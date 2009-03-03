@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+  <include file="dhis-web-commons.xml"/>
+	
+  <package name="dhis-web-jforum-integration" extends="dhis-web-commons" namespace="/dhis-web-jforum-integration">
+	
+	<action name="index" class="org.hisp.dhis.jforum.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-jforum-integration/populateForm.vm</param>
+    </action>
+		
+	<action name="populate" class="org.hisp.dhis.jforum.action.PopulateJForumAction">
+	  <result name="success" type="chain">index</result>
+	</action>
+    
+  </package>
+</xwork>

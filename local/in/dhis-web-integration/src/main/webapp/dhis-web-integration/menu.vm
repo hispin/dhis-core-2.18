@@ -1,0 +1,30 @@
+<h2>NRHM Integration</h2>
+<ul>
+	<li>RIMS</li>	
+	<ul>
+		<li><a href = "createDatasetForm.action">Create dataset</a></li>
+		<li><a href = "rimsDataElementList.action">DataElements</a></li>
+		<li><a href = "rimsOrgUnitList.action">Orgunits</a></li>
+		<li><a href = "rimsExportForm.action">Export</a></li>
+		<li><a href = "rimsImportForm.action">Import</a></li>
+		<!-- truncate.action is omitted to avoid encouraging 
+		dangerous activities. -->
+		<li><a href = "http://www.rimsindia.org">RIMS reports online</a></li>
+	</ul>
+</ul>
+<ul>
+	<li>OpenMRS</li>	
+	<ul>
+		<li><a href = "#">DataElements</a></li>
+		<li><a href = "#">Orgunits</a></li>
+		<li><a href = "#">Export</a></li>
+	</ul>			
+</ul>
+<ul>
+	<li>CRIS</li>	
+	<ul>
+		<li><a href = "#">DataElements</a></li>
+		<li><a href = "#">Orgunits</a></li>
+		<li><a href = "#">Export</a></li>
+	</ul>			
+</ul>

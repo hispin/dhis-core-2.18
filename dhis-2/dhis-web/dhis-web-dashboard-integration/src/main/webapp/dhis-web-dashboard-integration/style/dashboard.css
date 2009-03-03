@@ -1,0 +1,47 @@
+
+.contentProviderTable
+{
+  width:305px;
+}
+
+.contentProviderTable td
+{
+  padding-top:3px;
+  padding-bottom:3px;
+  border-bottom:1px solid #cad5e5;
+}
+
+.contentProviderTable a
+{
+  text-decoration:none;
+}
+
+.linkArea
+{
+  border:1px solid #d0d0d0;
+  padding:1px;
+  height:175px;
+  width:305px;
+  overflow:hidden;
+  margin-bottom:15px;
+}
+
+.chartArea
+{
+  border:1px solid #d0d0d0;
+  padding:1px;
+  height:280px;
+  width:305px;
+  overflow:hidden;
+  margin-bottom:15px;
+}
+
+.buttonArea
+{
+  margin-bottom:2px;
+}
+
+.labelText
+{
+  color:#808080;
+}

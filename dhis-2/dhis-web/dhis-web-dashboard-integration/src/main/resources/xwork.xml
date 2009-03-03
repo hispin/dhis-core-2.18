@@ -1,0 +1,46 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+    "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+  <include file="dhis-web-commons.xml"/>
+
+  <package name="dhis-web-dashboard-integration" extends="dhis-web-commons" namespace="/dhis-web-dashboard-integration">
+
+    <action name="index" class="org.hisp.dhis.dashboard.action.ProvideContentAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-dashboard-integration/mainForm.vm</param>
+      <param name="menu">/dhis-web-commons/about/menu.vm</param>
+      <param name="stylesheets">style/dashboard.css</param>
+      <param name="javascripts">javascript/dropdown.js</param>
+    </action>
+    
+    <action name="getChart" class="org.hisp.dhis.dashboard.action.GetChartAction">
+      <result name="success" type="chart">
+        <param name="width">305</param>
+        <param name="height">280</param>
+      </result>
+    </action>
+    
+    <action name="setAreaItem" class="org.hisp.dhis.dashboard.action.SetAreaItemAction">
+      <result name="success" type="velocity-xml">/dhis-web-dashboard-integration/responseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <action name="clearArea" class="org.hisp.dhis.dashboard.action.ClearAreaAction">
+      <result name="success" type="velocity-xml">/dhis-web-dashboard-integration/responseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <action name="removeReport" class="org.hisp.dhis.dashboard.action.RemoveReportAction">
+      <result name="success" type="redirect">index.action</result>
+    </action>
+    
+    <action name="removeDataMartExport" class="org.hisp.dhis.dashboard.action.RemoveDataMartExportAction">
+      <result name="success" type="redirect">index.action</result>
+    </action>
+    
+    <action name="removeOlapUrl" class="org.hisp.dhis.dashboard.action.RemoveOlapUrlAction">
+      <result name="success" type="redirect">index.action</result>
+    </action>
+    
+  </package>
+</xwork>

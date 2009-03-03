@@ -1,0 +1,13 @@
+
+#if ( $flag )
+    <img src="../dhis-web-commons/flags/$flag" 
+      style="margin-top: 16px; margin-left: 16px; border: 1px solid #D0D0D0;">
+#end
+
+<h2>$i18n.getString( "dhis2_online" )&nbsp;</h2>
+
+<ul>
+	<li><a href="http://www.hisp.info" target="_blank">$i18n.getString( "hisp_homepage" )&nbsp;</a></li>
+	<li><a href="http://www.hisp.info/confluence/display/DHIS2/Home" target="_blank">$i18n.getString( "dhis2_wiki" )&nbsp;</a></li>
+	<li><a href="http://www.hisp.info/dhis2" target="_blank">$i18n.getString( "dhis2_issue_tracking" )&nbsp;</a></li>
+</ul>

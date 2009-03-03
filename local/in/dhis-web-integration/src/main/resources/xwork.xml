@@ -1,0 +1,137 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+ "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+  <!-- use the DHIS web portal default -->
+  <include file="dhis-web-commons.xml"/>
+
+  <package name="dhis-web-integration" extends="dhis-web-commons" namespace="/dhis-web-integration">
+	
+	<!-- DataIntegration Home -->	
+	<action name="index"
+      class="org.hisp.dhis.integration.action.IntegrationHomeAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-integration/welcome.vm</param>
+      <param name="menu">/dhis-web-integration/menu.vm</param>
+    </action>
+
+	<!-- RIMS -->
+	  
+	<action name="rimsDataElementList"
+      class="org.hisp.dhis.integration.rims.action.RIMSDataElementsListAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-integration/rimsDataElementList.vm</param>
+		<param name="menu">/dhis-web-integration/menu.vm</param>
+		<param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/hashtable.js,javascript/rims.js</param>
+		<param name="stylesheets">css/StylesForTags.css</param>
+		<interceptor-ref name="organisationUnitTreeStack"/>				
+    </action>
+
+	<action name="rimsOrgUnitList"
+      class="org.hisp.dhis.integration.rims.action.RIMSOrgunisListAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-integration/rimsOrgUnitList.vm</param>
+		<param name="menu">/dhis-web-integration/menu.vm</param>
+		<param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/hashtable.js,javascript/rims.js</param>
+		<param name="stylesheets">css/StylesForTags.css</param>
+		<interceptor-ref name="organisationUnitTreeStack"/>				
+    </action>
+	  	  
+	<action name="rimsExportForm"
+      class="org.hisp.dhis.integration.rims.action.RIMSExportFormAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-integration/rimsExportForm.vm</param>
+		<param name="menu">/dhis-web-integration/menu.vm</param>
+		<param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/hashtable.js,javascript/rims.js</param>
+		<param name="stylesheets">css/StylesForTags.css</param>
+		<interceptor-ref name="organisationUnitTreeStack"/>				
+    </action>
+    
+    <action name="rimsImportForm"
+      class="org.hisp.dhis.integration.rims.action.RIMSImportFormAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-integration/rimsImportForm.vm</param>
+		<param name="menu">/dhis-web-integration/menu.vm</param>
+		<param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/hashtable.js,javascript/rims.js</param>
+		<param name="stylesheets">css/StylesForTags.css</param>
+		<interceptor-ref name="organisationUnitTreeStack"/>				
+    </action>
+
+	<action name="rimsExport"
+      class="org.hisp.dhis.integration.rims.action.RIMSExportResultAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-integration/rimsExportResult.vm</param>
+		<param name="menu">/dhis-web-integration/menu.vm</param>
+		<param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/hashtable.js,javascript/rims.js</param>
+		<param name="stylesheets">css/StylesForTags.css</param>
+		<interceptor-ref name="organisationUnitTreeStack"/>				
+    </action>
+
+    <action name="rimsImport"
+      class="org.hisp.dhis.integration.rims.action.RIMSImportResultAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-integration/rimsImportResult.vm</param>
+      <param name="menu">/dhis-web-integration/menu.vm</param>
+      <param name="stylesheets">css/StylesForTags.css</param>
+      <interceptor-ref name="organisationUnitTreeStack"/>	
+    </action>
+    	  
+    <action name="getRIMSDataElements"
+      class="org.hisp.dhis.integration.rims.action.GetRIMSDataElementsAction">
+      <result name="success" type="velocity">/dhis-web-integration/responseRIMSDataElements.vm</result>
+      <interceptor-ref name="transactionStack"/>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="getRIMSPHCs"
+      class="org.hisp.dhis.integration.rims.action.GetRIMSPHCsAction">
+      <result name="success" type="velocity">/dhis-web-integration/responseRIMSOrgUnits.vm</result>
+      <interceptor-ref name="transactionStack"/>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <action name="DEMappingForm"
+      class="org.hisp.dhis.integration.rims.action.RIMSDEMappingFormAction">
+      <result name="success" type="velocity">/dhis-web-integration/dataelementmapping.vm</result>
+      <interceptor-ref name="transactionStack"/>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="createDatasetForm" class="com.opensymphony.xwork.ActionSupport">
+      <param name="page">/dhis-web-integration/createDatasetForm.vm</param>
+      <param name="menu">/dhis-web-integration/menu.vm</param>
+      <param name="stylesheets">css/StylesForTags.css</param>
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <action name="createDataset"
+      class="org.hisp.dhis.integration.rims.action.RIMSCreateDatasetAction">
+      <param name="page">/dhis-web-integration/createDatasetResult.vm</param>
+      <param name="menu">/dhis-web-integration/menu.vm</param>
+      <param name="stylesheets">css/StylesForTags.css</param>
+      <result name="success" type="velocity">/main.vm</result>
+      <interceptor-ref name="transactionStack"/>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="truncate"
+      class="org.hisp.dhis.integration.rims.action.TruncateConfirmAction">
+      <param name="page">/dhis-web-integration/truncateConfirm.vm</param>
+      <param name="menu">/dhis-web-integration/menu.vm</param>
+      <param name="stylesheets">css/StylesForTags.css</param>
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="truncateConfirmed"
+      class="org.hisp.dhis.integration.rims.action.TruncateAction">
+      <param name="page">/dhis-web-integration/truncateResult.vm</param>
+      <param name="menu">/dhis-web-integration/menu.vm</param>
+      <param name="stylesheets">css/StylesForTags.css</param>
+      <result name="success" type="velocity">/main.vm</result>
+      <interceptor-ref name="transactionStack"/>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+                      
+  </package>
+</xwork>

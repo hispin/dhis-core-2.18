@@ -1,0 +1,70 @@
+
+<script>
+	function showDataElementDetails( rimsDEName, dhisDEName)
+	{
+		document.getElementById( 'rimsDEField' ).innerHTML = rimsDEName;
+		document.getElementById( 'dhisDEField' ).innerHTML = dhisDEName;
+
+		showDetails()
+	}
+
+function showDetails()
+{
+    document.getElementById( 'detailsArea' ).style.display = 'block';
+}
+
+function hideDetails()
+{
+	document.getElementById( 'detailsArea' ).style.display = 'none';
+}
+
+</script>
+
+<h2>RIMS DataElement List</h2>
+
+<table class="mainPageTable">
+  <tr>
+    <td style="vertical-align:top">	
+      <table id="list" style="width:100%">
+          <col> ## Name
+          <col width="20">
+		  
+          <tr>
+            <th>$i18n.getString( "name" )</th>
+            <th>Info</th>
+          </tr>
+
+          <tbody>
+            #set( $mark = false )
+            #foreach( $rimsDataElement in $rimsDataElements )
+				#set($dhisDEName = $rimsDENameMap.get($rimsDataElement.deName))
+              <tr #if( $mark ) style="background-color:#dddddd" #end>
+                <td style="text-align:left">$encoder.htmlEncode( $rimsDataElement.deName )</td>
+                <td style="text-align:center">
+                  <a href="javascript:showDataElementDetails( '$rimsDataElement.deName', '$dhisDEName' )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" width="16" height="16" alt="$i18n.getString( "show_details" )"></a>
+                </td>
+              </tr>
+			  #if( $mark )
+				#set( $mark = false )
+			  #else
+				#set( $mark = true )
+			  #end
+            #end
+
+          </tbody>
+
+        </table>
+    </td>
+		<td style="width:20em; padding-left:2em; vertical-align:top">
+
+			<div id="detailsArea" style="display:none">
+				<div style="float:right">
+					<a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
+				</div>				
+				<p><label>RIMS DataElement:</label><br><span id="rimsDEField"></span></p>
+				<p><label>DHIS DataElement:</label><br><span id="dhisDEField"></span></p>
+			</div>
+
+		</td>
+  </tr>
+</table>

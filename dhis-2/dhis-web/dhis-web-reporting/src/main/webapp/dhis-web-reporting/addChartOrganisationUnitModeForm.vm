@@ -1,0 +1,74 @@
+
+<!-- OrganisationUnit -->
+
+<tr>
+    <th>$i18n.getString( "category_x_available_organisationunits" )</th>
+</tr>
+<tr>
+    <td>
+        <select id="organisationUnitLevel" name="organisationUnitLevel" style="min-width:600px" onchange="getOrganisationUnits()">
+            <option value="$ALL">[ $i18n.getString( "select_organisationunit_level_all" ) ]</option>
+            #foreach ( $level in $levels )
+                <option value="$level.level">$encoder.htmlEncode( $level.name )</option>
+            #end
+        </select>
+    </td>
+</tr>
+<tr>
+    <td>
+        <select multiple size="6" id="availableOrganisationUnits" name="availableOrganisationUnits" style="min-width:600px" ondblclick="moveSelectedById( 'availableOrganisationUnits', 'selectedOrganisationUnits' )">
+            #foreach ( $unit in $availableOrganisationUnits )
+                <option value="$unit.id">$unit.name</option>
+            #end
+        </select>
+    </td>
+</tr>
+<tr>
+    <td>
+        <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableOrganisationUnits', 'selectedOrganisationUnits' )"><input 
+            type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableOrganisationUnits', 'selectedOrganisationUnits' )"><input 
+            type="button" value="$i18n.getString( 'add_children' )" title="$i18n.getString( 'add_children' )" style="width:120px" onclick="getOrganisationUnitChildren()"><input 
+            type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedOrganisationUnits', 'availableOrganisationUnits' )"><input 
+            type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'selectedOrganisationUnits', 'availableOrganisationUnits' )">
+    </td>
+</tr>
+<tr>
+    <th>$i18n.getString( "category_x_selected_organisationunits" )</th>
+</tr>
+<tr>
+    <td>
+        <select size="6" id="selectedOrganisationUnits" name="selectedOrganisationUnits" style="min-width:600px" multiple ondblclick="moveSelectedById( 'selectedOrganisationUnits', 'availableOrganisationUnits' )">               
+            #foreach ( $unit in $selectedOrganisationUnits )
+                <option value="$unit.id">$unit.name</option>
+            #end
+        </select>
+    </td>
+</tr>
+<tr>
+    <td style="height:15px"></td>
+</tr>
+
+<!-- Period -->
+
+<tr>
+    <th>$i18n.getString( "filter_available_periods" )</th>
+</tr>
+<tr>
+    <td>
+        <select id="periodTypeId" name="periodTypeId" style="min-width:600px" onchange="getPeriodsToSelected()">
+            <option value="null">[ $i18n.getString( "select_period_type_all" ) ]</option>
+            #foreach ( $type in $periodTypes )
+                <option value="$type.name">$type.name</option>
+            #end
+        </select>
+    </td>
+</tr>
+<tr>
+    <td>
+        <select id="selectedPeriods" name="selectedPeriods" style="min-width:600px">               
+            #foreach ( $period in $selectedPeriods )
+                <option value="$period.id">$format.formatPeriod( $period )</option>
+            #end
+        </select>
+    </td>
+</tr>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+  <include file="dhis-web-commons.xml"/>
+	
+  <package name="dhis-web-maintenance-dataadmin" extends="dhis-web-commons" namespace="/dhis-web-maintenance-dataadmin">
+	
+    <action name="index" class="org.hisp.dhis.commons.action.NoAction">
+      <result name="success" type="redirect">displayLockingForm.action</result>
+    </action>
+    
+    <!-- Locking -->
+    
+    <action name="displayLockingForm" class="org.hisp.dhis.dataadmin.action.datalocking.GetPeriodTypesAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/lockingForm.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="javascripts">javascript/locking.js,../dhis-web-commons/lists/lists.js</param>
+      <param name="requiredAuthorities">F_DATASET_LOCK</param>
+    </action>
+    
+    <action name="lockDataSets" class="org.hisp.dhis.dataadmin.action.datalocking.LockDataSetsAction">
+      <result name="success" type="redirect">displayLockingForm.action</result>
+      <param name="requiredAuthorities">F_DATASET_LOCK</param>
+    </action>
+		
+    <action name="getDataSets" class="org.hisp.dhis.dataadmin.action.datalocking.GetDataSetsAction">
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseDataSet.vm</result>
+      <interceptor-ref name="transactionStack"/>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <!-- Maintenance -->
+  
+    <action name="displayMaintenanceForm" class="org.hisp.dhis.dataadmin.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/maintenanceForm.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="javascripts">javascript/maintenance.js</param>
+    </action>
+    
+    <action name="performMaintenance" class="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction">
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <!-- Resource table -->
+    
+    <action name="displayResourceTableForm" class="org.hisp.dhis.dataadmin.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/resourceTableForm.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="javascripts">javascript/resourceTable.js</param>
+    </action>
+    
+    <action name="generateResourceTable" class="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction">
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <!-- Cache -->
+    
+    <action name="showCache" class="org.hisp.dhis.dataadmin.action.cache.ShowCacheAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/showcache.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <interceptor-ref name="organisationUnitTreeStack"/>
+    </action>
+    
+    <action name="clearCache" class="org.hisp.dhis.dataadmin.action.cache.ClearCacheAction">
+      <result name="success" type="redirect">showCache.action</result>
+    </action>
+    
+    <!-- Data integrity -->
+    
+    <action name="displayDataIntegrityForm" class="org.hisp.dhis.dataadmin.action.dataintegrity.GetDataIntegrityAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/dataIntegrityForm.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+    </action> 
+    
+    <!-- Statistics -->
+    
+    <action name="viewStatistics" class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/viewStatistics.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+    </action>
+    
+    <action name="viewStatisticsChart" class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction">
+      <result name="success" type="chart">
+        <param name="width">420</param>
+        <param name="height">220</param>
+      </result>   
+    </action>
+    
+    <!-- Databrowser -->
+     
+    <action name="displayDataBrowserForm" class="org.hisp.dhis.dataadmin.action.datalocking.GetPeriodTypesAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/dataBrowserForm.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="javascripts">
+        ../dhis-web-commons/ouwt/ouwt.js,
+        ../dhis-web-commons/calendar/calendar.js,
+        ../dhis-web-commons/calendar/calendar-lang.js,
+        ../dhis-web-commons/calendar/calendar-setup.js,
+        javascript/dataBrowser.js
+      </param>
+      <interceptor-ref name="organisationUnitTreeStack"/>   
+    </action>
+            
+    <action name="searchResult" class="org.hisp.dhis.dataadmin.action.databrowser.SearchAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <result name="error" type="redirect">error.action</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/searchResult.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+    </action>
+    
+    <action name="error" class="org.hisp.dhis.dataadmin.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/error.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+    </action>
+    
+  </package>
+</xwork>

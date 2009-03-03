@@ -1,0 +1,180 @@
+
+<h3>$i18n.getString('design_report')</h3>
+
+<form id="reportForm" name="reportForm" action="" method="post">
+	
+  <input type="hidden" id="elementId" name="elementId">
+  <input type="hidden" id="report" name="report" value="$report">
+	
+  <table cellpadding="0" cellspacing="2" border="0" width="720">
+	  	
+    <col width="180">
+    <col width="180">
+    <col width="180">
+    <col width="180">
+  
+  	<tr>
+	  <th colspan="2">$i18n.getString('current_report')</th>
+	  <th>$i18n.getString('design_template')</th>
+	  <th>$i18n.getString('chart_template')</th>
+	</tr>
+	
+	<tr>
+	  <td colspan="2" valign="top">
+	  	<input type="text" id="reportName" name="reportName" value="$reportName" readonly="readonly" style="width:340px"><br>
+    	<input type="button" value="$i18n.getString('generate_design')" style="width:170px" onclick="generateDesign()"><input type="button" value="$i18n.getString('done')" style="width:170px" onclick="unloadReport()">    		
+      </td>            
+      <td>      	
+		<input id="templateRadio" type="radio" name="designTemplate" value="0"#if ( $designTemplate == 0 ) checked#end onclick="setDesignTemplate( '$encoder.jsEncode( $report )', '0' )"><label for="templateRadio">$i18n.getString('title')</label><br>		
+		<input id="oneColumnRadio" type="radio" name="designTemplate" value="1"#if ( $designTemplate == 1 ) checked#end onclick="setDesignTemplate( '$encoder.jsEncode( $report )', '1' )"><label for="oneColumnRadio">$i18n.getString('title_one_col')</label><br>
+		<input id="twoColumnRadio"type="radio" name="designTemplate" value="2"#if ( $designTemplate == 2 ) checked#end onclick="setDesignTemplate( '$encoder.jsEncode( $report )', '2' )"><label for="twoColumnRadio">$i18n.getString('title_two_col')</label>	
+	  </td>	  
+	  <td>	  	  	
+		<input id="noChartRadio" type="radio" name="chartTemplate" value="0"#if ( $chartTemplate == 0 ) checked#end onclick="setChartTemplate( '$encoder.jsEncode( $report )', '0' )"><label for="noChartRadio">$i18n.getString('no_chart')</label><br>
+		<input id="pieChartRadio" type="radio" name="chartTemplate" value="1"#if ( $chartTemplate == 1 ) checked#end onclick="setChartTemplate( '$encoder.jsEncode( $report )', '1' )"><label for="pieChartRadio">$i18n.getString('pie_chart')</label><br>
+		<input id="barChartRadio" type="radio" name="chartTemplate" value="2"#if ( $chartTemplate == 2 ) checked#end onclick="setChartTemplate( '$encoder.jsEncode( $report )', '2' )"><label for="barChartRadio">$i18n.getString('bar_chart')</label>			
+      </td>	
+	</tr>	
+	
+	<tr>
+	#if ( $message )
+	  <td height="60" colspan="4">
+	  	<span style="padding: 1em; margin: 1em; background-color: #ffffbf; border: 1px solid #cccc00; width: 340px;">$!message</span>
+	  </td>
+  	#else
+	  <td colspan="4" height="20"></td>
+	#end
+	</tr>
+	
+	<tr>
+	  <th colspan="2">$i18n.getString('dataelements')</th>
+	  <th colspan="2">$i18n.getString('indicators')</th>
+	</tr>
+	
+	<tr>
+	  <td colspan="2">
+	  	<select id="dataElementGroupId" name="dataElementGroupId" style="width:340px" onchange="viewReport()">
+	  	  <option value="$ALL">[ $i18n.getString( "filter_by_group_view_all" ) ]</option>
+	  	  #foreach ( $group in $dataElementGroups )
+	  	    <option value="$group.id"
+	  	    #if ( $dataElementGroupId == $group.id )
+	  	      selected="selected"
+	  	    #end
+	  	    >$encoder.htmlEncode( $group.name )</option>
+	  	  #end
+	  	</select>
+	  </td>
+	  <td colspan="2">
+	  	<select id="indicatorGroupId" name="indicatorGroupId" style="width:340px" onchange="viewReport()">
+	  	  <option value="$ALL">[ $i18n.getString( "filter_by_group_view_all" ) ]</option>
+	  	  #foreach ( $group in $indicatorGroups )
+	  	    <option value="$group.id"
+	  	    #if ( $indicatorGroupId == $group.id )
+	  	      selected="selected"
+	  	    #end
+	  	    >$encoder.htmlEncode( $group.name )</option>
+	  	  #end
+	  	</select>
+  	  </td>
+	</tr>
+	
+	<tr>	
+	  <td colspan="2">	  
+	  	<select multiple id="dataElementId" name="dataElementId" size="7" style="width:340px" ondblclick="addDataElementToReport()">
+		#foreach ( $dataElement in $dataElements )
+		  <option value="$dataElement.id">$encoder.htmlEncode( $dataElement.name )</option>		
+		#end
+		</select>
+		<input type="button" value="$i18n.getString('add_to_report')" style="width:170px" onclick="addDataElementToReport()"><input type="button" value="$i18n.getString('add_to_chart')" style="width:170px" onclick="addDataElementToChart()">				
+  	  </td>
+  	  
+  	  <td colspan="2">  	  	
+  	  	<select multiple id="indicatorId" name="indicatorId" size="7" style="width:340px" ondblclick="addIndicatorToReport()">
+		#foreach ( $indicator in $indicators )
+		  <option value="$indicator.id">$encoder.htmlEncode( $indicator.name )</option>
+		#end
+		</select>
+		<input type="button" value="$i18n.getString('add_to_report')" style="width:170px" onclick="addIndicatorToReport()"><input type="button" value="$i18n.getString('add_to_chart')" style="width:170px" onclick="addIndicatorToChart()">		
+  	  </td>		
+	</tr>
+	
+	<tr>
+	  <td colspan="4" height="20"></td>
+	</tr>
+	
+	<tr>	
+	  <td colspan="4">
+	    <input id="reportRadio" name="showChartElements" type="radio" value="false"#if ( $showChartElements == false ) checked#end onclick="viewReport()"><label for="reportRadio">$i18n.getString('show_report')</label>&nbsp;
+	    <input id="chartRadio" name="showChartElements" type="radio" value="true"#if ( $showChartElements ) checked#end onclick="viewReport()"><label for="chartRadio">$i18n.getString('show_chart')</label>&nbsp;
+	    #if ( $reportType == 1 )
+	    	<input id="includeBox" name="includeChildren" type="checkbox" value="true"#if ( $includeChildren ) checked#end><label for="includeBox">$i18n.getString('include_children')</label>
+	    #end
+	  </td>	
+	</tr>
+	
+	<tr>
+	  <td colspan="4" height="5"></td>
+	</tr>				
+	
+	<tr>		
+	  <td colspan="4">
+	  	  
+	    <table id="elementTable" cellpadding="0" cellspacing="2" border="0" style="width:100%">
+		
+		  <col width="100">
+		  <col width="*">
+		  #if ( $reportType == 1 )
+		  	<col width="150">	
+  		  #end
+		  <col width="30">
+		  <col width="30">
+		  <col width="30">
+		  			  
+		  <tr>		  
+		    <th>$i18n.getString('type')</th>
+		    <th>$i18n.getString('element')</th>
+		    #if ( $reportType == 1 )
+		      <th>$i18n.getString('organisation_unit')</th>
+    		#end
+		    <th colspan="3">$i18n.getString('operation')</th>  		
+  		  </tr>
+  		  
+  		  #if ( $showChartElements == false )
+		    	
+		    #foreach ( $rElmt in $currentReportElements )
+		    <tr>
+		      <td height="20">$encoder.htmlEncode( $rElmt.type )</td>
+		      <td>$encoder.htmlEncode( $rElmt.elementName )</td>
+		      #if ( $reportType == 1 )
+		        <td>$encoder.htmlEncode( $rElmt.organisationUnitName )</td>	
+      		  #end
+			  <td align="center"><a href="#" onclick="removeReportElement('$encoder.jsEncode( $report )', '$encoder.jsEncode( $rElmt.id )', this.parentNode.parentNode.rowIndex)"><img src="../images/delete.png" border="0" alt=""></a></td>
+			  <td align="center"><a href="#" onclick="moveUpReportElement('$encoder.jsEncode( $rElmt.id )')"><img src="../images/move_up.png" border="0" alt=""></a></td>
+			  <td align="center"><a href="#" onclick="moveDownReportElement('$encoder.jsEncode( $rElmt.id )')"><img src="../images/move_down.png" border="0" alt=""></a></td>
+		    </tr>
+		    #end
+		   
+		  #else
+		  
+		    #foreach ( $cElmt in $currentChartElements )
+			<tr>
+			  <td height="20">$encoder.htmlEncode( $cElmt.type )</td>
+		      <td>$encoder.htmlEncode( $cElmt.elementName )</td>
+			  <td align="center" colspan="3"><a href="#" onclick="removeChartElement('$encoder.jsEncode( $report )', '$encoder.jsEncode( $cElmt.id )', this.parentNode.parentNode.rowIndex)"><img src="../images/delete.png" border="0" alt=""></a></td>
+			</tr>
+			#end
+		
+		  #end
+		  
+		</table>	
+	  	
+  	  </td>		
+	</tr>
+
+  </table>
+  
+</form>
+
+  	
+
+

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+  
+  <!-- ResourceTable -->
+    
+  <bean id="org.hisp.dhis.resourcetable.ResourceTableStore"
+    class="org.hisp.dhis.resourcetable.hibernate.HibernateResourceTableStore">
+    <property name="sessionManager"
+      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+  </bean>
+    
+  <bean id="org.hisp.dhis.resourcetable.ResourceTableService"
+    class="org.hisp.dhis.resourcetable.DefaultResourceTableService">
+    <property name="resourceTableStore"
+      ref="org.hisp.dhis.resourcetable.ResourceTableStore"/>
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="organisationUnitGroupService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+    <property name="categoryOptionComboService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="batchHandlerFactory"
+      ref="org.hisp.dhis.jdbc.BatchHandlerFactory"/>
+  </bean>
+  
+  <!-- Data integrity -->
+  
+  <bean id="org.hisp.dhis.dataintegrity.DataIntegrityService"
+    class="org.hisp.dhis.dataintegrity.DefaultDataIntegrityService">
+    <property name="dataElementService"
+      ref="org.hisp.dhis.dataelement.DataElementService"/>
+    <property name="indicatorService"
+      ref="org.hisp.dhis.indicator.IndicatorService"/>
+    <property name="dataSetService"
+      ref="org.hisp.dhis.dataset.DataSetService"/>
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="organisationUnitGroupService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+  </bean>
+  
+  <!-- Maintenance -->
+  
+  <bean id="org.hisp.dhis.maintenance.MaintenanceStore"
+    class="org.hisp.dhis.maintenance.jdbc.JdbcMaintenanceStore">
+    <property name="statementManager"
+      ref="org.hisp.dhis.jdbc.StatementManager"/>
+    <property name="configurationProvider"
+      ref="org.hisp.dhis.jdbc.JDBCConfigurationProvider"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.maintenance.MaintenanceService"
+    class="org.hisp.dhis.maintenance.DefaultMaintenanceService">
+    <property name="maintenanceStore"
+      ref="org.hisp.dhis.maintenance.MaintenanceStore"/>
+  </bean>
+  
+  <!-- Statistics -->
+  
+  <bean id="org.hisp.dhis.statistics.StatisticsProvider"
+    class="org.hisp.dhis.statistics.jdbc.JdbcStatisticsProvider">
+    <property name="statementManager"
+      ref="org.hisp.dhis.jdbc.StatementManager"/>
+  </bean>
+  
+  <!-- Databrowser -->
+  
+  <bean id="org.hisp.dhis.databrowser.DataBrowserStore"
+    class="org.hisp.dhis.databrowser.jdbc.StatementManagerDataBrowserStore">
+    <property name="statementManager"
+      ref="org.hisp.dhis.jdbc.StatementManager" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.databrowser.DataBrowserService"
+    class="org.hisp.dhis.databrowser.DefaultDataBrowserService">
+    <property name="dataBrowserStore"
+      ref="org.hisp.dhis.databrowser.DataBrowserStore" />
+    <property name="periodService" 
+      ref="org.hisp.dhis.period.PeriodService"/>
+  </bean>
+    
+  <!-- AOP transaction definitions -->
+    
+  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice" ref="readOnlyTransactionInterceptor"/>
+    <property name="patterns">
+      <list>
+        <value>.*\.ResourceTableStore\.get.*</value>
+      </list>
+    </property>
+  </bean>
+    
+  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice" ref="readWriteTransactionInterceptor"/>
+    <property name="patterns">
+      <list>
+        <value>.*\.ResourceTableStore\.add.*</value>
+        <value>.*\.ResourceTableStore\.delete.*</value>
+      </list>
+    </property>
+  </bean>   
+    
+</beans>

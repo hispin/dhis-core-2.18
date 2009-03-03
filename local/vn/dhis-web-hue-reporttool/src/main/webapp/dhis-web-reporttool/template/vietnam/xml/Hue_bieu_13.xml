@@ -1,0 +1,320 @@
+<org.hisp.dhis.rt.report.Report>
+  <reportElements>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:281</id>
+      <type>DataElement</type>
+      <elementId>281</elementId>
+      <elementName>Tổng số BN lao</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:282</id>
+      <type>DataElement</type>
+      <elementId>282</elementId>
+      <elementName>Số lao phổi AFB+ mới</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:283</id>
+      <type>DataElement</type>
+      <elementId>283</elementId>
+      <elementName>Số AFB+ tphát</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:284</id>
+      <type>DataElement</type>
+      <elementId>284</elementId>
+      <elementName>TSBN lao phổi AFB-</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:289</id>
+      <type>DataElement</type>
+      <elementId>289</elementId>
+      <elementName>TSBN lao ngoài phổi</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:285</id>
+      <type>DataElement</type>
+      <elementId>285</elementId>
+      <elementName>Tổng số BN C do lao</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:286</id>
+      <type>DataElement</type>
+      <elementId>286</elementId>
+      <elementName>TS BN điều trị srét</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:287</id>
+      <type>DataElement</type>
+      <elementId>287</elementId>
+      <elementName>TSBN lao điều trị CB</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:288</id>
+      <type>DataElement</type>
+      <elementId>288</elementId>
+      <elementName>Số lao điều trị ngcơ</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:290</id>
+      <type>DataElement</type>
+      <elementId>290</elementId>
+      <elementName>Tổng số BN sốt rét</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:291</id>
+      <type>DataElement</type>
+      <elementId>291</elementId>
+      <elementName>TSBN sốt rét thường</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:292</id>
+      <type>DataElement</type>
+      <elementId>292</elementId>
+      <elementName>TSBN sốt rét ác tính</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:293</id>
+      <type>DataElement</type>
+      <elementId>293</elementId>
+      <elementName>TSBN trẻ em d15 tuổi</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:294</id>
+      <type>DataElement</type>
+      <elementId>294</elementId>
+      <elementName>Số SR ở PN có thai</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:295</id>
+      <type>DataElement</type>
+      <elementId>295</elementId>
+      <elementName>TSBN sốt rét C</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:296</id>
+      <type>DataElement</type>
+      <elementId>296</elementId>
+      <elementName>TSBN C d 15 tuổi</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:297</id>
+      <type>DataElement</type>
+      <elementId>297</elementId>
+      <elementName>TS C sốt rét PNCT</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:298</id>
+      <type>DataElement</type>
+      <elementId>298</elementId>
+      <elementName>Số bướu cổ đơn thuần</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:299</id>
+      <type>DataElement</type>
+      <elementId>299</elementId>
+      <elementName>Số bướu cổ đt 8-12t</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:300</id>
+      <type>DataElement</type>
+      <elementId>300</elementId>
+      <elementName>Số bướu cổ được đtrị</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:301</id>
+      <type>DataElement</type>
+      <elementId>301</elementId>
+      <elementName>TS BN bướu cổ Basedo</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:302</id>
+      <type>DataElement</type>
+      <elementId>302</elementId>
+      <elementName>Số phong mới</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:303</id>
+      <type>DataElement</type>
+      <elementId>303</elementId>
+      <elementName>Số phong TP độ II</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:304</id>
+      <type>DataElement</type>
+      <elementId>304</elementId>
+      <elementName>Số phong qlý và đtrị</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:305</id>
+      <type>DataElement</type>
+      <elementId>305</elementId>
+      <elementName>TSBN phong cần CSTP</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:306</id>
+      <type>DataElement</type>
+      <elementId>306</elementId>
+      <elementName>Số lậu trkỳ</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:307</id>
+      <type>DataElement</type>
+      <elementId>307</elementId>
+      <elementName>GMai mới phiện</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:308</id>
+      <type>DataElement</type>
+      <elementId>308</elementId>
+      <elementName>TS mới nhiễm HIV</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:309</id>
+      <type>DataElement</type>
+      <elementId>309</elementId>
+      <elementName>SMới nhiễm HIV d 13t</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:310</id>
+      <type>DataElement</type>
+      <elementId>310</elementId>
+      <elementName>Số nhiễm HIV TL</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:311</id>
+      <type>DataElement</type>
+      <elementId>311</elementId>
+      <elementName>TS nhiễm HIV TE d13t</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:312</id>
+      <type>DataElement</type>
+      <elementId>312</elementId>
+      <elementName>Tổng số mới M AIDS</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:313</id>
+      <type>DataElement</type>
+      <elementId>313</elementId>
+      <elementName>TS mới M AIDS TEd13t</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:314</id>
+      <type>DataElement</type>
+      <elementId>314</elementId>
+      <elementName>TS tích lũy AIDS</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:315</id>
+      <type>DataElement</type>
+      <elementId>315</elementId>
+      <elementName>TS Tlũy AIDS TE d13t</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:316</id>
+      <type>DataElement</type>
+      <elementId>316</elementId>
+      <elementName>Số C do HIV/AIDS</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:317</id>
+      <type>DataElement</type>
+      <elementId>317</elementId>
+      <elementName>Chết HIV/AIDS cdồn</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:318</id>
+      <type>DataElement</type>
+      <elementId>318</elementId>
+      <elementName>Tổng số nghiện hút</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:319</id>
+      <type>DataElement</type>
+      <elementId>319</elementId>
+      <elementName>Số nghiện hútd13t</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:320</id>
+      <type>DataElement</type>
+      <elementId>320</elementId>
+      <elementName>Tổng số cai nghiện</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:321</id>
+      <type>DataElement</type>
+      <elementId>321</elementId>
+      <elementName>Số TKPL mới</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:322</id>
+      <type>DataElement</type>
+      <elementId>322</elementId>
+      <elementName>Số TKPL được qlý-ĐT</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:323</id>
+      <type>DataElement</type>
+      <elementId>323</elementId>
+      <elementName>TS động kinh mới</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:324</id>
+      <type>DataElement</type>
+      <elementId>324</elementId>
+      <elementName>Số động kinh QLĐT</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:325</id>
+      <type>DataElement</type>
+      <elementId>325</elementId>
+      <elementName>Tổng số BN mù lòa</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:326</id>
+      <type>DataElement</type>
+      <elementId>326</elementId>
+      <elementName>Tổng số cụt một chi</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:327</id>
+      <type>DataElement</type>
+      <elementId>327</elementId>
+      <elementName>TS cụt 2 chi trở lên</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:328</id>
+      <type>DataElement</type>
+      <elementId>328</elementId>
+      <elementName>TS các tàn phế khác</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:329</id>
+      <type>DataElement</type>
+      <elementId>329</elementId>
+      <elementName>Tổng số BN Glocom</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:330</id>
+      <type>DataElement</type>
+      <elementId>330</elementId>
+      <elementName>Tổng số BN đục TTT</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:331</id>
+      <type>DataElement</type>
+      <elementId>331</elementId>
+      <elementName>Tổng số BN đã mổ</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:332</id>
+      <type>DataElement</type>
+      <elementId>332</elementId>
+      <elementName>TS mù do đục TTT</elementName>
+    </org.hisp.dhis.rt.report.Element>
+  </reportElements>
+  <chartElements/>
+  <designTemplate>2</designTemplate>
+  <chartTemplate>0</chartTemplate>
+  <reportType>0</reportType>
+</org.hisp.dhis.rt.report.Report>

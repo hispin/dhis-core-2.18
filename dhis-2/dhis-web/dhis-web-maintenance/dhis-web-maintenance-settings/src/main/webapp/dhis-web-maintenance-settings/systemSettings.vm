@@ -1,0 +1,46 @@
+
+<h3>$i18n.getString( "system_settings" )</h3>
+
+<form id="systemSettingForm" method="post" action="setSystemSettings.action">
+
+<h4>$i18n.getString( "application_title" )</h4>
+
+<p><input type="text" name="applicationTitle" style="width:30em" value="$!applicationTitle"></p>
+
+<h4>$i18n.getString( "flag" )</h4>
+
+<p>
+<select name="flag" style="width:30em">
+	<option value="NO_FLAG">$i18n.getString( "no_flag" )</option>
+	#foreach ( $f in $flags.entrySet() )
+		<option value="$f.value" #if( $f.value == $flag )selected="selected"#end>$i18n.getString( $f.key )</option>
+    #end
+</select>
+</p>
+
+<h4>$i18n.getString( "start_page" )</h4>
+
+<p>
+<select name="startModule" style="width:30em">
+    <option value="null">$i18n.getString( "portal" )</option>
+	#foreach ( $module in $modules )
+		<option value="$module.name" #if ( $currentStartModule == $module.name )selected#end>$i18n.getString( "$module.name" )</option>
+	#end
+</select>
+</p>
+
+<h4>$i18n.getString( "save_zero_values" )</h4>
+
+<p>
+<input type="checkbox" id="zeroValueSaveMode" name="zeroValueSaveMode" value="true" #if( $zeroValueSaveMode )checked="checked"#end>
+</p>
+
+<h4>$i18n.getString( "forum_integration" )</h4>
+
+<p>
+<input type="checkbox" id="forumIntegration" name="forumIntegration" value="true" #if( $forumIntegration )checked="checked"#end>
+</p>
+
+<p><input type="submit" value="$i18n.getString( "save" )" style="width:10em"></p>
+
+</form>

@@ -1,0 +1,62 @@
+<org.hisp.dhis.rt.report.Report>
+  <reportElements>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:92</id>
+      <type>DataElement</type>
+      <elementId>92</elementId>
+      <elementName>Dân số có đến 1/7</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:93</id>
+      <type>DataElement</type>
+      <elementId>93</elementId>
+      <elementName>Dân số Vùng sâu</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:94</id>
+      <type>DataElement</type>
+      <elementId>94</elementId>
+      <elementName>Dân số Miền núi</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:95</id>
+      <type>DataElement</type>
+      <elementId>95</elementId>
+      <elementName>Dân số HảI đảo</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:96</id>
+      <type>DataElement</type>
+      <elementId>96</elementId>
+      <elementName>Dân số Đồng bằng</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:97</id>
+      <type>DataElement</type>
+      <elementId>97</elementId>
+      <elementName>Số CSTYT Xã</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:100</id>
+      <type>DataElement</type>
+      <elementId>100</elementId>
+      <elementName>Số trạm xá BS</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:99</id>
+      <type>DataElement</type>
+      <elementId>99</elementId>
+      <elementName>Số trạm xá NHS</elementName>
+    </org.hisp.dhis.rt.report.Element>
+    <org.hisp.dhis.rt.report.Element>
+      <id>DataElement:101</id>
+      <type>DataElement</type>
+      <elementId>101</elementId>
+      <elementName>Số trạm xá YSSN</elementName>
+    </org.hisp.dhis.rt.report.Element>
+  </reportElements>
+  <chartElements/>
+  <designTemplate>2</designTemplate>
+  <chartTemplate>0</chartTemplate>
+  <reportType>0</reportType>
+</org.hisp.dhis.rt.report.Report>

@@ -1,0 +1,37 @@
+
+<h2>$i18n.getString( "import" )&nbsp;</h2>
+
+<ul>
+  <li><a href="setImportFormat.action?importFormat=DXF">$i18n.getString( "import" )&nbsp;</a></li>
+</ul>
+
+<h2>$i18n.getString( "import_from_other_systems" )&nbsp;</h2>
+
+<ul>
+	<li><a href="setImportFormat.action?importFormat=DHIS14XML">$i18n.getString( "DHIS14_xml_import" )&nbsp;</a></li>
+	<li><a href="setImportFormat.action?importFormat=DHIS14FILE">$i18n.getString( "DHIS14_file_import" )&nbsp;</a></li>
+	<li><a href="setImportFormat.action?importFormat=IXF">$i18n.getString( "IXF_import" )&nbsp;</a></li>
+</ul>
+
+<h2>$i18n.getString( "export" )&nbsp;</h2>
+
+<ul>
+  <li><a href="displayDataValueExportForm.action?exportFormat=DXF">$i18n.getString( "data_export" )&nbsp;</a></li>
+  <li><a href="displayMetaDataExportForm.action?exportFormat=DXF">$i18n.getString( "metadata_export" )&nbsp;</a></li>
+  <li><a href="displayDetailedMetaDataExportForm.action?exportFormat=DXF">$i18n.getString( "detailed_metadata_export" )&nbsp;</a></li> 
+</ul>
+
+<h2>$i18n.getString( "export_to_other_systems" )&nbsp;</h2>
+
+<ul>  
+  <li><a href="displayDataValueExportForm.action?exportFormat=IXF">$i18n.getString( "ixf_data_export" )&nbsp;</a></li>
+  <li><a href="displayMetaDataExportForm.action?exportFormat=IXF">$i18n.getString( "ixf_metadata_export" )&nbsp;</a></li>
+  <li><a href="displayMetaDataExportForm.action?exportFormat=DHIS14XML">$i18n.getString( "DHIS14_metadata_export" )&nbsp;</a></li>
+  <li><a href="displayDetailedMetaDataExportForm.action?exportFormat=DHIS14XML">$i18n.getString( "DHIS14_detailed_metadata_export" )&nbsp;</a></li>
+  <li><a href="displayMetaDataExportForm.action?exportFormat=PDF">$i18n.getString( "pdf_metadata_export" )&nbsp;</a></li>
+</ul>
+<ul>
+  <li><a href="displayConfigIXFForm.action">$i18n.getString( "ixf_configuration" )&nbsp;</a></li>
+  <li><a href="displayConfigDhis14Form.action">$i18n.getString( "dhis14_file_configuration" )&nbsp;</a></li>
+</ul>
+

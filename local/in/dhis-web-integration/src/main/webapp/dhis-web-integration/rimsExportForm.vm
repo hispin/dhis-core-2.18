@@ -1,0 +1,147 @@
+
+<script onload="getRIMSPCHs()">
+	function formValidations()
+	{
+		var selOUListlength = document.dataExportForm.selectedOrgunits.options.length;
+		var sDateVal = document.dataExportForm.startDate.value;
+		var eDateVal = document.dataExportForm.endDate.value;
+		var selSectionIndex = document.dataExportForm.rimsDEGroups.selectedIndex;		
+		
+		// Allow zero-length orgunit selection since district is checked off separately.
+		// if(selOUListlength <= 0) { alert("Please Select OrgUnit(s)"); return false; }
+		else if(sDateVal == null || sDateVal == "" || eDateVal == null || eDateVal == "") { alert("Please Select Period"); return false; }
+		else if(sDateVal > eDateVal) { alert("StartDate is Greater than EndDate"); return false; }
+		else if(selSectionIndex < 0) { alert("Please Select RIMS Section(s)"); return false; }
+		
+		var k=0;
+		for(k=0;k<selOUListlength;k++)
+    	{
+    		document.dataExportForm.selectedOrgunits.options[k].selected = true;
+        } // for loop end
+		
+	}
+</script>
+
+<h1>RIMS Export Form</h1>
+<hr />
+<h3>
+	Connecting to database
+</h3>
+
+<form id="dataExportForm" name="dataExportForm" action="rimsExport.action" method="post" onsubmit="return formValidations()">
+
+<select id="connection" name="connection">
+	#foreach( $connection in $connections.values() )
+		<option value="$connection.Id">$connection.Name</option>
+	#end
+</select>
+
+<h3>
+	Options
+</h3>
+
+	<table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="730" border=0>
+		<colgroup>
+        	<col width="325">
+  		    <col width="80">
+ 		    <col width="325">
+  	    </colgroup>
+        <tr>
+        	<td class="NormalB">
+        		RIMS Districts:<br/>
+        		<select id="rimsDistricts" name="rimsDistricts" style="width:325px;" onchange="getRIMSPHCs()">
+        			#foreach($rimsDistrictsOfPHC in $rimsDistrictsOfPHCs)
+        				<option value="$rimsDistrictsOfPHC.district_code">$rimsDistrictsOfPHC.district_name</option>
+        			#end
+        		</select>
+        		<br />
+        		
+        		<input type="checkbox" id="includeDistrict" name="includeDistrict" checked="checked">
+        		<label for="includeDistrict">Include district-level data in export</label>
+        	</td>   
+            <td class="NormalB">&nbsp;</td>
+            <td class="NormalB">&nbsp;</td>
+        </tr>        
+		<tr>
+        	<td class="NormalB">&nbsp;</td>   
+            <td class="NormalB">&nbsp;</td>
+            <td class="NormalB">&nbsp;</td>
+        </tr>
+		<tr>
+        	<td class="NormalB">
+        		Available PHCs:<br/>
+            	<select multiple size="5" id="availableOrgunits" name="availableOrgunits" style="width:325px; height:85px" ondblclick="moveSelectedById( 'availableOrgunits', 'selectedOrgunits' )">
+            		#foreach($rimsPHC in $rimsPHCs)
+            			<option value="$rimsPHC.phc_code">$rimsPHC.phc_name</option>
+            		#end
+                </select>
+            </td>
+	        <td class="NormalB" align="center">
+    			<br />
+    			<input type="button" value="&gt;" style="width:40px" onclick="moveSelectedById( 'availableOrgunits', 'selectedOrgunits' )"><br>
+                <input type="button" value="&lt;" style="width:40px" onclick="moveSelectedById( 'selectedOrgunits', 'availableOrgunits' )"><br>
+                <input type="button" value="&gt;&gt;" style="width:40px" onclick="moveAllById( 'availableOrgunits', 'selectedOrgunits' )"><br>
+                <input type="button" value="&lt;&lt;" style="width:40px" onclick="moveAllById( 'selectedOrgunits', 'availableOrgunits' )">		
+            </td>
+    		<td class="NormalB">
+    			Selected PHCs:<br />
+    			<select multiple size="7" id="selectedOrgunits" name="selectedOrgunits" style="width:325px; height:85px" ondblclick="moveSelectedById( 'selectedOrgunits', 'availableOrgunits' )">
+       			</select>
+   			</td>
+        </tr>
+		<tr>
+        	<td class="NormalB">&nbsp;</td>   
+            <td class="NormalB">&nbsp;</td>
+            <td class="NormalB">&nbsp;</td>
+        </tr>
+        <tr>
+        	<td class="NormalB">
+        		RIMS Sections:<br/>
+        		<select multiple size="7" id="rimsDEGroups" name="rimsDEGroups" style="width:325px; height:85px">
+        			#foreach($rimsDegroupKey in $rimsDEGroups.keySet())
+        				<option value="$rimsDegroupKey">$rimsDEGroups.get($rimsDegroupKey)</option>
+        			#end
+        		</select>
+        	</td>   
+            <td class="NormalB">&nbsp;</td>
+            <td class="NormalB">            
+            	<label for="startDate">$i18n.getString( 'start_date' ) ($i18n.getString( "format.date.label" ))</label><br/>
+				<input type="text" id="startDate" name="startDate" style="width:20em">
+				<img src="../images/calendar_icon.gif" width="16" height="16" id="getStartDate" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
+				
+				<br /><br />
+				
+				<label for="endDate">$i18n.getString( 'end_date' ) ($i18n.getString( "format.date.label" ))</label><br />
+				<input type="text" id="endDate" name="endDate" style="width:20em">
+				<img src="../images/calendar_icon.gif" width="16" height="16" id="getEndDate" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">				
+            </td>
+        </tr>        
+		<tr>
+        	<td class="NormalB">&nbsp;</td>   
+            <td class="NormalB">&nbsp;</td>
+            <td class="NormalB">&nbsp;</td>
+        </tr>
+		<tr>
+        	<td class="NormalB">&nbsp;</td>   
+            <td class="NormalB">&nbsp;</td>
+            <td class="NormalB"><input type="submit" name="rimsExport" value='Export To RIMS'/></td>
+        </tr>
+        
+	</table>
+</form>
+
+<script type="text/javascript">
+	
+	Calendar.setup({
+        inputField     :    "startDate",      // id of the input field
+        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+        button         :    "getStartDate"   // trigger for the calendar (button ID)
+    });
+	
+	Calendar.setup({
+        inputField     :    "endDate",      // id of the input field
+        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+        button         :    "getEndDate"   // trigger for the calendar (button ID)
+    });
+</script>
+	        

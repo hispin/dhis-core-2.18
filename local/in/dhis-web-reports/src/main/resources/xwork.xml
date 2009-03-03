@@ -1,0 +1,61 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+ "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+  <!-- use the DHIS web portal default -->
+  <include file="dhis-web-commons.xml"/>
+
+  <package name="dhis-web-reports" extends="dhis-web-commons" namespace="/dhis-web-reports">
+
+    <action name="index" class="org.hisp.dhis.web.reports.action.SelectOrganisationUnitAction">
+      <result name="success" type="chain">
+        <param name="actionName">getMonthlyPeriods</param>
+      </result>
+      <result name="input" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-reports/welcome.vm</param>
+      <param name="menu">/dhis-web-reports/menu.vm</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
+      <interceptor-ref name="organisationUnitTreeStack"/>
+    </action>
+
+    <action name="getMonthlyPeriods" class="org.hisp.dhis.web.reports.action.GetMonthlyPeriodsAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-reports/reportForm.vm</param>
+      <param name="menu">/dhis-web-reports/menu.vm</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
+      <interceptor-ref name="organisationUnitTreeStack"/>
+    </action>
+
+    <action name="generateReport" class="org.hisp.dhis.web.reports.action.GenerateReportAction">
+		<!-- Reports -->
+      	<result name="form6">/dhis-web-reports/Kerala/kform6.jsp</result>
+      	<result name="form7">/dhis-web-reports/Kerala/kform7.jsp</result>
+      	<result name="form7b">/dhis-web-reports/Kerala/kform7b.jsp</result>
+      	<result name="nvbdcp">/dhis-web-reports/Kerala/kcnvbdcp.jsp</result>
+      	<result name="commiec">/dhis-web-reports/Kerala/Kcontroliec.jsp</result>
+      	<result name="mf4">/dhis-web-reports/Kerala/kmf4.jsp</result>
+	  	<result name="mf5">/dhis-web-reports/Kerala/kmf-5.jsp</result>
+		<result name="mf6">/dhis-web-reports/Kerala/kmf-6.jsp</result>
+		<result name="nlepp">/dhis-web-reports/Kerala/knlep.jsp</result>
+		<result name="noncomm">/dhis-web-reports/Kerala/knoncommunicable.jsp</result>
+		<result name="opip">/dhis-web-reports/Kerala/kopip.jsp</result>
+		<result name="rntcp">/dhis-web-reports/Kerala/krntcp.jsp</result>
+		<result name="stockpos">/dhis-web-reports/Kerala/kstockposition.jsp</result>
+		<result name="jphn">/dhis-web-reports/Kerala/kjphn.jsp</result>
+		<result name="nmep">/dhis-web-reports/Kerala/knmep.jsp</result>
+		<result name="Prntcp">/dhis-web-reports/Kerala/kcprntcp.jsp</result>
+		<result name="Pnoncommunicable">/dhis-web-reports/Kerala/kcpnoncommunicable.jsp</result>
+		<result name="Pcommiec">/dhis-web-reports/Kerala/kcpiec.jsp</result>
+		<result name="communicable">/dhis-web-reports/Kerala/kccommunicable.jsp</result>
+		<result name="form1">/dhis-web-reports/Kerala/kform1.jsp</result>
+		<result name="form2">/dhis-web-reports/Kerala/kform2.jsp</result>
+		<result name="form3">/dhis-web-reports/Kerala/kform3.jsp</result>
+		<result name="form4">/dhis-web-reports/Kerala/kform4.jsp</result>
+		<result name="form5">/dhis-web-reports/Kerala/kform5.jsp</result>
+		<result name="form8">/dhis-web-reports/Kerala/kform8.jsp</result>
+		<result name="form9">/dhis-web-reports/Kerala/kform9.jsp</result>
+
+      <interceptor-ref name="organisationUnitTreeStack"/>
+    </action>
+
+  </package>
+</xwork>

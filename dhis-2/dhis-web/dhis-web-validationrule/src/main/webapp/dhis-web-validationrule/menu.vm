@@ -1,0 +1,7 @@
+
+<h2>$i18n.getString( "validation" )&nbsp;</h2>
+<ul>
+	<li><a href="showValidationRuleForm.action">$i18n.getString( "validation_rule" )&nbsp;</a></li>
+	<li><a href="showValidationRuleGroupForm.action">$i18n.getString( "validation_rule_group" )&nbsp;</a></li>
+	<li><a href="showRunValidationForm.action">$i18n.getString( "run_validation" )&nbsp;</a></li>
+</ul>

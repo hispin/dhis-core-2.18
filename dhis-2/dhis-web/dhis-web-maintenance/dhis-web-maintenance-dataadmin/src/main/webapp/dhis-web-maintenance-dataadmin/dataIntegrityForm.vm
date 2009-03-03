@@ -1,0 +1,65 @@
+
+#macro( integrityHeader $header $size $divId )
+
+<h4>
+    ${header}&nbsp;
+    #if ( ${size} > 0 )
+        (${size})&nbsp;&nbsp;<img src="../images/down.png" style="cursor:pointer" onclick="showHideDiv( '${divId}' )" title="$i18n.getString( 'view_violations' )">
+    #else
+        <img src="../images/check.png" title="$i18n.getString( 'no_violations' )">
+    #end
+</h4>
+    
+#end
+
+#macro( violationList $id $list )
+	
+<div style="display:none" id="${id}">
+    <table>
+	#foreach ( $object in $list )
+	    <tr>
+	        <td>${object.name}</td>
+	    </tr>
+	#end
+	</table>
+</div>
+	
+#end
+
+<h3>$i18n.getString( "data_integrity_checks_performed" )</h3>
+
+#integrityHeader( $i18n.getString( "data_elements_without_data_set" ) $dataElementsWithoutDataSet.size() "dataElementsWithoutDataSet" )
+#violationList( "dataElementsWithoutDataSet" $dataElementsWithoutDataSet )
+
+#integrityHeader( $i18n.getString( "data_elements_without_groups" ) $dataElementsWithoutGroups.size() "dataElementsWithoutGroups" )
+#violationList( "dataElementsWithoutGroups" $dataElementsWithoutGroups )
+
+#integrityHeader( $i18n.getString( "data_sets_not_assigned_to_organisation_units" ) $dataSetsNotAssignedToOrganisationUnits.size() "dataSetsNotAssignedToOrganisationUnits" )
+#violationList( "dataSetsNotAssignedToOrganisationUnits" $dataSetsNotAssignedToOrganisationUnits )
+
+#integrityHeader( $i18n.getString( "indicators_with_blank_formulas" ) $indicatorsWithBlankFormulas.size() "indicatorsWithBlankFormulas" )
+#violationList( "indicatorsWithBlankFormulas" $indicatorsWithBlankFormulas )
+
+#integrityHeader( $i18n.getString( "indicators_with_identical_formulas" ) $indicatorsWithIdenticalFormulas.size() "indicatorsWithIdenticalFormulas" )
+#violationList( "indicatorsWithIdenticalFormulas" $indicatorsWithIdenticalFormulas )
+
+#integrityHeader( $i18n.getString( "indicators_without_groups" ) $indicatorsWithoutGroups.size() "indicatorsWithoutGroups" )
+#violationList( "indicatorsWithoutGroups" $indicatorsWithoutGroups )
+
+#integrityHeader( $i18n.getString( "organisation_units_with_cyclic_references" ) $organisationUnitsWithCyclicReferences.size() "organisationUnitsWithCyclicReferences" )
+#violationList( "organisationUnitsWithCyclicReferences" $organisationUnitsWithCyclicReferences )
+
+#integrityHeader( $i18n.getString( "orphaned_organisation_units" ) $orphanedOrganisationUnits.size() "orphanedOrganisationUnits" )
+#violationList( "orphanedOrganisationUnits" $orphanedOrganisationUnits )
+
+#integrityHeader( $i18n.getString( "organisation_units_without_groups" ) $organisationUnitsWithoutGroups.size() "organisationUnitsWithoutGroups" )
+#violationList( "organisationUnitsWithoutGroups" $organisationUnitsWithoutGroups )
+
+#integrityHeader( $i18n.getString( "organisation_units_violating_compulsory_group_sets" ) $organisationUnitsViolatingCompulsoryGroupSets.size() "organisationUnitsViolatingCompulsoryGroupSets" )
+#violationList( "organisationUnitsViolatingCompulsoryGroupSets" $organisationUnitsViolatingCompulsoryGroupSets )
+
+#integrityHeader( $i18n.getString( "organisation_units_violation_exclusive_group_sets" ) $organisationUnitsViolatingExclusiveGroupSets.size() "organisationUnitsViolatingExclusiveGroupSets" )
+#violationList( "organisationUnitsViolatingExclusiveGroupSets" $organisationUnitsViolatingExclusiveGroupSets )
+
+#integrityHeader( $i18n.getString( "organisation_unit_groups_without_group_sets" ) $organisationUnitGroupsWithoutGroupSets.size() "organisationUnitGroupsWithoutGroupSets" )
+#violationList( "organisationUnitGroupsWithoutGroupSets" $organisationUnitGroupsWithoutGroupSets )

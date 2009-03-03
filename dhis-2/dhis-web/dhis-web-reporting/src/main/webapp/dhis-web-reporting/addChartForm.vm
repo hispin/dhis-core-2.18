@@ -1,0 +1,148 @@
+
+#macro ( getHeader )
+	#if ( $dimension == "period" )
+		$i18n.getString( "create_indicator_by_period_chart" )
+	#else
+	    $i18n.getString( "create_indicator_by_organisation_unit_chart" )
+	#end
+#end
+
+<h3>#getHeader()</h3>
+
+<form id="chartForm" name="chartForm" method="post" action="saveChart.action">
+
+<input type="hidden" id="id" name="id" value="$!chart.id">
+<input type="hidden" id="dimension" name="dimension" value="$!dimension">
+
+<table>
+    
+    <tr>
+        <th colspan="2">$i18n.getString( "chart" )</th>
+    </tr>
+    <tr>
+        <td><label for="title">$i18n.getString( "title" )</label></td>
+        <td><input type="text" id="title" name="title" style="width:300px" value="$!chart.title"></td>
+    </tr>
+    <tr>
+    	<td><label for="type">$i18n.getString( "chart_type" )</label></td>
+    	<td>
+    		<select id="type" name="type" style="width:300px">
+    			<option value="bar"#if ( $!chart.type == "bar" ) selected#end>$i18n.getString( "bar_chart" )</option>
+    			<option value="line"#if ( $!chart.type == "line" ) selected#end>$i18n.getString( "line_chart" )</option>
+		    </select>
+	    </td>
+    </tr>
+    <tr>
+        <td><label for="type">$i18n.getString( "chart_size" )</label></td>
+        <td>
+            <select id="size" name="size" style="width:300px">
+                <option value="normal"#if ( $!chart.size == "normal" ) selected#end>$i18n.getString( "normal" )</option>
+                <option value="wide"#if ( $!chart.size == "wide" ) selected#end>$i18n.getString( "wide" )</option>
+                <option value="tall"#if ( $!chart.size == "tall" ) selected#end>$i18n.getString( "tall" )</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+    	<td><label for="hideLegend">$i18n.getString( "hide_legend" )</label></td>
+    	<td><input type="checkbox" id="hideLegend" name="hideLegend" value="true"#if( $!chart.hideLegend ) checked#end></td>
+    </tr>
+    <tr>
+        <td><label for="verticalLabels">$i18n.getString( "vertical_category_labels" )</label></td>
+        <td><input type="checkbox" id="verticalLabels" name="verticalLabels" value="true"#if( $!chart.verticalLabels ) checked#end></td>
+    </tr>
+    <tr>
+        <td><label for="horizontalPlotOrientation">$i18n.getString( "horizontal_plot_orientation" )</label></td>
+        <td><input type="checkbox" id="horizontalPlotOrientation" name="horizontalPlotOrientation" value="true"#if( $!chart.horizontalPlotOrientation ) checked#end></td>
+    </tr>
+    <tr>
+        <td><label for="regression">$i18n.getString( "include_regression_line" )</label></td>
+        <td><input type="checkbox" id="regression" name="regression" value="true"#if( $!chart.regression ) checked#end></td>
+    </tr>
+    <tr>
+        <td colspan="2" style="height:15px"></td>
+    </tr>
+    
+</table>
+
+<table>
+        
+    <!-- Indicators -->
+    
+    <tr>
+        <th>$i18n.getString( "value_y_available_indicators" )</th>      
+    </tr>
+    <tr>
+        <td>
+            <select id="indicatorGroupId" name="indicatorGroupId" style="min-width:600px" onchange="getIndicators()">
+                <option value="$ALL">[ $i18n.getString( "select_indicatorgroup_all" ) ]</option>
+                #foreach ( $group in $indicatorGroups )
+                    <option value="$group.id">$group.name</option>
+                #end
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <select multiple size="6" id="availableIndicators" name="availableIndicators" style="min-width:600px" ondblclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )">             
+                #foreach ( $indicator in $availableIndicators )
+                    <option value="$indicator.id">$indicator.name</option>
+                #end
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )"><input 
+                type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableIndicators', 'selectedIndicators' )"><input 
+                type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )"><input 
+                type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'selectedIndicators', 'availableIndicators' )">
+        </td>
+    </tr>
+    <tr>
+        <th>$i18n.getString( "value_y_selected_indicators" )</th>
+    </tr>
+    <tr>
+        <td>
+            <select multiple size="6" id="selectedIndicators" name="selectedIndicators" style="min-width:600px" ondblclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )">
+                #foreach( $indicator in $selectedIndicators )
+                    <option value="$indicator.id">$indicator.name</option>
+                #end
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td style="height:15px"></td>
+    </tr>
+    
+    <!-- Category -->
+    
+    #if ( $dimension == "period" )
+    	#parse( "dhis-web-reporting/addChartPeriodModeForm.vm" )
+    #else
+        #parse( "dhis-web-reporting/addChartOrganisationUnitModeForm.vm" )
+    #end    
+    
+    <tr>
+        <td style="height:15px"></td>
+    </tr>
+    
+    <!-- Submit -->
+    
+    <tr>        
+        <td>
+            <input type="button" value="$i18n.getString( 'save' )"onclick="saveChart()" style="width:120px"><input 
+                type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayViewChartForm.action'" style="width:120px">
+        </td>
+    </tr>
+    
+</table>
+
+</form>
+
+<span id="message"></span>
+
+<script type="text/javascript">
+    var i18n_must_select_at_least_one_indicator = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_indicator" ), "'")';
+    var i18n_must_select_at_least_one_unit = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_unit" ), "'")';
+    var i18n_must_select_at_least_one_period = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_period" ), "'")';
+</script>

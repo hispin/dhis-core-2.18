@@ -1,0 +1,9 @@
+{ "mapvalues": [
+#foreach( $value in $object )
+  {
+    "geoCode": "$!{value.geoCode}",
+    "orgUnit": "$!{value.organisationUnitName}",
+    "value": $!{value.value}
+  },
+#end
+] }

@@ -1,0 +1,10 @@
+
+<script type="text/javascript">
+#if ( $startModule && $auth.hasAccess( $startModule.name, "index" ) )
+	window.location.href="$startModule.defaultAction";
+#else
+    window.location.href="intro.action";
+#end
+</script>
+
+<p>$i18n.getString( "loading" )...</p>

@@ -1,0 +1,61 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+ "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+  <!-- use the DHIS web portal default -->
+  <include file="dhis-web-commons.xml"/>
+
+	<package name="Ethiopia Reports" extends="dhis-web-commons"
+		namespace="/dhis-web-reports">
+		
+		<action name="index"
+			class="org.hisp.dhis.web.reports.action.SelectOrganisationUnitAction">
+			<result name="success" type="chain">
+				<param name="actionName">getMonthlyPeriods</param>
+			</result>
+			<result name="input" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-reports/welcome.vm</param>
+			<param name="menu">/dhis-web-reports/menu.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
+			<interceptor-ref name="organisationUnitTreeStack"/>
+		</action>
+		
+		<action name="getMonthlyPeriods"
+			class="org.hisp.dhis.web.reports.action.GetMonthlyPeriodsAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-reports/reportForm.vm</param>
+			<param name="menu">/dhis-web-reports/menu.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
+			<interceptor-ref name="organisationUnitTreeStack"/>
+		</action>
+		
+		<action name="generateReport"
+			class="org.hisp.dhis.web.reports.action.GenerateReportAction">
+			<result name="mm">/dhis-web-reports/Ethiopia/mm.jsp</result>
+			<result name="a">/dhis-web-reports/Ethiopia/HLMR.jsp</result>
+			<result name="b">/dhis-web-reports/Ethiopia/rptIMCI.jsp</result>
+			<result name="c">/dhis-web-reports/Ethiopia/rptVLRR.jsp</result>
+			<result name="d">/dhis-web-reports/Ethiopia/rptVCTR.jsp</result>
+			<result name="e">/dhis-web-reports/Ethiopia/rptRSRR.jsp</result>
+			<result name="f">/dhis-web-reports/Ethiopia/rptHERR.jsp</result>
+			<result name="g">/dhis-web-reports/Ethiopia/rptCLRR.jsp</result>
+			<result name="h">/dhis-web-reports/Ethiopia/rptLTRR.jsp</result>
+			<result name="i">/dhis-web-reports/Ethiopia/rptBBRR.jsp</result>
+			<result name="j">/dhis-web-reports/Ethiopia/DPDW.jsp</result>
+			<result name="k">/dhis-web-reports/Ethiopia/rptABORT.jsp</result>
+			<result name="l">/dhis-web-reports/Ethiopia/rptADOL.jsp</result>
+			<result name="m">/dhis-web-reports/Ethiopia/rptANC.jsp</result>
+			<result name="n">/dhis-web-reports/Ethiopia/rptCVACC.jsp</result>
+			<result name="o">/dhis-web-reports/Ethiopia/rptDELIVERY.jsp</result>
+			<result name="p">/dhis-web-reports/Ethiopia/rptFAMPLA.jsp</result>
+			<result name="q">/dhis-web-reports/Ethiopia/rptGRTH.jsp</result>
+			<result name="r">/dhis-web-reports/Ethiopia/rptMCOMP.jsp</result>
+			<result name="s">/dhis-web-reports/Ethiopia/rptOUTP.jsp</result>
+			<result name="t">/dhis-web-reports/Ethiopia/rptPNT.jsp</result>
+			<result name="u">/dhis-web-reports/Ethiopia/rptTTVACC.jsp</result>
+			<result name="v">/dhis-web-reports/Ethiopia/rptNTR.jsp</result>
+			
+			<interceptor-ref name="organisationUnitTreeStack"/>
+		</action>
+		
+	</package>
+</xwork>

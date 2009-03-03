@@ -1,0 +1,17 @@
+
+<table class="contentProviderTable">
+    <tr>
+    	<th colspan="2">$i18n.getString( "olap_url" )</th>
+    </tr>
+    #foreach ( $url in $olapUrls )
+    <tr>
+    	<td>
+    		<a href="../dhis-web-openhealth-integration/display.action?${url.url}">$url.name</a>
+    	</td>
+        <td style="width:16px">
+            <a href="javascript:window.location.href='removeOlapUrl.action?id=$url.id'" title="$i18n.getString( 'remove' )">
+            <img src="../images/close.png" alt="$i18n.getString( 'remove' )"></a>
+        </td>
+    </tr>
+    #end
+</table>

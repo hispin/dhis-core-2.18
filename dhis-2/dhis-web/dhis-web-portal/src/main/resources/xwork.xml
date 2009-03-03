@@ -1,0 +1,22 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+  "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+  <include file="dhis-web-commons.xml"/>
+  
+  <package name="dhis-web-portal" extends="dhis-web-commons" namespace="/dhis-web-portal">
+    
+    <action name="intro" class="org.hisp.dhis.wp.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-portal/intro.vm</param>
+      <param name="menu">/dhis-web-commons/about/menu.vm</param>
+      <param name="stylesheets">style/intro.css</param>
+      <param name="javascripts">javascript/intro.js</param>
+    </action>    
+    
+    <action name="redirect" class="org.hisp.dhis.wp.action.GetStartModuleAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-portal/redirect.vm</param>
+    </action>
+    
+  </package>
+</xwork>

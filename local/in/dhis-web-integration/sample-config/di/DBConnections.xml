@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<!-- DBConnection.xml -->
+
+<db-connections>
+    <rims name="RIMS application" default="default" id="rimsApp">
+        <uname>dhis</uname>
+        <upwd>RIMS#2005-06</upwd>
+	<dburl>jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=C:\programfiler\rims\rims.mdb</dburl>
+        <dbdriver>sun.jdbc.odbc.JdbcOdbcDriver</dbdriver>
+    </rims>	
+    <rims name="RIMS Anand database" id="rimsAnand">
+        <uname>dhis</uname>
+        <upwd>RIMS#2005-06</upwd>
+	<dburl>jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=C:\dok\uio\master\rims-export\sample data\rims-anand.mdb</dburl>
+        <dbdriver>sun.jdbc.odbc.JdbcOdbcDriver</dbdriver>
+    </rims>	
+    <rims name="RIMS Mehsana exported" id="rimsMehsanaExported">
+        <uname>dhis</uname>
+        <upwd>RIMS#2005-06</upwd>
+	<dburl>jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=C:\dok\uio\master\rims-export\rims-mehsana-exported.mdb</dburl>
+        <dbdriver>sun.jdbc.odbc.JdbcOdbcDriver</dbdriver>
+    </rims>	
+    <rims name="RIMS Mehsana database" id="rimsMehsana">
+        <uname>dhis</uname>
+        <upwd>RIMS#2005-06</upwd>
+	<dburl>jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=C:\dok\uio\master\rims-export\sample data\rims-mehsana.mdb</dburl>
+        <dbdriver>sun.jdbc.odbc.JdbcOdbcDriver</dbdriver>
+    </rims>	
+    <rims name="RIMS Valsad exported" id="rimsValsad">
+        <uname>dhis</uname>
+        <upwd>RIMS#2005-06</upwd>
+	<dburl>jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=C:\dok\uio\master\rims-export\sample data\rims-valsad-export.mdb</dburl>
+        <dbdriver>sun.jdbc.odbc.JdbcOdbcDriver</dbdriver>
+    </rims>	
+</db-connections>

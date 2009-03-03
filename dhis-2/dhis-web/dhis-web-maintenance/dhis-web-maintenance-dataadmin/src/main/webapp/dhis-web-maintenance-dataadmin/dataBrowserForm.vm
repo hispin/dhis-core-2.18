@@ -1,0 +1,97 @@
+
+<h3>$i18n.getString( "data_browser" )</h3>
+
+<form method="post" action="searchResult.action" onsubmit="return validate()">
+	
+<table>
+	<tr>
+		<th colspan="2">$i18n.getString( "period_type" )</th>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<select id="periodTypeId" name="periodTypeId" style="min-width:325px">
+				<option value="null">[ $i18n.getString( "select_period_type" ) ]</option>
+				#foreach ( $type in $periodTypes )
+					<option value="$type.name"#if( $currentPeriodTypeId == $type.name ) selected="selected"#end>$type.name</option>
+				#end
+			</select>
+		</td>
+	</tr>  
+    <tr>
+        <td colspan="2" style="height:10px"></td>
+    </tr>
+	
+	<tr>
+		<th>$i18n.getString( "from_date" )</th>
+		<th>$i18n.getString( "to_date" )</th>
+	</tr>
+	<tr>
+		<td>
+			<input type="text" id="fromDate" name="fromDate">
+			<img src="../images/calendar_icon.gif" width="16" height="16" id="getDateFieldFrom" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
+		</td>
+		<td>
+			<input type="text" id="toDate" name="toDate">	
+			<img src="../images/calendar_icon.gif" width="16" height="16" id="getDateFieldTo" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">			
+		</td>
+	</tr>  
+    <tr>
+        <td colspan="2" style="height:10px"></td>
+    </tr>
+	
+	<tr>
+		<th colspan="2">$i18n.getString( "browse_by" )</th>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<select id="searchOption" name="searchOption" style="min-width:325px" onChange="modeHandler()">
+				<option value ="null">[ $i18n.getString( "select_mode" ) ]</option>
+				<option value ="DataSet">$i18n.getString( "data_sets" )</option>
+				<option value ="OrganisationUnit">$i18n.getString( "organisation_units" )</option>
+			</select>
+		</td>
+	</tr>	
+</table>
+
+<div id="treeSection" style="display:none">	
+	<table>		
+	    <tr>
+	        <td style="height:15px; min-width:325px;"></td>
+	    </tr>
+		<tr>
+			<th>$i18n.getString( "select_parent_organisation_unit" )</th>
+		</tr>
+		<tr>
+			<td>
+				#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+			</td>
+		</tr>		
+	</table>
+</div>
+
+<table>
+	<tr>
+		<td>
+			<input type="submit" value="$i18n.getString( 'browse' )" style="width:120px">		
+		</td>
+	</tr>
+</table>	
+
+<span id="message"></span>
+
+<script type="text/javascript">
+    Calendar.setup({
+        inputField     :    "fromDate",      // id of the input field
+        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+        button         :    "getDateFieldFrom"   // trigger for the calendar (button ID)
+    });
+</script>
+<script type="text/javascript">
+    Calendar.setup({
+        inputField     :    "toDate",      // id of the input field
+        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+        button         :    "getDateFieldTo"   // trigger for the calendar (button ID)
+    });
+</script>
+
+</form>

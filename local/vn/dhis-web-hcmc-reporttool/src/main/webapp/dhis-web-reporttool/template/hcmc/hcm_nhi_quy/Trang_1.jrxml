@@ -1,0 +1,2101 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="Trang_1"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="Month" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="OrganisationUnit" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="DataElement:Tong_so_tre_duoi_5t" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_so_tre_duoi_5t]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_so_tre_1_12_th" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_so_tre_1_12_th]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_so_tre_13_24_th" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_so_tre_13_24_th]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_so_tre_duoi_2t" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_so_tre_duoi_2t]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_so_tre_tai_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_so_tre_tai_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_so_tre_o_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_so_tre_o_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_nhatre_maugiao" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_nhatre_maugiao]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:1_12_SKTE_tram_y_te" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:1_12_SKTE_tram_y_te]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:1_12_SKTE_luu_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:1_12_SKTE_luu_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:13_24_SKTE_tram_y_te" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:13_24_SKTE_tram_y_te]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:13_24_SKTE_luu_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:13_24_SKTE_luu_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:25_60_SKTE_tram_y_te" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:25_60_SKTE_tram_y_te]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:35_60_SKTE_luu_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:35_60_SKTE_luu_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_SKTE_tram_y_te" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_SKTE_tram_y_te]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_SKTE_luu_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_SKTE_luu_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_1_12_thang_kham" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_1_12_thang_kham]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_13_24_thang_kham" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_13_24_thang_kham]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_25_60_thang_kham" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_25_60_thang_kham]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_so_tre_den_kham" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_so_tre_den_kham]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_1_12_thang_can" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_1_12_thang_can]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_13_24_thang_can" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_13_24_thang_can]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_25_60_thang_can" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_25_60_thang_can]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_so_tre_can_do" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_so_tre_can_do]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_1_12_kham_co_so" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_1_12_kham_co_so]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_13_24_kham_co_so" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_13_24_kham_co_so]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_25_60_kham_co_so" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_25_60_kham_co_so]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_so_kham_co_so" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_so_kham_co_so]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tu_vong_chu_sinh" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tu_vong_chu_sinh]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tu_vong_tre_1_5_tuoi" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tu_vong_tre_1_5_tuoi]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tu_vong_duoi_1_tuoi" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tu_vong_duoi_1_tuoi]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Di_tat_bam_sinh" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Di_tat_bam_sinh]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Can_nang_sosinh_thap" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Can_nang_sosinh_thap]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_1_6_SDD_do_1_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_1_6_SDD_do_1_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_1_6_SDD_do_2_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_1_6_SDD_do_2_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_1_6_SDD_do_3_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_1_6_SDD_do_3_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_1_6_SDD_do_1_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_1_6_SDD_do_1_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_1_6_SDD_do_2_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_1_6_SDD_do_2_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_1_6_SDD_do_3_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_1_6_SDD_do_3_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_7_12_SDD_do_1_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_7_12_SDD_do_1_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_7_12_SDD_do_2_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_7_12_SDD_do_2_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_7_12_SDD_do_3_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_7_12_SDD_do_3_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_7_12_SDD_do_1_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_7_12_SDD_do_1_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_7_12_SDD_do_2_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_7_12_SDD_do_2_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_7_12_SDD_do_3_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_7_12_SDD_do_3_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_13_24_SDD_do1_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_13_24_SDD_do1_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_13_24_SDD_do2_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_13_24_SDD_do2_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_13_24_SDD_do3_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_13_24_SDD_do3_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_13_24_SDD_do1_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_13_24_SDD_do1_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_13_24_SDD_do2_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_13_24_SDD_do2_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_13_24_SDD_do3_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_13_24_SDD_do3_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_25_60_SDD_do1_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_25_60_SDD_do1_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_25_60_SDD_do2_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_25_60_SDD_do2_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_25_60_SDD_do3_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_25_60_SDD_do3_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_25_60_SDD_do1_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_25_60_SDD_do1_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_25_60_SDD_do2_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_25_60_SDD_do2_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tre_25_60_SDD_do3_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tre_25_60_SDD_do3_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:So_tre_1_6_SDD_o_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:So_tre_1_6_SDD_o_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:So_tre_1_6_SDD_o_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:So_tre_1_6_SDD_o_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:So_tre_7_12_SDD_o_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:So_tre_7_12_SDD_o_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:So_tre_7_12_SDD_o_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:So_tre_7_12_SDD_o_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:So_tre_13_24_SDD_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:So_tre_13_24_SDD_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:So_tre_13_24_SDD_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:So_tre_13_24_SDD_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:So_tre_25_60_SDD_DP" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:So_tre_25_60_SDD_DP]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:So_tre_25_60_SDD_NK" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:So_tre_25_60_SDD_NK]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_so_tre_SDD_do_1" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_so_tre_SDD_do_1]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_so_tre_SDD_do_2" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_so_tre_SDD_do_2]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_so_tre_SDD_do_3" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_so_tre_SDD_do_3]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:Tong_so_tre_SDD" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:Tong_so_tre_SDD]]></parameterDescription>
+	</parameter>
+	<parameter name="DataElement:SDD_kokham_trong_qui" isForPrompting="false" class="java.lang.String">
+		<parameterDescription><![CDATA[DataElement:SDD_kokham_trong_qui]]></parameterDescription>
+	</parameter>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="802"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="44"
+						y="10"
+						width="130"
+						height="15"
+						key="staticText-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[SỞ Y TẾ TP.HỒ CHÍ MINH]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="20"
+						y="25"
+						width="185"
+						height="15"
+						key="staticText-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" pdfFontName="arial.ttf" isUnderline="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[TT.CHĂM SÓC SỨC KHỎE SINH SẢN]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="225"
+						y="54"
+						width="86"
+						height="21"
+						key="staticText-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" pdfFontName="arialbd.ttf" size="16" isBold="true" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[BÁO CÁO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="130"
+						y="75"
+						width="283"
+						height="12"
+						key="staticText-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" pdfFontName="arial.ttf" size="8" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[(Mẫu báo cáo 3 tháng, 6 tháng, 9 tháng, cả năm)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="5"
+						y="123"
+						width="149"
+						height="15"
+						key="staticText-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" pdfFontName="arialbd.ttf" isBold="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[II. TÌNH HÌNH QUẢN LÝ TRẺ:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="5"
+						y="312"
+						width="137"
+						height="13"
+						key="staticText-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" pdfFontName="arial.ttf" isBold="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[4. Số lượt trẻ đến khám:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="18"
+						y="330"
+						width="122"
+						height="15"
+						key="staticText-11"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[1 - 12 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="140"
+						y="330"
+						width="122"
+						height="15"
+						key="staticText-12"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[13 - 24 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="262"
+						y="330"
+						width="122"
+						height="15"
+						key="staticText-13"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[25 - 60 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="384"
+						y="330"
+						width="122"
+						height="15"
+						key="staticText-15"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Tổng cộng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="6"
+						y="40"
+						width="218"
+						height="15"
+						key="staticText-102"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" pdfFontName="arial.ttf" size="12" isBold="true" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[CHƯƠNG TRÌNH SỨC KHỎE TRẺ EM]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="5"
+						y="362"
+						width="169"
+						height="13"
+						key="staticText-103"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" pdfFontName="arial.ttf" isBold="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[5. Tổng số lượt trẻ được cân đo: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="16"
+						y="414"
+						width="134"
+						height="15"
+						key="staticText-112"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[+ Khám lần đầu tại cơ sở]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="5"
+						y="469"
+						width="240"
+						height="12"
+						key="staticText-121"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" pdfFontName="arial.ttf" isBold="true" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[6. Tử vong trẻ em: (Gởi danh sách đính kèm)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="18"
+						y="487"
+						width="119"
+						height="15"
+						key="staticText-122"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[a. Số tử vong chu sinh :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="18"
+						y="506"
+						width="179"
+						height="13"
+						key="staticText-123"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[b. Số tử vong trẻ em từ 1 đến 5 tuổi: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="18"
+						y="525"
+						width="119"
+						height="13"
+						key="staticText-124"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[c. Số tử vong < 1 tuổi: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="5"
+						y="544"
+						width="229"
+						height="13"
+						key="staticText-125"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isBold="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[7. Dị tật bẩm sinh: (mới phát hiện)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="330"
+						y="14"
+						width="57"
+						height="15"
+						key="staticText-126"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Đơn vị: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="434"
+						y="31"
+						width="88"
+						height="12"
+						key="staticText-128"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" pdfFontName="arial.ttf" size="8" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[(version 2006)]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="387"
+						y="14"
+						width="117"
+						height="15"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{OrganisationUnit}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="18"
+						y="345"
+						width="122"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_1_12_thang_kham}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="140"
+						y="345"
+						width="122"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_13_24_thang_kham}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="262"
+						y="345"
+						width="122"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_25_60_thang_kham}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="384"
+						y="345"
+						width="122"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_so_tre_den_kham}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="18"
+						y="395"
+						width="122"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_1_12_thang_can}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="140"
+						y="395"
+						width="122"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_13_24_thang_can}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="262"
+						y="395"
+						width="122"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_25_60_thang_can}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="384"
+						y="395"
+						width="122"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_so_tre_can_do}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="18"
+						y="449"
+						width="122"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_1_12_kham_co_so}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="140"
+						y="449"
+						width="122"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_13_24_kham_co_so}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="262"
+						y="449"
+						width="122"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_25_60_kham_co_so}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="384"
+						y="449"
+						width="122"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_so_kham_co_so}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="257"
+						y="483"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tu_vong_chu_sinh}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="257"
+						y="502"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tu_vong_tre_1_5_tuoi}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="257"
+						y="521"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tu_vong_duoi_1_tuoi}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="257"
+						y="544"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Di_tat_bam_sinh}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="488"
+						y="785"
+						width="47"
+						height="17"
+						key="staticText-130"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isBold="true" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Trang 1]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="5"
+						y="106"
+						width="161"
+						height="15"
+						key="staticText-131"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" pdfFontName="arialbd.ttf" isBold="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[I. TỔNG SỐ TRẺ DƯỚI 5 TUỔI: ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="228"
+						y="107"
+						width="52"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_so_tre_duoi_5t}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="5"
+						y="139"
+						width="149"
+						height="15"
+						key="staticText-132"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" pdfFontName="arialbd.ttf" isBold="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[1. Tổng số trẻ dưới 2 tuổi: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="18"
+						y="157"
+						width="162"
+						height="15"
+						key="staticText-133"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Tổng số trẻ 1 - 12 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="180"
+						y="157"
+						width="162"
+						height="15"
+						key="staticText-134"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Tổng số trẻ 13 - 24 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="342"
+						y="157"
+						width="162"
+						height="15"
+						key="staticText-136"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Tổng cộng]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="18"
+						y="172"
+						width="162"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_so_tre_1_12_th}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="180"
+						y="172"
+						width="162"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_so_tre_13_24_th}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="342"
+						y="172"
+						width="162"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_so_tre_duoi_2t}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="6"
+						y="191"
+						width="150"
+						height="12"
+						key="staticText-137"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" pdfFontName="arial.ttf" isBold="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[2. Khối nhà trẻ - mẫu giáo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="115"
+						y="263"
+						width="97"
+						height="15"
+						key="staticText-138"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[1 - 12 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="212"
+						y="263"
+						width="97"
+						height="15"
+						key="staticText-139"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[13 - 24 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="309"
+						y="263"
+						width="97"
+						height="15"
+						key="staticText-140"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[25 - 60 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="406"
+						y="263"
+						width="97"
+						height="15"
+						key="staticText-141"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Tổng cộng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="18"
+						y="263"
+						width="97"
+						height="15"
+						key="staticText-142"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="18"
+						y="278"
+						width="97"
+						height="15"
+						key="staticText-143"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Tại trạm y tế]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="18"
+						y="293"
+						width="97"
+						height="15"
+						key="staticText-144"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Tại nơi khác]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="18"
+						y="211"
+						width="162"
+						height="15"
+						key="staticText-145"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Tổng số trẻ tại địa phương]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="180"
+						y="211"
+						width="162"
+						height="15"
+						key="staticText-146"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Tổng số trẻ ở nơi khác]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="342"
+						y="211"
+						width="162"
+						height="15"
+						key="staticText-147"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Tổng cộng]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="18"
+						y="226"
+						width="162"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_so_tre_tai_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="180"
+						y="226"
+						width="162"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_so_tre_o_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="342"
+						y="226"
+						width="162"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_nhatre_maugiao}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="5"
+						y="243"
+						width="150"
+						height="15"
+						key="staticText-148"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Arial" pdfFontName="arial.ttf" isBold="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[3. Số trẻ có phiếu SKTE lưu: ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="115"
+						y="278"
+						width="97"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:1_12_SKTE_tram_y_te}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="115"
+						y="293"
+						width="97"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:1_12_SKTE_luu_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="212"
+						y="278"
+						width="97"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:13_24_SKTE_tram_y_te}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="212"
+						y="293"
+						width="97"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:13_24_SKTE_luu_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="406"
+						y="278"
+						width="97"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_SKTE_tram_y_te}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="406"
+						y="293"
+						width="97"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_SKTE_luu_NK}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="18"
+						y="380"
+						width="122"
+						height="15"
+						key="staticText-149"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[1 - 12 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="140"
+						y="380"
+						width="122"
+						height="15"
+						key="staticText-150"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[13 - 24 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="262"
+						y="380"
+						width="122"
+						height="15"
+						key="staticText-151"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[25 - 60 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="384"
+						y="380"
+						width="122"
+						height="15"
+						key="staticText-152"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Tổng cộng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="18"
+						y="434"
+						width="122"
+						height="15"
+						key="staticText-153"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[1 - 12 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="140"
+						y="434"
+						width="122"
+						height="15"
+						key="staticText-154"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[13 - 24 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="262"
+						y="434"
+						width="122"
+						height="15"
+						key="staticText-155"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[25 - 60 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="384"
+						y="434"
+						width="122"
+						height="15"
+						key="staticText-156"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Tổng cộng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="5"
+						y="565"
+						width="229"
+						height="13"
+						key="staticText-157"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isBold="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[8. Cân nặng sơ sinh thấp (< 2500 gam): ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="257"
+						y="565"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Can_nang_sosinh_thap}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="4"
+						y="584"
+						width="285"
+						height="13"
+						key="staticText-158"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isBold="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[III. TÌNH HÌNH QUẢN LÝ TRẺ SUY DINH DƯỠNG:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="23"
+						y="603"
+						width="427"
+						height="13"
+						key="staticText-160"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isBold="true" isUnderline="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[- ĐP = trẻ SDD tại địa phương + trẻ SDD học tại NT -MG cư ngụ tại địa phương.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="23"
+						y="617"
+						width="427"
+						height="13"
+						key="staticText-161"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isBold="true" isUnderline="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[- NK = trẻ SDD học tại khối Nhà trẻ - Mẫu giáo cư ngụ tại nơi khác]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="3"
+						y="635"
+						width="427"
+						height="18"
+						key="staticText-162"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isBold="false" isUnderline="false" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[1. Tổng số trẻ SDD phân tích theo tháng tuổi và theo độ SDD: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="176"
+						y="660"
+						width="88"
+						height="15"
+						key="staticText-163"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[7 - 12 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="264"
+						y="660"
+						width="88"
+						height="15"
+						key="staticText-164"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[13 - 24 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="352"
+						y="660"
+						width="88"
+						height="15"
+						key="staticText-165"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[25 - 60 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="440"
+						y="660"
+						width="88"
+						height="15"
+						key="staticText-166"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Tổng cộng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="88"
+						y="660"
+						width="88"
+						height="15"
+						key="staticText-167"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[1 - 6 tháng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="12"
+						y="660"
+						width="76"
+						height="30"
+						key="staticText-171"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="12"
+						y="690"
+						width="76"
+						height="15"
+						key="staticText-172"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Độ I]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="12"
+						y="705"
+						width="76"
+						height="15"
+						key="staticText-173"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Độ II]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="12"
+						y="720"
+						width="76"
+						height="15"
+						key="staticText-174"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Độ III]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="12"
+						y="735"
+						width="76"
+						height="15"
+						key="staticText-175"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[Tổng cộng]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="88"
+						y="675"
+						width="44"
+						height="15"
+						key="staticText-176"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[ĐP]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="132"
+						y="675"
+						width="44"
+						height="15"
+						key="staticText-177"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[NK]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="176"
+						y="675"
+						width="44"
+						height="15"
+						key="staticText-178"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[ĐP]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="220"
+						y="675"
+						width="44"
+						height="15"
+						key="staticText-179"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[NK]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="264"
+						y="675"
+						width="44"
+						height="15"
+						key="staticText-180"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[ĐP]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="308"
+						y="675"
+						width="44"
+						height="15"
+						key="staticText-181"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[NK]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="352"
+						y="675"
+						width="44"
+						height="15"
+						key="staticText-182"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[ĐP]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="396"
+						y="675"
+						width="44"
+						height="15"
+						key="staticText-183"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[NK]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="88"
+						y="690"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_1_6_SDD_do_1_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="88"
+						y="705"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_1_6_SDD_do_2_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="88"
+						y="720"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_1_6_SDD_do_3_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="132"
+						y="690"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_1_6_SDD_do_1_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="132"
+						y="705"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_1_6_SDD_do_2_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="132"
+						y="720"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_1_6_SDD_do_3_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="176"
+						y="690"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_7_12_SDD_do_1_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="176"
+						y="705"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_7_12_SDD_do_2_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="176"
+						y="720"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_7_12_SDD_do_3_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="220"
+						y="690"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_7_12_SDD_do_1_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="220"
+						y="705"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_7_12_SDD_do_2_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="220"
+						y="720"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_7_12_SDD_do_3_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="264"
+						y="690"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_13_24_SDD_do1_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="264"
+						y="705"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_13_24_SDD_do2_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="264"
+						y="720"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_13_24_SDD_do3_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="308"
+						y="690"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_13_24_SDD_do1_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="308"
+						y="705"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_13_24_SDD_do2_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="308"
+						y="720"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_13_24_SDD_do3_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="352"
+						y="690"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_25_60_SDD_do1_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="352"
+						y="705"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_25_60_SDD_do2_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="352"
+						y="720"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_25_60_SDD_do3_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="396"
+						y="690"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_25_60_SDD_do1_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="396"
+						y="705"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_25_60_SDD_do2_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="396"
+						y="720"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tre_25_60_SDD_do3_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="88"
+						y="735"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:So_tre_1_6_SDD_o_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="132"
+						y="735"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:So_tre_1_6_SDD_o_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="176"
+						y="735"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:So_tre_7_12_SDD_o_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="220"
+						y="735"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:So_tre_7_12_SDD_o_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="264"
+						y="735"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:So_tre_13_24_SDD_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="308"
+						y="735"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:So_tre_13_24_SDD_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="352"
+						y="735"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:So_tre_25_60_SDD_DP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="396"
+						y="735"
+						width="44"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:So_tre_25_60_SDD_NK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="440"
+						y="690"
+						width="88"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_so_tre_SDD_do_1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="440"
+						y="705"
+						width="88"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_so_tre_SDD_do_2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="440"
+						y="720"
+						width="88"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_so_tre_SDD_do_3}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="440"
+						y="735"
+						width="88"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:Tong_so_tre_SDD}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="440"
+						y="675"
+						width="88"
+						height="15"
+						key="staticText-184"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="7"
+						y="762"
+						width="190"
+						height="15"
+						key="staticText-185"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="arial.ttf" isPdfEmbedded ="true" pdfEncoding ="Identity-H"/>
+					</textElement>
+				<text><![CDATA[+ Số trẻ SDD không ra khám trong quí: ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="211"
+						y="763"
+						width="53"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:SDD_kokham_trong_qui}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="309"
+						y="278"
+						width="97"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:25_60_SKTE_tram_y_te}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="309"
+						y="293"
+						width="97"
+						height="15"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DataElement:35_60_SKTE_luu_NK}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

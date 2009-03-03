@@ -1,0 +1,216 @@
+
+<script languange="javascript">
+   function periodInit()
+    {
+      var k = 0;
+      var str = "";
+      var monthNames = new Array(
+                       " ",
+                       "Jan - ",
+                       "Feb - ",
+                       "Mar - ",
+                       "Apr - ",
+                       "May - ",
+                       "Jun - ",
+                       "Jul - ",
+                       "Aug - ",
+                       "Sep - ",
+                       "Oct - ",
+                       "Nov - ",
+                       "Dec - "
+                       );
+	  var partsofPeriod;
+	  var periodName;
+
+      #foreach( $period in $monthlyPeriods )
+        	str = '$period.startDate';
+ 			partsofPeriod = str.split("-");        
+ 			
+        	     if(partsofPeriod[1] == "01")  periodName = "Jan - "+partsofPeriod[0];
+        	else if(partsofPeriod[1] == "02")  periodName = "Feb - "+partsofPeriod[0];
+        	else if(partsofPeriod[1] == "03")  periodName = "Mar - "+partsofPeriod[0];
+        	else if(partsofPeriod[1] == "04")  periodName = "Apr - "+partsofPeriod[0];
+        	else if(partsofPeriod[1] == "05")  periodName = "May - "+partsofPeriod[0];
+        	else if(partsofPeriod[1] == "06")  periodName = "Jun - "+partsofPeriod[0];
+        	else if(partsofPeriod[1] == "07")  periodName = "Jul - "+partsofPeriod[0];
+        	else if(partsofPeriod[1] == "08")  periodName = "Aug - "+partsofPeriod[0];
+        	else if(partsofPeriod[1] == "09")  periodName = "Sep - "+partsofPeriod[0];
+        	else if(partsofPeriod[1] == "10")  periodName = "Oct - "+partsofPeriod[0];
+        	else if(partsofPeriod[1] == "11")  periodName = "Nov - "+partsofPeriod[0];
+        	else if(partsofPeriod[1] == "12")  periodName = "Dec - "+partsofPeriod[0];
+        	
+        	//periodName = monthNames[parseInt(partsofPeriod[1])]+partsofPeriod[0];
+        	//alert(periodName + " " + "$period.startDate"+" : "+parseInt(partsofPeriod[1])+" : "+monthNames[parseInt(partsofPeriod[1])]);
+        	document.reportForm.startingPeriod.options[k] = new Option(periodName,"$period.startDate",false,false);
+        	document.reportForm.endingPeriod.options[k++] = new Option(periodName,"$period.startDate",false,false);
+      #end           
+    }
+
+   function radioSelection(evt)
+    {	
+    	var selRadioButton = evt.target.value;
+    	
+    	var CBLength = document.reportForm.reportSelect.options.length;
+    	var k = 0;
+    	for(k=0;k<CBLength;k++)
+    	     {
+    	       document.reportForm.reportSelect.options[0] = null;    	     
+             }
+    	
+    	k=0;
+    	if(selRadioButton == "reportsRadio")
+    		{
+      			#if($levelNumber == "1")
+            		document.reportForm.reportSelect.options[k++] = new Option("FORM 5","form5",false,false);
+              	#end
+            	#if($levelNumber == "2")
+              		document.reportForm.reportSelect.options[k++] = new Option("FORM 4","form4",false,false);
+              		document.reportForm.reportSelect.options[k++] = new Option("FORM 9","form9",false,false);		
+              	#end
+              	#if($levelNumber == "3")
+					document.reportForm.reportSelect.options[k++] = new Option("FORM 8","form8",false,false);
+              	#end              	              	              	
+              	#if($levelNumber == "4")
+              		document.reportForm.reportSelect.options[k++] = new Option("FORM 3","form3",false,false);
+              		document.reportForm.reportSelect.options[k++] = new Option("FORM 7","form7b",false,false);
+              		document.reportForm.reportSelect.options[k++] = new Option("RNTCP (TB)","rntcp",false,false);
+              		document.reportForm.reportSelect.options[k++] = new Option("Non-Communicable Diseases","noncomm",false,false);
+              		document.reportForm.reportSelect.options[k++] = new Option("Communicable / IEC Activities","commiec",false,false);
+              		document.reportForm.reportSelect.options[k++] = new Option("NVBDCP","nvbdcp",false,false);
+              		document.reportForm.reportSelect.options[k++] = new Option("Communicable Diseases","communicable",false,false);              
+              	#end
+              	#if($levelNumber == "5")
+	      			document.reportForm.reportSelect.options[k++] = new Option("FORM 2","form2",false,false);
+	      			document.reportForm.reportSelect.options[k++] = new Option("FORM 7","form7",false,false);
+	      			document.reportForm.reportSelect.options[k++] = new Option("NLEP","nlepp",false,false);
+	      			document.reportForm.reportSelect.options[k++] = new Option("NMEP","nmep",false,false);
+	      			document.reportForm.reportSelect.options[k++] = new Option("MF - 4","mf4",false,false);
+	      			document.reportForm.reportSelect.options[k++] = new Option("MF - 5","mf5",false,false);
+	      			document.reportForm.reportSelect.options[k++] = new Option("MF - 6","mf6",false,false);
+	      			document.reportForm.reportSelect.options[k++] = new Option("Stock Position","stockpos",false,false);
+	      			document.reportForm.reportSelect.options[k++] = new Option("Out / In Patient ","opip",false,false);
+	      			document.reportForm.reportSelect.options[k++] = new Option("RNTCP(TB)","Prntcp",false,false);
+	      			document.reportForm.reportSelect.options[k++] = new Option("Non-Communicable Diseases","Pnoncommunicable",false,false);
+              		document.reportForm.reportSelect.options[k++] = new Option("Communicable / IEC Activities","Pcommiec",false,false);                            
+              	#end	
+              	#if($levelNumber == "6")
+	      			document.reportForm.reportSelect.options[k++] = new Option("FORM 1","form1",false,false);
+	      			document.reportForm.reportSelect.options[k++] = new Option("Form 6","form6",false,false);
+	      			document.reportForm.reportSelect.options[k++] = new Option("JHI / JPHN","jphn",false,false);
+              	#end              	
+      		}
+      	else
+      		{      		
+      			#if($levelNumber == "1")      			
+      				document.reportForm.reportSelect.options[k++] = new Option("Indicator (State)","",false,false);
+      			#end
+            	#if($levelNumber == "2")
+      				document.reportForm.reportSelect.options[k++] = new Option("Indicator (District)","",false,false);
+      			#end
+            	#if($levelNumber == "3")	
+      				document.reportForm.reportSelect.options[k++] = new Option("Indicator (Taluk)","",false,false);
+      			#end
+            	#if($levelNumber == "4")	
+      				document.reportForm.reportSelect.options[k++] = new Option("Indicator (CHC)","",false,false);
+      			#end
+            	#if($levelNumber == "5")	
+      				document.reportForm.reportSelect.options[k++] = new Option("Indicator (PHC)","",false,false);
+      			#end	
+            	#if($levelNumber == "6")	
+      				document.reportForm.reportSelect.options[k++] = new Option("Indicator (SC)","",false,false);
+      			#end	
+      		}		
+    }
+</script>
+
+<body onload="periodInit()">
+
+<h2>$i18n.getString("report_heading") $orgUnitName</h2> 
+
+<form id="reportForm" name="reportForm" action="generateReport.action" method="post" onsubmit="" target="_blank">
+  <input type="hidden" id="monthlyPeriodTypeId" name="monthlyPeriodTypeId" value="1"/>
+
+  <table id="reportOptions">
+    <col> ## Labels
+    <col> ## Input
+    <thead>
+      <tr>
+        <th colspan="2">$i18n.getString("report_indicator_details")</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+      	<td><input type="radio" id="riRadio" name="riRadio" value="reportsRadio" onclick="radioSelection(event)" checked>$i18n.getString("reports")</td>
+          	<td><input type="radio" id="riRadio" name="riRadio" value="indicatorsRadio" onclick="radioSelection(event)">$i18n.getString("indicators")</td>
+      </tr>
+      <tr>
+        	<td><label>$i18n.getString("report_indicator") :</label></td>
+          	<td>
+               <select id="reportSelect" name="reportSelect" style="width:20em">
+            	#if($levelNumber == "1")
+            		<option value="form5">FORM5</option>
+              	#end
+            	#if($levelNumber == "2")
+              		<option value="form4">FORM 4</option>
+              		<option value="form9">FORM 9</option>		
+              	#end
+              	#if($levelNumber == "3")
+              		<option value="form8">FORM8</option>
+              	#end
+              	#if($levelNumber == "4")
+              		<option value="form3">Form 3</option>
+              		<option value="form7b">Form 7</option>
+              		<option value="nvbdcp">NVBDCP</option>
+              		<option value="commiec">Communicable / IEC Activities</option>
+              		<option value="noncomm">Non-Communicable Diseases</option>
+              		<option value="rntcp">RNTCP (TB)</option>
+              		<option value="communicable">Communicable Diseases</option>
+              	#end
+              	#if($levelNumber == "5")
+              		<option value="form2">Form 2</option>
+              		<option value="form7">Form - 7</option>
+              		<option value="nlepp">NLEP</option>
+              		<option value="nmep">NMEP</option>
+              		<option value="mf4">MF - 4</option>
+              		<option value="mf5">MF - 5</option>
+              		<option value="mf6">MF - 6</option>
+              		<option value="stockpos">Stock Position</option>              		              		
+              		<option value="opip">Out / In Patient</option>
+              		<option value="Pcommiec">Communicable / IEC Activities</option>
+              		<option value="Pnoncommunicable">Non-Communicable Diseases</option>
+              		<option value="Prntcp">RNTCP (TB)</option>              		
+              	#end	              
+              	#if($levelNumber == "6")
+              		<option value="form1">Form 1</option>
+              		<option value="form6">Form 6</option>
+              		<option value="jphn">JHI / JPHN</option>
+              	#end 
+              </select>
+            </td>
+      </tr>      	
+      <tr>
+        	<th colspan="2">$i18n.getString("period")</th>
+      </tr>
+	<tr>
+          	<td><label>$i18n.getString("in_start_date") :  </label></td>
+          	<td>
+            	<select id="startingPeriod" name="startingPeriod" style="width:20em" >
+            	</select>
+          	</td>
+      </tr>
+	<tr>
+          	<td><label>$i18n.getString("in_end_date") :  </label></td>
+          	<td>
+            	<select id="endingPeriod" name="endingPeriod" style="width:20em">
+            	</select>
+          	</td>
+      </tr>      
+      <tr>
+        	<td colspan="2">
+          		<input type="submit" name="generate" value='$i18n.getString("generate_report")'/>
+        	</td>
+      </tr>
+    	</tbody>
+  	</table>
+</form>
+</body>

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>DHIS 2</title>
+    <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/${stylesheet}">
+    <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css">
+    <link type="image/png" rel="icon" href="../images/favicon.png">    
+    
+    #parse( "settings.vm" )
+        
+    #foreach ( $style in $stylesheets )
+      <link type="text/css" rel="stylesheet" href="$style">
+	#end
+	
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+    <script type="text/javascript" src="../dhis-web-commons/util/commons.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/util/jquery.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/css/${stylesheetDirectory}/dom.js"></script>
+    <script type="text/javascript" src="../main.js"></script>
+    <script type="text/javascript" src="../menu.js"></script>
+    <script type="text/javascript">
+      var i18n_show_menu = '$encoder.jsEscape( $i18n.getString( "show_menu" ) , "'")';
+      var i18n_hide_menu = '$encoder.jsEscape( $i18n.getString( "hide_menu" ) , "'")';
+    </script>
+    <script type="text/javascript" src="../request.js"></script>
+    #foreach( $javascript in $javascripts )
+      <script type="text/javascript" src="$javascript"></script>
+    #end
+
+  </head>
+  
+  <body>
+    
+    #parse( "macros.vm" )
+        
+    <div id="header">
+      <img id="header1" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_left.png">
+      <img id="header2" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png">
+      <img id="header3" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_right.png">
+
+      <img id="menuSeparator1" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
+      <img id="menuSeparator2" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
+      <img id="menuSeparator3" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
+      <img id="menuSeparator4" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
+      <img id="menuSeparator5" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
+
+      <div id="menuLink1" class="menuLink" #if ( $maintenanceModules.size() > 0 ) onmouseover="showDropDown( 'menuDropDown1' )" onmouseout="hideDropDownTimeout()" #end>$i18n.getString( "maintenance" )</div>
+      <div id="menuLink2" class="menuLink" #if ( $serviceModules.size() > 0 ) onmouseover="showDropDown( 'menuDropDown2' )" onmouseout="hideDropDownTimeout()" #end>$i18n.getString( "services" )</div>
+      <div id="menuLink3" class="menuLink" onmouseover="showDropDown( 'menuDropDown3' )" onmouseout="hideDropDownTimeout()">$i18n.getString( "help" )</div>
+      <div id="menuLink4" class="menuLink" onclick="window.location.href='../dhis-web-commons-security/logout.action'">$i18n.getString( "log_out" )</div>
+
+      <div id="menuDropDown1" class="menuDropDownArea" onmouseover="cancelHideDropDownTimeout()" onmouseout="hideDropDownTimeout()">
+        <ul class="menuDropDownBox">
+        #foreach( $module in $maintenanceModules )
+          #set( $i18nName = false )
+          #set( $i18nName = $i18n.getString( $module.name ) )
+          #if( $auth.hasAccess( $module.name, "index" ) )
+            <li class="menuDropDownItem" onclick="window.location.href='$module.defaultAction'">#if( $i18nName )$i18nName #else$module.name #end&nbsp;</li>
+          #end
+        #end
+        </ul>      
+      </div>
+
+      <div id="menuDropDown2" class="menuDropDownArea" onmouseover="cancelHideDropDownTimeout()" onmouseout="hideDropDownTimeout()">
+        <ul class="menuDropDownBox">
+        #foreach( $module in $serviceModules )
+          #set( $i18nName = false )
+          #set( $i18nName = $i18n.getString( $module.name ) )
+          #if( $auth.hasAccess( $module.name, "index" ) )
+            <li class="menuDropDownItem" onclick="window.location.href='$module.defaultAction'">#if( $i18nName )$i18nName #else$module.name #end&nbsp;</li>
+          #end
+        #end
+        </ul>      
+      </div>
+      
+      <div id="menuDropDown3" class="menuDropDownArea" onmouseover="cancelHideDropDownTimeout()" onmouseout="hideDropDownTimeout()">
+      	<ul class="menuDropDownBox">
+          <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-about/help.action'">$i18n.getString( "help_contents" )&nbsp;</li>
+      	  <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-about/displayFeedbackForm.action'">$i18n.getString( "feedback" )&nbsp;</li>
+          <li class="menuDropDownItem" onclick="window.location.href='../dhis-web-commons-about/about.action'">$i18n.getString( "about_dhis2" )&nbsp;</li>
+	    </ul>
+	  </div>
+
+      <span id="headerText">
+      	#if ( $applicationTitle )
+      	  $applicationTitle
+	    #else
+      	  District Health Information Software 2
+      	#end
+      </span>
+      
+      <span id="showLeftBar">
+      	<a href="javascript:leftBar.showAnimated()" title="$i18n.getString( "show_menu" )">
+      	  <img src="../images/show_menu.png" width="16" height="16" alt="$i18n.getString( "show_menu" )"></a>
+      </span>
+    </div>
+
+	<div id="leftBar">    
+      <span id="hideLeftBar">
+        <a href="javascript:leftBar.hideAnimated()" title="$i18n.getString( "hide_menu" )">
+          <img src="../images/hide_menu.png" width="16" height="16" alt="$i18n.getString( "hide_menu" )"></a>
+      </span>
+      
+	  <div id="leftBarContents">
+	    #parse( $menu )
+	  </div>	  
+	</div>
+	
+    <div class="page" id="mainPage">
+      #if( !$page )
+        <p>$i18n.getString( "no_page_specified" )</p>
+      #else
+        #parse( $page )
+      #end
+    </div>
+    #if( !$menuState.visible )
+      <script type="text/javascript">
+        leftBar.hide();
+      </script>
+    #end
+    
+  </body>
+</html>

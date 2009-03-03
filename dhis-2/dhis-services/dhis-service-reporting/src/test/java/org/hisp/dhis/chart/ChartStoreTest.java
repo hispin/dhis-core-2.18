@@ -1,0 +1,220 @@
+package org.hisp.dhis.chart;
+
+/*
+ * Copyright (c) 2004-2007, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.MonthlyPeriodType;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
+
+/**
+ * @author Lars Helge Overland
+ * @version $Id$
+ */
+public class ChartStoreTest
+    extends DhisConvenienceTest
+{
+    private ChartStore chartStore;
+
+    private Indicator indicatorA;
+    private Indicator indicatorB;
+    private Indicator indicatorC;
+    
+    private Period periodA;
+    private Period periodB;
+    private Period periodC;
+    
+    private OrganisationUnit unitA;
+    private OrganisationUnit unitB;
+    private OrganisationUnit unitC;    
+        
+    private Chart chartA;
+    private Chart chartB;
+    private Chart chartC;
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private Chart createChart( char uniqueCharacter, List<Indicator> indicators, List<Period> periods, List<OrganisationUnit> units )
+    {
+        Chart chart = new Chart();
+        
+        chart.setTitle( "Chart" + uniqueCharacter );
+        chart.setDimension( Chart.DIMENSION_PERIOD );
+        chart.setIndicators( indicators );
+        chart.setPeriods( periods );
+        chart.setOrganisationUnits( units );
+        
+        return chart;
+    }
+
+    // -------------------------------------------------------------------------
+    // Fixture
+    // -------------------------------------------------------------------------
+
+    public void setUpTest()
+    {
+        chartStore = (ChartStore) getBean( ChartStore.ID );
+        
+        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
+        
+        periodService = (PeriodService) getBean( PeriodService.ID );
+        
+        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
+
+        // ---------------------------------------------------------------------
+        // Indicator
+        // ---------------------------------------------------------------------
+
+        IndicatorType indicatorType = createIndicatorType( 'A' );
+                
+        indicatorA = createIndicator( 'A', indicatorType );
+        indicatorB = createIndicator( 'B', indicatorType );
+        indicatorC = createIndicator( 'C', indicatorType );
+        
+        indicatorService.addIndicatorType( indicatorType );
+        indicatorService.addIndicator( indicatorA );
+        indicatorService.addIndicator( indicatorB );
+        indicatorService.addIndicator( indicatorC );
+        
+        List<Indicator> indicators = new ArrayList<Indicator>();
+        indicators.add( indicatorA );
+        indicators.add( indicatorB );
+        indicators.add( indicatorC );
+
+        // ---------------------------------------------------------------------
+        // Period
+        // ---------------------------------------------------------------------
+
+        PeriodType periodType = new MonthlyPeriodType();
+        
+        periodA = createPeriod( periodType, getDate( 2000, 1, 1 ), getDate( 2000, 1, 2 ) );
+        periodB = createPeriod( periodType, getDate( 2000, 1, 3 ), getDate( 2000, 1, 4 ) );
+        periodC = createPeriod( periodType, getDate( 2000, 1, 5 ), getDate( 2000, 1, 6 ) );
+        
+        periodService.addPeriod( periodA );
+        periodService.addPeriod( periodB );
+        periodService.addPeriod( periodC );
+        
+        List<Period> periods = new ArrayList<Period>();
+        periods.add( periodA );
+        periods.add( periodB );
+        periods.add( periodC );        
+
+        // ---------------------------------------------------------------------
+        // OrganisationUnit
+        // ---------------------------------------------------------------------
+
+        unitA = createOrganisationUnit( 'A' );
+        unitB = createOrganisationUnit( 'B' );
+        unitC = createOrganisationUnit( 'C' );
+        
+        organisationUnitService.addOrganisationUnit( unitA );
+        organisationUnitService.addOrganisationUnit( unitB );
+        organisationUnitService.addOrganisationUnit( unitC );
+        
+        List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
+        units.add( unitA );        
+        units.add( unitB );
+        units.add( unitC );
+        
+        chartA = createChart( 'A', indicators, periods, units );
+        chartB = createChart( 'B', indicators, periods, units );
+        chartC = createChart( 'C', indicators, periods, units );
+    }
+
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
+
+    public void testSaveGet()
+    {
+        int idA = chartStore.saveChart( chartA );
+        int idB = chartStore.saveChart( chartB );
+        int idC = chartStore.saveChart( chartC );
+        
+        assertEquals( chartA, chartStore.getChart( idA ) );
+        assertEquals( chartB, chartStore.getChart( idB ) );
+        assertEquals( chartC, chartStore.getChart( idC ) );
+        
+        assertTrue( equals( chartStore.getChart( idA ).getIndicators(), indicatorA, indicatorB, indicatorC ) );
+        assertTrue( equals( chartStore.getChart( idA ).getPeriods(), periodA, periodB, periodC ) );
+        assertTrue( equals( chartStore.getChart( idA ).getOrganisationUnits(), unitA, unitB, unitC ) );
+    }
+    
+    public void testDelete()
+    {
+        int idA = chartStore.saveChart( chartA );
+        int idB = chartStore.saveChart( chartB );
+        int idC = chartStore.saveChart( chartC );
+        
+        assertNotNull( chartStore.getChart( idA ) );
+        assertNotNull( chartStore.getChart( idB ) );
+        assertNotNull( chartStore.getChart( idC ) );
+        
+        chartStore.deleteChart( chartA );
+
+        assertNull( chartStore.getChart( idA ) );
+        assertNotNull( chartStore.getChart( idB ) );
+        assertNotNull( chartStore.getChart( idC ) );
+
+        chartStore.deleteChart( chartB );
+
+        assertNull( chartStore.getChart( idA ) );
+        assertNull( chartStore.getChart( idB ) );
+        assertNotNull( chartStore.getChart( idC ) );        
+    }
+    
+    public void testGetAll()
+    {
+        chartStore.saveChart( chartA );
+        chartStore.saveChart( chartB );
+        chartStore.saveChart( chartC );
+        
+        assertTrue( equals( chartStore.getAllCharts(), chartA, chartB, chartC ) );
+    }
+    
+    public void testGetByTitle()
+    {
+        chartStore.saveChart( chartA );
+        chartStore.saveChart( chartB );
+        chartStore.saveChart( chartC );
+        
+        assertEquals( chartB, chartStore.getChartByTitle( "ChartB" ) );
+    }
+}

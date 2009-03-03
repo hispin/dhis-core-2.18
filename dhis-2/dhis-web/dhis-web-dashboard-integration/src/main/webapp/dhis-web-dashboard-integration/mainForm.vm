@@ -1,0 +1,76 @@
+
+#macro ( dropDownButtonDiv $dropDownId $areaDivId )
+<div class="buttonArea">
+    <a href="javascript:showDropDown( '${dropDownId}' )">$i18n.getString( "insert" )</a>
+    <a href="javascript:hideDropDown()">$i18n.getString( "close" )</a>
+    <a href="javascript:clearArea( '${areaDivId}' )">$i18n.getString( "clear" )</a>
+</div>
+#end
+
+#macro ( linkDropDownListDiv $divId $listId $page )
+<div id="$divId" class="linkArea">
+    <div id="$listId" class="menuDropDownArea">
+        <ul class="menuDropDownBox">
+        #foreach( $provider in $providerNames )
+            <li class="menuDropDownItem" onclick="setAreaItem( '$divId', '$provider' )">$i18n.getString( "$provider" )&nbsp;</li>
+        #end
+        </ul>
+    </div>
+    #if ( $page )
+        #parse( "/dhis-web-dashboard-integration/${page}.vm" )
+    #else
+        <span class="labelText">$i18n.getString( 'this_is_a_link_area' )</span>
+    #end
+</div>
+#end
+
+#macro ( chartDropDownListDiv $divId $listId $chartId )
+<div id="$divId" class="chartArea">
+    <div id="$listId" class="menuDropDownArea">
+        <ul class="menuDropDownBox">
+        #foreach( $chart in $charts )
+            <li class="menuDropDownItem" onclick="setAreaItem( '$divId', '$chart.id' )">${chart.title}&nbsp;</li>
+        #end
+        </ul>
+    </div>
+    #if ( $chartId )        
+        <img style="cursor:pointer" src="getChart.action?id=${chartId}" 
+            onclick="viewChart( 'getChart.action?id=${chartId}&width=700&height=500' )">
+    #else
+        <span class="labelText">$i18n.getString( 'this_is_a_chart_area' )</span>
+    #end
+</div>
+#end
+
+<h3>$i18n.getString( "dashboard" )</h3>
+
+<table cellspacing="0" cellpadding="0" style="width:960px">
+<tr>
+    <td style="width:305px">        
+        #dropDownButtonDiv( "dropDownA" "areaA" )
+        #linkDropDownListDiv( "areaA" "dropDownA" $areaA )
+
+        #dropDownButtonDiv( "dropDownB" "areaB" )
+        #linkDropDownListDiv( "areaB" "dropDownB" $areaB )
+
+        #dropDownButtonDiv( "dropDownC" "areaC" )
+        #linkDropDownListDiv( "areaC" "dropDownC" $areaC )      
+    </td>
+    <td style="width:20px"></td>
+    <td style="width:305px">        
+        #dropDownButtonDiv( "chartDropDownA" "chartAreaA" )
+        #chartDropDownListDiv( "chartAreaA" "chartDropDownA" $chartAreaA )
+        
+        #dropDownButtonDiv( "chartDropDownB" "chartAreaB" )
+        #chartDropDownListDiv( "chartAreaB" "chartDropDownB" $chartAreaB )        
+    </td>
+    <td style="width:20px"></td>
+    <td style="width:305px">        
+        #dropDownButtonDiv( "chartDropDownC" "chartAreaC" )
+        #chartDropDownListDiv( "chartAreaC" "chartDropDownC" $chartAreaC )
+        
+        #dropDownButtonDiv( "chartDropDownD" "chartAreaD" )
+        #chartDropDownListDiv( "chartAreaD" "chartDropDownD" $chartAreaD )        
+    </td>
+</tr>
+</table>

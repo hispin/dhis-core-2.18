@@ -1,0 +1,35 @@
+#if(!$notFound)
+<h1>
+	Dataset created successfully
+</h1>
+<p>
+	$deCount data elements added.
+</p>
+#else
+<h1>
+	Dataset created with errors
+</h1>
+<p>
+	$deCount data elements added. The following $notFound.size() data elements were not found:
+</p>
+<table>
+	<tr>
+		<th>
+			ID
+		</th>
+		<th>
+			Name
+		</th>
+	</tr>
+	#foreach($mapping in $notFound)
+		<tr>
+			<td>
+				$mapping.getDhisid()
+			</td>
+			<td>
+				$mapping.getDeName()
+			</td>
+		</tr>
+	#end
+</table>
+#end

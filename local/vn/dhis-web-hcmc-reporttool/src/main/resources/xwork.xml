@@ -1,0 +1,159 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+ "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+	<include file="dhis-web-commons.xml"/>
+
+	<package name="dhis-web-reporttool" extends="dhis-web-commons" namespace="/dhis-web-reporttool">
+	
+	<action name="index" class="org.hisp.dhis.rt.action.NoAction">
+		<result name="success" type="redirect">loadDesigns.action</result>
+	</action>
+	
+	<!-- Manage -->	
+	
+	<action name="listReports" class="org.hisp.dhis.rt.action.ListReportsAction">
+	  <result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-reporttool/manageReportForm.vm</param>
+		<param name="menu">/dhis-web-reporttool/menu.vm</param>
+		<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/script.js</param>
+		<interceptor-ref name="organisationUnitTreeStack"/>
+	</action>	
+			
+	<action name="addReport" class="org.hisp.dhis.rt.action.AddReportAction">
+		<result name="success" type="chain">listReports</result>
+		<interceptor-ref name="organisationUnitTreeStack"/>			
+	</action>
+		
+	<action name="deleteReport" class="org.hisp.dhis.rt.action.DeleteReportAction">
+		<result name="success" type="chain">listReports</result>
+		<interceptor-ref name="organisationUnitTreeStack"/>			
+	</action>
+		
+	<action name="loadReport" class="org.hisp.dhis.rt.action.LoadReportAction">
+		<result name="generic" type="chain">viewReportNoMenu</result>
+		<result name="org_unit_spesific" type="chain">viewReportTreeMenu</result>
+		<interceptor-ref name="organisationUnitTreeStack"/>			
+	</action>
+		
+	<action name="unloadReport" class="org.hisp.dhis.rt.action.UnloadReportAction">
+		<result name="success" type="chain">listReports</result>
+		<interceptor-ref name="organisationUnitTreeStack"/>			
+	</action>
+		
+	<!-- Design -->
+
+	<action name="viewReportNoMenu" class="org.hisp.dhis.rt.action.ViewReportAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-reporttool/designReportForm.vm</param>	
+		<param name="menu">/dhis-web-reporttool/menu.vm</param>
+		<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/script.js</param>
+		<interceptor-ref name="organisationUnitTreeStack"/>
+	</action>
+		
+	<action name="viewReportTreeMenu" class="org.hisp.dhis.rt.action.ViewReportAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-reporttool/designReportForm.vm</param>	
+		<param name="menu">/dhis-web-reporttool/menuWithTree.vm</param>
+		<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/script.js</param>
+		<interceptor-ref name="organisationUnitTreeStack"/>
+	</action>
+
+	<action name="addDataElementToReport" class="org.hisp.dhis.rt.action.AddDataElementToReportAction">
+		<result name="success" type="chain">loadReport</result>
+		<interceptor-ref name="organisationUnitTreeStack"/>
+	</action>
+	
+	<action name="addDataElementToChart" class="org.hisp.dhis.rt.action.AddDataElementToChartAction">
+		<result name="success" type="chain">loadReport</result>
+		<interceptor-ref name="organisationUnitTreeStack"/>
+	</action>
+		
+	<action name="addIndicatorToReport" class="org.hisp.dhis.rt.action.AddIndicatorToReportAction">
+		<result name="success" type="chain">loadReport</result>
+		<interceptor-ref name="organisationUnitTreeStack"/>
+	</action>
+		
+	<action name="addIndicatorToChart" class="org.hisp.dhis.rt.action.AddIndicatorToChartAction">
+		<result name="success" type="chain">loadReport</result>
+		<interceptor-ref name="organisationUnitTreeStack"/>
+	</action>
+		
+	<action name="setDesignTemplate" class="org.hisp.dhis.rt.action.SetDesignTemplateAction"></action>
+		
+	<action name="setChartTemplate" class="org.hisp.dhis.rt.action.SetChartTemplateAction"></action>
+	
+	<action name="removeReportElement" class="org.hisp.dhis.rt.action.RemoveReportElementAction"></action>
+	
+	<action name="removeChartElement" class="org.hisp.dhis.rt.action.RemoveChartElementAction"></action>
+	
+	<action name="moveUpReportElement" class="org.hisp.dhis.rt.action.MoveUpReportElementAction">
+		<result name="success" type="chain">loadReport</result>
+		<interceptor-ref name="organisationUnitTreeStack"/>
+	</action>
+		
+	<action name="moveDownReportElement" class="org.hisp.dhis.rt.action.MoveDownReportElementAction">
+		<result name="success" type="chain">loadReport</result>
+		<interceptor-ref name="organisationUnitTreeStack"/>
+	</action>
+				
+	<action name="generateDesign" class="org.hisp.dhis.rt.action.GenerateDesignAction">
+		<result name="success" type="chain">loadReport</result>
+		<interceptor-ref name="organisationUnitTreeStack"/>			
+	</action>
+	
+	<!-- Generate -->
+		
+	<action name="loadDesigns" class="org.hisp.dhis.rt.action.LoadDesignsAction">
+		<result name="generic" type="chain">listDesignsTreeMenu</result>
+		<result name="org_unit_spesific" type="chain">listDesignsNoMenu</result>
+		<interceptor-ref name="organisationUnitTreeStack"/>			
+	</action>
+		
+	<action name="listDesignsNoMenu" class="org.hisp.dhis.rt.action.ListDesignsAction">
+	  <result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-reporttool/generateReportForm.vm</param>
+		<param name="menu">/dhis-web-reporttool/menu.vm</param>
+		<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/script.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js</param>
+		<interceptor-ref name="organisationUnitTreeStack"/>
+	</action>
+		
+	<action name="listDesignsTreeMenu" class="org.hisp.dhis.rt.action.ListDesignsAction">
+	  <result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-reporttool/generateReportForm.vm</param>
+		<param name="menu">/dhis-web-reporttool/menuWithTree.vm</param>
+		<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/script.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js</param>
+		<interceptor-ref name="organisationUnitTreeStack"/>
+	</action>
+	
+	<action name="generateReport" class="org.hisp.dhis.rt.action.GenerateReportAction">
+		<result name="success" type="stream">
+			<param name="contentType">text/pdf</param>
+			<param name="inputName">inputStream</param>
+			<param name="contentDisposition">filename="${fileName}"</param>
+			<param name="bufferSize">1024</param>
+		</result>
+		<param name="preview">false</param>  
+		<result name="error" type="chain">loadDesigns</result>
+		<interceptor-ref name="organisationUnitTreeStack"/>
+	</action>
+		
+	<!-- Preview -->
+	
+	<action name="previewReport" class="org.hisp.dhis.rt.action.GenerateReportAction">
+		<result name="success" type="chain">previewHtmlReport</result>		
+		<result name="error" type="chain">loadDesigns</result>
+		<param name="preview">true</param>
+		<interceptor-ref name="organisationUnitTreeStack"/>			
+	</action>
+		
+	<action name="previewHtmlReport" class="org.hisp.dhis.rt.action.PreviewReportAction">
+	  <result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-reporttool/previewReportForm.vm</param>
+		<param name="menu">/dhis-web-reporttool/menu.vm</param>
+		<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/script.js</param>
+		<interceptor-ref name="organisationUnitTreeStack"/>
+	</action>		
+		
+	</package>
+	
+</xwork>

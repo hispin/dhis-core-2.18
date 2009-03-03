@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <username>$encoder.xmlEncode( $userCredentials.username )</username>
+  <surname>$encoder.xmlEncode( $userCredentials.user.surname )</surname>
+  <firstName>$encoder.xmlEncode( $userCredentials.user.firstName )</firstName>
+  <email>$!encoder.xmlEncode( $userCredentials.user.email )</email>
+  <organisationName>$!encoder.xmlEncode( $userCredentials.user.organisationUnit.name )</organisationName>
+</user>

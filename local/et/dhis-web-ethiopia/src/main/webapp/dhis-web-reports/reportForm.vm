@@ -1,0 +1,67 @@
+<h2>Generate Monthly Report for $orgUnitName</h2> 
+
+<form id="reportForm" name="reportForm" action="generateReport.action" method="post" onsubmit="">
+  <input type="hidden" id="monthlyPeriodTypeId" name="monthlyPeriodTypeId" value="$monthlyPeriodTypeId"/>
+
+  <table id="reportOptions">
+    <col> ## Labels
+    <col> ## Input
+    <thead>
+      <tr>
+        <th colspan="2">Report details</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><label>Period: </label></td>
+          <td>
+            <select id="periodSelect" name="periodSelect" style="width:20em">
+              #foreach( $period in $monthlyPeriods )
+                <option value="$period.id">$period.startDate - $period.endDate</option>
+              #end
+            </select>
+          </td>
+        </tr>
+      <tr>
+        <td><label>Report:</label></td>
+          <td>
+            <select id="reportSelect" name="reportSelect" style="width:20em">
+		  	<option value="mm">DATA ENTRY for Morbidity and Mortality</option>
+
+		  	<option value="k">Abortion & Post Abortion Care Service</option>
+			<option value="l">Adolescent Reproductive Health Report</option>
+			<option value="m">Antenatal Care</option>
+			<option value="i">Blood Bank Report</option>
+			<option value="n">Children Vaccination Report</option>
+			<option value="g">Contraceptive Logistics Report</option>
+			<option value="o">Delivery Report</option>
+			<option value="j">Discharged Patient By Department/Ward/Type of Case </option>
+			<option value="p">Family Planning Report</option>
+			<option value="q">Growth Monitoring Report</option>
+			<option value="f">Health Education Report</option>
+			<option value="a">Health Learning Materials Report</option>
+			<option value="b">Integrated Management of Chlid Illness(IMCI)</option>
+			<option value="h">Laboratory Test Reportt</option>
+			<option value="r">Maternal Complication Admitted & Treated</option>
+			<option value="v">Nutrition Report</option>
+			<option value="s">Outpatient Summary Report</option>
+			<option value="t">Postnatal Report</option>
+			<option value="e">Radiology Service Report</option>
+			<option value="u">TT Vaccination Report</option>
+			<option value="c">Vaccine Logistics Report</option>
+		  	<option value="d">Voluntary Counseling & Testing(VCT)</option>
+ 			
+            	
+
+
+            </select>
+          </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input type="submit" name="generate" value="Generate report"/>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>

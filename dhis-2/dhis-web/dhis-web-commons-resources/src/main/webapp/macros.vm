@@ -1,0 +1,91 @@
+
+#*
+Displays a table which lists a set of objects and it's common operations: Filter, 
+add, update, translate, remove and show details. The macro produces code against 
+some specific conventions for the scripts and actions to call. Call it this way:
+
+#objectList( [name of object, e.g. DataElement], [list of such objects, e.g. $dataElements] )
+
+@param objectName The litteral name of the type of object to display, e.g. DataElement
+@param objects A Velocity list of the objects to be formatted, typically prepared by an action.
+*#
+#macro( objectList $objectName $objects )
+    <table class="objectListTable">
+        <col>
+        <col width="80">
+        <tr>
+            <td class="filter"><label for="filter">$i18n.getString( "filter_by_name" )</label>: <form action="none" onsubmit="filterValues(this.firstChild.firstChild.value);return false"><div><input id="filter" type="text"><input type="submit" value="Filter"></div></form></td>
+            <td style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAdd${objectName}Form.action'"></td>
+        </tr>
+        <tr>
+            <th>$i18n.getString( "name" )</th>
+            <th>$i18n.getString( "operations" )</th>
+        </tr>
+        <tbody id="list">
+        #set( $mark = false )
+        #set( $info = false )
+        #foreach( $object in $objects )
+        <tr #if( $mark ) class="odd" #end>
+            <td>$encoder.htmlEncode( $object.name )</td>
+            <td>
+              <a href="showUpdate${objectName}Form.action?id=${object.id}" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+              <a href="$i18n.getString( "translation_translate" )" title="$i18n.getString( "translation_translate" )" onclick="this.href='javascript:location.href= \'../dhis-web-commons/i18n.action?className=${objectName}&amp;$objectId=${object.id}&amp;returnUrl=\' + location.href'"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a>
+              <a href="javascript:remove${objectName}( $object.id, '$encoder.jsEncode( $object.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
+              <a href="javascript:show${objectName}Details( $object.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
+            </td>
+        </tr>
+            #if( $mark )
+                #set( $mark = false )
+            #else
+                #set( $mark = true )
+            #end
+        #end
+        </tbody>
+    </table>
+#end
+
+#*
+Supportive method for displaying rows with alternating colors in a table.
+
+@param mark boolean alternating the color.
+*#
+#macro( alternate $mark )
+    #if ( $mark ) class="listAlternateRow"#else class="listRow"#end
+#end
+
+#*
+Formats a boolean into a readable value
+
+@param bool the boolean to format.
+*#
+#macro( formatBool $bool )
+	#if ( $bool )
+		$i18n.getString( "yes" )
+	#else
+	   $i18n.getString( "no" )
+    #end
+#end
+
+#macro( formatAggregationOperator $operator )
+	#if ( $operator == "average" )
+		$i18n.getString( "average" )
+    #elseif ( $operator == "count" )
+        $i18n.getString( "count" )
+    #elseif ( $operator == "sum" )
+        $i18n.getString( "sum" )
+    #else
+        $i18n.getString( "unknown" )
+    #end
+#end
+
+#macro( formatType $type )
+	#if ( $type == "string" )
+		$i18n.getString( "text" )
+    #elseif ( $type == "bool" )
+        $i18n.getString( "yes_no" )
+    #elseif ( $type == "int" )
+        $i18n.getString( "number" )
+	#else	   
+        $i18n.getString( "unknown" )
+    #end
+#end

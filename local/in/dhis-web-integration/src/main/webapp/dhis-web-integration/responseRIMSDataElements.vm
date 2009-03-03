@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataElements>
+#foreach( $rimsDataElementId in $rimsDataElements.keySet() )
+	<dataElement>
+		<id>$rimsDataElementId</id>
+		<name>$encoder.xmlEncode( $rimsDataElements.get($rimsDataElementId) )</name>
+	</dataElement>
+#end
+</dataElements>
