@@ -294,6 +294,13 @@ public class FormAction
     {
         return zeroValueSaveMode;
     }
+    
+    private Boolean disableDefaultForm;
+
+    public Boolean getDisableDefaultForm()
+    {
+        return disableDefaultForm;
+    } 
 
     // -------------------------------------------------------------------------
     // Input/output
@@ -331,7 +338,10 @@ public class FormAction
 
     public String execute()
         throws Exception
-    {    	
+    {      	
+    	
+    	disableDefaultForm = false;
+    	
     	zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );   	
     	
     	OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
@@ -512,14 +522,26 @@ public class FormAction
 
         dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
         
-        cdeFormExists = (dataEntryForm != null);
+        cdeFormExists = ( dataEntryForm != null );
         
         if ( cdeFormExists )
         {            
             customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreenForMultiDimensional( dataEntryForm.getHtmlCode(), 
                 dataValues, calculatedValueMap, minMaxMap, disabled, zeroValueSaveMode, i18n );
-        }     
+        }        
         
+        if( dataEntryScreenManager.hasMixOfDimensions( dataSet ) )
+        {        
+    		disableDefaultForm = true;  		
+    	
+    		if ( !cdeFormExists )
+            {    			
+    			customDataEntryFormCode = i18n.getString( "please_design_a_custom_form" );
+    			
+    			return SUCCESS;
+            }        	        	
+        }   
+        	
         // ---------------------------------------------------------------------
         // Working on the display of dataelements
         // ---------------------------------------------------------------------

@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -41,6 +42,7 @@ import java.util.regex.Pattern;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -101,6 +103,29 @@ public class DefaultDataEntryScreenManager
     // -------------------------------------------------------------------------
     // DataEntryScreenManager implementation
     // -------------------------------------------------------------------------
+    
+    public boolean hasMixOfDimensions( DataSet dataSet )
+    {      	
+    	
+    	if ( dataSet.getDataElements().size() > 0 )
+        {       
+        	Iterator<DataElement> dataElementIterator = dataSet.getDataElements().iterator();
+        	
+        	DataElementCategoryCombo catCombo = dataElementIterator.next().getCategoryCombo();       	
+
+            for ( DataElement de : dataSet.getDataElements() )
+            {           	
+            	
+            	if( catCombo != de.getCategoryCombo() )
+            	{            		
+            		return true;
+            	}                
+            }
+        }
+
+        return false;
+        
+    }
 
     public boolean hasMultiDimensionalDataElement( DataSet dataSet )
     {
