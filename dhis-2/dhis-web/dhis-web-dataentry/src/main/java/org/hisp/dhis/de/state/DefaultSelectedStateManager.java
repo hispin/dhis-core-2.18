@@ -28,6 +28,7 @@ package org.hisp.dhis.de.state;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,6 +46,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -72,6 +74,13 @@ public class DefaultSelectedStateManager
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
 
     private DataSetService dataSetService;
 
@@ -189,6 +198,22 @@ public class DefaultSelectedStateManager
             periods = periodType.generatePeriods( basePeriod );
 
             generatedPeriodsCache.set( periods );
+        }
+        
+        Date now = new Date();
+
+        Iterator<Period> iterator = periods.iterator();
+        
+        Collection<Period> persistedPeriods = periodService.getAllPeriods();
+
+        while ( iterator.hasNext() )
+        {
+            Period period = iterator.next();
+
+            if ( period.getStartDate().after( now ) || !persistedPeriods.contains( period ))
+            {
+                iterator.remove();
+            }
         }
 
         return periods;
