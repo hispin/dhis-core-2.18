@@ -362,6 +362,25 @@
         </response>
       </responses>
     </request>
+	  
+	<!-- IndicatorGroup -->
+	  
+	<request>
+      <name>getAllIndicatorGroups</name>
+      <bean>org.hisp.dhis.indicator.IndicatorService</bean>
+      <method>getAllIndicatorGroups</method>
+      <template>xmlIndicatorGroups.vm</template>
+      <responses>
+        <response>
+          <format>xml</format>
+        </response>
+        <response>
+          <format>json</format>
+          <template>jsonIndicatorGroups.vm</template>
+          <contentType>application/json</contentType>
+        </response>
+      </responses>
+	</request>
       
     <!-- DataSet -->        
     
