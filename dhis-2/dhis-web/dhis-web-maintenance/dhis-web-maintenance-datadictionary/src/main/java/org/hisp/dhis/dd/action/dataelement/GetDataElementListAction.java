@@ -105,7 +105,7 @@ public class GetDataElementListAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private List<DataElement> dataElements;
 
     public List<DataElement> getDataElements()
     {
@@ -168,6 +168,8 @@ public class GetDataElementListAction
         else if ( dataDictionaryId == -1 ) // All, reset current data dictionary
         {
             dataDictionaryModeManager.setCurrentDataDictionary( null );
+            
+            dataDictionaryId = null;
         }
         else // Specified, set current data dictionary
         {
@@ -186,7 +188,7 @@ public class GetDataElementListAction
         // Criteria
         // ---------------------------------------------------------------------
 
-        if ( dataDictionaryId != null && dataElementGroupId == null && dataDictionaryService.getDataDictionary( dataDictionaryId ) != null )
+        if ( dataDictionaryId != null && dataElementGroupId == null )
         {
             dataElements = new ArrayList<DataElement>( dataDictionaryService.getDataDictionary( dataDictionaryId ).getDataElements() );
         }
@@ -194,7 +196,7 @@ public class GetDataElementListAction
         {
             dataElements = new ArrayList<DataElement>( dataElementService.getDataElementGroup( dataElementGroupId ).getMembers() );
         }
-        else if ( dataDictionaryId != null && dataElementGroupId != null && dataDictionaryService.getDataDictionary( dataDictionaryId ) != null  )
+        else if ( dataDictionaryId != null && dataElementGroupId != null )
         {
             Collection<DataElement> dictionary = dataDictionaryService.getDataDictionary( dataDictionaryId ).getDataElements();
 

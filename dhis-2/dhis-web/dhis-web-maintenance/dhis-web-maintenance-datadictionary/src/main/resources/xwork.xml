@@ -25,10 +25,9 @@
     </action>
     
     <action name="showSortDataElementForm"
-      class="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction">
+      class="org.hisp.dhis.dd.action.dataelement.GetDataElementListSortOrderAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/sortDataElementForm.vm</param>
-      <param name="javascripts">../dhis-web-commons/lists/lists.js</param>
     </action>
     
     <action name="saveDataElementSortOrder"
@@ -70,7 +69,7 @@
       class="org.hisp.dhis.dd.action.dataelement.ShowAddDataElementForm">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addDataElementForm.vm</param>
-      <param name="javascripts">../dhis-web-commons/lists/lists.js,javascript/shortName.js,javascript/dataElement.js</param>
+      <param name="javascripts">javascript/shortName.js,javascript/dataElement.js</param>
       <param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>
@@ -86,7 +85,7 @@
       class="org.hisp.dhis.dd.action.dataelement.ShowUpdateDataElementFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateDataElementForm.vm</param>
-      <param name="javascripts">../dhis-web-commons/lists/lists.js,javascript/shortName.js,javascript/dataElement.js,javascript/updateLoad.js</param>
+      <param name="javascripts">javascript/shortName.js,javascript/dataElement.js,javascript/updateLoad.js</param>
       <param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
       <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
@@ -115,7 +114,7 @@
       <result name="success" type="velocity">/main.vm</result>
 	  <param name="page">/dhis-web-maintenance-datadictionary/dataElementGroupEditor.vm</param>
 	  <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
-	  <param name="javascripts">javascript/dataElementGroup.js,../dhis-web-commons/lists/lists.js</param>
+	  <param name="javascripts">javascript/dataElementGroupEditor.js</param>
 	  <interceptor-ref name="transactionStack"/>
     </action>
 	
@@ -376,10 +375,9 @@
     </action>
     
     <action name="showSortIndicatorForm"
-      class="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction">
+      class="org.hisp.dhis.dd.action.indicator.GetIndicatorListSortOrderAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/sortIndicatorForm.vm</param>
-      <param name="javascripts">../dhis-web-commons/lists/lists.js</param>
     </action>
     
     <action name="saveIndicatorSortOrder"
@@ -818,7 +816,7 @@
       class="org.hisp.dhis.dd.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryOptionForm.vm</param>
-      <param name="javascripts">../dhis-web-commons/lists/lists.js,javascript/shortName.js,javascript/categoryOption.js</param>
+      <param name="javascripts">javascript/shortName.js,javascript/categoryOption.js</param>
       <param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>

@@ -37,6 +37,11 @@ import org.hisp.dhis.jdbc.StatementManager;
 public abstract class AbstractStatementInternalProcess
     implements Process<OutputHolderState>
 {
+    public final Class<OutputHolderState> getStateClass()
+    {
+        return OutputHolderState.class;
+    }
+    
     private OutputHolderState state;
 
     public void setMessage( String message )

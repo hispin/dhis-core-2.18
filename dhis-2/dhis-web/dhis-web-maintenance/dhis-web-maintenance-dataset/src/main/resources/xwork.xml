@@ -89,7 +89,6 @@
       class="org.hisp.dhis.dataset.action.DataSetListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/sortDataSetForm.vm</param>
-      <param name="javascripts">../dhis-web-commons/lists/lists.js</param>
     </action>
     
     <action name="saveDataSetSortOrder"

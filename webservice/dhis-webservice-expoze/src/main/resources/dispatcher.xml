@@ -5,7 +5,7 @@
 
   <requests>
 
-    <!--  DataElement -->
+    <!-- DataElement -->
 
     <request>
       <name>getAllDataElements</name>
@@ -335,6 +335,34 @@
       </responses>
     </request>
 
+    <request>
+      <name>getIndicatorsByIndicatorGroup</name>
+      <bean>org.hisp.dhis.webservice.adapter.indicator.IndicatorServiceAdapter</bean>
+      <method>getIndicatorsByIndicatorGroup</method>
+      <parameters>
+        <parameter>
+          <type>int</type>
+          <name>indicatorGroupId</name>
+        </parameter>
+      </parameters>
+      <template>xmlIndicators.vm</template>
+      <responses>
+        <response>
+          <format>xml</format>
+        </response>
+        <response>
+          <format>json</format>
+          <template>jsonIndicators.vm</template>
+          <contentType>application/json</contentType>
+        </response>
+        <response>
+          <format>jsonmin</format>
+          <template>jsonminIndicators.vm</template>
+          <contentType>application/json</contentType>
+        </response>
+      </responses>
+    </request>
+      
     <!-- DataSet -->        
     
     <request>
@@ -644,6 +672,23 @@
       </responses>
     </request>
     
+    <request>
+      <name>updateOrganisationUnitGeoCode</name>
+      <type>void</type>
+      <bean>org.hisp.dhis.webservice.adapter.organisationunit.OrganisationUnitServiceAdapter</bean>
+      <method>updateOrganisationUnitGeoCode</method>
+      <parameters>
+        <parameter>
+          <type>int</type>
+          <name>organisationUnitId</name>
+        </parameter>
+        <parameter>
+          <type>java.lang.String</type>
+          <name>geoCode</name>
+        </parameter>
+      </parameters>
+    </request>
+      
     <!-- OrganisationUnitLevel -->
     
     <request>
@@ -909,6 +954,31 @@
           <template>jsonPivotTable.vm</template>
           <contentType>application/json</contentType>
         </response>
+      </responses>
+    </request>
+        
+    <!-- Legend -->
+      
+    <request>
+      <name>getLegendMinAndMaxOfIndicator</name>
+      <bean>org.hisp.dhis.gis.LegendService</bean>
+      <method>getLegendSetOfIndicator</method>
+      <parameters>
+        <parameter>
+          <type>int</type>
+          <name>indicatorId</name>
+        </parameter>        
+      </parameters>
+      <template>xmlLegendMinMax.vm</template>
+      <responses>
+         <response>
+          <format>xml</format>
+        </response>
+        <response>
+          <format>json</format>
+          <template>jsonLegendMinMax.vm</template>
+          <contentType>application/json</contentType>
+        </response>      
       </responses>
     </request>
         

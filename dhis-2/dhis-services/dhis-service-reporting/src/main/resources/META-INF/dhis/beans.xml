@@ -98,7 +98,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="chartStore"
       ref="org.hisp.dhis.chart.ChartStore"/>
   </bean>
+  
+  <!-- Document -->
     
+  <bean id="org.hisp.dhis.document.DocumentStore"
+    class="org.hisp.dhis.document.hibernate.HibernateDocumentStore">
+    <property name="sessionManager"
+      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.document.DocumentService"
+    class="org.hisp.dhis.document.impl.DefaultDocumentService">
+    <property name="documentStore"
+      ref="org.hisp.dhis.document.DocumentStore"/>
+  </bean>
+  
   <!-- DataSetCompleteness -->
   
   <bean id="org.hisp.dhis.completeness.DataSetCompletenessService"
@@ -220,6 +234,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <value>.*\.ReportStore\.delete.*</value>
         <value>.*\.ChartStore\.save.*</value>
         <value>.*\.ChartStore\.delete.*</value>
+        <value>.*\.DocumentStore\.save.*</value>
+        <value>.*\.DocumentStore\.delete.*</value>
       </list>
     </property>
   </bean>	
@@ -308,6 +324,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <value>.*\.ReportTableService\.delete.*</value>
         <value>.*\.ReportStore\.delete.*</value>
         <value>.*\.ChartService\.delete.*</value>
+        <value>.*\.DocumentService\.delete.*</value>
       </list>
     </property>
   </bean>

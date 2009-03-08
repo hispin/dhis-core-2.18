@@ -5,7 +5,8 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
     
   <bean id="org.hisp.dhis.wp.action.NoAction"
-    class="org.hisp.dhis.wp.action.NoAction"/>
+    class="org.hisp.dhis.wp.action.NoAction"
+    scope="prototype"/>
   
   <bean id="org.hisp.dhis.wp.action.GetStartModuleAction"
     class="org.hisp.dhis.wp.action.GetStartModuleAction"

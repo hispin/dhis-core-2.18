@@ -9,4 +9,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
   </bean>
   
+  <bean id="org.hisp.dhis.webservice.adapter.indicator.IndicatorServiceAdapter"
+    class="org.hisp.dhis.webservice.adapter.indicator.DefaultIndicatorServiceAdapter">
+    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService"/>
+  </bean>
+    
+  <bean id="org.hisp.dhis.webservice.adapter.organisationunit.OrganisationUnitServiceAdapter"
+    class="org.hisp.dhis.webservice.adapter.organisationunit.DefaultOrganisationUnitServiceAdapter">
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+  </bean>
+  
 </beans>

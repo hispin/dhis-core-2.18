@@ -7,7 +7,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- Section -->
   
   <bean id="org.hisp.dhis.dataset.action.section.AddSectionAction"
-   	class="org.hisp.dhis.dataset.action.section.AddSectionAction" scope="prototype">       
+   	class="org.hisp.dhis.dataset.action.section.AddSectionAction" 
+   	scope="prototype">       
 	<property name="sectionService">
 	  <ref bean="org.hisp.dhis.dataset.SectionService"/>
 	</property>     
@@ -20,14 +21,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
    </bean> 
    
   <bean id="org.hisp.dhis.dataset.action.section.ValidateSectionAction"
-    class="org.hisp.dhis.dataset.action.section.ValidateSectionAction" scope="prototype">    
+    class="org.hisp.dhis.dataset.action.section.ValidateSectionAction" 
+    scope="prototype">    
     <property name="sectionService">
       <ref bean="org.hisp.dhis.dataset.SectionService"/>
     </property>
   </bean>  
   
   <bean id="org.hisp.dhis.dataset.action.section.SortOrderSection"
-    class="org.hisp.dhis.dataset.action.section.SortOrderSection" scope="prototype">       
+    class="org.hisp.dhis.dataset.action.section.SortOrderSection" 
+    scope="prototype">       
     <property name="sectionService">
       <ref bean="org.hisp.dhis.dataset.SectionService"/>
     </property> 
@@ -37,7 +40,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.section.EditSectionAction"
-    class="org.hisp.dhis.dataset.action.section.EditSectionAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.section.EditSectionAction" 
+    scope="prototype">
     <property name="sectionService">
       <ref bean="org.hisp.dhis.dataset.SectionService"/>
     </property>
@@ -47,7 +51,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.section.UpdateSectionAction"
-    class="org.hisp.dhis.dataset.action.section.UpdateSectionAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.section.UpdateSectionAction" 
+    scope="prototype">
     <property name="sectionService">
       <ref bean="org.hisp.dhis.dataset.SectionService"/>
      </property>
@@ -57,14 +62,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.section.RemoveSectionAction"
-    class="org.hisp.dhis.dataset.action.section.RemoveSectionAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.section.RemoveSectionAction" 
+    scope="prototype">
     <property name="sectionService">
       <ref bean="org.hisp.dhis.dataset.SectionService"/>
      </property>    
   </bean> 
   
   <bean id="org.hisp.dhis.dataset.action.section.SectionListAction"
-    class="org.hisp.dhis.dataset.action.section.SectionListAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.section.SectionListAction" 
+    scope="prototype">
     <property name="sectionService">
       <ref bean="org.hisp.dhis.dataset.SectionService"/>
      </property>
@@ -76,7 +83,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- DataSet -->
   
   <bean id="org.hisp.dhis.dataset.action.SetupAssociationsTreeAction"
-    class="org.hisp.dhis.dataset.action.SetupAssociationsTreeAction"
+    class="org.hisp.dhis.dataset.action.SetupAssociationsTreeAction" 
     scope="prototype">
     <property name="selectionTreeManager">
       <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
@@ -87,7 +94,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.DefineDataSetAssociationsAction"
-    class="org.hisp.dhis.dataset.action.DefineDataSetAssociationsAction"
+    class="org.hisp.dhis.dataset.action.DefineDataSetAssociationsAction" 
     scope="prototype">
     <property name="selectionTreeManager">
       <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
@@ -98,21 +105,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.SelectLevelAction"
-    class="org.hisp.dhis.dataset.action.SelectLevelAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.SelectLevelAction" 
+    scope="prototype">
     <property name="selectionTreeManager">
       <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
     </property>
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.UnselectLevelAction"
-    class="org.hisp.dhis.dataset.action.UnselectLevelAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.UnselectLevelAction" 
+    scope="prototype">
     <property name="selectionTreeManager">
       <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
     </property>
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.UnselectAllAction"
-    class="org.hisp.dhis.dataset.action.UnselectAllAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.UnselectAllAction" 
+    scope="prototype">
     <property name="selectionTreeManager">
       <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
     </property>
@@ -121,7 +131,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- Validation -->
     
   <bean id="org.hisp.dhis.dataset.action.ValidateDataSetAction"
-    class="org.hisp.dhis.dataset.action.ValidateDataSetAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.ValidateDataSetAction" 
+    scope="prototype">
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
@@ -130,28 +141,31 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- Overview -->
   
   <bean id="org.hisp.dhis.dataset.action.DataSetListAction"
-    class="org.hisp.dhis.dataset.action.DataSetListAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.DataSetListAction" 
+    scope="prototype">
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.PeriodTypeListAction"
-    class="org.hisp.dhis.dataset.action.PeriodTypeListAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.PeriodTypeListAction" 
+    scope="prototype">
     <property name="periodService">
       <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.DataElementListAction"
-    class="org.hisp.dhis.dataset.action.DataElementListAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.DataElementListAction" 
+    scope="prototype">
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.DataElementListFilteredByGroup"
-    class="org.hisp.dhis.dataset.action.DataElementListFilteredByGroup"
+    class="org.hisp.dhis.dataset.action.DataElementListFilteredByGroup" 
     scope="prototype">
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
@@ -178,7 +192,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.AddDataSetAction"
-    class="org.hisp.dhis.dataset.action.AddDataSetAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.AddDataSetAction" 
+    scope="prototype">
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
@@ -197,7 +212,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.UpdateDataSetAction"
-    class="org.hisp.dhis.dataset.action.UpdateDataSetAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.UpdateDataSetAction" 
+    scope="prototype">
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
@@ -210,7 +226,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.GetDataSetAction"
-    class="org.hisp.dhis.dataset.action.GetDataSetAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.GetDataSetAction" 
+    scope="prototype">
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
@@ -220,14 +237,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.DelDataSetAction"
-    class="org.hisp.dhis.dataset.action.DelDataSetAction" scope="prototype">
+    class="org.hisp.dhis.dataset.action.DelDataSetAction" 
+    scope="prototype">
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
   </bean>
   
   <bean id="org.hisp.dhis.dataset.action.GetNumberOfLevelsAction"
-    class="org.hisp.dhis.dataset.action.GetNumberOfLevelsAction">
+    class="org.hisp.dhis.dataset.action.GetNumberOfLevelsAction"
+    scope="prototype">
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     </property>

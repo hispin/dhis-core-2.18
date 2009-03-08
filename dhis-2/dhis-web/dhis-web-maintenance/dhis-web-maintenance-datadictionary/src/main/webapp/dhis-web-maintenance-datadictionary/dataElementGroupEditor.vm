@@ -40,11 +40,11 @@
 		</td>
 		
 		<td>
-			<input type="button" value="&lt;" onclick="addSelectDataElements();" style="width:30px"><br><br>
+			<input type="button" value="&lt;" onclick="addSelectedDataElements();" style="width:30px"><br><br>
 			<input type="button" value="&gt;" onclick="removeSelectedDataElements();" style="width:30px">
 		</td>
 		<td>
-			<select class="select" id="availableDataElements" multiple="multiple" size="30"  ondblclick="addSelectDataElements();" disabled="true">				
+			<select class="select" id="availableDataElements" multiple="multiple" size="30"  ondblclick="addSelectedDataElements();" disabled="true">				
 			</select>
 		</td>
 	</tr>

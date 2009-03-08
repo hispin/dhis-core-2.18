@@ -154,16 +154,19 @@ public class IndicatorConverter
                 
                 writer.closeElement();
     
-                // -------------------------------------------------------------
-                // Data values are embedded in the Indicator collection
-                // -------------------------------------------------------------
-                
-                Collection<DataValue> values = dataValueService.getDataValues( element, params.getPeriods(),
-                    params.getOrganisationUnits() );
-                
-                dataConverter = new DataConverter( values );
-                
-                dataConverter.write( writer, params );
+                if ( params.isIncludeDataValues() )
+                {
+                    // -------------------------------------------------------------
+                    // Data values are embedded in the Indicator collection
+                    // -------------------------------------------------------------
+                    
+                    Collection<DataValue> values = dataValueService.getDataValues( element, params.getPeriods(),
+                        params.getOrganisationUnits() );
+                    
+                    dataConverter = new DataConverter( values );
+                    
+                    dataConverter.write( writer, params );
+                }
                 
                 writer.closeElement();
             }

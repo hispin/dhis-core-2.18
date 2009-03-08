@@ -119,7 +119,7 @@
     <action name="showAddRoleForm" class="org.hisp.dhis.user.action.SetupRoleAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/addRoleForm.vm</param>
-      <param name="javascripts">../dhis-web-commons/lists/lists.js,../dhis-web-commons/oust/oust.js,javascript/role.js</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/role.js</param>
       <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_USERROLE_ADD</param>
     </action>
@@ -134,7 +134,7 @@
    <action name="showUpdateRoleForm" class="org.hisp.dhis.user.action.GetRoleAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/updateRoleForm.vm</param>
-      <param name="javascripts">../dhis-web-commons/lists/lists.js,../dhis-web-commons/oust/oust.js,javascript/role.js</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/role.js</param>
       <interceptor-ref name="transactionStack"/>
      <param name="requiredAuthorities">F_USERROLE_UPDATE</param>
     </action>

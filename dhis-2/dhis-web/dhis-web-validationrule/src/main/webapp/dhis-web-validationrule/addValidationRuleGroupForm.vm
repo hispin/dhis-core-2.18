@@ -22,25 +22,25 @@
 
 <table>
     <tr>
-        <th>$i18n.getString( "group_members" )</th><td></td><th>$i18n.getString( "available_validation_rules" )</th>
+        <th>$i18n.getString( "available_validation_rules" )</th><td></td><th>$i18n.getString( "group_members" )</th>
     </tr>
     <tr>
-        <td><input type="text" id="groupMembersFilter" onkeyup="filterGroupMembers()" style="width:25em"></td>
+    	<td><input type="text" id="availableValidationRulesFilter" onkeyup="filterAvailableValidationRules()" style="width:25em"></td>
         <td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>
-        <td><input type="text" id="availableValidationRulesFilter" onkeyup="filterAvailableValidationRules()" style="width:25em"></td>
+        <td><input type="text" id="groupMembersFilter" onkeyup="filterGroupMembers()" style="width:25em"></td>        
     </tr>
     <tr>
-        <td>
-            <select id="groupMembers" name="groupMembers" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="removeGroupMembers()" />
-        </td>
-        <td style="text-align:center">
-            <input type="button" value="&lt;" title="$i18n.getString('move_selected')" onclick="addGroupMembers()"><br><br>
-            <input type="button" value="&gt;" title="$i18n.getString('remove_selected')" onclick="removeGroupMembers()">
-        </td>
-        <td>
+    	<td>
             <select id="availableValidationRules" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="addGroupMembers()">
             </select>
         </td>
+        <td style="text-align:center">
+            <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="addGroupMembers()"><br><br>
+            <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="removeGroupMembers()">
+        </td>
+        <td>
+            <select id="groupMembers" name="groupMembers" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="removeGroupMembers()" />
+        </td>      
     </tr>
 </table>
 

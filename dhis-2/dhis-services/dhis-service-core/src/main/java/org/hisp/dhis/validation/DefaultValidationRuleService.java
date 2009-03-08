@@ -90,13 +90,18 @@ public class DefaultValidationRuleService
     {    	         
         Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
         
+        Collection<ValidationRule> relevantRules = null;
+        
         for ( Period period : periodService.getIntersectingPeriods( startDate, endDate ) )
         {        	
             for ( Source source : sources )
             {
                 for ( DataSet dataSet : getRelevantDataSets( source ) )
                 {
-                    validationViolations.addAll( validate( period, source, getRelevantValidationRules( dataSet ) ) );
+                    if ( ( relevantRules = getRelevantValidationRules( dataSet ) ).size() > 0 )
+                    {
+                        validationViolations.addAll( validate( period, source, relevantRules ) );
+                    }
                 }
             }
         }
@@ -109,15 +114,18 @@ public class DefaultValidationRuleService
     {
         Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
 
+        Collection<ValidationRule> relevantRules = null;
+        
         for ( Period period : periodService.getIntersectingPeriods( startDate, endDate ) )
         {               
             for ( Source source : sources )
             {
                 for ( DataSet dataSet : getRelevantDataSets( source ) )
                 {
-                    Collection<ValidationRule> relevantRules = CollectionUtils.intersection( getRelevantValidationRules( dataSet ), group.getMembers() );
-                    
-                    validationViolations.addAll( validate( period, source, relevantRules ) );
+                    if ( ( relevantRules = CollectionUtils.intersection( getRelevantValidationRules( dataSet ), group.getMembers() ) ).size() > 0 )
+                    {
+                        validationViolations.addAll( validate( period, source, relevantRules ) );
+                    }
                 }
             }
         }
@@ -128,12 +136,17 @@ public class DefaultValidationRuleService
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Source source )
     {
         Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
+
+        Collection<ValidationRule> relevantRules = null;
         
         for ( Period period : periodService.getIntersectingPeriods( startDate, endDate ) )
         {
             for ( DataSet dataSet : getRelevantDataSets( source ) )
             {
-                validationViolations.addAll( validate( period, source, getRelevantValidationRules( dataSet ) ) );
+                if ( ( relevantRules = getRelevantValidationRules( dataSet ) ).size() > 0 )
+                {
+                    validationViolations.addAll( validate( period, source, relevantRules ) );
+                }
             }
         }
         
@@ -149,18 +162,31 @@ public class DefaultValidationRuleService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private Collection<ValidationResult> validate( Period period, Source source, Collection<ValidationRule> validationRules )
+    /**
+     * Validates a collection of validation rules.
+     * 
+     * @param period the period to validate for.
+     * @param source the source to validate for.
+     * @param validationRules the rules to validate.
+     * @returns a collection of rules that did not pass validation.
+     */
+    private Collection<ValidationResult> validate( final Period period, final Source source, final Collection<ValidationRule> validationRules )
     {
-        Collection<ValidationResult> validationResults = new HashSet<ValidationResult>();
+        final Collection<ValidationResult> validationResults = new HashSet<ValidationResult>();
         
-        for ( ValidationRule validationRule : validationRules )
+        Double leftSide = null;
+        Double rightSide = null;
+        
+        boolean violation = false;
+        
+        for ( final ValidationRule validationRule : validationRules )
         {
-            Double leftSide = expressionService.getExpressionValue( validationRule.getLeftSide(), period, source );
-            Double rightSide = expressionService.getExpressionValue( validationRule.getRightSide(), period, source );
+            leftSide = expressionService.getExpressionValue( validationRule.getLeftSide(), period, source );
+            rightSide = expressionService.getExpressionValue( validationRule.getRightSide(), period, source );
             
             if ( leftSide != null && rightSide != null )
             {
-                boolean violation = !expressionIsTrue( leftSide, validationRule.getMathematicalOperator(), rightSide );
+                violation = !expressionIsTrue( leftSide, validationRule.getMathematicalOperator(), rightSide );
                 
                 if ( violation )
                 {
@@ -172,20 +198,37 @@ public class DefaultValidationRuleService
         return validationResults;
     }
 
-    private Collection<ValidationRule> getRelevantValidationRules( DataSet dataSet )
+    /**
+     * Returns all validation rules which have data elements assigned to it which
+     * are members of the given data set.
+     * 
+     * @param dataSet the data set.
+     * @return all validation rules which have data elements assigned to it which
+     *         are members of the given data set.
+     */
+    private Collection<ValidationRule> getRelevantValidationRules( final DataSet dataSet )
     {
-        Collection<ValidationRule> rules = validationRuleStore.getAllValidationRules();
+        final Collection<ValidationRule> rules = validationRuleStore.getAllValidationRules();
         
         return getRelevantValidationRules( dataSet, rules );
     }
     
-    private Collection<ValidationRule> getRelevantValidationRules( DataSet dataSet, Collection<ValidationRule> validationRules )
+    /**
+     * Returns all validation rules which have data elements assigned to it which
+     * are members of the given data set.
+     * 
+     * @param dataSet the data set.
+     * @param validationRules the validation rules.
+     * @return all validation rules which have data elements assigned to it which
+     *         are members of the given data set.
+     */
+    private Collection<ValidationRule> getRelevantValidationRules( final DataSet dataSet, final Collection<ValidationRule> validationRules )
     {           
-        Collection<ValidationRule> relevantValidationRules = new HashSet<ValidationRule>();
+        final Collection<ValidationRule> relevantValidationRules = new HashSet<ValidationRule>();
         
-        for ( ValidationRule validationRule : validationRules )
+        for ( final ValidationRule validationRule : validationRules )
         {               
-            for ( DataElement dataElement : dataSet.getDataElements() )
+            for ( final DataElement dataElement : dataSet.getDataElements() )
             {   
                 if ( validationRule.getLeftSide().getDataElementsInExpression().contains( dataElement ) ||
                     validationRule.getRightSide().getDataElementsInExpression().contains( dataElement ) )
@@ -198,11 +241,17 @@ public class DefaultValidationRuleService
         return relevantValidationRules;
     }
     
-    private Collection<DataSet> getRelevantDataSets( Source source )
+    /**
+     * Returns all data sets which the given source is assigned to.
+     * 
+     * @param source the source.
+     * @return all data sets which the given source is assigned to.
+     */
+    private Collection<DataSet> getRelevantDataSets( final Source source )
     {
-        Collection<DataSet> relevantDataSets = new HashSet<DataSet>();
+        final Collection<DataSet> relevantDataSets = new HashSet<DataSet>();
         
-        for ( DataSet dataSet : dataSetService.getAllDataSets() )
+        for ( final DataSet dataSet : dataSetService.getAllDataSets() )
         {
             if ( dataSet.getSources().contains( source ) )
             {

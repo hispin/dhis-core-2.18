@@ -44,6 +44,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.FrequencyOverrideAssociation;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.document.Document;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
@@ -409,6 +410,15 @@ public abstract class DeletionHandler
     }
     
     public boolean allowDeleteOlapURL( OlapURL olapURL )
+    {
+        return true;
+    }
+    
+    public void deleteDocument( Document document )
+    {   
+    }
+    
+    public boolean allowDeleteDocument( Document document )
     {
         return true;
     }

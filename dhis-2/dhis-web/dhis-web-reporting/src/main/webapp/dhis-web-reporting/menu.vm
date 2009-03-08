@@ -3,6 +3,7 @@
 <ul>
 	<li><a href="displayViewReportFormVerifyConfiguration.action">$i18n.getString( "standard_report" )&nbsp;</a></li>
 	<li><a href="dataSetReport.action">$i18n.getString( "dataset_report" )&nbsp;</a></li>
+    <li><a href="displayViewDocumentForm.action">$i18n.getString( "static_report" )&nbsp;</a></li>
 	<li><a href="displayConfigureReportForm.action">$i18n.getString( "report_configuration" )&nbsp;</a></li>
 </ul>
 

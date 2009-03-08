@@ -46,6 +46,11 @@ import org.hisp.dhis.transaction.TransactionManager;
 public abstract class AbstractTransactionalInternalProcess
     implements Process<State>
 {
+    public final Class<State> getStateClass()
+    {
+        return State.class;
+    }
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

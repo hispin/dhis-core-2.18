@@ -33,6 +33,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -54,6 +56,8 @@ import com.opensymphony.xwork.ActionSupport;
 public class RunValidationAction
     extends ActionSupport
 {
+    private static final Log log = LogFactory.getLog( RunValidationAction.class );
+    
     private static final String KEY_VALIDATIONRESULT = "validationResult";
     
     // -------------------------------------------------------------------------
@@ -159,12 +163,16 @@ public class RunValidationAction
 
         if ( validationRuleGroupId == -1 )
         {
+            log.info( "Validating all rules" );
+            
             validationResults = new ArrayList<ValidationResult>( validationRuleService.validate( 
                 format.parseDate( startDate ), format.parseDate( endDate ), sources  ) );
         }
         else
         {
             ValidationRuleGroup group = validationRuleService.getValidationRuleGroup( validationRuleGroupId );
+            
+            log.info( "Validating rules for group: '" + group.getName() + "'" );
             
             validationResults = new ArrayList<ValidationResult>( validationRuleService.validate( 
                 format.parseDate( startDate ), format.parseDate( endDate ), sources, group ) );

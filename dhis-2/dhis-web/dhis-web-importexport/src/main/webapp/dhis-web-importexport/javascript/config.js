@@ -35,11 +35,14 @@ function configDhis14Received( messageElement )
 function addLevel()
 {
     var list = document.getElementById( "levelNames" );
-    var field = document.getElementById( "levelName" );
+    var levelName = document.getElementById( "levelName" ).value;
     
-    var option = new Option( field.value, field.value );
+    if ( levelName != "" )
+    {
+        var option = new Option( levelName, levelName );
     
-    list.add( option, null );
+        list.add( option, null );
+    }
 }
 
 function deleteLevel()

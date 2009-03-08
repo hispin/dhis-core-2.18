@@ -5,7 +5,7 @@
 
 function exportDataValue()
 {
-    if ( validate() )
+    if ( validateDataValueExportForm() )
     {
         var aggregatedData = getListValue( "aggregatedData" );
         var generateDataSource = getListValue( "generateDataSource" );
@@ -79,7 +79,7 @@ function submitDataValueExportForm()
 {
     selectAll( document.getElementById( "selectedDataSets" ) );
 	
-	if ( validate() )
+	if ( validateDataValueExportForm() )
 	{
 	   document.getElementById( "exportForm" ).submit();
 	}
@@ -102,8 +102,16 @@ function setDataType()
 }
 
 // -----------------------------------------------------------------------------
-// Toggle
+// MetaDataExport
 // -----------------------------------------------------------------------------
+
+function submitMetaDataExportForm()
+{
+    if ( validateMetaDataExportForm() )
+    {
+       document.getElementById( "exportForm" ).submit();
+    }
+}
 
 function toggle( knob )
 {
@@ -133,7 +141,31 @@ function toggle( knob )
 // Validation
 // -----------------------------------------------------------------------------
 
-function validate()
+function validateMetaDataExportForm()
+{
+    if ( !isChecked( "dataElements" ) &&
+         !isChecked( "dataElementGroups" ) &&
+         !isChecked( "dataSets" ) &&
+         !isChecked( "indicators" ) &&
+         !isChecked( "indicatorGroups" ) &&
+         !isChecked( "dataDictionaries" ) &&
+         !isChecked( "organisationUnits" ) &&
+         !isChecked( "organisationUnitGroups" ) &&
+         !isChecked( "organisationUnitGroupSets" ) &&
+         !isChecked( "organisationUnitLevels" ) &&
+         !isChecked( "validationRules" ) &&
+         !isChecked( "reportTables" ) &&
+         !isChecked( "olapUrls" ) )
+     {
+         setMessage( i18n_select_one_or_more_object_types );
+         return false;
+     }
+     
+     hideMessage();
+     return true;
+}
+
+function validateDataValueExportForm()
 {    
     if ( selectedOrganisationUnitIds == null || selectedOrganisationUnitIds.length == 0 )
     {
@@ -156,6 +188,7 @@ function validate()
         return false;
     }
     
+    hideMessage();
     return true;
 }
 
@@ -166,8 +199,5 @@ function setSelectedOrganisationUnitIds( ids )
     selectedOrganisationUnitIds = ids;
 }
 
-if ( selectionTreeSelection )
-{
-    selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitIds );
-}
+selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitIds );
 

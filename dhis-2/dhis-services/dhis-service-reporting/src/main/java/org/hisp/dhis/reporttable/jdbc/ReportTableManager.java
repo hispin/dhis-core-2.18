@@ -44,6 +44,11 @@ public interface ReportTableManager
 {
     String ID = ReportTableManager.class.getName();
     
+    /**
+     * Creates a report table in the database.
+     * 
+     * @param reportTable the report table to create.
+     */
     void createReportTable( ReportTable reportTable );
     
     void removeReportTable( ReportTable reportTable );

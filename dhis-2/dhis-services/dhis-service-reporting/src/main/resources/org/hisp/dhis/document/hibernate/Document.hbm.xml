@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.document.Document" table="document">
+    
+    <id name="id" column="documentid">
+      <generator class="native"/>
+    </id>
+    
+    <property name="name" not-null="true" unique="true" length="160"/>
+
+    <property name="url" not-null="true" type="text"/>
+
+    <property name="external"/>
+    
+  </class>
+</hibernate-mapping>

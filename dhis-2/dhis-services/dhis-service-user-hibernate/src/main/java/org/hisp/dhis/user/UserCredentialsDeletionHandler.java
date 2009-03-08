@@ -28,6 +28,7 @@ package org.hisp.dhis.user;
  */
 
 import org.hisp.dhis.datamart.DataMartExport;
+import org.hisp.dhis.document.Document;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.system.deletion.DeletionHandler;
@@ -105,5 +106,16 @@ public class UserCredentialsDeletionHandler
                 userStore.updateUserCredentials( credentials );
             }
         }
-    }    
+    }
+    
+    public void deleteDocument( Document document )
+    {
+        for ( UserCredentials credentials : userStore.getAllUserCredentials() )
+        {
+            if ( credentials.getDashboardDocuments().remove( document ) )
+            {
+                userStore.updateUserCredentials( credentials );
+            }
+        }
+    }
 }

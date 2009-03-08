@@ -18,7 +18,7 @@
 		<td>
 			<select id="type" name="type" style="width:100%">
 				#if ( $importFormat != "DHIS14XML" )
-				    <option value="IMPORT"#if( $type == "IMPORT" ) selected="selected"#end>$i18n.getString( "import" )</option>
+				<option value="IMPORT"#if( $type == "IMPORT" ) selected="selected"#end>$i18n.getString( "import" )</option>
 				#end
 				<option value="PREVIEW"#if( $type == "PREVIEW" ) selected="selected"#end>$i18n.getString( "preview" )</option>
                 <option value="ANALYSIS"#if( $type == "ANALYSIS" ) selected="selected"#end>$i18n.getString( "analysis" )</option>   			

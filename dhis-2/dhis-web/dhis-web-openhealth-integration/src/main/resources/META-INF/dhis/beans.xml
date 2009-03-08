@@ -68,5 +68,4 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.olap.OlapURLService"/>
   </bean>
     
-    
 </beans>

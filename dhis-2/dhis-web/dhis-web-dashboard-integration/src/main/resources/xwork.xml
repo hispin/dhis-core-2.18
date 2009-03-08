@@ -42,5 +42,9 @@
       <result name="success" type="redirect">index.action</result>
     </action>
     
+    <action name="removeDocument" class="org.hisp.dhis.dashboard.action.RemoveDocumentAction">
+      <result name="success" type="redirect">index.action</result>
+    </action>
+    
   </package>
 </xwork>

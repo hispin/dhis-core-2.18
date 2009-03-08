@@ -134,7 +134,7 @@
       <param name="page">/dhis-web-maintenance-organisationunit/organisationUnitGroupSet.vm</param>
       <param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>
       <param name="menuTreeHeight">321</param>
-      <param name="javascripts">../dhis-web-commons/lists/lists.js,javascript/organisationUnitGroupSet.js</param>
+      <param name="javascripts">javascript/organisationUnitGroupSet.js</param>
 	  <interceptor-ref name="transactionStack"/>
     </action>
 		
@@ -161,7 +161,7 @@
     <action name="showAddOrganisationUnitGroupSetForm" class="org.hisp.dhis.oum.action.organisationunitgroupset.PrepareAddGroupSetAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitGroupSetForm.vm</param>
-	  <param name="javascripts">../dhis-web-commons/lists/lists.js,javascript/organisationUnitGroupSet.js</param>
+	  <param name="javascripts">javascript/organisationUnitGroupSet.js</param>
 	  <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_ORGUNITGROUPSET_ADD</param>
     </action>
@@ -169,7 +169,7 @@
 	<action name="showUpdateOrganisationUnitGroupSetForm" class="org.hisp.dhis.oum.action.organisationunitgroupset.PrepareUpdateGroupSetAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitGroupSetForm.vm</param>
-      <param name="javascripts">../dhis-web-commons/lists/lists.js,javascript/organisationUnitGroupSet.js</param>
+      <param name="javascripts">javascript/organisationUnitGroupSet.js</param>
       <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_ORGUNITGROUPSET_UPDATE</param>
     </action>

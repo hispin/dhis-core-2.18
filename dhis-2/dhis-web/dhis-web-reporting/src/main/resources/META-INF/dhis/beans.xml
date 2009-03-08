@@ -7,6 +7,67 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.reporting.action.NoAction"
     class="org.hisp.dhis.reporting.action.NoAction"/>
   
+  <!-- Document -->
+  
+  <bean id="org.hisp.dhis.reporting.document.action.SaveDocumentAction"
+    class="org.hisp.dhis.reporting.document.action.SaveDocumentAction"
+    scope="prototype">
+    <property name="documentService"
+      ref="org.hisp.dhis.document.DocumentService"/>
+    <property name="locationManager"
+      ref="org.hisp.dhis.external.location.LocationManager"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.document.action.GetDocumentAction"
+    class="org.hisp.dhis.reporting.document.action.GetDocumentAction"
+    scope="prototype">
+    <property name="documentService"
+      ref="org.hisp.dhis.document.DocumentService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.document.action.LoadDocumentFromFileSystemAction"
+    class="org.hisp.dhis.reporting.document.action.LoadDocumentFromFileSystemAction"
+    scope="prototype">
+    <property name="locationManager"
+      ref="org.hisp.dhis.external.location.LocationManager"/>
+    <property name="documentService"
+      ref="org.hisp.dhis.document.DocumentService"/>      
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.document.action.RemoveDocumentAction"
+    class="org.hisp.dhis.reporting.document.action.RemoveDocumentAction"
+    scope="prototype">
+    <property name="locationManager"
+      ref="org.hisp.dhis.external.location.LocationManager"/>
+    <property name="documentService"
+      ref="org.hisp.dhis.document.DocumentService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.document.action.GetAllDocumentsAction"
+    class="org.hisp.dhis.reporting.document.action.GetAllDocumentsAction"
+    scope="prototype">
+    <property name="documentService"
+      ref="org.hisp.dhis.document.DocumentService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.document.action.ValidateDocumentAction"
+    class="org.hisp.dhis.reporting.document.action.ValidateDocumentAction"
+    scope="prototype">
+    <property name="documentService"
+      ref="org.hisp.dhis.document.DocumentService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.document.action.AddDocumentToDashboardAction"
+    class="org.hisp.dhis.reporting.document.action.AddDocumentToDashboardAction"
+    scope="prototype">
+    <property name="currentUserService"
+      ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="userStore"
+      ref="org.hisp.dhis.user.UserStore"/>
+    <property name="documentService"
+      ref="org.hisp.dhis.document.DocumentService"/>
+  </bean>
+  
   <!-- Charts -->
   
   <bean id="org.hisp.dhis.reporting.chart.action.GenerateChartAction"

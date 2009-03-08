@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.datamart.DataMartExport;
+import org.hisp.dhis.document.Document;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.report.Report;
 
@@ -70,6 +71,8 @@ public class UserCredentials
     private List<DataMartExport> dashboardDataMartExports = new ArrayList<DataMartExport>();
     
     private List<OlapURL> dashboardOlapUrls = new ArrayList<OlapURL>();
+    
+    private List<Document> dashboardDocuments = new ArrayList<Document>();
 
     // -------------------------------------------------------------------------
     // Logic
@@ -110,6 +113,19 @@ public class UserCredentials
             while ( dashboardOlapUrls.size() > MAX_DASHBOARD_ELEMENTS )
             {
                 dashboardOlapUrls.remove( MAX_DASHBOARD_ELEMENTS );
+            }
+        }
+    }
+    
+    public void addDocument( Document document )
+    {
+        if ( !dashboardDocuments.contains( document ) )
+        {
+            dashboardDocuments.add( 0, document );
+            
+            while ( dashboardDocuments.size() > MAX_DASHBOARD_ELEMENTS )
+            {
+                dashboardDocuments.remove( MAX_DASHBOARD_ELEMENTS );
             }
         }
     }
@@ -229,5 +245,15 @@ public class UserCredentials
     public void setDashboardOlapUrls( List<OlapURL> dashboardOlapUrls )
     {
         this.dashboardOlapUrls = dashboardOlapUrls;
+    }
+
+    public List<Document> getDashboardDocuments()
+    {
+        return dashboardDocuments;
+    }
+
+    public void setDashboardDocuments( List<Document> dashboardDocuments )
+    {
+        this.dashboardDocuments = dashboardDocuments;
     }
 }

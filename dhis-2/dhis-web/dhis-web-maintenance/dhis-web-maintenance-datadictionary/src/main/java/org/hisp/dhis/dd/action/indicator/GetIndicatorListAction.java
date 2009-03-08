@@ -168,6 +168,8 @@ public class GetIndicatorListAction
         else if ( dataDictionaryId == -1 ) // All, reset current data dictionary
         {
             dataDictionaryModeManager.setCurrentDataDictionary( null );
+            
+            dataDictionaryId = null;
         }
         else // Specified, set current data dictionary
         {
@@ -186,7 +188,7 @@ public class GetIndicatorListAction
         // Criteria
         // -------------------------------------------------------------------------
 
-        if ( dataDictionaryId != null && indicatorGroupId == null && dataDictionaryService.getDataDictionary( dataDictionaryId ) != null  )
+        if ( dataDictionaryId != null && indicatorGroupId == null )
         {
             indicators = new ArrayList<Indicator>( dataDictionaryService.getDataDictionary( dataDictionaryId ).getIndicators() );
         }
@@ -194,7 +196,7 @@ public class GetIndicatorListAction
         {
             indicators = new ArrayList<Indicator>( indicatorService.getIndicatorGroup( indicatorGroupId ).getMembers() );
         }
-        else if ( dataDictionaryId != null && indicatorGroupId != null && dataDictionaryService.getDataDictionary( dataDictionaryId ) != null  )
+        else if ( dataDictionaryId != null && indicatorGroupId != null )
         {
             Collection<Indicator> dictionary = dataDictionaryService.getDataDictionary( dataDictionaryId ).getIndicators();
 
