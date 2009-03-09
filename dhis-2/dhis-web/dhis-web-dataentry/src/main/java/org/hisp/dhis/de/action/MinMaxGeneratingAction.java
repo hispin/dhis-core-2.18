@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.de.history.DataElementHistory;
 import org.hisp.dhis.de.history.HistoryRetriever;
@@ -117,10 +118,14 @@ public class MinMaxGeneratingAction
         {
             if ( dataelement.getType().equals( DataElement.TYPE_INT ) )
             {
-                DataElementHistory dataElementHistory = historyRetriever.getHistory( dataelement, organisationUnit,
-                    period, HISTORY_LENGTH );
+                for( DataElementCategoryOptionCombo optionCombo : dataelement.getCategoryCombo().getOptionCombos() )
+                {
+                	DataElementHistory dataElementHistory = historyRetriever.getHistory( dataelement, optionCombo, organisationUnit,
+                            period, HISTORY_LENGTH );
 
-                setMinMaxLimits( dataElementHistory, organisationUnit, dataelement );
+                        setMinMaxLimits( dataElementHistory, organisationUnit, dataelement, optionCombo );
+                }
+            	
             }
         }
 
@@ -138,11 +143,11 @@ public class MinMaxGeneratingAction
      * @throws Exception
      */
     private void setMinMaxLimits( DataElementHistory dataElementHistory, OrganisationUnit organisationUnit,
-        DataElement dataelement )
+        DataElement dataelement, DataElementCategoryOptionCombo optionCombo )
         throws Exception
     {
         MinMaxDataElement minMaxDataElement = minMaxDataElementStore.getMinMaxDataElement( organisationUnit,
-            dataelement );
+            dataelement, optionCombo );
 
         if ( minMaxDataElement != null )
         {
@@ -177,7 +182,7 @@ public class MinMaxGeneratingAction
 
             if ( minMaxDataElement == null )
             {
-                minMaxDataElement = new MinMaxDataElement( organisationUnit, dataelement, (int) minLimit,
+                minMaxDataElement = new MinMaxDataElement( organisationUnit, dataelement, optionCombo, (int) minLimit,
                     (int) maxLimit, true );
                 
                 minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement );

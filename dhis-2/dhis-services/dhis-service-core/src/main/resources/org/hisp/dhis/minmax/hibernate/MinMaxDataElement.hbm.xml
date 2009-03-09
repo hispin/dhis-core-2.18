@@ -13,6 +13,8 @@
         column="sourceid" foreign-key="fk_minmaxdataelement_sourceid"/>
     <many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement"
         column="dataelementid" foreign-key="fk_minmaxdataelement_dataelementid"/>
+    <many-to-one name="optionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"
+        column="categoryoptioncomboid" foreign-key="fk_minmaxdataelement_categoryoptioncomboid"/>
 
     <property name="min" column="minvalue"/>
     <property name="max" column="maxvalue"/>

@@ -30,6 +30,7 @@ package org.hisp.dhis.minmax;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -47,8 +48,10 @@ public interface MinMaxDataElementStore
     void updateMinMaxDataElement( MinMaxDataElement minMaxDataElement );
 
     MinMaxDataElement getMinMaxDataElement( int id );
-
-    MinMaxDataElement getMinMaxDataElement( Source source, DataElement dataElement );
+    
+    MinMaxDataElement getMinMaxDataElement( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
+    
+    Collection<MinMaxDataElement> getMinMaxDataElements( Source source, DataElement dataElement );  
 
     Collection<MinMaxDataElement> getMinMaxDataElements( Source source, Collection<DataElement> dataElements );
     

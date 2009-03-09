@@ -32,6 +32,8 @@ import java.util.HashSet;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
@@ -47,6 +49,8 @@ public class MinMaxDataElementStoreTest
     private SourceStore sourceStore;
 
     private DataElementService dataElementService;
+    
+    private DataElementCategoryOptionComboService categoryOptionComboService;
 
     private MinMaxDataElementStore minMaxDataElementStore;
 
@@ -56,6 +60,8 @@ public class MinMaxDataElementStoreTest
         sourceStore = (SourceStore) getBean( SourceStore.ID );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
+        
+        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
 
         minMaxDataElementStore = (MinMaxDataElementStore) getBean( MinMaxDataElementStore.ID );
     }
@@ -105,16 +111,26 @@ public class MinMaxDataElementStoreTest
         dataElementService.addDataElement( dataElement2 );
         dataElementService.addDataElement( dataElement3 );
         dataElementService.addDataElement( dataElement4 );
+        
+        
+        DataElementCategoryOptionCombo optionCombo1 = new DataElementCategoryOptionCombo();        
+        categoryOptionComboService.addDataElementCategoryOptionCombo( optionCombo1 );
+        
+        DataElementCategoryOptionCombo optionCombo2 = new DataElementCategoryOptionCombo();        
+        categoryOptionComboService.addDataElementCategoryOptionCombo( optionCombo2 );
 
-        MinMaxDataElement minMaxDataElement1 = new MinMaxDataElement( source1, dataElement1, 0, 100, false );
-        MinMaxDataElement minMaxDataElement2 = new MinMaxDataElement( source2, dataElement2, 0, 100, false );
-        MinMaxDataElement minMaxDataElement3 = new MinMaxDataElement( source2, dataElement3, 0, 100, false );
-        MinMaxDataElement minMaxDataElement4 = new MinMaxDataElement( source2, dataElement4, 0, 100, false );
+        MinMaxDataElement minMaxDataElement1 = new MinMaxDataElement( source1, dataElement1, optionCombo1, 0, 100, false );
+        MinMaxDataElement minMaxDataElement2 = new MinMaxDataElement( source2, dataElement2, optionCombo1, 0, 100, false );
+        MinMaxDataElement minMaxDataElement3 = new MinMaxDataElement( source2, dataElement3, optionCombo1, 0, 100, false );
+        MinMaxDataElement minMaxDataElement4 = new MinMaxDataElement( source2, dataElement4, optionCombo1, 0, 100, false );
+        
+        MinMaxDataElement minMaxDataElement5 = new MinMaxDataElement( source1, dataElement1, optionCombo2, 0, 100, false );
 
         int mmdeid1 = minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement1 );
         minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement2 );
         minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement3 );
         minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement4 );
+        minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement5 );
 
         // ----------------------------------------------------------------------
         // Assertions
@@ -136,11 +152,11 @@ public class MinMaxDataElementStoreTest
         dataElements2.add( dataElement3 );
         dataElements2.add( dataElement4 );
 
-        assertNotNull( minMaxDataElementStore.getMinMaxDataElement( source1, dataElement1 ) );
-        assertNull( minMaxDataElementStore.getMinMaxDataElement( source2, dataElement1 ) );
+        assertNotNull( minMaxDataElementStore.getMinMaxDataElement( source1, dataElement1, optionCombo1 ) );
+        assertNull( minMaxDataElementStore.getMinMaxDataElement( source2, dataElement1, optionCombo1 ) );
 
-        assertTrue( minMaxDataElementStore.getMinMaxDataElements( source1, dataElements1 ).size() == 1 );
-        assertTrue( minMaxDataElementStore.getMinMaxDataElements( source2, dataElements2 ).size() == 3 );
+        assertTrue( minMaxDataElementStore.getMinMaxDataElements( source1, dataElements1 ).size() == 2 );
+        assertTrue( minMaxDataElementStore.getMinMaxDataElements( source2, dataElements2 ).size() == 3 );       
 
         minMaxDataElementStore.delMinMaxDataElement( mmdeid1 );
 

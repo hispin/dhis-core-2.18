@@ -34,6 +34,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementStore;
@@ -91,16 +92,29 @@ public class HibernateMinMaxDataElementStore
         return (MinMaxDataElement) session.get( MinMaxDataElement.class, id );
     }
 
-    public MinMaxDataElement getMinMaxDataElement( Source source, DataElement dataElement )
+    public MinMaxDataElement getMinMaxDataElement( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
     {
         Session session = sessionManager.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MinMaxDataElement.class );
         criteria.add( Expression.eq( "source", source ) );
         criteria.add( Expression.eq( "dataElement", dataElement ) );
+        criteria.add( Expression.eq( "optionCombo", optionCombo ) );
 
         return (MinMaxDataElement) criteria.uniqueResult();
     }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<MinMaxDataElement> getMinMaxDataElements( Source source, DataElement dataElement )
+    {
+        Session session = sessionManager.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( MinMaxDataElement.class );
+        criteria.add( Expression.eq( "source", source ) );
+        criteria.add( Expression.eq( "dataElement", dataElement ) );       
+
+        return criteria.list();
+    }    
 
     @SuppressWarnings( "unchecked" )
     public Collection<MinMaxDataElement> getMinMaxDataElements( Source source,

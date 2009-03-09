@@ -66,10 +66,10 @@ function commentLeft( dataElementId )
 // Save
 // -----------------------------------------------------------------------------
 
-function saveValue( dataElementId, dataElementName, zeroValueSaveMode )
+function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSaveMode )
 {
-    var field = document.getElementById( 'value[' + dataElementId + '].value' );
-    var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerHTML;
+    var field = document.getElementById( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');
+    var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerHTML; 
     
     field.style.backgroundColor = '#ffffcc';   
     
@@ -101,8 +101,8 @@ function saveValue( dataElementId, dataElementName, zeroValueSaveMode )
             }
             else
             {
-                var minString = document.getElementById( 'value[' + dataElementId + '].min' ).innerHTML;
-                var maxString = document.getElementById( 'value[' + dataElementId + '].max' ).innerHTML;
+                var minString = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].min' ).innerHTML;
+                var maxString = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].max' ).innerHTML;
 
                 if ( minString.length != 0 && maxString.length != 0 )
                 {
@@ -112,7 +112,7 @@ function saveValue( dataElementId, dataElementName, zeroValueSaveMode )
 
                     if ( value < min )
                     {
-                        var valueSaver = new ValueSaver( dataElementId, field.value, '#ffcccc' );
+                        var valueSaver = new ValueSaver( dataElementId, optionComboId, field.value, '#ffcccc' );
                         valueSaver.save();
                         
                         window.alert( i18n_value_of_data_element_less + '\n\n' + dataElementName );
@@ -122,7 +122,7 @@ function saveValue( dataElementId, dataElementName, zeroValueSaveMode )
 
                     if ( value > max )
                     {
-                        var valueSaver = new ValueSaver( dataElementId, field.value, '#ffcccc' );
+                        var valueSaver = new ValueSaver( dataElementId, optionComboId, field.value, '#ffcccc' );
                         valueSaver.save();
                         
                         window.alert( i18n_value_of_data_element_greater + '\n\n' + dataElementName);
@@ -134,9 +134,9 @@ function saveValue( dataElementId, dataElementName, zeroValueSaveMode )
         }
     }
 
-    var valueSaver = new ValueSaver( dataElementId, field.value, '#ccffcc', '');
-    valueSaver.save();
-
+    var valueSaver = new ValueSaver( dataElementId, optionComboId, field.value, '#ccffcc', '' );
+    valueSaver.save();    
+    
     if ( type == 'int')
     {
     	calculateCDE(dataElementId);
@@ -180,15 +180,16 @@ function isInt( value )
 // Saver objects
 // -----------------------------------------------------------------------------
 
-function ValueSaver( dataElementId_, value_, resultColor_, selectedOption_ )
+function ValueSaver( dataElementId_, optionComboId_, value_, resultColor_, selectedOption_ )
 {
     var SUCCESS = '#ccffcc';
     var ERROR = '#ccccff';
 
     var dataElementId = dataElementId_;
+    var optionComboId = optionComboId_;
     var value = value_;
     var resultColor = resultColor_;
-    var selecteOption = selectedOption_;
+    var selectedOption = selectedOption_; 
     
     this.save = function()
     {
@@ -207,21 +208,7 @@ function ValueSaver( dataElementId_, value_, resultColor_, selectedOption_ )
         
         if ( code == 0 )
         {
-            markValue( resultColor );
-            
-            //var textNode;
-            
-            //var timestampElement = rootElement.getElementsByTagName( 'timestamp' )[0];
-            //var timestampField = document.getElementById( 'value[' + dataElementId + '].timestamp' );
-            //textNode = timestampElement.firstChild;
-            
-            //timestampField.innerHTML = ( textNode ? textNode.nodeValue : '' );
-            
-            //var storedByElement = rootElement.getElementsByTagName( 'storedBy' )[0];
-            //var storedByField = document.getElementById( 'value[' + dataElementId + '].storedBy' );
-            //textNode = storedByElement.firstChild;
-
-            //storedByField.innerHTML = ( textNode ? textNode.nodeValue : '' );
+            markValue( resultColor );                   
         }
         else
         {
@@ -234,26 +221,27 @@ function ValueSaver( dataElementId_, value_, resultColor_, selectedOption_ )
     {
         markValue( ERROR );
         window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
-    }
+    }   
     
     function markValue( color )
     {
-        var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerText;
-        var element;
+        var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerText;       
         
+        var element;
         
         if ( type == 'bool' )
         {
-            //element = document.getElementById( 'value[' + dataElementId + '].boolean' );
-            element = selectedOption;   
-                     
+            element = document.getElementById( 'value[' + dataElementId + '].boolean' );
+        }
+        else if( selectedOption )
+        {
+        	element = selectedOption;    
         }
         else
-        {
-            element = document.getElementById( 'value[' + dataElementId + '].value' );
-            
+        {           
+            element = document.getElementById( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');                      
         }
-
+                
         element.style.backgroundColor = color;
     }
 }
@@ -283,21 +271,7 @@ function CommentSaver( dataElementId_, value_ )
         
         if ( code == 0 )
         {
-            markComment( SUCCESS );
-            
-            //var textNode;
-            
-            //var timestampElement = rootElement.getElementsByTagName( 'timestamp' )[0];
-            //var timestampField = document.getElementById( 'value[' + dataElementId + '].timestamp' );
-            //textNode = timestampElement.firstChild;
-            
-            //timestampField.innerHTML = ( textNode ? textNode.nodeValue : '' );
-            
-            //var storedByElement = rootElement.getElementsByTagName( 'storedBy' )[0];
-            //var storedByField = document.getElementById( 'value[' + dataElementId + '].storedBy' );
-            //textNode = storedByElement.firstChild;
-
-            //storedByField.innerHTML = ( textNode ? textNode.nodeValue : '' );
+            markComment( SUCCESS );           
         }
         else
         {
@@ -321,16 +295,6 @@ function CommentSaver( dataElementId_, value_ )
         select.style.backgroundColor = color;
     }
 }
-
-// -----------------------------------------------------------------------------
-// View history
-// -----------------------------------------------------------------------------
-
-/* Why is this commented out?
-function viewHistory( dataElementId )
-{
-	window.open( 'viewHistory.action?dataElementId=' + dataElementId, '_blank', 'width=560,height=550,scrollbars=yes' );
-}*/
 
 // -----------------------------------------------------------------------------
 // Validation

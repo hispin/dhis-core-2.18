@@ -320,9 +320,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="selectedStateManager"
       ref="org.hisp.dhis.de.state.SelectedStateManager"/>
-	<property name="dataElementCategoryComboService"
+    <property name="dataElementCategoryComboService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-	<property name="dataElementCategoryOptionComboService"
+    <property name="dataElementCategoryOptionComboService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>  
   </bean>
   

@@ -30,6 +30,7 @@ package org.hisp.dhis.minmax;
 import java.io.Serializable;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -44,6 +45,8 @@ public class MinMaxDataElement
     private Source source;
 
     private DataElement dataElement;
+    
+    private DataElementCategoryOptionCombo optionCombo;
 
     private int min;
 
@@ -59,11 +62,12 @@ public class MinMaxDataElement
     {
     }
 
-    public MinMaxDataElement( Source source, DataElement dataElement, int min, int max,
+    public MinMaxDataElement( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo, int min, int max,
         boolean generated )
     {
         this.source = source;
         this.dataElement = dataElement;
+        this.optionCombo = optionCombo;
         this.min = min;
         this.max = max;
         this.generated = generated;
@@ -154,6 +158,16 @@ public class MinMaxDataElement
         this.dataElement = dataElement;
     }
 
+    public DataElementCategoryOptionCombo getOptionCombo()
+    {
+        return optionCombo;
+    }
+
+    public void setOptionCombo( DataElementCategoryOptionCombo optionCombo )
+    {
+        this.optionCombo = optionCombo;
+    }
+    
     public int getMin()
     {
         return min;

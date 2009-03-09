@@ -132,7 +132,7 @@ public class HistoryAction
     public String execute()
         throws Exception
     {
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );       
         
         DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
         

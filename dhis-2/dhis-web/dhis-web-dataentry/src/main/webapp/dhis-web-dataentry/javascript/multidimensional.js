@@ -99,7 +99,40 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
                 field.focus();
 
                 return;
-            }         
+            }  
+            
+            else
+            {
+                var minString = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].min' ).innerHTML;
+                var maxString = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].max' ).innerHTML;
+
+                if ( minString.length != 0 && maxString.length != 0 )
+                {
+                    var value = new Number( field.value );
+                    var min = new Number( minString );
+                    var max = new Number( maxString );
+
+                    if ( value < min )
+                    {
+                        var valueSaver = new ValueSaver( dataElementId, optionComboId, field.value, '#ffcccc' );
+                        valueSaver.save();
+                        
+                        window.alert( i18n_value_of_data_element_less + '\n\n' + dataElementName );
+                        
+                        return;
+                    }
+
+                    if ( value > max )
+                    {
+                        var valueSaver = new ValueSaver( dataElementId, optionComboId, field.value, '#ffcccc' );
+                        valueSaver.save();
+                        
+                        window.alert( i18n_value_of_data_element_greater + '\n\n' + dataElementName);
+                        
+                        return;
+                    }
+                }
+            }       
         }
     }
 
@@ -275,15 +308,6 @@ function CommentSaver( dataElementId_, value_ )
 }
 
 // -----------------------------------------------------------------------------
-// View history
-// -----------------------------------------------------------------------------
-
-function viewHistory( dataElementId )
-{
-    window.open( 'viewHistory.action?dataElementId=' + dataElementId, '_blank', 'width=560,height=550,scrollbars=yes' );
-}
-
-// -----------------------------------------------------------------------------
 // Validation
 // -----------------------------------------------------------------------------
 function validate()
@@ -363,4 +387,74 @@ function dataValuesReceived( node )
 		value = value.firstChild.nodeValue;		
 		document.getElementById( 'value[' + dataElementId + '].value' ).value = value;
 	}
+}
+
+// -----------------------------------------------------------------------------
+// View history
+// -----------------------------------------------------------------------------
+
+function viewHistory( dataElementId, optionComboId )
+{
+    window.open( 'viewHistory.action?dataElementId=' + dataElementId + '&optionComboId=' + optionComboId, '_blank', 'width=560,height=550,scrollbars=yes' );
+}
+
+/**
+ * Set min/max limits for dataelements that has one or more values, and no 
+ * manually entred min/max limits.
+ */
+function SetGeneratedMinMaxValues()
+{
+    this.save = function()
+    {
+        var request = new Request();
+        request.setCallbackSuccess( handleResponse );
+        request.setCallbackError( handleHttpError );
+        request.setResponseTypeXML( 'minmax' );
+        request.send( 'minMaxGeneration.action' );
+    };
+    
+    function handleResponse( rootElement )
+    {
+        var dataElements = rootElement.getElementsByTagName( 'dataelement' );
+        
+        for( i = 0; i < dataElements.length; i++ )
+        {
+            var deId = getElementValue( dataElements[i], 'dataelementId' );
+            var ocId = getElementValue( dataElements[i], 'optionComboId' );
+            
+            setFieldValue('value[' + deId + ':' + ocId + '].min', getElementValue( dataElements[i], 'minLimit'));
+            setFieldValue('value[' + deId + ':' + ocId + '].max', getElementValue( dataElements[i], 'maxLimit'));
+        }
+        
+    }
+    
+    function handleHttpError( errorCode )
+    {
+        window.alert( i18n_saving_minmax_failed_error_code + '\n\n' + errorCode );
+    }
+    
+    function setFieldValue( fieldId, value )
+    {
+        document.getElementById( fieldId ).innerHTML = value;
+    }
+    
+    function getElementValue( parentElement, childElementName )
+    {
+        var textNode = parentElement.getElementsByTagName( childElementName )[0].firstChild;
+        
+        if ( textNode )
+        {
+            return textNode.nodeValue;
+        }
+        else
+        {
+            return null;
+        }
+    }    
+}
+
+function generateMinMaxValues()
+{    
+    var setGeneratedMinMaxValues = new SetGeneratedMinMaxValues();
+    setGeneratedMinMaxValues.save();
 }

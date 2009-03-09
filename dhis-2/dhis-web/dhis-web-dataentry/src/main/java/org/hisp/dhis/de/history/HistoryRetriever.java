@@ -42,9 +42,6 @@ public interface HistoryRetriever
 
     DataElementHistory getHistory( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit, Period lastPeriod,
         int historyLength )
-        throws HistoryRetrieverException;
+        throws HistoryRetrieverException;    
     
-    DataElementHistory getHistory( DataElement dataElement, OrganisationUnit organisationUnit, Period lastPeriod,
-            int historyLength )
-            throws HistoryRetrieverException;
 }

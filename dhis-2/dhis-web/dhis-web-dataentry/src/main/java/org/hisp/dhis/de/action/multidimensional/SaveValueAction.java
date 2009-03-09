@@ -177,7 +177,7 @@ public class SaveValueAction
 
         storedBy = currentUserService.getCurrentUsername();        
         
-        DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
+        DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );        
                 
         if ( storedBy == null )
         {
@@ -192,8 +192,8 @@ public class SaveValueAction
         if ( value != null )
         {
             value = value.trim();
-        }       
-        
+        }          
+      
         // ---------------------------------------------------------------------
         // Update data
         // ---------------------------------------------------------------------

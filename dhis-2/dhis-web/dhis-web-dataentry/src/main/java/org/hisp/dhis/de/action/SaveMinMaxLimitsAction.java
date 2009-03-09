@@ -28,6 +28,8 @@ package org.hisp.dhis.de.action;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementStore;
@@ -67,6 +69,13 @@ public class SaveMinMaxLimitsAction
     {
         this.dataElementService = dataElementService;
     }
+    
+    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    
+    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService)
+    {
+    	this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;    	
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -84,6 +93,13 @@ public class SaveMinMaxLimitsAction
     public void setDataElementId( Integer dataElementId )
     {
         this.dataElementId = dataElementId;
+    }
+    
+    private Integer optionComboId;
+
+    public void setOptionComboIdId( Integer optionComboId )
+    {
+        this.optionComboId = optionComboId;
     }
 
     private Integer minLimit;
@@ -110,13 +126,15 @@ public class SaveMinMaxLimitsAction
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
+        
+        DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
 
         MinMaxDataElement minMaxDataElement = minMaxDataElementStore.getMinMaxDataElement( organisationUnit,
-            dataElement );
+            dataElement, optionCombo );
 
         if ( minMaxDataElement == null )
         {
-            minMaxDataElement = new MinMaxDataElement( organisationUnit, dataElement, minLimit, maxLimit, false );
+            minMaxDataElement = new MinMaxDataElement( organisationUnit, dataElement, optionCombo, minLimit, maxLimit, false );
 
             minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement );
         }

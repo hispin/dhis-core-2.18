@@ -211,9 +211,9 @@ public class FormAction
         return dataElementTypeMap;
     }
 
-    private Map<Integer, MinMaxDataElement> minMaxMap;
+    private Map<String, MinMaxDataElement> minMaxMap;
 
-    public Map<Integer, MinMaxDataElement> getMinMaxMap()
+    public Map<String, MinMaxDataElement> getMinMaxMap()
     {
         return minMaxMap;
     }
@@ -472,11 +472,11 @@ public class FormAction
         Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementStore.getMinMaxDataElements(
             organisationUnit, dataElements );
 
-        minMaxMap = new HashMap<Integer, MinMaxDataElement>( minMaxDataElements.size() );
+        minMaxMap = new HashMap<String, MinMaxDataElement>( minMaxDataElements.size() );
 
         for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )
-        {
-            minMaxMap.put( minMaxDataElement.getDataElement().getId(), minMaxDataElement );
+        {        	
+            minMaxMap.put( minMaxDataElement.getDataElement().getId() + ":" + minMaxDataElement.getOptionCombo().getId(), minMaxDataElement );
         }       
 
         // ---------------------------------------------------------------------
@@ -531,7 +531,8 @@ public class FormAction
         }        
         
         if( dataEntryScreenManager.hasMixOfDimensions( dataSet ) )
-        {        
+        {          	
+        	
     		disableDefaultForm = true;  		
     	
     		if ( !cdeFormExists )

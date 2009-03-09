@@ -297,7 +297,7 @@ public class DefaultDataEntryScreenManager
         // Inline Javascript to add to HTML before outputting.
         // ---------------------------------------------------------------------
         
-        final String jsCodeForInputs = " $DISABLED onchange=\"saveValue( $DATAELEMENTID, '$DATAELEMENTNAME' )\" onkeypress=\"return keyPress(event, this)\" style=\"text-align:center\" ";
+        final String jsCodeForInputs = " $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME' )\" onkeypress=\"return keyPress(event, this)\" style=\"text-align:center\" ";
         final String jsCodeForCombos = " $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, this )\">";
         final String historyCode = " ondblclick='javascript:viewHistory( $DATAELEMENTID  )' ";
         final String calDataElementCode = " class=\"calculated\" disabled ";
@@ -471,6 +471,7 @@ public class DefaultDataEntryScreenManager
 
                 appendCode += metaDataCode;
                 appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
+                appendCode = appendCode.replace( "$OPTIONCOMBOID", String.valueOf( optionComboId ) );
                 appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
                 appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementType );
                 appendCode = appendCode.replace( "$DISABLED", disabled );
@@ -501,7 +502,7 @@ public class DefaultDataEntryScreenManager
 
     public String populateCustomDataEntryScreenForMultiDimensional( String dataEntryFormCode,
         Collection<DataValue> dataValues, Map<CalculatedDataElement, Integer> calculatedValueMap,
-        Map<Integer, MinMaxDataElement> minMaxMap, String disabled, Boolean saveMode, I18n i18n )
+        Map<String, MinMaxDataElement> minMaxMap, String disabled, Boolean saveMode, I18n i18n )
     {
 
         // ---------------------------------------------------------------------
@@ -510,7 +511,7 @@ public class DefaultDataEntryScreenManager
 
         final String jsCodeForInputs = " $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME', $SAVEMODE )\" onkeypress=\"return keyPress(event, this)\" style=\"text-align:center\" ";
         final String jsCodeForCombos = " $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\">";
-        final String historyCode = " ondblclick='javascript:viewHistory( $DATAELEMENTID  )' ";
+        final String historyCode = " ondblclick='javascript:viewHistory( $DATAELEMENTID,  $OPTIONCOMBOID )' ";
         final String calDataElementCode = " class=\"calculated\" disabled ";
 
         // ---------------------------------------------------------------------
@@ -519,8 +520,8 @@ public class DefaultDataEntryScreenManager
 
         final String metaDataCode = "<span id=\"value[$DATAELEMENTID].name\" style=\"display:none\">$DATAELEMENTNAME</span>"
             + "<span id=\"value[$DATAELEMENTID].type\" style=\"display:none\">$DATAELEMENTTYPE</span>"
-            + "<div id=\"value[$DATAELEMENTID].min\" style=\"display:none\">$MIN</div>"
-            + "<div id=\"value[$DATAELEMENTID].max\" style=\"display:none\">$MAX</div>";
+            + "<div id=\"value[$DATAELEMENTID:$OPTIONCOMBOID].min\" style=\"display:none\">$MIN</div>"            
+            + "<div id=\"value[$DATAELEMENTID:$OPTIONCOMBOID].max\" style=\"display:none\">$MAX</div>";
 
         // Buffer to contain the final result.
         StringBuffer sb = new StringBuffer();
@@ -622,7 +623,7 @@ public class DefaultDataEntryScreenManager
                 // MIN-MAX Values
                 // -------------------------------------------------------------
 
-                MinMaxDataElement minMaxDataElement = minMaxMap.get( dataElement.getId() );
+                MinMaxDataElement minMaxDataElement = minMaxMap.get( dataElement.getId() + ":" + optionComboId);
                 String minValue = "No Min";
                 String maxValue = "No Max";
 

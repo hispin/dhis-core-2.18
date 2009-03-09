@@ -141,8 +141,8 @@ public class SaveValueAction
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        storedBy = currentUserService.getCurrentUsername();
-
+        storedBy = currentUserService.getCurrentUsername();       
+        
         if ( storedBy == null )
         {
             storedBy = "[unknown]";
@@ -156,7 +156,7 @@ public class SaveValueAction
         if ( value != null )
         {
             value = value.trim();
-        }        
+        }   
         
         // ---------------------------------------------------------------------
         // Save or update

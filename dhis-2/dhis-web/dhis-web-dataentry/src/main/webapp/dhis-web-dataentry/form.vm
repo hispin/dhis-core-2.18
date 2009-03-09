@@ -63,7 +63,7 @@
 		<td>
 			<span id="value[$dataElement.id].name" title="$!encoder.htmlEncode( $dataElement.description )">
 			#if( $dataElement.type == "int" && $auth.hasAccess( "dhis-web-dataentry", "viewHistory" ) )
-				<a href="javascript:viewHistory( $dataElement.id  )">
+				<a href="javascript:viewHistory( $dataElement.id, $optionComboId  )">
 			#end
 			#if( $useShortName )
 				$encoder.htmlEncode( $dataElement.shortName )
@@ -81,12 +81,12 @@
 		
 		##min value
 		<td>
-		#if( $dataElement.type == "int" )
-			<div id="value[$dataElement.id].min" style="text-align:center">$!minMax.min</div>
+		#if( $dataElement.type == "int" )			 
+			<div id="value[$dataElement.id:$optionComboId].min" style="text-align:center">$!minMax.min</div>
 		#end
 		</td>
 		
-		##entry
+		##entry		
 		<td>				
 				
 		#if( $dataElement.type == "bool" )
@@ -97,19 +97,20 @@
 			</select>				
 		#else
 			#set( $minMaxError = false )
-			#if( $dataElement.type == "int" && $dataValue && $minMax )
+			#if( $dataElement.type == "int" && $dataValue && $minMax )			
 				#if( $integer.parseInt( $dataValue.value ) < $minMax.min || $integer.parseInt( $dataValue.value ) > $minMax.max )
 					#set( $minMaxError = true )
 				#end
 			#end
 			#if ( $calculated )
-			<input name="entryfield" id="value[$dataElement.id].value" class="calculated" type="text" value="#if($dataValue) $!encoder.htmlEncode( $dataValue.value ) #elseif( $calculatedValue )$!encoder.htmlEncode( $calculatedValue ) #end" disabled="disabled" onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end">
+				<input name="entryfield" id="value[$dataElement.id].value" class="calculated" type="text" value="#if($dataValue) $!encoder.htmlEncode( $dataValue.value ) #elseif( $calculatedValue )$!encoder.htmlEncode( $calculatedValue ) #end" disabled="disabled" onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end">
 			#else
+				#set( $dataEntryId = "value[$dataElement.id].value:value[$optionComboId].value" )	
 				#if( $dataElement.aggregationOperator == "sum" )
-					<input name="entryfield" id="value[$dataElement.id].value" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveValue( $dataElement.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode)" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>
+					<input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveValue( $dataElement.id, $optionComboId, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode)" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>
 				#else
 					#set( $zeroValueSaveMode = true )					
-					<input name="entryfield" id="value[$dataElement.id].value" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveValue( $dataElement.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode)" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>
+					<input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveValue( $dataElement.id, $optionComboId, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode)" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>
 				#end
             #end
 		#end
@@ -118,7 +119,7 @@
 		##max value
 		<td>
 		#if( $dataElement.type == "int" )
-			<div id="value[$dataElement.id].max" style="text-align:center">$!minMax.max</div>
+			<div id="value[$dataElement.id:$optionComboId].max" style="text-align:center">$!minMax.max</div>
 		#end
 		</td>
 		

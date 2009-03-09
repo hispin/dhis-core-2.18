@@ -16,7 +16,10 @@
 
 #if( $isHistoryValid )
 	<h2>$encoder.htmlEncode( $i18n.getString( "dataelement_history" ) )</h2>
-	<h4>$encoder.htmlEncode( $dataElementHistory.dataElement.shortName )</h4>
+	<h4>
+		$encoder.htmlEncode( $dataElementHistory.dataElement.shortName )
+		$encoder.htmlEncode( $dataElementHistory.optionCombo.shortName )		
+	</h4>
 #else
 	<h2>$encoder.htmlEncode( $i18n.getString( "dataelement_history" ) )</h2>
 	<h4>$encoder.htmlEncode( $i18n.getString( "history_not_valid" ) )</h4>	

@@ -248,6 +248,13 @@ public class FormAction
     
     private String disabled = " ";
     
+    private Integer optionComboId;
+
+    public Integer getOptionComboId()
+    {
+        return optionComboId;
+    } 
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -275,7 +282,9 @@ public class FormAction
             return SUCCESS;
         }  
         
-        Collection<DataElementCategoryOptionCombo> defaultOptionCombo = dataElements.iterator().next().getCategoryCombo().getOptionCombos();        
+        Collection<DataElementCategoryOptionCombo> defaultOptionCombo = dataElements.iterator().next().getCategoryCombo().getOptionCombos();
+        
+        optionComboId = defaultOptionCombo.iterator().next().getId();
         
         // ---------------------------------------------------------------------
         // Get the min/max values

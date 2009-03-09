@@ -91,7 +91,7 @@ public class DefaultHistoryRetriever
         history.setOptionCombo( optionCombo );
         history.setOrganisationUnit( organisationUnit );
         history.setHistoryLength( historyLength );
-        addMinMaxLimits( organisationUnit, dataElement, history );
+        addMinMaxLimits( organisationUnit, dataElement, optionCombo, history );
 
         // ---------------------------------------------------------------------
         // Create history points
@@ -148,90 +148,12 @@ public class DefaultHistoryRetriever
         }
 
         return history;
-    }
+    }   
     
-    public DataElementHistory getHistory( DataElement dataElement, OrganisationUnit organisationUnit,
-            Period lastPeriod, int historyLength )
-        throws HistoryRetrieverException
-        {
-            if ( !dataElement.getType().equals( DataElement.TYPE_INT ) )
-            {
-                throw new HistoryRetrieverException( "DataElement is not of type " + DataElement.TYPE_INT + ": "
-                    + dataElement.getShortName() );
-            }
-
-            // ---------------------------------------------------------------------
-            // Initialise history
-            // ---------------------------------------------------------------------
-
-            DataElementHistory history = new DataElementHistory();
-            history.setDataElement( dataElement );            
-            history.setOrganisationUnit( organisationUnit );
-            history.setHistoryLength( historyLength );
-            addMinMaxLimits( organisationUnit, dataElement, history );
-
-            // ---------------------------------------------------------------------
-            // Create history points
-            // ---------------------------------------------------------------------
-
-            List<Period> periods = getPeriods( lastPeriod, historyLength );
-
-            double max = 1;
-            double average = 0;
-            double total = 0;
-            int count = 0;
-
-            if ( history.getMaxLimit() != null )
-            {
-                max = Math.max( max, history.getMaxLimit() );
-            }
-
-            for ( Period period : periods )
-            {
-                DataElementHistoryPoint historyPoint = new DataElementHistoryPoint();
-                historyPoint.setPeriod( period );
-
-                Double value = getValue( dataElement, organisationUnit, period );
-
-                if ( value != null )
-                {
-                    historyPoint.setValue( value );
-                }
-
-                if ( historyPoint.getValue() != null )
-                {
-                    max = Math.max( max, historyPoint.getValue() );
-                    total += historyPoint.getValue();
-                    average = total / ++count;
-                }
-
-                historyPoint.setAverage( average );
-
-                history.getHistoryPoints().add( historyPoint );
-            }
-
-            history.setMaxHistoryValue( max );
-
-            // get the maxValue
-            double maxValue = getMaxValue( history );
-
-            // if there was any entred values, set minValue and maxValue
-            if ( maxValue != Double.NEGATIVE_INFINITY )
-            {
-                history.setMaxValue( maxValue );
-
-                double minValue = getMinValue( history );
-                history.setMinValue( minValue );
-           }
-
-            return history;
-        }
-
-
-    private void addMinMaxLimits( OrganisationUnit organisationUnit, DataElement dataElement, DataElementHistory history )
+    private void addMinMaxLimits( OrganisationUnit organisationUnit, DataElement dataElement, DataElementCategoryOptionCombo optionCombo, DataElementHistory history )
     {
         MinMaxDataElement minMaxDataElement = minMaxDataElementStore.getMinMaxDataElement( organisationUnit,
-            dataElement );
+            dataElement, optionCombo);
 
         if ( minMaxDataElement != null )
         {
@@ -328,26 +250,8 @@ public class DefaultHistoryRetriever
         }
 
         return null;
-    }
-    
-    private Double getValue( DataElement dataElement, OrganisationUnit organisationUnit, Period period )
-    throws HistoryRetrieverException
-    {
-    	DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period );
-
-    	if ( dataValue != null )
-    	{
-    		if ( dataValue.getValue() != null )
-    		{
-    			return parseValue( dataValue.getValue() );
-
-    		}
-    	}
-
-    	return null;
-    }
-
-
+    }    
+ 
     private Double parseValue( String value )
         throws HistoryRetrieverException
     {

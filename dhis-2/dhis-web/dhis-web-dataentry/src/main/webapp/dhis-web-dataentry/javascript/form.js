@@ -1,6 +1,4 @@
 
-var ocId = -1;
-
 window.onload = function () 
 {
 	var inputs = document.getElementsByName( "entryfield" ) 
@@ -18,9 +16,9 @@ window.onload = function ()
 	}
 }
 
-function viewHistory( dataElementId )
+function viewHistory( dataElementId, optionComboId )
 {
-    window.open( 'viewHistory.action?dataElementId=' + dataElementId + '&optionComboId=' + ocId, '_blank', 'width=560,height=550,scrollbars=yes' );
+    window.open( 'viewHistory.action?dataElementId=' + dataElementId + '&optionComboId=' + optionComboId, '_blank', 'width=560,height=550,scrollbars=yes' );
 }
 
 /**
@@ -57,10 +55,10 @@ function valueFocus(e)
 	ocId = match2[1];		
 	
 	//Get the data element name
-	var nameContainer = document.getElementById('value['+deId+'].name');
-	var opCbContainer = document.getElementById('value[option'+ocId+'].name');
-	var minContainer = document.getElementById('value['+deId+'].min');
-	var maxContainer = document.getElementById('value['+deId+'].max');
+	var nameContainer = document.getElementById('value[' + deId + '].name');
+	var opCbContainer = document.getElementById('value[option' + ocId + '].name');
+	var minContainer = document.getElementById('value[' + deId + ':' + ocId +'].min');	
+	var maxContainer = document.getElementById('value[' + deId + ':' + ocId +'].max');
 	
 	if ( ! nameContainer )
 	{		
@@ -82,18 +80,30 @@ function valueFocus(e)
 	}
 	
 	if( opCbContainer )
-	{
-		if( opCbContainer.firstChild )		
-			optionName = opCbContainer.firstChild.nodeValue;
-			
+	{	    
+		if( opCbContainer.firstChild )
+		{
+		    optionName = opCbContainer.firstChild.nodeValue;
+		}			
 	}
 	
-	if(customDataEntryFormExists == "true")
-	{	
-	    optionName += " - "+minContainer.firstChild.nodeValue;
-	    optionName += " - "+maxContainer.firstChild.nodeValue; 
+	if( minContainer )
+	{
+	    	    
+	    if( minContainer.firstChild )
+	    {        
+	        optionName += " - "+minContainer.firstChild.nodeValue; 
+	    }	    
 	}
-    
+	
+	if( maxContainer )
+	{
+	    if( maxContainer.firstChild )
+	    {
+	        optionName += " - "+maxContainer.firstChild.nodeValue;
+	    }
+	}
+	    
     var curDeSpan = document.getElementById('currentDataElement');
      
     curDeSpan.firstChild.nodeValue = name;
@@ -199,9 +209,11 @@ function SetGeneratedMinMaxValues()
         
         for( i = 0; i < dataElements.length; i++ )
         {
-            var id = getElementValue( dataElements[i], 'dataelementId' );
-            setFieldValue('value[' + id + '].min', getElementValue( dataElements[i], 'minLimit'));
-            setFieldValue('value[' + id + '].max', getElementValue( dataElements[i], 'maxLimit'));
+            var deId = getElementValue( dataElements[i], 'dataelementId' );
+            var ocId = getElementValue( dataElements[i], 'optionComboId' );
+            
+            setFieldValue('value[' + deId + ':' + ocId + '].min', getElementValue( dataElements[i], 'minLimit'));
+            setFieldValue('value[' + deId + ':' + ocId + '].max', getElementValue( dataElements[i], 'maxLimit'));
         }
         
     }
