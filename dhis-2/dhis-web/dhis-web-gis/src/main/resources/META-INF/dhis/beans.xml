@@ -180,37 +180,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionGISManager" ref="org.hisp.dhis.gis.state.SelectionManager" />
 		<property name="statementManager" ref="org.hisp.dhis.jdbc.StatementManager" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="gisConfigurationService"
+			ref="org.hisp.dhis.gis.GISConfigurationService" />
+		<property name="aggregationService"
+			ref="org.hisp.dhis.aggregation.AggregationService" />
 
-	</bean>
-
-	<bean id="org.hisp.dhis.gis.action.dataanlysis.AnlysisIndicatorAction"
-		class="org.hisp.dhis.gis.action.dataanlysis.AnlysisIndicatorAction"
-		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="legendService" ref="org.hisp.dhis.gis.LegendService" />
-		<property name="featureService" ref="org.hisp.dhis.gis.FeatureService" />
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="selectionGISManager" ref="org.hisp.dhis.gis.state.SelectionManager" />
-		<property name="statementManager" ref="org.hisp.dhis.jdbc.StatementManager" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="jdbcIndicatorService"
-			ref="org.hisp.dhis.gis.hibernate.JDBCIndicatorService" />
-
-
-	</bean>
-
-	<bean id="org.hisp.dhis.gis.action.dataanlysis.GetIndicatorByGroupAction"
-		class="org.hisp.dhis.gis.action.dataanlysis.GetIndicatorByGroupAction">
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="selectionManager" ref="org.hisp.dhis.gis.state.SelectionManager" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.gis.action.dataanlysis.GetPeriodByPeriodTypeAction"
-		class="org.hisp.dhis.gis.action.dataanlysis.GetPeriodByPeriodTypeAction">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="selectionManager" ref="org.hisp.dhis.gis.state.SelectionManager" />
 	</bean>
 
 	<!-- Legend -->
@@ -297,11 +271,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.gis.action.export.FileFeatureStore" />
 		<property name="gisConfigurationManagerService"
 			ref="org.hisp.dhis.gis.action.configuration.GISConfigurationManagerService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.gis.action.export.ExportToImageAction"
-		class="org.hisp.dhis.gis.action.export.ExportToImageAction">
-		
 	</bean>
 
 

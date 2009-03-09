@@ -8,8 +8,6 @@
   		
 	
 <body onLoad="javascript:changeAction('polygon');selectedFeature('$!feature.featureCode');" >
-<form name="map">
-
 <table >
 	<tr>
 		<td style="vertical-align:top;">	
@@ -25,42 +23,18 @@
 		</td>
 		<td>		
 			<fieldset align="center" style="border:#0000FF thin solid; width:460px; height:450px;">
-			<legend align="right"><a style="text-decoration:none" style="CURSOR: hand" href="javascript:zoomIn();" title="Zoom In">[ + ]</a>
-		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:zoomOut();" title="Zoom Out">[ - ]</a>
-		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:retoreZoom();" title="Retore">[ ~ ]</a></legend>
-			 <embed id=map width="460" height="450" src="map/$mapFile.mapFile" name="map" type="image/svg+xml" align="center"/>
+				<legend align="right">
+					<a style="text-decoration:none" style="CURSOR: hand" href="javascript:zoomIn();" title="Zoom In">[ + ]</a>
+					<a style="text-decoration:none" style="CURSOR: hand" href="javascript:zoomOut();" title="Zoom Out">[ - ]</a>
+					<a style="text-decoration:none" style="CURSOR: hand" href="javascript:retoreZoom();" title="Retore">[ ~ ]</a>
+				</legend>
+				<embed id="map" src="map/$mapFile.mapFile" name="map" type="image/svg+xml" align="center"/>
 			</fieldset>			
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align:top;" colspan="2">
-		
-			<!--fieldset style="border:#0000FF thin solid;width: 350px;display:none">
-				<legend><label>$i18n.getString( "layer" )</label></legend>
-				<table width="100%">
-					<th><label>$i18n.getString( "show_layer" )</label></th>
-					<th><label>$i18n.getString( "active_layer" )</label></th>
-					<tr>
-						<td><input id="polygon_check" type="checkbox" name="district" onClick="showlayer(this,'polygon')" checked="checked"/><label>$i18n.getString( "district" )</label></td>
-						<td><input id="polygon_radio" type="radio" name="active" checked="checked" onClick="activelayer('polygon')" value="polygon"/><label>$i18n.getString( "district" )</label></td>
-					</tr>
-					<tr>
-						<td><input id="point_check" type="checkbox" name="health_facility" onClick="showlayer(this,'point')" checked="checked"/><label>$i18n.getString( "health_facility" )</label></td>
-						<td><input id="point_radio" type="radio" name="active" onClick="activelayer('point')" value="point"/><label>$i18n.getString( "health_facility" )</label></td>
-					</tr>
-					<tr>
-						<td><input id="polyline_check" type="checkbox" name="road" onClick="showlayer(this,'polyline')" checked="checked"/><label>$i18n.getString( "road" )</label></td>
-						<td><input id="polyline_radio" type="radio" name="active" onClick="activelayer('polyline')" value="polyline"/><label>$i18n.getString( "road" )</label></td>
-					</tr>
-					
-				</table>
-			
-		</fieldset>	
+		<td style="vertical-align:top;" colspan="2">		
 
-		
-			<br-->
-</form>			
-<form name="selectForm" id="selectForm" action="selectOrgUnit.action" method="post"> 
 		<div style="background-color:#FFFFCC; border:#FFCC00 thin solid;width:705px;">
 			
 				<table style="margin:3px;" width="100%">
@@ -93,8 +67,7 @@
 						</td>
 					</tr>
 				</table>
-			</div>
-	</form>	
+			</div>	
 		</td>
 	</tr>
 </table>
@@ -103,6 +76,16 @@
 <div id="showAllAssignedData" style='width:100%;text-align:left;margin:5px;'></div>
 </div>
 
+<script type="text/javascript">	
+	
+	//selectedFeature('$!feature.featureCode');
+	
+	//alert(document.embeds['map'].getSVGDocument().getElementById('polygon'));
+	
+	//setAction('polygon', 'click',getFeatureCode);
+	
+</script>
 </body>
+</html>
 
 

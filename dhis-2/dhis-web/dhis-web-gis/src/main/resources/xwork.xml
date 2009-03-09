@@ -20,7 +20,8 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/map.vm</param>
 			<param name="menu">/dhis-web-gis/orgunitMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/general.js,javascript/map.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/map.js,javascript/ui/ui.core.js,javascript/ui/ui.draggable.js,javascript/ui/ui.resizable.js</param>
+			<param name="stylesheets">style/map.css,style/ui.resizable.css</param>
 		</action>
 		
 		
@@ -32,6 +33,7 @@
 			<param name="menu">/dhis-web-gis/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/general.js,javascript/map.js</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
+			<param name="stylesheets">style/map.css</param>
 		</action>
 
 
@@ -45,7 +47,8 @@
 			<result name="input" type="velocity">/popup.vm</result>
 			<param name="page">/dhis-web-gis/assignUnit.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/map.js,javascript/selectunit.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/map.js,javascript/selectunit.js</param>
+			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>
 
@@ -64,6 +67,7 @@
 			<param name="page">/dhis-web-gis/assignUnit.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/map.js</param>
+			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>
 		<!-- Map management -->
@@ -76,6 +80,7 @@
 			<param name="page">/dhis-web-gis/selectMapAndUnit.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/map.js</param>
+			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>
 
@@ -130,6 +135,7 @@
 			<param name="page">/dhis-web-gis/assignRoot.vm</param>
 			<param name="menu">/dhis-web-gis/orgunitMenu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/general.js,javascript/map.js</param>
+			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>
 
@@ -142,6 +148,7 @@
 			<param name="page">/dhis-web-gis/assignRoot.vm</param>
 			<param name="menu">/dhis-web-gis/orgunitMenu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/general.js,javascript/map.js</param>
+			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>	
 		
@@ -167,6 +174,7 @@
 			<param name="page">/dhis-web-gis/listMap.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
 			<param name="javascripts">javascript/map.js</param>
+			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>	
 		</action>
 		
@@ -177,24 +185,7 @@
 		<action name="fillMapByIndicator"
 			class="org.hisp.dhis.gis.action.dataanlysis.FillMapByIndicatorAction">
 			<result name="success" type="velocity">	responseFillMap.vm	</result>
-		</action>
-		
-		<action name="fillMapByIndicatorGetFromAgg"
-			class="org.hisp.dhis.gis.action.dataanlysis.AnlysisIndicatorAction">
-			<result name="success" type="velocity">	responseFillMap.vm	</result>
-		</action>
-
-		<action name="getIndicatorByGroup"
-			class="org.hisp.dhis.gis.action.dataanlysis.GetIndicatorByGroupAction">
-			<result name="success" type="velocity">	responseIndicators.vm</result>
-		</action>
-		
-		<action name="getPeriods"
-			class="org.hisp.dhis.gis.action.dataanlysis.GetPeriodByPeriodTypeAction">
-			<result name="success" type="velocity">	responsePeriods.vm</result>
-		</action>
-		
-		
+		</action>	
 
 
 		<!-- Legend -->
@@ -206,6 +197,7 @@
 			<param name="page">/dhis-web-gis/listLegend.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
 			<param name="javascripts">javascript/legends.js,javascript/picker.js</param>
+			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>	
 		</action>
 
@@ -216,6 +208,7 @@
 			<param name="page">/dhis-web-gis/addLegend.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
 			<param name="javascripts">javascript/legends.js,javascript/picker.js</param>
+			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>	
 		</action>
 
@@ -256,6 +249,7 @@
 			<param name="page">/dhis-web-gis/listLegendSet.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
 			<param name="javascripts">javascript/legends.js,javascript/picker.js</param>
+			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>	
 		</action>
 
@@ -268,6 +262,7 @@
 			<param name="page">/dhis-web-gis/addLegendSet.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
 			<param name="javascripts">javascript/legends.js,javascript/picker.js</param>
+			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>	
 		</action>
 
@@ -292,6 +287,7 @@
 			<param name="javascripts">
 				javascript/legends.js,javascript/picker.js
 			</param>
+			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>	
 		</action>
 
@@ -325,18 +321,6 @@
 				<param name="contentDisposition">
 					filename="${outputImage}"
 				</param>
-				<param name="bufferSize">1024</param>
-			</result>
-		</action>
-		
-		<action name="exportToImage"
-			class="org.hisp.dhis.gis.action.export.ExportToImageAction">	
-			
-			<!-- result name="success" type="velocity">download.vm</result-->
-			<result name="success" type="stream">
-				<param name="contentType">image/jpeg</param>
-				<param name="inputName">inputStream</param>
-				<param name="contentDisposition">filename="${outputImage}"</param>
 				<param name="bufferSize">1024</param>
 			</result>
 		</action>

@@ -1,0 +1,55 @@
+.mapButton{
+	border: thin gray groove;
+	background-color: #FFFFFF;
+	cursor: pointer;
+}
+.mapButton:hover{	
+	background-color: #CFCFCF;
+}
+
+.closeButton{
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	cursor: pointer;
+}
+
+.closeButton:hover{
+	color: red;
+}
+
+#mapDiv{
+	border: medium solid #DFDFDF;
+	overflow: auto;		
+}
+#topMapMenu{
+	position: absolute;
+	top: 80px;
+	right: 10px;
+	background-color: #DFDFDF;
+	height: 21px;
+	width: 200px;
+	text-align: right;
+	padding-top: 3px;
+	padding-right: 5px;	
+}
+#mapRender , #legend{
+	display:none;
+	position: absolute;
+	border: thin solid #DFDFDF;
+	background-color: #EFEFEF;
+	top: 110px;		
+	padding: 5px;
+	padding-top: 20px;	
+	width: 350px;	
+}
+#information{
+	border: #FFCB3F thin solid;
+	background-color: #FFEEBF;
+	position: absolute;
+	display: none;
+	right: 20px;
+	top: 150px;
+	padding-top: 20px;
+	padding-right: 20px;		
+}

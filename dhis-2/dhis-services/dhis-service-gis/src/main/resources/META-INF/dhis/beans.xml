@@ -20,6 +20,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.gis.hibernate.HibernateLegendStore">
     <property name="sessionManager"
    	  ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+	<property name="indicatorService"
+   	  ref="org.hisp.dhis.indicator.IndicatorService"/>
   </bean>  
  
   <bean id="org.hisp.dhis.gis.FeatureService"

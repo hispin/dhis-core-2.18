@@ -11,7 +11,7 @@
 			<legend><label>$i18n.getString( "file_map" )</label></legend>
 			<table style="width:100%">
 				 <tr>
-					   <th align="left"><input type="button" value="$i18n.getString( "upload_file" )" onClick="javascript:showHideAll('underdiv'); showCenter('uploadfile');"/></th>
+					   <th align="left"><input type="button" value="$i18n.getString( "upload_file" )" onClick="javascript:openUploadFile();"/></th>
 				  </tr>
 			</table>
 			<div style="width:100%; height:90%;overflow:auto;">
@@ -47,7 +47,7 @@
 <div id="uploadfile" style="position:absolute;background-color:#FFFFFF;border:#0000FF thick solid;display:none;width:400px;height:70px;z-index:1000">
 	<table style="width:100%" cellpadding="1" cellspacing="1" border="0">
     	<tr>
-        	<td align="right"><a href="javascript:showHideAll('uploadfile');showHideAll('underdiv');" style="text-decoration:none">[x]</a></td>
+        	<td align="right"><a href="javascript:hideDropDown();" style="text-decoration:none">[x]</a></td>
         </tr>
 		  <tr>
         	<td align="right">&nbsp;</td>
@@ -64,10 +64,12 @@
 </div>
 </form>
 
-<div id="underdiv" style="position:fixed;background-color:#000000;width:1280px;height:1000px;top:0px;left:0px;opacity:0.5;display:none;"></div>
-
-
 <script type="text/javascript">
+function openUploadFile(){	
+	setPositionCenter('uploadfile');
+	showDropDown('uploadfile');
+}
+
 function deleteFile(mapFile){
 	if(confirm("Do you want delete ?")){
 		window.location = "deleteFileMap.action?mapFile="+mapFile+"";

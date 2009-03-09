@@ -1000,6 +1000,29 @@
         </response>      
       </responses>
     </request>
+	
+	<request>
+      <name>getLegendMinAndMaxOfIndicator</name>
+      <bean>org.hisp.dhis.gis.LegendService</bean>
+      <method>getLegendSetOfIndicator</method>
+      <parameters>
+        <parameter>
+          <type>int</type>
+          <name>indicatorId</name>
+        </parameter>        
+      </parameters>
+      <template>xmlLegendMinMax.vm</template>
+      <responses>
+		 <response>
+          <format>xml</format>
+        </response>
+        <response>
+          <format>json</format>
+          <template>jsonLegendMinMax.vm</template>
+          <contentType>application/json</contentType>
+        </response>      
+      </responses>
+    </request>   
         
   </requests>
 

@@ -31,12 +31,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.gis.comparator.LegendComparator;
 import org.hisp.dhis.indicator.Indicator;
 
 public class LegendSet
     implements Serializable
 {
-    private int id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private int id;
 
     private String name;
 
@@ -131,5 +137,13 @@ public class LegendSet
             return false;
         
         return true;
+    }
+    
+    public Legend getMinLegend(){
+    	return Collections.min(this.legends, new LegendComparator());			
+    }
+    
+    public Legend getMaxLegend(){
+    	return Collections.max(this.legends, new LegendComparator());			
     }
 }

@@ -31,10 +31,13 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.gis.FeatureService;
+import org.hisp.dhis.gis.GISConfiguration;
+import org.hisp.dhis.gis.GISConfigurationService;
 import org.hisp.dhis.gis.Legend;
 import org.hisp.dhis.gis.LegendService;
 import org.hisp.dhis.gis.LegendSet;
@@ -49,8 +52,8 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.aggregation.AggregationService;
 
 import com.opensymphony.xwork.Action;
 
@@ -83,17 +86,23 @@ public class FillMapByIndicatorAction
 
     private I18nFormat format;
 
+    private AggregationService aggregationService;
+    
+    private GISConfigurationService gisConfigurationService;
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
     private Integer indicatorId;
 
+    private String startDate;
+
+    private String endDate;
+    
     private Integer periodId;
-
-    private Double valueBegin;
-
-    private Double valueEnd;
+    
+    private NumberFormat formatter = new DecimalFormat( "#0.00" );
 
     // -------------------------------------------------------------------------
     // Output
@@ -106,6 +115,23 @@ public class FillMapByIndicatorAction
     // -------------------------------------------------------------------------
     // Getter & setter
     // -------------------------------------------------------------------------
+    
+    
+
+    public void setAggregationService( AggregationService aggregationService )
+    {
+        this.aggregationService = aggregationService;
+    }
+
+    public void setPeriodId( Integer periodId )
+    {
+        this.periodId = periodId;
+    }
+
+    public void setGisConfigurationService( GISConfigurationService gisConfigurationService )
+    {
+        this.gisConfigurationService = gisConfigurationService;
+    }
 
     public void setStatementManager( StatementManager statementManager )
     {
@@ -152,24 +178,19 @@ public class FillMapByIndicatorAction
         this.indicatorId = indicatorId;
     }
 
-    public void setPeriodId( Integer periodId )
-    {
-        this.periodId = periodId;
-    }
-
     public void setFeatureService( FeatureService featureService )
     {
         this.featureService = featureService;
     }
 
-    public void setValueBegin( Double valueBegin )
+    public void setStartDate( String startDate )
     {
-        this.valueBegin = valueBegin;
+        this.startDate = startDate;
     }
 
-    public void setValueEnd( Double valueEnd )
+    public void setEndDate( String endDate )
     {
-        this.valueEnd = valueEnd;
+        this.endDate = endDate;
     }
 
     public void setPeriodService( PeriodService periodService )
@@ -189,7 +210,7 @@ public class FillMapByIndicatorAction
 
         if ( maxValue > maxLegend.getMax() )
         {
-            NumberFormat formatter = new DecimalFormat( "#0.00" );
+            
 
             if ( maxLegend.getAutoCreateMax() == Legend.AUTO_CREATE_MAX )
             {
@@ -216,8 +237,8 @@ public class FillMapByIndicatorAction
     }
 
     private LegendSet createLegendSet( double min, double max )
-    {
-        NumberFormat formatter = new DecimalFormat( "#0.00" );
+    {      
+       
 
         double section = (max - min) / 5;
 
@@ -246,6 +267,16 @@ public class FillMapByIndicatorAction
         return legendSet;
 
     }
+    
+    private double getIndicatorValue(Indicator indicator, Date startdate, Date enddate, OrganisationUnit organisationUnit){
+        
+        if(gisConfigurationService.getValue( GISConfiguration.KEY_GETINDICATOR ).equalsIgnoreCase( GISConfiguration.AggregationService )){
+         
+            return aggregationService.getAggregatedIndicatorValue( indicator, startdate, enddate, organisationUnit );
+        }         
+        
+        return dataMartStore.getAggregatedValue( indicator, periodService.getPeriod( periodId ) , organisationUnit );
+    }
 
     public String execute()
         throws Exception
@@ -256,40 +287,29 @@ public class FillMapByIndicatorAction
 
         Indicator indicator = indicatorService.getIndicator( new Integer( indicatorId ).intValue() );
 
-        selectionGISManager.setSelectedIndicator( indicator );
-
-        Period period = periodService.getPeriod( periodId.intValue() );
-
-        selectionGISManager.setPeriod( period );
+        selectionGISManager.setSelectedIndicator( indicator ); 
+        
+        Date startdate = format.parseDate( startDate );
+        
+        Date enddate = format.parseDate( endDate );
 
         for ( OrganisationUnit org : organisationUnit.getChildren() )
         {
-            double indicatorValue = dataMartStore.getAggregatedValue( indicator, period, org );
+            
+            
+            double indicatorValue = getIndicatorValue(indicator, startdate, enddate, org ); 
+               
 
             if ( indicatorValue < 0.0 )
             {
 
                 indicatorValue = 0;
             }
+           
+            org.hisp.dhis.gis.Feature feature = featureService.get( org );
 
-            if ( valueBegin != null && valueEnd != null )
-            {
-
-                if ( valueBegin <= indicatorValue && valueEnd >= indicatorValue )
-                {
-
-                    org.hisp.dhis.gis.Feature feature = featureService.get( org );
-
-                    features.add( new Feature( feature, indicatorValue, "#CCCCCC" ) );
-                }
-
-            }
-            else
-            {
-                org.hisp.dhis.gis.Feature feature = featureService.get( org );
-
-                features.add( new Feature( feature, indicatorValue, "#CCCCCC" ) );
-            }
+            features.add( new Feature( feature, indicatorValue, "#CCCCCC" ) );
+           
         }
 
         double max = Collections.max( features, new FeatureValueComparator() ).getAggregatedDataValue();
@@ -319,24 +339,21 @@ public class FillMapByIndicatorAction
                 {
                     feature.setColor( "#" + legend.getColor() );
                 }
-            }
-
-            NumberFormat formatter = new DecimalFormat( "#0.00" );
+            }       
 
             feature.setAggregatedDataValue( new Double( formatter.format( feature.getAggregatedDataValue() ) )
                 .doubleValue() );
 
         }
 
-        selectionGISManager
-            .setSeletedBagSession( new BagSession( indicator, format.formatDate( period.getStartDate() ), format
-                .formatDate( period.getEndDate() ), features, legendSet ) );
-
-        valueBegin = valueEnd = null;
+        selectionGISManager.setSeletedBagSession( new BagSession( indicator, format.formatDate( startdate ) , format.formatDate( enddate ), features, legendSet ) );       
 
         statementManager.destroy();
 
         return SUCCESS;
     }
+    
+    
+    
 
 }

@@ -1,4 +1,3 @@
-<body onLoad="javascript:changeAction('polygon');selectedFeature('$!feature.featureCode');">
 <script language="javascript">
 function popupAssignUnit(){	
 	window.open("assignUnit.action","","menubar=no,width=750,height=700,resizable=no,scrollbars=yes");
@@ -23,7 +22,5 @@ function popupAssignUnit(){
 	</tr>
 </table>
 
-
-</body>
 
 

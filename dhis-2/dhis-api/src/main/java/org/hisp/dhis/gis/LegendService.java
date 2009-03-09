@@ -64,4 +64,7 @@ public interface LegendService {
 	public LegendSet getLegendSet(String name);
 	
 	public LegendSet getLegendSet(Indicator indicator);
+	
+	public LegendSet getLegendSetOfIndicator(int indicatorId );
+	
 }

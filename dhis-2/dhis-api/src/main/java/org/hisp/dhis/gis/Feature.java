@@ -37,7 +37,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 public class Feature
     implements Serializable
 {
-    private int id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private int id;
 
     private OrganisationUnit organisationUnit;
 
