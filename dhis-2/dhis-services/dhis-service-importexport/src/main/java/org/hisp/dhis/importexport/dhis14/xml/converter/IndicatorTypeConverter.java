@@ -89,15 +89,18 @@ public class IndicatorTypeConverter
     {
         Collection<IndicatorType> indicatorTypes = indicatorService.getIndicatorTypes( params.getIndicatorTypes() );
         
-        for ( IndicatorType object : indicatorTypes )
+        if ( indicatorTypes != null && indicatorTypes.size() > 0 )
         {
-            writer.openElement( ELEMENT_NAME );
-            
-            writer.writeElement( FIELD_ID, String.valueOf( object.getId() ) );
-            writer.writeElement( FIELD_NAME, object.getName() );
-            writer.writeElement( FIELD_FACTOR, String.valueOf( object.getFactor() ) );
-            
-            writer.closeElement();
+            for ( IndicatorType object : indicatorTypes )
+            {
+                writer.openElement( ELEMENT_NAME );
+                
+                writer.writeElement( FIELD_ID, String.valueOf( object.getId() ) );
+                writer.writeElement( FIELD_NAME, object.getName() );
+                writer.writeElement( FIELD_FACTOR, String.valueOf( object.getFactor() ) );
+                
+                writer.closeElement();
+            }
         }
     }
     

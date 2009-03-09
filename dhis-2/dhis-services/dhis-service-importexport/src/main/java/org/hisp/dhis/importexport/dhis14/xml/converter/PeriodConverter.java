@@ -99,16 +99,19 @@ public class PeriodConverter
     {
         Collection<Period> periods = periodService.getPeriods( params.getPeriods() );
         
-        for ( Period period : periods )
+        if ( periods != null && periods.size() > 0 )
         {
-            writer.openElement( ELEMENT_NAME );
-            
-            writer.writeElement( FIELD_ID, String.valueOf( period.getId() ) );
-            writer.writeElement( FIELD_PERIOD_TYPE, String.valueOf( period.getPeriodType().getId() ) );
-            
-            //TODO
-            
-            writer.closeElement();
+            for ( Period period : periods )
+            {
+                writer.openElement( ELEMENT_NAME );
+                
+                writer.writeElement( FIELD_ID, String.valueOf( period.getId() ) );
+                writer.writeElement( FIELD_PERIOD_TYPE, String.valueOf( period.getPeriodType().getId() ) );
+                
+                //TODO
+                
+                writer.closeElement();
+            }
         }
     }
     

@@ -105,23 +105,26 @@ public class OrganisationUnitConverter
     {
         Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
         
-        for ( OrganisationUnit unit : units )
+        if ( units != null && units.size() > 0 )
         {
-            writer.openElement( ELEMENT_NAME );
-            
-            writer.writeElement( FIELD_ID, String.valueOf( unit.getId() ) );
-            writer.writeElement( FIELD_CODE, unit.getCode() );
-            writer.writeElement( FIELD_LEVEL, "" );
-            writer.writeElement( FIELD_NAME, unit.getName() );
-            writer.writeElement( FIELD_SHORT_NAME, unit.getShortName() );
-            writer.writeElement( FIELD_VALID_FROM, String.valueOf( VALID_FROM ) );
-            writer.writeElement( FIELD_VALID_TO, String.valueOf( VALID_TO ) );
-            writer.writeElement( FIELD_ACTIVE, convertBooleanToDhis14( unit.isActive() ) );
-            writer.writeElement( FIELD_SELECTED, String.valueOf( 0 ) );
-            writer.writeElement( FIELD_LAST_USER, String.valueOf( 1 ) );
-            writer.writeElement( FIELD_LAST_UPDATED, String.valueOf( VALID_FROM ) );
-            
-            writer.closeElement();
+            for ( OrganisationUnit unit : units )
+            {
+                writer.openElement( ELEMENT_NAME );
+                
+                writer.writeElement( FIELD_ID, String.valueOf( unit.getId() ) );
+                writer.writeElement( FIELD_CODE, unit.getCode() );
+                writer.writeElement( FIELD_LEVEL, "" );
+                writer.writeElement( FIELD_NAME, unit.getName() );
+                writer.writeElement( FIELD_SHORT_NAME, unit.getShortName() );
+                writer.writeElement( FIELD_VALID_FROM, String.valueOf( VALID_FROM ) );
+                writer.writeElement( FIELD_VALID_TO, String.valueOf( VALID_TO ) );
+                writer.writeElement( FIELD_ACTIVE, convertBooleanToDhis14( unit.isActive() ) );
+                writer.writeElement( FIELD_SELECTED, String.valueOf( 0 ) );
+                writer.writeElement( FIELD_LAST_USER, String.valueOf( 1 ) );
+                writer.writeElement( FIELD_LAST_UPDATED, String.valueOf( VALID_FROM ) );
+                
+                writer.closeElement();
+            }
         }
     }
     

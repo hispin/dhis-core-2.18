@@ -134,6 +134,11 @@ public class DefaultDataValueService
     {
         return dataValueStore.getDataValues( source, period, dataElements, optionCombos );
     }
+
+    public Collection<DataValue> getDataValues( DataElement dataElement, Period period, Collection<? extends Source> sources )
+    {
+        return dataValueStore.getDataValues( dataElement, period, sources );
+    }
     
     public Collection<DataValue> getDataValues( DataElement dataElement, Collection<Period> periods, Collection<? extends Source> sources )
     {

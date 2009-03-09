@@ -45,6 +45,7 @@ import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.jdbc.JDBCConfiguration;
 import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
@@ -57,6 +58,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.objectmapper.AggregatedDataValueRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedIndicatorValueRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedMapValueRowMapper;
+import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
 import org.hisp.dhis.system.objectmapper.ObjectMapper;
 
 /**
@@ -392,6 +394,34 @@ public class JdbcDataMartStore
     // DataValue
     // -------------------------------------------------------------------------
 
+    public Collection<DeflatedDataValue> getDeflatedDataValues( final int dataElementId, final int periodId, final Collection<Integer> sourceIds )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+            
+        final ObjectMapper<DeflatedDataValue> mapper = new ObjectMapper<DeflatedDataValue>();
+        
+        try
+        {
+            final String sql =
+                "SELECT * FROM datavalue " +
+                "WHERE dataelementid = " + dataElementId + " " +
+                "AND periodid = " + periodId + " " +
+                "AND sourceid IN ( " + getCommaDelimitedString( sourceIds ) + " )";
+            
+            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
+            
+            return mapper.getCollection( resultSet, new DeflatedDataValueRowMapper() );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get deflated data values", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+    
     public Collection<DataValue> getDataValues( final int dataElementId, final Collection<Integer> periodIds, final Collection<Integer> sourceIds )
     {
         if ( sourceIds != null && sourceIds.size() > 0 && periodIds != null && periodIds.size() > 0 )

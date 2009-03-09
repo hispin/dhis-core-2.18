@@ -37,6 +37,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -174,6 +175,8 @@ public interface DataMartStore
     // ----------------------------------------------------------------------
     // DataValue
     // ----------------------------------------------------------------------
+    
+    Collection<DeflatedDataValue> getDeflatedDataValues( final int dataElementId, final int periodId, final Collection<Integer> sourceIds );
     
     /**
      * Gets all DataValues for the given DataElement identifer, collection of Period identifers, and collection of Sources

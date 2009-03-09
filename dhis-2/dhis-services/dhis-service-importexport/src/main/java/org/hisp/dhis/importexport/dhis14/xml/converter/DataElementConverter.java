@@ -149,41 +149,43 @@ public class DataElementConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElement> elements = dataElementService.getNonCalculatedDataElements( params.getDataElements() );
-        elements.addAll( dataElementService.getCalculatedDataElements( params.getCalculatedDataElements() ) ); // Calculated elements handled together
+        Collection<DataElement> elements = dataElementService.getDataElements( params.getAllDataElements() ); // Calculated elements handled together
         
-        for ( DataElement object : elements )
+        if ( elements != null && elements.size() > 0 )
         {
-            final boolean calculated = object instanceof CalculatedDataElement;
-            final boolean saveCalculated = calculated ? ((CalculatedDataElement)object).isSaved() : false;
-            
-            writer.openElement( ELEMENT_NAME );
-            
-            writer.writeElement( FIELD_ID, String.valueOf( object.getId() ) );
-            writer.writeElement( FIELD_SORT_ORDER, String.valueOf( object.getId() ) );
-            writer.writeElement( FIELD_CODE, object.getCode() );
-            writer.writeElement( FIELD_NAME, object.getName() );
-            writer.writeElement( FIELD_SHORT_NAME, object.getShortName() );
-            writer.writeElement( FIELD_DOS, object.getShortName().replaceAll( "[^a-zA-Z0-9]", "" ) );
-            writer.writeElement( FIELD_PROMPT, object.getName() );
-            writer.writeElement( FIELD_META, String.valueOf( 0 ) );
-            writer.writeElement( FIELD_DATA_TYPE, convertTypeToDhis14( object.getType() ) );
-            writer.writeElement( FIELD_PERIOD_TYPE, String.valueOf( 1 ) );
-            writer.writeElement( FIELD_VALID_FROM, String.valueOf( VALID_FROM ) );
-            writer.writeElement( FIELD_VALID_TO, String.valueOf( VALID_TO ) );
-            writer.writeElement( FIELD_DESCRIPTION, object.getDescription() );
-            writer.writeElement( FIELD_COMMENT, "" );
-            writer.writeElement( FIELD_CALCULATED, convertBooleanToDhis14( calculated ) );
-            writer.writeElement( FIELD_SAVE_CALCULATED, convertBooleanToDhis14( saveCalculated ) );
-            writer.writeElement( FIELD_AGGREGATION_START_LEVEL, String.valueOf( AGG_START_LEVEL ) );
-            writer.writeElement( FIELD_AGGREGATION_OPERATOR, convertAggregationOperatorToDhis14( object.getAggregationOperator() ) );
-            writer.writeElement( FIELD_SELECTED, String.valueOf( 0 ) );
-            writer.writeElement( FIELD_LAST_USER, String.valueOf( 1 ) );
-            writer.writeElement( FIELD_LAST_UPDATED, String.valueOf( VALID_FROM ) );
-            
-            writer.closeElement();
-            
-            NameMappingUtil.addDataElementAggregationOperatorMapping( object.getId(), object.getAggregationOperator() );
+            for ( DataElement object : elements )
+            {
+                final boolean calculated = object instanceof CalculatedDataElement;
+                final boolean saveCalculated = calculated ? ((CalculatedDataElement)object).isSaved() : false;
+                
+                writer.openElement( ELEMENT_NAME );
+                
+                writer.writeElement( FIELD_ID, String.valueOf( object.getId() ) );
+                writer.writeElement( FIELD_SORT_ORDER, String.valueOf( object.getId() ) );
+                writer.writeElement( FIELD_CODE, object.getCode() );
+                writer.writeElement( FIELD_NAME, object.getName() );
+                writer.writeElement( FIELD_SHORT_NAME, object.getShortName() );
+                writer.writeElement( FIELD_DOS, object.getShortName().replaceAll( "[^a-zA-Z0-9]", "" ) );
+                writer.writeElement( FIELD_PROMPT, object.getName() );
+                writer.writeElement( FIELD_META, String.valueOf( 0 ) );
+                writer.writeElement( FIELD_DATA_TYPE, convertTypeToDhis14( object.getType() ) );
+                writer.writeElement( FIELD_PERIOD_TYPE, String.valueOf( 1 ) );
+                writer.writeElement( FIELD_VALID_FROM, String.valueOf( VALID_FROM ) );
+                writer.writeElement( FIELD_VALID_TO, String.valueOf( VALID_TO ) );
+                writer.writeElement( FIELD_DESCRIPTION, object.getDescription() );
+                writer.writeElement( FIELD_COMMENT, "" );
+                writer.writeElement( FIELD_CALCULATED, convertBooleanToDhis14( calculated ) );
+                writer.writeElement( FIELD_SAVE_CALCULATED, convertBooleanToDhis14( saveCalculated ) );
+                writer.writeElement( FIELD_AGGREGATION_START_LEVEL, String.valueOf( AGG_START_LEVEL ) );
+                writer.writeElement( FIELD_AGGREGATION_OPERATOR, convertAggregationOperatorToDhis14( object.getAggregationOperator() ) );
+                writer.writeElement( FIELD_SELECTED, String.valueOf( 0 ) );
+                writer.writeElement( FIELD_LAST_USER, String.valueOf( 1 ) );
+                writer.writeElement( FIELD_LAST_UPDATED, String.valueOf( VALID_FROM ) );
+                
+                writer.closeElement();
+                
+                NameMappingUtil.addDataElementAggregationOperatorMapping( object.getId(), object.getAggregationOperator() );
+            }
         }
     }
     

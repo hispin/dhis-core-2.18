@@ -80,30 +80,36 @@ public class DataElementIndicatorGroupConverter
     {
         Collection<DataElementGroup> dataElementGroups = dataElementService.getDataElementGroups( params.getDataElementGroups() );
         
-        for ( DataElementGroup group : dataElementGroups )
+        if ( dataElementGroups != null && dataElementGroups.size() > 0 )
         {
-            writer.openElement( ELEMENT_NAME );
-            
-            writer.writeElement( FIELD_ID, String.valueOf( group.getId() ) );
-            writer.writeElement( FIELD_NAME, group.getName() );
-            writer.writeElement( FIELD_LAST_USER, "1" );
-            writer.writeElement( FIELD_LAST_UPDATED, "" );
-            
-            writer.closeElement();
+            for ( DataElementGroup group : dataElementGroups )
+            {
+                writer.openElement( ELEMENT_NAME );
+                
+                writer.writeElement( FIELD_ID, String.valueOf( group.getId() ) );
+                writer.writeElement( FIELD_NAME, group.getName() );
+                writer.writeElement( FIELD_LAST_USER, "1" );
+                writer.writeElement( FIELD_LAST_UPDATED, "" );
+                
+                writer.closeElement();
+            }
         }
         
         Collection<IndicatorGroup> indicatorGroups = indicatorService.getIndicatorGroups( params.getIndicatorGroups() );
         
-        for ( IndicatorGroup group : indicatorGroups )
+        if ( indicatorGroups != null && indicatorGroups.size() > 0 )
         {
-            writer.openElement( ELEMENT_NAME );
-            
-            writer.writeElement( FIELD_ID, String.valueOf( group.getId() ) );
-            writer.writeElement( FIELD_NAME, group.getName() );
-            writer.writeElement( FIELD_LAST_USER, "1" );
-            writer.writeElement( FIELD_LAST_UPDATED, "" );
-            
-            writer.closeElement();
+            for ( IndicatorGroup group : indicatorGroups )
+            {
+                writer.openElement( ELEMENT_NAME );
+                
+                writer.writeElement( FIELD_ID, String.valueOf( group.getId() ) );
+                writer.writeElement( FIELD_NAME, group.getName() );
+                writer.writeElement( FIELD_LAST_USER, "1" );
+                writer.writeElement( FIELD_LAST_UPDATED, "" );
+                
+                writer.closeElement();
+            }
         }
     }
     

@@ -89,23 +89,26 @@ public class CalculatedDataElementAssociationConverter
     {
         Collection<DataElement> elements = dataElementService.getDataElements( params.getCalculatedDataElements() );
         
-        CalculatedDataElement calculatedElement = null;
-        
-        for ( DataElement element : elements )
+        if ( elements != null && elements.size() > 0 )
         {
-            calculatedElement = (CalculatedDataElement) element;
+            CalculatedDataElement calculatedElement = null;
             
-            Map<Operand, Double> factorMap = Dhis14ParsingUtils.getOperandFactors( calculatedElement );
-            
-            for ( Entry<Operand, Double> entry : factorMap.entrySet() )
+            for ( DataElement element : elements )
             {
-                writer.openElement( ELEMENT_NAME );
+                calculatedElement = (CalculatedDataElement) element;
                 
-                writer.writeElement( FIELD_ID, String.valueOf( calculatedElement.getId() ) );
-                writer.writeElement( FIELD_DATAELEMENT, String.valueOf( entry.getKey().getDataElementId() ) );
-                writer.writeElement( FIELD_FACTOR, String.valueOf( entry.getValue() ) );
+                Map<Operand, Double> factorMap = Dhis14ParsingUtils.getOperandFactors( calculatedElement );
                 
-                writer.closeElement();
+                for ( Entry<Operand, Double> entry : factorMap.entrySet() )
+                {
+                    writer.openElement( ELEMENT_NAME );
+                    
+                    writer.writeElement( FIELD_ID, String.valueOf( calculatedElement.getId() ) );
+                    writer.writeElement( FIELD_DATAELEMENT, String.valueOf( entry.getKey().getDataElementId() ) );
+                    writer.writeElement( FIELD_FACTOR, String.valueOf( entry.getValue() ) );
+                    
+                    writer.closeElement();
+                }
             }
         }
     }

@@ -42,7 +42,7 @@ public class AggregatedIndicatorValueRowMapper
     public AggregatedIndicatorValue mapRow( ResultSet resultSet )
         throws SQLException
     {
-        AggregatedIndicatorValue value = new AggregatedIndicatorValue();
+        final AggregatedIndicatorValue value = new AggregatedIndicatorValue();
         
         value.setIndicatorId( resultSet.getInt( 1 ) );
         value.setPeriodId( resultSet.getInt( 2 ) );

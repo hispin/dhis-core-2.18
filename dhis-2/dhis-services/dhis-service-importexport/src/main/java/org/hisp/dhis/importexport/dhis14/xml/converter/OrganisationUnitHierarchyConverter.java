@@ -104,25 +104,28 @@ public class OrganisationUnitHierarchyConverter
     {
         Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
         
-        int id = 0;
-        
-        for ( OrganisationUnit unit : units )
+        if ( units != null && units.size() > 0 )
         {
-            if ( unit.getParent() != null )
+            int id = 0;
+            
+            for ( OrganisationUnit unit : units )
             {
-                int level = organisationUnitService.getLevelOfOrganisationUnit( unit );
-                
-                writer.openElement( ELEMENT_NAME );
-                
-                writer.writeElement( FIELD_ID, String.valueOf( ++id ) );                    
-                writer.writeElement( FIELD_LEVEL, String.valueOf( level ) );
-                writer.writeElement( FIELD_STRUCTURE, String.valueOf( STRUCTURE_ID ) );
-                writer.writeElement( FIELD_CHILD, String.valueOf( unit.getId() ) );
-                writer.writeElement( FIELD_PARENT, String.valueOf( unit.getParent().getId() ) );
-                writer.writeElement( FIELD_LAST_USER, "" );
-                writer.writeElement( FIELD_LAST_UPDATED, "" );
-                
-                writer.closeElement();
+                if ( unit.getParent() != null )
+                {
+                    int level = organisationUnitService.getLevelOfOrganisationUnit( unit );
+                    
+                    writer.openElement( ELEMENT_NAME );
+                    
+                    writer.writeElement( FIELD_ID, String.valueOf( ++id ) );                    
+                    writer.writeElement( FIELD_LEVEL, String.valueOf( level ) );
+                    writer.writeElement( FIELD_STRUCTURE, String.valueOf( STRUCTURE_ID ) );
+                    writer.writeElement( FIELD_CHILD, String.valueOf( unit.getId() ) );
+                    writer.writeElement( FIELD_PARENT, String.valueOf( unit.getParent().getId() ) );
+                    writer.writeElement( FIELD_LAST_USER, "" );
+                    writer.writeElement( FIELD_LAST_UPDATED, "" );
+                    
+                    writer.closeElement();
+                }
             }
         }
     }

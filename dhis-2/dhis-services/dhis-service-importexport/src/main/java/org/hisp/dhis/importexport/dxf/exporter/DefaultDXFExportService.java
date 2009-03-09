@@ -46,7 +46,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportPipeThread;
 import org.hisp.dhis.importexport.ExportService;
@@ -93,6 +92,7 @@ import org.hisp.dhis.importexport.dxf.converter.ReportTableOrganisationUnitConve
 import org.hisp.dhis.importexport.dxf.converter.ReportTablePeriodConverter;
 import org.hisp.dhis.importexport.dxf.converter.ValidationRuleConverter;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -212,13 +212,6 @@ public class DefaultDXFExportService
         this.olapURLService = olapURLService;
     }
 
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-    
     private CompleteDataSetRegistrationService completeDataSetRegistrationService;
 
     public void setCompleteDataSetRegistrationService( CompleteDataSetRegistrationService completeDataSetRegistrationService )
@@ -231,6 +224,13 @@ public class DefaultDXFExportService
     public void setDataMartStore( DataMartStore dataMartStore )
     {
         this.dataMartStore = dataMartStore;
+    }
+    
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
     }
 
     // -------------------------------------------------------------------------
@@ -323,7 +323,7 @@ public class DefaultDXFExportService
                 completeDataSetRegistrationService, dataSetService, organisationUnitService, periodService ) );
             
             thread.registerXMLConverter( params.isAggregatedData() ? new AggregatedDataValueConverter( dataMartStore ) : 
-                new DataValueConverter( dataValueService, dataElementService, periodService, organisationUnitService ) );
+                new DataValueConverter( dataMartStore, statementManager ) );
             
             thread.start();
             

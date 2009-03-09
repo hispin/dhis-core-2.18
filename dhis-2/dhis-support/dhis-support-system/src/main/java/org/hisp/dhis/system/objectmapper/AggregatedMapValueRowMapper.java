@@ -42,7 +42,7 @@ public class AggregatedMapValueRowMapper
     public AggregatedMapValue mapRow( ResultSet resultSet )
         throws SQLException
     {
-        AggregatedMapValue value = new AggregatedMapValue();
+        final AggregatedMapValue value = new AggregatedMapValue();
         
         value.setGeoCode( resultSet.getString( 1 ) );
         value.setOrganisationUnitName( resultSet.getString( 2 ) );

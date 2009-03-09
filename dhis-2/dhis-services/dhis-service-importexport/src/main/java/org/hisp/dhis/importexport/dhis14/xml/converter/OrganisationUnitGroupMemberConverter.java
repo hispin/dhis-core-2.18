@@ -35,6 +35,7 @@ import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 
@@ -54,6 +55,8 @@ public class OrganisationUnitGroupMemberConverter
     
     private OrganisationUnitGroupService organisationUnitGroupService;
     
+    private OrganisationUnitService organisationUnitService;
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -61,9 +64,11 @@ public class OrganisationUnitGroupMemberConverter
     /**
      * Constructor for write operations.
      */
-    public OrganisationUnitGroupMemberConverter( OrganisationUnitGroupService organisationUnitGroupService )
+    public OrganisationUnitGroupMemberConverter( OrganisationUnitGroupService organisationUnitGroupService,
+        OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
+        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
@@ -74,22 +79,27 @@ public class OrganisationUnitGroupMemberConverter
     {
         Collection<OrganisationUnitGroup> groups = organisationUnitGroupService.getOrganisationUnitGroups( params.getOrganisationUnitGroups() );
         
-        for ( OrganisationUnitGroup group : groups )
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
+        
+        if ( groups != null && groups.size() > 0 && units != null && units.size() > 0 )
         {
-            if ( group.getMembers() != null )
+            for ( OrganisationUnitGroup group : groups )
             {
-                for ( OrganisationUnit unit : group.getMembers() )
+                if ( group.getMembers() != null )
                 {
-                    if ( params.getOrganisationUnits().contains( unit ) )
+                    for ( OrganisationUnit unit : group.getMembers() )
                     {
-                        writer.openElement( ELEMENT_NAME );
-                        
-                        writer.writeElement( FIELD_GROUP_ID, String.valueOf( group.getId() ) );
-                        writer.writeElement( FIELD_UNIT_ID, String.valueOf( unit.getId() ) );
-                        writer.writeElement( FIELD_LAST_USER, "");
-                        writer.writeElement( FIELD_LAST_UPDATED, "");
-                        
-                        writer.closeElement();
+                        if ( units.contains( unit ) )
+                        {
+                            writer.openElement( ELEMENT_NAME );
+                            
+                            writer.writeElement( FIELD_GROUP_ID, String.valueOf( group.getId() ) );
+                            writer.writeElement( FIELD_UNIT_ID, String.valueOf( unit.getId() ) );
+                            writer.writeElement( FIELD_LAST_USER, "");
+                            writer.writeElement( FIELD_LAST_UPDATED, "");
+                            
+                            writer.closeElement();
+                        }
                     }
                 }
             }

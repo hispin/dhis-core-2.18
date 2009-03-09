@@ -32,22 +32,22 @@ import java.util.Map;
 
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
-import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractDataValueConverter;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.DateUtils;
 
@@ -74,11 +74,9 @@ public class DataValueConverter
     // Properties
     // -------------------------------------------------------------------------
 
-    private DataElementService dataElementService;
+    private DataMartStore dataMartStore;
     
-    private PeriodService periodService;
-    
-    private OrganisationUnitService organisationUnitService;
+    private StatementManager statementManager;
     
     private Map<Object, Integer> dataElementMapping;    
     private Map<Object, Integer> periodMapping;    
@@ -92,15 +90,11 @@ public class DataValueConverter
     /**
      * Constructor for write operations.
      */
-    public DataValueConverter( DataValueService dataValueService,
-        DataElementService dataElementService,
-        PeriodService periodService,
-        OrganisationUnitService organisationUnitService )
+    public DataValueConverter( DataMartStore dataMartStore,
+        StatementManager statementManager )
     {
-        this.dataValueService = dataValueService;
-        this.dataElementService = dataElementService;
-        this.periodService = periodService;
-        this.organisationUnitService = organisationUnitService;
+        this.dataMartStore = dataMartStore;
+        this.statementManager = statementManager;
     }
     
     /**
@@ -135,38 +129,41 @@ public class DataValueConverter
     {   
         if ( params.isIncludeDataValues() )
         {
-            Collection<DataValue> values = null;
+            Collection<DeflatedDataValue> values = null;
             
-            Collection<DataElement> dataElements = dataElementService.getDataElements( params.getDataElements() );
-            Collection<Period> periods = periodService.getPeriods( params.getPeriods() );
-            Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
-                       
             if ( params.getDataElements().size() > 0 && params.getPeriods().size() > 0 && params.getOrganisationUnits().size() > 0 )
             {
+                statementManager.initialise();
+                
                 writer.openElement( COLLECTION_NAME );
                 
-                for ( final DataElement element : dataElements )
+                for ( final Integer element : params.getDataElements() )
                 {
-                    values = dataValueService.getDataValues( element, periods, units );
-                    
-                    for ( final DataValue value : values )
-                    {   
-                        writer.openElement( ELEMENT_NAME );
+                    for ( final Integer period : params.getPeriods() )
+                    {
+                        values = dataMartStore.getDeflatedDataValues( element, period, params.getOrganisationUnits() );
                         
-                        writer.writeElement( FIELD_DATAELEMENT, String.valueOf( value.getDataElement().getId() ) );
-                        writer.writeElement( FIELD_PERIOD, String.valueOf( value.getPeriod().getId() ) );
-                        writer.writeElement( FIELD_SOURCE, String.valueOf( value.getSource().getId() ) );
-                        writer.writeElement( FIELD_VALUE, value.getValue() );
-                        writer.writeElement( FIELD_STOREDBY, value.getStoredBy() );
-                        writer.writeElement( FIELD_TIMESTAMP, DateUtils.getMediumDateString( value.getTimestamp() ) );
-                        writer.writeElement( FIELD_COMMENT, value.getComment() );
-                        writer.writeElement( FIELD_CATEGORY_OPTION_COMBO, String.valueOf( value.getOptionCombo().getId() ) );
-                        
-                        writer.closeElement();
+                        for ( final DeflatedDataValue value : values )
+                        {   
+                            writer.openElement( ELEMENT_NAME );
+                            
+                            writer.writeElement( FIELD_DATAELEMENT, String.valueOf( value.getDataElementId() ) );
+                            writer.writeElement( FIELD_PERIOD, String.valueOf( value.getPeriodId() ) );
+                            writer.writeElement( FIELD_SOURCE, String.valueOf( value.getSourceId() ) );
+                            writer.writeElement( FIELD_VALUE, value.getValue() );
+                            writer.writeElement( FIELD_STOREDBY, value.getStoredBy() );
+                            writer.writeElement( FIELD_TIMESTAMP, DateUtils.getMediumDateString( value.getTimestamp() ) );
+                            writer.writeElement( FIELD_COMMENT, value.getComment() );
+                            writer.writeElement( FIELD_CATEGORY_OPTION_COMBO, String.valueOf( value.getCategoryOptionComboId() ) );
+                            
+                            writer.closeElement();
+                        }
                     }
                 }
                 
                 writer.closeElement();
+                
+                statementManager.destroy();
             }
         }
     }

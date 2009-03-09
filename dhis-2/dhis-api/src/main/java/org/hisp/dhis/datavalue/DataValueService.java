@@ -184,6 +184,18 @@ public interface DataValueService
      *         values match.
      */
     Collection<DataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements );
+
+    /**
+     * Returns all DataValues for a given DataElement, Period, and collection of 
+     * Sources.
+     * 
+     * @param dataElement the DataElements of the DataValues.
+     * @param period the Period of the DataValues.
+     * @param sources the Sources of the DataValues.
+     * @return a collection of all DataValues which match the given DataElement,
+     *         Period, and Sources.
+     */
+    Collection<DataValue> getDataValues( DataElement dataElement, Period period, Collection<? extends Source> sources );
     
     /**
      * Returns all DataValues for a given DataElement, collection of Periods, and 

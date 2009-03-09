@@ -42,7 +42,7 @@ public class AggregatedDataValueRowMapper
     public AggregatedDataValue mapRow( ResultSet resultSet )
         throws SQLException
     {
-        AggregatedDataValue value = new AggregatedDataValue();
+        final AggregatedDataValue value = new AggregatedDataValue();
         
         value.setDataElementId( resultSet.getInt( 1 ) );
         value.setCategoryOptionComboId( resultSet.getInt( 2 ) );

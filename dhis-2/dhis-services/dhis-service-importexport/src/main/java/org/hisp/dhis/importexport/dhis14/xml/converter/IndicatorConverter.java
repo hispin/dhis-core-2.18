@@ -139,34 +139,37 @@ public class IndicatorConverter
         
         Collection<Indicator> indicators = indicatorService.getIndicators( params.getIndicators() );
         
-        for ( Indicator object : indicators )
+        if ( indicators != null && indicators.size() > 0 )
         {
-            writer.openElement( ELEMENT_NAME );
-            
-            writer.writeElement( FIELD_ID, String.valueOf( object.getId() ) );
-            writer.writeElement( FIELD_SORT_ORDER, String.valueOf( object.getId() ) );
-            writer.writeElement( FIELD_NAME, object.getName() );
-            writer.writeElement( FIELD_SHORT_NAME, object.getShortName() );
-            writer.writeElement( FIELD_DOS, TextUtils.subString( object.getShortName(), 0, 8 ) );
-            writer.writeElement( FIELD_VALID_FROM, String.valueOf( VALID_FROM ) );
-            writer.writeElement( FIELD_VALID_TO, String.valueOf( VALID_TO ) );
-            writer.writeElement( FIELD_DESCRIPTION, object.getDescription() );
-            writer.writeElement( FIELD_SELECTED, String.valueOf( 0 ) );
-            writer.writeElement( FIELD_INDICATOR_TYPE, String.valueOf( object.getIndicatorType().getId() ) );
-            writer.writeElement( FIELD_PERIOD_TYPE, String.valueOf( 1 ) );
-            writer.writeElement( FIELD_ANNUALISED, object.getAnnualized() ? String.valueOf( 1 ) : String.valueOf( 0 ) );
-            writer.writeElement( FIELD_NUMERATOR, convertExpressionToDhis14( object.getNumerator(), mapping ) );
-            writer.writeElement( FIELD_NUMERATOR_AGG_LEVEL, String.valueOf( AGG_START_LEVEL ) );
-            writer.writeElement( FIELD_NUMERATOR_TIME_LAG, String.valueOf( 0 ) );
-            writer.writeElement( FIELD_NUMERATOR_DESCRIPTION, object.getNumeratorDescription() );
-            writer.writeElement( FIELD_DENOMINATOR, convertExpressionToDhis14( object.getDenominator(), mapping ) );
-            writer.writeElement( FIELD_DENOMINATOR_AGG_LEVEL, String.valueOf( AGG_START_LEVEL ) );
-            writer.writeElement( FIELD_DENOMINATOR_TIME_LAG, String.valueOf( 0 ) );
-            writer.writeElement( FIELD_DENOMINATOR_DESCRIPTION, object.getDenominatorDescription() );
-            writer.writeElement( FIELD_LAST_USER, String.valueOf( 1 ) );
-            writer.writeElement( FIELD_LAST_UPDATED, String.valueOf( VALID_FROM ) );
-            
-            writer.closeElement();
+            for ( Indicator object : indicators )
+            {
+                writer.openElement( ELEMENT_NAME );
+                
+                writer.writeElement( FIELD_ID, String.valueOf( object.getId() ) );
+                writer.writeElement( FIELD_SORT_ORDER, String.valueOf( object.getId() ) );
+                writer.writeElement( FIELD_NAME, object.getName() );
+                writer.writeElement( FIELD_SHORT_NAME, object.getShortName() );
+                writer.writeElement( FIELD_DOS, TextUtils.subString( object.getShortName(), 0, 8 ) );
+                writer.writeElement( FIELD_VALID_FROM, String.valueOf( VALID_FROM ) );
+                writer.writeElement( FIELD_VALID_TO, String.valueOf( VALID_TO ) );
+                writer.writeElement( FIELD_DESCRIPTION, object.getDescription() );
+                writer.writeElement( FIELD_SELECTED, String.valueOf( 0 ) );
+                writer.writeElement( FIELD_INDICATOR_TYPE, String.valueOf( object.getIndicatorType().getId() ) );
+                writer.writeElement( FIELD_PERIOD_TYPE, String.valueOf( 1 ) );
+                writer.writeElement( FIELD_ANNUALISED, object.getAnnualized() ? String.valueOf( 1 ) : String.valueOf( 0 ) );
+                writer.writeElement( FIELD_NUMERATOR, convertExpressionToDhis14( object.getNumerator(), mapping ) );
+                writer.writeElement( FIELD_NUMERATOR_AGG_LEVEL, String.valueOf( AGG_START_LEVEL ) );
+                writer.writeElement( FIELD_NUMERATOR_TIME_LAG, String.valueOf( 0 ) );
+                writer.writeElement( FIELD_NUMERATOR_DESCRIPTION, object.getNumeratorDescription() );
+                writer.writeElement( FIELD_DENOMINATOR, convertExpressionToDhis14( object.getDenominator(), mapping ) );
+                writer.writeElement( FIELD_DENOMINATOR_AGG_LEVEL, String.valueOf( AGG_START_LEVEL ) );
+                writer.writeElement( FIELD_DENOMINATOR_TIME_LAG, String.valueOf( 0 ) );
+                writer.writeElement( FIELD_DENOMINATOR_DESCRIPTION, object.getDenominatorDescription() );
+                writer.writeElement( FIELD_LAST_USER, String.valueOf( 1 ) );
+                writer.writeElement( FIELD_LAST_UPDATED, String.valueOf( VALID_FROM ) );
+                
+                writer.closeElement();
+            }
         }
     }
     

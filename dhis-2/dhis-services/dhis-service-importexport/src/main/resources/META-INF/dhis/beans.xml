@@ -384,12 +384,12 @@
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
     <property name="olapURLService"
       ref="org.hisp.dhis.olap.OlapURLService"/>
-    <property name="dataValueService"
-      ref="org.hisp.dhis.datavalue.DataValueService"/>
     <property name="completeDataSetRegistrationService"
       ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService"/>
     <property name="dataMartStore"
       ref="org.hisp.dhis.datamart.DataMartStore"/>
+    <property name="statementManager"
+      ref="org.hisp.dhis.jdbc.StatementManager"/>
   </bean>
   
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

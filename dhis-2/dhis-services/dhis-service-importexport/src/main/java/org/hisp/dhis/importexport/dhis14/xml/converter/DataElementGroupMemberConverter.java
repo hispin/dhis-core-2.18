@@ -72,20 +72,25 @@ public class DataElementGroupMemberConverter
     {
         Collection<DataElementGroup> groups = dataElementService.getDataElementGroups( params.getDataElementGroups() );
         
-        for ( DataElementGroup group : groups )
+        Collection<DataElement> elements = dataElementService.getDataElements( params.getAllDataElements() );
+        
+        if ( groups != null && groups.size() >  0 && elements != null && elements.size() > 0 )
         {
-            if ( group.getMembers() != null )
+            for ( DataElementGroup group : groups )
             {
-                for ( DataElement element : group.getMembers() )
+                if ( group.getMembers() != null )
                 {
-                    if ( params.getDataElements().contains( element ) )
+                    for ( DataElement element : group.getMembers() )
                     {
-                        writer.openElement( ELEMENT_NAME );
-                        
-                        writer.writeElement( FIELD_GROUP_ID, String.valueOf( group.getId() ) );
-                        writer.writeElement( FIELD_DATAELEMENT_ID, String.valueOf( element.getId() ) );
-                        
-                        writer.closeElement();
+                        if ( elements.contains( element ) )
+                        {
+                            writer.openElement( ELEMENT_NAME );
+                            
+                            writer.writeElement( FIELD_GROUP_ID, String.valueOf( group.getId() ) );
+                            writer.writeElement( FIELD_DATAELEMENT_ID, String.valueOf( element.getId() ) );
+                            
+                            writer.closeElement();
+                        }
                     }
                 }
             }

@@ -30,6 +30,7 @@ package org.hisp.dhis.datavalue.hibernate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -286,6 +287,26 @@ public class HibernateDataValueStore
         return criteria.list();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataValue> getDataValues( DataElement dataElement, Period period, Collection<? extends Source> sources )
+    {
+        Period storedPeriod = reloadPeriod( period );
+
+        if ( storedPeriod == null )
+        {
+            return new HashSet<DataValue>();
+        }
+
+        Session session = sessionManager.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DataValue.class );
+        criteria.add( Restrictions.eq( "dataElement", dataElement ) );
+        criteria.add( Restrictions.eq( "period", storedPeriod ) );
+        criteria.add( Restrictions.in( "source", sources ) );
+
+        return criteria.list();
+    }
+    
     @SuppressWarnings( "unchecked" )
     public Collection<DataValue> getDataValues( DataElement dataElement, Collection<Period> periods,
         Collection<? extends Source> sources )

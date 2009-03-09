@@ -72,20 +72,25 @@ public class IndicatorGroupMemberConverter
     {
         Collection<IndicatorGroup> indicatorGroups = indicatorService.getIndicatorGroups( params.getIndicatorGroups() );
         
-        for ( IndicatorGroup group : indicatorGroups )
+        Collection<Indicator> indicators = indicatorService.getIndicators( params.getIndicators() );
+        
+        if ( indicatorGroups != null && indicatorGroups.size() > 0 && indicators != null && indicators.size() > 0 )
         {
-            if ( group.getMembers() != null )
+            for ( IndicatorGroup group : indicatorGroups )
             {
-                for ( Indicator indicator : group.getMembers() )
+                if ( group.getMembers() != null )
                 {
-                    if ( params.getIndicators().contains( indicator ) )
+                    for ( Indicator indicator : group.getMembers() )
                     {
-                        writer.openElement( ELEMENT_NAME );
-                        
-                        writer.writeElement( FIELD_GROUP_ID, String.valueOf( group.getId() ) );
-                        writer.writeElement( FIELD_INDICATOR_ID, String.valueOf( indicator.getId() ) );
-                        
-                        writer.closeElement();
+                        if ( indicators.contains( indicator ) )
+                        {
+                            writer.openElement( ELEMENT_NAME );
+                            
+                            writer.writeElement( FIELD_GROUP_ID, String.valueOf( group.getId() ) );
+                            writer.writeElement( FIELD_INDICATOR_ID, String.valueOf( indicator.getId() ) );
+                            
+                            writer.closeElement();
+                        }
                     }
                 }
             }

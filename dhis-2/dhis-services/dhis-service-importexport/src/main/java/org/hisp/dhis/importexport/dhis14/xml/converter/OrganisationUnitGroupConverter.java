@@ -73,16 +73,19 @@ public class OrganisationUnitGroupConverter
     {
         Collection<OrganisationUnitGroup> groups = organisationUnitGroupService.getOrganisationUnitGroups( params.getOrganisationUnitGroups() );
         
-        for ( OrganisationUnitGroup group : groups )
+        if ( groups != null && groups.size() > 0 )
         {
-            writer.openElement( ELEMENT_NAME );
-            
-            writer.writeElement( FIELD_ID, String.valueOf( group.getId() ) );
-            writer.writeElement( FIELD_NAME, group.getName() );
-            writer.writeElement( FIELD_LAST_USER, "");
-            writer.writeElement( FIELD_LAST_UPDATED, "");
-            
-            writer.closeElement();
+            for ( OrganisationUnitGroup group : groups )
+            {
+                writer.openElement( ELEMENT_NAME );
+                
+                writer.writeElement( FIELD_ID, String.valueOf( group.getId() ) );
+                writer.writeElement( FIELD_NAME, group.getName() );
+                writer.writeElement( FIELD_LAST_USER, "");
+                writer.writeElement( FIELD_LAST_UPDATED, "");
+                
+                writer.closeElement();
+            }
         }
     }
     
