@@ -1,0 +1,44 @@
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.hisp.dhis</groupId>
+    <artifactId>dhis-i18n-resourceeditor</artifactId>
+    <packaging>jar</packaging>
+    <version>0.3</version>
+    <name>I18n Resource Editor</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.hisp.dhis.i18nresourceeditor.gui.I18nResourceEditorGUI</mainClass>
+                            <packageName>org.hisp.dhis.i18nresourceeditor</packageName>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
