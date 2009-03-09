@@ -57,7 +57,7 @@ public class DataElementXSDConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        if ( params.getDataElements().size() > 0 )
+        if ( params.getDataElements() != null && params.getDataElements().size() > 0 )
         {
             writer.openElement( "xsd:element", "name", "DataElement" );
             

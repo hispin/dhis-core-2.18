@@ -144,10 +144,10 @@ public class DataConverter
             
             value.setOptionCombo( categoryOptionCombo );
 
-            Period period = new Period();          
+            final Period period = new Period();          
             value.setPeriod( period );
             
-            Source source = new OrganisationUnit();
+            final Source source = new OrganisationUnit();
             value.setSource( source );
 
             reader.moveToStartElement( FIELD_VALUE );

@@ -57,7 +57,7 @@ public class IndicatorXSDConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        if ( params.getIndicators().size() > 0 )
+        if ( params.getIndicators() != null && params.getIndicators().size() > 0 )
         {
             writer.openElement( "xsd:element", "name", "Indicator" );
             
