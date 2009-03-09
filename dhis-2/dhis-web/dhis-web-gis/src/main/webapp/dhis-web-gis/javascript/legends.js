@@ -238,28 +238,49 @@ function updateLegendSetValidationCompleted(messageElement){
   		  }
 }
 
-function getIndicatorByIndicatorGroup(groupId, action){
-	var request = new Request();
- 	request.setResponseTypeXML( 'indicators' );
-    request.setCallbackSuccess( responseGetIndicatorByIndicatorGroup);
-	if(action=='add'){
-		request.send( "getIndicatorByIndicatorGroup.action?indicatorGroupId=" + groupId);
-	}else{
-		var id = document.getElementById( 'id' ).value;
-		request.send( "getIndicatorByIndicatorGroup.action?indicatorGroupId=" + groupId + "&legendSetId=" + id);
+function getIndicatorByIndicatorGroup(){
+
+	var indicatorGroupList = document.getElementById( "indicatorGroupId" );
+	var indicatorGroupId = indicatorGroupList.options[ indicatorGroupList.selectedIndex ].value;	
+	
+	if ( indicatorGroupId != null )
+	{
+		var url = "../dhis-web-commons-ajax/getIndicators.action?id=" + indicatorGroupId;
+		
+		var request = new Request();
+	    request.setResponseTypeXML( 'indicator' );
+	    request.setCallbackSuccess( responseGetIndicatorByIndicatorGroup );
+	    request.send( url );	    
 	}
 	
     
 }
-function responseGetIndicatorByIndicatorGroup(indicators){
-	var indicatorList = indicators.getElementsByTagName("indicator");
-	var indicatorId = document.getElementById("availableIndicatorList");	
-	var innerHTML="";
-	for(var i=0;i<indicatorList.length;i++){
-		var indicator = indicatorList.item(i);
-		var id = indicator.getElementsByTagName('id')[0].firstChild.nodeValue;
-		var name =  indicator.getElementsByTagName('name')[0].firstChild.nodeValue;
-		innerHTML += "<option value="+id+">"+name+"</option>";
+function responseGetIndicatorByIndicatorGroup( xmlObject ){
+
+	var indicatorList = document.getElementById( "availableIndicatorList" );
+    var indicators = xmlObject.getElementsByTagName( "indicator" );
+	
+	var selectedList = document.getElementById( "selectedIndicatorList" ).options;
+    
+	clearList( indicatorList );
+	
+    for ( var i = 0; i < indicators.length; i++ )
+    {
+		var id = indicators[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;		
+		var indicatorName = indicators[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
+		indicatorList.add(new Option(indicatorName, id), null); 
+		for(var j=0;j<selectedList.length;j++){
+			if(selectedList[j].value == id){
+				indicatorList.remove(i);
+			}
+		}
+		
+		 
 	}
-	indicatorId.innerHTML = innerHTML;
+	
+	
+	
+        
+    
 }
+

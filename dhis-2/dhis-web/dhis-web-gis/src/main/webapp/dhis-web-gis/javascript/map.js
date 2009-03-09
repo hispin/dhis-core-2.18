@@ -347,9 +347,6 @@ function showLabel(orgCode,value){
 }
 
 
-
-
-
 function addMapFile(){
 	
 	var mapFileName = document.getElementById("mapFileName").value;

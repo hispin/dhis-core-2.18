@@ -24,7 +24,7 @@
 		<tr> 			 
 	        <td>
 				<select id="indicatorGroupId" name="indicatorGroupId" style="min-width:20em"
-	              onchange="javascript:getIndicatorByIndicatorGroup( this.options[this.selectedIndex].value ,'add')">
+	              onchange="javascript:getIndicatorByIndicatorGroup()"  >
 		            <option value="ALL" selected="selected">$i18n.getString( "[ ALL ]" )</option>
 		            #foreach ( $indicatorGroup in $indicatorGroups )
 		              <option value="$indicatorGroup.id">$encoder.htmlEncode( $indicatorGroup.name )</option>
