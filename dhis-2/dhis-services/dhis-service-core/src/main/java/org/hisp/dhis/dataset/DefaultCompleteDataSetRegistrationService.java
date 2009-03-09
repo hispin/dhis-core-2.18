@@ -65,7 +65,7 @@ public class DefaultCompleteDataSetRegistrationService
     {
         return completeDataSetRegistrationStore.getCompleteDataSetRegistration( dataSet, period, source );
     }
-    
+        
     public Collection<CompleteDataSetRegistration> getAllCompleteDataSetRegistrations()
     {
         return completeDataSetRegistrationStore.getAllCompleteDataSetRegistrations();

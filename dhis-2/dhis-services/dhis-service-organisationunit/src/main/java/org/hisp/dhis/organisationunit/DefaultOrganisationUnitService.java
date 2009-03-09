@@ -122,6 +122,11 @@ public class DefaultOrganisationUnitService
     
     public Collection<OrganisationUnit> getOrganisationUnits( Collection<Integer> identifiers )
     {
+        if ( identifiers == null )
+        {
+            return getAllOrganisationUnits();
+        }
+        
         Collection<OrganisationUnit> objects = new ArrayList<OrganisationUnit>();
         
         for ( Integer id : identifiers )
@@ -418,6 +423,23 @@ public class DefaultOrganisationUnitService
     public OrganisationUnitLevel getOrganisationUnitLevel( int id )
     {
         return organisationUnitStore.getOrganisationUnitLevel( id );
+    }
+    
+    public Collection<OrganisationUnitLevel> getOrganisationUnitLevels( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getOrganisationUnitLevels();
+        }
+        
+        Collection<OrganisationUnitLevel> levels = new ArrayList<OrganisationUnitLevel>();
+        
+        for ( Integer id : identifiers )
+        {
+            levels.add( getOrganisationUnitLevel( id ) );
+        }
+        
+        return levels;
     }
     
     public void deleteOrganisationUnitLevel( OrganisationUnitLevel level )

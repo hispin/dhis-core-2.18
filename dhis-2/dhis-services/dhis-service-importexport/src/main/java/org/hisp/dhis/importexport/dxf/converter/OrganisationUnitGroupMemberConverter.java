@@ -41,6 +41,8 @@ import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 
@@ -61,6 +63,10 @@ public class OrganisationUnitGroupMemberConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private OrganisationUnitGroupService organisationUnitGroupService;
+    
+    private OrganisationUnitService organisationUnitService;
+    
     private Map<Object, Integer> organisationUnitMapping;
     
     private Map<Object, Integer> organisationUnitGroupMapping;
@@ -72,8 +78,11 @@ public class OrganisationUnitGroupMemberConverter
     /**
      * Constructor for write operations.
      */
-    public OrganisationUnitGroupMemberConverter()
+    public OrganisationUnitGroupMemberConverter( OrganisationUnitGroupService organisationUnitGroupService,
+        OrganisationUnitService organisationUnitService )
     {   
+        this.organisationUnitGroupService = organisationUnitGroupService;
+        this.organisationUnitService = organisationUnitService;
     }
     
     /**
@@ -96,9 +105,11 @@ public class OrganisationUnitGroupMemberConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<OrganisationUnitGroup> groups = params.getOrganisationUnitGroups();
+        Collection<OrganisationUnitGroup> groups = organisationUnitGroupService.getOrganisationUnitGroups( params.getOrganisationUnitGroups() );
         
-        if ( groups != null && groups.size() > 0 )
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
+        
+        if ( groups != null && groups.size() > 0 && units != null && units.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
             
@@ -108,7 +119,7 @@ public class OrganisationUnitGroupMemberConverter
                 {
                     for ( OrganisationUnit unit : group.getMembers() )
                     {
-                        if ( params.getOrganisationUnits().contains( unit ) )
+                        if ( units.contains( unit ) )
                         {
                             writer.openElement( ELEMENT_NAME );
                             

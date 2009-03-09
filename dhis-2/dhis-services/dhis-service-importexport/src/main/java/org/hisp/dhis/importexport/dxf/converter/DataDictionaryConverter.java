@@ -64,8 +64,9 @@ public class DataDictionaryConverter
     /**
      * Constructor for write operations.
      */
-    public DataDictionaryConverter()
-    {   
+    public DataDictionaryConverter( DataDictionaryService dataDictionaryService )
+    {
+        this.dataDictionaryService = dataDictionaryService;
     }
     
     /**
@@ -90,7 +91,7 @@ public class DataDictionaryConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataDictionary> dataDictionaries = params.getDataDictionaries();
+        Collection<DataDictionary> dataDictionaries = dataDictionaryService.getDataDictionaries( params.getDataDictionaries() );
         
         if ( dataDictionaries != null && dataDictionaries.size() > 0 )
         {

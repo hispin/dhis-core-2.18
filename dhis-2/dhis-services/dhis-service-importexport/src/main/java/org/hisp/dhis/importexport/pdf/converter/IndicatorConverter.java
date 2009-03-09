@@ -27,11 +27,14 @@ package org.hisp.dhis.importexport.pdf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
 import org.hisp.dhis.importexport.pdf.util.PDFPrintUtil;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
@@ -44,8 +47,11 @@ import com.lowagie.text.pdf.PdfPTable;
 public class IndicatorConverter
     extends PDFUtils implements PDFConverter 
 {
-    public IndicatorConverter()
+    private IndicatorService indicatorService;
+    
+    public IndicatorConverter( IndicatorService indicatorService )
     {   
+        this.indicatorService = indicatorService;
     }
 
     // -------------------------------------------------------------------------
@@ -58,7 +64,9 @@ public class IndicatorConverter
         
         I18n i18n = params.getI18n();
         
-        for ( Indicator indicator : params.getIndicators() )
+        Collection<Indicator> indicators = indicatorService.getIndicators( params.getIndicators() );
+        
+        for ( Indicator indicator : indicators )
         {
             PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
     

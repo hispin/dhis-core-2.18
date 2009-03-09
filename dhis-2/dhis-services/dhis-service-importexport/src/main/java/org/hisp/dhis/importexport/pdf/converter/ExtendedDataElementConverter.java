@@ -27,16 +27,12 @@ package org.hisp.dhis.importexport.pdf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfPTable;
-
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
-import org.hisp.dhis.importexport.pdf.util.PDFPrintUtil;
-import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.PDFUtils;
+
+import com.lowagie.text.Document;
 
 /**
  * @author Lars Helge Overland
@@ -45,8 +41,11 @@ import org.hisp.dhis.system.util.PDFUtils;
 public class ExtendedDataElementConverter
     extends PDFUtils implements PDFConverter 
 {
-    public ExtendedDataElementConverter()
+    private DataElementService dataElementService;
+    
+    public ExtendedDataElementConverter( DataElementService dataElementService )
     {   
+        this.dataElementService = dataElementService;
     }    
 
     // -------------------------------------------------------------------------
@@ -55,11 +54,14 @@ public class ExtendedDataElementConverter
     
     public void write( Document document, ExportParams params )
     {
+        /*
         PDFPrintUtil.printDataElementFrontPage( document, params );
         
         I18n i18n = params.getI18n();
-                
-        for ( DataElement element : params.getDataElements() )
+
+        Collection<DataElement> dataElements = dataElementService.getDataElements( params.getDataElements() );
+           
+        for ( DataElement dataElement : dataElements );
         {
             PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
             
@@ -216,5 +218,6 @@ public class ExtendedDataElementConverter
             
             addTableToDocument( document, table );
         }
+        */
     }
 }

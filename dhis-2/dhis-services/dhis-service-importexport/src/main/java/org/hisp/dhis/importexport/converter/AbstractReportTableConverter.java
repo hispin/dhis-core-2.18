@@ -28,7 +28,7 @@ package org.hisp.dhis.importexport.converter;
  */
 
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableStore;
+import org.hisp.dhis.reporttable.ReportTableService;
 
 /**
  * @author Lars Helge Overland
@@ -37,7 +37,7 @@ import org.hisp.dhis.reporttable.ReportTableStore;
 public class AbstractReportTableConverter
     extends AbstractConverter<ReportTable>
 {
-    protected ReportTableStore reportTableStore;
+    protected ReportTableService reportTableService;
 
     // -------------------------------------------------------------------------
     // Overridden methods
@@ -78,12 +78,12 @@ public class AbstractReportTableConverter
         match.getReportParams().setParamParentOrganisationUnit( object.getReportParams().isParamParentOrganisationUnit() );
         match.getReportParams().setParamOrganisationUnit( object.getReportParams().isParamOrganisationUnit() );
         
-        reportTableStore.saveReportTable( match );
+        reportTableService.saveReportTable( match );
     }
     
     protected ReportTable getMatching( ReportTable object )
     {
-        return reportTableStore.getReportTableByName( object.getName() );
+        return reportTableService.getReportTableByName( object.getName() );
     }
     
     protected boolean isIdentical( ReportTable object, ReportTable existing )

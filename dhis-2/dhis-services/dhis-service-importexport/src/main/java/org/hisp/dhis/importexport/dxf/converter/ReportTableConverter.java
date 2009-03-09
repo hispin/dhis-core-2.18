@@ -32,7 +32,6 @@ import java.util.Map;
 
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
-import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -40,10 +39,11 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractReportTableConverter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.reporttable.RelativePeriods;
 import org.hisp.dhis.reporttable.ReportParams;
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableStore;
+import org.hisp.dhis.reporttable.ReportTableService;
 
 /**
  * @author Lars Helge Overland
@@ -92,8 +92,9 @@ public class ReportTableConverter
     /**
      * Constructor for write operations.
      */
-    public ReportTableConverter()
+    public ReportTableConverter( ReportTableService reportTableService )
     {   
+        this.reportTableService = reportTableService;
     }
 
     /**
@@ -104,11 +105,11 @@ public class ReportTableConverter
      * @param importObjectService ImportObjectService
      */
     public ReportTableConverter( BatchHandler batchHandler, 
-        ReportTableStore reportTableStore,
+        ReportTableService reportTableService,
         ImportObjectService importObjectService )
     {
         this.batchHandler = batchHandler;
-        this.reportTableStore = reportTableStore;
+        this.reportTableService = reportTableService;
         this.importObjectService = importObjectService;
     }
 
@@ -118,7 +119,7 @@ public class ReportTableConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<ReportTable> reportTables = params.getReportTables();
+        Collection<ReportTable> reportTables = reportTableService.getReportTables( params.getReportTables() );
         
         if ( reportTables != null && reportTables.size() > 0 )
         {

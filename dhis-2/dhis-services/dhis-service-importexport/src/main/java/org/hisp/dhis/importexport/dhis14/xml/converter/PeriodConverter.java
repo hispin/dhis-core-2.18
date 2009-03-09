@@ -59,6 +59,8 @@ public class PeriodConverter
     private static final String FIELD_START_DATE = "ValidFrom";
     private static final String FIELD_END_DATE = "ValidTo";
 
+    private PeriodService periodService;
+    
     private Map<String, Integer> periodTypeMapping;
         
     // -------------------------------------------------------------------------
@@ -68,8 +70,9 @@ public class PeriodConverter
     /**
      * Constructor for write operations.
      */
-    public PeriodConverter()
+    public PeriodConverter( PeriodService periodService )
     {   
+        this.periodService = periodService;
     }
     
     /**
@@ -94,7 +97,7 @@ public class PeriodConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<Period> periods = params.getPeriods();
+        Collection<Period> periods = periodService.getPeriods( params.getPeriods() );
         
         for ( Period period : periods )
         {

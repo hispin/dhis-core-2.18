@@ -63,8 +63,9 @@ public class DataElementGroupConverter
     /**
      * Constructor for write operations.
      */
-    public DataElementGroupConverter()
-    {   
+    public DataElementGroupConverter( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
     }
     
     /**
@@ -89,7 +90,7 @@ public class DataElementGroupConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElementGroup> groups = params.getDataElementGroups();
+        Collection<DataElementGroup> groups = dataElementService.getDataElementGroups( params.getDataElementGroups() );
         
         if ( groups != null && groups.size() > 0 )
         {

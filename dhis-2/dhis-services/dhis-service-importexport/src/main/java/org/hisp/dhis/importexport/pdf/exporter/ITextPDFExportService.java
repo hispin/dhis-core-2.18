@@ -35,6 +35,7 @@ import java.io.PipedOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.pdf.converter.DataElementConverter;
@@ -42,6 +43,7 @@ import org.hisp.dhis.importexport.pdf.converter.ExtendedDataElementConverter;
 import org.hisp.dhis.importexport.pdf.converter.IndicatorConverter;
 import org.hisp.dhis.importexport.pdf.converter.OrganisationUnitConverter;
 import org.hisp.dhis.importexport.pdf.converter.OrganisationUnitHierarchyConverter;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 /**
@@ -51,6 +53,24 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 public class ITextPDFExportService
     implements ExportService
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
+    
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -84,11 +104,11 @@ public class ITextPDFExportService
             thread.setOutputStream( zipOut );
             thread.setExportParams( params );
             
-            thread.setDataElementConverter( new DataElementConverter() );            
-            thread.setIndicatorConverter( new IndicatorConverter() );
-            thread.setExtendedDataElementConverter( new ExtendedDataElementConverter() );
+            thread.setDataElementConverter( new DataElementConverter( dataElementService ) );            
+            thread.setIndicatorConverter( new IndicatorConverter( indicatorService ) );
+            thread.setExtendedDataElementConverter( new ExtendedDataElementConverter( dataElementService ) );
             thread.setOrganisationUnitHierarchyConverter( new OrganisationUnitHierarchyConverter( organisationUnitService ) );
-            thread.setOrganisationUnitConverter( new OrganisationUnitConverter() );
+            thread.setOrganisationUnitConverter( new OrganisationUnitConverter( organisationUnitService ) );
             
             thread.start();
             

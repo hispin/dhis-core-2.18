@@ -38,14 +38,14 @@ import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.importexport.dxf.converter.DataElementCategoryComboConverter;
+import org.hisp.dhis.importexport.converter.AbstractDataElementCategoryComboConverter;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DimensionComboConverter
-    extends DataElementCategoryComboConverter implements XMLConverter
+    extends AbstractDataElementCategoryComboConverter implements XMLConverter
 {
     // -------------------------------------------------------------------------
     // Properties

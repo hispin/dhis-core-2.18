@@ -58,6 +58,8 @@ public interface OlapURLService
     
     OlapURL getOlapURL( int id );
     
+    Collection<OlapURL> getOlapURLs( Collection<Integer> identifiers );
+    
     void deleteOlapURL( OlapURL olapURL );
     
     Collection<OlapURL> getAllOlapURLs();

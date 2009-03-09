@@ -35,6 +35,8 @@ import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.AssociationType;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
@@ -61,6 +63,10 @@ public class CategoryComboCategoryAssociationConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private DataElementCategoryComboService categoryComboService;
+    
+    private DataElementCategoryService categoryService;
+    
     private Map<Object, Integer> categoryComboMapping;
     
     private Map<Object, Integer> categoryMapping;
@@ -72,8 +78,11 @@ public class CategoryComboCategoryAssociationConverter
     /**
      * Constructor for write operations.
      */
-    public CategoryComboCategoryAssociationConverter()
-    {   
+    public CategoryComboCategoryAssociationConverter( DataElementCategoryComboService categoryComboService,
+        DataElementCategoryService categoryService )
+    {
+        this.categoryComboService = categoryComboService;
+        this.categoryService = categoryService;
     }
 
     /**
@@ -101,9 +110,11 @@ public class CategoryComboCategoryAssociationConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElementCategoryCombo> categoryCombos = params.getCategoryCombos();
+        Collection<DataElementCategoryCombo> categoryCombos = categoryComboService.getDataElementCategoryCombos( params.getCategoryCombos() );
         
-        if ( categoryCombos != null && categoryCombos.size() > 0 )
+        Collection<DataElementCategory> categories = categoryService.getDataElementCategories( params.getCategories() );
+        
+        if ( categoryCombos != null && categoryCombos.size() > 0 && categories != null && categories.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
             
@@ -113,7 +124,7 @@ public class CategoryComboCategoryAssociationConverter
                 {
                     for ( DataElementCategory category : categoryCombo.getCategories() )
                     {
-                        if ( params.getCategories().contains( category ) )
+                        if ( categories.contains( category ) )
                         {
                             writer.openElement( ELEMENT_NAME );
                             

@@ -92,6 +92,11 @@ public class DefaultIndicatorService
     
     public Collection<Indicator> getIndicators( Collection<Integer> identifiers )
     {
+        if ( identifiers == null )
+        {
+            return getAllIndicators();
+        }
+        
         Collection<Indicator> objects = new ArrayList<Indicator>();
         
         for ( Integer id : identifiers )
@@ -145,6 +150,23 @@ public class DefaultIndicatorService
         return indicatorStore.getIndicatorType( id );
     }
     
+    public Collection<IndicatorType> getIndicatorTypes( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllIndicatorTypes();
+        }
+        
+        Collection<IndicatorType> types = new ArrayList<IndicatorType>();
+        
+        for ( Integer id : identifiers )
+        {
+            types.add( getIndicatorType( id ) );
+        }
+        
+        return types;
+    }
+    
     public Collection<IndicatorType> getAllIndicatorTypes()
     {
         return indicatorStore.getAllIndicatorTypes();
@@ -166,7 +188,8 @@ public class DefaultIndicatorService
             indicatorGroup.setUuid( UUIdUtils.getUUId() );
         }
         
-        return indicatorStore.addIndicatorGroup( indicatorGroup );    }
+        return indicatorStore.addIndicatorGroup( indicatorGroup );
+    }
     
     public void updateIndicatorGroup( IndicatorGroup indicatorGroup )
     {
@@ -181,6 +204,23 @@ public class DefaultIndicatorService
     public IndicatorGroup getIndicatorGroup( int id )
     {
         return indicatorStore.getIndicatorGroup( id );
+    }
+    
+    public Collection<IndicatorGroup> getIndicatorGroups( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllIndicatorGroups();
+        }
+        
+        Collection<IndicatorGroup> groups = new ArrayList<IndicatorGroup>();
+        
+        for ( Integer id : identifiers )
+        {
+            groups.add( getIndicatorGroup( id ) );
+        }
+        
+        return groups;
     }
     
     public IndicatorGroup getIndicatorGroup( String uuid )

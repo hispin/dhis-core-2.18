@@ -63,8 +63,9 @@ public class IndicatorTypeConverter
     /**
      * Constructor for write operations.
      */
-    public IndicatorTypeConverter()
-    {   
+    public IndicatorTypeConverter( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
     }
     
     /**
@@ -89,7 +90,7 @@ public class IndicatorTypeConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<IndicatorType> indicatorTypes = params.getIndicatorTypes();
+        Collection<IndicatorType> indicatorTypes = indicatorService.getIndicatorTypes( params.getIndicatorTypes() );
         
         if ( indicatorTypes != null && indicatorTypes.size() > 0 )
         {

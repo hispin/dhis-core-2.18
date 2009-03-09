@@ -34,6 +34,7 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 
@@ -49,6 +50,8 @@ public class IndicatorGroupMemberConverter
     private static final String FIELD_GROUP_ID = "DataElementAndIndicatorGroupID";
     private static final String FIELD_INDICATOR_ID = "IndicatorID"; 
 
+    private IndicatorService indicatorService;
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -56,8 +59,9 @@ public class IndicatorGroupMemberConverter
     /**
      * Constructor for write operations.
      */    
-    public IndicatorGroupMemberConverter()
+    public IndicatorGroupMemberConverter( IndicatorService indicatorService )
     {   
+        this.indicatorService = indicatorService;
     }
 
     // -------------------------------------------------------------------------
@@ -66,7 +70,7 @@ public class IndicatorGroupMemberConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<IndicatorGroup> indicatorGroups = params.getIndicatorGroups();
+        Collection<IndicatorGroup> indicatorGroups = indicatorService.getIndicatorGroups( params.getIndicatorGroups() );
         
         for ( IndicatorGroup group : indicatorGroups )
         {

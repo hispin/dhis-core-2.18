@@ -27,6 +27,7 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
@@ -79,6 +80,23 @@ public class DefaultDataElementCategoryComboService
     public DataElementCategoryCombo getDataElementCategoryCombo( int id )
     {
         return dataElementCategoryComboStore.getDataElementCategoryCombo( id );
+    }
+    
+    public Collection<DataElementCategoryCombo> getDataElementCategoryCombos( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllDataElementCategoryCombos();
+        }
+        
+        Collection<DataElementCategoryCombo> categoryCombos = new ArrayList<DataElementCategoryCombo>();
+        
+        for ( Integer id : identifiers )
+        {
+            categoryCombos.add( getDataElementCategoryCombo( id ) );
+        }
+        
+        return categoryCombos;
     }
 
     public DataElementCategoryCombo getDataElementCategoryComboByName( String name )

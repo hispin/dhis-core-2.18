@@ -34,7 +34,9 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
+import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -42,7 +44,9 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractCompleteDataSetRegistrationConverter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.DateUtils;
 
@@ -65,6 +69,14 @@ public class CompleteDataSetRegistrationConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private CompleteDataSetRegistrationService completeDataSetRegistrationService;
+    
+    private DataSetService dataSetService;
+    
+    private OrganisationUnitService organisationUnitService;
+    
+    private PeriodService periodService;
+    
     private Map<Object, Integer> dataSetMapping;    
     private Map<Object, Integer> periodMapping;    
     private Map<Object, Integer> sourceMapping;
@@ -76,8 +88,15 @@ public class CompleteDataSetRegistrationConverter
     /**
      * Constructor for write operations.
      */
-    public CompleteDataSetRegistrationConverter()
+    public CompleteDataSetRegistrationConverter( CompleteDataSetRegistrationService completeDataSetRegistrationService,
+        DataSetService dataSetService,
+        OrganisationUnitService organisationUnitService,
+        PeriodService periodService )
     {   
+        this.completeDataSetRegistrationService = completeDataSetRegistrationService;
+        this.dataSetService = dataSetService;
+        this.organisationUnitService = organisationUnitService;
+        this.periodService = periodService;
     }
     
     /**
@@ -111,25 +130,34 @@ public class CompleteDataSetRegistrationConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<CompleteDataSetRegistration> registrations = params.getCompleteDataSetRegistrations();
-        
-        if ( registrations != null && registrations.size() > 0 )
+        if ( params.isIncludeCompleteDataSetRegistrations() )
         {
-            writer.openElement( COLLECTION_NAME );
+            Collection<CompleteDataSetRegistration> registrations = null;
             
-            for ( CompleteDataSetRegistration registration : registrations )
+            Collection<DataSet> dataSets = dataSetService.getDataSets( params.getDataSets() );
+            Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
+            Collection<Period> periods = periodService.getPeriods( params.getPeriods() );
+                    
+            if ( dataSets.size() > 0 && units.size() > 0 && periods.size() > 0 )
             {
-                writer.openElement( ELEMENT_NAME );
+                writer.openElement( COLLECTION_NAME );
                 
-                writer.writeElement( FIELD_DATASET, String.valueOf( registration.getDataSet().getId() ) );
-                writer.writeElement( FIELD_PERIOD, String.valueOf( registration.getPeriod().getId() ) );
-                writer.writeElement( FIELD_SOURCE, String.valueOf( registration.getSource().getId() ) );
-                writer.writeElement( FIELD_DATE, DateUtils.getMediumDateString( registration.getDate() ) );
+                registrations = completeDataSetRegistrationService.getCompleteDataSetRegistrations( dataSets, units, periods );
+                
+                for ( final CompleteDataSetRegistration registration : registrations )
+                {
+                    writer.openElement( ELEMENT_NAME );
+                    
+                    writer.writeElement( FIELD_DATASET, String.valueOf( registration.getDataSet().getId() ) );
+                    writer.writeElement( FIELD_PERIOD, String.valueOf( registration.getPeriod().getId() ) );
+                    writer.writeElement( FIELD_SOURCE, String.valueOf( registration.getSource().getId() ) );
+                    writer.writeElement( FIELD_DATE, DateUtils.getMediumDateString( registration.getDate() ) );
+                    
+                    writer.closeElement();
+                }
                 
                 writer.closeElement();
             }
-            
-            writer.closeElement();
         }
     }
     

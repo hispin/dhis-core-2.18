@@ -72,6 +72,13 @@ public interface DataElementCategoryService
     
     /**
      * 
+     * @param identifiers
+     * @return
+     */
+    Collection<DataElementCategory> getDataElementCategories( Collection<Integer> identifiers );
+    
+    /**
+     * 
      * @param name
      * @return
      */

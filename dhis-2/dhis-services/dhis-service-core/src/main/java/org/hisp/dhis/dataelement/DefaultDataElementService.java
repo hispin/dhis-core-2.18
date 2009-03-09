@@ -91,14 +91,14 @@ public class DefaultDataElementService
     {
         return dataElementStore.getDataElement( uuid );
     }
-
+    
     public Collection<DataElement> getAllDataElements()
     {
         return dataElementStore.getAllDataElements();
     }
     
     public Collection<CalculatedDataElement> getCalculatedDataElements()
-    {
+    {        
         Collection<CalculatedDataElement> calculatedDataElements = new ArrayList<CalculatedDataElement>();
         
         for ( DataElement dataElement : getAllDataElements() )
@@ -116,13 +116,24 @@ public class DefaultDataElementService
     {
         Collection<DataElement> dataElements = getAllDataElements();
         
-        dataElements.removeAll( getCalculatedDataElements() );
+        for ( DataElement dataElement : getAllDataElements() )
+        {
+            if ( !( dataElement instanceof CalculatedDataElement ) )
+            {
+                dataElements.add( dataElement );
+            }
+        }
         
         return dataElements;
     }
     
     public Collection<DataElement> getDataElements( Collection<Integer> identifiers )
     {
+        if ( identifiers == null )
+        {
+            return getAllDataElements();
+        }
+        
         Collection<DataElement> objects = new ArrayList<DataElement>();
         
         for ( Integer id : identifiers )
@@ -131,6 +142,33 @@ public class DefaultDataElementService
         }
         
         return objects;
+    }
+    
+    public Collection<CalculatedDataElement> getCalculatedDataElements( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getCalculatedDataElements();
+        }
+        
+        Collection<CalculatedDataElement> objects = new ArrayList<CalculatedDataElement>();
+        
+        for ( Integer id : identifiers )
+        {
+            objects.add( (CalculatedDataElement)getDataElement( id ) );
+        }
+        
+        return objects;
+    }
+    
+    public Collection<DataElement> getNonCalculatedDataElements( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getNonCalculatedDataElements();
+        }
+        
+        return getDataElements( identifiers );
     }
 
     public Collection<DataElement> getAggregateableDataElements()
@@ -303,6 +341,23 @@ public class DefaultDataElementService
     public DataElementGroup getDataElementGroup( int id )
     {
         return dataElementStore.getDataElementGroup( id );
+    }
+    
+    public Collection<DataElementGroup> getDataElementGroups( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllDataElementGroups();
+        }
+        
+        Collection<DataElementGroup> groups = new ArrayList<DataElementGroup>();
+        
+        for ( Integer id : identifiers )
+        {
+            groups.add( getDataElementGroup( id ) );
+        }
+        
+        return groups;
     }
 
     public DataElementGroup getDataElementGroup( String uuid )

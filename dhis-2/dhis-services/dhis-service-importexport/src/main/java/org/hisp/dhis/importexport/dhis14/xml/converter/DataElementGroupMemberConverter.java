@@ -31,6 +31,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
@@ -49,6 +50,8 @@ public class DataElementGroupMemberConverter
     private static final String FIELD_GROUP_ID = "DataElementAndIndicatorGroupID";
     private static final String FIELD_DATAELEMENT_ID = "DataElementID"; 
 
+    private DataElementService dataElementService;
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -56,8 +59,9 @@ public class DataElementGroupMemberConverter
     /**
      * Constructor for write operations.
      */    
-    public DataElementGroupMemberConverter()
+    public DataElementGroupMemberConverter( DataElementService dataElementService )
     {   
+        this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -66,7 +70,7 @@ public class DataElementGroupMemberConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElementGroup> groups = params.getDataElementGroups();
+        Collection<DataElementGroup> groups = dataElementService.getDataElementGroups( params.getDataElementGroups() );
         
         for ( DataElementGroup group : groups )
         {

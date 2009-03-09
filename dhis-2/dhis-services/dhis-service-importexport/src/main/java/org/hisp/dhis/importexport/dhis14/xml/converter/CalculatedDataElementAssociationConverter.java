@@ -36,6 +36,8 @@ import java.util.Map.Entry;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportParams;
@@ -55,6 +57,8 @@ public class CalculatedDataElementAssociationConverter
     private static final String FIELD_DATAELEMENT = "DataElementID";
     private static final String FIELD_FACTOR = "DataElementFactor";
     
+    private DataElementService dataElementService;
+    
     private Map<Integer, String> expressionMap;
     
     // -------------------------------------------------------------------------
@@ -64,8 +68,9 @@ public class CalculatedDataElementAssociationConverter
     /**
      * Constructor for write operations.
      */
-    public CalculatedDataElementAssociationConverter()
+    public CalculatedDataElementAssociationConverter( DataElementService dataElementService )
     {
+        this.dataElementService = dataElementService;
     }
 
     /**
@@ -82,17 +87,21 @@ public class CalculatedDataElementAssociationConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<CalculatedDataElement> elements = params.getCalculatedDataElements();
+        Collection<DataElement> elements = dataElementService.getDataElements( params.getCalculatedDataElements() );
         
-        for ( CalculatedDataElement element : elements )
+        CalculatedDataElement calculatedElement = null;
+        
+        for ( DataElement element : elements )
         {
-            Map<Operand, Double> factorMap = Dhis14ParsingUtils.getOperandFactors( element );
+            calculatedElement = (CalculatedDataElement) element;
+            
+            Map<Operand, Double> factorMap = Dhis14ParsingUtils.getOperandFactors( calculatedElement );
             
             for ( Entry<Operand, Double> entry : factorMap.entrySet() )
             {
                 writer.openElement( ELEMENT_NAME );
                 
-                writer.writeElement( FIELD_ID, String.valueOf( element.getId() ) );
+                writer.writeElement( FIELD_ID, String.valueOf( calculatedElement.getId() ) );
                 writer.writeElement( FIELD_DATAELEMENT, String.valueOf( entry.getKey().getDataElementId() ) );
                 writer.writeElement( FIELD_FACTOR, String.valueOf( entry.getValue() ) );
                 

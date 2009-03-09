@@ -32,7 +32,6 @@ import java.util.Collection;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportParams;
@@ -95,9 +94,9 @@ public class AggregatedDataValueConverter
             {
                 writer.openElement( COLLECTION_NAME );
                 
-                for ( DataElement element : params.getDataElements() )
+                for ( Integer dataElemetId : params.getDataElements() )
                 {
-                    values = dataMartStore.getAggregatedDataValues( element, periodIds, organisationUnitIds );
+                    values = dataMartStore.getAggregatedDataValues( dataElemetId, periodIds, organisationUnitIds );
                     
                     for ( AggregatedDataValue value : values )
                     {

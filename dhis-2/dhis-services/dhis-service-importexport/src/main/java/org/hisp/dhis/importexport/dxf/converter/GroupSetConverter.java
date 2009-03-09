@@ -65,8 +65,9 @@ public class GroupSetConverter
     /**
      * Constructor for write operations.
      */
-    public GroupSetConverter()
+    public GroupSetConverter( OrganisationUnitGroupService organisationUnitGroupService )
     {   
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }    
 
     /**
@@ -91,7 +92,8 @@ public class GroupSetConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<OrganisationUnitGroupSet> groupSets = params.getOrganisationUnitGroupSets();
+        Collection<OrganisationUnitGroupSet> groupSets = 
+            organisationUnitGroupService.getOrganisationUnitGroupSets( params.getOrganisationUnitGroupSets() );
         
         if ( groupSets != null && groupSets.size() > 0 )
         {

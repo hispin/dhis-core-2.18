@@ -70,8 +70,9 @@ public class OrganisationUnitRelationshipConverter
     /**
      * Constructor for write operations.
      */
-    public OrganisationUnitRelationshipConverter()
+    public OrganisationUnitRelationshipConverter(OrganisationUnitService organisationUnitService)
     {   
+        this.organisationUnitService = organisationUnitService;
     }
     
     /**
@@ -94,7 +95,7 @@ public class OrganisationUnitRelationshipConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<OrganisationUnit> units = params.getOrganisationUnits();
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
         
         if ( units != null && units.size() > 0 )
         {

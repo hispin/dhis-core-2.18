@@ -43,6 +43,7 @@ import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.reporttable.ReportTableService;
 
 /**
  * @author Lars Helge Overland
@@ -62,6 +63,8 @@ public class ReportTableOrganisationUnitConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private ReportTableService reportTableService;
+    
     private Map<Object, Integer> reportTableMapping;
     
     private Map<Object, Integer> organisationUnitMapping;
@@ -73,8 +76,9 @@ public class ReportTableOrganisationUnitConverter
     /**
      * Constructor for write operations.
      */
-    public ReportTableOrganisationUnitConverter()
+    public ReportTableOrganisationUnitConverter( ReportTableService reportTableService )
     {   
+        this.reportTableService = reportTableService;
     }
     
     /**
@@ -97,7 +101,7 @@ public class ReportTableOrganisationUnitConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<ReportTable> reportTables = params.getReportTables();
+        Collection<ReportTable> reportTables = reportTableService.getReportTables( params.getReportTables() );
         
         if ( reportTables != null && reportTables.size() > 0 )
         {

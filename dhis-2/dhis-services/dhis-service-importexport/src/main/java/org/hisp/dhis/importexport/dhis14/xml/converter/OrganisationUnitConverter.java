@@ -67,6 +67,8 @@ public class OrganisationUnitConverter
 
     private static final int VALID_FROM = 34335;
     private static final int VALID_TO = 2958465;
+
+    private OrganisationUnitService organisationUnitService;
     
     // -------------------------------------------------------------------------
     // Constructor
@@ -75,8 +77,9 @@ public class OrganisationUnitConverter
     /**
      * Constructor for write operations.
      */
-    public OrganisationUnitConverter()
+    public OrganisationUnitConverter( OrganisationUnitService organisationUnitService )
     {   
+        this.organisationUnitService = organisationUnitService;
     }
 
     /**
@@ -100,7 +103,7 @@ public class OrganisationUnitConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<OrganisationUnit> units = params.getOrganisationUnits();
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
         
         for ( OrganisationUnit unit : units )
         {

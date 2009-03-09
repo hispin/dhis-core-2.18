@@ -37,11 +37,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ExportParams;
@@ -50,7 +45,9 @@ import org.hisp.dhis.importexport.ImportExportServiceManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.util.ConversionUtils;
 
 import com.opensymphony.xwork.ActionSupport;
 
@@ -83,46 +80,11 @@ public class DataValueExportAction
         this.serviceManager = serviceManager;
     }
 
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-    
-    private DataElementCategoryOptionService categoryOptionService;
-
-    public void setCategoryOptionService( DataElementCategoryOptionService categoryOptionService )
-    {
-        this.categoryOptionService = categoryOptionService;
-    }
-
-    private DataElementCategoryComboService categoryComboService;
-
-    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
-    {
-        this.categoryComboService = categoryComboService;
-    }
-
-    private DataElementCategoryOptionComboService categoryOptionComboService;
-
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
-    {
-        this.categoryOptionComboService = categoryOptionComboService;
-    }
-
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-    
-    private CompleteDataSetRegistrationService registrationService;
-
-    public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
-    {
-        this.registrationService = registrationService;
     }
     
     private OrganisationUnitService organisationUnitService;
@@ -230,20 +192,20 @@ public class DataValueExportAction
 
         if ( selectedDataSets != null )
         {
-            params.setCategories( categoryService.getAllDataElementCategories() );
-            params.setCategoryCombos( categoryComboService.getAllDataElementCategoryCombos() );
-            params.setCategoryOptions( categoryOptionService.getAllDataElementCategoryOptions() );
-            params.setCategoryOptionCombos( categoryOptionComboService.getAllDataElementCategoryOptionCombos() );
+            params.setCategories( null );
+            params.setCategoryCombos( null );
+            params.setCategoryOptions( null );
+            params.setCategoryOptionCombos( null );
 
-            Set<DataElement> distinctDataElements = new HashSet<DataElement>();
+            Set<Integer> distinctDataElements = new HashSet<Integer>();
             
             for ( String dataSetId : selectedDataSets )
             {
                 DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
                 
-                distinctDataElements.addAll( dataSet.getDataElements() );
+                distinctDataElements.addAll( ConversionUtils.getIdentifiers( DataElement.class, dataSet.getDataElements() ) );
                 
-                params.getDataSets().add( dataSet );
+                params.getDataSets().add( Integer.parseInt( dataSetId ) );
             }
             
             params.setDataElements( distinctDataElements );
@@ -259,7 +221,8 @@ public class DataValueExportAction
         
             Date selectedEndDate = getMediumDate( endDate );
         
-            params.getPeriods().addAll( periodService.getIntersectingPeriods( selectedStartDate, selectedEndDate ) );
+            params.getPeriods().addAll( ConversionUtils.getIdentifiers( 
+                Period.class, periodService.getIntersectingPeriods( selectedStartDate, selectedEndDate ) ) );
         }
         
         // ---------------------------------------------------------------------
@@ -274,7 +237,8 @@ public class DataValueExportAction
             {
                 for ( OrganisationUnit unit : selectedUnits )
                 {
-                    params.getOrganisationUnits().addAll( organisationUnitService.getOrganisationUnitsAtLevel( dataSourceLevel, unit ) );
+                    params.getOrganisationUnits().addAll( ConversionUtils.getIdentifiers( OrganisationUnit.class,
+                        organisationUnitService.getOrganisationUnitsAtLevel( dataSourceLevel, unit ) ) );
                 }
             }
             else
@@ -283,11 +247,12 @@ public class DataValueExportAction
                 {
                     if ( excludeChildren )
                     {
-                        params.getOrganisationUnits().add( organisationUnitService.getOrganisationUnit( unit.getId() ) );
+                        params.getOrganisationUnits().add( unit.getId() );
                     }
                     else
                     {
-                        params.getOrganisationUnits().addAll( organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
+                        params.getOrganisationUnits().addAll( ConversionUtils.getIdentifiers( OrganisationUnit.class, 
+                            organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) ) );
                     }
                 }
             }
@@ -297,10 +262,8 @@ public class DataValueExportAction
         // Get CompleteDataSetRegistrations
         // ---------------------------------------------------------------------
         
-        params.setCompleteDataSetRegistrations( registrationService.
-            getCompleteDataSetRegistrations( params.getDataSets(), params.getOrganisationUnits(), params.getPeriods() ) );
-                
         params.setIncludeDataValues( true );
+        params.setIncludeCompleteDataSetRegistrations( true );
         params.setAggregatedData( aggregatedData );
 
         // ---------------------------------------------------------------------
@@ -333,7 +296,7 @@ public class DataValueExportAction
         
         if ( params.getDataSets().size() == 1 )
         {
-            fileName += FILE_SEPARATOR + fileNameEncode( params.getDataSets().iterator().next().getName() );
+            fileName += FILE_SEPARATOR + fileNameEncode( dataSetService.getDataSet( params.getDataSets().iterator().next() ).getName() );
         }
         
         fileName += FILE_EXTENSION;

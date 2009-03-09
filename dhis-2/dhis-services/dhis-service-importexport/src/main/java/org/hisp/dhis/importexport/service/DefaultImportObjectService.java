@@ -38,43 +38,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.CategoryComboCategoryAssociationBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.CompleteDataSetRegistrationBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataDictionaryBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataDictionaryDataElementBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataDictionaryIndicatorBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataElementBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryComboBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryOptionBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataElementGroupBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataElementGroupMemberBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataSetBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataSetMemberBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataSetSourceAssociationBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ExtendedDataElementBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.GroupSetBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.GroupSetMemberBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.IndicatorBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupMemberBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.IndicatorTypeBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupMemberBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableCategoryOptionComboBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableDataElementBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableDataSetBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableIndicatorBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableOrganisationUnitBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTablePeriodBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.SourceBatchHandler;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
@@ -112,6 +75,43 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.CategoryComboCategoryAssociationBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.CompleteDataSetRegistrationBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataDictionaryBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataDictionaryDataElementBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataDictionaryIndicatorBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryComboBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryOptionBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementGroupBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementGroupMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataSetBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataSetMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataSetSourceAssociationBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ExtendedDataElementBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.GroupSetBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.GroupSetMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorTypeBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ReportTableBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ReportTableCategoryOptionComboBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ReportTableDataElementBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ReportTableDataSetBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ReportTableIndicatorBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ReportTableOrganisationUnitBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ReportTablePeriodBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.SourceBatchHandler;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -122,7 +122,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableStore;
+import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
@@ -230,11 +230,11 @@ public class DefaultImportObjectService<T>
         this.expressionService = expressionService;
     }
     
-    private ReportTableStore reportTableStore;
+    private ReportTableService reportTableService;
 
-    public void setReportTableStore( ReportTableStore reportTableStore )
+    public void setReportTableService( ReportTableService reportTableService )
     {
-        this.reportTableStore = reportTableStore;
+        this.reportTableService = reportTableService;
     }
     
     private OlapURLService olapURLService;
@@ -641,7 +641,7 @@ public class DefaultImportObjectService<T>
         {
             ReportTable reportTable = (ReportTable) object;
             
-            reportTable.setName( reportTableStore.getReportTable( existingObjectId ).getName() );
+            reportTable.setName( reportTableService.getReportTable( existingObjectId ).getName() );
         }
         else if ( object.getClass().equals( OlapURL.class ) )
         {

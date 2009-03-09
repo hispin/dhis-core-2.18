@@ -45,6 +45,8 @@ public interface DataElementCategoryOptionComboService
  
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( int id );
     
+    Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos( Collection<Integer> identifiers );
+    
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( 
         DataElementCategoryOptionCombo categoryOptionCombo );
     

@@ -34,6 +34,7 @@ import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.importexport.AssociationType;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
@@ -61,6 +62,8 @@ public class DataElementGroupMemberConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private DataElementService dataElementService;
+    
     private Map<Object, Integer> dataElementMapping;
     
     private Map<Object, Integer> dataElementGroupMapping;
@@ -72,8 +75,9 @@ public class DataElementGroupMemberConverter
     /**
      * Constructor for write operations.
      */
-    public DataElementGroupMemberConverter()
-    {   
+    public DataElementGroupMemberConverter( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
     }
     
     /**
@@ -96,9 +100,11 @@ public class DataElementGroupMemberConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElementGroup> groups = params.getDataElementGroups();
+        Collection<DataElementGroup> groups = dataElementService.getDataElementGroups( params.getDataElementGroups() );
         
-        if ( groups != null && groups.size() > 0 )
+        Collection<DataElement> elements = dataElementService.getDataElements( params.getAllDataElements() );
+        
+        if ( groups != null && groups.size() > 0 && elements != null && elements.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
             
@@ -108,7 +114,7 @@ public class DataElementGroupMemberConverter
                 {                    
                     for ( DataElement element : group.getMembers() )
                     {
-                        if ( params.getDataElements().contains( element ) )
+                        if ( elements.contains( element ) )
                         {
                             writer.openElement( ELEMENT_NAME );
                             

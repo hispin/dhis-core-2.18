@@ -1,5 +1,8 @@
 package org.hisp.dhis.importexport.action.exp;
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,10 +11,6 @@ import java.util.Set;
 
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
@@ -54,34 +53,6 @@ public class DetailedMetaDataExportAction
     public void setServiceManager( ImportExportServiceManager serviceManager )
     {
         this.serviceManager = serviceManager;
-    }
-
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-    
-    private DataElementCategoryOptionService categoryOptionService;
-
-    public void setCategoryOptionService( DataElementCategoryOptionService categoryOptionService )
-    {
-        this.categoryOptionService = categoryOptionService;
-    }
-
-    private DataElementCategoryComboService categoryComboService;
-
-    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
-    {
-        this.categoryComboService = categoryComboService;
-    }
-
-    private DataElementCategoryOptionComboService categoryOptionComboService;
-
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
-    {
-        this.categoryOptionComboService = categoryOptionComboService;
     }
 
     private DataElementService dataElementService;
@@ -174,42 +145,41 @@ public class DetailedMetaDataExportAction
         
         ExportParams params = new ExportParams();
 
-        params.setCategories( categoryService.getAllDataElementCategories() );
-        params.setCategoryCombos( categoryComboService.getAllDataElementCategoryCombos() );
-        params.setCategoryOptions( categoryOptionService.getAllDataElementCategoryOptions() );
-        params.setCategoryOptionCombos( categoryOptionComboService.getAllDataElementCategoryOptionCombos() );
+        params.setCategories( null );
+        params.setCategoryCombos( null );
+        params.setCategoryOptions( null );
+        params.setCategoryOptionCombos( null );
         
-        Set<DataElement> dataElements = new HashSet<DataElement>();
+        Set<Integer> dataElements = new HashSet<Integer>();
         
         if ( selectedIndicators.size() > 0 )
         {
-            params.setIndicatorTypes( indicatorService.getAllIndicatorTypes() );
+            params.setIndicatorTypes( null );
         }
         
-        for ( String id : selectedDataElements )
-        {
-            dataElements.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
-        }
+        dataElements.addAll( getIntegerCollection( selectedDataElements ) );
+        
+        params.setIndicators( getIntegerCollection( selectedIndicators ) );
         
         for ( String id : selectedIndicators )
         {
             Indicator indicator = indicatorService.getIndicator( Integer.parseInt( id ) );
 
-            dataElements.addAll( expressionService.getDataElementsInExpression( indicator.getNumerator() ) );
-            dataElements.addAll( expressionService.getDataElementsInExpression( indicator.getDenominator() ) );
-                        
-            params.getIndicators().add( indicator );
+            dataElements.addAll( getIdentifiers( DataElement.class, expressionService.getDataElementsInExpression( indicator.getNumerator() ) ) );
+            dataElements.addAll( getIdentifiers( DataElement.class, expressionService.getDataElementsInExpression( indicator.getDenominator() ) ) );
         }
 
-        for ( DataElement element : dataElements )
+        for ( Integer id : dataElements )
         {
+            final DataElement element = dataElementService.getDataElement( id );
+            
             if ( element instanceof CalculatedDataElement )
             {
-                params.getCalculatedDataElements().add( (CalculatedDataElement)element );
+                params.getCalculatedDataElements().add( element.getId() );
             }
             else
             {
-                params.getDataElements().add( element );
+                params.getDataElements().add( element.getId() );
             }
         }
         

@@ -64,6 +64,8 @@ public class DataElementCategoryOptionComboConverter
     private static final String SUB_COLLECTION_NAME = "categoryOptions";
     private static final String SUB_COLLECTION_ELEMENT_NAME = "categoryOption";
     
+    private DataElementCategoryOptionComboService categoryOptionComboService;
+    
     private DataElementCategoryOptionService categoryOptionService;
     
     private DataElementCategoryComboService categoryComboService;
@@ -78,8 +80,9 @@ public class DataElementCategoryOptionComboConverter
     /**
      * Constructor for write operations.
      */
-    public DataElementCategoryOptionComboConverter()
-    {   
+    public DataElementCategoryOptionComboConverter( DataElementCategoryOptionComboService categoryOptionComboService )
+    {
+        this.categoryOptionComboService = categoryOptionComboService;
     }
     
     /**
@@ -109,7 +112,8 @@ public class DataElementCategoryOptionComboConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElementCategoryOptionCombo> categoryOptionCombos = params.getCategoryOptionCombos();
+        Collection<DataElementCategoryOptionCombo> categoryOptionCombos = 
+            categoryOptionComboService.getDataElementCategoryOptionCombos( params.getCategoryOptionCombos() );
         
         if ( categoryOptionCombos != null && categoryOptionCombos.size() > 0 )
         {

@@ -144,7 +144,7 @@ public class JdbcDataMartStore
         }
     }
     
-    public Collection<AggregatedDataValue> getAggregatedDataValues( final DataElement element, 
+    public Collection<AggregatedDataValue> getAggregatedDataValues( final int dataElementId, 
         final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds )
     {
         final StatementHolder holder = statementManager.getHolder();
@@ -156,7 +156,7 @@ public class JdbcDataMartStore
             final String sql = 
                 "SELECT * " +
                 "FROM aggregateddatavalue " +
-                "WHERE dataelementid = " + element.getId() + " " +
+                "WHERE dataelementid = " + dataElementId + " " +
                 "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
                 "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
             

@@ -41,6 +41,7 @@ import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 
@@ -61,6 +62,8 @@ public class IndicatorGroupMemberConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private IndicatorService indicatorService;
+    
     private Map<Object, Integer> indicatorMapping;
     
     private Map<Object, Integer> indicatorGroupMapping;
@@ -72,8 +75,9 @@ public class IndicatorGroupMemberConverter
     /**
      * Constructor for write operations.
      */
-    public IndicatorGroupMemberConverter()
-    {   
+    public IndicatorGroupMemberConverter( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
     }
     
     /**
@@ -96,9 +100,11 @@ public class IndicatorGroupMemberConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<IndicatorGroup> groups = params.getIndicatorGroups();
+        Collection<IndicatorGroup> groups = indicatorService.getIndicatorGroups( params.getIndicatorGroups() );
         
-        if ( groups != null && groups.size() > 0 )
+        Collection<Indicator> indicators = indicatorService.getIndicators( params.getIndicators() );
+        
+        if ( groups != null && groups.size() > 0 && indicators != null && indicators.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
             
@@ -106,7 +112,7 @@ public class IndicatorGroupMemberConverter
             {
                 for ( Indicator indicator : group.getMembers() )
                 {
-                    if ( params.getIndicators().contains( indicator ) )
+                    if ( indicators.contains( indicator ) )
                     {
                         writer.openElement( ELEMENT_NAME );
                     

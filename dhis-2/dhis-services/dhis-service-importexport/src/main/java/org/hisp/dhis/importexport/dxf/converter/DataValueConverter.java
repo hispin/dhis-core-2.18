@@ -35,6 +35,7 @@ import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.ExportParams;
@@ -44,7 +45,9 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractDataValueConverter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.DateUtils;
 
@@ -71,6 +74,12 @@ public class DataValueConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private DataElementService dataElementService;
+    
+    private PeriodService periodService;
+    
+    private OrganisationUnitService organisationUnitService;
+    
     private Map<Object, Integer> dataElementMapping;    
     private Map<Object, Integer> periodMapping;    
     private Map<Object, Integer> sourceMapping;
@@ -83,9 +92,15 @@ public class DataValueConverter
     /**
      * Constructor for write operations.
      */
-    public DataValueConverter( DataValueService dataValueService )
+    public DataValueConverter( DataValueService dataValueService,
+        DataElementService dataElementService,
+        PeriodService periodService,
+        OrganisationUnitService organisationUnitService )
     {
-        this.dataValueService = dataValueService;    
+        this.dataValueService = dataValueService;
+        this.dataElementService = dataElementService;
+        this.periodService = periodService;
+        this.organisationUnitService = organisationUnitService;
     }
     
     /**
@@ -117,20 +132,24 @@ public class DataValueConverter
     // -------------------------------------------------------------------------
 
     public void write( XMLWriter writer, ExportParams params )
-    {        
-        Collection<DataValue> values = null;
-        
+    {   
         if ( params.isIncludeDataValues() )
-        {        
+        {
+            Collection<DataValue> values = null;
+            
+            Collection<DataElement> dataElements = dataElementService.getDataElements( params.getDataElements() );
+            Collection<Period> periods = periodService.getPeriods( params.getPeriods() );
+            Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
+                       
             if ( params.getDataElements().size() > 0 && params.getPeriods().size() > 0 && params.getOrganisationUnits().size() > 0 )
             {
                 writer.openElement( COLLECTION_NAME );
                 
-                for ( DataElement element : params.getDataElements() )
+                for ( final DataElement element : dataElements )
                 {
-                    values = dataValueService.getDataValues( element, params.getPeriods(), params.getOrganisationUnits() );
+                    values = dataValueService.getDataValues( element, periods, units );
                     
-                    for ( DataValue value : values )
+                    for ( final DataValue value : values )
                     {   
                         writer.openElement( ELEMENT_NAME );
                         

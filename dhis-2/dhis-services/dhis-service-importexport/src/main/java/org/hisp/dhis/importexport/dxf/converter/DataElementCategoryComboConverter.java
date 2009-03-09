@@ -55,6 +55,8 @@ public class DataElementCategoryComboConverter
     private static final String FIELD_ID = "id";
     private static final String FIELD_NAME = "name";
 
+    private DataElementCategoryComboService categoryComboService;
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -62,8 +64,9 @@ public class DataElementCategoryComboConverter
     /**
      * Constructor for write operations.
      */
-    public DataElementCategoryComboConverter()
+    public DataElementCategoryComboConverter( DataElementCategoryComboService categoryComboService )
     {
+        this.categoryComboService = categoryComboService;
     }
     
     /**
@@ -89,7 +92,7 @@ public class DataElementCategoryComboConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElementCategoryCombo> categoryCombos = params.getCategoryCombos();
+        Collection<DataElementCategoryCombo> categoryCombos = categoryComboService.getDataElementCategoryCombos( params.getCategoryCombos() );
         
         if ( categoryCombos != null && categoryCombos.size() > 0)
         {

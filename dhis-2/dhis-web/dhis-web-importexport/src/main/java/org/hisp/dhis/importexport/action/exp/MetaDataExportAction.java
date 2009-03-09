@@ -28,17 +28,7 @@ package org.hisp.dhis.importexport.action.exp;
  */
 
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
-import org.hisp.dhis.datadictionary.DataDictionaryService;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
@@ -46,15 +36,7 @@ import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.ImportDataValueService;
 import org.hisp.dhis.importexport.ImportExportServiceManager;
 import org.hisp.dhis.importexport.ImportObjectService;
-import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.options.datadictionary.DataDictionaryModeManager;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableStore;
-import org.hisp.dhis.validation.ValidationRuleService;
 
 import com.opensymphony.xwork.ActionSupport;
 
@@ -71,6 +53,27 @@ public class MetaDataExportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private ImportExportServiceManager serviceManager;
+
+    public void setServiceManager( ImportExportServiceManager serviceManager )
+    {
+        this.serviceManager = serviceManager;
+    }
+
+    private ImportObjectService importObjectService;
+
+    public void setImportObjectService( ImportObjectService importObjectService )
+    {
+        this.importObjectService = importObjectService;
+    }
+
+    private ImportDataValueService importDataValueService;
+
+    public void setImportDataValueService( ImportDataValueService importDataValueService )
+    {
+        this.importDataValueService = importDataValueService;
+    }
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -83,118 +86,6 @@ public class MetaDataExportAction
     public void setFormat( I18nFormat format )
     {
         this.format = format;
-    }
-        
-    private ImportExportServiceManager serviceManager;
-
-    public void setServiceManager( ImportExportServiceManager serviceManager )
-    {
-        this.serviceManager = serviceManager;
-    }
-
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-    
-    private DataElementCategoryOptionService categoryOptionService;
-
-    public void setCategoryOptionService( DataElementCategoryOptionService categoryOptionService )
-    {
-        this.categoryOptionService = categoryOptionService;
-    }
-
-    private DataElementCategoryComboService categoryComboService;
-
-    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
-    {
-        this.categoryComboService = categoryComboService;
-    }
-
-    private DataElementCategoryOptionComboService categoryOptionComboService;
-
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
-    {
-        this.categoryOptionComboService = categoryOptionComboService;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-    
-    private DataDictionaryService dataDictionaryService;
-
-    public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
-    {
-        this.dataDictionaryService = dataDictionaryService;
-    }
-    
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-    
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-    
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
-    
-    private ValidationRuleService validationRuleService;
-
-    public void setValidationRuleService( ValidationRuleService validationRuleService )
-    {
-        this.validationRuleService = validationRuleService;
-    }
-    
-    private ReportTableStore reportTableStore;
-
-    public void setReportTableStore( ReportTableStore reportTableStore )
-    {
-        this.reportTableStore = reportTableStore;
-    }
-    
-    private OlapURLService olapURLService;
-
-    public void setOlapURLService( OlapURLService olapURLService )
-    {
-        this.olapURLService = olapURLService;
-    }
-
-    private ImportDataValueService importDataValueService;
-
-    public void setImportDataValueService( ImportDataValueService importDataValueService )
-    {
-        this.importDataValueService = importDataValueService;
-    }
-
-    private ImportObjectService importObjectService;
-
-    public void setImportObjectService( ImportObjectService importObjectService )
-    {
-        this.importObjectService = importObjectService;
     }
     
     // -------------------------------------------------------------------------
@@ -345,76 +236,76 @@ public class MetaDataExportAction
         
         if ( dataElements || dataElementGroups || indicators || dataSets || validationRules || reportTables )
         {
-            params.setCategories( categoryService.getAllDataElementCategories() );
-            params.setCategoryCombos( categoryComboService.getAllDataElementCategoryCombos() );
-            params.setCategoryOptions( categoryOptionService.getAllDataElementCategoryOptions() );
-            params.setCategoryOptionCombos( categoryOptionComboService.getAllDataElementCategoryOptionCombos() );
-            params.setDataElements( dataElementService.getNonCalculatedDataElements() );
-            params.setCalculatedDataElements( dataElementService.getCalculatedDataElements() );
+            params.setCategories( null );
+            params.setCategoryCombos( null );
+            params.setCategoryOptions( null );
+            params.setCategoryOptionCombos( null );
+            params.setDataElements( null );
+            params.setCalculatedDataElements( null );
         }
         
         if ( dataElementGroups )
         {
-            params.setDataElementGroups( dataElementService.getAllDataElementGroups() );
+            params.setDataElementGroups( null );
         }
         
         if ( indicators || indicatorGroups || reportTables )
         {
-            params.setIndicators( indicatorService.getAllIndicators() );
+            params.setIndicators( null );
             
-            params.setIndicatorTypes( indicatorService.getAllIndicatorTypes() );
+            params.setIndicatorTypes( null );
         }
         
         if ( indicatorGroups )
         {
-            params.setIndicatorGroups( indicatorService.getAllIndicatorGroups() );
+            params.setIndicatorGroups( null );
         }
 
         if ( dataDictionaries )
         {
-            params.setDataDictionaries( dataDictionaryService.getAllDataDictionaries() );
+            params.setDataDictionaries( null );
         }
         
         if ( dataSets || reportTables )
         {
-            params.setDataSets( dataSetService.getAllDataSets() );            
+            params.setDataSets( null );            
         }
         
         if ( organisationUnits || organisationUnitGroups || reportTables )
         {
-            params.setOrganisationUnits( organisationUnitService.getAllOrganisationUnits() );
+            params.setOrganisationUnits( null );
         }
         
         if ( organisationUnitGroups || organisationUnitGroupSets )
         {
-            params.setOrganisationUnitGroups( organisationUnitGroupService.getAllOrganisationUnitGroups() );            
+            params.setOrganisationUnitGroups( null );            
         }
         
         if ( organisationUnitGroupSets )
         {
-            params.setOrganisationUnitGroupSets( organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
+            params.setOrganisationUnitGroupSets( null );
         }
         
         if ( organisationUnitLevels )
         {
-            params.setOrganisationUnitLevels( organisationUnitService.getOrganisationUnitLevels() );
+            params.setOrganisationUnitLevels( null );
         }
         
         if ( validationRules )
         {
-            params.setValidationRules( validationRuleService.getAllValidationRules() );
+            params.setValidationRules( null );
         }
         
         if ( reportTables )
         {            
-            params.setReportTables( reportTableStore.getAllReportTables() );
+            params.setReportTables( null );
             
-            params.setPeriods( getPeriodsInReportTables( params.getReportTables() ) );
+            params.setPeriods( null ); //TODO Include only relevant periods
         }
         
         if ( olapUrls )
         {
-            params.setOlapUrls( olapURLService.getAllOlapURLs() );
+            params.setOlapUrls( null );
         }
         
         params.setIncludeDataValues( false );
@@ -429,21 +320,5 @@ public class MetaDataExportAction
         fileName = FILENAME;
         
         return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Collection<Period> getPeriodsInReportTables( Collection<ReportTable> reportTables )
-    {
-        Set<Period> distinctPeriods = new HashSet<Period>();
-        
-        for ( ReportTable reportTable : reportTables )
-        {
-            distinctPeriods.addAll( reportTable.getPeriods() );
-        }
-        
-        return distinctPeriods;
     }
 }

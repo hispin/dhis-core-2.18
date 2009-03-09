@@ -31,29 +31,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.hisp.dhis.datadictionary.DataDictionary;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategory;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataset.CompleteDataSetRegistration;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.olap.OlapURL;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.validation.ValidationRule;
 
 /**
  * @author Lars Helge Overland
@@ -63,51 +42,53 @@ public class ExportParams
 {
     private boolean includeDataValues;
     
+    private boolean includeCompleteDataSetRegistrations;
+    
     private boolean extendedMode;
     
     private boolean aggregatedData;
     
-    private Collection<DataElementCategory> categories = new ArrayList<DataElementCategory>();
+    private Collection<Integer> categories = new ArrayList<Integer>();
     
-    private Collection<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
+    private boolean allCategories;
     
-    private Collection<DataElementCategoryCombo> categoryCombos = new ArrayList<DataElementCategoryCombo>();
+    private Collection<Integer> categoryOptions = new ArrayList<Integer>();
+    
+    private Collection<Integer> categoryCombos = new ArrayList<Integer>();
 
-    private Collection<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+    private Collection<Integer> categoryOptionCombos = new ArrayList<Integer>();
 
-    private Collection<DataElement> dataElements = new ArrayList<DataElement>();
+    private Collection<Integer> dataElements = new ArrayList<Integer>();
     
-    private Collection<CalculatedDataElement> calculatedDataElements = new ArrayList<CalculatedDataElement>();
+    private Collection<Integer> calculatedDataElements = new ArrayList<Integer>();
     
-    private Collection<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
+    private Collection<Integer> dataElementGroups = new ArrayList<Integer>();
     
-    private Collection<Indicator> indicators = new ArrayList<Indicator>();
+    private Collection<Integer> indicators = new ArrayList<Integer>();
     
-    private Collection<IndicatorGroup> indicatorGroups = new ArrayList<IndicatorGroup>();
+    private Collection<Integer> indicatorGroups = new ArrayList<Integer>();
     
-    private Collection<IndicatorType> indicatorTypes = new ArrayList<IndicatorType>();
+    private Collection<Integer> indicatorTypes = new ArrayList<Integer>();
     
-    private Collection<DataDictionary> dataDictionaries = new ArrayList<DataDictionary>();
+    private Collection<Integer> dataDictionaries = new ArrayList<Integer>();
     
-    private Collection<DataSet> dataSets = new ArrayList<DataSet>();
+    private Collection<Integer> dataSets = new ArrayList<Integer>();
     
-    private Collection<CompleteDataSetRegistration> completeDataSetRegistrations = new ArrayList<CompleteDataSetRegistration>();
+    private Collection<Integer> periods = new ArrayList<Integer>();
     
-    private Collection<Period> periods = new ArrayList<Period>();
+    private Collection<Integer> organisationUnits = new ArrayList<Integer>();
     
-    private Collection<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+    private Collection<Integer> organisationUnitGroups = new ArrayList<Integer>();
     
-    private Collection<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
+    private Collection<Integer> organisationUnitGroupSets = new ArrayList<Integer>();
     
-    private Collection<OrganisationUnitGroupSet> organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>();
+    private Collection<Integer> organisationUnitLevels = new HashSet<Integer>();
     
-    private Collection<OrganisationUnitLevel> organisationUnitLevels = new HashSet<OrganisationUnitLevel>();
+    private Collection<Integer> validationRules = new ArrayList<Integer>();
     
-    private Collection<ValidationRule> validationRules = new ArrayList<ValidationRule>();
+    private Collection<Integer> reportTables = new ArrayList<Integer>();
     
-    private Collection<ReportTable> reportTables = new ArrayList<ReportTable>();
-    
-    private Collection<OlapURL> olapUrls = new ArrayList<OlapURL>();
+    private Collection<Integer> olapUrls = new ArrayList<Integer>();
     
     private I18n i18n;
     
@@ -125,6 +106,35 @@ public class ExportParams
     // Getters & setters
     // -------------------------------------------------------------------------
 
+    public Collection<Integer> getAllDataElements()
+    {
+        if ( dataElements == null && calculatedDataElements == null )
+        {
+            return null;
+        }
+        else if ( dataElements == null && calculatedDataElements != null )
+        {
+            return calculatedDataElements;
+        }
+        else if ( dataElements != null && calculatedDataElements == null )
+        {
+            return dataElements;
+        }
+        else
+        {
+            final Collection<Integer> elements = getDataElements();
+            
+            elements.addAll( getCalculatedDataElements() );
+            
+            return elements;
+        }
+        
+    }
+    
+    // -------------------------------------------------------------------------
+    // Getters & setters
+    // -------------------------------------------------------------------------
+
     public boolean isIncludeDataValues()
     {
         return includeDataValues;
@@ -135,6 +145,16 @@ public class ExportParams
         this.includeDataValues = includeDataValues;
     }
 
+    public boolean isIncludeCompleteDataSetRegistrations()
+    {
+        return includeCompleteDataSetRegistrations;
+    }
+
+    public void setIncludeCompleteDataSetRegistrations( boolean includeCompleteDataSetRegistrations )
+    {
+        this.includeCompleteDataSetRegistrations = includeCompleteDataSetRegistrations;
+    }
+    
     public boolean isExtendedMode()
     {
         return extendedMode;
@@ -155,216 +175,6 @@ public class ExportParams
         this.aggregatedData = aggregatedData;
     }
 
-    public Collection<DataElementCategory> getCategories()
-    {
-        return categories;
-    }
-
-    public void setCategories( Collection<DataElementCategory> categories )
-    {
-        this.categories = categories;
-    }
-
-    public Collection<DataElementCategoryOption> getCategoryOptions()
-    {
-        return categoryOptions;
-    }
-
-    public void setCategoryOptions( Collection<DataElementCategoryOption> categoryOptions )
-    {
-        this.categoryOptions = categoryOptions;
-    }
-
-    public Collection<DataElementCategoryCombo> getCategoryCombos()
-    {
-        return categoryCombos;
-    }
-
-    public void setCategoryCombos( Collection<DataElementCategoryCombo> categoryCombos )
-    {
-        this.categoryCombos = categoryCombos;
-    }
-
-    public Collection<DataElementCategoryOptionCombo> getCategoryOptionCombos()
-    {
-        return categoryOptionCombos;
-    }
-
-    public void setCategoryOptionCombos( Collection<DataElementCategoryOptionCombo> categoryOptionCombos )
-    {
-        this.categoryOptionCombos = categoryOptionCombos;
-    }
-
-    public Collection<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
-    public void setDataElements( Collection<DataElement> dataElements )
-    {
-        this.dataElements = dataElements;
-    }
-
-    public Collection<CalculatedDataElement> getCalculatedDataElements()
-    {
-        return calculatedDataElements;
-    }
-
-    public void setCalculatedDataElements( Collection<CalculatedDataElement> calculatedDataElements )
-    {
-        this.calculatedDataElements = calculatedDataElements;
-    }
-    
-    public Collection<DataElementGroup> getDataElementGroups()
-    {
-        return dataElementGroups;
-    }
-
-    public void setDataElementGroups( Collection<DataElementGroup> dataElementGroups )
-    {
-        this.dataElementGroups = dataElementGroups;
-    }
-
-    public Collection<Indicator> getIndicators()
-    {
-        return indicators;
-    }
-
-    public void setIndicators( Collection<Indicator> indicators )
-    {
-        this.indicators = indicators;
-    }
-
-    public Collection<IndicatorGroup> getIndicatorGroups()
-    {
-        return indicatorGroups;
-    }
-
-    public void setIndicatorGroups( Collection<IndicatorGroup> indicatorGroups )
-    {
-        this.indicatorGroups = indicatorGroups;
-    }
-
-    public Collection<IndicatorType> getIndicatorTypes()
-    {
-        return indicatorTypes;
-    }
-
-    public void setIndicatorTypes( Collection<IndicatorType> indicatorTypes )
-    {
-        this.indicatorTypes = indicatorTypes;
-    }
-
-    public Collection<DataDictionary> getDataDictionaries()
-    {
-        return dataDictionaries;
-    }
-
-    public void setDataDictionaries( Collection<DataDictionary> dataDictionaries )
-    {
-        this.dataDictionaries = dataDictionaries;
-    }
-
-    public Collection<DataSet> getDataSets()
-    {
-        return dataSets;
-    }
-
-    public void setDataSets( Collection<DataSet> dataSets )
-    {
-        this.dataSets = dataSets;
-    }
-
-    public Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations()
-    {
-        return completeDataSetRegistrations;
-    }
-
-    public void setCompleteDataSetRegistrations( Collection<CompleteDataSetRegistration> completeDataSetRegistrations )
-    {
-        this.completeDataSetRegistrations = completeDataSetRegistrations;
-    }
-
-    public Collection<Period> getPeriods()
-    {
-        return periods;
-    }
-
-    public void setPeriods( Collection<Period> periods )
-    {
-        this.periods = periods;
-    }
-    
-    public Collection<OrganisationUnit> getOrganisationUnits()
-    {
-        return organisationUnits;
-    }
-
-    public void setOrganisationUnits( Collection<OrganisationUnit> organisationUnits )
-    {
-        this.organisationUnits = organisationUnits;
-    }
-
-    public Collection<OrganisationUnitGroup> getOrganisationUnitGroups()
-    {
-        return organisationUnitGroups;
-    }
-
-    public void setOrganisationUnitGroups( Collection<OrganisationUnitGroup> organisationUnitGroups )
-    {
-        this.organisationUnitGroups = organisationUnitGroups;
-    }
-
-    public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSets()
-    {
-        return organisationUnitGroupSets;
-    }
-
-    public void setOrganisationUnitGroupSets( Collection<OrganisationUnitGroupSet> organisationUnitGroupSets )
-    {
-        this.organisationUnitGroupSets = organisationUnitGroupSets;
-    }
-
-    public Collection<OrganisationUnitLevel> getOrganisationUnitLevels()
-    {
-        return organisationUnitLevels;
-    }
-
-    public void setOrganisationUnitLevels( Collection<OrganisationUnitLevel> organisationUnitLevels )
-    {
-        this.organisationUnitLevels = organisationUnitLevels;
-    }
-    
-    public Collection<ValidationRule> getValidationRules()
-    {
-        return validationRules;
-    }
-
-    public void setValidationRules( Collection<ValidationRule> validationRules )
-    {
-        this.validationRules = validationRules;
-    }
-
-    public Collection<ReportTable> getReportTables()
-    {
-        return reportTables;
-    }
-
-    public void setReportTables( Collection<ReportTable> reportTables )
-    {
-        this.reportTables = reportTables;
-    }
-
-    public Collection<OlapURL> getOlapUrls()
-    {
-        return olapUrls;
-    }
-
-    public void setOlapUrls( Collection<OlapURL> olapUrls )
-    {
-        this.olapUrls = olapUrls;
-    }
-
     public I18n getI18n()
     {
         return i18n;
@@ -383,5 +193,215 @@ public class ExportParams
     public void setFormat( I18nFormat format )
     {
         this.format = format;
+    }
+
+    public Collection<Integer> getCategories()
+    {
+        return categories;
+    }
+
+    public void setCategories( Collection<Integer> categories )
+    {
+        this.categories = categories;
+    }
+
+    public Collection<Integer> getCategoryOptions()
+    {
+        return categoryOptions;
+    }
+
+    public void setCategoryOptions( Collection<Integer> categoryOptions )
+    {
+        this.categoryOptions = categoryOptions;
+    }
+
+    public Collection<Integer> getCategoryCombos()
+    {
+        return categoryCombos;
+    }
+
+    public void setCategoryCombos( Collection<Integer> categoryCombos )
+    {
+        this.categoryCombos = categoryCombos;
+    }
+
+    public Collection<Integer> getCategoryOptionCombos()
+    {
+        return categoryOptionCombos;
+    }
+
+    public void setCategoryOptionCombos( Collection<Integer> categoryOptionCombos )
+    {
+        this.categoryOptionCombos = categoryOptionCombos;
+    }
+
+    public Collection<Integer> getDataElements()
+    {
+        return dataElements;
+    }
+
+    public void setDataElements( Collection<Integer> dataElements )
+    {
+        this.dataElements = dataElements;
+    }
+
+    public Collection<Integer> getCalculatedDataElements()
+    {
+        return calculatedDataElements;
+    }
+
+    public void setCalculatedDataElements( Collection<Integer> calculatedDataElements )
+    {
+        this.calculatedDataElements = calculatedDataElements;
+    }
+
+    public Collection<Integer> getDataElementGroups()
+    {
+        return dataElementGroups;
+    }
+
+    public void setDataElementGroups( Collection<Integer> dataElementGroups )
+    {
+        this.dataElementGroups = dataElementGroups;
+    }
+
+    public Collection<Integer> getIndicators()
+    {
+        return indicators;
+    }
+
+    public void setIndicators( Collection<Integer> indicators )
+    {
+        this.indicators = indicators;
+    }
+
+    public Collection<Integer> getIndicatorGroups()
+    {
+        return indicatorGroups;
+    }
+
+    public void setIndicatorGroups( Collection<Integer> indicatorGroups )
+    {
+        this.indicatorGroups = indicatorGroups;
+    }
+
+    public Collection<Integer> getIndicatorTypes()
+    {
+        return indicatorTypes;
+    }
+
+    public void setIndicatorTypes( Collection<Integer> indicatorTypes )
+    {
+        this.indicatorTypes = indicatorTypes;
+    }
+
+    public Collection<Integer> getDataDictionaries()
+    {
+        return dataDictionaries;
+    }
+
+    public void setDataDictionaries( Collection<Integer> dataDictionaries )
+    {
+        this.dataDictionaries = dataDictionaries;
+    }
+
+    public Collection<Integer> getDataSets()
+    {
+        return dataSets;
+    }
+
+    public void setDataSets( Collection<Integer> dataSets )
+    {
+        this.dataSets = dataSets;
+    }
+
+    public Collection<Integer> getPeriods()
+    {
+        return periods;
+    }
+
+    public void setPeriods( Collection<Integer> periods )
+    {
+        this.periods = periods;
+    }
+
+    public Collection<Integer> getOrganisationUnits()
+    {
+        return organisationUnits;
+    }
+
+    public void setOrganisationUnits( Collection<Integer> organisationUnits )
+    {
+        this.organisationUnits = organisationUnits;
+    }
+
+    public Collection<Integer> getOrganisationUnitGroups()
+    {
+        return organisationUnitGroups;
+    }
+
+    public void setOrganisationUnitGroups( Collection<Integer> organisationUnitGroups )
+    {
+        this.organisationUnitGroups = organisationUnitGroups;
+    }
+
+    public Collection<Integer> getOrganisationUnitGroupSets()
+    {
+        return organisationUnitGroupSets;
+    }
+
+    public void setOrganisationUnitGroupSets( Collection<Integer> organisationUnitGroupSets )
+    {
+        this.organisationUnitGroupSets = organisationUnitGroupSets;
+    }
+
+    public Collection<Integer> getOrganisationUnitLevels()
+    {
+        return organisationUnitLevels;
+    }
+
+    public void setOrganisationUnitLevels( Collection<Integer> organisationUnitLevels )
+    {
+        this.organisationUnitLevels = organisationUnitLevels;
+    }
+
+    public Collection<Integer> getValidationRules()
+    {
+        return validationRules;
+    }
+
+    public void setValidationRules( Collection<Integer> validationRules )
+    {
+        this.validationRules = validationRules;
+    }
+
+    public Collection<Integer> getReportTables()
+    {
+        return reportTables;
+    }
+
+    public void setReportTables( Collection<Integer> reportTables )
+    {
+        this.reportTables = reportTables;
+    }
+
+    public Collection<Integer> getOlapUrls()
+    {
+        return olapUrls;
+    }
+
+    public void setOlapUrls( Collection<Integer> olapUrls )
+    {
+        this.olapUrls = olapUrls;
+    }
+
+    public boolean isAllCategories()
+    {
+        return allCategories;
+    }
+
+    public void setAllCategories( boolean allCategories )
+    {
+        this.allCategories = allCategories;
     }
 }

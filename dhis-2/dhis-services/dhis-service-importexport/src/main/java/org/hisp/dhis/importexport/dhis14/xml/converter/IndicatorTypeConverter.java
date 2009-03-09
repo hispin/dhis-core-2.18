@@ -54,6 +54,8 @@ public class IndicatorTypeConverter
     private static final String FIELD_NAME = "IndicatorTypeName";
     private static final String FIELD_FACTOR = "Factor";
     
+    private IndicatorService indicatorService;
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -61,8 +63,9 @@ public class IndicatorTypeConverter
     /**
      * Constructor for write operations.
      */
-    public IndicatorTypeConverter()
+    public IndicatorTypeConverter( IndicatorService indicatorService )
     {   
+        this.indicatorService = indicatorService;
     }
 
     /**
@@ -84,7 +87,7 @@ public class IndicatorTypeConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<IndicatorType> indicatorTypes = params.getIndicatorTypes();
+        Collection<IndicatorType> indicatorTypes = indicatorService.getIndicatorTypes( params.getIndicatorTypes() );
         
         for ( IndicatorType object : indicatorTypes )
         {

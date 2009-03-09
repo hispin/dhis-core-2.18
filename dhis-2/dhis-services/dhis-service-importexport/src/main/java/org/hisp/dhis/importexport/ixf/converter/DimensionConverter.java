@@ -69,6 +69,8 @@ public class DimensionConverter
     
     private DataElementCategoryComboService categoryComboService;
     
+    private DataElementCategoryService categoryService;
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -76,8 +78,9 @@ public class DimensionConverter
     /**
      * Constructor for write operations.
      */
-    public DimensionConverter()
+    public DimensionConverter( DataElementCategoryService categoryService )
     {
+        this.categoryService = categoryService;
     }
     
     /**
@@ -108,7 +111,7 @@ public class DimensionConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElementCategory> categories = params.getCategories();
+        Collection<DataElementCategory> categories = categoryService.getDataElementCategories( params.getCategories() );
         
         if ( categories != null && categories.size() > 0 )
         {

@@ -33,7 +33,9 @@ import java.util.Map;
 import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.AssociationType;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
@@ -61,6 +63,10 @@ public class DataSetMemberConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private DataSetService dataSetService;
+    
+    private DataElementService dataElementService;
+    
     private Map<Object, Integer> dataElementMapping;
     
     private Map<Object, Integer> dataSetMapping;
@@ -72,8 +78,11 @@ public class DataSetMemberConverter
     /**
      * Constructor for write operations.
      */
-    public DataSetMemberConverter()
+    public DataSetMemberConverter( DataSetService dataSetService,
+        DataElementService dataElementService )
     {   
+        this.dataSetService = dataSetService;
+        this.dataElementService = dataElementService;
     }
     
     /**
@@ -96,9 +105,11 @@ public class DataSetMemberConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataSet> dataSets = params.getDataSets();
+        Collection<DataSet> dataSets = dataSetService.getDataSets( params.getDataSets() );
         
-        if ( dataSets != null && dataSets.size() > 0 )
+        Collection<DataElement> elements = dataElementService.getDataElements( params.getAllDataElements() );
+        
+        if ( dataSets != null && dataSets.size() > 0 && elements != null && elements.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
             

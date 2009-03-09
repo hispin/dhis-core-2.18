@@ -32,8 +32,8 @@ import java.util.Map;
 
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
-import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.datadictionary.DataDictionary;
+import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.importexport.AssociationType;
 import org.hisp.dhis.importexport.ExportParams;
@@ -43,6 +43,7 @@ import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
+import org.hisp.dhis.jdbc.BatchHandler;
 
 /**
  * @author Lars Helge Overland
@@ -61,6 +62,8 @@ public class DataDictionaryDataElementConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private DataDictionaryService dataDictionaryService;
+    
     private Map<Object, Integer> dataDictionaryMapping;
 
     private Map<Object, Integer> dataElementMapping;
@@ -72,8 +75,9 @@ public class DataDictionaryDataElementConverter
     /**
      * Constructor for write operations.
      */
-    public DataDictionaryDataElementConverter()
-    {   
+    public DataDictionaryDataElementConverter( DataDictionaryService dataDictionaryService )
+    {
+        this.dataDictionaryService = dataDictionaryService;
     }
 
     /**
@@ -96,7 +100,7 @@ public class DataDictionaryDataElementConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataDictionary> dataDictionaries = params.getDataDictionaries();
+        Collection<DataDictionary> dataDictionaries = dataDictionaryService.getDataDictionaries( params.getDataDictionaries() );
         
         if ( dataDictionaries != null && dataDictionaries.size() > 0 )
         {

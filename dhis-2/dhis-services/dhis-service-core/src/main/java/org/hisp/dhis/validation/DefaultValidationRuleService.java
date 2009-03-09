@@ -29,6 +29,7 @@ package org.hisp.dhis.validation;
 
 import static org.hisp.dhis.system.util.MathUtils.expressionIsTrue;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -284,6 +285,23 @@ public class DefaultValidationRuleService
     public ValidationRule getValidationRule( int id )
     {
         return validationRuleStore.getValidationRule( id );
+    }
+    
+    public Collection<ValidationRule> getValidationRules( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllValidationRules();
+        }
+        
+        Collection<ValidationRule> rules = new ArrayList<ValidationRule>();
+        
+        for ( Integer id : identifiers )
+        {
+            rules.add( getValidationRule( id ) );
+        }
+        
+        return rules;
     }
 
     public ValidationRule getValidationRuleByName( String name )

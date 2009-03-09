@@ -103,8 +103,9 @@ public class DataElementConverter
     /**
      * Constructor for write operations.
      */
-    public DataElementConverter()
+    public DataElementConverter( DataElementService dataElementService )
     {
+        this.dataElementService = dataElementService;
     }
 
     /**
@@ -148,8 +149,8 @@ public class DataElementConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElement> elements = params.getDataElements();
-        elements.addAll( params.getCalculatedDataElements() ); // Calculated elements handled together
+        Collection<DataElement> elements = dataElementService.getNonCalculatedDataElements( params.getDataElements() );
+        elements.addAll( dataElementService.getCalculatedDataElements( params.getCalculatedDataElements() ) ); // Calculated elements handled together
         
         for ( DataElement object : elements )
         {

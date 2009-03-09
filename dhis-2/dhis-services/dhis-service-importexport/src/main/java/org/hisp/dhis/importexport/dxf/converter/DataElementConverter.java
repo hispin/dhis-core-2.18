@@ -75,8 +75,9 @@ public class DataElementConverter
     /**
      * Constructor for write operations.
      */
-    public DataElementConverter()
+    public DataElementConverter( DataElementService dataElementService )
     {
+        this.dataElementService = dataElementService;
     }
     
     /**
@@ -104,7 +105,7 @@ public class DataElementConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElement> elements = params.getDataElements();
+        Collection<DataElement> elements = dataElementService.getNonCalculatedDataElements( params.getDataElements() );
         
         if ( elements != null && elements.size() > 0 )
         {

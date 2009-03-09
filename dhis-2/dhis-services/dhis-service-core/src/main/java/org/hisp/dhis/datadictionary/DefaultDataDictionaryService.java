@@ -27,6 +27,7 @@ package org.hisp.dhis.datadictionary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -59,6 +60,23 @@ public class DefaultDataDictionaryService
     public DataDictionary getDataDictionary( int id )
     {
         return dataDictionaryStore.getDataDictionary( id );
+    }
+    
+    public Collection<DataDictionary> getDataDictionaries( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllDataDictionaries();
+        }
+        
+        Collection<DataDictionary> dictionaries = new ArrayList<DataDictionary>();
+        
+        for ( Integer id : identifiers )
+        {
+            dictionaries.add( getDataDictionary( id ) );
+        }
+        
+        return dictionaries;
     }
     
     public void deleteDataDictionary( DataDictionary dataDictionary )

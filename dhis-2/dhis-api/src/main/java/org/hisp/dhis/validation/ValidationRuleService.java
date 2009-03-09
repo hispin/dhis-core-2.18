@@ -122,6 +122,13 @@ public interface ValidationRuleService
     ValidationRule getValidationRule( int id );
 
     /**
+     * 
+     * @param identifiers
+     * @return
+     */
+    Collection<ValidationRule> getValidationRules( Collection<Integer> identifiers );
+    
+    /**
      * Get all validation rules.
      * 
      * @return a Collection of ValidationRule or null if it there are no validation rules.

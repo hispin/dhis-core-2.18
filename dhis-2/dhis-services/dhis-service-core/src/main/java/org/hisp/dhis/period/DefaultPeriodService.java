@@ -87,6 +87,11 @@ public class DefaultPeriodService
     
     public Collection<Period> getPeriods( Collection<Integer> identifiers )
     {
+        if ( identifiers == null )
+        {
+            return getAllPeriods();
+        }
+        
         Collection<Period> objects = new ArrayList<Period>();
         
         for ( Integer id : identifiers )

@@ -74,6 +74,8 @@ public interface IndicatorService
     void deleteIndicatorType( IndicatorType indicatorType );
 
     IndicatorType getIndicatorType( int id );
+    
+    Collection<IndicatorType> getIndicatorTypes( Collection<Integer> identifiers );
 
     Collection<IndicatorType> getAllIndicatorTypes();
 
@@ -90,6 +92,8 @@ public interface IndicatorService
     void deleteIndicatorGroup( IndicatorGroup indicatorGroup );
 
     IndicatorGroup getIndicatorGroup( int id );
+    
+    Collection<IndicatorGroup> getIndicatorGroups( Collection<Integer> identifiers );
     
     IndicatorGroup getIndicatorGroup( String uuid );
 

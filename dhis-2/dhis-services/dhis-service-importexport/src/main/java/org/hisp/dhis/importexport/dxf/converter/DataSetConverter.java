@@ -70,8 +70,9 @@ public class DataSetConverter
     /**
      * Constructor for write operations.
      */
-    public DataSetConverter()
+    public DataSetConverter( DataSetService dataSetService )
     {   
+        this.dataSetService = dataSetService;
     }
     
     /**
@@ -98,7 +99,7 @@ public class DataSetConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataSet> dataSets = params.getDataSets();
+        Collection<DataSet> dataSets = dataSetService.getDataSets( params.getDataSets() );
         
         if ( dataSets != null && dataSets.size() > 0 )
         {

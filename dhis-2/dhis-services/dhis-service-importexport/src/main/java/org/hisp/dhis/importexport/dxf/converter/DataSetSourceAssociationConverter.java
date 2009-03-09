@@ -33,6 +33,7 @@ import java.util.Map;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.AssociationType;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
@@ -42,6 +43,8 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
 import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -61,6 +64,10 @@ public class DataSetSourceAssociationConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private DataSetService dataSetService;
+    
+    private OrganisationUnitService organisationUnitService;
+    
     private Map<Object, Integer> dataSetMapping;
     
     private Map<Object, Integer> sourceMapping;
@@ -72,8 +79,11 @@ public class DataSetSourceAssociationConverter
     /**
      * Constructor for write operations.
      */
-    public DataSetSourceAssociationConverter()
+    public DataSetSourceAssociationConverter( DataSetService dataSetService,
+        OrganisationUnitService organisationUnitService )
     {   
+        this.dataSetService = dataSetService;
+        this.organisationUnitService = organisationUnitService;
     }
     
     /**
@@ -96,9 +106,11 @@ public class DataSetSourceAssociationConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataSet> dataSets = params.getDataSets();
+        Collection<DataSet> dataSets = dataSetService.getDataSets( params.getDataSets() );
         
-        if ( dataSets != null && dataSets.size() > 0 )
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
+        
+        if ( dataSets != null && dataSets.size() > 0 && units != null && units.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
             
@@ -108,7 +120,7 @@ public class DataSetSourceAssociationConverter
                 {
                     for ( Source source : dataSet.getSources() )
                     {
-                        if ( params.getOrganisationUnits() != null && params.getOrganisationUnits().contains( source ) )
+                        if ( units.contains( source ) )
                         {
                             writer.openElement( ELEMENT_NAME );
                             

@@ -55,6 +55,8 @@ public class DataElementCategoryConverter
     private static final String FIELD_ID = "id";
     private static final String FIELD_NAME = "name";
     
+    private DataElementCategoryService categoryService;
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -62,8 +64,9 @@ public class DataElementCategoryConverter
     /**
      * Constructor for write operations.
      */
-    public DataElementCategoryConverter()
-    {   
+    public DataElementCategoryConverter( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
     }
     
     /**
@@ -88,7 +91,7 @@ public class DataElementCategoryConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElementCategory> categories = params.getCategories();
+        Collection<DataElementCategory> categories = categoryService.getDataElementCategories( params.getCategories() );
         
         if ( categories != null && categories.size() > 0 )
         {

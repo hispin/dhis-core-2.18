@@ -79,12 +79,12 @@ public interface DataMartStore
     /**
      * Gets a collection of AggregatedDataValues.
      * 
-     * @param element the DataElement.
+     * @param dataElementId the DataElement identifier.
      * @param periodIds the collection of Period identifiers.
      * @param organisationUnitIds the collection of OrganisationUnit identifiers.
      * @return a collection of AggregatedDataValues.
      */
-    Collection<AggregatedDataValue> getAggregatedDataValues( DataElement element, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
+    Collection<AggregatedDataValue> getAggregatedDataValues( int dataElementId, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     
     /**
      * Deletes AggregatedDataValues registered for the given parameters.

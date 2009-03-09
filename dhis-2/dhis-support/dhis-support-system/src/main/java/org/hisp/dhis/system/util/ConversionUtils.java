@@ -44,7 +44,7 @@ public class ConversionUtils
      * @param objects for which to get the identifiers.
      */
     @SuppressWarnings( "unchecked" )
-    public static Collection<Integer> getIdentifiers( Class clazz, Collection<? extends Object> objects )
+    public static Collection<Integer> getIdentifiers( Class clazz, Collection<?> objects )
     {
         try
         {

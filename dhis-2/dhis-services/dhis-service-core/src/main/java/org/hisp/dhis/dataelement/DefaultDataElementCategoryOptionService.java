@@ -27,6 +27,7 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -69,6 +70,23 @@ public class DefaultDataElementCategoryOptionService
     public DataElementCategoryOption getDataElementCategoryOption( int id )
     {
         return dataElementCategoryOptionStore.getDataElementCategoryOption( id );
+    }
+    
+    public Collection<DataElementCategoryOption> getDataElementCategoryOptions( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllDataElementCategoryOptions();
+        }
+        
+        Collection<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
+        
+        for ( Integer id : identifiers )
+        {
+            categoryOptions.add( getDataElementCategoryOption( id ) );
+        }
+        
+        return categoryOptions;
     }
 
     public DataElementCategoryOption getDataElementCategoryOptionByName( String name )

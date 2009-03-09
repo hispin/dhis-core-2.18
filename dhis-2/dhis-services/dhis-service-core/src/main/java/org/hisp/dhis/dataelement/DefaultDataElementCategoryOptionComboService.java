@@ -118,6 +118,23 @@ public class DefaultDataElementCategoryOptionComboService
     {
         return dataElementCategoryOptionComboStore.getDataElementCategoryOptionCombo( id );
     }
+    
+    public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllDataElementCategoryOptionCombos();
+        }
+        
+        Collection<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+        
+        for ( Integer id : identifiers )
+        {
+            categoryOptionCombos.add( getDataElementCategoryOptionCombo( id ) );
+        }
+        
+        return categoryOptionCombos;
+    }
 
     public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
     {

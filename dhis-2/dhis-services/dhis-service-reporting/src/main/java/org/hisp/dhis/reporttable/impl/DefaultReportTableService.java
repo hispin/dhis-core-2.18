@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -254,21 +253,26 @@ public class DefaultReportTableService
         return reportTableStore.getReportTable( id );
     }
     
+    public Collection<ReportTable> getReportTables( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllReportTables();
+        }
+        
+        Collection<ReportTable> tables = new ArrayList<ReportTable>();
+        
+        for ( Integer id : identifiers )
+        {
+            tables.add( getReportTable( id ) );
+        }
+        
+        return tables;
+    }
+    
     public Collection<ReportTable> getAllReportTables()
     {
         return reportTableStore.getAllReportTables();
-    }
-    
-    public Collection<ReportTable> getReportTables( Collection<Integer> reportTables )
-    {
-        Collection<ReportTable> objects = new HashSet<ReportTable>();
-        
-        for ( Integer id : reportTables )
-        {
-            objects.add( getReportTable( id ) );
-        }
-        
-        return objects;
     }
     
     public ReportTable getReportTableByName( String name )

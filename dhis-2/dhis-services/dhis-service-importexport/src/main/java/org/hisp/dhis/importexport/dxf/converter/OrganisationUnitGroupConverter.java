@@ -63,24 +63,25 @@ public class OrganisationUnitGroupConverter
     /**
      * Constructor for write operations.
      */
-    public OrganisationUnitGroupConverter()
+    public OrganisationUnitGroupConverter( OrganisationUnitGroupService organisationUnitGroupService )
     {   
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
     
     /**
      * Constructor for read perations.
      * 
      * @param batchHandler the batchHandler to use.
-     * @param groupService the groupService to use.
+     * @param organisationUnitGroupService the groupService to use.
      * @param importObjectService the importObjectService to use.
      */
     public OrganisationUnitGroupConverter( BatchHandler batchHandler, 
         ImportObjectService importObjectService, 
-        OrganisationUnitGroupService groupService )
+        OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.batchHandler = batchHandler;
         this.importObjectService = importObjectService;
-        this.organisationUnitGroupService = groupService;
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
     
     // -------------------------------------------------------------------------
@@ -89,7 +90,7 @@ public class OrganisationUnitGroupConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<OrganisationUnitGroup> groups = params.getOrganisationUnitGroups();
+        Collection<OrganisationUnitGroup> groups = organisationUnitGroupService.getOrganisationUnitGroups( params.getOrganisationUnitGroups() );
         
         if ( groups != null && groups.size() > 0 )
         {

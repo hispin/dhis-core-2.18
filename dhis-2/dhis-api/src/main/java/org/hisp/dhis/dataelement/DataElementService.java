@@ -143,12 +143,31 @@ public interface DataElementService
     Collection<DataElement> getNonCalculatedDataElements();
     
     /**
-     * Returns all DataElements with corresponding identifiers.
+     * Returns all DataElements with corresponding identifiers. Returns all
+     * DataElements if the given argument is null.
      * 
      * @param identifiers the collection of identifiers.
      * @return a collection of DataElements.
      */
     Collection<DataElement> getDataElements( Collection<Integer> identifiers );
+    
+    /**
+     * Returns all CalculatedDataElements with corresponding identifiers. Returns
+     * all CalculatedDataElements if the given argument is null.
+     * 
+     * @param identifiers the collection of identifiers.
+     * @return a collection of CalculatedDataElements.
+     */
+    Collection<CalculatedDataElement> getCalculatedDataElements( Collection<Integer> identifiers );
+    
+    /**
+     * Returns all non-calculated DataElements with corresponding identifiers.
+     * Returns all non-calculated DataElements if the given argument is null.
+     * 
+     * @param identifiers the collection of identifiers.
+     * @return a collection of DataElements.
+     */
+    Collection<DataElement> getNonCalculatedDataElements( Collection<Integer> identifiers );
     
     /**
      * Returns all DataElements with types that are possible to aggregate. The
@@ -289,6 +308,14 @@ public interface DataElementService
      */
     DataElementGroup getDataElementGroup( int id );
 
+    /**
+     * Returns data elements with identifiers in the given collection.
+     * 
+     * @param identifiers the id collection.
+     * @return data elements with identifiers in the given collection.
+     */
+    Collection<DataElementGroup> getDataElementGroups( Collection<Integer> identifiers );
+    
     /**
      * Returns the DataElementGroup with the given UUID.
      * 

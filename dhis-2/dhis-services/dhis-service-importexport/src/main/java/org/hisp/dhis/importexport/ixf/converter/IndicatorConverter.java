@@ -35,6 +35,10 @@ import java.util.Map;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -68,6 +72,10 @@ public class IndicatorConverter
     // -------------------------------------------------------------------------
 
     private DataValueService dataValueService;
+    
+    private PeriodService periodService;
+    
+    private OrganisationUnitService organisationUnitService;
 
     private DataElementCategoryCombo categoryCombo;
     
@@ -87,23 +95,20 @@ public class IndicatorConverter
 
     /**
      * Constructor for write operations.
-     * 
-     * @param indicatorService the indicatorService to use.
-     * @param dataElementService the dataElementService to use.
-     * @param dataValueService the dataValueService to use.
-     * @param aggregationStore the aggregationStore to use.
-     * @param configurationManager the configurationManager to use.
      */
-    public IndicatorConverter( DataValueService dataValueService )
+    public IndicatorConverter( DataValueService dataValueService,
+        DataElementService dataElementService,
+        PeriodService periodService,
+        OrganisationUnitService organisationUnitService )
     {
         this.dataValueService = dataValueService;
+        this.dataElementService = dataElementService;
+        this.periodService = periodService;
+        this.organisationUnitService = organisationUnitService;
     }
 
     /**
      * Constructor for read operations.
-     * 
-     * @param dataElementService the dataElementService to use.
-     * @param importObjectService the importObjectService to use.
      */
     public IndicatorConverter( BatchHandler batchHandler,
         DataElementService dataElementService, 
@@ -130,7 +135,9 @@ public class IndicatorConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElement> dataElements = params.getDataElements();
+        Collection<DataElement> dataElements = dataElementService.getDataElements( params.getDataElements() );
+        Collection<Period> periods = periodService.getPeriods( params.getPeriods() );
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
         
         if ( dataElements != null && dataElements.size() > 0 )
         {
@@ -160,8 +167,7 @@ public class IndicatorConverter
                     // Data values are embedded in the Indicator collection
                     // -------------------------------------------------------------
                     
-                    Collection<DataValue> values = dataValueService.getDataValues( element, params.getPeriods(),
-                        params.getOrganisationUnits() );
+                    Collection<DataValue> values = dataValueService.getDataValues( element, periods, units );
                     
                     dataConverter = new DataConverter( values );
                     

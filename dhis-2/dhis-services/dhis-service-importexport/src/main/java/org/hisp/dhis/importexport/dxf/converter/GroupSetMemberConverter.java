@@ -40,6 +40,7 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
@@ -61,6 +62,8 @@ public class GroupSetMemberConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private OrganisationUnitGroupService organisationUnitGroupService;
+    
     private Map<Object, Integer> organisationUnitGroupMapping;
     
     private Map<Object, Integer> organisationUnitGroupSetMapping;
@@ -72,9 +75,9 @@ public class GroupSetMemberConverter
     /**
      * Constructor for write operations.
      */
-    public GroupSetMemberConverter()
+    public GroupSetMemberConverter( OrganisationUnitGroupService organisationUnitGroupService )
     {
-   
+        this.organisationUnitGroupService = organisationUnitGroupService;   
     }
     
     /**
@@ -97,9 +100,13 @@ public class GroupSetMemberConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<OrganisationUnitGroupSet> groupSets = params.getOrganisationUnitGroupSets();
+        Collection<OrganisationUnitGroupSet> groupSets = 
+            organisationUnitGroupService.getOrganisationUnitGroupSets( params.getOrganisationUnitGroupSets() );
         
-        if ( groupSets != null && groupSets.size() > 0 )
+        Collection<OrganisationUnitGroup> groups = 
+            organisationUnitGroupService.getOrganisationUnitGroups( params.getOrganisationUnitGroups() );
+        
+        if ( groupSets != null && groupSets.size() > 0 && groups != null && groups.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
             
@@ -109,7 +116,7 @@ public class GroupSetMemberConverter
                 {
                     for ( OrganisationUnitGroup group : groupSet.getOrganisationUnitGroups() )
                     {
-                        if ( params.getOrganisationUnitGroups().contains( group ) )
+                        if ( groups.contains( group ) )
                         {
                             writer.openElement( ELEMENT_NAME );
                             

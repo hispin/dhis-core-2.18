@@ -27,6 +27,7 @@ package org.hisp.dhis.olap;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -82,6 +83,23 @@ public class DefaultOlapURLService
     public OlapURL getOlapURL( int id )
     {
         return olapURLStore.getOlapURL( id );
+    }
+    
+    public Collection<OlapURL> getOlapURLs( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllOlapURLs();
+        }
+        
+        Collection<OlapURL> urls = new ArrayList<OlapURL>();
+        
+        for ( Integer id : identifiers )
+        {
+            urls.add( getOlapURL( id ) );
+        }
+        
+        return urls;
     }
     
     public void deleteOlapURL( OlapURL olapURL )

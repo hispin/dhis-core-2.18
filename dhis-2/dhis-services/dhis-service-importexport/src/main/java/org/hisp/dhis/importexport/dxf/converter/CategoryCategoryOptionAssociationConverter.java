@@ -35,6 +35,8 @@ import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.AssociationType;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
@@ -61,6 +63,10 @@ public class CategoryCategoryOptionAssociationConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private DataElementCategoryService categoryService;
+    
+    private DataElementCategoryOptionService categoryOptionService;
+    
     private Map<Object, Integer> categoryMapping;
     
     private Map<Object, Integer> categoryOptionMapping;
@@ -72,8 +78,11 @@ public class CategoryCategoryOptionAssociationConverter
     /**
      * Constructor for write operations.
      */
-    public CategoryCategoryOptionAssociationConverter()
-    {   
+    public CategoryCategoryOptionAssociationConverter( DataElementCategoryService categoryService,
+        DataElementCategoryOptionService categoryOptionService )
+    {
+        this.categoryService = categoryService;
+        this.categoryOptionService = categoryOptionService;
     }
     
     /**
@@ -101,9 +110,10 @@ public class CategoryCategoryOptionAssociationConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElementCategory> categories = params.getCategories();
+        Collection<DataElementCategory> categories = categoryService.getDataElementCategories( params.getCategories() );
+        Collection<DataElementCategoryOption> categoryOptions = categoryOptionService.getDataElementCategoryOptions( params.getCategoryOptions() );
         
-        if ( categories != null && categories.size() > 0 )
+        if ( categories != null && categories.size() > 0 && categoryOptions != null && categoryOptions.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
             
@@ -113,7 +123,7 @@ public class CategoryCategoryOptionAssociationConverter
                 {                    
                     for ( DataElementCategoryOption categoryOption : category.getCategoryOptions() )
                     {
-                        if ( params.getCategoryOptions().contains( categoryOption ) )
+                        if ( categoryOptions.contains( categoryOption ) )
                         {
                             writer.openElement( ELEMENT_NAME );
                             

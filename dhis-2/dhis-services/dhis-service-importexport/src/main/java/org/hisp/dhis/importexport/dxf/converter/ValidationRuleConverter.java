@@ -76,8 +76,9 @@ public class ValidationRuleConverter
     /**
      * Constructor for write operations.
      */
-    public ValidationRuleConverter()
+    public ValidationRuleConverter( ValidationRuleService validationRuleService )
     {   
+        this.validationRuleService = validationRuleService;
     }
     
     /**
@@ -107,7 +108,7 @@ public class ValidationRuleConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<ValidationRule> validationRules = params.getValidationRules();
+        Collection<ValidationRule> validationRules = validationRuleService.getValidationRules( params.getValidationRules() );
         
         if ( validationRules != null && validationRules.size() > 0 )
         {

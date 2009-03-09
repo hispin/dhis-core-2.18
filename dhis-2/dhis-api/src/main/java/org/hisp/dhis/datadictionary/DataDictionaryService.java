@@ -45,6 +45,8 @@ public interface DataDictionaryService
     
     DataDictionary getDataDictionary( int id );
 
+    Collection<DataDictionary> getDataDictionaries( Collection<Integer> identifiers );
+    
     DataDictionary getDataDictionaryByName( String name );
     
     void deleteDataDictionary( DataDictionary dataDictionary );

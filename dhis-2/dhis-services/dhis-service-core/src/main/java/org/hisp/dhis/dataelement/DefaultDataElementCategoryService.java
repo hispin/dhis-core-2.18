@@ -27,6 +27,7 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
@@ -51,8 +52,7 @@ public class DefaultDataElementCategoryService
 
     private DataElementDimensionColumnOrderService dataElementDimensionColumnOrderService;
 
-    public void setDataElementDimensionColumnOrderService(
-        DataElementDimensionColumnOrderService dataElementDimensionColumnOrderService )
+    public void setDataElementDimensionColumnOrderService( DataElementDimensionColumnOrderService dataElementDimensionColumnOrderService )
     {
         this.dataElementDimensionColumnOrderService = dataElementDimensionColumnOrderService;
     }
@@ -79,7 +79,23 @@ public class DefaultDataElementCategoryService
     public DataElementCategory getDataElementCategory( int id )
     {
         return dataElementCategoryStore.getDataElementCategory( id );
-
+    }
+    
+    public Collection<DataElementCategory> getDataElementCategories( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllDataElementCategories();
+        }
+        
+        Collection<DataElementCategory> categories = new ArrayList<DataElementCategory>();
+        
+        for ( Integer id : identifiers )
+        {
+            categories.add( getDataElementCategory( id ) );
+        }
+        
+        return categories;
     }
 
     public DataElementCategory getDataElementCategoryByName( String name )

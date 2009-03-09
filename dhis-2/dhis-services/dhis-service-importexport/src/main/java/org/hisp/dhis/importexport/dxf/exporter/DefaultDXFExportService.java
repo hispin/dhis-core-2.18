@@ -37,7 +37,15 @@ import java.util.zip.ZipOutputStream;
 
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.writer.XMLWriter;
+import org.hisp.dhis.datadictionary.DataDictionaryService;
+import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportPipeThread;
@@ -84,6 +92,13 @@ import org.hisp.dhis.importexport.dxf.converter.ReportTableIndicatorConverter;
 import org.hisp.dhis.importexport.dxf.converter.ReportTableOrganisationUnitConverter;
 import org.hisp.dhis.importexport.dxf.converter.ReportTablePeriodConverter;
 import org.hisp.dhis.importexport.dxf.converter.ValidationRuleConverter;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.olap.OlapURLService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.validation.ValidationRuleService;
 
 /**
  * @author Lars Helge Overland
@@ -98,12 +113,117 @@ public class DefaultDXFExportService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-        
+
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+    
+    private DataElementCategoryOptionService categoryOptionService;
+
+    public void setCategoryOptionService( DataElementCategoryOptionService categoryOptionService )
+    {
+        this.categoryOptionService = categoryOptionService;
+    }
+
+    private DataElementCategoryComboService categoryComboService;
+
+    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
+    {
+        this.categoryComboService = categoryComboService;
+    }
+
+    private DataElementCategoryOptionComboService categoryOptionComboService;
+
+    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
+    {
+        this.categoryOptionComboService = categoryOptionComboService;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
+    
+    private DataDictionaryService dataDictionaryService;
+
+    public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
+    {
+        this.dataDictionaryService = dataDictionaryService;
+    }
+    
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+    
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+    
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+    
+    private ValidationRuleService validationRuleService;
+
+    public void setValidationRuleService( ValidationRuleService validationRuleService )
+    {
+        this.validationRuleService = validationRuleService;
+    }
+    
+    private ReportTableService reportTableService;
+
+    public void setReportTableService( ReportTableService reportTableService )
+    {
+        this.reportTableService = reportTableService;
+    }
+    
+    private OlapURLService olapURLService;
+
+    public void setOlapURLService( OlapURLService olapURLService )
+    {
+        this.olapURLService = olapURLService;
+    }
+
     private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
+    }
+    
+    private CompleteDataSetRegistrationService completeDataSetRegistrationService;
+
+    public void setCompleteDataSetRegistrationService( CompleteDataSetRegistrationService completeDataSetRegistrationService )
+    {
+        this.completeDataSetRegistrationService = completeDataSetRegistrationService;
     }
     
     private DataMartStore dataMartStore;
@@ -147,60 +267,63 @@ public class DefaultDXFExportService
             thread.setWriter( writer );
             thread.setRootName( ROOT_NAME );
             
-            thread.registerXMLConverter( new DataElementCategoryOptionConverter() );
-            thread.registerXMLConverter( new DataElementCategoryConverter() );
-            thread.registerXMLConverter( new DataElementCategoryComboConverter() );
-            thread.registerXMLConverter( new DataElementCategoryOptionComboConverter() );
+            thread.registerXMLConverter( new DataElementCategoryOptionConverter( categoryOptionService ) );
+            thread.registerXMLConverter( new DataElementCategoryConverter( categoryService ) );
+            thread.registerXMLConverter( new DataElementCategoryComboConverter( categoryComboService ) );
+            thread.registerXMLConverter( new DataElementCategoryOptionComboConverter( categoryOptionComboService ) );
             
-            thread.registerXMLConverter( new CategoryCategoryOptionAssociationConverter() );
-            thread.registerXMLConverter( new CategoryComboCategoryAssociationConverter() );
+            thread.registerXMLConverter( new CategoryCategoryOptionAssociationConverter( categoryService, categoryOptionService ) );
+            thread.registerXMLConverter( new CategoryComboCategoryAssociationConverter( categoryComboService, categoryService ) );
             
-            thread.registerXMLConverter( params.isExtendedMode() ? new ExtendedDataElementConverter() : new DataElementConverter() );
-            thread.registerXMLConverter( new CalculatedDataElementConverter() );
-            thread.registerXMLConverter( new DataElementGroupConverter() );
-            thread.registerXMLConverter( new DataElementGroupMemberConverter() );
+            thread.registerXMLConverter( params.isExtendedMode() ? 
+                new ExtendedDataElementConverter( dataElementService ) : new DataElementConverter( dataElementService ) );            
+            thread.registerXMLConverter( new CalculatedDataElementConverter( dataElementService ) );
+            thread.registerXMLConverter( new DataElementGroupConverter( dataElementService ) );
+            thread.registerXMLConverter( new DataElementGroupMemberConverter( dataElementService ) );
             
-            thread.registerXMLConverter( new IndicatorTypeConverter() );
-            thread.registerXMLConverter( params.isExtendedMode() ? new ExtendedIndicatorConverter() : new IndicatorConverter() );
-            thread.registerXMLConverter( new IndicatorGroupConverter() );
-            thread.registerXMLConverter( new IndicatorGroupMemberConverter() );
+            thread.registerXMLConverter( new IndicatorTypeConverter( indicatorService ) );
+            thread.registerXMLConverter( params.isExtendedMode() ? 
+                new ExtendedIndicatorConverter( indicatorService ) : new IndicatorConverter( indicatorService ) );
+            thread.registerXMLConverter( new IndicatorGroupConverter( indicatorService ) );
+            thread.registerXMLConverter( new IndicatorGroupMemberConverter( indicatorService ) );
             
-            thread.registerXMLConverter( new DataDictionaryConverter() );
-            thread.registerXMLConverter( new DataDictionaryDataElementConverter() );
-            thread.registerXMLConverter( new DataDictionaryIndicatorConverter() );
+            thread.registerXMLConverter( new DataDictionaryConverter( dataDictionaryService ) );
+            thread.registerXMLConverter( new DataDictionaryDataElementConverter( dataDictionaryService ) );
+            thread.registerXMLConverter( new DataDictionaryIndicatorConverter( dataDictionaryService ) );
                         
-            thread.registerXMLConverter( new DataSetConverter() );
-            thread.registerXMLConverter( new DataSetMemberConverter() );
+            thread.registerXMLConverter( new DataSetConverter( dataSetService ) );
+            thread.registerXMLConverter( new DataSetMemberConverter( dataSetService, dataElementService ) );
             
-            thread.registerXMLConverter( new OrganisationUnitConverter() );
-            thread.registerXMLConverter( new OrganisationUnitRelationshipConverter() );
-            thread.registerXMLConverter( new OrganisationUnitGroupConverter() );
-            thread.registerXMLConverter( new OrganisationUnitGroupMemberConverter() );
+            thread.registerXMLConverter( new OrganisationUnitConverter( organisationUnitService ) );
+            thread.registerXMLConverter( new OrganisationUnitRelationshipConverter( organisationUnitService ) );
+            thread.registerXMLConverter( new OrganisationUnitGroupConverter( organisationUnitGroupService ) );
+            thread.registerXMLConverter( new OrganisationUnitGroupMemberConverter( organisationUnitGroupService, organisationUnitService ) );
             
-            thread.registerXMLConverter( new GroupSetConverter() );
-            thread.registerXMLConverter( new GroupSetMemberConverter() );
-            thread.registerXMLConverter( new OrganisationUnitLevelConverter() );
+            thread.registerXMLConverter( new GroupSetConverter( organisationUnitGroupService ) );
+            thread.registerXMLConverter( new GroupSetMemberConverter( organisationUnitGroupService ) );
+            thread.registerXMLConverter( new OrganisationUnitLevelConverter( organisationUnitService ) );
             
-            thread.registerXMLConverter( new DataSetSourceAssociationConverter() );
+            thread.registerXMLConverter( new DataSetSourceAssociationConverter( dataSetService, organisationUnitService ) );
             
-            thread.registerXMLConverter( new ValidationRuleConverter() );
+            thread.registerXMLConverter( new ValidationRuleConverter( validationRuleService ) );
             
-            thread.registerXMLConverter( new PeriodConverter() );
+            thread.registerXMLConverter( new PeriodConverter( periodService ) );
             
-            thread.registerXMLConverter( new ReportTableConverter() );
-            thread.registerXMLConverter( new ReportTableDataElementConverter() );
-            thread.registerXMLConverter( new ReportTableCategoryOptionComboConverter() );
-            thread.registerXMLConverter( new ReportTableIndicatorConverter() );
-            thread.registerXMLConverter( new ReportTableDataSetConverter() );
-            thread.registerXMLConverter( new ReportTablePeriodConverter() );
-            thread.registerXMLConverter( new ReportTableOrganisationUnitConverter() );
+            thread.registerXMLConverter( new ReportTableConverter( reportTableService ) );
+            thread.registerXMLConverter( new ReportTableDataElementConverter( reportTableService ) );
+            thread.registerXMLConverter( new ReportTableCategoryOptionComboConverter( reportTableService ) );
+            thread.registerXMLConverter( new ReportTableIndicatorConverter( reportTableService ) );
+            thread.registerXMLConverter( new ReportTableDataSetConverter( reportTableService ) );
+            thread.registerXMLConverter( new ReportTablePeriodConverter( reportTableService ) );
+            thread.registerXMLConverter( new ReportTableOrganisationUnitConverter( reportTableService ) );
             
-            thread.registerXMLConverter( new OlapUrlConverter() );
+            thread.registerXMLConverter( new OlapUrlConverter( olapURLService ) );
             
-            thread.registerXMLConverter( new CompleteDataSetRegistrationConverter() );
+            thread.registerXMLConverter( new CompleteDataSetRegistrationConverter( 
+                completeDataSetRegistrationService, dataSetService, organisationUnitService, periodService ) );
             
-            thread.registerXMLConverter( params.isAggregatedData() ? 
-                new AggregatedDataValueConverter( dataMartStore ) : new DataValueConverter( dataValueService ) );
+            thread.registerXMLConverter( params.isAggregatedData() ? new AggregatedDataValueConverter( dataMartStore ) : 
+                new DataValueConverter( dataValueService, dataElementService, periodService, organisationUnitService ) );
             
             thread.start();
             

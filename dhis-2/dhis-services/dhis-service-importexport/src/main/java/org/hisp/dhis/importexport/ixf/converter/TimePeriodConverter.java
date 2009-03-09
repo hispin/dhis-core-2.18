@@ -60,6 +60,8 @@ public class TimePeriodConverter
     // Properties
     // -------------------------------------------------------------------------
     
+    private PeriodService periodService;
+    
     private Map<String, Integer> periodTypeMapping;
     
     // -------------------------------------------------------------------------
@@ -69,8 +71,9 @@ public class TimePeriodConverter
     /**
      * Constructor for write operations.
      */
-    public TimePeriodConverter()
+    public TimePeriodConverter( PeriodService periodService )
     {
+        this.periodService = periodService;
     }
 
     /**
@@ -96,7 +99,7 @@ public class TimePeriodConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {        
-        Collection<Period> periods = params.getPeriods();
+        Collection<Period> periods = periodService.getPeriods( params.getPeriods() );
         
         if ( periods != null && periods.size() > 0 )
         {

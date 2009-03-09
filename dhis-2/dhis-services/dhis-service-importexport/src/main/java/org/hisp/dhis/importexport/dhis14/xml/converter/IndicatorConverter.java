@@ -93,6 +93,8 @@ public class IndicatorConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private IndicatorService indicatorService;
+    
     private Map<Object, Integer> indicatorTypeMapping;
     private Map<Object, Integer> dataElementMapping;
     private Map<Object, String> dataElementAggregationOperatorMap;
@@ -104,8 +106,9 @@ public class IndicatorConverter
     /**
      * Constructor for write operations.
      */
-    public IndicatorConverter()
-    {   
+    public IndicatorConverter( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
     }
     
     /**
@@ -134,7 +137,7 @@ public class IndicatorConverter
     {
         Map<Object, String> mapping = NameMappingUtil.getDataElementAggregationOperatorMap();
         
-        Collection<Indicator> indicators = params.getIndicators();
+        Collection<Indicator> indicators = indicatorService.getIndicators( params.getIndicators() );
         
         for ( Indicator object : indicators )
         {

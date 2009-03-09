@@ -62,8 +62,9 @@ public class OlapUrlConverter
     /**
      * Constructor for write operations.
      */
-    public OlapUrlConverter()
+    public OlapUrlConverter( OlapURLService olapURLService )
     {   
+        this.olapURLService = olapURLService;
     }
     
     /**
@@ -85,7 +86,7 @@ public class OlapUrlConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<OlapURL> olapUrls = params.getOlapUrls();
+        Collection<OlapURL> olapUrls = olapURLService.getOlapURLs( params.getOlapUrls() );
         
         if ( olapUrls != null && olapUrls.size() > 0 )
         {

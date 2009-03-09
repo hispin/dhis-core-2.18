@@ -248,6 +248,8 @@ public interface OrganisationUnitService
     
     OrganisationUnitLevel getOrganisationUnitLevel( int id );
     
+    Collection<OrganisationUnitLevel> getOrganisationUnitLevels( Collection<Integer> identifiers );
+    
     void deleteOrganisationUnitLevel( OrganisationUnitLevel level );
 
     void deleteOrganisationUnitLevels();

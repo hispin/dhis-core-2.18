@@ -62,8 +62,9 @@ public class OrganisationUnitLevelConverter
     /**
      * Constructor for write operations.
      */
-    public OrganisationUnitLevelConverter()
+    public OrganisationUnitLevelConverter( OrganisationUnitService organisationUnitService )
     {   
+        this.organisationUnitService = organisationUnitService;
     }
     
     /**
@@ -85,7 +86,7 @@ public class OrganisationUnitLevelConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<OrganisationUnitLevel> levels = params.getOrganisationUnitLevels();
+        Collection<OrganisationUnitLevel> levels = organisationUnitService.getOrganisationUnitLevels( params.getOrganisationUnitLevels() );
         
         if ( levels != null && levels.size() > 0 )
         {

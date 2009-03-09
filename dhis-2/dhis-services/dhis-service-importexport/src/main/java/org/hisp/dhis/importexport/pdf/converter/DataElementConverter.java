@@ -27,7 +27,10 @@ package org.hisp.dhis.importexport.pdf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
@@ -44,8 +47,11 @@ import com.lowagie.text.pdf.PdfPTable;
 public class DataElementConverter
     extends PDFUtils implements PDFConverter 
 {
-    public DataElementConverter()
+    private DataElementService dataElementService;
+    
+    public DataElementConverter( DataElementService dataElementService )
     {   
+        this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -58,7 +64,9 @@ public class DataElementConverter
         
         I18n i18n = params.getI18n();
         
-        for ( DataElement element : params.getDataElements() )        
+        Collection<DataElement> elements = dataElementService.getDataElements( params.getDataElements() );
+        
+        for ( DataElement element : elements )    
         {
             PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
             

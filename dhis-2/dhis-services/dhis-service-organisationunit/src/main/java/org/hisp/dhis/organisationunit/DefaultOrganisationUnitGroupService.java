@@ -29,6 +29,7 @@ package org.hisp.dhis.organisationunit;
 
 import org.hisp.dhis.system.util.UUIdUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -78,6 +79,23 @@ public class DefaultOrganisationUnitGroupService
     {
         return organisationUnitGroupStore.getOrganisationUnitGroup( id );
     }
+    
+    public Collection<OrganisationUnitGroup> getOrganisationUnitGroups( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllOrganisationUnitGroups();
+        }
+        
+        Collection<OrganisationUnitGroup> groups = new ArrayList<OrganisationUnitGroup>();
+        
+        for ( Integer id : identifiers )
+        {
+            groups.add( getOrganisationUnitGroup( id ) );
+        }
+        
+        return groups;
+    }
 
     public OrganisationUnitGroup getOrganisationUnitGroup( String uuid )
     {
@@ -116,6 +134,23 @@ public class DefaultOrganisationUnitGroupService
     public OrganisationUnitGroupSet getOrganisationUnitGroupSet( int id )
     {
         return organisationUnitGroupStore.getOrganisationUnitGroupSet( id );
+    }
+    
+    public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSets( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllOrganisationUnitGroupSets();
+        }
+        
+        Collection<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>();
+        
+        for ( Integer id : identifiers )
+        {
+            groupSets.add( getOrganisationUnitGroupSet( id ) );
+        }
+        
+        return groupSets;
     }
 
     public OrganisationUnitGroupSet getOrganisationUnitGroupSetByName( String name )

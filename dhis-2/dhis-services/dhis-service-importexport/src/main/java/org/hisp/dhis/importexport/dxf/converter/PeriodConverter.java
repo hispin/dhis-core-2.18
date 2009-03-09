@@ -74,8 +74,9 @@ public class PeriodConverter
     /**
      * Constructor for write operations.
      */
-    public PeriodConverter()
+    public PeriodConverter(PeriodService periodService)
     {   
+        this.periodService = periodService;
     }
     
     /**
@@ -102,7 +103,7 @@ public class PeriodConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<Period> periods = params.getPeriods();
+        Collection<Period> periods = periodService.getPeriods( params.getPeriods() );
         
         if ( periods != null && periods.size() > 0 )
         {

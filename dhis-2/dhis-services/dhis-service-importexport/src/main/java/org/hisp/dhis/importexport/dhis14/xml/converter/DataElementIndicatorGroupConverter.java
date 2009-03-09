@@ -30,10 +30,12 @@ package org.hisp.dhis.importexport.dhis14.xml.converter;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorService;
 
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
@@ -52,6 +54,10 @@ public class DataElementIndicatorGroupConverter
     private static final String FIELD_LAST_USER = "LastUserID";
     private static final String FIELD_LAST_UPDATED = "LastUpdated";
 
+    private DataElementService dataElementService;
+    
+    private IndicatorService indicatorService;
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -59,8 +65,11 @@ public class DataElementIndicatorGroupConverter
     /**
      * Constructor for write operations.
      */
-    public DataElementIndicatorGroupConverter()
+    public DataElementIndicatorGroupConverter( DataElementService dataElementService,
+        IndicatorService indicatorService )
     {   
+        this.dataElementService = dataElementService;
+        this.indicatorService = indicatorService;
     }
 
     // -------------------------------------------------------------------------
@@ -69,7 +78,7 @@ public class DataElementIndicatorGroupConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElementGroup> dataElementGroups = params.getDataElementGroups();
+        Collection<DataElementGroup> dataElementGroups = dataElementService.getDataElementGroups( params.getDataElementGroups() );
         
         for ( DataElementGroup group : dataElementGroups )
         {
@@ -83,7 +92,7 @@ public class DataElementIndicatorGroupConverter
             writer.closeElement();
         }
         
-        Collection<IndicatorGroup> indicatorGroups = params.getIndicatorGroups();
+        Collection<IndicatorGroup> indicatorGroups = indicatorService.getIndicatorGroups( params.getIndicatorGroups() );
         
         for ( IndicatorGroup group : indicatorGroups )
         {

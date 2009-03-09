@@ -75,6 +75,13 @@ public interface OrganisationUnitGroupService
     OrganisationUnitGroup getOrganisationUnitGroup( int id );
 
     /**
+     * 
+     * @param identifiers
+     * @return
+     */
+    Collection<OrganisationUnitGroup> getOrganisationUnitGroups( Collection<Integer> identifiers );
+    
+    /**
      * Returns the OrganisationUnitGroup with the given UUID.
      * 
      * @param id the UUID of the OrganisationUnitGroup.
@@ -134,6 +141,13 @@ public interface OrganisationUnitGroupService
      */
     OrganisationUnitGroupSet getOrganisationUnitGroupSet( int id );
 
+    /**
+     * 
+     * @param identifiers
+     * @return
+     */
+    Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSets( Collection<Integer> identifiers );
+    
     /**
      * Returns an OrganisationUnitGroupSet with a given name.
      * 

@@ -37,6 +37,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.writer.XMLWriter;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportPipeThread;
 import org.hisp.dhis.importexport.ExportService;
@@ -57,6 +58,7 @@ import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.IndicatorXSDConverter
 import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.PeriodTypeXSDConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.UserRoleXSDConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.UserXSDConverter;
+import org.hisp.dhis.indicator.IndicatorService;
 
 /**
  * @author Lars Helge Overland
@@ -71,6 +73,24 @@ public class DefaultDhis14XMLExportService
     private static final String ROOT_NAME = "root";
     private static final String[] ROOT_PROPERTIES = { "xmlns:xsd", "http://www.w3.org/2001/XMLSchema", 
                                   "xmlns:od", "urn:schemas-microsoft-com:officedata" };
+
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
     
     // -------------------------------------------------------------------------
     // ExportService implementation
@@ -120,10 +140,10 @@ public class DefaultDhis14XMLExportService
             thread.registerXSDConverter( new UserRoleXSDConverter() );
             
             thread.registerXMLConverter( new PeriodTypeConverter() );
-            thread.registerXMLConverter( new CalculatedDataElementAssociationConverter() );
-            thread.registerXMLConverter( new DataElementConverter() );
-            thread.registerXMLConverter( new IndicatorTypeConverter() );
-            thread.registerXMLConverter( new IndicatorConverter() );            
+            thread.registerXMLConverter( new CalculatedDataElementAssociationConverter( dataElementService ) );
+            thread.registerXMLConverter( new DataElementConverter( dataElementService ) );
+            thread.registerXMLConverter( new IndicatorTypeConverter( indicatorService ) );
+            thread.registerXMLConverter( new IndicatorConverter( indicatorService ) );            
             thread.registerXMLConverter( new DataTypeConverter() );
             thread.registerXMLConverter( new UserConverter() );
             thread.registerXMLConverter( new UserRoleConverter() );

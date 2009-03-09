@@ -112,8 +112,9 @@ public class ExtendedDataElementConverter
     /**
      * Constructor for write operations.
      */
-    public ExtendedDataElementConverter()
-    {   
+    public ExtendedDataElementConverter( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
     }
     
     /**
@@ -144,7 +145,7 @@ public class ExtendedDataElementConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElement> dataElements = params.getDataElements();
+        Collection<DataElement> dataElements = dataElementService.getDataElements( params.getDataElements() );
         
         if ( dataElements != null && dataElements.size() > 0 )
         {

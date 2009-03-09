@@ -57,6 +57,8 @@ public class SourceConverter
     private static final String FIELD_ORG = "org";
     private static final String FIELD_KEY = "key";
     
+    private OrganisationUnitService organisationUnitService;
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -64,8 +66,9 @@ public class SourceConverter
     /**
      * Constructor for write operations.
      */
-    public SourceConverter()
+    public SourceConverter( OrganisationUnitService organisationUnitService )
     {   
+        this.organisationUnitService = organisationUnitService;
     }
     
     /**
@@ -90,7 +93,7 @@ public class SourceConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<OrganisationUnit> units = params.getOrganisationUnits();
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
         
         if ( units != null && units.size() > 0 )
         {        

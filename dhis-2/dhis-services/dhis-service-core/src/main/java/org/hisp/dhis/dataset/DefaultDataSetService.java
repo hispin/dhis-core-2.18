@@ -138,6 +138,11 @@ public class DefaultDataSetService
     
     public Collection<DataSet> getDataSets( Collection<Integer> identifiers )
     {
+        if ( identifiers == null )
+        {
+            return getAllDataSets();
+        }        
+        
         Collection<DataSet> objects = new ArrayList<DataSet>();
         
         for ( Integer id : identifiers )

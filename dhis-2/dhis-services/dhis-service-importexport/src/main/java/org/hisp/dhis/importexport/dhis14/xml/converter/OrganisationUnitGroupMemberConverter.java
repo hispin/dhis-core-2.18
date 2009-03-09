@@ -34,6 +34,7 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 
@@ -51,6 +52,8 @@ public class OrganisationUnitGroupMemberConverter
     private static final String FIELD_LAST_USER = "LastUserID";
     private static final String FIELD_LAST_UPDATED = "LastUpdatedID";
     
+    private OrganisationUnitGroupService organisationUnitGroupService;
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -58,8 +61,9 @@ public class OrganisationUnitGroupMemberConverter
     /**
      * Constructor for write operations.
      */
-    public OrganisationUnitGroupMemberConverter()
-    {   
+    public OrganisationUnitGroupMemberConverter( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     // -------------------------------------------------------------------------
@@ -68,7 +72,7 @@ public class OrganisationUnitGroupMemberConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<OrganisationUnitGroup> groups = params.getOrganisationUnitGroups();
+        Collection<OrganisationUnitGroup> groups = organisationUnitGroupService.getOrganisationUnitGroups( params.getOrganisationUnitGroups() );
         
         for ( OrganisationUnitGroup group : groups )
         {

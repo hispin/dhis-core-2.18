@@ -28,9 +28,9 @@ package org.hisp.dhis.importexport.action.exp;
  */
 
 import static org.hisp.dhis.datamart.DataMartInternalProcess.PROCESS_TYPE;
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDate;
-import static org.hisp.dhis.util.InternalProcessUtil.*;
+import static org.hisp.dhis.util.InternalProcessUtil.PROCESS_KEY_EXPORT;
+import static org.hisp.dhis.util.InternalProcessUtil.setCurrentRunningProcess;
 
 import java.util.Collection;
 import java.util.Date;
@@ -40,14 +40,13 @@ import java.util.Set;
 import org.amplecode.cave.process.ProcessCoordinator;
 import org.amplecode.cave.process.ProcessExecutor;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.DataMartInternalProcess;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -147,7 +146,7 @@ public class ExportDataMartAction
     
     public String execute()
     {
-        ExportParams params = new ExportParams();
+        DataMartExport export = new DataMartExport();
 
         // ---------------------------------------------------------------------
         // Get DataElements
@@ -164,7 +163,7 @@ public class ExportDataMartAction
                 distinctDataElements.addAll( dataSet.getDataElements() );
             }
             
-            params.setDataElements( distinctDataElements );
+            export.setDataElements( distinctDataElements );
         }
         
         // ---------------------------------------------------------------------
@@ -177,7 +176,7 @@ public class ExportDataMartAction
         
             Date selectedEndDate = getMediumDate( endDate );
         
-            params.getPeriods().addAll( periodService.getPeriodsBetweenDates( selectedStartDate, selectedEndDate ) );
+            export.getPeriods().addAll( periodService.getPeriodsBetweenDates( selectedStartDate, selectedEndDate ) );
         }
         
         // ---------------------------------------------------------------------
@@ -190,7 +189,7 @@ public class ExportDataMartAction
         {
             for ( OrganisationUnit unit : selectedUnits )
             {
-                params.getOrganisationUnits().addAll( organisationUnitService.getOrganisationUnitsAtLevel( dataSourceLevel, unit ) );
+                export.getOrganisationUnits().addAll( organisationUnitService.getOrganisationUnitsAtLevel( dataSourceLevel, unit ) );
             }
         }
 
@@ -204,10 +203,7 @@ public class ExportDataMartAction
         
         DataMartInternalProcess process = (DataMartInternalProcess) executor.getProcess();
         
-        process.setDataElementIds( getIdentifiers( DataElement.class, params.getDataElements() ) );
-        process.setIndicatorIds( new HashSet<Integer>() );
-        process.setPeriodIds( getIdentifiers( Period.class, params.getPeriods() ) );
-        process.setOrganisationUnitIds( getIdentifiers( OrganisationUnit.class, params.getOrganisationUnits() ) );
+        process.setProperties( export );
         
         processCoordinator.requestProcessExecution( executor );
         

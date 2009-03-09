@@ -102,7 +102,7 @@ public class OrganisationUnitHierarchyConverter
     
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<OrganisationUnit> units = params.getOrganisationUnits();
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
         
         int id = 0;
         

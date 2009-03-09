@@ -37,6 +37,8 @@ import java.util.zip.ZipOutputStream;
 
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.writer.XMLWriter;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportPipeThread;
@@ -53,6 +55,7 @@ import org.hisp.dhis.importexport.ixf.converter.LanguageConverter;
 import org.hisp.dhis.importexport.ixf.converter.SourceConverter;
 import org.hisp.dhis.importexport.ixf.converter.TimePeriodConverter;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.PeriodService;
 
 /**
  * @author Lars Helge Overland
@@ -72,14 +75,28 @@ public class DefaultIXFExportService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
-    private IXFConfigurationManager configurationManager;
 
-    public void setConfigurationManager( IXFConfigurationManager configurationManager )
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.configurationManager = configurationManager;
+        this.categoryService = categoryService;
     }
+    
+    private DataElementService dataElementService;
 
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+    
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -92,6 +109,13 @@ public class DefaultIXFExportService
     public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
+    }
+
+    private IXFConfigurationManager configurationManager;
+
+    public void setConfigurationManager( IXFConfigurationManager configurationManager )
+    {
+        this.configurationManager = configurationManager;
     }
 
     // -------------------------------------------------------------------------
@@ -130,15 +154,15 @@ public class DefaultIXFExportService
             thread.setRootProperties( ROOT_PROPERTIES );
             
             thread.registerXMLConverter( new FileMetaDataConverter( configurationManager ) );
-            thread.registerXMLConverter( new TimePeriodConverter() );
-            thread.registerXMLConverter( new SourceConverter() );
+            thread.registerXMLConverter( new TimePeriodConverter( periodService ) );
+            thread.registerXMLConverter( new SourceConverter( organisationUnitService ) );
             thread.registerXMLConverter( new LanguageConverter() );
             thread.registerXMLConverter( new GeoLevelConverter( configurationManager, organisationUnitService ) );
             thread.registerXMLConverter( new GeoTypeConverter() );
             thread.registerXMLConverter( new CountryConverter( configurationManager ) );
             thread.registerXMLConverter( new GeoCodeConverter() );
-            thread.registerXMLConverter( new DimensionConverter() );
-            thread.registerXMLConverter( new IndicatorConverter( dataValueService ) );
+            thread.registerXMLConverter( new DimensionConverter( categoryService ) );
+            thread.registerXMLConverter( new IndicatorConverter( dataValueService, dataElementService, periodService, organisationUnitService  ) );
             
             thread.start();
 

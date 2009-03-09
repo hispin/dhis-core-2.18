@@ -34,6 +34,7 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.datadictionary.DataDictionary;
+import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.importexport.AssociationType;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
@@ -61,6 +62,8 @@ public class DataDictionaryIndicatorConverter
     // Properties
     // -------------------------------------------------------------------------
 
+    private DataDictionaryService dataDictionaryService;
+    
     private Map<Object, Integer> dataDictionaryMapping;
 
     private Map<Object, Integer> indicatorMapping;
@@ -72,8 +75,9 @@ public class DataDictionaryIndicatorConverter
     /**
      * Constructor for write operations.
      */
-    public DataDictionaryIndicatorConverter()
-    {   
+    public DataDictionaryIndicatorConverter( DataDictionaryService dataDictionaryService )
+    {
+        this.dataDictionaryService = dataDictionaryService;   
     }
 
     /**
@@ -96,7 +100,7 @@ public class DataDictionaryIndicatorConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataDictionary> dataDictionaries = params.getDataDictionaries();
+        Collection<DataDictionary> dataDictionaries = dataDictionaryService.getDataDictionaries( params.getDataDictionaries() );
         
         if ( dataDictionaries != null && dataDictionaries.size() > 0 )
         {

@@ -127,8 +127,9 @@ public class ExtendedIndicatorConverter
     /**
      * Constructor for write operations.
      */
-    public ExtendedIndicatorConverter()
-    {   
+    public ExtendedIndicatorConverter( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
     }
     
     /**
@@ -168,7 +169,7 @@ public class ExtendedIndicatorConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<Indicator> indicators = params.getIndicators();
+        Collection<Indicator> indicators = indicatorService.getIndicators( params.getIndicators() );
         
         if ( indicators != null && indicators.size() > 0 )
         {

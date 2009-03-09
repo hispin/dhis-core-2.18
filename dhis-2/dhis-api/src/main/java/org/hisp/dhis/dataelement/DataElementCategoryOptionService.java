@@ -68,6 +68,13 @@ public interface DataElementCategoryOptionService
     
     /**
      * 
+     * @param identifiers
+     * @return
+     */
+    Collection<DataElementCategoryOption> getDataElementCategoryOptions( Collection<Integer> identifiers );
+    
+    /**
+     * 
      * @param name
      * @return
      */

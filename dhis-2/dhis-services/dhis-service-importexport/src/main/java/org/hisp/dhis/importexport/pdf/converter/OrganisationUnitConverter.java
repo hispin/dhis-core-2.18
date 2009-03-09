@@ -27,12 +27,15 @@ package org.hisp.dhis.importexport.pdf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
 import org.hisp.dhis.importexport.pdf.util.PDFPrintUtil;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
@@ -45,8 +48,11 @@ import com.lowagie.text.pdf.PdfPTable;
 public class OrganisationUnitConverter
     extends PDFUtils implements PDFConverter 
 {
-    public OrganisationUnitConverter()
+    private OrganisationUnitService organisationUnitService;
+    
+    public OrganisationUnitConverter( OrganisationUnitService organisationUnitService )
     {   
+        this.organisationUnitService = organisationUnitService;
     }
     
     // -------------------------------------------------------------------------
@@ -60,7 +66,9 @@ public class OrganisationUnitConverter
         I18n i18n = params.getI18n();
         I18nFormat format = params.getFormat();
         
-        for ( OrganisationUnit unit : params.getOrganisationUnits() )
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
+        
+        for ( OrganisationUnit unit : units )
         {
             PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
             

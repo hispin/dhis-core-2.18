@@ -45,6 +45,8 @@ public interface DataElementCategoryComboService
  
     DataElementCategoryCombo getDataElementCategoryCombo( int id );
     
+    Collection<DataElementCategoryCombo> getDataElementCategoryCombos( Collection<Integer> identifiers );
+    
     DataElementCategoryCombo getDataElementCategoryComboByName( String name );
     
     Collection<DataElementCategoryCombo> getAllDataElementCategoryCombos();

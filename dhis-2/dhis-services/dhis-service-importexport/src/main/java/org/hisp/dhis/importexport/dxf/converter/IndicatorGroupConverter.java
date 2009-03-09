@@ -63,8 +63,9 @@ public class IndicatorGroupConverter
     /**
      * Constructor for write operations.
      */
-    public IndicatorGroupConverter()
-    {   
+    public IndicatorGroupConverter( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
     }
     
     /**
@@ -89,7 +90,7 @@ public class IndicatorGroupConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<IndicatorGroup> groups = params.getIndicatorGroups();
+        Collection<IndicatorGroup> groups = indicatorService.getIndicatorGroups( params.getIndicatorGroups() );
         
         if ( groups != null && groups.size() > 0 )
         {
