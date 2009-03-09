@@ -17,7 +17,14 @@
     <input type="button" value="$i18n.getString( "run_validation" )" onclick="javascript:validate();" style="width:150px" #if( !$selectedPeriodIndex ) disabled="disabled" #end><br>
     <input type="button" id="calculateCDEs" value="$i18n.getString( "save_calculated" )" name="calculateCDEs" onclick="calculateAndSaveCDEs();" style="width:150px" #if( !$selectedPeriodIndex ) disabled="disabled" #end><br>
 
-	<input type="checkbox" id="useDefaultForm" name="useDefaultForm" #if( $useDefaultForm || !$customDataEntryFormExists ) checked="checked" #end #if( !$customDataEntryFormExists ) disabled="disabled" #end onchange="document.getElementById( 'selectForm' ).submit();">
+	<input type="checkbox" id="useDefaultForm" name="useDefaultForm"
+		#if( $useDefaultForm || !$customDataEntryFormExists ) 
+			checked="checked" 
+		#end 
+		#if( !$customDataEntryFormExists || $disableDefaultForm ) 
+			disabled="disabled" 
+		#end 
+		onchange="document.getElementById( 'selectForm' ).submit();">	
 	<label>$i18n.getString( "use_default_form" )</label><br>
 
 	<input type="checkbox" id="useSectionForm" name="useSectionForm" #if( $useSectionForm ) checked="checked" #end  #if(!$haveSection) disabled="disabled" #end onchange="document.getElementById( 'selectForm' ).submit();">
