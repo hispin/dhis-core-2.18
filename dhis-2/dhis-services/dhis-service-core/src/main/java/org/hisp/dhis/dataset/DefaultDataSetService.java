@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -59,6 +60,13 @@ public class DefaultDataSetService
     {
         this.dataEntryFormService = dataEntryFormService;
     }
+    
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
 
     // -------------------------------------------------------------------------
     // DataSet
@@ -66,16 +74,24 @@ public class DefaultDataSetService
 
     public int addDataSet( DataSet dataSet )
     {
-        return dataSetStore.addDataSet( dataSet );
+        int id = dataSetStore.addDataSet( dataSet );
+        
+        i18nService.addObject( dataSet );
+        
+        return id;
     }
 
     public void updateDataSet( DataSet dataSet )
     {
         dataSetStore.updateDataSet( dataSet );
+        
+        i18nService.verify( dataSet );
     }
 
     public void deleteDataSet( DataSet dataSet )
     {
+        i18nService.removeObject( dataSet );
+        
         dataSetStore.deleteDataSet( dataSet );
     }
 

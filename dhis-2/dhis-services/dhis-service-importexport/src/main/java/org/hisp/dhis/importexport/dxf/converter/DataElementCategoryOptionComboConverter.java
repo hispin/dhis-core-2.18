@@ -63,9 +63,11 @@ public class DataElementCategoryOptionComboConverter
     
     private static final String SUB_COLLECTION_NAME = "categoryOptions";
     private static final String SUB_COLLECTION_ELEMENT_NAME = "categoryOption";
-    
-    private DataElementCategoryOptionComboService categoryOptionComboService;
-    
+
+    // -------------------------------------------------------------------------
+    // Properties
+    // -------------------------------------------------------------------------
+
     private DataElementCategoryOptionService categoryOptionService;
     
     private DataElementCategoryComboService categoryComboService;

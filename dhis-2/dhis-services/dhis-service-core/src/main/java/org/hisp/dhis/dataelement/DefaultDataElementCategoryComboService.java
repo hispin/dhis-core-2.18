@@ -32,6 +32,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.hisp.dhis.i18n.I18nService;
+
 /**
  * @author Abyot Asalefew
  * @version $Id$
@@ -52,10 +54,16 @@ public class DefaultDataElementCategoryComboService
 
     private DataElementDimensionRowOrderService dataElementDimensionRowOrderService;
 
-    public void setDataElementDimensionRowOrderService(
-        DataElementDimensionRowOrderService dataElementDimensionRowOrderService )
+    public void setDataElementDimensionRowOrderService( DataElementDimensionRowOrderService dataElementDimensionRowOrderService )
     {
         this.dataElementDimensionRowOrderService = dataElementDimensionRowOrderService;
+    }
+
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
     }
 
     // -------------------------------------------------------------------------
@@ -64,11 +72,17 @@ public class DefaultDataElementCategoryComboService
 
     public int addDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo )
     {
-        return dataElementCategoryComboStore.addDataElementCategoryCombo( dataElementCategoryCombo );
+        int id = dataElementCategoryComboStore.addDataElementCategoryCombo( dataElementCategoryCombo );
+        
+        i18nService.addObject( dataElementCategoryCombo );
+        
+        return id;
     }
 
     public void deleteDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo )
     {
+        i18nService.removeObject( dataElementCategoryCombo );
+        
         dataElementCategoryComboStore.deleteDataElementCategoryCombo( dataElementCategoryCombo );
     }
 

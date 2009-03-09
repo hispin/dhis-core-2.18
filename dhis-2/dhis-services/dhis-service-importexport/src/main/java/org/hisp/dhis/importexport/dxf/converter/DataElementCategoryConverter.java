@@ -55,8 +55,6 @@ public class DataElementCategoryConverter
     private static final String FIELD_ID = "id";
     private static final String FIELD_NAME = "name";
     
-    private DataElementCategoryService categoryService;
-    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------

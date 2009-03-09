@@ -32,6 +32,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.hisp.dhis.i18n.I18nService;
+
 /**
  * @author Abyot Asalefew
  * @version $Id$
@@ -57,17 +59,30 @@ public class DefaultDataElementCategoryService
         this.dataElementDimensionColumnOrderService = dataElementDimensionColumnOrderService;
     }
 
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
+
     // -------------------------------------------------------------------------
     // DataElementCategory
     // -------------------------------------------------------------------------
 
     public int addDataElementCategory( DataElementCategory dataElementCategory )
     {
-        return dataElementCategoryStore.addDataElementCategory( dataElementCategory );
+        int id = dataElementCategoryStore.addDataElementCategory( dataElementCategory );
+        
+        i18nService.addObject( dataElementCategory );
+        
+        return id;
     }
 
     public void deleteDataElementCategory( DataElementCategory dataElementCategory )
     {
+        i18nService.removeObject( dataElementCategory );
+        
         dataElementCategoryStore.deleteDataElementCategory( dataElementCategory );
     }
 

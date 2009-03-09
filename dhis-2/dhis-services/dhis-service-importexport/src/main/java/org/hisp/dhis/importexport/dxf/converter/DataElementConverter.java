@@ -66,6 +66,10 @@ public class DataElementConverter
     private static final String FIELD_AGGREGATION_OPERATOR = "aggregationOperator";
     private static final String FIELD_CATEGORY_COMBO = "categoryCombo";
 
+    // -------------------------------------------------------------------------
+    // Properties
+    // -------------------------------------------------------------------------
+
     private Map<Object, Integer> categoryComboMapping;
     
     // -------------------------------------------------------------------------

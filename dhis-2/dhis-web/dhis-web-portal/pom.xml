@@ -114,12 +114,6 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-openhealth-integration</artifactId>
-      <version>${version}</version>
-      <type>war</type>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-reporting</artifactId>
       <version>${version}</version>
       <type>war</type>
@@ -129,21 +123,29 @@
       <artifactId>dhis-web-dashboard-integration</artifactId>
       <version>${version}</version>
       <type>war</type>
-    </dependency>    
+    </dependency>
+    <!-- 
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-openhealth-integration</artifactId>
+      <version>${version}</version>
+      <type>war</type>
+    </dependency>
+    -->
+    <!-- 
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-jforum-integration</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
-    <!--
+    -->
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-gis</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
-    -->
     <!--
     <dependency>
       <groupId>org.hisp.dhis</groupId>
@@ -151,7 +153,7 @@
       <version>${version}</version>
       <type>war</type>
     </dependency>
-    -->	
+    -->
     
     <!-- Other -->
     

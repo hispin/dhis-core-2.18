@@ -28,6 +28,7 @@ package org.hisp.dhis.importexport.converter;
  */
 
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
+import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.importexport.ImportParams;
 
 /**
@@ -39,6 +40,8 @@ public class AbstractCompleteDataSetRegistrationConverter
 {
     protected ImportParams params;
 
+    protected CompleteDataSetRegistrationService completeDataSetRegistrationService;
+    
     // -------------------------------------------------------------------------
     // Overridden methods
     // -------------------------------------------------------------------------

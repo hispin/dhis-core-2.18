@@ -18,6 +18,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.source.SourceStore"/>
     <property name="organisationUnitStore"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitStore"/>
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore"
@@ -30,6 +32,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.organisationunit.DefaultOrganisationUnitGroupService">
     <property name="organisationUnitGroupStore"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore"/>
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
   
   <!-- Transactio AOP definitions -->
@@ -79,22 +83,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <list>
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitHierarchyVerifier"/>
         </list>
-      </list>
-    </property>
-  </bean>	
-	
-  <!-- I18n AOP definitions -->
-  
-  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-    <property name="advice" ref="I18nObjectInterceptor"/>
-    <property name="patterns">
-      <list>
-        <value>.*\.OrganisationUnitService\.add.*</value>
-        <value>.*\.OrganisationUnitService\.update.*</value>
-        <value>.*\.OrganisationUnitService\.delete.*</value>
-        <value>.*\.OrganisationUnitGroupService\.add.*</value>
-        <value>.*\.OrganisationUnitGroupService\.update.*</value>
-        <value>.*\.OrganisationUnitGroupService\.delete.*</value>  
       </list>
     </property>
   </bean>

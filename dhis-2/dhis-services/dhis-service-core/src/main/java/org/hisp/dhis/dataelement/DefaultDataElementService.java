@@ -36,6 +36,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.UUIdUtils;
 
 /**
@@ -56,6 +57,13 @@ public class DefaultDataElementService
     {
         this.dataElementStore = dataElementStore;
     }
+    
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
 
     // -------------------------------------------------------------------------
     // DataElement
@@ -67,18 +75,26 @@ public class DefaultDataElementService
         {
             dataElement.setUuid( UUIdUtils.getUUId() );
         }
+        
+        int id = dataElementStore.addDataElement( dataElement );
 
-        return dataElementStore.addDataElement( dataElement );
+        i18nService.addObject( dataElement );
+
+        return id;
     }
 
     public void updateDataElement( DataElement dataElement )
     {
         dataElementStore.updateDataElement( dataElement );
+        
+        i18nService.verify( dataElement );
     }
 
     public void deleteDataElement( DataElement dataElement )
         throws HierarchyViolationException
-    {
+    {        
+        i18nService.removeObject( dataElement );
+        
         dataElementStore.deleteDataElement( dataElement );
     }
 
@@ -325,16 +341,24 @@ public class DefaultDataElementService
             dataElementGroup.setUuid( UUIdUtils.getUUId() );
         }
 
-        return dataElementStore.addDataElementGroup( dataElementGroup );
+        int id = dataElementStore.addDataElementGroup( dataElementGroup );
+        
+        i18nService.addObject( dataElementGroup );
+        
+        return id;
     }
 
     public void updateDataElementGroup( DataElementGroup dataElementGroup )
     {
         dataElementStore.updateDataElementGroup( dataElementGroup );
+        
+        i18nService.verify( dataElementGroup );        
     }
 
     public void deleteDataElementGroup( DataElementGroup dataElementGroup )
-    {
+    {        
+        i18nService.removeObject( dataElementGroup );
+        
         dataElementStore.deleteDataElementGroup( dataElementGroup );
     }
 

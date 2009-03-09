@@ -31,13 +31,11 @@ import java.io.InputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.ImportExportServiceManager;
-import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.options.datadictionary.DataDictionaryModeManager;
 
 import com.opensymphony.xwork.Action;
@@ -68,20 +66,6 @@ public class ExportToPdfAction
     public void setServiceManager( ImportExportServiceManager serviceManager )
     {
         this.serviceManager = serviceManager;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
     }
 
     private I18n i18n;

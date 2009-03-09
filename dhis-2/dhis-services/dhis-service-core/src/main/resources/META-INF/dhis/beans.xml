@@ -138,6 +138,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.dataelement.DefaultDataElementService">
     <property name="dataElementStore"
       ref="org.hisp.dhis.dataelement.DataElementStore"/>
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
   
   <bean id="org.hisp.dhis.minmax.MinMaxDataElementService"
@@ -150,12 +152,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.datadictionary.DefaultDataDictionaryService">
     <property name="dataDictionaryStore"
       ref="org.hisp.dhis.datadictionary.DataDictionaryStore"/>
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
   
 	<bean id="org.hisp.dhis.indicator.IndicatorService"
 		class="org.hisp.dhis.indicator.DefaultIndicatorService">
     <property name="indicatorStore"
       ref="org.hisp.dhis.indicator.IndicatorStore"/>
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>
 	</bean>
 	
   <bean id="org.hisp.dhis.period.PeriodService"
@@ -170,6 +176,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataset.DataSetStore"/>
     <property name="dataEntryFormService"
       ref="org.hisp.dhis.dataset.DataEntryFormService"/>
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
 
   <bean id="org.hisp.dhis.dataset.CompleteDataSetRegistrationService"
@@ -219,7 +227,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementCategoryStore"
       ref="org.hisp.dhis.dataelement.DataElementCategoryStore"/> 
     <property name="dataElementDimensionColumnOrderService"
-      ref="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService"/>   
+      ref="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService"/> 
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>  
   </bean>
   
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryComboService"
@@ -227,13 +237,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementCategoryComboStore"
       ref="org.hisp.dhis.dataelement.DataElementCategoryComboStore"/>
     <property name="dataElementDimensionRowOrderService"
-      ref="org.hisp.dhis.dataelement.DataElementDimensionRowOrderService"/>          
+      ref="org.hisp.dhis.dataelement.DataElementDimensionRowOrderService"/>   
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>       
   </bean>  
   
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionService"
     class="org.hisp.dhis.dataelement.DefaultDataElementCategoryOptionService">
     <property name="dataElementCategoryOptionStore"
       ref="org.hisp.dhis.dataelement.DataElementCategoryOptionStore"/>
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
   
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"
@@ -422,27 +436,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-  <!-- I18n AOP definitions -->
-  
-  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-    <property name="advice" ref="I18nObjectInterceptor"/>
-    <property name="patterns">
-      <list>
-        <value>.*\.DataElementService\.add.*</value>
-        <value>.*\.DataElementService\.update.*</value>
-        <value>.*\.DataElementService\.delete.*</value>
-        <value>.*\.DataDictionaryService\.save.*</value>
-        <value>.*\.DataDictionaryService\.delete.*</value>
-        <value>.*\.IndicatorService\.add.*</value>
-        <value>.*\.IndicatorService\.update.*</value>
-        <value>.*\.IndicatorService\.delete.*</value>
-        <value>.*\.DataSetService\.add.*</value>
-        <value>.*\.DataSetService\.update.*</value>
-        <value>.*\.DataSetService\.delete.*</value>
-      </list>
-    </property>
-  </bean>
-  
   <!-- DeletionHandlers -->
     
   <bean id="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler"

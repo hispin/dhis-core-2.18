@@ -9,17 +9,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <!-- Event listener definitions -->
-<!--
+
   <bean id="org.hisp.dhis.i18n.hibernate.HibernateI18nPostLoadEventListener"
-        class="org.hisp.dhis.i18n.hibernate.HibernateI18nPostLoadEventListener">
+    class="org.hisp.dhis.i18n.hibernate.HibernateI18nPostLoadEventListener">
     <property name="i18nService">
       <ref bean="org.hisp.dhis.i18n.I18nService"/>
     </property>
   </bean>
--->
+
   <!-- Event listener registrations -->
-<!--
-  <bean id="addI18nPostLoadEventListener" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+
+  <bean id="addI18nPostLoadEventListener" 
+    class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetObject">
       <ref bean="org.hisp.dhis.hibernate.HibernateConfigurationProvider"/>
     </property>
@@ -33,11 +34,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       </list>
     </property>
   </bean>
--->
+  
   <!-- I18n object definitions -->
 
   <bean id="I18nDataElement"
-        class="org.hisp.dhis.i18n.I18nObject">
+    class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="DataElement"/>
     <property name="propertyNames">
       <list>
@@ -49,7 +50,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="I18nDataElementGroup"
-        class="org.hisp.dhis.i18n.I18nObject">
+    class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="DataElementGroup"/>
     <property name="propertyNames">
       <list>
@@ -60,7 +61,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 
   <bean id="I18nIndicator"
-        class="org.hisp.dhis.i18n.I18nObject">
+    class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="Indicator"/>
     <property name="propertyNames">
       <list>
@@ -74,7 +75,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="I18nIndicatorType"
-        class="org.hisp.dhis.i18n.I18nObject">
+    class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="IndicatorType"/>
     <property name="propertyNames">
       <list>
@@ -84,7 +85,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="I18nIndicatorGroup"
-        class="org.hisp.dhis.i18n.I18nObject">
+    class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="IndicatorGroup"/>
     <property name="propertyNames">
       <list>
@@ -94,7 +95,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="I18nDataDictionary"
-        class="org.hisp.dhis.i18n.I18nObject">
+    class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="DataDictionary"/>
     <property name="propertyNames">
       <list>
@@ -106,7 +107,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="I18nOrganisationUnit"
-        class="org.hisp.dhis.i18n.I18nObject">
+    class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="OrganisationUnit"/>
     <property name="propertyNames">
       <list>
@@ -118,7 +119,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="I18nOrganisationUnitGroup"
-        class="org.hisp.dhis.i18n.I18nObject">
+    class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="OrganisationUnitGroup"/>
     <property name="propertyNames">
       <list>
@@ -128,7 +129,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="I18nOrganisationUnitGroupSet"
-        class="org.hisp.dhis.i18n.I18nObject">
+    class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="OrganisationUnitGroupSet"/>
     <property name="propertyNames">
       <list>
@@ -139,7 +140,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="I18nDataSet"
-        class="org.hisp.dhis.i18n.I18nObject">
+    class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="DataSet"/>
     <property name="propertyNames">
       <list>
@@ -149,7 +150,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="I18nDataElementCategory"
-        class="org.hisp.dhis.i18n.I18nObject">
+    class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="DataElementCategory"/>
     <property name="propertyNames">
       <list>
@@ -159,7 +160,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="I18nDataElementCategoryOption"
-        class="org.hisp.dhis.i18n.I18nObject">
+    class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="DataElementCategoryOption"/>
     <property name="propertyNames">
       <list>
@@ -169,7 +170,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="I18nDataElementCategoryCombo"
-        class="org.hisp.dhis.i18n.I18nObject">
+    class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="DataElementCategoryCombo"/>
     <property name="propertyNames">
       <list>
@@ -178,16 +179,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
   
-  <bean id="I18nTarget"
-        class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="Target"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-        <value>description</value>
-      </list>
-    </property>
-  </bean>
+  <!-- I18nService -->
   
   <bean id="org.hisp.dhis.i18n.I18nService"
         class="org.hisp.dhis.i18n.DefaultI18nService">
@@ -212,17 +204,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <ref bean="I18nDataElementCategory"/>
         <ref bean="I18nDataElementCategoryOption"/>
         <ref bean="I18nDataElementCategoryCombo"/>
-        <ref bean="I18nTarget"/>
       </list>
     </property>
   </bean>
   
   <!-- I81n AOP definitions -->
-  
+  <!--
   <bean id="I18nObjectInterceptor"
     class="org.hisp.dhis.i18n.interceptor.I18nObjectInterceptor">
     <property name="i18nService"
       ref="org.hisp.dhis.i18n.I18nService"/>  
   </bean>
+  -->
   
 </beans>

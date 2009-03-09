@@ -61,6 +61,10 @@ public class DataSetConverter
     private static final String FIELD_CODE = "code";
     private static final String FIELD_PERIOD_TYPE = "periodType";
 
+    // -------------------------------------------------------------------------
+    // Properties
+    // -------------------------------------------------------------------------
+
     private Map<String, Integer> periodTypeMapping;
     
     // -------------------------------------------------------------------------

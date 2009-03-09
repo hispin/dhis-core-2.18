@@ -27,6 +27,7 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.UUIdUtils;
 
 import java.util.ArrayList;
@@ -51,6 +52,13 @@ public class DefaultOrganisationUnitGroupService
         this.organisationUnitGroupStore = organisationUnitGroupStore;
     }
 
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitGroup
     // -------------------------------------------------------------------------
@@ -62,16 +70,24 @@ public class DefaultOrganisationUnitGroupService
             organisationUnitGroup.setUuid( UUIdUtils.getUUId() );
         }
         
-        return organisationUnitGroupStore.addOrganisationUnitGroup( organisationUnitGroup );
+        int id = organisationUnitGroupStore.addOrganisationUnitGroup( organisationUnitGroup );
+        
+        i18nService.addObject( organisationUnitGroup );
+        
+        return id;
     }
 
     public void updateOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
     {
         organisationUnitGroupStore.updateOrganisationUnitGroup( organisationUnitGroup );
+        
+        i18nService.verify( organisationUnitGroup );
     }
 
     public void deleteOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
     {
+        i18nService.removeObject( organisationUnitGroup );
+        
         organisationUnitGroupStore.deleteOrganisationUnitGroup( organisationUnitGroup );
     }
 
@@ -118,16 +134,24 @@ public class DefaultOrganisationUnitGroupService
 
     public int addOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet )
     {
-        return organisationUnitGroupStore.addOrganisationUnitGroupSet( organisationUnitGroupSet );
+        int id = organisationUnitGroupStore.addOrganisationUnitGroupSet( organisationUnitGroupSet );
+        
+        i18nService.addObject( organisationUnitGroupSet );
+        
+        return id;
     }
 
     public void updateOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet )
     {
         organisationUnitGroupStore.updateOrganisationUnitGroupSet( organisationUnitGroupSet );
+        
+        i18nService.verify( organisationUnitGroupSet );
     }
 
     public void deleteOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet )
     {
+        i18nService.removeObject( organisationUnitGroupSet );
+        
         organisationUnitGroupStore.deleteOrganisationUnitGroupSet( organisationUnitGroupSet );
     }
 

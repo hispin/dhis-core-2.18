@@ -103,6 +103,10 @@ public class ExtendedDataElementConverter
     private static final String FIELD_SAVED = "saved";
     private static final String FIELD_LAST_UPDATED = "lastUpdated";
 
+    // -------------------------------------------------------------------------
+    // Properties
+    // -------------------------------------------------------------------------
+
     private Map<Object, Integer> categoryComboMapping;
     
     // -------------------------------------------------------------------------

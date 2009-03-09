@@ -46,6 +46,5 @@ public class HibernateI18nPostLoadEventListener implements PostLoadEventListener
     public void onPostLoad( PostLoadEvent postLoadEvent )
     {
         i18nService.internationalise( postLoadEvent.getEntity() );
-        //System.out.println("Load event !");
     }
 }

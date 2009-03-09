@@ -30,6 +30,8 @@ package org.hisp.dhis.datadictionary;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.i18n.I18nService;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -47,14 +49,34 @@ public class DefaultDataDictionaryService
     {
         this.dataDictionaryStore = dataDictionaryStore;
     }
-    
+
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
+
     // -------------------------------------------------------------------------
     // DataDictionary
     // -------------------------------------------------------------------------
 
     public int saveDataDictionary( DataDictionary dataDictionary )
     {
-        return dataDictionaryStore.saveDataDictionary( dataDictionary );        
+        int dataDictionaryId = dataDictionary.getId();
+        
+        int id = dataDictionaryStore.saveDataDictionary( dataDictionary );
+        
+        if ( dataDictionaryId == 0 )
+        {
+            i18nService.addObject( dataDictionary );
+        }
+        else
+        {
+            i18nService.verify( dataDictionary );
+        }
+        
+        return id;
     }
     
     public DataDictionary getDataDictionary( int id )
@@ -81,6 +103,8 @@ public class DefaultDataDictionaryService
     
     public void deleteDataDictionary( DataDictionary dataDictionary )
     {
+        i18nService.removeObject( dataDictionary );
+        
         dataDictionaryStore.deleteDataDictionary( dataDictionary );
     }
     

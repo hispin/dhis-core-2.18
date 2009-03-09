@@ -947,12 +947,10 @@ public class OrganisationUnitServiceTest
         assertEquals( level1, actual.next() );
         assertEquals( level2, actual.next() );
         
-        OrganisationUnitLevel level3 = actual.next();
+        level4 = actual.next();
         
-        assertEquals( 3, level3.getLevel() );
-        assertEquals( "Level 3", level3.getName() );
-        
-        assertEquals( level4, actual.next() );
+        assertEquals( 4, level4.getLevel() );
+        assertEquals( "PHU", level4.getName() );
     }
     
     public void testRemoveOrganisationUnitLevel()

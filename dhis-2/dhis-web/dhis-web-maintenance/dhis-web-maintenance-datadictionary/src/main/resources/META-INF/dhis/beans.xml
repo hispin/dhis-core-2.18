@@ -684,12 +684,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="serviceManager">
       <ref bean="org.hisp.dhis.importexport.ImportExportServiceManager"/>
     </property>
-    <property name="dataElementService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-    </property>
-	<property name="indicatorService">
-	  <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-	</property>
   </bean>
 	
   <!-- Other -->

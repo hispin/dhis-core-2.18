@@ -30,6 +30,8 @@ package org.hisp.dhis.dataelement;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.i18n.I18nService;
+
 /**
  * @author Abyot Asalefew
  * @version $Id$
@@ -48,22 +50,37 @@ public class DefaultDataElementCategoryOptionService
         this.dataElementCategoryOptionStore = dataElementCategoryOptionStore;
     }
 
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
+
     // -------------------------------------------------------------------------
     // DataElementCategoryOption
     // -------------------------------------------------------------------------
 
     public int addDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
     {
-        return dataElementCategoryOptionStore.addDataElementCategoryOption( dataElementCategoryOption );
+        int id = dataElementCategoryOptionStore.addDataElementCategoryOption( dataElementCategoryOption );
+        
+        i18nService.addObject( dataElementCategoryOption );
+        
+        return id;
     }
 
     public void updateDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
     {
         dataElementCategoryOptionStore.addDataElementCategoryOption( dataElementCategoryOption );
+        
+        i18nService.verify( dataElementCategoryOption );
     }
 
     public void deleteDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
     {
+        i18nService.removeObject( dataElementCategoryOption );
+        
         dataElementCategoryOptionStore.deleteDataElementCategoryOption( dataElementCategoryOption );
     }
 

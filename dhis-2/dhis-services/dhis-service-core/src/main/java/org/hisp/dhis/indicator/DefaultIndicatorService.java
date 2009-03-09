@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.UUIdUtils;
 
 /**
@@ -51,6 +52,13 @@ public class DefaultIndicatorService
         this.indicatorStore = indicatorStore;
     }
 
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
+
     // -------------------------------------------------------------------------
     // Indicator
     // -------------------------------------------------------------------------
@@ -62,16 +70,24 @@ public class DefaultIndicatorService
             indicator.setUuid( UUIdUtils.getUUId() );            
         }
         
-        return indicatorStore.addIndicator( indicator );
+        int id = indicatorStore.addIndicator( indicator );
+        
+        i18nService.addObject( indicator );
+        
+        return id;
     }
 
     public void updateIndicator( Indicator indicator )
     {
         indicatorStore.updateIndicator( indicator );
+        
+        i18nService.verify( indicator );
     }
     
     public void deleteIndicator( Indicator indicator )
     {
+        i18nService.removeObject( indicator );
+        
         indicatorStore.deleteIndicator( indicator );    
     }
     
@@ -133,15 +149,24 @@ public class DefaultIndicatorService
 
     public int addIndicatorType( IndicatorType indicatorType )
     {
-        return indicatorStore.addIndicatorType( indicatorType );    }
+        int id = indicatorStore.addIndicatorType( indicatorType );
+        
+        i18nService.addObject( indicatorType );
+        
+        return id;
+    }
     
     public void updateIndicatorType( IndicatorType indicatorType )
     {
         indicatorStore.updateIndicatorType( indicatorType );
+        
+        i18nService.verify( indicatorType );
     }
 
     public void deleteIndicatorType( IndicatorType indicatorType )
     {
+        i18nService.removeObject( indicatorType );
+        
         indicatorStore.deleteIndicatorType( indicatorType );
     }
 
@@ -188,16 +213,24 @@ public class DefaultIndicatorService
             indicatorGroup.setUuid( UUIdUtils.getUUId() );
         }
         
-        return indicatorStore.addIndicatorGroup( indicatorGroup );
+        int id = indicatorStore.addIndicatorGroup( indicatorGroup );
+        
+        i18nService.addObject( indicatorGroup );
+        
+        return id;
     }
     
     public void updateIndicatorGroup( IndicatorGroup indicatorGroup )
     {
         indicatorStore.updateIndicatorGroup( indicatorGroup );
+        
+        i18nService.verify( indicatorGroup );
     }
     
     public void deleteIndicatorGroup( IndicatorGroup indicatorGroup )
     {
+        i18nService.removeObject( indicatorGroup );
+        
         indicatorStore.deleteIndicatorGroup( indicatorGroup );
     }
     
