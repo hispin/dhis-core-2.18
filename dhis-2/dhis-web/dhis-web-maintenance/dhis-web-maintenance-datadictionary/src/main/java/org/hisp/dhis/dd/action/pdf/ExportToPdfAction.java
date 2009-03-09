@@ -147,7 +147,7 @@ public class ExportToPdfAction
     
             if ( type.equals( TYPE_DATAELEMENT ) )
             {
-                params.setDataElements( dataElementService.getAllDataElements() );
+                params.setDataElements( null );
                 
                 fileName = FILENAME_DATAELEMENT;
                 
@@ -155,7 +155,7 @@ public class ExportToPdfAction
             }  
             else if ( type.equals( TYPE_INDICATOR ) )
             {
-                params.setIndicators( indicatorService.getAllIndicators() );
+                params.setIndicators( null );
                 
                 fileName = FILENAME_INDICATOR;
                 
