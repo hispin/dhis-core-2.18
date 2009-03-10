@@ -34,12 +34,14 @@ import java.util.Set;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.system.util.CodecUtils;
 
 import com.opensymphony.xwork.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: AddIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z larshelg $
+ * @version $Id: AddIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z larshelg
+ *          $
  */
 public class AddIndicatorGroupAction
     extends ActionSupport
@@ -54,7 +56,7 @@ public class AddIndicatorGroupAction
     {
         this.indicatorService = indicatorService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -73,13 +75,41 @@ public class AddIndicatorGroupAction
         this.groupMembers = groupMembers;
     }
 
+    private String mode;
+
+    public void setMode( String mode )
+    {
+        this.mode = mode;
+    }
+    
+    private IndicatorGroup indicatorGroup;
+    
+    public IndicatorGroup getIndicatorGroup()
+    {
+        return indicatorGroup;
+    }
+    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+
+
+    public String execute()
+        throws Exception
     {
-        IndicatorGroup indicatorGroup = new IndicatorGroup( name );
+        indicatorGroup = new IndicatorGroup( name );
+        
+        if ( mode != null )
+        {
+            if ( mode.equalsIgnoreCase( "editor" ) )
+            {
+
+                indicatorGroup.setName( CodecUtils.unescape( name ) );
+
+            }
+        }
         
         Set<Indicator> members = new HashSet<Indicator>();
 
@@ -88,14 +118,14 @@ public class AddIndicatorGroupAction
             for ( String id : groupMembers )
             {
                 Indicator indicator = indicatorService.getIndicator( Integer.parseInt( id ) );
-                
+
                 members.add( indicator );
             }
         }
-        
+
         indicatorGroup.setMembers( members );
-        
-        indicatorService.addIndicatorGroup( indicatorGroup );        
+
+        indicatorService.addIndicatorGroup( indicatorGroup );
 
         return SUCCESS;
     }

@@ -223,6 +223,53 @@
       <interceptor-ref name="transactionStack"/>
     </action>
     
+    <!-- Indicator Group Editor -->
+    
+    <action name="indicatorGroupEditor"
+      class="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction">
+      <result name="success" type="velocity">/main.vm</result>
+	  <param name="page">/dhis-web-maintenance-datadictionary/indicatorGroupEditor.vm</param>
+	  <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
+	  <param name="javascripts">javascript/indicatorGroupEditor.js</param>
+	  <param name="stylesheets">style/indicatorGroupEditor.css</param>
+	  <interceptor-ref name="transactionStack"/>
+    </action>
+    
+    <action name="getIndicatorGroupEditor"
+      class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupAction">
+	  <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseIndicatorGroup.vm</result>
+	  <interceptor-ref name="transactionStack"/>
+    </action>
+    
+    <action name="addIndicatorGroupEditor"
+      class="org.hisp.dhis.dd.action.indicatorgroup.AddIndicatorGroupAction">
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseIndicatorGroup.vm</result>	  
+      <interceptor-ref name="transactionStack"/>
+	  <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
+    </action>
+    
+    <action name="renameIndicatorGroupEditor"
+      class="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction">
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseIndicatorGroup.vm</result>	  
+      <interceptor-ref name="transactionStack"/>
+	  <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
+    </action>
+	
+	<action name="deleteIndicatorGroupEditor"
+      class="org.hisp.dhis.dd.action.indicatorgroup.RemoveIndicatorGroupAction">
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
+      <interceptor-ref name="transactionStack"/>
+	  <param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
+    </action>
+	
+	<action name="updateIndicatorGroupEditor"
+      class="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction">
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseIndicatorGroup.vm</result>	 
+      <interceptor-ref name="transactionStack"/>
+	  <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
+    </action>
+      
+    
     <!-- IndicatorGroup -->
     
     <action name="indicatorGroup"

@@ -345,7 +345,7 @@ function toggleById( id )
 /**
  * Show div at center of screen.
  */
-function showDivCenter( id )
+function setPositionCenter( id )
 {
 	var div = document.getElementById(id);
 	
@@ -354,8 +354,6 @@ function showDivCenter( id )
 	
 	var x = (document.documentElement.clientHeight / 2) - new Number(height.replace('px',''))/2;
 	var y = (document.documentElement.clientWidth / 2) - new Number(width.replace('px',''))/2;	
-	
-	div.style.display = 'block';
 	div.style.top = x +"px";
 	div.style.left  = y +"px";		
 }
@@ -391,8 +389,8 @@ function showDivEffect()
 	divEffect.style.height = height + "px";
 	divEffect.style.background = "#000000";
 	divEffect.style.opacity = 0.5;
-	divEffect.style.zIndex = 100000000;
-	divEffect.innerHTML = "<div style='background-color:#EFEFEF;position:absolute;top:300px;width:100%;text-align:center'><img src=\"../images/ajax-loader.gif\"/></div>";	
+	divEffect.style.zIndex = 100;
+	//divEffect.innerHTML = "<div style='background-color:#EFEFEF;position:absolute;top:300px;width:100%;text-align:center'><img src=\"../images/ajax-loader.gif\"/></div>";	
 	document.body.appendChild( divEffect );	
 }
 
