@@ -1,7 +1,0 @@
-<h2>Data-element mapping</h2>
-<h3>RIMS table</h3>
-<select id="rimsTable" height="1">
-	#foreach($table in $rimsTables)
-		<option id="$table.getValue
-	#end
-</select>

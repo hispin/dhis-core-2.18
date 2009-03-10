@@ -1,7 +1,0 @@
-<h1>
-	Truncate tables
-</h1>
-<strong>
-	$tablesTruncated
-</strong>
-tables truncated (<strong>$rowsDeleted</strong> rows deleted).
