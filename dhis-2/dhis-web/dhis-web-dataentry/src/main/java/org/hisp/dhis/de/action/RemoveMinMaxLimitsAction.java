@@ -97,7 +97,7 @@ public class RemoveMinMaxLimitsAction
     
     private Integer optionComboId;
 
-    public void setOptionComboIdId( Integer optionComboId )
+    public void setOptionComboId( Integer optionComboId )
     {
         this.optionComboId = optionComboId;
     }

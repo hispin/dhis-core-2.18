@@ -27,12 +27,17 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.de.comments.StandardCommentsManager;
 import org.hisp.dhis.de.history.DataElementHistory;
 import org.hisp.dhis.de.history.HistoryRetriever;
 import org.hisp.dhis.de.state.SelectedStateManager;
@@ -68,6 +73,13 @@ public class HistoryAction
         this.dataElementService = dataElementService;
     }
     
+    private DataValueService dataValueService;
+
+    public void setDataValueService( DataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
+    }
+    
     private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
     public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
@@ -88,6 +100,13 @@ public class HistoryAction
     {
         this.selectedStateManager = selectedStateManager;
     }
+    
+    private StandardCommentsManager standardCommentsManager;
+
+    public void setStandardCommentsManager( StandardCommentsManager standardCommentsManager )
+    {
+        this.standardCommentsManager = standardCommentsManager;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -105,6 +124,18 @@ public class HistoryAction
     public void setOptionComboId( Integer optionComboId )
     {
     	this.optionComboId = optionComboId;
+    }
+    
+    private Boolean showComment;
+    
+    public void setShowComment( Boolean showComment)
+    {
+    	this.showComment = showComment;
+    }
+    
+    public Boolean getShowComment()
+    {
+    	return showComment;
     }
 
     // -------------------------------------------------------------------------
@@ -124,6 +155,20 @@ public class HistoryAction
     {
     	return isHistoryValid;
     }
+    
+    private DataValue dataValue;
+
+    public DataValue getDataValue()
+    {
+        return dataValue;
+    }
+    
+    private List<String> standardComments;
+
+    public List<String> getStandardComments()
+    {
+        return standardComments;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -132,7 +177,8 @@ public class HistoryAction
     public String execute()
         throws Exception
     {
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );       
+    	
+    	DataElement dataElement = dataElementService.getDataElement( dataElementId );       
         
         DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
         
@@ -151,8 +197,16 @@ public class HistoryAction
         Period period = selectedStateManager.getSelectedPeriod();
 
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        
+        dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo );
 
         dataElementHistory = historyRetriever.getHistory( dataElement, optionCombo, organisationUnit, period, HISTORY_LENGTH );
+        
+        // ---------------------------------------------------------------------
+        // Make the standard comments available
+        // ---------------------------------------------------------------------
+
+        standardComments = standardCommentsManager.getStandardComments();
         
         if( dataElementHistory == null )
         {

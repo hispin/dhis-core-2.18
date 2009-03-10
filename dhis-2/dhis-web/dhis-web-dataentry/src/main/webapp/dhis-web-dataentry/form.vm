@@ -63,7 +63,7 @@
 		<td>
 			<span id="value[$dataElement.id].name" title="$!encoder.htmlEncode( $dataElement.description )">
 			#if( $dataElement.type == "int" && $auth.hasAccess( "dhis-web-dataentry", "viewHistory" ) )
-				<a href="javascript:viewHistory( $dataElement.id, $optionComboId  )">
+				<a href="javascript:viewHistory( $dataElement.id, $optionComboId, false  )">
 			#end
 			#if( $useShortName )
 				$encoder.htmlEncode( $dataElement.shortName )
@@ -125,15 +125,15 @@
 		
 		##comment
 		<td>
-			<select id="value[$dataElement.id].comments" #if( $auth.hasAccess( "dhis-web-dataentry", "saveComment" ) ) onchange="commentSelected( $dataElement.id )" #else disabled="disabled" #end #if( $dataValue.comment && !$standardComments.contains( $dataValue.comment ) ) style="display:none; width:100%" #end#if( $locked ) disabled="disabled"#end>
+			<select id="value[$dataElement.id:$optionComboId].comments" #if( $auth.hasAccess( "dhis-web-dataentry", "saveComment" ) ) onchange="commentSelected( $dataElement.id, $optionComboId )" #else disabled="disabled" #end #if( $dataValue.comment && !$standardComments.contains( $dataValue.comment ) ) style="display:none; width:100%" #end#if( $locked ) disabled="disabled"#end>
 				<option value="">[$i18n.getString( "no_comment" )]</option>
 				<option value="custom">[$i18n.getString( "custom_comment" )]</option>
 			#foreach( $comment in $standardComments )
 				<option value="$encoder.htmlEncode( $comment )" #if( $encoder.htmlEncode( $comment ) == $encoder.htmlEncode( $dataValue.comment ) ) selected="selected" #end>$encoder.htmlEncode( $comment )</option>
 			#end
 			</select>
-			<input id="value[$dataElement.id].comment" type="text" value="$!encoder.htmlEncode( $dataValue.comment )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveComment" ))
-			    onblur="commentLeft( $dataElement.id )" #else disabled="disabled" #end style="width:100% #if( !$dataValue.comment || $standardComments.contains( $dataValue.comment )) ;display:none #end">
+			<input id="value[$dataElement.id:$optionComboId].comment" type="text" value="$!encoder.htmlEncode( $dataValue.comment )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveComment" ))
+			    onblur="commentLeft( $dataElement.id, $optionComboId )" #else disabled="disabled" #end style="width:100% #if( !$dataValue.comment || $standardComments.contains( $dataValue.comment )) ;display:none #end">
 		</td>
 	</tr>
 	#set( $tabIndex = $tabIndex + 1 )

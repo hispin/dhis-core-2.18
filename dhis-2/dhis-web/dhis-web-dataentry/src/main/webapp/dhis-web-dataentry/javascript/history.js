@@ -1,4 +1,112 @@
 
+// -----------------------------------------------------------------------------
+// Comments
+// -----------------------------------------------------------------------------
+
+function commentSelected( dataElementId, optionComboId )
+{  
+    var commentSelector = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
+    var commentField = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );
+
+    var value = commentSelector.options[commentSelector.selectedIndex].value;
+    
+    if ( value == 'custom' )
+    {
+        commentSelector.style.display = 'none';
+        commentField.style.display = 'inline';
+        
+        commentField.select();
+        commentField.focus();
+    }
+    else
+    {
+        commentField.value = value;
+        
+        saveComment( dataElementId, optionComboId, value );
+    }
+}
+
+function commentLeft( dataElementId, optionComboId )
+{
+    var commentField = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );
+    var commentSelector = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
+
+    saveComment( dataElementId, optionComboId, commentField.value );
+
+    var value = commentField.value;
+    
+    if ( value == '' )
+    {
+        commentField.style.display = 'none';
+        commentSelector.style.display = 'inline';
+
+        commentSelector.selectedIndex = 0;
+    }
+}
+
+function saveComment( dataElementId, optionComboId, commentValue )
+{
+    var field = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
+    var select = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
+    
+    field.style.backgroundColor = '#ffffcc';
+    select.style.backgroundColor = '#ffffcc';
+    
+    var commentSaver = new CommentSaver( dataElementId, optionComboId, commentValue );
+    commentSaver.save();
+}
+
+function CommentSaver( dataElementId_, optionComboId_, value_ )
+{
+    var SUCCESS = '#ccffcc';
+    var ERROR = '#ccccff';
+
+    var dataElementId = dataElementId_;
+    var optionComboId = optionComboId_
+    var value = value_;
+    
+    this.save = function()
+    {
+        var request = new Request();
+        request.setCallbackSuccess( handleResponse );
+        request.setCallbackError( handleHttpError );
+        request.setResponseTypeXML( 'status' );
+        request.send( 'saveComment.action?dataElementId=' +
+                dataElementId + '&optionComboId=' + optionComboId + '&comment=' + value );
+    };
+    
+    function handleResponse( rootElement )
+    {
+        var codeElement = rootElement.getElementsByTagName( 'code' )[0];
+        var code = parseInt( codeElement.firstChild.nodeValue );
+        
+        if ( code == 0 )
+        {
+            markComment( SUCCESS );           
+        }
+        else
+        {
+            markComment( ERROR );
+            window.alert( i18n_saving_comment_failed_status_code + '\n\n' + code );
+        }
+    }
+    
+    function handleHttpError( errorCode )
+    {
+        markComment( ERROR );
+        window.alert( i18n_saving_comment_failed_error_code + '\n\n' + errorCode );
+    }
+    
+    function markComment( color )
+    {
+        var field = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
+        var select = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );        
+
+        field.style.backgroundColor = color;
+        select.style.backgroundColor = color;
+    }
+}
+
 function createChart()
 {
     var canvas = document.getElementById( 'canvas' );
@@ -80,7 +188,7 @@ function createChart()
     g.paint();
 }
 
-function saveMinLimit( organisationUnitId, dataElementId )
+function saveMinLimit( organisationUnitId, dataElementId, optionComboId )
 {
     var minLimitField = document.getElementById( "minLimit" );
     var maxLimitField = document.getElementById( "maxLimit" );
@@ -91,7 +199,7 @@ function saveMinLimit( organisationUnitId, dataElementId )
 
     if ( minLimitField.value == '' )
     {
-        request.send( 'removeMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId );
+        request.send( 'removeMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&optionComboId=' + optionComboId );
     }
     else
     {
@@ -110,7 +218,7 @@ function saveMinLimit( organisationUnitId, dataElementId )
                 maxLimit = minLimit + 1;
             }
 
-            request.send( 'saveMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&minLimit=' + minLimit + '&maxLimit=' + maxLimit );
+            request.send( 'saveMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&optionComboId=' + optionComboId + '&minLimit=' + minLimit + '&maxLimit=' + maxLimit );
         }
         else
         {
@@ -119,7 +227,7 @@ function saveMinLimit( organisationUnitId, dataElementId )
     }
 }
 
-function saveMaxLimit( organisationUnitId, dataElementId )
+function saveMaxLimit( organisationUnitId, dataElementId, optionComboId )
 {
     var minLimitField = document.getElementById( "minLimit" );
     var maxLimitField = document.getElementById( "maxLimit" );
@@ -130,7 +238,7 @@ function saveMaxLimit( organisationUnitId, dataElementId )
 
     if ( maxLimitField.value == '' )
     {
-        request.send( 'removeMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId );
+        request.send( 'removeMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&optionComboId=' + optionComboId );
     }
     else
     {
@@ -153,7 +261,7 @@ function saveMaxLimit( organisationUnitId, dataElementId )
                 minLimit = maxLimit - 1;
             }
 
-            request.send( 'saveMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&minLimit=' + minLimit + '&maxLimit=' + maxLimit );
+            request.send( 'saveMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&optionComboId=' + optionComboId + '&minLimit=' + minLimit + '&maxLimit=' + maxLimit );
         }
         else
         {

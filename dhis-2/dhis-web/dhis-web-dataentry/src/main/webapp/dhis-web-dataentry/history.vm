@@ -14,12 +14,26 @@
 	#set( $maxLimit = $encoder.htmlEncode( $i18n.getString( "not_set" ) ) )
 #end
 
+<h4>$i18n.getString( "dataelement_comment" )</h4>		
+#if( $showComment == 'true' )
+##comment		
+	<select id="value[$dataElementHistory.dataElement.id:$dataElementHistory.optionCombo.id].comments" #if( $auth.hasAccess( "dhis-web-dataentry", "saveComment" ) ) onchange="commentSelected( $dataElementHistory.dataElement.id, $dataElementHistory.optionCombo.id )" #else disabled="disabled" #end #if( $dataValue.comment && !$standardComments.contains( $dataValue.comment ) ) style="display:none; width:100%" #end#if( $locked ) disabled="disabled"#end>
+		<option value="">[$i18n.getString( "no_comment" )]</option>
+		<option value="custom">[$i18n.getString( "custom_comment" )]</option>
+		#foreach( $comment in $standardComments )
+			<option value="$encoder.htmlEncode( $comment )" #if( $encoder.htmlEncode( $comment ) == $encoder.htmlEncode( $dataValue.comment ) ) selected="selected" #end>$encoder.htmlEncode( $comment )</option>
+		#end
+	</select>
+	<input id="value[$dataElementHistory.dataElement.id:$dataElementHistory.optionCombo.id].comment" type="text" value="$!encoder.htmlEncode( $dataValue.comment )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveComment" ))
+	   	onblur="commentLeft( $dataElementHistory.dataElement.id, $dataElementHistory.optionCombo.id )" #else disabled="disabled" #end style="width:100% #if( !$dataValue.comment || $standardComments.contains( $dataValue.comment )) ;display:none #end">
+#end
+	
 #if( $isHistoryValid )
 	<h2>$encoder.htmlEncode( $i18n.getString( "dataelement_history" ) )</h2>
 	<h4>
 		$encoder.htmlEncode( $dataElementHistory.dataElement.shortName )
 		$encoder.htmlEncode( $dataElementHistory.optionCombo.shortName )		
-	</h4>
+	</h4>	
 #else
 	<h2>$encoder.htmlEncode( $i18n.getString( "dataelement_history" ) )</h2>
 	<h4>$encoder.htmlEncode( $i18n.getString( "history_not_valid" ) )</h4>	
@@ -31,7 +45,7 @@
 		<td>$encoder.htmlEncode( $i18n.getString( "max_limit" ) ) </td>
 		<td><input type="text" id="maxLimit" style="width:10em" value="$maxLimit"
 			#if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
-				onchange="saveMaxLimit( $dataElementHistory.organisationUnit.id, $dataElementHistory.dataElement.id )"
+				onchange="saveMaxLimit( $dataElementHistory.organisationUnit.id, $dataElementHistory.dataElement.id,  $dataElementHistory.optionCombo.id )"
 			#else disabled="disabled" #end onfocus="this.select()"></td>
 	</tr>
 	<tr>
@@ -39,7 +53,7 @@
 		<td>$encoder.htmlEncode( $i18n.getString( "min_limit" ) ) </td>
 		<td><input type="text" id="minLimit" style="width:10em" value="$minLimit"
 			#if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
-			   onchange="saveMinLimit( $dataElementHistory.organisationUnit.id, $dataElementHistory.dataElement.id )"
+			   onchange="saveMinLimit( $dataElementHistory.organisationUnit.id, $dataElementHistory.dataElement.id, $dataElementHistory.optionCombo.id )"
 			#else disabled="disabled" #end onfocus="this.select()"></td>
 	</tr>
 	<tr>

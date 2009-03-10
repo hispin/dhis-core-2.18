@@ -16,9 +16,9 @@ window.onload = function ()
 	}
 }
 
-function viewHistory( dataElementId, optionComboId )
-{
-    window.open( 'viewHistory.action?dataElementId=' + dataElementId + '&optionComboId=' + optionComboId, '_blank', 'width=560,height=550,scrollbars=yes' );
+function viewHistory( dataElementId, optionComboId, showComment )
+{    
+    window.open( 'viewHistory.action?dataElementId=' + dataElementId + '&optionComboId=' + optionComboId + '&showComment=' + showComment, '_blank', 'width=560,height=550,scrollbars=yes' );
 }
 
 /**

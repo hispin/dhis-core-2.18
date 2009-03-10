@@ -21,10 +21,14 @@ function changeOrder()
 // Comments
 // -----------------------------------------------------------------------------
 
-function commentSelected( dataElementId )
-{
-    var commentSelector = document.getElementById( 'value[' + dataElementId + '].comments' );
-    var commentField = document.getElementById( 'value[' + dataElementId + '].comment' );
+// -----------------------------------------------------------------------------
+// Comments
+// -----------------------------------------------------------------------------
+
+function commentSelected( dataElementId, optionComboId )
+{  
+    var commentSelector = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
+    var commentField = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );
 
     var value = commentSelector.options[commentSelector.selectedIndex].value;
     
@@ -44,12 +48,12 @@ function commentSelected( dataElementId )
     }
 }
 
-function commentLeft( dataElementId )
+function commentLeft( dataElementId, optionComboId )
 {
-    var commentField = document.getElementById( 'value[' + dataElementId + '].comment' );
-    var commentSelector = document.getElementById( 'value[' + dataElementId + '].comments' );
+    var commentField = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );
+    var commentSelector = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
 
-    saveComment( dataElementId, commentField.value );
+    saveComment( dataElementId, optionComboId, commentField.value );
 
     var value = commentField.value;
     
@@ -159,15 +163,15 @@ function saveBoolean( dataElementId, optionComboId, selectedOption  )
 
 }
 
-function saveComment( dataElementId, commentValue )
+function saveComment( dataElementId, optionComboId, commentValue )
 {
-    var field = document.getElementById( 'value[' + dataElementId + '].comment' );
-    var select = document.getElementById( 'value[' + dataElementId + '].comments' );
+    var field = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
+    var select = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
     
     field.style.backgroundColor = '#ffffcc';
     select.style.backgroundColor = '#ffffcc';
     
-    var commentSaver = new CommentSaver( dataElementId, commentValue );
+    var commentSaver = new CommentSaver( dataElementId, optionComboId, commentValue );
     commentSaver.save();
 }
 
@@ -256,12 +260,13 @@ function ValueSaver( dataElementId_, optionComboId_, value_, resultColor_, selec
     }
 }
 
-function CommentSaver( dataElementId_, value_ )
+function CommentSaver( dataElementId_, optionComboId_, value_ )
 {
     var SUCCESS = '#ccffcc';
     var ERROR = '#ccccff';
 
     var dataElementId = dataElementId_;
+    var optionComboId = optionComboId_
     var value = value_;
     
     this.save = function()
@@ -271,7 +276,7 @@ function CommentSaver( dataElementId_, value_ )
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );
         request.send( 'saveComment.action?dataElementId=' +
-                dataElementId + '&comment=' + value );
+                dataElementId + '&optionComboId=' + optionComboId + '&comment=' + value );
     };
     
     function handleResponse( rootElement )
@@ -281,8 +286,7 @@ function CommentSaver( dataElementId_, value_ )
         
         if ( code == 0 )
         {
-            markComment( SUCCESS );
-           
+            markComment( SUCCESS );           
         }
         else
         {
@@ -299,8 +303,8 @@ function CommentSaver( dataElementId_, value_ )
     
     function markComment( color )
     {
-        var field = document.getElementById( 'value[' + dataElementId + '].comment' );
-        var select = document.getElementById( 'value[' + dataElementId + '].comments' );
+        var field = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
+        var select = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );        
 
         field.style.backgroundColor = color;
         select.style.backgroundColor = color;
@@ -393,9 +397,9 @@ function dataValuesReceived( node )
 // View history
 // -----------------------------------------------------------------------------
 
-function viewHistory( dataElementId, optionComboId )
+function viewHistory( dataElementId, optionComboId, showComment )
 {
-    window.open( 'viewHistory.action?dataElementId=' + dataElementId + '&optionComboId=' + optionComboId, '_blank', 'width=560,height=550,scrollbars=yes' );
+    window.open( 'viewHistory.action?dataElementId=' + dataElementId + '&optionComboId=' + optionComboId + '&showComment=' + showComment, '_blank', 'width=560,height=550,scrollbars=yes' );
 }
 
 /**

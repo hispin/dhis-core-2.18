@@ -32,6 +32,8 @@ import java.util.Date;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -82,6 +84,13 @@ public class SaveCommentAction
     {
         this.selectedStateManager = selectedStateManager;
     }
+    
+    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    
+    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService)
+    {
+    	this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;    	
+    }
 
     // -------------------------------------------------------------------------
     // Input/output
@@ -104,6 +113,13 @@ public class SaveCommentAction
     public int getDataElementId()
     {
         return dataElementId;
+    }
+    
+    private Integer optionComboId;
+
+    public void setOptionComboId( Integer optionComboId )
+    {
+        this.optionComboId = optionComboId;
     }
 
     private int statusCode;
@@ -138,6 +154,8 @@ public class SaveCommentAction
         Period period = selectedStateManager.getSelectedPeriod();
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
+        
+        DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
 
         storedBy = currentUserService.getCurrentUsername();
 
@@ -155,7 +173,7 @@ public class SaveCommentAction
         // Update DB
         // ---------------------------------------------------------------------
 
-        DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period );
+        DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo );
 
         if ( dataValue == null )
         {
@@ -163,7 +181,7 @@ public class SaveCommentAction
             {
                 LOG.debug( "Adding DataValue, comment added" );
 
-                dataValue = new DataValue( dataElement, period, organisationUnit, null, storedBy, new Date(), comment );
+                dataValue = new DataValue( dataElement, period, organisationUnit, null, storedBy, new Date(), comment, optionCombo );
 
                 dataValueService.addDataValue( dataValue );
             }
