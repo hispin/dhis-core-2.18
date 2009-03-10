@@ -88,15 +88,6 @@ public class UpdateDataElementGroupAction
     {
         this.selectedDataElements = selectedDataElements;
     }
-    
-    private String mode;
-
-    public void setMode( String mode )
-    {
-        this.mode = mode;
-    }
-    
-    
 
     // -------------------------------------------------------------------------
     // Output
@@ -117,26 +108,15 @@ public class UpdateDataElementGroupAction
         throws Exception
     {
         dataElementGroup = dataElementService.getDataElementGroup( id );
-        
-        if(mode!=null){
-            if(mode.equalsIgnoreCase( "editor" )){
-             
-                if ( name != null )
-                {
-                    if ( name.trim().length() > 0 )
-                    {
-                        dataElementGroup.setName( CodecUtils.unescape( name ) );
-                    }
-                }
-                
-            }else{
-                dataElementGroup.setName( name );
-            }
-        }else{
-            dataElementGroup.setName( name ); 
-        }
 
-        
+        if ( name != null )
+        {
+            if ( name.trim().length() > 0 )
+            {
+                dataElementGroup.setName( CodecUtils.unescape( name ) );
+            }
+
+        }
 
         Set<DataElement> members = new HashSet<DataElement>();
 

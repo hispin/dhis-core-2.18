@@ -34,14 +34,12 @@ import java.util.Set;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.system.util.CodecUtils;
 
 import com.opensymphony.xwork.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: UpdateIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z
- *          larshelg $
+ * @version $Id: UpdateIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z larshelg $
  */
 public class UpdateIndicatorGroupAction
     extends ActionSupport
@@ -56,7 +54,7 @@ public class UpdateIndicatorGroupAction
     {
         this.indicatorService = indicatorService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -75,10 +73,6 @@ public class UpdateIndicatorGroupAction
         this.name = name;
     }
 
-    /*
-     * This property use when using submit
-     */
-
     private Collection<String> groupMembers;
 
     public void setGroupMembers( Collection<String> groupMembers )
@@ -86,95 +80,29 @@ public class UpdateIndicatorGroupAction
         this.groupMembers = groupMembers;
     }
 
-    /*
-     * This property use when using ajax
-     */
-
-    private String selectedIndicators[] = new String[0];
-
-    public void setSelectedIndicators( String[] selectedIndicators )
-    {
-        this.selectedIndicators = selectedIndicators;
-    }
-
-    /*
-     * This property is mode of user interface (normal or editor)
-     */
-
-    private String mode;
-
-    public void setMode( String mode )
-    {
-        this.mode = mode;
-    }
-
-    private IndicatorGroup indicatorGroup;
-
-    public IndicatorGroup getIndicatorGroup()
-    {
-        return indicatorGroup;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute()
-        throws Exception
+    public String execute() throws Exception
     {
-        indicatorGroup = indicatorService.getIndicatorGroup( id );
-
-        if ( mode != null )
-        {
-            if ( mode.equalsIgnoreCase( "editor" ) )
-            {
-                if(name!=null){
-                    if(name.length() > 0){
-                        indicatorGroup.setName( CodecUtils.unescape( name ) );
-                    }
-                }                
-
-            }
-            else
-            {
-                indicatorGroup.setName( name );
-            }
-        }
-        else
-        {
-
-            indicatorGroup.setName( name );
-
-        }
+        IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( id );
 
         Set<Indicator> members = new HashSet<Indicator>();
-
+        
         if ( groupMembers != null )
         {
             for ( String memberId : groupMembers )
             {
-                members.add( indicatorService.getIndicator( Integer.parseInt( memberId ) ) );
+                members.add( indicatorService.getIndicator( Integer.parseInt( memberId ) ) );            
             }
         }
-
-        if ( selectedIndicators != null )
-        {
-            if ( selectedIndicators.length > 0 )
-            {
-                for ( int i = 0; i < selectedIndicators.length; i++ )
-                {
-                    Indicator indicator = indicatorService.getIndicator( Integer.parseInt( selectedIndicators[i] ) );
-                    members.add( indicator );                   
-                }
-
-            }
-
-        }
-
+        
+        indicatorGroup.setName( name );
         indicatorGroup.setMembers( members );
-
+        
         indicatorService.updateIndicatorGroup( indicatorGroup );
-
+        
         return SUCCESS;
     }
 }
