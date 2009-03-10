@@ -129,8 +129,9 @@ public class DefaultLegendService
         legendStore.updateLegendSet( legendSet );
     }
 
-	public LegendSet getLegendSetOfIndicator(int indicatorId) {
-		return legendStore.getLegendSetOfIndicator(indicatorId);
-	}	
-	
+    public LegendSet getLegendSetOfIndicator( int indicatorId )
+    {
+        return legendStore.getLegendSetOfIndicator( indicatorId );
+    }
+
 }

@@ -139,11 +139,23 @@ public class LegendSet
         return true;
     }
     
-    public Legend getMinLegend(){
-    	return Collections.min(this.legends, new LegendComparator());			
+    public Legend getMinLegend()
+    {
+        if ( legends != null && legends.size() > 0 )
+        {
+            return Collections.min(this.legends, new LegendComparator() );
+        }
+        
+        return null;
     }
     
-    public Legend getMaxLegend(){
-    	return Collections.max(this.legends, new LegendComparator());			
+    public Legend getMaxLegend()
+    {
+        if ( legends != null && legends.size() > 0 )
+        {
+            return Collections.max(this.legends, new LegendComparator());
+        }
+        
+        return null;
     }
 }

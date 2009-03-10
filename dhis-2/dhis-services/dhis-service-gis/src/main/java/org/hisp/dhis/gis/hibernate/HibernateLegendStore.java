@@ -43,137 +43,159 @@ import org.hisp.dhis.indicator.IndicatorService;
  * @author Tran Thanh Tri
  * @version $Id: Feature.java 28-01-2008 16:06:00 $
  */
-public class HibernateLegendStore implements LegendStore {
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+public class HibernateLegendStore
+    implements LegendStore
+{
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private HibernateSessionManager sessionManager;
+    private HibernateSessionManager sessionManager;
 
-	public void setSessionManager(HibernateSessionManager sessionManager) {
-		this.sessionManager = sessionManager;
-	}
+    public void setSessionManager( HibernateSessionManager sessionManager )
+    {
+        this.sessionManager = sessionManager;
+    }
 
-	private IndicatorService indicatorService;
+    private IndicatorService indicatorService;
 
-	public void updateLegendSet(LegendSet legendSet) {
-		Session session = sessionManager.getCurrentSession();
+    public void updateLegendSet( LegendSet legendSet )
+    {
+        Session session = sessionManager.getCurrentSession();
 
-		session.update(legendSet);
-	}
+        session.update( legendSet );
+    }
 
-	// -------------------------------------------------------------------------
-	// LegendStore implementation
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // LegendStore implementation
+    // -------------------------------------------------------------------------
 
-	public void setIndicatorService(IndicatorService indicatorService) {
-		this.indicatorService = indicatorService;
-	}
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
 
-	public void addLegend(Legend legend) {
-		Session session = sessionManager.getCurrentSession();
+    public void addLegend( Legend legend )
+    {
+        Session session = sessionManager.getCurrentSession();
 
-		session.save(legend);
-	}
+        session.save( legend );
+    }
 
-	public void deleteLegend(Legend legend) {
-		Session session = sessionManager.getCurrentSession();
+    public void deleteLegend( Legend legend )
+    {
+        Session session = sessionManager.getCurrentSession();
 
-		session.delete(legend);
-	}
+        session.delete( legend );
+    }
 
-	public Legend getLegend(int legendId) {
-		Session session = sessionManager.getCurrentSession();
+    public Legend getLegend( int legendId )
+    {
+        Session session = sessionManager.getCurrentSession();
 
-		return (Legend) session.get(Legend.class, new Integer(legendId));
-	}
+        return (Legend) session.get( Legend.class, new Integer( legendId ) );
+    }
 
-	@SuppressWarnings("unchecked")
-	public Set<Legend> getLegendByMaxMin(double max, double min) {
-		Session session = sessionManager.getCurrentSession();
+    @SuppressWarnings( "unchecked" )
+    public Set<Legend> getLegendByMaxMin( double max, double min )
+    {
+        Session session = sessionManager.getCurrentSession();
 
-		Criteria criteria = session.createCriteria(Legend.class);
-		criteria.add(Restrictions.eq("max", max));
-		criteria.add(Restrictions.eq("min", min));
+        Criteria criteria = session.createCriteria( Legend.class );
+        criteria.add( Restrictions.eq( "max", max ) );
+        criteria.add( Restrictions.eq( "min", min ) );
 
-		return (Set<Legend>) criteria.list();
-	}
+        return (Set<Legend>) criteria.list();
+    }
 
-	public void updateLegend(Legend legend) {
-		Session session = sessionManager.getCurrentSession();
+    public void updateLegend( Legend legend )
+    {
+        Session session = sessionManager.getCurrentSession();
 
-		session.update(legend);
+        session.update( legend );
 
-	}
+    }
 
-	@SuppressWarnings("unchecked")
-	public Set<Legend> getAllLegend() {
-		Session session = sessionManager.getCurrentSession();
+    @SuppressWarnings( "unchecked" )
+    public Set<Legend> getAllLegend()
+    {
+        Session session = sessionManager.getCurrentSession();
 
-		Criteria criteria = session.createCriteria(Legend.class);
+        Criteria criteria = session.createCriteria( Legend.class );
 
-		return new HashSet<Legend>(criteria.list());
-	}
+        return new HashSet<Legend>( criteria.list() );
+    }
 
-	public Legend getLegendByName(String name) {
-		Session session = sessionManager.getCurrentSession();
+    public Legend getLegendByName( String name )
+    {
+        Session session = sessionManager.getCurrentSession();
 
-		Criteria criteria = session.createCriteria(Legend.class);
-		criteria.add(Restrictions.eq("name", name));
+        Criteria criteria = session.createCriteria( Legend.class );
+        criteria.add( Restrictions.eq( "name", name ) );
 
-		return (Legend) criteria.uniqueResult();
-	}
+        return (Legend) criteria.uniqueResult();
+    }
 
-	public void addLegendSet(LegendSet legendSet) {
-		Session session = sessionManager.getCurrentSession();
+    public void addLegendSet( LegendSet legendSet )
+    {
+        Session session = sessionManager.getCurrentSession();
 
-		session.save(legendSet);
-	}
+        session.save( legendSet );
+    }
 
-	public void deleteLegendSet(LegendSet legendSet) {
-		Session session = sessionManager.getCurrentSession();
+    public void deleteLegendSet( LegendSet legendSet )
+    {
+        Session session = sessionManager.getCurrentSession();
 
-		session.delete(legendSet);
-	}
+        session.delete( legendSet );
+    }
 
-	@SuppressWarnings("unchecked")
-	public Set<LegendSet> getAllLegendSet() {
-		Session session = sessionManager.getCurrentSession();
+    @SuppressWarnings( "unchecked" )
+    public Set<LegendSet> getAllLegendSet()
+    {
+        Session session = sessionManager.getCurrentSession();
 
-		Criteria criteria = session.createCriteria(LegendSet.class);
+        Criteria criteria = session.createCriteria( LegendSet.class );
 
-		return new HashSet<LegendSet>(criteria.list());
-	}
+        return new HashSet<LegendSet>( criteria.list() );
+    }
 
-	public LegendSet getLegendSet(int id) {
-		Session session = sessionManager.getCurrentSession();
+    public LegendSet getLegendSet( int id )
+    {
+        Session session = sessionManager.getCurrentSession();
 
-		return (LegendSet) session.get(LegendSet.class, new Integer(id));
-	}
+        return (LegendSet) session.get( LegendSet.class, new Integer( id ) );
+    }
 
-	public LegendSet getLegendSet(String name) {
-		Session session = sessionManager.getCurrentSession();
-		Criteria criteria = session.createCriteria(LegendSet.class);
-		criteria.add(Restrictions.eq("name", name));
-		return (LegendSet) criteria.uniqueResult();
-	}
+    public LegendSet getLegendSet( String name )
+    {
+        Session session = sessionManager.getCurrentSession();
+        Criteria criteria = session.createCriteria( LegendSet.class );
+        criteria.add( Restrictions.eq( "name", name ) );
+        return (LegendSet) criteria.uniqueResult();
+    }
 
-	public LegendSet getLegendSet(Indicator indicator) {
-		Set<LegendSet> legendSets = getAllLegendSet();
+    public LegendSet getLegendSet( Indicator indicator )
+    {
+        Set<LegendSet> legendSets = getAllLegendSet();
 
-		for (LegendSet legendSet : legendSets) {
-			for (Indicator temp : legendSet.getIndicators()) {
-				if (temp.equals(indicator)) {
-					return legendSet;
-				}
-			}
-		}
+        for ( LegendSet legendSet : legendSets )
+        {
+            for ( Indicator temp : legendSet.getIndicators() )
+            {
+                if ( temp.equals( indicator ) )
+                {
+                    return legendSet;
+                }
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public LegendSet getLegendSetOfIndicator(int indicatorId) {
-		return this.getLegendSet(indicatorService.getIndicator(indicatorId));
-	}
-	
+    public LegendSet getLegendSetOfIndicator( int indicatorId )
+    {
+        return this.getLegendSet( indicatorService.getIndicator( indicatorId ) );
+    }
+
 }

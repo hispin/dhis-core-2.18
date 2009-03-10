@@ -4,8 +4,8 @@
     "name": "$!{object.name}",
     "min-value": "$!{object.getMinLegend().min}",
     "min-color": "$!{object.getMinLegend().color}",
-	"max-value": "$!{object.getMaxLegend().max}",
-	"max-color": "$!{object.getMaxLegend().color}"
+    "max-value": "$!{object.getMaxLegend().max}",
+    "max-color": "$!{object.getMaxLegend().color}"
   }
   ]
 }
