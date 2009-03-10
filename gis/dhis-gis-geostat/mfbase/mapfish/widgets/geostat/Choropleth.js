@@ -143,20 +143,31 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     
     newUrl : false,
     
+    selectedValue : false,
+    
     initComponent : function() {
     
     
         // DHIS
+        
+        indicatorGroupStore = new Ext.data.JsonStore({
+              url: 'http://localhost:' + localhost_port + '/dhis-webservice/getAllIndicatorGroups.service',
+              baseParams: { format: 'json' },
+              root: 'indicatorGroups',
+              fields: ['id', 'name'],
+              autoLoad: true
+            });
+        
         indicatorStore = new Ext.data.JsonStore({
-              url: 'http://localhost:8180/dhis-webservice/getAllIndicators.service?format=jsonmin',
-              //baseParams: { format: 'jsonmin' },
+              url: 'http://localhost:' + localhost_port + '/dhis-webservice/getIndicatorsByIndicatorGroup.service',
+//              baseParams: { format: 'json' },
               root: 'indicators',
-              fields: ['id', 'name']//,
-              //autoLoad: true
+              fields: ['id', 'name'],
+              autoLoad: false
             });
         
         periodTypeStore = new Ext.data.JsonStore({
-              url: 'http://localhost:8180/dhis-webservice/getAllPeriodTypes.service',
+              url: 'http://localhost:' + localhost_port + '/dhis-webservice/getAllPeriodTypes.service',
               baseParams: { format: 'json' },
               root: 'periodTypes',
               fields: ['id', 'name'],
@@ -164,7 +175,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             });
             
         periodStore = new Ext.data.JsonStore({
-              url: 'http://localhost:8180/dhis-webservice/getPeriodsByPeriodType.service',
+              url: 'http://localhost:' + localhost_port + '/dhis-webservice/getPeriodsByPeriodType.service',
               baseParams: { periodTypeId: '9', format: 'json' },
               root: 'periods',
               fields: ['id', 'startDate'],
@@ -172,12 +183,21 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             });
             
         levelStore = new Ext.data.JsonStore({
-              url: 'http://localhost:8180/dhis-webservice/getOrganisationUnitLevels.service',
+              url: 'http://localhost:' + localhost_port + '/dhis-webservice/getOrganisationUnitLevels.service',
               baseParams: { format: 'json' },
               root: 'organisationUnitLevels',
               fields: ['level', 'name'],
               autoLoad: true
             });
+            
+        legendStore = new Ext.data.JsonStore({
+              url: 'http://localhost:' + localhost_port + '/dhis-webservice/getLegendMinAndMaxOfIndicator.service',
+              baseParams: { indicatorId: '52460', format: 'json' },
+              root: 'legendSet',
+              fields: ['id', 'name'],
+              autoLoad: false
+            });
+            
         // end DHIS
     
     
@@ -185,11 +205,38 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     
     
         this.items = [
-        {
-        
         
             // DHIS
-
+         
+        {
+            xtype: 'combo',
+            id: 'indicatorgroup_cb',
+            fieldLabel: 'Indicator group',
+            typeAhead: true,
+            editable: false,
+            valueField: 'id',
+            displayField: 'name',
+            mode: 'remote',
+            forceSelection: true,
+            triggerAction: 'all',
+            emptyText: 'Select group',
+            selectOnFocus: true,
+            store: indicatorGroupStore,
+            listeners: {
+                'select': {
+                    fn: function()
+                    {
+                        Ext.getCmp('indicator_cb').reset();
+                        var igId = Ext.getCmp('indicatorgroup_cb').getValue();
+                        indicatorStore.baseParams = { indicatorGroupId: igId, format: 'json' };
+                        indicatorStore.reload();
+                    },
+                    scope: this
+                }
+            }
+        },     
+        
+        {
             xtype: 'combo',
             id: 'indicator_cb',
             fieldLabel: 'Indicator',
@@ -274,29 +321,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         },
         
         {html:'<br>'},
-        // end DHIS
-        
-
-/*
-        {
-        
-            xtype: 'combo',
-            fieldLabel: 'Indicator',
-            name: 'indicator',
-            editable: false,
-            valueField: 'value',
-            displayField: 'text',
-            mode: 'local',
-            emptyText: 'Select an indicator',
-            triggerAction: 'all',
-            store: new Ext.data.SimpleStore({
-                fields: ['value', 'text'],
-                data : this.indicators
-            })
             
-            },
-*/            
-            
+/*            
             {
             xtype: 'combo',
             fieldLabel: 'Method',
@@ -314,7 +340,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                         ['CLASSIFY_BY_QUANTILS', 'Quantils']]
             })
             
-            },{
+            },
+*/
+          
+          {
             xtype: 'combo',
             fieldLabel: 'Classes',
             name: 'numClasses',
@@ -330,34 +359,81 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             })
             
             },{
-            xtype: 'colorfield',
-            fieldLabel: 'Color',
-            name: 'colorA',
-            width: 100,
-            allowBlank: false,
-            value: "#FFFF00" /*,
+       
+
+            xtype: 'combo',
+            id: 'legend_cb',
+            fieldLabel: 'Legend set',
+            typeAhead: true,
+            editable: false,
+            valueField: 'id',
+            displayField: 'name',
+            mode: 'remote',
+            forceSelection: true,
+            triggerAction: 'all',
+            emptyText: 'Select legend',
+            selectOnFocus: true,
+            store: legendStore,
             listeners: {
-                'valid': {
-                    fn: function() {this.classify(false)},
+                'select': {
+                    fn: function()
+                    {
+                        var iId = Ext.getCmp('indicator_cb').getValue();
+                        var url = 'http://localhost:' + localhost_port + '/dhis-webservice/getLegendMinAndMaxOfIndicator.service';
+                        var format = 'json';
+                        
+                        Ext.Ajax.request({
+                          
+                          url: url,
+                          method: 'GET',
+                          params: { indicatorId: iId, format: format },
+                          
+                          success: function( responseObject )
+                          {
+                              var data = Ext.util.JSON.decode(responseObject.responseText);
+                              var color1 = "#" + data.legendSet[0]["min-color"];
+                              var color2 = "#" + data.legendSet[0]["max-color"];
+
+                              Ext.getCmp('colorA_cf').setValue(color1);
+                              Ext.getCmp('colorB_cf').setValue(color2);
+                          },
+                          failure: function()
+                          {
+                              alert( 'Status', 'Error while retrieving data' );
+                          } 
+                        });
+                        
+                    },
                     scope: this
                 }
             }
-            */
+
+            },{
+            xtype: 'colorfield',
+            fieldLabel: 'Color',
+            name: 'colorA',
+            id: 'colorA_cf',
+            width: 100,
+            allowBlank: false,
+            value: "#FFFF00"
         },{
             xtype: 'colorfield',
             fieldLabel: 'Color',
             name: 'colorB',
+            id: 'colorB_cf',
             width: 100,
             allowBlank: false,
             value: "#FF0000"
         },{
             xtype: 'button',
             text: 'Submit',
-            handler: function() {
+            handler: function()
+            {
                 this.classify(true);
             },
             scope: this
-        }
+        },
+        
         
         ];
 
@@ -418,9 +494,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
      *      the widget isn't ready, or no indicator is specified, or no
      *      method is specified.
      */
-    classify: function(exception, wfs) {
-    
-//    alert("classify");
+    classify: function(exception) {
     
         if (!this.ready) {
             if (exception) {
@@ -455,15 +529,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         options.indicator = this.indicator;
 
         
-        options.method = this.form.findField('method').getValue();
-        if (!options.method) {
-            if (exception) {
-                Ext.MessageBox.alert('Error', 'You must choose a method');
-            }
-            return;
-        }
-        
-        
+        //options.method = "CLASSIFY_BY_EQUAL_INTERVALS";
         options.method = mapfish.GeoStat.Distribution[options.method];
         options.numClasses = this.form.findField('numClasses').getValue();
         options.colors = this.getColors();
@@ -485,7 +551,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         }
         
     },
-
+    
+    
     /**
      * Method: onRender
      * Called by EXT when the component is rendered.

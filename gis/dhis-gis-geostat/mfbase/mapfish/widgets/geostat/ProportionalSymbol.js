@@ -207,7 +207,8 @@ mapfish.widgets.geostat.ProportionalSymbol = Ext.extend(Ext.FormPanel, {
     requestFailure: function(request) {
         OpenLayers.Console.error('Ajax request failed');
     },
-        
+    
+    
     /**
      * Method: classify
      *    Reads the features to get the different value for
