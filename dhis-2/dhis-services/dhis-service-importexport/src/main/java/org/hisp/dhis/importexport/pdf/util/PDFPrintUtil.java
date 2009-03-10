@@ -50,7 +50,7 @@ public class PDFPrintUtil
     
     public static void printDataElementFrontPage( Document document, ExportParams exportParams )
     {
-        if ( exportParams.getDataElements().size() > 0 )
+        if ( exportParams.getDataElements() == null || exportParams.getDataElements().size() > 0 )
         {
             I18n i18n = exportParams.getI18n();
             
@@ -62,7 +62,7 @@ public class PDFPrintUtil
     
     public static void printIndicatorFrontPage( Document document, ExportParams exportParams )
     {
-        if ( exportParams.getIndicators().size() > 0 )
+        if ( exportParams.getIndicators() == null || exportParams.getIndicators().size() > 0 )
         {
             I18n i18n = exportParams.getI18n();
             
@@ -74,7 +74,7 @@ public class PDFPrintUtil
 
     public static void printDataElementConceptFrontPage( Document document, ExportParams exportParams )
     {
-        if ( exportParams.getIndicators().size() > 0 )
+        if ( exportParams.getIndicators() == null || exportParams.getIndicators().size() > 0 )
         {
             I18n i18n = exportParams.getI18n();
             
@@ -86,7 +86,7 @@ public class PDFPrintUtil
 
     public static void printOrganisationUnitHierarchyFrontPage( Document document, ExportParams exportParams )
     {
-        if ( exportParams.getOrganisationUnits().size() > 0 )
+        if ( exportParams.getOrganisationUnits() == null || exportParams.getOrganisationUnits().size() > 0 )
         {
             I18n i18n = exportParams.getI18n();
             
@@ -98,7 +98,7 @@ public class PDFPrintUtil
     
     public static void printOrganisationUnitFrontPage( Document document, ExportParams exportParams )
     {
-        if ( exportParams.getOrganisationUnits().size() > 0 )
+        if ( exportParams.getOrganisationUnits() == null || exportParams.getOrganisationUnits().size() > 0 )
         {
             I18n i18n = exportParams.getI18n();
             

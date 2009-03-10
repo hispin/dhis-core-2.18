@@ -146,38 +146,33 @@
       <version>${version}</version>
       <type>war</type>
     </dependency>
-    <!--
+    
+    <!-- India modules -->
+    
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dashboard</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
-    -->
-    <!--
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dataentry-national</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
-    -->
-    <!--
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-reports-national</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
-    -->
-    <!--
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-validationrule-local-in</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
-    -->
     
     <!-- Other -->
     
