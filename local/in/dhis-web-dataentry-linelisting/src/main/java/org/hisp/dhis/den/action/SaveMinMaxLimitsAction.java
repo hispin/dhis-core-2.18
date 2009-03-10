@@ -112,11 +112,11 @@ public class SaveMinMaxLimitsAction
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
         MinMaxDataElement minMaxDataElement = minMaxDataElementStore.getMinMaxDataElement( organisationUnit,
-            dataElement );
+            dataElement, null );
 
         if ( minMaxDataElement == null )
         {
-            minMaxDataElement = new MinMaxDataElement( organisationUnit, dataElement, minLimit, maxLimit, false );
+            minMaxDataElement = new MinMaxDataElement( organisationUnit, dataElement, null, minLimit, maxLimit, false );
 
             minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement );
         }

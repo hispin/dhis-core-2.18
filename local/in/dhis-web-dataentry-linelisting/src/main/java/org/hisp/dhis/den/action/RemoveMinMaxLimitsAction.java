@@ -98,7 +98,7 @@ public class RemoveMinMaxLimitsAction
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
         MinMaxDataElement minMaxDataElement = minMaxDataElementStore.getMinMaxDataElement( organisationUnit,
-            dataElement );
+            dataElement, null );
 
         if ( minMaxDataElement != null )
         {

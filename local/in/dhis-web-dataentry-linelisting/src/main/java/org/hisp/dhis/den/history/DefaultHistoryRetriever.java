@@ -229,7 +229,7 @@ public class DefaultHistoryRetriever
     private void addMinMaxLimits( OrganisationUnit organisationUnit, DataElement dataElement, DataElementHistory history )
     {
         MinMaxDataElement minMaxDataElement = minMaxDataElementStore.getMinMaxDataElement( organisationUnit,
-            dataElement );
+            dataElement, null );
 
         if ( minMaxDataElement != null )
         {

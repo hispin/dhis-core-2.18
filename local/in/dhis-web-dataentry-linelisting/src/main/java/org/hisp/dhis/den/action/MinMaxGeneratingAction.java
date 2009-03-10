@@ -32,12 +32,12 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.order.manager.DataElementOrderManager;
 import org.hisp.dhis.den.history.DataElementHistory;
 import org.hisp.dhis.den.history.HistoryRetriever;
 import org.hisp.dhis.den.state.SelectedStateManager;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementStore;
+import org.hisp.dhis.order.manager.DataElementOrderManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -69,7 +69,7 @@ public class MinMaxGeneratingAction
     {
         this.minMaxDataElementStore = minMaxDataElementStore;
     }
-
+    
     private DataElementOrderManager dataElementOrderManager;
 
     public void setDataElementOrderManager( DataElementOrderManager dataElementOrderManager )
@@ -83,7 +83,7 @@ public class MinMaxGeneratingAction
     {
         this.selectedStateManager = selectedStateManager;
     }
-
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -145,7 +145,7 @@ public class MinMaxGeneratingAction
         throws Exception
     {
         MinMaxDataElement minMaxDataElement = minMaxDataElementStore.getMinMaxDataElement( organisationUnit,
-            dataelement );
+            dataelement, null );
 
         if ( minMaxDataElement != null )
         {
@@ -182,7 +182,7 @@ public class MinMaxGeneratingAction
             // create a new MinMaxDataElement if it doesn't exist
             if ( minMaxDataElement == null )
             {
-                minMaxDataElement = new MinMaxDataElement( organisationUnit, dataelement, (int) minLimit,
+                minMaxDataElement = new MinMaxDataElement( organisationUnit, dataelement, null, (int) minLimit,
                     (int) maxLimit, true );
                 minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement );
             }
