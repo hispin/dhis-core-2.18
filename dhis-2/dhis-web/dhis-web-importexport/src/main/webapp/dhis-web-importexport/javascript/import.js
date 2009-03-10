@@ -5,10 +5,8 @@
 
 function submitImportForm()
 {
-	if(document.getElementById( "importForm" ).value != undefined){ 
-		setMessage( i18n_importing ); 
-		document.getElementById( "importForm" ).submit(); 
-	}
+	setMessage( i18n_importing ); 
+	document.getElementById( "importForm" ).submit(); 
 }
 
 function showAdvancedOptions()
