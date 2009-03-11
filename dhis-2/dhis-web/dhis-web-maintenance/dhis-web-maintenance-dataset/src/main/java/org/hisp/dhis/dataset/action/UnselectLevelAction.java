@@ -84,11 +84,11 @@ public class UnselectLevelAction
         throws Exception
     {
         Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits();
-
+        
         Collection<OrganisationUnit> selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();
 
         for ( OrganisationUnit rootUnit : rootUnits )
-        {
+        {        	
             unselectLevel( rootUnit, FIRST_LEVEL, selectedUnits );
         }
 
@@ -106,13 +106,13 @@ public class UnselectLevelAction
     private void unselectLevel( OrganisationUnit orgUnit, int currentLevel, Collection<OrganisationUnit> selectedUnits )
     {
         if ( currentLevel == level )
-        {
+        {        	
             selectedUnits.remove( orgUnit );
         }
         else
         {
             for ( OrganisationUnit child : orgUnit.getChildren() )
-            {
+            {            	
                 unselectLevel( child, currentLevel + 1, selectedUnits );
             }
         }

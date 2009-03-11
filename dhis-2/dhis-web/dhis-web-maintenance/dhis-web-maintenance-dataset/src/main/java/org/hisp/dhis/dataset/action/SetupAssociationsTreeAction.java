@@ -110,9 +110,9 @@ public class SetupAssociationsTreeAction
         Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
         
         for ( Source source : sources )
-        {
+        {        	
             organisationUnits.add( (OrganisationUnit) source );
-        }
+        }       
         
         return organisationUnits;
     }

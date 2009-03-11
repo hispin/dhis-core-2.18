@@ -64,8 +64,8 @@ public class DefineDataSetAssociationsAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
+    }    
+ 
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
@@ -82,12 +82,25 @@ public class DefineDataSetAssociationsAction
     public String execute()
         throws Exception
     {
-        DataSet dataSet = dataSetService.getDataSet( dataSetId );
-
-        Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getSelectedOrganisationUnits();
-
-        dataSet.setSources( convert( selectedOrganisationUnits ) );
+    	
+        Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits(); 
         
+        Set<OrganisationUnit> unitsInTheTree = new HashSet<OrganisationUnit>();        
+        
+        getUnitsInTheTree( rootUnits, unitsInTheTree );          
+	
+    	DataSet dataSet = dataSetService.getDataSet( dataSetId );    	
+    	
+    	Set<Source> assignedSources = dataSet.getSources();
+    	
+    	assignedSources.removeAll( convert( unitsInTheTree ) );        
+
+    	Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getSelectedOrganisationUnits();
+    	
+    	assignedSources.addAll( convert( selectedOrganisationUnits ) );  	
+    	
+    	dataSet.setSources( assignedSources );
+    	
         dataSetService.updateDataSet( dataSet );
         
         return SUCCESS;
@@ -104,5 +117,14 @@ public class DefineDataSetAssociationsAction
         sources.addAll( organisationUnits );
         
         return sources;
+    }   
+    
+    private void getUnitsInTheTree( Collection<OrganisationUnit> rootUnits, Set<OrganisationUnit> unitsInTheTree )
+    {
+    	for( OrganisationUnit root : rootUnits )
+        {
+    		unitsInTheTree.add( root );
+    		getUnitsInTheTree( root.getChildren(), unitsInTheTree );    		
+        }
     }
 }
