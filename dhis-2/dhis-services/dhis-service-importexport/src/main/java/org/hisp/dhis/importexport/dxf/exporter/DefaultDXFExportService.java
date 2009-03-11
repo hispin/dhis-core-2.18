@@ -322,8 +322,9 @@ public class DefaultDXFExportService
             thread.registerXMLConverter( new CompleteDataSetRegistrationConverter( 
                 completeDataSetRegistrationService, dataSetService, organisationUnitService, periodService ) );
             
-            thread.registerXMLConverter( params.isAggregatedData() ? new AggregatedDataValueConverter( dataMartStore ) : 
-                new DataValueConverter( dataMartStore, statementManager ) );
+            thread.registerXMLConverter( params.isAggregatedData() ? 
+                new AggregatedDataValueConverter( dataMartStore, dataSetService, periodService ) : 
+                new DataValueConverter( dataMartStore, statementManager, periodService ) );
             
             thread.start();
             

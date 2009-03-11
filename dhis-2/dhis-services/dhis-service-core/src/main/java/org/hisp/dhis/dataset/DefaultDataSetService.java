@@ -222,11 +222,18 @@ public class DefaultDataSetService
         return null;
     }
     
-    public Collection<DataSet> getDistictDataElements( Collection<Integer> dataSetIdentifiers )
+    public Collection<DataElement> getDistinctDataElements( Collection<Integer> dataSetIdentifiers )
     {
         Collection<DataSet> dataSets = getDataSets( dataSetIdentifiers );
         
-        return dataSets;
+        Set<DataElement> dataElements = new HashSet<DataElement>();
+        
+        for ( DataSet dataSet : dataSets )
+        {
+            dataElements.addAll( dataSet.getDataElements() );
+        }
+        
+        return dataElements;
     }
 
     // -------------------------------------------------------------------------

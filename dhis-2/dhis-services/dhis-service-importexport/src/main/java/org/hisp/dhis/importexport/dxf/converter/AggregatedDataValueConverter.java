@@ -27,18 +27,22 @@ package org.hisp.dhis.importexport.dxf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
 import java.util.Collection;
 
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.system.util.ConversionUtils;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 
 /**
  * @author Lars Helge Overland
@@ -64,6 +68,10 @@ public class AggregatedDataValueConverter
     // -------------------------------------------------------------------------
 
     private DataMartStore dataMartStore;
+
+    private DataSetService dataSetService;
+    
+    private PeriodService periodService;
     
     // -------------------------------------------------------------------------
     // Constructor
@@ -72,9 +80,13 @@ public class AggregatedDataValueConverter
     /**
      * Constructor for write operations.
      */
-    public AggregatedDataValueConverter( DataMartStore dataMartStore )
+    public AggregatedDataValueConverter( DataMartStore dataMartStore,
+        DataSetService dataSetService,
+        PeriodService periodService )
     {
         this.dataMartStore = dataMartStore;
+        this.dataSetService = dataSetService;
+        this.periodService = periodService;
     }
 
     // -------------------------------------------------------------------------
@@ -83,20 +95,26 @@ public class AggregatedDataValueConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<AggregatedDataValue> values = null;
-        
-        Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class, params.getPeriods() );
-        Collection<Integer> organisationUnitIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, params.getOrganisationUnits() );
-        
         if ( params.isIncludeDataValues() )
         {
-            if ( params.getDataElements().size() > 0 && params.getPeriods().size() > 0 && params.getOrganisationUnits().size() > 0 )
+            Collection<DataElement> dataElements = dataSetService.getDistinctDataElements( params.getDataSets() );
+
+            if ( dataElements.size() > 0 && params.getStartDate() != null && params.getEndDate() != null )
             {
+                Collection<Period> periods = null;
+
+                Collection<AggregatedDataValue> values = null;
+                
                 writer.openElement( COLLECTION_NAME );
                 
-                for ( Integer dataElemetId : params.getDataElements() )
+                for ( final DataElement dataElement : dataElements )
                 {
-                    values = dataMartStore.getAggregatedDataValues( dataElemetId, periodIds, organisationUnitIds );
+                    final PeriodType periodType = dataSetService.getPeriodType( dataElement, params.getDataSets() );
+                    
+                    periods = periodService.getIntersectingPeriodsByPeriodType( periodType, params.getStartDate(), params.getEndDate() );
+                    
+                    values = dataMartStore.getAggregatedDataValues( dataElement.getId(), 
+                        getIdentifiers( Period.class, periods ), params.getOrganisationUnits() );
                     
                     for ( AggregatedDataValue value : values )
                     {
@@ -106,9 +124,9 @@ public class AggregatedDataValueConverter
                         writer.writeElement( FIELD_PERIOD, String.valueOf( value.getPeriodId() ) );
                         writer.writeElement( FIELD_SOURCE, String.valueOf( value.getOrganisationUnitId() ) );
                         writer.writeElement( FIELD_VALUE, String.valueOf( Math.round( value.getValue() ) ) );
-                        writer.writeElement( FIELD_STOREDBY, "");
-                        writer.writeElement( FIELD_TIMESTAMP, "");
-                        writer.writeElement( FIELD_COMMENT, "");
+                        writer.writeElement( FIELD_STOREDBY, "" );
+                        writer.writeElement( FIELD_TIMESTAMP, "" );
+                        writer.writeElement( FIELD_COMMENT, "" );
                         writer.writeElement( FIELD_CATEGORY_OPTION_COMBO, String.valueOf( value.getCategoryOptionComboId() ) );
                         
                         writer.closeElement();

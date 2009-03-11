@@ -48,6 +48,7 @@ import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.DateUtils;
 
@@ -78,6 +79,8 @@ public class DataValueConverter
     
     private StatementManager statementManager;
     
+    private PeriodService periodService;
+    
     private Map<Object, Integer> dataElementMapping;    
     private Map<Object, Integer> periodMapping;    
     private Map<Object, Integer> sourceMapping;
@@ -91,10 +94,12 @@ public class DataValueConverter
      * Constructor for write operations.
      */
     public DataValueConverter( DataMartStore dataMartStore,
-        StatementManager statementManager )
+        StatementManager statementManager,
+        PeriodService periodService )
     {
         this.dataMartStore = dataMartStore;
         this.statementManager = statementManager;
+        this.periodService = periodService;
     }
     
     /**
@@ -129,19 +134,21 @@ public class DataValueConverter
     {   
         if ( params.isIncludeDataValues() )
         {
-            Collection<DeflatedDataValue> values = null;
-            
-            if ( params.getDataElements().size() > 0 && params.getPeriods().size() > 0 && params.getOrganisationUnits().size() > 0 )
+            if ( params.getStartDate() != null && params.getEndDate() != null )
             {
+                Collection<DeflatedDataValue> values = null;
+            
+                Collection<Period> periods = periodService.getIntersectingPeriods( params.getStartDate(), params.getEndDate() );
+                
                 statementManager.initialise();
                 
                 writer.openElement( COLLECTION_NAME );
                 
                 for ( final Integer element : params.getDataElements() )
                 {
-                    for ( final Integer period : params.getPeriods() )
+                    for ( final Period period : periods )
                     {
-                        values = dataMartStore.getDeflatedDataValues( element, period, params.getOrganisationUnits() );
+                        values = dataMartStore.getDeflatedDataValues( element, period.getId(), params.getOrganisationUnits() );
                         
                         for ( final DeflatedDataValue value : values )
                         {   

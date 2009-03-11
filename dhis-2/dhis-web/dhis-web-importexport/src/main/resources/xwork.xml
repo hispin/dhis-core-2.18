@@ -170,6 +170,12 @@
       <result name="success" type="velocity-json">/dhis-web-importexport/responseIndicators.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
+    
+    <action name="validateAggregatedExport" class="org.hisp.dhis.importexport.action.exp.ValidateAggregatedExportAction">
+      <result name="success" type="velocity-xml">/dhis-web-importexport/responseSuccess.vm</result>
+      <result name="error" type="velocity-xml">/dhis-web-importexport/responseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
         
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
     <!-- IXF Configuration                                             -->

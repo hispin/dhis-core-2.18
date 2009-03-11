@@ -27,17 +27,15 @@ package org.hisp.dhis.importexport.action.exp;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDate;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
@@ -87,6 +85,13 @@ public class DataValueExportAction
         this.dataSetService = dataSetService;
     }
     
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+    
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -94,13 +99,6 @@ public class DataValueExportAction
         this.organisationUnitService = organisationUnitService;
     }
     
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-        
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -118,7 +116,7 @@ public class DataValueExportAction
     {
         return fileName;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -176,7 +174,7 @@ public class DataValueExportAction
     {
         this.selectedDataSets = selectedDataSets;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -185,7 +183,7 @@ public class DataValueExportAction
         throws Exception
     {
         ExportParams params = new ExportParams();
-        
+
         // ---------------------------------------------------------------------
         // Get DataElements
         // ---------------------------------------------------------------------
@@ -196,19 +194,10 @@ public class DataValueExportAction
             params.setCategoryCombos( null );
             params.setCategoryOptions( null );
             params.setCategoryOptionCombos( null );
-
-            Set<Integer> distinctDataElements = new HashSet<Integer>();
             
-            for ( String dataSetId : selectedDataSets )
-            {
-                DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
-                
-                distinctDataElements.addAll( ConversionUtils.getIdentifiers( DataElement.class, dataSet.getDataElements() ) );
-                
-                params.getDataSets().add( Integer.parseInt( dataSetId ) );
-            }
+            params.setDataSets( getIntegerCollection( selectedDataSets ) );
             
-            params.setDataElements( distinctDataElements );
+            params.setDataElements( getIdentifiers( DataElement.class, dataSetService.getDistinctDataElements( params.getDataSets() ) ) );
         }
         
         // ---------------------------------------------------------------------
@@ -217,12 +206,11 @@ public class DataValueExportAction
 
         if ( startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0 )
         {
-            Date selectedStartDate = getMediumDate( startDate );
-        
-            Date selectedEndDate = getMediumDate( endDate );
-        
-            params.getPeriods().addAll( ConversionUtils.getIdentifiers( 
-                Period.class, periodService.getIntersectingPeriods( selectedStartDate, selectedEndDate ) ) );
+            params.setStartDate( getMediumDate( startDate ) );
+            params.setEndDate( getMediumDate( endDate ) );
+            
+            params.setPeriods( getIdentifiers( Period.class, 
+                periodService.getIntersectingPeriods( getMediumDate( startDate ), getMediumDate( endDate ) ) ) );
         }
         
         // ---------------------------------------------------------------------
@@ -258,10 +246,6 @@ public class DataValueExportAction
             }
         }
 
-        // ---------------------------------------------------------------------
-        // Get CompleteDataSetRegistrations
-        // ---------------------------------------------------------------------
-        
         params.setIncludeDataValues( true );
         params.setIncludeCompleteDataSetRegistrations( true );
         params.setAggregatedData( aggregatedData );

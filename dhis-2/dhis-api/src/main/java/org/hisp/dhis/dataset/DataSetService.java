@@ -159,6 +159,15 @@ public interface DataSetService
      */
     PeriodType getPeriodType( DataElement dataElement, Collection<Integer> dataSetIdentifiers );
     
+    /**
+     * Returns a distinct collection of data elements associated with the data
+     * sets with the given corresponding data set identifiers.
+     * 
+     * @param dataSetIdentifiers the data set identifiers.
+     * @return a distinct collection of data elements.
+     */
+    Collection<DataElement> getDistinctDataElements( Collection<Integer> dataSetIdentifiers );
+    
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation
     // -------------------------------------------------------------------------

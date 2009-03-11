@@ -8,19 +8,46 @@ function exportDataValue()
     if ( validateDataValueExportForm() )
     {
         var aggregatedData = getListValue( "aggregatedData" );
-        var generateDataSource = getListValue( "generateDataSource" );
         
-        if ( aggregatedData == "true" && generateDataSource && generateDataSource == "true" )
+        if ( aggregatedData == "true" )
         {
             var request = new Request();
-            request.sendAsPost( getDataMartExportParams() );
-            request.setCallbackSuccess( exportDataMartReceived );
-            request.send( "exportDataMart.action" );        
+            request.setResponseTypeXML( 'message' );
+            request.setCallbackSuccess( validateAggregatedExportCompleted );
+            request.send( "validateAggregatedExport.action" );
         }
         else
         {
             submitDataValueExportForm();
         }
+    }
+}
+
+function validateAggregatedExportCompleted( messageElement )
+{
+    var type = messageElement.getAttribute( 'type' );
+    var message = messageElement.firstChild.nodeValue;
+    
+    if ( type == 'success' )
+    {
+        var generateDataSource = getListValue( "generateDataSource" );
+        
+        if ( generateDataSource && generateDataSource == "true" )
+        {
+            var request = new Request();
+            request.sendAsPost( getDataMartExportParams() );
+            request.setCallbackSuccess( exportDataMartReceived );
+            request.send( "exportDataMart.action" );   
+        }
+        else
+        {
+            submitDataValueExportForm();
+        }
+    }
+    else if ( type == 'error' )
+    {
+        document.getElementById( 'message' ).innerHTML = message;
+        document.getElementById( 'message' ).style.display = 'block';
     }
 }
 

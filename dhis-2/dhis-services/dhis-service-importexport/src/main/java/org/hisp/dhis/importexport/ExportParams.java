@@ -29,6 +29,7 @@ package org.hisp.dhis.importexport;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 
 import org.hisp.dhis.i18n.I18n;
@@ -48,9 +49,11 @@ public class ExportParams
     
     private boolean aggregatedData;
     
-    private Collection<Integer> categories = new ArrayList<Integer>();
+    private Date startDate;
     
-    private boolean allCategories;
+    private Date endDate;
+    
+    private Collection<Integer> categories = new ArrayList<Integer>();
     
     private Collection<Integer> categoryOptions = new ArrayList<Integer>();
     
@@ -175,6 +178,26 @@ public class ExportParams
         this.aggregatedData = aggregatedData;
     }
 
+    public Date getStartDate()
+    {
+        return startDate;
+    }
+
+    public void setStartDate( Date startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate()
+    {
+        return endDate;
+    }
+
+    public void setEndDate( Date endDate )
+    {
+        this.endDate = endDate;
+    }
+    
     public I18n getI18n()
     {
         return i18n;
@@ -393,15 +416,5 @@ public class ExportParams
     public void setOlapUrls( Collection<Integer> olapUrls )
     {
         this.olapUrls = olapUrls;
-    }
-
-    public boolean isAllCategories()
-    {
-        return allCategories;
-    }
-
-    public void setAllCategories( boolean allCategories )
-    {
-        this.allCategories = allCategories;
     }
 }

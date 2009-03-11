@@ -172,10 +172,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.importexport.ImportExportServiceManager"/>
     <property name="dataSetService"
       ref="org.hisp.dhis.dataset.DataSetService"/>
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/>
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 	
   <bean id="org.hisp.dhis.importexport.action.exp.GetExportOptionsAction"
@@ -240,6 +240,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.indicator.IndicatorService"/>
     <property name="dataDictionaryService"
       ref="org.hisp.dhis.datadictionary.DataDictionaryService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.importexport.action.exp.ValidateAggregatedExportAction"
+    class="org.hisp.dhis.importexport.action.exp.ValidateAggregatedExportAction"
+    scope="prototype">
+    <property name="dataIntegrityService"
+      ref="org.hisp.dhis.dataintegrity.DataIntegrityService"/>
   </bean>
     
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
