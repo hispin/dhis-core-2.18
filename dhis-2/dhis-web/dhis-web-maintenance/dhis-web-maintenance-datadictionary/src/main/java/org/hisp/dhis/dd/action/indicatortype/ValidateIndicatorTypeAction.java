@@ -133,6 +133,15 @@ public class ValidateIndicatorTypeAction
 
             return INPUT;
         }
+        else
+        {
+            if ( factor == 0 )
+            {
+                message = i18n.getString( "factor_cannot_be_zero" );
+                
+                return INPUT;
+            }
+        }
 
         message = i18n.getString( "everything_is_ok" );
 
