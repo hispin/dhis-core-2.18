@@ -18,7 +18,7 @@
 			<th>$i18n.getString( "color" )</th>
 			<th>$i18n.getString( "min" )</th>
 			<th>$i18n.getString( "max" )</th>
-            <th>$i18n.getString( "operations" )</th>
+            <th width="100px;">$i18n.getString( "operations" )</th>
           </tr>
 		  <tbody>
             #set( $mark = false )

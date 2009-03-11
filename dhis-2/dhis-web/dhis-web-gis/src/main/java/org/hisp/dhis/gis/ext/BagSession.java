@@ -109,6 +109,11 @@ public class BagSession
         this.legendSet = legendSet;
     }
 
+    public BagSession()
+    {
+        // TODO Auto-generated constructor stub
+    }
+
     public Title getTitle()
     {
         return new Title( this.getIndicator().getName(), this.getStartDate(), this.getEndDate() );
@@ -116,10 +121,11 @@ public class BagSession
 
     public List<Legend> getLegends()
     {
-        for(Legend legend:this.getLegendSet().getLegends()){
-            
+        for ( Legend legend : this.getLegendSet().getLegends() )
+        {
+
             legend.setColor( "#" + legend.getColor() );
-            
+
         }
         return this.getLegendSet().getLegends();
     }
@@ -129,10 +135,11 @@ public class BagSession
         List<FeatureStructure> featureStructure = new ArrayList<FeatureStructure>();
         for ( Feature feature : this.getFeatures() )
         {
-            if(feature.getFeature()!=null){
+            if ( feature.getFeature() != null )
+            {
                 featureStructure.add( new FeatureStructure( feature.getFeature().getFeatureCode(), feature.getColor(),
                     feature.getAggregatedDataValue(), feature.getFeature().getOrganisationUnit().getId() ) );
-                }
+            }
         }
         return featureStructure;
     }
@@ -144,12 +151,12 @@ public class BagSession
         for ( Feature feature : this.features )
         {
 
-            if ( feature.getFeature() != null)
+            if ( feature.getFeature() != null )
             {
                 String key = feature.getFeature().getFeatureCode();
 
                 String color = feature.getColor();
-                
+
                 double value = feature.getAggregatedDataValue();
 
                 result.put( key, color + "-" + value );
@@ -159,6 +166,26 @@ public class BagSession
 
         return result;
 
+    }
+    
+    public Double getIndicatorValue(String geoCode){
+        
+        for ( Feature feature : this.features )
+        {
+
+            if ( feature.getFeature() != null )
+            {
+                String key = feature.getFeature().getFeatureCode();
+                
+                if(key.equalsIgnoreCase( geoCode )){
+                    return feature.getAggregatedDataValue(); 
+                }        
+               
+            }
+
+        }
+        
+        return null;
     }
 
 }

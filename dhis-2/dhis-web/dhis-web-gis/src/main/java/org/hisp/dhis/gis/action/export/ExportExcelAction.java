@@ -52,7 +52,6 @@ import org.hisp.dhis.gis.action.configuration.GISConfigurationManagerService;
 import org.hisp.dhis.gis.state.SelectionManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -65,8 +64,6 @@ public class ExportExcelAction
     private FileFeatureStore fileFeatureStore;
 
     private OrganisationUnitSelectionManager organisationUnitSelectionManager;
-
-    private IndicatorService indicatorService;
 
     private OrganisationUnitService organisationUnitService;
 
@@ -81,13 +78,7 @@ public class ExportExcelAction
     private String outputXLS;
 
     private InputStream inputStream;
-
-    private String startDate;
-
-    private String endDate;
-
-    private Integer indicatorId;
-
+   
     public void setGisConfigurationManagerService( GISConfigurationManagerService gisConfigurationManagerService )
     {
         this.gisConfigurationManagerService = gisConfigurationManagerService;
@@ -106,22 +97,7 @@ public class ExportExcelAction
     public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
     {
         this.organisationUnitSelectionManager = organisationUnitSelectionManager;
-    }
-
-    public void setStartDate( String startDate )
-    {
-        this.startDate = startDate;
-    }
-
-    public void setEndDate( String endDate )
-    {
-        this.endDate = endDate;
-    }
-
-    public void setIndicatorId( Integer indicatorId )
-    {
-        this.indicatorId = indicatorId;
-    }
+    }   
 
     public InputStream getInputStream()
     {
@@ -146,11 +122,6 @@ public class ExportExcelAction
     public void setMapFileName( String mapFileName )
     {
         this.mapFileName = mapFileName;
-    }
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
     }
 
     public void setSelectionManager( SelectionManager selectionManager )
@@ -235,7 +206,7 @@ public class ExportExcelAction
 
             // Workbook templateWorkbook = Workbook.c;
 
-            Indicator indicator = indicatorService.getIndicator( indicatorId.intValue() );
+            Indicator indicator = selectionManager.getSeleteBagSession().getIndicator();
 
             WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( output );
 
@@ -287,8 +258,9 @@ public class ExportExcelAction
                 header ) );
             sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 1, organisationUnit.getName(), header ) );
             sheet.addCell( new Label( titlePositionCol, titlePositionRow + 2, i18n.getString( "period" ), header ) );
-            sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 2, "from " + startDate + " to "
-                + endDate, header ) );
+            sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 2, selectionManager
+                .getSeleteBagSession().getStartDate()
+                + " - " + selectionManager.getSeleteBagSession().getEndDate(), header ) );
 
             sheet.mergeCells( legendPositionCol, legendPositionRow, legendPositionCol + 2, legendPositionRow );
             sheet

@@ -1,3 +1,4 @@
+
 .mapButton{
 	border: thin gray groove;
 	background-color: #FFFFFF;
@@ -28,7 +29,7 @@
 	right: 10px;
 	background-color: #DFDFDF;
 	height: 21px;
-	width: 200px;
+	width: 400px;
 	text-align: right;
 	padding-top: 3px;
 	padding-right: 5px;	
@@ -48,8 +49,32 @@
 	background-color: #FFEEBF;
 	position: absolute;
 	display: none;
-	right: 20px;
-	top: 150px;
+	left: 300px;
+	top: 200px;
+	padding:5px;
+	padding-top:20px;
+	z-index:100000;	
+	
+}
+#listMapFile{
+	background-color:#FFFFFF;
+	width:200px;
+	overflow:auto;
+	position:absolute;
+	top:110px;
+	right:30px;
+	border: thin solid #EFEFEF;	
+}
+#uploadfile{
+	background-color:#EFEFEF;	
+	overflow:auto;
+	position:absolute;
+	top:110px;
+	right:200px;
+	border: thin solid #000000;	
+	width:400px;
+	display: none;
+	text-align: center;
+	height: 50px;
 	padding-top: 20px;
-	padding-right: 20px;		
 }

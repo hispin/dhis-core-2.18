@@ -20,7 +20,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/map.vm</param>
 			<param name="menu">/dhis-web-gis/orgunitMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/map.js,javascript/ui/ui.core.js,javascript/ui/ui.draggable.js,javascript/ui/ui.resizable.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/commons.js,javascript/render.js,javascript/ui/ui.core.js,javascript/ui/ui.draggable.js,javascript/ui/ui.resizable.js</param>
 			<param name="stylesheets">style/map.css,style/ui.resizable.css</param>
 		</action>
 		
@@ -31,7 +31,7 @@
 			<result name="input" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/changeConfiguration.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/general.js,javascript/map.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/commons.js</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 			<param name="stylesheets">style/map.css</param>
 		</action>
@@ -41,13 +41,13 @@
 			class="org.hisp.dhis.gis.action.management.AssignMapAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="configuration" type="redirect">changeConfiguration.action?action=1</result>
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				responseAssignUnitSuccess.vm
 			</result>
 			<result name="input" type="velocity">/popup.vm</result>
 			<param name="page">/dhis-web-gis/assignUnit.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/map.js,javascript/selectunit.js</param>
+			<param name="javascripts">../dhis-web-commonss/ouwt/ouwt.js,javascript/selectunit.js,javascript/commons.js</param>
 			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>
@@ -55,8 +55,8 @@
 		<action name="assignUnitSaveAction"
 			class="org.hisp.dhis.gis.action.management.AssignUnitSaveAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity">responseAssignUnitSuccess.vm</result>
-			<result name="input" type="velocity">responseAssignUnitInput.vm</result>
+			<result name="success" type="velocity-xml">responseAssignUnitSuccess.vm</result>
+			<result name="input" type="velocity-xml">responseAssignUnitInput.vm</result>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>
 
@@ -66,7 +66,7 @@
 			<result name="success" type="velocity">/popup.vm</result>
 			<param name="page">/dhis-web-gis/assignUnit.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/map.js</param>
+			<param name="javascripts">../dhis-web-commonss/ouwt/ouwt.js,javascript/commons.js</param>
 			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>
@@ -79,52 +79,52 @@
 			<result name="input" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/selectMapAndUnit.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/map.js</param>
+			<param name="javascripts">../dhis-web-commonss/ouwt/ouwt.js</param>
 			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>
 
 		<action name="validateAssignMap"
 			class="org.hisp.dhis.gis.action.management.ValidateAssignMapAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				responseAssignUnitSuccess.vm
 			</result>
-			<result name="input" type="velocity">
+			<result name="input" type="velocity-xml">
 				responseAssignUnitInput.vm
 			</result>
 		</action>
 
 		<action name="selectOrgUnitAjax"
 			class="org.hisp.dhis.gis.action.management.SelectOrgunitAjaxAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				responseSelectOrgunit.vm
 			</result>
 		</action>
 
 		<action name="deleteFeature"
 			class="org.hisp.dhis.gis.action.management.DeleteFeatureAction">
-			<result name="success" type="velocity">	responseSuccess.vm	</result>			
+			<result name="success" type="velocity-xml">	responseSuccess.vm	</result>			
 		</action>
 
 		<action name="deleteAllFeature"
 			class="org.hisp.dhis.gis.action.management.DeleteAllFeatureAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				responseSuccess.vm
 			</result>
 		</action>
 		<action name="showAllFeature"
 			class="org.hisp.dhis.gis.action.management.ShowAllFeatureAssignedAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				responseShowAllSuccess.vm
 			</result>
 		</action>
 
 		<action name="addMapFile"
 			class="org.hisp.dhis.gis.action.management.AddMapFileAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				responseSuccess.vm
 			</result>
-			<result name="input" type="velocity">
+			<result name="input" type="velocity-xml">
 				responseInput.vm
 			</result>
 		</action>
@@ -134,7 +134,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/assignRoot.vm</param>
 			<param name="menu">/dhis-web-gis/orgunitMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/general.js,javascript/map.js</param>
+			<param name="javascripts">../dhis-web-commonss/ouwt/ouwt.js,../dhis-web-commonss/calendar/calendar.js,../dhis-web-commonss/calendar/calendar-lang.js,../dhis-web-commonss/calendar/calendar-setup.js,javascript/commons.js</param>
 			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>
@@ -147,7 +147,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/assignRoot.vm</param>
 			<param name="menu">/dhis-web-gis/orgunitMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/general.js,javascript/map.js</param>
+			<param name="javascripts">../dhis-web-commonss/ouwt/ouwt.js,../dhis-web-commonss/calendar/calendar.js,../dhis-web-commonss/calendar/calendar-lang.js,../dhis-web-commonss/calendar/calendar-setup.js,javascript/commons.js</param>
 			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>	
@@ -173,7 +173,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/listMap.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
-			<param name="javascripts">javascript/map.js</param>
+			<param name="javascripts">javascript/commons.js</param>
 			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>	
 		</action>
@@ -184,7 +184,7 @@
 
 		<action name="fillMapByIndicator"
 			class="org.hisp.dhis.gis.action.dataanlysis.FillMapByIndicatorAction">
-			<result name="success" type="velocity">	responseFillMap.vm	</result>
+			<result name="success" type="velocity-xml">responseFillMap.vm</result>
 		</action>	
 
 
@@ -214,8 +214,8 @@
 
 		<action name="validateLegend"
 			class="org.hisp.dhis.gis.action.legend.ValidateLegendAction">
-			<result name="success" type="velocity">	responseSuccess.vm	</result>
-			<result name="input" type="velocity">responseInput.vm</result>
+			<result name="success" type="velocity-xml">responseSuccess.vm</result>
+			<result name="input" type="velocity-xml">responseInput.vm</result>
 		</action>
 
 		<action name="deleteLegend"	class="org.hisp.dhis.gis.action.legend.DeleteLegendAction">
@@ -268,8 +268,8 @@
 
 		<action name="validateLegendSet"
 			class="org.hisp.dhis.gis.action.legend.ValidateLegendSetAction">
-			<result name="success" type="velocity">	responseSuccess.vm	</result>
-			<result name="input" type="velocity">responseInput.vm	</result>
+			<result name="success" type="velocity-xml">responseSuccess.vm</result>
+			<result name="input" type="velocity-xml">responseInput.vm</result>
 		</action>
 
 		<action name="deleteLegendSet"
@@ -300,7 +300,7 @@
 
 		<action name="getIndicatorByIndicatorGroup"
 		class="org.hisp.dhis.gis.action.legend.GetIndicatorByGroup">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				responseIndicators.vm
 			</result>
 		</action>
@@ -326,8 +326,7 @@
 		</action>
 
 		<action name="exportExcel"
-			class="org.hisp.dhis.gis.action.export.ExportExcelAction">
-			<!-- result name="success" type="velocity">download.vm</result-->
+			class="org.hisp.dhis.gis.action.export.ExportExcelAction">			
 			<result name="success" type="stream">
 				<param name="contentType">
 					application/vnd.ms-excel
@@ -338,6 +337,12 @@
 				</param>
 				<param name="bufferSize">1024</param>
 			</result>
+		</action>
+		
+		<action name="getIndicatorValueFromBagSession"
+			class="org.hisp.dhis.gis.action.dataanlysis.GetIndicatorValueFromBagSession">
+			<result name="success" type="velocity-xml">responseInformationSuccess.vm</result>
+			<result name="error" type="velocity-xml">responseError.vm</result>
 		</action>
 
 	</package>

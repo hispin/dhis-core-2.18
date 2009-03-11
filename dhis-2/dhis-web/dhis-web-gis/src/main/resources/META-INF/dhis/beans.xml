@@ -162,8 +162,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.gis.action.configuration.GISConfigurationManagerService" />
 	</bean>
 
-	<!-- Search -->
-
 	<!-- Fill map -->
 
 
@@ -277,8 +275,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.gis.action.export.ExportExcelAction"
 		class="org.hisp.dhis.gis.action.export.ExportExcelAction">
 		<property name="fileFeatureStore"
-			ref="org.hisp.dhis.gis.action.export.FileFeatureStore" />
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+			ref="org.hisp.dhis.gis.action.export.FileFeatureStore" />		
 		<property name="organisationUnitSelectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="organisationUnitService"
@@ -297,6 +294,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="gisConfigurationManagerService"
 			ref="org.hisp.dhis.gis.action.configuration.GISConfigurationManagerService" />
 		<property name="gisConfigurationService" ref="org.hisp.dhis.gis.GISConfigurationService" />
+
+	</bean>
+	
+	<!-- Get Indicator Value -->
+	
+	<bean
+		id="org.hisp.dhis.gis.action.dataanlysis.GetIndicatorValueFromBagSession"
+		class="org.hisp.dhis.gis.action.dataanlysis.GetIndicatorValueFromBagSession">		
+		<property name="featureService" ref="org.hisp.dhis.gis.FeatureService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="dataMartStore" ref="org.hisp.dhis.datamart.DataMartStore" />	
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="gisConfigurationService"
+			ref="org.hisp.dhis.gis.GISConfigurationService" />
+		<property name="aggregationService"
+			ref="org.hisp.dhis.aggregation.AggregationService" />
 
 	</bean>
 

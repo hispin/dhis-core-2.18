@@ -52,6 +52,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.aggregation.AggregationService;
 
@@ -61,299 +62,297 @@ import com.opensymphony.xwork.Action;
  * @author Tran Thanh Tri
  * @version $Id: FillMapByIndicatorAction.java 28-04-2008 16:06:00 $
  */
-public class FillMapByIndicatorAction
-    implements Action
-{
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+public class FillMapByIndicatorAction implements Action {
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private FeatureService featureService;
+	private FeatureService featureService;
 
-    private OrganisationUnitSelectionManager selectionManager;
+	private OrganisationUnitSelectionManager selectionManager;
 
-    private SelectionManager selectionGISManager;
+	private SelectionManager selectionGISManager;
 
-    private StatementManager statementManager;
+	private StatementManager statementManager;
 
-    private IndicatorService indicatorService;
+	private IndicatorService indicatorService;
 
-    private DataMartStore dataMartStore;
+	private DataMartStore dataMartStore;
 
-    private LegendService legendService;
+	private LegendService legendService;
 
-    private PeriodService periodService;
+	private PeriodService periodService;
 
-    private I18nFormat format;
+	private I18nFormat format;
 
-    private AggregationService aggregationService;
-    
-    private GISConfigurationService gisConfigurationService;
+	private AggregationService aggregationService;
 
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
+	private GISConfigurationService gisConfigurationService;
 
-    private Integer indicatorId;
+	// -------------------------------------------------------------------------
+	// Input
+	// -------------------------------------------------------------------------
 
-    private String startDate;
+	private Integer indicatorId;
 
-    private String endDate;
-    
-    private Integer periodId;
-    
-    private NumberFormat formatter = new DecimalFormat( "#0.00" );
+	private String startDate;
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
+	private String endDate;
 
-    private List<Feature> features = new ArrayList<Feature>();
+	private Integer periodId;
 
-    private LegendSet legendSet;
+	private NumberFormat formatter = new DecimalFormat("#0.00");
 
-    // -------------------------------------------------------------------------
-    // Getter & setter
-    // -------------------------------------------------------------------------
-    
-    
+	// -------------------------------------------------------------------------
+	// Output
+	// -------------------------------------------------------------------------
 
-    public void setAggregationService( AggregationService aggregationService )
-    {
-        this.aggregationService = aggregationService;
-    }
+	private List<Feature> features = new ArrayList<Feature>();
 
-    public void setPeriodId( Integer periodId )
-    {
-        this.periodId = periodId;
-    }
+	private LegendSet legendSet;
 
-    public void setGisConfigurationService( GISConfigurationService gisConfigurationService )
-    {
-        this.gisConfigurationService = gisConfigurationService;
-    }
+	// -------------------------------------------------------------------------
+	// Getter & setter
+	// -------------------------------------------------------------------------
 
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
+	public void setAggregationService(AggregationService aggregationService) {
+		this.aggregationService = aggregationService;
+	}
 
-    public void setSelectionGISManager( SelectionManager selectionGISManager )
-    {
-        this.selectionGISManager = selectionGISManager;
-    }
+	public void setPeriodId(Integer periodId) {
+		this.periodId = periodId;
+	}
 
-    public void setLegendService( LegendService legendService )
-    {
-        this.legendService = legendService;
-    }
+	public void setGisConfigurationService(
+			GISConfigurationService gisConfigurationService) {
+		this.gisConfigurationService = gisConfigurationService;
+	}
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
+	public void setStatementManager(StatementManager statementManager) {
+		this.statementManager = statementManager;
+	}
 
-    public List<Feature> getFeatures()
-    {
-        return features;
-    }
+	public void setSelectionGISManager(SelectionManager selectionGISManager) {
+		this.selectionGISManager = selectionGISManager;
+	}
 
-    public LegendSet getLegendSet()
-    {
-        return legendSet;
-    }
-
-    public void setDataMartStore( DataMartStore dataMartStore )
-    {
-        this.dataMartStore = dataMartStore;
-    }
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-
-    public void setIndicatorId( Integer indicatorId )
-    {
-        this.indicatorId = indicatorId;
-    }
-
-    public void setFeatureService( FeatureService featureService )
-    {
-        this.featureService = featureService;
-    }
-
-    public void setStartDate( String startDate )
-    {
-        this.startDate = startDate;
-    }
-
-    public void setEndDate( String endDate )
-    {
-        this.endDate = endDate;
-    }
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
-    private void autoFixLegendSet( double maxValue )
-    {
-
-        Legend maxLegend = Collections.max( legendSet.getLegends(), new LegendComparator() );
-
-        if ( maxValue > maxLegend.getMax() )
-        {
-            
-
-            if ( maxLegend.getAutoCreateMax() == Legend.AUTO_CREATE_MAX )
-            {
-
-                maxLegend.setMax( Double.parseDouble( formatter.format( maxValue ) ) );
-
-            }
-            else
-            {
-                int red = new Integer( (int) (Math.random() * 255) ).intValue();
-                int green = new Integer( (int) (Math.random() * 255) ).intValue();
-                int blue = new Integer( (int) (Math.random() * 255) ).intValue();
-
-                String color = (Integer.toHexString( red ) + Integer.toHexString( green ) + Integer.toHexString( blue ))
-                    .toUpperCase();
-
-                Legend legendNew = new Legend( "Fix", color, maxLegend.getMax(), Double.parseDouble( formatter
-                    .format( maxValue ) ) );
-
-                legendSet.addLegend( legendNew );
-            }
-        }
-
-    }
-
-    private LegendSet createLegendSet( double min, double max )
-    {      
-       
-
-        double section = (max - min) / 5;
-
-        Legend l1 = new Legend( "00FFFF", Double.parseDouble( formatter.format( min ) ), Double.parseDouble( formatter
-            .format( min + section ) ) );
-        min += section;
-        Legend l2 = new Legend( "00CCFF", Double.parseDouble( formatter.format( min ) ), Double.parseDouble( formatter
-            .format( min + section ) ) );
-        min += section;
-        Legend l3 = new Legend( "0066FF", Double.parseDouble( formatter.format( min ) ), Double.parseDouble( formatter
-            .format( min + section ) ) );
-        min += section;
-        Legend l4 = new Legend( "0000FF", Double.parseDouble( formatter.format( min ) ), Double.parseDouble( formatter
-            .format( min + section ) ) );
-        min += section;
-        Legend l5 = new Legend( "3300CC", Double.parseDouble( formatter.format( min ) ), Double.parseDouble( formatter
-            .format( min + section ) ) );
-
-        LegendSet legendSet = new LegendSet( "Default" );
-        legendSet.addLegend( l1 );
-        legendSet.addLegend( l2 );
-        legendSet.addLegend( l3 );
-        legendSet.addLegend( l4 );
-        legendSet.addLegend( l5 );
-
-        return legendSet;
-
-    }
-    
-    private double getIndicatorValue(Indicator indicator, Date startdate, Date enddate, OrganisationUnit organisationUnit){
-        
-        if(gisConfigurationService.getValue( GISConfiguration.KEY_GETINDICATOR ).equalsIgnoreCase( GISConfiguration.AggregationService )){
-         
-            return aggregationService.getAggregatedIndicatorValue( indicator, startdate, enddate, organisationUnit );
-        }         
-        
-        return dataMartStore.getAggregatedValue( indicator, periodService.getPeriod( periodId ) , organisationUnit );
-    }
-
-    public String execute()
-        throws Exception
-    {
-        statementManager.initialise();
-
-        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
-
-        Indicator indicator = indicatorService.getIndicator( new Integer( indicatorId ).intValue() );
-
-        selectionGISManager.setSelectedIndicator( indicator ); 
-        
-        Date startdate = format.parseDate( startDate );
-        
-        Date enddate = format.parseDate( endDate );
-
-        for ( OrganisationUnit org : organisationUnit.getChildren() )
-        {
-            
-            
-            double indicatorValue = getIndicatorValue(indicator, startdate, enddate, org ); 
-               
-
-            if ( indicatorValue < 0.0 )
-            {
-
-                indicatorValue = 0;
-            }
-           
-            org.hisp.dhis.gis.Feature feature = featureService.get( org );
-
-            features.add( new Feature( feature, indicatorValue, "#CCCCCC" ) );
-           
-        }
-
-        double max = Collections.max( features, new FeatureValueComparator() ).getAggregatedDataValue();
-
-        double min = Collections.min( features, new FeatureValueComparator() ).getAggregatedDataValue();
-
-        legendSet = legendService.getLegendSet( indicator );
-
-        if ( legendSet == null )
-        {
-            legendSet = createLegendSet( min, max );
-        }
-        else
-        {
-            autoFixLegendSet( max );
-        }
-
-        legendSet.sortLegend( new LegendComparator() );
-
-        for ( Feature feature : features )
-        {
-            for ( Legend legend : legendSet.getLegends() )
-            {
-
-                if ( feature.getAggregatedDataValue() >= legend.getMin()
-                    && feature.getAggregatedDataValue() <= legend.getMax() )
-                {
-                    feature.setColor( "#" + legend.getColor() );
-                }
-            }       
-
-            feature.setAggregatedDataValue( new Double( formatter.format( feature.getAggregatedDataValue() ) )
-                .doubleValue() );
-
-        }
-
-        selectionGISManager.setSeletedBagSession( new BagSession( indicator, format.formatDate( startdate ) , format.formatDate( enddate ), features, legendSet ) );       
-
-        statementManager.destroy();
-
-        return SUCCESS;
-    }
-    
-    
-    
+	public void setLegendService(LegendService legendService) {
+		this.legendService = legendService;
+	}
+
+	public void setSelectionManager(
+			OrganisationUnitSelectionManager selectionManager) {
+		this.selectionManager = selectionManager;
+	}
+
+	public List<Feature> getFeatures() {
+		return features;
+	}
+
+	public LegendSet getLegendSet() {
+		return legendSet;
+	}
+
+	public void setDataMartStore(DataMartStore dataMartStore) {
+		this.dataMartStore = dataMartStore;
+	}
+
+	public void setIndicatorService(IndicatorService indicatorService) {
+		this.indicatorService = indicatorService;
+	}
+
+	public void setIndicatorId(Integer indicatorId) {
+		this.indicatorId = indicatorId;
+	}
+
+	public void setFeatureService(FeatureService featureService) {
+		this.featureService = featureService;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public void setPeriodService(PeriodService periodService) {
+		this.periodService = periodService;
+	}
+
+	public void setFormat(I18nFormat format) {
+		this.format = format;
+	}
+
+	private BagSession bagSession = new BagSession();
+
+	private void autoFixLegendSet(double maxValue) {
+
+		Legend maxLegend = Collections.max(legendSet.getLegends(),
+				new LegendComparator());
+
+		if (maxValue > maxLegend.getMax()) {
+
+			if (maxLegend.getAutoCreateMax() == Legend.AUTO_CREATE_MAX) {
+
+				maxLegend
+						.setMax(Double.parseDouble(formatter.format(maxValue)));
+
+			} else {
+				int red = new Integer((int) (Math.random() * 255)).intValue();
+				int green = new Integer((int) (Math.random() * 255)).intValue();
+				int blue = new Integer((int) (Math.random() * 255)).intValue();
+
+				String color = (Integer.toHexString(red)
+						+ Integer.toHexString(green) + Integer
+						.toHexString(blue)).toUpperCase();
+
+				Legend legendNew = new Legend("Fix", color, maxLegend.getMax(),
+						Double.parseDouble(formatter.format(maxValue)));
+
+				legendSet.addLegend(legendNew);
+			}
+		}
+
+	}
+
+	private LegendSet createLegendSet(double min, double max) {
+
+		double section = (max - min) / 5;
+
+		Legend l1 = new Legend("00FFFF", Double.parseDouble(formatter
+				.format(min)), Double.parseDouble(formatter.format(min
+				+ section)));
+		min += section;
+		Legend l2 = new Legend("00CCFF", Double.parseDouble(formatter
+				.format(min)), Double.parseDouble(formatter.format(min
+				+ section)));
+		min += section;
+		Legend l3 = new Legend("0066FF", Double.parseDouble(formatter
+				.format(min)), Double.parseDouble(formatter.format(min
+				+ section)));
+		min += section;
+		Legend l4 = new Legend("0000FF", Double.parseDouble(formatter
+				.format(min)), Double.parseDouble(formatter.format(min
+				+ section)));
+		min += section;
+		Legend l5 = new Legend("3300CC", Double.parseDouble(formatter
+				.format(min)), Double.parseDouble(formatter.format(min
+				+ section)));
+
+		LegendSet legendSet = new LegendSet("Default");
+		legendSet.addLegend(l1);
+		legendSet.addLegend(l2);
+		legendSet.addLegend(l3);
+		legendSet.addLegend(l4);
+		legendSet.addLegend(l5);
+
+		return legendSet;
+
+	}
+
+	private double getIndicatorValue(Indicator indicator, Date startdate,
+			Date enddate, OrganisationUnit organisationUnit, Period period) {
+
+		if (gisConfigurationService.getValue(GISConfiguration.KEY_GETINDICATOR)
+				.equalsIgnoreCase(GISConfiguration.AggregationService)) {
+
+			return aggregationService.getAggregatedIndicatorValue(indicator,
+					startdate, enddate, organisationUnit);
+		}
+
+		return dataMartStore.getAggregatedValue(indicator, period,
+				organisationUnit);
+	}
+
+	public String execute() throws Exception {
+		Period period = null;
+		
+		if (periodId != null) {
+			period = periodService.getPeriod(periodId);
+		}
+		statementManager.initialise();
+
+		OrganisationUnit organisationUnit = selectionManager
+				.getSelectedOrganisationUnit();
+
+		Indicator indicator = indicatorService.getIndicator(new Integer(
+				indicatorId).intValue());
+
+		selectionGISManager.setSelectedIndicator(indicator);
+
+		Date startdate = format.parseDate(startDate);
+
+		Date enddate = format.parseDate(endDate);
+
+		for (OrganisationUnit org : organisationUnit.getChildren()) {
+
+			double indicatorValue = getIndicatorValue(indicator, startdate,
+					enddate, org, period);
+
+			if (indicatorValue < 0.0) {
+
+				indicatorValue = 0;
+			}
+
+			org.hisp.dhis.gis.Feature feature = featureService.get(org);
+
+			features.add(new Feature(feature, indicatorValue, "#CCCCCC"));
+
+		}
+
+		double max = Collections.max(features, new FeatureValueComparator())
+				.getAggregatedDataValue();
+
+		double min = Collections.min(features, new FeatureValueComparator())
+				.getAggregatedDataValue();
+
+		legendSet = legendService.getLegendSet(indicator);
+
+		if (legendSet == null) {
+			legendSet = createLegendSet(min, max);
+		} else {
+			autoFixLegendSet(max);
+		}
+
+		legendSet.sortLegend(new LegendComparator());
+
+		for (Feature feature : features) {
+			for (Legend legend : legendSet.getLegends()) {
+
+				if (feature.getAggregatedDataValue() >= legend.getMin()
+						&& feature.getAggregatedDataValue() <= legend.getMax()) {
+					feature.setColor("#" + legend.getColor());
+				}
+			}
+
+			feature.setAggregatedDataValue(new Double(formatter.format(feature
+					.getAggregatedDataValue())).doubleValue());
+
+		}
+
+		if (gisConfigurationService.getValue(GISConfiguration.KEY_GETINDICATOR)
+				.equalsIgnoreCase(GISConfiguration.AggregationService)) {
+
+			this.bagSession.setStartDate(format.formatDate(startdate));
+			this.bagSession.setEndDate(format.formatDate(enddate));
+
+		} else {
+			this.bagSession.setStartDate(format.formatDate( period.getStartDate()));
+			this.bagSession.setEndDate(format.formatDate( period.getStartDate()));
+		}
+		
+		this.bagSession.setIndicator( indicator );
+		this.bagSession.setFeatures( features );
+		this.bagSession.setLegendSet( legendSet );
+		
+		selectionGISManager.setSeletedBagSession(this.bagSession);
+
+		
+		statementManager.destroy();
+
+		return SUCCESS;
+	}
 
 }
