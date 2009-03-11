@@ -14,10 +14,7 @@
 <li><a href="#importexport">Import-Export</a></li>
 <li><a href="#dataanalysis">Data Analysis</a></li>
 <li><a href="#reports">Reports</a></li>
-<li></li>
 </ol>
-
-<a href="#navigation">Navigation</a>
 
 <h2><a name="navigation">Navigation</a> <a href="#index">To top</a></h2>
 
@@ -37,16 +34,16 @@
 <p>The main page for all of these sub-sections will show you a list of already created elements. Next to each element in the list you will find icons for edit, translate, remove and show details. These icons will take you to the desired operation for the desired element. Above the column with the operation icons you will see an 'Add new' button.</p>
 
 <h3>Add new</h3>
-<p>In the main page of the module click on the &lt;Add new&gt; button. This will open a form where you can fill in the information about the element, and to finalise the operation click the &lt;Add&gt; button at the bottom of the form. Click on &lt;Cancel&gt; at any time to abort the add operation. &lt;Add&gt; will take you back to the list where you will see your new element.</p>
+<p>In the main page, of the module click on the &lt;Add new&gt; button. This will open a form where you can fill in the information about the element, and to finalise the operation click the &lt;Add&gt; button at the bottom of the form. Click on &lt;Cancel&gt; at any time to abort the add operation. &lt;Add&gt; will take you back to the list where you will see your new element.</p>
 
 <h3>Translate</h3>
 <p>Here you can translate the element (in the database) to any desired language. Please read the <a href="#internationalisation">Internationalisation</a> section in this manual for further details on how to maintain translations.</p>
 
 <h3>Edit</h3>
-<p>In the main page look for your element in the list and click on the edit icon next to it. This will open a form similar to the Add form, but this time displaying the stored information about your element. Make the changes you like and click on the &lt;Save&gt; button to finalise the operation. Click on &lt;Cancel&gt; at any time to abort the add operation.</p>
+<p>In the main page, look for your element in the list and click on the edit icon next to it. This will open a form similar to the Add form, but this time displaying the stored information about your element. Make the changes you like and click on the &lt;Save&gt; button to finalise the operation. Click on &lt;Cancel&gt; at any time to abort the add operation.</p>
 
 <h3>Remove</h3>
-<p>In the main page look for your element in the list and click on the remove icon next to it. You will be asked to confirm the deletion, and click &lt;OK&gt; to finalise the operation.</p>
+<p>In the main page, look for your element in the list and click on the remove icon next to it. You will be asked to confirm the deletion, and click &lt;OK&gt; to finalise the operation.</p>
 
 <h3>Show details</h3>
 <p>In the main page look for your element in the list and click on the show details icon next to it. This will display the information about the element on the right side of the page next to the list.</p>
@@ -58,12 +55,12 @@
 
 <h3>Organisational unit (org unit) properties</h3>
 <dl>
-	<dt>Name</dt><dd>self explanatory</dd>
-	<dt>Short name</dt><dd>maximum 20 characters and used in reports etc. with limited space</dd>
-	<dt>Organisational Unit Code</dt><dd>optional field to reflect a health system's unit codification system</dd>
-	<dt>Opening Date</dt><dd>Used to provide a history of the organisational structure. E.g. to avoid new units being part of (historical) reports from a period when they did not exist.</dd>
+	<dt>Name</dt><dd>Self explanatory</dd>
+	<dt>Short name</dt><dd>Maximum 20 characters and used in reports etc. with limited space</dd>
+	<dt>Organisational Unit Code</dt><dd>Optional field to reflect a health system's unit codification system</dd>
+	<dt>Opening Date</dt><dd>Used to provide a history of the organisational structure. e.g. to avoid new units being part of (historical) reports from a period when they did not exist.</dd>
 	<dt>Registers Data</dt><dd>This field is used to identify whether this unit registers any data or not. Most administrative units in the hierarchy do not register any data, whereas typically the data is registered at health facilities at the bottom level. Data is then reported upwards in the hierarchy using export/import functionality and not through data registration (data entry).</dd>
-	<dt>Comment</dt><dd>this field is optional and can provide additional information such as name changes etc.</dd>
+	<dt>Comment</dt><dd>This field is optional and can provide additional information such as name changes etc.</dd>
 </dl>
 
 <h3>The organisational hierarchy</h3>
@@ -81,14 +78,14 @@
 	<li>Select the new parent (to the unit you are moving) in the menu tree and click on &lt;Confirm&gt;</li>
 	<li>Go through with the move by clicking on &lt;Move&gt;.</li>
 </ol>
-<p>&lt;Reset&gt; will reset the confirmed selections from step 1. and 2.</p>
+<p>&lt;Reset&gt; will reset the confirmed selections from step 1 and 2.</p>
 <p>Click on any other menu item to cancel this operation.</p>
 
 <h3>Organisational Unit Groups</h3>
 <p>See the general instruction for groups.</p>
 
 
-<h2><a name="deandind">Data Elements And Indicators</a> <a href="#index">To top</a></h2>
+<h2><a name="deandind">Data Elements and Indicators</a> <a href="#index">To top</a></h2>
 
 <h3><a name="dataelements">Data Elements</a> <a href="#index">To top</a></h3>
 <p>Data elements represent every piece of information registered in the DHIS. The data elements are flexible in the way that they can represent any kind of information. Often data elements are called meta-information or meta-data, as they provide information of what is being captured in the system and does not represent the data values itself. The three main types of data that a data element in DHIS represents are routine, semi-permanent and survey data. These will be explained further down.</p>
@@ -97,12 +94,12 @@
 
 <h4>Data element properties</h4>
 <dl>
-	<dt>Name</dt><dd>self explanatory</dd>
-	<dt>Short name</dt><dd>maximum 20 characters and used in reports etc. with limited space</dd>
+	<dt>Name</dt><dd>Self explanatory</dd>
+	<dt>Short name</dt><dd>Maximum 20 characters and used in reports etc. with limited space</dd>
 	<dt>Description</dt><dd>Additional textual information</dd>
 	<dt>Active</dt><dd>Identifies whether the data element is in use at the moment or not</dd>
 	<dt>Type</dt><dd>Identifies what kind of data values that is captured: Number, text, or Yes/no answers</dd>
-	<dt>Aggregation Operator</dt><dd>This identifies how data values of this data element are aggregated over time. There are two options: Sum and Average. An example can be that you would like to make a yearly report and your data is captured at a monthly frequency. Then the aggregation operator is used to tell whether the 12 monthly values should be summarised to a total for the year or that an average value should be calculated and used as a yearly value. Typically routine data like vaccinations, patient visits etc. use SUM as these services are summarised over time, and more permanent data like number of beds, population estimates etc. use AVERAGE as these are not summarised over time, but in stead an average value is calculated to represent a longer interval of time than the registration frequency.</dd>
+	<dt>Aggregation Operator</dt><dd>This identifies how data values of this data element are aggregated over time. There are two options: Sum and Average. An example can be that you would like to make a yearly report and your data is captured at a monthly frequency. Then the aggregation operator is used to tell whether the 12 monthly values should be summarised to a total for the year or that an average value should be calculated and used as a yearly value. Typically routine data like vaccinations, patient visits etc. use SUM as these services are summarised over time, and more permanent data like number of beds, population estimates etc. use AVERAGE as these are not summarised over time, but instead an average value is calculated to represent a longer interval of time than the registration frequency.</dd>
 </dl>
 
 <h4>Data Element Groups</h4>
@@ -110,7 +107,7 @@
 
 
 <h4>Data Element Categories (dimensions)</h4>
-Data elements can flexibly be breaken up into any number of categories. The most common examples of categories are gender and age groups, but can in practice be any thing.
+Data elements can flexibly be broken up into any number of categories. The most common examples of categories are gender and age groups, but can in practice be anything.
 
 <h3><a name="indicators">Indicators</a> <a href="#index">To top</a></h3>
 <p>Indicators in DHIS are formulas of data elements that can provide more useful and contextual information than the "raw" data values that are captured in the system. The simplest indicator example can be:</p>
@@ -123,9 +120,9 @@ Data elements can flexibly be breaken up into any number of categories. The most
 
 <h4>Indicator properties</h4>
 <dl>
-	<dt>Name</dt><dd>self-explanatory</dd>
-	<dt>Description</dt><dd>additional textual information: its use etc.</dd>
-	<dt>Indicator type</dt><dd>used to calculate the indicator, e.g. "%" is a type.</dd>
+	<dt>Name</dt><dd>Self-explanatory</dd>
+	<dt>Description</dt><dd>Additional textual information: its use etc.</dd>
+	<dt>Indicator type</dt><dd>Used to calculate the indicator, e.g. "%" is a type.</dd>
 </dl>
 <p>The indicator types must be created before the indicator. Select "Indicator type" in the left side menu to add/edit/remove/view types. The type consists of a name (used in add indicator) and a factor (used to calculate the indicator). An example is the "%" type with name "%" and factor "100". This factor is multiplied with the value of the indicator formula (numerator/denominator) value when the indicator value is calculated.</p>
 
@@ -154,15 +151,15 @@ Data elements can flexibly be breaken up into any number of categories. The most
 <h3>Dataset properties</h3>
 <dl>
 	<dt>Name</dt><dd>e.g. "Immunisation program", "Population estimates"</dd>
-	<dt>Frequency</dt><dd>the frequency by which this dataset is being registered and or reported</dd>
+	<dt>Frequency</dt><dd>The frequency by which this dataset is being registered and or reported</dd>
 
 <h4>The purpose of the datasets</h4>
 <p>The data entry (see below) and the import/export (see below) are organised around the datasets. Data are registered for 1 dataset at a time. All the data elements in one data entry form must come from the same dataset. In the data entry module, orgunits are only allowed to register data for the datasets that have been assigned to them in the Dataset Management section. A dataset will often represent the paper forms used in the health information system, but note that this is not a requirement for generating reports that look just like the paper forms. Reports can be designed based on the more fine-grained data elements and are not dependent on the datasets. See the report module below for more information on how to make reports.</p>
  
 <h4>How to add a new dataset</h4>
-<p>Click on the "Add new" button on the main page just above the operations list. You need to provide a name and select the frequency (period type) at which the dataset will be used for data entry. Then use the list of data elements to add the elements you would like for your dataset. Note that a data element can be added to multiple data sets. To avoid overlap of data, be careful so that the same data element is not part of to different datasets that are both assigned to the same orgunit and have different frequencies (e.g Monthly and Quarterly). When you have finished adding the data elements you need, click on the "Add dataset" button below the list boxes.  
+<p>Click on the "Add new" button on the main page just above the operations list. You need to provide a name and select the frequency (period type) at which the dataset will be used for data entry. Then use the list of data elements to add the elements you would like for your dataset. Note that a data element can be added to multiple data sets. To avoid overlap of data, be careful so that the same data element is not part of two different datasets that are both assigned to the same orgunit and have different frequencies (e.g. Monthly and Quarterly). When you have finished adding the data elements you need, click on the "Add dataset" button below the list boxes.
 
-<h4>How to assign a datset to sorgunits (enable data entry)</h4>
+<h4>How to assign a dataset to orgunits (enable data entry)</h4>
 In order to use the dataset for data entry you must assign it to the orgunits that are going to register data. In the dataset list select the wand symbol (leftmost symbol) next to your dataset. In the "Assign datasets to orgunits" window you can either select all orgunits at one specific level or assign or remove individual orgunits. You can also easily remove all selected orgunits by clicking on the "Select none" button. To assign to all orgunits at one level write in the desired level in the textbox and click on the "Select level" button. Then the tree will appear with all the selected orgunits in yellow colour. In the same tree you can assign more orgunits or remove some already selected. When you are finished click on the "Update" button. If you do not want to save your changes click the "Cancel" button. 
 
 <h2><a name="dataentry">Data Entry</a> <a href="#index">To top</a></h2>
@@ -194,7 +191,7 @@ In order to use the dataset for data entry you must assign it to the orgunits th
 
 <h2><a name="importexport">Import-Export</a> <a href="#index">To top</a></h2>
 
-<p>This module allows organisation units to send or receive standardized set of data in the absence of a networked system. Please read about datasets above before you continue reading these instructions. The datasets are defining what data that are being exported/imported between organisation units.</p>
+<p>This module allows organisation units to send or receive standardized set of data in the absence of a networked system. Please read about datasets above before you continue reading these instructions. The datasets are defining what data is being exported/imported between organisation units.</p>
 
 <h3>Export</h3>
 
@@ -204,9 +201,9 @@ In order to use the dataset for data entry you must assign it to the orgunits th
 
 <h3>Import</h3>
 
-<p>Click Import in the left side menu. On the import page, select whether you want to preview the contents of the import file before you import it. Then select which import file you want to import from before clicking Import. By clicking on Show advanced options you are able to select whether you want to import or preview new and updated objects or only new objects. You may also select whether you you want to include data values from the import file.</p>
+<p>Click Import in the left side menu. On the import page, select whether you want to preview the contents of the import file before you import it. Then select which import file you want to import from before clicking Import. By clicking on Show advanced options you are able to select whether you want to import or preview new and updated objects or only new objects. You may also select whether you want to include data values from the import file.</p>
 
-<p>The preview page gives an overview over updates and new objects. If present, after clicking on the number of new objects of any type can can choose to discard that specific object, discard all objects of that type, or match that object to an existing object. The latter is useful if you already have that particular object in the database only with a minor naming variation or similar.</p>
+<p>The preview page gives an overview over updates and new objects. If present, after clicking on the number of new objects of any type can choose to discard that specific object, discard all objects of that type, or match that object to an existing object. The latter is useful if you already have that particular object in the database only with a minor naming variation or similar.</p>
 
 <p>If present, after clicking on the number of updates you can choose to discard that object, to discard all objects of that same type, or to compare that object to an existing object in the database. After comparing you may decide to keep the existing object or overwrite it with the previewed object. When you have completed your preview, you may use the Import all button to import all objects in the preview, or to cancel the operation.</p>
 
@@ -221,7 +218,7 @@ In order to use the dataset for data entry you must assign it to the orgunits th
 <h3>Designing reports</h3>
 
 <h2><a name="dataanalysis">Data Analysis</a> <a href="#index">To top</a></h2>
-This module integrates the OpenHealth system's web-based pivottables and GIS functionality.
+This module integrates the OpenHealth system's web-based pivot tables and GIS functionality.
 
 <b>Basic usage</b>
 
