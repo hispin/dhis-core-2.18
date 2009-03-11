@@ -61,6 +61,12 @@ public interface DataIntegrityService
      */
     Collection<DataElement> getDataElementsWithoutGroups();
 
+    /**
+     * Returns all data elements which are members of data sets with different
+     * period types.
+     */
+    Collection<DataElement> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
+
     // -------------------------------------------------------------------------
     // DataSet
     // -------------------------------------------------------------------------
@@ -69,7 +75,7 @@ public interface DataIntegrityService
      * Gets all data sets which are not assigned to any organisation units.
      */
     Collection<DataSet> getDataSetsNotAssignedToOrganisationUnits();
-
+    
     // -------------------------------------------------------------------------
     // Indicator
     // -------------------------------------------------------------------------

@@ -30,6 +30,8 @@ package org.hisp.dhis.dataset;
 import java.util.Collection;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -142,6 +144,20 @@ public interface DataSetService
      * @return A List containing assigned DataSets.
      */
     List<DataSet> getAssignedDataSets();
+    
+    /**
+     * Searches through the data sets with the corresponding given identifiers.
+     * If the given data element is a member of one of the data sets, that
+     * data sets period type is returned. This implies that if the data element
+     * is a member of more than one data set, which period type being returned
+     * is undefined. If null is passed as the second argument, all data sets
+     * will be searched. 
+     * 
+     * @param dataElement the data element to find the period type for.
+     * @param dataSetIdentifiers the data set identifiers to search through.
+     * @return the period type of the given data element.
+     */
+    PeriodType getPeriodType( DataElement dataElement, Collection<Integer> dataSetIdentifiers );
     
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation

@@ -33,7 +33,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -205,6 +207,28 @@ public class DefaultDataSetService
         return assignedDataSetList;
     }
     
+    public PeriodType getPeriodType( DataElement dataElement, Collection<Integer> dataSetIdentifiers )
+    {
+        Collection<DataSet> dataSets = getDataSets( dataSetIdentifiers );
+        
+        for ( DataSet dataSet : dataSets )
+        {
+            if ( dataSet.getDataElements().contains( dataElement ) )
+            {
+                return dataSet.getPeriodType();                
+            }
+        }
+        
+        return null;
+    }
+    
+    public Collection<DataSet> getDistictDataElements( Collection<Integer> dataSetIdentifiers )
+    {
+        Collection<DataSet> dataSets = getDataSets( dataSetIdentifiers );
+        
+        return dataSets;
+    }
+
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation
     // -------------------------------------------------------------------------

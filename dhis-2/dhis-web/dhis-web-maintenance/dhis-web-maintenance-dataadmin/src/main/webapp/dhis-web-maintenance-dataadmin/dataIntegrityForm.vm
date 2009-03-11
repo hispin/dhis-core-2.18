@@ -34,6 +34,9 @@
 #integrityHeader( $i18n.getString( "data_elements_without_groups" ) $dataElementsWithoutGroups.size() "dataElementsWithoutGroups" )
 #violationList( "dataElementsWithoutGroups" $dataElementsWithoutGroups )
 
+#integrityHeader( $i18n.getString( "data_elements_assigned_to_period_types_with_different_period_types" ) $dataElementsAssignedToDataSetsWithDifferentPeriodTypes.size() "dataElementsAssignedToDataSetsWithDifferentPeriodTypes" )
+#violationList( "dataElementsAssignedToDataSetsWithDifferentPeriodTypes" $dataElementsAssignedToDataSetsWithDifferentPeriodTypes )
+
 #integrityHeader( $i18n.getString( "data_sets_not_assigned_to_organisation_units" ) $dataSetsNotAssignedToOrganisationUnits.size() "dataSetsNotAssignedToOrganisationUnits" )
 #violationList( "dataSetsNotAssignedToOrganisationUnits" $dataSetsNotAssignedToOrganisationUnits )
 

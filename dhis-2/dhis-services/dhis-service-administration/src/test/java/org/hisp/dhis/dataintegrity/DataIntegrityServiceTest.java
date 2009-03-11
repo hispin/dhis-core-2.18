@@ -45,6 +45,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
+import org.hisp.dhis.period.QuarterlyPeriodType;
 
 /**
  * @author Lars Helge Overland
@@ -153,12 +154,14 @@ public class DataIntegrityServiceTest
         organisationUnitService.updateOrganisationUnit( unitA );
         
         dataSetA = createDataSet( 'A', new MonthlyPeriodType() );
-        dataSetB = createDataSet( 'B', new MonthlyPeriodType() );
+        dataSetB = createDataSet( 'B', new QuarterlyPeriodType() );
 
         dataSetA.getDataElements().add( elementA );
         dataSetA.getDataElements().add( elementB );
         
         dataSetA.getSources().add( unitA );
+        
+        dataSetB.getDataElements().add( elementA );
         
         dataSetService.addDataSet( dataSetA );
         dataSetService.addDataSet( dataSetB );
@@ -223,6 +226,13 @@ public class DataIntegrityServiceTest
         Collection<DataElement> expected = dataIntegrityService.getDataElementsWithoutGroups();
         
         assertTrue( equals( expected, elementB, elementC ) );
+    }
+
+    public void testGetDataElementsAssignedToDataSetsWithDifferentPeriodType()
+    {
+        Collection<DataElement> expected = dataIntegrityService.getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
+        
+        assertTrue( equals( expected, elementA ) );
     }
     
     public void testGetDataSetsNotAssignedToOrganisationUnits()

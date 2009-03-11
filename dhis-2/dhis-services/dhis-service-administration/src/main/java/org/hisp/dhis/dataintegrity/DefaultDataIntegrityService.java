@@ -48,6 +48,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.PeriodType;
 
 /**
  * @author Lars Helge Overland
@@ -157,6 +158,37 @@ public class DefaultDataIntegrityService
         return dataElements;
     }
 
+    public Collection<DataElement> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes()
+    {
+        Collection<DataElement> dataElements = dataElementService.getAllDataElements();
+        
+        Collection<DataSet> dataSets = dataSetService.getAllDataSets();
+        
+        Collection<DataElement> targets = new ArrayList<DataElement>();
+        
+        Set<PeriodType> periodTypes = new HashSet<PeriodType>();
+        
+        for ( DataElement element : dataElements )
+        {
+            for ( DataSet dataSet : dataSets )
+            {
+                if ( dataSet.getDataElements().contains( element ) )
+                {
+                    periodTypes.add( dataSet.getPeriodType() );
+                }
+            }
+            
+            if ( periodTypes.size() > 1 )
+            {
+                targets.add( element );
+            }
+            
+            periodTypes.clear();            
+        }
+        
+        return targets;
+    }
+
     // -------------------------------------------------------------------------
     // DataSet
     // -------------------------------------------------------------------------
@@ -178,8 +210,8 @@ public class DefaultDataIntegrityService
         }
         
         return dataSets;
-    }    
-
+    }
+    
     // -------------------------------------------------------------------------
     // Indicator
     // -------------------------------------------------------------------------

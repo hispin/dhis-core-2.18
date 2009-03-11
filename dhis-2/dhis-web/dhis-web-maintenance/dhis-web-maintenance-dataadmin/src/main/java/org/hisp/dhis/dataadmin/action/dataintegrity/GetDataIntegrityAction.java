@@ -80,6 +80,13 @@ public class GetDataIntegrityAction
     {
         return dataSetsNotAssignedToOrganisationUnits;
     }
+    
+    private Collection<DataElement> dataElementsAssignedToDataSetsWithDifferentPeriodTypes;
+
+    public Collection<DataElement> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes()
+    {
+        return dataElementsAssignedToDataSetsWithDifferentPeriodTypes;
+    }
 
     private Collection<Indicator> indicatorsWithBlankFormulas;
 
@@ -152,6 +159,7 @@ public class GetDataIntegrityAction
     {
         dataElementsWithoutDataSet = dataIntegrityService.getDataElementsWithoutDataSet();
         dataElementsWithoutGroups = dataIntegrityService.getDataElementsWithoutGroups();
+        dataElementsAssignedToDataSetsWithDifferentPeriodTypes = dataIntegrityService.getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
         
         dataSetsNotAssignedToOrganisationUnits = dataIntegrityService.getDataSetsNotAssignedToOrganisationUnits();
         
