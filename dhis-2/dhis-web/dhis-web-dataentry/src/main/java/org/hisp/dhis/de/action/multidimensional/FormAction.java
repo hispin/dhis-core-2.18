@@ -342,8 +342,13 @@ public class FormAction
     	
     	disableDefaultForm = false;
     	
-    	zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );   	
+    	zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );
     	
+    	if( zeroValueSaveMode == null )
+    	{
+    		zeroValueSaveMode = false;
+    	}
+    	   	
     	OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         DataSet dataSet = selectedStateManager.getSelectedDataSet();

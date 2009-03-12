@@ -144,11 +144,11 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
 
 }
 
-function saveBoolean( dataElementId, selectedOption )
+function saveBoolean( dataElementId, optionComboId, selectedOption )
 {
     selectedOption.style.backgroundColor = '#ffffcc';
     
-    var valueSaver = new ValueSaver( dataElementId, selectedOption.options[selectedOption.selectedIndex].value, '#ccffcc', selectedOption );
+    var valueSaver = new ValueSaver( dataElementId, optionComboId, selectedOption.options[selectedOption.selectedIndex].value, '#ccffcc', selectedOption );
     valueSaver.save();
 }
 

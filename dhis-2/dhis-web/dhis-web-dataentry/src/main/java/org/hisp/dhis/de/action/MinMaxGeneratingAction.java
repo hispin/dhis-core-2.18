@@ -102,8 +102,8 @@ public class MinMaxGeneratingAction
 
     public String execute()
         throws Exception
-    {
-        minMaxDataElements = new ArrayList<MinMaxDataElement>();
+    {    	
+    	minMaxDataElements = new ArrayList<MinMaxDataElement>();
 
         Period period = selectedStateManager.getSelectedPeriod();
 
@@ -115,20 +115,19 @@ public class MinMaxGeneratingAction
             .getOrderedDataElements( dataSet ) );
 
         for ( DataElement dataelement : dataElements )
-        {
+        {        	
             if ( dataelement.getType().equals( DataElement.TYPE_INT ) )
-            {
+            {            	
                 for( DataElementCategoryOptionCombo optionCombo : dataelement.getCategoryCombo().getOptionCombos() )
-                {
+                {                	
                 	DataElementHistory dataElementHistory = historyRetriever.getHistory( dataelement, optionCombo, organisationUnit,
-                            period, HISTORY_LENGTH );
-
-                        setMinMaxLimits( dataElementHistory, organisationUnit, dataelement, optionCombo );
+                            period, HISTORY_LENGTH );                	
+                    setMinMaxLimits( dataElementHistory, organisationUnit, dataelement, optionCombo );
                 }
             	
             }
-        }
-
+        }        
+        
         return SUCCESS;
     }
 

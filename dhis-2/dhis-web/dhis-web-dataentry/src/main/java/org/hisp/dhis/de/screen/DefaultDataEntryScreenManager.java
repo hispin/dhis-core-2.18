@@ -291,14 +291,14 @@ public class DefaultDataEntryScreenManager
 
     public String populateCustomDataEntryScreen( String dataEntryFormCode, Collection<DataValue> dataValues,
         Map<CalculatedDataElement, Integer> calculatedValueMap, Map<Integer, MinMaxDataElement> minMaxMap,
-        String disabled, I18n i18n )
+        String disabled, Boolean saveMode, I18n i18n )
     {
         // ---------------------------------------------------------------------
         // Inline Javascript to add to HTML before outputting.
-        // ---------------------------------------------------------------------
-        
-        final String jsCodeForInputs = " $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME' )\" onkeypress=\"return keyPress(event, this)\" style=\"text-align:center\" ";
-        final String jsCodeForCombos = " $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, this )\">";
+        // ---------------------------------------------------------------------      
+    	
+        final String jsCodeForInputs = " $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME', $SAVEMODE )\" onkeypress=\"return keyPress(event, this)\" style=\"text-align:center\" ";
+        final String jsCodeForCombos = " $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\">";
         final String historyCode = " ondblclick='javascript:viewHistory( $DATAELEMENTID, $OPTIONCOMBOID, true )' ";
         final String calDataElementCode = " class=\"calculated\" disabled ";
 
@@ -308,8 +308,8 @@ public class DefaultDataEntryScreenManager
         
         final String metaDataCode = "<span id=\"value[$DATAELEMENTID].name\" style=\"display:none\">$DATAELEMENTNAME</span>"
             + "<span id=\"value[$DATAELEMENTID].type\" style=\"display:none\">$DATAELEMENTTYPE</span>"
-            + "<div id=\"value[$DATAELEMENTID].min\" style=\"display:none\">$MIN</div>"
-            + "<div id=\"value[$DATAELEMENTID].max\" style=\"display:none\">$MAX</div>";
+            + "<div id=\"value[$DATAELEMENTID:$OPTIONCOMBOID].min\" style=\"display:none\">$MIN</div>"
+            + "<div id=\"value[$DATAELEMENTID:$OPTIONCOMBOID].max\" style=\"display:none\">$MAX</div>";
 
         // Buffer to contain the final result.
         StringBuffer sb = new StringBuffer();
@@ -398,10 +398,6 @@ public class DefaultDataEntryScreenManager
                         dataElementCode = dataElementCode.replace( "value=\"\"", "value=\"" + dataElementValue + "\"" );
                     else
                         dataElementCode += "value=\"" + dataElementValue + "\"";
-
-                    dataElementCode = dataElementCode.replace( "value[" + dataElementId + "].value:value["
-                        + optionComboId + "].value", "value[" + dataElementId + "].value" );
-
                 }
 
                 // ---------------------------------------------------------------------
@@ -468,12 +464,18 @@ public class DefaultDataEntryScreenManager
 
                     appendCode += " />";
                 }
-
+                
+                if( ! dataElement.getAggregationOperator().equalsIgnoreCase( DataElement.AGGREGATION_OPERATOR_SUM ) )
+                {
+                	saveMode = true;
+                }
+					
                 appendCode += metaDataCode;
                 appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
                 appendCode = appendCode.replace( "$OPTIONCOMBOID", String.valueOf( optionComboId ) );
                 appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
                 appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementType );
+                appendCode = appendCode.replace( "$SAVEMODE", "" + saveMode + "" );
                 appendCode = appendCode.replace( "$DISABLED", disabled );
 
                 if ( minMaxDataElement == null )
@@ -704,6 +706,11 @@ public class DefaultDataEntryScreenManager
                     }
 
                     appendCode += " />";
+                }
+                
+                if( ! dataElement.getAggregationOperator().equalsIgnoreCase( DataElement.AGGREGATION_OPERATOR_SUM ) )
+                {
+                	saveMode = true;
                 }
 
                 appendCode += metaDataCode;

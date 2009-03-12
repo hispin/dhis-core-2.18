@@ -262,7 +262,12 @@ public class FormAction
     public String execute()
         throws Exception
     {    	
-    	zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );   	
+    	zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );
+    	
+    	if( zeroValueSaveMode == null )
+    	{
+    		zeroValueSaveMode = false;
+    	}
     	
     	OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
@@ -343,7 +348,7 @@ public class FormAction
         
         if ( cdeFormExists )
         {        	
-        	customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreen( dataEntryForm.getHtmlCode(), dataValues, calculatedValueMap, minMaxMap, disabled, i18n );
+        	customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreen( dataEntryForm.getHtmlCode(), dataValues, calculatedValueMap, minMaxMap, disabled, zeroValueSaveMode, i18n );
         }            
 
         // ---------------------------------------------------------------------
