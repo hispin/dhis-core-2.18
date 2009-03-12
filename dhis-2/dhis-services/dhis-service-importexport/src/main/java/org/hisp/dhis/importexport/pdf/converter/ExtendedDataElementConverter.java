@@ -35,6 +35,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
 import org.hisp.dhis.importexport.pdf.util.PDFPrintUtil;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
@@ -60,14 +61,13 @@ public class ExtendedDataElementConverter
     
     public void write( Document document, ExportParams params )
     {
-        /*
         PDFPrintUtil.printDataElementFrontPage( document, params );
         
         I18n i18n = params.getI18n();
 
         Collection<DataElement> elements = dataElementService.getDataElements( params.getDataElements() );
            
-        for ( DataElement element : elements );
+        for ( DataElement element : elements )
         {
             PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
             
@@ -223,6 +223,6 @@ public class ExtendedDataElementConverter
             table.addCell( getCell( 2, 30 ) );
             
             addTableToDocument( document, table );
-        }*/
+        }
     }
 }
