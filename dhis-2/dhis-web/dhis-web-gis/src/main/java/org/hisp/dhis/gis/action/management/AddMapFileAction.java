@@ -104,6 +104,12 @@ public class AddMapFileAction
                 return INPUT;
             }
         }
+        
+        if(mapFileName=="example.svg"){
+            message = i18n.getString( "non_selected_map" );
+            return INPUT; 
+        }
+       
 
         if ( mapFile != null )
         {
@@ -120,7 +126,7 @@ public class AddMapFileAction
             featureService.addMapFile( map );
         }
 
-        message = i18n.getString( "assigned" );
+        message = i18n.getString( "assign_success" );
 
         return SUCCESS;
     }

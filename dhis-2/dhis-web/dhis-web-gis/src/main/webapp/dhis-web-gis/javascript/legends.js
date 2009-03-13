@@ -1,7 +1,7 @@
-    var selectedIndicatorList;
-	var availableIndicatorList;
-	var selectedList;
-	var availableList;
+var selectedIndicatorList;
+var availableIndicatorList;
+var selectedList;
+var availableList;
 
 function move( listId ) {
 	
@@ -53,18 +53,10 @@ function moveIndicator( listId ) {
 }
 
 function submitForm() {
-	
-  if ( ! availableIndicatorList ) {
-    availableIndicatorList = document.getElementById('availableIndicatorList');
-  }
 
   if ( ! selectedIndicatorList ) {
     selectedIndicatorList = document.getElementById('selectedIndicatorList');
-  }
-
-  if ( ! availableList ) {
-    availableList = document.getElementById('availableList');
-  }
+  }  
 
   if ( ! selectedList ) {
     selectedList = document.getElementById('selectedList');
@@ -101,16 +93,14 @@ function validateAddLegend(){
   
   var requestString = "validateLegend.action?nameField=" + name + "&colorField=" + color + "&minField=" + minValue + "&maxField=" + maxValue + "&action=add" + "&autoCreateMax=" + 	autoMax;
 
-  request.send( requestString );
-  
-  return false;
+  request.send( requestString );  
+ 
 }
 function addLegendValidationCompleted(messageElement){
 	var type = messageElement.getAttribute( 'type' );
 	var message = messageElement.firstChild.nodeValue;
 	 if ( type == 'success' )
- 	 {
-      // Both edit and add form has id='dataSetForm'      
+ 	 {      
       document.forms['addLegend'].submit();
   	 } else if ( type == 'input' )
  		 {
@@ -152,90 +142,78 @@ function updateLegendValidationCompleted(messageElement){
   		  }
 }
 
-function showLegendDetails(id){
-  var request = new Request();
-  request.setResponseTypeXML( 'legend' );
-  request.setCallbackSuccess( showLegendDetailCompleted ); 
- 
-  var requestString = "showLegendDetails.action?id=" + id;
-	
-  request.send( requestString );
-}
-
-function showLegendDetailCompleted(legend){	
-
-	var name = legend.getElementsByTagName('name')[0].firstChild.nodeValue;
-	var color = legend.getElementsByTagName('color')[0].firstChild.nodeValue;
-	var minValue = legend.getElementsByTagName('min')[0].firstChild.nodeValue;
-	var maxValue = legend.getElementsByTagName('max')[0].firstChild.nodeValue;
-	var indicators = legend.getElementsByTagName('indicators');
-	
-	for(var i=0;i<indicators.length;i++){
-		var inName = indicators[i].getElementsByTagName('name')[0].firstChild.nodeValue;
-		var inType = indicators[i].getElementsByTagName('type')[0].firstChild.nodeValue;
-	}
-	
-}
-
 // legend set-----------------------------------------------
 
 function validateAddLegendSet(){
-  var request = new Request();
-  request.setResponseTypeXML( 'message' );
-  request.setCallbackSuccess( addLegendSetValidationCompleted ); 
-  
-  var name = document.getElementById( 'name' ).value;
-  var indicatorId = document.getElementById( 'indicatorId' ).value; 
-  
-  var requestString = "validateLegendSet.action?name=" + name + "&indicatorId=" + indicatorId +"&action=add"	;
+	var request = new Request();
+	request.setResponseTypeXML( 'message' );
+	request.setCallbackSuccess( addLegendSetValidationCompleted ); 
 
-  request.send( requestString );
+	var name = document.getElementById( 'name' ).value;
+
+	var requestString = "validateLegendSet.action";
+	var params = "name=" + name;
+	params += "&action=add";
+	var selectedDataElementMembers = document.getElementById( 'selectedIndicatorList' );
+
+	for ( var i = 0; i < selectedDataElementMembers.options.length; ++i)
+	{
+		params += '&indicatorIds=' + selectedDataElementMembers.options[i].value;
+	}   
+	request.sendAsPost( params );
+	request.setResponseTypeXML( 'xmlObject' );  
+	request.setCallbackSuccess( addLegendSetValidationCompleted );
+	request.send( requestString );  
   
-  return false;
 }
-function addLegendSetValidationCompleted(messageElement){
-	var type = messageElement.getAttribute( 'type' );
-	var message = messageElement.firstChild.nodeValue;
-	 if ( type == 'success' )
- 	 {
-      // Both edit and add form has id='dataSetForm'      
-      document.forms['addLegendSet'].submit();
-  	 } else if ( type == 'input' )
- 		 {
-   			 document.getElementById( 'message' ).innerHTML = message;
-   			 document.getElementById( 'message' ).style.display = 'block';
-  		  }
+function addLegendSetValidationCompleted( xmlObject ){
+	var type = xmlObject.getAttribute( 'type' );
+	var message = xmlObject.firstChild.nodeValue;
+	if ( type == 'success' )
+	{    
+		submitForm();
+		document.forms['addLegendSet'].submit();
+	} else 
+	{
+		setMessage(message);
+	}
 }
 
 function validateUpdateLegendSet(){
+
 	var request = new Request();
-  request.setResponseTypeXML( 'message' );
-  request.setCallbackSuccess( updateLegendSetValidationCompleted ); 
-  
-  var id = document.getElementById( 'id' ).value;
-  var name = document.getElementById( 'name' ).value;
-  var indicatorId = document.getElementById( 'indicatorId' ).value; 
-  
-  var requestString = "validateLegendSet.action?id=" + id + "&name=" + name + "&indicatorId=" + indicatorId +"&action=update"	;
-	
-  request.send( requestString );
-  
-  return false;
+	request.setResponseTypeXML( 'message' );
+	request.setCallbackSuccess( addLegendSetValidationCompleted ); 
+
+	var name = document.getElementById( 'name' ).value;
+
+	var requestString = "validateLegendSet.action";
+	var params = "name=" + name;	
+	var selectedDataElementMembers = document.getElementById( 'selectedIndicatorList' );
+
+	for ( var i = 0; i < selectedDataElementMembers.options.length; ++i)
+	{
+		params += '&indicatorIds=' + selectedDataElementMembers.options[i].value;
+	}   
+	request.sendAsPost( params );
+	request.setResponseTypeXML( 'xmlObject' );  
+	request.setCallbackSuccess( updateLegendSetValidationCompleted );
+	request.send( requestString );  
+ 
 }
 
-function updateLegendSetValidationCompleted(messageElement){
-	var type = messageElement.getAttribute( 'type' );
+function updateLegendSetValidationCompleted(xmlObject){
+	var type = xmlObject.getAttribute( 'type' );
 	
-	var message = messageElement.firstChild.nodeValue;
-	 if ( type == 'success' )
- 	 {
-      // Both edit and add form has id='dataSetForm'      
-      document.forms['editLegendSet'].submit();
-  	 } else if ( type == 'input' )
- 		 {
-   			 document.getElementById( 'message' ).innerHTML = message;
-   			 document.getElementById( 'message' ).style.display = 'block';
-  		  }
+	var message = xmlObject.firstChild.nodeValue;
+	if ( type == 'success' )
+	{	   
+		submitForm();
+		document.forms['editLegendSet'].submit();
+	} else
+	{
+		setMessage(message);
+	}
 }
 
 function getIndicatorByIndicatorGroup(){
@@ -245,7 +223,7 @@ function getIndicatorByIndicatorGroup(){
 	
 	if ( indicatorGroupId != null )
 	{
-		var url = "../dhis-web-commons-ajax/getIndicators.action?id=" + indicatorGroupId;
+		var url = "getIndicatorByIndicatorGroup.action?indicatorGroupId=" + indicatorGroupId;
 		
 		var request = new Request();
 	    request.setResponseTypeXML( 'indicator' );

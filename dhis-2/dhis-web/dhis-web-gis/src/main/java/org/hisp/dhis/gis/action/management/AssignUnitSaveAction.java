@@ -29,6 +29,7 @@ package org.hisp.dhis.gis.action.management;
 
 import org.hisp.dhis.gis.Feature;
 import org.hisp.dhis.gis.FeatureService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
@@ -36,7 +37,7 @@ import com.opensymphony.xwork.Action;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id: Feature.java 28-04-2008 16:06:00 $
+ * @version $Id: AssignUnitSaveAction.java 28-04-2008 16:06:00 $
  */
 public class AssignUnitSaveAction
     implements Action
@@ -45,27 +46,36 @@ public class AssignUnitSaveAction
     private FeatureService featureService;
 
     private OrganisationUnitService organisationUnitService;
+    
+    private I18n i18n;
 
     // Input-------------------------------------------
 
     private OrganisationUnit organisationUnit;
 
-    private String organisationUnitCode;
-
-    private String comment;
+    private String organisationUnitCode;    
 
     private Integer orgUnitId;
+    
+    private String message;    
+    
 
-    // Getter & Setter---------------------------------
-
-    public String getComment()
-    {
-        return comment;
-    }
+    // Getter & Setter---------------------------------    
+  
 
     public String getOrganisationUnitCode()
     {
         return organisationUnitCode;
+    }
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }    
+
+    public String getMessage()
+    {
+        return message;
     }
 
     public OrganisationUnit getOrganisationUnit()
@@ -87,11 +97,7 @@ public class AssignUnitSaveAction
     {
         this.organisationUnitCode = organisationUnitCode;
     }
-
-    public void setComment( String comment )
-    {
-        this.comment = comment;
-    }
+  
 
     public void setOrgUnitId( Integer orgUnitId )
     {
@@ -110,33 +116,28 @@ public class AssignUnitSaveAction
         organisationUnit = organisationUnitService.getOrganisationUnit( this.orgUnitId );
 
         Feature feature = featureService.get( organisationUnit );
-
-        if ( feature != null )
-        {
-            comment = comment.trim();
-        }
+       
         if ( feature == null )
         {
             Feature featureNew = new Feature();
 
             featureNew.setOrganisationUnit( organisationUnit );
 
-            featureNew.setFeatureCode( organisationUnitCode );
-
-            featureNew.setComment( comment );
+            featureNew.setFeatureCode( organisationUnitCode );            
 
             featureService.add( featureNew );
 
         }
         else
-        {
-            feature.setComment( comment );
+        {          
 
             feature.setFeatureCode( organisationUnitCode );
 
             featureService.update( feature );
 
         }
+        
+        message = i18n.getString( "assign_success" );
 
         return SUCCESS;
     }

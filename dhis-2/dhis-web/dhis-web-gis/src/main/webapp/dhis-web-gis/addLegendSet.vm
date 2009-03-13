@@ -1,5 +1,5 @@
 <h2>$i18n.getString( "add_legendset" )</h2>
-<form name="addLegendSet" action="addLegendSet.action" method="post" onsubmit="submitForm(); return validateAddLegendSet();">
+<form name="addLegendSet" action="addLegendSet.action" method="post">
 	 <table id="list" style="width:50%">
 	 	<tr>
 			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -15,8 +15,7 @@
     <thead>
       <tr>
 		<th>$i18n.getString( "available_indicators" )</th>	        
-		<th>&nbsp;</th>
-		<th>&nbsp;</th>       
+		<th>&nbsp;</th>		       
         <th>$i18n.getString( "selected_indicators" )</th>
       </tr>
     </thead>
@@ -30,10 +29,7 @@
 		              <option value="$indicatorGroup.id">$encoder.htmlEncode( $indicatorGroup.name )</option>
 		            #end
 				</select>
-			</td>
-	        <td>
-				
-	        </td>
+			</td>	      
 		</tr>
       <tr>
 	 	
@@ -49,8 +45,7 @@
           <input type="button" value="&gt;"  title="$i18n.getString('move_selected')" onclick="moveIndicator( 'availableIndicatorList' )">
           <br>
           <input type="button"  value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveIndicator ( 'selectedIndicatorList' )">
-        </td>
-        <td></td>
+        </td>        
         <td>        
 		   <select id="selectedIndicatorList" name="selectedIndicatorList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveIndicator( 'selectedIndicatorList' )">
             <!-- initially empty -->
@@ -62,14 +57,12 @@
 	
   <table id="legendArea">
     <col> ## Selected DataElements
-    <col> ## Actions
-    <col> ## Filter
+    <col> ## Actions   
     <col> ## Available DataElements
     <thead>
       <tr>
 		<th>$i18n.getString( "available_legends" )</th>        
-		<th>&nbsp;</th>
-		<th>&nbsp;</th>       
+		<th>&nbsp;</th>		  
         <th>$i18n.getString( "selected_legends" )</th>
       </tr>
     </thead>
@@ -88,27 +81,17 @@
           <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="move( 'availableList' )">
           <br>
           <input type="button" value="&lt;"  title="$i18n.getString('remove_selected')" onclick="move ( 'selectedList' )">
-        </td>
-        <td></td>
+        </td>        
         <td>
 		  <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'selectedList' )">
             <!-- initially empty -->
           </select>         
         </td>
-      </tr>
+      </tr>    
 
       <tr>
-        <td colspan="4">
-          <span id="message"></span>
-        </td>
-      </tr>
-
-      <tr>
-        <td colspan="4">
-          <input type="submit" name="add" value="$i18n.getString( "add_legendset" )">
-          <!--
-            Cancel and go back to the overview
-          -->
+        <td colspan="3">
+          <input type="button" name="add" value="$i18n.getString( 'add_legendset' )" onclick="validateAddLegendSet();"> 
           <input type="button" name="cancel"
             onclick="window.location.href='listLegendSets.action'" value="$i18n.getString( "cancel" )">
         </td>
@@ -116,3 +99,4 @@
     </tbody>
   </table>
 </form>
+<span id="message" style="top:70px;right:5px;position:fixed;width:200px"></span>

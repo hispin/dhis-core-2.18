@@ -37,39 +37,25 @@
 		</action>
 
 
-		<action name="assignUnit"
+		<action name="popupAsignWindow"
 			class="org.hisp.dhis.gis.action.management.AssignMapAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="configuration" type="redirect">changeConfiguration.action?action=1</result>
-			<result name="success" type="velocity-xml">
-				responseAssignUnitSuccess.vm
-			</result>
-			<result name="input" type="velocity">/popup.vm</result>
+			<result name="configuration" type="redirect">changeConfiguration.action?action=1</result>			
+			<result name="input" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/assignUnit.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
-			<param name="javascripts">../dhis-web-commonss/ouwt/ouwt.js,javascript/selectunit.js,javascript/commons.js</param>
-			<param name="stylesheets">style/map.css</param>
+			<param name="javascripts">javascript/commons.js,javascript/asignunit.js,javascript/ui/ui.core.js,javascript/ui/ui.draggable.js,javascript/ui/ui.resizable.js</param>
+			<param name="stylesheets">style/map.css,style/ui.resizable.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>
 
 		<action name="assignUnitSaveAction"
 			class="org.hisp.dhis.gis.action.management.AssignUnitSaveAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity-xml">responseAssignUnitSuccess.vm</result>
-			<result name="input" type="velocity-xml">responseAssignUnitInput.vm</result>
+			<result name="success" type="velocity-xml">responseSuccess.vm</result>			
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>
-
-		<action name="selectOrgUnit"
-			class="org.hisp.dhis.gis.action.management.SelectOrganisationUnitAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity">/popup.vm</result>
-			<param name="page">/dhis-web-gis/assignUnit.vm</param>
-			<param name="menu">/dhis-web-gis/menu.vm</param>
-			<param name="javascripts">../dhis-web-commonss/ouwt/ouwt.js,javascript/commons.js</param>
-			<param name="stylesheets">style/map.css</param>
-			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
-		</action>
+	
 		<!-- Map management -->
 
 		<action name="selectMapAndUnit"
@@ -78,20 +64,16 @@
 			<result name="configuration" type="redirect">changeConfiguration.action?action=1</result>
 			<result name="input" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/selectMapAndUnit.vm</param>
-			<param name="menu">/dhis-web-gis/menu.vm</param>
-			<param name="javascripts">../dhis-web-commonss/ouwt/ouwt.js</param>
+			<param name="menu">/dhis-web-gis/orgunitMenu.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js</param>
 			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>
 
 		<action name="validateAssignMap"
 			class="org.hisp.dhis.gis.action.management.ValidateAssignMapAction">
-			<result name="success" type="velocity-xml">
-				responseAssignUnitSuccess.vm
-			</result>
-			<result name="input" type="velocity-xml">
-				responseAssignUnitInput.vm
-			</result>
+			<result name="success" type="velocity-xml">responseSuccess.vm</result>
+			<result name="input" type="velocity-xml">responseInput.vm</result>
 		</action>
 
 		<action name="selectOrgUnitAjax"
@@ -121,25 +103,17 @@
 
 		<action name="addMapFile"
 			class="org.hisp.dhis.gis.action.management.AddMapFileAction">
-			<result name="success" type="velocity-xml">
-				responseSuccess.vm
-			</result>
-			<result name="input" type="velocity-xml">
-				responseInput.vm
-			</result>
+			<result name="success" type="velocity-xml">responseSuccess.vm</result>
+			<result name="input" type="velocity-xml">responseInput.vm</result>
+		</action>		
+		
+		<action name="getSVGFileByOrganisation"
+			class="org.hisp.dhis.gis.action.management.GetSVGFileByOrganisationUnitAction">
+			<result name="success" type="velocity-xml">responseSVGURL.vm</result>
 		</action>
 
-		<action name="previewMap"
-			class="org.hisp.dhis.gis.action.management.PreviewMapAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-gis/assignRoot.vm</param>
-			<param name="menu">/dhis-web-gis/orgunitMenu.vm</param>
-			<param name="javascripts">../dhis-web-commonss/ouwt/ouwt.js,../dhis-web-commonss/calendar/calendar.js,../dhis-web-commonss/calendar/calendar-lang.js,../dhis-web-commonss/calendar/calendar-setup.js,javascript/commons.js</param>
-			<param name="stylesheets">style/map.css</param>
-			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
-		</action>
-
-
+		<!-- Open Asign root map form  -->
+		
 		<action name="assignRoot"
 			class="org.hisp.dhis.gis.action.management.AssignRootAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
@@ -147,7 +121,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/assignRoot.vm</param>
 			<param name="menu">/dhis-web-gis/orgunitMenu.vm</param>
-			<param name="javascripts">../dhis-web-commonss/ouwt/ouwt.js,../dhis-web-commonss/calendar/calendar.js,../dhis-web-commonss/calendar/calendar-lang.js,../dhis-web-commonss/calendar/calendar-setup.js,javascript/commons.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js</param>
 			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>
 		</action>	
@@ -196,7 +170,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/listLegend.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
-			<param name="javascripts">javascript/legends.js,javascript/picker.js</param>
+			<param name="javascripts">javascript/legends.js,javascript/commons.js</param>
 			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>	
 		</action>
@@ -207,7 +181,7 @@
 			<result name="input" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/addLegend.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
-			<param name="javascripts">javascript/legends.js,javascript/picker.js</param>
+			<param name="javascripts">javascript/legends.js,javascript/picker.js,javascript/commons.js</param>
 			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>	
 		</action>
@@ -229,7 +203,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/editLegend.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
-			<param name="javascripts">javascript/legends.js,javascript/picker.js</param>
+			<param name="javascripts">javascript/legends.js,javascript/picker.js,javascript/commons.js</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>	
 		</action>
 
@@ -248,7 +222,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/listLegendSet.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
-			<param name="javascripts">javascript/legends.js,javascript/picker.js</param>
+			<param name="javascripts">javascript/legends.js,javascript/commons.js</param>
 			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>	
 		</action>
@@ -261,15 +235,15 @@
 			<result name="input" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-gis/addLegendSet.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
-			<param name="javascripts">javascript/legends.js,javascript/picker.js</param>
+			<param name="javascripts">javascript/legends.js,javascript/picker.js,javascript/commons.js</param>
 			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>	
 		</action>
 
 		<action name="validateLegendSet"
 			class="org.hisp.dhis.gis.action.legend.ValidateLegendSetAction">
-			<result name="success" type="velocity-xml">responseSuccess.vm</result>
-			<result name="input" type="velocity-xml">responseInput.vm</result>
+			<result name="error" type="velocity-xml">responseError.vm</result>
+			<result name="success" type="velocity-xml">responseSuccess.vm</result>			
 		</action>
 
 		<action name="deleteLegendSet"
@@ -285,7 +259,7 @@
 			<param name="page">/dhis-web-gis/editLegendSet.vm</param>
 			<param name="menu">/dhis-web-gis/menu.vm</param>
 			<param name="javascripts">
-				javascript/legends.js,javascript/picker.js
+				javascript/legends.js,javascript/commons.js
 			</param>
 			<param name="stylesheets">style/map.css</param>
 			<param name="requiredAuthorities">F_GIS_CONFIGURATION_UPDATE</param>	
@@ -300,9 +274,7 @@
 
 		<action name="getIndicatorByIndicatorGroup"
 		class="org.hisp.dhis.gis.action.legend.GetIndicatorByGroup">
-			<result name="success" type="velocity-xml">
-				responseIndicators.vm
-			</result>
+			<result name="success" type="velocity-xml">responseIndicators.vm</result>
 		</action>
 
 

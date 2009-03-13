@@ -27,6 +27,9 @@ package org.hisp.dhis.gis.action.legend;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.Set;
+
 import org.hisp.dhis.gis.LegendService;
 import org.hisp.dhis.gis.LegendSet;
 import org.hisp.dhis.i18n.I18n;
@@ -54,7 +57,7 @@ public class ValidateLegendSetAction
 
     private String name;
 
-    private Integer indicatorId;
+    private Collection<String> indicatorIds;
 
     private String action;
 
@@ -76,11 +79,11 @@ public class ValidateLegendSetAction
     public void setName( String name )
     {
         this.name = name;
-    }
+    }   
 
-    public void setIndicatorId( Integer indicatorId )
+    public void setIndicatorIds( Collection<String> indicatorIds )
     {
-        this.indicatorId = indicatorId;
+        this.indicatorIds = indicatorIds;
     }
 
     public void setAction( String action )
@@ -104,7 +107,7 @@ public class ValidateLegendSetAction
         if ( name == null )
         {
             message = i18n.getString( "enter_legendset_name" );
-            return INPUT;
+            return ERROR;
         }
         else
         {
@@ -112,7 +115,7 @@ public class ValidateLegendSetAction
             if ( name.length() == 0 )
             {
                 message = i18n.getString( "enter_legendset_name" );
-                return INPUT;
+                return ERROR;
             }
         }
         if ( action == ADD )
@@ -122,14 +125,19 @@ public class ValidateLegendSetAction
             if ( legendSet != null )
             {
                 message = i18n.getString( "legend_name_ready_exist" );
-                return INPUT;
+                return ERROR;
             }
         }
 
-        if ( indicatorId == null )
+        if(indicatorIds==null){
+            message = i18n.getString( "enter_indicator" );
+            return ERROR; 
+        }
+        
+        if ( indicatorIds.size() == 0 )
         {
             message = i18n.getString( "enter_indicator" );
-            return INPUT;
+            return ERROR;
         }
 
         return SUCCESS;

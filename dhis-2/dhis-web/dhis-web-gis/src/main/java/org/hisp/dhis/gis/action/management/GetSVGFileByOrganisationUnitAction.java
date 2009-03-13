@@ -1,5 +1,3 @@
-package org.hisp.dhis.gis.action.management;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -26,55 +24,39 @@ package org.hisp.dhis.gis.action.management;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.gis.action.management;
 
-import org.hisp.dhis.gis.Feature;
 import org.hisp.dhis.gis.FeatureService;
 import org.hisp.dhis.gis.MapFile;
-import org.hisp.dhis.gis.state.SelectionManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
 import com.opensymphony.xwork.Action;
 
-
 /**
  * @author Tran Thanh Tri
- * @version $Id: Feature.java 28-04-2008 16:06:00 $
+ * @version $Id: GetSVGFileByOrganisationUnitAction.java 11-03-2009 16:06:00 $
  */
-public class SelectOrganisationUnitAction
+public class GetSVGFileByOrganisationUnitAction
     implements Action
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
     private OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
     private FeatureService featureService;
 
-    private Feature feature;
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
 
-    private OrganisationUnit organisationUnit;
+    private String svg;
 
-    private SelectionManager selectionManager;
-
-    private MapFile mapFile;
-
-    public MapFile getMapFile()
+    public String getSvg()
     {
-        return mapFile;
-    }
-
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
-
-    public Feature getFeature()
-    {
-        return feature;
-    }
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
+        return svg;
     }
 
     public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
@@ -90,22 +72,19 @@ public class SelectOrganisationUnitAction
     public String execute()
         throws Exception
     {
-
-        organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-
-        feature = featureService.get( organisationUnit );
+        OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
         if ( organisationUnit != null )
         {
-            mapFile = selectionManager.getSelectedMapFile();
+            MapFile mf = featureService.getMapFile( organisationUnit );
+            
+            if(mf==null){
+                 svg = "example.svg";
+            }else{
+                svg = mf.getMapFile();
+            }
         }
-        if ( mapFile == null )
-        {
-            mapFile = new MapFile();
-            mapFile.setMapFile( "example.svg" );
-        }
-        // TODO Auto-generated method stub
+
         return SUCCESS;
     }
-
 }

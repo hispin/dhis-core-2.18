@@ -19,20 +19,16 @@
 	color: red;
 }
 
-#mapDiv{
+#mapDiv{	
 	border: medium solid #DFDFDF;
 	overflow: auto;		
 }
-#topMapMenu{
-	position: absolute;
-	top: 80px;
-	right: 10px;
+#topMapMenu{	
 	background-color: #DFDFDF;
-	height: 21px;
-	width: 400px;
+	height: 21px;	
 	text-align: right;
 	padding-top: 3px;
-	padding-right: 5px;	
+	padding-right: 5px;		
 }
 #mapRender , #legend{
 	display:none;
@@ -61,8 +57,8 @@
 	width:200px;
 	overflow:auto;
 	position:absolute;
-	top:110px;
-	right:30px;
+	top:130px;	
+	right:40px;
 	border: thin solid #EFEFEF;	
 }
 #uploadfile{
@@ -77,4 +73,14 @@
 	text-align: center;
 	height: 50px;
 	padding-top: 20px;
+}
+#listChildren , #showAllAssigned{	
+	position: absolute;
+	border: thin solid #61DF96;
+	background-color: #CFFFE3;
+	top: 110px;		
+	padding: 5px;
+	padding-top: 20px;	
+	width: 200px;
+	max-height:400px;
 }

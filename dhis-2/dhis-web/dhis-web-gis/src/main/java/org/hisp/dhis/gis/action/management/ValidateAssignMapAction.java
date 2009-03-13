@@ -93,14 +93,14 @@ public class ValidateAssignMapAction
     public String execute()
         throws Exception
     {
-
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-
-        if ( organisationUnit == null )
+        if ( orgUnitId == null )
         {
             message = i18n.getString( "nonselected_orgunit" );
             return INPUT;
-        }
+        }       
+
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+        
 
         if ( organisationUnitCode == null )
         {

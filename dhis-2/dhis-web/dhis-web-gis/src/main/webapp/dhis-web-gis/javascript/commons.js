@@ -1,8 +1,6 @@
 /***********************************************************
 * ************ MAPP FUNCTION ****************************  
 ************************************************************/
-
-
 function zoomIn(){
 	 var svg = document.embeds['map'].getSVGDocument().getElementsByTagName('svg');
 	 svg = svg.item(0);	
@@ -104,6 +102,22 @@ function fillColor(orgCode,color){
 			
 		}
 		
-	}
-	
+	}	
+}
+
+function getSVGFileByOrganisation(){
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( getSVGFileByOrganisationReceived );
+	request.send( "getSVGFileByOrganisation.action" );
+}
+function getSVGFileByOrganisationReceived( xmlObject ){
+	var svg = xmlObject.firstChild.nodeValue;	
+	document.getElementById('map').src = "map/" + svg;
+	return false;
+}
+
+function previewMap( svg ){
+	document.getElementById('map').src = "map/" + svg;
+	currentSVG = svg;	
 }

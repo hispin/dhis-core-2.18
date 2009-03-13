@@ -104,7 +104,7 @@ public class AssignMapAction
 
         Collections.sort( organisationUnitChildren, new OrganisationUnitNameComparator() );
 
-        mapFile = selectionManager.getSelectedMapFile();
+        mapFile = selectionManager.getSelectedMapFile();      
 
         return INPUT;
     }

@@ -112,15 +112,19 @@ public class UpdateLegendSetAction
     {
         legendSet = legendService.getLegendSet( id.intValue() );
 
-        indicators = new HashSet<Indicator>( indicatorService.getAllIndicators() );
-
-        indicators.removeAll( legendSet.getIndicators() );
+        indicators = new HashSet<Indicator>( indicatorService.getAllIndicators() );       
 
         indicatorGroups = new HashSet<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
 
         legends = legendService.getAllLegend();
 
         legends.removeAll( legendSet.getLegends() );
+
+        for ( LegendSet legendSet : legendService.getAllLegendSet() )
+        {
+
+            indicators.removeAll( legendSet.getIndicators() );
+        }
 
         return SUCCESS;
     }

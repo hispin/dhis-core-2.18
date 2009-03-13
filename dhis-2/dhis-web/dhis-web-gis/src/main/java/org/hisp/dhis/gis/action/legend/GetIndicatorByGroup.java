@@ -48,23 +48,16 @@ public class GetIndicatorByGroup
 
     private LegendService legendService;
 
-    private Integer indicatorGroupId;
+    private String indicatorGroupId;
 
-    private Set<Indicator> indicators = new HashSet<Indicator>();
-
-    private Integer legendSetId;
+    private Set<Indicator> indicators = new HashSet<Indicator>();  
 
     private LegendSet legendSet;
 
     public LegendSet getLegendSet()
     {
         return legendSet;
-    }
-
-    public void setLegendSetId( Integer legendSetId )
-    {
-        this.legendSetId = legendSetId;
-    }
+    }  
 
     public Set<Indicator> getIndicators()
     {
@@ -81,7 +74,7 @@ public class GetIndicatorByGroup
         this.indicatorService = indicatorService;
     }
 
-    public void setIndicatorGroupId( Integer indicatorGroupId )
+    public void setIndicatorGroupId( String indicatorGroupId )
     {
         this.indicatorGroupId = indicatorGroupId;
     }
@@ -90,7 +83,7 @@ public class GetIndicatorByGroup
         throws Exception
     {
 
-        if ( indicatorGroupId == null )
+        if ( indicatorGroupId.equalsIgnoreCase( "all" ) )
         {
 
             indicators = new HashSet<Indicator>( indicatorService.getAllIndicators() );
@@ -98,18 +91,14 @@ public class GetIndicatorByGroup
         }
         else
         {
-            IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( indicatorGroupId.intValue() );
+            IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( Integer.parseInt( indicatorGroupId ) );
 
             indicators = indicatorGroup.getMembers();
         }
-
-        if ( legendSetId != null )
-        {
-
-            legendSet = legendService.getLegendSet( legendSetId.intValue() );
-
+      
+        for(LegendSet legendSet: legendService.getAllLegendSet()){
+            
             indicators.removeAll( legendSet.getIndicators() );
-
         }
 
         return SUCCESS;

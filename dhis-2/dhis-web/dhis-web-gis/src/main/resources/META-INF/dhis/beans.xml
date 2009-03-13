@@ -109,8 +109,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Map management -->
 
-
-
 	<bean id="org.hisp.dhis.gis.action.management.AddMapFileAction"
 		class="org.hisp.dhis.gis.action.management.AddMapFileAction" scope="prototype">
 		<property name="organisationUnitSelectionManager"
@@ -126,6 +124,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="featureService" ref="org.hisp.dhis.gis.FeatureService" />
 	</bean>
 
+	<!-- 
+
 	<bean id="org.hisp.dhis.gis.action.management.PreviewMapAction"
 		class="org.hisp.dhis.gis.action.management.PreviewMapAction" scope="prototype">
 		<property name="organisationUnitSelectionManager"
@@ -133,7 +133,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="gisConfigurationManagerService"
 			ref="org.hisp.dhis.gis.action.configuration.GISConfigurationManagerService" />
 	</bean>
-
+	-->
+	<bean id="org.hisp.dhis.gis.action.management.GetSVGFileByOrganisationUnitAction"
+		class="org.hisp.dhis.gis.action.management.GetSVGFileByOrganisationUnitAction" scope="prototype">
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="featureService" ref="org.hisp.dhis.gis.FeatureService" />		
+	</bean>
+	
+	
 	<bean id="org.hisp.dhis.gis.action.management.AssignRootAction"
 		class="org.hisp.dhis.gis.action.management.AssignRootAction" scope="prototype">
 		<property name="organisationUnitSelectionManager"
@@ -212,11 +220,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.gis.action.legend.UpdateLegendAction"
 		class="org.hisp.dhis.gis.action.legend.UpdateLegendAction">
-		<property name="legendService" ref="org.hisp.dhis.gis.LegendService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.gis.action.legend.ShowLegendDetailAction"
-		class="org.hisp.dhis.gis.action.legend.ShowLegendDetailAction">
 		<property name="legendService" ref="org.hisp.dhis.gis.LegendService" />
 	</bean>
 

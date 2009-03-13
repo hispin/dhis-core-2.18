@@ -1,14 +1,14 @@
 ﻿<body onLoad="javascript:init();">
 <input id="mapFileName" type="hidden" value="$mapFile.mapFile"/>
-<div id="mapDiv" >
-	<div id="topMapMenu">		
-		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:showHideLabel();">[Label]</a>
-		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:showHideDiv('legend');">[Legend]</a>
-		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:zoomIn();" title="Zoom In">[ + ]</a>
-		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:zoomOut();" title="Zoom Out">[ - ]</a>
-		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:retoreZoom();" title="Retore">[ ~ ]</a>
-		<a style="text-decoration:none" style="CURSOR: hand" href="#" onclick="showDropDown('mapRender');" title="$i18n.getString( 'map_render' )">[ < ]</a>	
-	</div>
+<div id="topMapMenu">		
+	<a style="text-decoration:none" style="CURSOR: hand" href="javascript:showHideLabel();">[Label]</a>
+	<a style="text-decoration:none" style="CURSOR: hand" href="javascript:showHideDiv('legend');">[Legend]</a>
+	<a style="text-decoration:none" style="CURSOR: hand" href="javascript:zoomIn();" title="Zoom In">[ + ]</a>
+	<a style="text-decoration:none" style="CURSOR: hand" href="javascript:zoomOut();" title="Zoom Out">[ - ]</a>
+	<a style="text-decoration:none" style="CURSOR: hand" href="javascript:retoreZoom();" title="Retore">[ ~ ]</a>
+	<a style="text-decoration:none" style="CURSOR: hand" href="#" onclick="showDropDown('mapRender');" title="$i18n.getString( 'map_render' )">[ < ]</a>	
+</div>
+<div id="mapDiv" >	
 	<div id="divMap">
 	 <embed id="map" src="map/$mapFile.mapFile" name="map" type="image/svg+xml" align="center"/>
 	</div>	
@@ -117,7 +117,7 @@
 </div>
 
 <div id="legend">
-	<div class="closeButton" onclick="showHideDiv('legend');">[x]</div>
+	<div class="closeButton" onclick="hideById('legend');">[x]</div>
 	<div id="legendDetails"></div>
 </div>
 
@@ -140,7 +140,7 @@
 		
 		
 		
-		 $(document).ready(function(){
+		$(document).ready(function(){
 			$("#mapRender").draggable(); 
 			$("#legend").draggable(); 
 			$("#information").draggable(); 
