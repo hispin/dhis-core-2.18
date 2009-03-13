@@ -136,7 +136,7 @@ function getDataElementGroupCompleted( xmlObject )
         selectedDataElements[id] = value;
     }
     filterSelectedDataElements();   
-    document.getElementById( 'groupNameView').innerHTML = i18n_member_of + " <b>" + name + "</b>";
+    setMessage(i18n_member_of + " <b>" + name + "</b>");
     document.getElementById('availableDataElements').disabled=false;
     
 }
@@ -156,7 +156,7 @@ function updateDataElementGroupMembers()
 
     for ( var i = 0; i < selectedDataElementMembers.options.length; ++i)
     {
-        params += '&selectedDataElements=' + selectedDataElementMembers.options[i].value;
+        params += '&groupMembers=' + selectedDataElementMembers.options[i].value;
     }   
     request.sendAsPost( params );
     request.setResponseTypeXML( 'xmlObject' );  
@@ -215,9 +215,11 @@ function showRenameDataElementGroupForm()
     {
         var name = dataElementGroupsSelect.options[ dataElementGroupsSelect.selectedIndex ].text;
         document.getElementById( 'addRenameGroupButton' ).onclick=validateRenameDataElementGroup;
-        showDivCenter( 'addDataElementGroupForm' );
+        setPositionCenter( 'addDataElementGroupForm' );
+		showById('addDataElementGroupForm');
+		document.getElementById( 'groupName' ).value = name;
         showDivEffect();
-        document.getElementById( 'groupName' ).value = name;
+        
     }
     catch(e)
     {
@@ -277,7 +279,8 @@ function showAddDataElementGroupForm()
 {
     document.getElementById( 'groupName' ).value='';    
     document.getElementById( 'addRenameGroupButton' ).onclick=validateAddDataElementGroup;
-    showDivCenter( 'addDataElementGroupForm' );
+    setPositionCenter( 'addDataElementGroupForm' );
+	showById('addDataElementGroupForm');
     showDivEffect();
 }
 

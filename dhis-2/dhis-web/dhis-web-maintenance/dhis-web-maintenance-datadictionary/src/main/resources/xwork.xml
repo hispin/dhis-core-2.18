@@ -224,7 +224,7 @@
     </action>
     
     <!-- Indicator Group Editor -->
-    <!-- 
+    
     <action name="indicatorGroupEditor"
       class="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -268,8 +268,7 @@
       <interceptor-ref name="transactionStack"/>
 	  <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
-    -->
-    
+        
     <!-- IndicatorGroup -->
     
     <action name="indicatorGroup"

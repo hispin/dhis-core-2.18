@@ -34,12 +34,14 @@ import java.util.Set;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.system.util.CodecUtils;
 
 import com.opensymphony.xwork.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: UpdateIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z larshelg $
+ * @version $Id: UpdateIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z
+ *          larshelg $
  */
 public class UpdateIndicatorGroupAction
     extends ActionSupport
@@ -54,7 +56,7 @@ public class UpdateIndicatorGroupAction
     {
         this.indicatorService = indicatorService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -80,29 +82,45 @@ public class UpdateIndicatorGroupAction
         this.groupMembers = groupMembers;
     }
 
+    private IndicatorGroup indicatorGroup;
+
+    public IndicatorGroup getIndicatorGroup()
+    {
+        return indicatorGroup;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
-        IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( id );
+        indicatorGroup = indicatorService.getIndicatorGroup( id );
 
         Set<Indicator> members = new HashSet<Indicator>();
-        
+
         if ( groupMembers != null )
         {
             for ( String memberId : groupMembers )
             {
-                members.add( indicatorService.getIndicator( Integer.parseInt( memberId ) ) );            
+                members.add( indicatorService.getIndicator( Integer.parseInt( memberId ) ) );
             }
         }
-        
-        indicatorGroup.setName( name );
+
+        if ( name != null )
+        {
+            if ( name.trim().length() > 0 )
+            {
+
+                indicatorGroup.setName( CodecUtils.unescape( name ) );
+            }
+        }
+
         indicatorGroup.setMembers( members );
-        
+
         indicatorService.updateIndicatorGroup( indicatorGroup );
-        
+
         return SUCCESS;
     }
 }

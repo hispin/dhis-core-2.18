@@ -52,9 +52,9 @@
 		<td>			
 			<a href="javascript:sortList( 'dataElementGroups', 'ASC' );"><img align="absmiddle" src="images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
 			<a href="javascript:sortList( 'dataElementGroups', 'DES' );"><img align="absmiddle" src="images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>			
-			<input type="button" value="$i18n.getString( 'new' )" onclick="javascript:showAddDataElementGroupForm()" style="width:70px"><input 
-			       type="button" value="$i18n.getString( 'rename' )" onclick="javascript:showRenameDataElementGroupForm()" style="width:70px"><input 
-			       type="button" value="$i18n.getString( 'delete' )" onclick="javascript:deleteDataElementGroup()" style="width:70px">
+			<input type="button" value="$i18n.getString( 'new' )" onclick="javascript:showAddDataElementGroupForm()" style="width:70px">
+			<input type="button" value="$i18n.getString( 'rename' )" onclick="javascript:showRenameDataElementGroupForm()" style="width:70px">
+			<input type="button" value="$i18n.getString( 'delete' )" onclick="javascript:deleteDataElementGroup()" style="width:70px">
 		</td>
 		<td>
 			<a href="javascript:sortList( 'selectedDataElements', 'ASC' );"><img align="absmiddle" src="images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
@@ -71,7 +71,7 @@
 	</tr>
 </table>
 
-<div id="addDataElementGroupForm" style="position:fixed;background-color:#FFFFFF;border:thin #000000 solid;height:70px;width:450px;display:none;z-index:1;">
+<div id="addDataElementGroupForm" style="position:fixed;background-color:#FFFFFF;border:thin #000000 solid;height:70px;width:450px;display:none;z-index:10000000000;">
 
 <table width="100%" height="100%" border="0" cellpadding="2" cellspacing="2"> 
 
@@ -105,6 +105,7 @@
 	var selectedDataElements = new Object();	
 	
 	initAllList();
+	
 	
 </script>
 

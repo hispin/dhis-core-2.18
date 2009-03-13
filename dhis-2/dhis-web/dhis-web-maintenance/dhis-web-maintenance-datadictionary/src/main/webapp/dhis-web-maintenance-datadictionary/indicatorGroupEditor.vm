@@ -78,8 +78,8 @@
   <tr align="center">
     <td>$i18n.getString( "name" )</td>
 	<td><input type="text" id="groupName" style="width:20em"/></td>
-	<td><input id="addRenameGroupButton" type="button" value="$i18n.getString( 'ok' )">
-	<input type="button" onclick="showHideDiv( 'addDataElementGroupForm' ); deleteDivEffect();" value="$i18n.getString( 'cancel' )"/></td>
+	<td><input id="addRenameGroupButton" type="button" value="$i18n.getString( 'ok' )"/>
+	<input type="button" onclick="javascript:cancel();" value="$i18n.getString( 'cancel' )"/></td>
   </tr>
 
 </table>
@@ -87,6 +87,11 @@
 </div>
 
 <script type="text/javascript">
+
+	function cancel(){
+		hideById("addIndicatorGroupForm");
+		deleteDivEffect();
+	}
 
 	var i18n_select_indicator_group = '$encoder.jsEscape( $i18n.getString( "select_indicator_group" ) , "'")';
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_group" ) , "'")';

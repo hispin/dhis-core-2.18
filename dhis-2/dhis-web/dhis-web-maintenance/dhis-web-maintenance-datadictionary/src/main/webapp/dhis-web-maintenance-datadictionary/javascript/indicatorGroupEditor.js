@@ -278,7 +278,7 @@ function updateIndicatorGroupMembers(){
 
 	    for ( var i = 0; i < selectedIndicatorMembers.options.length; ++i)
 	    {
-	        params += '&selectedIndicators=' + selectedIndicatorMembers.options[i].value;
+	        params += '&groupMembers=' + selectedIndicatorMembers.options[i].value;
 	    }   
 	    request.sendAsPost( params );
 	    request.setResponseTypeXML( 'xmlObject' );  

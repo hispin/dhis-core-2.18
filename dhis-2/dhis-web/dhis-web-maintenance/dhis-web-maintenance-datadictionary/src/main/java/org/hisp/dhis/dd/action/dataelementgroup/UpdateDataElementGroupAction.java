@@ -80,14 +80,7 @@ public class UpdateDataElementGroupAction
     public void setGroupMembers( Collection<String> groupMembers )
     {
         this.groupMembers = groupMembers;
-    }
-
-    private String selectedDataElements[] = new String[0];
-
-    public void setSelectedDataElements( String[] selectedDataElements )
-    {
-        this.selectedDataElements = selectedDataElements;
-    }
+    }   
 
     // -------------------------------------------------------------------------
     // Output
@@ -130,23 +123,7 @@ public class UpdateDataElementGroupAction
                 }
                 dataElementGroup.setMembers( members );
             }
-        }
-
-        if ( selectedDataElements != null )
-        {
-            if ( selectedDataElements.length > 0 )
-            {
-                for ( int i = 0; i < selectedDataElements.length; i++ )
-                {
-                    DataElement dataElement = dataElementService.getDataElement( Integer
-                        .parseInt( selectedDataElements[i] ) );
-                    members.add( dataElement );
-                }
-
-                dataElementGroup.setMembers( members );
-            }
-
-        }
+        }     
 
         dataElementService.updateDataElementGroup( dataElementGroup );
 
