@@ -1,3 +1,4 @@
+
 <h3>$i18n.getString( "data_element_category_option_management" )</h3>
 
 <table class="mainPageTable">
@@ -18,7 +19,7 @@
 					<th>$i18n.getString( "name" )</th>
 					<th colspan="4">$i18n.getString( "operations" )</th>
 				</tr>
-				<tbody>
+				<tbody id="list">
 				#set( $mark = false )
 				#foreach( $dataElementCategoryOption in $dataElementCategoryOptions )
 				<tr>
