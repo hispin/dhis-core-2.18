@@ -70,7 +70,7 @@ public class GetIndicatorGroupListAction
     // Action implemantation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
     {
         indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
 

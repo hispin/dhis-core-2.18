@@ -113,7 +113,6 @@ public class GetDataElementCategoryAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         dataElementCategory = dataElementCategoryService.getDataElementCategory( dataElementCategoryId );
 

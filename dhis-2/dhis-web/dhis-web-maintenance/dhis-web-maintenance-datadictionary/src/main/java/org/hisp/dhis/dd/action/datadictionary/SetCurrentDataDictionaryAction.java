@@ -65,7 +65,6 @@ public class SetCurrentDataDictionaryAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         dataDictionaryModeManager.setCurrentDataDictionary( id );
         

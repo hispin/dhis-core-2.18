@@ -73,7 +73,6 @@ public class GetDataElementCategoryOptionAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         dataElementCategoryOption = dataElementCategoryOptionService
             .getDataElementCategoryOption( dataElementCategoryOptionId );

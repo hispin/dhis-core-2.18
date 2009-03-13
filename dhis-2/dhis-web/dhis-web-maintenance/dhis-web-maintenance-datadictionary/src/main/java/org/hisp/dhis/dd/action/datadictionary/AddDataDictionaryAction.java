@@ -117,7 +117,7 @@ public class AddDataDictionaryAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
     {
         DataDictionary dictionary = new DataDictionary();
         

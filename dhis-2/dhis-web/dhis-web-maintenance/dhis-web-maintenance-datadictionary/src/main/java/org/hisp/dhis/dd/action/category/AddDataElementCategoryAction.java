@@ -95,7 +95,6 @@ public class AddDataElementCategoryAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         DataElementCategory dataElementCategory = new DataElementCategory();
         dataElementCategory.setName( nameField );

@@ -72,7 +72,7 @@ public class GetDataDictionaryAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
     {
         dataDictionary = dataDictionaryService.getDataDictionary( id );
         

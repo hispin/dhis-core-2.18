@@ -73,7 +73,6 @@ public class AddDataElementCategoryOptionAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         DataElementCategoryOption dataElementCategoryOption = new DataElementCategoryOption();
 

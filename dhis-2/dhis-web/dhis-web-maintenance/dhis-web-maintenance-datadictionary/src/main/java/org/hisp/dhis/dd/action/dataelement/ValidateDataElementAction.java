@@ -110,7 +110,9 @@ public class ValidateDataElementAction
         this.code = code;
     }
 
-    // For Calculated Data Elements
+    // -------------------------------------------------------------------------
+    // Calculated data elements
+    // -------------------------------------------------------------------------
 
     private String type;
 

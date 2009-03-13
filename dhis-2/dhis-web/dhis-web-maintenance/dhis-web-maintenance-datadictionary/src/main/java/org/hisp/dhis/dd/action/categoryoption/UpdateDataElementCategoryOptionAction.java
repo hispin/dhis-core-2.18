@@ -80,7 +80,6 @@ public class UpdateDataElementCategoryOptionAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         DataElementCategoryOption dataElementCategoryOption = dataElementCategoryOptionService
             .getDataElementCategoryOption( id );

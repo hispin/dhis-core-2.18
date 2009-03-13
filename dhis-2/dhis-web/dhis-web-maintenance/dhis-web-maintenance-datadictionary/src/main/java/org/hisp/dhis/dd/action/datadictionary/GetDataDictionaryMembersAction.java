@@ -158,7 +158,6 @@ public class GetDataDictionaryMembersAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         // ---------------------------------------------------------------------
         // Get selected elements

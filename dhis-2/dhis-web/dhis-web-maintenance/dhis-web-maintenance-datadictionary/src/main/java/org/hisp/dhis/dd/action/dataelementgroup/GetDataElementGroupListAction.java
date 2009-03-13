@@ -70,7 +70,7 @@ public class GetDataElementGroupListAction
     // Action implemantation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
     {
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 

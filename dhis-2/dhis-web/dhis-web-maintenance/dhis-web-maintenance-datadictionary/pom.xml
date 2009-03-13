@@ -10,7 +10,7 @@
   </parent>
   
   <artifactId>dhis-web-maintenance-datadictionary</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <name>DHIS Data Dictionary</name>
   
   <build>

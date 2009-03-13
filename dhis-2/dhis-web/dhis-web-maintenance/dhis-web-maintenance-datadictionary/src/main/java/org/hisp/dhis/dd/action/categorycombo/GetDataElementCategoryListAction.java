@@ -71,7 +71,6 @@ public class GetDataElementCategoryListAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryService
             .getAllDataElementCategories() );

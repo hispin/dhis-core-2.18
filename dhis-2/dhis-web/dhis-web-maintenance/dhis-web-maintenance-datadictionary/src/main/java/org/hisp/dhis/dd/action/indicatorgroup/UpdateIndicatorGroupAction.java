@@ -94,30 +94,25 @@ public class UpdateIndicatorGroupAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         indicatorGroup = indicatorService.getIndicatorGroup( id );
 
-        Set<Indicator> members = new HashSet<Indicator>();
+        if ( name != null && name.trim().length() > 0 )
+        {
+            indicatorGroup.setName( CodecUtils.unescape( name ) );
+        }
 
         if ( groupMembers != null )
         {
+            Set<Indicator> members = new HashSet<Indicator>();
+
             for ( String memberId : groupMembers )
             {
                 members.add( indicatorService.getIndicator( Integer.parseInt( memberId ) ) );
             }
+
+            indicatorGroup.setMembers( members );
         }
-
-        if ( name != null )
-        {
-            if ( name.trim().length() > 0 )
-            {
-
-                indicatorGroup.setName( CodecUtils.unescape( name ) );
-            }
-        }
-
-        indicatorGroup.setMembers( members );
 
         indicatorService.updateIndicatorGroup( indicatorGroup );
 

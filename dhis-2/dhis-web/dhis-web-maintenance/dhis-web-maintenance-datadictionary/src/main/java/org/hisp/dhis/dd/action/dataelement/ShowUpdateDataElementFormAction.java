@@ -143,7 +143,6 @@ public class ShowUpdateDataElementFormAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {    	
     	dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryComboService.getAllDataElementCategoryCombos() );
     	
@@ -170,8 +169,7 @@ public class ShowUpdateDataElementFormAction
         	Operand operand = new Operand( dataElement.getId(), optionCombo.getId(), dataElement.getName() + dataElementCategoryOptionComboService.getOptionNames( optionCombo ) );
         		
         	operands.add( operand );
-            }
-            
+            }            
         }               
 
         return SUCCESS;        

@@ -166,7 +166,6 @@ public class UpdateIndicatorAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         Indicator indicator = indicatorService.getIndicator( id );
         

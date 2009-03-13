@@ -65,7 +65,6 @@ public class RemoveDataElementGroupAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         dataElementService.deleteDataElementGroup( dataElementService.getDataElementGroup( id ) );
 

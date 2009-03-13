@@ -70,7 +70,7 @@ public class GetDataDictionaryListAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
     {
         dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getAllDataDictionaries() );
         

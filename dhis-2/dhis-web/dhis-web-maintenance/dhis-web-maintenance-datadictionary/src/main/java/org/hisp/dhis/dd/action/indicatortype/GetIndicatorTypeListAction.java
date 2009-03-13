@@ -70,7 +70,7 @@ public class GetIndicatorTypeListAction
     // Action implemantation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
     {
         indicatorTypes = new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() );
 

@@ -78,7 +78,6 @@ public class GetDataElementCategoryComboListAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         defaultCombo = dataElementCategoryComboService
             .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );

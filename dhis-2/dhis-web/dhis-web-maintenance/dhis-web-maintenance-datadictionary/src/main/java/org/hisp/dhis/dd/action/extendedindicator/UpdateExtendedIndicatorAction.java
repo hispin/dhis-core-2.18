@@ -402,7 +402,6 @@ public class UpdateExtendedIndicatorAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         // ---------------------------------------------------------------------
         // Prepare values

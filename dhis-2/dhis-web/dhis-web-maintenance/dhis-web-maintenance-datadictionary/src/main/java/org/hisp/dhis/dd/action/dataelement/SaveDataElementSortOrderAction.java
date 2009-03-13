@@ -69,7 +69,6 @@ public class SaveDataElementSortOrderAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         int sortOrder = 1;
         

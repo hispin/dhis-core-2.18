@@ -84,7 +84,7 @@ public class RemoveIndicatorAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
     {
         try
         {            

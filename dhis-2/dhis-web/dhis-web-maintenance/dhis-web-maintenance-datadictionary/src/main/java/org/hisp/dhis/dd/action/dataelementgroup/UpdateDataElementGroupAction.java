@@ -98,31 +98,24 @@ public class UpdateDataElementGroupAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         dataElementGroup = dataElementService.getDataElementGroup( id );
 
-        if ( name != null )
+        if ( name != null && name.trim().length() > 0 )
         {
-            if ( name.trim().length() > 0 )
-            {
-                dataElementGroup.setName( CodecUtils.unescape( name ) );
-            }
-
+            dataElementGroup.setName( CodecUtils.unescape( name ) );
         }
 
-        Set<DataElement> members = new HashSet<DataElement>();
-
-        if ( groupMembers != null )
+        if ( groupMembers != null && groupMembers.size() > 0 )
         {
-            if ( groupMembers.size() > 0 )
+            Set<DataElement> members = new HashSet<DataElement>();
+
+            for ( String id : groupMembers )
             {
-                for ( String id : groupMembers )
-                {
-                    members.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
-                }
-                dataElementGroup.setMembers( members );
+                members.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
             }
+                
+            dataElementGroup.setMembers( members );
         }     
 
         dataElementService.updateDataElementGroup( dataElementGroup );

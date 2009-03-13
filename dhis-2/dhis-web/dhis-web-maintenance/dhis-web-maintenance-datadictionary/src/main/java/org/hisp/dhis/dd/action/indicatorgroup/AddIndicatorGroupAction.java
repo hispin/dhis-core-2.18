@@ -81,30 +81,25 @@ public class AddIndicatorGroupAction
         return indicatorGroup;
     }
 
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
    
-
-
-    public String execute() throws Exception
+    public String execute()
     {
         indicatorGroup = new IndicatorGroup( CodecUtils.unescape( name ) );
         
-        Set<Indicator> members = new HashSet<Indicator>();
-
         if ( groupMembers != null )
         {
+            Set<Indicator> members = new HashSet<Indicator>();
+
             for ( String id : groupMembers )
             {
-                Indicator indicator = indicatorService.getIndicator( Integer.parseInt( id ) );
-                
-                members.add( indicator );
+                members.add( indicatorService.getIndicator( Integer.parseInt( id ) ) );
             }
+
+            indicatorGroup.setMembers( members );            
         }
-        
-        indicatorGroup.setMembers( members );
         
         indicatorService.addIndicatorGroup( indicatorGroup );        
 

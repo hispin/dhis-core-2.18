@@ -113,7 +113,6 @@ public class GetDataElementCategoryComboAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         dataElementCategoryCombo = dataElementCategoryComboService
             .getDataElementCategoryCombo( dataElementCategoryComboId );

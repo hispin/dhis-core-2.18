@@ -100,7 +100,6 @@ public class ShowAddDataElementForm
     // -------------------------------------------------------------------------
     
     public String execute()
-        throws Exception
     {    	
     	defaultCategoryCombo = dataElementCategoryComboService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
     	

@@ -105,7 +105,6 @@ public class AddDataElementCategoryComboAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         DataElementCategoryCombo dataElementCategoryCombo = new DataElementCategoryCombo();
         dataElementCategoryCombo.setName( nameField );
@@ -114,8 +113,8 @@ public class AddDataElementCategoryComboAction
 
         for ( String id : selectedList )
         {
-            DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( Integer
-                .parseInt( id ) );
+            DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( 
+                Integer.parseInt( id ) );
 
             categories.add( dataElementCategory );
         }

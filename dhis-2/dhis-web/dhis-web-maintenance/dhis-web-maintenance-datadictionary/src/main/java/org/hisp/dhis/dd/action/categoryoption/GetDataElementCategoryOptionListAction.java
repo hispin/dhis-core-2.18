@@ -79,7 +79,6 @@ public class GetDataElementCategoryOptionListAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         defaultOption = dataElementCategoryOptionService
             .getDataElementCategoryOptionByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );

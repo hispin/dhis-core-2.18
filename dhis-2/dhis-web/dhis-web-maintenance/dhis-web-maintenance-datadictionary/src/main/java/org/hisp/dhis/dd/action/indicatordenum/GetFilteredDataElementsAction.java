@@ -138,7 +138,6 @@ public class GetFilteredDataElementsAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         // ---------------------------------------------------------------------
         // DataElementGroup and AggregationOperator filter

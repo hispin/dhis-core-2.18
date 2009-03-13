@@ -103,7 +103,6 @@ public class UpdateDataElementCategoryAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         // ---------------------------------------------------------------------
         // Update data element category

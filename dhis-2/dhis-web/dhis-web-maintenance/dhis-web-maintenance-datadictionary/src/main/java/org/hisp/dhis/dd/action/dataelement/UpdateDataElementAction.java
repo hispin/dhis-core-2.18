@@ -166,7 +166,6 @@ public class UpdateDataElementAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {    	
     	// ---------------------------------------------------------------------
         // Prepare values

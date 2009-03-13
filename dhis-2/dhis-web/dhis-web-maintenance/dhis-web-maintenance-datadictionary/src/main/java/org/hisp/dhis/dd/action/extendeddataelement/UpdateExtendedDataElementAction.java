@@ -357,7 +357,6 @@ public class UpdateExtendedDataElementAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         // ---------------------------------------------------------------------
         // Prepare values

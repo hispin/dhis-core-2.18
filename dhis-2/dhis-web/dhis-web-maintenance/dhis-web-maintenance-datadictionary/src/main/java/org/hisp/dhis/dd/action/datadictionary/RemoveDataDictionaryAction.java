@@ -66,7 +66,6 @@ public class RemoveDataDictionaryAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         DataDictionary dataDictionary = dataDictionaryService.getDataDictionary( id );
         

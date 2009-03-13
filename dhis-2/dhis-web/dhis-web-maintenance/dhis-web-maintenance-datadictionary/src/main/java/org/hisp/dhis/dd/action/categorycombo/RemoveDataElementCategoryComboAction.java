@@ -66,7 +66,6 @@ public class RemoveDataElementCategoryComboAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
     	DataElementCategoryCombo categoryCombo = dataElementCategoryComboService.getDataElementCategoryCombo( dataElementCategoryComboId );
     	

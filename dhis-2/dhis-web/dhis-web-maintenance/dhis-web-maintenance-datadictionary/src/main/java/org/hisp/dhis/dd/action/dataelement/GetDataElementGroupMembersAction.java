@@ -126,7 +126,6 @@ public class GetDataElementGroupMembersAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         if ( dataElementGroupId > 0 )
         {

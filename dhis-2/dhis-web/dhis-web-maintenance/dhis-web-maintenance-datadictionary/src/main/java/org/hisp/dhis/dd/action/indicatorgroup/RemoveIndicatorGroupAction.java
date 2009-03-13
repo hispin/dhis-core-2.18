@@ -64,7 +64,7 @@ public class RemoveIndicatorGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
     {
         indicatorService.deleteIndicatorGroup( indicatorService.getIndicatorGroup( id ) );
 

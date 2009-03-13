@@ -72,7 +72,7 @@ public class AddIndicatorTypeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
     {
         IndicatorType indicatorType = new IndicatorType( name, factor );
         

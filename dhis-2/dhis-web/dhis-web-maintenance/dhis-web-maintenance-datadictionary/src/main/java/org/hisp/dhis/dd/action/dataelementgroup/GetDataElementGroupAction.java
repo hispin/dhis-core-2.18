@@ -79,7 +79,7 @@ public class GetDataElementGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
     {
         dataElementGroup = dataElementService.getDataElementGroup( id );
 

@@ -163,7 +163,6 @@ public class AddDataElementAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         // ---------------------------------------------------------------------
         // Prepare values

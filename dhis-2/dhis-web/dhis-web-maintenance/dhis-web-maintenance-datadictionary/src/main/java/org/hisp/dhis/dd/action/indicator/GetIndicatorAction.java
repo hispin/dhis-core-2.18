@@ -86,7 +86,7 @@ public class GetIndicatorAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
     {
         indicator = indicatorService.getIndicator( id );
 

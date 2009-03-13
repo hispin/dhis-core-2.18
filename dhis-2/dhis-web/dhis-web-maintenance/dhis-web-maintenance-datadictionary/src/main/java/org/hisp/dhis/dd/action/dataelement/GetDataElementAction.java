@@ -73,7 +73,6 @@ public class GetDataElementAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         dataElement = dataElementService.getDataElement( id );       
         

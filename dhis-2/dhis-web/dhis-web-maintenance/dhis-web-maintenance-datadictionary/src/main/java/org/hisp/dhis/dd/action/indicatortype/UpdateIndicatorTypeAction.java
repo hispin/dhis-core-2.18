@@ -79,7 +79,7 @@ public class UpdateIndicatorTypeAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
     {
         IndicatorType indicatorType = indicatorService.getIndicatorType( id );
         

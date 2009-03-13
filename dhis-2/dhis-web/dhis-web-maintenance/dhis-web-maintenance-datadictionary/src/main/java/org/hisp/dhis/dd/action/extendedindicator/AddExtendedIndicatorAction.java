@@ -387,7 +387,6 @@ public class AddExtendedIndicatorAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         // ---------------------------------------------------------------------
         // Prepare values

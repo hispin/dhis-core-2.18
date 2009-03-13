@@ -125,7 +125,6 @@ public class UpdateDataDictionaryAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         DataDictionary dictionary = dataDictionaryService.getDataDictionary( id );
         

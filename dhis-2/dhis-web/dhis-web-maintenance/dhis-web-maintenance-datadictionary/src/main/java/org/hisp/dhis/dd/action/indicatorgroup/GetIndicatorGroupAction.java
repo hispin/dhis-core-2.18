@@ -79,7 +79,7 @@ public class GetIndicatorGroupAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
     {
         indicatorGroup = indicatorService.getIndicatorGroup( id );
 

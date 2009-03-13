@@ -85,7 +85,6 @@ public class RemoveDataElementCategoryAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         try
         {            

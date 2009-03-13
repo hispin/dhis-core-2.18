@@ -112,7 +112,6 @@ public class UpdateDataElementCategoryComboAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         DataElementCategoryCombo dataElementCategoryCombo = dataElementCategoryComboService
             .getDataElementCategoryCombo( dataElementCategoryComboId );
@@ -130,17 +129,15 @@ public class UpdateDataElementCategoryComboAction
                 .parseInt( id ) );
 
             updatedCategories.add( dataElementCategory );
-
         }
 
-        if( ! dataElementCategoryCombo.getCategories().containsAll( updatedCategories) )
+        if ( !dataElementCategoryCombo.getCategories().containsAll( updatedCategories) )
         {
-        	dataElementCategoryCombo.setCategories( updatedCategories );
+            dataElementCategoryCombo.setCategories( updatedCategories );
 
             dataElementCategoryComboService.updateDataElementCategoryCombo( dataElementCategoryCombo );
             
-        	dataElementCategoryOptionComboService.generateOptionCombos( dataElementCategoryCombo );
-
+            dataElementCategoryOptionComboService.generateOptionCombos( dataElementCategoryCombo );
         }       	
 
         int displayOrder = 1;
@@ -149,8 +146,7 @@ public class UpdateDataElementCategoryComboAction
 
         for ( String id : selectedList )
         {            
-            
-        	DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( Integer
+            DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( Integer
                 .parseInt( id ) );       	
 
             rowOrder = dataElementDimensionRowOrderService.getDataElementDimensionRowOrder( dataElementCategoryCombo,
@@ -161,19 +157,16 @@ public class UpdateDataElementCategoryComboAction
                 rowOrder = new DataElementDimensionRowOrder( dataElementCategoryCombo, dataElementCategory,
                     displayOrder );
                 
-                dataElementDimensionRowOrderService.addDataElementDimensionRowOrder( rowOrder );                
-                
+                dataElementDimensionRowOrderService.addDataElementDimensionRowOrder( rowOrder );
             }
             else
             {
                 rowOrder.setDisplayOrder( displayOrder );
                 
-                dataElementDimensionRowOrderService.updateDataElementDimensionRowOrder( rowOrder );                
-                
+                dataElementDimensionRowOrderService.updateDataElementDimensionRowOrder( rowOrder );
             }
 
             displayOrder++;
-
         }
 
         return SUCCESS;

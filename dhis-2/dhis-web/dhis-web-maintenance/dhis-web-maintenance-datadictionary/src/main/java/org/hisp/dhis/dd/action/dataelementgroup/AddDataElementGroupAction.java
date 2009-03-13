@@ -91,11 +91,8 @@ public class AddDataElementGroupAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
-        dataElementGroup = new DataElementGroup();
-
-        dataElementGroup.setName( CodecUtils.unescape( name ) );
+        dataElementGroup = new DataElementGroup( CodecUtils.unescape( name ) );
 
         if ( groupMembers != null )
         {

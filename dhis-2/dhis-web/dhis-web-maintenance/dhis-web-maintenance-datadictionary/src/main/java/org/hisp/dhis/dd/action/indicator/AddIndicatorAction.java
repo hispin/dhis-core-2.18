@@ -159,7 +159,6 @@ public class AddIndicatorAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         IndicatorType indicatorType = indicatorService.getIndicatorType( indicatorTypeId );
 

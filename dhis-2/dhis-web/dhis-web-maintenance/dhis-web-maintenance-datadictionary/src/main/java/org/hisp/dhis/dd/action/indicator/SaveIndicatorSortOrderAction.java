@@ -69,7 +69,6 @@ public class SaveIndicatorSortOrderAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         int sortOrder = 1;
         
