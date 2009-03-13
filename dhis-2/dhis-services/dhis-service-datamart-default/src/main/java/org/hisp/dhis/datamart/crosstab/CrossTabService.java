@@ -48,4 +48,6 @@ public interface CrossTabService
     void trimCrossTabTable( Collection<Operand> emptyOperands );
 
     Map<Operand, Integer> getOperandIndexMap( Collection<Operand> operands );
+    
+    int validateCrossTabTable( Collection<Operand> operands );
 }

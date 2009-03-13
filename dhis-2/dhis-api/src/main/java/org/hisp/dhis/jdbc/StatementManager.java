@@ -73,4 +73,11 @@ public interface StatementManager
      * Closes the statement object and the internal database connection.
      */
     void destroyInternal();
+    
+    /**
+     * Gets the current StatementBuilder.
+     * 
+     * @return the current StatementBuilder.
+     */
+    StatementBuilder getStatementBuilder();
 }

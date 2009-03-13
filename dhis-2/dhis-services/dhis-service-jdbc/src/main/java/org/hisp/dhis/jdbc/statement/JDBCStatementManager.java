@@ -32,8 +32,10 @@ import java.sql.DriverManager;
 
 import org.hisp.dhis.jdbc.JDBCConfiguration;
 import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.jdbc.StatementHolder;
 import org.hisp.dhis.jdbc.StatementManager;
+import org.hisp.dhis.jdbc.factory.StatementBuilderFactory;
 
 /**
  * @author Lars Helge Overland
@@ -124,6 +126,11 @@ public class JDBCStatementManager
         
             internalHolderTag.remove();
         }
+    }
+    
+    public StatementBuilder getStatementBuilder()
+    {
+        return StatementBuilderFactory.createStatementBuilder( configurationProvider.getConfiguration().getDialect() );
     }
 
     // -------------------------------------------------------------------------

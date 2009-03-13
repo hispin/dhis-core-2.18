@@ -265,4 +265,9 @@ public class H2StatementBuilder
         
         return sql;
     }
+
+    public int getMaximumNumberOfColumns()
+    {
+        return 1580; // TODO verify
+    }
 }

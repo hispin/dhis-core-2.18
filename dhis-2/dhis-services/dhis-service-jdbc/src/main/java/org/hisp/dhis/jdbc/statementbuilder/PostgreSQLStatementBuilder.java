@@ -41,6 +41,8 @@ import org.hisp.dhis.period.RelativePeriodType;
 public class PostgreSQLStatementBuilder
     extends AbstractStatementBuilder
 {
+    public static final int MAX_COLUMS = 1580; // TODO verify
+    
     private static final String AUTO_INCREMENT = "nextval('hibernate_sequence')";
     
     // -------------------------------------------------------------------------
@@ -272,5 +274,10 @@ public class PostgreSQLStatementBuilder
             "AND datavalue.value IN ( '0', '0.', '.0', '0.0', ' 0', '0 ', '0 0' )";
         
         return sql;
+    }
+
+    public int getMaximumNumberOfColumns()
+    {
+        return 1580; // TODO verify
     }
 }

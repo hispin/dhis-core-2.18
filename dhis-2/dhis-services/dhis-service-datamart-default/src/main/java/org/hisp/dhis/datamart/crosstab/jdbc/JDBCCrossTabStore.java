@@ -29,10 +29,13 @@ package org.hisp.dhis.datamart.crosstab.jdbc;
 
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.jdbc.StatementHolder;
 import org.hisp.dhis.jdbc.StatementManager;
@@ -44,6 +47,8 @@ import org.hisp.dhis.jdbc.StatementManager;
 public class JDBCCrossTabStore
     implements CrossTabStore
 {
+    private static final Log log = LogFactory.getLog( JDBCCrossTabStore.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -62,6 +67,8 @@ public class JDBCCrossTabStore
     public void createCrossTabTable( final List<Operand> operands )
     {
         final StatementHolder holder = statementManager.getHolder();
+        
+        log.info( operands != null ? "Number of crosstab columns: " + ( 2 + operands.size() ) : "No operands selected" );
         
         try
         {
@@ -161,5 +168,12 @@ public class JDBCCrossTabStore
         {
             holder.close();
         }            
+    }
+    
+    public int validateCrossTabTable( final Collection<Operand> operands )
+    {
+        int maxColumns = statementManager.getStatementBuilder().getMaximumNumberOfColumns();
+        
+        return ( operands != null && operands.size() > maxColumns ) ? operands.size() - maxColumns : 0;
     }
 }

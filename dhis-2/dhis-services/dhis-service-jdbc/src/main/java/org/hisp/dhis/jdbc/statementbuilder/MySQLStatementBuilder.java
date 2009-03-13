@@ -262,4 +262,9 @@ public class MySQLStatementBuilder
         
         return sql;
     }
+    
+    public int getMaximumNumberOfColumns()
+    {
+        return 720;
+    }
 }

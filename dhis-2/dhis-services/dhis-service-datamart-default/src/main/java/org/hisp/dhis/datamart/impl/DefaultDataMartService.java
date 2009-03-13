@@ -174,9 +174,9 @@ public class DefaultDataMartService
 
     public int export( final Collection<Integer> dataElementIds, final Collection<Integer> indicatorIds,
         final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds )
-    {
+    {   
         int count = 0;
-                
+             
         log.info( "Export process started" );
         
         TimeUtils.start();
@@ -192,8 +192,6 @@ public class DefaultDataMartService
         dataMartStore.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
         
         log.info( "Deleted existing aggregated data: " + TimeUtils.getHMS() );
-
-        setMessage( "crosstabulating_data" );
 
         // ---------------------------------------------------------------------
         // Crosstabulate data
@@ -213,7 +211,24 @@ public class DefaultDataMartService
         final Collection<Operand> allDataElementOperands = categoryOptionComboService.getOperands( dataElementService.getDataElements( allDataElementIds ) );
         final Collection<Operand> dataElementInIndicatorOperands = categoryOptionComboService.getOperands( dataElementService.getDataElements( dataElementInIndicatorIds ) );
         final Collection<Operand> dataElementInCalculatedDataElementOperands = categoryOptionComboService.getOperands( dataElementService.getDataElements( dataElementInCalculatedDataElementIds ) );
-        
+
+        // ---------------------------------------------------------------------
+        // Validate crosstabtable
+        // ---------------------------------------------------------------------
+
+        if ( crossTabService.validateCrossTabTable( allDataElementOperands ) != 0 )
+        {
+            int excess = crossTabService.validateCrossTabTable( allDataElementOperands );
+            
+            log.warn( "Cannot crosstabulate since the number of data elements exceeded maximum columns: " + excess );
+            
+            setMessage( "could_not_export_too_many_data_elements" );
+            
+            return 0;
+        }           
+
+        setMessage( "crosstabulating_data" );
+
         final Collection<Operand> emptyOperands = crossTabService.populateCrossTabTable( allDataElementOperands, getIntersectingIds( periodIds ), 
             getIdsWithChildren( organisationUnitIds ) );
 

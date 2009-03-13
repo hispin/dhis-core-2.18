@@ -230,4 +230,11 @@ public interface StatementBuilder
      * @return a delete datavalue statement.
      */
     String getDeleteZeroDataValues();
+    
+    /**
+     * Returns the maximum number of columns in a table.
+     * 
+     * @return the maximum number of columns in a table.
+     */
+    int getMaximumNumberOfColumns();
 }

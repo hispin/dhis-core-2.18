@@ -214,6 +214,11 @@ public class DefaultCrossTabService
         
         return operandMap;
     }
+
+    public int validateCrossTabTable( Collection<Operand> operands )
+    {
+        return crossTabStore.validateCrossTabTable( operands );
+    }
     
     // -------------------------------------------------------------------------
     // Supportive methods

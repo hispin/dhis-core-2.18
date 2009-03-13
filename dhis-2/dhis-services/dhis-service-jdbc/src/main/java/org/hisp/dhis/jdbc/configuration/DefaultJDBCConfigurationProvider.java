@@ -28,10 +28,10 @@ package org.hisp.dhis.jdbc.configuration;
  */
 
 import org.hibernate.cfg.Configuration;
+import org.hisp.dhis.hibernate.HibernateConfigurationProvider;
 import org.hisp.dhis.jdbc.JDBCConfiguration;
 import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
 import org.hisp.dhis.jdbc.StatementDialect;
-import org.hisp.dhis.hibernate.HibernateConfigurationProvider;
 
 /**
  * @author Lars Helge Overland

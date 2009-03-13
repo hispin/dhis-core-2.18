@@ -27,6 +27,7 @@ package org.hisp.dhis.datamart.crosstab.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -49,4 +50,6 @@ public interface CrossTabStore
     Map<Integer, String> getCrossTabTableColumns();
     
     void dropCrossTabColumn( String columnName );
+    
+    int validateCrossTabTable( Collection<Operand> operands );
 }

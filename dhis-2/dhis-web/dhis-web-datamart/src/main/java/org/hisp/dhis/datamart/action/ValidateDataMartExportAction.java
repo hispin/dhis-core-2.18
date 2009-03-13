@@ -75,7 +75,7 @@ public class ValidateDataMartExportAction
     {
         this.name = name;
     }
-
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -119,6 +119,8 @@ public class ValidateDataMartExportAction
                 return INPUT;
             }
         }
+        
+        
         
         return SUCCESS;
     }
