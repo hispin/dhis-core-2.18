@@ -94,9 +94,8 @@ function getPeriods()
 	    clearList( reportsList );
 	}
 	var ouId = document.reportForm.ouIDTB.value;
-	var reportListFileName = document.reportForm.reportListFileNameTB.value;
 	
-	getReports(ouId, reportListFileName);
+	getReports(ouId);
 }
 
 function getReports( ouId, reportListFileName )
