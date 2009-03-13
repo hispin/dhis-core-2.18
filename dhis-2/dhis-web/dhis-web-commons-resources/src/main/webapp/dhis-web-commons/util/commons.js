@@ -398,7 +398,8 @@ function showDivEffect()
  * Removes the opacity div from the document.
 function deleteDivEffect()
  */
-function deleteDivEffect(){
+function deleteDivEffect()
+{
 	var divEffect = document.getElementById( 'divEffect' );
 	
 	document.body.removeChild(divEffect);
