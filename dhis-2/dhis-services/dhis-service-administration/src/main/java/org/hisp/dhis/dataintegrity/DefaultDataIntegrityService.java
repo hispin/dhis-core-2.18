@@ -29,9 +29,11 @@ package org.hisp.dhis.dataintegrity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -158,32 +160,32 @@ public class DefaultDataIntegrityService
         return dataElements;
     }
 
-    public Collection<DataElement> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes()
+    public Map<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes()
     {
         Collection<DataElement> dataElements = dataElementService.getAllDataElements();
         
         Collection<DataSet> dataSets = dataSetService.getAllDataSets();
         
-        Collection<DataElement> targets = new ArrayList<DataElement>();
-        
-        Set<PeriodType> periodTypes = new HashSet<PeriodType>();
-        
+        Map<DataElement, Collection<DataSet>> targets = new HashMap<DataElement, Collection<DataSet>>();
+                
         for ( DataElement element : dataElements )
         {
+            final Set<PeriodType> targetPeriodTypes = new HashSet<PeriodType>();
+            final Collection<DataSet> targetDataSets = new HashSet<DataSet>();
+            
             for ( DataSet dataSet : dataSets )
             {
                 if ( dataSet.getDataElements().contains( element ) )
                 {
-                    periodTypes.add( dataSet.getPeriodType() );
+                    targetPeriodTypes.add( dataSet.getPeriodType() );
+                    targetDataSets.add( dataSet );
                 }
             }
             
-            if ( periodTypes.size() > 1 )
+            if ( targetPeriodTypes.size() > 1 )
             {
-                targets.add( element );
-            }
-            
-            periodTypes.clear();            
+                targets.put( element, targetDataSets );
+            }          
         }
         
         return targets;

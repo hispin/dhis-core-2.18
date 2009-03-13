@@ -35,7 +35,21 @@
 #violationList( "dataElementsWithoutGroups" $dataElementsWithoutGroups )
 
 #integrityHeader( $i18n.getString( "data_elements_assigned_to_period_types_with_different_period_types" ) $dataElementsAssignedToDataSetsWithDifferentPeriodTypes.size() "dataElementsAssignedToDataSetsWithDifferentPeriodTypes" )
-#violationList( "dataElementsAssignedToDataSetsWithDifferentPeriodTypes" $dataElementsAssignedToDataSetsWithDifferentPeriodTypes )
+<div style="display:none" id="dataElementsAssignedToDataSetsWithDifferentPeriodTypes">
+    <table>
+    #foreach ( $dataElement in $dataElementsAssignedToDataSetsWithDifferentPeriodTypes.keySet() )
+        <tr>
+            <td>
+            	#set( $size = $dataElementsAssignedToDataSetsWithDifferentPeriodTypes.get( $dataElement ).size() )
+            	${dataElement.name} (
+            	#foreach ( $dataSet in $dataElementsAssignedToDataSetsWithDifferentPeriodTypes.get( $dataElement ) )
+            		${dataSet.name}#if( $velocityCount < $size ), #end
+	            #end)
+            </td>
+        </tr>
+    #end
+    </table>
+</div>
 
 #integrityHeader( $i18n.getString( "data_sets_not_assigned_to_organisation_units" ) $dataSetsNotAssignedToOrganisationUnits.size() "dataSetsNotAssignedToOrganisationUnits" )
 #violationList( "dataSetsNotAssignedToOrganisationUnits" $dataSetsNotAssignedToOrganisationUnits )

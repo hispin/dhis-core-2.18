@@ -28,6 +28,7 @@ package org.hisp.dhis.dataintegrity;
  */
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -65,7 +66,7 @@ public interface DataIntegrityService
      * Returns all data elements which are members of data sets with different
      * period types.
      */
-    Collection<DataElement> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
+    Map<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
 
     // -------------------------------------------------------------------------
     // DataSet

@@ -28,6 +28,7 @@ package org.hisp.dhis.dataadmin.action.dataintegrity;
  */
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataintegrity.DataIntegrityService;
@@ -81,9 +82,9 @@ public class GetDataIntegrityAction
         return dataSetsNotAssignedToOrganisationUnits;
     }
     
-    private Collection<DataElement> dataElementsAssignedToDataSetsWithDifferentPeriodTypes;
+    private Map<DataElement, Collection<DataSet>> dataElementsAssignedToDataSetsWithDifferentPeriodTypes;
 
-    public Collection<DataElement> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes()
+    public Map<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes()
     {
         return dataElementsAssignedToDataSetsWithDifferentPeriodTypes;
     }

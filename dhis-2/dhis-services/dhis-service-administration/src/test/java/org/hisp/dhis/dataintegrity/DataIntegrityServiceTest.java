@@ -28,6 +28,7 @@ package org.hisp.dhis.dataintegrity;
  */
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.hisp.dhis.DhisConvenienceTest;
 import org.hisp.dhis.dataelement.DataElement;
@@ -230,9 +231,11 @@ public class DataIntegrityServiceTest
 
     public void testGetDataElementsAssignedToDataSetsWithDifferentPeriodType()
     {
-        Collection<DataElement> expected = dataIntegrityService.getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
+        Map<DataElement, Collection<DataSet>> expected = dataIntegrityService.getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
         
-        assertTrue( equals( expected, elementA ) );
+        assertEquals( 1, expected.size() );
+        assertEquals( elementA, expected.keySet().iterator().next() );
+        assertTrue( equals( expected.get( elementA ), dataSetA, dataSetB ) );
     }
     
     public void testGetDataSetsNotAssignedToOrganisationUnits()

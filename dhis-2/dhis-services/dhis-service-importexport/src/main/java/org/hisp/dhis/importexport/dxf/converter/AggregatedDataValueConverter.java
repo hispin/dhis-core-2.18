@@ -33,6 +33,8 @@ import java.util.Collection;
 
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.datamart.DataMartStore;
@@ -51,6 +53,8 @@ import org.hisp.dhis.period.PeriodType;
 public class AggregatedDataValueConverter
     implements XMLConverter
 {
+    private static final Log log = LogFactory.getLog( AggregatedDataValueConverter.class );
+    
     public static final String COLLECTION_NAME = "dataValues";
     public static final String ELEMENT_NAME = "dataValue";
     
@@ -112,6 +116,8 @@ public class AggregatedDataValueConverter
                     final PeriodType periodType = dataSetService.getPeriodType( dataElement, params.getDataSets() );
                     
                     periods = periodService.getIntersectingPeriodsByPeriodType( periodType, params.getStartDate(), params.getEndDate() );
+                    
+                    log.debug( "Using period type: " + periodType.getName() + " for data element: " + dataElement.getName() );
                     
                     values = dataMartStore.getAggregatedDataValues( dataElement.getId(), 
                         getIdentifiers( Period.class, periods ), params.getOrganisationUnits() );
