@@ -70,3 +70,10 @@
 </table>
 
 </form>
+
+<span id="message"></span>
+
+<script type="text/javascript">
+    var i18n_select_a_period_type = '$encoder.jsEscape( $i18n.getString( "select_a_period_type" ), "'" )';
+    var i18n_select_a_period = '$encoder.jsEscape( $i18n.getString( "select_a_period" ), "'" )';
+</script>

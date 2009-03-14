@@ -90,8 +90,28 @@ function getDataSetsReceived( xmlObject )
 
 function updateDataSets()
 {
-	selectAllById( "lockedDataSets" );
-	selectAllById( "unlockedDataSets" );
-	
-	document.getElementById( "lockingForm" ).submit();
+    if ( validateLocking() )
+    {
+    	selectAllById( "lockedDataSets" );
+    	selectAllById( "unlockedDataSets" );
+    	
+    	document.getElementById( "lockingForm" ).submit();
+    }
+}
+
+function validateLocking()
+{
+    if ( getListValue( "periodTypeId" ) == "null" )
+    {
+        setMessage( i18n_select_a_period_type );
+        return false;
+    }
+    
+    if ( getListValue( "periodId" ) == "null" )
+    {
+        setMessage( i18n_select_a_period );
+        return false;
+    }
+    
+    return true;
 }
