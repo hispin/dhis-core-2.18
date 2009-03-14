@@ -159,8 +159,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             });
         
         indicatorStore = new Ext.data.JsonStore({
-              url: 'http://localhost:' + localhost_port + '/dhis-webservice/getIndicatorsByIndicatorGroup.service',
-//              baseParams: { format: 'json' },
+              url: 'http://localhost:' + localhost_port + '/dhis-webservice/getAllIndicators.service?format=jsonmin',
               root: 'indicators',
               fields: ['id', 'name'],
               autoLoad: false
@@ -198,11 +197,24 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
               autoLoad: false
             });
             
+        panelStore = new Ext.data.JsonStore({
+            url: 'http://localhost:' + localhost_port + '/dhis-webservice/getOrganisationUnitsAtLevel.service',
+            baseParams: { level: 2, format: 'json' },
+            root: 'organisationUnit',
+            fields: ['id', 'name'],
+            autoLoad: true
+        });
+        
+        gridStore = new Ext.data.JsonStore({
+            url: 'http://localhost:' + localhost_port + '/dhis-webservice/getOrganisationUnitsAtLevel.service',
+            root: 'organisationUnits',
+            fields: ['id', 'name'],
+            autoLoad: false
+        });
+        
         // end DHIS
     
-    
-    
-    
+
     
         this.items = [
         
@@ -311,6 +323,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             listeners: {
                 'select': {
                     fn: function() {
+                    alert(shapefiles[this.form.findField('level_cb').getValue()]);
                         this.selectedLevel = this.form.findField('level_cb').getValue();
                         this.newUrl = shapefiles[this.form.findField('level_cb').getValue()];
                         this.classify(false);
@@ -434,6 +447,61 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             scope: this
         },
         
+        { html: '<br><hr><br><b>Org. unit assignment</b><br><br>' },
+        
+        {
+            xtype: 'combo',
+            id: 'assign_level_cb',
+            fieldLabel: 'Level',
+            typeAhead: true,
+            editable: false,
+            valueField: 'level',
+            displayField: 'name',
+            mode: 'remote',
+            forceSelection: true,
+            triggerAction: 'all',
+            emptyText: 'Select level',
+            selectOnFocus: true,
+            store: levelStore,
+            listeners: {
+                'select': {
+                    fn: function() {
+                        var value = this.form.findField('assign_level_cb').getValue();
+                        this.selectedLevel = value;
+                        this.newUrl = shapefiles[value];
+                        
+                        gridStore.baseParams = { level: value, format: 'json' };
+                        gridStore.reload();
+
+                        this.classify2(true);
+                    },
+                    scope: this
+                }
+            }
+        },
+        
+        {
+            xtype: 'button',
+            text: 'Submit',
+            handler: function()
+            {
+                this.classify2(true);
+            },
+            scope: this
+        },
+        
+        { html: '<br><br>' },
+
+        {
+            xtype: 'grid',
+            id: 'grid_gp',
+            store: gridStore,
+            columns: [
+                { id: 'name', dataIndex: 'name', sortable: true, width: gridpanel_width-2 }
+            ],
+            autoHeight: true,
+            width: gridpanel_width
+        }
         
         ];
 
@@ -553,6 +621,59 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     },
     
     
+    
+    
+    
+    classify2: function(exception) {
+    
+        if (!this.ready) {
+            if (exception) {
+                Ext.MessageBox.alert('Error', 'Component init not complete');
+            }
+            return;
+        }
+        
+        if (this.newUrl) {
+            var url = this.newUrl;
+            this.newUrl = false;
+            this.setUrl(url, false);
+        }
+        
+        var options = {};
+
+        if (!this.form.findField('assign_level_cb').getValue()) {
+                if (exception) {
+                    Ext.MessageBox.alert('Error', 'You must choose a level');
+                }
+                return;
+        }
+        
+        getAssignOrganisationUnitData();
+        
+        // hidden
+        this.indicator = 'value';
+        this.indicatorText = 'Indicator';
+        options.indicator = this.indicator;
+
+//        options.method = "CLASSIFY_BY_EQUAL_INTERVALS";
+        
+        options.method = mapfish.GeoStat.Distribution[options.method];
+        options.numClasses = 1;
+//        options.colors = this.getColors();
+        
+        var colorA = new mapfish.ColorRgb();
+        colorA.setFromHex('#FFFFFF');
+        var colorB = new mapfish.ColorRgb();
+        colorB.setFromHex('#FFFFFF');
+        options.colors = [colorA, colorB];   
+        
+        this.coreComp.updateOptions(options);
+        this.coreComp.applyClassification();
+        this.classificationApplied = true;
+        
+    },
+
+
     /**
      * Method: onRender
      * Called by EXT when the component is rendered.

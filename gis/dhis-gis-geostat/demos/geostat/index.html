@@ -17,9 +17,10 @@
   <!-- debug mode -->
 
   <script type="text/javascript" src="../../mfbase/openlayers/lib/OpenLayers.js"></script>
-  <script type="text/javascript" src="./newSelectFeature.js"></script>
   <script type="text/javascript" src="../../mfbase/mapfish/MapFish.js"></script>
 
+  <script type="text/javascript" src="./newSelectFeature.js"></script>
+  
   <!-- production mode -->
   <!--
   <script type="text/javascript" src="../../mfbase/release/mapfish/MapFish.js"></script>
@@ -44,6 +45,8 @@
       map = new OpenLayers.Map($('olmap'));
       this.myMap = map;
       
+      features = null;
+      
 
       var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
                                              "http://labs.metacarta.com/wms-c/Basic.py?", 
@@ -56,28 +59,28 @@
                                            
                                            
       // define choropleth layer and its styling
-      var choroplethLayer = new OpenLayers.Layer.Vector('Choropleth', {
+      var choroplethLayer = new OpenLayers.Layer.Vector(choroplethLayerName, {
           'visibility': false,
           'styleMap': new OpenLayers.StyleMap({
               'default': new OpenLayers.Style(
                   OpenLayers.Util.applyDefaults(
-                      {'fillOpacity': 0.25, 'strokeColor': '#222222', 'strokeWidth': 1, 'opacity': 0.6},
+                      {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'opacity': 0.6},
                       OpenLayers.Feature.Vector.style['default']
                   )
               ),
               'select': new OpenLayers.Style(
-                  {'fillOpacity': 0.25, 'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+                  {'fillOpacity': 1, 'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
               )
           })
       });
 
       // define proportional symbol layer and its styling
-      var propSymbolLayer = new OpenLayers.Layer.Vector('Proportional Symbol', {
+      var propSymbolLayer = new OpenLayers.Layer.Vector(propSymbolLayerName, {
           'visibility': false,
           'styleMap': new OpenLayers.StyleMap({
               'default': new OpenLayers.Style(
                   OpenLayers.Util.applyDefaults(
-                      {'fillOpacity': 0.6, 'fillColor': '#bbbbbb', 'strokeWidth': 1, 'strokeColor': '#222222' },
+                      {'fillOpacity': 0.6, 'fillColor': 'Khaki', 'strokeWidth': 1, 'strokeColor': '#222222' },
                       OpenLayers.Feature.Vector.style['default']
                   )
               ),
@@ -89,7 +92,7 @@
       
       
 
-      map.addLayers([jpl_wms, vmap0, choroplethLayer, propSymbolLayer]);
+      map.addLayers([vmap0, jpl_wms, choroplethLayer, propSymbolLayer]);
 
 
 
@@ -228,9 +231,9 @@ var propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
                   contentEl: 'south',
                   id: 'south-panel',
                   split: true,
-                  height: 150,
+                  height: 100,
                   minSize: 100,
-                  maxSize: 200,
+                  maxSize: 100,
                   collapsible: true,
                   title: 'Information',
                   margins: '0 0 0 0',
@@ -355,7 +358,7 @@ var propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
               html += '<br>';
               html += style + '<b>Value: </b>' + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
           }
-          
+
           popup_feature.html = html;
           popup_feature.show();
           
@@ -365,15 +368,56 @@ var propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
       function onHoverUnselectChoropleth(feature)
       {
           var infoPanel = Ext.getCmp('south-panel');
-          infoPanel.body.dom.innerHTML = '';
+//          infoPanel.body.dom.innerHTML = '';
           
           popup_feature.hide();
       }
       
       function onClickSelectChoropleth(feature)
       {
+          var selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
+          organisationUnitId = selected.data["id"],
+          geoCode = feature.attributes["NAME"];
+          
+          if (!selected) {
+            alert("ikke valgt");
+          }
+          else {
+            Ext.Ajax.request
+            ( 
+              {
+                  url: 'http://localhost:' + localhost_port + '/dhis-webservice/updateOrganisationUnitGeoCode.service',
+                  method: 'GET',
+                  params: { organisationUnitId: organisationUnitId, geoCode: geoCode },
+                  
+                  success: function( responseObject )
+                  {
+                        alert("OK");
+                  },
+                  failure: function()
+                  {
+                      alert( 'Status', 'Error while retrieving data' );
+                  } 
+              }
+            );
+            }
+                
+
+    
+          
+          
+          
+          
+          
           popup_feature.hide();
+          
+/*
+          var cll = feature.geometry.getBounds().getCenterLonLat();
+          map.setCenter(new OpenLayers.LonLat(cll.lon, cll.lat), 9);
           choropleth.setUrl(shapefiles[choropleth.selectedLevel+1], true);
+*/
+
+          
       }
       
       function onClickUnselectChoropleth(feature)
@@ -445,7 +489,7 @@ var propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
       }
 
 
-
+      // GET DATA
 
       function getChoroplethData()
       {
@@ -508,35 +552,51 @@ var propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
         );
         
       }
+      
+      function getAssignOrganisationUnitData()
+      {
+          var layers = this.myMap.getLayersByName(choroplethLayerName);
+          features = layers[0]["features"];
+          var featuresLength = features.length;
+       
+          for ( var j=0; j < featuresLength; j++ ) 
+          {
+              features[j].attributes["value"] = 0;
+          }
+      }
+
+
+
+
+    // DATA RECEIVED
 
     function dataReceivedChoropleth( responseText )
     {
-      var layers = this.myMap.getLayersByName('Choropleth');
+      var layers = this.myMap.getLayersByName(choroplethLayerName);
       var level = choropleth.selectedLevel;
-      var features = layers[0].features;
+      var features = layers[0]["features"];
       var featuresLength = features.length;
       var data = Ext.util.JSON.decode(responseText);
       var dataLength = data.mapvalues.length;
       
       for ( var j=0; j < featuresLength; j++ ) 
       {
-          features[j].attributes["value"] = 0
-                    
+          features[j].attributes["value"] = 0;
+
           for ( var i=0; i < dataLength; i++ )
-          {            
+          {
               if (features[j].attributes[shpcols[level][0].geocode] == data.mapvalues[i].orgUnit)
               {
                   features[j].attributes["value"] = data.mapvalues[i].value;
               }
           }
        }
-       
     }
     
     function dataReceivedPoint( responseText )
     {
-      var layers = this.myMap.getLayersByName('Proportional Symbol');
-      var features = layers[0].features;
+      var layers = this.myMap.getLayersByName(propSymbolLayerName);
+      var features = layers[0]["features"];
       var featuresLength = features.length;
       var data = Ext.util.JSON.decode(responseText);
       var dataLength = data.mapvalues.length;

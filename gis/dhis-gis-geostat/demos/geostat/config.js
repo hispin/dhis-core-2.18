@@ -22,3 +22,7 @@ propSymbolLayerName = "Proportional Symbol";
 
 // TOMCAT PORT
 localhost_port = 8180;
+
+
+// LAYOUT
+gridpanel_width = 180;
