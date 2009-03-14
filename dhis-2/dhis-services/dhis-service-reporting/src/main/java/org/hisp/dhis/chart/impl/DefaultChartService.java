@@ -62,6 +62,7 @@ import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
@@ -73,6 +74,7 @@ public class DefaultChartService
     implements ChartService
 {
     private static final Font titleFont = new Font( "Tahoma", Font.BOLD, 14 );
+    private static final Font subTitleFont = new Font( "Tahoma", Font.PLAIN, 12 );
     private static final String TREND_PREFIX = "Trend - ";
     private static final String TITLE_SEPARATOR = " - ";
     private static final String DEFAULT_TITLE_PIVOT_CHART = "Pivot Chart";
@@ -115,7 +117,7 @@ public class DefaultChartService
         
         chart.setFormat( format );
         
-        return getJFreeChart( chart );
+        return getJFreeChart( chart, true );
     }
 
     public JFreeChart getJFreeChart( List<Indicator> indicators, List<Period> periods, 
@@ -136,7 +138,7 @@ public class DefaultChartService
         chart.setOrganisationUnits( organisationUnits );
         chart.setFormat( format );
         
-        return getJFreeChart( chart );
+        return getJFreeChart( chart, false );
     }
     
     public JFreeChart getJFreeChart( String title, PlotOrientation orientation, 
@@ -205,7 +207,7 @@ public class DefaultChartService
     /**
      * Returns a JFreeChart of type defined in the chart argument.
      */
-    private JFreeChart getJFreeChart( Chart chart )
+    private JFreeChart getJFreeChart( Chart chart, boolean subTitle )
     {
         final BarRenderer barRenderer = getBarRenderer();
         final LineAndShapeRenderer lineRenderer = getLineRenderer();
@@ -234,6 +236,11 @@ public class DefaultChartService
         }
         
         JFreeChart jFreeChart = new JFreeChart( chart.getTitle(), titleFont, plot, !chart.isHideLegend() );
+        
+        if ( subTitle )
+        {
+            jFreeChart.addSubtitle( getSubTitle( chart, chart.getFormat() ) );
+        }
         
         // ---------------------------------------------------------------------
         // Plot orientation
@@ -377,6 +384,27 @@ public class DefaultChartService
         }
         
         return title;
+    }
+    
+    /**
+     * Returns a subtitle based on the chart dimension.
+     */
+    private TextTitle getSubTitle( Chart chart, I18nFormat format )
+    {
+        TextTitle subTitle = new TextTitle();
+        
+        subTitle.setFont( subTitleFont );
+        
+        if ( chart.isDimension( DIMENSION_PERIOD ) && chart.getOrganisationUnits().size() > 0 )
+        {
+            subTitle.setText( chart.getOrganisationUnits().get( 0 ).getName() );
+        }
+        else if ( chart.isDimension( DIMENSION_ORGANISATIONUNIT ) && chart.getPeriods().size() > 0 )
+        {
+            subTitle.setText( format.formatPeriod( chart.getPeriods().get( 0 ) ) );
+        }
+        
+        return subTitle;
     }
     
     // -------------------------------------------------------------------------

@@ -30,22 +30,6 @@
       <artifactId>dhis-web-commons-resources</artifactId>
       <type>war</type>
     </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-support-hibernate</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-support-system</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-user-hibernate</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-options</artifactId>
-    </dependency>
     
     <!-- Web maintenance modules -->
     
@@ -149,7 +133,7 @@
     
     <!-- India modules -->
     
-    <!-- 
+    <!--    
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dashboard</artifactId>
