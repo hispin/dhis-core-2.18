@@ -11,7 +11,7 @@ type="button" value="$i18n.getString( 'move_to_bottom' )" style="width:130px" on
 </p>
 
 <p>
-<select multiple id="indicators" name="indicators" size="25" style="width:680px">
+<select id="indicators" name="indicators" size="25" style="width:680px">
 #foreach ( $indicator in $indicators )
 	<option value="$indicator.id">$indicator.name</option>
 #end
