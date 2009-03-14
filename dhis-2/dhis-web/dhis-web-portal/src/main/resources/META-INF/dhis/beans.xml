@@ -8,13 +8,4 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.wp.action.NoAction"
     scope="prototype"/>
   
-  <bean id="org.hisp.dhis.wp.action.GetStartModuleAction"
-    class="org.hisp.dhis.wp.action.GetStartModuleAction"
-    scope="prototype">
-    <property name="moduleManager"
-      ref="org.hisp.dhis.webportal.module.ModuleManager"/>
-    <property name="systemSettingManager"
-      ref="org.hisp.dhis.options.SystemSettingManager"/>
-  </bean>
-  
 </beans>

@@ -106,7 +106,7 @@ public class SetSystemSettingsAction
             flag = null;
         }
         
-        if ( startModule != null && startModule.trim().length() == 0 )
+        if ( startModule != null && startModule.equals( "NO_START_PAGE" ) )
         {
             startModule = null;
         }
