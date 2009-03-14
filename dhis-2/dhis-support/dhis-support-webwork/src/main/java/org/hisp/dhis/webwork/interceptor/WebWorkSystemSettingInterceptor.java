@@ -38,6 +38,7 @@ import com.opensymphony.xwork.interceptor.AroundInterceptor;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FORUM_INTEGRATION;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
 
 /**
  * @author Lars Helge Overland
@@ -69,10 +70,12 @@ public class WebWorkSystemSettingInterceptor
         String applicationTitle = (String) systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE );
         String flag = (String) systemSettingManager.getSystemSetting( KEY_FLAG );
         Boolean forumIntegration = (Boolean) systemSettingManager.getSystemSetting( KEY_FORUM_INTEGRATION );
+        String startModule = (String) systemSettingManager.getSystemSetting( KEY_START_MODULE );
         
         map.put( KEY_APPLICATION_TITLE, applicationTitle );
         map.put( KEY_FLAG, flag );
         map.put( KEY_FORUM_INTEGRATION, forumIntegration );
+        map.put( KEY_START_MODULE, startModule );
         
         invocation.getStack().push( map );
     }
