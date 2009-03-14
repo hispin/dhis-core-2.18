@@ -233,6 +233,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
   
+  <!-- Deletion AOP definitions -->
+  
+  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice" ref="deletionInterceptor"/>
+    <property name="patterns">
+      <list>
+        <value>.*\.DataMartExportService\.delete.*</value>
+      </list>
+    </property>
+  </bean>
+  
   <!-- Startup -->
   
   <bean id="org.hisp.dhis.datamart.startup.AggregationTableCreator"
