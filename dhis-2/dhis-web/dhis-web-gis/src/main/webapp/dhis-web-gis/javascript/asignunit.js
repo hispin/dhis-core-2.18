@@ -101,7 +101,7 @@ function assignUnitSuccess(message){
 }
 
 function deleteFeature(){
-	if(confirm("Do you want delete ?")){		
+	if(confirm(i18n_confirm_delete)){		
 		var request = new Request();
 		request.setResponseTypeXML( 'message' );
 		request.setCallbackSuccess( deleteFeatureSuccess);

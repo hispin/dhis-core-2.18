@@ -3,7 +3,7 @@
 		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:validateAddFeature();">[$i18n.getString( 'assignunit_map' )]</a>
 		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:showAllFeature();">[$i18n.getString( 'show_all_assigned' )]</a>
 		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:deleteFeature();">[$i18n.getString( 'delete_selected' )]</a>
-		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:deleteAllFeature();">[$i18n.getString( 'show_all_assigned' )]</a>
+		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:deleteAllFeature();">[$i18n.getString( 'delete_all' )]</a>
 		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:showHideLabel();">[Label]</a>
 		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:zoomIn();" title="Zoom In">[ + ]</a>
 		<a style="text-decoration:none" style="CURSOR: hand" href="javascript:zoomOut();" title="Zoom Out">[ - ]</a>
@@ -45,6 +45,8 @@
 	$(document).ready(function(){
 		$("#listChildren").draggable(); 		
 	});
+	
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete" ) , "'" )';
 </script>
 </body>
 
