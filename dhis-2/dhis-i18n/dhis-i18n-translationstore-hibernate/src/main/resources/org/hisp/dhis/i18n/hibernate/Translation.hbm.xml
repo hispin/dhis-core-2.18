@@ -5,6 +5,8 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.i18n.Translation" table="translation">
 
+    <cache usage="read-write"/>
+    
     <composite-id>
       <key-property name="className" column="objectclass" length="127"/>
       <key-property name="id" column="objectid"/>

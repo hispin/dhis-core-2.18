@@ -100,6 +100,8 @@ public class HibernateTranslationStore
         criteria.add( Restrictions.eq( "id", id ) );
         criteria.add( Restrictions.eq( "locale", locale.toString() ) );
 
+        criteria.setCacheable( true );
+        
         return criteria.list();
     }
 
