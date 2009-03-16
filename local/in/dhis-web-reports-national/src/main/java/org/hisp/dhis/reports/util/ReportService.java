@@ -155,11 +155,11 @@ public class ReportService
             dataElementid = LLDataSets.LLMD_MOTHER_NAME;
         */
 
-        if( lltype.equalsIgnoreCase( "lllivebirth" ) )
+        if( lltype.equalsIgnoreCase( "lllivebirth-l4" ) || lltype.equalsIgnoreCase( "lllivebirth-l5" ) || lltype.equalsIgnoreCase( "lllivebirth-l6" ))
             dataElementid = 1020;
-        else if( lltype.equalsIgnoreCase( "lldeath" ) )
+        else if( lltype.equalsIgnoreCase( "lldeath-l4" ) || lltype.equalsIgnoreCase( "lldeath-l5" ) || lltype.equalsIgnoreCase( "lldeath-l6" ) )
             dataElementid = 1027;
-        else if( lltype.equalsIgnoreCase( "llmaternaldeath" ) )
+        else if( lltype.equalsIgnoreCase( "llmaternaldeath-l4" ) || lltype.equalsIgnoreCase( "llmaternaldeath-l5" ) || lltype.equalsIgnoreCase( "llmaternaldeath-l6" ))
             dataElementid = 1032;
 
         try

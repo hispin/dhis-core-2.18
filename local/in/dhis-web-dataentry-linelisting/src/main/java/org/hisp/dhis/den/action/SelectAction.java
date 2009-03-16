@@ -361,6 +361,7 @@ public class SelectAction
         if ( selectedPeriodIndex == null )
         {
             selectedPeriodIndex = selectedStateManager.getSelectedPeriodIndex();
+            System.out.println("Period is null");
         }
 
         if ( selectedPeriodIndex != null && selectedPeriodIndex >= 0 && selectedPeriodIndex < periods.size() )

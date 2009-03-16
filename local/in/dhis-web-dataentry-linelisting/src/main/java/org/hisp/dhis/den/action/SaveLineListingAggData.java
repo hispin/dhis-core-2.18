@@ -477,6 +477,30 @@ public class SaveLineListingAggData implements Action
                 String mainTagValue15 = ((Node) textMainTagList15.item( 0 )).getNodeValue().trim();
                 lineListAggDes.put( "cdnk", mainTagValue15 );
 
+                NodeList mainTagList16 = doc.getElementsByTagName( "mdo55y" );
+                Element mainTagElement16 = (Element) mainTagList16.item( 0 );
+                NodeList textMainTagList16 = mainTagElement16.getChildNodes();
+                String mainTagValue16 = ((Node) textMainTagList16.item( 0 )).getNodeValue().trim();
+                lineListAggDes.put( "mdo55y", mainTagValue16 );
+                
+                NodeList mainTagList17 = doc.getElementsByTagName( "fdo55y" );
+                Element mainTagElement17 = (Element) mainTagList17.item( 0 );
+                NodeList textMainTagList17 = mainTagElement17.getChildNodes();
+                String mainTagValue17 = ((Node) textMainTagList17.item( 0 )).getNodeValue().trim();
+                lineListAggDes.put( "fdo55y", mainTagValue17 );
+                
+                NodeList mainTagList18 = doc.getElementsByTagName( "mdo15y" );
+                Element mainTagElement18 = (Element) mainTagList18.item( 0 );
+                NodeList textMainTagList18 = mainTagElement18.getChildNodes();
+                String mainTagValue18 = ((Node) textMainTagList18.item( 0 )).getNodeValue().trim();
+                lineListAggDes.put( "mdo15y", mainTagValue18 );
+                
+                NodeList mainTagList19 = doc.getElementsByTagName( "fdo15y" );
+                Element mainTagElement19 = (Element) mainTagList19.item( 0 );
+                NodeList textMainTagList19 = mainTagElement19.getChildNodes();
+                String mainTagValue19 = ((Node) textMainTagList19.item( 0 )).getNodeValue().trim();
+                lineListAggDes.put( "fdo15y", mainTagValue19 );
+                
                 lineListDeathSex = mainTagElement1.getAttribute( "sex" );
                 lineListDeathAge = mainTagElement1.getAttribute( "age" );
                 lineListDeathCause = mainTagElement1.getAttribute( "causeofdeath" );
@@ -866,6 +890,10 @@ public class SaveLineListingAggData implements Action
         int totalDeathOver5Y = 0;
         int totalMaleDeathOver5Y = 0;
         int totalFemaleDeathOver5Y = 0;
+        int totalMaleDeathOver15Y = 0;
+        int totalFemaleDeathOver15Y = 0;
+        int totalMaleDeathOver55Y = 0;
+        int totalFemaleDeathOver55Y = 0;
         int totalDeathBelow5Y = 0;
         int totalMaleDeathBelow5Y = 0;
         int totalFemaleDeathBelow5Y = 0;
@@ -889,7 +917,7 @@ public class SaveLineListingAggData implements Action
             if(dv1 != null && dv2 !=null && dv3 != null)
             {
                 String ageValue = dv1.getValue();
-                String age =  ageValue.substring( 0,ageValue.length()-1 );
+                String age =  ageValue.substring( 0,ageValue.length()-2 );
                 String ageType = ageValue.substring(ageValue.length()-1);
                 try
                 { 
@@ -901,7 +929,7 @@ public class SaveLineListingAggData implements Action
                     
                     if( ageType.equalsIgnoreCase( "y" ) )
                     {
-                        if(Integer.parseInt( age ) > 5)
+                        if((Integer.parseInt( age ) > 5) && (Integer.parseInt( age ) < 15))
                         {
                             if(dv2.getValue().equalsIgnoreCase( "m" ))
                             {
@@ -913,6 +941,31 @@ public class SaveLineListingAggData implements Action
                             }
                             totalDeathOver5Y++;
                         }
+                        else if((Integer.parseInt( age ) > 15) && (Integer.parseInt( age ) < 55))
+                        {
+                            if(dv2.getValue().equalsIgnoreCase( "m" ))
+                            {
+                                totalMaleDeathOver15Y++;
+                            }
+                            else if(dv2.getValue().equalsIgnoreCase( "f" ))
+                            {
+                                totalFemaleDeathOver15Y++;
+                            }
+                            totalDeathOver5Y++;
+                        }
+                        else if(Integer.parseInt( age ) > 55)
+                        {
+                            if(dv2.getValue().equalsIgnoreCase( "m" ))
+                            {
+                                totalMaleDeathOver55Y++;
+                            }
+                            else if(dv2.getValue().equalsIgnoreCase( "f" ))
+                            {
+                                totalFemaleDeathOver55Y++;
+                            }
+                            totalDeathOver5Y++;
+                        }
+
                         else
                         {
                             if(dv2.getValue().equalsIgnoreCase( "m" ))
@@ -1004,6 +1057,22 @@ public class SaveLineListingAggData implements Action
         
         String deString = lineListAggDes.get( "do5y" );
         String value = ""+totalDeathOver5Y;
+        saveData(organisationUnit, period, deString, value);
+
+        deString = lineListAggDes.get( "mdo55y" );
+        value = ""+totalMaleDeathOver55Y;
+        saveData(organisationUnit, period, deString, value);
+
+        deString = lineListAggDes.get( "fdo55y" );
+        value = ""+totalFemaleDeathOver55Y;
+        saveData(organisationUnit, period, deString, value);
+
+        deString = lineListAggDes.get( "mdo15y" );
+        value = ""+totalMaleDeathOver15Y;
+        saveData(organisationUnit, period, deString, value);
+
+        deString = lineListAggDes.get( "fdo15y" );
+        value = ""+totalFemaleDeathOver15Y;
         saveData(organisationUnit, period, deString, value);
 
         deString = lineListAggDes.get( "mdo5y" );
