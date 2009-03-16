@@ -1,4 +1,4 @@
-#set($recordNo = $maxRecordNo + 1)
+﻿#set($recordNo = $maxRecordNo + 1)
 
 
 <script>
@@ -60,13 +60,13 @@
 
 <table id="tblGrid" width="100%">
 	<tr>
-		<th width="5%">અનુ.નં</th>
-		<th width="20%">નવ જાત બાળકનું નામ અને  માતા/પિતાનું નામ</th>
-		<th width="20%">ગામ</th>
-		<th width="10%">જાતિ</th>
-		<th width="20%">અંદાજિત જન્મ તારીખ </th>
-		<th width="12%">વજન (કિ.ગ્રામ) ન જણતા હોય તો  NK</th>
-		<th width="13%">જન્મના પ્રથમ કલાકમાં આપેલ માતાનું ધાવણ (Y/N/NK)</th>		
+		<th width="5%">Sl. No.</th>
+		<th width="20%">Name of Child Born for Mother/Father Name</th>
+		<th width="20%">Village</th>
+		<th width="10%">Sex</th>
+		<th width="20%">Approx Date of birth</th>
+		<th width="12%">Weight(in gms) or NK</th>
+		<th width="13%">Breast feeding in first hour (Y/N/NK)</th>		
 	<tr>
 
 #set($calInfo = "")

@@ -1,4 +1,4 @@
-#set($recordNo = $maxRecordNo + 1)
+﻿#set($recordNo = $maxRecordNo + 1)
 
 <script>
 	var nextRecordNo = $recordNo;
@@ -51,12 +51,12 @@
 
 <table id="tblGrid" width="100%">
 	<tr>
-		<th width="5%">અનુ.નં</th>
-		<th width="25%">બાળકનું  નામ  (૫ વર્ષથી નીચેના, માતા/પિતા )</th>
-		<th width="25%">ગામ</th>
-		<th width="10%">જાતિ</th>
-		<th width="15%">ઉંમર  </th>
-		<th width="20%">મરણના સંભવિત કારણો </th>		
+		<th width="5%">Sl. No.</th>
+		<th width="25%">Name of Child (If under 5 Mother/Father Name)</th>
+		<th width="25%">Village</th>
+		<th width="10%">Sex</th>
+		<th width="15%">Age Category</th>
+		<th width="20%">Probable Cause of death</th>		
 	<tr>
 
 #set($calInfo = "")

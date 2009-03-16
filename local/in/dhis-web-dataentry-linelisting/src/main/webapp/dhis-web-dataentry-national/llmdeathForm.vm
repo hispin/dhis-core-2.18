@@ -1,4 +1,4 @@
-#set($recordNo = $maxRecordNo + 1)
+﻿#set($recordNo = $maxRecordNo + 1)
 
 <script>
 	var nextRecordNo = $recordNo;
@@ -60,15 +60,15 @@
 
 <table id="tblGrid" width="100%">
 	<tr>
-		<th width="5%">અનુ.નં</th>
-		<th width="16%">માતાનું  નામ </th>
-		<th width="15%">ગામ</th>
-		<th width="10%">મરણ વખતની ઉંમર </th>
-		<th width="11%">માતા મરણ </th>
-		<th width="11%">પ્રસુતિ સમયે </th>		
-		<th width="11%">પ્રસુતિ દરમ્યાન </th>
-		<th width="12%">મરણના કારણો </th>
-		<th width="9%">મરણની તપાસ કરેલ છે?</th>
+		<th width="5%">Sl. No.</th>
+		<th width="16%">Name of Mother</th>
+		<th width="15%">Village</th>
+		<th width="10%">Age at Death</th>
+		<th width="11%">Death During</th>
+		<th width="11%">Delivery At</th>		
+		<th width="11%">Delivery By</th>
+		<th width="12%">Cause of Death</th>
+		<th width="9%">Is Audited?</th>
 	<tr>
 
 #set( $mapKeys = $recordNos )
