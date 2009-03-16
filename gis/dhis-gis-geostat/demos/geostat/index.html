@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-  <title>Geostat demo</title>
+  <title>DHIS2 Geostat</title>
 
   <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/ext-all.css"/>
 <!--  <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/xtheme-gray.css" />  -->
@@ -231,7 +231,7 @@ var propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
                   contentEl: 'south',
                   id: 'south-panel',
                   split: true,
-                  height: 100,
+                  height: south_height,
                   minSize: 100,
                   maxSize: 100,
                   collapsible: true,
@@ -274,7 +274,7 @@ var propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
                   title: '',
                   split: true,
                   collapsible: true,
-                  width: 250,
+                  width: west_width,
                   minSize: 175,
                   maxSize: 500,
                   margins: '0 0 0 5',
@@ -338,25 +338,27 @@ var propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
           
           style = '<p style="margin-top: 5px; padding-left:5px;">';
           
+          space = '&nbsp;&nbsp;';
+          
           if (choropleth.selectedLevel == 1) {
-              var html = style + '<b>' + shpcols[choropleth.selectedLevel][0].type + ': </b>' + feature.attributes[shpcols[choropleth.selectedLevel][0].name] + '</p>';
+              var html = style + '<b>' + shpcols[choropleth.selectedLevel][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].name] + '</p>';
               html += '<br>';
-              html += style + '<b>Value: </b>' + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
+              html += style + '<b>Value:</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
           }
           
           if (choropleth.selectedLevel == 2) {
-              var html = style + '<b>' + shpcols[choropleth.selectedLevel-1][0].type + ': </b>' + feature.attributes[shpcols[choropleth.selectedLevel][0].parent1] + '</p>';
-              html += style + '<b>' + shpcols[choropleth.selectedLevel][0].type + ': </b>' + feature.attributes[shpcols[choropleth.selectedLevel][0].name] + '</p>';
+              var html = style + '<b>' + shpcols[choropleth.selectedLevel][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].name] + '</p>';
+              html += style + '<b>' + shpcols[choropleth.selectedLevel-1][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].parent1] + '</p>';
               html += '<br>';
-              html += style + '<b>Value: </b>' + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
+              html += style + '<b>Value:</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
           }
           
           if (choropleth.selectedLevel == 3) {
-              var html = style + '<b>' + shpcols[choropleth.selectedLevel-2][0].type + ': </b>' + feature.attributes[shpcols[choropleth.selectedLevel][0].parent2] + '</p>';
-              html += style + '<b>' + shpcols[choropleth.selectedLevel-1][0].type + ': </b>' + feature.attributes[shpcols[choropleth.selectedLevel][0].parent1] + '</p>';
-              html += style + '<b>' + shpcols[choropleth.selectedLevel][0].type + ': </b>' + feature.attributes[shpcols[choropleth.selectedLevel][0].name] + '</p>';
+              var html = style + '<b>' + shpcols[choropleth.selectedLevel][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].name] + '</p>';
+              html += style + '<b>' + shpcols[choropleth.selectedLevel-1][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].parent1] + '</p>';
+              html += style + '<b>' + shpcols[choropleth.selectedLevel-2][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].parent2] + '</p>';
               html += '<br>';
-              html += style + '<b>Value: </b>' + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
+              html += style + '<b>Value:</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
           }
 
           popup_feature.html = html;
@@ -496,6 +498,8 @@ var propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
         var indicatorId = Ext.getCmp('indicator_cb').getValue();
         var periodId = Ext.getCmp('period_cb').getValue();
         var level = Ext.getCmp('level_cb').getValue();
+
+alert(indicatorId + "\n" + periodId + "\n" + level);        
         
         if (choropleth.isDrillDown) {
             level = choropleth.selectedLevel + 1;
@@ -585,7 +589,7 @@ var propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
 
           for ( var i=0; i < dataLength; i++ )
           {
-              if (features[j].attributes[shpcols[level][0].geocode] == data.mapvalues[i].orgUnit)
+              if (features[j].attributes[shpcols[level][0].geocode] == data.mapvalues[i].geoCode)
               {
                   features[j].attributes["value"] = data.mapvalues[i].value;
               }

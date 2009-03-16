@@ -159,7 +159,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             });
         
         indicatorStore = new Ext.data.JsonStore({
-              url: 'http://localhost:' + localhost_port + '/dhis-webservice/getAllIndicators.service?format=jsonmin',
+              url: 'http://localhost:' + localhost_port + '/dhis-webservice/getIndicatorsByIndicatorGroup.service',
               root: 'indicators',
               fields: ['id', 'name'],
               autoLoad: false
@@ -233,6 +233,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             triggerAction: 'all',
             emptyText: 'Select group',
             selectOnFocus: true,
+            width: combo_width,
             store: indicatorGroupStore,
             listeners: {
                 'select': {
@@ -261,6 +262,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             triggerAction: 'all',
             emptyText: 'Select indicator',
             selectOnFocus: true,
+            width: combo_width,
             store: indicatorStore
         },
         {
@@ -276,6 +278,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             triggerAction: 'all',
             emptyText: 'Select period type',
             selectOnFocus: true,
+            width: combo_width,
             store: periodTypeStore,
             listeners: {
                 'select': {
@@ -303,6 +306,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             triggerAction: 'all',
             emptyText: 'Select period',
             selectOnFocus: true,
+            width: combo_width,
             store: periodStore
         },
         
@@ -319,13 +323,14 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             triggerAction: 'all',
             emptyText: 'Select level',
             selectOnFocus: true,
+            width: combo_width,
             store: levelStore,
             listeners: {
                 'select': {
                     fn: function() {
-                    alert(shapefiles[this.form.findField('level_cb').getValue()]);
-                        this.selectedLevel = this.form.findField('level_cb').getValue();
-                        this.newUrl = shapefiles[this.form.findField('level_cb').getValue()];
+                        var level = this.form.findField('level_cb').getValue();
+                        this.selectedLevel = level;
+                        this.newUrl = shapefiles[level];
                         this.classify(false);
                     },
                     scope: this
@@ -366,6 +371,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             mode: 'local',
             value: 5,
             triggerAction: 'all',
+            width: combo_width,
             store: new Ext.data.SimpleStore({
                 fields: ['value'],
                 data: [[0], [1], [2], [3], [4], [5], [6], [7], [8], [9]]
@@ -386,6 +392,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             triggerAction: 'all',
             emptyText: 'Select legend',
             selectOnFocus: true,
+            width: combo_width,
             store: legendStore,
             listeners: {
                 'select': {
@@ -428,6 +435,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             id: 'colorA_cf',
             width: 100,
             allowBlank: false,
+            width: combo_width,
             value: "#FFFF00"
         },{
             xtype: 'colorfield',
@@ -436,6 +444,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             id: 'colorB_cf',
             width: 100,
             allowBlank: false,
+            width: combo_width,
             value: "#FF0000"
         },{
             xtype: 'button',
@@ -462,6 +471,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             triggerAction: 'all',
             emptyText: 'Select level',
             selectOnFocus: true,
+            width: combo_width,
             store: levelStore,
             listeners: {
                 'select': {
@@ -500,6 +510,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 { id: 'name', dataIndex: 'name', sortable: true, width: gridpanel_width-2 }
             ],
             autoHeight: true,
+            autoScroll: true,
             width: gridpanel_width
         }
         
