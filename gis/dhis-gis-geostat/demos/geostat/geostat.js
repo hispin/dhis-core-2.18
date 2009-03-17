@@ -19,7 +19,7 @@ Ext.onReady(function()
                                      
     var vmap0 = new OpenLayers.Layer.WMS("OpenLayers WMS",
                                          "../../../geoserver/wms?", 
-                                         {layers: 'who:sl_init'});
+                                         {layers: init_map}); // config.js
                                    
     // define choropleth layer and its styling
     var choroplethLayer = new OpenLayers.Layer.Vector(choroplethLayerName, {
@@ -73,7 +73,7 @@ Ext.onReady(function()
     selectFeatureChoropleth.activate();
     selectFeaturePoint.activate();
 
-    map.setCenter(new OpenLayers.LonLat(-11.8, 8.5), 8);
+    map.setCenter(new OpenLayers.LonLat(init_longitude, init_latitude), init_zoom); // config.js
 
 
     // create choropleth widget
@@ -149,7 +149,7 @@ Ext.onReady(function()
                 // raw
                 region: 'north',
                 el: 'north',
-                height: 32
+                height: north_height
             }),
             
             {
@@ -158,8 +158,8 @@ Ext.onReady(function()
                 id: 'south-panel',
                 split: true,
                 height: south_height,
-                minSize: 100,
-                maxSize: 100,
+                minSize: 50,
+                maxSize: 200,
                 collapsible: true,
                 title: 'Information',
                 margins: '0 0 0 0',
@@ -264,7 +264,7 @@ function onHoverSelectChoropleth(feature)
     var y = south_panel.y - height - padding_y;
 
     popup_feature = new Ext.Window({
-    title: 'Feature',
+    title: 'Area',
     width: 190,
     height: height,
     layout: 'fit',
@@ -318,12 +318,14 @@ function onClickSelectChoropleth(feature)
 {
     var selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
     organisationUnitId = selected.data["id"],
-    geoCode = feature.attributes["NAME"];
+    geoCode = feature.attributes[ shpcols[choropleth.selectedLevel][0].name ];
 
-    if (!selected) {
+    if (!selected)
+    {
         alert("ikke valgt");
     }
-    else {
+    else
+    {
         Ext.Ajax.request( 
         {
             url: 'http://localhost:' + localhost_port + '/dhis-webservice/updateOrganisationUnitGeoCode.service',
@@ -340,6 +342,8 @@ function onClickSelectChoropleth(feature)
             } 
         });
     }
+    
+    choropleth.gridStore.reload();
 
     popup_feature.hide();
 
@@ -426,6 +430,8 @@ function getChoroplethData()
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
     var periodId = Ext.getCmp('period_cb').getValue();
     var level = Ext.getCmp('level_cb').getValue();
+    
+alert(    indicatorId + "\n" + periodId + "\n" + level);
 
     var url = 'http://localhost:' + localhost_port + '/dhis-webservice/getMapValues.service';
     format = 'json';
@@ -500,15 +506,17 @@ function dataReceivedChoropleth( responseText )
     var featuresLength = features.length;
     var data = Ext.util.JSON.decode(responseText);
     var dataLength = data.mapvalues.length;
+    
+alert(featuresLength + "\n" + dataLength);    
 
-    for ( var j=0; j < featuresLength; j++ ) 
+    for (var j=0; j < featuresLength; j++) 
     {
         features[j].attributes["value"] = 0;
-
-        for ( var i=0; i < dataLength; i++ )
+        
+        for (var i=0; i < dataLength; i++)
         {
             if (features[j].attributes[shpcols[level][0].geocode] == data.mapvalues[i].geoCode)
-            {
+            {   
                 features[j].attributes["value"] = data.mapvalues[i].value;
             }
         }
