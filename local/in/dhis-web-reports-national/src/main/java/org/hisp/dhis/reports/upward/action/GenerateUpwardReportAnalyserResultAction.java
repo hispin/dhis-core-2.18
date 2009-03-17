@@ -476,6 +476,8 @@ public class GenerateUpwardReportAnalyserResultAction
         while ( it.hasNext() )
         {
 
+        	int quarterPeriod = 0;
+        	
             OrganisationUnit currentOrgUnit = (OrganisationUnit) it.next();
 
             Iterator it1 = deCodesList.iterator();
@@ -582,7 +584,7 @@ public class GenerateUpwardReportAnalyserResultAction
                 else if ( deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" ) )
                 {
                     String startMonth = "";
-
+                    
                     startMonth = monthFormat.format( sDate );
 
                     if ( startMonth.equalsIgnoreCase( "April" ) )
@@ -602,13 +604,29 @@ public class GenerateUpwardReportAnalyserResultAction
                     else
                     {
                         tempStr = "Quarter IV";
+
+                        quarterPeriod = 1;
+                        
+                        
                     }
                 }
 
                 else if ( deCodeString.equalsIgnoreCase( "PERIOD-YEAR" ) )
                 {
-                    tempStr = yearFormat.format( sDate );
+                	if (quarterPeriod != 0)
+                	{
 
+                		Calendar tempQuarterYear = Calendar.getInstance();
+                        
+                        tempQuarterYear.setTime(sDate);
+                        
+                        tempQuarterYear.roll( Calendar.YEAR, -1 );
+                        
+                        sDate = tempQuarterYear.getTime();
+
+                	}              		
+                		
+                    tempStr = yearFormat.format( sDate );
                 }
                 else if ( deCodeString.equalsIgnoreCase( "SLNO" ) )
                 {
@@ -1502,7 +1520,7 @@ public class GenerateUpwardReportAnalyserResultAction
     {
         try
         {
-            System.out.println( "expression : "+formula + " ***** "+ String.valueOf( startDate ) + " **** "+ String.valueOf( endDate ));
+            //System.out.println( "expression : "+formula + " ***** "+ String.valueOf( startDate ) + " **** "+ String.valueOf( endDate ));
             
             int deFlag1 = 0;
             int deFlag2 = 0;

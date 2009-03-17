@@ -1311,13 +1311,13 @@ public class HibernateLLDataValueStore
             + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value < '16'";
         // Metarnal Death At age 16 to 19
         queries[7] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
-            + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value >= '16' and value < '19'";
-        // Metarnal Death At age 19 to 35
+            + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value >= '16' and value <= '19'";
+        // Metarnal Death At age 20 to 35
         queries[8] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
-            + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value >= '19' and value <'35' ";
+            + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value >= '20' and value <= '35' ";
         // Metarnal Death At age above 35
         queries[9] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
-            + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value >= '35'";
+            + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value > '35'";
 
         // Metarnal Death At Home
         queries[10] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId

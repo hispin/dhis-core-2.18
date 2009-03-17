@@ -40,7 +40,7 @@
 
 
 
-<div align="center"><h3><u>Line List of Death</u></h3></div>
+<div align="center"><h3><u>Linelisting : Deaths</u></h3></div>
 
 
 <table id="tblGrid" width="100%">
@@ -88,7 +88,7 @@
 					<option value="NONE" #if(!$llDataValue.getValue() || $llDataValue.getValue()=="NONE") selected #end>---</option>
 					<option value="ASPHYXIA" #if($llDataValue.getValue() && $llDataValue.getValue()=="ASPHYXIA") selected #end>ASPHYXIA</option>					
 					<option value="SEPSIS" #if($llDataValue.getValue() && $llDataValue.getValue()=="SEPSIS") selected #end>SEPSIS</option>
-					<option value="LOWBIRTHWEIGH" #if($llDataValue.getValue() && $llDataValue.getValue()=="LOWBIRTHWEIGH") selected #end>LOWBIRTHWEIGH</option>
+					<option value="LOWBIRTHWEIGH" #if($llDataValue.getValue() && $llDataValue.getValue()=="LOWBIRTHWEIGH") selected #end>LOWBIRTHWEIGHT</option>
           <option value="IMMREAC" #if($llDataValue.getValue() && $llDataValue.getValue()=="IMMREAC") selected #end>Immunization reactions</option>
           <option value="PNEUMONIA" #if($llDataValue.getValue() && $llDataValue.getValue()=="PNEUMONIA") selected #end>Pneumonia</option>
           <option value="DIADIS" #if($llDataValue.getValue() && $llDataValue.getValue()=="DIADIS") selected #end>Diarrhoeal Disease</option>
