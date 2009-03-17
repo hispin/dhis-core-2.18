@@ -56,7 +56,7 @@ propSymbolLayerName = "Proportional Symbol";
 // LAYOUT
 west_width = 270; // viewport west
 north_height = 0;
-south_height = 80; // viewport south
+south_height = 70; // viewport south
 
 gridpanel_width = 255;
 combo_width = 150;

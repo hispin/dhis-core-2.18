@@ -431,8 +431,6 @@ function getChoroplethData()
     var periodId = Ext.getCmp('period_cb').getValue();
     var level = Ext.getCmp('level_cb').getValue();
     
-alert(    indicatorId + "\n" + periodId + "\n" + level);
-
     var url = 'http://localhost:' + localhost_port + '/dhis-webservice/getMapValues.service';
     format = 'json';
 
@@ -507,8 +505,6 @@ function dataReceivedChoropleth( responseText )
     var data = Ext.util.JSON.decode(responseText);
     var dataLength = data.mapvalues.length;
     
-alert(featuresLength + "\n" + dataLength);    
-
     for (var j=0; j < featuresLength; j++) 
     {
         features[j].attributes["value"] = 0;

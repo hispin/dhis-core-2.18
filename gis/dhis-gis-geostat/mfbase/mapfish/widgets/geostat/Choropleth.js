@@ -145,8 +145,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     
     selectedValue : false,
     
-    gridPanelTitle : '',
-    
     
     initComponent : function() {
     
@@ -537,14 +535,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         {
             xtype: 'grid',
             id: 'grid_gp',
-            title: this.gridPanelTitle,
             store: gridStore,
-            columns: [
-                { id: 'name', dataIndex: 'name', sortable: true, width: gridpanel_width-2 }
-            ],
+            columns: [ { header: 'Organisation units ', id: 'name', dataIndex: 'name', sortable: true } ],
             autoHeight: true,
             autoScroll: true,
-            height: 100,
             width: gridpanel_width,
             view: gridView
         }
@@ -553,6 +547,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 
         mapfish.widgets.geostat.Choropleth.superclass.initComponent.apply(this);
     },
+    
+    
+    
+    
 
     setUrl: function(url, isDrillDown) {
     
