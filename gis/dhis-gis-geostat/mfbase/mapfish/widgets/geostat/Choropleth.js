@@ -145,6 +145,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     
     selectedValue : false,
     
+    isAssignment : false,
+    
     
     initComponent : function() {
     
@@ -402,7 +404,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             width: combo_width,
             store: new Ext.data.SimpleStore({
                 fields: ['value'],
-                data: [[0], [1], [2], [3], [4], [5], [6], [7], [8], [9]]
+                data: [[1], [2], [3], [4], [5], [6], [7], [8], [9]]
             })
             
             },
@@ -513,6 +515,9 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                         gridStore.baseParams = { level: value, format: 'json' };
                         gridStore.reload();
                         
+                        var south = Ext.getCmp('south-panel');
+                        Ext.getCmp('grid_gp').height = south.y - 500;
+                        
                         this.classify2(true);
                     },
                     scope: this
@@ -537,9 +542,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             id: 'grid_gp',
             store: gridStore,
             columns: [ { header: 'Organisation units ', id: 'name', dataIndex: 'name', sortable: true } ],
-            autoHeight: true,
-            autoScroll: true,
             width: gridpanel_width,
+            height: gridpanel_height,
             view: gridView
         }
         
@@ -608,6 +612,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
      */
     classify: function(exception) {
     
+        this.isAssignment = false;
+        
         if (!this.ready) {
             if (exception) {
                 Ext.MessageBox.alert('Error', 'Component init not complete');
@@ -670,6 +676,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     
     classify2: function(exception) {
     
+        this.isAssignment = true;
+    
         if (!this.ready) {
             if (exception) {
                 Ext.MessageBox.alert('Error', 'Component init not complete');
@@ -702,13 +710,13 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 //        options.method = "CLASSIFY_BY_EQUAL_INTERVALS";
         
         options.method = mapfish.GeoStat.Distribution[options.method];
-        options.numClasses = 1;
+        options.numClasses = 2;
 //        options.colors = this.getColors();
         
         var colorA = new mapfish.ColorRgb();
-        colorA.setFromHex('#FFFFFF');
+        colorA.setFromHex('#FFEFD5');
         var colorB = new mapfish.ColorRgb();
-        colorB.setFromHex('#FFFFFF');
+        colorB.setFromHex('#DBFFDC');
         options.colors = [colorA, colorB];   
         
         this.coreComp.updateOptions(options);

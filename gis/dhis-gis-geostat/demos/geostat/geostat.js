@@ -76,6 +76,10 @@ Ext.onReady(function()
     map.setCenter(new OpenLayers.LonLat(init_longitude, init_latitude), init_zoom); // config.js
 
 
+    
+    
+    
+    
     // create choropleth widget
     choropleth = new mapfish.widgets.geostat.Choropleth({
         id: 'choropleth',
@@ -108,8 +112,9 @@ Ext.onReady(function()
         }
     });
 
-    // create proportional symbol layer
+    // create proportional symbol widget
     var propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
+        id: 'propsymbol',
         map: map,
         layer: propSymbolLayer,
         title: 'Proportional symbol',
@@ -148,6 +153,7 @@ Ext.onReady(function()
             {
                 // raw
                 region: 'north',
+                id: 'north',
                 el: 'north',
                 height: north_height
             }),
@@ -161,7 +167,7 @@ Ext.onReady(function()
                 minSize: 50,
                 maxSize: 200,
                 collapsible: true,
-                title: 'Information',
+                title: 'Status',
                 margins: '0 0 0 0',
                 bodyStyle: 'padding:5px; font-family:tahoma; font-size:12px'
             },
@@ -279,29 +285,41 @@ function onHoverSelectChoropleth(feature)
 
     if (choropleth.selectedLevel == 1) {
         var html = style + '<b>' + shpcols[choropleth.selectedLevel][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].name] + '</p>';
-        html += '<br>';
-        html += style + '<b>Value:</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
+        
+        if (!choropleth.isAssignment)
+        {
+            html += '<br>';
+            html += style + '<b>Value:</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
+        }
     }
 
     if (choropleth.selectedLevel == 2) {
         var html = style + '<b>' + shpcols[choropleth.selectedLevel][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].name] + '</p>';
         html += style + '<b>' + shpcols[choropleth.selectedLevel-1][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].parent1] + '</p>';
-        html += '<br>';
-        html += style + '<b>Value:</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
+        
+        if (!choropleth.isAssignment)
+        {
+            html += '<br>';
+            html += style + '<b>Value:</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
+        }
     }
 
     if (choropleth.selectedLevel == 3) {
         var html = style + '<b>' + shpcols[choropleth.selectedLevel][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].name] + '</p>';
         html += style + '<b>' + shpcols[choropleth.selectedLevel-1][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].parent1] + '</p>';
         html += style + '<b>' + shpcols[choropleth.selectedLevel-2][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].parent2] + '</p>';
-        html += '<br>';
-        html += style + '<b>Value:</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
+        
+        if (!choropleth.isAssignment)
+        {
+            html += '<br>';
+            html += style + '<b>Value:</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
+        }
     }
 
     popup_feature.html = html;
     popup_feature.show();
 
-    south_panel.body.dom.innerHTML = 'More information about the selected area may be listed here.';
+    
 }
 
 
@@ -317,7 +335,8 @@ function onHoverUnselectChoropleth(feature)
 function onClickSelectChoropleth(feature)
 {
     var selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
-    organisationUnitId = selected.data["id"],
+    organisationUnitId = selected.data["id"];
+    organisationUnit = selected.data["name"];
     geoCode = feature.attributes[ shpcols[choropleth.selectedLevel][0].name ];
 
     if (!selected)
@@ -334,7 +353,10 @@ function onClickSelectChoropleth(feature)
 
             success: function( responseObject )
             {
-                alert("OK");
+                var south_panel = Ext.getCmp('south-panel');
+                south_panel.body.dom.innerHTML = organisationUnit + '<font color="#444444"> assigned to </font>' + geoCode;
+                choropleth.gridStore.reload();
+                alert("funka");
             },
             failure: function()
             {
@@ -431,6 +453,8 @@ function getChoroplethData()
     var periodId = Ext.getCmp('period_cb').getValue();
     var level = Ext.getCmp('level_cb').getValue();
     
+//alert(indicatorId+"\n"+    periodId+"\n"+level);
+    
     var url = 'http://localhost:' + localhost_port + '/dhis-webservice/getMapValues.service';
     format = 'json';
 
@@ -481,14 +505,25 @@ function getPointData()
 
 function getAssignOrganisationUnitData()
 {
-    var layers = this.myMap.getLayersByName(choroplethLayerName);
-    features = layers[0]["features"];
-    var featuresLength = features.length;
-
-    for ( var j=0; j < featuresLength; j++ ) 
+    var url = 'http://localhost:' + localhost_port + '/dhis-webservice/getOrganisationUnitsAtLevel.service';
+    var level = choropleth.selectedLevel;
+    var format = 'json';
+    
+    Ext.Ajax.request( 
     {
-        features[j].attributes["value"] = 0;
-    }
+        url: url,
+        method: 'GET',
+        params: { level: level, format: format },
+
+        success: function( responseObject )
+        {
+            dataReceivedAssignOrganisationUnit( responseObject.responseText );
+        },
+        failure: function()
+        {
+            alert( 'Status', 'Error while retrieving data' );
+        } 
+    });
 }
 
 
@@ -538,6 +573,29 @@ function dataReceivedPoint( responseText )
             {
                 features[j].attributes["name"] = data.mapvalues[i].orgUnit;
                 features[j].attributes["value"] = data.mapvalues[i].value;
+            }
+        }
+    }
+}
+
+function dataReceivedAssignOrganisationUnit( responseText )
+{
+    var layers = this.myMap.getLayersByName(choroplethLayerName);
+    var level = choropleth.selectedLevel;    
+    features = layers[0]["features"];
+    var featuresLength = features.length;
+    var data = Ext.util.JSON.decode(responseText);
+    var dataLength = data.organisationUnits.length;
+    
+    for ( var j=0; j < featuresLength; j++ ) 
+    {
+        features[j].attributes["value"] = j;
+        
+        for ( var i=0; i < dataLength; i++ )
+        {
+            if (features[j].attributes[shpcols[level][0].geocode] == data.organisationUnits[i].geoCode)
+            {
+                features[j].attributes["value"] = 1000;
             }
         }
     }
