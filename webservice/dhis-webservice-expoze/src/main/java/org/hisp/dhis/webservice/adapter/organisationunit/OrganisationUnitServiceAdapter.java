@@ -34,5 +34,5 @@ package org.hisp.dhis.webservice.adapter.organisationunit;
 
 public interface OrganisationUnitServiceAdapter
 {
-    void updateOrganisationUnitGeoCode( int organisationUnitId, String geoCode );
+    void updateOrganisationUnitGeoCode( int id, String geoCode );
 }

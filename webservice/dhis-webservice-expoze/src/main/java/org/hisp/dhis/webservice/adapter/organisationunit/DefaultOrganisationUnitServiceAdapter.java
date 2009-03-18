@@ -52,9 +52,9 @@ public class DefaultOrganisationUnitServiceAdapter
     // PeriodServiceAdapter implementation
     // -------------------------------------------------------------------------
 
-    public void updateOrganisationUnitGeoCode( int organisationUnitId, String geoCode )
+    public void updateOrganisationUnitGeoCode( int id, String geoCode )
     {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
 
         if ( organisationUnit != null )
         {

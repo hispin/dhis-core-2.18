@@ -705,7 +705,7 @@
       <parameters>
         <parameter>
           <type>int</type>
-          <name>organisationUnitId</name>
+          <name>id</name>
         </parameter>
         <parameter>
           <type>java.lang.String</type>
