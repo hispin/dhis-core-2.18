@@ -5,10 +5,8 @@
 
 function submitImportForm()
 {
-    if(document.getElementById( "upload" ).value != ""){
-	setMessage( i18n_importing ); 
+    setMessage( i18n_importing ); 
 	document.getElementById( "importForm" ).submit();
-    }
 }
 
 function showAdvancedOptions()
