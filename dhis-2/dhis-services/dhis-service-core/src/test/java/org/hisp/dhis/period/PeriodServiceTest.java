@@ -28,7 +28,6 @@ package org.hisp.dhis.period;
  */
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -44,7 +43,6 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
-import org.hisp.dhis.transaction.TransactionManager;
 
 /**
  * @author Kristian Nordal
@@ -62,10 +60,6 @@ public class PeriodServiceTest
     private SourceStore sourceStore;
     
     private DataValueService dataValueService;
-
-    private TransactionManager transactionManager;
-
-    private Calendar calendar;
 
     private DataElementCategoryOptionCombo optionCombo;
     
@@ -85,25 +79,9 @@ public class PeriodServiceTest
         
         dataValueService = (DataValueService) getBean( DataValueService.ID );
 
-        transactionManager = (TransactionManager) getBean( TransactionManager.ID );
-
-        calendar = Calendar.getInstance();
-
         optionCombo = new DataElementCategoryOptionCombo();
         
         categoryOptionComboService.addDataElementCategoryOptionCombo( optionCombo );
-    }
-
-    // -------------------------------------------------------------------------
-    // Support methods
-    // -------------------------------------------------------------------------
-
-    private Date getDay( int day )
-    {
-        calendar.clear();
-        calendar.set( Calendar.DAY_OF_YEAR, day );
-
-        return calendar.getTime();
     }
     
     // -------------------------------------------------------------------------
@@ -112,8 +90,6 @@ public class PeriodServiceTest
 
     public void testAddPeriod()
     {
-        transactionManager.enter();
-
         Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
         Iterator<PeriodType> it = periodTypes.iterator();
         PeriodType periodTypeA = it.next();
@@ -127,8 +103,6 @@ public class PeriodServiceTest
         int idB = periodService.addPeriod( periodB );
         int idC = periodService.addPeriod( periodC );
 
-        transactionManager.leave();
-
         try
         {
             // Should give unique constraint violation.
@@ -139,8 +113,6 @@ public class PeriodServiceTest
         {
             // Expected.
         }
-
-        transactionManager.enter();
 
         periodA = periodService.getPeriod( idA );
         assertNotNull( periodA );
@@ -162,14 +134,10 @@ public class PeriodServiceTest
         assertEquals( periodTypeB, periodC.getPeriodType() );
         assertEquals( getDay( 2 ), periodC.getStartDate() );
         assertEquals( getDay( 3 ), periodC.getEndDate() );
-
-        transactionManager.leave();
     }
 
     public void testDeleteAndGetPeriod()
     {
-        transactionManager.enter();
-
         Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
         Iterator<PeriodType> it = periodTypes.iterator();
         PeriodType periodTypeA = it.next();
@@ -212,14 +180,10 @@ public class PeriodServiceTest
         assertNull( periodService.getPeriod( idB ) );
         assertNull( periodService.getPeriod( idC ) );
         assertNull( periodService.getPeriod( idD ) );
-
-        transactionManager.leave();
     }
 
     public void testGetPeriod()
     {
-        transactionManager.enter();
-        
         Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
         Iterator<PeriodType> it = periodTypes.iterator();
         PeriodType periodTypeA = it.next();
@@ -276,8 +240,6 @@ public class PeriodServiceTest
         assertNull( periodService.getPeriod( getDay( 0 ), getDay( 5 ), periodTypeB ) );
         assertNull( periodService.getPeriod( getDay( 4 ), getDay( 3 ), periodTypeB ) );
         assertNull( periodService.getPeriod( getDay( 5 ), getDay( 6 ), periodTypeA ) );
-        
-        transactionManager.leave();
     }
 
     public void testGetAllPeriods()
@@ -303,8 +265,6 @@ public class PeriodServiceTest
     
     public void testGetPeriodsBetweenDates()
     {
-        transactionManager.enter();
-
         Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
         Iterator<PeriodType> it = periodTypes.iterator();
         PeriodType periodTypeA = it.next();
@@ -342,89 +302,84 @@ public class PeriodServiceTest
         assertTrue( periods.contains( periodB ) );
         assertTrue( periods.contains( periodC ) );
         assertTrue( periods.contains( periodD ) );
-
-        transactionManager.leave();
     }
 
     public void testGetIntersectingPeriodsByPeriodType()
+        throws Exception
     {
-    	transactionManager.enter();
+        PeriodType ypt = PeriodType.getPeriodTypeByName( YearlyPeriodType.NAME );
         
-    	PeriodType ypt = PeriodType.getPeriodTypeByName( "Yearly" );
-    	
-    	Date jan2006 = getDate(1, 1, 2006);
-    	Date dec2006 = getDate(31, 12, 2006);
-    	Date jan2007 = getDate(1, 1, 2007);
-    	Date dec2007 = getDate(31, 12, 2007);
-    	
-    	Period periodA = new Period(ypt, jan2006, dec2006);
-    	Period periodB = new Period(ypt, jan2007, dec2007);    	
-    	periodService.addPeriod(periodA);
-    	periodService.addPeriod(periodB);
-    	    	
-    	PeriodType mpt = PeriodType.getPeriodTypeByName( "Monthly" );
-    	
-    	Date janstart = getDate(1,1,2006);
-    	Date janend = getDate(31,1,2006);
-    	Date febstart = getDate(1,2,2006);
-    	Date febend = getDate(28,2,2006);
-    	Date marstart = getDate(1,3,2006);
-    	Date marend = getDate(31,3,2006);
-    	Date aprstart = getDate(1,4,2006);
-    	Date aprend = getDate(30,4,2006);
-    	Date maystart = getDate(1,5,2006);
-    	Date mayend = getDate(31,5,2006);
-    	Date junstart = getDate(1,6,2006);
-    	Date junend = getDate(30,6,2006);
-    	Date julstart = getDate(1,7,2006);
-    	Date julend = getDate(31,7,2006);
-    	Date augstart = getDate(1,8,2006);
-    	Date augend = getDate(31,8,2006);
-    	Date sepstart = getDate(1,9,2006);
-    	Date sepend = getDate(30,9,2006);
-    	Date octstart = getDate(1,10,2006);
-    	Date octend = getDate(31,10,2006);
-    	Date novstart = getDate(1,11,2006);
-    	Date novend = getDate(30,11,2006);
-    	Date decstart = getDate(1,12,2006);
-    	Date decend = getDate(31,12,2006);
-    	
-    	Period periodC = new Period(mpt,janstart,janend);
-    	Period periodD = new Period(mpt,febstart,febend);
-    	Period periodE = new Period(mpt,marstart,marend);
-    	Period periodF = new Period(mpt,aprstart,aprend);
-    	Period periodG = new Period(mpt,maystart,mayend);
-    	Period periodH = new Period(mpt,junstart,junend);
-    	Period periodI = new Period(mpt,julstart,julend);
-    	Period periodJ = new Period(mpt,augstart,augend);
-    	Period periodK = new Period(mpt,sepstart,sepend);
-    	Period periodL = new Period(mpt,octstart,octend);
-    	Period periodM = new Period(mpt,novstart,novend);
-    	Period periodN = new Period(mpt,decstart,decend);
-    	
-    	periodService.addPeriod(periodC);
-    	periodService.addPeriod(periodD);
-    	periodService.addPeriod(periodE);
-    	periodService.addPeriod(periodF);
-    	periodService.addPeriod(periodG);
-    	periodService.addPeriod(periodH);
-    	periodService.addPeriod(periodI);
-    	periodService.addPeriod(periodJ);
-    	periodService.addPeriod(periodK);
-    	periodService.addPeriod(periodL);
-    	periodService.addPeriod(periodM);
-    	periodService.addPeriod(periodN);
-    	
-    	Collection<Period> periodsA = periodService.getIntersectingPeriodsByPeriodType(ypt, getDate(1,6,2006), getDate(30,11,2006)); 
-    	assertNotNull( periodsA );
-    	assertEquals( 1, periodsA.size() );
-    	
-    	Collection<Period> periodsB = periodService.getIntersectingPeriodsByPeriodType(mpt, getDate(1,6,2006), getDate(30,11,2006));
-    	assertNotNull( periodsB );
-    	assertEquals( 6, periodsB.size() );
-    	
-    	transactionManager.leave();
-    }    
+        Date jan2006 = getDate( 2006, 1, 1 );
+        Date dec2006 = getDate( 2006, 12, 31 );
+        Date jan2007 = getDate( 2007, 1, 1 );
+        Date dec2007 = getDate( 2007, 12, 31 );
+        
+        Period periodA = new Period( ypt, jan2006, dec2006 );
+        Period periodB = new Period( ypt, jan2007, dec2007 );           
+        periodService.addPeriod( periodA );
+        periodService.addPeriod( periodB );       
+        
+        PeriodType mpt = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
+        
+        Date janstart = getDate( 2006, 1, 1 );
+        Date janend = getDate( 2006, 1, 31 );
+        Date febstart = getDate( 2006, 2, 1 );
+        Date febend = getDate( 2006, 2, 28 );
+        Date marstart = getDate( 2006, 3, 1 );
+        Date marend = getDate( 2006, 3, 31 );
+        Date aprstart = getDate( 2006, 4, 1 );
+        Date aprend = getDate( 2006, 4, 30 );
+        Date maystart = getDate( 2006, 5, 1 );
+        Date mayend = getDate( 2006, 5, 31 );
+        Date junstart = getDate( 2006, 6, 1 );
+        Date junend = getDate( 2006, 6, 30 );
+        Date julstart = getDate( 2006, 7, 1 );
+        Date julend = getDate( 2006, 7, 31 );
+        Date augstart = getDate( 2006, 8, 1 );
+        Date augend = getDate( 2006, 8, 31 );
+        Date sepstart = getDate( 2006, 9, 1 );
+        Date sepend = getDate( 2006, 9, 30 );
+        Date octstart = getDate( 2006, 10, 1 );
+        Date octend = getDate( 2006, 10, 31 );
+        Date novstart = getDate( 2006, 11, 1 );
+        Date novend = getDate( 2006, 11, 30 );
+        Date decstart = getDate( 2006, 12, 1 );
+        Date decend = getDate( 2006, 12, 31 );
+        
+        Period periodC = new Period( mpt, janstart, janend );
+        Period periodD = new Period( mpt, febstart, febend );
+        Period periodE = new Period( mpt, marstart, marend );
+        Period periodF = new Period( mpt, aprstart, aprend );
+        Period periodG = new Period( mpt, maystart, mayend );
+        Period periodH = new Period( mpt, junstart, junend );
+        Period periodI = new Period( mpt, julstart, julend );
+        Period periodJ = new Period( mpt, augstart, augend );
+        Period periodK = new Period( mpt, sepstart, sepend );
+        Period periodL = new Period( mpt, octstart, octend );
+        Period periodM = new Period( mpt, novstart, novend );
+        Period periodN = new Period( mpt, decstart, decend );
+        
+        periodService.addPeriod( periodC );
+        periodService.addPeriod( periodD );
+        periodService.addPeriod( periodE );
+        periodService.addPeriod( periodF );
+        periodService.addPeriod( periodG );
+        periodService.addPeriod( periodH );
+        periodService.addPeriod( periodI );
+        periodService.addPeriod( periodJ );
+        periodService.addPeriod( periodK );
+        periodService.addPeriod( periodL );
+        periodService.addPeriod( periodM );
+        periodService.addPeriod( periodN );
+        
+        Collection<Period> periodsA = periodService.getIntersectingPeriodsByPeriodType( ypt, getDate( 2006, 6, 1 ), getDate( 2006, 11, 30 ) ); 
+        assertNotNull( periodsA );
+        assertEquals( 1, periodsA.size() );
+        
+        Collection<Period> periodsB = periodService.getIntersectingPeriodsByPeriodType( mpt, getDate( 2006, 6, 1 ), getDate( 2006, 11, 30 ) );            
+        assertNotNull( periodsB );
+        assertEquals( 6, periodsB.size() );
+    }
 
     public void testGetIntersectingPeriods()
     {
@@ -466,8 +421,6 @@ public class PeriodServiceTest
     
     public void testGetPeriodsByPeriodType()
     {
-        transactionManager.enter();
-
         Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
         Iterator<PeriodType> it = periodTypes.iterator();
         PeriodType periodTypeA = it.next();
@@ -501,33 +454,32 @@ public class PeriodServiceTest
         Collection<Period> periodsC = periodService.getPeriodsByPeriodType( periodTypeC );
         assertNotNull( periodsC );
         assertEquals( 0, periodsC.size() );
-
-        transactionManager.leave();
     }
 
     public void testGetPeriodsWithAssociatedDataValues()
+        throws Exception
     {
-        DataElement dataElementA = createDataElement( 'A' );
+        DataElement dataElementA = createDataElement( 'A' );   
         DataElement dataElementB = createDataElement( 'B' );
         DataElement dataElementC = createDataElement( 'C' );
-        
+    
         PeriodType quarterly = PeriodType.getPeriodTypeByName( QuarterlyPeriodType.NAME );
         PeriodType monthly = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
         PeriodType weekly = PeriodType.getPeriodTypeByName( WeeklyPeriodType.NAME );
         
-        Period qu1 = new Period( quarterly, getDate( 1, 1, 2008 ), getDate( 31, 3, 2008 ) );
+        Period qu1 = new Period( quarterly, getDate( 2008, 1, 1 ), getDate( 2008, 3, 31 ) );
         
-        Period jan = new Period( monthly, getDate( 1, 1, 2008 ), getDate( 31, 1, 2008 ) );
-        Period feb = new Period( monthly, getDate( 1, 2, 2008 ), getDate( 29, 2, 2008 ) );
-        Period mar = new Period( monthly, getDate( 1, 3, 2008 ), getDate( 31, 3, 2008 ) );
-        Period apr = new Period( monthly, getDate( 1, 4, 2008 ), getDate( 30, 4, 2008 ) );
-        Period may = new Period( monthly, getDate( 1, 5, 2008 ), getDate( 31, 5, 2008 ) );
+        Period jan = new Period( monthly, getDate( 2008, 1, 1 ), getDate( 2008, 1, 31 ) );
+        Period feb = new Period( monthly, getDate( 2008, 2, 1 ), getDate( 2008, 2, 29 ) );
+        Period mar = new Period( monthly, getDate( 2008, 3, 1 ), getDate( 2008, 3, 31 ) );
+        Period apr = new Period( monthly, getDate( 2008, 4, 1 ), getDate( 2008, 4, 30 ) );
+        Period may = new Period( monthly, getDate( 2008, 5, 1 ), getDate( 2008, 5, 31 ) );
         
-        Period w01 = new Period( weekly, getDate( 31, 12, 2007 ), getDate( 6, 1, 2008 ) );
-        Period w02 = new Period( weekly, getDate( 7, 1, 2008 ), getDate( 13, 1, 2008 ) );
-        Period w03 = new Period( weekly, getDate( 14, 1, 2008 ), getDate( 20, 1, 2008 ) );
-        Period w04 = new Period( weekly, getDate( 21, 1, 2008 ), getDate( 27, 1, 2008 ) );
-        Period w05 = new Period( weekly, getDate( 28, 1, 2008 ), getDate( 3, 2, 2008 ) );
+        Period w01 = new Period( weekly, getDate( 2007, 12, 31 ), getDate( 2008, 1, 6 ) );
+        Period w02 = new Period( weekly, getDate( 2008, 1, 7 ), getDate( 2008, 1, 13 ) );
+        Period w03 = new Period( weekly, getDate( 2008, 1, 14 ), getDate( 2008, 1, 20 ) );
+        Period w04 = new Period( weekly, getDate( 2008, 1, 21 ), getDate( 2008, 1, 27 ) );
+        Period w05 = new Period( weekly, getDate( 2008, 1, 28 ), getDate( 2008, 2, 3 ) );
                 
         Source sourceA = new DummySource( "SourceA" );
         Source sourceB = new DummySource( "SourceB" );
@@ -552,16 +504,14 @@ public class PeriodServiceTest
         DataValue dataValueI = new DataValue( dataElementB, w05, sourceA, optionCombo );
         dataValueI.setValue( "9" );
         
-        transactionManager.enter();
-    
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
         dataElementService.addDataElement( dataElementC );
-        
+     
         sourceStore.addSource( sourceA );
         sourceStore.addSource( sourceB );
         sourceStore.addSource( sourceC );
-
+        
         dataValueService.addDataValue( dataValueA );
         dataValueService.addDataValue( dataValueB );
         dataValueService.addDataValue( dataValueC );
@@ -572,8 +522,6 @@ public class PeriodServiceTest
         dataValueService.addDataValue( dataValueH );
         dataValueService.addDataValue( dataValueI );
         
-        transactionManager.leave();
-                
         Collection<DataElement> dataElements1 = new ArrayList<DataElement>();
         
         dataElements1.add( dataElementA );
@@ -713,72 +661,72 @@ public class PeriodServiceTest
     
     public void testGetRelativePeriodDateIntInt()
     {
-        Date date = getDate( 10, 7, 2000 );
+        Date date = getDate( 2000, 7, 10 );
 
         PeriodType periodType = new RelativePeriodType();
         
         Period period = periodService.getRelativePeriod( date, 3, 6 );
         
         assertTrue( period.getId() != 0 );
-        assertEquals( getDate( 1, 10, 2000 ), period.getStartDate() );
-        assertEquals( getDate( 31, 12, 2000 ), period.getEndDate() );
-        assertNotNull( periodService.getPeriod( getDate( 1, 10, 2000 ), getDate( 31, 12, 2000 ), periodType ) );
+        assertEquals( getDate( 2000, 10, 1 ), period.getStartDate() );
+        assertEquals( getDate( 2000, 12, 31 ), period.getEndDate() );
+        assertNotNull( periodService.getPeriod( getDate( 2000, 10, 1 ), getDate( 2000, 12, 31 ), periodType ) );
         
         period = periodService.getRelativePeriod( date, 0, 3 );
 
         assertTrue( period.getId() != 0 );
-        assertEquals( getDate( 1, 7, 2000 ), period.getStartDate() );
-        assertEquals( getDate( 30, 9, 2000 ), period.getEndDate() );
-        assertNotNull( periodService.getPeriod( getDate( 1, 7, 2000 ), getDate( 30, 9, 2000 ), periodType ) );
+        assertEquals( getDate( 2000, 7, 1 ), period.getStartDate() );
+        assertEquals( getDate( 2000, 9, 30 ), period.getEndDate() );
+        assertNotNull( periodService.getPeriod( getDate( 2000, 7, 1 ), getDate( 2000, 9, 30 ), periodType ) );
 
         period = periodService.getRelativePeriod( date, -3, 0 );
 
         assertTrue( period.getId() != 0 );
-        assertEquals( getDate( 1, 4, 2000 ), period.getStartDate() );
-        assertEquals( getDate( 30, 6, 2000 ), period.getEndDate() );
-        assertNotNull( periodService.getPeriod( getDate( 1, 4, 2000 ), getDate( 30, 6, 2000 ), periodType ) );
+        assertEquals( getDate( 2000, 4, 1 ), period.getStartDate() );
+        assertEquals( getDate( 2000, 6, 30 ), period.getEndDate() );
+        assertNotNull( periodService.getPeriod( getDate( 2000, 4, 1 ), getDate( 2000, 6, 30 ), periodType ) );
 
         period = periodService.getRelativePeriod( date, -6, -3 );
 
         assertTrue( period.getId() != 0 );
-        assertEquals( getDate( 1, 1, 2000 ), period.getStartDate() );
-        assertEquals( getDate( 31, 3, 2000 ), period.getEndDate() );
-        assertNotNull( periodService.getPeriod( getDate( 1, 1, 2000 ), getDate( 31, 3, 2000 ), periodType ) );
+        assertEquals( getDate( 2000, 1, 1 ), period.getStartDate() );
+        assertEquals( getDate( 2000, 3, 31 ), period.getEndDate() );
+        assertNotNull( periodService.getPeriod( getDate( 2000, 1, 1 ), getDate( 2000, 3, 31 ), periodType ) );
     }
     
     public void testGetRelativePeriodDateInt()
     {
-        Date date = getDate( 10, 6, 2000 );
+        Date date = getDate( 2000, 6, 10 );
 
         PeriodType periodType = new RelativePeriodType();
         
         Period period = periodService.getRelativePeriod( date, 3 );
         
         assertTrue( period.getId() != 0 );
-        assertEquals( getDate( 1, 6, 2000 ), period.getStartDate() );
-        assertEquals( getDate( 31, 8, 2000 ), period.getEndDate() );
-        assertNotNull( periodService.getPeriod( getDate( 1, 6, 2000 ), getDate( 31, 8, 2000 ), periodType ) );
+        assertEquals( getDate( 2000, 6, 1 ), period.getStartDate() );
+        assertEquals( getDate( 2000, 8, 31 ), period.getEndDate() );
+        assertNotNull( periodService.getPeriod( getDate( 2000, 6, 1 ), getDate( 2000, 8, 31 ), periodType ) );
         
         period = periodService.getRelativePeriod( date, 1 );
         
         assertTrue( period.getId() != 0 );
-        assertEquals( getDate( 1, 6, 2000 ), period.getStartDate() );
-        assertEquals( getDate( 30, 6, 2000 ), period.getEndDate() );
-        assertNotNull( periodService.getPeriod( getDate( 1, 6, 2000 ), getDate( 30, 6, 2000 ), periodType ) );
+        assertEquals( getDate( 2000, 6, 1 ), period.getStartDate() );
+        assertEquals( getDate( 2000, 6, 30 ), period.getEndDate() );
+        assertNotNull( periodService.getPeriod( getDate( 2000, 6, 1 ), getDate( 2000, 6, 30 ), periodType ) );
         
         period = periodService.getRelativePeriod( date, -3 );
         
         assertTrue( period.getId() != 0 );
-        assertEquals( getDate( 1, 4, 2000 ), period.getStartDate() );
-        assertEquals( getDate( 30, 6, 2000 ), period.getEndDate() );
-        assertNotNull( periodService.getPeriod( getDate( 1, 4, 2000 ), getDate( 30, 6, 2000 ), periodType ) );
+        assertEquals( getDate( 2000, 4, 1 ), period.getStartDate() );
+        assertEquals( getDate( 2000, 6, 30 ), period.getEndDate() );
+        assertNotNull( periodService.getPeriod( getDate( 2000, 4, 1 ), getDate( 2000, 6, 30 ), periodType ) );
 
         period = periodService.getRelativePeriod( date, -1 );
         
         assertTrue( period.getId() != 0 );
-        assertEquals( getDate( 1, 6, 2000 ), period.getStartDate() );
-        assertEquals( getDate( 30, 6, 2000 ), period.getEndDate() );
-        assertNotNull( periodService.getPeriod( getDate( 1, 6, 2000 ), getDate( 30, 6, 2000 ), periodType ) );
+        assertEquals( getDate( 2000, 6, 1 ), period.getStartDate() );
+        assertEquals( getDate( 2000, 6, 30 ), period.getEndDate() );
+        assertNotNull( periodService.getPeriod( getDate( 2000, 6, 1 ), getDate( 2000, 6, 30 ), periodType ) );
 
         try
         {

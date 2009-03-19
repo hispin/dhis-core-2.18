@@ -142,8 +142,8 @@ public class HibernatePeriodStore
     	
     	Criteria criteria = session.createCriteria( Period.class );
     	criteria.add( Restrictions.eq( "periodType", reloadPeriodType( periodType ) ) );    	    	
-    	criteria.add( Restrictions.ge( "endDate", startDate ) );
-    	criteria.add( Restrictions.le( "startDate", endDate ) );
+    	criteria.add( Restrictions.gt( "endDate", startDate ) );
+    	criteria.add( Restrictions.lt( "startDate", endDate ) );
 
     	return criteria.list();
     }

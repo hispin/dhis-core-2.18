@@ -88,8 +88,6 @@ public class DhisConvenienceTest
 
     private static Date date;
     
-    private static Calendar calendar;
-
     // -------------------------------------------------------------------------
     // Service references
     // -------------------------------------------------------------------------
@@ -134,8 +132,8 @@ public class DhisConvenienceTest
     
     static
     {
-        calendar = Calendar.getInstance();
-    
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
         calendar.set( 1970, Calendar.JANUARY, 1 );
     
         date = calendar.getTime();
@@ -155,11 +153,30 @@ public class DhisConvenienceTest
      */
     protected static Date getDate( int year, int month, int day )
     {
+        final Calendar calendar = Calendar.getInstance();
+        
+        calendar.clear();
         calendar.set( year, month - 1, day );
         
         return calendar.getTime();
     }
 
+    /**
+     * Creates a date.
+     * 
+     * @param day the day of the year.
+     * @return a date.
+     */
+    protected Date getDay( int day )
+    {
+        final Calendar calendar = Calendar.getInstance();
+        
+        calendar.clear();
+        calendar.set( Calendar.DAY_OF_YEAR, day );
+
+        return calendar.getTime();
+    }
+        
     /**
      * Compares two collections for equality. This method does not check for the
      * implementation type of the collection in contrast to the native equals
@@ -172,7 +189,7 @@ public class DhisConvenienceTest
      */
     protected static boolean equals( Collection<?> actual, Object... reference )
     {
-        Collection<Object> collection = new HashSet<Object>();
+        final Collection<Object> collection = new HashSet<Object>();
         
         for ( Object object : reference )
         {

@@ -28,13 +28,12 @@ package org.hisp.dhis.period;
  */
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.DhisConvenienceTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
@@ -44,15 +43,13 @@ import org.hisp.dhis.datavalue.DataValueStore;
 import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
-import org.hisp.dhis.system.util.UUIdUtils;
-import org.hisp.dhis.transaction.TransactionManager;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: PeriodStoreTest.java 5983 2008-10-17 17:42:44Z larshelg $
  */
 public class PeriodStoreTest
-    extends DhisSpringTest
+    extends DhisConvenienceTest
 {
     private PeriodStore periodStore;
     
@@ -63,10 +60,6 @@ public class PeriodStoreTest
     private SourceStore sourceStore;
     
     private DataValueStore dataValueStore;
-
-    private TransactionManager transactionManager;
-
-    private Calendar calendar;
 
     private DataElementCategoryOptionCombo optionCombo;
     
@@ -87,53 +80,11 @@ public class PeriodStoreTest
         
         dataValueStore = (DataValueStore) getBean( DataValueStore.ID );
 
-        transactionManager = (TransactionManager) getBean( TransactionManager.ID );
-        
-        calendar = Calendar.getInstance();
-
         optionCombo = new DataElementCategoryOptionCombo();
         
         categoryOptionComboService.addDataElementCategoryOptionCombo( optionCombo );
     }
 
-    // -------------------------------------------------------------------------
-    // Support methods
-    // -------------------------------------------------------------------------
-
-    private Date getDay( int day )
-    {
-        calendar.clear();
-        calendar.set( Calendar.DAY_OF_YEAR, day );
-
-        return calendar.getTime();
-    }
-    
-    private Date getDate( int day, int month, int year )
-    {
-    	calendar.clear();
-    	calendar.set( Calendar.YEAR, year );
-    	calendar.set( Calendar.MONTH, month - 1 );
-    	calendar.set( Calendar.DAY_OF_MONTH, day );
-    	    	    	
-    	return calendar.getTime();
-    }
-
-    private DataElement createDataElement( char uniqueCharacter )
-    {
-        DataElement dataElement = new DataElement();
-
-        dataElement.setUuid( UUIdUtils.getUUId() );
-        dataElement.setName( "DataElement" + uniqueCharacter );
-        dataElement.setAlternativeName( "AlternativeName" + uniqueCharacter );
-        dataElement.setShortName( "DE" + uniqueCharacter );
-        dataElement.setCode( "Code" + uniqueCharacter );
-        dataElement.setDescription( "DataElementDescription" + uniqueCharacter );
-        dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        dataElement.setType( DataElement.TYPE_INT );
-
-        return dataElement;
-    }
-    
     // -------------------------------------------------------------------------
     // Period
     // -------------------------------------------------------------------------
@@ -141,8 +92,6 @@ public class PeriodStoreTest
     public void testAddPeriod()
         throws Exception
     {
-        transactionManager.enter();
-
         Collection<PeriodType> periodTypes = periodStore.getAllPeriodTypes();
         Iterator<PeriodType> it = periodTypes.iterator();
         PeriodType periodTypeA = it.next();
@@ -156,8 +105,6 @@ public class PeriodStoreTest
         int idB = periodStore.addPeriod( periodB );
         int idC = periodStore.addPeriod( periodC );
 
-        transactionManager.leave();
-
         try
         {
             // Should give unique constraint violation.
@@ -168,8 +115,6 @@ public class PeriodStoreTest
         {
             // Expected.
         }
-
-        transactionManager.enter();
 
         periodA = periodStore.getPeriod( idA );
         assertNotNull( periodA );
@@ -191,15 +136,11 @@ public class PeriodStoreTest
         assertEquals( periodTypeB, periodC.getPeriodType() );
         assertEquals( getDay( 2 ), periodC.getStartDate() );
         assertEquals( getDay( 3 ), periodC.getEndDate() );
-
-        transactionManager.leave();
     }
 
     public void testDeleteAndGetPeriod()
         throws Exception
     {
-        transactionManager.enter();
-
         Collection<PeriodType> periodTypes = periodStore.getAllPeriodTypes();
         Iterator<PeriodType> it = periodTypes.iterator();
         PeriodType periodTypeA = it.next();
@@ -242,15 +183,11 @@ public class PeriodStoreTest
         assertNull( periodStore.getPeriod( idB ) );
         assertNull( periodStore.getPeriod( idC ) );
         assertNull( periodStore.getPeriod( idD ) );
-
-        transactionManager.leave();
     }
 
     public void testGetPeriod()
         throws Exception
     {
-        transactionManager.enter();
-        
         Collection<PeriodType> periodTypes = periodStore.getAllPeriodTypes();
         Iterator<PeriodType> it = periodTypes.iterator();
         PeriodType periodTypeA = it.next();
@@ -307,8 +244,6 @@ public class PeriodStoreTest
         assertNull( periodStore.getPeriod( getDay( 0 ), getDay( 5 ), periodTypeB ) );
         assertNull( periodStore.getPeriod( getDay( 4 ), getDay( 3 ), periodTypeB ) );
         assertNull( periodStore.getPeriod( getDay( 5 ), getDay( 6 ), periodTypeA ) );
-        
-        transactionManager.leave();
     }
     
     public void testGetAllPeriods()
@@ -336,8 +271,6 @@ public class PeriodStoreTest
     public void testGetPeriodsBetweenDates()
         throws Exception
     {
-        transactionManager.enter();
-
         Collection<PeriodType> periodTypes = periodStore.getAllPeriodTypes();
         Iterator<PeriodType> it = periodTypes.iterator();
         PeriodType periodTypeA = it.next();
@@ -375,89 +308,83 @@ public class PeriodStoreTest
         assertTrue( periods.contains( periodB ) );
         assertTrue( periods.contains( periodC ) );
         assertTrue( periods.contains( periodD ) );
-
-        transactionManager.leave();
     }
 
     public void testGetIntersectingPeriodsByPeriodType()
         throws Exception
     {
-    	transactionManager.enter();
+    	PeriodType ypt = PeriodType.getPeriodTypeByName( YearlyPeriodType.NAME );
+    	
+    	Date jan2006 = getDate( 2006, 1, 1 );
+    	Date dec2006 = getDate( 2006, 12, 31 );
+    	Date jan2007 = getDate( 2007, 1, 1 );
+    	Date dec2007 = getDate( 2007, 12, 31 );
         
-    	PeriodType ypt = PeriodType.getPeriodTypeByName( "Yearly" );
+    	Period periodA = new Period( ypt, jan2006, dec2006 );
+    	Period periodB = new Period( ypt, jan2007, dec2007 );    	
+    	periodStore.addPeriod( periodA );
+    	periodStore.addPeriod( periodB );    	
     	
-    	Date jan2006 = getDate(1, 1, 2006);
-    	Date dec2006 = getDate(31, 12, 2006);
-    	Date jan2007 = getDate(1, 1, 2007);
-    	Date dec2007 = getDate(31, 12, 2007);
+    	PeriodType mpt = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
     	
-    	Period periodA = new Period(ypt, jan2006, dec2006);
-    	Period periodB = new Period(ypt, jan2007, dec2007);    	
-    	periodStore.addPeriod(periodA);
-    	periodStore.addPeriod(periodB);    	
+    	Date janstart = getDate( 2006, 1, 1 );
+    	Date janend = getDate( 2006, 1, 31 );
+    	Date febstart = getDate( 2006, 2, 1 );
+    	Date febend = getDate( 2006, 2, 28 );
+    	Date marstart = getDate( 2006, 3, 1 );
+    	Date marend = getDate( 2006, 3, 31 );
+    	Date aprstart = getDate( 2006, 4, 1 );
+    	Date aprend = getDate( 2006, 4, 30 );
+    	Date maystart = getDate( 2006, 5, 1 );
+    	Date mayend = getDate( 2006, 5, 31 );
+    	Date junstart = getDate( 2006, 6, 1 );
+    	Date junend = getDate( 2006, 6, 30 );
+    	Date julstart = getDate( 2006, 7, 1 );
+    	Date julend = getDate( 2006, 7, 31 );
+    	Date augstart = getDate( 2006, 8, 1 );
+    	Date augend = getDate( 2006, 8, 31 );
+    	Date sepstart = getDate( 2006, 9, 1 );
+    	Date sepend = getDate( 2006, 9, 30 );
+    	Date octstart = getDate( 2006, 10, 1 );
+    	Date octend = getDate( 2006, 10, 31 );
+    	Date novstart = getDate( 2006, 11, 1 );
+    	Date novend = getDate( 2006, 11, 30 );
+    	Date decstart = getDate( 2006, 12, 1 );
+    	Date decend = getDate( 2006, 12, 31 );
     	
-    	PeriodType mpt = PeriodType.getPeriodTypeByName( "Monthly" );
+    	Period periodC = new Period( mpt, janstart, janend );
+    	Period periodD = new Period( mpt, febstart, febend );
+    	Period periodE = new Period( mpt, marstart, marend );
+    	Period periodF = new Period( mpt, aprstart, aprend );
+    	Period periodG = new Period( mpt, maystart, mayend );
+    	Period periodH = new Period( mpt, junstart, junend );
+    	Period periodI = new Period( mpt, julstart, julend );
+    	Period periodJ = new Period( mpt, augstart, augend );
+    	Period periodK = new Period( mpt, sepstart, sepend );
+    	Period periodL = new Period( mpt, octstart, octend );
+    	Period periodM = new Period( mpt, novstart, novend );
+    	Period periodN = new Period( mpt, decstart, decend );
     	
-    	Date janstart = getDate(1,1,2006);
-    	Date janend = getDate(31,1,2006);
-    	Date febstart = getDate(1,2,2006);
-    	Date febend = getDate(28,2,2006);
-    	Date marstart = getDate(1,3,2006);
-    	Date marend = getDate(31,3,2006);
-    	Date aprstart = getDate(1,4,2006);
-    	Date aprend = getDate(30,4,2006);
-    	Date maystart = getDate(1,5,2006);
-    	Date mayend = getDate(31,5,2006);
-    	Date junstart = getDate(1,6,2006);
-    	Date junend = getDate(30,6,2006);
-    	Date julstart = getDate(1,7,2006);
-    	Date julend = getDate(31,7,2006);
-    	Date augstart = getDate(1,8,2006);
-    	Date augend = getDate(31,8,2006);
-    	Date sepstart = getDate(1,9,2006);
-    	Date sepend = getDate(30,9,2006);
-    	Date octstart = getDate(1,10,2006);
-    	Date octend = getDate(31,10,2006);
-    	Date novstart = getDate(1,11,2006);
-    	Date novend = getDate(30,11,2006);
-    	Date decstart = getDate(1,12,2006);
-    	Date decend = getDate(31,12,2006);
+    	periodStore.addPeriod( periodC );
+    	periodStore.addPeriod( periodD );
+    	periodStore.addPeriod( periodE );
+    	periodStore.addPeriod( periodF );
+    	periodStore.addPeriod( periodG );
+    	periodStore.addPeriod( periodH );
+    	periodStore.addPeriod( periodI );
+    	periodStore.addPeriod( periodJ );
+    	periodStore.addPeriod( periodK );
+    	periodStore.addPeriod( periodL );
+    	periodStore.addPeriod( periodM );
+    	periodStore.addPeriod( periodN );
     	
-    	Period periodC = new Period(mpt,janstart,janend);
-    	Period periodD = new Period(mpt,febstart,febend);
-    	Period periodE = new Period(mpt,marstart,marend);
-    	Period periodF = new Period(mpt,aprstart,aprend);
-    	Period periodG = new Period(mpt,maystart,mayend);
-    	Period periodH = new Period(mpt,junstart,junend);
-    	Period periodI = new Period(mpt,julstart,julend);
-    	Period periodJ = new Period(mpt,augstart,augend);
-    	Period periodK = new Period(mpt,sepstart,sepend);
-    	Period periodL = new Period(mpt,octstart,octend);
-    	Period periodM = new Period(mpt,novstart,novend);
-    	Period periodN = new Period(mpt,decstart,decend);
-    	
-    	periodStore.addPeriod(periodC);
-    	periodStore.addPeriod(periodD);
-    	periodStore.addPeriod(periodE);
-    	periodStore.addPeriod(periodF);
-    	periodStore.addPeriod(periodG);
-    	periodStore.addPeriod(periodH);
-    	periodStore.addPeriod(periodI);
-    	periodStore.addPeriod(periodJ);
-    	periodStore.addPeriod(periodK);
-    	periodStore.addPeriod(periodL);
-    	periodStore.addPeriod(periodM);
-    	periodStore.addPeriod(periodN);
-    	
-    	Collection<Period> periodsA = periodStore.getIntersectingPeriodsByPeriodType(ypt, getDate(1,6,2006), getDate(30,11,2006)); 
+    	Collection<Period> periodsA = periodStore.getIntersectingPeriodsByPeriodType( ypt, getDate( 2006, 6, 1 ), getDate( 2006, 11, 30 ) ); 
     	assertNotNull( periodsA );
     	assertEquals( 1, periodsA.size() );
     	
-    	Collection<Period> periodsB = periodStore.getIntersectingPeriodsByPeriodType(mpt, getDate(1,6,2006), getDate(30,11,2006));    	
+    	Collection<Period> periodsB = periodStore.getIntersectingPeriodsByPeriodType( mpt, getDate( 2006, 6, 1 ), getDate( 2006, 11, 30 ) );    	
     	assertNotNull( periodsB );
     	assertEquals( 6, periodsB.size() );
-    	
-    	transactionManager.leave();
     }
     
     public void testGetIntersectingPeriods()
@@ -502,8 +429,6 @@ public class PeriodStoreTest
     public void testGetPeriodsByPeriodType()
         throws Exception
     {
-        transactionManager.enter();
-
         Collection<PeriodType> periodTypes = periodStore.getAllPeriodTypes();
         Iterator<PeriodType> it = periodTypes.iterator();
         PeriodType periodTypeA = it.next();
@@ -537,8 +462,6 @@ public class PeriodStoreTest
         Collection<Period> periodsC = periodStore.getPeriodsByPeriodType( periodTypeC );
         assertNotNull( periodsC );
         assertEquals( 0, periodsC.size() );
-
-        transactionManager.leave();
     }
 
     public void testGetPeriodsWithAssociatedDataValues()
@@ -552,19 +475,19 @@ public class PeriodStoreTest
         PeriodType monthly = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
         PeriodType weekly = PeriodType.getPeriodTypeByName( WeeklyPeriodType.NAME );
         
-        Period qu1 = new Period( quarterly, getDate( 1, 1, 2008 ), getDate( 31, 3, 2008 ) );
+        Period qu1 = new Period( quarterly, getDate( 2008, 1, 1 ), getDate( 2008, 3, 31 ) );
         
-        Period jan = new Period( monthly, getDate( 1, 1, 2008 ), getDate( 31, 1, 2008 ) );
-        Period feb = new Period( monthly, getDate( 1, 2, 2008 ), getDate( 29, 2, 2008 ) );
-        Period mar = new Period( monthly, getDate( 1, 3, 2008 ), getDate( 31, 3, 2008 ) );
-        Period apr = new Period( monthly, getDate( 1, 4, 2008 ), getDate( 30, 4, 2008 ) );
-        Period may = new Period( monthly, getDate( 1, 5, 2008 ), getDate( 31, 5, 2008 ) );
+        Period jan = new Period( monthly, getDate( 2008, 1, 1 ), getDate( 2008, 1, 31 ) );
+        Period feb = new Period( monthly, getDate( 2008, 2, 1 ), getDate( 2008, 2, 29 ) );
+        Period mar = new Period( monthly, getDate( 2008, 3, 1 ), getDate( 2008, 3, 31 ) );
+        Period apr = new Period( monthly, getDate( 2008, 4, 1 ), getDate( 2008, 4, 30 ) );
+        Period may = new Period( monthly, getDate( 2008, 5, 1 ), getDate( 2008, 5, 31 ) );
         
-        Period w01 = new Period( weekly, getDate( 31, 12, 2007 ), getDate( 6, 1, 2008 ) );
-        Period w02 = new Period( weekly, getDate( 7, 1, 2008 ), getDate( 13, 1, 2008 ) );
-        Period w03 = new Period( weekly, getDate( 14, 1, 2008 ), getDate( 20, 1, 2008 ) );
-        Period w04 = new Period( weekly, getDate( 21, 1, 2008 ), getDate( 27, 1, 2008 ) );
-        Period w05 = new Period( weekly, getDate( 28, 1, 2008 ), getDate( 3, 2, 2008 ) );
+        Period w01 = new Period( weekly, getDate( 2007, 12, 31 ), getDate( 2008, 1, 6 ) );
+        Period w02 = new Period( weekly, getDate( 2008, 1, 7 ), getDate( 2008, 1, 13 ) );
+        Period w03 = new Period( weekly, getDate( 2008, 1, 14 ), getDate( 2008, 1, 20 ) );
+        Period w04 = new Period( weekly, getDate( 2008, 1, 21 ), getDate( 2008, 1, 27 ) );
+        Period w05 = new Period( weekly, getDate( 2008, 1, 28 ), getDate( 2008, 2, 3 ) );
                 
         Source sourceA = new DummySource( "SourceA" );
         Source sourceB = new DummySource( "SourceB" );
@@ -589,8 +512,6 @@ public class PeriodStoreTest
         DataValue dataValueI = new DataValue( dataElementB, w05, sourceA, optionCombo );
         dataValueI.setValue( "9" );
         
-        transactionManager.enter();
-    
         dataElementStore.addDataElement( dataElementA );
         dataElementStore.addDataElement( dataElementB );
         dataElementStore.addDataElement( dataElementC );
@@ -609,8 +530,6 @@ public class PeriodStoreTest
         dataValueStore.addDataValue( dataValueH );
         dataValueStore.addDataValue( dataValueI );
         
-        transactionManager.leave();
-                
         Collection<DataElement> dataElements1 = new ArrayList<DataElement>();
         
         dataElements1.add( dataElementA );

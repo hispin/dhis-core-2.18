@@ -1,12 +1,17 @@
 package org.hisp.dhis.reporting.document.action;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.hisp.dhis.external.location.LocationManager;
+import org.hisp.dhis.system.util.StreamUtils;
 
 import com.opensymphony.xwork.Action;
 
@@ -92,14 +97,30 @@ public class SaveDocumentAction
         {
             log.info( "Uploading file: '" + fileName + "', content-type: '" + contentType + "'" );
             
-            File destination = locationManager.getFileForWriting( fileName, DocumentService.DIR );
-                
-            boolean fileMoved = file.renameTo( destination );
+            InputStream in = null;
             
-            if ( !fileMoved )
+            OutputStream out = null;
+            
+            try
             {
-                throw new RuntimeException( "File was not uploaded" );
+                in = new BufferedInputStream( new FileInputStream( file ) );
+                
+                out = locationManager.getOutputStream( fileName, DocumentService.DIR );
+
+                int b = 0;
+                
+                while ( ( b = in.read() ) != -1 )
+                {
+                    out.write( b );
+                }                
             }
+            catch ( Exception ex )
+            {
+                StreamUtils.closeInputStream( in );
+                StreamUtils.closeOutputStream( out );
+                
+                throw ex;
+            }            
             
             url = fileName;
         }

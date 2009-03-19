@@ -27,9 +27,7 @@ package org.hisp.dhis.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 
 import org.hisp.dhis.DhisConvenienceTest;
@@ -58,8 +56,6 @@ public class DataValueServiceTest
 
     private TransactionManager transactionManager;
     
-    private Calendar calendar = Calendar.getInstance();
-
     // -------------------------------------------------------------------------
     // Supporting data
     // -------------------------------------------------------------------------
@@ -142,18 +138,6 @@ public class DataValueServiceTest
         optionCombo = new DataElementCategoryOptionCombo();
         
         categoryOptionComboService.addDataElementCategoryOptionCombo( optionCombo );
-    }
-
-    // -------------------------------------------------------------------------
-    // Support methods
-    // -------------------------------------------------------------------------
-
-    private Date getDay( int day )
-    {
-        calendar.clear();
-        calendar.set( Calendar.DAY_OF_YEAR, day );
-
-        return calendar.getTime();
     }
 
     // -------------------------------------------------------------------------
