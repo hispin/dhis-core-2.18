@@ -32,6 +32,7 @@ import java.util.Collection;
 import org.hisp.dhis.DhisConvenienceTest;
 import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
@@ -44,6 +45,8 @@ import org.hisp.dhis.dataelement.DataElementService;
 public class DataElementBatchHandlerTest
     extends DhisConvenienceTest
 {
+	private HibernateCacheManager cacheManager;
+	
     private BatchHandlerFactory batchHandlerFactory;
     
     private BatchHandler batchHandler;
@@ -60,6 +63,8 @@ public class DataElementBatchHandlerTest
     
     public void setUpTest()
     {
+    	cacheManager = (HibernateCacheManager) getBean( HibernateCacheManager.ID );
+    	
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
         batchHandlerFactory = (BatchHandlerFactory) getBean( BatchHandlerFactory.ID );
@@ -94,6 +99,8 @@ public class DataElementBatchHandlerTest
         
         batchHandler.flush();
         
+        cacheManager.clearCache();
+        
         Collection<DataElement> dataElements = dataElementService.getAllDataElements();
         
         assertTrue( dataElements.contains( dataElementA ) );
@@ -106,6 +113,8 @@ public class DataElementBatchHandlerTest
         int idA = batchHandler.insertObject( dataElementA, true );
         int idB = batchHandler.insertObject( dataElementB, true );
         int idC = batchHandler.insertObject( dataElementC, true );
+
+        cacheManager.clearCache();
         
         assertNotNull( dataElementService.getDataElement( idA ) );
         assertNotNull( dataElementService.getDataElement( idB ) );
@@ -119,6 +128,8 @@ public class DataElementBatchHandlerTest
         dataElementA.setName( "UpdatedName" );
         
         batchHandler.updateObject( dataElementA );
+
+        cacheManager.clearCache();
         
         assertEquals( dataElementService.getDataElement( id ).getName(), "UpdatedName" );
     }
@@ -126,7 +137,7 @@ public class DataElementBatchHandlerTest
     public void testGetObjectIdentifier()
     {
         int referenceId = dataElementService.addDataElement( dataElementA );
-        
+
         int retrievedId = batchHandler.getObjectIdentifier( "DataElementA" );
         
         assertEquals( referenceId, retrievedId );

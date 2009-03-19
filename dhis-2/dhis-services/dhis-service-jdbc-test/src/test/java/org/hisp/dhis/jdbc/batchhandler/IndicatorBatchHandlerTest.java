@@ -32,6 +32,7 @@ import java.util.Collection;
 import org.hisp.dhis.DhisConvenienceTest;
 import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
@@ -43,6 +44,8 @@ import org.hisp.dhis.indicator.IndicatorType;
 public class IndicatorBatchHandlerTest
     extends DhisConvenienceTest
 {
+	private HibernateCacheManager cacheManager;
+	
     private BatchHandlerFactory batchHandlerFactory;
     
     private BatchHandler batchHandler;
@@ -57,6 +60,8 @@ public class IndicatorBatchHandlerTest
     
     public void setUpTest()
     {
+    	cacheManager = (HibernateCacheManager) getBean( HibernateCacheManager.ID );
+    	
         indicatorService = (IndicatorService) getBean( IndicatorService.ID );
         
         batchHandlerFactory = (BatchHandlerFactory) getBean( BatchHandlerFactory.ID );
@@ -91,6 +96,8 @@ public class IndicatorBatchHandlerTest
         
         batchHandler.flush();
         
+        cacheManager.clearCache();
+        
         Collection<Indicator> indicators = indicatorService.getAllIndicators();
         
         assertTrue( indicators.contains( indicatorA  ) );
@@ -103,6 +110,8 @@ public class IndicatorBatchHandlerTest
         int idA = batchHandler.insertObject( indicatorA, true );
         int idB = batchHandler.insertObject( indicatorB, true );
         int idC = batchHandler.insertObject( indicatorC, true );
+
+        cacheManager.clearCache();
         
         assertNotNull( indicatorService.getIndicator( idA ) );
         assertNotNull( indicatorService.getIndicator( idB ) );
@@ -116,6 +125,8 @@ public class IndicatorBatchHandlerTest
         indicatorA.setName( "UpdatedName" );
         
         batchHandler.updateObject( indicatorA );
+
+        cacheManager.clearCache();
         
         assertEquals( indicatorService.getIndicator( id ).getName(), "UpdatedName" );
     }
