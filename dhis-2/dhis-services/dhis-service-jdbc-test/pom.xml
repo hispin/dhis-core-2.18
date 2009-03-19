@@ -11,7 +11,7 @@
   
   <artifactId>dhis-service-jdbc-test</artifactId>
   <packaging>jar</packaging>
-  <name>DHIS JDBC Service</name>
+  <name>DHIS JDBC Test Project</name>
   
   <dependencies>
     
