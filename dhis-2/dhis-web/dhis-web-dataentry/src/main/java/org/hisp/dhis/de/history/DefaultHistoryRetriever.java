@@ -78,8 +78,10 @@ public class DefaultHistoryRetriever
         {	
             return null;
         	
-            /*throw new HistoryRetrieverException( "DataElement is not of type " + DataElement.TYPE_INT + ": "
-                + dataElement.getShortName() ) ; */
+            /*
+            throw new HistoryRetrieverException( "DataElement is not of type " + DataElement.TYPE_INT + ": "
+                + dataElement.getShortName() ) ;
+            */
         }
 
         // ---------------------------------------------------------------------
@@ -149,7 +151,11 @@ public class DefaultHistoryRetriever
 
         return history;
     }   
-    
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
     private void addMinMaxLimits( OrganisationUnit organisationUnit, DataElement dataElement, DataElementCategoryOptionCombo optionCombo, DataElementHistory history )
     {
         MinMaxDataElement minMaxDataElement = minMaxDataElementStore.getMinMaxDataElement( organisationUnit,

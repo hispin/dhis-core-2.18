@@ -87,8 +87,7 @@ public class DefaultDataEntryScreenManager
 
     private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    public void setDataElementCategoryOptionComboService(
-        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
     {
         this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
@@ -105,26 +104,23 @@ public class DefaultDataEntryScreenManager
     // -------------------------------------------------------------------------
     
     public boolean hasMixOfDimensions( DataSet dataSet )
-    {      	
-    	
+    {    	
     	if ( dataSet.getDataElements().size() > 0 )
         {       
-        	Iterator<DataElement> dataElementIterator = dataSet.getDataElements().iterator();
+    	    Iterator<DataElement> dataElementIterator = dataSet.getDataElements().iterator();
         	
-        	DataElementCategoryCombo catCombo = dataElementIterator.next().getCategoryCombo();       	
+    	    DataElementCategoryCombo catCombo = dataElementIterator.next().getCategoryCombo();       	
 
             for ( DataElement de : dataSet.getDataElements() )
             {           	
-            	
-            	if( catCombo != de.getCategoryCombo() )
+            	if ( catCombo != de.getCategoryCombo() )
             	{            		
-            		return true;
+            	    return true;
             	}                
             }
         }
 
         return false;
-        
     }
 
     public boolean hasMultiDimensionalDataElement( DataSet dataSet )
@@ -152,7 +148,6 @@ public class DefaultDataEntryScreenManager
 
     public String getScreenType( DataSet dataSet )
     {
-
         int numberOfTotalColumns = 1;
 
         if ( dataSet.getDataElements().size() > 0 )
@@ -196,7 +191,6 @@ public class DefaultDataEntryScreenManager
 
     public Map<CalculatedDataElement, Map<DataElement, Integer>> getNonSavedCalculatedDataElements( DataSet dataSet )
     {
-
         Map<CalculatedDataElement, Map<DataElement, Integer>> calculatedDataElementMap = new HashMap<CalculatedDataElement, Map<DataElement, Integer>>();
 
         CalculatedDataElement cde;

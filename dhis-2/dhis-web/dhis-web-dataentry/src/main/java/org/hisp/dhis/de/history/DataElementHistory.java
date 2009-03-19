@@ -52,13 +52,19 @@ public class DataElementHistory
 
     private int historyLength;
     
-    //max value used to draw the history graph
+    /**
+     * Max value used to draw the history graph
+     */
     private double maxHistoryValue;
     
-    //the lowest entered value
+    /**
+     * The lowest entered value
+     */
     private double minValue;
     
-    //the highest entered value
+    /**
+     * The highest entered value
+     */
     private double maxValue = Double.NEGATIVE_INFINITY;
     
     private List<DataElementHistoryPoint> historyPoints = new ArrayList<DataElementHistoryPoint>();

@@ -35,5 +35,4 @@ public interface DataEntryScreenManager
     String populateCustomDataEntryScreen( String dataEntryFormCode, Collection<DataValue> dataValues, Map<CalculatedDataElement,Integer> calculatedValueMap, Map<Integer, MinMaxDataElement> minMaxMap, String disabled, Boolean saveMode, I18n i18n );
     
     String populateCustomDataEntryScreenForMultiDimensional( String dataEntryFormCode, Collection<DataValue> dataValues, Map<CalculatedDataElement,Integer> calculatedValueMap, Map<String, MinMaxDataElement> minMaxMap, String disabled, Boolean saveMode, I18n i18n );
-
 }

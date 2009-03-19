@@ -338,15 +338,14 @@ public class FormAction
 
     public String execute()
         throws Exception
-    {      	
-    	
+    {    	
     	disableDefaultForm = false;
     	
     	zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );
     	
-    	if( zeroValueSaveMode == null )
+    	if ( zeroValueSaveMode == null )
     	{
-    		zeroValueSaveMode = false;
+    	    zeroValueSaveMode = false;
     	}
     	   	
     	OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
@@ -367,17 +366,17 @@ public class FormAction
             return SUCCESS;
         }
         
-        for( DataElement de : dataElements )
+        for ( DataElement de : dataElements )
         {  
-        	Collection<DataElementCategoryOptionCombo> optionCombos = dataElementCategoryOptionComboService.sortDataElementCategoryOptionCombos( de.getCategoryCombo() ) ;
+            Collection<DataElementCategoryOptionCombo> optionCombos = dataElementCategoryOptionComboService.sortDataElementCategoryOptionCombos( de.getCategoryCombo() ) ;
         	
-        	for( DataElementCategoryOptionCombo optionCombo : optionCombos )
-        	{
-        		if( !orderdCategoryOptionCombos.contains( optionCombo ) )
-        		{
-        			orderdCategoryOptionCombos.add(optionCombo);
-        		}
-        	}	
+            for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
+            {
+                if ( !orderdCategoryOptionCombos.contains( optionCombo ) )
+                {
+                    orderdCategoryOptionCombos.add(optionCombo);
+                }
+            }	
         }
         
         /*
@@ -399,16 +398,16 @@ public class FormAction
         
         for ( DataElementCategory category : categories ) // Get the order of categories
         {                   
-        	DataElementDimensionRowOrder rowOrder = dataElementDimensionRowOrderService.getDataElementDimensionRowOrder( decbo, category );
+            DataElementDimensionRowOrder rowOrder = dataElementDimensionRowOrderService.getDataElementDimensionRowOrder( decbo, category );
         	
-        	if( rowOrder != null )
-        	{
-        		categoryMap.put( rowOrder.getDisplayOrder(), category );
-        	}
-        	else
-        	{
-        		categoryMap.put( category.getId(), category );
-        	}
+            if( rowOrder != null )
+            {
+                categoryMap.put( rowOrder.getDisplayOrder(), category );
+            }
+            else
+            {
+                categoryMap.put( category.getId(), category );
+            }
         }
 
         orderedCategories = categoryMap.values();
@@ -421,13 +420,13 @@ public class FormAction
             {
             	DataElementDimensionColumnOrder columnOrder = dataElementDimensionColumnOrderService.getDataElementDimensionColumnOrder( dec, option );
             	
-            	if( columnOrder != null )
+            	if ( columnOrder != null )
             	{
-            		optionsMap.put( columnOrder.getDisplayOrder(), option );
+            	    optionsMap.put( columnOrder.getDisplayOrder(), option );
             	}
             	else
             	{
-            		optionsMap.put( option.getId(), option );
+            	    optionsMap.put( option.getId(), option );
             	}            	
             }            	
 
@@ -465,9 +464,9 @@ public class FormAction
             catRepeat.put( cat.getId(), catColSpan );
         }       
         
-        for( DataElementCategoryOptionCombo deOptionCombo : orderdCategoryOptionCombos )
+        for ( DataElementCategoryOptionCombo deOptionCombo : orderdCategoryOptionCombos )
         {
-        	optionComboNames.put( deOptionCombo.getId(), dataElementCategoryOptionComboService.getOptionNames( deOptionCombo ) );        	
+            optionComboNames.put( deOptionCombo.getId(), dataElementCategoryOptionComboService.getOptionNames( deOptionCombo ) );        	
         }
         
         // ---------------------------------------------------------------------
@@ -535,16 +534,15 @@ public class FormAction
                 dataValues, calculatedValueMap, minMaxMap, disabled, zeroValueSaveMode, i18n );
         }        
         
-        if( dataEntryScreenManager.hasMixOfDimensions( dataSet ) )
+        if ( dataEntryScreenManager.hasMixOfDimensions( dataSet ) )
         {          	
-        	
-    		disableDefaultForm = true;  		
+            disableDefaultForm = true;  		
     	
-    		if ( !cdeFormExists )
+            if ( !cdeFormExists )
             {    			
-    			customDataEntryFormCode = i18n.getString( "please_design_a_custom_form" );
+                customDataEntryFormCode = i18n.getString( "please_design_a_custom_form" );
     			
-    			return SUCCESS;
+                return SUCCESS;
             }        	        	
         }   
         	

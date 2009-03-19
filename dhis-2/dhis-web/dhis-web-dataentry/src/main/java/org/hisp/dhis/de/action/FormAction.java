@@ -264,9 +264,9 @@ public class FormAction
     {    	
     	zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );
     	
-    	if( zeroValueSaveMode == null )
+    	if ( zeroValueSaveMode == null )
     	{
-    		zeroValueSaveMode = false;
+    	    zeroValueSaveMode = false;
     	}
     	
     	OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
@@ -348,7 +348,7 @@ public class FormAction
         
         if ( cdeFormExists )
         {        	
-        	customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreen( dataEntryForm.getHtmlCode(), dataValues, calculatedValueMap, minMaxMap, disabled, zeroValueSaveMode, i18n );
+            customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreen( dataEntryForm.getHtmlCode(), dataValues, calculatedValueMap, minMaxMap, disabled, zeroValueSaveMode, i18n );
         }            
 
         // ---------------------------------------------------------------------

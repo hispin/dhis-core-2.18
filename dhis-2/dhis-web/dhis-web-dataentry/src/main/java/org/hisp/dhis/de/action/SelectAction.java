@@ -379,8 +379,7 @@ public class SelectAction
 
         if ( selectedDataSetId != null && selectedPeriodIndex != null && organisationUnit != null )
         {
-        	registration = registrationService.getCompleteDataSetRegistration( selectedDataSet, period,
-                organisationUnit );
+            registration = registrationService.getCompleteDataSetRegistration( selectedDataSet, period, organisationUnit );
 
             registrationDate = registration != null ? registration.getDate() : new Date();
         }

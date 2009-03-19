@@ -61,7 +61,5 @@ public interface SelectedStateManager
 
     void previousPeriodSpan();
     
-    List<DataSet> loadDataSetsForSelectedOrgUnit( OrganisationUnit organisationUnit );  
-    
-    
+    List<DataSet> loadDataSetsForSelectedOrgUnit( OrganisationUnit organisationUnit );    
 }

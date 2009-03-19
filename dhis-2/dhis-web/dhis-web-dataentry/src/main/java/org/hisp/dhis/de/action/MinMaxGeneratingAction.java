@@ -120,8 +120,8 @@ public class MinMaxGeneratingAction
             {            	
                 for( DataElementCategoryOptionCombo optionCombo : dataelement.getCategoryCombo().getOptionCombos() )
                 {                	
-                	DataElementHistory dataElementHistory = historyRetriever.getHistory( dataelement, optionCombo, organisationUnit,
-                            period, HISTORY_LENGTH );                	
+                    DataElementHistory dataElementHistory = historyRetriever.getHistory( 
+                        dataelement, optionCombo, organisationUnit, period, HISTORY_LENGTH );                	
                     setMinMaxLimits( dataElementHistory, organisationUnit, dataelement, optionCombo );
                 }
             	

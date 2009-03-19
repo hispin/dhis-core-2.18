@@ -176,8 +176,7 @@ public class HistoryAction
 
     public String execute()
         throws Exception
-    {
-    	
+    {    	
     	DataElement dataElement = dataElementService.getDataElement( dataElementId );       
         
         DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
@@ -186,7 +185,7 @@ public class HistoryAction
         {
             String defaultName = DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
             
-        	optionCombo = dataElementCategoryComboService.getDataElementCategoryComboByName( defaultName ).getOptionCombos().iterator().next();
+            optionCombo = dataElementCategoryComboService.getDataElementCategoryComboByName( defaultName ).getOptionCombos().iterator().next();
         }
 
         if ( dataElement == null )
@@ -208,9 +207,9 @@ public class HistoryAction
 
         standardComments = standardCommentsManager.getStandardComments();
         
-        if( dataElementHistory == null )
+        if ( dataElementHistory == null )
         {
-        	isHistoryValid = false;
+            isHistoryValid = false;
         }
 
         return SUCCESS;

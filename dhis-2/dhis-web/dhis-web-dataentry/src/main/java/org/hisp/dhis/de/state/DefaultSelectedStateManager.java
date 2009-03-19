@@ -120,11 +120,19 @@ public class DefaultSelectedStateManager
     // SelectedStateManager implementation
     // -------------------------------------------------------------------------
 
+    // -------------------------------------------------------------------------
+    // OrganisationUnit
+    // -------------------------------------------------------------------------
+    
     public OrganisationUnit getSelectedOrganisationUnit()
     {
         return selectionManager.getSelectedOrganisationUnit();
     }
 
+    // -------------------------------------------------------------------------
+    // DataSet
+    // -------------------------------------------------------------------------
+    
     @SuppressWarnings( "unchecked" )
     public void setSelectedDataSet( DataSet dataSet )
     {
@@ -148,6 +156,10 @@ public class DefaultSelectedStateManager
         getSession().remove( SESSION_KEY_SELECTED_DATASET_ID );
     }
 
+    // -------------------------------------------------------------------------
+    // Period
+    // -------------------------------------------------------------------------
+    
     @SuppressWarnings( "unchecked" )
     public void setSelectedPeriodIndex( Integer index )
     {
@@ -210,7 +222,7 @@ public class DefaultSelectedStateManager
         {
             Period period = iterator.next();
 
-            if ( period.getStartDate().after( now ) || !persistedPeriods.contains( period ))
+            if ( period.getStartDate().after( now ) || !persistedPeriods.contains( period ) )
             {
                 iterator.remove();
             }
@@ -347,7 +359,7 @@ public class DefaultSelectedStateManager
         {
             DataSet dataSet = iterator.next();
 
-            if ( !(dataSet.getPeriodType() instanceof CalendarPeriodType) )
+            if ( !( dataSet.getPeriodType() instanceof CalendarPeriodType) )
             {
                 iterator.remove();
             }
