@@ -154,9 +154,9 @@ public class GridTest
         List<String> column = grid.getColumn( 1 );
         
         assertTrue( column.size() == 4 );
+        assertTrue( column.contains( "5.0" ) );
         assertTrue( column.contains( "17.0" ) );
         assertTrue( column.contains( "29.0" ) );
         assertTrue( column.contains( "41.0" ) );
-        assertTrue( column.contains( "53.0" ) );
     }
 }
