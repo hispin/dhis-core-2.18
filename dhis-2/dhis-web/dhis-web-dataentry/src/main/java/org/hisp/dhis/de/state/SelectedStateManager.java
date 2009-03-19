@@ -39,14 +39,28 @@ import org.hisp.dhis.period.Period;
  */
 public interface SelectedStateManager
 {
+    // -------------------------------------------------------------------------
+    // OrganisationUnit
+    // -------------------------------------------------------------------------
+    
     OrganisationUnit getSelectedOrganisationUnit();  
+
+    // -------------------------------------------------------------------------
+    // DataSet
+    // -------------------------------------------------------------------------
     
     void setSelectedDataSet( DataSet dataSet );
 
     DataSet getSelectedDataSet();
 
     void clearSelectedDataSet();
+    
+    List<DataSet> loadDataSetsForSelectedOrgUnit( OrganisationUnit organisationUnit );    
 
+    // -------------------------------------------------------------------------
+    // Period
+    // -------------------------------------------------------------------------
+    
     void setSelectedPeriodIndex( Integer index );
 
     Integer getSelectedPeriodIndex();
@@ -60,6 +74,4 @@ public interface SelectedStateManager
     void nextPeriodSpan();
 
     void previousPeriodSpan();
-    
-    List<DataSet> loadDataSetsForSelectedOrgUnit( OrganisationUnit organisationUnit );    
 }

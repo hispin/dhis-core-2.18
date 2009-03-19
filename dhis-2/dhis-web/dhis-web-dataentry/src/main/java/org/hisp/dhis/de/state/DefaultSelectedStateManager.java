@@ -38,8 +38,6 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -156,6 +154,43 @@ public class DefaultSelectedStateManager
         getSession().remove( SESSION_KEY_SELECTED_DATASET_ID );
     }
 
+    public List<DataSet> loadDataSetsForSelectedOrgUnit( OrganisationUnit organisationUnit )
+    {
+        List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( organisationUnit ) );
+
+        if ( !currentUserService.currentUserIsSuper() )
+        {
+            UserCredentials userCredentials = userStore.getUserCredentials( currentUserService.getCurrentUser() );
+
+            Set<DataSet> dataSetUserAuthorityGroups = new HashSet<DataSet>();
+
+            for ( UserAuthorityGroup userAuthorityGroup : userCredentials.getUserAuthorityGroups() )
+            {
+                dataSetUserAuthorityGroups.addAll( userAuthorityGroup.getDataSets() );
+            }
+
+            dataSets.retainAll( dataSetUserAuthorityGroups );
+        }
+
+        // ---------------------------------------------------------------------
+        // Remove DataSets which don't have a CalendarPeriodType
+        // ---------------------------------------------------------------------
+
+        Iterator<DataSet> iterator = dataSets.iterator();
+
+        while ( iterator.hasNext() )
+        {
+            DataSet dataSet = iterator.next();
+
+            if ( !( dataSet.getPeriodType() instanceof CalendarPeriodType) )
+            {
+                iterator.remove();
+            }
+        }
+
+        return dataSets;
+    }
+    
     // -------------------------------------------------------------------------
     // Period
     // -------------------------------------------------------------------------
@@ -306,65 +341,5 @@ public class DefaultSelectedStateManager
     private static final Map getSession()
     {
         return ActionContext.getContext().getSession();
-    }
-
-    public boolean hasDataSetMultiDimensionalDataElement( DataSet dataSet )
-    {
-        int numberOfTotalColumns = 1;
-
-        if ( dataSet.getDataElements().size() > 0 )
-        {
-            for ( DataElement de : dataSet.getDataElements() )
-            {
-                for ( DataElementCategory category : de.getCategoryCombo().getCategories() )
-                {
-                    numberOfTotalColumns = numberOfTotalColumns * category.getCategoryOptions().size();
-                }
-
-                if ( numberOfTotalColumns > 1 )
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public List<DataSet> loadDataSetsForSelectedOrgUnit( OrganisationUnit organisationUnit )
-    {
-        List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( organisationUnit ) );
-
-        if ( !currentUserService.currentUserIsSuper() )
-        {
-            UserCredentials userCredentials = userStore.getUserCredentials( currentUserService.getCurrentUser() );
-
-            Set<DataSet> dataSetUserAuthorityGroups = new HashSet<DataSet>();
-
-            for ( UserAuthorityGroup userAuthorityGroup : userCredentials.getUserAuthorityGroups() )
-            {
-                dataSetUserAuthorityGroups.addAll( userAuthorityGroup.getDataSets() );
-            }
-
-            dataSets.retainAll( dataSetUserAuthorityGroups );
-        }
-
-        // ---------------------------------------------------------------------
-        // Remove DataSets which don't have a CalendarPeriodType
-        // ---------------------------------------------------------------------
-
-        Iterator<DataSet> iterator = dataSets.iterator();
-
-        while ( iterator.hasNext() )
-        {
-            DataSet dataSet = iterator.next();
-
-            if ( !( dataSet.getPeriodType() instanceof CalendarPeriodType) )
-            {
-                iterator.remove();
-            }
-        }
-
-        return dataSets;
     }
 }
