@@ -57,8 +57,6 @@ public class SourceConverter
     private static final String FIELD_ORG = "org";
     private static final String FIELD_KEY = "key";
     
-    private OrganisationUnitService organisationUnitService;
-    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------

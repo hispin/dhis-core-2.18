@@ -54,8 +54,6 @@ public class IndicatorTypeConverter
     private static final String FIELD_NAME = "IndicatorTypeName";
     private static final String FIELD_FACTOR = "Factor";
     
-    private IndicatorService indicatorService;
-    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------

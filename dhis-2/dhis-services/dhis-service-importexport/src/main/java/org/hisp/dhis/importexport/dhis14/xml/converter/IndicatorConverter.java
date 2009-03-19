@@ -93,8 +93,6 @@ public class IndicatorConverter
     // Properties
     // -------------------------------------------------------------------------
 
-    private IndicatorService indicatorService;
-    
     private Map<Object, Integer> indicatorTypeMapping;
     private Map<Object, Integer> dataElementMapping;
     private Map<Object, String> dataElementAggregationOperatorMap;

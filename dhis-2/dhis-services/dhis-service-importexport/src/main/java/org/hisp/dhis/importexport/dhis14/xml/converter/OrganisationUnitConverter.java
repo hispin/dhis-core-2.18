@@ -68,8 +68,6 @@ public class OrganisationUnitConverter
     private static final int VALID_FROM = 34335;
     private static final int VALID_TO = 2958465;
 
-    private OrganisationUnitService organisationUnitService;
-    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------

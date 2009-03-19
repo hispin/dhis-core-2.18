@@ -59,8 +59,6 @@ public class PeriodConverter
     private static final String FIELD_START_DATE = "ValidFrom";
     private static final String FIELD_END_DATE = "ValidTo";
 
-    private PeriodService periodService;
-    
     private Map<String, Integer> periodTypeMapping;
         
     // -------------------------------------------------------------------------

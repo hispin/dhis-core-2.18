@@ -60,8 +60,6 @@ public class TimePeriodConverter
     // Properties
     // -------------------------------------------------------------------------
     
-    private PeriodService periodService;
-    
     private Map<String, Integer> periodTypeMapping;
     
     // -------------------------------------------------------------------------

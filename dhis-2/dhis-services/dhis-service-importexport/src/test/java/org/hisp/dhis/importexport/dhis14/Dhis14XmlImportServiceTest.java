@@ -35,7 +35,7 @@ public class Dhis14XmlImportServiceTest
     {
         ImportParams params = new ImportParams();
 
-        params.setType( ImportType.IMPORT );
+        params.setType( ImportType.PREVIEW );
         params.setDataValues( true );
         params.setExtendedMode( false );
         params.setSkipCheckMatching( false );
