@@ -57,6 +57,10 @@ public class JForumManagerTest
     // Tests
     // -------------------------------------------------------------------------
 
+    public void testTemp()
+    {	
+    }
+    
     public void _testPopulate()
     {
         dataElementService.addDataElement( createDataElement( 'A' ) );
