@@ -27,6 +27,7 @@ package org.hisp.dhis.reports.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -77,6 +78,17 @@ public class GetPeriodsAction
         return periods;
     }
 
+    private List<String> periodNameList;
+    
+	public List<String> getPeriodNameList() 
+	{
+		return periodNameList;
+	}
+    
+    private SimpleDateFormat simpleDateFormat1;
+
+    private SimpleDateFormat simpleDateFormat2;
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -84,6 +96,8 @@ public class GetPeriodsAction
     public String execute()
         throws Exception
     {
+    	periodNameList = new ArrayList<String>();
+    	
         if ( id.equals( ALL ) )
         {
             Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
@@ -100,10 +114,48 @@ public class GetPeriodsAction
             PeriodType periodType = periodService.getPeriodTypeByName( id );
 
             periods = new ArrayList<Period>(periodService.getPeriodsByPeriodType( periodType ));
+            
+            if(periodType.getName().equalsIgnoreCase("monthly"))
+            {
+            	simpleDateFormat1 = new SimpleDateFormat( "MMM-yyyy" );
+            	for(Period p1 : periods)
+            	{
+            		periodNameList.add( simpleDateFormat1.format(p1.getStartDate() ) ); 
+            	}
+            }
+            else if(periodType.getName().equalsIgnoreCase("quarterly"))
+            {
+            	simpleDateFormat1 = new SimpleDateFormat( "MMM" );
+            	simpleDateFormat2 = new SimpleDateFormat( "MMM yyyy" );
+            	
+            	for(Period p1 : periods)
+            	{
+            		String tempPeriodName = simpleDateFormat1.format( p1.getStartDate() ) + " - " + simpleDateFormat2.format( p1.getEndDate() ); 
+            		periodNameList.add( tempPeriodName ); 
+            	}
+            }
+            else if(periodType.getName().equalsIgnoreCase("yearly"))
+            {
+            	simpleDateFormat1 = new SimpleDateFormat( "yyyy" );
+            	for(Period p1 : periods)
+            	{
+            		periodNameList.add( simpleDateFormat1.format(p1.getStartDate() ) ); 
+            	}
+            }
+            else
+            {
+            	simpleDateFormat1 = new SimpleDateFormat( "yyyy-mm-dd" );
+            	for(Period p1 : periods)
+            	{
+            		String tempPeriodName = simpleDateFormat1.format( p1.getStartDate() ) + " - " + simpleDateFormat1.format( p1.getEndDate() ); 
+            		periodNameList.add( tempPeriodName ); 
+            	}
+            }
         }
 
         Collections.sort(periods, new PeriodComparator() );
         
         return SUCCESS;
     }
+
 }

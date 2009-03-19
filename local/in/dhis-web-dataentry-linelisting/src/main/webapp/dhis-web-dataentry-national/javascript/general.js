@@ -223,7 +223,7 @@ function validateNameField( dataElementId, recordNo )
   var resVal = field.value;
 
   if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
-  {
+  {    
     alert("Please enter Name");
     field.value = "";
     field.focus();
@@ -239,9 +239,12 @@ function validateBirthDateField( dataElementId, recordNo )
 	var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
   var resVal = field.value;
     
-	if( isDate(resVal) )
+	if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
 	{	
-    saveLLbirthValue( dataElementId, recordNo );
+		alert("Please enter Name");
+		
+    field.value = "";
+    field.focus();    
 	}
 	else
 	{
@@ -252,6 +255,90 @@ function validateBirthDateField( dataElementId, recordNo )
 	return false; 
 }
 
+function validateAgeAtDeathField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+  var resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+
+  if( !isLLMDNameFiledEntered( recordNo ) )
+  {
+  	alert("Please enter name field");
+  	
+  	field.value = "";
+  	return false;
+  }
+  
+  if(resVal == null || resVal == "" )
+  {    
+    field.value = "";
+    field.focus();
+    
+    return false;
+  }
+  
+  if( isInteger( resVal) && parseInt(resVal) >= 15 && parseInt(resVal) < 50 )
+  {
+      saveLLbirthValue( dataElementId, recordNo );
+  }
+  else
+  {
+    alert("Please enter valid AGE (between 15 - 50)");
+    field.value = "";
+    field.focus();
+    
+    return false;
+  }     
+}
+
+
+function isLLBNameFiledEntered( recordNo )
+{
+  var dataElementId = 1020;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+
+  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+  {    
+    return false;
+  }
+  else
+  {
+  	return true;
+  }	
+}
+
+function isLLDNameFiledEntered( recordNo )
+{
+  var dataElementId = 1027;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+
+  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+  {    
+    return false;
+  }
+  else
+  {
+    return true;
+  } 
+}
+
+function isLLMDNameFiledEntered( recordNo )
+{
+  var dataElementId = 1032;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+
+  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+  {    
+    return false;
+  }
+  else
+  {
+    return true;
+  } 
+}
 
 // -----------------------------------------------------------------------------
 // Save

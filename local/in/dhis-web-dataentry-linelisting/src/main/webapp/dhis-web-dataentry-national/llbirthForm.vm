@@ -5,8 +5,7 @@
 	var nextRecordNo = $recordNo;
 	var nextFlag = 0;
 	
-	var slnos = $recordNos.size()+1;
-	var curRecord = slnos;
+	var slnos = $recordNos.size()+1;	
 	
 	function addLLBNewRow( thisValue, dataElementId, recordNo )
 	{
@@ -39,7 +38,7 @@
     	var oCell = newRow.insertCell(0);
     	oCell.innerHTML = "<div id='value[1020].value:value["+nextRecordNo+"].slno' align='center'>" + slnos + "</div>";
 
-    	var oCell = newRow.insertCell(1);
+    	oCell = newRow.insertCell(1);
     	oCell.innerHTML = "<input name='entryfield' id='value[1020].value:value["+nextRecordNo+"].value' type='text' value='' onchange='validateNameField(1020,"+nextRecordNo+")' onkeypress='return keyPress(event, this)' onblur='addLLBNewRow(this.value, 1020, "+nextRecordNo+")' style='width:100% text-align:center'>";
     
     	oCell = newRow.insertCell(2);

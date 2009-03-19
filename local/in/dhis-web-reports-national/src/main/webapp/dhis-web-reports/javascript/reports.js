@@ -101,7 +101,7 @@ function getPeriods()
 
 function getReports( ouId, reportListFileName )
 {	
-    var periodTypeList = document.getElementById( "periodTypeId" );
+  var periodTypeList = document.getElementById( "periodTypeId" );
 	var periodType = periodTypeList.options[ periodTypeList.selectedIndex ].value;
 			
 	if ( periodType != "NA" && ouId != null && ouId != "" )
@@ -155,10 +155,9 @@ function getPeriodsReceived( xmlObject )
 	for ( var i = 0; i < periods.length; i++)
 	{
 		var id = periods[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-		var startDate = periods[ i ].getElementsByTagName( "startDate" )[0].firstChild.nodeValue;
-		var endDate = periods[ i ].getElementsByTagName( "endDate" )[0].firstChild.nodeValue;
-		
-		var periodName = startDate + " - " + endDate;
+		//var startDate = periods[ i ].getElementsByTagName( "startDate" )[0].firstChild.nodeValue;
+		//var endDate = periods[ i ].getElementsByTagName( "endDate" )[0].firstChild.nodeValue;		
+		var periodName = periods[ i ].getElementsByTagName( "periodname" )[0].firstChild.nodeValue;
 		
 		if ( listContains( selectedPeriods, id ) == false )
 		{						

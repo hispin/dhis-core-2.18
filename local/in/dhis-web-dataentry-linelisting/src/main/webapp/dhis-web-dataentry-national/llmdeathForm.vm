@@ -6,16 +6,16 @@
 	
 	var slnos = $recordNos.size()+1;
 	
-	function addLLMDNewRow()
+	function addLLMDNewRow( thisValue, dataElementId, recordNo )
 	{
-		if(nextFlag == 0)
-		{
-		   nextFlag = 1;
-		}
-		else
-		{
-		    return;
-		}
+
+		var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].slno' );    
+        var resVal = field.innerHTML;
+        
+        if( thisValue == null || thisValue.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" || slnos != resVal )
+        {
+			return;
+        }
 		
 		nextRecordNo++;
 		slnos++;
@@ -25,16 +25,16 @@
 		var newRow = tbl.insertRow(lastRow);		
 
     	var oCell = newRow.insertCell(0);
-    	oCell.innerHTML = "<div align='center'>" + slnos + "</div>";
+    	oCell.innerHTML = "<div id='value[1032].value:value["+nextRecordNo+"].slno' align='center'>" + slnos + "</div>";
             
     	oCell = newRow.insertCell(1);
-    	oCell.innerHTML = "<input name='entryfield' id='value[1032].value:value["+nextRecordNo+"].value' type='text' value=' ' onchange='saveLLbirthValue(1032,"+nextRecordNo+")' onkeypress='return keyPress(event, this)' onblur='addLLMDNewRow()' style='width:100% text-align:center'>";
+    	oCell.innerHTML = "<input name='entryfield' id='value[1032].value:value["+nextRecordNo+"].value' type='text' value='' onchange='validateNameField(1032,"+nextRecordNo+")' onkeypress='return keyPress(event, this)' onblur='addLLMDNewRow(this.value, 1032, "+nextRecordNo+")' style='width:100% text-align:center'>";
     
     	oCell = newRow.insertCell(2);
-    	oCell.innerHTML = "<input name='entryfield' id='value[1033].value:value["+nextRecordNo+"].value' type='text' value=' ' onchange='saveLLbirthValue(1033,"+nextRecordNo+")' onkeypress='return keyPress(event, this)' style='width:100% text-align:center'>";
+    	oCell.innerHTML = "<input name='entryfield' id='value[1033].value:value["+nextRecordNo+"].value' type='text' value='' onchange='saveLLbirthValue(1033,"+nextRecordNo+")' onkeypress='return keyPress(event, this)' style='width:100% text-align:center'>";
 
     	oCell = newRow.insertCell(3);
-    	oCell.innerHTML = "<input name='entryfield' id='value[1034].value:value["+nextRecordNo+"].value' type='text' value=' ' onchange='saveLLbirthValue(1034,"+nextRecordNo+")' onkeypress='return keyPress(event, this)' style='width:100% text-align:center'>";
+    	oCell.innerHTML = "<input name='entryfield' id='value[1034].value:value["+nextRecordNo+"].value' type='text' value='' onchange='validateAgeAtDeathField(1034,"+nextRecordNo+")' onkeypress='return keyPress(event, this)' style='width:100% text-align:center' maxlength='2'>";
     
     	oCell = newRow.insertCell(4);
     	oCell.innerHTML = "<select name='entryfield' id='value[1035].value:value["+nextRecordNo+"].value' onchange='saveLLbirthValue(1035,"+nextRecordNo+")' onkeypress='return keyPress(event, his)' style='width:100% text-align:center'><option value='NONE' selected>---</option><option value='FTP'>FIRST TRIMESTER PREGNANCY</option><option value='STP'>SECOND TRIMESTER PREGNANCY</option>	<option value='TTP'>THIRD TRIMESTER PREGNANCY</option><option value='DELIVERY'>DELIVERY</option><option value='ADW42D'>AFTER DELIVERY WITHIN 42 DAYS</option></select>";    	
@@ -139,10 +139,12 @@
 				</select>
 			</td>
 		#elseif($count1 == 1)
-			<td align="center">$slno</td>
-			<td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue()) $llDataValue.getValue() #end" onchange="saveLLbirthValue($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>		
+			<td align="center"><div id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].slno" align='center'>$slno</div></td>
+			<td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="validateNameField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
+        #elseif($count1 == 3)
+            <td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="validateAgeAtDeathField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center" maxlength='2'></td>     						
 		#else
-			<td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue()) $llDataValue.getValue() #end" onchange="saveLLbirthValue($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>		
+			<td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="saveLLbirthValue($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>		
 		#end				
 		#set($count1 = $count1+1)
 	#end
@@ -150,10 +152,10 @@
 	</tr>	
 #end
 <tr>
-	<td align="center">$slno</td>
-	<td><input name="entryfield" id="value[1032].value:value[$recordNo].value" type="text" value=" " onchange="saveLLbirthValue(1032,$recordNo )" onkeypress="return keyPress(event, this)" onblur="addLLMDNewRow()" style="width:100% text-align:center"></td>
-	<td><input name="entryfield" id="value[1033].value:value[$recordNo].value" type="text" value=" " onchange="saveLLbirthValue(1033,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
-	<td><input name="entryfield" id="value[1034].value:value[$recordNo].value" type="text" value=" " onchange="saveLLbirthValue(1034,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
+	<td align="center"><div id='value[1032].value:value[$recordNo].slno' align='center'>$slno</div></td>
+	<td><input name="entryfield" id="value[1032].value:value[$recordNo].value" type="text" value="" onchange="validateNameField(1032,$recordNo )" onkeypress="return keyPress(event, this)" onblur="addLLMDNewRow( this.value, 1032, $recordNo )" style="width:100% text-align:center"></td>
+	<td><input name="entryfield" id="value[1033].value:value[$recordNo].value" type="text" value="" onchange="saveLLbirthValue(1033,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
+	<td><input name="entryfield" id="value[1034].value:value[$recordNo].value" type="text" value="" onchange="validateAgeAtDeathField(1034,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center" maxlength='2'></td>
 	<td>
 		<select name="entryfield" id="value[1035].value:value[$recordNo].value" onchange="saveLLbirthValue(1035,$recordNo)" onkeypress="return keyPress(event, this)" style="width:100% text-align:center">
 			<option value="NONE" selected>---</option>					
