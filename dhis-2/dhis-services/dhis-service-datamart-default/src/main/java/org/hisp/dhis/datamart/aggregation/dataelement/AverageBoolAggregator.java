@@ -127,20 +127,20 @@ public class AverageBoolAggregator
                         value = 0.0;                        
                         relevantDays = 0.0;
                         
-                        if ( currentStartDate.compareTo( startDate ) >= 0 && currentEndDate.compareTo( endDate ) <= 0 )
+                        if ( currentStartDate.compareTo( startDate ) >= 0 && currentEndDate.compareTo( endDate ) <= 0 ) // Value is within period
                         {
                             relevantDays = getDays( currentEndDate ) - getDays( currentStartDate );
                         }
-                        else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( endDate ) >= 0 )
+                        else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( endDate ) >= 0 ) // Value spans whole period
                         {
                             relevantDays = getDays( endDate ) - getDays( startDate );
                         }
-                        else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( startDate ) >= 0
+                        else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( startDate ) >= 0 // Value spans period start
                             && currentEndDate.compareTo( endDate ) <= 0 )
                         {
                             relevantDays = getDays( currentEndDate ) - getDays( startDate );
                         }
-                        else if ( currentStartDate.compareTo( startDate ) >= 0 && currentStartDate.compareTo( endDate ) <= 0
+                        else if ( currentStartDate.compareTo( startDate ) >= 0 && currentStartDate.compareTo( endDate ) <= 0 // Value spans period end
                             && currentEndDate.compareTo( endDate ) >= 0 )
                         {
                             relevantDays = getDays( endDate ) - getDays( currentStartDate );

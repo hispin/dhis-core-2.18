@@ -140,29 +140,29 @@ public class SumIntAggregator
                         relevantDays = 0;
                         factor = 0;
                         
-                        if ( currentStartDate.compareTo( startDate ) >= 0 && currentEndDate.compareTo( endDate ) <= 0 )
+                        if ( currentStartDate.compareTo( startDate ) >= 0 && currentEndDate.compareTo( endDate ) <= 0 ) // Value is within period
                         {
                             relevantDays = getDays( endDate ) - getDays( startDate );
                             factor = 1;
                         }
-                        else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( endDate ) >= 0 )
+                        else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( endDate ) >= 0 ) // Value spans whole period
                         {
                             relevantDays = getDays( endDate ) - getDays( startDate );
                             factor = relevantDays / duration;
                         }
                         else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( startDate ) >= 0
-                            && currentEndDate.compareTo( endDate ) <= 0 )
+                            && currentEndDate.compareTo( endDate ) <= 0 ) // Value spans period start
                         {
                             relevantDays = getDays( currentEndDate ) - getDays( startDate );
                             factor = relevantDays / duration;
                         }
                         else if ( currentStartDate.compareTo( startDate ) >= 0 && currentStartDate.compareTo( endDate ) <= 0
-                            && currentEndDate.compareTo( endDate ) >= 0 )
+                            && currentEndDate.compareTo( endDate ) >= 0 ) // Value spans period end
                         {
                             relevantDays = getDays( endDate ) - getDays( currentStartDate );
                             factor = relevantDays / duration;
                         }
-
+                        
                         value = value * factor;
                         
                         existingValue = totalSums.containsKey( entry.getKey() ) ? totalSums.get( entry.getKey() )[ 0 ] : 0;

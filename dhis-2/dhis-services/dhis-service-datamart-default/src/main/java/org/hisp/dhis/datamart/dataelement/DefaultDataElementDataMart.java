@@ -129,10 +129,8 @@ public class DefaultDataElementDataMart
                 {
                     value.clear();
                     
-                    Operand operand = entry.getKey();
-                    
-                    value.setDataElementId( operand.getDataElementId() );
-                    value.setCategoryOptionComboId( operand.getOptionComboId() );
+                    value.setDataElementId( entry.getKey().getDataElementId() );
+                    value.setCategoryOptionComboId( entry.getKey().getOptionComboId() );
                     value.setPeriodId( period.getId() );
                     value.setPeriodTypeId( periodType.getId() );
                     value.setOrganisationUnitId( unit.getId() );
@@ -155,7 +153,7 @@ public class DefaultDataElementDataMart
     // Id-to-object methods
     // -------------------------------------------------------------------------
 
-    private Collection<Period> getPeriods( Collection<Integer> periodIds )
+    private Collection<Period> getPeriods( final Collection<Integer> periodIds )
     {
         final Set<Period> periods = new HashSet<Period>( periodIds.size() );
         
@@ -167,7 +165,7 @@ public class DefaultDataElementDataMart
         return periods;
     }
     
-    private Collection<OrganisationUnit> getOrganisationUnits( Collection<Integer> organisationUnitIds )
+    private Collection<OrganisationUnit> getOrganisationUnits( final Collection<Integer> organisationUnitIds )
     {
         final Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>( organisationUnitIds.size() );
         
