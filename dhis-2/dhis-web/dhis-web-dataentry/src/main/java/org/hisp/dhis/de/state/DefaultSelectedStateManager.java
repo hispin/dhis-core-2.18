@@ -28,7 +28,6 @@ package org.hisp.dhis.de.state;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -44,7 +43,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -61,7 +59,7 @@ import com.opensymphony.xwork.ActionContext;
 public class DefaultSelectedStateManager
     implements SelectedStateManager
 {
-    private static final Log LOG = LogFactory.getLog( DefaultSelectedStateManager.class );
+    private static final Log log = LogFactory.getLog( DefaultSelectedStateManager.class );
 
     public static final String SESSION_KEY_SELECTED_DATASET_ID = "data_entry_selected_dataset_id";
 
@@ -73,13 +71,6 @@ public class DefaultSelectedStateManager
     // Dependencies
     // -------------------------------------------------------------------------
     
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -109,12 +100,6 @@ public class DefaultSelectedStateManager
     }
 
     // -------------------------------------------------------------------------
-    // Cache
-    // -------------------------------------------------------------------------
-
-    private ThreadLocal<List<Period>> generatedPeriodsCache = new ThreadLocal<List<Period>>();
-
-    // -------------------------------------------------------------------------
     // SelectedStateManager implementation
     // -------------------------------------------------------------------------
 
@@ -131,7 +116,6 @@ public class DefaultSelectedStateManager
     // DataSet
     // -------------------------------------------------------------------------
     
-    @SuppressWarnings( "unchecked" )
     public void setSelectedDataSet( DataSet dataSet )
     {
         getSession().put( SESSION_KEY_SELECTED_DATASET_ID, dataSet.getId() );
@@ -141,12 +125,7 @@ public class DefaultSelectedStateManager
     {
         Integer id = (Integer) getSession().get( SESSION_KEY_SELECTED_DATASET_ID );
 
-        if ( id == null )
-        {
-            return null;
-        }
-
-        return dataSetService.getDataSet( id );
+        return id != null ? dataSetService.getDataSet( id ) : null;
     }
 
     public void clearSelectedDataSet()
@@ -157,6 +136,10 @@ public class DefaultSelectedStateManager
     public List<DataSet> loadDataSetsForSelectedOrgUnit( OrganisationUnit organisationUnit )
     {
         List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( organisationUnit ) );
+
+        // ---------------------------------------------------------------------
+        // Retain only DataSets from current user's authority groups
+        // ---------------------------------------------------------------------
 
         if ( !currentUserService.currentUserIsSuper() )
         {
@@ -195,7 +178,6 @@ public class DefaultSelectedStateManager
     // Period
     // -------------------------------------------------------------------------
     
-    @SuppressWarnings( "unchecked" )
     public void setSelectedPeriodIndex( Integer index )
     {
         getSession().put( SESSION_KEY_SELECTED_PERIOD_INDEX, index );
@@ -232,41 +214,27 @@ public class DefaultSelectedStateManager
 
     public List<Period> getPeriodList()
     {
-        List<Period> periods = generatedPeriodsCache.get();
         Period basePeriod = getBasePeriod();
-
-        if ( periods == null || periods.size() == 0
-            || !periods.get( 0 ).getPeriodType().equals( basePeriod.getPeriodType() ) || !periods.contains( basePeriod ) )
-        {
-            CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
-
-            LOG.debug( "Generated periods cache invalid, generating new periods based on " + basePeriod );
-
-            periods = periodType.generatePeriods( basePeriod );
-
-            generatedPeriodsCache.set( periods );
-        }
         
+        CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
+
+        List<Period> periods = periodType.generatePeriods( basePeriod );
+
         Date now = new Date();
 
         Iterator<Period> iterator = periods.iterator();
         
-        Collection<Period> persistedPeriods = periodService.getAllPeriods();
-
         while ( iterator.hasNext() )
         {
-            Period period = iterator.next();
-
-            if ( period.getStartDate().after( now ) || !persistedPeriods.contains( period ) )
+            if ( iterator.next().getStartDate().after( now ) )
             {
                 iterator.remove();
             }
         }
-
+        
         return periods;
     }
-
-    @SuppressWarnings( "unchecked" )
+    
     public void nextPeriodSpan()
     {
         List<Period> periods = getPeriodList();
@@ -278,12 +246,9 @@ public class DefaultSelectedStateManager
         if ( newBasePeriod.getStartDate().before( new Date() ) ) // Future periods not allowed
         {
             getSession().put( SESSION_KEY_BASE_PERIOD, newBasePeriod );
-
-            generatedPeriodsCache.remove();
         }
     }
 
-    @SuppressWarnings( "unchecked" )
     public void previousPeriodSpan()
     {
         List<Period> periods = getPeriodList();
@@ -293,8 +258,6 @@ public class DefaultSelectedStateManager
         Period newBasePeriod = periodType.getPreviousPeriod( basePeriod );
 
         getSession().put( SESSION_KEY_BASE_PERIOD, newBasePeriod );
-
-        generatedPeriodsCache.remove();
     }
 
     // -------------------------------------------------------------------------
@@ -313,22 +276,22 @@ public class DefaultSelectedStateManager
         return dataSet.getPeriodType();
     }
 
-    @SuppressWarnings( "unchecked" )
     private Period getBasePeriod()
     {
         Period basePeriod = (Period) getSession().get( SESSION_KEY_BASE_PERIOD );
+        
         PeriodType periodType = getPeriodType();
 
         if ( basePeriod == null )
         {
-            LOG.debug( "getBasePeriod(): Base period is null, creating new." );
+            log.debug( "Base period is null, creating new" );
 
             basePeriod = periodType.createPeriod();
             getSession().put( SESSION_KEY_BASE_PERIOD, basePeriod );
         }
         else if ( !basePeriod.getPeriodType().equals( periodType ) )
         {
-            LOG.debug( "getBasePeriod(): Wrong type of base period, transforming." );
+            log.debug( "Wrong type of base period, transforming" );
 
             basePeriod = periodType.createPeriod( basePeriod.getStartDate() );
             getSession().put( SESSION_KEY_BASE_PERIOD, basePeriod );
@@ -338,7 +301,7 @@ public class DefaultSelectedStateManager
     }
 
     @SuppressWarnings( "unchecked" )
-    private static final Map getSession()
+    private static final Map<Object, Object> getSession()
     {
         return ActionContext.getContext().getSession();
     }
