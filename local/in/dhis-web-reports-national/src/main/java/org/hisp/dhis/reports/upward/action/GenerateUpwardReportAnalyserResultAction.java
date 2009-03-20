@@ -14,6 +14,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.SimpleFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -266,11 +267,25 @@ public class GenerateUpwardReportAnalyserResultAction
         return monthFormat;
     }
 
+    private SimpleDateFormat simpleMonthFormat;
+
+    public SimpleDateFormat getSimpleMonthFormat()
+    {
+        return simpleMonthFormat;
+    }
+
     private SimpleDateFormat yearFormat;
 
     public SimpleDateFormat getYearFormat()
     {
         return yearFormat;
+    }
+
+    private SimpleDateFormat simpleYearFormat;
+
+    public SimpleDateFormat getSimpleYearFormat()
+    {
+        return simpleYearFormat;
     }
 
     private List<String> deCodeType;
@@ -373,7 +388,9 @@ public class GenerateUpwardReportAnalyserResultAction
         String deCodesXMLFileName = "";
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
         monthFormat = new SimpleDateFormat( "MMMM" );
+        simpleMonthFormat= new SimpleDateFormat("MMM");
         yearFormat = new SimpleDateFormat( "yyyy" );
+        simpleYearFormat = new SimpleDateFormat("yy");
         deCodesXMLFileName = reportList + "DECodes.xml";
 
         String parentUnit = "";
@@ -575,6 +592,17 @@ public class GenerateUpwardReportAnalyserResultAction
                     tempStr = monthFormat.format( sDate );
 
                 }
+                else if ( deCodeString.equalsIgnoreCase( "MONTH-START" ) )
+                {
+                    tempStr = simpleMonthFormat.format( sDate );
+
+                }
+                else if ( deCodeString.equalsIgnoreCase( "MONTH-END" ) )
+                {
+                    tempStr = simpleMonthFormat.format( eDate );
+
+                }
+
                 else if ( deCodeString.equalsIgnoreCase( "PERIOD-WEEK" ) )
                 {
                     tempStr = String.valueOf( tempStartDate.get( Calendar.WEEK_OF_MONTH ) );
@@ -714,6 +742,24 @@ public class GenerateUpwardReportAnalyserResultAction
                     }
 
                     tempStr = yearFormat.format( sDate );
+                }
+
+                else if ( deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" ) )
+                {
+                    if ( quarterPeriod != 0 )
+                    {
+
+                        Calendar tempQuarterYear = Calendar.getInstance();
+
+                        tempQuarterYear.setTime( sDate );
+
+                        tempQuarterYear.roll( Calendar.YEAR, -1 );
+
+                        sDate = tempQuarterYear.getTime();
+
+                    }
+
+                    tempStr = simpleYearFormat.format( sDate );
                 }
 
                 else if ( deCodeString.equalsIgnoreCase( "YEAR-END" ) )
