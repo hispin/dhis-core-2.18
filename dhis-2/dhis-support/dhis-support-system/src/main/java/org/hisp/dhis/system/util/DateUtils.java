@@ -156,6 +156,18 @@ public class DateUtils
     }
     
     /**
+     * Returns the number of days since 01/01/1970. The value is rounded off to 
+     * the floor value and does not take daylight saving time into account.
+     * 
+     * @param date the date.
+     * @return number of days since Epoch.
+     */
+    public static long getDays( Date date )
+    {
+        return date.getTime() / MS_PER_DAY;
+    }
+    
+    /**
      * Returns the number of days between the start date (inclusive) and end 
      * date (exclusive). The value is rounded off to the floor value and does 
      * not take daylight saving time into account.

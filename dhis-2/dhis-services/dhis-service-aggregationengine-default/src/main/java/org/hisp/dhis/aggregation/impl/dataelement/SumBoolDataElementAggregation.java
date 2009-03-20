@@ -39,7 +39,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.period.Period;
 
 import static org.hisp.dhis.system.util.MathUtils.getFloor;
-import static org.hisp.dhis.system.util.MathUtils.getDays;
+import static org.hisp.dhis.system.util.DateUtils.getDays;
 
 
 /**
