@@ -214,10 +214,7 @@ function filterDataSetMembers()
     {
         var value = dataSetMembers[id];
         
-        value = value.toLowerCase();
-		filter = filter.toLowerCase();
-        
-        if ( value.indexOf( filter ) != -1 )
+        if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
         {
             list.add( new Option( value, id ), null );
         }
@@ -235,10 +232,7 @@ function filterAvailableDataElements()
     {
         var value = availableDataElements[id];
         
-        value = value.toLowerCase();
-		filter = filter.toLowerCase();
-        
-        if ( value.indexOf( filter ) != -1 )
+        if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
         {
             list.add( new Option( value, id ), null );
         }
