@@ -43,6 +43,8 @@ public class DateUtils
 {
     public static final double DAYS_IN_YEAR = 365.0;
     
+    private static final long MS_PER_DAY = 86400000;
+    
     /**
      * Formats a Date to the IXF date format which is YYYY-MM-DD'T'HH:MM:SS.
      * @param date the Date to parse.
@@ -50,7 +52,7 @@ public class DateUtils
      */
     public static String getLongDateString( Date date )
     {
-        SimpleDateFormat format = new SimpleDateFormat();
+        final SimpleDateFormat format = new SimpleDateFormat();
         format.applyPattern( "yyyy-MM-dd'T'HH:mm:ss" );
         
         return date != null ? format.format( date ) : null;
@@ -72,7 +74,7 @@ public class DateUtils
      */
     public static String getMediumDateString( Date date )
     {
-        SimpleDateFormat format = new SimpleDateFormat();
+        final SimpleDateFormat format = new SimpleDateFormat();
         format.applyPattern( "yyyy-MM-dd" );
         
         return date != null ? format.format( date ) : null;
@@ -96,7 +98,7 @@ public class DateUtils
     {
         try
         {
-            SimpleDateFormat format = new SimpleDateFormat();
+            final SimpleDateFormat format = new SimpleDateFormat();
             format.applyPattern( "yyyy-MM-dd" );
         
             return dateString != null ? format.parse( dateString ) : null;
@@ -154,9 +156,9 @@ public class DateUtils
     }
     
     /**
-     * Returns the number of days between the start and end-date. The value
-     * is rounded off to the floor value and does not take daylight saving time
-     * into account.
+     * Returns the number of days between the start date (inclusive) and end 
+     * date (exclusive). The value is rounded off to the floor value and does 
+     * not take daylight saving time into account.
      * 
      * @param startDate the start-date.
      * @param endDate the end-date.
@@ -164,10 +166,21 @@ public class DateUtils
      */
     public static long getDays( Date startDate, Date endDate )
     {
-        long msPrDay = 86400000;
-        long ms = endDate.getTime() - startDate.getTime();
-        
-        return ms / msPrDay;
+        return ( endDate.getTime() - startDate.getTime() ) / MS_PER_DAY;
+    }
+
+    /**
+     * Returns the number of days between the start date (inclusive) and end 
+     * date (inclusive). The value is rounded off to the floor value and does 
+     * not take daylight saving time into account.
+     * 
+     * @param startDate the start-date.
+     * @param endDate the end-date.
+     * @return the number of days between the start and end-date.
+     */
+    public static long getDaysInclusive( Date startDate, Date endDate )
+    {
+        return ( getDays( startDate, endDate ) + 1 );
     }
     
     /**
@@ -179,7 +192,7 @@ public class DateUtils
      */
     public static int daysBetween( Date startDate, Date endDate )
     {
-        Days days = Days.daysBetween( new DateTime( startDate ), new DateTime( endDate ) );
+        final Days days = Days.daysBetween( new DateTime( startDate ), new DateTime( endDate ) );
         
         return days.getDays();
     }
@@ -191,7 +204,7 @@ public class DateUtils
      */
     public static int daysSince1900( Date date )
     {
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         
         calendar.clear();
         calendar.set( 1900, 0, 1 );
@@ -205,7 +218,7 @@ public class DateUtils
      */
     public static Date getEpoch()
     {
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         
         calendar.clear();
         calendar.set( 1970, 0, 1 );

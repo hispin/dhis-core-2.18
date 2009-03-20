@@ -27,7 +27,6 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
 import java.util.Scanner;
 
 import org.nfunk.jep.JEP;
@@ -40,8 +39,6 @@ public class MathUtils
 {
     public static final double INVALID = -1.0;
     
-    private static final long MS_PER_DAY = 86400000;
-    
     /**
      * Validates whether an expression is true or false.
      * 
@@ -52,9 +49,9 @@ public class MathUtils
      */
     public static boolean expressionIsTrue( double leftSide, String operator, double rightSide )
     {
-        String expression = leftSide + operator + rightSide;
+        final String expression = leftSide + operator + rightSide;
         
-        JEP parser = new JEP();
+        final JEP parser = new JEP();
         
         parser.parseExpression( expression );
         
@@ -69,7 +66,7 @@ public class MathUtils
      */
     public static double calculateExpression( String expression )   
     {
-        JEP parser = new JEP();
+        final JEP parser = new JEP();
         
         parser.parseExpression( expression );
         
@@ -86,7 +83,7 @@ public class MathUtils
      */
     public static boolean expressionHasErrors( String expression )
     {
-        JEP parser = new JEP();
+        final JEP parser = new JEP();
         
         parser.parseExpression( expression );
         
@@ -102,26 +99,11 @@ public class MathUtils
      */
     public static String getExpressionErrorInfo( String expression )
     {
-        JEP parser = new JEP();
+        final JEP parser = new JEP();
         
         parser.parseExpression( expression );
         
         return parser.getErrorInfo();
-    }
-    
-    /**
-     * Calculates the number of days since epoch (01.01.1970). The value is 
-     * rounded off to the floor value.
-     * 
-     * @param date The date to be calculated
-     * @return Number of days since epoch
-     */
-    public static long getDays( Date date )
-    {
-        long ms = date.getTime();
-        long days = ms / MS_PER_DAY;
-        
-        return days;        
     }
     
     /**
@@ -144,7 +126,7 @@ public class MathUtils
      */
     public static double getRounded( double value, int decimals )
     {
-        double factor = Math.pow( 10, decimals );
+        final double factor = Math.pow( 10, decimals );
         
         return Math.round( value * factor ) / factor;
     }

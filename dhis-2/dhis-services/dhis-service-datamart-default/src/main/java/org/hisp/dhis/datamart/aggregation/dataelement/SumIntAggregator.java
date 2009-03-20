@@ -27,7 +27,7 @@ package org.hisp.dhis.datamart.aggregation.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.MathUtils.getDays;
+import static org.hisp.dhis.system.util.DateUtils.getDaysInclusive;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -115,7 +115,7 @@ public class SumIntAggregator
             currentStartDate = period.getStartDate();
             currentEndDate = period.getEndDate();
             
-            double duration = getDays( currentEndDate ) - getDays( currentStartDate );
+            double duration = getDaysInclusive( currentStartDate, currentEndDate );
             
             if ( duration > 0 )
             {
@@ -142,24 +142,24 @@ public class SumIntAggregator
                         
                         if ( currentStartDate.compareTo( startDate ) >= 0 && currentEndDate.compareTo( endDate ) <= 0 ) // Value is within period
                         {
-                            relevantDays = getDays( endDate ) - getDays( startDate );
+                            relevantDays = getDaysInclusive( startDate, endDate );
                             factor = 1;
                         }
                         else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( endDate ) >= 0 ) // Value spans whole period
                         {
-                            relevantDays = getDays( endDate ) - getDays( startDate );
+                            relevantDays = getDaysInclusive( startDate, endDate );
                             factor = relevantDays / duration;
                         }
                         else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( startDate ) >= 0
                             && currentEndDate.compareTo( endDate ) <= 0 ) // Value spans period start
                         {
-                            relevantDays = getDays( currentEndDate ) - getDays( startDate );
+                            relevantDays = getDaysInclusive( startDate, currentEndDate );
                             factor = relevantDays / duration;
                         }
                         else if ( currentStartDate.compareTo( startDate ) >= 0 && currentStartDate.compareTo( endDate ) <= 0
                             && currentEndDate.compareTo( endDate ) >= 0 ) // Value spans period end
                         {
-                            relevantDays = getDays( endDate ) - getDays( currentStartDate );
+                            relevantDays = getDaysInclusive( currentStartDate, endDate );
                             factor = relevantDays / duration;
                         }
                         

@@ -48,7 +48,7 @@ public class TextUtils
      */
     public static String subString( String string, int beginIndex, int length )
     {
-        int endIndex = beginIndex + length;
+        final int endIndex = beginIndex + length;
         
         if ( beginIndex >= string.length()  )
         {
@@ -73,7 +73,7 @@ public class TextUtils
     {
         if ( elements != null && elements.size() > 0 )
         {
-            StringBuffer buffer = new StringBuffer();        
+            final StringBuffer buffer = new StringBuffer();        
         
             for ( Integer element : elements )
             {
