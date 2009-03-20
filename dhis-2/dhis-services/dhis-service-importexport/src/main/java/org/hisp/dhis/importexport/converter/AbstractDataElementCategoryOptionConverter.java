@@ -55,9 +55,6 @@ public class AbstractDataElementCategoryOptionConverter
 
     protected DataElementCategoryOption getMatching( DataElementCategoryOption object )
     {
-        System.out.println( "c " + categoryOptionService );
-        System.out.println( "o " + object );
-        
         return categoryOptionService.getDataElementCategoryOptionByName( object.getName() );
     }
     
