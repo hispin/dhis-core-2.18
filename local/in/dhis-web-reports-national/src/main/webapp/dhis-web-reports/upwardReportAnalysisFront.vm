@@ -96,7 +96,7 @@
 	                <tr>
           	          <td>&nbsp;</td>
           	          <td>
-						  <input type="checkbox" id="aggCB" name="aggCB"> Aggregated Data
+						  <input type="checkbox" id="aggCB" name="aggCB" checked> Aggregated Data
 						  <br><br>	  							
           	              <input type="submit" name="generate" value='Generate Report'/>
           	              <input type="hidden" name="ouIDTB" id="ouIDTB">

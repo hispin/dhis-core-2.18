@@ -108,12 +108,15 @@ public class GetPeriodsAction
             {
                 periods.addAll( periodService.getPeriodsByPeriodType( type ) );
             }
+            Collections.sort(periods, new PeriodComparator() );
         }
         else
         {
             PeriodType periodType = periodService.getPeriodTypeByName( id );
 
             periods = new ArrayList<Period>(periodService.getPeriodsByPeriodType( periodType ));
+            
+            Collections.sort(periods, new PeriodComparator() );
             
             if(periodType.getName().equalsIgnoreCase("monthly"))
             {
@@ -153,7 +156,7 @@ public class GetPeriodsAction
             }
         }
 
-        Collections.sort(periods, new PeriodComparator() );
+        
         
         return SUCCESS;
     }

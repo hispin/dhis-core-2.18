@@ -332,14 +332,13 @@ public class GenerateUpwardReportAnalyserResultAction
     {
         this.availablePeriods = availablePeriods;
     }
-    
+
     private String aggCB;
-    
+
     public void setAggCB( String aggCB )
     {
         this.aggCB = aggCB;
     }
-
 
     private Hashtable<String, String> serviceList;
 
@@ -383,10 +382,10 @@ public class GenerateUpwardReportAnalyserResultAction
         rowList = new ArrayList<Integer>();
         colList = new ArrayList<Integer>();
 
-        String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator
-            + "ra_national" + File.separator + "template" + File.separator + reportFileNameTB;
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator
-            + "ra_national" + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + "ra_national" + File.separator
+            + "template" + File.separator + reportFileNameTB;
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + "ra_national" + File.separator
+            + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
 
         WritableWorkbook outputReportWorkbook = Workbook
@@ -433,19 +432,19 @@ public class GenerateUpwardReportAnalyserResultAction
 
             Collections.sort( orgUnitList, new OrganisationUnitNameComparator() );
 
-            //orgUnitList.add( 0, parent );
-            
+            // orgUnitList.add( 0, parent );
+
             orgUnitList.add( orgUnit );
 
         }
         if ( reportModelTB.equalsIgnoreCase( "INDICATOR-AGAINST-SIBLINGS" ) )
         {
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
-            
-            System.out.println("The selected parent is :" + orgUnit.getName());
-            
+
+            System.out.println( "The selected parent is :" + orgUnit.getName() );
+
             orgUnitList = new ArrayList<OrganisationUnit>();
-            
+
             orgUnitList.addAll( orgUnit.getChildren() );
 
             Collections.sort( orgUnitList, new OrganisationUnitNameComparator() );
@@ -470,14 +469,14 @@ public class GenerateUpwardReportAnalyserResultAction
         Iterator it = orgUnitList.iterator();
         int orgUnitCount = 0;
         int orgUnitGroupCount = 0;
-        
+
         int rowCounter = 0;
-        
+
         while ( it.hasNext() )
         {
 
-        	int quarterPeriod = 0;
-        	
+            int quarterPeriod = 0;
+
             OrganisationUnit currentOrgUnit = (OrganisationUnit) it.next();
 
             Iterator it1 = deCodesList.iterator();
@@ -508,12 +507,12 @@ public class GenerateUpwardReportAnalyserResultAction
                     tempEndDate = calendarList.get( 1 );
                 }
 
-                if ( deCodeString.equalsIgnoreCase( "FACILITY" )  )
+                if ( deCodeString.equalsIgnoreCase( "FACILITY" ) )
                 {
                     tempStr = currentOrgUnit.getName();
 
                 }
-                else if( deCodeString.equalsIgnoreCase( "FACILITY-NOREPEAT" ))
+                else if ( deCodeString.equalsIgnoreCase( "FACILITY-NOREPEAT" ) )
                 {
                     tempStr = parentUnit;
                 }
@@ -584,7 +583,7 @@ public class GenerateUpwardReportAnalyserResultAction
                 else if ( deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" ) )
                 {
                     String startMonth = "";
-                    
+
                     startMonth = monthFormat.format( sDate );
 
                     if ( startMonth.equalsIgnoreCase( "April" ) )
@@ -606,28 +605,131 @@ public class GenerateUpwardReportAnalyserResultAction
                         tempStr = "Quarter IV";
 
                         quarterPeriod = 1;
-                        
-                        
+
+                    }
+                }
+
+                else if ( deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" ) )
+                {
+                    String startMonth = "";
+
+                    startMonth = monthFormat.format( sDate );
+                    
+                    if ( startMonth.equalsIgnoreCase( "April" ) )
+                    {
+                        tempStr = "Apr - Jun";
+                    }
+
+                    else if ( startMonth.equalsIgnoreCase( "July" ) )
+                    {
+                        tempStr = "Jul - Sep";
+                    }
+                    else if ( startMonth.equalsIgnoreCase( "October" ) )
+                    {
+                        tempStr = "Oct - Dec";
+                    }
+
+                    else
+                    {
+                        tempStr = "Jan - Mar";
+
+                        quarterPeriod = 1;
+
+                    }
+                }
+
+
+                else if ( deCodeString.equalsIgnoreCase( "QUARTER-START" ) )
+                {
+                    String startMonth = "";
+
+                    startMonth = monthFormat.format( sDate );
+
+                    if ( startMonth.equalsIgnoreCase( "April" ) )
+                    {
+                        tempStr = "Apr";
+                    }
+
+                    else if ( startMonth.equalsIgnoreCase( "July" ) )
+                    {
+                        tempStr = "Jul";
+                    }
+                    else if ( startMonth.equalsIgnoreCase( "October" ) )
+                    {
+                        tempStr = "Oct";
+                    }
+
+                    else
+                    {
+                        tempStr = "Jan";
+
+                        quarterPeriod = 1;
+
+                    }
+                }
+
+
+                else if ( deCodeString.equalsIgnoreCase( "QUARTER-END" ) )
+                {
+                    String endMonth = "";
+
+                    endMonth = monthFormat.format( eDate );
+
+                    if ( endMonth.equalsIgnoreCase( "June" ) )
+                    {
+                        tempStr = "Jun";
+                    }
+
+                    else if ( endMonth.equalsIgnoreCase( "September" ) )
+                    {
+                        tempStr = "Sep";
+                    }
+                    else if ( endMonth.equalsIgnoreCase( "December" ) )
+                    {
+                        tempStr = "Dec";
+                    }
+
+                    else
+                    {
+                        tempStr = "Mar";
+
+                        quarterPeriod = 1;
+
                     }
                 }
 
                 else if ( deCodeString.equalsIgnoreCase( "PERIOD-YEAR" ) )
                 {
-                	if (quarterPeriod != 0)
-                	{
+                    if ( quarterPeriod != 0 )
+                    {
 
-                		Calendar tempQuarterYear = Calendar.getInstance();
-                        
-                        tempQuarterYear.setTime(sDate);
-                        
+                        Calendar tempQuarterYear = Calendar.getInstance();
+
+                        tempQuarterYear.setTime( sDate );
+
                         tempQuarterYear.roll( Calendar.YEAR, -1 );
-                        
+
                         sDate = tempQuarterYear.getTime();
 
-                	}              		
-                		
+                    }
+
                     tempStr = yearFormat.format( sDate );
                 }
+
+                else if ( deCodeString.equalsIgnoreCase( "YEAR-END" ) )
+                {
+
+                    Calendar tempQuarterYear = Calendar.getInstance();
+
+                    tempQuarterYear.setTime( sDate );
+
+                    tempQuarterYear.roll( Calendar.YEAR, 1 );
+
+                    sDate = tempQuarterYear.getTime();
+
+                    tempStr = yearFormat.format( sDate );
+                }
+
                 else if ( deCodeString.equalsIgnoreCase( "SLNO" ) )
                 {
                     tempStr = "" + (orgUnitCount + 1);
@@ -639,49 +741,57 @@ public class GenerateUpwardReportAnalyserResultAction
                 else
                 {
                     rowCounter += 1;
-                    
+
                     if ( sType.equalsIgnoreCase( "dataelement" ) )
                     {
-                        if( aggCB == null )
+                        if ( aggCB == null )
                         {
-                            tempStr = getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );                            
+                            tempStr = getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate
+                                .getTime(), currentOrgUnit );
                         }
                         else
                         {
-                            tempStr = getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                            tempStr = getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(),
+                                currentOrgUnit );
                         }
                     }
                     else if ( sType.equalsIgnoreCase( "indicator-parent" ) )
                     {
-                        if( aggCB == null )
+                        if ( aggCB == null )
                         {
-                            tempStr = getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
+                            tempStr = getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(),
+                                tempEndDate.getTime(), currentOrgUnit.getParent() );
                         }
                         else
                         {
-                            tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit.getParent() );
+                            tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate
+                                .getTime(), currentOrgUnit.getParent() );
                         }
                     }
                     else if ( sType.equalsIgnoreCase( "dataelement-boolean" ) )
                     {
-                        if( aggCB == null )
+                        if ( aggCB == null )
                         {
-                            tempStr = getBooleanDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                            tempStr = getBooleanDataValue( deCodeString, tempStartDate.getTime(),
+                                tempEndDate.getTime(), currentOrgUnit );
                         }
                         else
                         {
-                            tempStr = getBooleanDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                            tempStr = getBooleanDataValue( deCodeString, tempStartDate.getTime(),
+                                tempEndDate.getTime(), currentOrgUnit );
                         }
                     }
                     else
                     {
-                        if( aggCB == null )
+                        if ( aggCB == null )
                         {
-                            tempStr = getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                            tempStr = getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(),
+                                tempEndDate.getTime(), currentOrgUnit );
                         }
                         else
                         {
-                            tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                            tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate
+                                .getTime(), currentOrgUnit );
                         }
                     }
                 }
@@ -698,7 +808,7 @@ public class GenerateUpwardReportAnalyserResultAction
                     wCellformat.setWrap( true );
                     wCellformat.setAlignment( Alignment.CENTRE );
 
-                    sheet0.addCell( new Blank (tempColNo, tempRowNo, wCellformat) );
+                    sheet0.addCell( new Blank( tempColNo, tempRowNo, wCellformat ) );
                 }
                 else
                 {
@@ -1037,7 +1147,8 @@ public class GenerateUpwardReportAnalyserResultAction
                     }
                     if ( reportModelTB.equalsIgnoreCase( "dynamicwithrootfacility" ) )
                     {
-                        if ( deCodeString.equalsIgnoreCase( "FACILITYP" ) || deCodeString.equalsIgnoreCase( "FACILITY-NOREPEAT" ) )
+                        if ( deCodeString.equalsIgnoreCase( "FACILITYP" )
+                            || deCodeString.equalsIgnoreCase( "FACILITY-NOREPEAT" ) )
                         {
 
                         }
@@ -1147,7 +1258,7 @@ public class GenerateUpwardReportAnalyserResultAction
         previousPeriod = getPreviousPeriod();
 
         if ( deType.equalsIgnoreCase( "ccmcy" ) )
-        {            
+        {
             tempStartDate.setTime( selectedPeriod.getStartDate() );
             if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
             {
@@ -1155,11 +1266,13 @@ public class GenerateUpwardReportAnalyserResultAction
             }
             tempStartDate.set( Calendar.MONTH, Calendar.APRIL );
             tempEndDate.setTime( selectedPeriod.getEndDate() );
-            //System.out.println("CCMCY : "+ String.valueOf( tempStartDate.getTime()) +" ------ "+String.valueOf( tempEndDate.getTime()));
+            // System.out.println("CCMCY : "+ String.valueOf(
+            // tempStartDate.getTime()) +" ------ "+String.valueOf(
+            // tempEndDate.getTime()));
         }
         else if ( deType.equalsIgnoreCase( "cpmcy" ) )
         {
-            tempStartDate.setTime( previousPeriod.getStartDate() );            
+            tempStartDate.setTime( previousPeriod.getStartDate() );
             if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
             {
                 tempStartDate.roll( Calendar.YEAR, -1 );
@@ -1182,13 +1295,13 @@ public class GenerateUpwardReportAnalyserResultAction
 
             tempStartDate.roll( Calendar.YEAR, -1 );
             tempEndDate.roll( Calendar.YEAR, -1 );
-                        
+
             if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
             {
                 tempStartDate.roll( Calendar.YEAR, -1 );
             }
-            tempStartDate.set( Calendar.MONTH, Calendar.APRIL );                        
-            
+            tempStartDate.set( Calendar.MONTH, Calendar.APRIL );
+
         }
         else if ( deType.equalsIgnoreCase( "pmcy" ) )
         {
@@ -1199,12 +1312,12 @@ public class GenerateUpwardReportAnalyserResultAction
 
         else
         {
-            
+
             tempStartDate.setTime( selectedPeriod.getStartDate() );
             tempEndDate.setTime( selectedPeriod.getEndDate() );
         }
 
-        //System.out.print(deType+" -- ");
+        // System.out.print(deType+" -- ");
         calendarList.add( tempStartDate );
         calendarList.add( tempEndDate );
 
@@ -1389,8 +1502,9 @@ public class GenerateUpwardReportAnalyserResultAction
     {
         try
         {
-            System.out.println( "expression : "+formula + " ***** "+ String.valueOf( startDate ) + " **** "+ String.valueOf( endDate ));
-            
+            //System.out.println( "expression : " + formula + " ***** " + String.valueOf( startDate ) + " **** "
+            //    + String.valueOf( endDate ) );
+
             int deFlag1 = 0;
             int deFlag2 = 0;
             Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
@@ -1398,6 +1512,8 @@ public class GenerateUpwardReportAnalyserResultAction
             Matcher matcher = pattern.matcher( formula );
             StringBuffer buffer = new StringBuffer();
 
+            String resultValue = "";
+            
             while ( matcher.find() )
             {
                 String replaceString = matcher.group();
@@ -1468,14 +1584,16 @@ public class GenerateUpwardReportAnalyserResultAction
                     else
                         replaceString = "";
 
-                    if( replaceString == null ) replaceString = "";
+                    if ( replaceString == null )
+                        replaceString = "";
                 }
                 matcher.appendReplacement( buffer, replaceString );
+
+                resultValue = replaceString;
             }
 
             matcher.appendTail( buffer );
 
-            String resultValue = "";
             if ( deFlag1 == 0 )
             {
                 double d = 0.0;
@@ -1493,21 +1611,27 @@ public class GenerateUpwardReportAnalyserResultAction
                 {
                     d = Math.round( d * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
                     resultValue = "" + (int) d;
+                    
+                    if (resultValue.equalsIgnoreCase( "0" ))
+                    {
+                        resultValue = "";
+                    }
                 }
 
-                //if ( deFlag2 == 0 )
-                //{
-                //    resultValue = " ";
-                //}
+                // if ( deFlag2 == 0 )
+                // {
+                // resultValue = " ";
+                // }
 
             }
             else
             {
                 resultValue = buffer.toString();
             }
-            
-            if (resultValue.equalsIgnoreCase( "" )) resultValue = " ";
-            
+
+            if ( resultValue.equalsIgnoreCase( "" ) )
+                resultValue = " ";
+
             return resultValue;
         }
         catch ( NumberFormatException ex )
@@ -1516,12 +1640,15 @@ public class GenerateUpwardReportAnalyserResultAction
         }
     }
 
-    private String getIndividualResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit )
+    private String getIndividualResultDataValue( String formula, Date startDate, Date endDate,
+        OrganisationUnit organisationUnit )
     {
         try
         {
-            //System.out.println( "expression : "+formula + " ***** "+ String.valueOf( startDate ) + " **** "+ String.valueOf( endDate ));
-            
+            // System.out.println( "expression : "+formula + " ***** "+
+            // String.valueOf( startDate ) + " **** "+ String.valueOf( endDate
+            // ));
+
             int deFlag1 = 0;
             int deFlag2 = 0;
             Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
@@ -1529,6 +1656,8 @@ public class GenerateUpwardReportAnalyserResultAction
             Matcher matcher = pattern.matcher( formula );
             StringBuffer buffer = new StringBuffer();
 
+            String resultValue = "";
+            
             while ( matcher.find() )
             {
                 String replaceString = matcher.group();
@@ -1554,11 +1683,11 @@ public class GenerateUpwardReportAnalyserResultAction
                 }
                 if ( dataElement.getType().equalsIgnoreCase( "int" ) )
                 {
-                    
+
                     PeriodType dePeriodType = getDataElementPeriodType( dataElement );
                     List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
                         dePeriodType, startDate, endDate ) );
-                    
+
                     if ( periodList == null || periodList.isEmpty() )
                     {
                         replaceString = "";
@@ -1568,11 +1697,12 @@ public class GenerateUpwardReportAnalyserResultAction
                     else
                     {
                         double aggregatedValue = 0.0;
-                        for(Period tempPeriod : periodList)
+                        for ( Period tempPeriod : periodList )
                         {
-                            DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod, optionCombo );
-                            
-                            if( dataValue != null )
+                            DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement,
+                                tempPeriod, optionCombo );
+
+                            if ( dataValue != null )
                             {
                                 aggregatedValue += Double.parseDouble( dataValue.getValue() );
                             }
@@ -1615,14 +1745,16 @@ public class GenerateUpwardReportAnalyserResultAction
                     else
                         replaceString = "";
 
-                    if( replaceString == null ) replaceString = "";
+                    if ( replaceString == null )
+                        replaceString = "";
                 }
                 matcher.appendReplacement( buffer, replaceString );
+
+                resultValue = replaceString;
             }
 
             matcher.appendTail( buffer );
 
-            String resultValue = "";
             if ( deFlag1 == 0 )
             {
                 double d = 0.0;
@@ -1640,20 +1772,26 @@ public class GenerateUpwardReportAnalyserResultAction
                 {
                     d = Math.round( d * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
                     resultValue = "" + (int) d;
+                    
+                    if (resultValue.equalsIgnoreCase( "0" ))
+                    {
+                        resultValue = "";
+                    }
                 }
 
-                //if ( deFlag2 == 0 )
-                //{
-                //    resultValue = " ";
-                //}
+                // if ( deFlag2 == 0 )
+                // {
+                // resultValue = " ";
+                // }
 
             }
             else
             {
                 resultValue = buffer.toString();
             }
-            if (resultValue.equalsIgnoreCase( "" )) resultValue = " ";
-            
+            if ( resultValue.equalsIgnoreCase( "" ) )
+                resultValue = " ";
+
             return resultValue;
         }
         catch ( NumberFormatException ex )
@@ -1696,7 +1834,7 @@ public class GenerateUpwardReportAnalyserResultAction
                     matcher.appendReplacement( buffer, replaceString );
                     continue;
                 }
-                
+
                 if ( dataElement.getType().equalsIgnoreCase( "bool" ) )
                 {
                     deFlag1 = 1;
@@ -1717,11 +1855,11 @@ public class GenerateUpwardReportAnalyserResultAction
 
                     DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
                         optionCombo );
-                    
+
                     if ( dataValue != null )
                     {
                         // Works for both text and boolean data types
-                        
+
                         if ( dataValue.getValue().equalsIgnoreCase( "true" ) )
                         {
                             replaceString = "Yes";
@@ -1832,8 +1970,6 @@ public class GenerateUpwardReportAnalyserResultAction
 
                 }
 
-                System.out.println("Formula is : \t" + formula);
-                
                 double aggregatedValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
                     organisationUnit );
 
@@ -1888,7 +2024,6 @@ public class GenerateUpwardReportAnalyserResultAction
         }
     }
 
-
     private String getIndividualResultIndicatorValue( String formula, Date startDate, Date endDate,
         OrganisationUnit organisationUnit )
     {
@@ -1926,41 +2061,45 @@ public class GenerateUpwardReportAnalyserResultAction
                 String denominatorExp = indicator.getDenominator();
                 int indicatorFactor = indicator.getIndicatorType().getFactor();
                 String numeratorVal = getIndividualResultDataValue( numeratorExp, startDate, endDate, organisationUnit );
-                String denominatorVal = getIndividualResultDataValue( denominatorExp, startDate, endDate, organisationUnit );
-                
+                String denominatorVal = getIndividualResultDataValue( denominatorExp, startDate, endDate,
+                    organisationUnit );
+
                 double numeratorValue;
                 try
                 {
-                    numeratorValue = Double.parseDouble( numeratorVal );                     
+                    numeratorValue = Double.parseDouble( numeratorVal );
                 }
-                catch( Exception e )
+                catch ( Exception e )
                 {
-                    System.out.println( "Exception while getting Numerator : "+numeratorExp+" for Indicaotr "+indicator.getName() );
+                    System.out.println( "Exception while getting Numerator : " + numeratorExp + " for Indicaotr "
+                        + indicator.getName() );
                     numeratorValue = 0.0;
                 }
 
                 double denominatorValue;
                 try
                 {
-                    denominatorValue = Double.parseDouble( denominatorVal );                     
+                    denominatorValue = Double.parseDouble( denominatorVal );
                 }
-                catch( Exception e )
+                catch ( Exception e )
                 {
-                    System.out.println( "Exception while getting Deniminator : "+denominatorExp+" for Indicaotr "+indicator.getName() );
+                    System.out.println( "Exception while getting Deniminator : " + denominatorExp + " for Indicaotr "
+                        + indicator.getName() );
                     denominatorValue = 1.0;
                 }
 
                 double aggregatedValue;
                 try
                 {
-                    aggregatedValue = ( numeratorValue / denominatorValue )* indicatorFactor;                    
+                    aggregatedValue = (numeratorValue / denominatorValue) * indicatorFactor;
                 }
-                catch( Exception e )
+                catch ( Exception e )
                 {
-                    System.out.println( "Exception while calculating Indicator value for Indicaotr "+indicator.getName() );
+                    System.out.println( "Exception while calculating Indicator value for Indicaotr "
+                        + indicator.getName() );
                     aggregatedValue = 0.0;
                 }
-                
+
                 replaceString = String.valueOf( aggregatedValue );
                 deFlag2 = 1;
 

@@ -71,6 +71,860 @@ function trim( stringToTrim )
   return stringToTrim.replace(/^\s+|\s+$/g,"");
 }
 
+// -----------------------------------------------------------------------------
+// Linelisting LiveBirth Related Methods for Validation
+// -----------------------------------------------------------------------------
+
+function isLLBNameFiledEntered( recordNo )
+{
+  var dataElementId = 1020;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+
+  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+  { 
+  	alert("Please enter NAME");   
+    return false;
+  }
+  else
+  {
+    return true;
+  } 
+}
+
+function isLLBVillageFiledEntered( recordNo )
+{
+  var dataElementId = 1021;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+
+  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+  { 
+  	alert("Please enter VILLAGE");   
+    return false;
+  }
+  else
+  {
+    return true;
+  } 
+}
+
+function isLLBSexFieldEntered( recordNo )
+{
+  
+  var dataElementId = 1022;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;
+  
+  if(resVal <= 0)
+  {
+    alert("Please enter SEX");
+    
+    return false
+  }
+  
+  return true;
+}
+
+function isLLBDOBFiledEntered( recordNo )
+{
+  var dataElementId = 1023;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+
+  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+  { 
+  	alert("Please enter DOB");   
+    return false;
+  }
+  else
+  {
+    return true;
+  } 
+}
+
+function isLLBWeightFiledEntered( recordNo )
+{
+  var dataElementId = 1024;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+
+  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+  { 
+  	alert("Please enter Weight");   
+    return false;
+  }
+  else
+  {
+    return true;
+  } 
+}
+
+function isLLBBreastFedFiledEntered( )
+{
+	if(lastRecordNo == -1) return true;
+	
+  var dataElementId = 1025;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + lastRecordNo + '].value' );    
+  var resVal = field.selectedIndex;
+
+  if( resVal <= 0 )
+  { 
+  	alert("Please enter BreasFeeding Field in Previous Record");   
+    return false;
+  }
+  else
+  {
+    return true;
+  } 
+}
+
+function validateLLBNameField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+  resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    
+  if(isLLBBreastFedFiledEntered( ))
+  {     
+    if(resVal == null || resVal == "" )
+    {    
+      alert("Please enter name");
+      field.value = "";
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );    
+  }
+  else
+  {     
+      field.value = "";      
+    
+      return false;   
+  }   
+}
+
+function validateLLBVillageField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+  resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    
+  if(isLLBNameFiledEntered( recordNo ))
+  {     
+    if(resVal == null || resVal == "" )
+    {    
+      alert("Please enter village");
+      field.value = "";
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );    
+  }
+  else
+  {     
+      field.value = "";      
+    
+      return false;   
+  }   
+}
+
+function validateLLBSexField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;  
+    
+  if(isLLBVillageFiledEntered( recordNo ))
+  {     
+    if(resVal <= 0)
+    {    
+      alert("Please Select Sex");
+      field.options[0].selected = true;
+      
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );    
+  }
+  else
+  {     
+      field.options[0].selected = true;      
+    
+      return false;   
+  }   
+}
+
+function validateLLBDOBField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+  resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+  
+  if( isLLBSexFieldEntered( recordNo ) )
+  {  
+	  if(isDate(resVal) )
+	  { 
+	    saveLLbirthValue( dataElementId, recordNo );
+	  }    
+	  else
+	  {
+	   field.value = "";
+	   field.focus();
+	  } 
+  }  
+  else
+  {
+  	field.value = "";
+  	
+  	return false;
+  } 
+}
+
+function validateLLBWeightField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+  resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+
+	if(isLLBDOBFiledEntered( recordNo ))
+	{
+    if(resVal == null || resVal == "" )
+	  {    
+	    field.value = "";
+	    field.focus();
+	    
+	    return false;
+	  }
+	
+	  if( isInteger(resVal) || resVal.toUpperCase() == "NK" )
+	  {
+	    saveLLbirthValue( dataElementId, recordNo );
+	  }
+	  else
+	  {
+	    alert("Please enter weight in Grams");
+	    field.value = "";
+	    field.focus();
+	    
+	    return false;
+	  }
+	}
+	else
+	{
+      field.value = "";
+      
+      return false;		
+	} 
+}
+
+function validateLLBBreastFedField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;  
+    
+  if(isLLBWeightFiledEntered( recordNo ))
+  {     
+    if(resVal <= 0)
+    {    
+      alert("Please Select BreastFed Option");
+      field.options[0].selected = true;
+      
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );
+    
+    addLLBNewRow( resVal, 1020, recordNo )    
+  }
+  else
+  {     
+      field.options[0].selected = true;      
+    
+      return false;   
+  }   
+}
+
+// -----------------------------------------------------------------------------
+// Linelisting LiveBirth Related Methods for Validation
+// -----------------------------------------------------------------------------
+
+function isLLDNameFiledEntered( recordNo )
+{
+  var dataElementId = 1027;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+
+  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+  { 
+    alert("Please enter NAME");   
+    return false;
+  }
+  else
+  {
+    return true;
+  } 
+}
+
+function isLLDVillageFiledEntered( recordNo )
+{
+  var dataElementId = 1028;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+
+  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+  { 
+    alert("Please enter VILLAGE");   
+    return false;
+  }
+  else
+  {
+    return true;
+  } 
+}
+
+function isLLDSexFieldEntered( recordNo )
+{  
+  var dataElementId = 1029;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;
+  
+  if(resVal <= 0)
+  {
+    alert("Please enter SEX");
+    
+    return false
+  }
+  
+  return true;
+}
+
+function isLLDAgeCategoryFieldEntered( recordNo )
+{  
+  var dataElementId = 1030;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;
+  
+  if(resVal <= 0)
+  {
+    alert("Please enter AGE CATEGORY");
+    
+    return false
+  }
+  
+  return true;
+}
+
+function isLLDPCDFieldEntered( )
+{ 
+	if(lastRecordNo == -1) return true;
+	 
+  var dataElementId = 1031;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + lastRecordNo + '].value' );    
+  var resVal = field.selectedIndex;
+  
+  if(resVal <= 0)
+  {
+    alert("Please enter CAUSE OF DEATH");
+    
+    return false
+  }
+  
+  return true;
+}
+
+function validateLLDNameField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+  resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    
+  if(isLLDPCDFieldEntered( ))
+  {     
+    if(resVal == null || resVal == "" )
+    {    
+      alert("Please enter name");
+      field.value = "";
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );    
+  }
+  else
+  {     
+      field.value = "";      
+    
+      return false;   
+  }   
+}
+
+function validateLLDVillageField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+  resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+      
+  if(isLLDNameFiledEntered( recordNo ))
+  { 
+    if(resVal == null || resVal == "" )
+    {    
+      alert("Please enter village");
+      field.value = "";
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );    
+  }
+  else
+  {   
+      field.value = "";      
+    
+      return false;   
+  }   
+}
+
+function validateLLDSexField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;  
+    
+  if(isLLDVillageFiledEntered( recordNo ))
+  {     
+    if(resVal <= 0)
+    {    
+      alert("Please Select Sex");
+      field.options[0].selected = true;
+      
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );    
+  }
+  else
+  {     
+      field.options[0].selected = true;      
+    
+      return false;   
+  }   
+}
+
+function validateLLDAgeCategoryField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;  
+    
+  if(isLLDSexFieldEntered( recordNo ))
+  {     
+    if(resVal <= 0)
+    {    
+      alert("Please Select Age Category");
+      field.options[0].selected = true;
+      
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );    
+  }
+  else
+  {     
+      field.options[0].selected = true;      
+    
+      return false;   
+  }   
+}
+
+function validateLLDPCDField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;  
+    
+  if(isLLDAgeCategoryFieldEntered( recordNo ))
+  {     
+    if(resVal <= 0)
+    {    
+      alert("Please enter Cause for Death");
+      field.options[0].selected = true;
+      
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );
+    
+    addLLDNewRow( resVal, 1027, recordNo )    
+  }
+  else
+  {     
+      field.options[0].selected = true;      
+    
+      return false;   
+  }   
+}
+
+// -----------------------------------------------------------------------------
+// Linelisting Maternal Death Related Methods for Validation
+// -----------------------------------------------------------------------------
+
+function isLLMDNameFiledEntered( recordNo )
+{
+  var dataElementId = 1032;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+
+  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+  { 
+    alert("Please enter NAME");   
+    return false;
+  }
+  else
+  {
+    return true;
+  } 
+}
+
+function isLLMDVillageFiledEntered( recordNo )
+{
+  var dataElementId = 1033;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+
+  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+  { 
+    alert("Please enter VILLAGE");   
+    return false;
+  }
+  else
+  {
+    return true;
+  } 
+}
+
+function isLLMDAgeFiledEntered( recordNo )
+{
+  var dataElementId = 1034;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+
+  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+  { 
+    alert("Please enter AGE AT DEATH");   
+    return false;
+  }
+  else
+  {
+    return true;
+  } 
+}
+
+function isLLMDDuringFieldEntered( recordNo )
+{  
+  var dataElementId = 1035;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;
+  
+  if(resVal <= 0)
+  {
+    alert("Please enter DEATH DURING");
+    
+    return false
+  }
+  
+  return true;
+}
+
+function isLLMDDeliveryAtFieldEntered( recordNo )
+{  
+  var dataElementId = 1036;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;
+  
+  if(resVal <= 0)
+  {
+    alert("Please select DELIVERY AT");
+    
+    return false
+  }
+  
+  return true;
+}
+
+function isLLMDDeliveryByFieldEntered( recordNo )
+{  
+  var dataElementId = 1037;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;
+  
+  if(resVal <= 0)
+  {
+    alert("Please select DELIVERY BY");
+    
+    return false
+  }
+  
+  return true;
+}
+
+function isLLMDCauseFieldEntered( recordNo )
+{  
+  var dataElementId = 1038;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;
+  
+  if(resVal <= 0)
+  {
+    alert("Please select CAUSE FOR DEATH");
+    
+    return false
+  }
+  
+  return true;
+}
+
+function isLLMDAuditedFieldEntered(  )
+{  
+	if(lastRecordNo == -1) return true;
+	
+  var dataElementId = 1039;
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + lastRecordNo + '].value' );    
+  var resVal = field.selectedIndex;
+  
+  if(resVal <= 0)
+  {
+    alert("Please enter IS AUDITED");
+    
+    return false
+  }
+  
+  return true;
+}
+
+function validateLLMDNameField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+  resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    
+  if(isLLMDAuditedFieldEntered( ))
+  {     
+    if(resVal == null || resVal == "" )
+    {    
+      alert("Please enter name");
+      field.value = "";
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );    
+  }
+  else
+  {     
+      field.value = "";      
+    
+      return false;   
+  }   
+}
+
+function validateLLMDVillageField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+  resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+      
+  if(isLLMDNameFiledEntered( recordNo ))
+  { 
+    if(resVal == null || resVal == "" )
+    {    
+      alert("Please enter village");
+      field.value = "";
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );    
+  }
+  else
+  {   
+      field.value = "";      
+    
+      return false;   
+  }   
+}
+
+function validateLLMDAgeAtDeathField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.value;
+  var resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+  
+  if(isLLMDVillageFiledEntered( recordNo ))
+  {
+	  if(resVal == null || resVal == "" )
+	  {    
+	    field.value = "";
+	    field.focus();
+	    
+	    return false;
+	  }
+  
+	  if( isInteger( resVal) && parseInt(resVal) >= 15 && parseInt(resVal) < 50 )
+	  {
+	      saveLLbirthValue( dataElementId, recordNo );
+	  }
+	  else
+	  {
+	    alert("Please enter valid AGE (between 15 - 50)");
+	    field.value = "";
+	    field.focus();
+	    
+	    return false;
+	  }
+  }
+  else
+  {
+      field.value = "";      
+    
+      return false;  	
+  }     
+}
+
+function validateLLMDDuringField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;  
+    
+  if(isLLMDAgeFiledEntered( recordNo ))
+  {     
+    if(resVal <= 0)
+    {    
+      alert("Please Enter Death During");
+      field.options[0].selected = true;
+      
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );    
+  }
+  else
+  {     
+      field.options[0].selected = true;      
+    
+      return false;   
+  }   
+}
+
+function validateLLMDDeliveryAtField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;  
+    
+  if(isLLMDDuringFieldEntered( recordNo ))
+  {     
+    if(resVal <= 0)
+    {    
+      alert("Please Enter Delivery At");
+      field.options[0].selected = true;
+      
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );    
+  }
+  else
+  {     
+      field.options[0].selected = true;      
+    
+      return false;   
+  }   
+}
+
+function validateLLMDDeliveryByField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;  
+    
+  if(isLLMDDeliveryAtFieldEntered( recordNo ))
+  {     
+    if(resVal <= 0)
+    {    
+      alert("Please Enter Delivery By");
+      field.options[0].selected = true;
+      
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );    
+  }
+  else
+  {     
+      field.options[0].selected = true;      
+    
+      return false;   
+  }   
+}
+
+function validateLLMDCauseField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;  
+    
+  if(isLLMDDeliveryByFieldEntered( recordNo ))
+  {     
+    if(resVal <= 0)
+    {    
+      alert("Please Enter Cuase for Death");
+      field.options[0].selected = true;
+      
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );    
+  }
+  else
+  {     
+      field.options[0].selected = true;      
+    
+      return false;   
+  }   
+}
+
+function validateLLMDAuditedField( dataElementId, recordNo )
+{
+  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+  var resVal = field.selectedIndex;  
+    
+  if(isLLMDCauseFieldEntered( recordNo ))
+  {     
+    if(resVal <= 0)
+    {    
+      alert("Please enter Is Audited or not");
+      field.options[0].selected = true;
+      
+      field.focus();
+    
+      return false;
+    }      
+    saveLLbirthValue( dataElementId, recordNo );
+    
+    addLLMDNewRow( resVal, 1032, recordNo )    
+  }
+  else
+  {     
+      field.options[0].selected = true;      
+    
+      return false;   
+  }   
+}
 
 // -----------------------------------------------------------------------------
 // Date Validation for Linelisting
@@ -187,157 +1041,6 @@ function isInteger(s)
 {
   var n = trim(s);
   return n.length > 0 && !(/[^0-9]/).test(n);
-}
-
-function validateWeightField( dataElementId, recordNo )
-{
-  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
-  var resVal = field.value;
-  var resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-
-  if(resVal == null || resVal == "" )
-  {    
-    field.value = "";
-    field.focus();
-    
-    return false;
-  }
-
-  if( isInteger( resVal) || resVal.toUpperCase() == "NK" )
-  {
-    saveLLbirthValue( dataElementId, recordNo );
-  }
-  else
-  {
-  	alert("Please enter weight in Grams");
-  	field.value = "";
-    field.focus();
-    
-    return false;
-  }	
-}
-
-function validateNameField( dataElementId, recordNo )
-{
-  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
-  var resVal = field.value;
-
-  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
-  {    
-    alert("Please enter Name");
-    field.value = "";
-    field.focus();
-    
-    return false;
-  }
-  
-  saveLLbirthValue( dataElementId, recordNo );  	
-}
-
-function validateBirthDateField( dataElementId, recordNo )
-{
-	var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
-  var resVal = field.value;
-    
-	if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
-	{	
-		alert("Please enter Name");
-		
-    field.value = "";
-    field.focus();    
-	}
-	else
-	{
-	 field.value = "";
-	 field.focus();
-	}	
-	
-	return false; 
-}
-
-function validateAgeAtDeathField( dataElementId, recordNo )
-{
-  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
-  var resVal = field.value;
-  var resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-
-  if( !isLLMDNameFiledEntered( recordNo ) )
-  {
-  	alert("Please enter name field");
-  	
-  	field.value = "";
-  	return false;
-  }
-  
-  if(resVal == null || resVal == "" )
-  {    
-    field.value = "";
-    field.focus();
-    
-    return false;
-  }
-  
-  if( isInteger( resVal) && parseInt(resVal) >= 15 && parseInt(resVal) < 50 )
-  {
-      saveLLbirthValue( dataElementId, recordNo );
-  }
-  else
-  {
-    alert("Please enter valid AGE (between 15 - 50)");
-    field.value = "";
-    field.focus();
-    
-    return false;
-  }     
-}
-
-
-function isLLBNameFiledEntered( recordNo )
-{
-  var dataElementId = 1020;
-  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
-  var resVal = field.value;
-
-  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
-  {    
-    return false;
-  }
-  else
-  {
-  	return true;
-  }	
-}
-
-function isLLDNameFiledEntered( recordNo )
-{
-  var dataElementId = 1027;
-  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
-  var resVal = field.value;
-
-  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
-  {    
-    return false;
-  }
-  else
-  {
-    return true;
-  } 
-}
-
-function isLLMDNameFiledEntered( recordNo )
-{
-  var dataElementId = 1032;
-  var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
-  var resVal = field.value;
-
-  if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
-  {    
-    return false;
-  }
-  else
-  {
-    return true;
-  } 
 }
 
 // -----------------------------------------------------------------------------

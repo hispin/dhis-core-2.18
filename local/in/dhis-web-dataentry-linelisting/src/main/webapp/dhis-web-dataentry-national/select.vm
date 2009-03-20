@@ -3,7 +3,7 @@
 	#set( $period = $selectedStateManager.getSelectedPeriod() )
 	#if ( $period ) $format.formatPeriod( $period ) #else $i18n.getString("no_period_selected") #end <br> 
 	<span id="currentDataElement">$i18n.getString("no_dataelement_selected")</span> <br>
-	<span id="currentOptionCombo">$i18n.getString("no_option_selected")</span>	
+	<span id="currentOptionCombo">Please Fill All Fields.</span>	
 </div>
 
 <form id="selectForm" name="selectForm" method="post" action="select.action">
