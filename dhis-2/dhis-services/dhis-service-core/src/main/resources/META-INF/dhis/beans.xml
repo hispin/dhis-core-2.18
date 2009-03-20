@@ -301,7 +301,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <value>.*\.SectionStore\.get.*</value>
         <value>.*\.DataEntryFormStore\.get.*</value>
         <value>.*\.ExpressionStore\.get.*</value>
-        <value>.*\.MinMaxDataElementStore\.get.*"</value>
+        <value>.*\.MinMaxDataElementStore\.get.*</value>
         <value>.*\.ValidationRuleStore\.get.*</value>
       </list>
     </property>
