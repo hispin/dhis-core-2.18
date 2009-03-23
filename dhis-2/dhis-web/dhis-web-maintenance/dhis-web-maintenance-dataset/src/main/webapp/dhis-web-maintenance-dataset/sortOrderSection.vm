@@ -23,32 +23,30 @@
   <table id="dataElementSelectionArea">
     <col> ## Selected DataElements
     <col> ## Actions
-    <col> ## Filter
     <col> ## Available DataElements
     <thead>
       <tr>
-        <th>$i18n.getString( "selected_sections" )</th>
-        <th></th>
-        <th></th>
         <th>$i18n.getString( "available_sections" )</th>
+        <th></th>
+        <th>$i18n.getString( "selected_sections" )</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td>
-          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'selectedList' )">
-          </select>
-        </td>
-        <td valign="top">
-          <input type="button" value="&lt;" title="$i18n.getString('move_selected')" onclick="move( 'availableList' )">
-          <br>
-          <input type="button" value="&gt;" title="$i18n.getString('remove_selected')" onclick="move ( 'selectedList' )">        </td>
-        <td></td>
-        <td>
           <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'availableList' )">
             #foreach ( $section in $sections )
               <option value="$section.id">$encoder.htmlEncode( $section.name )</option>
             #end
+          </select>
+        </td>
+        <td valign="top">
+          <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="move( 'availableList' )">
+          <br>
+          <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="move ( 'selectedList' )">
+        </td>
+        <td>
+          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'selectedList' )">
           </select>
         </td>
       </tr>

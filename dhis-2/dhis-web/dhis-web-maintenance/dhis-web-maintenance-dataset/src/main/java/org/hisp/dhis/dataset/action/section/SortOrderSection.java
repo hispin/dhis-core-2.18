@@ -134,7 +134,7 @@ public class SortOrderSection
         {
             Section temp = sectionService.getSection( Integer.parseInt( id ) );
             temp.setSortOrder( i++ );
-            System.out.println( temp.getSortOrder() );
+            
             sectionService.updateSection( temp );
         }
 

@@ -200,12 +200,9 @@ public class AddSectionAction
         Section section = new Section();
 
         section.setName( sectionName );
-
         section.setLabel( sectionLabel );
-
         section.setSortOrder( 0 );
-
-        section.setDataSet( dataSetService.getDataSet( dataSetId.intValue() ) );
+        section.setDataSet( dataSetService.getDataSet( dataSetId ) );
 
         for ( String id : selectedList )
         {

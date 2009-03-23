@@ -144,7 +144,6 @@ public class EditSectionAction
         for ( Section s : sections )
         {
             dataElementOfDataSet.removeAll( s.getDataElements() );
-
         }
 
         return SUCCESS;
