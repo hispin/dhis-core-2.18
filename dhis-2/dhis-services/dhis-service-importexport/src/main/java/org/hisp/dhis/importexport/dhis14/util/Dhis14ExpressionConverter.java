@@ -104,7 +104,7 @@ public class Dhis14ExpressionConverter
                 
                 if ( convertedDataElementId == null )
                 {
-                    log.error( "'" + name + "' contains a non-existing data element identifier: " + dataElementId );
+                    log.warn( "'" + name + "' contains a non-existing data element identifier: " + dataElementId );
                     
                     convertedDataElementId = -1;
                 }

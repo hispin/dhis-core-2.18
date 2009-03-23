@@ -27,7 +27,7 @@
 				#foreach ( $table in $tables )
 				<tr>
 					<td#alternate( $mark )>$encoder.htmlEncode( $table.name )</td>
-					<td style="text-align:center"#alternate( $mark )><a href="getReportParams.action?id=$table.id&mode=table" title="$i18n.getString( "create" )"><img src="../images/up_left.png" alt="$i18n.getString( "create" )"></a></td>
+					<td style="text-align:center"#alternate( $mark )><a href="getReportParams.action?id=$table.id&mode=table" title="$i18n.getString( "create" )"><img src="../images/start_process.png" alt="$i18n.getString( "create" )"></a></td>
                     <td style="text-align:center"#alternate( $mark )><a href="displayAddTableForm.action?id=$table.id&mode=$table.mode&category=$table.hasCategoryOptionCombos()" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
                     <td style="text-align:center"#alternate( $mark )><a href="javascript:removeTable( $table.id, '$encoder.jsEncode( $table.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
 					<td style="text-align:center"#alternate( $mark )><a href="javascript:showTableDetails( $table.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
