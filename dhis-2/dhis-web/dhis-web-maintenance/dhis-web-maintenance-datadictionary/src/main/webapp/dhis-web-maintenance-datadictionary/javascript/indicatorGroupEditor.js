@@ -1,4 +1,6 @@
-function initList() {
+
+function initList() 
+{
 	var list = document.getElementById('indicatorGroups');
 	var id;
 
@@ -59,8 +61,8 @@ function removeSelectedIndicators()
  * Get Indicator
  *==============================================================================*/
  
- function getIndicatorGroup( listbox ){
-	
+function getIndicatorGroup( listbox )
+{	
 	selectedIndicators = new Object();
     var id = listbox.options[ listbox.selectedIndex ].value;  
     var request = new Request();
@@ -92,7 +94,8 @@ function getIndicatorGroupCompleted( xmlObject )
  *   Filter Indicator 
  *==============================================================================*/
 
-function filterSelectedIndicators(){
+function filterSelectedIndicators()
+{
 	var filter = document.getElementById( 'selecteIndicatorsFilter' ).value;
     var list = document.getElementById( 'selectedIndicators' );
     
@@ -149,15 +152,17 @@ function filterAvailableIndicators()
  *  New  Indicator Group
  *==============================================================================*/
 
-
-function showAddIndicatorGroupForm(){
+function showAddIndicatorGroupForm()
+{
 	document.getElementById( 'groupName' ).value='';    
     document.getElementById( 'addRenameGroupButton' ).onclick=validateAddIndicatorGroup;
     setPositionCenter( 'addIndicatorGroupForm' );	
     showDivEffect();
 	toggleById('addIndicatorGroupForm');
 }
-function validateAddIndicatorGroup(){
+
+function validateAddIndicatorGroup()
+{
 	var name = getFieldValue('groupName');
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
@@ -169,17 +174,18 @@ function validateAddIndicatorGroupReceived( xmlObject )
 {
     var type = xmlObject.getAttribute( 'type' );
     
-    if(type=='input')
+    if ( type=='input' )
     {
         alert(xmlObject.firstChild.nodeValue);
     }
-    if(type=='success')
+    if ( type=='success' )
     {
         createNewGroup();
     }
 }
 
-function createNewGroup(){
+function createNewGroup()
+{
 	var name = document.getElementById( 'groupName' ).value;    
     var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
@@ -206,22 +212,26 @@ function createNewGroupReceived( xmlObject )
  * Update Indicator Group
  *==============================================================================*/
 
-function showRenameIndicatorGroupForm(){
-
+function showRenameIndicatorGroupForm()
+{
 	var list = byId('indicatorGroups');
-	if(list.value==''){
+	
+	if( list.value== '' )
+	{
 		alert(i18n_select_indicator_group);
-	}else{
+	}
+	else
+	{
 		document.getElementById( 'groupName' ).value = list.options[ list.selectedIndex ].text
 		document.getElementById( 'addRenameGroupButton' ).onclick=validateRenameIndicatorGroup;
 		setPositionCenter( 'addIndicatorGroupForm' );	
 		showDivEffect();
 		toggleById('addIndicatorGroupForm');
-	}
-	
+	}	
 } 
 
-function validateRenameIndicatorGroup(){
+function validateRenameIndicatorGroup()
+{
 	var name = getFieldValue('groupName');
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
@@ -233,23 +243,28 @@ function validateRenameIndicatorGroupReceived( xmlObject )
 {
     var type = xmlObject.getAttribute( 'type' );
     
-    if(type=='input')
+    if( type=='input' )
     {
         alert(xmlObject.firstChild.nodeValue);
     }
-    if(type=='success')
+    
+    if( type=='success' )
     {
         renameGroup();
     }
 }
-function renameGroup(){
+
+function renameGroup()
+{
 	var name = document.getElementById( 'groupName' ).value;    
     var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
     request.setCallbackSuccess( renameGroupReceived );
     request.send( 'renameIndicatorGroupEditor.action?name=' + name + "&mode=editor&id=" +  byId('indicatorGroups').value);	
 }
-function renameGroupReceived( xmlObject ){
+
+function renameGroupReceived( xmlObject )
+{
 	var name = xmlObject.getElementsByTagName( "name" )[0].firstChild.nodeValue;
     var list = document.getElementById( 'indicatorGroups' );
     list.options[ list.selectedIndex ].text = name; 
@@ -262,8 +277,10 @@ function renameGroupReceived( xmlObject ){
  * Update Member of Indicator Group
  *==============================================================================*/
  
-function updateIndicatorGroupMembers(){
-	try{
+function updateIndicatorGroupMembers()
+{
+	try
+	{
 		var indicatorGroupsSelect = document.getElementById( 'indicatorGroups' );
 	    var id = indicatorGroupsSelect.options[ indicatorGroupsSelect.selectedIndex ].value;	
 		
@@ -284,8 +301,10 @@ function updateIndicatorGroupMembers(){
 	    request.setResponseTypeXML( 'xmlObject' );  
 	    request.setCallbackSuccess( updateIndicatorGroupMembersReceived );
 	    request.send( requestString );  
-	}catch( e ){
-		alert(i18n_select_indicator_group);
+	}
+	catch( e )
+	{
+		alert( i18n_select_indicator_group );
 	}
 }
 
@@ -299,9 +318,10 @@ function updateIndicatorGroupMembersReceived( xmlObject ){
  * Delete Indicator Group
  *==============================================================================*/
  
-function deleteIndicatorGroup(){
-
-	if( window.confirm( i18n_confirm_delete ) ){
+function deleteIndicatorGroup()
+{
+	if( window.confirm( i18n_confirm_delete ) )
+	{
 		var indicatorGroupsSelect = document.getElementById( 'indicatorGroups' );
 	    var id = indicatorGroupsSelect.options[ indicatorGroupsSelect.selectedIndex ].value;	
 		
@@ -316,12 +336,11 @@ function deleteIndicatorGroupReceived( xmlObject )
 {
     var type = xmlObject.getAttribute( 'type' );    
     
-    if(type=='success')
+    if ( type == 'success' )
     {
 		var indicatorGroupsSelect = document.getElementById( 'indicatorGroups' );
         indicatorGroupsSelect.remove( indicatorGroupsSelect.selectedIndex );
     }
-
 }
  
  

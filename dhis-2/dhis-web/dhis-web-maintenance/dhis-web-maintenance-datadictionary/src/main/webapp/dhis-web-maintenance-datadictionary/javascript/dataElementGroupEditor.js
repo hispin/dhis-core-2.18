@@ -35,6 +35,7 @@ function addSelectedDataElements()
         selectedDataElements[id] = availableDataElements[id];       
     
     }
+    
     filterSelectedDataElements();
     filterAvailableDataElements();
 }
@@ -128,6 +129,7 @@ function getDataElementGroupCompleted( xmlObject )
     selectedList.length = 0;
     name = xmlObject.getElementsByTagName('name')[0].firstChild.nodeValue;
     var dataElementList = xmlObject.getElementsByTagName('dataElement');
+    
     for ( var i = 0; i < dataElementList.length; i++ )
     {
         dataElement = dataElementList.item(i);  
@@ -135,10 +137,10 @@ function getDataElementGroupCompleted( xmlObject )
         var value = dataElement.firstChild.nodeValue;       
         selectedDataElements[id] = value;
     }
+    
     filterSelectedDataElements();   
     setMessage(i18n_member_of + " <b>" + name + "</b>");
     document.getElementById('availableDataElements').disabled=false;
-    
 }
 
 function updateDataElementGroupMembers()
@@ -197,7 +199,7 @@ function deleteDataElementGroupReceived( xmlObject )
 {
     var type = xmlObject.getAttribute( 'type' );
     
-    if(type=='success')
+    if ( type=='success' )
     {
         var dataElementGroupsSelect = document.getElementById( 'dataElementGroups' );           
         dataElementGroupsSelect.remove( dataElementGroupsSelect.selectedIndex );
@@ -218,14 +220,12 @@ function showRenameDataElementGroupForm()
         setPositionCenter( 'addDataElementGroupForm' );
 		showById('addDataElementGroupForm');
 		document.getElementById( 'groupName' ).value = name;
-        showDivEffect();
-        
+        showDivEffect();        
     }
     catch(e)
     {
         alert(i18n_select_dataelement_group);
     }
-    
 }
 
 function validateRenameDataElementGroup()
@@ -243,11 +243,11 @@ function validateRenameDataElementGroupReceived( xmlObject )
 {
     var type = xmlObject.getAttribute( 'type' );
     
-    if(type=='input')
+    if ( type=='input' )
     {
         alert(xmlObject.firstChild.nodeValue);
     }
-    if(type=='success')
+    if ( type=='success' )
     {
         renameDataElementGroup();
     }
@@ -297,11 +297,11 @@ function validateAddDataElementGroupReceived( xmlObject )
 {
     var type = xmlObject.getAttribute( 'type' );
     
-    if(type=='input')
+    if ( type=='input' )
     {
         alert(xmlObject.firstChild.nodeValue);
     }
-    if(type=='success')
+    if ( type=='success' )
     {
         createNewGroup();
     }
