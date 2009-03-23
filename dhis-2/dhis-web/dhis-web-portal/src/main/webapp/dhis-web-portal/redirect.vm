@@ -1,9 +1,9 @@
 
 <script type="text/javascript">
-#if ( $startModule && $auth.hasAccess( $startModule.name, "index" ) )
-	window.location.href="$startModule.defaultAction";
+#if ( $startModule && $auth.hasAccess( $startModule, "index" ) )
+	window.location.href = "../${startModule}/index.action";
 #else
-    window.location.href="intro.action";
+    window.location.href = "intro.action";
 #end
 </script>
 
