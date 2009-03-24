@@ -183,6 +183,13 @@ public class ValidateUserAction
             return INPUT;
         }
 
+        if ( surname == null || surname.trim().length() == 0 )
+        {
+            message = i18n.getString( "specify_surname" );
+
+            return INPUT;
+        }
+
         if ( firstName == null || firstName.trim().length() == 0 )
         {
             message = i18n.getString( "specify_first_name" );
@@ -190,14 +197,7 @@ public class ValidateUserAction
             return INPUT;
         }
 
-        if ( surname == null || surname.trim().length() == 0 )
-        {
-            message = i18n.getString( "specify_surname" );
-
-            return INPUT;
-        }
-        
-        if ( email != null && !ValidationUtils.emailIsValid( email ) )
+        if ( email != null && email.trim().length() > 0 && !ValidationUtils.emailIsValid( email ) )
         {
             message = i18n.getString( "email_is_not_valid" );
             
