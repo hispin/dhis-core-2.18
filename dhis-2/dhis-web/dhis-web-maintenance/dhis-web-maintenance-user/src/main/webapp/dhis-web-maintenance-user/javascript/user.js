@@ -20,8 +20,8 @@ function userReceived( userElement )
     var email = getElementValue( userElement, 'email' );
     setFieldValue( 'emailField', email ? email : '[' + i18n_none + ']' );
 
-    var organisationName = getElementValue( userElement, 'organisationName' );
-	setFieldValue( 'organisationNameField', organisationName ? organisationName : '[' + i18n_none + ']' );
+    var phoneNumber = getElementValue( userElement, 'phoneNumber' );
+	setFieldValue( 'phoneNumberField', phoneNumber ? phoneNumber : '[' + i18n_none + ']' );
 
     showDetails();
 }

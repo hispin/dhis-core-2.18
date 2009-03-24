@@ -52,8 +52,8 @@
 				<p><label>$i18n.getString( "username" ):</label><br><span id="usernameField"></span></p>
 				<p><label>$i18n.getString( "surname" ):</label><br><span id="surnameField"></span></p>
 				<p><label>$i18n.getString( "firstName" ):</label><br><span id="firstNameField"></span></p>
-				<p><label>$i18n.getString( "organisation_unit" ):</label><br><span id="organisationNameField"></span></p>
-				<p><label>$i18n.getString( "email" ):</label><br><span id="emailField"></span></p>			
+				<p><label>$i18n.getString( "email" ):</label><br><span id="emailField"></span></p>
+                <p><label>$i18n.getString( "phone_number" ):</label><br><span id="phoneNumberField"></span></p>
 			</div>
 
 		</td>

@@ -4,5 +4,5 @@
   <surname>$encoder.xmlEncode( $userCredentials.user.surname )</surname>
   <firstName>$encoder.xmlEncode( $userCredentials.user.firstName )</firstName>
   <email>$!encoder.xmlEncode( $userCredentials.user.email )</email>
-  <organisationName>$!encoder.xmlEncode( $userCredentials.user.organisationUnit.name )</organisationName>
+  <phoneNumber>$!encoder.xmlEncode( $userCredentials.user.phoneNumber )</phoneNumber>
 </user>
