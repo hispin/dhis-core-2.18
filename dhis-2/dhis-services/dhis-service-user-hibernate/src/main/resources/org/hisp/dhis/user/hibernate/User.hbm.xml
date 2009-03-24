@@ -12,19 +12,15 @@
       <generator class="native"/>
     </id>
 
-    <property name="surname">
-      <column name="surname" not-null="true" length="160"/>
-    </property>
+    <property name="surname" not-null="true" length="160"/>
     
-    <property name="firstName">
-      <column name="firstname" not-null="true" length="160"/>
-    </property>
+    <property name="firstName" not-null="true" length="160"/>
      
-    <property name="email">
-      <column name="email" length="160"/>
-    </property>
+    <property name="email" length="160"/>
 	
-	  <set name="organisationUnits" table="usermembership">
+	<property name="phoneNumber" length="80"/>
+	
+	<set name="organisationUnits" table="usermembership">
       <key column="userinfoid"/>
       <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnit" 
         column="organisationunitid" foreign-key="fk_userinfo_organisationunitid"/>

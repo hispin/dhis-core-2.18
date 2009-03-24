@@ -54,6 +54,8 @@ public class User
     private String firstName;
 
     private String email;
+    
+    private String phoneNumber;
 
     /**
      * All OrgUnits where the user could belong
@@ -66,9 +68,6 @@ public class User
     // hashCode and equals
     // -------------------------------------------------------------------------
 
-    /**
-     * No real candidate key here. Doing the best we can.
-     */
     @Override
     public int hashCode()
     {
@@ -76,15 +75,11 @@ public class User
         int result = 1;
 
         result = result * prime + surname.hashCode();
-        result = result * prime + firstName.hashCode();
-        result = result * prime + (email != null ? email.hashCode() : 0);      
+        result = result * prime + firstName.hashCode();    
 
         return result;
     }
 
-    /**
-     * No real candidate key here. Doing the best we can.
-     */
     @Override
     public boolean equals( Object o )
     {
@@ -106,9 +101,7 @@ public class User
         final User other = (User) o;
 
         return surname.equals( other.getSurname() )
-            && firstName.equals( other.getFirstName() )
-            && ((email == null && other.getEmail() == null) || email.equals( other.getEmail() ));
-            
+            && firstName.equals( other.getFirstName() );
     }
 
     // -------------------------------------------------------------------------
@@ -125,6 +118,16 @@ public class User
         this.id = id;
     }
 
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public void setFirstName( String firstName )
+    {
+        this.firstName = firstName;
+    }
+    
     public String getSurname()
     {
         return surname;
@@ -145,16 +148,16 @@ public class User
         this.email = email;
     }
 
-    public String getFirstName()
+    public String getPhoneNumber()
     {
-        return firstName;
+        return phoneNumber;
     }
 
-    public void setFirstName( String firstName )
+    public void setPhoneNumber( String phoneNumber )
     {
-        this.firstName = firstName;
+        this.phoneNumber = phoneNumber;
     }
-    
+
     public Collection<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
@@ -164,5 +167,4 @@ public class User
     {
         this.organisationUnits = organisationUnits;
     }
-    
 }

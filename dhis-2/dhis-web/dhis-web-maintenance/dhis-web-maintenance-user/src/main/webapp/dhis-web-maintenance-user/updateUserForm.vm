@@ -47,6 +47,12 @@
 		<td></td>
 		<td></td>		
 	</tr>
+    <tr>
+        <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
+        <td><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $userCredentials.user.phoneNumber )" style="width:20em"></td>
+        <td></td>
+        <td></td>       
+    </tr>
 	<tr>
 		<td colspan="4" height="10"></td>
 	</tr>

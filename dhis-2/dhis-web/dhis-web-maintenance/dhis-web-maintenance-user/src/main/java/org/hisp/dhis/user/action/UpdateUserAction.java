@@ -120,6 +120,13 @@ public class UpdateUserAction
         this.email = email;
     }
 
+    private String phoneNumber;
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
+    }
+
     private Collection<String> selectedList = new ArrayList<String>();
 
     public void setSelectedList( Collection<String> selectedList )
@@ -158,6 +165,7 @@ public class UpdateUserAction
         user.setSurname( surname );
         user.setFirstName( firstName );
         user.setEmail( email );
+        user.setPhoneNumber( phoneNumber );
         user.setOrganisationUnits( units );
 
         UserCredentials userCredentials = userStore.getUserCredentials( user );

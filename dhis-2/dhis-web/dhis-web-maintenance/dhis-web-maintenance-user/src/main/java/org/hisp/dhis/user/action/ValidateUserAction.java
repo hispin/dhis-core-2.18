@@ -28,6 +28,7 @@ package org.hisp.dhis.user.action;
  */
 
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
 
@@ -88,6 +89,13 @@ public class ValidateUserAction
     public void setFirstName( String firstName )
     {
         this.firstName = firstName;
+    }
+    
+    private String email;
+
+    public void setEmail( String email )
+    {
+        this.email = email;
     }
 
     private String rawPassword;
@@ -175,17 +183,24 @@ public class ValidateUserAction
             return INPUT;
         }
 
+        if ( firstName == null || firstName.trim().length() == 0 )
+        {
+            message = i18n.getString( "specify_first_name" );
+
+            return INPUT;
+        }
+
         if ( surname == null || surname.trim().length() == 0 )
         {
             message = i18n.getString( "specify_surname" );
 
             return INPUT;
         }
-
-        if ( firstName == null || firstName.trim().length() == 0 )
+        
+        if ( email != null && !ValidationUtils.emailIsValid( email ) )
         {
-            message = i18n.getString( "specify_first_name" );
-
+            message = i18n.getString( "email_is_not_valid" );
+            
             return INPUT;
         }
 

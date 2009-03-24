@@ -53,7 +53,8 @@ function validateAddUser()
         '&surname=' + getFieldValue( 'surname' ) +
         '&firstName=' + getFieldValue( 'firstName' ) +
         '&rawPassword=' + getFieldValue( 'rawPassword' ) + 
-        '&retypePassword=' + getFieldValue( 'retypePassword' ) );
+        '&retypePassword=' + getFieldValue( 'retypePassword' ) +
+        '&email=' + getFieldValue( 'email' ) );
 
     return false;
 }
@@ -96,7 +97,8 @@ function validateUpdateUser()
         '&surname=' + getFieldValue( 'surname' ) +
         '&firstName=' + getFieldValue( 'firstName' ) +
         '&rawPassword=' + getFieldValue( 'rawPassword' ) + 
-        '&retypePassword=' + getFieldValue( 'retypePassword' ) );
+        '&retypePassword=' + getFieldValue( 'retypePassword' ) +
+        '&email=' + getFieldValue( 'email' ) );
         
     return false;
 }

@@ -118,6 +118,13 @@ public class AddUserAction
     {
         this.email = email;
     }
+    
+    private String phoneNumber;
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
+    }
 
     private String passwordUnMatched;
 
@@ -166,6 +173,7 @@ public class AddUserAction
         user.setSurname( surname );
         user.setFirstName( firstName );
         user.setEmail( email );
+        user.setPhoneNumber( phoneNumber );
         user.setOrganisationUnits( orgUnits );
 
         UserCredentials userCredentials = new UserCredentials();
