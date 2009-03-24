@@ -238,9 +238,9 @@ public class DefaultReportTableService
         return reportTableStore.saveReportTable( reportTable );
     }
     
-    public void saveOrUpdateReportTable( ReportTable reportTable )
+    public void updateReportTable( ReportTable reportTable )
     {
-        reportTableStore.saveOrUpdateReportTable( reportTable );
+        reportTableStore.updateReportTable( reportTable );
     }
     
     public void deleteReportTable( ReportTable reportTable )

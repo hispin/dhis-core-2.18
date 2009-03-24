@@ -176,13 +176,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataset.DataSetService"/>
   </bean>
   
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction"
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.SaveTableAction"
+    class="org.hisp.dhis.reporting.tablecreator.action.SaveTableAction"
     scope="prototype">
-    <property name="processCoordinator"
-      ref="processCoordinator"/>
-    <property name="currentUserService"
-      ref="org.hisp.dhis.user.CurrentUserService"/>
     <property name="reportTableService"
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
     <property name="dataElementService"
@@ -199,8 +195,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataset.DataSetService"/>
   </bean>
   
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.ReCreateTableAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.ReCreateTableAction"
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction"
+    class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction"
     scope="prototype">
         <property name="processCoordinator"
       ref="processCoordinator"/>

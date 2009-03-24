@@ -63,9 +63,9 @@ public class HibernateReportTableStore
         return (Integer) sessionManager.getCurrentSession().save( reportTable );
     }
     
-    public void saveOrUpdateReportTable( ReportTable reportTable )
+    public void updateReportTable( ReportTable reportTable )
     {
-        sessionManager.getCurrentSession().saveOrUpdate( reportTable );
+        sessionManager.getCurrentSession().update( reportTable );
     }
 
     public void deleteReportTable( ReportTable reportTable )

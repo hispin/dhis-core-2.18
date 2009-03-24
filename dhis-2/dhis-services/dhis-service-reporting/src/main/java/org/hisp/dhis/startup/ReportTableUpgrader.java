@@ -70,7 +70,7 @@ public class ReportTableUpgrader
             {
                 table.setExistingTableName( table.getTableName() );
                 
-                reportTableService.saveOrUpdateReportTable( table );
+                reportTableService.updateReportTable( table );
             }
         }
         

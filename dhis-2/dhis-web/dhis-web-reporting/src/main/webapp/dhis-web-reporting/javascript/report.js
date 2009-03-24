@@ -3,7 +3,7 @@ var tempUrl = null;
 
 function runAndViewReport( reportId, reportUrl )
 {
-    var url = "reCreateTable.action?id=" + reportId + "&mode=report";
+    var url = "createTable.action?id=" + reportId + "&mode=report";
     
     if ( document.getElementById( "reportingPeriod" ) != null )
     {

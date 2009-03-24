@@ -129,7 +129,7 @@
 	    <param name="requiredAuthorities">F_REPORT_DELETE</param>
     </action>
     
-    <action name="createReportTable" class="org.hisp.dhis.reporting.tablecreator.action.ReCreateTableAction">
+    <action name="createReportTable" class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction">
       <result name="success" type="redirect">displayViewReportForm.action</result>
       <param name="requiredAuthorities">F_REPORT_VIEW</param>
     </action>
@@ -182,12 +182,12 @@
       <param name="requiredAuthorities">F_REPORTTABLE_DELETE</param>
     </action>
     
-    <action name="createTable" class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction">
-      <result name="success" type="redirect">getReportParams.action?mode=status</result>
+    <action name="saveTable" class="org.hisp.dhis.reporting.tablecreator.action.SaveTableAction">
+      <result name="success" type="redirect">displayManageTableForm.action</result>
 	    <param name="requiredAuthorities">F_REPORTTABLE_ADD</param>
     </action>
     
-    <action name="reCreateTable" class="org.hisp.dhis.reporting.tablecreator.action.ReCreateTableAction">
+    <action name="createTable" class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction">
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_REPORTTABLE_ADD</param>

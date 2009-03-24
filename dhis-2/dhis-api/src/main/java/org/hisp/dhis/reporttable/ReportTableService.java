@@ -47,7 +47,7 @@ public interface ReportTableService
     
     int saveReportTable( ReportTable reportTable );
     
-    void saveOrUpdateReportTable( ReportTable reportTable );
+    void updateReportTable( ReportTable reportTable );
     
     void deleteReportTable( ReportTable reportTable );
     

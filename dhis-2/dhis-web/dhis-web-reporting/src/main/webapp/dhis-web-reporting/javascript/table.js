@@ -1,11 +1,11 @@
 
 // -----------------------------------------------------------------------------
-// Recreate ReportTable
+// Create ReportTable
 // -----------------------------------------------------------------------------
 
-function reCreateTable( tableId )
+function createTable( tableId )
 {
-    var url = "reCreateTable.action?id=" + tableId + "&mode=table";
+    var url = "createTable.action?id=" + tableId + "&mode=table";
     
     if ( document.getElementById( "reportingPeriod" ) != null )
     {
@@ -23,11 +23,11 @@ function reCreateTable( tableId )
     }
     
     var request = new Request();
-    request.setCallbackSuccess( reCreateTableReceived );    
+    request.setCallbackSuccess( createTableReceived );    
     request.send( url );
 }
 
-function reCreateTableReceived( messageElement )
+function createTableReceived( messageElement )
 {
     getTableStatus();
 }
@@ -69,49 +69,6 @@ function waitAndGetTableStatus( millis )
 }
 
 // -----------------------------------------------------------------------------
-// Create and save ReportTable
-// -----------------------------------------------------------------------------
-
-function createAndSaveTable()
-{
-    if ( validateCollections() )
-    {
-        var tableId = document.getElementById( "tableId" ).value;
-        var tableName = document.getElementById( "tableName" ).value;
-        
-        var url = "validateTable.action?id=" + tableId + "&name=" + tableName;
-        
-        var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( createAndSaveTableReceived );
-        request.send( url );
-    }
-}
-
-function createAndSaveTableReceived( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == "input" )
-    {
-        setMessage( message );
-        
-        return false;
-    }
-    else if ( type == "success" )
-    {        
-        selectTableForm();
-        
-        var form = document.getElementById( "tableForm" );
-        
-        form.action = "createTable.action";
-        
-        form.submit();
-    }
-}
-
-// -----------------------------------------------------------------------------
 // Save ReportTable
 // -----------------------------------------------------------------------------
 
@@ -146,21 +103,7 @@ function saveTableReceived( messageElement )
     {        
         selectTableForm();
         
-        var form = document.getElementById( "tableForm" );
-        
-        form.action = "createTable!save.action";
-        
-        form.submit();
-    }
-}
-
-function removeTable( tableId, tableName )
-{
-    var result = window.confirm( i18n_confirm_delete + '\n\n' + tableName );
-    
-    if ( result )
-    {
-        window.location.href = "removeTable.action?id=" + tableId;
+        document.getElementById( "tableForm" ).submit();
     }
 }
 
@@ -183,6 +126,20 @@ function selectTableForm()
     
     selectAllById( "selectedPeriods" );
     selectAllById( "selectedOrganisationUnits" );   
+}
+
+// -----------------------------------------------------------------------------
+// Remove
+// -----------------------------------------------------------------------------
+
+function removeTable( tableId, tableName )
+{
+    var result = window.confirm( i18n_confirm_delete + '\n\n' + tableName );
+    
+    if ( result )
+    {
+        window.location.href = "removeTable.action?id=" + tableId;
+    }
 }
 
 // -----------------------------------------------------------------------------

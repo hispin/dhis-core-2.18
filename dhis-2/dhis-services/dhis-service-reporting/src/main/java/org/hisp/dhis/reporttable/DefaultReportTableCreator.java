@@ -114,8 +114,6 @@ public class DefaultReportTableCreator
         
         setMessage( "aggregating_data" );
         
-        reportTableService.saveOrUpdateReportTable( reportTable );
-        
         // ---------------------------------------------------------------------
         // Exporting relevant data to data mart
         // ---------------------------------------------------------------------
@@ -154,7 +152,7 @@ public class DefaultReportTableCreator
         
         reportTable.updateExistingTableName();
         
-        reportTableService.saveOrUpdateReportTable( reportTable );
+        reportTableService.updateReportTable( reportTable );
         
         log.info( "Created report table" );
 

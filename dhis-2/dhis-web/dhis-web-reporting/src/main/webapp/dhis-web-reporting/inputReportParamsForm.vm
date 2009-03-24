@@ -24,7 +24,7 @@
 
 #if ( $mode == "table" && $!reportParams.isSet() == false )
 	<script type="text/javascript">
-		reCreateTable( "$id" );
+		createTable( "$id" );
 	</script>
 #end
 
@@ -123,7 +123,7 @@
     <tr>        
         <td>
         #if ( $mode == "table" && $!reportParams.isSet() )
-            <input type="button" value="$i18n.getString( 'ok' )" onclick="reCreateTable( '$id' )" style="width:120px">
+            <input type="button" value="$i18n.getString( 'ok' )" onclick="createTable( '$id' )" style="width:120px">
         #end
         #if ( $mode == "table" || $mode == "status" )
             <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:120px">

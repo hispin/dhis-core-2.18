@@ -27,37 +27,27 @@ package org.hisp.dhis.reporting.tablecreator.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
-import static org.hisp.dhis.util.InternalProcessUtil.*;
 import static org.hisp.dhis.reporttable.ReportTableInternalProcess.PROCESS_TYPE;
+import static org.hisp.dhis.util.InternalProcessUtil.PROCESS_KEY_REPORT;
+import static org.hisp.dhis.util.InternalProcessUtil.setCurrentRunningProcess;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import org.amplecode.cave.process.ProcessCoordinator;
 import org.amplecode.cave.process.ProcessExecutor;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.reporttable.RelativePeriods;
-import org.hisp.dhis.reporttable.ReportParams;
+import org.hisp.dhis.report.ReportStore;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableInternalProcess;
 import org.hisp.dhis.reporttable.ReportTableService;
-import org.hisp.dhis.system.util.CollectionConversionUtils;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork.Action;
@@ -69,10 +59,16 @@ import com.opensymphony.xwork.Action;
 public class CreateTableAction
     implements Action
 {
+    private static final Log log = LogFactory.getLog( CreateTableAction.class );
+    
+    private static final String MODE_REPORT = "report";
+
+    private static final String MODE_REPORT_TABLE = "table";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+    
     private ProcessCoordinator processCoordinator;
 
     public void setProcessCoordinator( ProcessCoordinator processCoordinator )
@@ -93,40 +89,12 @@ public class CreateTableAction
     {
         this.reportTableService = reportTableService;
     }
-    
-    private I18nFormat format;
 
-    public void setFormat( I18nFormat format )
+    private ReportStore reportStore;
+
+    public void setReportStore( ReportStore reportStore )
     {
-        this.format = format;
-    }
-    
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-    
-    private DataElementCategoryComboService categoryComboService;
-
-    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
-    {
-        this.categoryComboService = categoryComboService;
-    }    
-    
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
+        this.reportStore = reportStore;
     }
     
     private OrganisationUnitService organisationUnitService;
@@ -135,121 +103,30 @@ public class CreateTableAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
-    private DataSetService dataSetService;
 
-    public void setDataSetService( DataSetService dataSetService )
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
     {
-        this.dataSetService = dataSetService;
+        this.format = format;
     }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer tableId;
+    private Integer id;
 
-    public void setTableId( Integer id )
+    public void setId( Integer id )
     {
-        this.tableId = id;
+        this.id = id;
     }
-    
-    private String tableName;
 
-    public void setTableName( String tableName )
-    {
-        this.tableName = tableName;
-    }
-    
-    private boolean skipDataMart;
-
-    public void setSkipDataMart( boolean skipDataMart )
-    {
-        this.skipDataMart = skipDataMart;
-    }
-    
     private String mode;
 
     public void setMode( String mode )
     {
         this.mode = mode;
-    }
-    
-    private boolean regression;
-
-    public void setRegression( boolean regression )
-    {
-        this.regression = regression;
-    }    
-    
-    private Integer categoryComboId;
-
-    public void setCategoryComboId( Integer categoryComboId )
-    {
-        this.categoryComboId = categoryComboId;
-    }
-    
-    private boolean doIndicators;
-
-    public void setDoIndicators( boolean doIndicators )
-    {
-        this.doIndicators = doIndicators;
-    }
-    
-    private boolean doCategoryOptionCombos;
-
-    public void setDoCategoryOptionCombos( boolean doCategoryOptionCombos )
-    {
-        this.doCategoryOptionCombos = doCategoryOptionCombos;
-    }
-    
-    private boolean doPeriods;
-
-    public void setDoPeriods( boolean doPeriods )
-    {
-        this.doPeriods = doPeriods;
-    }
-
-    private boolean doOrganisationUnits;
-
-    public void setDoOrganisationUnits( boolean doUnits )
-    {
-        this.doOrganisationUnits = doUnits;
-    }
-
-    private List<String> selectedDataElements = new ArrayList<String>();
-
-    public void setSelectedDataElements( List<String> selectedDataElements )
-    {
-        this.selectedDataElements = selectedDataElements;
-    }
-    
-    private List<String> selectedIndicators = new ArrayList<String>();
-
-    public void setSelectedIndicators( List<String> selectedIndicators )
-    {
-        this.selectedIndicators = selectedIndicators;
-    }
-
-    private List<String> selectedDataSets = new ArrayList<String>();
-
-    public void setSelectedDataSets( List<String> selectedDataSets )
-    {
-        this.selectedDataSets = selectedDataSets;
-    }
-    
-    private List<String> selectedPeriods = new ArrayList<String>();
-
-    public void setSelectedPeriods( List<String> selectedPeriods )
-    {
-        this.selectedPeriods = selectedPeriods;
-    }
-
-    private List<String> selectedOrganisationUnits = new ArrayList<String>();
-
-    public void setSelectedOrganisationUnits( List<String> selectedOrganisationUnits )
-    {
-        this.selectedOrganisationUnits = selectedOrganisationUnits;
     }
 
     private Integer reportingPeriod;
@@ -258,119 +135,21 @@ public class CreateTableAction
     {
         this.reportingPeriod = reportingPeriod;
     }
-    
-    private boolean reportingMonth;
 
-    public void setReportingMonth( boolean reportingMonth )
+    private Integer parentOrganisationUnitId;
+
+    public void setParentOrganisationUnitId( Integer parentOrganisationUnitId )
     {
-        this.reportingMonth = reportingMonth;
+        this.parentOrganisationUnitId = parentOrganisationUnitId;
     }
 
-    private boolean last3Months;
+    private Integer organisationUnitId;
 
-    public void setLast3Months( boolean last3Months )
+    public void setOrganisationUnitId( Integer organisationUnitId )
     {
-        this.last3Months = last3Months;
-    }
-
-    private boolean last6Months;
-
-    public void setLast6Months( boolean last6Months )
-    {
-        this.last6Months = last6Months;
+        this.organisationUnitId = organisationUnitId;
     }
     
-    private boolean last9Months;
-
-    public void setLast9Months( boolean last9Months )
-    {
-        this.last9Months = last9Months;
-    }
-    
-    private boolean last12Months;
-
-    public void setLast12Months( boolean last12Months )
-    {
-        this.last12Months = last12Months;
-    }
-    
-    private boolean soFarThisYear;
-
-    public void setSoFarThisYear( boolean soFarThisYear )
-    {
-        this.soFarThisYear = soFarThisYear;
-    }
-
-    private boolean soFarThisFinancialYear;
-
-    public void setSoFarThisFinancialYear( boolean soFarThisFinancialYear )
-    {
-        this.soFarThisFinancialYear = soFarThisFinancialYear;
-    }
-    
-    private boolean last3To6Months;
-
-    public void setLast3To6Months( boolean last3To6Months )
-    {
-        this.last3To6Months = last3To6Months;
-    }
-
-    private boolean last6To9Months;
-
-    public void setLast6To9Months( boolean last6To9Months )
-    {
-        this.last6To9Months = last6To9Months;
-    }
-
-    private boolean last9To12Months;
-
-    public void setLast9To12Months( boolean last9To12Months )
-    {
-        this.last9To12Months = last9To12Months;
-    }
-    
-    private boolean last12IndividualMonths;
-
-    public void setLast12IndividualMonths( boolean last12IndividualMonths )
-    {
-        this.last12IndividualMonths = last12IndividualMonths;
-    }
-    
-    private boolean individualMonthsThisYear;
-
-    public void setIndividualMonthsThisYear( boolean individualMonthsThisYear )
-    {
-        this.individualMonthsThisYear = individualMonthsThisYear;
-    }
-
-    private boolean individualQuartersThisYear;
-
-    public void setIndividualQuartersThisYear( boolean individualQuartersThisYear )
-    {
-        this.individualQuartersThisYear = individualQuartersThisYear;
-    }
-    
-    private boolean paramReportingMonth;
-
-    public void setParamReportingMonth( boolean paramReportingMonth )
-    {
-        this.paramReportingMonth = paramReportingMonth;
-    }
-
-    private boolean paramParentOrganisationUnit;
-
-    public void setParamParentOrganisationUnit( boolean paramParentOrganisationUnit )
-    {
-        this.paramParentOrganisationUnit = paramParentOrganisationUnit;
-    }
-    
-    private boolean paramOrganisationUnit;
-
-    public void setParamOrganisationUnit( boolean paramOrganisationUnit )
-    {
-        this.paramOrganisationUnit = paramOrganisationUnit;
-    }
-        
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -378,128 +157,115 @@ public class CreateTableAction
     public String execute()
         throws Exception
     {
-        ReportTable reportTable = getReportTable();
-        
         String owner = currentUserService.getCurrentUsername();
 
         ProcessExecutor executor = processCoordinator.newProcess( PROCESS_TYPE, owner );
         
-        ReportTableInternalProcess reportTableProcess = (ReportTableInternalProcess) executor.getProcess();
-        
-        reportTableProcess.addReportTable( reportTable );
-        reportTableProcess.setDoDataMart( !skipDataMart );
-        
-        processCoordinator.requestProcessExecution( executor );
-        
-        setCurrentRunningProcess( PROCESS_KEY_REPORT, executor.getId() );
-        
-        return SUCCESS;
-    }
-    
-    public String save()
-        throws Exception
-    {
-        ReportTable reportTable = getReportTable();
-        
-        reportTableService.saveReportTable( reportTable );
-        
-        return SUCCESS;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
+        ReportTableInternalProcess process = (ReportTableInternalProcess) executor.getProcess();
 
-    private ReportTable getReportTable()
-        throws Exception
-    {
-        List<DataElement> dataElements = new CollectionConversionUtils<DataElement>().getList( 
-            dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) );
-        
-        List<Indicator> indicators = new CollectionConversionUtils<Indicator>().getList( 
-            indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) );
-        
-        List<DataSet> dataSets = new CollectionConversionUtils<DataSet>().getList( 
-            dataSetService.getDataSets( getIntegerCollection( selectedDataSets ) ) );
-        
-        List<Period> periods = new CollectionConversionUtils<Period>().getList( 
-            periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) );
-        
-        List<OrganisationUnit> organisationUnits = new CollectionConversionUtils<OrganisationUnit>().getList( 
-            organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) );
+        process.setDoDataMart( true );
 
-        DataElementCategoryCombo categoryCombo = ( categoryComboId != null ) ? 
-            categoryComboService.getDataElementCategoryCombo( categoryComboId ) : null;
-        
-        List<DataElementCategoryOptionCombo> categoryOptionCombos = ( categoryCombo != null ) ? 
-            new ArrayList<DataElementCategoryOptionCombo>( categoryCombo.getOptionCombos() ) : new ArrayList<DataElementCategoryOptionCombo>();
+        // ---------------------------------------------------------------------
+        // Report parameters
+        // ---------------------------------------------------------------------
 
-        RelativePeriods relatives = new RelativePeriods();
-        
-        relatives.setReportingMonth( reportingMonth );
-        relatives.setLast3Months( last3Months );
-        relatives.setLast6Months( last6Months );
-        relatives.setLast9Months( last9Months );
-        relatives.setLast12Months( last12Months );
-        relatives.setSoFarThisYear( soFarThisYear );
-        relatives.setSoFarThisFinancialYear( soFarThisFinancialYear );
-        relatives.setLast3To6Months( last3To6Months );
-        relatives.setLast6To9Months( last6To9Months );
-        relatives.setLast9To12Months( last9To12Months );
-        relatives.setLast12IndividualMonths( last12IndividualMonths );
-        relatives.setIndividualMonthsThisYear( individualMonthsThisYear );
-        relatives.setIndividualQuartersThisYear( individualQuartersThisYear );
-        
-        List<Period> relativePeriods = reportTableService.getRelativePeriods( relatives, reportingPeriod );
-        
-        ReportParams reportParams = new ReportParams();
-        
-        reportParams.setParamReportingMonth( paramReportingMonth );
-        reportParams.setParamParentOrganisationUnit( paramParentOrganisationUnit );
-        reportParams.setParamOrganisationUnit( paramOrganisationUnit );
-        
-        Date date = reportTableService.getDateFromPreviousMonth( reportingPeriod );
-        
-        MonthlyPeriodType periodType = new MonthlyPeriodType();
-        
-        Period period = periodType.createPeriod( date );
-        
-        String reportingMonthName = format.formatPeriod( period );
-        
-        ReportTable reportTable = null;
-        
-        if ( tableId == null )
+        for ( ReportTable reportTable : getReportTables( id, mode ) )
         {
-            reportTable = new ReportTable( tableName, mode, regression,
-                dataElements, indicators, dataSets, categoryOptionCombos, periods, relativePeriods, organisationUnits, 
-                doIndicators, doCategoryOptionCombos, doPeriods, doOrganisationUnits, relatives, reportParams, 
-                format, reportingMonthName );
-        }
-        else
-        {
-            reportTable = reportTableService.getReportTable( tableId );
+            // -----------------------------------------------------------------
+            // Reporting period report parameter / current reporting period
+            // -----------------------------------------------------------------
+
+            Date date = null;
+
+            if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamReportingMonth() )
+            {
+                reportTable.setRelativePeriods( reportTableService.getRelativePeriods( reportTable.getRelatives(), reportingPeriod ) );
+                
+                date = reportTableService.getDateFromPreviousMonth( reportingPeriod );
+                
+                log.info( "Reporting period: " + reportingPeriod );
+            }
+            else
+            {
+                reportTable.setRelativePeriods( reportTableService.getRelativePeriods( reportTable.getRelatives(), -1 ) );
+                
+                date = reportTableService.getDateFromPreviousMonth( -1 );
+            }
+
+            String reportingMonthName = format.formatPeriod( new MonthlyPeriodType().createPeriod( date ) );
             
-            reportTable.setName( tableName );
-            reportTable.setRegression( regression );
-            reportTable.setDataElements( dataElements );
-            reportTable.setIndicators( indicators );
-            reportTable.setDataSets( dataSets );
-            reportTable.setCategoryOptionCombos( categoryOptionCombos );
-            reportTable.setPeriods( periods );
-            reportTable.setRelativePeriods( relativePeriods );
-            reportTable.setUnits( organisationUnits );
-            reportTable.setDoIndicators( doIndicators );
-            reportTable.setDoCategoryOptionCombos( doCategoryOptionCombos );
-            reportTable.setDoPeriods( doPeriods );
-            reportTable.setDoUnits( doOrganisationUnits );
-            reportTable.setRelatives( relatives );
-            reportTable.setReportParams( reportParams );
-            reportTable.setI18nFormat( format );
             reportTable.setReportingMonthName( reportingMonthName );
-            
+
+            // -----------------------------------------------------------------
+            // Parent organisation unit report parameter
+            // -----------------------------------------------------------------
+
+            if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamParentOrganisationUnit() )
+            {
+                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
+
+                reportTable.setUnits( new ArrayList<OrganisationUnit>( organisationUnit.getChildren() ) );
+                
+                log.info( "Parent organisation unit: " + organisationUnit.getName() );
+            }
+
+            // -----------------------------------------------------------------
+            // Organisation unit report parameter
+            // -----------------------------------------------------------------
+
+            if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamOrganisationUnit() )
+            {
+                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+                
+                List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+                organisationUnits.add( organisationUnit );
+                reportTable.setUnits( organisationUnits );
+                
+                log.info( "Organisation unit: " + organisationUnit.getName() );
+            }
+
+            reportTable.setI18nFormat( format );
             reportTable.init();
+
+            process.addReportTable( reportTable );
         }
-        
-        return reportTable;
+
+        // ---------------------------------------------------------------------
+        // Internal process execution
+        // ---------------------------------------------------------------------
+
+        processCoordinator.requestProcessExecution( executor );
+
+        setCurrentRunningProcess( PROCESS_KEY_REPORT, executor.getId() );
+
+        return SUCCESS;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    /**
+     * If report table mode, this method will return the report table with the
+     * given identifier. If report mode, this method will return the report
+     * tables associated with the report.
+     * 
+     * @param id the identifier.
+     * @param mode the mode.
+     */
+    private Collection<ReportTable> getReportTables( Integer id, String mode )
+    {
+        Collection<ReportTable> reportTables = new ArrayList<ReportTable>();
+
+        if ( mode.equals( MODE_REPORT_TABLE ) )
+        {
+            reportTables.add( reportTableService.getReportTable( id ) );
+        }
+        else if ( mode.equals( MODE_REPORT ) )
+        {
+            reportTables = reportStore.getReport( id ).getReportTables();
+        }
+
+        return reportTables;
     }
 }

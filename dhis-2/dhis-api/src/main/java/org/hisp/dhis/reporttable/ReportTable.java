@@ -233,6 +233,7 @@ public class ReportTable
      * 
      * @param name the name.
      * @param mode the mode.
+     * @param regression include regression columns.
      * @param dataElements the data elements.
      * @param indicators the indicators.
      * @param dataSets the datasets.
@@ -287,8 +288,6 @@ public class ReportTable
         this.reportParams = reportParams;
         this.i18nFormat = i18nFormat;
         this.reportingMonthName = reportingMonthName;
-        
-        init();
     }
 
     // -------------------------------------------------------------------------

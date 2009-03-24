@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "create_report_table" )</h3>
 
-<form id="tableForm" name="tableForm" method="post">
+<form id="tableForm" name="tableForm" method="post" action="saveTable.action">
 
 <input type="hidden" id="tableId" name="tableId" value="$!reportTable.id">
 <input type="hidden" id="mode" name="mode" value="$!mode">
@@ -26,14 +26,14 @@
 		<td><input type="checkbox" id="doIndicators" name="doIndicators" value="true"#if( $reportTable.doIndicators ) checked#end></td>
 	</tr>
 	<tr>
-		<td><label for="skipDataMart">$i18n.getString( "skip_data_mart" )</label></td>
-		<td><input type="checkbox" id="skipDataMart" name="skipDataMart" value="true"></td>
-		<td><label for="doOrganisationUnits">$i18n.getString( "organisation_units" )</label></td>
+		<td><label for="regression">$i18n.getString( "include_regression" )</label></td>
+        <td><input type="checkbox" onclick="toggleRegression()" id="regression" name="regression" value="true"#if( $reportTable.isRegression() ) checked#end></td>
+        <td><label for="doOrganisationUnits">$i18n.getString( "organisation_units" )</label></td>
 		<td><input type="checkbox" id="doOrganisationUnits" name="doOrganisationUnits" value="true"#if( $reportTable.doUnits ) checked#end></td>
 	</tr>
 	<tr>
-		<td><label for="regression">$i18n.getString( "include_regression" )</label></td>
-		<td><input type="checkbox" onclick="toggleRegression()" id="regression" name="regression" value="true"#if( $reportTable.isRegression() ) checked#end></td>
+		<td></td>
+		<td></td>
 		<td><label for="doPeriods">$i18n.getString( "periods" )</label></td>
 		<td><input type="checkbox" id="doPeriods" name="doPeriods" value="true"#if( $reportTable.doPeriods ) checked#end></td>
 	</tr>
@@ -319,24 +319,6 @@
 		<td style="height:15px"></td>
 	</tr>
 	
-	<!-- Reporting month -->
-	
-	<tr>
-		<th>$i18n.getString( "reporting_month" )</th>
-	</tr>
-	<tr>
-		<td>
-			<select  id="reportingPeriod" name="reportingPeriod" style="min-width:640px">				
-				#foreach ( $key in $reportingPeriods.keySet() )
-					<option value="$key">$reportingPeriods.get( $key )</option>
-				#end
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td style="height:15px"></td>
-	</tr>
-
 </table>
 	
 	<!-- Relative Periods -->
@@ -420,8 +402,7 @@
 	
 	<tr>		
 		<td>
-			<input type="button" value="$i18n.getString( 'create_and_save' )" onclick="createAndSaveTable()" style="width:120px"><input 
-				type="button" value="$i18n.getString( 'save' )" onclick="saveTable()" style="width:120px"><input 
+			<input type="button" value="$i18n.getString( 'save' )" onclick="saveTable()" style="width:120px"><input 
 				type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:120px">
 		</td>
 	</tr>
