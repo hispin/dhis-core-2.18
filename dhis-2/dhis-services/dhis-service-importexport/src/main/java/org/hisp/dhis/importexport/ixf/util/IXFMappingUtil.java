@@ -28,16 +28,19 @@ package org.hisp.dhis.importexport.ixf.util;
  */
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
+import org.hisp.dhis.period.OnChangePeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.QuarterlyPeriodType;
+import org.hisp.dhis.period.SixMonthlyPeriodType;
 import org.hisp.dhis.period.WeeklyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
+import org.hisp.dhis.system.util.LoggingHashMap;
 
 /**
  * @author Lars Helge Overland
@@ -53,26 +56,35 @@ public class IXFMappingUtil
     
     static
     {
-        periodTypeNameToIXFMapping = new HashMap<String, String>();
+        periodTypeNameToIXFMapping = new LoggingHashMap<String, String>();
         
         periodTypeNameToIXFMapping.put( YearlyPeriodType.NAME, "Year" );
+        periodTypeNameToIXFMapping.put( SixMonthlyPeriodType.NAME, "SixMonth" );        
+        periodTypeNameToIXFMapping.put( QuarterlyPeriodType.NAME, "Quarter" );
         periodTypeNameToIXFMapping.put( MonthlyPeriodType.NAME, "Month" );
         periodTypeNameToIXFMapping.put( WeeklyPeriodType.NAME, "Week" );
         periodTypeNameToIXFMapping.put( DailyPeriodType.NAME, "Day" );
+        periodTypeNameToIXFMapping.put( OnChangePeriodType.NAME, "OnChange" );
         
-        periodTypeNameFromIXFMapping = new HashMap<String, String>();
+        periodTypeNameFromIXFMapping = new LoggingHashMap<String, String>();
         
         periodTypeNameFromIXFMapping.put( "Year", YearlyPeriodType.NAME );
+        periodTypeNameFromIXFMapping.put( "SixMonthly", SixMonthlyPeriodType.NAME );
+        periodTypeNameFromIXFMapping.put( "Quarter", QuarterlyPeriodType.NAME );
         periodTypeNameFromIXFMapping.put( "Month", MonthlyPeriodType.NAME );
         periodTypeNameFromIXFMapping.put( "Week", WeeklyPeriodType.NAME );
         periodTypeNameFromIXFMapping.put( "Day", DailyPeriodType.NAME );
+        periodTypeNameFromIXFMapping.put( "OnChange", OnChangePeriodType.NAME );
         
-        periodTypeFromIXFMapping = new HashMap<String, PeriodType>();
+        periodTypeFromIXFMapping = new LoggingHashMap<String, PeriodType>();
         
         periodTypeFromIXFMapping.put( "Year", new YearlyPeriodType() );
+        periodTypeFromIXFMapping.put( "SixMonth", new SixMonthlyPeriodType() );
+        periodTypeFromIXFMapping.put( "Quarter", new QuarterlyPeriodType() );
         periodTypeFromIXFMapping.put( "Month", new MonthlyPeriodType() );
         periodTypeFromIXFMapping.put( "Week", new WeeklyPeriodType() );
         periodTypeFromIXFMapping.put( "Day", new DailyPeriodType() );
+        periodTypeFromIXFMapping.put( "OnChange", new OnChangePeriodType() );
     }
     
     public static String getPeriodTypeToIXF( String type )

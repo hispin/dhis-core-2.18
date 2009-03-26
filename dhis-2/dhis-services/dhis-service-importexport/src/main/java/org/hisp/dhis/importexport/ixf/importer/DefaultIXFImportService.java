@@ -41,6 +41,7 @@ import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.SourceBatchHandler;
+import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -126,6 +127,13 @@ public class DefaultIXFImportService
     public void setObjectMappingGenerator( ObjectMappingGenerator objectMappingGenerator )
     {
         this.objectMappingGenerator = objectMappingGenerator;
+    }
+
+    private HibernateCacheManager cacheManager;
+
+    public void setCacheManager( HibernateCacheManager cacheManager )
+    {
+        this.cacheManager = cacheManager;
     }
 
     // -------------------------------------------------------------------------
@@ -230,8 +238,12 @@ public class DefaultIXFImportService
         
         setMessage( "import_process_done" );
         
+        StreamUtils.closeInputStream( zipIn );
+        
+        reader.closeReader();
+        
         NameMappingUtil.clearMapping();
         
-        StreamUtils.closeInputStream( zipIn );
+        cacheManager.clearCache();
     }
 }

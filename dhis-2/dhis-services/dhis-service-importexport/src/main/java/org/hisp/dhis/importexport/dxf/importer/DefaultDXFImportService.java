@@ -1080,12 +1080,14 @@ public class DefaultDXFImportService
                 }
             }
         }
-        
+                
         setMessage( "import_process_done" );
         
-        NameMappingUtil.clearMapping();
-                
         StreamUtils.closeInputStream( zipIn );
+
+        reader.closeReader();
+
+        NameMappingUtil.clearMapping();
         
         cacheManager.clearCache();
     }

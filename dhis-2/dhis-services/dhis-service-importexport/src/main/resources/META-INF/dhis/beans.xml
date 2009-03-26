@@ -348,6 +348,8 @@
       ref="org.hisp.dhis.jdbc.BatchHandlerFactory"/>   
     <property name="objectMappingGenerator" 
       ref="org.hisp.dhis.importexport.mapping.ObjectMappingGenerator"/>
+    <property name="cacheManager"
+      ref="org.hisp.dhis.cache.HibernateCacheManager"/>
   </bean>
   
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
