@@ -167,6 +167,8 @@ public class ExportPipeThread
             
             StreamUtils.closeOutputStream( zipOutputStream );
             
+            writer.closeWriter();
+            
             NameMappingUtil.clearMapping();
         }
     }

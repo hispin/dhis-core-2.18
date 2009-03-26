@@ -31,6 +31,7 @@ import static org.hisp.dhis.system.util.TextUtils.subString;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Random;
 
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
@@ -185,6 +186,8 @@ public class IndicatorConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final int random = new Random().nextInt( 100000 );
+            
             final DataElement element = new DataElement();
             
             reader.moveToStartElement( FIELD_DEFINITION );
@@ -193,7 +196,7 @@ public class IndicatorConverter
             
             reader.moveToStartElement( FIELD_NAME );            
             element.setName( reader.getElementValue() );                      
-            element.setShortName( subString( element.getName(), 0, 20 ) );
+            element.setShortName( subString( element.getName(), 0, 17 ) + random );
             
             reader.moveToStartElement( FIELD_DESCRIPTION );            
             element.setDescription( reader.getElementValue() );

@@ -28,6 +28,7 @@ package org.hisp.dhis.importexport.ixf.converter;
  */
 
 import java.util.Collection;
+import java.util.Random;
 
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
@@ -114,13 +115,15 @@ public class SourceConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final int random = new Random().nextInt( 100000 );
+            
             final OrganisationUnit unit = new OrganisationUnit();
 
             unit.setUuid( reader.getAttributeValue( FIELD_KEY ) );
             
             reader.moveToStartElement( FIELD_ORG );            
             unit.setName( reader.getElementValue() );
-            unit.setShortName( subString( unit.getName(), 0, 20 ) );
+            unit.setShortName( subString( unit.getName(), 0, 17 ) + random );
             
             NameMappingUtil.addOrganisationUnitMapping( unit.getUuid(), unit.getName() );
             

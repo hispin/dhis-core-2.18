@@ -225,6 +225,7 @@ public class DefaultDhis14XMLImportService
                 Map<Integer, String> expressionMap = new AppendingHashMap<Integer, String>();
                 
                 setMessage( "importing_meta_data" );
+                
                 log.info( "Importing meta data" );
         
                 XMLReader reader = XMLFactory.getXMLReader( zipIn );
@@ -275,6 +276,8 @@ public class DefaultDhis14XMLImportService
                         periodConverter.read( reader, params );
                     }
                 }
+                
+                reader.closeReader();
             }
             else if ( zipEntry.getName().toLowerCase().trim().equals( DATA_FILE_NAME ) )
             {
@@ -283,6 +286,7 @@ public class DefaultDhis14XMLImportService
                 // -------------------------------------------------------------
 
                 setMessage( "importing_data_values" );
+                
                 log.info( "Importing DataValues" );
     
                 BufferedReader streamReader = new BufferedReader( new InputStreamReader( zipIn ) );
@@ -308,13 +312,14 @@ public class DefaultDhis14XMLImportService
         {
             setOutput( importAnalyser.getImportAnalysis() );
         }
-        
-        setMessage( "import_process_done" );
+
         log.info( "Import process done" );
         
-        NameMappingUtil.clearMapping();
+        setMessage( "import_process_done" );
         
         StreamUtils.closeInputStream( zipIn );
+
+        NameMappingUtil.clearMapping();
         
         cacheManager.clearCache();
     }
