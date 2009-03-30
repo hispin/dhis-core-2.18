@@ -284,7 +284,8 @@ public class FillMapByIndicatorAction implements Action {
 
 		Date startdate = format.parseDate(startDate);
 
-		Date enddate = format.parseDate(endDate);
+		Date enddate = format.parseDate(endDate);		
+		
 
 		for (OrganisationUnit org : organisationUnit.getChildren()) {
 

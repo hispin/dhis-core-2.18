@@ -50,6 +50,7 @@ import jxl.write.WritableWorkbook;
 import org.hisp.dhis.gis.Legend;
 import org.hisp.dhis.gis.action.configuration.GISConfigurationManagerService;
 import org.hisp.dhis.gis.state.SelectionManager;
+import org.hisp.dhis.gis.util.SVGUtils;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -137,18 +138,22 @@ public class ExportExcelAction
         {
 
             String svg = directory.getAbsolutePath() + File.separator + "legend.svg";
+            
+            String output = directory.getAbsolutePath() + File.separator + "legend.png";
+            
+            SVGUtils.convertSVG2PNG( svg, output, 100, legends.size() * 100 );
 
-            String jarpath = "\"" + directory.getParent() + File.separator + "batik-1.7" + File.separator
-                + "batik-rasterizer.jar\" ";
-
-            String jarrun = "java -jar " + jarpath + " -w 100  -h " + legends.size() * 100 + " -q 0.9999 -m image/png "
-                + "\"" + svg + "\"";
-
-            Process pro = Runtime.getRuntime().exec( jarrun );
-
-            pro.waitFor();
-
-            pro.destroy();
+//            String jarpath = "\"" + directory.getParent() + File.separator + "batik-1.7" + File.separator
+//                + "batik-rasterizer.jar\" ";
+//
+//            String jarrun = "java -jar " + jarpath + " -w 100  -h " + legends.size() * 100 + " -q 0.9999 -m image/png "
+//                + "\"" + svg + "\"";
+//
+//            Process pro = Runtime.getRuntime().exec( jarrun );
+//
+//            pro.waitFor();
+//
+//            pro.destroy();
 
             File result = new File( directory, "legend.png" );
 
@@ -190,19 +195,23 @@ public class ExportExcelAction
             File directory = gisConfigurationManagerService.getGISTempDirectory();
 
             String svg = directory.getAbsolutePath() + File.separator + "temp.svg";
+            
+            String outputPath = directory.getAbsolutePath() + File.separator + "temp.png";
 
             File output = new File( directory, "ouput.xls" );
+            
+            SVGUtils.convertSVG2PNG( svg, outputPath, 1000, 1000);
 
-            String jarpath = "\"" + directory.getParent() + File.separator + "batik-1.7" + File.separator
-                + "batik-rasterizer.jar\" ";
+            //String jarpath = "\"" + directory.getParent() + File.separator + "batik-1.7" + File.separator
+            //    + "batik-rasterizer.jar\" ";
 
-            String jarrun = "java -jar " + jarpath + " -w 1024  -h 1024 -q 0.9999 -m image/png " + "\"" + svg + "\"";
+            //String jarrun = "java -jar " + jarpath + " -w 1024  -h 1024 -q 0.9999 -m image/png " + "\"" + svg + "\"";
 
-            Process pro = Runtime.getRuntime().exec( jarrun );
+           // Process pro = Runtime.getRuntime().exec( jarrun );
 
-            pro.waitFor();
+            //pro.waitFor();
 
-            pro.destroy();
+            //pro.destroy();
 
             // Workbook templateWorkbook = Workbook.c;
 
