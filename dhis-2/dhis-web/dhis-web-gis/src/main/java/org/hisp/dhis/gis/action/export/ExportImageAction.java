@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.util.Date;
 
 import org.hisp.dhis.gis.action.configuration.GISConfigurationManagerService;
+import org.hisp.dhis.gis.util.SVGUtils;
 
 import com.opensymphony.xwork.Action;
 
@@ -101,24 +102,28 @@ public class ExportImageAction
             File directory = gisConfigurationManagerService.getGISTempDirectory();
 
             String svg = directory.getAbsolutePath() + File.separator + "temp.svg";
+            
+            String outputPath = directory.getAbsolutePath() + File.separator + "temp.png";
+            
+            SVGUtils.convertSVG2PNG( svg, outputPath, 1024, 1024);
 
-            String jarpath = "\"" + gisConfigurationManagerService.getGISDirectory() + File.separator + "batik-1.7"
-                + File.separator + "batik-rasterizer.jar\" ";
+//            String jarpath = "\"" + gisConfigurationManagerService.getGISDirectory() + File.separator + "batik-1.7"
+//                + File.separator + "batik-rasterizer.jar\" ";
+//
+//            String jarrun = "java -jar " + jarpath + " -w 1024  -h 1024 -q 0.9999 -m image/jpeg " + "\"" + svg + "\"";
+//
+//            Process pro = Runtime.getRuntime().exec( jarrun );
+//
+//            pro.waitFor();
+//
+//            pro.destroy();
 
-            String jarrun = "java -jar " + jarpath + " -w 1024  -h 1024 -q 0.9999 -m image/jpeg " + "\"" + svg + "\"";
-
-            Process pro = Runtime.getRuntime().exec( jarrun );
-
-            pro.waitFor();
-
-            pro.destroy();
-
-            File outputXLSStream = new File( directory.getAbsolutePath() + File.separator + "temp.jpg" );
+            File outputXLSStream = new File( directory.getAbsolutePath() + File.separator + "temp.png" );
 
             inputStream = new BufferedInputStream( new FileInputStream( outputXLSStream ) );
 
             outputImage = mapFileName.replace( ".svg", "" ) + "_" + new Date().getDay() + new Date().getMonth()
-                + new Date().getYear() + ".jpg";
+                + new Date().getYear() + ".png";
 
             outputXLSStream.deleteOnExit();
 

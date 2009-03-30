@@ -37,7 +37,7 @@ import java.util.*;
 
 /**
  * @author Tran Thanh Tri
- * @version $Id: Feature.java 28-04-2008 16:06:00 $
+ * @version $Id: FileCopy.java 28-04-2008 16:06:00 $
  */
 public class FileCopy
 {

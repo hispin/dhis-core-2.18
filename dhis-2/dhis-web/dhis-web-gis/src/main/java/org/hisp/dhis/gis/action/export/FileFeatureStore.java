@@ -277,7 +277,7 @@ public class FileFeatureStore
                         String[] a_color_value = color_value.split( "-" );
                         newColor = a_color_value[0];
 
-                        newColor = "fill=\"" + newColor + "\"";
+                        newColor = " fill=\"" + newColor + "\"";
 
                         newText = ":" + a_color_value[1] + "</text>";
 
