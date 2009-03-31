@@ -64,7 +64,5 @@
 </table>
 
 <script type="text/javascript">
-
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_category_option" ) , "'")';
-	var i18n_item_cannot_be_deleted = '$encoder.jsEscape( $i18n.getString( "this_item_cannot_be_deleted" ) , "'")';
 </script>
