@@ -111,29 +111,18 @@ public class UpdateDataElementCategoryAction
         DataElementCategory dataElementCategory = dataElementCategoryService
             .getDataElementCategory( dataElementCategoryId );
 
-        if ( !dataElementCategory.getName().equals( nameField ) )
-        {
-            dataElementCategory.setName( nameField );
-        }
-
+        dataElementCategory.setName( nameField );        
+        
         Set<DataElementCategoryOption> updatedCategoryOptions = new HashSet<DataElementCategoryOption>();
 
         for ( String id : selectedList )
         {
-            DataElementCategoryOption dataElementCategoryOption = dataElementCategoryOptionService
-                .getDataElementCategoryOption( Integer.parseInt( id ) );
-
-            updatedCategoryOptions.add( dataElementCategoryOption );
-
+            updatedCategoryOptions.add( dataElementCategoryOptionService.getDataElementCategoryOption( Integer.parseInt( id ) ) );
         }
 
-        if( ! dataElementCategory.getCategoryOptions().containsAll(updatedCategoryOptions) )
-        {
-        	dataElementCategory.setCategoryOptions( updatedCategoryOptions );
-        }     
-
+        dataElementCategory.setCategoryOptions( updatedCategoryOptions );
+        
         dataElementCategoryService.updateDataElementCategory( dataElementCategory );
-
         
         int displayOrder = 1;
         
@@ -149,8 +138,7 @@ public class UpdateDataElementCategoryAction
 
             if ( columnOrder == null )
             {
-                columnOrder = new DataElementDimensionColumnOrder( dataElementCategory, dataElementCategoryOption,
-                    displayOrder );
+                columnOrder = new DataElementDimensionColumnOrder( dataElementCategory, dataElementCategoryOption, displayOrder );
                 dataElementDimensionColumnOrderService.addDataElementDimensionColumnOrder( columnOrder );
             }
             else
@@ -160,7 +148,6 @@ public class UpdateDataElementCategoryAction
             }
 
             displayOrder++;
-
         }
 
         return SUCCESS;

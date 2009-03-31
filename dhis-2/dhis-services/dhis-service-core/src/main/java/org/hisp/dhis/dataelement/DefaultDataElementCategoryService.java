@@ -79,6 +79,13 @@ public class DefaultDataElementCategoryService
         return id;
     }
 
+    public void updateDataElementCategory( DataElementCategory dataElementCategory )
+    {
+        dataElementCategoryStore.updateDataElementCategory( dataElementCategory );
+        
+        i18nService.verify( dataElementCategory );
+    }
+
     public void deleteDataElementCategory( DataElementCategory dataElementCategory )
     {
         i18nService.removeObject( dataElementCategory );
@@ -116,11 +123,6 @@ public class DefaultDataElementCategoryService
     public DataElementCategory getDataElementCategoryByName( String name )
     {
         return dataElementCategoryStore.getDataElementCategoryByName( name );
-    }
-
-    public void updateDataElementCategory( DataElementCategory dataElementCategory )
-    {
-        dataElementCategoryStore.updateDataElementCategory( dataElementCategory );
     }
 
     public Collection<DataElementCategoryOption> getOrderedOptions( DataElementCategory category )

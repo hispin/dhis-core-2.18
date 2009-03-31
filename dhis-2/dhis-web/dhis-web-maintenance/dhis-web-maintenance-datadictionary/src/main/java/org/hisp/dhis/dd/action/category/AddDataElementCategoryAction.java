@@ -138,7 +138,6 @@ public class AddDataElementCategoryAction
             }
 
             displayOrder++;
-
         }
 
         return SUCCESS;

@@ -128,8 +128,7 @@ public class GetDataElementCategoryComboAction
         
         for ( DataElementCategory category : cateogries )
         {
-            rowOrder = dataElementDimensionRowOrderService.getDataElementDimensionRowOrder( dataElementCategoryCombo,
-                category );
+            rowOrder = dataElementDimensionRowOrderService.getDataElementDimensionRowOrder( dataElementCategoryCombo, category );
 
             if ( rowOrder == null )
             {

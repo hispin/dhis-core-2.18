@@ -237,9 +237,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementCategoryComboStore"
       ref="org.hisp.dhis.dataelement.DataElementCategoryComboStore"/>
     <property name="dataElementDimensionRowOrderService"
-      ref="org.hisp.dhis.dataelement.DataElementDimensionRowOrderService"/>   
-    <property name="i18nService"
-      ref="org.hisp.dhis.i18n.I18nService"/>       
+      ref="org.hisp.dhis.dataelement.DataElementDimensionRowOrderService"/>
   </bean>  
   
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionService"
@@ -578,7 +576,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="targetObject" ref="org.hisp.dhis.system.deletion.DeletionManager"/>
     <property name="targetMethod" value="addDeletionHandlers"/>
     <property name="arguments">
-		  <list>
+	  <list>
         <list>
           <ref local="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler"/>
           <ref local="org.hisp.dhis.dataelement.DataElementDeletionHandler"/>
@@ -601,7 +599,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
           <ref local="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler"/>
           <ref local="org.hisp.dhis.datavalue.DataValueDeletionHandler"/>
         </list>
-		  </list>
+      </list>
     </property>
   </bean>
   

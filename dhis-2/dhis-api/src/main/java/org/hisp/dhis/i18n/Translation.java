@@ -160,6 +160,6 @@ public class Translation implements Serializable
     @Override
     public String toString()
     {
-        return "ClassName: " + className + " id: " + id + " locale: " + locale + " property: " + property + " value: " + value;
+        return "[Class name: " + className + " id: " + id + " locale: " + locale + " property: " + property + " value: " + value + "]";
     }
 }
