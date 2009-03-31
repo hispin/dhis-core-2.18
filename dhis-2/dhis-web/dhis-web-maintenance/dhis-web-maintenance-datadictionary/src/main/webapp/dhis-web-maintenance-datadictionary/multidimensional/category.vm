@@ -66,6 +66,5 @@
 </table>
 
 <script type="text/javascript">
-
-	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete" ) , "'" )';
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_category" ) , "'" )';
 </script>
