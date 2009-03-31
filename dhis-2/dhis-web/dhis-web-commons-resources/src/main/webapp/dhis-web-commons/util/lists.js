@@ -217,12 +217,12 @@ function moveUpSelectedOption( listId )
 	{
 		if ( list.options[ i ].selected )
 		{
-			if ( i > 0 )
+			if ( i > 0 ) // Cannot move up the option at the top
 			{
 				var precedingOption = new Option( list.options[ i - 1 ].text, list.options[ i - 1 ].value );
 				var currentOption = new Option( list.options[ i ].text, list.options[ i ].value );
 				
-				list.options[ i - 1 ] = currentOption;
+				list.options[ i - 1 ] = currentOption; // Swapping place in the list
 				list.options[ i - 1 ].selected = true;
 				list.options[ i ] = precedingOption;
 			}
@@ -243,12 +243,12 @@ function moveDownSelectedOption( listId )
 	{
 		if ( list.options[ i ].selected )
 		{
-			if ( i <= list.options.length - 1 )
+			if ( i <= list.options.length - 1 ) // Cannot move down the option at the bottom
 			{
 				var subsequentOption = new Option( list.options[ i + 1 ].text, list.options[ i + 1 ].value );
 				var currentOption = new Option( list.options[ i ].text, list.options[ i ].value );
 				
-				list.options[ i + 1 ] = currentOption;
+				list.options[ i + 1 ] = currentOption; // Swapping place in the list
 				list.options[ i + 1 ].selected = true;
 				list.options[ i ] = subsequentOption;
 			}
@@ -257,7 +257,7 @@ function moveDownSelectedOption( listId )
 }
 
 /**
- * Moves the selected option to the top of the list.
+ * Moves the selected options to the top of the list.
  * 
  * @param listId the id of the list.
  */
@@ -265,27 +265,44 @@ function moveSelectedOptionToTop( listId )
 {
     var list = document.getElementById( listId );
     
-    var moveOption = null;
-            
-    for ( var i = list.options.length - 1; i >= 0; i-- )
+    var listLength = list.options.length;
+    
+    // Copy selected options to holding list and remove from main list
+    
+    var moveOptions = [];
+    
+    for ( var i = listLength - 1; i >= 0; i-- )
     {
         if ( list.options[ i ].selected )
         {
-            moveOption = new Option( list.options[ i ].text, list.options[ i ].value );                
-        }
-        
-        if ( moveOption != null && i > 0 )
-        {
-            var nextOption = new Option( list.options[ i - 1 ].text, list.options[ i - 1 ].value );
-            list.options[ i ] = nextOption;
+            moveOptions.unshift( new Option( list.options[ i ].text, list.options[ i ].value ) );
+            
+            list.remove( i );
         }
     }
     
-    list.options[ 0 ] = moveOption;       
+    // Move options in main list down a number of positions equal to selected options
+    
+    list.options.length = listLength;
+    
+    for ( var j = listLength - moveOptions.length - 1; j >= 0; j-- )
+    {
+        var moveOption = new Option( list.options[ j ].text, list.options[ j ].value );
+        
+        list.options[ j + moveOptions.length ] = moveOption;
+    }
+    
+    // Insert options in holding list at the top of main list
+    
+    for ( var k = 0; k < moveOptions.length; k++ )
+    {
+        list.options[ k ] = moveOptions[ k ];        
+        list.options[ k ].selected = true;
+    }
 }
 
 /**
- * Moves the selected option to the bottom of the list.
+ * Moves the selected options to the bottom of the list.
  * 
  * @param listId the id of the list.
  */
@@ -293,23 +310,28 @@ function moveSelectedOptionToBottom( listId )
 {
     var list = document.getElementById( listId );
     
-    var moveOption = null;
-  
-    for ( var i = 0; i < list.options.length; i++ )
+    // Copy selected options to holding list and remove from main list
+    
+    var moveOptions = [];
+    
+    for ( var i = list.options.length - 1; i >= 0; i-- )
     {
         if ( list.options[ i ].selected )
         {
-            moveOption = new Option( list.options[ i ].text, list.options[ i ].value );                
-        }
-      
-        if ( moveOption != null && i < ( list.options.length - 1 ) )
-        {
-            var nextOption = new Option( list.options[ i + 1 ].text, list.options[ i + 1 ].value );
-            list.options[ i ] = nextOption;
+            moveOptions.unshift( new Option( list.options[ i ].text, list.options[ i ].value ) );
+            
+            list.remove( i );
         }
     }
     
-    list.options[ list.options.length - 1 ] = moveOption;
+    // Insert options in holding list to the end of main list
+    
+    for ( var j = 0; j < moveOptions.length; j++ )
+    {
+        list.add( moveOptions[ j ], null );
+        
+        list.options[ list.options.length - 1 ].selected = true;
+    }
 }
 
 /**
