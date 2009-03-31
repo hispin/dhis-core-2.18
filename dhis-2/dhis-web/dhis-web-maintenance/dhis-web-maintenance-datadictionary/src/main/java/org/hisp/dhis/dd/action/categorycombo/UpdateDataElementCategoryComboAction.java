@@ -116,11 +116,8 @@ public class UpdateDataElementCategoryComboAction
         DataElementCategoryCombo dataElementCategoryCombo = dataElementCategoryComboService
             .getDataElementCategoryCombo( dataElementCategoryComboId );
 
-        if ( !dataElementCategoryCombo.getName().equals( nameField ) )
-        {
-            dataElementCategoryCombo.setName( nameField );
-        }
-
+        dataElementCategoryCombo.setName( nameField );
+        
         Set<DataElementCategory> updatedCategories = new HashSet<DataElementCategory>();
 
         for ( String id : selectedList )
@@ -131,14 +128,11 @@ public class UpdateDataElementCategoryComboAction
             updatedCategories.add( dataElementCategory );
         }
 
-        if ( !dataElementCategoryCombo.getCategories().containsAll( updatedCategories) )
-        {
-            dataElementCategoryCombo.setCategories( updatedCategories );
+        dataElementCategoryCombo.setCategories( updatedCategories );
 
-            dataElementCategoryComboService.updateDataElementCategoryCombo( dataElementCategoryCombo );
+        dataElementCategoryComboService.updateDataElementCategoryCombo( dataElementCategoryCombo );
             
-            dataElementCategoryOptionComboService.generateOptionCombos( dataElementCategoryCombo );
-        }       	
+        dataElementCategoryOptionComboService.generateOptionCombos( dataElementCategoryCombo );
 
         int displayOrder = 1;
         

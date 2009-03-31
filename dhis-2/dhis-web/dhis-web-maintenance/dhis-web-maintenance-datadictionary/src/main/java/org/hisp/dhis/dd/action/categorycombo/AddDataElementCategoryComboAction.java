@@ -150,7 +150,6 @@ public class AddDataElementCategoryComboAction
             }
 
             displayOrder++;
-
         }
 
         return SUCCESS;

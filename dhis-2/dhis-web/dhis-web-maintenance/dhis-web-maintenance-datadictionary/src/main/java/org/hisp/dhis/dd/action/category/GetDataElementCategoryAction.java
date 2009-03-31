@@ -132,7 +132,6 @@ public class GetDataElementCategoryAction
 
             if ( columnOrder == null )
             {
-
                 storedDisplayOrder = false;
                 break;
             }
