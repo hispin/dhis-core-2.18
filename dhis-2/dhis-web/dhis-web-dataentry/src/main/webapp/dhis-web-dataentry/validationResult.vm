@@ -1,9 +1,9 @@
-<h1>$encoder.htmlEncode( $i18n.getString( "validation_result" ) )</h1>
+<h3>$encoder.htmlEncode( $i18n.getString( "validation_result" ) )</h3>
 
 #if( $results.size() == 0)
-	<h3>$encoder.htmlEncode( $i18n.getString( "successful_validation" ) )</h3>
+	<p><b>$encoder.htmlEncode( $i18n.getString( "successful_validation" ) )</b></p>
 #else
-	<p>$encoder.htmlEncode( $i18n.getString( "unsuccessful_validation" ) )</p>
+	<p><b>$encoder.htmlEncode( $i18n.getString( "unsuccessful_validation" ) )</b></p>
 	<table width="100%">
 		<thead>
 			<tr>
