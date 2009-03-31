@@ -145,6 +145,8 @@ public class ReportTableStatementTest
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
         
+        reportTable.init();
+        
         ReportTableStatement statement = new CreateReportTableStatement( reportTable, dialect );
 
         assertNotNull( statement.getStatement() );
@@ -152,6 +154,8 @@ public class ReportTableStatementTest
         reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         statement = new CreateReportTableStatement( reportTable, dialect );
         
@@ -160,6 +164,8 @@ public class ReportTableStatementTest
         reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         statement = new CreateReportTableStatement( reportTable, dialect );
 
@@ -171,6 +177,8 @@ public class ReportTableStatementTest
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false, 
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             true, false ,true, false, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         ReportTableStatement statement = new GetReportTableDataStatement( reportTable );
         
@@ -186,6 +194,8 @@ public class ReportTableStatementTest
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, 
             true, true, false, false, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         ReportTableStatement statement = new GetReportTableDataStatement( reportTable );
 
@@ -201,6 +211,8 @@ public class ReportTableStatementTest
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         ReportTableStatement statement = new GetReportTableDataStatement( reportTable );
 
@@ -216,6 +228,8 @@ public class ReportTableStatementTest
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATASETS, false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         ReportTableStatement statement = new GetReportTableDataStatement( reportTable );
 
@@ -231,6 +245,8 @@ public class ReportTableStatementTest
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         ReportTableStatement statement = new RemoveReportTableStatement( reportTable );
         

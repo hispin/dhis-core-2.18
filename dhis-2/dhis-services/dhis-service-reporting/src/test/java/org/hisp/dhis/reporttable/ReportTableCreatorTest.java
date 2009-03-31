@@ -337,6 +337,8 @@ public class ReportTableCreatorTest
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         reportTableCreator.createReportTable( reportTable, false );
     }
@@ -346,6 +348,8 @@ public class ReportTableCreatorTest
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         reportTableCreator.createReportTable( reportTable, false );
     }
@@ -355,6 +359,8 @@ public class ReportTableCreatorTest
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             true, false, false, true, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         reportTableCreator.createReportTable( reportTable, false );
     }
@@ -364,6 +370,8 @@ public class ReportTableCreatorTest
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, 
             true, true, true, false, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         reportTableCreator.createReportTable( reportTable, false );
     }
@@ -374,6 +382,8 @@ public class ReportTableCreatorTest
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, 
             false, true, false, true, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         reportTableCreator.createReportTable( reportTable, false );
     }
@@ -383,6 +393,8 @@ public class ReportTableCreatorTest
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, 
             true, false, false, true, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         reportTableCreator.createReportTable( reportTable, false );
     }
@@ -392,6 +404,8 @@ public class ReportTableCreatorTest
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_INDICATORS, false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         reportTableCreator.createReportTable( reportTable, false );
     }
@@ -401,6 +415,8 @@ public class ReportTableCreatorTest
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_INDICATORS, false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         reportTableCreator.createReportTable( reportTable, false );
     }
@@ -410,6 +426,8 @@ public class ReportTableCreatorTest
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_INDICATORS, false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             true, false, false, true, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         reportTableCreator.createReportTable( reportTable, false );
     }
@@ -419,6 +437,8 @@ public class ReportTableCreatorTest
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATASETS, false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         reportTableCreator.createReportTable( reportTable, false );
     }
@@ -428,6 +448,8 @@ public class ReportTableCreatorTest
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATASETS, false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         reportTableCreator.createReportTable( reportTable, false );
     }
@@ -437,6 +459,8 @@ public class ReportTableCreatorTest
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATASETS, false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
             true, false, false, true, relatives, null, i18nFormat, "january_2000" );
+
+        reportTable.init();
         
         reportTableCreator.createReportTable( reportTable, false );
     }
