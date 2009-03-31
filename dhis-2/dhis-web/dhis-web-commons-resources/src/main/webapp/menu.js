@@ -17,13 +17,13 @@ function showDropDown( id )
 
         dropDownId = newDropDownId;
         
-        $( dropDownId ).show( 'fast' );
+        $( dropDownId ).show();
     }
 }
 
 function hideDropDown()
 {
-    $( dropDownId ).hide( 'fast' );
+    $( dropDownId ).hide();
     
     dropDownId = null;
 }
