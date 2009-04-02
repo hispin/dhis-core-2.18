@@ -31,23 +31,10 @@ import static org.hisp.dhis.reporttable.ReportTableInternalProcess.PROCESS_TYPE;
 import static org.hisp.dhis.util.InternalProcessUtil.PROCESS_KEY_REPORT;
 import static org.hisp.dhis.util.InternalProcessUtil.setCurrentRunningProcess;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
 import org.amplecode.cave.process.ProcessCoordinator;
 import org.amplecode.cave.process.ProcessExecutor;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.report.ReportStore;
-import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableInternalProcess;
-import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork.Action;
@@ -59,12 +46,6 @@ import com.opensymphony.xwork.Action;
 public class CreateTableAction
     implements Action
 {
-    private static final Log log = LogFactory.getLog( CreateTableAction.class );
-    
-    private static final String MODE_REPORT = "report";
-
-    private static final String MODE_REPORT_TABLE = "table";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -81,27 +62,6 @@ public class CreateTableAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
-    }
-
-    private ReportTableService reportTableService;
-
-    public void setReportTableService( ReportTableService reportTableService )
-    {
-        this.reportTableService = reportTableService;
-    }
-
-    private ReportStore reportStore;
-
-    public void setReportStore( ReportStore reportStore )
-    {
-        this.reportStore = reportStore;
-    }
-    
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
     }
 
     private I18nFormat format;
@@ -163,109 +123,17 @@ public class CreateTableAction
         
         ReportTableInternalProcess process = (ReportTableInternalProcess) executor.getProcess();
 
-        process.setDoDataMart( true );
-
-        // ---------------------------------------------------------------------
-        // Report parameters
-        // ---------------------------------------------------------------------
-
-        for ( ReportTable reportTable : getReportTables( id, mode ) )
-        {
-            // -----------------------------------------------------------------
-            // Reporting period report parameter / current reporting period
-            // -----------------------------------------------------------------
-
-            Date date = null;
-
-            if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamReportingMonth() )
-            {
-                reportTable.setRelativePeriods( reportTableService.getRelativePeriods( reportTable.getRelatives(), reportingPeriod ) );
-                
-                date = reportTableService.getDateFromPreviousMonth( reportingPeriod );
-                
-                log.info( "Reporting period: " + reportingPeriod );
-            }
-            else
-            {
-                reportTable.setRelativePeriods( reportTableService.getRelativePeriods( reportTable.getRelatives(), -1 ) );
-                
-                date = reportTableService.getDateFromPreviousMonth( -1 );
-            }
-
-            String reportingMonthName = format.formatPeriod( new MonthlyPeriodType().createPeriod( date ) );
-            
-            reportTable.setReportingMonthName( reportingMonthName );
-
-            // -----------------------------------------------------------------
-            // Parent organisation unit report parameter
-            // -----------------------------------------------------------------
-
-            if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamParentOrganisationUnit() )
-            {
-                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
-
-                reportTable.getRelativeUnits().addAll( new ArrayList<OrganisationUnit>( organisationUnit.getChildren() ) );
-                
-                log.info( "Parent organisation unit: " + organisationUnit.getName() );
-            }
-
-            // -----------------------------------------------------------------
-            // Organisation unit report parameter
-            // -----------------------------------------------------------------
-
-            if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamOrganisationUnit() )
-            {
-                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-                
-                List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
-                organisationUnits.add( organisationUnit );
-                reportTable.getRelativeUnits().addAll( organisationUnits );
-                
-                log.info( "Organisation unit: " + organisationUnit.getName() );
-            }
-
-            reportTable.setI18nFormat( format );
-            reportTable.init();
-
-            process.addReportTable( reportTable );
-        }
-
-        // ---------------------------------------------------------------------
-        // Internal process execution
-        // ---------------------------------------------------------------------
+        process.setId( id );
+        process.setMode( mode );
+        process.setReportingPeriod( reportingPeriod );
+        process.setParentOrganisationUnitId( parentOrganisationUnitId );
+        process.setOrganisationUnitId( organisationUnitId );
+        process.setFormat( format );
 
         processCoordinator.requestProcessExecution( executor );
 
         setCurrentRunningProcess( PROCESS_KEY_REPORT, executor.getId() );
 
         return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    /**
-     * If report table mode, this method will return the report table with the
-     * given identifier. If report mode, this method will return the report
-     * tables associated with the report.
-     * 
-     * @param id the identifier.
-     * @param mode the mode.
-     */
-    private Collection<ReportTable> getReportTables( Integer id, String mode )
-    {
-        Collection<ReportTable> reportTables = new ArrayList<ReportTable>();
-
-        if ( mode.equals( MODE_REPORT_TABLE ) )
-        {
-            reportTables.add( reportTableService.getReportTable( id ) );
-        }
-        else if ( mode.equals( MODE_REPORT ) )
-        {
-            reportTables = reportStore.getReport( id ).getReportTables();
-        }
-
-        return reportTables;
     }
 }
