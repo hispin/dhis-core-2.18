@@ -127,13 +127,13 @@ public class DefaultReportTableCreator
                 dataMartService.export( getIdentifiers( DataElement.class, reportTable.getDataElements() ),
                     getIdentifiers( Indicator.class, reportTable.getIndicators() ),
                     getIdentifiers( Period.class, reportTable.getAllPeriods() ),
-                    getIdentifiers( OrganisationUnit.class, reportTable.getUnits() ) );
+                    getIdentifiers( OrganisationUnit.class, reportTable.getAllUnits() ) );
             }
             else if ( mode.equals( ReportTable.MODE_DATASETS ) )
             {
                 completenessExportService.exportDataSetCompleteness( getIdentifiers( DataSet.class, reportTable.getDataSets() ),
                     getIdentifiers( Period.class, reportTable.getAllPeriods() ),
-                    getIdentifiers( OrganisationUnit.class, reportTable.getUnits() ),
+                    getIdentifiers( OrganisationUnit.class, reportTable.getAllUnits() ),
                     reportTable.getId() );
             }
         }

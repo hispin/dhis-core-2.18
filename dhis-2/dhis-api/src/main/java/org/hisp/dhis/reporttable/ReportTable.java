@@ -124,9 +124,19 @@ public class ReportTable
     private List<Period> relativePeriods = new ArrayList<Period>();
     
     /**
-     * Static periods and relative periods.
+     * Static Periods and relative Periods.
      */
     private List<Period> allPeriods = new ArrayList<Period>();
+    
+    /**
+     * OrganisationUnits relative to a parent unit or current unit.
+     */
+    private List<OrganisationUnit> relativeUnits = new ArrayList<OrganisationUnit>();
+    
+    /**
+     * Static OrganisationUnits and relative OrganisationUnits.
+     */
+    private List<OrganisationUnit> allUnits = new ArrayList<OrganisationUnit>();
     
     /**
      * Indicators that will be crosstabulated on the columns axis. Indicators 
@@ -241,6 +251,7 @@ public class ReportTable
      * @param periods the periods. These periods cannot have the name property set.
      * @param relativePeriods the relative periods. These periods must have the name property set. Not persisted.
      * @param units the organisation units.
+     * @param relativeUnits the organisation units. Not persisted.
      * @param doIndicators indicating whether indicators should be crosstabulated.
      * @param doCategoryOptionCombos indicating whether category option combos should be crosstabulated.
      * @param doPeriods indicating whether periods should be crosstabulated.
@@ -259,6 +270,7 @@ public class ReportTable
         List<Period> periods,
         List<Period> relativePeriods,
         List<OrganisationUnit> units,
+        List<OrganisationUnit> relativeUnits,
         boolean doIndicators,
         boolean doCategoryOptionCombos,
         boolean doPeriods,
@@ -280,6 +292,7 @@ public class ReportTable
         this.periods = periods;
         this.relativePeriods = relativePeriods;
         this.units = units;
+        this.relativeUnits = relativeUnits;
         this.doIndicators = doIndicators;
         this.doCategoryOptionCombos = doCategoryOptionCombos;
         this.doPeriods = doPeriods;
@@ -307,13 +320,16 @@ public class ReportTable
         }
         
         // ---------------------------------------------------------------------
-        // Init tableName and allPeriods
+        // Init tableName, allPeriods and allUnits
         // ---------------------------------------------------------------------
 
         this.tableName = generateTableName( name );
         
         allPeriods.addAll( periods );
         allPeriods.addAll( relativePeriods );
+        
+        allUnits.addAll( units );
+        allUnits.addAll( relativeUnits );
         
         // ---------------------------------------------------------------------
         // Init indexColumns and selectColumns
@@ -371,30 +387,28 @@ public class ReportTable
         
         if ( isDoPeriods() )
         {
-            crossTabPeriods = new ArrayList<Period>( periods );
-            crossTabPeriods.addAll( relativePeriods );
+            crossTabPeriods = new ArrayList<Period>( allPeriods );
             reportPeriods.add( null );
             selectColumns.add( PERIOD_ID );
         }
         else
         {
             crossTabPeriods.add( null );
-            reportPeriods = new ArrayList<Period>( periods );
-            reportPeriods.addAll( relativePeriods );
+            reportPeriods = new ArrayList<Period>( allPeriods );
             indexColumns.add( PERIOD_ID );
             indexNameColumns.add( PERIOD_NAME );
         }
         
         if ( isDoUnits() )
         {
-            crossTabUnits = new ArrayList<OrganisationUnit>( units );
+            crossTabUnits = new ArrayList<OrganisationUnit>( allUnits );
             reportUnits.add( null );
             selectColumns.add( ORGANISATIONUNIT_ID );            
         }
         else
         {
             crossTabUnits.add( null );
-            reportUnits = new ArrayList<OrganisationUnit>( units );
+            reportUnits = new ArrayList<OrganisationUnit>( allUnits );
             indexColumns.add( ORGANISATIONUNIT_ID );
             indexNameColumns.add( ORGANISATIONUNIT_NAME );
         }
@@ -861,6 +875,21 @@ public class ReportTable
         return allPeriods;
     }
 
+    public List<OrganisationUnit> getRelativeUnits()
+    {
+        return relativeUnits;
+    }
+
+    public void setRelativeUnits( List<OrganisationUnit> relativeUnits )
+    {
+        this.relativeUnits = relativeUnits;
+    }
+
+    public List<OrganisationUnit> getAllUnits()
+    {
+        return allUnits;
+    }
+    
     public I18nFormat getI18nFormat()
     {
         return i18nFormat;

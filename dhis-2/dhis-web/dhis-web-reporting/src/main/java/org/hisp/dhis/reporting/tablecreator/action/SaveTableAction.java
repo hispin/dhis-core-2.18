@@ -396,7 +396,7 @@ public class SaveTableAction
         if ( tableId == null )
         {
             reportTable = new ReportTable( tableName, mode, regression,
-                dataElements, indicators, dataSets, categoryOptionCombos, periods, null, organisationUnits, 
+                dataElements, indicators, dataSets, categoryOptionCombos, periods, null, organisationUnits, null,
                 doIndicators, doCategoryOptionCombos, doPeriods, doOrganisationUnits, relatives, reportParams, 
                 null, null );
         }

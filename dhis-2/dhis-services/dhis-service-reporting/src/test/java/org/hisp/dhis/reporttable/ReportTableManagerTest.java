@@ -208,7 +208,7 @@ public class ReportTableManagerTest
     public void testCreateReportTable()
     {
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -216,7 +216,7 @@ public class ReportTableManagerTest
         reportTableManager.createReportTable( reportTable );
         
         reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -224,7 +224,7 @@ public class ReportTableManagerTest
         reportTableManager.createReportTable( reportTable );
         
         reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -235,7 +235,7 @@ public class ReportTableManagerTest
     public void testRemoveReportTable()
     {
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -243,7 +243,7 @@ public class ReportTableManagerTest
         reportTableManager.removeReportTable( reportTable );
 
         reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -251,7 +251,7 @@ public class ReportTableManagerTest
         reportTableManager.removeReportTable( reportTable );
 
         reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -277,7 +277,7 @@ public class ReportTableManagerTest
         batchHandler.flush();
         
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -315,7 +315,7 @@ public class ReportTableManagerTest
         batchHandler.flush();        
 
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -353,7 +353,7 @@ public class ReportTableManagerTest
         batchHandler.flush();        
 
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -391,7 +391,7 @@ public class ReportTableManagerTest
         batchHandler.flush();        
 
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATASETS, false,
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
