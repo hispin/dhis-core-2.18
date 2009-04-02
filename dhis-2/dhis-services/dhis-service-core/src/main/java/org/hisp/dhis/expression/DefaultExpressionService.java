@@ -38,6 +38,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -58,6 +60,8 @@ import org.hisp.dhis.system.util.MathUtils;
 public class DefaultExpressionService
     implements ExpressionService
 {
+    private static final Log log = LogFactory.getLog( DefaultExpressionService.class );
+    
     private static final String NULL_REPLACEMENT = "0";
 
     // -------------------------------------------------------------------------
@@ -178,16 +182,28 @@ public class DefaultExpressionService
 
                 match = match.replaceAll( "[\\[\\]]", "" );
 
-                String dataElementIdString = match.substring( 0, match.indexOf( SEPARATOR ) );
-                String categoryOptionComboIdString = match.substring( match.indexOf( SEPARATOR ) + 1, match.length() );
-
-                int dataElementId = Integer.parseInt( dataElementIdString );
-                int categoryOptionComboId = Integer.parseInt( categoryOptionComboIdString );
+                final int dataElementId = Integer.parseInt( match.substring( 0, match.indexOf( SEPARATOR ) ) );
+                final int categoryOptionComboId = Integer.parseInt( match.substring( match.indexOf( SEPARATOR ) + 1, match.length() ) );
                 
-                dataElementId = dataElementMapping.get( dataElementId );
-                categoryOptionComboId = categoryOptionComboMapping.get( categoryOptionComboId );
+                final Integer mappedDataElementId = dataElementMapping.get( dataElementId );
+                final Integer mappedCategoryOptionComboId = categoryOptionComboMapping.get( categoryOptionComboId );
                 
-                match = "[" + dataElementId + SEPARATOR + categoryOptionComboId + "]";
+                if ( mappedDataElementId == null )
+                {
+                    log.info( "Data element identifier refers to non-existing object: " + dataElementId );
+                    
+                    match = NULL_REPLACEMENT;
+                }
+                else if ( mappedCategoryOptionComboId == null )
+                {
+                    log.info( "Category option combo identifer refers to non-existing object: " + categoryOptionComboId );
+                    
+                    match = NULL_REPLACEMENT;
+                }
+                else
+                {
+                    match = "[" + mappedDataElementId + SEPARATOR + mappedCategoryOptionComboId + "]";
+                }
                 
                 matcher.appendReplacement( convertedFormula, match );
             }

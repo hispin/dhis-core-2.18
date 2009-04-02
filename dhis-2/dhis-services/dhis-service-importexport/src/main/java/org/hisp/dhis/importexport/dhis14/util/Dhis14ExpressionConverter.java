@@ -45,6 +45,8 @@ public class Dhis14ExpressionConverter
 {
     private static final Log log = LogFactory.getLog( Dhis14ExpressionConverter.class );
 
+    private static final String NULL_REPLACEMENT = "0";
+    
     /**
      * Converts an indicator formula from the DHIS 1.4 format to the DHIS 2 format.
      * 
@@ -106,14 +108,12 @@ public class Dhis14ExpressionConverter
                 {
                     log.warn( "'" + name + "' contains a non-existing data element identifier: " + dataElementId );
                     
-                    convertedDataElementId = -1;
+                    replaceString = NULL_REPLACEMENT;
                 }
-                
-                // -------------------------------------------------------------
-                // Add default category option combo and put brackets back on
-                // -------------------------------------------------------------
-    
-                replaceString = "[" + convertedDataElementId + SEPARATOR + categoryOptionComboId + "]";
+                else
+                {
+                    replaceString = "[" + convertedDataElementId + SEPARATOR + categoryOptionComboId + "]";
+                }
                 
                 matcher.appendReplacement( convertedFormula, replaceString );
             }
