@@ -59,6 +59,13 @@ public class DefaultLocationManager
         this.environmentVariable = environmentVariable;
     }
     
+    private String systemProperty;
+
+    public void setSystemProperty( String systemProperty )
+    {
+        this.systemProperty = systemProperty;
+    }
+    
     // -------------------------------------------------------------------------
     // Init
     // -------------------------------------------------------------------------
@@ -79,6 +86,22 @@ public class DefaultLocationManager
         else
         {
             log.info( "Environment variable " + environmentVariable + " not set" );
+            
+            path = System.getProperty( systemProperty );
+            
+            if ( path != null )
+            {
+                log.info( "System property " + systemProperty + " points to " + path );
+                
+                if ( directoryIsValid( new File( path ) ) )
+                {
+                    externalDir = path;
+                }
+            }
+            else
+            {
+                log.info( "System proeprty " + systemProperty + " not set" );
+            }
         }
     }
 

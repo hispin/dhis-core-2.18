@@ -8,6 +8,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.external.location.DefaultLocationManager"
     init-method="init">
     <property name="environmentVariable" value="DHIS2_HOME"/>
+    <property name="systemProperty" value="dhis2.home"/>
   </bean>
   
   <bean id="org.hisp.dhis.external.configuration.ConfigurationManager"
