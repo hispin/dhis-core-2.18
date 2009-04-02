@@ -72,11 +72,11 @@ public class DefaultLocationManager
 
     public void init()
     {
-        String path = System.getenv( environmentVariable );
+        String path = System.getProperty( systemProperty );
         
         if ( path != null )
         {
-            log.info( "Environment variable " + environmentVariable + " points to " + path );
+            log.info( "System property " + systemProperty + " points to " + path );
             
             if ( directoryIsValid( new File( path ) ) )
             {
@@ -85,13 +85,13 @@ public class DefaultLocationManager
         }
         else
         {
-            log.info( "Environment variable " + environmentVariable + " not set" );
+            log.info( "System property " + systemProperty + " not set" );
             
-            path = System.getProperty( systemProperty );
+            path = System.getenv( environmentVariable );
             
             if ( path != null )
             {
-                log.info( "System property " + systemProperty + " points to " + path );
+                log.info( "Environment variable " + environmentVariable + " points to " + path );
                 
                 if ( directoryIsValid( new File( path ) ) )
                 {
@@ -100,7 +100,7 @@ public class DefaultLocationManager
             }
             else
             {
-                log.info( "System proeprty " + systemProperty + " not set" );
+                log.info( "Environment variable " + environmentVariable + " not set" );
             }
         }
     }
