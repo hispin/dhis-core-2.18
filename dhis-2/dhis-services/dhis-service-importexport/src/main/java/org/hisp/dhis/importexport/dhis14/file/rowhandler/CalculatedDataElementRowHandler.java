@@ -112,6 +112,7 @@ public class CalculatedDataElementRowHandler
         dataElement.setCategoryCombo( categoryCombo );
         
         String expression = calculatedEntryMap.get( dataElement.getId() );
+        
         expression = expressionService.convertExpression( expression, dataElementMapping, categoryOptionComboMapping );
         dataElement.setExpression( new Expression( expression, null, new HashSet<DataElement>() ) );
         
