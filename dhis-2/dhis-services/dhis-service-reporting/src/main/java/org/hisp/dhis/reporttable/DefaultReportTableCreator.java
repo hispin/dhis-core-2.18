@@ -200,8 +200,6 @@ public class DefaultReportTableCreator
     public void deleteRelativePeriods()
     {
         dataMartStore.deleteRelativePeriods();
-        
-        log.info( "Deleted relative periods" );
     }
 
     // -------------------------------------------------------------------------
