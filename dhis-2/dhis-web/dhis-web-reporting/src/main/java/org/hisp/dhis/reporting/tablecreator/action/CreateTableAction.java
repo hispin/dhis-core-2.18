@@ -204,7 +204,7 @@ public class CreateTableAction
             {
                 OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
 
-                reportTable.setUnits( new ArrayList<OrganisationUnit>( organisationUnit.getChildren() ) );
+                reportTable.getRelativeUnits().addAll( new ArrayList<OrganisationUnit>( organisationUnit.getChildren() ) );
                 
                 log.info( "Parent organisation unit: " + organisationUnit.getName() );
             }
@@ -219,7 +219,7 @@ public class CreateTableAction
                 
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
                 organisationUnits.add( organisationUnit );
-                reportTable.setUnits( organisationUnits );
+                reportTable.getRelativeUnits().addAll( organisationUnits );
                 
                 log.info( "Organisation unit: " + organisationUnit.getName() );
             }

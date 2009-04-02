@@ -189,7 +189,7 @@ public class ReportTableTest
     public void testIndicatorReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_INDICATORS, false,
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -245,7 +245,7 @@ public class ReportTableTest
     public void testIndicatorReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_INDICATORS, false,
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -293,7 +293,7 @@ public class ReportTableTest
     public void testIndicatorReportTableC()
     {        
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_INDICATORS, false, 
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -345,7 +345,7 @@ public class ReportTableTest
     public void testDataElementReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -401,7 +401,7 @@ public class ReportTableTest
     public void testDataElementReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -450,7 +450,7 @@ public class ReportTableTest
     public void testDataElementReportTableC()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -502,7 +502,7 @@ public class ReportTableTest
     public void testDataElementWithCategoryOptionReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -572,7 +572,7 @@ public class ReportTableTest
     public void testDataElementWithCategoryOptionReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, true, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -626,7 +626,7 @@ public class ReportTableTest
     public void testDataElementWithCategoryOptionReportTableC()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -680,7 +680,7 @@ public class ReportTableTest
     public void testDataSetReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATASETS, false,
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -735,7 +735,7 @@ public class ReportTableTest
     public void testDataSetReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATASETS, false,
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
@@ -783,7 +783,7 @@ public class ReportTableTest
     public void testDataSetReportTableC()
     {        
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATASETS, false, 
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();

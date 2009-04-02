@@ -183,13 +183,13 @@ public class ReportTableStoreTest
     public void testSaveGetReportTable()
     {
         ReportTable reportTableA = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );        
         ReportTable reportTableB = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
         ReportTable reportTableC = new ReportTable( "Assualt", ReportTable.MODE_DATASETS, false,
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
         
         int idA = reportTableStore.saveReportTable( reportTableA );
@@ -234,10 +234,10 @@ public class ReportTableStoreTest
     public void testDeleteReportTable()
     {
         ReportTable reportTableA = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );        
         ReportTable reportTableB = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
         
         int idA = reportTableStore.saveReportTable( reportTableA );
@@ -260,10 +260,10 @@ public class ReportTableStoreTest
     public void testGetAllReportTables()
     {
         ReportTable reportTableA = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );        
         ReportTable reportTableB = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
         
         reportTableStore.saveReportTable( reportTableA );
@@ -278,10 +278,10 @@ public class ReportTableStoreTest
     public void testGetReportTableByName()
     {
         ReportTable reportTableA = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );        
         ReportTable reportTableB = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
         
         reportTableStore.saveReportTable( reportTableA );
