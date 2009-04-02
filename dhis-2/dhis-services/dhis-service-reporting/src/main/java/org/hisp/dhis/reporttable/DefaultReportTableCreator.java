@@ -73,13 +73,6 @@ public class DefaultReportTableCreator
         this.reportTableManager = reportTableManager;
     }
     
-    private ReportTableService reportTableService;
-
-    public void setReportTableService( ReportTableService reportTableService )
-    {
-        this.reportTableService = reportTableService;
-    }
-    
     private BatchHandlerFactory batchHandlerFactory;
     
     public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )

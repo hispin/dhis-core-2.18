@@ -25,10 +25,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="statementManager"
       ref="org.hisp.dhis.jdbc.StatementManager"/>
-    <property name="reportTableManager"
-      ref="org.hisp.dhis.reporttable.jdbc.ReportTableManager"/>
     <property name="reportTableService"
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
+    <property name="reportStore"
+      ref="org.hisp.dhis.report.ReportStore"/>
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="reportTableManager"
+      ref="org.hisp.dhis.reporttable.jdbc.ReportTableManager"/>
     <property name="batchHandlerFactory"
       ref="org.hisp.dhis.jdbc.BatchHandlerFactory"/>
     <property name="dataMartService"
