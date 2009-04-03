@@ -144,7 +144,7 @@ public class DataElementConverter
         {
             final DataElement element = new DataElement();
             
-            DataElementCategoryCombo categoryCombo = new DataElementCategoryCombo();
+            final DataElementCategoryCombo categoryCombo = new DataElementCategoryCombo();
             element.setCategoryCombo( categoryCombo );
             
             reader.moveToStartElement( FIELD_ID );

@@ -49,7 +49,7 @@ public class AbstractCalculatedDataElementConverter
         dataElementService.addDataElement( object );
     }
     
-    protected void importMatching( CalculatedDataElement match, CalculatedDataElement object )
+    protected void importMatching( CalculatedDataElement object, CalculatedDataElement match )
     {
         match.setUuid( object.getUuid() );
         match.setName( object.getName() );
