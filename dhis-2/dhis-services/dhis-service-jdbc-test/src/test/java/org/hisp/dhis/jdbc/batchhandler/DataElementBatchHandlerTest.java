@@ -45,7 +45,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 public class DataElementBatchHandlerTest
     extends DhisConvenienceTest
 {
-	private HibernateCacheManager cacheManager;
+    private HibernateCacheManager cacheManager;
 	
     private BatchHandlerFactory batchHandlerFactory;
     
@@ -119,6 +119,17 @@ public class DataElementBatchHandlerTest
         assertNotNull( dataElementService.getDataElement( idA ) );
         assertNotNull( dataElementService.getDataElement( idB ) );
         assertNotNull( dataElementService.getDataElement( idC ) );
+    }
+    
+    public void testInsertWithSpecialCharacters()
+    {
+        dataElementA.setDescription( "'quote'" );
+        dataElementB.setDescription( "\\backslash\\" );
+        dataElementC.setDescription( ";semicolon;" );
+        
+        batchHandler.insertObject( dataElementA, false );
+        batchHandler.insertObject( dataElementB, false );
+        batchHandler.insertObject( dataElementC, false );
     }
     
     public void testUpdateObject()
