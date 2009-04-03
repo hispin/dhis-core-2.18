@@ -28,6 +28,7 @@ package org.hisp.dhis.jdbc.factory;
  */
 
 import org.hisp.dhis.jdbc.StatementDialect;
+import org.hisp.dhis.jdbc.identifier.DerbyIdentifierExtractor;
 import org.hisp.dhis.jdbc.identifier.H2IdentifierExtractor;
 import org.hisp.dhis.jdbc.identifier.IdentifierExtractor;
 import org.hisp.dhis.jdbc.identifier.MySQLIdentifierExtractor;
@@ -58,6 +59,10 @@ public class IdentifierExtractorFactory
         else if ( dialect.equals( StatementDialect.H2 ) )
         {
             return new H2IdentifierExtractor();
+        }
+        else if ( dialect.equals( StatementDialect.DERBY ) )
+        {
+            return new DerbyIdentifierExtractor();
         }
         else
         {

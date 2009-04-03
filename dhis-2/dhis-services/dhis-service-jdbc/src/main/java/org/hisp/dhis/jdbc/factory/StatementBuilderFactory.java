@@ -29,6 +29,7 @@ package org.hisp.dhis.jdbc.factory;
 
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.jdbc.StatementDialect;
+import org.hisp.dhis.jdbc.statementbuilder.DerbyStatementBuilder;
 import org.hisp.dhis.jdbc.statementbuilder.H2StatementBuilder;
 import org.hisp.dhis.jdbc.statementbuilder.MySQLStatementBuilder;
 import org.hisp.dhis.jdbc.statementbuilder.PostgreSQLStatementBuilder;
@@ -58,6 +59,10 @@ public class StatementBuilderFactory
         else if ( dialect.equals( StatementDialect.H2 ) )
         {
             return new H2StatementBuilder();
+        }
+        else if ( dialect.equals( StatementDialect.DERBY ) )
+        {
+            return new DerbyStatementBuilder();
         }
         else
         {

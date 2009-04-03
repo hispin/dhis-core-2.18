@@ -41,16 +41,16 @@ public class DefaultJDBCConfigurationProvider
     implements JDBCConfigurationProvider
 {
     private static final String KEY_DIALECT = "hibernate.dialect";
-    private static final String DIALECT_MYSQL = "org.hibernate.dialect.MySQLDialect";
-    private static final String DIALECT_POSTGRESQL = "org.hibernate.dialect.PostgreSQLDialect";
-    private static final String DIALECT_H2 = "org.hibernate.dialect.H2Dialect";
-    private static final String DIALECT_HSQL = "org.hibernate.dialect.HSQLDialect";
-    
     private static final String KEY_DRIVER = "hibernate.connection.driver_class";
     private static final String KEY_CONNECTION_URL = "hibernate.connection.url";
     private static final String KEY_USERNAME = "hibernate.connection.username";
     private static final String KEY_PASSWORD = "hibernate.connection.password";
     
+    private static final String DIALECT_MYSQL = "org.hibernate.dialect.MySQLDialect";
+    private static final String DIALECT_POSTGRESQL = "org.hibernate.dialect.PostgreSQLDialect";
+    private static final String DIALECT_H2 = "org.hibernate.dialect.H2Dialect";
+    private static final String DIALECT_DERBY = "org.hibernate.dialect.H2Dialect";
+        
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -84,9 +84,9 @@ public class DefaultJDBCConfigurationProvider
         {
             config.setDialect( StatementDialect.H2 );
         }
-        else if ( hibernateConfiguration.getProperty( KEY_DIALECT ).equals( DIALECT_HSQL ) )
+        else if ( hibernateConfiguration.getProperty( KEY_DIALECT ).equals( DIALECT_DERBY ) )
         {
-            config.setDialect( StatementDialect.HSQL );
+            config.setDialect( StatementDialect.DERBY );
         }
         
         config.setDriverClass( hibernateConfiguration.getProperty( KEY_DRIVER ) );            

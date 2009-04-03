@@ -1,4 +1,4 @@
-package org.hisp.dhis.jdbc;
+package org.hisp.dhis.jdbc.identifier;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,14 +27,46 @@ package org.hisp.dhis.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * @author Lars Helge Overland
- * @version $Id: StatementDialect.java 4646 2008-02-26 14:54:29Z larshelg $
+ * @version $Id$
  */
-public enum StatementDialect
+public class DerbyIdentifierExtractor
+    implements IdentifierExtractor
 {
-    MYSQL,
-    POSTGRESQL,
-    H2,
-    DERBY
+    public Collection<Integer> extract( Statement statement, int statementCount )
+        throws SQLException
+    {
+        Collection<Integer> identifiers = new ArrayList<Integer>();
+        
+        int firstIdentifier = extract( statement );
+        
+        if ( firstIdentifier != 0 )
+        {
+            for ( int i = 0; i < statementCount; i++ )
+            {
+                int identifier = i + firstIdentifier;
+                
+                identifiers.add( identifier );
+            }
+        }
+        
+        return identifiers;
+    }
+    
+    public int extract( Statement statement )
+        throws SQLException
+    {
+        String sql = "values IDENTITY_VAL_LOCAL()";
+        
+        ResultSet resultSet = statement.executeQuery( sql );
+        
+        return resultSet.next() ? resultSet.getInt( 1 ) : 0;
+    }
 }
