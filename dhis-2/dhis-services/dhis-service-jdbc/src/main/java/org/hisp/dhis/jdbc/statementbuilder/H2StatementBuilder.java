@@ -270,4 +270,22 @@ public class H2StatementBuilder
     {
         return 1580; // TODO verify
     }
+
+    // -------------------------------------------------------------------------
+    // AbstractStatementBuilder implementation
+    // -------------------------------------------------------------------------
+    
+    @Override
+    protected String sqlEncode( String string )
+    {
+        if ( string != null )
+        {
+            string = string.endsWith( "\\" ) ? string.substring( 0, string.length() - 1 ) : string;
+            string = string.replaceAll( QUOTE, QUOTE + QUOTE );
+            
+            return string;
+        }
+        
+        return null;
+    }
 }
