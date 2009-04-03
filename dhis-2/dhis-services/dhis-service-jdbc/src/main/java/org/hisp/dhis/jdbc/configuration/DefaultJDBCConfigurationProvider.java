@@ -49,6 +49,7 @@ public class DefaultJDBCConfigurationProvider
     private static final String DIALECT_MYSQL = "org.hibernate.dialect.MySQLDialect";
     private static final String DIALECT_POSTGRESQL = "org.hibernate.dialect.PostgreSQLDialect";
     private static final String DIALECT_H2 = "org.hibernate.dialect.H2Dialect";
+    private static final String DIALECT_H2_PATCHED = "org.hisp.dhis.dialect.H2Dialect";
     private static final String DIALECT_DERBY = "org.hibernate.dialect.H2Dialect";
         
     // -------------------------------------------------------------------------
@@ -72,21 +73,27 @@ public class DefaultJDBCConfigurationProvider
         
         JDBCConfiguration config = new JDBCConfiguration();
         
-        if ( hibernateConfiguration.getProperty( KEY_DIALECT ).equals( DIALECT_MYSQL ) )
+        String dialect = hibernateConfiguration.getProperty( KEY_DIALECT );
+        
+        if ( dialect.equals( DIALECT_MYSQL ) )
         {
             config.setDialect( StatementDialect.MYSQL );
         }
-        else if ( hibernateConfiguration.getProperty( KEY_DIALECT ).equals( DIALECT_POSTGRESQL ) )
+        else if ( dialect.equals( DIALECT_POSTGRESQL ) )
         {
             config.setDialect( StatementDialect.POSTGRESQL );
         }
-        else if ( hibernateConfiguration.getProperty( KEY_DIALECT ).equals( DIALECT_H2 ) )
+        else if ( dialect.equals( DIALECT_H2 ) || dialect.equals( DIALECT_H2_PATCHED ) )
         {
             config.setDialect( StatementDialect.H2 );
         }
-        else if ( hibernateConfiguration.getProperty( KEY_DIALECT ).equals( DIALECT_DERBY ) )
+        else if ( dialect.equals( DIALECT_DERBY ) )
         {
             config.setDialect( StatementDialect.DERBY );
+        }
+        else
+        {
+            throw new RuntimeException( "Unsupported dialect: " + hibernateConfiguration.getProperty( KEY_DIALECT ) );
         }
         
         config.setDriverClass( hibernateConfiguration.getProperty( KEY_DRIVER ) );            
