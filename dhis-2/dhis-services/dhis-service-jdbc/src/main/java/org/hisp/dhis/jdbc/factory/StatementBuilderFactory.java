@@ -66,7 +66,7 @@ public class StatementBuilderFactory
         }
         else
         {
-            throw new RuntimeException( "Unsupported dialect" );
+            throw new RuntimeException( "Unsupported dialect: " + dialect );
         }
     }
 }
