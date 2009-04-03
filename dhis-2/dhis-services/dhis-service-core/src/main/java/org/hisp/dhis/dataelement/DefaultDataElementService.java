@@ -130,7 +130,7 @@ public class DefaultDataElementService
     
     public Collection<DataElement> getNonCalculatedDataElements()
     {
-        Collection<DataElement> dataElements = getAllDataElements();
+        Collection<DataElement> dataElements = new ArrayList<DataElement>();
         
         for ( DataElement dataElement : getAllDataElements() )
         {
