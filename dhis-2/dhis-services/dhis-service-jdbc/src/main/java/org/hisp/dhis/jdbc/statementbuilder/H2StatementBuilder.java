@@ -258,10 +258,7 @@ public class H2StatementBuilder
     {
         String sql = 
             "DELETE FROM datavalue " +
-            "USING dataelement " +
-            "WHERE datavalue.dataelementid = dataelement.dataelementid " +
-            "AND dataelement.aggregationtype = 'sum' " +
-            "AND datavalue.value IN ( '0', '0.', '.0', '0.0', ' 0', '0 ', '0 0' )";
+            "WHERE datavalue.value IN ( '0', '0.', '.0', '0.0', ' 0', '0 ', '0 0' )";
         
         return sql;
     }
