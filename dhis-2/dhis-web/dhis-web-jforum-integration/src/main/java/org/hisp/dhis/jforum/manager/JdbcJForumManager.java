@@ -367,7 +367,7 @@ public class JdbcJForumManager
     {
         String sql = null;
         
-        if ( dialect.equals( StatementDialect.MYSQL ) || dialect.equals( StatementDialect.H2 ) || dialect.equals( StatementDialect.HSQL ) )
+        if ( dialect.equals( StatementDialect.MYSQL ) || dialect.equals( StatementDialect.H2 ) )
         {
             sql = "SELECT LAST_INSERT_ID()";
         }
