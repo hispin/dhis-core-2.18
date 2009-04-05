@@ -50,7 +50,7 @@ public class DefaultJDBCConfigurationProvider
     private static final String DIALECT_POSTGRESQL = "org.hibernate.dialect.PostgreSQLDialect";
     private static final String DIALECT_H2 = "org.hibernate.dialect.H2Dialect";
     private static final String DIALECT_H2_PATCHED = "org.hisp.dhis.dialect.H2Dialect";
-    private static final String DIALECT_DERBY = "org.hibernate.dialect.H2Dialect";
+    private static final String DIALECT_DERBY = "org.hibernate.dialect.DerbyDialect";
         
     // -------------------------------------------------------------------------
     // Dependencies
