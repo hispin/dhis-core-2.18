@@ -1006,7 +1006,118 @@
         </response>      
       </responses>
     </request>
-        
+	  
+	<!-- Mapping -->
+	  
+	<request>
+      <name>addOrUpdateMap</name>
+	  <type>void</type>
+      <bean>org.hisp.dhis.webservice.adapter.mapping.MappingServiceAdapter</bean>
+      <method>addOrUpdateMap</method>
+      <parameters>
+		<parameter>
+          <type>java.lang.String</type>
+          <name>mapLayerPath</name>
+        </parameter>
+        <parameter>
+          <type>int</type>
+          <name>organisationUnitId</name>
+        </parameter>
+		<parameter>
+          <type>int</type>
+          <name>organisationUnitLevelId</name>
+        </parameter>
+		<parameter>
+          <type>java.lang.String</type>
+          <name>uniqueColumn</name>
+        </parameter>
+		<parameter>
+          <type>java.lang.String</type>
+          <name>nameColumn</name>
+        </parameter>
+      </parameters>
+    </request>
+	  
+	<request>
+      <name>getAllMaps</name>
+      <bean>org.hisp.dhis.mapping.MappingService</bean>
+      <method>getAllMaps</method>
+      <template>xmlMaps.vm</template>
+      <responses>
+		<response>
+          <format>json</format>
+          <template>jsonMaps.vm</template>
+          <contentType>application/json</contentType>
+        </response>
+        <response>
+          <format>jsonmin</format>
+          <template>jsonminMaps.vm</template>
+          <contentType>application/json</contentType>
+        </response>      
+      </responses>
+    </request>
+	  
+	<request>
+      <name>getMapByMapLayerPath</name>
+      <bean>org.hisp.dhis.mapping.MappingService</bean>
+      <method>getMapByMapLayerPath</method>
+	  <parameters>
+		<parameter>
+          <type>java.lang.String</type>
+          <name>mapLayerPath</name>
+        </parameter>
+      </parameters>	
+      <template>xmlMap.vm</template>
+      <responses>
+        <response>
+          <format>json</format>
+          <template>jsonMap.vm</template>
+          <contentType>application/json</contentType>
+        </response>      
+      </responses>
+    </request>
+	  
+	<request>
+      <name>addOrUpdateMapOrganisationUnitRelation</name>
+	  <type>void</type>
+      <bean>org.hisp.dhis.webservice.adapter.mapping.MappingServiceAdapter</bean>
+      <method>addOrUpdateMapOrganisationUnitRelation</method>
+      <parameters>
+		<parameter>
+          <type>java.lang.String</type>
+          <name>mapLayerPath</name>
+        </parameter>
+        <parameter>
+          <type>int</type>
+          <name>organisationUnitId</name>
+        </parameter>
+		<parameter>
+          <type>java.lang.String</type>
+          <name>featureId</name>
+        </parameter>
+	  </parameters>
+    </request>
+	  
+	<request>
+      <name>getAvailableMapOrganisationUnitRelations</name>
+      <bean>org.hisp.dhis.webservice.adapter.mapping.MappingServiceAdapter</bean>
+      <method>getAvailableMapOrganisationUnitRelations</method>
+	  <parameters>
+		<parameter>
+          <type>java.lang.String</type>
+          <name>mapLayerPath</name>
+        </parameter>
+      </parameters>	
+      <template>xmlMapOrganisationUnitRelations.vm</template>
+      <responses>
+        <response>
+          <format>json</format>
+          <template>jsonMapOrganisationUnitRelations.vm</template>
+          <contentType>application/json</contentType>
+        </response>      
+      </responses>
+    </request>
+	  
   </requests>
 
 </expoze>

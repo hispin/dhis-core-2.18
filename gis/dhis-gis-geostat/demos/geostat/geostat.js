@@ -12,22 +12,20 @@ Ext.onReady(function()
 
     features = null;
 
-
-    var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
-                                           "http://labs.metacarta.com/wms-c/Basic.py?", 
+    var jpl_wms = new OpenLayers.Layer.WMS('Satellite',
+                                           'http://labs.metacarta.com/wms-c/Basic.py?', 
                                            {layers: 'satellite', format: 'image/png'});
                                      
-    var vmap0 = new OpenLayers.Layer.WMS("OpenLayers WMS",
-                                         "../../../geoserver/wms?", 
-                                         {layers: init_map}); // config.js
+    var vmap0 = new OpenLayers.Layer.WMS('OpenLayers WMS',
+                                         geoserver + 'wms?', 
+                                         {layers: default_map}); // config.js
                                    
-    // define choropleth layer and its styling
     var choroplethLayer = new OpenLayers.Layer.Vector(choroplethLayerName, {
         'visibility': false,
         'styleMap': new OpenLayers.StyleMap({
             'default': new OpenLayers.Style(
                 OpenLayers.Util.applyDefaults(
-                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'opacity': 0.6},
+                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'opacity': 1},
                     OpenLayers.Feature.Vector.style['default']
                 )
             ),
@@ -37,7 +35,6 @@ Ext.onReady(function()
         })
     });
 
-    // define proportional symbol layer and its styling
     var propSymbolLayer = new OpenLayers.Layer.Vector(propSymbolLayerName, {
         'visibility': false,
         'styleMap': new OpenLayers.StyleMap({
@@ -55,10 +52,7 @@ Ext.onReady(function()
 
     map.addLayers([vmap0, jpl_wms, choroplethLayer, propSymbolLayer]);
 
-
-    // create select feature control for choropleth layer
-    selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
-        choroplethLayer,
+    selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature( choroplethLayer,
         {onClickSelect: onClickSelectChoropleth, onClickUnselect: onClickUnselectChoropleth,
         onHoverSelect: onHoverSelectChoropleth, onHoverUnselect: onHoverUnselectChoropleth}
     );
@@ -74,33 +68,185 @@ Ext.onReady(function()
     selectFeaturePoint.activate();
 
     map.setCenter(new OpenLayers.LonLat(init_longitude, init_latitude), init_zoom); // config.js
+    
+    organisationUnitLevelStore = new Ext.data.JsonStore({
+        url: localhost + port + '/dhis-webservice/getOrganisationUnitLevels.service',
+        baseParams: { format: 'json' },
+        root: 'organisationUnitLevels',
+        fields: ['id', 'level', 'name'],
+        autoLoad: true
+    });
+
+    organisationUnitStore = new Ext.data.JsonStore({
+        url: localhost + port + '/dhis-webservice/getOrganisationUnitsAtLevel.service',
+        root: 'organisationUnits',
+        fields: ['id', 'name'],
+        sortInfo: { field: 'name', direction: 'ASC' },
+        autoLoad: false
+    });
+
+    var organisationUnitLevelCombo = new Ext.form.ComboBox({
+        id: 'organisationunitlevel_cb',
+        fieldLabel: 'Level',
+        typeAhead: true,
+        editable: false,
+        valueField: 'level',
+        emptyText: 'Required',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        selectOnFocus: true,
+        width: combo_width,
+        store: organisationUnitLevelStore,
+        listeners: {
+            'select': {
+                fn: function() {
+                    var level = Ext.getCmp('organisationunitlevel_cb').getValue();
+                    organisationUnitStore.baseParams = { level: level, format: 'json' };
+                    organisationUnitStore.reload();
+                },
+                scope: this
+            }
+        }
+    });
+    
+    var organisationUnitCombo = new Ext.form.ComboBox({
+        id: 'organisationunit_cb',
+        fieldLabel: 'Organisation unit',
+        typeAhead: true,
+        editable: false,
+        valueField: 'id',
+        emptyText: 'Required',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        selectOnFocus: true,
+        width: combo_width,
+        store: organisationUnitStore
+    });
+    
+    var organisationUnitLevelCombo2 = new Ext.form.ComboBox({
+        id: 'organisationunitlevel2_cb',
+        fieldLabel: 'Level',
+        typeAhead: true,
+        editable: false,
+        valueField: 'id',
+        emptyText: 'Required',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        selectOnFocus: true,
+        width: combo_width,
+        store: organisationUnitLevelStore,
+    });
 
 
+    var mapLayerPathTextField = new Ext.form.TextField({
+        id: 'maplayerpath_tf',
+        emptyText: 'Required',
+        width: combo_width
+    });
     
+    var uniqueColumnTextField = new Ext.form.TextField({
+        id: 'uniquecolumn_tf',
+        emptyText: 'Required',
+        width: combo_width
+    });
     
-    
-    
-    // create choropleth widget
+    var nameColumnTextField = new Ext.form.TextField({
+        id: 'namecolumn_tf',
+        emptyText: 'Required',
+        width: combo_width
+    });
+
+    var submitButton = new Ext.Button({
+        id: 'submit_b',
+        text: 'Register map',
+        handler: function()
+        {
+            var mlp = Ext.getCmp('maplayerpath_tf').getValue();
+            var oui = Ext.getCmp('organisationunit_cb').getValue();
+            var ouli = Ext.getCmp('organisationunitlevel2_cb').getValue();
+            var uc = Ext.getCmp('uniquecolumn_tf').getValue();
+            var nc = Ext.getCmp('namecolumn_tf').getValue();
+            
+            if (!mlp || !oui || !ouli || !uc || !nc)
+            {
+                Ext.MessageBox.alert('Error', 'Form is not complete');
+                return;
+            }
+            
+            Ext.Ajax.request(
+            {
+                url: localhost + port + '/dhis-webservice/addOrUpdateMap.service',
+                method: 'GET',
+                params: { mapLayerPath: mlp, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc },
+
+                success: function( responseObject )
+                {
+                    alert( 'OK' );
+                },
+                failure: function()
+                {
+                    alert( 'Status', 'Error while saving data' );
+                }
+            });
+        }
+    });
+
+    rootmap = new Ext.Panel({
+        id: 'rootmap',
+        title: 'Register shapefiles',
+        items: [ { html: '<p style="padding-bottom:4px">Load organisation units from level:</p>' }, organisationUnitLevelCombo, { html: '<br><br><br>' },
+                 { html: '<p style="padding-bottom:4px">Register map for this organisation unit:</p>' }, organisationUnitCombo, { html: '<br>' },
+                 { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, organisationUnitLevelCombo2, { html: '<br>' },
+                 { html: '<p style="padding-bottom:4px">Geoserver map layer path:</p>' }, mapLayerPathTextField, { html: '<br>' },
+                 { html: '<p style="padding-bottom:4px">Unique column:</p>' }, uniqueColumnTextField, { html: '<br>' },
+                 { html: '<p style="padding-bottom:4px">Name column:</p>' }, nameColumnTextField, { html: '<br>' },
+                 submitButton ]
+    });
+
     choropleth = new mapfish.widgets.geostat.Choropleth({
         id: 'choropleth',
         map: map,
         layer: choroplethLayer,
         title: 'Choropleth',
-        nameAttribute: "NAME",
+        nameAttribute: 'NAME',
         indicators: [['value', 'Indicator']],
-        url: shapefiles[0],
+        url: geoserver + 'wfs?request=GetFeature&typename=' + default_map + '&outputformat=json&version=1.0.0',
         featureSelection: false,
-        loadMask: {msg: 'Loading Data...', msgCls: 'x-mask-loading'},
+        loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
+        'legendDiv': 'myChoroplethLegendDiv',
         defaults:{
             width: 130
         },
         listeners: {
-        //           collapse: {
-        // hide layer if collapsed
-        //  fn: function() {
-        //      this.layer.setVisibility(false);
-        //  }
-        //            },
+            expand: {
+                // show layer if expanded
+                fn: function() {
+                    if (this.classificationApplied) {
+                        this.layer.setVisibility(true);
+                    }
+                }
+            }
+        }
+    });
+    
+    mapping = new mapfish.widgets.geostat.Mapping({
+        id: 'mapping',
+        map: map,
+        layer: choroplethLayer,
+        title: 'Assign organisation units',
+        nameAttribute: 'NAME',
+        indicators: [['value', 'Indicator']],
+        url: geoserver + 'wfs?request=GetFeature&typename=' + default_map + '&outputformat=json&version=1.0.0',
+        featureSelection: false,
+        loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
+        'legendDiv' : 'myChoroplethLegendDiv',
+        defaults:{
+            width: 130
+        },
+        listeners: {
             expand: {
                 // show layer if expanded
                 fn: function() {
@@ -112,17 +258,16 @@ Ext.onReady(function()
         }
     });
 
-    // create proportional symbol widget
     var propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
         id: 'propsymbol',
         map: map,
         layer: propSymbolLayer,
         title: 'Proportional symbol',
-        nameAttribute: "ouname",
+        nameAttribute: 'ouname',
         indicators: [['PERIMETER', 'Perimeter']],
-        url: '../../../geoserver/wfs?request=GetFeature&typename=who:clinics&outputformat=json&version=1.0.0',
+        url: geoserver + 'wfs?request=GetFeature&typename=' + default_map + '&outputformat=json&version=1.0.0',
         featureSelection: false,
-        loadMask : {msg: 'Loading Data...', msgCls: 'x-mask-loading'},
+        loadMask : {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
         defaults: {
             width: 130
         },
@@ -144,11 +289,10 @@ Ext.onReady(function()
         }
     });
 
-
-    // create viewport
     viewport = new Ext.Viewport({
         layout: 'border',
-        items:[
+        items:
+        [
             new Ext.BoxComponent(
             {
                 // raw
@@ -177,35 +321,41 @@ Ext.onReady(function()
                 title: ' ',
                 width: 200,
                 collapsible: true,
-                collapsed: true,
                 margins: '0 0 0 5',
                 defaults: {
                     border: true,
                     frame: true
                 },
-                layout: 'border',
+                layout: 'anchor',
                 items: [
                 {
                     title: 'Layers',
-                    region: 'north',
                     autoHeight: true,
                     xtype: 'layertree',
-                    map: map
+                    map: map,
+                    anchor: '100%'
                 },
                 
                 {
                     title: 'Overview Map',
-                    region: 'center',
-                    height: 300,
-                    html:'<div id="overviewmap"></div>'
+                    autoHeight: true,
+                    html:'<div id="overviewmap"></div>',
+                    anchor: '100%'
                 },
                 
                 {
                     title: 'Position',
-                    region: 'south',
-                    collapsible: true,
                     height: 65,
-                    contentEl: 'position'
+                    contentEl: 'position',
+                    anchor: '100%'
+                },
+                
+                {
+                    title: 'Legend',
+                    minHeight: 65,
+                    autoHeight: true,
+                    contentEl: 'legend',
+                    anchor: '100%'
                 } ]
             },
             
@@ -226,7 +376,9 @@ Ext.onReady(function()
                 },
                 items: [
                     choropleth,
-                    propSymbol ]
+                    mapping,
+                    rootmap
+                ]
             },
             
             {
@@ -241,7 +393,7 @@ Ext.onReady(function()
 
     map.addControl(new OpenLayers.Control.MousePosition(
     {
-        displayClass: "void", 
+        displayClass: 'void', 
         div: $('mouseposition'), 
         prefix: 'x: ',
         separator: '<br/>y: '
@@ -252,10 +404,6 @@ Ext.onReady(function()
     Ext.get('loading').fadeOut({remove: true});
 
 });
-
-
-
-// CHOROPLETH SELECT FEATURES
 
 function onHoverSelectChoropleth(feature)
 {
@@ -270,7 +418,7 @@ function onHoverSelectChoropleth(feature)
     var y = south_panel.y - height - padding_y;
 
     popup_feature = new Ext.Window({
-    title: 'Area',
+    title: 'Organisation unit',
     width: 190,
     height: height,
     layout: 'fit',
@@ -278,85 +426,57 @@ function onHoverSelectChoropleth(feature)
     bodyStyle: 'padding:5px',
     x: x,
     y: y
-    });
+    });    
 
     style = '<p style="margin-top: 5px; padding-left:5px;">';
     space = '&nbsp;&nbsp;';
-
-    if (choropleth.selectedLevel == 1) {
-        var html = style + '<b>' + shpcols[choropleth.selectedLevel][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].name] + '</p>';
-        
-        if (!choropleth.isAssignment)
-        {
-            html += '<br>';
-            html += style + '<b>Value:</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
-        }
-    }
-
-    if (choropleth.selectedLevel == 2) {
-        var html = style + '<b>' + shpcols[choropleth.selectedLevel][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].name] + '</p>';
-        html += style + '<b>' + shpcols[choropleth.selectedLevel-1][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].parent1] + '</p>';
-        
-        if (!choropleth.isAssignment)
-        {
-            html += '<br>';
-            html += style + '<b>Value:</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
-        }
-    }
-
-    if (choropleth.selectedLevel == 3) {
-        var html = style + '<b>' + shpcols[choropleth.selectedLevel][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].name] + '</p>';
-        html += style + '<b>' + shpcols[choropleth.selectedLevel-1][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].parent1] + '</p>';
-        html += style + '<b>' + shpcols[choropleth.selectedLevel-2][0].type + ':</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].parent2] + '</p>';
-        
-        if (!choropleth.isAssignment)
-        {
-            html += '<br>';
-            html += style + '<b>Value:</b>' + space + feature.attributes[shpcols[choropleth.selectedLevel][0].value] + '</p>';
-        }
-    }
-
+    bs = '<b>';
+    be = '</b>';
+    lf = '<br>';
+    pe = '</p>';
+    
+    var html = style + feature.attributes[mapData.map.nameColumn] + pe;
+    html += style + bs + 'Value:' + be + space + feature.attributes['value'] + pe;
+    
     popup_feature.html = html;
     popup_feature.show();
-
-    
 }
-
 
 function onHoverUnselectChoropleth(feature)
 {
     var infoPanel = Ext.getCmp('south-panel');
-    //infoPanel.body.dom.innerHTML = '';
 
     popup_feature.hide();
 }
 
-
 function onClickSelectChoropleth(feature)
 {
     var selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
-    organisationUnitId = selected.data["id"];
-    organisationUnit = selected.data["name"];
-    geoCode = feature.attributes[ shpcols[choropleth.selectedLevel][0].name ];
+    var organisationUnitId = selected.data['organisationUnitId'];
+    var organisationUnit = selected.data['organisationUnit'];
+    
+    var uniqueColumn = mapData.map.uniqueColumn;
+    var mlp = mapData.map.mapLayerPath;
+    var featureId = feature.attributes[uniqueColumn];
 
     if (!selected)
     {
-        alert("ikke valgt");
+        alert('First, select an organisation unit from the list');
     }
     else
     {
         Ext.Ajax.request( 
         {
-            url: 'http://localhost:' + localhost_port + '/dhis-webservice/updateOrganisationUnitGeoCode.service',
+            url: localhost + port + '/dhis-webservice/addOrUpdateMapOrganisationUnitRelation.service',
             method: 'GET',
-            params: { organisationUnitId: organisationUnitId, geoCode: geoCode },
+            params: { mapLayerPath: mlp, organisationUnitId: organisationUnitId, featureId: featureId },
 
             success: function( responseObject )
             {
                 var south_panel = Ext.getCmp('south-panel');
-                south_panel.body.dom.innerHTML = organisationUnit + '<font color="#444444"> assigned to </font>' + geoCode;
-                choropleth.gridStore.reload();
-                alert("funka");
+                south_panel.body.dom.innerHTML = organisationUnit + '<font color="#444444"> assigned to </font>' + featureId + "!";
+                
+                setMapData('assignment');
             },
             failure: function()
             {
@@ -365,8 +485,6 @@ function onClickSelectChoropleth(feature)
         });
     }
     
-    choropleth.gridStore.reload();
-
     popup_feature.hide();
 
     /*
@@ -376,18 +494,16 @@ function onClickSelectChoropleth(feature)
     */
 }
 
-
 function onClickUnselectChoropleth(feature)
 {
-
 }
-
 
 
 // PROPORTIONAL SYMBOL SELECT FEATURES
 
 function onHoverSelectPoint(feature)
 {
+/*
     var center_panel = Ext.getCmp('center');
     var south_panel = Ext.getCmp('south-panel');
 
@@ -424,45 +540,70 @@ function onHoverSelectPoint(feature)
 
     var infoPanel_orgunit = Ext.getCmp('south-panel');
     infoPanel_orgunit.body.dom.innerHTML = 'More information about the selected organisation unit may be listed here.';
+*/    
 }
 
 function onHoverUnselectPoint(feature)
 {
+/*
     var infoPanel_orgunit = Ext.getCmp('south-panel');
     infoPanel_orgunit.body.dom.innerHTML = '';
 
     popup_orgunit.hide();
+*/    
 }
 
 function onClickSelectPoint(feature)
 {
-
 }
 
 function onClickUnselectPoint(feature)
 {
+}
 
+
+mapData = false;
+
+function setMapData(param)
+{
+    Ext.Ajax.request( 
+    {
+        url: localhost + port + '/dhis-webservice/getMapByMapLayerPath.service',
+        method: 'GET',
+        params: { mapLayerPath: default_map, format: 'json' },
+
+        success: function( responseObject )
+        {
+            mapData = Ext.util.JSON.decode(responseObject.responseText);
+            
+            if (param == 'choropleth') {
+                getChoroplethData(); }
+            if (param == 'point') {
+                getPointData(); }
+            if (param == 'assignment') {
+                getAssignOrganisationUnitData(); }
+        },
+        failure: function()
+        {
+            alert( 'Error while retrieving map data: setMapData' );
+        } 
+    });
 }
 
 
 // GET DATA
 
 function getChoroplethData()
-{
+{   
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
     var periodId = Ext.getCmp('period_cb').getValue();
-    var level = Ext.getCmp('level_cb').getValue();
+    var level = mapData.map.organisationUnitLevel;
     
-//alert(indicatorId+"\n"+    periodId+"\n"+level);
-    
-    var url = 'http://localhost:' + localhost_port + '/dhis-webservice/getMapValues.service';
-    format = 'json';
-
     Ext.Ajax.request( 
     {
-        url: url,
+        url: localhost + port + '/dhis-webservice/getMapValues.service',
         method: 'GET',
-        params: { indicatorId: indicatorId, periodId: periodId, level: level, format: format },
+        params: { indicatorId: indicatorId, periodId: periodId, level: level, format: 'json' },
 
         success: function( responseObject )
         {
@@ -470,26 +611,23 @@ function getChoroplethData()
         },
         failure: function()
         {
-            alert( 'Status', 'Error while retrieving data' );
+            alert( 'Error while retrieving data: getChoroplethData' );
         } 
     });
 }
 
-
 function getPointData()
 {
+/*
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
     var periodId = Ext.getCmp('period_cb').getValue();
     var level = pointLayer;
 
-    var url = 'http://localhost:' + localhost_port + '/dhis-webservice/getMapValues.service';
-    format = 'json';
-
     Ext.Ajax.request( 
     {
-        url: url,
+        url: localhost + port + '/dhis-webservice/getMapValues.service',
         method: 'GET',
-        params: { indicatorId: indicatorId, periodId: periodId, level: level, format: format },
+        params: { indicatorId: indicatorId, periodId: periodId, level: level, format: 'json' },
 
         success: function( responseObject )
         {
@@ -497,23 +635,21 @@ function getPointData()
         },
         failure: function()
         {
-            alert( 'Status', 'Error while retrieving data' );
+            alert( 'Error while retrieving data: getPointData' );
         } 
     });
+*/
 }
-
 
 function getAssignOrganisationUnitData()
 {
-    var url = 'http://localhost:' + localhost_port + '/dhis-webservice/getOrganisationUnitsAtLevel.service';
-    var level = choropleth.selectedLevel;
-    var format = 'json';
+    var mlp = mapData.map.mapLayerPath;
     
     Ext.Ajax.request( 
     {
-        url: url,
+        url: localhost + port + '/dhis-webservice/getAvailableMapOrganisationUnitRelations.service',
         method: 'GET',
-        params: { level: level, format: format },
+        params: { mapLayerPath: mlp, format: 'json' },
 
         success: function( responseObject )
         {
@@ -521,12 +657,10 @@ function getAssignOrganisationUnitData()
         },
         failure: function()
         {
-            alert( 'Status', 'Error while retrieving data' );
+            alert( 'Error while retrieving data: getAssignOrganisationUnitData' );
         } 
     });
 }
-
-
 
 
 // DATA RECEIVED
@@ -534,68 +668,100 @@ function getAssignOrganisationUnitData()
 function dataReceivedChoropleth( responseText )
 {
     var layers = this.myMap.getLayersByName(choroplethLayerName);
-    var level = choropleth.selectedLevel;
-    var features = layers[0]["features"];
-    var featuresLength = features.length;
-    var data = Ext.util.JSON.decode(responseText);
-    var dataLength = data.mapvalues.length;
+    var features = layers[0]['features'];
     
-    for (var j=0; j < featuresLength; j++) 
+    var mapvalues = Ext.util.JSON.decode(responseText).mapvalues;
+    
+    var mlp = mapData.map.mapLayerPath;
+    var uniqueColumn = mapData.map.uniqueColumn;
+    
+    Ext.Ajax.request( 
     {
-        features[j].attributes["value"] = 0;
-        
-        for (var i=0; i < dataLength; i++)
-        {
-            if (features[j].attributes[shpcols[level][0].geocode] == data.mapvalues[i].geoCode)
-            {   
-                features[j].attributes["value"] = data.mapvalues[i].value;
-            }
-        }
-    }
-}
+        url: localhost + port + '/dhis-webservice/getAvailableMapOrganisationUnitRelations.service',
+        method: 'GET',
+        params: { mapLayerPath: mlp, format: 'json' },
 
+        success: function( responseObject )
+        {
+            var relations = Ext.util.JSON.decode(responseObject.responseText).mapOrganisationUnitRelations;
+            
+            for (var i=0; i < relations.length; i++)
+            {
+                var orgunitid = relations[i].organisationUnitId;
+                var featureid = relations[i].featureId;
+                
+                for (var j=0; j < mapvalues.length; j++)
+                {
+                    if (orgunitid == mapvalues[j].organisationUnitId)
+                    {
+                        for (var k=0; k < features.length; k++)
+                        {
+                            if (features[k].attributes['value'] == null)
+                            {
+                                features[k].attributes['value'] = 0;
+                            }
+                            
+                            if (featureid == features[k].attributes[uniqueColumn])
+                            {
+                                features[k].attributes['value'] = mapvalues[j].value;
+                            }
+                        }
+                    }
+                }
+            }
+            
+        },
+        failure: function()
+        {
+            alert( 'Error while retrieving data: dataReceivedChoropleth' );
+        } 
+    });
+}
 
 function dataReceivedPoint( responseText )
 {
+/*
     var layers = this.myMap.getLayersByName(propSymbolLayerName);
-    var features = layers[0]["features"];
+    var features = layers[0]['features'];
     var featuresLength = features.length;
     var data = Ext.util.JSON.decode(responseText);
     var dataLength = data.mapvalues.length;
 
     for ( var j=0; j < featuresLength; j++ ) 
     {
-        features[j].attributes["value"] = 0;
+        features[j].attributes['value'] = 0;
         
         for ( var i=0; i < dataLength; i++ )
         {
             if (features[j].attributes[shpcols[pointLayer][0].geocode] == data.mapvalues[i].geoCode)
             {
-                features[j].attributes["name"] = data.mapvalues[i].orgUnit;
-                features[j].attributes["value"] = data.mapvalues[i].value;
+                features[j].attributes['name'] = data.mapvalues[i].orgUnit;
+                features[j].attributes['value'] = data.mapvalues[i].value;
             }
         }
     }
+*/
 }
 
 function dataReceivedAssignOrganisationUnit( responseText )
 {
     var layers = this.myMap.getLayersByName(choroplethLayerName);
-    var level = choropleth.selectedLevel;    
-    features = layers[0]["features"];
-    var featuresLength = features.length;
-    var data = Ext.util.JSON.decode(responseText);
-    var dataLength = data.organisationUnits.length;
+    features = layers[0]['features'];
     
-    for ( var j=0; j < featuresLength; j++ ) 
+    var relations = Ext.util.JSON.decode(responseText).mapOrganisationUnitRelations;
+    
+    var uniqueColumn = mapData.map.uniqueColumn;   
+    
+    for (var i=0; i < features.length; i++)
     {
-        features[j].attributes["value"] = j;
+        var featureId = features[i].attributes[uniqueColumn];
+        features[i].attributes['value'] = 0;
         
-        for ( var i=0; i < dataLength; i++ )
+        for (var j=0; j < relations.length; j++)
         {
-            if (features[j].attributes[shpcols[level][0].geocode] == data.organisationUnits[i].geoCode)
+            if (relations[j].featureId == featureId)
             {
-                features[j].attributes["value"] = 1000;
+                features[i].attributes['value'] = 1;
             }
         }
     }

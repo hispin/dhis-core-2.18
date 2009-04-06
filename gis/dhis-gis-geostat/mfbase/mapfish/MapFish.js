@@ -117,6 +117,7 @@
             "widgets/data/LayerStoreMediator.js",
             "widgets/data/GridRowFeatureMediator.js",
             "widgets/geostat/Choropleth.js",
+            "widgets/geostat/Mapping.js",
             "widgets/geostat/ProportionalSymbol.js",
             "widgets/tree/LayerTree.js",
             "widgets/tree/LayerTreeExtra.js",
