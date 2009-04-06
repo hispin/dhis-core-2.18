@@ -1,4 +1,4 @@
-package org.hisp.dhis.system.objectmapper;
+package org.hisp.dhis.mapping;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,28 +27,50 @@ package org.hisp.dhis.system.objectmapper;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.Collection;
 
-import org.hisp.dhis.aggregation.AggregatedMapValue;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
 /**
- * @author Lars Helge Overland
+ * @author Jan Henrik Overland
  * @version $Id$
  */
-public class AggregatedMapValueRowMapper
-    implements RowMapper<AggregatedMapValue>
+public interface MappingStore
 {
-    public AggregatedMapValue mapRow( ResultSet resultSet )
-        throws SQLException
-    {
-        final AggregatedMapValue value = new AggregatedMapValue();
-        
-        value.setOrganisationUnitId( resultSet.getInt( 1 ) );
-        value.setGeoCode( resultSet.getString( 2 ) );
-        value.setOrganisationUnitName( resultSet.getString( 3 ) );
-        value.setValue( resultSet.getDouble( 4 ) );
-        
-        return value;
-    }
+    // -------------------------------------------------------------------------
+    // Map
+    // -------------------------------------------------------------------------
+
+    int addMap( Map map );
+
+    void updateMap( Map map );
+
+    void deleteMap( Map map );
+
+    Map getMap( int id );
+    
+    Map getMapByMapLayerPath( String mapLayerPath );
+
+    Collection<Map> getAllMaps();
+    
+    Collection<Map> getMapsAtLevel( OrganisationUnitLevel organisationUnitLevel );
+    
+    // -------------------------------------------------------------------------
+    // MapOrganisationUnitRelation
+    // -------------------------------------------------------------------------
+
+    int addMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation );
+
+    void updateMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation );
+
+    void deleteMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation );
+    
+    MapOrganisationUnitRelation getMapOrganisationUnitRelation( int id );
+    
+    MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit );
+    
+    Collection<MapOrganisationUnitRelation> getAllMapOrganisationUnitRelations();
+    
+    Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationByMap( Map map );
 }

@@ -205,6 +205,11 @@
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
+        <artifactId>dhis-service-mapping</artifactId>
+        <version>${version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-user-hibernate</artifactId>
         <version>${version}</version>
       </dependency>

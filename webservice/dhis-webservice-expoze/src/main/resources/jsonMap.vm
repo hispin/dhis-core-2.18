@@ -1,0 +1,10 @@
+{ "map": 
+  {
+    "id": $!{object.id},
+    "mapLayerPath": "$!{object.mapLayerPath}",
+    "organisationUnit": "$!{object.organisationUnit.name}",
+    "organisationUnitLevel": $!{object.organisationUnitLevel.level},
+    "uniqueColumn": "$!{object.uniqueColumn}",
+    "nameColumn": "$!{object.nameColumn}"
+  }
+}
