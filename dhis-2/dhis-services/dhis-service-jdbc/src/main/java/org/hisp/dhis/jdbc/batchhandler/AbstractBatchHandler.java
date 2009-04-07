@@ -186,7 +186,7 @@ public abstract class AbstractBatchHandler
     {
         try
         {
-            String sql = getUpdateSqlStatement( object );
+            final String sql = getUpdateSqlStatement( object );
             
             statement.executeUpdate( sql );
         }
@@ -200,7 +200,7 @@ public abstract class AbstractBatchHandler
     {
         try
         {
-            String sql = getUniquenessStatement( objectName );
+            final String sql = getUniquenessStatement( objectName );
             
             ResultSet resultSet = statement.executeQuery( sql );   
             
@@ -216,7 +216,7 @@ public abstract class AbstractBatchHandler
     {
         try
         {
-            String sql = getIdentifierStatement( objectName );
+            final String sql = getIdentifierStatement( objectName );
             
             ResultSet resultSet = statement.executeQuery( sql );  
             
