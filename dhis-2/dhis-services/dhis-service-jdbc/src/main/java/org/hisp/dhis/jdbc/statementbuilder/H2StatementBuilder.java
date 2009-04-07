@@ -269,7 +269,7 @@ public class H2StatementBuilder
     }
 
     // -------------------------------------------------------------------------
-    // AbstractStatementBuilder implementation
+    // AbstractStatementBuilder override methods
     // -------------------------------------------------------------------------
     
     @Override
