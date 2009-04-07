@@ -51,6 +51,7 @@ public class DefaultJDBCConfigurationProvider
     private static final String DIALECT_H2 = "org.hibernate.dialect.H2Dialect";
     private static final String DIALECT_H2_PATCHED = "org.hisp.dhis.dialect.H2Dialect";
     private static final String DIALECT_DERBY = "org.hibernate.dialect.DerbyDialect";
+    private static final String DIALECT_DERBY_PATCHED = "org.hisp.dhis.dialect.IdentityDerbyDialect";
         
     // -------------------------------------------------------------------------
     // Dependencies
@@ -87,7 +88,7 @@ public class DefaultJDBCConfigurationProvider
         {
             config.setDialect( StatementDialect.H2 );
         }
-        else if ( dialect.equals( DIALECT_DERBY ) )
+        else if ( dialect.equals( DIALECT_DERBY ) || dialect.equals( DIALECT_DERBY_PATCHED ) )
         {
             config.setDialect( StatementDialect.DERBY );
         }
