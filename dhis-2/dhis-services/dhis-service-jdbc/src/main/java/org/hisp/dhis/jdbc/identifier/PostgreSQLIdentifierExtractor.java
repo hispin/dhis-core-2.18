@@ -43,7 +43,7 @@ public class PostgreSQLIdentifierExtractor
     public Collection<Integer> extract( Statement statement, int statementCount )
         throws SQLException
     {
-        Collection<Integer> identifiers = new ArrayList<Integer>();
+        final Collection<Integer> identifiers = new ArrayList<Integer>();
         
         int lastIdentifier = extract( statement );
         
@@ -63,7 +63,7 @@ public class PostgreSQLIdentifierExtractor
     public int extract( Statement statement )
         throws SQLException
     {
-        String sql = "SELECT currval('hibernate_sequence')";
+        final String sql = "SELECT currval('hibernate_sequence')";
         
         ResultSet resultSet = statement.executeQuery( sql );
         

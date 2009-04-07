@@ -1,8 +1,5 @@
 package org.hisp.dhis.jdbc.batchhandler;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.jdbc.JDBCConfiguration;
 
@@ -81,7 +78,7 @@ public class DataSetSourceAssociationBatchHandler
         GroupMemberAssociation association = (GroupMemberAssociation) objectName;
         
         String sql = statementBuilder.getValueStatement( tableName, "datasetid", "sourceid", 
-            "datasetid", String.valueOf( association.getGroupId() ), "sourceid", String.valueOf( association.getMemberId() ) );
+            "datasetid", association.getGroupId(), "sourceid", association.getMemberId() );
         
         return sql;
     }
@@ -89,13 +86,11 @@ public class DataSetSourceAssociationBatchHandler
     protected String getUniquenessStatement( Object object )
     {
         GroupMemberAssociation association = (GroupMemberAssociation) object;
+
+        String sql = statementBuilder.getValueStatement( tableName, "datasetid", "sourceid", 
+            "datasetid", association.getGroupId(), "sourceid", association.getMemberId() );
         
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "datasetid", String.valueOf( association.getGroupId() ) );
-        fieldMap.put( "sourceid", String.valueOf( association.getMemberId() ) );
-        
-        return statementBuilder.getValueStatement( tableName, "datasetid", fieldMap, true );
+        return sql;
     }
     
     protected void addColumns()

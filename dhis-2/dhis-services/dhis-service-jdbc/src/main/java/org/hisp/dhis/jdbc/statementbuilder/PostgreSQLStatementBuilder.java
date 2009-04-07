@@ -41,8 +41,6 @@ import org.hisp.dhis.period.RelativePeriodType;
 public class PostgreSQLStatementBuilder
     extends AbstractStatementBuilder
 {
-    public static final int MAX_COLUMS = 1580; // TODO verify
-    
     private static final String AUTO_INCREMENT = "nextval('hibernate_sequence')";
     
     // -------------------------------------------------------------------------
@@ -153,7 +151,7 @@ public class PostgreSQLStatementBuilder
 
     public String getValueStatement( String table, String returnField1, String returnField2, String compareField1, String value1, String compareField2, String value2 )
     {
-        return "SELECT " + returnField1 + ", " + returnField2 + " FROM " + table + " WHERE " + compareField1 + "='" + sqlEncode( value1 ) + "' AND " + compareField2 + "='" + value2 + "'";
+        return "SELECT " + returnField1 + ", " + returnField2 + " FROM " + table + " WHERE " + compareField1 + "='" + sqlEncode( value1 ) + "' AND " + compareField2 + "='" + sqlEncode( value2 ) + "'";
     }
 
     public String getValueStatement( String table, String returnField, Map<String, String> fieldMap, boolean union )

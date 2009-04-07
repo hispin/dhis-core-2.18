@@ -27,11 +27,8 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.hisp.dhis.jdbc.JDBCConfiguration;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
+import org.hisp.dhis.jdbc.JDBCConfiguration;
 
 /**
  * @author Lars Helge Overland
@@ -81,7 +78,7 @@ public class DataElementGroupMemberBatchHandler
         GroupMemberAssociation association = (GroupMemberAssociation) objectName;
         
         String sql = statementBuilder.getValueStatement( tableName, "dataelementgroupid", "dataelementid", 
-            "dataelementgroupid", String.valueOf( association.getGroupId() ), "dataelementid", String.valueOf( association.getMemberId() ) );
+            "dataelementgroupid", association.getGroupId(), "dataelementid", association.getMemberId() );
         
         return sql;
     }
@@ -89,13 +86,11 @@ public class DataElementGroupMemberBatchHandler
     protected String getUniquenessStatement( Object object )
     {
         GroupMemberAssociation association = (GroupMemberAssociation) object;
+
+        String sql = statementBuilder.getValueStatement( tableName, "dataelementgroupid", "dataelementid", 
+            "dataelementgroupid", association.getGroupId(), "dataelementid", association.getMemberId() );
         
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "dataelementgroupid", String.valueOf( association.getGroupId() ) );
-        fieldMap.put( "dataelementid", String.valueOf( association.getMemberId() ) );
-        
-        return statementBuilder.getValueStatement( tableName, "dataelementgroupid", fieldMap, true );
+        return sql;
     }
     
     protected void addColumns()

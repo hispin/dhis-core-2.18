@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.hisp.dhis.jdbc.StatementBuilder;
 
@@ -120,7 +122,35 @@ public abstract class AbstractStatementBuilder
     {
         values.add( value != null ? QUOTE + getDateString( value ) + QUOTE : NULL );
     }
+
+    public String getValueStatement( String table, String returnField, String compareField, int value )
+    {
+        return "SELECT " + returnField + " FROM " + table + " WHERE " + compareField + " = " + value;
+    }
     
+    public String getValueStatement( String table, String returnField1, String returnField2, String compareField1, int value1, String compareField2, int value2 )
+    {
+        return "SELECT " + returnField1 + ", " + returnField2 + " FROM " + table + " WHERE " + compareField1 + "=" + value1 + " AND " + compareField2 + "=" + value2;
+    }
+
+    public String getIntegerValueStatement( String table, String returnField, Map<String, Integer> fieldMap, boolean union )
+    {
+        final String operator = union ? " AND " : " OR ";
+        
+        final StringBuffer sqlBuffer = new StringBuffer();
+        sqlBuffer.append( "SELECT " ).append( returnField ).append( " FROM " ).append( table ).append( " WHERE " );
+        
+        for ( Entry<String, Integer> entry : fieldMap.entrySet() )
+        {
+            sqlBuffer.append( entry.getKey() ).append( "=" ).append( entry.getValue() ).append( operator );
+        }
+
+        String sql = sqlBuffer.toString();
+        sql = sql.substring( 0, sql.length() - operator.length() );
+        
+        return sql;
+    }
+
     protected String getDateString( Date date )
     {
         Calendar cal = Calendar.getInstance();

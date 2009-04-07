@@ -37,6 +37,11 @@ import org.hibernate.id.IdentityGenerator;
 public class IdentityDerbyDialect
     extends DerbyDialect
 {
+    public IdentityDerbyDialect()
+    {
+        super();
+    }
+    
     @Override
     public Class<?> getNativeIdentifierGeneratorClass() 
     {

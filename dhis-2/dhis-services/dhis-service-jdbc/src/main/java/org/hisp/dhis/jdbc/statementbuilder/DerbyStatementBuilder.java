@@ -41,6 +41,8 @@ import org.hisp.dhis.period.RelativePeriodType;
 public class DerbyStatementBuilder
     extends AbstractStatementBuilder
 {
+    private static final String AUTO_INCREMENT = "default";
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -56,6 +58,11 @@ public class DerbyStatementBuilder
  
     public String getInsertStatementOpening( String table )
     {
+        if ( autoIncrementColumnIndex != null && autoIncrementColumnName != null )
+        {
+            columns.add( autoIncrementColumnIndex, autoIncrementColumnName );
+        }
+        
         final StringBuffer buffer = new StringBuffer();
         
         buffer.append( "INSERT INTO " + table + " (" );
@@ -84,6 +91,11 @@ public class DerbyStatementBuilder
     
     public String getInsertStatementValues()
     {
+        if ( autoIncrementColumnIndex != null )
+        {
+            values.add( autoIncrementColumnIndex, AUTO_INCREMENT );
+        }
+        
         final StringBuffer buffer = new StringBuffer();
         
         buffer.append( BRACKET_START );
@@ -139,7 +151,7 @@ public class DerbyStatementBuilder
     
     public String getValueStatement( String table, String returnField1, String returnField2, String compareField1, String value1, String compareField2, String value2 )
     {
-        return "SELECT " + returnField1 + ", " + returnField2 + " FROM " + table + " WHERE " + compareField1 + "='" + sqlEncode( value1 ) + "' AND " + compareField2 + "='" + value2 + "'";
+        return "SELECT " + returnField1 + ", " + returnField2 + " FROM " + table + " WHERE " + compareField1 + "='" + sqlEncode( value1 ) + "' AND " + compareField2 + "='" + sqlEncode( value2 ) + "'";
     }
     
     public String getValueStatement( String table, String returnField, Map<String, String> fieldMap, boolean union )
@@ -247,5 +259,29 @@ public class DerbyStatementBuilder
     public int getMaximumNumberOfColumns()
     {
         return 1200; //TODO verify
+    }
+
+    // -------------------------------------------------------------------------
+    // AbstractStatementBuilder overridden methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void setBoolean( boolean value )
+    {
+        values.add( value ? "1" : "0" );
+    }
+
+    @Override
+    protected String sqlEncode( String string )
+    {
+        if ( string != null )
+        {
+            string = string.endsWith( "\\" ) ? string.substring( 0, string.length() - 1 ) : string;
+            string = string.replaceAll( QUOTE, QUOTE + QUOTE );
+            
+            return string;
+        }
+        
+        return null;
     }
 }

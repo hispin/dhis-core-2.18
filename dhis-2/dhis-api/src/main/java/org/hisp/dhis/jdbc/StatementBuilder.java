@@ -155,6 +155,17 @@ public interface StatementBuilder
      * @return a SELECT statement for the given parameters.
      */
     String getValueStatement( String table, String returnField, String compareField, String value );
+
+    /**
+     * Creates a SELECT statement for the given parameters.
+     * 
+     * @param table the table to use in the statement.
+     * @param returnField the table field to return from the query.
+     * @param compareField the table field to compare with the value.
+     * @param value the value to compare with the compareField.
+     * @return a SELECT statement for the given parameters.
+     */
+    String getValueStatement( String table, String returnField, String compareField, int value );
     
     /**
      * Creates a SELECT statement for the given parameters.
@@ -169,6 +180,20 @@ public interface StatementBuilder
      * @return a SELECT statement for the given parameters.
      */
     String getValueStatement( String table, String returnField1, String returnField2, String compareField1, String value1, String compareField2, String value2 );
+
+    /**
+     * Creates a SELECT statement for the given parameters.
+     * 
+     * @param table the table to use in the statement.
+     * @param returnField1 the first table field to return from the query.
+     * @param returnField2 the second table field to return from the query.
+     * @param compareField1 the first table field to compare with the value.
+     * @param value1 the value to compare with the first compareField.
+     * @param compareField2 the second table field to compare with the value.
+     * @param value2 the value to compare with the second compareField.
+     * @return a SELECT statement for the given parameters.
+     */
+    String getValueStatement( String table, String returnField1, String returnField2, String compareField1, int value1, String compareField2, int value2 );
     
     /**
      * Creates a SELECT statement for the given parameters.
@@ -180,6 +205,17 @@ public interface StatementBuilder
      * @return a SELECT statement for the given parameters.
      */
     String getValueStatement( String table, String returnField, Map<String, String> fieldMap, boolean union );
+
+    /**
+     * Creates a SELECT statement for the given parameters.
+     * 
+     * @param table the table to use in the statement.
+     * @param returnField the table field to return from the query.
+     * @param fieldMap the map of fields and values to compare.
+     * @param union true for AND, false for OR
+     * @return a SELECT statement for the given parameters.
+     */
+    String getIntegerValueStatement( String table, String returnField, Map<String, Integer> fieldMap, boolean union );
     
     /**
      * Returns the name of a double column type.

@@ -83,16 +83,16 @@ public class DataValueBatchHandler
 
     protected String getUniquenessStatement( Object object )
     {
-        DataValue value = (DataValue) object;
+        final DataValue value = (DataValue) object;
         
-        Map<String, String> fieldMap = new HashMap<String, String>();
+        final Map<String, Integer> fieldMap = new HashMap<String, Integer>();
         
-        fieldMap.put( "dataelementid", String.valueOf( value.getDataElement().getId() ) );
-        fieldMap.put( "categoryoptioncomboid", String.valueOf( value.getOptionCombo().getId() ) );
-        fieldMap.put( "periodid", String.valueOf( value.getPeriod().getId() ) );
-        fieldMap.put( "sourceid", String.valueOf( value.getSource().getId() ) );
+        fieldMap.put( "dataelementid", value.getDataElement().getId() );
+        fieldMap.put( "categoryoptioncomboid", value.getOptionCombo().getId() );
+        fieldMap.put( "periodid", value.getPeriod().getId() );
+        fieldMap.put( "sourceid", value.getSource().getId() );
         
-        return statementBuilder.getValueStatement( tableName, "dataelementid", fieldMap, true );
+        return statementBuilder.getIntegerValueStatement( tableName, "dataelementid", fieldMap, true );
     }
     
     protected void addColumns()
