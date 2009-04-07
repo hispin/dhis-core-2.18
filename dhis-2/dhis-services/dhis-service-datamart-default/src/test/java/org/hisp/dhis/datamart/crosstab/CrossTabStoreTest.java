@@ -56,11 +56,4 @@ public class CrossTabStoreTest
         
         crossTabStore.dropCrossTabTable();
     }
-    
-    public void testDropCrossTabColumn()
-    {
-        crossTabStore.createCrossTabTable( operands );
-        
-        crossTabStore.dropCrossTabColumn( "de1_1" );
-    }
 }

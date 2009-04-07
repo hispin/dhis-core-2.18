@@ -27,9 +27,6 @@ package org.hisp.dhis.datamart.crosstab;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore.COLUMN_PREFIX;
-import static org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore.SEPARATOR;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -91,7 +88,7 @@ public class DefaultCrossTabService
     public Collection<Operand> populateCrossTabTable( final Collection<Operand> operands, 
         final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds )
     {
-        final Set<Operand> emptyOperands = new HashSet<Operand>( operands );
+        final Set<Operand> operandsWithData = new HashSet<Operand>( operands );
 
         if ( validate( operands, periodIds, organisationUnitIds ) )
         {
@@ -110,8 +107,6 @@ public class DefaultCrossTabService
             final BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataValueCrossTabBatchHandler.class );
             
             batchHandler.init();
-            
-            emptyOperands.addAll( operands );
             
             Map<Operand, String> map = null;
             
@@ -152,7 +147,7 @@ public class DefaultCrossTabService
                         if ( value != null )
                         {
                             hasValues = true;                            
-                            emptyOperands.remove( operand );                            
+                            operandsWithData.add( operand );                            
                         }
                         
                         valueList.add( value );
@@ -170,7 +165,7 @@ public class DefaultCrossTabService
             batchHandler.flush();
         }
 
-        return emptyOperands;
+        return operandsWithData;
     }
     
     public void dropCrossTabTable()
@@ -178,14 +173,15 @@ public class DefaultCrossTabService
         crossTabStore.dropCrossTabTable();
     }
     
-    public void trimCrossTabTable( Collection<Operand> emptyOperands )
+    public void trimCrossTabTable( Collection<Operand> operands )
     {
-        final Collection<String> columnNames = getCrossTabColumnNames( emptyOperands );
+        // TODO use H2 in-memory table for datavaluecrosstab table ?
         
-        for ( final String columnName : columnNames )
-        {
-            crossTabStore.dropCrossTabColumn( columnName );
-        }     
+        crossTabStore.createTrimmedCrossTabTable( operands );
+        
+        crossTabStore.dropCrossTabTable();
+        
+        crossTabStore.renameTrimmedCrossTabTable();
     }
     
     public Map<Operand, Integer> getOperandIndexMap( Collection<Operand> operands )
@@ -223,21 +219,6 @@ public class DefaultCrossTabService
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    /**
-     * Generates a collection of crosstab column names based on a collection of Operands.
-     */
-    private Collection<String> getCrossTabColumnNames( Collection<Operand> operands )
-    {
-        final Collection<String> columnNames = new HashSet<String>( operands.size() );
-        
-        for ( final Operand operand : operands )
-        {
-            columnNames.add( COLUMN_PREFIX + operand.getDataElementId() + SEPARATOR + operand.getOptionComboId() );
-        }
-        
-        return columnNames;
-    }
 
     /**
      * Validates whether the given collections of identifiers are not null and of size greater than 0.
