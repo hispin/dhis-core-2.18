@@ -33,7 +33,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-
 public class MapOrganisationUnitRelation
 {
     private int id;
@@ -59,15 +58,6 @@ public class MapOrganisationUnitRelation
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
 
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
     @Override
     public int hashCode()
     {
@@ -75,7 +65,6 @@ public class MapOrganisationUnitRelation
 
         int result = 1;
 
-        result = prime * result + ( ( featureId == null ) ? 0 : featureId.hashCode() );
         result = prime * result + ( ( map == null ) ? 0 : map.hashCode() );
         result = prime * result + ( ( organisationUnit == null ) ? 0 : organisationUnit.hashCode() );
 
@@ -83,37 +72,35 @@ public class MapOrganisationUnitRelation
     }
 
     @Override
-    public boolean equals( Object obj )
+    public boolean equals( Object object )
     {
-        if ( this == obj )
+        if ( this == object )
+        {
             return true;
-        if ( obj == null )
-            return false;
-        if ( getClass() != obj.getClass() )
-            return false;
-        MapOrganisationUnitRelation other = ( MapOrganisationUnitRelation ) obj;
-        if ( featureId == null )
-        {
-            if ( other.featureId != null )
-                return false;
         }
-        else if ( !featureId.equals( other.featureId ) )
-            return false;
-        if ( map == null )
+        
+        if ( object == null )
         {
-            if ( other.map != null )
-                return false;
-        }
-        else if ( !map.equals( other.map ) )
             return false;
-        if ( organisationUnit == null )
+        }
+        
+        if ( getClass() != object.getClass() )
         {
-            if ( other.organisationUnit != null )
-                return false;
-        }
-        else if ( !organisationUnit.equals( other.organisationUnit ) )
             return false;
-        return true;
+        }
+        
+        final MapOrganisationUnitRelation other = ( MapOrganisationUnitRelation ) object;
+        
+        return map.equals( other.map ) && organisationUnit.equals( other.organisationUnit );
+    }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
+    public int getId()
+    {
+        return id;
     }
 
     public void setId( int id )

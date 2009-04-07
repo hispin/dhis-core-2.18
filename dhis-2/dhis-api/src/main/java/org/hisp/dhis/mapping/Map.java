@@ -37,7 +37,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-
 public class Map
 {
     private int id;
