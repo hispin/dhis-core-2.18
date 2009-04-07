@@ -209,9 +209,9 @@ public class CrossTabServiceTest
     
     public void testTrimCrossTabTable()
     {
-        Collection<Operand> emptyOperands = crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
+        Collection<Operand> operandsWithData = crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
         
-        crossTabService.trimCrossTabTable( emptyOperands );
+        crossTabService.trimCrossTabTable( operandsWithData );
     }
     
     public void testGetOperandIndexMap()

@@ -96,27 +96,7 @@ public class JDBCCrossTabStore
             holder.close();
         }
     }
-    
-    public void dropCrossTabTable()
-    {
-        final StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            final String sql = "DROP TABLE IF EXISTS datavaluecrosstab";
-            
-            holder.getStatement().executeUpdate( sql );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to drop datavalue crosstab table", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-    
+
     public Map<Integer, String> getCrossTabTableColumns()
     {
         final StatementHolder holder = statementManager.getHolder();
@@ -149,25 +129,98 @@ public class JDBCCrossTabStore
             holder.close();
         }
     }
-        
-    public void dropCrossTabColumn( final String columnName )
+    
+    public void dropCrossTabTable()
     {
         final StatementHolder holder = statementManager.getHolder();
         
         try
         {
-            final String sql = "ALTER TABLE datavaluecrosstab DROP COLUMN " + columnName;
+            final String sql = "DROP TABLE IF EXISTS datavaluecrosstab";
             
             holder.getStatement().executeUpdate( sql );
         }
         catch ( SQLException ex )
         {
-            throw new RuntimeException( "Failed to drop datavalue crosstab column", ex );
+            throw new RuntimeException( "Failed to drop datavalue crosstab table", ex );
         }
         finally
         {
             holder.close();
-        }            
+        }
+    }
+
+    public void dropTrimmedCrossTabTable()
+    {
+        final StatementHolder holder = statementManager.getHolder();
+        
+        try
+        {
+            final String sql = "DROP TABLE IF EXISTS datavaluecrosstabtrimmed";
+            
+            holder.getStatement().executeUpdate( sql );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to drop trimmed datavalue crosstab table", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
+    public void renameTrimmedCrossTabTable()
+    {
+        final StatementHolder holder = statementManager.getHolder();
+        
+        try
+        {
+            final String sql = "ALTER TABLE datavaluecrosstabtrimmed RENAME TO datavaluecrosstab";
+            
+            holder.getStatement().executeUpdate( sql );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to rename trimmed crosstab table", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+    
+    public void createTrimmedCrossTabTable( Collection<Operand> operands )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+        
+        try
+        {            
+            final StringBuffer buffer = new StringBuffer( "CREATE TABLE datavaluecrosstabtrimmed AS SELECT periodid, sourceid, " );
+            
+            for ( final Operand operand : operands )
+            {
+                buffer.append( COLUMN_PREFIX ).append( operand.getDataElementId() ).append( SEPARATOR ).append( operand.getOptionComboId() ).append( ", " );
+            }
+            
+            if ( buffer.length() > 1 )
+            {
+                buffer.deleteCharAt( buffer.length() - 1 );
+                buffer.deleteCharAt( buffer.length() - 1 );
+            }
+            
+            buffer.append( " FROM datavaluecrosstab" );
+            
+            holder.getStatement().executeUpdate( buffer.toString() );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get crosstab table columns", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
     }
     
     public int validateCrossTabTable( final Collection<Operand> operands )

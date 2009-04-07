@@ -44,12 +44,16 @@ public interface CrossTabStore
     String SEPARATOR = "_";
     
     void createCrossTabTable( List<Operand> operands );
+
+    Map<Integer, String> getCrossTabTableColumns();
     
     void dropCrossTabTable();
     
-    Map<Integer, String> getCrossTabTableColumns();
+    void dropTrimmedCrossTabTable();
     
-    void dropCrossTabColumn( String columnName );
+    void renameTrimmedCrossTabTable();
+    
+    void createTrimmedCrossTabTable( Collection<Operand> operands );
     
     int validateCrossTabTable( Collection<Operand> operands );
 }
