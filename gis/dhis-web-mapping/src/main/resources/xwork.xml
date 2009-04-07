@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+  "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+  <include file="dhis-web-commons.xml"/>
+  
+  <package name="dhis-web-mapping" extends="dhis-web-commons"
+    namespace="/dhis-web-mapping">
+        
+    <action name="index" class="org.hisp.dhis.mapping.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-mapping/index.vm</param>
+    </action>
+    
+    <action name="getOrganisationUnitLevels" class="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/jsonOrganisationUnitLevels.vm</result>
+    </action>
+        
+  </package>
+</xwork>
