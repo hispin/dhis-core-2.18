@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.jdbc.JDBCConfiguration;
 
@@ -81,7 +78,7 @@ public class ReportTableCategoryOptionComboBatchHandler
         GroupMemberAssociation association = (GroupMemberAssociation) objectName;
         
         String sql = statementBuilder.getValueStatement( tableName, "reporttableid", "categoryoptioncomboid", 
-            "reporttableid", String.valueOf( association.getGroupId() ), "categoryoptioncomboid", String.valueOf( association.getMemberId() ) );
+            "reporttableid", association.getGroupId(), "categoryoptioncomboid", association.getMemberId() );
         
         return sql;
     }
@@ -89,13 +86,11 @@ public class ReportTableCategoryOptionComboBatchHandler
     protected String getUniquenessStatement( Object object )
     {
         GroupMemberAssociation association = (GroupMemberAssociation) object;
+
+        String sql = statementBuilder.getValueStatement( tableName, "reporttableid", "categoryoptioncomboid", 
+            "reporttableid", association.getGroupId(), "categoryoptioncomboid", association.getMemberId() );
         
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "reporttableid", String.valueOf( association.getGroupId() ) );
-        fieldMap.put( "categoryoptioncomboid", String.valueOf( association.getMemberId() ) );
-        
-        return statementBuilder.getValueStatement( tableName, "reporttableid", fieldMap, true );
+        return sql;
     }
     
     protected void addColumns()

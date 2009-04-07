@@ -74,7 +74,7 @@ public class SourceBatchHandler
     
     protected String getIdentifierStatement( Object objectName )
     {
-        return statementBuilder.getValueStatement( tableName, "sourceid", "sourceid", String.valueOf( objectName ) );
+        return statementBuilder.getValueStatement( tableName, "sourceid", "sourceid", Integer.valueOf( String.valueOf( objectName ) ) );
     }
     
     protected void addColumns()

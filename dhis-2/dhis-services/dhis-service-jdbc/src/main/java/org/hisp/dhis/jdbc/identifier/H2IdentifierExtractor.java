@@ -43,7 +43,7 @@ public class H2IdentifierExtractor
     public Collection<Integer> extract( Statement statement, int statementCount )
         throws SQLException
     {
-        Collection<Integer> identifiers = new ArrayList<Integer>();
+        final Collection<Integer> identifiers = new ArrayList<Integer>();
         
         int firstIdentifier = extract( statement );
         
@@ -63,7 +63,7 @@ public class H2IdentifierExtractor
     public int extract( Statement statement )
         throws SQLException
     {
-        String sql = "SELECT LAST_INSERT_ID()";
+        final String sql = "SELECT LAST_INSERT_ID()";
         
         ResultSet resultSet = statement.executeQuery( sql );
         

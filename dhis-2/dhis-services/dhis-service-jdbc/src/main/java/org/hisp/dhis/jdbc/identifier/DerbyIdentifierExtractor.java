@@ -43,7 +43,7 @@ public class DerbyIdentifierExtractor
     public Collection<Integer> extract( Statement statement, int statementCount )
         throws SQLException
     {
-        Collection<Integer> identifiers = new ArrayList<Integer>();
+        final Collection<Integer> identifiers = new ArrayList<Integer>();
         
         int firstIdentifier = extract( statement );
         
@@ -63,7 +63,7 @@ public class DerbyIdentifierExtractor
     public int extract( Statement statement )
         throws SQLException
     {
-        String sql = "values IDENTITY_VAL_LOCAL()";
+        final String sql = "values IDENTITY_VAL_LOCAL()";
         
         ResultSet resultSet = statement.executeQuery( sql );
         

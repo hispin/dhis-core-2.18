@@ -139,9 +139,9 @@ public class MySQLStatementBuilder
     
     public String getValueStatement( String table, String returnField1, String returnField2, String compareField1, String value1, String compareField2, String value2 )
     {
-        return "SELECT " + returnField1 + ", " + returnField2 + " FROM " + table + " WHERE " + compareField1 + "='" + sqlEncode( value1 ) + "' AND " + compareField2 + "='" + value2 + "'";
+        return "SELECT " + returnField1 + ", " + returnField2 + " FROM " + table + " WHERE " + compareField1 + "='" + sqlEncode( value1 ) + "' AND " + compareField2 + "='" + sqlEncode( value2 ) + "'";
     }
-    
+
     public String getValueStatement( String table, String returnField, Map<String, String> fieldMap, boolean union )
     {
         final String operator = union ? " AND " : " OR ";

@@ -123,7 +123,7 @@ public class OrganisationUnitBatchHandler
         statementBuilder.setInt( unit.getId() );
         statementBuilder.setString( unit.getUuid() );
         statementBuilder.setString( unit.getName() );        
-        statementBuilder.setString( unit.getParent() != null ? String.valueOf( unit.getParent().getId() ) : null );
+        statementBuilder.setInt( unit.getParent() != null ? unit.getParent().getId() : null );
         statementBuilder.setString( unit.getShortName() );
         statementBuilder.setString( unit.getCode() );
         statementBuilder.setDate( unit.getOpeningDate() );
