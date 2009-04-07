@@ -56,7 +56,7 @@ public class DerbyStatementBuilder
  
     public String getInsertStatementOpening( String table )
     {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         
         buffer.append( "INSERT INTO " + table + " (" );
         
@@ -79,14 +79,12 @@ public class DerbyStatementBuilder
     
     public String getNoColumnInsertStatementOpening( String table )
     {
-        String sql = "INSERT INTO " + table + " VALUES ";
-        
-        return sql;
+        return "INSERT INTO " + table + " VALUES ";
     }
     
     public String getInsertStatementValues()
     {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         
         buffer.append( BRACKET_START );
         
@@ -109,7 +107,7 @@ public class DerbyStatementBuilder
     
     public String getUpdateStatement( String table )
     {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         
         buffer.append( "UPDATE " + table + " SET " );
 
@@ -136,23 +134,19 @@ public class DerbyStatementBuilder
     
     public String getValueStatement( String table, String returnField, String compareField, String value )
     {
-        String sql = "SELECT " + returnField + " FROM " + table + " WHERE " + compareField + " = '" + sqlEncode( value ) + "'";
-        
-        return sql;
+        return "SELECT " + returnField + " FROM " + table + " WHERE " + compareField + " = '" + sqlEncode( value ) + "'";
     }
     
     public String getValueStatement( String table, String returnField1, String returnField2, String compareField1, String value1, String compareField2, String value2 )
     {
-        String sql = "SELECT " + returnField1 + ", " + returnField2 + " FROM " + table + " WHERE " + compareField1 + "='" + sqlEncode( value1 ) + "' AND " + compareField2 + "='" + value2 + "'";
-        
-        return sql;
+        return "SELECT " + returnField1 + ", " + returnField2 + " FROM " + table + " WHERE " + compareField1 + "='" + sqlEncode( value1 ) + "' AND " + compareField2 + "='" + value2 + "'";
     }
     
     public String getValueStatement( String table, String returnField, Map<String, String> fieldMap, boolean union )
     {
-        String operator = union ? " AND " : " OR ";
+        final String operator = union ? " AND " : " OR ";
         
-        StringBuffer sqlBuffer = new StringBuffer();
+        final StringBuffer sqlBuffer = new StringBuffer();
         sqlBuffer.append( "SELECT " ).append( returnField ).append( " FROM " ).append( table ).append( " WHERE " );
         
         for ( Entry<String, String> entry : fieldMap.entrySet() )
@@ -168,24 +162,21 @@ public class DerbyStatementBuilder
 
     public String getDoubleColumnType()
     {
-        String type = "DOUBLE";
-        
-        return type;
+        return "DOUBLE";
     }
     
     public String getPeriodIdentifierStatement( Period period )
     {
-        String sql = 
+        return 
             "SELECT periodid FROM period WHERE periodtypeid=" + period.getPeriodType().getId() + " " + 
             "AND startdate='" + getDateString( period.getStartDate() ) + "' " +
             "AND enddate='" + getDateString( period.getEndDate() ) + "'";
-        
-        return sql;
     }    
 
     public String getCreateAggregatedDataValueTable()
     {
-        String sql = "CREATE TABLE aggregateddatavalue ( " +
+        return
+            "CREATE TABLE aggregateddatavalue ( " +
             "dataelementid INTEGER, " +
             "categoryoptioncomboid INTEGER, " +
             "periodid INTEGER, " +
@@ -193,13 +184,12 @@ public class DerbyStatementBuilder
             "periodtypeid INTEGER, " +
             "level INTEGER, " +
             "value DOUBLE );";
-        
-        return sql;
     }
     
     public String getCreateAggregatedIndicatorTable()
     {
-        String sql = "CREATE TABLE aggregatedindicatorvalue ( " +
+        return
+            "CREATE TABLE aggregatedindicatorvalue ( " +
             "indicatorid INTEGER, " +
             "periodid INTEGER, " +
             "organisationunitid INTEGER, " +
@@ -210,13 +200,12 @@ public class DerbyStatementBuilder
             "value DOUBLE, " +
             "numeratorvalue DOUBLE, " +
             "denominatorvalue DOUBLE );";
-        
-        return sql;
     }
 
     public String getCreateDataSetCompletenessTable()
     {
-        String sql = "CREATE TABLE aggregateddatasetcompleteness ( " +
+        return 
+            "CREATE TABLE aggregateddatasetcompleteness ( " +
             "datasetid INTEGER, " +
             "periodid INTEGER, " +
             "periodname VARCHAR( 30 ), " +
@@ -227,40 +216,32 @@ public class DerbyStatementBuilder
             "registrationsOnTime INTEGER, " +
             "value DOUBLE, " +
             "valueOnTime DOUBLE );";
-        
-        return sql;
     }
 
     public String getCreateDataValueIndex()
     {
-        String sql =
+        return
             "CREATE INDEX crosstab " +
             "ON datavalue ( periodid, sourceid );";
-        
-        return sql;
     }
 
     public String getDeleteRelativePeriods()
     {
-        String sql =
+        return
             "DELETE FROM period " +
             "USING period, periodtype " +
             "WHERE period.periodtypeid = periodtype.periodtypeid " +
             "AND periodtype.name = '" + RelativePeriodType.NAME + "';";
-        
-        return sql;
     }
 
     public String getDeleteZeroDataValues()
     {
-        String sql = 
+        return 
             "DELETE FROM datavalue " +
             "USING datavalue, dataelement " +
             "WHERE datavalue.dataelementid = dataelement.dataelementid " +
             "AND dataelement.aggregationtype = 'sum' " +
             "AND datavalue.value IN ( '0', '0.', '.0', '0.0' )";
-        
-        return sql;
     }
     
     public int getMaximumNumberOfColumns()

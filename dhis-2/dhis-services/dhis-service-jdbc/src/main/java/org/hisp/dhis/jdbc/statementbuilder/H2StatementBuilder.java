@@ -56,7 +56,7 @@ public class H2StatementBuilder
  
     public String getInsertStatementOpening( String table )
     {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         
         buffer.append( "INSERT INTO " + table + " (" );
         
@@ -79,14 +79,12 @@ public class H2StatementBuilder
     
     public String getNoColumnInsertStatementOpening( String table )
     {
-        String sql = "INSERT INTO " + table + " VALUES ";
-        
-        return sql;
+        return "INSERT INTO " + table + " VALUES ";
     }
     
     public String getInsertStatementValues()
     {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         
         buffer.append( BRACKET_START );
         
@@ -109,7 +107,7 @@ public class H2StatementBuilder
     
     public String getUpdateStatement( String table )
     {
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         
         buffer.append( "UPDATE " + table + " SET " );
 
@@ -136,23 +134,19 @@ public class H2StatementBuilder
     
     public String getValueStatement( String table, String returnField, String compareField, String value )
     {
-        String sql = "SELECT " + returnField + " FROM " + table + " WHERE " + compareField + " = '" + sqlEncode( value ) + "'";
-        
-        return sql;
+        return "SELECT " + returnField + " FROM " + table + " WHERE " + compareField + " = '" + sqlEncode( value ) + "'";
     }
     
     public String getValueStatement( String table, String returnField1, String returnField2, String compareField1, String value1, String compareField2, String value2 )
     {
-        String sql = "SELECT " + returnField1 + ", " + returnField2 + " FROM " + table + " WHERE " + compareField1 + "='" + sqlEncode( value1 ) + "' AND " + compareField2 + "='" + value2 + "'";
-        
-        return sql;
+        return "SELECT " + returnField1 + ", " + returnField2 + " FROM " + table + " WHERE " + compareField1 + "='" + sqlEncode( value1 ) + "' AND " + compareField2 + "='" + value2 + "'";
     }
     
     public String getValueStatement( String table, String returnField, Map<String, String> fieldMap, boolean union )
     {
-        String operator = union ? " AND " : " OR ";
+        final String operator = union ? " AND " : " OR ";
         
-        StringBuffer sqlBuffer = new StringBuffer();
+        final StringBuffer sqlBuffer = new StringBuffer();
         sqlBuffer.append( "SELECT " ).append( returnField ).append( " FROM " ).append( table ).append( " WHERE " );
         
         for ( Entry<String, String> entry : fieldMap.entrySet() )
@@ -160,8 +154,7 @@ public class H2StatementBuilder
             sqlBuffer.append( entry.getKey() ).append( "='" ).append( sqlEncode( entry.getValue() ) ).append( "'" ).append( operator );
         }
 
-        String sql = sqlBuffer.toString();
-        
+        String sql = sqlBuffer.toString();        
         sql = sql.substring( 0, sql.length() - operator.length() );
         
         return sql;
@@ -169,24 +162,20 @@ public class H2StatementBuilder
 
     public String getDoubleColumnType()
     {
-        String type = "DOUBLE";
-        
-        return type;
+        return "DOUBLE";
     }
     
     public String getPeriodIdentifierStatement( Period period )
     {
-        String sql =
+        return
             "SELECT periodid FROM period WHERE periodtypeid=" + period.getPeriodType().getId() + " " + 
             "AND startdate='" + getDateString( period.getStartDate() ) + "' " +
             "AND enddate='" + getDateString( period.getEndDate() ) + "'";
-        
-        return sql;
     }
     
     public String getCreateAggregatedDataValueTable()
     {
-        String sql = 
+        return
             "CREATE TABLE aggregateddatavalue ( " +
             "dataelementid INTEGER, " +
             "categoryoptioncomboid INTEGER, " +
@@ -195,13 +184,11 @@ public class H2StatementBuilder
             "periodtypeid INTEGER, " +
             "level INTEGER, " +
             "value DOUBLE );";
-        
-        return sql;
     }
     
     public String getCreateAggregatedIndicatorTable()
     {
-        String sql = 
+        return
             "CREATE TABLE aggregatedindicatorvalue ( " +
             "indicatorid INTEGER, " +
             "periodid INTEGER, " +
@@ -213,13 +200,12 @@ public class H2StatementBuilder
             "value DOUBLE, " +
             "numeratorvalue DOUBLE, " +
             "denominatorvalue DOUBLE );";
-        
-        return sql;
     }
 
     public String getCreateDataSetCompletenessTable()
     {
-        String sql = "CREATE TABLE aggregateddatasetcompleteness ( " +
+        return
+            "CREATE TABLE aggregateddatasetcompleteness ( " +
             "datasetid INTEGER, " +
             "periodid INTEGER, " +
             "periodname VARCHAR( 30 ), " +
@@ -230,37 +216,29 @@ public class H2StatementBuilder
             "registrationsOnTime INTEGER, " +
             "value DOUBLE, " +
             "valueOnTime DOUBLE );";
-        
-        return sql;
     }
     
     public String getCreateDataValueIndex()
     {
-        String sql =
+        return
             "CREATE INDEX crosstab " +
             "ON datavalue ( periodid, sourceid );";
-        
-        return sql;
     }
 
     public String getDeleteRelativePeriods()
     {
-        String sql =
+        return
             "DELETE FROM period " +
             "USING periodtype " +
             "WHERE period.periodtypeid = periodtype.periodtypeid " +
             "AND periodtype.name = '" + RelativePeriodType.NAME + "';";
-        
-        return sql;
     }
 
     public String getDeleteZeroDataValues()
     {
-        String sql = 
+        return
             "DELETE FROM datavalue " +
             "WHERE datavalue.value IN ( '0', '0.', '.0', '0.0', ' 0', '0 ', '0 0' )";
-        
-        return sql;
     }
 
     public int getMaximumNumberOfColumns()
