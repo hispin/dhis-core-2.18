@@ -10,18 +10,18 @@
 					var reportFileNames = new HashTable();
 
 		            // OrganisationUnit ids and its Names
-			            var orgUnits = new HashTable();
-			            #foreach($orgUnit in $organisationUnits)
-			                var orgUnitId = ""+$orgUnit.getId();
-			                orgUnits.put(orgUnitId,"$orgUnit.getShortName()");
-			            #end
+			            ##var orgUnits = new HashTable();
+			            ##foreach($orgUnit in $organisationUnits)
+			            ##    var orgUnitId = ""+$orgUnit.getId();
+			            ##    orgUnits.put(orgUnitId,"$orgUnit.getShortName()");
+			            ##end
 			            
 			            // OrganisationUnit ids and its Level
-			            var orgUnitLevels = new HashTable();
-			            #foreach($orgUnit in $organisationUnits)
-			                var orgUnitId = ""+$orgUnit.getId();
-			                orgUnitLevels.put(orgUnitId,"$organisationUnitService.getLevelOfOrganisationUnit( $orgUnit )");
-			            #end
+			            ##var orgUnitLevels = new HashTable();
+			            ##foreach($orgUnit in $organisationUnits)
+			            ##    var orgUnitId = ""+$orgUnit.getId();
+			            ##    orgUnitLevels.put(orgUnitId,"$organisationUnitService.getLevelOfOrganisationUnit( $orgUnit )");
+			            ##end
 			            
 			            function formValidations()
 			            {			            

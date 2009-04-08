@@ -193,7 +193,7 @@ public class DBConnection
         dbInfoList.add( 2, info.getPassword() );
         dbInfoList.add( 3, info.getUrl() );
         
-        System.out.println("DB URL: "+info.getUrl());
+        //System.out.println("DB URL: "+info.getUrl());
         
         return dbInfoList;
     }

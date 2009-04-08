@@ -2,14 +2,27 @@ package org.hisp.dhis.reports.action;
 
 import java.io.File;
 
+import org.hisp.dhis.reports.util.ReportService;
+
 import com.opensymphony.xwork.Action;
 
 public class ReportsHomePageAction implements Action
 {
 
-    public String execute()
+    private ReportService reportService;
+
+    public void setReportService( ReportService reportService )
+    {
+        this.reportService = reportService;
+    }
+
+    private String raFolderName;
+    
+	public String execute()
         throws Exception
     {
+		raFolderName = reportService.getRAFolderName();
+		
         clearCache();
         
         return SUCCESS;
@@ -19,13 +32,13 @@ public class ReportsHomePageAction implements Action
     {
         try
         {
-            String cacheFolderPath = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + "ra_national"+ File.separator + "output";
+            String cacheFolderPath = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName + File.separator + "output";
             try
             {
                 String newpath = System.getenv( "DHIS2_HOME" );
                 if ( newpath != null )
                 {
-                    cacheFolderPath = newpath + File.separator + "ra_national" + File.separator + "output";
+                    cacheFolderPath = newpath + File.separator + raFolderName + File.separator + "output";
                 }
             }
             catch ( NullPointerException npe )

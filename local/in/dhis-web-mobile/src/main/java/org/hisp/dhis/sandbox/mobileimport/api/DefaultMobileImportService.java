@@ -70,7 +70,7 @@ public class DefaultMobileImportService implements MobileImportService
 
         for ( User user : allUsers )
         {            
-            if ( user.getEmail() != null && user.getEmail().equalsIgnoreCase( mobileNumber ) )
+            if ( user.getPhoneNumber() != null && user.getPhoneNumber().equalsIgnoreCase( mobileNumber ) )
                 selectedUser = user;
         }
 
@@ -116,7 +116,7 @@ public class DefaultMobileImportService implements MobileImportService
         String tempDeid;
         String tempDataValue;
 
-        Map<Integer, Integer> dataValues = new HashMap<Integer, Integer>();
+        Map<String, Integer> dataValues = new HashMap<String, Integer>();
 
         MobileImportParameters mobileImportParameters = new MobileImportParameters();
 
@@ -174,9 +174,9 @@ public class DefaultMobileImportService implements MobileImportService
                     NodeList valueList = dataValueElement.getElementsByTagName( "value" );
                     Element valueElement = (Element) valueList.item( 0 );
                     NodeList textValueElementList = valueElement.getChildNodes();
-                    tempDataValue = ((Node) textValueElementList.item( 0 )).getNodeValue().trim();
+                    tempDataValue = ((Node) textValueElementList.item( 0 )).getNodeValue();
 
-                    Integer tempDeID = Integer.parseInt( tempDeid );
+                    String tempDeID = tempDeid ;
                     Integer tempDV = Integer.parseInt( tempDataValue );
 
                     System.out.println("In getParametersFromXML : "+ tempDeID + " : "+ tempDV );
@@ -185,8 +185,7 @@ public class DefaultMobileImportService implements MobileImportService
                 }
             }// end of for loop with s var
 
-            mobileImportParameters.setDataValues( dataValues );
-            
+            mobileImportParameters.setDataValues( dataValues );           
 
         }// try block end
         catch ( SAXParseException err )

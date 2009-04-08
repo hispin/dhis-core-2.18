@@ -590,23 +590,23 @@ public class HibernateLLDataValueStore
         // Live Birth Weighed Lessthan 1800 Male
         queries[5] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLB_WIEGH
-            + " AND value < '1800' AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = "
+            + " AND value < 1800 AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = "
             + LLDataSets.LLB_SEX + " AND value = 'M' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
         // Live Birth Weighed Lessthan 1800 Female
         queries[6] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLB_WIEGH
-            + " AND value < '1800' AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = "
+            + " AND value < 1800 AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = "
             + LLDataSets.LLB_SEX + " AND value = 'F' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
 
         // Live Birth Weighed Lessthan 2500 Male
         queries[7] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLB_WIEGH
-            + " AND value < '2500' AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = "
+            + " AND value >= 1800 AND value < 2500 AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = "
             + LLDataSets.LLB_SEX + " AND value = 'M' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
         // Live Birth Weighed Lessthan 2500 Female
         queries[8] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLB_WIEGH
-            + " AND value < '2500' AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = "
+            + " AND value >= 1800 AND value < 2500 AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = "
             + LLDataSets.LLB_SEX + " AND value = 'F' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
 
         // Live Birth Breastfeeding in FirstHour Male
@@ -827,26 +827,26 @@ public class HibernateLLDataValueStore
         queries[6] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value LIKE 'O5YEAR' AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'F' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
         
         // Death Below 5 Year
-        queries[7] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B5YEAR', 'B1YEAR', 'B1MONTH', 'B1WEEK', 'B1DAY')";
+        queries[7] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B5YEAR')";
         // Death Below 5 Year Male
-        queries[8] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B5YEAR', 'B1YEAR', 'B1MONTH', 'B1WEEK', 'B1DAY') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'M' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
+        queries[8] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B5YEAR') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'M' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
         // Death Below 5 Year Female
-        queries[9] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B5YEAR', 'B1YEAR', 'B1MONTH', 'B1WEEK', 'B1DAY') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'F' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
+        queries[9] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B5YEAR') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'F' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
 
         // Death Below 1 Year Male
-        queries[10] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B1YEAR', 'B1MONTH', 'B1WEEK', 'B1DAY') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'M' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
+        queries[10] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B1YEAR') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'M' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
         // Death Below 1 Year Female
-        queries[11] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B1YEAR', 'B1MONTH', 'B1WEEK', 'B1DAY') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'F' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
+        queries[11] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B1YEAR') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'F' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
 
         // Death Below 1 Month Male
-        queries[12] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B1MONTH', 'B1WEEK', 'B1DAY') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'M' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
+        queries[12] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B1MONTH') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'M' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
         // Death Below 1 Month Female
-        queries[13] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B1MONTH', 'B1WEEK', 'B1DAY') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'F' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
+        queries[13] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B1MONTH') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'F' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
 
         // Death Below 1 Week Male
-        queries[14] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B1WEEK', 'B1DAY') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'M' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
+        queries[14] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B1WEEK') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'M' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
         // Death Below 1 Week Female
-        queries[15] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B1WEEK', 'B1DAY') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'F' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
+        queries[15] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B1WEEK') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'F' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
 
         // Death Below 1 Day Male
         queries[16] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('B1DAY') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'M' AND sourceid = " + ouId + " AND periodid = " + pId + ")";
@@ -933,9 +933,9 @@ public class HibernateLLDataValueStore
         queries[52] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_DEATH_CAUSE + " AND value LIKE '" + LLDataSets.LLD_PRD + "' AND recordno IN ( SELECT recordno FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('O15YEAR') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'F' AND sourceid = " + ouId + " AND periodid = " + pId + "))";
         
         // 1139 : Sterilisation related deaths 15-55 years Male
-        queries[53] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_DEATH_CAUSE + " AND value LIKE '" + LLDataSets.LLD_SRD + "' AND recordno IN ( SELECT recordno FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('O15YEAR') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'M' AND sourceid = " + ouId + " AND periodid = " + pId + "))";
+        queries[53] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_DEATH_CAUSE + " AND value LIKE '" + LLDataSets.LLD_SRD + "' AND recordno IN ( SELECT recordno FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('O15YEAR','O55YEAR') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'M' AND sourceid = " + ouId + " AND periodid = " + pId + "))";
         // 1139 : Sterilisation related deaths 15-55 years Female
-        queries[54] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_DEATH_CAUSE + " AND value LIKE '" + LLDataSets.LLD_SRD + "' AND recordno IN ( SELECT recordno FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('O15YEAR') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'F' AND sourceid = " + ouId + " AND periodid = " + pId + "))";
+        queries[54] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_DEATH_CAUSE + " AND value LIKE '" + LLDataSets.LLD_SRD + "' AND recordno IN ( SELECT recordno FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('O15YEAR', 'O55YEAR') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'F' AND sourceid = " + ouId + " AND periodid = " + pId + "))";
         
         // 1140 : Accidents or injuries 5-14 years Male
         queries[55] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_DEATH_CAUSE + " AND value LIKE '" + LLDataSets.LLD_AI + "' AND recordno IN ( SELECT recordno FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId + " AND dataelementid = " + LLDataSets.LLD_AGE_CATEGORY + " AND value IN ('O5YEAR') AND recordno IN (SELECT recordno FROM lldatavalue WHERE dataelementid = " + LLDataSets.LLD_SEX + " AND value = 'M' AND sourceid = " + ouId + " AND periodid = " + pId + "))";
@@ -1308,16 +1308,16 @@ public class HibernateLLDataValueStore
 
         // Metarnal Death At age below 16
         queries[6] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
-            + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value < '16'";
+            + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value < 16";
         // Metarnal Death At age 16 to 19
         queries[7] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
-            + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value >= '16' and value <= '19'";
+            + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value >= 16 and value <= 19";
         // Metarnal Death At age 20 to 35
         queries[8] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
-            + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value >= '20' and value <= '35' ";
+            + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value >= 20 and value <= 35 ";
         // Metarnal Death At age above 35
         queries[9] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
-            + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value > '35'";
+            + " AND dataelementid = " + LLDataSets.LLMD_AGE_AT_DEATH + "  AND value > 35";
 
         // Metarnal Death At Home
         queries[10] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId

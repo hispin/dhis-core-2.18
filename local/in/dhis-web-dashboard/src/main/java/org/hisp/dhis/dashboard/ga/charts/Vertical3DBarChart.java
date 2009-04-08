@@ -58,7 +58,7 @@ public class Vertical3DBarChart
         {
             for ( int j = 0; j < categories.length; j++ )
             {
-            	System.out.println("data : "+data[i][j]+" series : "+series[i]+" categories : "+categories[j]);
+            	//System.out.println("data : "+data[i][j]+" series : "+series[i]+" categories : "+categories[j]);
                 dataset.addValue( data[i][j], series[i], categories[j] );                
             }
         }

@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.hisp.dhis.reports.api.Report;
+import org.hisp.dhis.reports.util.ReportService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -19,6 +20,13 @@ import com.opensymphony.xwork.ActionSupport;
 
 public class GetProgressReportsAction extends ActionSupport
 {
+    private ReportService reportService;
+
+    public void setReportService( ReportService reportService )
+    {
+        this.reportService = reportService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -46,23 +54,25 @@ public class GetProgressReportsAction extends ActionSupport
         throws Exception
     {
         reportList = new ArrayList<Report>();
+        
+        String raFolderName = reportService.getRAFolderName();
 
-        getSelectedReportList();
+        getSelectedReportList(raFolderName);
 
         return SUCCESS;
     }
 
-    public void getSelectedReportList()
+    public void getSelectedReportList(String raFolderName)
     {
         String fileName = "progressReportsList.xml";
-        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + "ra"
+        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName
             + File.separator + fileName;
         try
         {
             String newpath = System.getenv( "DHIS2_HOME" );
             if ( newpath != null )
             {
-                path = newpath + File.separator + "ra_national" + File.separator + fileName;
+                path = newpath + File.separator + raFolderName + File.separator + fileName;
             }
         }
         catch ( NullPointerException npe )

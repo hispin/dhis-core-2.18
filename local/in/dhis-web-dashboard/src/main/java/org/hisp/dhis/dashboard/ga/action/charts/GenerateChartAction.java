@@ -280,16 +280,16 @@ public class GenerateChartAction
     
     public double[][] convertDoubleTodouble( Double[][] objData )
     {
-        System.out.println("Before Sorting : ");
+        //System.out.println("Before Sorting : ");
         double[][] data = new double[series1.length][categories1.length];
         for ( int i = 0; i < objData.length; i++ )
         {
             for ( int j = 0; j < objData[0].length; j++ )
             {
                 data[i][j] = objData[i][j].doubleValue();
-                System.out.print(categories1[j]+": "+data[i][j]+", ");                
+                //System.out.print(categories1[j]+": "+data[i][j]+", ");                
             }
-            System.out.println("");
+            //System.out.println("");
         }
 
         return data;

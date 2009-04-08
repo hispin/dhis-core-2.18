@@ -195,7 +195,8 @@ function validateLLBNameField( dataElementId, recordNo )
     
       return false;
     }      
-    saveLLbirthValue( dataElementId, recordNo );    
+    saveLLbirthValue( dataElementId, recordNo );
+    saveLLBSexValue( 1022, recordNo );    
   }
   else
   {     
@@ -251,7 +252,7 @@ function validateLLBSexField( dataElementId, recordNo )
   }
   else
   {     
-      field.options[0].selected = true;      
+      field.options[1].selected = true;      
     
       return false;   
   }   
@@ -336,6 +337,7 @@ function validateLLBBreastFedField( dataElementId, recordNo )
     
       return false;
     }      
+    //saveLLBValue( dataElementId, recordNo );
     saveLLbirthValue( dataElementId, recordNo );
     
     addLLBNewRow( resVal, 1020, recordNo )    
@@ -346,6 +348,60 @@ function validateLLBBreastFedField( dataElementId, recordNo )
     
       return false;   
   }   
+}
+
+function saveLLBSexValue( dataElementId, recordNo )
+{
+	 var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+   var resVal = '';
+    
+   field.style.backgroundColor = '#ffffcc';
+   
+   field.options[1].selected = true; 
+   resVal = field.options[field.selectedIndex].value;
+   if(resVal == "NONE") return;
+    
+   if ( resVal != '' )
+      {
+        var deIdRecordNo = dataElementId + ":" + recordNo;
+        var valueSaver = new ValueSaver( deIdRecordNo, resVal, '#ccffcc' );
+        valueSaver.save();        
+      }
+}
+
+function saveLLBValue( dataElementId, recordNo )
+{
+    var llbDeIds = Array();
+    llbDeIds[0] = 1020;
+    llbDeIds[1] = 1021;
+    llbDeIds[2] = 1022;
+    llbDeIds[3] = 1023;
+    llbDeIds[4] = 1024;
+    llbDeIds[5] = 1025;
+    
+    for(i = 0; i < llbDeIds.length; i++)
+    {	
+    	dataElementId = llbDeIds[i];
+      var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );    
+      var resVal = '';
+    
+      field.style.backgroundColor = '#ffffcc';
+    
+      if(dataElementId == 1022 || dataElementId == 1025 || dataElementId == 1029 || dataElementId == 1030 || dataElementId == 1031 || dataElementId == 1035 || dataElementId == 1036 || dataElementId == 1037 || dataElementId == 1038 || dataElementId == 1039 || dataElementId == 1040 || dataElementId == 1043 || dataElementId == 1046 || dataElementId == 1050 || dataElementId == 1051 || dataElementId == 1052 || dataElementId == 1054)
+      {
+        resVal = field.options[field.selectedIndex].value;
+        if(resVal == "NONE") return;
+      }
+      else
+        resVal = field.value; 
+    
+      if ( resVal != '' )
+      {
+        var deIdRecordNo = dataElementId + ":" + recordNo;
+        var valueSaver = new ValueSaver( deIdRecordNo, resVal, '#ccffcc' );
+        valueSaver.save();        
+      }
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -452,7 +508,9 @@ function validateLLDNameField( dataElementId, recordNo )
     
       return false;
     }      
-    saveLLbirthValue( dataElementId, recordNo );    
+    saveLLbirthValue( dataElementId, recordNo );
+    saveLLBSexValue( 1029, recordNo )
+        
   }
   else
   {     
@@ -498,7 +556,7 @@ function validateLLDSexField( dataElementId, recordNo )
     if(resVal <= 0)
     {    
       alert("Please Select Sex");
-      field.options[0].selected = true;
+      field.options[1].selected = true;
       
       field.focus();
     
@@ -508,7 +566,7 @@ function validateLLDSexField( dataElementId, recordNo )
   }
   else
   {     
-      field.options[0].selected = true;      
+      field.options[1].selected = true;      
     
       return false;   
   }   

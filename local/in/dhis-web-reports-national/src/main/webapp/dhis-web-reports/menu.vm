@@ -8,16 +8,25 @@
         <li>
             <a href = "progressReportAnalyser.action">Progress</a>
         </li>
-        <li>
-            <a href = "advancedReportAnalyser.action">Advanced</a>
-        </li>		
 -->
+        <li>
+            <a href = "advancedReportAnalyser.action">Advanced Reports</a>
+        </li>		
+
         <li>
             <a href = "upwardReportAnalyser.action">Routine Reports</a>
         </li>
         <li>
             <a href = "linelistingReportAnalyser.action">Linelisting Reports</a>
         </li>
+        <li>
+            <a href = "TwentyPointReportsAnalyser.action">Twenty Point Reports</a>
+        </li>
+        <li>Grading</li>
+		<ul>
+			<li><a href = "gradingReportAnalyser.action">Detailed</a></li>
+			<li><a href = "gradingAbstration.action">Abstraction</a></li>			
+		</ul>
 <!--        <li>
             <a href = "populateUsers.action">Populate Users</a>
         </li>

@@ -295,6 +295,9 @@ public class GenerateProgressAnalyserResultAction extends ActionSupport
     private Date eDate;
     
     private List<Integer> ougmemberCountList;
+    
+    private String raFolderName;
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -304,6 +307,8 @@ public class GenerateProgressAnalyserResultAction extends ActionSupport
     {
 
         // Initialization
+    	raFolderName = reportService.getRAFolderName();
+    	
         mathTool = new MathTool();
         services = new ArrayList<String>();
         slNos = new ArrayList<String>();
@@ -318,9 +323,9 @@ public class GenerateProgressAnalyserResultAction extends ActionSupport
         rowList = new ArrayList<Integer>();
         colList = new ArrayList<Integer>();
 
-        String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + "ra_national"
+        String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName
             + File.separator + "template" + File.separator + reportFileNameTB;
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + "ra_national"
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName
             + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
 
@@ -620,14 +625,14 @@ public class GenerateProgressAnalyserResultAction extends ActionSupport
     public List<String> getDECodes( String fileName )
     {
         List<String> deCodes = new ArrayList<String>();
-        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + "ra_national"
+        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName
             + File.separator + fileName;
         try
         {
             String newpath = System.getenv( "DHIS2_HOME" );
             if ( newpath != null )
             {
-                path = newpath + File.separator + "ra_national" + File.separator + fileName;
+                path = newpath + File.separator + raFolderName + File.separator + fileName;
             }
         }
         catch ( NullPointerException npe )

@@ -59,7 +59,7 @@ public class ExportToExcelAction extends ActionSupport
     {                        
 
         fileName = "dataStatusResult.xls";
-                
+
         inputStream = new BufferedInputStream( new ByteArrayInputStream( htmlCode.getBytes() ) );
         
         return SUCCESS;

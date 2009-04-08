@@ -8,6 +8,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.reports.util.ReportService;
 
 import com.opensymphony.xwork.ActionSupport;
 
@@ -65,7 +66,7 @@ public class GenerateProgressReportAnalyserFormAction extends ActionSupport
     {
         return orgUnitGroupList;
     }
-
+        
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------

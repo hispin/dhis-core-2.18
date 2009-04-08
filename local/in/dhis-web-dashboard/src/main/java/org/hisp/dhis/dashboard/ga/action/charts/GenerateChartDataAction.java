@@ -935,7 +935,7 @@ public class GenerateChartDataAction
                                 else
                                 {
                                     aggDataValue = aggregationService.getAggregatedDataValue( dElement, decoc1, p.getStartDate(), p.getEndDate(), selectedOrgUnit );
-                                    System.out.println("AggValue for DE : "+dElement.getName()+" Period: "+p.getStartDate()+" -- "+p.getEndDate()+" and OrgUnit : "+selectedOrgUnit.getName()+" is : "+aggDataValue);
+                                    //System.out.println("AggValue for DE : "+dElement.getName()+" Period: "+p.getStartDate()+" -- "+p.getEndDate()+" and OrgUnit : "+selectedOrgUnit.getName()+" is : "+aggDataValue);
                                 }
                                 
                             }

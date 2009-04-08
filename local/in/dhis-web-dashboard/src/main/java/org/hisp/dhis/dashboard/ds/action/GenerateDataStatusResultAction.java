@@ -366,8 +366,9 @@ public class GenerateDataStatusResultAction
         // Period Related Info
         Period startPeriod = periodStore.getPeriod( sDateLB );
         Period endPeriod = periodStore.getPeriod( eDateLB );
-
-        selectedPeriodList = dashBoardService.getMonthlyPeriods( startPeriod.getStartDate(), endPeriod.getEndDate() );
+                
+        //selectedPeriodList = dashBoardService.getMonthlyPeriods( startPeriod.getStartDate(), endPeriod.getEndDate() );
+        selectedPeriodList = new ArrayList<Period>(periodStore.getIntersectingPeriods( startPeriod.getStartDate(), endPeriod.getEndDate() ));
         
         periodInfo = "-1";
         for(Period p : selectedPeriodList)            
@@ -455,7 +456,6 @@ public class GenerateDataStatusResultAction
                 {                    
                     p = (Period) periodIterator.next();
                     periodInfo = ""+p.getId();
-                    
                                                                                
                     if ( dso == null )
                     {

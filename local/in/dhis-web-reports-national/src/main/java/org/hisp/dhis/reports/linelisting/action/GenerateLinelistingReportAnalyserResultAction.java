@@ -364,6 +364,9 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
     private Map<String, String> resMap;
     
     Connection con = null;
+    
+    private String raFolderName;
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -376,6 +379,8 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
         con = dbConnection.openConnection();
         
         // Initialization
+        raFolderName = reportService.getRAFolderName();
+        
         mathTool = new MathTool();
         services = new ArrayList<String>();
         slNos = new ArrayList<String>();
@@ -401,9 +406,9 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
         colMergeList = new ArrayList<Integer>();
 
         String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator
-            + "ra_national" + File.separator + "template" + File.separator + reportFileNameTB;
+            + raFolderName + File.separator + "template" + File.separator + reportFileNameTB;
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator
-            + "ra_national" + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+            + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
 
         WritableWorkbook outputReportWorkbook = Workbook
@@ -690,8 +695,12 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
         resMap.put( "B1WEEK", "1 DAY - 1 WEEK" );
         resMap.put( "B1MONTH", "1 WEEK - 1 MONTH" );
         resMap.put( "B1YEAR", "1 MONTH - 1 YEAR" );
-        resMap.put( "B5YEAR", "1 YEAR - 5 YEARS" );
-        resMap.put( "O5YEAR", "OVER 5 YEARS" );
+        resMap.put( "B5YEAR", "1 YEAR - 5 YEARS" );                
+        resMap.put( "O5YEAR", "6 YEARS - 14 YEARS" );
+        
+        resMap.put( "O15YEAR", "15 YEARS - 55 YEARS" );
+        resMap.put( "O55YEAR", "OVER 55 YEARS" );
+        
         resMap.put( "ASPHYXIA", "ASPHYXIA" );
         resMap.put( "SEPSIS", "SEPSIS" );
         resMap.put( "LOWBIRTHWEIGH", "LOWBIRTHWEIGH" );
@@ -893,14 +902,14 @@ public class GenerateLinelistingReportAnalyserResultAction extends ActionSupport
     public List<String> getDECodes( String fileName )
     {
         List<String> deCodes = new ArrayList<String>();
-        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + "ra_national"
+        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName
             + File.separator + fileName;
         try
         {
             String newpath = System.getenv( "DHIS2_HOME" );
             if ( newpath != null )
             {
-                path = newpath + File.separator + "ra_national" + File.separator + fileName;
+                path = newpath + File.separator + raFolderName + File.separator + fileName;
             }
         }
         catch ( NullPointerException npe )
