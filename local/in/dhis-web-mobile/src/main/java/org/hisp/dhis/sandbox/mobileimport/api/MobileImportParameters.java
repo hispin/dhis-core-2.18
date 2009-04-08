@@ -12,7 +12,7 @@ public class MobileImportParameters implements Serializable
     
     private String smsTime;
     
-    private Map<Integer, Integer> dataValues;
+    private Map<String, Integer> dataValues;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -57,12 +57,12 @@ public class MobileImportParameters implements Serializable
         this.smsTime = smsTime;
     }
 
-    public Map<Integer, Integer> getDataValues()
+    public Map<String, Integer> getDataValues()
     {
         return dataValues;
     }
 
-    public void setDataValues( Map<Integer, Integer> dataValues )
+    public void setDataValues( Map<String, Integer> dataValues )
     {
         this.dataValues = dataValues;
     }

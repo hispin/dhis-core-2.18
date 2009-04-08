@@ -2,7 +2,7 @@
 	#if ( $organisationUnit ) $encoder.htmlEncode( $organisationUnit.name )#else $i18n.getString("no_organisationunit_selected") #end - 
 	#set( $period = $selectedStateManager.getSelectedPeriod() )
 	#if ( $period ) $format.formatPeriod( $period ) #else $i18n.getString("no_period_selected") #end <br> 
-	<span id="currentDataElement">$i18n.getString("no_dataelement_selected")</span> <br>
+	<span id="currentDataElement"></span> <br>
 	<span id="currentOptionCombo">Please Fill All Fields.</span>	
 </div>
 

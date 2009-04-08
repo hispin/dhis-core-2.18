@@ -15,6 +15,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reports.api.Report;
+import org.hisp.dhis.reports.util.ReportService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -51,6 +52,13 @@ public class GenerateUpwardReportAnalyserFormAction
             return organisationUnitService;
         }
 
+        private ReportService reportService;
+
+        public void setReportService( ReportService reportService )
+        {
+            this.reportService = reportService;
+        }
+        
         // -------------------------------------------------------------------------
         // Constants
         // -------------------------------------------------------------------------
@@ -62,6 +70,8 @@ public class GenerateUpwardReportAnalyserFormAction
             return ALL;
         }
 
+        private String raFolderName;
+        
         // -------------------------------------------------------------------------
         // Properties
         // -------------------------------------------------------------------------
@@ -94,6 +104,8 @@ public class GenerateUpwardReportAnalyserFormAction
         public String execute()
             throws Exception
         {
+        	raFolderName = reportService.getRAFolderName();
+        	
             /* OrganisationUnit */
             organisationUnits = organisationUnitService.getAllOrganisationUnits();
 
@@ -111,14 +123,14 @@ public class GenerateUpwardReportAnalyserFormAction
         public void getReportList()
         {
             String fileName = "nationalReportsList.xml";
-            String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + "ra_national"
+            String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName
                 + File.separator + fileName;
             try
             {
                 String newpath = System.getenv( "DHIS2_HOME" );
                 if ( newpath != null )
                 {
-                    path = newpath + "ra_national" + File.separator + fileName;
+                    path = newpath + raFolderName + File.separator + fileName;
                 }
             }
             catch ( NullPointerException npe )

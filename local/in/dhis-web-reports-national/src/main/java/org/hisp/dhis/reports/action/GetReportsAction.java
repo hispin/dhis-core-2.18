@@ -10,6 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.reports.api.Report;
+import org.hisp.dhis.reports.util.ReportService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -32,6 +33,13 @@ public class GetReportsAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private ReportService reportService;
+
+    public void setReportService( ReportService reportService )
+    {
+        this.reportService = reportService;
     }
 
     // -------------------------------------------------------------------------
@@ -76,6 +84,8 @@ public class GetReportsAction
 
     
     private String orgUnitLevel;
+    private String raFolderName;
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -84,7 +94,7 @@ public class GetReportsAction
         throws Exception
     {
         reportList = new ArrayList<Report>();
-        
+        raFolderName = reportService.getRAFolderName();
         if(ouId != null)
         {
             try
@@ -107,14 +117,14 @@ public class GetReportsAction
     public void getSelectedReportList( String reportListFileName )
     {
         String fileName = reportListFileName;
-        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + "ra_national"
+        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName
             + File.separator + fileName;
         try
         {
             String newpath = System.getenv( "DHIS2_HOME" );
             if ( newpath != null )
             {
-                path = newpath + File.separator + "ra_national" + File.separator + fileName;
+                path = newpath + File.separator + raFolderName + File.separator + fileName;
             }
         }
         catch ( NullPointerException npe )

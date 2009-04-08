@@ -268,6 +268,8 @@ public class GenerateRoutineReportAnalyserResultAction
     private List<Integer> rowList;
 
     private List<Integer> colList;
+    
+    private String raFolderName;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -279,6 +281,8 @@ public class GenerateRoutineReportAnalyserResultAction
         statementManager.initialise();
         
         // Initialization
+        raFolderName = reportService.getRAFolderName();
+        
         mathTool = new MathTool();
         services = new ArrayList<String>();
         slNos = new ArrayList<String>();
