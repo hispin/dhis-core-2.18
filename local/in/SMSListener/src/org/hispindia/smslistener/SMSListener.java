@@ -36,7 +36,7 @@ public class SMSListener {
         System.out.println("#######Service Created Successfully");
         System.out.println("Listening on port: COM" + SettingsWindow.portNumber);
         inboundNotification = new InboundNotification();
-        SerialModemGateway gateway = new SerialModemGateway("modem.com" + SettingsWindow.portNumber, "COM" + SettingsWindow.portNumber, 115200, "Sony Ericsson", "k750");
+        SerialModemGateway gateway = new SerialModemGateway("modem.com" + SettingsWindow.portNumber, "COM" + SettingsWindow.portNumber, 115200, "Generic USB", "generic-usb-modem");
         System.out.println("#######Gateway Created Successfully");
         gateway.setProtocol(Protocols.PDU);
         gateway.setInbound(true);
@@ -124,6 +124,7 @@ public class SMSListener {
     //<editor-fold defaultstate="collapsed" desc=" Start Service ">
     private void startSMSListener() {
         try {
+            System.out.println("Starting Service on Com:"+SettingsWindow.portNumber);
             service.startService();
         } catch (SMSLibException ex) {
             Logger.getLogger(SMSListener.class.getName()).log(Level.SEVERE, null, ex);
@@ -138,6 +139,7 @@ public class SMSListener {
     //<editor-fold defaultstate="collapsed" desc=" Stop Service ">
     private void stopSMSListener() {
         try {
+            System.out.println("Stopping Service on Com:"+SettingsWindow.portNumber);
             service.stopService();
         } catch (TimeoutException ex) {
             Logger.getLogger(SMSListener.class.getName()).log(Level.SEVERE, null, ex);
