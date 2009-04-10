@@ -8,8 +8,8 @@ import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordStoreException;
+import javax.wireless.messaging.BinaryMessage;
 import javax.wireless.messaging.MessageConnection;
-import javax.wireless.messaging.TextMessage;
 import org.netbeans.microedition.lcdui.SplashScreen;
 
 public class ANMApp extends MIDlet implements CommandListener {
@@ -19,7 +19,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     private boolean firstRun = false;
     private RecordStore lastMsgStore = null;
     private boolean savedMsg = false;
-    private ImageItem imgItem = new ImageItem(null,null,ImageItem.LAYOUT_TOP,null);
+    private ImageItem imgItem = new ImageItem(null, null, ImageItem.LAYOUT_TOP, null);
     //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
     private java.util.Hashtable __previousDisplayables = new java.util.Hashtable();
     private Form ancPage;
@@ -792,13 +792,12 @@ public class ANMApp extends MIDlet implements CommandListener {
                             for (int i = 0; i < 3; i++) {
                                 if (lastMsgStore.getRecord(i + 1) != null) {
                                     j++;
-                                    //System.out.println("Sending SMS to: " + new String(lastMsgStore.getRecord(i + 1)));
                                     MessageConnection smsConn = (MessageConnection) Connector.open("sms://+91" + new String(lastMsgStore.getRecord(i + 1)));
-                                    TextMessage sms = (TextMessage) smsConn.newMessage(MessageConnection.TEXT_MESSAGE);
-                                    //byte[] compressedData = Compressor.compress(fullData.getBytes("UTF-8"));
+                                    BinaryMessage sms = (BinaryMessage) smsConn.newMessage(MessageConnection.BINARY_MESSAGE);
+                                    byte[] compressedData = Compressor.compress(fullData.getBytes("UTF-8"));
                                     //String compressedText = new String(compressedData, "UTF-8");
                                     //System.out.println("Compressed Text: " + compressedText);
-                                    sms.setPayloadText(fullData);
+                                    sms.setPayloadData(compressedData);
                                     smsConn.send(sms);
                                     smsConn.close();
                                 }
@@ -3177,7 +3176,7 @@ public class ANMApp extends MIDlet implements CommandListener {
             if (sendPage.size() > 1) {
                 sendPage.delete(sendPage.size() - 1);
             }
-            
+
             sendPage.append(imgItem);
 
         }//GEN-BEGIN:|167-getter|2|
@@ -3359,7 +3358,7 @@ public class ANMApp extends MIDlet implements CommandListener {
             splashScreen.setCommandListener(this);
             splashScreen.setFullScreenMode(true);
             splashScreen.setImage(getNrhmlogo());
-            splashScreen.setText("HMIS Mobile Reporting");
+            splashScreen.setText("Mobile SCDRT");
             splashScreen.setTimeout(3000);//GEN-END:|202-getter|1|202-postInit
             // write post-init user code here
         }//GEN-BEGIN:|202-getter|2|
@@ -3376,7 +3375,7 @@ public class ANMApp extends MIDlet implements CommandListener {
         if (nrhmlogo == null) {//GEN-END:|205-getter|0|205-preInit
             // write pre-init user code here
             try {//GEN-BEGIN:|205-getter|1|205-@java.io.IOException
-                nrhmlogo = Image.createImage("/org/hispindia/mobile/images/nrhm-logo.gif");
+                nrhmlogo = Image.createImage("/org/hispindia/mobile/images/nrhm-logo.png");
             } catch (java.io.IOException e) {//GEN-END:|205-getter|1|205-@java.io.IOException
                 e.printStackTrace();
             }//GEN-LINE:|205-getter|2|205-postInit
@@ -3535,90 +3534,90 @@ public class ANMApp extends MIDlet implements CommandListener {
     }
     //</editor-fold>//GEN-END:|227-getter|2|
 
-        //<editor-fold defaultstate="collapsed" desc=" Generated Getter: settingsPage ">//GEN-BEGIN:|233-getter|0|233-preInit
-        /**
-         * Returns an initiliazed instance of settingsPage component.
-         * @return the initialized component instance
-         */
-        public Form getSettingsPage() {
-            if (settingsPage == null) {//GEN-END:|233-getter|0|233-preInit
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: settingsPage ">//GEN-BEGIN:|233-getter|0|233-preInit
+    /**
+     * Returns an initiliazed instance of settingsPage component.
+     * @return the initialized component instance
+     */
+    public Form getSettingsPage() {
+        if (settingsPage == null) {//GEN-END:|233-getter|0|233-preInit
+            // write pre-init user code here
+            settingsPage = new Form("Settings", new Item[] { getPhone1Num(), getPhone2Num(), getPhone3Num() });//GEN-BEGIN:|233-getter|1|233-postInit
+            settingsPage.addCommand(getSettingsCmd());
+            settingsPage.addCommand(getSettingsBackCmd());
+            settingsPage.setCommandListener(this);//GEN-END:|233-getter|1|233-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|233-getter|2|
+        return settingsPage;
+    }
+    //</editor-fold>//GEN-END:|233-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: reportingChoice ">//GEN-BEGIN:|235-getter|0|235-preInit
+    /**
+     * Returns an initiliazed instance of reportingChoice component.
+     * @return the initialized component instance
+     */
+    public ChoiceGroup getReportingChoice() {
+        if (reportingChoice == null) {//GEN-END:|235-getter|0|235-preInit
                 // write pre-init user code here
-                settingsPage = new Form("Settings", new Item[] { getPhone1Num(), getPhone2Num(), getPhone3Num() });//GEN-BEGIN:|233-getter|1|233-postInit
-                settingsPage.addCommand(getSettingsCmd());
-                settingsPage.addCommand(getSettingsBackCmd());
-                settingsPage.setCommandListener(this);//GEN-END:|233-getter|1|233-postInit
+            reportingChoice = new ChoiceGroup("Reporting Freq:", Choice.POPUP);//GEN-BEGIN:|235-getter|1|235-postInit
+            reportingChoice.append("Monthly", null);
+            reportingChoice.append("Weekly", null);
+            reportingChoice.append("Daily", null);
+            reportingChoice.setSelectedFlags(new boolean[] { false, false, false });
+            reportingChoice.setFont(0, null);
+            reportingChoice.setFont(1, null);
+            reportingChoice.setFont(2, null);//GEN-END:|235-getter|1|235-postInit
+
+        }//GEN-BEGIN:|235-getter|2|
+        return reportingChoice;
+    }
+    //</editor-fold>//GEN-END:|235-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: questionImage ">//GEN-BEGIN:|241-getter|0|241-preInit
+    /**
+     * Returns an initiliazed instance of questionImage component.
+     * @return the initialized component instance
+     */
+    public ImageItem getQuestionImage() {
+        if (questionImage == null) {//GEN-END:|241-getter|0|241-preInit
+                // write pre-init user code here
+            questionImage = new ImageItem("", getQuestion(), ImageItem.LAYOUT_CENTER | Item.LAYOUT_2, "");//GEN-LINE:|241-getter|1|241-postInit
                 // write post-init user code here
-            }//GEN-BEGIN:|233-getter|2|
-            return settingsPage;
-        }
-        //</editor-fold>//GEN-END:|233-getter|2|
+        }//GEN-BEGIN:|241-getter|2|
+        return questionImage;
+    }
+    //</editor-fold>//GEN-END:|241-getter|2|
 
-        //<editor-fold defaultstate="collapsed" desc=" Generated Getter: reportingChoice ">//GEN-BEGIN:|235-getter|0|235-preInit
-        /**
-         * Returns an initiliazed instance of reportingChoice component.
-         * @return the initialized component instance
-         */
-        public ChoiceGroup getReportingChoice() {
-            if (reportingChoice == null) {//GEN-END:|235-getter|0|235-preInit
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: settingsCmd ">//GEN-BEGIN:|242-getter|0|242-preInit
+    /**
+     * Returns an initiliazed instance of settingsCmd component.
+     * @return the initialized component instance
+     */
+    public Command getSettingsCmd() {
+        if (settingsCmd == null) {//GEN-END:|242-getter|0|242-preInit
                 // write pre-init user code here
-                reportingChoice = new ChoiceGroup("Reporting Freq:", Choice.POPUP);//GEN-BEGIN:|235-getter|1|235-postInit
-                reportingChoice.append("Monthly", null);
-                reportingChoice.append("Weekly", null);
-                reportingChoice.append("Daily", null);
-                reportingChoice.setSelectedFlags(new boolean[] { false, false, false });
-                reportingChoice.setFont(0, null);
-                reportingChoice.setFont(1, null);
-                reportingChoice.setFont(2, null);//GEN-END:|235-getter|1|235-postInit
-
-            }//GEN-BEGIN:|235-getter|2|
-            return reportingChoice;
-        }
-        //</editor-fold>//GEN-END:|235-getter|2|
-
-        //<editor-fold defaultstate="collapsed" desc=" Generated Getter: questionImage ">//GEN-BEGIN:|241-getter|0|241-preInit
-        /**
-         * Returns an initiliazed instance of questionImage component.
-         * @return the initialized component instance
-         */
-        public ImageItem getQuestionImage() {
-            if (questionImage == null) {//GEN-END:|241-getter|0|241-preInit
-                // write pre-init user code here
-                questionImage = new ImageItem("", getQuestion(), ImageItem.LAYOUT_CENTER | Item.LAYOUT_2, "");//GEN-LINE:|241-getter|1|241-postInit
+            settingsCmd = new Command("Save", Command.OK, 0);//GEN-LINE:|242-getter|1|242-postInit
                 // write post-init user code here
-            }//GEN-BEGIN:|241-getter|2|
-            return questionImage;
-        }
-        //</editor-fold>//GEN-END:|241-getter|2|
+        }//GEN-BEGIN:|242-getter|2|
+        return settingsCmd;
+    }
+    //</editor-fold>//GEN-END:|242-getter|2|
 
-        //<editor-fold defaultstate="collapsed" desc=" Generated Getter: settingsCmd ">//GEN-BEGIN:|242-getter|0|242-preInit
-        /**
-         * Returns an initiliazed instance of settingsCmd component.
-         * @return the initialized component instance
-         */
-        public Command getSettingsCmd() {
-            if (settingsCmd == null) {//GEN-END:|242-getter|0|242-preInit
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: settingsBackCmd ">//GEN-BEGIN:|245-getter|0|245-preInit
+    /**
+     * Returns an initiliazed instance of settingsBackCmd component.
+     * @return the initialized component instance
+     */
+    public Command getSettingsBackCmd() {
+        if (settingsBackCmd == null) {//GEN-END:|245-getter|0|245-preInit
                 // write pre-init user code here
-                settingsCmd = new Command("Save", Command.OK, 0);//GEN-LINE:|242-getter|1|242-postInit
+            settingsBackCmd = new Command("Back", Command.BACK, 0);//GEN-LINE:|245-getter|1|245-postInit
                 // write post-init user code here
-            }//GEN-BEGIN:|242-getter|2|
-            return settingsCmd;
-        }
-        //</editor-fold>//GEN-END:|242-getter|2|
-
-        //<editor-fold defaultstate="collapsed" desc=" Generated Getter: settingsBackCmd ">//GEN-BEGIN:|245-getter|0|245-preInit
-        /**
-         * Returns an initiliazed instance of settingsBackCmd component.
-         * @return the initialized component instance
-         */
-        public Command getSettingsBackCmd() {
-            if (settingsBackCmd == null) {//GEN-END:|245-getter|0|245-preInit
-                // write pre-init user code here
-                settingsBackCmd = new Command("Back", Command.BACK, 0);//GEN-LINE:|245-getter|1|245-postInit
-                // write post-init user code here
-            }//GEN-BEGIN:|245-getter|2|
-            return settingsBackCmd;
-        }
-        //</editor-fold>//GEN-END:|245-getter|2|
+        }//GEN-BEGIN:|245-getter|2|
+        return settingsBackCmd;
+    }
+    //</editor-fold>//GEN-END:|245-getter|2|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: phone1Num ">//GEN-BEGIN:|248-getter|0|248-preInit
     /**
@@ -3627,17 +3626,17 @@ public class ANMApp extends MIDlet implements CommandListener {
      */
     public TextField getPhone1Num() {
         if (phone1Num == null) {//GEN-END:|248-getter|0|248-preInit
-            String str = "";
-            try {
-                if (lastMsgStore.getRecord(1) != null) {
-                    str = new String(lastMsgStore.getRecord(1));
-                }
+                String str = "";
+                try {
+                    if (lastMsgStore.getRecord(1) != null) {
+                        str = new String(lastMsgStore.getRecord(1));
+                    }
 
-            } catch (RecordStoreException rsex) {
-                rsex.printStackTrace();
-            }
-            phone1Num = new TextField("Enter Phone:", str, 32, TextField.PHONENUMBER);//GEN-LINE:|248-getter|1|248-postInit
-            // write post-init user code here
+                } catch (RecordStoreException rsex) {
+                    rsex.printStackTrace();
+                }
+                phone1Num = new TextField("Enter Phone:", str, 32, TextField.PHONENUMBER);//GEN-LINE:|248-getter|1|248-postInit
+                // write post-init user code here
         }//GEN-BEGIN:|248-getter|2|
         return phone1Num;
     }
@@ -3650,17 +3649,17 @@ public class ANMApp extends MIDlet implements CommandListener {
      */
     public TextField getPhone2Num() {
         if (phone2Num == null) {//GEN-END:|249-getter|0|249-preInit
-            String str = "";
-            try {
-                if (lastMsgStore.getRecord(2) != null) {
-                    str = new String(lastMsgStore.getRecord(2));
-                }
+                String str = "";
+                try {
+                    if (lastMsgStore.getRecord(2) != null) {
+                        str = new String(lastMsgStore.getRecord(2));
+                    }
 
-            } catch (RecordStoreException rsex) {
-                rsex.printStackTrace();
-            }
-            phone2Num = new TextField("Enter Phone #2:", str, 32, TextField.PHONENUMBER);//GEN-LINE:|249-getter|1|249-postInit
-            // write post-init user code here
+                } catch (RecordStoreException rsex) {
+                    rsex.printStackTrace();
+                }
+                phone2Num = new TextField("Enter Phone #2:", str, 32, TextField.PHONENUMBER);//GEN-LINE:|249-getter|1|249-postInit
+                // write post-init user code here
         }//GEN-BEGIN:|249-getter|2|
         return phone2Num;
     }
@@ -3704,35 +3703,35 @@ public class ANMApp extends MIDlet implements CommandListener {
     }
     //</editor-fold>//GEN-END:|251-getter|2|
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: sendSettingsCmd ">//GEN-BEGIN:|254-getter|0|254-preInit
-    /**
-     * Returns an initiliazed instance of sendSettingsCmd component.
-     * @return the initialized component instance
-     */
-    public Command getSendSettingsCmd() {
-        if (sendSettingsCmd == null) {//GEN-END:|254-getter|0|254-preInit
+        //<editor-fold defaultstate="collapsed" desc=" Generated Getter: sendSettingsCmd ">//GEN-BEGIN:|254-getter|0|254-preInit
+        /**
+         * Returns an initiliazed instance of sendSettingsCmd component.
+         * @return the initialized component instance
+         */
+        public Command getSendSettingsCmd() {
+            if (sendSettingsCmd == null) {//GEN-END:|254-getter|0|254-preInit
             // write pre-init user code here
-            sendSettingsCmd = new Command("Settings", Command.OK, 0);//GEN-LINE:|254-getter|1|254-postInit
+                sendSettingsCmd = new Command("Settings", Command.OK, 0);//GEN-LINE:|254-getter|1|254-postInit
             // write post-init user code here
-        }//GEN-BEGIN:|254-getter|2|
-        return sendSettingsCmd;
-    }
-    //</editor-fold>//GEN-END:|254-getter|2|
+            }//GEN-BEGIN:|254-getter|2|
+            return sendSettingsCmd;
+        }
+        //</editor-fold>//GEN-END:|254-getter|2|
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: dateField ">//GEN-BEGIN:|258-getter|0|258-preInit
-    /**
-     * Returns an initiliazed instance of dateField component.
-     * @return the initialized component instance
-     */
-    public TextField getDateField() {
-        if (dateField == null) {//GEN-END:|258-getter|0|258-preInit
+        //<editor-fold defaultstate="collapsed" desc=" Generated Getter: dateField ">//GEN-BEGIN:|258-getter|0|258-preInit
+        /**
+         * Returns an initiliazed instance of dateField component.
+         * @return the initialized component instance
+         */
+        public TextField getDateField() {
+            if (dateField == null) {//GEN-END:|258-getter|0|258-preInit
             // write pre-init user code here
-            dateField = new TextField("Enter Date (yyyy-mm-dd):", null, 32, TextField.ANY);//GEN-LINE:|258-getter|1|258-postInit
+                dateField = new TextField("Enter Date (yyyy-mm-dd):", null, 32, TextField.ANY);//GEN-LINE:|258-getter|1|258-postInit
             // write post-init user code here
-        }//GEN-BEGIN:|258-getter|2|
-        return dateField;
-    }
-    //</editor-fold>//GEN-END:|258-getter|2|
+            }//GEN-BEGIN:|258-getter|2|
+            return dateField;
+        }
+        //</editor-fold>//GEN-END:|258-getter|2|
 
     private void getEmptyFields() {
         String ancFormData = pregNum.getString() + "|" + firstTrimesterNum.getString() + "|" + jsyNum.getString() + "|" + threeAncNum.getString() + "|" + tt1Num.getString() + "|" + boosterNum.getString() + "|" + ifaTabletNum.getString() + "|" + hypertensionNum.getString() + "|" + anaemicAncNum.getString();
