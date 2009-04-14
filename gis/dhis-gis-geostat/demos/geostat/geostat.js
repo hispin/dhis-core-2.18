@@ -58,7 +58,7 @@ Ext.onReady(function()
         })
     });
 
-    map.addLayers([vmap0, jpl_wms, choroplethLayer, propSymbolLayer]);
+    map.addLayers([jpl_wms, vmap0, choroplethLayer, propSymbolLayer]);
 
 
     // create select feature control for choropleth layer
@@ -558,6 +558,12 @@ function onHoverUnselectChoropleth(feature)
 
 function onClickSelectChoropleth(feature)
 {
+    if (!Ext.getCmp('grid_gp').getSelectionModel().getSelected())
+    {
+        alert('First, select an organisation unit from the list');
+        return;
+    }
+    
     var selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
     var organisationUnitId = selected.data['organisationUnitId'];
     var organisationUnit = selected.data['organisationUnit'];
@@ -566,39 +572,26 @@ function onClickSelectChoropleth(feature)
     var mlp = mapData.map.mapLayerPath;
     var featureId = feature.attributes[uniqueColumn];
 
-    if (!selected)
+    Ext.Ajax.request( 
     {
-        alert('First, select an organisation unit from the list');
-    }
-    else
-    {
-        Ext.Ajax.request( 
-        {
-            url: localhost + port + '/dhis-webservice/addOrUpdateMapOrganisationUnitRelation.service',
-            method: 'GET',
-            params: { mapLayerPath: mlp, organisationUnitId: organisationUnitId, featureId: featureId },
+        url: localhost + '/dhis-webservice/addOrUpdateMapOrganisationUnitRelation.service',
+        method: 'GET',
+        params: { mapLayerPath: mlp, organisationUnitId: organisationUnitId, featureId: featureId },
 
-            success: function( responseObject )
-            {
-                var south_panel = Ext.getCmp('south-panel');
-                south_panel.body.dom.innerHTML = organisationUnit + '<font color="#444444"> assigned to </font>' + featureId + "!";
-                
-                setMapData('assignment');
-            },
-            failure: function()
-            {
-                alert( 'Status', 'Error while retrieving data' );
-            } 
-        });
-    }
+        success: function( responseObject )
+        {
+            var south_panel = Ext.getCmp('south-panel');
+            south_panel.body.dom.innerHTML = organisationUnit + '<font color="#444444"> assigned to </font>' + featureId + "!";
+            
+            setMapData('assignment');
+        },
+        failure: function()
+        {
+            alert( 'Status', 'Error while retrieving data' );
+        } 
+    });
     
     popup_feature.hide();
-
-    /*
-    var cll = feature.geometry.getBounds().getCenterLonLat();
-    map.setCenter(new OpenLayers.LonLat(cll.lon, cll.lat), 9);
-    choropleth.setUrl(shapefiles[choropleth.selectedLevel+1], true);
-    */
 }
 
 function onClickUnselectChoropleth(feature) {}
