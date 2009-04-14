@@ -229,9 +229,10 @@ public class H2StatementBuilder
     {
         return
             "DELETE FROM period " +
-            "USING periodtype " +
-            "WHERE period.periodtypeid = periodtype.periodtypeid " +
-            "AND periodtype.name = '" + RelativePeriodType.NAME + "';";
+            "WHERE periodtypeid IN ( " +
+            "SELECT periodtypeid " +
+            "FROM periodtype " +
+            "WHERE periodtype.name = '" + RelativePeriodType.NAME + "' );";
     }
 
     public String getDeleteZeroDataValues()
