@@ -1035,6 +1035,18 @@
           <type>java.lang.String</type>
           <name>nameColumn</name>
         </parameter>
+		<parameter>
+          <type>java.lang.String</type>
+          <name>longitude</name>
+        </parameter>
+		<parameter>
+          <type>java.lang.String</type>
+          <name>latitude</name>
+        </parameter>
+		<parameter>
+          <type>int</type>
+          <name>zoom</name>
+        </parameter>
       </parameters>
     </request>
 	  

@@ -8,6 +8,9 @@
 	    <organisationUnitLevel>$map.organisationUnitLevel.level</organisationUnitLevel>
 	    <uniqueColumn>$!encoder.xmlEncode( $map.uniqueColumn )</uniqueColumn>
 	    <nameColumn>$!encoder.xmlEncode( $map.nameColumn )</nameColumn>
+	    <longitude>$!encoder.xmlEncode( $map.longitude )</longitude>
+        <latitude>$!encoder.xmlEncode( $map.latitude )</latitude>
+        <zoom>$map.zoom</zoom>
 	</map>
 #end
 </maps>

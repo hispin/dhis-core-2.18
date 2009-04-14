@@ -1,10 +1,13 @@
 { "map": 
   {
     "id": $!{object.id},
-    "mapLayerPath": "$!{object.mapLayerPath}",
-    "organisationUnit": "$!{object.organisationUnit.name}",
+    "mapLayerPath": "$!encoder.jsonEncode( ${object.mapLayerPath} )",
+    "organisationUnit": "$!encoder.jsonEncode( ${object.organisationUnit.name} )",
     "organisationUnitLevel": $!{object.organisationUnitLevel.level},
-    "uniqueColumn": "$!{object.uniqueColumn}",
-    "nameColumn": "$!{object.nameColumn}"
+    "uniqueColumn": "$!encoder.jsonEncode( ${object.uniqueColumn} )",
+    "nameColumn": "$!encoder.jsonEncode( ${object.nameColumn} )",
+    "longitude": "$!encoder.jsonEncode( ${object.longitude} )",
+    "latitude": "$!encoder.jsonEncode( ${object.latitude} )",
+    "zoom": $!{object.zoom}
   }
 }

@@ -139,12 +139,14 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      
     newUrl : false,
     
-    isSubmitted : false,
+    selectedValue : false,
     
+       
     initComponent : function() {
     
+    
         mapStore = new Ext.data.JsonStore({
-            url: localhost + port + '/dhis-webservice/getAllMaps.service',
+            url: localhost + '/dhis-webservice/getAllMaps.service',
             baseParams: { format: 'jsonmin' },
             root: 'maps',
             fields: ['id', 'mapLayerPath', 'organisationUnitLevel'],
@@ -152,7 +154,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         });    
             
         gridStore = new Ext.data.JsonStore({
-            url: localhost + port + '/dhis-webservice/getAvailableMapOrganisationUnitRelations.service',
+            url: localhost + '/dhis-webservice/getAvailableMapOrganisationUnitRelations.service',
             root: 'mapOrganisationUnitRelations',
             fields: ['id', 'organisationUnit', 'organisationUnitId', 'featureId'],
             autoLoad: false
@@ -174,8 +176,11 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 return cls;
             }
         });
+    
 
+    
         this.items = [
+        
         {
             xtype: 'combo',
             id: 'maps_cb',
@@ -195,23 +200,20 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 'select': {
                     fn: function() {
                         var mlp = Ext.getCmp('maps_cb').getValue();
-                        
-                        if (mlp != default_map)
-                        {
-                            default_map = mlp;
-                            this.newUrl = mlp;
-                        }
+                        this.newUrl = mlp;
                         
                         gridStore.baseParams = { mapLayerPath: mlp, format: 'json' };
                         gridStore.reload();
-                        
-                        this.classify(true);
+                            
+                        this.classify(false);
                     },
                     scope: this
                 }
             }
         },
         
+
+
         {
             xtype: 'button',
             text: 'Load map',
@@ -221,8 +223,6 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 gridStore.baseParams = { mapLayerPath: mlp, format: 'json' };
                 gridStore.reload();
                 
-                this.classify(true);
-                this.isSubmitted = true;
                 this.classify(true);
             },
             scope: this
@@ -244,10 +244,11 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 
         mapfish.widgets.geostat.Choropleth.superclass.initComponent.apply(this);
     },
-
-    setUrl: function(map) {
     
-        this.url = geoserver + 'wfs?request=GetFeature&typename=' + map + '&outputformat=json&version=1.0.0';
+    
+    setUrl: function(url) {
+    
+        this.url = url;
         this.coreComp.setUrl(this.url);
     },
 
@@ -284,9 +285,9 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      */
     getColors: function() {
         var colorA = new mapfish.ColorRgb();
-        colorA.setFromHex(this.form.findField('colorA').getValue());
+        colorA.setFromHex(Ext.getCmp('colorA_cf').getValue());
         var colorB = new mapfish.ColorRgb();
-        colorB.setFromHex(this.form.findField('colorB').getValue());
+        colorB.setFromHex(Ext.getCmp('colorB_cf').getValue());
         return [colorA, colorB];
     },
 
@@ -298,59 +299,54 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      *      the widget isn't ready, or no indicator is specified, or no
      *      method is specified.
      */
-
     classify: function(exception) {
-   
+    
         if (!this.ready) {
-            if (exception) {
-                Ext.MessageBox.alert('Error', 'Component init not complete');
-            }
+            Ext.MessageBox.alert('Error', 'Component init not complete');
             return;
         }
         
         if (this.newUrl) {
             var url = this.newUrl;
             this.newUrl = false;
-            this.setUrl(url);
+            this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + url + '&outputformat=json&version=1.0.0');
         }
         
         if (!Ext.getCmp('maps_cb').getValue()) {
-            if (exception) {
-                Ext.MessageBox.alert('You must choose a map');
-            }
-            return;
+                if (exception) {
+                    Ext.MessageBox.alert('Error', 'You must choose a map');
+                }
+                return;
         }
         
-        setMapData('assignment');
+        default_map = Ext.getCmp('maps_cb').getValue();
         
-        if (this.isSubmitted)
-        {
-            this.isSubmitted = false;
-            
-            var options = {};
+        loadMapData('assignment');
+        
+        var options = {};
+        
+        // hidden
+        this.indicator = 'value';
+        this.indicatorText = 'Indicator';
+        options.indicator = this.indicator;
 
-            // hidden
-            this.indicator = 'value';
-            this.indicatorText = 'Indicator';
-            options.indicator = this.indicator;
-
-            //options.method = "CLASSIFY_BY_EQUAL_INTERVALS";
-            //options.method = mapfish.GeoStat.Distribution[options.method];
-            options.method = 1;
-            options.numClasses = 2;
-            //options.colors = this.getColors();
-            
-            var colorA = new mapfish.ColorRgb();
-            colorA.setFromHex('#FFFFFF');
-            var colorB = new mapfish.ColorRgb();
-            colorB.setFromHex('#72FF63');
-            options.colors = [colorA, colorB];   
-            
-            this.coreComp.updateOptions(options);
-            this.coreComp.applyClassification();
-            this.classificationApplied = true;
-        }
+        
+        //options.method = "CLASSIFY_BY_EQUAL_INTERVALS";
+        options.method = 1;
+        options.numClasses = 2;
+        
+        var colorA = new mapfish.ColorRgb();
+        colorA.setFromHex('#FFFFFF');
+        var colorB = new mapfish.ColorRgb();
+        colorB.setFromHex('#72FF63');
+        options.colors = [colorA, colorB]; 
+        
+        this.coreComp.updateOptions(options);
+        this.coreComp.applyClassification();
+        this.classificationApplied = true;
     },
+
+
 
     /**
      * Method: onRender
@@ -379,5 +375,4 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         this.coreComp = new mapfish.GeoStat.Choropleth(this.map, coreOptions);
     }
 });
-
 Ext.reg('mapping', mapfish.widgets.geostat.Mapping);

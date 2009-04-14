@@ -5,5 +5,8 @@
     <organisationUnit>$!encoder.xmlEncode( $object.organisationUnit.name )</organisationUnit>
     <organisationUnitLevel>$object.organisationUnitLevel.level</organisationUnitLevel>
     <uniqueColumn>$!encoder.xmlEncode( $object.uniqueColumn )</uniqueColumn>
-    <nameColumn>$!encoder.xmlEncode( $object.nameColumn )</nameColumn>  
+    <nameColumn>$!encoder.xmlEncode( $object.nameColumn )</nameColumn>
+    <longitude>$!encoder.xmlEncode( $object.longitude )</longitude>
+    <latitude>$!encoder.xmlEncode( $object.latitude )</latitude>
+    <zoom>$object.zoom</zoom>
 </map>

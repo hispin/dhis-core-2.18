@@ -36,7 +36,7 @@ public class DefaultMappingServiceAdapter
     // -------------------------------------------------------------------------
 
     public int addMap( String mapLayerPath, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
-        String nameColumn )
+        String nameColumn, String longitude, String latitude, int zoom )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
@@ -45,14 +45,14 @@ public class DefaultMappingServiceAdapter
 
         Set<String> staticMapLayerPaths = null;
 
-        Map map = new Map( mapLayerPath, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn,
-            staticMapLayerPaths );
+        Map map = new Map( mapLayerPath, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn, longitude,
+            latitude, zoom, staticMapLayerPaths );
 
         return mappingService.addMap( map );
     }
 
     public void addOrUpdateMap( String mapLayerPath, int organisationUnitId, int organisationUnitLevelId,
-        String uniqueColumn, String nameColumn )
+        String uniqueColumn, String nameColumn, String longitude, String latitude, int zoom )
     {
         Map map = mappingService.getMapByMapLayerPath( mapLayerPath );
 
@@ -69,13 +69,16 @@ public class DefaultMappingServiceAdapter
             map.setOrganisationUnitLevel( organisationUnitLevel );
             map.setUniqueColumn( uniqueColumn );
             map.setNameColumn( nameColumn );
+            map.setLongitude( longitude );
+            map.setLatitude( latitude );
+            map.setZoom( zoom );
 
             mappingService.updateMap( map );
         }
         else
         {
-            map = new Map( mapLayerPath, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn,
-                staticMapLayerPaths );
+            map = new Map( mapLayerPath, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn, longitude,
+                latitude, zoom, staticMapLayerPaths );
 
             mappingService.addMap( map );
         }
@@ -115,7 +118,7 @@ public class DefaultMappingServiceAdapter
         else
         {
             mapOrganisationUnitRelation = new MapOrganisationUnitRelation( map, organisationUnit, featureId );
-            
+
             mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelation );
         }
     }

@@ -193,6 +193,7 @@ mapfish.GeoStat = OpenLayers.Class({
      */
     onSuccess: function(request) {
     
+// alert("onSuccess i GeoStat.js");    
         var doc = request.responseXML;
         if (!doc || !doc.documentElement) {
             doc = request.responseText;
@@ -274,6 +275,7 @@ mapfish.GeoStat = OpenLayers.Class({
      * options - {Object}
      */
     applyClassification: function(options) {
+//    alert("applyClassification");
         this.layer.renderer.clear();
         this.layer.redraw();
         this.updateLegend();
