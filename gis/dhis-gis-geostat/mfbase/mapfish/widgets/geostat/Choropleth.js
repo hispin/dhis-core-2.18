@@ -553,8 +553,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 return;
         }
         
-        default_map = Ext.getCmp('map_cb').getValue();
-        
         loadMapData('choropleth');
         
         var options = {};
@@ -573,7 +571,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         this.coreComp.updateOptions(options);
         this.coreComp.applyClassification();
         this.classificationApplied = true;
-        
     },
 
 

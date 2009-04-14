@@ -2,9 +2,9 @@
 localhost = 'http://localhost:8180';
 
 // MAP
-init_longitude = 82;
-init_latitude = 22;
-init_zoom = 5;
+init_longitude = 0;
+init_latitude = 0;
+init_zoom = 3;
 
 // LAYER NAMES
 choroplethLayerName = "Choropleth";

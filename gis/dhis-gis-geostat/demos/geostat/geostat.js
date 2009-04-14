@@ -307,7 +307,7 @@ Ext.onReady(function()
         url: 'pageload_geojson.txt',
         featureSelection: false,
         loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
-        legendDiv: 'myChoroplethLegendDiv',
+        legendDiv: 'choroplethLegend',
         defaults:{
             width: 130
         },
@@ -341,7 +341,7 @@ Ext.onReady(function()
         url: 'pageload_geojson.txt',
         featureSelection: false,
         loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
-        legendDiv: 'myChoroplethLegendDiv',
+        legendDiv: 'choroplethLegend',
         defaults:{
             width: 130
         },
@@ -683,7 +683,7 @@ function loadMapData(redirect)
         {
             mapData = Ext.util.JSON.decode(responseObject.responseText);
 
-//            map.setCenter(new OpenLayers.LonLat(mapData.map.longitude, mapData.map.latitude), mapData.map.zoom);
+            map.setCenter(new OpenLayers.LonLat(mapData.map.longitude, mapData.map.latitude), mapData.map.zoom);
 
             if (redirect == 'choropleth') {
                 getChoroplethData(); }
