@@ -1,16 +1,7 @@
-// TOMCAT PORT
-port = 8180;
+// LOCALHOST + TOMCAT
+localhost = 'http://localhost:8180';
 
-// LOCALHOST
-localhost = 'http://localhost:';
-
-// GEOSERVER
-geoserver = '../../../geoserver/';
-
-// DEFAULT MAP
-default_map = 'who:Indian_state';
-
-// MAP CENTER AND ZOOM
+// MAP
 init_longitude = 82;
 init_latitude = 22;
 init_zoom = 5;
@@ -21,9 +12,9 @@ propSymbolLayerName = "Proportional Symbol";
 
 // LAYOUT
 west_width = 270; // viewport west
-north_height = 0; // viewport north
+north_height = 0;
 south_height = 70; // viewport south
 
 gridpanel_width = west_width - 15;
-gridpanel_height = window.height - 470;
+gridpanel_height = 495;
 combo_width = 150;

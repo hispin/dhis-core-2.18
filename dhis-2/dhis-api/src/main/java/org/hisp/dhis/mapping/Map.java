@@ -51,6 +51,12 @@ public class Map
 
     private String nameColumn;
     
+    private String longitude;
+    
+    private String latitude;
+    
+    private int zoom;
+    
     private Set<String> staticMapLayerPaths;
     
     public Map()
@@ -58,13 +64,16 @@ public class Map
     }
 
     public Map( String mapLayerPath, OrganisationUnit organisationUnit, OrganisationUnitLevel organisationUnitLevel, 
-        String uniqueColumn, String nameColumn, Set<String> staticMapLayerPaths )
+        String uniqueColumn, String nameColumn, String longitude, String latitude, int zoom, Set<String> staticMapLayerPaths )
     {
         this.mapLayerPath = mapLayerPath;
         this.organisationUnit = organisationUnit;
         this.organisationUnitLevel = organisationUnitLevel;
         this.uniqueColumn = uniqueColumn;
         this.nameColumn = nameColumn;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.zoom = zoom;
         this.staticMapLayerPaths = staticMapLayerPaths;
     }
     
@@ -163,6 +172,36 @@ public class Map
     public void setNameColumn( String nameColumn )
     {
         this.nameColumn = nameColumn;
+    }
+    
+    public String getLongitude()
+    {
+        return longitude;
+    }
+
+    public void setLongitude( String longitude )
+    {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude()
+    {
+        return latitude;
+    }
+
+    public void setLatitude( String latitude )
+    {
+        this.latitude = latitude;
+    }
+
+    public int getZoom()
+    {
+        return zoom;
+    }
+
+    public void setZoom( int zoom )
+    {
+        this.zoom = zoom;
     }
     
     public Set<String> getStaticMapLayerPaths()
