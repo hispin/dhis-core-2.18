@@ -161,7 +161,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         });
 
         gridView = new Ext.grid.GridView({ 
-            forceFit: true, 
+            forceFit: true,
+            sortClasses: ['sort-asc'],
             getRowClass: function (row, index){
                 var cls = ''; 
                 var data = row.data;
