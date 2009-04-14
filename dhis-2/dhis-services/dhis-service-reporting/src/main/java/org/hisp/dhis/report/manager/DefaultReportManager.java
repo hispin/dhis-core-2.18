@@ -43,6 +43,9 @@ import org.hisp.dhis.report.ReportManager;
 public class DefaultReportManager
     implements ReportManager
 {
+    private static final String BIRT_HOME_SYSTEM_PROPERTY = "birt.home";
+    private static final String BIRT_DIR_SYSTEM_PROPERTY = "birt.context.path";
+    
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
@@ -100,6 +103,22 @@ public class DefaultReportManager
     public ReportConfiguration getConfiguration()
         throws NoConfigurationFoundException
     {
+        // ---------------------------------------------------------------------
+        // Look for system property
+        // ---------------------------------------------------------------------
+
+        String home = System.getProperty( BIRT_HOME_SYSTEM_PROPERTY );
+        String dir = System.getProperty( BIRT_DIR_SYSTEM_PROPERTY );
+        
+        if ( home != null && dir != null )
+        {
+            return new ReportConfiguration( home, dir );
+        }
+
+        // ---------------------------------------------------------------------
+        // Look for configuration file
+        // ---------------------------------------------------------------------
+
         try
         {
             InputStream in = locationManager.getInputStream( reportConfigFile, reportConfigDir );

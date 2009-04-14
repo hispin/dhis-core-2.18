@@ -36,6 +36,8 @@ import java.io.Serializable;
 public class ReportConfiguration
     implements Serializable
 {
+    private static final String SEPARATOR = "/";
+    
     private String home;
     
     private String directory;
@@ -134,6 +136,11 @@ public class ReportConfiguration
 
     public String getDirectory()
     {
+        if ( directory != null && directory.startsWith( SEPARATOR ) )
+        {
+            return directory.substring( 1, directory.length() );
+        }
+        
         return directory;
     }
 
