@@ -319,8 +319,6 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 return;
         }
         
-        default_map = Ext.getCmp('maps_cb').getValue();
-        
         loadMapData('assignment');
         
         var options = {};
