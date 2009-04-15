@@ -15,6 +15,8 @@ public interface MappingServiceAdapter
 
     void addOrUpdateMap( String mapLayerPath, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
         String nameColumn, String longitude, String latitude, int zoom );
+    
+    void deleteMapByMapLayerPath( String mapLayerPath );
 
     // -------------------------------------------------------------------------
     // MapOrganisationUnitRelation

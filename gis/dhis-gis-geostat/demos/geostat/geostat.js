@@ -97,6 +97,14 @@ Ext.onReady(function()
         sortInfo: { field: 'name', direction: 'ASC' },
         autoLoad: false
     });
+    
+    existingMapsStore = new Ext.data.JsonStore({
+            url: localhost + '/dhis-webservice/getAllMaps.service',
+            baseParams: { format: 'jsonmin' },
+            root: 'maps',
+            fields: ['id', 'mapLayerPath', 'organisationUnitLevel'],
+            autoLoad: true
+    });
 
 
     var organisationUnitLevelCombo = new Ext.form.ComboBox({
@@ -229,9 +237,9 @@ Ext.onReady(function()
             data: [[3], [4], [5], [6], [7], [8]]
         })
     });
-
-    var submitButton = new Ext.Button({
-        id: 'submit_b',
+    
+    var newMapButton = new Ext.Button({
+        id: 'newmap_b',
         text: 'Register map',
         handler: function()
         {
@@ -261,7 +269,96 @@ Ext.onReady(function()
                 {
                     Ext.Msg.show({
                         title:'Register shapefiles',
-                        msg: '<p style="padding-top:8px"><b>The map </b>' + mlp + '<b> was successfully stored!</b></p>',
+                        msg: '<p style="padding-top:8px">The map <b>' + mlp + '</b> was successfully registered!</b></p>',
+                        buttons: Ext.Msg.OK,
+                        animEl: 'elId',
+                        minWidth: 400,
+                        icon: Ext.MessageBox.INFO
+                    });
+                    
+                    Ext.getCmp('map_cb').getStore().reload();
+                    Ext.getCmp('maps_cb').getStore().reload();
+                },
+                failure: function()
+                {
+                    alert( 'Status', 'Error while saving data' );
+                }
+            });
+        }
+    });
+    
+    var editMapButton = new Ext.Button({
+        id: 'editmap_b',
+        text: 'Save changes',
+        handler: function()
+        {
+            var em = Ext.getCmp('editmap_cb').getValue();
+            var uc = Ext.getCmp('uniquecolumn_tf').getValue();
+            var nc = Ext.getCmp('namecolumn_tf').getValue();
+            var lon = Ext.getCmp('longitude_tf').getValue();
+            var lat = Ext.getCmp('latitude_tf').getValue();
+            var zoom = Ext.getCmp('zoom_cb').getValue();
+            
+            if (!em || !uc || !nc || !lon || !lat)
+            {
+                Ext.MessageBox.alert('Error', 'Form is not complete');
+                return;
+            }
+            
+            Ext.Ajax.request(
+            {
+                url: localhost + '/dhis-webservice/addOrUpdateMap.service',
+                method: 'GET',
+                params: { mapLayerPath: mlp, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc,
+                          longitude: lon, latitude: lat, zoom: zoom},
+
+                success: function( responseObject )
+                {
+                    Ext.Msg.show({
+                        title:'Register shapefiles',
+                        msg: '<p style="padding-top:8px">The map <b>' + mlp + '</b> was successfully updated!</b></p>',
+                        buttons: Ext.Msg.OK,
+                        animEl: 'elId',
+                        minWidth: 400,
+                        icon: Ext.MessageBox.INFO
+                    });
+                    
+                    Ext.getCmp('map_cb').getStore().reload();
+                    Ext.getCmp('maps_cb').getStore().reload();
+                },
+                failure: function()
+                {
+                    alert( 'Status', 'Error while saving data' );
+                }
+            });
+        }
+    });
+    
+    var deleteMapButton = new Ext.Button({
+        id: 'deletemap_b',
+        text: 'Delete map',
+        handler: function()
+        {
+            var mlp = Ext.getCmp('deletemap_cb').getValue();
+            
+alert(mlp);            
+            if (!mlp)
+            {
+                Ext.MessageBox.alert('Error', 'Choose a map');
+                return;
+            }
+            
+            Ext.Ajax.request(
+            {
+                url: localhost + '/dhis-webservice/deleteMapByMapLayerPath.service',
+                method: 'GET',
+                params: { mapLayerPath: mlp },
+
+                success: function( responseObject )
+                {
+                    Ext.Msg.show({
+                        title:'Register shapefiles',
+                        msg: '<p style="padding-top:8px">The map <b>' + mlp + '</b> was successfully deleted!</b></p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
                         minWidth: 400,
@@ -282,16 +379,191 @@ Ext.onReady(function()
     rootmap = new Ext.Panel({
         id: 'rootmap',
         title: 'Register shapefiles',
-        items: [ { html: '<p style="padding-bottom:4px">Load organisation units from level:</p>' }, organisationUnitLevelCombo, { html: '<br><br><br>' },
-                 { html: '<p style="padding-bottom:4px">Register map for this organisation unit:</p>' }, organisationUnitCombo, { html: '<br>' },
-                 { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, organisationUnitLevelCombo2, { html: '<br>' },
-                 { html: '<p style="padding-bottom:4px">Geoserver map layer path:</p>' }, mapLayerPathTextField, { html: '<br>' },
-                 { html: '<p style="padding-bottom:4px">Unique column:</p>' }, uniqueColumnTextField, { html: '<br>' },
-                 { html: '<p style="padding-bottom:4px">Name column:</p>' }, nameColumnTextField, { html: '<br>' },
-                 { html: '<p style="padding-bottom:4px">Longitude:</p>' }, longitudeTextField, { html: '<br>' },
-                 { html: '<p style="padding-bottom:4px">Latitude:</p>' }, latitudeTextField, { html: '<br>' },
-                 { html: '<p style="padding-bottom:4px">Zoom:</p>' }, zoomComboBox, { html: '<br>' },
-                 submitButton ]
+        items:
+        [
+            {
+                xtype: 'tabpanel',
+                activeTab: 0,
+                deferredRender: false,
+                plain: true,
+                defaults: {layout: 'fit', bodyStyle: 'padding:8px'},
+                listeners: {
+                    tabchange: function(panel, tab) {
+                        if (tab.id == 0)
+                        {
+                            Ext.getCmp('panel1_p').setVisible(true);
+                            Ext.getCmp('panel2_p').setVisible(true);
+                            Ext.getCmp('newmap_b').setVisible(true);
+                            Ext.getCmp('editmap_b').setVisible(false);
+                            Ext.getCmp('deletemap_b').setVisible(false);
+                        }
+                        
+                        if (tab.id == 1)
+                        {
+                            Ext.getCmp('panel1_p').setVisible(false);
+                            Ext.getCmp('panel2_p').setVisible(true);
+                            Ext.getCmp('newmap_b').setVisible(false);
+                            Ext.getCmp('editmap_b').setVisible(true);
+                            Ext.getCmp('deletemap_b').setVisible(false);
+                        }
+                        
+                        if (tab.id == 2)
+                        {
+                            Ext.getCmp('panel1_p').setVisible(false);
+                            Ext.getCmp('panel2_p').setVisible(false);
+                            Ext.getCmp('newmap_b').setVisible(false);
+                            Ext.getCmp('editmap_b').setVisible(false);
+                            Ext.getCmp('deletemap_b').setVisible(true);
+                        }
+                    }
+                },
+                items:[
+                {
+                    title:'New map',
+                    id: '0',
+                    defaults:{layout: 'fit', border: false, bodyStyle: 'padding:10px'},
+                    items:
+                    [
+                        {
+                            xtype: 'combo',
+                            id: 'newmap_cb',
+                            typeAhead: true,
+                            editable: false,
+                            valueField: 'level',
+                            displayField: 'name',
+                            emptyText: 'Select organisation unit level',
+                            mode: 'remote',
+                            forceSelection: true,
+                            triggerAction: 'all',
+                            selectOnFocus: true,
+                            width: combo_width,
+                            store: organisationUnitLevelStore,
+                            listeners: {
+                                'select': {
+                                    fn: function() {
+                                        var level = Ext.getCmp('newmap_cb').getValue();
+                                        organisationUnitStore.baseParams = { level: level, format: 'json' };
+                                        organisationUnitStore.reload();
+                                    },
+                                    scope: this
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    title:'Edit map',
+                    id: '1',
+                    defaults:{layout: 'fit', border: false, bodyStyle: 'padding:8px'},
+                    items:
+                    [
+                        {
+                            xtype: 'combo',
+                            id: 'editmap_cb',
+                            typeAhead: true,
+                            editable: false,
+                            valueField: 'mapLayerPath',
+                            displayField: 'mapLayerPath',
+                            emptyText: 'Select map',
+                            mode: 'remote',
+                            forceSelection: true,
+                            triggerAction: 'all',
+                            selectOnFocus: true,
+                            width: combo_width,
+                            store: existingMapsStore,
+                            listeners:
+                            {
+                                'select':
+                                {
+                                    fn: function()
+                                    {
+                                        var mlp = Ext.getCmp('editmap_cb').getValue();
+                                        
+                                        Ext.Ajax.request( 
+                                        {
+                                            url: localhost + '/dhis-webservice/getMapByMapLayerPath.service',
+                                            method: 'GET',
+                                            params: { mapLayerPath: mlp, format: 'json' },
+
+                                            success: function( responseObject )
+                                            {
+                                                var map = Ext.util.JSON.decode( responseObject.responseText ).map;
+                                                
+                                                Ext.getCmp('uniquecolumn_tf').setValue(map.uniqueColumn);
+                                                Ext.getCmp('namecolumn_tf').setValue(map.nameColumn);
+                                                Ext.getCmp('longitude_tf').setValue(map.longitude);
+                                                Ext.getCmp('latitude_tf').setValue(map.latitude);
+                                                Ext.getCmp('zoom_cb').setValue(map.zoom);
+                                                
+                                            },
+                                            failure: function()
+                                            {
+                                                alert( 'Error while retrieving data: getAssignOrganisationUnitData' );
+                                            } 
+                                        });
+                                                                            
+                                        
+                                        
+                                    },
+                                    scope: this
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    title:'Delete map',
+                    id: '2',
+                    defaults:{layout: 'fit', border: false, bodyStyle: 'padding:8px'},
+                    items:
+                    [
+                        {
+                            xtype: 'combo',
+                            id: 'deletemap_cb',
+                            typeAhead: true,
+                            editable: false,
+                            valueField: 'mapLayerPath',
+                            displayField: 'mapLayerPath',
+                            emptyText: 'Select map',
+                            mode: 'remote',
+                            forceSelection: true,
+                            triggerAction: 'all',
+                            selectOnFocus: true,
+                            width: combo_width,
+                            store: existingMapsStore
+                        }
+                    ]
+                },]
+            },
+            
+            { html: '<br>' },
+            
+            {
+                xtype: 'panel',
+                id: 'panel1_p',
+                items:
+                [
+                    { html: '<p style="padding-bottom:4px">Register map for this organisation unit:</p>' }, organisationUnitCombo, { html: '<br>' },
+                    { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, organisationUnitLevelCombo2, { html: '<br>' },
+                    { html: '<p style="padding-bottom:4px">Geoserver map layer path:</p>' }, mapLayerPathTextField, { html: '<br>' }
+                ]
+            },
+            
+            {
+                xtype: 'panel',
+                id: 'panel2_p',
+                items:
+                [
+                    { html: '<p style="padding-bottom:4px">Unique column:</p>' }, uniqueColumnTextField, { html: '<br>' },
+                    { html: '<p style="padding-bottom:4px">Name column:</p>' }, nameColumnTextField, { html: '<br>' },
+                    { html: '<p style="padding-bottom:4px">Longitude:</p>' }, longitudeTextField, { html: '<br>' },
+                    { html: '<p style="padding-bottom:4px">Latitude:</p>' }, latitudeTextField, { html: '<br>' },
+                    { html: '<p style="padding-bottom:4px">Zoom:</p>' }, zoomComboBox, { html: '<br>' }
+                ]
+            },
+
+            newMapButton, editMapButton, deleteMapButton
+        ]
     });
     
     
@@ -300,7 +572,7 @@ Ext.onReady(function()
         id: 'choropleth',
         map: map,
         layer: choroplethLayer,
-        title: 'Choropleth',
+        title: 'Thematic map',
         nameAttribute: "NAME",
         indicators: [['value', 'Indicator']],
 //        url: '../../../geoserver/wfs?request=GetFeature&typename=who:sl_init&outputformat=json&version=1.0.0',

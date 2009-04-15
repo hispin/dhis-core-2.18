@@ -1090,6 +1090,19 @@
     </request>
 	  
 	<request>
+      <name>deleteMapByMapLayerPath</name>
+	  <type>void</type>
+      <bean>org.hisp.dhis.webservice.adapter.mapping.MappingServiceAdapter</bean>
+      <method>deleteMapByMapLayerPath</method>
+      <parameters>
+		<parameter>
+          <type>java.lang.String</type>
+          <name>mapLayerPath</name>
+        </parameter>
+      </parameters>
+    </request>
+	  
+	<request>
       <name>addOrUpdateMapOrganisationUnitRelation</name>
 	  <type>void</type>
       <bean>org.hisp.dhis.webservice.adapter.mapping.MappingServiceAdapter</bean>
