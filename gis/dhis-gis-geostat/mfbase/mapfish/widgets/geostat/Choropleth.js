@@ -291,6 +291,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                         var iId = Ext.getCmp('indicator_cb').getValue();
                         legendStore.baseParams = { indicatorId: iId, format: 'json' };
                         legendStore.reload();
+                        
+                        classify(false);
                     }
                 }
             }
@@ -338,7 +340,15 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             emptyText: 'Select period',
             selectOnFocus: true,
             width: combo_width,
-            store: periodStore
+            store: periodStore,
+            listeners: {
+                'select': {
+                    fn: function()
+                    {
+                        classify(false);
+                    }
+                }
+            }
         },
         
         {
@@ -363,12 +373,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                                      
                             this.newUrl = mlp;
                             this.classify(false);
-/*                    
-                        var level = this.form.findField('level_cb').getValue();
-                        this.selectedLevel = level;
-                        this.newUrl = shapefiles[level];
-                        this.classify(false);
-*/                        
                     },
                     scope: this
                 }

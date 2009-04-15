@@ -83,6 +83,13 @@ public class DefaultMappingServiceAdapter
             mappingService.addMap( map );
         }
     }
+    
+    public void deleteMapByMapLayerPath( String mapLayerPath )
+    {
+        Map map = mappingService.getMapByMapLayerPath( mapLayerPath );
+        
+        mappingService.deleteMap( map );
+    }
 
     // -------------------------------------------------------------------------
     // MapOrganisationUnitRelation
