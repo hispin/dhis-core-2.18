@@ -252,7 +252,7 @@ public class PostgreSQLStatementBuilder
             "USING dataelement " +
             "WHERE datavalue.dataelementid = dataelement.dataelementid " +
             "AND dataelement.aggregationtype = 'sum' " +
-            "AND datavalue.value IN ( '0', '0.', '.0', '0.0', ' 0', '0 ', '0 0' )";
+            "AND datavalue.value = '0'";
     }
 
     public int getMaximumNumberOfColumns()
