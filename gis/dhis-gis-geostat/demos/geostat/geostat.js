@@ -14,19 +14,13 @@ Ext.onReady(function()
     features_choropleth = null;
     features_mapping = null;
 
-
     var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
                                            "http://labs.metacarta.com/wms-c/Basic.py?", 
                                            {layers: 'satellite', format: 'image/png'});
                                      
-//    var vmap0 = new OpenLayers.Layer.WMS("OpenLayers WMS",
-//                                         "../../../geoserver/wms?", 
-//                                         {layers: 'who:sl_init'});
-
     var vmap0 = new OpenLayers.Layer.WMS("OpenLayers WMS",
                                          "pageload_geojson.txt");
                                    
-    // define choropleth layer and its styling
     var choroplethLayer = new OpenLayers.Layer.Vector(choroplethLayerName, {
         'visibility': false,
         'styleMap': new OpenLayers.StyleMap({
@@ -42,7 +36,6 @@ Ext.onReady(function()
         })
     });
 
-    // define proportional symbol layer and its styling
     var propSymbolLayer = new OpenLayers.Layer.Vector(propSymbolLayerName, {
         'visibility': false,
         'styleMap': new OpenLayers.StyleMap({
@@ -60,8 +53,6 @@ Ext.onReady(function()
 
     map.addLayers([jpl_wms, vmap0, choroplethLayer, propSymbolLayer]);
 
-
-    // create select feature control for choropleth layer
     selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
         choroplethLayer,
         {onClickSelect: onClickSelectChoropleth, onClickUnselect: onClickUnselectChoropleth,
@@ -79,8 +70,6 @@ Ext.onReady(function()
     selectFeaturePoint.activate();
 
     map.setCenter(new OpenLayers.LonLat(init_longitude, init_latitude), init_zoom); // config.js
-
-
     
     organisationUnitLevelStore = new Ext.data.JsonStore({
         url: localhost + '/dhis-webservice/getOrganisationUnitLevels.service',
@@ -106,7 +95,23 @@ Ext.onReady(function()
             autoLoad: true
     });
 
-
+    var organisationUnitCombo = new Ext.form.ComboBox({
+        id: 'organisationunit_cb',
+        fieldLabel: 'Organisation unit',
+        typeAhead: true,
+        editable: false,
+        valueField: 'name',
+        displayField: 'name',
+        emptyText: 'Required',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        selectOnFocus: true,
+        width: combo_width,
+        minListWidth: combo_width + 26,
+        store: organisationUnitStore
+    });
+    
     var organisationUnitLevelCombo = new Ext.form.ComboBox({
         id: 'organisationunitlevel_cb',
         fieldLabel: 'Level',
@@ -120,57 +125,13 @@ Ext.onReady(function()
         triggerAction: 'all',
         selectOnFocus: true,
         width: combo_width,
-        minListWidth: combo_width,
-        store: organisationUnitLevelStore,
-        listeners: {
-            'select': {
-                fn: function() {
-                    var level = Ext.getCmp('organisationunitlevel_cb').getValue();
-                    organisationUnitStore.baseParams = { level: level, format: 'json' };
-                    organisationUnitStore.reload();
-                },
-                scope: this
-            }
-        }
-    });
-    
-    var organisationUnitCombo = new Ext.form.ComboBox({
-        id: 'organisationunit_cb',
-        fieldLabel: 'Organisation unit',
-        typeAhead: true,
-        editable: false,
-        valueField: 'name',
-        displayField: 'name',
-        emptyText: 'Requiredss',
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_width + 26,
-        store: organisationUnitStore
-    });
-    
-    var organisationUnitLevelCombo2 = new Ext.form.ComboBox({
-        id: 'organisationunitlevel2_cb',
-        fieldLabel: 'Level',
-        typeAhead: true,
-        editable: false,
-        valueField: 'level',
-        displayField: 'name',
-        emptyText: 'Required',
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        selectOnFocus: true,
-        width: combo_width,
         minListWidth: combo_width + 26,
         store: organisationUnitLevelStore,
         listeners: {
             'select': {
                 fn: function() {
-                    var level1 = Ext.getCmp('organisationunitlevel_cb').getValue();
-                    var level2 = Ext.getCmp('organisationunitlevel2_cb').getValue();
+                    var level1 = Ext.getCmp('newmap_cb').getValue();
+                    var level2 = Ext.getCmp('organisationunitlevel_cb').getValue();
                     var orgunit = Ext.getCmp('organisationunit_cb').getValue();
                     
                     if (level1 >= level2)
@@ -194,7 +155,6 @@ Ext.onReady(function()
             }
         }
     });
-
 
     var mapLayerPathTextField = new Ext.form.TextField({
         id: 'maplayerpath_tf',
@@ -248,16 +208,17 @@ Ext.onReady(function()
         text: 'Register map',
         handler: function()
         {
-            var mlp = Ext.getCmp('maplayerpath_tf').getValue();
+            var nm = Ext.getCmp('newmap_cb').getValue();
             var oui = Ext.getCmp('organisationunit_cb').getValue();
-            var ouli = Ext.getCmp('organisationunitlevel2_cb').getValue();
+            var ouli = Ext.getCmp('organisationunitlevel_cb').getValue();
+            var mlp = Ext.getCmp('maplayerpath_tf').getValue();
             var uc = Ext.getCmp('uniquecolumn_tf').getValue();
             var nc = Ext.getCmp('namecolumn_tf').getValue();
             var lon = Ext.getCmp('longitude_tf').getValue();
             var lat = Ext.getCmp('latitude_tf').getValue();
             var zoom = Ext.getCmp('zoom_cb').getValue();
             
-            if (!mlp || !oui || !ouli || !uc || !nc || !lon || !lat)
+            if (!nm || !mlp || !oui || !ouli || !uc || !nc || !lon || !lat)
             {
                 Ext.MessageBox.alert('Error', 'Form is not complete');
                 return;
@@ -421,120 +382,124 @@ Ext.onReady(function()
                         }
                     }
                 },
-                items:[
-                {
-                    title:'New map',
-                    id: '0',
-                    items:
-                    [
-                        {
-                            xtype: 'combo',
-                            id: 'newmap_cb',
-                            typeAhead: true,
-                            editable: false,
-                            valueField: 'level',
-                            displayField: 'name',
-                            emptyText: 'Select organisation unit level',
-                            mode: 'remote',
-                            forceSelection: true,
-                            triggerAction: 'all',
-                            selectOnFocus: true,
-                            width: combo_width,
-                            store: organisationUnitLevelStore,
-                            listeners: {
-                                'select': {
-                                    fn: function() {
-                                        var level = Ext.getCmp('newmap_cb').getValue();
-                                        organisationUnitStore.baseParams = { level: level, format: 'json' };
-                                        organisationUnitStore.reload();
-                                    },
-                                    scope: this
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    title:'Edit map',
-                    id: '1',
-                    items:
-                    [
-                        {
-                            xtype: 'combo',
-                            id: 'editmap_cb',
-                            typeAhead: true,
-                            editable: false,
-                            valueField: 'mapLayerPath',
-                            displayField: 'mapLayerPath',
-                            emptyText: 'Select map',
-                            mode: 'remote',
-                            forceSelection: true,
-                            triggerAction: 'all',
-                            selectOnFocus: true,
-                            width: combo_width,
-                            store: existingMapsStore,
-                            listeners:
+                items:
+                [
+                    {
+                        title:'New map',
+                        id: '0',
+                        items:
+                        [
                             {
-                                'select':
-                                {
-                                    fn: function()
-                                    {
-                                        var mlp = Ext.getCmp('editmap_cb').getValue();
-                                        
-                                        Ext.Ajax.request( 
-                                        {
-                                            url: localhost + '/dhis-webservice/getMapByMapLayerPath.service',
-                                            method: 'GET',
-                                            params: { mapLayerPath: mlp, format: 'json' },
-
-                                            success: function( responseObject )
-                                            {
-                                                var map = Ext.util.JSON.decode( responseObject.responseText ).map;
-                                                
-                                                Ext.getCmp('uniquecolumn_tf').setValue(map.uniqueColumn);
-                                                Ext.getCmp('namecolumn_tf').setValue(map.nameColumn);
-                                                Ext.getCmp('longitude_tf').setValue(map.longitude);
-                                                Ext.getCmp('latitude_tf').setValue(map.latitude);
-                                                Ext.getCmp('zoom_cb').setValue(map.zoom);
-                                                
-                                            },
-                                            failure: function()
-                                            {
-                                                alert( 'Error while retrieving data: getAssignOrganisationUnitData' );
-                                            } 
-                                        });
-                                                                            
-                                        
-                                        
-                                    },
-                                    scope: this
+                                xtype: 'combo',
+                                id: 'newmap_cb',
+                                typeAhead: true,
+                                editable: false,
+                                valueField: 'level',
+                                displayField: 'name',
+                                emptyText: 'Select organisation unit level',
+                                mode: 'remote',
+                                forceSelection: true,
+                                triggerAction: 'all',
+                                selectOnFocus: true,
+                                width: combo_width,
+                                store: organisationUnitLevelStore,
+                                listeners: {
+                                    'select': {
+                                        fn: function() {
+                                            var level = Ext.getCmp('newmap_cb').getValue();
+                                            organisationUnitStore.baseParams = { level: level, format: 'json' };
+                                            organisationUnitStore.reload();
+                                        },
+                                        scope: this
+                                    }
                                 }
                             }
-                        }
-                    ]
-                },
-                {
-                    title:'Delete map',
-                    id: '2',
-                    items:
-                    [
-                        {
-                            xtype: 'combo',
-                            id: 'deletemap_cb',
-                            typeAhead: true,
-                            editable: false,
-                            valueField: 'mapLayerPath',
-                            displayField: 'mapLayerPath',
-                            emptyText: 'Select map',
-                            mode: 'remote',
-                            forceSelection: true,
-                            triggerAction: 'all',
-                            selectOnFocus: true,
-                            width: combo_width,
-                            store: existingMapsStore
-                        }
-                    ]
-                },]
+                        ]
+                    },
+                    
+                    {
+                        title:'Edit map',
+                        id: '1',
+                        items:
+                        [
+                            {
+                                xtype: 'combo',
+                                id: 'editmap_cb',
+                                typeAhead: true,
+                                editable: false,
+                                valueField: 'mapLayerPath',
+                                displayField: 'mapLayerPath',
+                                emptyText: 'Select map',
+                                mode: 'remote',
+                                forceSelection: true,
+                                triggerAction: 'all',
+                                selectOnFocus: true,
+                                width: combo_width,
+                                store: existingMapsStore,
+                                listeners:
+                                {
+                                    'select':
+                                    {
+                                        fn: function()
+                                        {
+                                            var mlp = Ext.getCmp('editmap_cb').getValue();
+                                            
+                                            Ext.Ajax.request( 
+                                            {
+                                                url: localhost + '/dhis-webservice/getMapByMapLayerPath.service',
+                                                method: 'GET',
+                                                params: { mapLayerPath: mlp, format: 'json' },
+
+                                                success: function( responseObject )
+                                                {
+                                                    var map = Ext.util.JSON.decode( responseObject.responseText ).map;
+                                                    
+                                                    Ext.getCmp('uniquecolumn_tf').setValue(map.uniqueColumn);
+                                                    Ext.getCmp('namecolumn_tf').setValue(map.nameColumn);
+                                                    Ext.getCmp('longitude_tf').setValue(map.longitude);
+                                                    Ext.getCmp('latitude_tf').setValue(map.latitude);
+                                                    Ext.getCmp('zoom_cb').setValue(map.zoom);
+                                                    
+                                                },
+                                                failure: function()
+                                                {
+                                                    alert( 'Error while retrieving data: getAssignOrganisationUnitData' );
+                                                } 
+                                            });
+                                                                                
+                                            
+                                            
+                                        },
+                                        scope: this
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    
+                    {
+                        title:'Delete map',
+                        id: '2',
+                        items:
+                        [
+                            {
+                                xtype: 'combo',
+                                id: 'deletemap_cb',
+                                typeAhead: true,
+                                editable: false,
+                                valueField: 'mapLayerPath',
+                                displayField: 'mapLayerPath',
+                                emptyText: 'Select map',
+                                mode: 'remote',
+                                forceSelection: true,
+                                triggerAction: 'all',
+                                selectOnFocus: true,
+                                width: combo_width,
+                                store: existingMapsStore
+                            }
+                        ]
+                    }
+                ]
             },
             
             { html: '<br>' },
@@ -545,7 +510,7 @@ Ext.onReady(function()
                 items:
                 [
                     { html: '<p style="padding-bottom:4px">Register map for this organisation unit:</p>' }, organisationUnitCombo, { html: '<br>' },
-                    { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, organisationUnitLevelCombo2, { html: '<br>' },
+                    { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, organisationUnitLevelCombo, { html: '<br>' },
                     { html: '<p style="padding-bottom:4px">Geoserver map layer path:</p>' }, mapLayerPathTextField, { html: '<br>' }
                 ]
             },
@@ -563,7 +528,11 @@ Ext.onReady(function()
                 ]
             },
 
-            newMapButton, editMapButton, deleteMapButton
+            newMapButton,
+            
+            editMapButton,
+            
+            deleteMapButton
         ]
     });
     
@@ -576,23 +545,13 @@ Ext.onReady(function()
         title: 'Thematic map',
         nameAttribute: "NAME",
         indicators: [['value', 'Indicator']],
-//        url: '../../../geoserver/wfs?request=GetFeature&typename=who:sl_init&outputformat=json&version=1.0.0',
         url: 'pageload_geojson.txt',
         featureSelection: false,
         loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
         legendDiv: 'choroplethLegend',
-        defaults:{
-            width: 130
-        },
+        defaults: {width: 130},
         listeners: {
-        //           collapse: {
-        // hide layer if collapsed
-        //  fn: function() {
-        //      this.layer.setVisibility(false);
-        //  }
-        //            },
             expand: {
-                // show layer if expanded
                 fn: function() {
                     choroplethLayer.setVisibility(false);
                     choropleth.classify(false);
@@ -615,9 +574,7 @@ Ext.onReady(function()
         featureSelection: false,
         loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
         legendDiv: 'choroplethLegend',
-        defaults:{
-            width: 130
-        },
+        defaults: {width: 130},
         listeners: {
             expand: {
                 // show layer if expanded
@@ -631,7 +588,6 @@ Ext.onReady(function()
         }
     });
 
-    // create proportional symbol widget
     var propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
         id: 'propsymbol',
         map: map,
@@ -639,22 +595,12 @@ Ext.onReady(function()
         title: 'Proportional symbol',
         nameAttribute: "ouname",
         indicators: [['PERIMETER', 'Perimeter']],
-//        url: '../../../geoserver/wfs?request=GetFeature&typename=who:sl_init&outputformat=json&version=1.0.0',
         url: 'pageload_geojson.txt',
         featureSelection: false,
         loadMask : {msg: 'Loading Data...', msgCls: 'x-mask-loading'},
-        defaults: {
-            width: 130
-        },
+        defaults: {width: 130},
         listeners: {
-            //         collapse: {
-            // hide layer if collapsed
-            //      fn: function() {
-            //          this.layer.setVisibility(false);
-            //        }
-            //       },
             expand: {
-                // show layer if expanded
                 fn: function() {
                     if (this.classificationApplied) {
                         this.layer.setVisibility(true);
@@ -664,11 +610,10 @@ Ext.onReady(function()
         }
     });
 
-
-    // create viewport
     viewport = new Ext.Viewport({
         layout: 'border',
-        items:[
+        items:
+        [
             new Ext.BoxComponent(
             {
                 // raw
@@ -703,36 +648,38 @@ Ext.onReady(function()
                     frame: true
                 },
                 layout: 'anchor',
-                items: [
-                {
-                    title: 'Layers',
-                    autoHeight: true,
-                    xtype: 'layertree',
-                    map: map,
-                    anchor: '100%'
-                },
-                
-                {
-                    title: 'Overview Map',
-                    autoHeight: true,
-                    html:'<div id="overviewmap"></div>',
-                    anchor: '100%'
-                },
-                
-                {
-                    title: 'Position',
-                    height: 65,
-                    contentEl: 'position',
-                    anchor: '100%'
-                },
-                
-                {
-                    title: 'Legend',
-                    minHeight: 65,
-                    autoHeight: true,
-                    contentEl: 'legend',
-                    anchor: '100%'
-                } ]
+                items:
+                [
+                    {
+                        title: 'Layers',
+                        autoHeight: true,
+                        xtype: 'layertree',
+                        map: map,
+                        anchor: '100%'
+                    },
+                    
+                    {
+                        title: 'Overview Map',
+                        autoHeight: true,
+                        html:'<div id="overviewmap"></div>',
+                        anchor: '100%'
+                    },
+                    
+                    {
+                        title: 'Position',
+                        height: 65,
+                        contentEl: 'position',
+                        anchor: '100%'
+                    },
+                    
+                    {
+                        title: 'Legend',
+                        minHeight: 65,
+                        autoHeight: true,
+                        contentEl: 'legend',
+                        anchor: '100%'
+                    }
+                ]
             },
             
             {
@@ -747,10 +694,11 @@ Ext.onReady(function()
                 margins: '0 0 0 5',
                 layout: 'accordion',
                 defaults: {
-                border: true,
-                frame: true
+                    border: true,
+                    frame: true
                 },
-                items: [
+                items:
+                [
                     choropleth,
                     mapping,
                     rootmap
@@ -778,12 +726,7 @@ Ext.onReady(function()
     map.addControl(new OpenLayers.Control.OverviewMap({div: $('overviewmap')}));
 
     Ext.get('loading').fadeOut({remove: true});
-
 });
-
-
-
-// CHOROPLETH SELECT FEATURES
 
 function onHoverSelectChoropleth(feature)
 {
@@ -798,14 +741,14 @@ function onHoverSelectChoropleth(feature)
     var y = south_panel.y - height - padding_y;
 
     popup_feature = new Ext.Window({
-    title: 'Organisation unit',
-    width: 190,
-    height: height,
-    layout: 'fit',
-    plain: true,
-    bodyStyle: 'padding:5px',
-    x: x,
-    y: y
+        title: 'Organisation unit',
+        width: 190,
+        height: height,
+        layout: 'fit',
+        plain: true,
+        bodyStyle: 'padding:5px',
+        x: x,
+        y: y
     });    
 
     style = '<p style="margin-top: 5px; padding-left:5px;">';
@@ -870,9 +813,6 @@ function onClickSelectChoropleth(feature)
 function onClickUnselectChoropleth(feature) {}
 
 
-
-// PROPORTIONAL SYMBOL SELECT FEATURES
-
 function onHoverSelectPoint(feature)
 {
 /*
@@ -931,10 +871,6 @@ function onClickUnselectPoint(feature) {}
 
 
 
-
-
-
-
 mapData = null;
 
 function loadMapData(redirect)
@@ -965,10 +901,6 @@ function loadMapData(redirect)
     });
 }
 
-
-
-
-// GET DATA
 
 function getChoroplethData()
 {
@@ -1042,36 +974,6 @@ function getAssignOrganisationUnitData()
     });
 }
 
-
-
-
-// DATA RECEIVED
-
-/*
-function dataReceivedChoropleth( responseText )
-{
-    var layers = this.myMap.getLayersByName(choroplethLayerName);
-    var level = choropleth.selectedLevel;
-    var features = layers[0]["features"];
-    var featuresLength = features.length;
-    var data = Ext.util.JSON.decode(responseText);
-    var dataLength = data.mapvalues.length;
-    
-    for (var j=0; j < featuresLength; j++) 
-    {
-        features[j].attributes["value"] = 0;
-        
-        for (var i=0; i < dataLength; i++)
-        {
-            if (features[j].attributes[shpcols[level][0].geocode] == data.mapvalues[i].geoCode)
-            {   
-                features[j].attributes["value"] = data.mapvalues[i].value;
-            }
-        }
-    }
-}
-*/
-
 function dataReceivedChoropleth( responseText )
 {
     var layers = this.myMap.getLayersByName(choroplethLayerName);
@@ -1118,7 +1020,6 @@ function dataReceivedChoropleth( responseText )
             }
             
             features_choropleth = features;
-            
         },
         failure: function()
         {

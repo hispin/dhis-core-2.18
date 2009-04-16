@@ -139,11 +139,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      
     newUrl : false,
     
-    selectedValue : false,
-    
-       
     initComponent : function() {
-    
     
         mapStore = new Ext.data.JsonStore({
             url: localhost + '/dhis-webservice/getAllMaps.service',
@@ -178,74 +174,68 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
             }
         });
     
-
-    
-        this.items = [
-        
-        {
-            xtype: 'combo',
-            id: 'maps_cb',
-            fieldLabel: 'Map',
-            typeAhead: true,
-            editable: false,
-            valueField: 'mapLayerPath',
-            displayField: 'mapLayerPath',
-            mode: 'remote',
-            forceSelection: true,
-            triggerAction: 'all',
-            emptyText: 'Required',
-            selectOnFocus: true,
-            width: 125,
-            store: mapStore,
-            listeners: {
-                'select': {
-                    fn: function() {
-                        var mlp = Ext.getCmp('maps_cb').getValue();
-                        this.newUrl = mlp;
-                        
-                        gridStore.baseParams = { mapLayerPath: mlp, format: 'json' };
-                        gridStore.reload();
-                            
-                        this.classify(false);
-                    },
-                    scope: this
-                }
-            }
-        },
-        
-
-
-        {
-            xtype: 'button',
-            text: 'Load map',
-            handler: function()
+        this.items =
+        [
             {
-                var mlp = Ext.getCmp('maps_cb').getValue();
-                gridStore.baseParams = { mapLayerPath: mlp, format: 'json' };
-                gridStore.reload();
-                
-                this.classify(true);
+                xtype: 'combo',
+                id: 'maps_cb',
+                fieldLabel: 'Map',
+                typeAhead: true,
+                editable: false,
+                valueField: 'mapLayerPath',
+                displayField: 'mapLayerPath',
+                mode: 'remote',
+                forceSelection: true,
+                triggerAction: 'all',
+                emptyText: 'Required',
+                selectOnFocus: true,
+                width: 125,
+                store: mapStore,
+                listeners: {
+                    'select': {
+                        fn: function() {
+                            var mlp = Ext.getCmp('maps_cb').getValue();
+                            this.newUrl = mlp;
+                            
+                            gridStore.baseParams = { mapLayerPath: mlp, format: 'json' };
+                            gridStore.reload();
+                                
+                            this.classify(false);
+                        },
+                        scope: this
+                    }
+                }
             },
-            scope: this
-        },
-        
-        { html: '<br>' },
 
-        {
-            xtype: 'grid',
-            id: 'grid_gp',
-            store: gridStore,
-            columns: [ { header: 'Organisation units ', id: 'organisationUnitId', dataIndex: 'organisationUnit', sortable: true } ],
-            width: gridpanel_width,
-            height: gridpanel_height,
-            view: gridView
-        }
-        
+            {
+                xtype: 'button',
+                text: 'Load map',
+                handler: function()
+                {
+                    var mlp = Ext.getCmp('maps_cb').getValue();
+                    gridStore.baseParams = { mapLayerPath: mlp, format: 'json' };
+                    gridStore.reload();
+                    
+                    this.classify(true);
+                },
+                scope: this
+            },
+            
+            { html: '<br>' },
+
+            {
+                xtype: 'grid',
+                id: 'grid_gp',
+                store: gridStore,
+                columns: [ { header: 'Organisation units ', id: 'organisationUnitId', dataIndex: 'organisationUnit', sortable: true } ],
+                width: gridpanel_width,
+                height: gridpanel_height,
+                view: gridView
+            }
         ];
 
         mapfish.widgets.geostat.Choropleth.superclass.initComponent.apply(this);
     },
-    
     
     setUrl: function(url) {
     
@@ -300,8 +290,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      *      the widget isn't ready, or no indicator is specified, or no
      *      method is specified.
      */
-    classify: function(exception) {
-    
+    classify: function(exception)
+    {
         if (!this.ready) {
             Ext.MessageBox.alert('Error', 'Component init not complete');
             return;
@@ -328,9 +318,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         this.indicator = 'value';
         this.indicatorText = 'Indicator';
         options.indicator = this.indicator;
-
         
-        //options.method = "CLASSIFY_BY_EQUAL_INTERVALS";
         options.method = 1;
         options.numClasses = 2;
         
@@ -344,8 +332,6 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         this.coreComp.applyClassification();
         this.classificationApplied = true;
     },
-
-
 
     /**
      * Method: onRender
@@ -374,4 +360,5 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         this.coreComp = new mapfish.GeoStat.Choropleth(this.map, coreOptions);
     }
 });
+
 Ext.reg('mapping', mapfish.widgets.geostat.Mapping);
