@@ -36,16 +36,49 @@ import java.util.Collection;
 public interface ReportTableStore
 {
     String ID = ReportTableStore.class.getName();
-    
+
+    /**
+     * Saves a ReportTable.
+     * 
+     * @param reportTable the ReportTable to save.
+     * @return the generated identifier.
+     */
     int saveReportTable( ReportTable reportTable );
-    
+
+    /**
+     * Updates a ReportTable.
+     * 
+     * @param reportTable the ReportTable to update.
+     */
     void updateReportTable( ReportTable reportTable );
-    
+
+    /**
+     * Deletes a ReportTable.
+     * 
+     * @param reportTable the ReportTable to delete.
+     */
     void deleteReportTable( ReportTable reportTable );
-    
+
+    /**
+     * Retrieves the ReportTable with the given identifier.
+     * 
+     * @param id the identifier of the ReportTable to retrieve.
+     * @return the ReportTable.
+     */
     ReportTable getReportTable( int id );
-    
+
+    /**
+     * Retrieves a Collection of all ReportTables.
+     * 
+     * @return a Collection of ReportTables.
+     */
     Collection<ReportTable> getAllReportTables();
-    
+
+    /**
+     * Retrieves the ReportTable with the given name.
+     * 
+     * @param name the name of the ReportTable.
+     * @return the ReportTable.
+     */
     ReportTable getReportTableByName( String name );
 }

@@ -41,23 +41,85 @@ public interface ReportTableService
 {
     String ID = ReportTableService.class.getName();
     
+    /**
+     * Retrieves a List of Periods of the RelativePeriodType.
+     * 
+     * @param relatives the RelativePeriods.
+     * @param months the number of months back in time which will be used as
+     *        basis for the generation of relative Periods.
+     *        
+     * @return a Collection of Periods of the RelativePeriodType.
+     */
     List<Period> getRelativePeriods( RelativePeriods relatives, int months );
     
+    /**
+     * Returns the current date subtracted with the given number of months.
+     * 
+     * @param months the numner of months.
+     * @return a Date.
+     */
     Date getDateFromPreviousMonth( int months );
     
+    /**
+     * Saves a ReportTable.
+     * 
+     * @param reportTable the ReportTable to save.
+     * @return the generated identifier.
+     */
     int saveReportTable( ReportTable reportTable );
     
+    /**
+     * Updates a ReportTable.
+     * 
+     * @param reportTable the ReportTable to update.
+     */
     void updateReportTable( ReportTable reportTable );
     
+    /**
+     * Deletes a ReportTable.
+     * 
+     * @param reportTable the ReportTable to delete.
+     */
     void deleteReportTable( ReportTable reportTable );
     
+    /**
+     * Retrieves the ReportTable with the given identifier.
+     * 
+     * @param id the identifier of the ReportTable to retrieve.
+     * @return the ReportTable.
+     */
     ReportTable getReportTable( int id );
     
+    /**
+     * Retrieves a Collection of all ReportTables.
+     * 
+     * @return a Collection of ReportTables.
+     */
     Collection<ReportTable> getAllReportTables();
     
+    /**
+     * Retrieves ReportTables with the given identifiers.
+     * 
+     * @param reportTables the identfiers of the ReportTables to retrieve.
+     * @return a Collection of ReportTables.
+     */
     Collection<ReportTable> getReportTables( Collection<Integer> reportTables );
     
+    /**
+     * Retrieves the ReportTable with the given name.
+     * 
+     * @param name the name of the ReportTable.
+     * @return the ReportTable.
+     */
     ReportTable getReportTableByName( String name );
     
+    /**
+     * Retrieves a ReportTableData object for the ReportTable with the given
+     * identifier.
+     * 
+     * @param id the identifier of the ReportTable which the ReportTableData is
+     *        based on.
+     * @return a ReportTableData object.
+     */
     ReportTableData getReportTableData( int id );
 }

@@ -37,15 +37,48 @@ public interface SourceStore
 {
     String ID = SourceStore.class.getName();
 
+    /**
+     * Adds a Source.
+     * 
+     * @param source the Source to add.
+     * @return the generated identifier.
+     */
     <S extends Source> int addSource( S source );
 
+    /**
+     * Updated a Source.
+     * 
+     * @param source the Source to update.
+     */
     <S extends Source> void updateSource( S source );
 
+    /**
+     * Deletes a Source.
+     * 
+     * @param source the Source to delete.
+     */
     <S extends Source> void deleteSource( S source );
 
+    /**
+     * Retrieves the Source with the given identifier.
+     * 
+     * @param id the identifier of the Source to retrieve.
+     * @return the Source.
+     */
     <S extends Source> S getSource( int id );
 
+    /**
+     * Retrieves all Sources of the given Class.
+     * 
+     * @param clazz the Class of the Sources to retrieve.
+     * @return a Collection of Sources.
+     */
     <S extends Source> Collection<S> getAllSources( Class<S> clazz );
 
+    /**
+     * Retrieves all Sources.
+     * 
+     * @return a Collection of Sources.
+     */
     <S extends Source> Collection<S> getAllSources();
 }

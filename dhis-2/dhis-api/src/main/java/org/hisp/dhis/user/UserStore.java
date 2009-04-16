@@ -43,63 +43,196 @@ public interface UserStore
     // User
     // -------------------------------------------------------------------------
 
+    /**
+     * Adds a User.
+     * 
+     * @param user the User to add.
+     * @return the generated identifier.
+     */
     int addUser( User user );
 
+    /**
+     * Updates a User.
+     * 
+     * @param user the User to update.
+     */
     void updateUser( User user );
 
+    /**
+     * Retrieves the User with the given identifier.
+     * 
+     * @param idn the identifier of the User to retrieve.
+     * @return the User.
+     */
     User getUser( int id );
 
+    /**
+     * Returns a Collection of all Users.
+     * 
+     * @return a Collection of Users.
+     */
     Collection<User> getAllUsers();
 
+    /**
+     * Returns a Collection of the Users associated with the given OrganisationUnit.
+     * 
+     * @param organisationUnit the OrganisationUnit.
+     * @return a Collection of Users.
+     */
     Collection<User> getUsersByOrganisationUnit( OrganisationUnit organisationUnit );
 
+    /**
+     * Returns a Collection of the Users which are not associated with any OrganisationUnits.
+     * 
+     * @return a Collection of Users.
+     */
     Collection<User> getUsersWithoutOrganisationUnit();
 
+    /**
+     * Deletes a User.
+     * 
+     * @param user the User to delete.
+     */
     void deleteUser( User user );
 
     // -------------------------------------------------------------------------
     // UserCredentials
     // -------------------------------------------------------------------------
 
+    /**
+     * Adds a UserCredentials.
+     * 
+     * @param userCredentials the UserCredentials to add.
+     * @return the User which the UserCredentials is associated with.
+     */
     User addUserCredentials( UserCredentials userCredentials );
 
+    /**
+     * Updates a UserCredentials.
+     * 
+     * @param userCredentials the UserCredentials to update.
+     */
     void updateUserCredentials( UserCredentials userCredentials );
 
+    /**
+     * Retrieves the UserCredentials of the given User.
+     * 
+     * @param user the User.
+     * @return the UserCredentials.
+     */
     UserCredentials getUserCredentials( User user );
 
+    /**
+     * Retrieves the UserCredentials associated with the User with the given name.
+     * 
+     * @param username the name of the User.
+     * @return the UserCredentials.
+     */
     UserCredentials getUserCredentialsByUsername( String username );
     
+    /**
+     * Retrieves all UserCredentials.
+     * 
+     * @return a Collection of UserCredentials.
+     */
     Collection<UserCredentials> getAllUserCredentials();
 
+    /**
+     * Deletes a UserCredentials.
+     * 
+     * @param userCredentials the UserCredentials.
+     */
     void deleteUserCredentials( UserCredentials userCredentials );
 
     // -------------------------------------------------------------------------
     // UserAuthorityGroup
     // -------------------------------------------------------------------------
 
+    /**
+     * Adds a UserAuthorityGroup.
+     * 
+     * @param userAuthorityGroup the UserAuthorityGroup.
+     * @return the generated identifier.
+     */
     int addUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup );
 
+    /**
+     * Updates a UserAuthorityGroup.
+     * 
+     * @param userAuthorityGroup the UserAuthorityGroup.
+     */
     void updateUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup );
 
+    /**
+     * Retrieves the UserAuthorityGroup with the given identifier.
+     * 
+     * @param id the identifier of the UserAuthorityGroup to retrieve.
+     * @return the UserAuthorityGroup.
+     */
     UserAuthorityGroup getUserAuthorityGroup( int id );
     
+    /**
+     * Retrieves the UserAuthorityGroup with the given name.
+     * 
+     * @param name the name of the UserAuthorityGroup to retrieve.
+     * @return the UserAuthorityGroup.
+     */
     UserAuthorityGroup getUserAuthorityGroupByName( String name );
 
+    /**
+     * Retrieves all UserAuthorityGroups.
+     * 
+     * @return a Collectio of UserAuthorityGroups.
+     */
     Collection<UserAuthorityGroup> getAllUserAuthorityGroups();
 
+    /**
+     * Deletes a UserAuthorityGroup.
+     * 
+     * @param userAuthorityGroup the UserAuthorityGroup to delete.
+     */
     void deleteUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup );
 
     // -------------------------------------------------------------------------
     // UserSettings
     // -------------------------------------------------------------------------
 
+    /**
+     * Adds a UserSetting.
+     * 
+     * @param userSetting the UserSetting to add.
+     */
     void addUserSetting( UserSetting userSetting );
 
+    /**
+     * Updates a UserSetting.
+     * 
+     * @param userSetting the UserSetting to update.
+     */
     void updateUserSetting( UserSetting userSetting );
 
+    /**
+     * Retrieves the UserSetting associated with the given User for the given
+     * UserSetting name.
+     * 
+     * @param user the User.
+     * @param name the name of the UserSetting.
+     * @return the UserSetting.
+     */
     UserSetting getUserSetting( User user, String name );
 
+    /**
+     * Retrieves all UserSettings for the given User.
+     * 
+     * @param user the User.
+     * @return a Collection of UserSettings.
+     */
     Collection<UserSetting> getAllUserSettings( User user );
 
+    /**
+     * Deletes a UserSetting.
+     * 
+     * @param userSetting the UserSetting to delete.
+     */
     void deleteUserSetting( UserSetting userSetting );
 }
