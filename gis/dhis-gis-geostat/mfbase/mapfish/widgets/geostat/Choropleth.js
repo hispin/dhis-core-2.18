@@ -292,7 +292,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                         legendStore.baseParams = { indicatorId: iId, format: 'json' };
                         legendStore.reload();
                         
-                        classify(false);
+                        this.classify(false);
                     }
                 }
             }
@@ -345,7 +345,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 'select': {
                     fn: function()
                     {
-                        classify(false);
+                        this.classify(false);
                     }
                 }
             }
