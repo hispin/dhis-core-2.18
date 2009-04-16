@@ -35,7 +35,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import com.opensymphony.xwork.Action;
 
 /**
- * @author Jan Henrik Oeverland
+ * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetOrganisationUnitLevelsAction
