@@ -139,44 +139,38 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
      
     newUrl : false,
     
-    selectedValue : false,
-    
-       
     initComponent : function() {
     
-    
-        // DHIS
-        
         indicatorGroupStore = new Ext.data.JsonStore({
-              url: localhost + '/dhis-webservice/getAllIndicatorGroups.service',
-              baseParams: { format: 'json' },
-              root: 'indicatorGroups',
-              fields: ['id', 'name'],
-              autoLoad: true
-            });
+            url: localhost + '/dhis-webservice/getAllIndicatorGroups.service',
+            baseParams: { format: 'json' },
+            root: 'indicatorGroups',
+            fields: ['id', 'name'],
+            autoLoad: true
+        });
         
         indicatorStore = new Ext.data.JsonStore({
-              url: localhost + '/dhis-webservice/getIndicatorsByIndicatorGroup.service',
-              root: 'indicators',
-              fields: ['id', 'name'],
-              autoLoad: false
-            });
+            url: localhost + '/dhis-webservice/getIndicatorsByIndicatorGroup.service',
+            root: 'indicators',
+            fields: ['id', 'name'],
+            autoLoad: false
+        });
         
         periodTypeStore = new Ext.data.JsonStore({
-              url: localhost + '/dhis-webservice/getAllPeriodTypes.service',
-              baseParams: { format: 'json' },
-              root: 'periodTypes',
-              fields: ['id', 'name'],
-              autoLoad: true
-            });
+            url: localhost + '/dhis-webservice/getAllPeriodTypes.service',
+            baseParams: { format: 'json' },
+            root: 'periodTypes',
+            fields: ['id', 'name'],
+            autoLoad: true
+        });
             
         periodStore = new Ext.data.JsonStore({
-              url: localhost + '/dhis-webservice/getPeriodsByPeriodType.service',
-              baseParams: { periodTypeId: '9', format: 'json' },
-              root: 'periods',
-              fields: ['id', 'startDate'],
-              autoLoad: true
-            });
+            url: localhost + '/dhis-webservice/getPeriodsByPeriodType.service',
+            baseParams: { periodTypeId: '9', format: 'json' },
+            root: 'periods',
+            fields: ['id', 'startDate'],
+            autoLoad: true
+        });
             
         mapStore = new Ext.data.JsonStore({
             url: localhost + '/dhis-webservice/getAllMaps.service',
@@ -187,56 +181,21 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         }); 
             
         levelStore = new Ext.data.JsonStore({
-              url: localhost + '/dhis-webservice/getOrganisationUnitLevels.service',
-              baseParams: { format: 'json' },
-              root: 'organisationUnitLevels',
-              fields: ['level', 'name'],
-              autoLoad: true
-            });
-            
+            url: localhost + '/dhis-webservice/getOrganisationUnitLevels.service',
+            baseParams: { format: 'json' },
+            root: 'organisationUnitLevels',
+            fields: ['level', 'name'],
+            autoLoad: true
+        });
+
         legendStore = new Ext.data.JsonStore({
-              url: localhost + '/dhis-webservice/getLegendMinAndMaxOfIndicator.service',
-              root: 'legendSet',
-              fields: ['id', 'name'],
-              autoLoad: false
-            });
-            
-        gridStore = new Ext.data.JsonStore({
-            url: localhost + '/dhis-webservice/getOrganisationUnitsAtLevel.service',
-            baseParams: { level: this.selectedLevel, format: 'json' },
-            root: 'organisationUnits',
-            fields: ['id', 'name', 'geoCode'],
+            url: localhost + '/dhis-webservice/getLegendMinAndMaxOfIndicator.service',
+            root: 'legendSet',
+            fields: ['id', 'name'],
             autoLoad: false
         });
 
-        
-        gridView = new Ext.grid.GridView({ 
-            forceFit: true, 
-            getRowClass: function (row, index){
-                var cls = ''; 
-                var data = row.data;
-
-                switch (data.geoCode) { 
-                    case '': 
-                        cls = 'not-assigned-row';
-                        break;
-                    default:
-                        cls = 'assigned-row';
-                    }
-                return cls;
-            }
-        });
-        
-        
-
-
-        // end DHIS
-    
-
-    
         this.items = [
-        
-            // DHIS
          
         {
             xtype: 'combo',
@@ -371,15 +330,14 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     fn: function() {
                         var mlp = Ext.getCmp('map_cb').getValue();
                                      
-                            this.newUrl = mlp;
-                            this.classify(false);
+                        this.newUrl = mlp;
+                        this.classify(false);
                     },
                     scope: this
                 }
             }
         },
         
-          
         {
             xtype: 'combo',
             fieldLabel: 'Classes',
@@ -395,12 +353,9 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 fields: ['value'],
                 data: [[1], [2], [3], [4], [5], [6], [7], [8]]
             })
+        },
             
-            },
-            
-            {
-       
-
+        {
             xtype: 'combo',
             id: 'legend_cb',
             fieldLabel: 'Legend set',
@@ -449,7 +404,9 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 }
             }
 
-            },{
+        },
+        
+        {
             xtype: 'colorfield',
             fieldLabel: 'Color',
             id: 'colorA_cf',
@@ -457,7 +414,9 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             allowBlank: false,
             width: combo_width,
             value: "#FFFF00"
-        },{
+        },
+        
+        {
             xtype: 'colorfield',
             fieldLabel: 'Color',
             id: 'colorB_cf',
@@ -465,7 +424,9 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             allowBlank: false,
             width: combo_width,
             value: "#FF0000"
-        },{
+        },
+        
+        {
             xtype: 'button',
             text: 'Load map',
             handler: function()
@@ -480,7 +441,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 
         mapfish.widgets.geostat.Choropleth.superclass.initComponent.apply(this);
     },
-    
     
     setUrl: function(url) {
     
@@ -535,8 +495,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
      *      the widget isn't ready, or no indicator is specified, or no
      *      method is specified.
      */
-    classify: function(exception) {
-    
+    classify: function(exception)
+    {
         if (!this.ready) {
             Ext.MessageBox.alert('Error', 'Component init not complete');
             return;
@@ -565,9 +525,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         this.indicator = 'value';
         this.indicatorText = 'Indicator';
         options.indicator = this.indicator;
-
         
-        //options.method = "CLASSIFY_BY_EQUAL_INTERVALS";
         options.method = 1;
         options.numClasses = Ext.getCmp('numClasses').getValue();
         options.colors = this.getColors();
@@ -576,8 +534,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         this.coreComp.applyClassification();
         this.classificationApplied = true;
     },
-
-
 
     /**
      * Method: onRender
@@ -604,6 +560,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         };
 
         this.coreComp = new mapfish.GeoStat.Choropleth(this.map, coreOptions);
-    }
+    }   
 });
+
 Ext.reg('choropleth', mapfish.widgets.geostat.Choropleth);
