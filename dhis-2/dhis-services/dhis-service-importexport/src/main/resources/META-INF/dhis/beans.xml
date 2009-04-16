@@ -75,6 +75,10 @@
           <key><value>DHIS14XML</value></key>
           <ref bean="org.hisp.dhis.importexport.Dhis14XMLExportService"/>
         </entry>
+        <entry>
+          <key><value>CSV</value></key>
+          <ref bean="org.hisp.dhis.importexport.CSVExportService"/>
+        </entry>
 	  </map>
 	</property>
   </bean>
@@ -448,6 +452,16 @@
       ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="indicatorService"
       ref="org.hisp.dhis.indicator.IndicatorService"/>
+  </bean>
+  
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- DHIS 1.4 XML Export                                           -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    
+  <bean id="org.hisp.dhis.importexport.CSVExportService"
+    class="org.hisp.dhis.importexport.csv.exporter.DefaultCSVExportService">
+    <property name="reportTableService"
+      ref="org.hisp.dhis.reporttable.ReportTableService"/>
   </bean>
   
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
