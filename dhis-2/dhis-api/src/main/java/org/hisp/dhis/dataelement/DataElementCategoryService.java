@@ -71,16 +71,18 @@ public interface DataElementCategoryService
     DataElementCategory getDataElementCategory( int id );
     
     /**
+     * Retrieves the DataElementCategories with the given identifiers.
      * 
-     * @param identifiers
-     * @return
+     * @param identifiers the identifiers of the DataElementCategories to retrieve.
+     * @return a collection of DataElementCategories.
      */
     Collection<DataElementCategory> getDataElementCategories( Collection<Integer> identifiers );
     
     /**
+     * Retrieves the DataElementCategory with the given name.
      * 
-     * @param name
-     * @return
+     * @param name the name of the DataElementCategory to retrieve.
+     * @return the DataElementCategory.
      */
     DataElementCategory getDataElementCategoryByName( String name );
     
@@ -93,9 +95,11 @@ public interface DataElementCategoryService
     Collection<DataElementCategory> getAllDataElementCategories();
     
     /**
+     * Retrieves an ordered Collection of DataElementCategoryOptions for the given
+     * DataElementCategory.
      * 
-     * @param category
-     * @return
+     * @param category the DataElementCategory.
+     * @return a collection of DataElementCategories.
      */
-    Collection<DataElementCategoryOption> getOrderedOptions( DataElementCategory category );
+    Collection<DataElementCategoryOption> getOrderedOptions( DataElementCategory category ); // TODO List instead?
 }

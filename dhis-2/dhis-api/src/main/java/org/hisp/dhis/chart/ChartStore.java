@@ -37,15 +37,48 @@ public interface ChartStore
 {
     String ID = ChartStore.class.getName();
     
+    /**
+     * Saves the Chart.
+     * 
+     * @param chart the Chart to save.
+     * @return the generated identifier.
+     */
     int saveChart( Chart chart );
     
+    /**
+     * Saves or updates the Chart based on its persistent state.
+     * 
+     * @param chart the Chart to save or update.
+     */
     void saveOrUpdate( Chart chart );
     
+    /**
+     * Retrieves the Chart with the given identifier.
+     * 
+     * @param id the identifier of the Chart.
+     * @return the Chart.
+     */
     Chart getChart( int id );
     
+    /**
+     * Deletes a Chart.
+     * 
+     * @param chart the Chart to delete.
+     */
     void deleteChart( Chart chart );
     
+    /**
+     * Retrieves all Charts.
+     * 
+     * @return a collection of Charts.
+     */
     Collection<Chart> getAllCharts();
     
+    /**
+     * Retrieves the Chart with the given title.
+     * 
+     * @param title the title of the Chart.
+     * @return the Chart.
+     */
     Chart getChartByTitle( String title );
 }

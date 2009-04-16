@@ -36,20 +36,65 @@ import java.util.Collection;
 public interface DataElementCategoryComboService 
 {	
     String ID = DataElementCategoryComboService.class.getName();
-	
+    
+    /**
+     * Adds a DataElementCategoryCombo.
+     * 
+     * @param dataElementCategoryCombo the DataElementCategoryCombo to add.
+     * @return the generated identifier.
+     */
     int addDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo );
-   
+
+    /**
+     * Updates a DataElementCategoryCombo.
+     * 
+     * @param dataElementCategoryCombo the DataElementCategoryCombo to update.
+     */
     void updateDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo );
 
+    /**
+     * Deletes a DataElementCategoryCombo.
+     * 
+     * @param dataElementCategoryCombo the DataElementCategoryCombo to delete.
+     */
     void deleteDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo );
  
+    /**
+     * Retrieves a DataElementCategoryCombo with the given identifier.
+     * 
+     * @param id the identifier of the DataElementCategoryCombo to retrieve.
+     * @return the DataElementCategoryCombo.
+     */
     DataElementCategoryCombo getDataElementCategoryCombo( int id );
     
+    /**
+     * Retrieves the DataElementCategoryCombo with the given identifiers.
+     * 
+     * @param identifiers the identifiers.
+     * @return a collection of DataElementCategoryCombos.
+     */
     Collection<DataElementCategoryCombo> getDataElementCategoryCombos( Collection<Integer> identifiers );
     
+    /**
+     * Retrieves the DataElementCategoryCombo with the given name.
+     * 
+     * @param name the name of the DataElementCategoryCombo to retrieve.
+     * @return the DataElementCategoryCombo.
+     */
     DataElementCategoryCombo getDataElementCategoryComboByName( String name );
     
+    /**
+     * Retrieves all DataElementCategoryCombos.
+     * 
+     * @return a collection of DataElementCategoryCombos.
+     */
     Collection<DataElementCategoryCombo> getAllDataElementCategoryCombos();
     
+    /**
+     * Retrieves an ordered collection of DataElementCategories for the given DataElementCategoryCombo.
+     * 
+     * @param dataElementCategoryCombo the DataElementCategoryCombo.
+     * @return a Collection of DataElementCategoryCombos.
+     */
     Collection<DataElementCategory> getOrderCategories( DataElementCategoryCombo dataElementCategoryCombo );
 }

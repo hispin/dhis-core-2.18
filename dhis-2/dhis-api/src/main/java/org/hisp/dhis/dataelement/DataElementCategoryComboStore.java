@@ -36,17 +36,49 @@ import java.util.Collection;
 public interface DataElementCategoryComboStore
 {    
     String ID = DataElementCategoryComboStore.class.getName();
-    
+
+    /**
+     * Adds a DataElementCategoryCombo.
+     * 
+     * @param dataElementCategoryCombo the DataElementCategoryCombo to add.
+     * @return the generated identifier.
+     */
     int addDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo );
-    
+
+    /**
+     * Updates a DataElementCategoryCombo.
+     * 
+     * @param dataElementCategoryCombo the DataElementCategoryCombo to update.
+     */
     void updateDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo );
 
+    /**
+     * Deletes a DataElementCategoryCombo.
+     * 
+     * @param dataElementCategoryCombo the DataElementCategoryCombo to delete.
+     */
     void deleteDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo );            
-    
+
+    /**
+     * Retrieves a DataElementCategoryCombo with the given identifier.
+     * 
+     * @param id the identifier of the DataElementCategoryCombo to retrieve.
+     * @return the DataElementCategoryCombo.
+     */
     DataElementCategoryCombo getDataElementCategoryCombo( int id );
-    
+
+    /**
+     * Retrieves the DataElementCategoryCombo with the given name.
+     * 
+     * @param name the name of the DataElementCategoryCombo to retrieve.
+     * @return the DataElementCategoryCombo.
+     */
     DataElementCategoryCombo getDataElementCategoryComboByName( String name );
-    
-    Collection<DataElementCategoryCombo> getAllDataElementCategoryCombos(); 
-    
+
+    /**
+     * Retrieves all DataElementCategoryCombos.
+     * 
+     * @return a collection of DataElementCategoryCombos.
+     */
+    Collection<DataElementCategoryCombo> getAllDataElementCategoryCombos();    
 }

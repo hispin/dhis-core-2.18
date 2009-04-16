@@ -259,5 +259,4 @@ public interface DataElementStore
      *         no DataElementGroups exist.
      */
     Collection<DataElementGroup> getAllDataElementGroups();
-
 }

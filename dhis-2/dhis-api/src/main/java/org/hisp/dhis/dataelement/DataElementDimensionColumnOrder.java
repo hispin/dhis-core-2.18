@@ -76,12 +76,12 @@ public class DataElementDimensionColumnOrder
     @Override   
     public boolean equals( Object object )
     {
-        if( this == object )
+        if ( this == object )
         {
             return true;
         }
         
-        if( ( object == null) || ( object.getClass() != this.getClass() ) )
+        if ( ( object == null) || ( object.getClass() != this.getClass() ) )
         {
             return false;
         }
@@ -124,7 +124,5 @@ public class DataElementDimensionColumnOrder
     public void setDisplayOrder( int displayOrder )
     {
         this.displayOrder = displayOrder;
-    }  
-    
+    }
 }
-
