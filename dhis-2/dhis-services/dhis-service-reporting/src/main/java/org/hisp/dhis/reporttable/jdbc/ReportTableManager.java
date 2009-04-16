@@ -51,10 +51,31 @@ public interface ReportTableManager
      */
     void createReportTable( ReportTable reportTable );
     
+    /**
+     * Deletes a ReportTable.
+     * 
+     * @param reportTable the ReportTable to delete.
+     */
     void removeReportTable( ReportTable reportTable );
     
+    /**
+     * Returns an AggregatedValueMap.
+     * 
+     * @param reportTable the ReportTable.
+     * @param indicator the Indicator.
+     * @param categoryOptionCombo the DataElementCategoryOptionCombo.
+     * @param period the Period.
+     * @param unit the OrganisationUnit.
+     * @return a Map with String as keys and Double as values.
+     */
     Map<String, Double> getAggregatedValueMap( ReportTable reportTable, MetaObject indicator, 
         DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit );
     
+    /**
+     * Returns a ReportTableData object for the given ReportTable.
+     * 
+     * @param reportTable the ReportTable.
+     * @return a ReportTableData object.
+     */
     ReportTableData getReportTable( ReportTable reportTable );
 }

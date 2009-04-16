@@ -40,23 +40,81 @@ import org.hisp.dhis.source.Source;
 public interface CompleteDataSetRegistrationStore
 {
     String ID = CompleteDataSetRegistrationStore.class.getName();
-    
+
+    /**
+     * Saves a CompleteDataSetRegistration.
+     * 
+     * @param registration the CompleteDataSetRegistration to save.
+     */
     void saveCompleteDataSetRegistration( CompleteDataSetRegistration registration );
-    
+
+    /**
+     * Retrieves the CompleteDataSetRegistration for the given DataSet, Period
+     * and Source.
+     * 
+     * @param dataSet the DataSet.
+     * @param period the Period.
+     * @param source the Source.
+     * @return the CompleteDataSetRegistration.
+     */
     CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, Source source );
-    
+
+    /**
+     * Deletes a CompleteDataSetRegistration.
+     * 
+     * @param registration the CompleteDataSetRegistration to delete.
+     */
     void deleteCompleteDataSetRegistration( CompleteDataSetRegistration registration );
-    
+
+    /**
+     * Retrieves a Collection of CompleteDataSetRegistration for the given DataSet, 
+     * Collection of Sources and Period.
+     * 
+     * @param dataSet the DataSet.
+     * @param sources the Collection of Sources.
+     * @param period the Period.
+     * @return the number of existing CompleteDataSetRegistrations.
+     */
     Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
         DataSet dataSet, Collection<? extends Source> sources, Period period );
     
+    /**
+     * Retrieves all CompleteDataSetRegistration.
+     * 
+     * @return a Collection of CompleteDataSetRegistrations.
+     */
     Collection<CompleteDataSetRegistration> getAllCompleteDataSetRegistrations();
     
+    /**
+     * Retrieves a Collection of CompleteDataSetRegistrations for the given Collection 
+     * of DataSets, Sources and Periods.
+     * 
+     * @param dataSets the Collection of DataSets.
+     * @param sources the Collection of Sources.
+     * @param periods the Collection of Periods.
+     * @return a Collection of CompleteDataSetRegistrations.
+     */
     Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
         Collection<DataSet> dataSets, Collection<? extends Source> sources, Collection<Period> periods );
     
+    /**
+     * Retrieves a Collection of CompleteDataSetRegistrations for the given DataSet,
+     * Collection of Sources, Period and Date. The Date deadline is the date that 
+     * the registration must be made before in order to be defined as "on time".
+     * 
+     * @param dataSet the DataSet.
+     * @param sources the Collection of Sources.
+     * @param period the Period.
+     * @param deadline the Date.
+     * @return a Collection of CompleteDataSetRegistrations.
+     */
     Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
         DataSet dataSet, Collection<? extends Source> sources, Period period, Date deadline );
-    
+
+    /**
+     * Deletes the CompleteDataSetRegistrations associated with the given DataSet.
+     * 
+     * @param dataSet the DataSet.
+     */
     void deleteCompleteDataSetRegistrations( DataSet dataSet );
 }

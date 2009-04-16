@@ -33,17 +33,56 @@ public interface SectionService
 {
     String ID = SectionService.class.getName();
     
+    /**
+     * Adds a Section.
+     * 
+     * @param section the Section to add.
+     * @return the generated identifier.
+     */
     int addSection( Section section );
 
+    /**
+     * Updates a Section.
+     * 
+     * @param section the Section to update.
+     */
     void updateSection( Section section );
 
+    /**
+     * Deletes a Section.
+     * 
+     * @param section the Section to delete.
+     */
     void deleteSection( Section section );
    
+    /**
+     * Retrieves the Section with the given identifier.
+     * 
+     * @param id the identifier of the Section to retrieve.
+     * @return the Section.
+     */
     Section getSection( int id );
 
+    /**
+     * Retrieves the Section with the given name.
+     * 
+     * @param name the name of the Section to retrieve.
+     * @return the Section.
+     */
     Section getSectionByName( String name );
     
+    /**
+     * Retrieves all Sections.
+     * 
+     * @return a Collection of Sections.
+     */
     Collection<Section> getAllSections();
     
-    Collection<Section> getSectionByDataSet(DataSet dataSet);
+    /**
+     * Retrieves all Sections for the given DataSet.
+     * 
+     * @param dataSet the DataSet.
+     * @return a Collection of Sections.
+     */
+    Collection<Section> getSectionByDataSet( DataSet dataSet );
 }

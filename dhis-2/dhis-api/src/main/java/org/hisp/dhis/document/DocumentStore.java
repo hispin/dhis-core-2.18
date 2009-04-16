@@ -36,14 +36,42 @@ import java.util.Collection;
 public interface DocumentStore
 {
     String ID = DocumentStore.class.getName();
-    
+
+    /**
+     * Saves a Document.
+     * 
+     * @param document the Document to save.
+     * @return the generated identifier.
+     */
     int saveDocument( Document document );
-        
+
+    /**
+     * Retrieves the Document with the given identifier.
+     * 
+     * @param id the identifier of the Document.
+     * @return the Document.
+     */
     Document getDocument( int id );
-    
+
+    /**
+     * Deletes a Document.
+     * 
+     * @param document the Document to delete.
+     */
     void deleteDocument( Document document );
-    
+
+    /**
+     * Retrieves all Documents.
+     * 
+     * @return a Collection of Documents.
+     */
     Collection<Document> getAllDocuments();
-    
+
+    /**
+     * Retrieves the Document with the given name.
+     * 
+     * @param name the name of the Document.
+     * @return the Document.
+     */
     Document getDocumentByName( String name );
 }
