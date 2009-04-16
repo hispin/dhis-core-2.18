@@ -9,7 +9,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.mapping.MappingService"
     class="org.hisp.dhis.mapping.DefaultMappingService">
-    <property name="mappingStore"
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+	<property name="mappingStore"
       ref="org.hisp.dhis.mapping.MappingStore"/>
 	<property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>

@@ -1012,7 +1012,7 @@
 	<request>
       <name>addOrUpdateMap</name>
 	  <type>void</type>
-      <bean>org.hisp.dhis.webservice.adapter.mapping.MappingServiceAdapter</bean>
+      <bean>org.hisp.dhis.mapping.MappingServiceAdapter</bean>
       <method>addOrUpdateMap</method>
       <parameters>
 		<parameter>
@@ -1092,7 +1092,7 @@
 	<request>
       <name>deleteMapByMapLayerPath</name>
 	  <type>void</type>
-      <bean>org.hisp.dhis.webservice.adapter.mapping.MappingServiceAdapter</bean>
+      <bean>org.hisp.dhis.mapping.MappingService</bean>
       <method>deleteMapByMapLayerPath</method>
       <parameters>
 		<parameter>
@@ -1105,7 +1105,7 @@
 	<request>
       <name>addOrUpdateMapOrganisationUnitRelation</name>
 	  <type>void</type>
-      <bean>org.hisp.dhis.webservice.adapter.mapping.MappingServiceAdapter</bean>
+      <bean>org.hisp.dhis.mapping.MappingService</bean>
       <method>addOrUpdateMapOrganisationUnitRelation</method>
       <parameters>
 		<parameter>
@@ -1125,7 +1125,7 @@
 	  
 	<request>
       <name>getAvailableMapOrganisationUnitRelations</name>
-      <bean>org.hisp.dhis.webservice.adapter.mapping.MappingServiceAdapter</bean>
+      <bean>org.hisp.dhis.mapping.MappingService</bean>
       <method>getAvailableMapOrganisationUnitRelations</method>
 	  <parameters>
 		<parameter>
