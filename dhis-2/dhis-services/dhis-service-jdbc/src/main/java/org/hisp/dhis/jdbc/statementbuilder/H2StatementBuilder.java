@@ -239,7 +239,7 @@ public class H2StatementBuilder
     {
         return
             "DELETE FROM datavalue " +
-            "WHERE datavalue.value IN ( '0', '0.', '.0', '0.0', ' 0', '0 ', '0 0' )";
+            "WHERE datavalue.value = '0'";
     }
 
     public int getMaximumNumberOfColumns()
