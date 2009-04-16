@@ -225,6 +225,7 @@ Ext.onReady(function()
     
     var zoomComboBox = new Ext.form.ComboBox({
         id: 'zoom_cb',
+        editable: false,
         emptyText: 'Required',
         displayField: 'value',
         valueField: 'value',
@@ -341,7 +342,6 @@ Ext.onReady(function()
         {
             var mlp = Ext.getCmp('deletemap_cb').getValue();
             
-alert(mlp);            
             if (!mlp)
             {
                 Ext.MessageBox.alert('Error', 'Choose a map');
@@ -398,7 +398,7 @@ alert(mlp);
                             Ext.getCmp('deletemap_b').setVisible(false);
                         }
                         
-                        if (tab.id == 1)
+                        else if (tab.id == 1)
                         {
                             Ext.getCmp('panel1_p').setVisible(false);
                             Ext.getCmp('panel2_p').setVisible(true);
@@ -407,7 +407,7 @@ alert(mlp);
                             Ext.getCmp('deletemap_b').setVisible(false);
                         }
                         
-                        if (tab.id == 2)
+                        else if (tab.id == 2)
                         {
                             Ext.getCmp('panel1_p').setVisible(false);
                             Ext.getCmp('panel2_p').setVisible(false);
@@ -421,7 +421,6 @@ alert(mlp);
                 {
                     title:'New map',
                     id: '0',
-                    defaults:{layout: 'fit', border: false, bodyStyle: 'padding:10px'},
                     items:
                     [
                         {
@@ -454,7 +453,6 @@ alert(mlp);
                 {
                     title:'Edit map',
                     id: '1',
-                    defaults:{layout: 'fit', border: false, bodyStyle: 'padding:8px'},
                     items:
                     [
                         {
@@ -514,7 +512,6 @@ alert(mlp);
                 {
                     title:'Delete map',
                     id: '2',
-                    defaults:{layout: 'fit', border: false, bodyStyle: 'padding:8px'},
                     items:
                     [
                         {
