@@ -53,14 +53,14 @@ public class DefaultMappingService
     {
         this.mappingService = mappingService;
     }
-    
+
     private MappingStore mappingStore;
 
     public void setMappingStore( MappingStore mappingStore )
     {
         this.mappingStore = mappingStore;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -81,36 +81,6 @@ public class DefaultMappingService
         return mappingStore.addMap( map );
     }
 
-    public void updateMap( Map map )
-    {
-        mappingStore.updateMap( map );
-    }
-
-    public void deleteMap( Map map )
-    {
-        mappingStore.deleteMap( map );
-    }
-
-    public Map getMap( int id )
-    {
-        return mappingStore.getMap( id );
-    }
-    
-    public Map getMapByMapLayerPath( String mapLayerPath )
-    {
-        return mappingStore.getMapByMapLayerPath( mapLayerPath );
-    }
-
-    public Collection<Map> getAllMaps()
-    {
-        return mappingStore.getAllMaps();
-    }
-
-    public Collection<Map> getMapsAtLevel( OrganisationUnitLevel organisationUnitLevel )
-    {
-        return mappingStore.getMapsAtLevel( organisationUnitLevel );
-    }
-    
     public int addMap( String mapLayerPath, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
         String nameColumn, String longitude, String latitude, int zoom )
     {
@@ -159,14 +129,44 @@ public class DefaultMappingService
             mappingService.addMap( map );
         }
     }
-    
+
+    public void updateMap( Map map )
+    {
+        mappingStore.updateMap( map );
+    }
+
+    public void deleteMap( Map map )
+    {
+        mappingStore.deleteMap( map );
+    }
+
     public void deleteMapByMapLayerPath( String mapLayerPath )
     {
         Map map = mappingService.getMapByMapLayerPath( mapLayerPath );
-        
+
         mappingService.deleteMap( map );
     }
-    
+
+    public Map getMap( int id )
+    {
+        return mappingStore.getMap( id );
+    }
+
+    public Map getMapByMapLayerPath( String mapLayerPath )
+    {
+        return mappingStore.getMapByMapLayerPath( mapLayerPath );
+    }
+
+    public Collection<Map> getAllMaps()
+    {
+        return mappingStore.getAllMaps();
+    }
+
+    public Collection<Map> getMapsAtLevel( OrganisationUnitLevel organisationUnitLevel )
+    {
+        return mappingStore.getMapsAtLevel( organisationUnitLevel );
+    }
+
     // -------------------------------------------------------------------------
     // MapOrganisationUnitRelation
     // -------------------------------------------------------------------------
@@ -176,52 +176,6 @@ public class DefaultMappingService
         return mappingStore.addMapOrganisationUnitRelation( mapOrganisationUnitRelation );
     }
 
-    public void updateMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
-    {
-        mappingStore.updateMapOrganisationUnitRelation( mapOrganisationUnitRelation );
-    }
-
-    public void deleteMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
-    {
-        mappingStore.deleteMapOrganisationUnitRelation( mapOrganisationUnitRelation );
-    }
-
-    public MapOrganisationUnitRelation getMapOrganisationUnitRelation( int id )
-    {
-        return mappingStore.getMapOrganisationUnitRelation( id );
-    }
-    
-    public MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit )
-    {
-        return mappingStore.getMapOrganisationUnitRelation( map, organisationUnit );
-    }
-
-    public Collection<MapOrganisationUnitRelation> getAllMapOrganisationUnitRelations()
-    {
-        return mappingStore.getAllMapOrganisationUnitRelations();
-    }
-
-    public Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationByMap( Map map )
-    {
-        return mappingStore.getMapOrganisationUnitRelationByMap( map );
-    }
-    
-    public Collection<MapOrganisationUnitRelation> getAvailableMapOrganisationUnitRelations( Map map )
-    {
-        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( map.getOrganisationUnitLevel().getLevel() );
-        
-        Collection<MapOrganisationUnitRelation> relations = new ArrayList<MapOrganisationUnitRelation>();
-        
-        for ( OrganisationUnit unit : organisationUnits )
-        {
-            MapOrganisationUnitRelation relation = getMapOrganisationUnitRelation( map, unit );
-            
-            relations.add( relation != null ? relation : new MapOrganisationUnitRelation( map, unit, null ) );
-        }
-        
-        return relations;
-    }
-    
     public int addMapOrganisationUnitRelation( String mapLayerPath, int organisationUnitId, String featureId )
     {
         Map map = mappingService.getMapByMapLayerPath( mapLayerPath );
@@ -255,6 +209,53 @@ public class DefaultMappingService
 
             mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelation );
         }
+    }
+
+    public void updateMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
+    {
+        mappingStore.updateMapOrganisationUnitRelation( mapOrganisationUnitRelation );
+    }
+
+    public void deleteMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
+    {
+        mappingStore.deleteMapOrganisationUnitRelation( mapOrganisationUnitRelation );
+    }
+
+    public MapOrganisationUnitRelation getMapOrganisationUnitRelation( int id )
+    {
+        return mappingStore.getMapOrganisationUnitRelation( id );
+    }
+
+    public MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit )
+    {
+        return mappingStore.getMapOrganisationUnitRelation( map, organisationUnit );
+    }
+
+    public Collection<MapOrganisationUnitRelation> getAllMapOrganisationUnitRelations()
+    {
+        return mappingStore.getAllMapOrganisationUnitRelations();
+    }
+
+    public Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationByMap( Map map )
+    {
+        return mappingStore.getMapOrganisationUnitRelationByMap( map );
+    }
+
+    public Collection<MapOrganisationUnitRelation> getAvailableMapOrganisationUnitRelations( Map map )
+    {
+        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( map
+            .getOrganisationUnitLevel().getLevel() );
+
+        Collection<MapOrganisationUnitRelation> relations = new ArrayList<MapOrganisationUnitRelation>();
+
+        for ( OrganisationUnit unit : organisationUnits )
+        {
+            MapOrganisationUnitRelation relation = getMapOrganisationUnitRelation( map, unit );
+
+            relations.add( relation != null ? relation : new MapOrganisationUnitRelation( map, unit, null ) );
+        }
+
+        return relations;
     }
 
     public Collection<MapOrganisationUnitRelation> getAvailableMapOrganisationUnitRelations( String mapLayerPath )
