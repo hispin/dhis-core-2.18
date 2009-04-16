@@ -120,6 +120,7 @@ Ext.onReady(function()
         triggerAction: 'all',
         selectOnFocus: true,
         width: combo_width,
+        minListWidth: combo_width,
         store: organisationUnitLevelStore,
         listeners: {
             'select': {
@@ -140,12 +141,13 @@ Ext.onReady(function()
         editable: false,
         valueField: 'name',
         displayField: 'name',
-        emptyText: 'Required',
+        emptyText: 'Requiredss',
         mode: 'remote',
         forceSelection: true,
         triggerAction: 'all',
         selectOnFocus: true,
         width: combo_width,
+        minListWidth: combo_width + 26,
         store: organisationUnitStore
     });
     
@@ -162,6 +164,7 @@ Ext.onReady(function()
         triggerAction: 'all',
         selectOnFocus: true,
         width: combo_width,
+        minListWidth: combo_width + 26,
         store: organisationUnitLevelStore,
         listeners: {
             'select': {
@@ -230,6 +233,7 @@ Ext.onReady(function()
         displayField: 'value',
         valueField: 'value',
         width: combo_width,
+        minListWidth: combo_width + 26,
         triggerAction: 'all',
         mode: 'local',
         value: 5,
