@@ -36,18 +36,58 @@ import java.util.Collection;
 public interface DataElementCategoryOptionStore
 {    
     String ID = DataElementCategoryOptionStore.class.getName();
-    
+
+    /**
+     * Adds a DataElementCategoryOption.
+     * 
+     * @param dataElemtnCategoryOption the DataElementCategoryOption to add.
+     * @return a generated unique id of the added DataElementCategoryOption.
+     */
     int addDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption );
-    
+
+    /**
+     * Updates a DataElementCategoryOption.
+     * 
+     * @param dataElementCategoryOption the DataElementCategoryOption to update.
+     */
     void updateDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption );
-    
+
+    /**
+     * Deletes a DataElementCategoryOption.
+     * 
+     * @param dataElementCategoryOption
+     */
     void deleteDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption );
-    
+
+    /**
+     * Returns a DataElementCategoryOption.
+     * 
+     * @param id the id of the DataElementCategoryOption to return.
+     * @return the DataElementCategoryOption with the given id, or null if no match.
+     */
     DataElementCategoryOption getDataElementCategoryOption( int id );
-    
+
+    /**
+     * Retrieves the DataElementCategoryOption with the given name.
+     * 
+     * @param name the name of the DataElementCategoryOption.
+     * @return the DataElementCategoryOption.
+     */
     DataElementCategoryOption getDataElementCategoryOptionByName( String name );
-    
+
+    /**
+     * Retrieves the DataElementCategoryOption with the given short name.
+     * 
+     * @param shortName the short name of the DataElementCategoryOption to retrieve.
+     * @return the DataElementCategoryOption.
+     */
     DataElementCategoryOption getDataElementCategoryOptionByShortName( String shortName );
-        
+
+    /**
+     * Returns all DataElementCategoryOptions.
+     * 
+     * @return a collection of all DataElementCategoryOptions, or an empty collection if there
+     *         are no DataElementCategoryOptions.
+     */
     Collection<DataElementCategoryOption> getAllDataElementCategoryOptions();
 }

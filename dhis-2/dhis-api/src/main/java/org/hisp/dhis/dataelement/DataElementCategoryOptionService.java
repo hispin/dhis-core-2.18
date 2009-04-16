@@ -36,7 +36,7 @@ import java.util.Collection;
 public interface DataElementCategoryOptionService 
 {	
     String ID = DataElementCategoryOptionService.class.getName();
-	
+    
     /**
      * Adds a DataElementCategoryOption.
      * 
@@ -53,6 +53,7 @@ public interface DataElementCategoryOptionService
     void updateDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption );
     
     /**
+     * Deletes a DataElementCategoryOption.
      * 
      * @param dataElementCategoryOption
      */
@@ -67,19 +68,27 @@ public interface DataElementCategoryOptionService
     DataElementCategoryOption getDataElementCategoryOption( int id );
     
     /**
+     * Retrieves the DataElementCategoryOptions with the given identifiers.
      * 
-     * @param identifiers
-     * @return
+     * @param identifiers the identifiers of the DataElementCategoryOption to retrieve.
+     * @return a Collection of DataElementCategoryOptions.
      */
     Collection<DataElementCategoryOption> getDataElementCategoryOptions( Collection<Integer> identifiers );
     
     /**
+     * Retrieves the DataElementCategoryOption with the given name.
      * 
-     * @param name
-     * @return
+     * @param name the name of the DataElementCategoryOption.
+     * @return the DataElementCategoryOption.
      */
     DataElementCategoryOption getDataElementCategoryOptionByName( String name );
     
+    /**
+     * Retrieves the DataElementCategoryOption with the given short name.
+     * 
+     * @param shortName the short name of the DataElementCategoryOption to retrieve.
+     * @return the DataElementCategoryOption.
+     */
     DataElementCategoryOption getDataElementCategoryOptionByShortName( String shortName );
     
     /**

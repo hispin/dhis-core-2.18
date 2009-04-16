@@ -345,6 +345,5 @@ public interface DataElementService
      * @param dataElement the DataElement which the DataElementGroups must contain.
      * @return a collection of all DataElementGroups that contain the given DataElement.
      */
-    Collection<DataElementGroup> getGroupsContainingDataElement( DataElement dataElement );    
-    
+    Collection<DataElementGroup> getGroupsContainingDataElement( DataElement dataElement );
 }

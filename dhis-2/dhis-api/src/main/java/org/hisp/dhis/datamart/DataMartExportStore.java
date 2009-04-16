@@ -36,14 +36,41 @@ import java.util.Collection;
 public interface DataMartExportStore
 {
     String ID = DataMartExportStore.class.getName();
-    
+
+    /**
+     * Saves a DataMartExport.
+     * 
+     * @param export the DataMartExport to save.
+     */
     void saveDataMartExport( DataMartExport export );
-    
+
+    /**
+     * Retrieves the DataMartExport with the given identifier.
+     * 
+     * @param id the identifier of the DataMartExport.
+     * @return the DataMartExport.
+     */
     DataMartExport getDataMartExport( int id );
-    
+
+    /**
+     * Deletes a DataMartExport.
+     * 
+     * @param export the DataMartExport to delete.
+     */
     void deleteDataMartExport( DataMartExport export );
-    
+
+    /**
+     * Retrieves all DataMartExports.
+     * 
+     * @return a Collection of DataMartExports.
+     */
     Collection<DataMartExport> getAllDataMartExports();
-    
+
+    /**
+     * Retrieves the DataMartExport with the given name.
+     * 
+     * @param name the name of the DataMartExport to retrieve.
+     * @return the DataMartExport.
+     */
     DataMartExport getDataMartExportByName( String name );
 }

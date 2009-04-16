@@ -60,33 +60,37 @@ public interface DataElementDimensionRowOrderService
     void deleteDataElementDimensionRowOrder( DataElementDimensionRowOrder dataElementDimensionRowOrder );  
     
     /**
+     * Deletes the DataElementDimensionRowOrder associated with the given
+     * DataElementCategoryCombo.
      * 
-     * @param categoryCombo
-     * @return
+     * @param categoryOption the DataElementCategoryCombo.
+     * @return the number of deleted objects.
      */
     int deleteDataElementDimensionRowOrder( DataElementCategoryCombo categoryCombo );
     
     /**
+     * Deletes the DataElementDimensionRowOrder associated with the given
+     * DataElementCategory.
      * 
-     * @param category
-     * @return
+     * @param category the DataElementCategory.
+     * @return the number of deleted objects.
      */
     int deleteDataElementDimensionRowOrder( DataElementCategory category );
     
     /**
+     * Retrievs the DataElementDimensionRowOrder for the given DataElementCategoryCombo
+     * and DataElementCategory.
      * 
-     * @param categoryCombo
-     * @param category
-     * @return
+     * @param categoryCombo the DataElementCategoryCombo.
+     * @param category the DataElementCategory.
+     * @return the DataElementDimensionRowOrder.
      */
     DataElementDimensionRowOrder getDataElementDimensionRowOrder( DataElementCategoryCombo categoryCombo,  DataElementCategory category);
 
     /**
      * Returns all DataElementDimensionRowOrders which belong to a single table row.
      * 
-     * @return a collection of all DataElementDimensionRowOrders, or an empty collection if there
-     *         are no DataElementDimensionRowOrders.
+     * @return a collection of all DataElementDimensionRowOrders.
      */
     Collection<DataElementDimensionRowOrder> getDataElementDimensionRowOrders( DataElementCategoryCombo categoryCombo );
-
 }

@@ -38,16 +38,53 @@ import org.hisp.dhis.dataelement.DataElementCategory;
 public interface DataElementCategoryStore
 {    
     String ID = DataElementCategoryStore.class.getName();
-    
+
+    /**
+     * Adds a DataElementCategory.
+     * 
+     * @param dataElementCategory the DataElementCategory to add.
+     * @return a generated unique id of the added Category.
+     */
     int addDataElementCategory( DataElementCategory dataElementCategory );
-    
+
+    /**
+     * Updates a DataElementCategory.
+     * 
+     * @param dataElementCategory the DataElementCategory to update.
+     */
     void updateDataElementCategory( DataElementCategory dataElementCategory );
-    
+
+    /**
+     * Deletes a DataElementCategory. The DataElementCategory is also removed from any
+     * DataElementCategoryCombos if it is a member of. It is not possible to delete a
+     * DataElementCategory with options.
+     * 
+     * @param dataElementCategory the DataElementCategory to delete.
+     * @throws HierarchyViolationException if the DataElementCategory has children.
+     */
     void deleteDataElementCategory( DataElementCategory dataElementCategory );    
-    
+
+    /**
+     * Returns a DataElementCategory.
+     * 
+     * @param id the id of the DataElementCTEGORY to return.
+     * @return the DataElementCategory with the given id, or null if no match.
+     */
     DataElementCategory getDataElementCategory( int id );
-    
+
+    /**
+     * Retrieves the DataElementCategory with the given name.
+     * 
+     * @param name the name of the DataElementCategory to retrieve.
+     * @return the DataElementCategory.
+     */
     DataElementCategory getDataElementCategoryByName( String name );
-    
+
+    /**
+     * Returns all DataElementCategories.
+     * 
+     * @return a collection of all DataElementCategories, or an empty collection if there
+     *         are no DataElementCategories.
+     */
     Collection<DataElementCategory> getAllDataElementCategories();
 }

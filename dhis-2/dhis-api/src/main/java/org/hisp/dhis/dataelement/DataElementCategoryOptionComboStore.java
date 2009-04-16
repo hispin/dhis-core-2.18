@@ -37,13 +37,40 @@ public interface DataElementCategoryOptionComboStore
 {    
     String ID = DataElementCategoryOptionComboStore.class.getName();
 
+    /**
+     * Adds a DataElementCategoryOptionCombo.
+     * 
+     * @param dataElementCategoryOptionCombo the DataElementCategoryOptionCombo to add.
+     * @return the generated identifier.
+     */
     int addDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo );
-    
+
+    /**
+     * Updates a DataElementCategoryOptionCombo.
+     * 
+     * @param dataElementCategoryOptionCombo the DataElementCategoryOptionCombo to update.
+     */
     void updateDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo );
 
+    /**
+     * Retrieves a DataElementCategoryOptionCombo with the given identifier.
+     * 
+     * @param id the identifier of the DataElementCategoryOptionCombo.
+     * @return the DataElementCategoryOptionCombo.
+     */
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( int id );
     
+    /**
+     * Deletes a DataElementCategoryOptionCombo.
+     * 
+     * @param dataElementCategoryOptionCombo the DataElementCategoryOptionCombo to delete.
+     */
     void deleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo );
-    
+
+    /**
+     * Retrieves all DataElementCategoryOptionCombos.
+     * 
+     * @return a Collection of DataElementCategoryOptionCombos.
+     */
     Collection<DataElementCategoryOptionCombo> getAllDataElementCategoryOptionCombos();   
 }

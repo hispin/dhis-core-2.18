@@ -41,15 +41,49 @@ public interface DataDictionaryService
     // DataDictionary
     // -------------------------------------------------------------------------
 
+    /**
+     * Saves the DataDictionary.
+     * 
+     * @param dataDictionary the DataDictionary to save.
+     * @return the generated identifier.
+     */
     int saveDataDictionary( DataDictionary dataDictionary );
     
+    /**
+     * Retrieves the DataDictionary with the given identifier.
+     * 
+     * @param id the identifier of the DataDictionary.
+     * @return the DataDictionary.
+     */
     DataDictionary getDataDictionary( int id );
 
+    /**
+     * Retrieves the DataDictionaries with the given identifiers.
+     * 
+     * @param identifiers the identifiers.
+     * @return a collection of DataDictionaries.
+     */
     Collection<DataDictionary> getDataDictionaries( Collection<Integer> identifiers );
     
+    /**
+     * Retrieves the DataDictionary with the given name.
+     * 
+     * @param name the name of the DataDictionary.
+     * @return the DataDictionary.
+     */
     DataDictionary getDataDictionaryByName( String name );
     
+    /**
+     * Deteles the DataDictionary.
+     * 
+     * @param dataDictionary the DataDictionary to delete.
+     */
     void deleteDataDictionary( DataDictionary dataDictionary );
     
+    /**
+     * Retrieves all DataDictionaries.
+     * 
+     * @return a collection of DataDictionaries.
+     */
     Collection<DataDictionary> getAllDataDictionaries();
 }
