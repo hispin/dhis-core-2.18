@@ -92,10 +92,6 @@ public class CSVExportPipeThread
             
             log.info( "Export finished" );
         }
-        catch ( Exception ex )
-        {
-            throw new RuntimeException( ex );
-        }
         finally
         {
             StreamUtils.closeWriter( writer );

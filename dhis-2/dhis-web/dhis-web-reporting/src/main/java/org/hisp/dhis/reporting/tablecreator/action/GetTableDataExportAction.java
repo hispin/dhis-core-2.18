@@ -71,11 +71,7 @@ public class GetTableDataExportAction
         params.getReportTables().add( id );
         
         inputStream = exportService.exportData( params );
-        /*
-        int l = 0;
-        while ( ( l = inputStream.read() ) != -1 )
-            System.out.println( l);
-        */
+        
         fileName = "ReportTable.zip";
         
         return SUCCESS;
