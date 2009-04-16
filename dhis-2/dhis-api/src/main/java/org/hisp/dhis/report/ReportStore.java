@@ -38,11 +38,33 @@ public interface ReportStore
 {
     String ID = ReportStore.class.getName();
     
+    /**
+     * Saves a Report.
+     * 
+     * @param report the Report to save.
+     * @return the generated identifier.
+     */
     int saveReport( Report report );
     
+    /**
+     * Retrieves the Report with the given identifier.
+     * 
+     * @param id the identifier of the Report to retrieve.
+     * @return the Report.
+     */
     Report getReport( int id );
     
+    /**
+     * Deletes a Report.
+     * 
+     * @param report the Report to delete.
+     */
     void deleteReport( Report report );
     
+    /**
+     * Retrieves all Reports.
+     * 
+     * @return a Collection of Reports.
+     */
     Collection<Report> getAllReports();
 }
