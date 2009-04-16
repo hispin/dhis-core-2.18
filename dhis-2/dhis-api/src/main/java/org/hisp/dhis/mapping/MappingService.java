@@ -42,37 +42,204 @@ public interface MappingService
     // Map
     // -------------------------------------------------------------------------
 
+    /**
+     * Adds a Map.
+     * 
+     * @param map, the Map to add.
+     * @return a generated unique id of the added Map.
+     */
     int addMap( Map map );
 
+    /**
+     * Adds a Map.
+     * 
+     * @param mapLayerPath, the link to Geoserver.
+     * @param organisationUnitId, the id of the organisation unit.
+     * @param organisationUnitLevelId, the level of the organisation units into
+     *        which the map is devided.
+     * @param uniqueColumn, the shapefile column which holds the unique
+     *        organisation unit value.
+     * @param nameColumn, the shapefile column which holds the name of the
+     *        organisation unit.
+     * @param longitude
+     * @param latitude
+     * @param zoom
+     * @return a generated unique id of the added Map.
+     */
+    int addMap( String mapLayerPath, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
+        String nameColumn, String longitude, String latitude, int zoom );
+
+    /**
+     * Adds a map. If a map with the same mapLayerPath already exists, the map
+     * will be updated.
+     * 
+     * @param mapLayerPath, the link to Geoserver.
+     * @param organisationUnitId, the id of the organisation unit.
+     * @param organisationUnitLevelId, the level of the organisation units into
+     *        which the map is devided.
+     * @param uniqueColumn, the shapefile column which holds the unique
+     *        organisation unit value.
+     * @param nameColumn, the shapefile column which holds the name of the
+     *        organisation unit.
+     * @param longitude
+     * @param latitude
+     * @param zoom
+     */
+    void addOrUpdateMap( String mapLayerPath, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
+        String nameColumn, String longitude, String latitude, int zoom );
+
+    /**
+     * Updates a Map.
+     * 
+     * @param map, the Map to update.
+     */
     void updateMap( Map map );
 
+    /**
+     * Deletes a Map.
+     * 
+     * @param map, the Map to delete.
+     */
     void deleteMap( Map map );
 
+    /**
+     * Returns the Map with the given id.
+     * 
+     * @param id, the id of the map.
+     * @return the Map with the given id.
+     */
     Map getMap( int id );
-    
+
+    /**
+     * Returns the Map with the given map layer path.
+     * 
+     * @param id, the id of the map.
+     * @return a Map.
+     */
     Map getMapByMapLayerPath( String mapLayerPath );
 
+    /**
+     * Returns a Collection of all Maps.
+     * 
+     * @return a Collection of all Maps.
+     */
     Collection<Map> getAllMaps();
-    
+
+    /**
+     * Returns a Collection of all Maps at the given level.
+     * 
+     * @param organisationUnitLevel, the organisation unit level to return maps
+     *        at.
+     * @return a Collection with all Maps at the given level.
+     */
     Collection<Map> getMapsAtLevel( OrganisationUnitLevel organisationUnitLevel );
 
     // -------------------------------------------------------------------------
     // MapOrganisationUnitRelation
     // -------------------------------------------------------------------------
 
+    /**
+     * Adds a MapOrganisationUnitRelation.
+     * 
+     * @param mapOrganisationUnitRelation, the MapOrganisationUnitRelation to
+     *        add.
+     * @return a generated unique id of the added MapOrganisationUnitRelation.
+     */
     int addMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation );
 
+    /**
+     * Adds a MapOrganisationUnitRelation.
+     * 
+     * @param mapLayerPath, the map the MapOrganisationUnitRelation should be
+     *        added to.
+     * @param organisationUnitId, an organisation unit in the database.
+     * @param featureId, the id of an organisation unit in the shapefile.
+     * @return a generated unique id of the added MapOrganisationUnitRelation.
+     */
+    int addMapOrganisationUnitRelation( String mapLayerPath, int organisationUnitId, String featureId );
+
+    /**
+     * Adds a MapOrganisationUnitRelation. If it already exists, it will be
+     * updated.
+     * 
+     * @param mapLayerPath, the map the MapOrganisationUnitRelation should be
+     *        added to.
+     * @param organisationUnitId, an organisation unit in the database.
+     * @param featureId, the id of an organisation unit in the shapefile.
+     * @return a generated unique id of the added MapOrganisationUnitRelation.
+     */
+    void addOrUpdateMapOrganisationUnitRelation( String mapLayerPath, int organisationUnitId, String featureId );
+
+    /**
+     * Updates a MapOrganisationUnitRelation.
+     * 
+     * @param mapOrganisationUnitRelation, the MapOrganisationUnitRelation to
+     *        update.
+     */
     void updateMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation );
 
+    /**
+     * Deletes a MapOrganisationUnitRelation.
+     * 
+     * @param mapOrganisationUnitRelation, the MapOrganisationUnitRelation to
+     *        delete.
+     */
     void deleteMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation );
-    
+
+    /**
+     * Returns a MapOrganisationUnitRelation.
+     * 
+     * @param id, the id of the returned MapOrganisationUnitRelation.
+     * @return the MapOrganisationUnitRelation with the given id.
+     */
     MapOrganisationUnitRelation getMapOrganisationUnitRelation( int id );
-    
+
+    /**
+     * Returns a MapOrganisationUnitRelation.
+     * 
+     * @param map, the foreign Map in the MapOrganisationUnitRelation.
+     * @param map, the foreign OrganisationUnit in the
+     *        MapOrganisationUnitRelation.
+     * @return the MapOrganisationUnitRelation which contains the given Map and
+     *         OrganisationUnit.
+     */
     MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit );
-    
+
+    /**
+     * Returns a Collection of MapOrganisationUnitRelations.
+     * 
+     * @return a Collection of all MapOrganisationUnitRelations.
+     */
     Collection<MapOrganisationUnitRelation> getAllMapOrganisationUnitRelations();
-    
+
+    /**
+     * Returns a Collection of all MapOrganisationUnitRelations connected to the
+     * given Map.
+     * 
+     * @param map, the Map to which the MapOrganisationUnitRelations are
+     *        connected.
+     * @return a Collection of MapOrganisationUnitRelations connected to the
+     *         given Map.
+     */
     Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationByMap( Map map );
-    
+
+    /**
+     * Returns a Collection of all existing MapOrganisationUnitRelations and the
+     * MapOrganisationUnitRelations that are not yet created (no featureId).
+     * 
+     * @param map, the Map to which the MapOrganisationUnitRelations are
+     *        connected.
+     * @return a Collection of MapOrganisationUnitRelations.
+     */
     Collection<MapOrganisationUnitRelation> getAvailableMapOrganisationUnitRelations( Map map );
+
+    /**
+     * Returns a Collection of all existing MapOrganisationUnitRelations and the
+     * MapOrganisationUnitRelations that are not yet created (no featureId).
+     * 
+     * @param mapLayerPath, the map to which the MapOrganisationUnitRelations
+     *        are connected.
+     * @return a Collection of MapOrganisationUnitRelations.
+     */
+    Collection<MapOrganisationUnitRelation> getAvailableMapOrganisationUnitRelations( String mapLayerPath );
 }
