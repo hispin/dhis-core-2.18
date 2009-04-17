@@ -12,7 +12,7 @@
  *
  * var request = new Request();
  * request.setResponseTypeXML( 'rootElement' );       		// Optional
- * request.sendAsPost( 'value=1&value=2' );					// Optional
+ * request.sendAsPost( 'value=1&value=2' );			// Optional
  * request.setCallbackSuccess( processResponse );     		// Optional
  * request.setCallbackError( requestFailed );         		// Optional
  * request.send( 'url.action?value=1' );
@@ -35,10 +35,10 @@ function Request()
     };
     
     this.sendAsPost = function( requestParameters_ )
-	{
-		requestMethod = 'POST';
-		requestParameters = requestParameters_;
-	};
+    {
+        requestMethod = 'POST';
+        requestParameters = requestParameters_;
+    };
 
     this.setCallbackSuccess = function( callbackSuccess_ )
     {
@@ -60,7 +60,7 @@ function Request()
             return;
         }
 
-		request.onreadystatechange = responseReceived;
+        request.onreadystatechange = responseReceived;
         request.open( requestMethod, url, true );
         request.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");		
         request.send( requestParameters );
@@ -105,59 +105,59 @@ function Request()
     {
         if ( request.readyState == 4 )
         {
-        	switch( request.status )
-        	{
-        	case 200:
-                if ( callbackSuccess )
-                {
-                    if ( responseType == 'TEXT' )
+            switch( request.status )
+            {
+                case 200:
+                    if ( callbackSuccess )
                     {
-                        callbackSuccess( request.responseText );
-                    }
-                    else
-                    {
-                        var xml = textToXML( request.responseText, rootElementName );
+                        if ( responseType == 'TEXT' )
+                        {
+                            callbackSuccess( request.responseText );
+                        }
+                        else
+                        {
+                            var xml = textToXML( request.responseText, rootElementName );
 
-                        callbackSuccess( xml );
+                            callbackSuccess( xml );
+                        }
                     }
-                }
-                break;
-            case 204:
-            	if ( callbackSuccess )
-            	{
-            	    callbackSuccess( null );
-            	}
-            	break;
-            case 500:
-                var message = 'Operation failed - internal server error';
+                    break;
+                case 204:
+                    if ( callbackSuccess )
+                    {
+                        callbackSuccess( null );
+                    }
+                    break;
+                case 500:
+                    var message = 'Operation failed - internal server error';
                 
-                var serverMessage = request.responseText;
+                    var serverMessage = request.responseText;
 
-                if ( serverMessage )
-                {
-                    var maxLength = 512;
-                    
-                    if ( serverMessage.length > maxLength )
+                    if ( serverMessage )
                     {
-                        serverMessage = serverMessage.substring( 0, maxLength - 3 ) + '...';
-                    }
+                        var maxLength = 512;
                     
-                    if ( serverMessage.length > 0 )
-                    {
-                        message += '\n\n' + serverMessage;
+                        if ( serverMessage.length > maxLength )
+                        {
+                            serverMessage = serverMessage.substring( 0, maxLength - 3 ) + '...';
+                        }
+                    
+                        if ( serverMessage.length > 0 )
+                        {
+                            message += '\n\n' + serverMessage;
+                        }
                     }
-                }
 
-                message += '\n\nThe error details are logged';
+                    message += '\n\nThe error details are logged';
 
-                window.alert( message );
+                    window.alert( message );
 
-                break;
-            default:
-                if ( callbackError )
-                {
-                    callbackError( request.status );
-                }
+                    break;
+                default:
+                    if ( callbackError )
+                    {
+                        callbackError( request.status );
+                    }
             }
         }
     }
