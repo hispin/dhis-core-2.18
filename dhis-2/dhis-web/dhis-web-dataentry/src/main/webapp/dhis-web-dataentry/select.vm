@@ -1,3 +1,4 @@
+<h3>$i18n.getString( "data_entry" )</h3>
 
 <div id="currentSelection">
 	#if ( $organisationUnit ) $encoder.htmlEncode( $organisationUnit.name )#else $i18n.getString( "no_organisationunit_selected" ) #end - 
