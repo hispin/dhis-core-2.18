@@ -91,15 +91,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction"
     class="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction"
     scope="prototype">
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
+    <property name="periodStore"
+      ref="org.hisp.dhis.period.PeriodStore"/>
   </bean>
   
   <bean id="org.hisp.dhis.mapping.action.GetPeriodsByPeriodTypeAction"
     class="org.hisp.dhis.mapping.action.GetPeriodsByPeriodTypeAction"
     scope="prototype">
-    <property name="periodStore"
-      ref="org.hisp.dhis.period.PeriodStore"/>
+    <property name="periodService"
+      ref="org.hisp.dhis.period.PeriodService"/>
   </bean>
   
 </beans>
