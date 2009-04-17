@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>DHIS2 Geostat</title>
+
+    <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/ext-all.css"/>
+    <!--  <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/xtheme-gray.css" />  -->
+    <!--  <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/xtheme-gray-colors.css" /> -->
+
+    <!-- EXT colorField Extent -->
+    <link rel="stylesheet" type="text/css" href="../../mfbase/ext-community-extensions/color-field.css" />
+
+    <script type="text/javascript" src="../../mfbase/ext/adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="../../mfbase/ext/ext-all.js"></script>
+
+    <!-- debug mode -->
+    <script type="text/javascript" src="../../mfbase/openlayers/lib/OpenLayers.js"></script>
+    <script type="text/javascript" src="../../mfbase/openlayers/lib/OpenLayers/Control/newSelectFeature.js"></script>
+    <script type="text/javascript" src="../../mfbase/mapfish/MapFish.js"></script>
+
+    <!-- production mode -->
+    <!--  <script type="text/javascript" src="../../mfbase/release/mapfish/MapFish.js"></script>  -->
+    
+    <!-- EXT colorField Extent -->
+    <script type="text/javascript" src="../../mfbase/ext-community-extensions/color-field.js"></script>
+
+    <!-- Div script -->
+    
+    <script type="text/javascript" src="config.js"></script>
+    <script type="text/javascript" src="geostat.js"></script>
+    
+    <style>
+        .assigned-row {background-color: #72FF63}
+        .not-assigned-row {background-color: #FFFFFF}
+    </style>
+</head>
+
+<body>
+    <div id="loading">
+        <div class="loading-mask"></div>
+        <div class="loading-container">
+            <div class="loading-indicator" style="font-family:tahoma; font-size:11px">
+                <img src="../../mfbase/ext/resources/images/default/shared/large-loading.gif" width="32" height="32" style="margin-right:8px;float:left;vertical-align:top;"/>
+                DHIS2 Geostat<br />
+                <span id="loading-msg">Loading MapFish...</span>
+            </div>
+        </div>
+    </div>
+    
+    <div id="north" style="padding: 3px"></div>
+    
+    <div id="olmap"></div>
+    
+    <div id="south"></div>
+    
+    <div id="legend">
+        <div id="choroplethLegend"></div>
+    </div> 
+    
+    <div id="position">
+        <div id="mouseposition"></div>
+    </div>
+
+</body>
+
+</html>
