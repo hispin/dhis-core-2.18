@@ -4,15 +4,102 @@
        xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
   
+  <!-- No -->
+  
   <bean id="org.hisp.dhis.mapping.action.NoAction"
     class="org.hisp.dhis.mapping.action.NoAction"
     scope="prototype"/>
+  
+  <!-- OrganisationUnit -->
   
   <bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction"
     class="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction"
     scope="prototype">
     <property name="organisationUnitService" 
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitsAtLevelAction"
+    class="org.hisp.dhis.mapping.action.GetOrganisationUnitsAtLevelAction"
+    scope="prototype">
+    <property name="organisationUnitService" 
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+  </bean>
+  
+  <!-- Map -->
+  
+  <bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapAction"
+    class="org.hisp.dhis.mapping.action.AddOrUpdateMapAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.mapping.action.GetAllMapsAction"
+    class="org.hisp.dhis.mapping.action.GetAllMapsAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.mapping.action.GetMapByMapLayerPathAction"
+    class="org.hisp.dhis.mapping.action.GetMapByMapLayerPathAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.mapping.action.GetMapValuesAction"
+    class="org.hisp.dhis.mapping.action.GetMapValuesAction"
+    scope="prototype">
+    <property name="dataMartStore"
+      ref="org.hisp.dhis.datamart.DataMartStore"/>
+  </bean>
+    
+  <bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction"
+    class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction"
+    class="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+  
+  <!-- Indicator -->
+    
+  <bean id="org.hisp.dhis.mapping.action.GetAllIndicatorGroupsAction"
+    class="org.hisp.dhis.mapping.action.GetAllIndicatorGroupsAction"
+    scope="prototype">
+    <property name="indicatorService"
+      ref="org.hisp.dhis.indicator.IndicatorService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.mapping.action.GetIndicatorsByIndicatorGroupAction"
+    class="org.hisp.dhis.mapping.action.GetIndicatorsByIndicatorGroupAction"
+    scope="prototype">
+    <property name="indicatorService"
+      ref="org.hisp.dhis.indicator.IndicatorService"/>
+  </bean>
+  
+  <!-- Period -->
+  
+  <bean id="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction"
+    class="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction"
+    scope="prototype">
+    <property name="periodService"
+      ref="org.hisp.dhis.period.PeriodService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.mapping.action.GetPeriodsByPeriodTypeAction"
+    class="org.hisp.dhis.mapping.action.GetPeriodsByPeriodTypeAction"
+    scope="prototype">
+    <property name="periodStore"
+      ref="org.hisp.dhis.period.PeriodStore"/>
   </bean>
   
 </beans>

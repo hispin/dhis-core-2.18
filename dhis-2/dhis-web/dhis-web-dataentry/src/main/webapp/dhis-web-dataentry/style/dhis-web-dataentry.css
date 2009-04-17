@@ -1,15 +1,11 @@
 
 #currentSelection 
 {
-  position: fixed;
-  top: 95px;
-  right: 5px;
   color: black;
   padding: 5px;
   background-color: #D5FFC5;
   border: 1px solid black;
   font-size: 14px;
-  width: 58%; 
   text-align: right;
 }
 
