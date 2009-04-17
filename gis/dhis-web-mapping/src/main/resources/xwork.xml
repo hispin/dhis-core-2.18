@@ -12,6 +12,8 @@
       <param name="page">/dhis-web-mapping/index.vm</param>
     </action>
     
+    <!-- OrganisationUnit -->
+  
     <action name="getOrganisationUnitLevels" class="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonOrganisationUnitLevels.vm</result>
     </action>
