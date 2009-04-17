@@ -1,117 +1,80 @@
+function getPeriods() {
+    var periodTypeList = document.getElementById( "periodTypeId" );
+    var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;
 
-function getPeriods()
-{
-	var periodTypeList = document.getElementById( "periodTypeId" );
-	var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;
-	
-	if ( periodTypeId != null )
-	{		
-		var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
-		
-		var request = new Request();
-	    request.setResponseTypeXML( 'period' );
-	    request.setCallbackSuccess( getPeriodsReceived );
-	    request.send( url );
-	}
-}
-
-function getPeriodsReceived( xmlObject )
-{	
-	document.getElementById( "periodId" ).disabled = false;
-	
-	var periodList = document.getElementById( "periodId" );
-	
-	var periods = xmlObject.getElementsByTagName( "period" );
-	
-	periodList.options.length = 1;
-	
-	for ( var i = 0; i < periods.length; i++)
-	{
-		var id = periods[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-		var periodName = periods[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
-		
-		var option = document.createElement( "option" );
-		option.value = id;
-		option.text = periodName;
-		
-		periodList.add( option, null );
-	}
-}
-
-function getDataSets()
-{
-	var periodList = document.getElementById( "periodId" );
-	var periodId = periodList.options[ periodList.selectedIndex ].value;
-	
-	if ( periodId != null )
-	{
-		var url = "getDataSets.action?periodId=" + periodId;
-		
-		var request = new Request();
-		request.setResponseTypeXML( 'dataSet' );
-		request.setCallbackSuccess( getDataSetsReceived );
-		request.send( url );
-	}
-}
-
-function getDataSetsReceived( xmlObject )
-{
-	var unlockedDataSetList = document.getElementById( "unlockedDataSets" );
-	var lockedDataSetList = document.getElementById( "lockedDataSets" );
-	
-	unlockedDataSetList.disabled = false;
-	lockedDataSetList.disabled = false;
-	
-	clearList( unlockedDataSetList );
-	clearList( lockedDataSetList );
-	
-	var dataSets = xmlObject.getElementsByTagName( "dataSet" );
-	
-	for ( var i = 0; i < dataSets.length; i++ )
-	{
-		var id = dataSets[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-		var dataSetName = dataSets[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
-		var locked = dataSets[ i ].getElementsByTagName( "locked" )[0].firstChild.nodeValue;
-		
-		var option = document.createElement( "option" );
-		option.value = id;
-		option.text = dataSetName;
-		
-		if ( locked == "true" )
-		{
-			lockedDataSetList.add( option, null );
-		}
-		else
-		{
-			unlockedDataSetList.add( option, null );
-		}
-	}
-}
-
-function updateDataSets()
-{
-    if ( validateLocking() )
-    {
-    	selectAllById( "lockedDataSets" );
-    	selectAllById( "unlockedDataSets" );
-    	
-    	document.getElementById( "lockingForm" ).submit();
+    if ( periodTypeId != null ) {
+        var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
+        $.ajax({
+            url: url,
+            cache: false,
+            success: function(response){
+                dom = parseXML(response);
+                $( '#periodId >option' ).remove();
+                $(dom).find('period').each(function(){
+                    $('#periodId').append("<option value="+$(this).find('id').text()+">" +$(this).find('name').text()+ "</option>");
+                });
+                document.getElementById( "periodId" ).disabled = false;
+            }
+        });
     }
 }
 
-function validateLocking()
-{
-    if ( getListValue( "periodTypeId" ) == "null" )
-    {
+function parseXML( xml ) {
+    if( window.ActiveXObject && window.GetObject ) {
+        var dom = new ActiveXObject( 'Microsoft.XMLDOM' );
+        dom.loadXML( xml );
+        return dom;
+    }
+    if( window.DOMParser )
+        return new DOMParser().parseFromString( xml, 'text/xml' );
+    throw new Error( 'No XML parser available' );
+}
+
+function getDataSets() {
+    var periodList = document.getElementById( "periodId" );
+    var periodId = periodList.options[ periodList.selectedIndex ].value;
+
+    if ( periodId != null ) {
+        var url = "getDataSets.action?periodId=" + periodId;
+        $.ajax({
+            url:url,
+            cache: false,
+            success: function(response){
+                $( '#unlockedDataSets >option' ).remove();
+                $( '#lockedDataSets >option' ).remove();
+                $(response).find('dataSet').each(function(){
+                    if($(this).find('locked').text() == 'false'){
+                        $('#unlockedDataSets').append("<option value="+$(this).find('id').text()+">" +$(this).find('name').text()+ "</option>");
+                    }
+                    else {
+                        $('#lockedDataSets').append("<option value="+$(this).find('id').text()+">" +$(this).find('name').text()+ "</option>");
+                    }
+                });
+                document.getElementById( "unlockedDataSets" ).disabled = false;
+                document.getElementById( "lockedDataSets" ).disabled = false;
+            }
+        });
+    }
+}
+
+function updateDataSets() {
+    if ( validateLocking() )  {
+        selectAllById( "lockedDataSets" );
+        selectAllById( "unlockedDataSets" );
+
+        document.getElementById( "lockingForm" ).submit();
+    }
+}
+
+function validateLocking() {
+    if ( getListValue( "periodTypeId" ) == "null" ) {
         setMessage( i18n_select_a_period_type );
         return false;
     }
-    
-    if ( getListValue( "periodId" ) == "null" )
-    {
+
+    if ( getListValue( "periodId" ) == "null" ) {
         setMessage( i18n_select_a_period );
         return false;
     }
-    
     return true;
 }
