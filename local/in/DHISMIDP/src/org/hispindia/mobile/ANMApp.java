@@ -130,6 +130,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     private TextField phone3Num;
     private TextField phone1Num;
     private TextField phone2Num;
+    private Alert exitAlert;
     private Command ancCmd;
     private Command deliveriesCmd;
     private Command deliveriesBackCmd;
@@ -159,6 +160,8 @@ public class ANMApp extends MIDlet implements CommandListener {
     private Command monthSettingsCmd;
     private Command settingsBackCmd;
     private Command settingsCmd;
+    private Command exitAlertCmd;
+    private Command exitAlertBackCmd;
     private Image nrhmlogo;
     private Image question;
     private Font font;
@@ -175,7 +178,6 @@ public class ANMApp extends MIDlet implements CommandListener {
             } else {
                 firstRun = false;
             }
-            //System.out.println("First Run: " + firstRun);
 
             if (firstRun) {
                 for (int i = 0; i < 90; i++) {
@@ -572,74 +574,83 @@ public class ANMApp extends MIDlet implements CommandListener {
                 // write pre-action user code here
                 switchDisplayable(null, getPregOutPage());//GEN-LINE:|7-commandAction|24|43-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|25|86-preAction
+            }//GEN-BEGIN:|7-commandAction|25|263-preAction
+        } else if (displayable == exitAlert) {
+            if (command == exitAlertBackCmd) {//GEN-END:|7-commandAction|25|263-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getSendPage());//GEN-LINE:|7-commandAction|26|263-postAction
+                // write post-action user code here
+            } else if (command == exitAlertCmd) {//GEN-LINE:|7-commandAction|27|261-preAction
+                // write pre-action user code here
+                exitMIDlet();//GEN-LINE:|7-commandAction|28|261-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|29|86-preAction
         } else if (displayable == familyPage) {
-            if (command == familyBackCmd) {//GEN-END:|7-commandAction|25|86-preAction
+            if (command == familyBackCmd) {//GEN-END:|7-commandAction|29|86-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getPregOutPage());//GEN-LINE:|7-commandAction|26|86-postAction
+                switchDisplayable(null, getPregOutPage());//GEN-LINE:|7-commandAction|30|86-postAction
                 // write post-action user code here
-            } else if (command == familyCmd) {//GEN-LINE:|7-commandAction|27|84-preAction
+            } else if (command == familyCmd) {//GEN-LINE:|7-commandAction|31|84-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getChildImmPage1());//GEN-LINE:|7-commandAction|28|84-postAction
+                switchDisplayable(null, getChildImmPage1());//GEN-LINE:|7-commandAction|32|84-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|29|160-preAction
+            }//GEN-BEGIN:|7-commandAction|33|160-preAction
         } else if (displayable == healthFacilityPage) {
-            if (command == healthFacilityBackCmd) {//GEN-END:|7-commandAction|29|160-preAction
+            if (command == healthFacilityBackCmd) {//GEN-END:|7-commandAction|33|160-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getChildImmPage4());//GEN-LINE:|7-commandAction|30|160-postAction
+                switchDisplayable(null, getChildImmPage4());//GEN-LINE:|7-commandAction|34|160-postAction
                 // write post-action user code here
-            } else if (command == healthFacilityCmd) {//GEN-LINE:|7-commandAction|31|158-preAction
+            } else if (command == healthFacilityCmd) {//GEN-LINE:|7-commandAction|35|158-preAction
                 // write pre-action user code here
                 getEmptyFields();
-                switchDisplayable(null, getSendPage());//GEN-LINE:|7-commandAction|32|158-postAction
+                switchDisplayable(null, getSendPage());//GEN-LINE:|7-commandAction|36|158-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|33|226-preAction
+            }//GEN-BEGIN:|7-commandAction|37|226-preAction
         } else if (displayable == loadPage) {
-            if (command == loadCmd) {//GEN-END:|7-commandAction|33|226-preAction
+            if (command == loadCmd) {//GEN-END:|7-commandAction|37|226-preAction
                 int lastSelected = lastChoice.getSelectedIndex();
-                //System.out.println("Selected choice = " + lastSelected);
                 if (lastSelected == 0) {
                     editingLastReport = true;
                 } else {
                     editingLastReport = false;
                 }
-                switchDisplayable(null, getMonthPage());//GEN-LINE:|7-commandAction|34|226-postAction
+                switchDisplayable(null, getMonthPage());//GEN-LINE:|7-commandAction|38|226-postAction
                 // write post-action user code here
-            } else if (command == loadExitCmd) {//GEN-LINE:|7-commandAction|35|228-preAction
+            } else if (command == loadExitCmd) {//GEN-LINE:|7-commandAction|39|228-preAction
                 // write pre-action user code here
-                exitMIDlet();//GEN-LINE:|7-commandAction|36|228-postAction
+                exitMIDlet();//GEN-LINE:|7-commandAction|40|228-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|37|180-preAction
+            }//GEN-BEGIN:|7-commandAction|41|180-preAction
         } else if (displayable == monthPage) {
-            if (command == monthCmd) {//GEN-END:|7-commandAction|37|180-preAction
+            if (command == monthCmd) {//GEN-END:|7-commandAction|41|180-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getAncPage());//GEN-LINE:|7-commandAction|38|180-postAction
+                switchDisplayable(null, getAncPage());//GEN-LINE:|7-commandAction|42|180-postAction
                 // write post-action user code here
-            } else if (command == monthExitCmd) {//GEN-LINE:|7-commandAction|39|188-preAction
+            } else if (command == monthExitCmd) {//GEN-LINE:|7-commandAction|43|188-preAction
 
-                exitMIDlet();//GEN-LINE:|7-commandAction|40|188-postAction
+                exitMIDlet();//GEN-LINE:|7-commandAction|44|188-postAction
                 // write post-action user code here
-            } else if (command == monthSettingsCmd) {//GEN-LINE:|7-commandAction|41|252-preAction
+            } else if (command == monthSettingsCmd) {//GEN-LINE:|7-commandAction|45|252-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getSettingsPage());//GEN-LINE:|7-commandAction|42|252-postAction
+                switchDisplayable(null, getSettingsPage());//GEN-LINE:|7-commandAction|46|252-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|43|64-preAction
+            }//GEN-BEGIN:|7-commandAction|47|64-preAction
         } else if (displayable == pregOutPage) {
-            if (command == pregOutBackCmd) {//GEN-END:|7-commandAction|43|64-preAction
+            if (command == pregOutBackCmd) {//GEN-END:|7-commandAction|47|64-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getDeliveriesPage());//GEN-LINE:|7-commandAction|44|64-postAction
+                switchDisplayable(null, getDeliveriesPage());//GEN-LINE:|7-commandAction|48|64-postAction
                 // write post-action user code here
-            } else if (command == pregOutCmd) {//GEN-LINE:|7-commandAction|45|62-preAction
+            } else if (command == pregOutCmd) {//GEN-LINE:|7-commandAction|49|62-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getFamilyPage());//GEN-LINE:|7-commandAction|46|62-postAction
+                switchDisplayable(null, getFamilyPage());//GEN-LINE:|7-commandAction|50|62-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|47|171-preAction
+            }//GEN-BEGIN:|7-commandAction|51|171-preAction
         } else if (displayable == sendPage) {
-            if (command == sendBackCmd) {//GEN-END:|7-commandAction|47|171-preAction
+            if (command == sendBackCmd) {//GEN-END:|7-commandAction|51|171-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getHealthFacilityPage());//GEN-LINE:|7-commandAction|48|171-postAction
+                switchDisplayable(null, getHealthFacilityPage());//GEN-LINE:|7-commandAction|52|171-postAction
                 // write post-action user code here
-            } else if (command == sendCmd) {//GEN-LINE:|7-commandAction|49|169-preAction
+            } else if (command == sendCmd) {//GEN-LINE:|7-commandAction|53|169-preAction
 
                 sendMsgLabel.setText("Sending SMS...");
                 final String monthData = String.valueOf(monthChoice.getSelectedIndex() + 1);
@@ -653,8 +664,6 @@ public class ANMApp extends MIDlet implements CommandListener {
                 String childImm4FormData = vitA1Num.getString() + "|" + vitA5Num.getString() + "|" + vitA9Num.getString() + "|" + caseMeaslesNum.getString() + "|" + caseDiarrhNum.getString() + "|" + caseMalariaNum.getString();
                 String healthFacilityFormData = vhndNum.getString() + "|" + opdNum.getString() + "|" + hbTestsNum.getString() + "|" + anaemicOpdNum.getString() + "|";
 
-                //System.out.println(monthData + "$" + ancFormData + "|" + deliveriesFormData + "|" + pregOutFormData + "|" + familyPlanFormData + "|" + childImm1FormData + "|" + childImm2FormData + "|" + childImm3FormData + "|" + childImm4FormData + "|" + healthFacilityFormData);
-
                 final String fullData = monthData + "$" + ancFormData + "|" + deliveriesFormData + "|" + pregOutFormData + "|" + familyPlanFormData + "|" + childImm1FormData + "|" + childImm2FormData + "|" + childImm3FormData + "|" + childImm4FormData + "|" +
                         healthFacilityFormData;
 
@@ -663,7 +672,6 @@ public class ANMApp extends MIDlet implements CommandListener {
 
                     public void run() {
                         try {
-                            //System.out.println("Updating Records");
                             lastMsgStore.setRecord(10, monthData.getBytes(), 0, monthData.length());
 
                             //<editor-fold defaultstate="collapsed" desc=" ancForm to update RMS ">
@@ -770,7 +778,6 @@ public class ANMApp extends MIDlet implements CommandListener {
                             lastMsgStore.setRecord(87, anaemicOpdNum.getString().getBytes(), 0, anaemicOpdNum.getString().length());
                             //</editor-fold>
 
-                            //System.out.println("Records Updated Successfully");
                             lastMsgStore.setRecord(4, "true".getBytes(), 0, "true".getBytes().length);
                             savedMsg = true;
 
@@ -795,17 +802,15 @@ public class ANMApp extends MIDlet implements CommandListener {
                                     MessageConnection smsConn = (MessageConnection) Connector.open("sms://+91" + new String(lastMsgStore.getRecord(i + 1)));
                                     BinaryMessage sms = (BinaryMessage) smsConn.newMessage(MessageConnection.BINARY_MESSAGE);
                                     byte[] compressedData = Compressor.compress(fullData.getBytes("UTF-8"));
-                                    //String compressedText = new String(compressedData, "UTF-8");
-                                    //System.out.println("Compressed Text: " + compressedText);
                                     sms.setPayloadData(compressedData);
                                     smsConn.send(sms);
                                     smsConn.close();
                                 }
                             }
                             if (j == 0) {
-                                sendMsgLabel.setText("No number to send SMS... Please go to settings and enter a phone number");
+                                sendMsgLabel.setText("No Number to Send SMS... Please Go to Settings & Enter a Phone Number");
                             } else {
-                                sendMsgLabel.setText("Message Sent Successfully. You can go back and edit or exit the application now.");
+                                sendMsgLabel.setText("Message Saved & Sent Successfully. You Can Go Back & Edit or Exit the Application");
                             }
                         } catch (UnsupportedEncodingException ex) {
                             ex.printStackTrace();
@@ -824,23 +829,23 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }).start();
                 //</editor-fold>
 
-//GEN-LINE:|7-commandAction|50|169-postAction
+//GEN-LINE:|7-commandAction|54|169-postAction
                 // write post-action user code here
-            } else if (command == sendExitCmd) {//GEN-LINE:|7-commandAction|51|207-preAction
+            } else if (command == sendExitCmd) {//GEN-LINE:|7-commandAction|55|207-preAction
                 // write pre-action user code here
-                exitMIDlet();//GEN-LINE:|7-commandAction|52|207-postAction
+                switchDisplayable(getExitAlert(), getSendPage());//GEN-LINE:|7-commandAction|56|207-postAction
                 // write post-action user code here
-            } else if (command == sendSettingsCmd) {//GEN-LINE:|7-commandAction|53|255-preAction
+            } else if (command == sendSettingsCmd) {//GEN-LINE:|7-commandAction|57|255-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getSettingsPage());//GEN-LINE:|7-commandAction|54|255-postAction
+                switchDisplayable(null, getSettingsPage());//GEN-LINE:|7-commandAction|58|255-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|55|246-preAction
+            }//GEN-BEGIN:|7-commandAction|59|246-preAction
         } else if (displayable == settingsPage) {
-            if (command == settingsBackCmd) {//GEN-END:|7-commandAction|55|246-preAction
+            if (command == settingsBackCmd) {//GEN-END:|7-commandAction|59|246-preAction
                 // write pre-action user code here
-                switchToPreviousDisplayable();//GEN-LINE:|7-commandAction|56|246-postAction
+                switchToPreviousDisplayable();//GEN-LINE:|7-commandAction|60|246-postAction
                 // write post-action user code here
-            } else if (command == settingsCmd) {//GEN-LINE:|7-commandAction|57|243-preAction
+            } else if (command == settingsCmd) {//GEN-LINE:|7-commandAction|61|243-preAction
                 try {
                     String phone1 = phone1Num.getString();
                     String phone2 = phone2Num.getString();
@@ -856,21 +861,21 @@ public class ANMApp extends MIDlet implements CommandListener {
                 } catch (RecordStoreException ex) {
                     ex.printStackTrace();
                 }
-                switchToPreviousDisplayable();//GEN-LINE:|7-commandAction|58|243-postAction
+                switchToPreviousDisplayable();//GEN-LINE:|7-commandAction|62|243-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|59|203-preAction
+            }//GEN-BEGIN:|7-commandAction|63|203-preAction
         } else if (displayable == splashScreen) {
-            if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|59|203-preAction
+            if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|63|203-preAction
                 if (savedMsg == false) {
                     switchDisplayable(null, getMonthPage());
                 } else {
-                    switchDisplayable(null, getLoadPage());//GEN-LINE:|7-commandAction|60|203-postAction
+                    switchDisplayable(null, getLoadPage());//GEN-LINE:|7-commandAction|64|203-postAction
                 }
-            }//GEN-BEGIN:|7-commandAction|61|7-postCommandAction
-        }//GEN-END:|7-commandAction|61|7-postCommandAction
+            }//GEN-BEGIN:|7-commandAction|65|7-postCommandAction
+        }//GEN-END:|7-commandAction|65|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|62|
-    //</editor-fold>//GEN-END:|7-commandAction|62|
+    }//GEN-BEGIN:|7-commandAction|66|
+    //</editor-fold>//GEN-END:|7-commandAction|66|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: deliveriesPage ">//GEN-BEGIN:|26-getter|0|26-preInit
     /**
@@ -3232,7 +3237,6 @@ public class ANMApp extends MIDlet implements CommandListener {
 
                 public void itemStateChanged(Item item) {
                     if (item == reportingChoice) {
-                        //System.out.println("Checking....");
                         if (reportingChoice.getSelectedIndex() == 0) {
                             monthPage.delete(1);
                             monthPage.append(monthChoice);
@@ -3559,7 +3563,7 @@ public class ANMApp extends MIDlet implements CommandListener {
      */
     public ChoiceGroup getReportingChoice() {
         if (reportingChoice == null) {//GEN-END:|235-getter|0|235-preInit
-                // write pre-init user code here
+            // write pre-init user code here
             reportingChoice = new ChoiceGroup("Reporting Freq:", Choice.POPUP);//GEN-BEGIN:|235-getter|1|235-postInit
             reportingChoice.append("Monthly", null);
             reportingChoice.append("Weekly", null);
@@ -3581,9 +3585,9 @@ public class ANMApp extends MIDlet implements CommandListener {
      */
     public ImageItem getQuestionImage() {
         if (questionImage == null) {//GEN-END:|241-getter|0|241-preInit
-                // write pre-init user code here
+            // write pre-init user code here
             questionImage = new ImageItem("", getQuestion(), ImageItem.LAYOUT_CENTER | Item.LAYOUT_2, "");//GEN-LINE:|241-getter|1|241-postInit
-                // write post-init user code here
+            // write post-init user code here
         }//GEN-BEGIN:|241-getter|2|
         return questionImage;
     }
@@ -3596,9 +3600,9 @@ public class ANMApp extends MIDlet implements CommandListener {
      */
     public Command getSettingsCmd() {
         if (settingsCmd == null) {//GEN-END:|242-getter|0|242-preInit
-                // write pre-init user code here
+            // write pre-init user code here
             settingsCmd = new Command("Save", Command.OK, 0);//GEN-LINE:|242-getter|1|242-postInit
-                // write post-init user code here
+            // write post-init user code here
         }//GEN-BEGIN:|242-getter|2|
         return settingsCmd;
     }
@@ -3611,9 +3615,9 @@ public class ANMApp extends MIDlet implements CommandListener {
      */
     public Command getSettingsBackCmd() {
         if (settingsBackCmd == null) {//GEN-END:|245-getter|0|245-preInit
-                // write pre-init user code here
+            // write pre-init user code here
             settingsBackCmd = new Command("Back", Command.BACK, 0);//GEN-LINE:|245-getter|1|245-postInit
-                // write post-init user code here
+            // write post-init user code here
         }//GEN-BEGIN:|245-getter|2|
         return settingsBackCmd;
     }
@@ -3626,17 +3630,17 @@ public class ANMApp extends MIDlet implements CommandListener {
      */
     public TextField getPhone1Num() {
         if (phone1Num == null) {//GEN-END:|248-getter|0|248-preInit
-                String str = "";
-                try {
-                    if (lastMsgStore.getRecord(1) != null) {
-                        str = new String(lastMsgStore.getRecord(1));
-                    }
-
-                } catch (RecordStoreException rsex) {
-                    rsex.printStackTrace();
+            String str = "";
+            try {
+                if (lastMsgStore.getRecord(1) != null) {
+                    str = new String(lastMsgStore.getRecord(1));
                 }
-                phone1Num = new TextField("Enter Phone:", str, 32, TextField.PHONENUMBER);//GEN-LINE:|248-getter|1|248-postInit
-                // write post-init user code here
+
+            } catch (RecordStoreException rsex) {
+                rsex.printStackTrace();
+            }
+            phone1Num = new TextField("Enter 10-digit Phone #1:", str, 10, TextField.PHONENUMBER);//GEN-LINE:|248-getter|1|248-postInit
+            // write post-init user code here
         }//GEN-BEGIN:|248-getter|2|
         return phone1Num;
     }
@@ -3649,17 +3653,17 @@ public class ANMApp extends MIDlet implements CommandListener {
      */
     public TextField getPhone2Num() {
         if (phone2Num == null) {//GEN-END:|249-getter|0|249-preInit
-                String str = "";
-                try {
-                    if (lastMsgStore.getRecord(2) != null) {
-                        str = new String(lastMsgStore.getRecord(2));
-                    }
-
-                } catch (RecordStoreException rsex) {
-                    rsex.printStackTrace();
+            String str = "";
+            try {
+                if (lastMsgStore.getRecord(2) != null) {
+                    str = new String(lastMsgStore.getRecord(2));
                 }
-                phone2Num = new TextField("Enter Phone #2:", str, 32, TextField.PHONENUMBER);//GEN-LINE:|249-getter|1|249-postInit
-                // write post-init user code here
+
+            } catch (RecordStoreException rsex) {
+                rsex.printStackTrace();
+            }
+            phone2Num = new TextField("Enter 10-digit Phone #2:", str, 10, TextField.PHONENUMBER);//GEN-LINE:|249-getter|1|249-postInit
+            // write post-init user code here
         }//GEN-BEGIN:|249-getter|2|
         return phone2Num;
     }
@@ -3681,7 +3685,7 @@ public class ANMApp extends MIDlet implements CommandListener {
             } catch (RecordStoreException rsex) {
                 rsex.printStackTrace();
             }
-            phone3Num = new TextField("Enter Phone #3:", str, 32, TextField.PHONENUMBER);//GEN-LINE:|250-getter|1|250-postInit
+            phone3Num = new TextField("Enter 10-digit Phone #3:", str, 10, TextField.PHONENUMBER);//GEN-LINE:|250-getter|1|250-postInit
             // write post-init user code here
         }//GEN-BEGIN:|250-getter|2|
         return phone3Num;
@@ -3703,35 +3707,89 @@ public class ANMApp extends MIDlet implements CommandListener {
     }
     //</editor-fold>//GEN-END:|251-getter|2|
 
-        //<editor-fold defaultstate="collapsed" desc=" Generated Getter: sendSettingsCmd ">//GEN-BEGIN:|254-getter|0|254-preInit
-        /**
-         * Returns an initiliazed instance of sendSettingsCmd component.
-         * @return the initialized component instance
-         */
-        public Command getSendSettingsCmd() {
-            if (sendSettingsCmd == null) {//GEN-END:|254-getter|0|254-preInit
-            // write pre-init user code here
-                sendSettingsCmd = new Command("Settings", Command.OK, 0);//GEN-LINE:|254-getter|1|254-postInit
-            // write post-init user code here
-            }//GEN-BEGIN:|254-getter|2|
-            return sendSettingsCmd;
-        }
-        //</editor-fold>//GEN-END:|254-getter|2|
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: sendSettingsCmd ">//GEN-BEGIN:|254-getter|0|254-preInit
+    /**
+     * Returns an initiliazed instance of sendSettingsCmd component.
+     * @return the initialized component instance
+     */
+    public Command getSendSettingsCmd() {
+        if (sendSettingsCmd == null) {//GEN-END:|254-getter|0|254-preInit
+                // write pre-init user code here
+            sendSettingsCmd = new Command("Settings", Command.OK, 0);//GEN-LINE:|254-getter|1|254-postInit
+                // write post-init user code here
+        }//GEN-BEGIN:|254-getter|2|
+        return sendSettingsCmd;
+    }
+    //</editor-fold>//GEN-END:|254-getter|2|
 
-        //<editor-fold defaultstate="collapsed" desc=" Generated Getter: dateField ">//GEN-BEGIN:|258-getter|0|258-preInit
-        /**
-         * Returns an initiliazed instance of dateField component.
-         * @return the initialized component instance
-         */
-        public TextField getDateField() {
-            if (dateField == null) {//GEN-END:|258-getter|0|258-preInit
-            // write pre-init user code here
-                dateField = new TextField("Enter Date (yyyy-mm-dd):", null, 32, TextField.ANY);//GEN-LINE:|258-getter|1|258-postInit
-            // write post-init user code here
-            }//GEN-BEGIN:|258-getter|2|
-            return dateField;
-        }
-        //</editor-fold>//GEN-END:|258-getter|2|
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: dateField ">//GEN-BEGIN:|258-getter|0|258-preInit
+    /**
+     * Returns an initiliazed instance of dateField component.
+     * @return the initialized component instance
+     */
+    public TextField getDateField() {
+        if (dateField == null) {//GEN-END:|258-getter|0|258-preInit
+                // write pre-init user code here
+            dateField = new TextField("Enter Date (yyyy-mm-dd):", null, 32, TextField.ANY);//GEN-LINE:|258-getter|1|258-postInit
+                // write post-init user code here
+        }//GEN-BEGIN:|258-getter|2|
+        return dateField;
+    }
+    //</editor-fold>//GEN-END:|258-getter|2|
+        //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitAlert ">//GEN-BEGIN:|259-getter|0|259-preInit
+    /**
+     * Returns an initiliazed instance of exitAlert component.
+     * @return the initialized component instance
+     */
+    public Alert getExitAlert() {
+        if (exitAlert == null) {//GEN-END:|259-getter|0|259-preInit
+                // write pre-init user code here
+            exitAlert = new Alert("Exit Warning", "Are you sure you want to exit?\n\nAny unsent data will be lost!", null, AlertType.CONFIRMATION);//GEN-BEGIN:|259-getter|1|259-postInit
+            exitAlert.addCommand(getExitAlertCmd());
+            exitAlert.addCommand(getExitAlertBackCmd());
+            exitAlert.setCommandListener(this);
+            exitAlert.setTimeout(Alert.FOREVER);//GEN-END:|259-getter|1|259-postInit
+                // write post-init user code here
+        }//GEN-BEGIN:|259-getter|2|
+        return exitAlert;
+    }
+    //</editor-fold>//GEN-END:|259-getter|2|
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitAlertCmd ">//GEN-BEGIN:|260-getter|0|260-preInit
+    /**
+     * Returns an initiliazed instance of exitAlertCmd component.
+     * @return the initialized component instance
+     */
+    public Command getExitAlertCmd() {
+        if (exitAlertCmd == null) {//GEN-END:|260-getter|0|260-preInit
+                // write pre-init user code here
+            exitAlertCmd = new Command("Yes", Command.EXIT, 0);//GEN-LINE:|260-getter|1|260-postInit
+                // write post-init user code here
+        }//GEN-BEGIN:|260-getter|2|
+        return exitAlertCmd;
+    }
+    //</editor-fold>//GEN-END:|260-getter|2|
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitAlertBackCmd ">//GEN-BEGIN:|262-getter|0|262-preInit
+    /**
+     * Returns an initiliazed instance of exitAlertBackCmd component.
+     * @return the initialized component instance
+     */
+    public Command getExitAlertBackCmd() {
+        if (exitAlertBackCmd == null) {//GEN-END:|262-getter|0|262-preInit
+                // write pre-init user code here
+            exitAlertBackCmd = new Command("No", Command.BACK, 0);//GEN-LINE:|262-getter|1|262-postInit
+                // write post-init user code here
+        }//GEN-BEGIN:|262-getter|2|
+        return exitAlertBackCmd;
+    }
+    //</editor-fold>//GEN-END:|262-getter|2|
+
+
 
     private void getEmptyFields() {
         String ancFormData = pregNum.getString() + "|" + firstTrimesterNum.getString() + "|" + jsyNum.getString() + "|" + threeAncNum.getString() + "|" + tt1Num.getString() + "|" + boosterNum.getString() + "|" + ifaTabletNum.getString() + "|" + hypertensionNum.getString() + "|" + anaemicAncNum.getString();
@@ -3753,7 +3811,6 @@ public class ANMApp extends MIDlet implements CommandListener {
                 j++;
             }
         }
-        //System.out.println("Total Blank Fields = " + j);
         try {
             if (j != 0) {
                 Image missingImg = Image.createImage("/org/hispindia/mobile/images/exclamation.png");
@@ -3785,7 +3842,7 @@ public class ANMApp extends MIDlet implements CommandListener {
         // Get the last node
         nodes.addElement(original);
 
-        // Create splitted string array
+        // Create a split string array
         String[] result = new String[nodes.size()];
         if (nodes.size() > 0) {
             for (int loop = 0; loop < nodes.size(); loop++) {
