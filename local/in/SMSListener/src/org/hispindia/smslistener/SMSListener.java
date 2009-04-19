@@ -8,8 +8,14 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -17,6 +23,7 @@ import javax.swing.JOptionPane;
 import org.smslib.AGateway.Protocols;
 import org.smslib.GatewayException;
 import org.smslib.IInboundMessageNotification;
+import org.smslib.InboundBinaryMessage;
 import org.smslib.InboundMessage;
 import org.smslib.Message.MessageTypes;
 import org.smslib.SMSLibException;
@@ -28,22 +35,10 @@ public class SMSListener {
 
     private Service service;
     private InboundNotification inboundNotification;
+    private int PORT = 8; //default port
+    private File infFile = new File(System.getProperty("user.home") + "/.smslistener", "SMSListener.inf");
 
     public SMSListener() {
-        showTrayIcon();
-
-        service = new Service();
-        System.out.println("#######Service Created Successfully");
-        System.out.println("Listening on port: COM" + SettingsWindow.portNumber);
-        inboundNotification = new InboundNotification();
-        SerialModemGateway gateway = new SerialModemGateway("modem.com" + SettingsWindow.portNumber, "COM" + SettingsWindow.portNumber, 115200, "Generic USB", "generic-usb-modem");
-        System.out.println("#######Gateway Created Successfully");
-        gateway.setProtocol(Protocols.PDU);
-        gateway.setInbound(true);
-        gateway.setOutbound(false);
-        service.setInboundNotification(inboundNotification);
-        service.addGateway(gateway);
-        System.out.println("#######Gateway Added to Service");
     }
 
     public class InboundNotification implements IInboundMessageNotification {
@@ -73,7 +68,6 @@ public class SMSListener {
             exitItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    System.out.println("#######Exit Item pressed");
                     System.exit(0);
                 }
             });
@@ -82,11 +76,9 @@ public class SMSListener {
 
                 public void actionPerformed(ActionEvent evt) {
                     if (serviceItem.getLabel().equals("Start SMS Listening")) {
-                        System.out.println("#######Start Service Pressed");
                         startSMSListener();
                         serviceItem.setLabel("Stop SMS Listening");
                     } else {
-                        System.out.println("#######Stop Service Pressed");
                         stopSMSListener();
                         serviceItem.setLabel("Start SMS Listening");
                     }
@@ -123,15 +115,23 @@ public class SMSListener {
 
     //<editor-fold defaultstate="collapsed" desc=" Start Service ">
     private void startSMSListener() {
+        service = new Service();
+        inboundNotification = new InboundNotification();
+        SerialModemGateway gateway = new SerialModemGateway("modem.com" + this.PORT, "COM" + this.PORT, 115200, "Generic USB", "generic-usb-modem");
+        gateway.setProtocol(Protocols.PDU);
+        gateway.setInbound(true);
+        gateway.setOutbound(false);
+        service.setInboundNotification(inboundNotification);
+        service.addGateway(gateway);
         try {
-            System.out.println("Starting Service on Com:"+SettingsWindow.portNumber);
+            System.out.println("Starting Service on Com:" + this.PORT);
             service.startService();
         } catch (SMSLibException ex) {
-            Logger.getLogger(SMSListener.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         } catch (IOException ex) {
-            Logger.getLogger(SMSListener.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         } catch (InterruptedException ex) {
-            Logger.getLogger(SMSListener.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
     //</editor-fold>
@@ -139,7 +139,7 @@ public class SMSListener {
     //<editor-fold defaultstate="collapsed" desc=" Stop Service ">
     private void stopSMSListener() {
         try {
-            System.out.println("Stopping Service on Com:"+SettingsWindow.portNumber);
+            System.out.println("Stopping Service on Com:" + this.PORT);
             service.stopService();
         } catch (TimeoutException ex) {
             Logger.getLogger(SMSListener.class.getName()).log(Level.SEVERE, null, ex);
@@ -154,20 +154,79 @@ public class SMSListener {
     //</editor-fold>
 
     private void processMessage(InboundMessage message) {
-        //System.out.println("PDU HEX String:" + message.getPduUserData());
-        //System.out.println("PDU HEX String#:" + message.getPduUserData().length());
-        InboundMessage textMsg = (InboundMessage) message;
-        String compressedText = textMsg.getText();
-        System.out.println("Compressed text: " + compressedText);
+        InboundBinaryMessage binaryMsg = (InboundBinaryMessage) message;
+        try {
+            byte[] compressedData = binaryMsg.getDataBytes();
+            String unCompressedText = new String(Compressor.decompress(compressedData), "UTF-8");
+            XMLCreator xmlcreator = new XMLCreator();
+            xmlcreator.writeXML(message.getOriginator(), new Timestamp(message.getDate().getTime()).toString(), unCompressedText);
+        } catch (UnsupportedEncodingException uneex) {
+            JOptionPane.showMessageDialog(null, "Message Decryption Error: " + uneex.getMessage());
+        }
+    }
 
-        //byte[] compressedData = compressedText.getBytes("UTF-8");
-        //String unCompressedText = new String(Compressor.decompress(compressedData), "UTF-8");
-        System.out.println("Uncompressed text: " + compressedText);
-        XMLCreator xmlcreator = new XMLCreator();
-        xmlcreator.writeXML(message.getOriginator(), new Timestamp(message.getDate().getTime()).toString(), compressedText);
+    public void setPort(int portNumber) {
+        try {
+            Properties prop = new Properties();
+            if (infFile.exists()) {
+                FileOutputStream fos = new FileOutputStream(infFile);
+                prop.setProperty("com.port", Integer.toString(portNumber));
+                prop.store(fos, "COM Port Property");
+                fos.close();
+            } else {
+                JOptionPane.showMessageDialog(null, "Properties File Not Found at: " + infFile.getAbsolutePath());
+            }
+        } catch (FileNotFoundException fnfex) {
+            JOptionPane.showMessageDialog(null, "Properties File Exception: " + fnfex.getMessage());
+        } catch (IOException ioex) {
+            JOptionPane.showMessageDialog(null, "Properties I/O Exception: " + ioex.getMessage());
+        } catch (NumberFormatException nfex) {
+            JOptionPane.showMessageDialog(null, "Properties Port Number Exception: " + nfex.getMessage());
+        } catch (SecurityException nfex) {
+            JOptionPane.showMessageDialog(null, "Properties File Exception: " + nfex.getMessage());
+        }
+    }
+
+    public int getPort() {
+        try {
+            Properties prop = new Properties();
+            if (infFile.exists()) {
+                FileInputStream fis = new FileInputStream(infFile);
+                prop.load(fis);
+                this.PORT = Integer.parseInt(prop.getProperty("com.port"));
+                fis.close();
+            } else {
+                JOptionPane.showMessageDialog(null, "Properties File Not Found at: " + infFile.getAbsolutePath());
+            }
+        } catch (FileNotFoundException fnfex) {
+            JOptionPane.showMessageDialog(null, "Properties File Exception: " + fnfex.getMessage());
+        } catch (IOException ioex) {
+            JOptionPane.showMessageDialog(null, "Properties I/O Exception: " + ioex.getMessage());
+        } catch (NumberFormatException nfex) {
+            JOptionPane.showMessageDialog(null, "Properties Port Number Exception: " + nfex.getMessage());
+        } catch (SecurityException nfex) {
+            JOptionPane.showMessageDialog(null, "Properties File Exception: " + nfex.getMessage());
+        }
+        return this.PORT;
     }
 
     public static void main(String args[]) {
-        SMSListener obj = new SMSListener();
+        SMSListener app = new SMSListener();
+        app.showTrayIcon();
+
+        if (app.infFile.exists()) {
+            app.getPort();
+        } else {
+            try {
+                if (!app.infFile.getParentFile().exists()) {
+                    app.infFile.getParentFile().mkdir();
+                }
+                app.infFile.createNewFile();
+                app.setPort(app.PORT);
+            } catch (IOException ioex) {
+                JOptionPane.showMessageDialog(null, "Properties I/O Exception: " + ioex.getMessage());
+                System.exit(1);
+            }
+        }
     }
 }

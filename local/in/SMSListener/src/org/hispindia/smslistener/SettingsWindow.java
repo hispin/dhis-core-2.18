@@ -1,26 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * SettingsWindow.java
- *
- * Created on Feb 6, 2009, 3:45:50 PM
- */
 package org.hispindia.smslistener;
 
-/**
- *
- * @author Administrator
- */
 public class SettingsWindow extends javax.swing.JFrame {
 
-    public static int portNumber = 8; //default set to 8
+    private SMSListener app = new SMSListener();
 
     /** Creates new form SettingsWindow */
     public SettingsWindow() {
         initComponents();
+        portNumCombo.setSelectedIndex(app.getPort() - 1);
     }
 
     /** This method is called from within the constructor to
@@ -68,7 +55,7 @@ public class SettingsWindow extends javax.swing.JFrame {
                 .addComponent(portNumCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(98, 98, 98))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(137, Short.MAX_VALUE)
+                .addContainerGap(153, Short.MAX_VALUE)
                 .addComponent(saveCmd)
                 .addContainerGap())
         );
@@ -88,7 +75,7 @@ public class SettingsWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void portNumComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_portNumComboActionPerformed
-        SettingsWindow.portNumber = portNumCombo.getSelectedIndex() + 1;
+        app.setPort(portNumCombo.getSelectedIndex() + 1);
     }//GEN-LAST:event_portNumComboActionPerformed
 
     private void saveCmdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveCmdActionPerformed
@@ -106,7 +93,6 @@ public class SettingsWindow extends javax.swing.JFrame {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox portNumCombo;
     private javax.swing.JLabel portNumLabel;
