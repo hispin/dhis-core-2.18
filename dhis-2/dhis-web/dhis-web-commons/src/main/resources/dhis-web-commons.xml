@@ -178,7 +178,20 @@
     </action>
 
   </package>
+
+  <!-- Help -->
   
+  <package name="dhis-web-commons-help" extends="dhis-web-commons" namespace="/dhis-web-commons/help">
+    
+<!-- Dynamic Help Action MLA-->
+		<action name="viewDynamicHelp"
+			class="org.hisp.dhis.help.action.PopupHelpAction">
+			<result name="success" type="velocity">/dhis-web-commons/help/reponseSuccess.vm</result>		
+			<result name="error" type="velocity">/dhis-web-commons/help/reponseError.vm</result>		
+		</action>
+		
+  </package>
+    
   <!-- Security -->
   
   <package name="dhis-web-commons-security" extends="dhis-web-commons" namespace="/dhis-web-commons-security">
