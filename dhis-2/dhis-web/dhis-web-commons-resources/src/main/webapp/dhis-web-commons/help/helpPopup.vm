@@ -1,2 +1,2 @@
-<p><b>$i18n.getString( $helpContent.getHeader() )</b></p>
+<h3>$i18n.getString( $helpContent.getHeader() )</h3>
 <p>$i18n.getString( $helpContent.getContent() )</p>

@@ -555,11 +555,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.user.CurrentUserService"/>
   </bean>
 
-<!-- Dynamic Help bean MLA --> 
- 	<bean id="org.hisp.dhis.help.action.PopupHelpAction"
-		class="org.hisp.dhis.help.action.PopupHelpAction"
-		scope="prototype">
-	</bean> 
+  <bean id="org.hisp.dhis.help.action.PopupHelpAction"
+    class="org.hisp.dhis.help.action.PopupHelpAction"
+    scope="prototype">
+  </bean> 
 	  
   <!-- Common actions -->
   
