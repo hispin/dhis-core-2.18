@@ -2,6 +2,6 @@
 <h2>$i18n.getString( "dataset" )&nbsp;</h2>
 <ul>
 	<li><a href="index.action">$i18n.getString( "dataset_management" )&nbsp;</a>&nbsp;
-	<a href="javascript:leftBar.openHelpForm('datasetsecmanfilter');" title="$i18n.getString( 'help' )"><img src="../images/help_blue.gif" width="16" height="16" alt="$i18n.getString( 'help' )"></a></li>
-	<li><a href="section.action">$i18n.getString( "section_management" )&nbsp;</a><a href="javascript:leftBar.openHelpForm('datasetsecmanfilter');" title="$i18n.getString( 'help' )"><img src="../images/help_blue.gif" width="16" height="16" alt="$i18n.getString( 'help' )"></a></li>
+	<a href="javascript:leftBar.openHelpForm('datasetmanmenu');" title="$i18n.getString( 'help' )"><img src="../images/help_blue.gif" width="16" height="16" alt="$i18n.getString( 'help' )"></a></li>
+	<li><a href="section.action">$i18n.getString( "section_management" )&nbsp;</a><a href="javascript:leftBar.openHelpForm('datasetsecmanmenu');" title="$i18n.getString( 'help' )"><img src="../images/help_blue.gif" width="16" height="16" alt="$i18n.getString( 'help' )"></a></li>
 </ul>
