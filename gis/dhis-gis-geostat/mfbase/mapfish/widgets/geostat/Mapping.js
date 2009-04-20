@@ -142,7 +142,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
     initComponent : function() {
     
         mapStore = new Ext.data.JsonStore({
-            url: localhost + '/dhis-webservice/getAllMaps.service',
+            url: '/dhis-web-mapping/getAllMaps.service',
             baseParams: { format: 'jsonmin' },
             root: 'maps',
             fields: ['id', 'mapLayerPath', 'organisationUnitLevel'],
@@ -150,7 +150,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         });    
             
         gridStore = new Ext.data.JsonStore({
-            url: localhost + '/dhis-webservice/getAvailableMapOrganisationUnitRelations.service',
+            url: '/dhis-web-mapping/getAvailableMapOrganisationUnitRelations.service',
             root: 'mapOrganisationUnitRelations',
             fields: ['id', 'organisationUnit', 'organisationUnitId', 'featureId'],
             autoLoad: false

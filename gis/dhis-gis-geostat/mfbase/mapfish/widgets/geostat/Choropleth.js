@@ -142,7 +142,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     initComponent : function() {
     
         indicatorGroupStore = new Ext.data.JsonStore({
-            url: localhost + '/dhis-webservice/getAllIndicatorGroups.service',
+            url: '/dhis-web-mapping/getAllIndicatorGroups.action',
             baseParams: { format: 'json' },
             root: 'indicatorGroups',
             fields: ['id', 'name'],
@@ -150,14 +150,14 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         });
         
         indicatorStore = new Ext.data.JsonStore({
-            url: localhost + '/dhis-webservice/getIndicatorsByIndicatorGroup.service',
+            url: '/dhis-web-mapping/getIndicatorsByIndicatorGroup.action',
             root: 'indicators',
             fields: ['id', 'name'],
             autoLoad: false
         });
         
         periodTypeStore = new Ext.data.JsonStore({
-            url: localhost + '/dhis-webservice/getAllPeriodTypes.service',
+            url: '/dhis-web-mapping/getAllPeriodTypes.action',
             baseParams: { format: 'json' },
             root: 'periodTypes',
             fields: ['id', 'name'],
@@ -165,7 +165,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         });
             
         periodStore = new Ext.data.JsonStore({
-            url: localhost + '/dhis-webservice/getPeriodsByPeriodType.service',
+            url: '/dhis-web-mapping/getPeriodsByPeriodType.action',
             baseParams: { periodTypeId: '9', format: 'json' },
             root: 'periods',
             fields: ['id', 'startDate'],
@@ -173,7 +173,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         });
             
         mapStore = new Ext.data.JsonStore({
-            url: localhost + '/dhis-webservice/getAllMaps.service',
+            url: '/dhis-web-mapping/getAllMaps.action',
             baseParams: { format: 'jsonmin' },
             root: 'maps',
             fields: ['id', 'mapLayerPath', 'organisationUnitLevel'],
@@ -181,7 +181,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         }); 
             
         levelStore = new Ext.data.JsonStore({
-            url: localhost + '/dhis-webservice/getOrganisationUnitLevels.service',
+            url: '/dhis-web-mapping/getOrganisationUnitLevels.action',
             baseParams: { format: 'json' },
             root: 'organisationUnitLevels',
             fields: ['level', 'name'],
@@ -189,7 +189,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         });
 
         legendStore = new Ext.data.JsonStore({
-            url: localhost + '/dhis-webservice/getLegendMinAndMaxOfIndicator.service',
+            url: '/dhis-web-mapping/getLegendMinAndMaxOfIndicator.action',
             root: 'legendSet',
             fields: ['id', 'name'],
             autoLoad: false
@@ -375,7 +375,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     fn: function()
                     {
                         var iId = Ext.getCmp('indicator_cb').getValue();
-                        var url = localhost + '/dhis-webservice/getLegendMinAndMaxOfIndicator.service';
+                        var url = '/dhis-web-mapping/getLegendMinAndMaxOfIndicator.action';
                         var format = 'json';
                         
                         Ext.Ajax.request({
