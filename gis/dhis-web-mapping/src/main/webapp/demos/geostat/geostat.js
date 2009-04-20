@@ -117,7 +117,7 @@ Ext.onReady(function()
         fieldLabel: 'Level',
         typeAhead: true,
         editable: false,
-        valueField: 'level',
+        valueField: 'id',
         displayField: 'name',
         emptyText: 'Required',
         mode: 'remote',
@@ -140,7 +140,7 @@ Ext.onReady(function()
                         
                         Ext.Msg.show({
                         title:'Register shapefiles',
-                        msg: '<p style="padding-top:8px">' + orgunit + ' must be devided into a lower level than itself!</p>',
+                        msg: '<p style="padding-top:8px">The organisation unit selected above must be devided into a lower level than itself.</p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
                         maxWidth: 300,
