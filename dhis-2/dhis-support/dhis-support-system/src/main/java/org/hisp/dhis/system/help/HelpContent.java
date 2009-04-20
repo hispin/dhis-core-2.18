@@ -32,7 +32,7 @@ package org.hisp.dhis.system.help;
  * @version $Id: PopupHelpAction.java 08-04-2009 $
  */
 
-public class HelpService {
+public class HelpContent {
 
 	private String header;
 	private String content;
