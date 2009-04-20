@@ -28,11 +28,13 @@ package org.hisp.dhis.mapping.action;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.comparator.PeriodComparator;
 
 import com.opensymphony.xwork.Action;
 
@@ -88,6 +90,8 @@ public class GetPeriodsByPeriodTypeAction
         if ( periodType != null )
         {
             object = new ArrayList<Period>( periodService.getPeriodsByPeriodType( periodType ) );
+            
+            Collections.sort( object, new PeriodComparator() );
         }
         
         return SUCCESS;
