@@ -72,7 +72,7 @@ Ext.onReady(function()
     map.setCenter(new OpenLayers.LonLat(init_longitude, init_latitude), init_zoom); // config.js
     
     organisationUnitLevelStore = new Ext.data.JsonStore({
-        url: 'getOrganisationUnitLevels.action',
+        url: 'dhis-web-mapping/getOrganisationUnitLevels.action',
         baseParams: { format: 'json' },
         root: 'organisationUnitLevels',
         fields: ['id', 'level', 'name'],

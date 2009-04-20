@@ -3,7 +3,7 @@
 #foreach( $indicator in $object )
   {
     "id": $!{indicator.id},
-    "name": "$!encoder.jsonEncode( ${indicator.name} )"
+    "name": "$!encoder.jsEncode( ${indicator.name} )"
   }#if( $velocityCount < $size ),#end
 #end
 ] }

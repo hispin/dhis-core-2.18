@@ -7,11 +7,10 @@
   <package name="dhis-web-mapping" extends="dhis-web-commons"
     namespace="/dhis-web-mapping">
         
-    <!-- No -->
+    <!-- Default -->
   
     <action name="index" class="org.hisp.dhis.mapping.action.NoAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-mapping/index.vm</param>
+      <result name="success" type="redirect">../demos/geostat/index.html</result>
     </action>
     
     <!-- OrganisationUnit -->
