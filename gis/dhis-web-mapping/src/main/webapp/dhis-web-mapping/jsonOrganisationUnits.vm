@@ -3,13 +3,13 @@
 #foreach ( $unit in $object )
   {
     "id": $!{unit.id},
-    "name": "$!{unit.name}",
-    "shortName": "$!{unit.shortName}",
-    "code": "$!{unit.code}",
+    "name": "$!encoder.jsEncode( ${unit.name} )",
+    "shortName": "$!encoder.jsEncode( ${unit.shortName} )",
+    "code": "$!encoder.jsEncode( ${unit.code} )",
     "openingDate": "$!{unit.openingDate}",
     "closedDate": "$!{unit.closedDate}",
     "active": "$!{unit.active}",
-    "comment": "$!{unit.comment}",
+    "comment": "$!encoder.jsEncode( ${unit.comment} )",
     "geoCode": "$!{unit.geoCode}",
     "latitude": "$!{unit.latitude}",
     "longitude": "$!{unit.longitude}"
