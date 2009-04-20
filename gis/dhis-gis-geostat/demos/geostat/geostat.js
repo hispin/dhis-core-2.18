@@ -51,7 +51,7 @@ Ext.onReady(function()
         })
     });
 
-    map.addLayers([jpl_wms, vmap0, choroplethLayer, propSymbolLayer]);
+    map.addLayers([jpl_wms, vmap0, choroplethLayer]);
 
     var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
         choroplethLayer,
@@ -72,7 +72,7 @@ Ext.onReady(function()
     map.setCenter(new OpenLayers.LonLat(init_longitude, init_latitude), init_zoom); // config.js
     
     var organisationUnitLevelStore = new Ext.data.JsonStore({
-        url: '/dhis-web-mapping/getOrganisationUnitLevels.action',
+        url: path + 'getOrganisationUnitLevels' + type,
         baseParams: { format: 'json' },
         root: 'organisationUnitLevels',
         fields: ['id', 'level', 'name'],
@@ -80,7 +80,7 @@ Ext.onReady(function()
     });
 
     var organisationUnitStore = new Ext.data.JsonStore({
-        url: '/dhis-web-mapping/getOrganisationUnitsAtLevel.action',
+        url: path + 'getOrganisationUnitsAtLevel' + type,
         root: 'organisationUnits',
         fields: ['id', 'name'],
         sortInfo: { field: 'name', direction: 'ASC' },
@@ -88,7 +88,7 @@ Ext.onReady(function()
     });
     
     var existingMapsStore = new Ext.data.JsonStore({
-            url: '/dhis-web-mapping/getAllMaps.action',
+            url: path + 'getAllMaps' + type,
             baseParams: { format: 'jsonmin' },
             root: 'maps',
             fields: ['id', 'mapLayerPath', 'organisationUnitLevel'],
@@ -100,7 +100,7 @@ Ext.onReady(function()
         fieldLabel: 'Organisation unit',
         typeAhead: true,
         editable: false,
-        valueField: 'name',
+        valueField: 'id',
         displayField: 'name',
         emptyText: 'Required',
         mode: 'remote',
@@ -136,11 +136,11 @@ Ext.onReady(function()
                     
                     if (level1 >= level2)
                     {
-                        organisationUnitLevelCombo2.reset();
+                        organisationUnitLevelComboBox.reset();
                         
                         Ext.Msg.show({
                         title:'Register shapefiles',
-                        msg: '<p style="padding-top:8px">Level must be lower than ' + orgunit + '!</p>',
+                        msg: '<p style="padding-top:8px">' + orgunit + ' must be devided into a lower level than itself!</p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
                         maxWidth: 300,
@@ -175,7 +175,7 @@ Ext.onReady(function()
     });
     
     var newNameColumnTextField = new Ext.form.TextField({
-        id: 'namecolumn_tf',
+        id: 'newnamecolumn_tf',
         emptyText: 'Required',
         width: combo_width
     });
@@ -267,7 +267,7 @@ Ext.onReady(function()
             
             Ext.Ajax.request(
             {
-                url: '/dhis-web-mapping/addOrUpdateMap.action',
+                url: path + 'addOrUpdateMap' + type,
                 method: 'GET',
                 params: { mapLayerPath: mlp, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc,
                           longitude: lon, latitude: lat, zoom: zoom},
@@ -314,7 +314,7 @@ Ext.onReady(function()
             
             Ext.Ajax.request(
             {
-                url: '/dhis-web-mapping/addOrUpdateMap.action',
+                url: path + 'addOrUpdateMap' + type,
                 method: 'GET',
                 params: { mapLayerPath: mlp, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc,
                           longitude: lon, latitude: lat, zoom: zoom},
@@ -356,7 +356,7 @@ Ext.onReady(function()
             
             Ext.Ajax.request(
             {
-                url: '/dhis-web-mapping/deleteMapByMapLayerPath.action',
+                url: path + 'deleteMapByMapLayerPath' + type,
                 method: 'GET',
                 params: { mapLayerPath: mlp },
 
@@ -434,7 +434,7 @@ Ext.onReady(function()
                     
                     Ext.Ajax.request( 
                     {
-                        url: '/dhis-web-mapping/getMapByMapLayerPath.action',
+                        url: path + 'getMapByMapLayerPath' + type,
                         method: 'GET',
                         params: { mapLayerPath: mlp, format: 'json' },
 
@@ -855,7 +855,7 @@ function onClickSelectChoropleth(feature)
 
     Ext.Ajax.request( 
     {
-        url: '/dhis-web-mapping/addOrUpdateMapOrganisationUnitRelation.action',
+        url: path + 'addOrUpdateMapOrganisationUnitRelation' + type,
         method: 'GET',
         params: { mapLayerPath: mlp, organisationUnitId: organisationUnitId, featureId: featureId },
 
@@ -942,7 +942,7 @@ function loadMapData(redirect)
 {
     Ext.Ajax.request( 
     {
-        url: '/dhis-web-mapping/getMapByMapLayerPath.action',
+        url: path + 'getMapByMapLayerPath' + type,
         method: 'GET',
         params: { mapLayerPath: 'who:Indian_state', format: 'json' },
 
@@ -975,7 +975,7 @@ function getChoroplethData()
 
     Ext.Ajax.request( 
     {
-        url: '/dhis-web-mapping/getMapValues.action',
+        url: path + 'getMapValues' + type,
         method: 'GET',
         params: { indicatorId: indicatorId, periodId: periodId, level: level, format: 'json' },
 
@@ -997,7 +997,7 @@ function getPointData()
     var periodId = Ext.getCmp('period_cb').getValue();
     var level = pointLayer;
 
-    var url = 'getMapValues.action';
+    var url = 'getMapValues' + type;
     format = 'json';
 
     Ext.Ajax.request( 
@@ -1024,7 +1024,7 @@ function getAssignOrganisationUnitData()
     
     Ext.Ajax.request( 
     {
-        url: '/dhis-web-mapping/getAvailableMapOrganisationUnitRelations.action',
+        url: path + 'getAvailableMapOrganisationUnitRelations' + type,
         method: 'GET',
         params: { mapLayerPath: mlp, format: 'json' },
 
@@ -1051,7 +1051,7 @@ function dataReceivedChoropleth( responseText )
     
     Ext.Ajax.request( 
     {
-        url: '/dhis-web-mapping/getAvailableMapOrganisationUnitRelations.action',
+        url: path + 'getAvailableMapOrganisationUnitRelations' + type,
         method: 'GET',
         params: { mapLayerPath: mlp, format: 'json' },
 
