@@ -181,13 +181,12 @@
 
   <!-- Help -->
   
-  <package name="dhis-web-commons-help" extends="dhis-web-commons" namespace="/dhis-web-commons/help">
+  <package name="dhis-web-commons-help" extends="dhis-web-commons" namespace="/dhis-web-commons-help">
     
-<!-- Dynamic Help Action MLA-->
-		<action name="viewDynamicHelp"
-			class="org.hisp.dhis.help.action.PopupHelpAction">
-			<result name="success" type="velocity">/dhis-web-commons/help/helpPopup.vm</result>				
-		</action>
+    <action name="viewDynamicHelp" class="org.hisp.dhis.help.action.PopupHelpAction">
+      <result name="success" type="velocity">/popup.vm</result>
+      <param name="page">/dhis-web-commons/help/helpPopup.vm</param>   			
+    </action>
 		
   </package>
     

@@ -1,5 +1,8 @@
-$(document).ready(function(){
-    if($(window).width() <= 800){
+
+$(document).ready(function()
+{
+    if($(window).width() <= 800)
+    {
         $('img#menuSeparator1').css('left','400px');
         $('img#menuSeparator2').css('left','490px');
         $('img#menuSeparator3').css('left','580px');
@@ -69,10 +72,5 @@ function LeftBar()
     {        
         var request = new Request();
         request.send( '../dhis-web-commons/menu/setMenuHidden.action' );        
-    }
-
-    this.openHelpForm = function( id )
-    {
-		window.open ("../dhis-web-commons/help/viewDynamicHelp.action?id=" + id,"Help", 'width=800,height=600,scrollbars=yes');
-    }    
+    } 
 }

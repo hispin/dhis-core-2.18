@@ -1,5 +1,15 @@
 
 /**
+ * Opens a help popup window.
+ * 
+ * @param id the key of the help property content.
+ */
+function openHelpForm( id )
+{
+    window.open( "../dhis-web-commons-help/viewDynamicHelp.action?id=" + id, "_blank", "width=800,height=600,scrollbars=yes" );
+}   
+
+/**
  * Returns the value of the selected option in the list with the given identifier.
  * 
  * @param listId the list identifier.

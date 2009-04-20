@@ -31,17 +31,19 @@ import org.hisp.dhis.system.help.HelpContent;
 
 import com.opensymphony.xwork.Action;
 
-
 /**
  * @author Murodillo Latifov Abdusamadovich
  * @version $Id: PopupHelpAction.java 08-04-2009 $
  */
-
 public class PopupHelpAction
-implements Action
+    implements Action
 {
+    private HelpContent helpContent;
 
-    public HelpContent helpContent;
+    public HelpContent getHelpContent()
+    {
+        return helpContent;
+    }
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -49,20 +51,22 @@ implements Action
 
     private String id;
 
-	public String getId() {
-		return id;
-	}
+    public void setId( String id )
+    {
+        this.id = id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-	public String execute()
+    public String execute()
         throws Exception
     {
-		helpContent = new HelpContent();
-		helpContent.setHeader("help."+id);
-		helpContent.setContent("help."+id+".content");
+        helpContent = new HelpContent();
+        
+        helpContent.setHeader( "help." + id );
+        helpContent.setContent( "help." + id + ".content" );
 
         return SUCCESS;
     }
