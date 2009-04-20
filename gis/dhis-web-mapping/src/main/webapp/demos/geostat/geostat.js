@@ -133,8 +133,8 @@ Ext.onReady(function()
                     var level1 = Ext.getCmp('newmap_cb').getValue();
                     var level2 = Ext.getCmp('organisationunitlevel_cb').getValue();
                     var orgunit = Ext.getCmp('organisationunit_cb').getValue();
-                    
-                    if (level1 >= level2)
+
+                    if (level1 >= level2) // CURRENTLY NOT WORKING BECAUSE OF valuefield: 'id'
                     {
                         organisationUnitLevelComboBox.reset();
                         
@@ -181,7 +181,7 @@ Ext.onReady(function()
     });
     
     var editNameColumnTextField = new Ext.form.TextField({
-        id: 'editcolumn_tf',
+        id: 'editnamecolumn_tf',
         emptyText: 'Required',
         width: combo_width
     });
@@ -311,12 +311,38 @@ Ext.onReady(function()
                 Ext.MessageBox.alert('Error', 'Form is not complete');
                 return;
             }
-            
+/*            
+            Ext.Ajax.request(
+            {
+                url: path + 'getMapByMapLayerPath' + type,
+                method: 'GET',
+                params: { mapLayerPath: em },
+
+                success: function( responseObject )
+                {
+                    Ext.Msg.show({
+                        title:'Register shapefiles',
+                        msg: '<p style="padding-top:8px">The map <b>' + mlp + '</b> was successfully updated!</b></p>',
+                        buttons: Ext.Msg.OK,
+                        animEl: 'elId',
+                        minWidth: 400,
+                        icon: Ext.MessageBox.INFO
+                    });
+                    
+                    Ext.getCmp('map_cb').getStore().reload();
+                    Ext.getCmp('maps_cb').getStore().reload();
+                },
+                failure: function()
+                {
+                    alert( 'Status', 'Error while saving data' );
+                }
+            });
+*/            
             Ext.Ajax.request(
             {
                 url: path + 'addOrUpdateMap' + type,
                 method: 'GET',
-                params: { mapLayerPath: mlp, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc,
+                params: { mapLayerPath: em, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc,
                           longitude: lon, latitude: lat, zoom: zoom},
 
                 success: function( responseObject )
@@ -944,7 +970,7 @@ function loadMapData(redirect)
     {
         url: path + 'getMapByMapLayerPath' + type,
         method: 'GET',
-        params: { mapLayerPath: 'who:Indian_state', format: 'json' },
+        params: { mapLayerPath: choropleth.currentUrl, format: 'json' },
 
         success: function( responseObject )
         {

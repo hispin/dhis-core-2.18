@@ -139,6 +139,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      
     newUrl : false,
     
+    currentUrl : false,
+    
     initComponent : function() {
     
         mapStore = new Ext.data.JsonStore({
@@ -189,7 +191,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 triggerAction: 'all',
                 emptyText: 'Required',
                 selectOnFocus: true,
-                width: 125,
+                width: 133,
+                minListWidth: combo_width + 26,
                 store: mapStore,
                 listeners: {
                     'select': {
@@ -298,9 +301,9 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         }
         
         if (this.newUrl) {
-            var url = this.newUrl;
+            this.currentUrl = this.newUrl;
             this.newUrl = false;
-            this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + url + '&outputformat=json&version=1.0.0');
+            this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + this.currentUrl + '&outputformat=json&version=1.0.0');
         }
         
         if (!Ext.getCmp('maps_cb').getValue()) {

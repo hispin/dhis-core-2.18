@@ -139,6 +139,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
      
     newUrl : false,
     
+    currentUrl : false,
+    
     initComponent : function() {
     
         indicatorGroupStore = new Ext.data.JsonStore({
@@ -493,9 +495,9 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         }
         
         if (this.newUrl) {
-            var url = this.newUrl;
+            this.currentUrl = this.newUrl;
             this.newUrl = false;
-            this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + url + '&outputformat=json&version=1.0.0');
+            this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + this.currentUrl + '&outputformat=json&version=1.0.0');
         }
         
         if (!Ext.getCmp('indicator_cb').getValue() ||
