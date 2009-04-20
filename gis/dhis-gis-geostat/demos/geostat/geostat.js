@@ -169,7 +169,7 @@ Ext.onReady(function()
     });
     
     var editUniqueColumnTextField = new Ext.form.TextField({
-        id: 'edituniquecolumn2_tf',
+        id: 'edituniquecolumn_tf',
         emptyText: 'Required',
         width: combo_width
     });
@@ -181,7 +181,7 @@ Ext.onReady(function()
     });
     
     var editNameColumnTextField = new Ext.form.TextField({
-        id: 'editcolumn2_tf',
+        id: 'editcolumn_tf',
         emptyText: 'Required',
         width: combo_width
     });
@@ -193,7 +193,7 @@ Ext.onReady(function()
     });
     
     var editLongitudeTextField = new Ext.form.TextField({
-        id: 'editlongitude2_tf',
+        id: 'editlongitude_tf',
         emptyText: 'Required',
         width: combo_width
     });
@@ -205,7 +205,7 @@ Ext.onReady(function()
     });
     
     var editLatitudeTextField = new Ext.form.TextField({
-        id: 'editlatitude2_tf',
+        id: 'editlatitude_tf',
         emptyText: 'Required',
         width: combo_width
     });
@@ -227,8 +227,8 @@ Ext.onReady(function()
         })
     });
     
-    var editzoomComboBox2 = new Ext.form.ComboBox({
-        id: 'editzoom2_cb',
+    var editZoomComboBox = new Ext.form.ComboBox({
+        id: 'editzoom_cb',
         editable: false,
         emptyText: 'Required',
         displayField: 'value',
