@@ -186,8 +186,7 @@
 <!-- Dynamic Help Action MLA-->
 		<action name="viewDynamicHelp"
 			class="org.hisp.dhis.help.action.PopupHelpAction">
-			<result name="success" type="velocity">/dhis-web-commons/help/reponseSuccess.vm</result>		
-			<result name="error" type="velocity">/dhis-web-commons/help/reponseError.vm</result>		
+			<result name="success" type="velocity">/dhis-web-commons/help/helpPopup.vm</result>				
 		</action>
 		
   </package>

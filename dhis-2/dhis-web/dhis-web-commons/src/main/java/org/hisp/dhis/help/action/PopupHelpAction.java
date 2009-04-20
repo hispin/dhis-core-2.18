@@ -27,7 +27,7 @@ package org.hisp.dhis.help.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.system.help.HelpService;
+import org.hisp.dhis.system.help.HelpContent;
 
 import com.opensymphony.xwork.Action;
 
@@ -40,16 +40,16 @@ import com.opensymphony.xwork.Action;
 public class PopupHelpAction
 implements Action
 {
+
+    public HelpContent helpContent;
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HelpService helpService;
-
     private String id;
 
-    
-    public String getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -57,21 +57,12 @@ implements Action
 		this.id = id;
 	}
 
-	public void setHelpService( HelpService helpService )
-    {
-        this.helpService = helpService;
-    }
-
-    public HelpService getHelpService() {
-		return helpService;
-	}
-
-
 	public String execute()
         throws Exception
     {
-    	helpService.setHeader("help."+id);
-    	helpService.setContent("help."+id+".content");
+		helpContent = new HelpContent();
+		helpContent.setHeader("help."+id);
+		helpContent.setContent("help."+id+".content");
 
         return SUCCESS;
     }

@@ -559,7 +559,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
  	<bean id="org.hisp.dhis.help.action.PopupHelpAction"
 		class="org.hisp.dhis.help.action.PopupHelpAction"
 		scope="prototype">
-		<property name="helpService" ref="org.hisp.dhis.system.help.HelpService" />
 	</bean> 
 	  
   <!-- Common actions -->
@@ -611,7 +610,4 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.commons.action.NoAction"
     class="org.hisp.dhis.commons.action.NoAction"/>
     
-   <bean id="org.hisp.dhis.system.help.HelpService"
-    class="org.hisp.dhis.system.help.HelpService"/>
-   
 </beans>
