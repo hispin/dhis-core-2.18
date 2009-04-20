@@ -53,13 +53,13 @@ Ext.onReady(function()
 
     map.addLayers([jpl_wms, vmap0, choroplethLayer, propSymbolLayer]);
 
-    selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
+    var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
         choroplethLayer,
         {onClickSelect: onClickSelectChoropleth, onClickUnselect: onClickUnselectChoropleth,
         onHoverSelect: onHoverSelectChoropleth, onHoverUnselect: onHoverUnselectChoropleth}
     );
 
-    selectFeaturePoint = new OpenLayers.Control.newSelectFeature( propSymbolLayer,
+    var selectFeaturePoint = new OpenLayers.Control.newSelectFeature( propSymbolLayer,
         {onClickSelect: onClickSelectPoint, onClickUnselect: onClickUnselectPoint,
         onHoverSelect: onHoverSelectPoint, onHoverUnselect: onHoverUnselectPoint }
     );
@@ -71,31 +71,31 @@ Ext.onReady(function()
 
     map.setCenter(new OpenLayers.LonLat(init_longitude, init_latitude), init_zoom); // config.js
     
-    organisationUnitLevelStore = new Ext.data.JsonStore({
-        url: localhost + '/dhis-webservice/getOrganisationUnitLevels.service',
+    var organisationUnitLevelStore = new Ext.data.JsonStore({
+        url: '/dhis-web-mapping/getOrganisationUnitLevels.action',
         baseParams: { format: 'json' },
         root: 'organisationUnitLevels',
         fields: ['id', 'level', 'name'],
         autoLoad: true
     });
 
-    organisationUnitStore = new Ext.data.JsonStore({
-        url: localhost + '/dhis-webservice/getOrganisationUnitsAtLevel.service',
+    var organisationUnitStore = new Ext.data.JsonStore({
+        url: '/dhis-web-mapping/getOrganisationUnitsAtLevel.action',
         root: 'organisationUnits',
         fields: ['id', 'name'],
         sortInfo: { field: 'name', direction: 'ASC' },
         autoLoad: false
     });
     
-    existingMapsStore = new Ext.data.JsonStore({
-            url: localhost + '/dhis-webservice/getAllMaps.service',
+    var existingMapsStore = new Ext.data.JsonStore({
+            url: '/dhis-web-mapping/getAllMaps.action',
             baseParams: { format: 'jsonmin' },
             root: 'maps',
             fields: ['id', 'mapLayerPath', 'organisationUnitLevel'],
             autoLoad: true
     });
 
-    var organisationUnitCombo = new Ext.form.ComboBox({
+    var organisationUnitComboBox = new Ext.form.ComboBox({
         id: 'organisationunit_cb',
         fieldLabel: 'Organisation unit',
         typeAhead: true,
@@ -112,7 +112,7 @@ Ext.onReady(function()
         store: organisationUnitStore
     });
     
-    var organisationUnitLevelCombo = new Ext.form.ComboBox({
+    var organisationUnitLevelComboBox = new Ext.form.ComboBox({
         id: 'organisationunitlevel_cb',
         fieldLabel: 'Level',
         typeAhead: true,
@@ -162,32 +162,73 @@ Ext.onReady(function()
         width: combo_width
     });
     
-    var uniqueColumnTextField = new Ext.form.TextField({
-        id: 'uniquecolumn_tf',
+    var newUniqueColumnTextField = new Ext.form.TextField({
+        id: 'newuniquecolumn_tf',
         emptyText: 'Required',
         width: combo_width
     });
     
-    var nameColumnTextField = new Ext.form.TextField({
+    var editUniqueColumnTextField = new Ext.form.TextField({
+        id: 'edituniquecolumn2_tf',
+        emptyText: 'Required',
+        width: combo_width
+    });
+    
+    var newNameColumnTextField = new Ext.form.TextField({
         id: 'namecolumn_tf',
         emptyText: 'Required',
         width: combo_width
     });
     
-    var longitudeTextField = new Ext.form.TextField({
-        id: 'longitude_tf',
+    var editNameColumnTextField = new Ext.form.TextField({
+        id: 'editcolumn2_tf',
         emptyText: 'Required',
         width: combo_width
     });
     
-    var latitudeTextField = new Ext.form.TextField({
-        id: 'latitude_tf',
+    var newLongitudeTextField = new Ext.form.TextField({
+        id: 'newlongitude_tf',
         emptyText: 'Required',
         width: combo_width
     });
     
-    var zoomComboBox = new Ext.form.ComboBox({
-        id: 'zoom_cb',
+    var editLongitudeTextField = new Ext.form.TextField({
+        id: 'editlongitude2_tf',
+        emptyText: 'Required',
+        width: combo_width
+    });
+    
+    var newLatitudeTextField = new Ext.form.TextField({
+        id: 'newlatitude_tf',
+        emptyText: 'Required',
+        width: combo_width
+    });
+    
+    var editLatitudeTextField = new Ext.form.TextField({
+        id: 'editlatitude2_tf',
+        emptyText: 'Required',
+        width: combo_width
+    });
+    
+    var newZoomComboBox = new Ext.form.ComboBox({
+        id: 'newzoom_cb',
+        editable: false,
+        emptyText: 'Required',
+        displayField: 'value',
+        valueField: 'value',
+        width: combo_width,
+        minListWidth: combo_width + 26,
+        triggerAction: 'all',
+        mode: 'local',
+        value: 5,
+        store: new Ext.data.SimpleStore({
+            fields: ['value'],
+            data: [[3], [4], [5], [6], [7], [8]]
+        })
+    });
+    
+    var editzoomComboBox2 = new Ext.form.ComboBox({
+        id: 'editzoom2_cb',
         editable: false,
         emptyText: 'Required',
         displayField: 'value',
@@ -205,18 +246,18 @@ Ext.onReady(function()
     
     var newMapButton = new Ext.Button({
         id: 'newmap_b',
-        text: 'Register map',
+        text: 'Register new map',
         handler: function()
         {
             var nm = Ext.getCmp('newmap_cb').getValue();
             var oui = Ext.getCmp('organisationunit_cb').getValue();
             var ouli = Ext.getCmp('organisationunitlevel_cb').getValue();
             var mlp = Ext.getCmp('maplayerpath_tf').getValue();
-            var uc = Ext.getCmp('uniquecolumn_tf').getValue();
-            var nc = Ext.getCmp('namecolumn_tf').getValue();
-            var lon = Ext.getCmp('longitude_tf').getValue();
-            var lat = Ext.getCmp('latitude_tf').getValue();
-            var zoom = Ext.getCmp('zoom_cb').getValue();
+            var uc = Ext.getCmp('newuniquecolumn_tf').getValue();
+            var nc = Ext.getCmp('newnamecolumn_tf').getValue();
+            var lon = Ext.getCmp('newlongitude_tf').getValue();
+            var lat = Ext.getCmp('newlatitude_tf').getValue();
+            var zoom = Ext.getCmp('newzoom_cb').getValue();
             
             if (!nm || !mlp || !oui || !ouli || !uc || !nc || !lon || !lat)
             {
@@ -226,7 +267,7 @@ Ext.onReady(function()
             
             Ext.Ajax.request(
             {
-                url: localhost + '/dhis-webservice/addOrUpdateMap.service',
+                url: '/dhis-web-mapping/addOrUpdateMap.action',
                 method: 'GET',
                 params: { mapLayerPath: mlp, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc,
                           longitude: lon, latitude: lat, zoom: zoom},
@@ -259,11 +300,11 @@ Ext.onReady(function()
         handler: function()
         {
             var em = Ext.getCmp('editmap_cb').getValue();
-            var uc = Ext.getCmp('uniquecolumn_tf').getValue();
-            var nc = Ext.getCmp('namecolumn_tf').getValue();
-            var lon = Ext.getCmp('longitude_tf').getValue();
-            var lat = Ext.getCmp('latitude_tf').getValue();
-            var zoom = Ext.getCmp('zoom_cb').getValue();
+            var uc = Ext.getCmp('edituniquecolumn_tf').getValue();
+            var nc = Ext.getCmp('editnamecolumn_tf').getValue();
+            var lon = Ext.getCmp('editlongitude_tf').getValue();
+            var lat = Ext.getCmp('editlatitude_tf').getValue();
+            var zoom = Ext.getCmp('editzoom_cb').getValue();
             
             if (!em || !uc || !nc || !lon || !lat)
             {
@@ -273,7 +314,7 @@ Ext.onReady(function()
             
             Ext.Ajax.request(
             {
-                url: localhost + '/dhis-webservice/addOrUpdateMap.service',
+                url: '/dhis-web-mapping/addOrUpdateMap.action',
                 method: 'GET',
                 params: { mapLayerPath: mlp, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc,
                           longitude: lon, latitude: lat, zoom: zoom},
@@ -315,7 +356,7 @@ Ext.onReady(function()
             
             Ext.Ajax.request(
             {
-                url: localhost + '/dhis-webservice/deleteMapByMapLayerPath.service',
+                url: '/dhis-web-mapping/deleteMapByMapLayerPath.action',
                 method: 'GET',
                 params: { mapLayerPath: mlp },
 
@@ -340,6 +381,142 @@ Ext.onReady(function()
             });
         }
     });
+    
+    var newMapComboBox = new Ext.form.ComboBox(
+    {
+        id: 'newmap_cb',
+        typeAhead: true,
+        editable: false,
+        valueField: 'level',
+        displayField: 'name',
+        emptyText: 'Required',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        selectOnFocus: true,
+        width: combo_width,
+        minListWidth: combo_width + 26,
+        store: organisationUnitLevelStore,
+        listeners: {
+            'select': {
+                fn: function() {
+                    var level = Ext.getCmp('newmap_cb').getValue();
+                    organisationUnitStore.baseParams = { level: level, format: 'json' };
+                    organisationUnitStore.reload();
+                },
+                scope: this
+            }
+        }
+    });
+    
+    var editMapComboBox = new Ext.form.ComboBox(
+    {
+        id: 'editmap_cb',
+        typeAhead: true,
+        editable: false,
+        valueField: 'mapLayerPath',
+        displayField: 'mapLayerPath',
+        emptyText: 'Required',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        selectOnFocus: true,
+        width: combo_width,
+        minListWidth: combo_width + 26,
+        store: existingMapsStore,
+        listeners:
+        {
+            'select':
+            {
+                fn: function()
+                {
+                    var mlp = Ext.getCmp('editmap_cb').getValue();
+                    
+                    Ext.Ajax.request( 
+                    {
+                        url: '/dhis-web-mapping/getMapByMapLayerPath.action',
+                        method: 'GET',
+                        params: { mapLayerPath: mlp, format: 'json' },
+
+                        success: function( responseObject )
+                        {
+                            var map = Ext.util.JSON.decode( responseObject.responseText ).map;
+                            
+                            Ext.getCmp('edituniquecolumn_tf').setValue(map.uniqueColumn);
+                            Ext.getCmp('editnamecolumn_tf').setValue(map.nameColumn);
+                            Ext.getCmp('editlongitude_tf').setValue(map.longitude);
+                            Ext.getCmp('editlatitude_tf').setValue(map.latitude);
+                            Ext.getCmp('editzoom_cb').setValue(map.zoom);
+                            
+                        },
+                        failure: function()
+                        {
+                            alert( 'Error while retrieving data: getAssignOrganisationUnitData' );
+                        } 
+                    });
+                },
+                scope: this
+            }
+        }
+    });
+    
+    var deleteMapComboBox = new Ext.form.ComboBox(
+    {
+        xtype: 'combo',
+        id: 'deletemap_cb',
+        typeAhead: true,
+        editable: false,
+        valueField: 'mapLayerPath',
+        displayField: 'mapLayerPath',
+        emptyText: 'Required',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        selectOnFocus: true,
+        width: combo_width,
+        minListWidth: combo_width + 26,
+        store: existingMapsStore
+    });
+    
+    var newMapPanel = new Ext.Panel(
+    {   
+        id: 'newmap_p',
+        items:
+        [   
+            { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, newMapComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Organisation unit:</p>' }, organisationUnitComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Devided into level:</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Geoserver map layer path:</p>' }, mapLayerPathTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Unique column:</p>' }, newUniqueColumnTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Name column:</p>' }, newNameColumnTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Longitude:</p>' }, newLongitudeTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Latitude:</p>' }, newLatitudeTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Zoom:</p>' }, newZoomComboBox
+        ]
+    });
+    
+    var editMapPanel = new Ext.Panel(
+    {
+        id: 'editmap_p',
+        items:
+        [
+            { html: '<p style="padding-bottom:4px">Choose a map:</p>' }, editMapComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Unique column:</p>' }, editUniqueColumnTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Name column:</p>' }, editNameColumnTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Longitude:</p>' }, editLongitudeTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Latitude:</p>' }, editLatitudeTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Zoom:</p>' }, editZoomComboBox
+        ]
+    });
+    
+    var deleteMapPanel = new Ext.Panel(
+    {
+        id: 'deletemap_p',
+        items:
+        [
+            { html: '<p style="padding-bottom:4px">Choose a map:</p>' }, deleteMapComboBox
+        ]
+    });
 
     rootmap = new Ext.Panel({
         id: 'rootmap',
@@ -353,32 +530,31 @@ Ext.onReady(function()
                 plain: true,
                 defaults: {layout: 'fit', bodyStyle: 'padding:8px'},
                 listeners: {
-                    tabchange: function(panel, tab) {
+                    tabchange: function(panel, tab)
+                    {
+                        var nm_b = Ext.getCmp('newmap_b');
+                        var em_b = Ext.getCmp('editmap_b');
+                        var dm_b = Ext.getCmp('deletemap_b');
+                        
                         if (tab.id == 0)
-                        {
-                            Ext.getCmp('panel1_p').setVisible(true);
-                            Ext.getCmp('panel2_p').setVisible(true);
-                            Ext.getCmp('newmap_b').setVisible(true);
-                            Ext.getCmp('editmap_b').setVisible(false);
-                            Ext.getCmp('deletemap_b').setVisible(false);
+                        { 
+                            nm_b.setVisible(true);
+                            em_b.setVisible(false);
+                            dm_b.setVisible(false);
                         }
                         
                         else if (tab.id == 1)
                         {
-                            Ext.getCmp('panel1_p').setVisible(false);
-                            Ext.getCmp('panel2_p').setVisible(true);
-                            Ext.getCmp('newmap_b').setVisible(false);
-                            Ext.getCmp('editmap_b').setVisible(true);
-                            Ext.getCmp('deletemap_b').setVisible(false);
+                            nm_b.setVisible(false);
+                            em_b.setVisible(true);
+                            dm_b.setVisible(false);
                         }
                         
                         else if (tab.id == 2)
                         {
-                            Ext.getCmp('panel1_p').setVisible(false);
-                            Ext.getCmp('panel2_p').setVisible(false);
-                            Ext.getCmp('newmap_b').setVisible(false);
-                            Ext.getCmp('editmap_b').setVisible(false);
-                            Ext.getCmp('deletemap_b').setVisible(true);
+                            nm_b.setVisible(false);
+                            em_b.setVisible(false);
+                            dm_b.setVisible(true);
                         }
                     }
                 },
@@ -389,114 +565,27 @@ Ext.onReady(function()
                         id: '0',
                         items:
                         [
-                            {
-                                xtype: 'combo',
-                                id: 'newmap_cb',
-                                typeAhead: true,
-                                editable: false,
-                                valueField: 'level',
-                                displayField: 'name',
-                                emptyText: 'Select organisation unit level',
-                                mode: 'remote',
-                                forceSelection: true,
-                                triggerAction: 'all',
-                                selectOnFocus: true,
-                                width: combo_width,
-                                store: organisationUnitLevelStore,
-                                listeners: {
-                                    'select': {
-                                        fn: function() {
-                                            var level = Ext.getCmp('newmap_cb').getValue();
-                                            organisationUnitStore.baseParams = { level: level, format: 'json' };
-                                            organisationUnitStore.reload();
-                                        },
-                                        scope: this
-                                    }
-                                }
-                            }
+                            newMapPanel
                         ]
                     },
                     
                     {
                         title:'Edit map',
                         id: '1',
+                        deferredRender: false,
                         items:
                         [
-                            {
-                                xtype: 'combo',
-                                id: 'editmap_cb',
-                                typeAhead: true,
-                                editable: false,
-                                valueField: 'mapLayerPath',
-                                displayField: 'mapLayerPath',
-                                emptyText: 'Select map',
-                                mode: 'remote',
-                                forceSelection: true,
-                                triggerAction: 'all',
-                                selectOnFocus: true,
-                                width: combo_width,
-                                store: existingMapsStore,
-                                listeners:
-                                {
-                                    'select':
-                                    {
-                                        fn: function()
-                                        {
-                                            var mlp = Ext.getCmp('editmap_cb').getValue();
-                                            
-                                            Ext.Ajax.request( 
-                                            {
-                                                url: localhost + '/dhis-webservice/getMapByMapLayerPath.service',
-                                                method: 'GET',
-                                                params: { mapLayerPath: mlp, format: 'json' },
-
-                                                success: function( responseObject )
-                                                {
-                                                    var map = Ext.util.JSON.decode( responseObject.responseText ).map;
-                                                    
-                                                    Ext.getCmp('uniquecolumn_tf').setValue(map.uniqueColumn);
-                                                    Ext.getCmp('namecolumn_tf').setValue(map.nameColumn);
-                                                    Ext.getCmp('longitude_tf').setValue(map.longitude);
-                                                    Ext.getCmp('latitude_tf').setValue(map.latitude);
-                                                    Ext.getCmp('zoom_cb').setValue(map.zoom);
-                                                    
-                                                },
-                                                failure: function()
-                                                {
-                                                    alert( 'Error while retrieving data: getAssignOrganisationUnitData' );
-                                                } 
-                                            });
-                                                                                
-                                            
-                                            
-                                        },
-                                        scope: this
-                                    }
-                                }
-                            }
+                            editMapPanel
                         ]
                     },
                     
                     {
                         title:'Delete map',
                         id: '2',
+                        deferredRender: false,
                         items:
                         [
-                            {
-                                xtype: 'combo',
-                                id: 'deletemap_cb',
-                                typeAhead: true,
-                                editable: false,
-                                valueField: 'mapLayerPath',
-                                displayField: 'mapLayerPath',
-                                emptyText: 'Select map',
-                                mode: 'remote',
-                                forceSelection: true,
-                                triggerAction: 'all',
-                                selectOnFocus: true,
-                                width: combo_width,
-                                store: existingMapsStore
-                            }
+                            deleteMapPanel
                         ]
                     }
                 ]
@@ -504,30 +593,6 @@ Ext.onReady(function()
             
             { html: '<br>' },
             
-            {
-                xtype: 'panel',
-                id: 'panel1_p',
-                items:
-                [
-                    { html: '<p style="padding-bottom:4px">Register map for this organisation unit:</p>' }, organisationUnitCombo, { html: '<br>' },
-                    { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, organisationUnitLevelCombo, { html: '<br>' },
-                    { html: '<p style="padding-bottom:4px">Geoserver map layer path:</p>' }, mapLayerPathTextField, { html: '<br>' }
-                ]
-            },
-            
-            {
-                xtype: 'panel',
-                id: 'panel2_p',
-                items:
-                [
-                    { html: '<p style="padding-bottom:4px">Unique column:</p>' }, uniqueColumnTextField, { html: '<br>' },
-                    { html: '<p style="padding-bottom:4px">Name column:</p>' }, nameColumnTextField, { html: '<br>' },
-                    { html: '<p style="padding-bottom:4px">Longitude:</p>' }, longitudeTextField, { html: '<br>' },
-                    { html: '<p style="padding-bottom:4px">Latitude:</p>' }, latitudeTextField, { html: '<br>' },
-                    { html: '<p style="padding-bottom:4px">Zoom:</p>' }, zoomComboBox, { html: '<br>' }
-                ]
-            },
-
             newMapButton,
             
             editMapButton,
@@ -790,7 +855,7 @@ function onClickSelectChoropleth(feature)
 
     Ext.Ajax.request( 
     {
-        url: localhost + '/dhis-webservice/addOrUpdateMapOrganisationUnitRelation.service',
+        url: '/dhis-web-mapping/addOrUpdateMapOrganisationUnitRelation.action',
         method: 'GET',
         params: { mapLayerPath: mlp, organisationUnitId: organisationUnitId, featureId: featureId },
 
@@ -877,7 +942,7 @@ function loadMapData(redirect)
 {
     Ext.Ajax.request( 
     {
-        url: localhost + '/dhis-webservice/getMapByMapLayerPath.service',
+        url: '/dhis-web-mapping/getMapByMapLayerPath.action',
         method: 'GET',
         params: { mapLayerPath: 'who:Indian_state', format: 'json' },
 
@@ -910,7 +975,7 @@ function getChoroplethData()
 
     Ext.Ajax.request( 
     {
-        url: localhost + '/dhis-webservice/getMapValues.service',
+        url: '/dhis-web-mapping/getMapValues.action',
         method: 'GET',
         params: { indicatorId: indicatorId, periodId: periodId, level: level, format: 'json' },
 
@@ -932,7 +997,7 @@ function getPointData()
     var periodId = Ext.getCmp('period_cb').getValue();
     var level = pointLayer;
 
-    var url = localhost + '/dhis-webservice/getMapValues.service';
+    var url = 'getMapValues.action';
     format = 'json';
 
     Ext.Ajax.request( 
@@ -959,7 +1024,7 @@ function getAssignOrganisationUnitData()
     
     Ext.Ajax.request( 
     {
-        url: localhost + '/dhis-webservice/getAvailableMapOrganisationUnitRelations.service',
+        url: '/dhis-web-mapping/getAvailableMapOrganisationUnitRelations.action',
         method: 'GET',
         params: { mapLayerPath: mlp, format: 'json' },
 
@@ -986,7 +1051,7 @@ function dataReceivedChoropleth( responseText )
     
     Ext.Ajax.request( 
     {
-        url: localhost + '/dhis-webservice/getAvailableMapOrganisationUnitRelations.service',
+        url: '/dhis-web-mapping/getAvailableMapOrganisationUnitRelations.action',
         method: 'GET',
         params: { mapLayerPath: mlp, format: 'json' },
 
