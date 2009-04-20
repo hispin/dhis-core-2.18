@@ -1,5 +1,7 @@
-// LOCALHOST + TOMCAT
-localhost = 'http://localhost:8180';
+// AJAX REQUESTS
+
+path = '../../dhis-web-mapping/';
+type = '.action';
 
 // MAP
 init_longitude = 0;
