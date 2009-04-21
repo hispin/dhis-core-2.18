@@ -60,16 +60,16 @@ public class AddOrUpdateMapAction
         this.mapLayerPath = mapLayerPath;
     }
 
-    private Integer organisationUnitId;
+    private int organisationUnitId;
 
-    public void setOrganisationUnitId( Integer organisationUnitId )
+    public void setOrganisationUnitId( int organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }
 
-    private Integer organisationUnitLevelId;
+    private int organisationUnitLevelId;
 
-    public void setOrganisationUnitLevelId( Integer organisationUnitLevelId )
+    public void setOrganisationUnitLevelId( int organisationUnitLevelId )
     {
         this.organisationUnitLevelId = organisationUnitLevelId;
     }
@@ -102,9 +102,9 @@ public class AddOrUpdateMapAction
         this.latitude = latitude;
     }
 
-    private Integer zoom;
+    private int zoom;
 
-    public void setZoom( Integer zoom )
+    public void setZoom( int zoom )
     {
         this.zoom = zoom;
     }
