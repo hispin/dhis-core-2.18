@@ -148,6 +148,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             baseParams: { format: 'json' },
             root: 'indicatorGroups',
             fields: ['id', 'name'],
+            sortInfo: { field: 'name', direction: 'ASC' },
             autoLoad: true
         });
         
@@ -155,6 +156,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             url: path + 'getIndicatorsByIndicatorGroup' + type,
             root: 'indicators',
             fields: ['id', 'name'],
+            sortInfo: { field: 'name', direction: 'ASC' },
             autoLoad: false
         });
         
@@ -179,6 +181,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             baseParams: { format: 'jsonmin' },
             root: 'maps',
             fields: ['id', 'mapLayerPath', 'organisationUnitLevel'],
+            sortInfo: { field: 'mapLayerPath', direction: 'ASC' },
             autoLoad: true
         }); 
             
@@ -495,9 +498,9 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         }
         
         if (this.newUrl) {
-            this.currentUrl = this.newUrl;
+            url = this.newUrl;
             this.newUrl = false;
-            this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + this.currentUrl + '&outputformat=json&version=1.0.0');
+            this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + url + '&outputformat=json&version=1.0.0');
         }
         
         if (!Ext.getCmp('indicator_cb').getValue() ||
