@@ -102,17 +102,8 @@ public class DefaultMappingService
     {
         Map map = mappingService.getMapByMapLayerPath( mapLayerPath );
 
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-
-        OrganisationUnitLevel organisationUnitLevel = organisationUnitService
-            .getOrganisationUnitLevel( organisationUnitLevelId );
-
-        Set<String> staticMapLayerPaths = null;
-
         if ( map != null )
         {
-            map.setOrganisationUnit( organisationUnit );
-            map.setOrganisationUnitLevel( organisationUnitLevel );
             map.setUniqueColumn( uniqueColumn );
             map.setNameColumn( nameColumn );
             map.setLongitude( longitude );
@@ -123,8 +114,13 @@ public class DefaultMappingService
         }
         else
         {
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+
+            OrganisationUnitLevel organisationUnitLevel = organisationUnitService
+                .getOrganisationUnitLevel( organisationUnitLevelId );
+
             map = new Map( mapLayerPath, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn, longitude,
-                latitude, zoom, staticMapLayerPaths );
+                latitude, zoom, null );
 
             mappingService.addMap( map );
         }
