@@ -29,7 +29,6 @@ package org.hisp.dhis.mapping;
 
 import java.util.Set;
 
-import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
@@ -105,9 +104,9 @@ public class Map
             return false;
         }
         
-        Chart other = (Chart) object;
+        Map other = (Map) object;
         
-        return mapLayerPath.equals( other.getTitle() );
+        return mapLayerPath.equals( other.mapLayerPath );
     }
     
     // -------------------------------------------------------------------------

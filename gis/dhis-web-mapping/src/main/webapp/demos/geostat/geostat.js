@@ -357,7 +357,7 @@ Ext.onReady(function()
             
             Ext.Ajax.request(
             {
-                url: path + 'deleteMapByMapLayerPath' + type,
+                url: path + 'deleteMap' + type,
                 method: 'GET',
                 params: { mapLayerPath: mlp },
 
