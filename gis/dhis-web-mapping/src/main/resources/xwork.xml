@@ -53,6 +53,16 @@
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapOrganisationUnitRelations.vm</result>
     </action>
     
+    <!-- MapLegendSet -->
+    
+    <action name="addMapLegendSet" class="org.hisp.dhis.mapping.action.AddMapLegendSetAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+    </action>
+    
+    <action name="deleteMapLegendSet" class="org.hisp.dhis.mapping.action.DeleteMapLegendSetAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+    </action>
+        
     <!-- Indicator -->
     
     <action name="getAllIndicatorGroups" class="org.hisp.dhis.mapping.action.GetAllIndicatorGroupsAction">
