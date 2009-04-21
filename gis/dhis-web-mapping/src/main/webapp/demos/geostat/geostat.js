@@ -316,7 +316,7 @@ Ext.onReady(function()
            
             Ext.Ajax.request(
             {
-                url: path + 'updateMap' + type,
+                url: path + 'addOrUpdateMap' + type,
                 method: 'GET',
                 params: { mapLayerPath: em, uniqueColumn: uc, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom },
 
@@ -324,7 +324,7 @@ Ext.onReady(function()
                 {
                     Ext.Msg.show({
                         title:'Register shapefiles',
-                        msg: '<p style="padding-top:8px">The map <b>' + mlp + '</b> was successfully updated!</b></p>',
+                        msg: '<p style="padding-top:8px">The map <b>' + em + '</b> was successfully updated!</b></p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
                         minWidth: 400,
