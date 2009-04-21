@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
-import org.hisp.dhis.gis.LegendSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -267,28 +266,28 @@ public class DefaultMappingService
     // LegendSet
     // -------------------------------------------------------------------------    
     
-    public int addMapLegendSet( LegendSet legendSet )
+    public int addMapLegendSet( MapLegendSet legendSet )
     {
         return mappingStore.addMapLegendSet( legendSet );
     }
     
-    public void deleteMapLegendSet( LegendSet legendSet )
+    public void deleteMapLegendSet( MapLegendSet legendSet )
     {
         mappingStore.deleteMapLegendSet( legendSet );
     }
     
-    public LegendSet getMapLegendSet( int id )
+    public MapLegendSet getMapLegendSet( int id )
     {
         return mappingStore.getMapLegendSet( id );
     }
     
-    public LegendSet getMapLegendSetByIndicator( int indicatorId )
+    public MapLegendSet getMapLegendSetByIndicator( int indicatorId )
     {
         Indicator indicator = indicatorService.getIndicator( indicatorId );
         
-        Collection<LegendSet> legendSets = mappingStore.getAllMapLegendSets();
+        Collection<MapLegendSet> legendSets = mappingStore.getAllMapLegendSets();
         
-        for ( LegendSet legendSet : legendSets )
+        for ( MapLegendSet legendSet : legendSets )
         {
             if ( legendSet.getIndicators().contains( indicator ))
             {
@@ -299,7 +298,7 @@ public class DefaultMappingService
         return null;
     }
     
-    public Collection<LegendSet> getAllMapLegendSets()
+    public Collection<MapLegendSet> getAllMapLegendSets()
     {
         return mappingStore.getAllMapLegendSets();
     }
@@ -308,9 +307,9 @@ public class DefaultMappingService
     {
         Indicator indicator = indicatorService.getIndicator( indicatorId );
         
-        Collection<LegendSet> legendSets = mappingStore.getAllMapLegendSets();
+        Collection<MapLegendSet> legendSets = mappingStore.getAllMapLegendSets();
         
-        for ( LegendSet legendSet : legendSets )
+        for ( MapLegendSet legendSet : legendSets )
         {
             if ( legendSet.getIndicators().contains( indicator ))
             {

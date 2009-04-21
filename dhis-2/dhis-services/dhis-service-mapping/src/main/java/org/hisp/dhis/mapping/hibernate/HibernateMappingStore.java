@@ -33,9 +33,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.gis.LegendSet;
 import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapOrganisationUnitRelation;
 import org.hisp.dhis.mapping.MappingStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -195,29 +195,29 @@ public class HibernateMappingStore
     // LegendSet
     // -------------------------------------------------------------------------    
     
-    public int addMapLegendSet( LegendSet legendSet )
+    public int addMapLegendSet( MapLegendSet legendSet )
     {
         Session session = sessionManager.getCurrentSession();
 
         return (Integer) session.save( legendSet );
     }
     
-    public void deleteMapLegendSet( LegendSet legendSet )
+    public void deleteMapLegendSet( MapLegendSet legendSet )
     {
         Session session = sessionManager.getCurrentSession();
 
         session.update( legendSet );
     }
     
-    public LegendSet getMapLegendSet( int id )
+    public MapLegendSet getMapLegendSet( int id )
     {
         Session session = sessionManager.getCurrentSession();
 
-        return (LegendSet) session.get( LegendSet.class, id );
+        return (MapLegendSet) session.get( MapLegendSet.class, id );
     }
     
     @SuppressWarnings("unchecked")
-    public Collection<LegendSet> getAllMapLegendSets()
+    public Collection<MapLegendSet> getAllMapLegendSets()
     {
         Session session = sessionManager.getCurrentSession();
 
