@@ -149,7 +149,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
             root: 'maps',
             fields: ['id', 'mapLayerPath', 'organisationUnitLevel'],
             autoLoad: true
-        });    
+        });
             
         gridStore = new Ext.data.JsonStore({
             url: path + 'getAvailableMapOrganisationUnitRelations' + type,
@@ -160,6 +160,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 
         gridView = new Ext.grid.GridView({ 
             forceFit: true,
+            draggable: true,
             sortClasses: ['sort-asc'],
             getRowClass: function (row, index){
                 var cls = ''; 
@@ -191,8 +192,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 triggerAction: 'all',
                 emptyText: 'Required',
                 selectOnFocus: true,
-                width: 133,
-                minListWidth: combo_width + 26,
+                width: 130,
+                minListWidth: combo_width,
                 store: mapStore,
                 listeners: {
                     'select': {
@@ -301,9 +302,9 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         }
         
         if (this.newUrl) {
-            this.currentUrl = this.newUrl;
+            url = this.newUrl;
             this.newUrl = false;
-            this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + this.currentUrl + '&outputformat=json&version=1.0.0');
+            this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + url + '&outputformat=json&version=1.0.0');
         }
         
         if (!Ext.getCmp('maps_cb').getValue()) {
@@ -313,7 +314,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 return;
         }
         
-        loadMapData('assignment');
+        loadMapData('assignment', url);
         
         var options = {};
         

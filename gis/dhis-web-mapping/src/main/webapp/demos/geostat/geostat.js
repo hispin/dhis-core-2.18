@@ -13,6 +13,8 @@ Ext.onReady(function()
     features = null;
     features_choropleth = null;
     features_mapping = null;
+    
+    url = null;
 
     var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
                                            "http://labs.metacarta.com/wms-c/Basic.py?", 
@@ -311,39 +313,12 @@ Ext.onReady(function()
                 Ext.MessageBox.alert('Error', 'Form is not complete');
                 return;
             }
-/*            
+           
             Ext.Ajax.request(
             {
-                url: path + 'getMapByMapLayerPath' + type,
+                url: path + 'updateMap' + type,
                 method: 'GET',
-                params: { mapLayerPath: em },
-
-                success: function( responseObject )
-                {
-                    Ext.Msg.show({
-                        title:'Register shapefiles',
-                        msg: '<p style="padding-top:8px">The map <b>' + mlp + '</b> was successfully updated!</b></p>',
-                        buttons: Ext.Msg.OK,
-                        animEl: 'elId',
-                        minWidth: 400,
-                        icon: Ext.MessageBox.INFO
-                    });
-                    
-                    Ext.getCmp('map_cb').getStore().reload();
-                    Ext.getCmp('maps_cb').getStore().reload();
-                },
-                failure: function()
-                {
-                    alert( 'Status', 'Error while saving data' );
-                }
-            });
-*/            
-            Ext.Ajax.request(
-            {
-                url: path + 'addOrUpdateMap' + type,
-                method: 'GET',
-                params: { mapLayerPath: em, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc,
-                          longitude: lon, latitude: lat, zoom: zoom},
+                params: { mapLayerPath: em, uniqueColumn: uc, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom },
 
                 success: function( responseObject )
                 {
@@ -890,7 +865,7 @@ function onClickSelectChoropleth(feature)
             var south_panel = Ext.getCmp('south-panel');
             south_panel.body.dom.innerHTML = organisationUnit + '<font color="#444444"> assigned to </font>' + featureId + "!";
             
-            setMapData('assignment');
+            loadMapData('assignment');
         },
         failure: function()
         {
@@ -970,7 +945,7 @@ function loadMapData(redirect)
     {
         url: path + 'getMapByMapLayerPath' + type,
         method: 'GET',
-        params: { mapLayerPath: choropleth.currentUrl, format: 'json' },
+        params: { mapLayerPath: url, format: 'json' },
 
         success: function( responseObject )
         {
@@ -987,7 +962,7 @@ function loadMapData(redirect)
         },
         failure: function()
         {
-            alert( 'Error while retrieving map data: setMapData' );
+            alert( 'Error while retrieving map data: loadMapData' );
         } 
     });
 }
