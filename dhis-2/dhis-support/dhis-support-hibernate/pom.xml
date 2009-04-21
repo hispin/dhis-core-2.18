@@ -31,8 +31,48 @@
     </dependency>
     
     <!-- Hibernate -->
-    
+<!-- Latest hibernate MLA -->
+    <!-- the dependency on the hibernate-core module (see above) -->
     <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+    </dependency>
+
+    <!-- Here we are using cglib instead of Javassist (Hibernate 'repackages' cglib to avoid name clashes) -->
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-cglib-repack</artifactId>
+    </dependency>
+    <!-- Logging set up -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+    </dependency>
+    <!-- Here is the bit enabling EhCache support -->
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-ehcache</artifactId>
+    </dependency>    
+    <dependency>
+        <groupId>javassist</groupId>
+        <artifactId>javassist</artifactId>
+    </dependency>
+  <!-- Hibernate annotations -->
+
+    <dependency>
+        <groupId>org.hibernate</groupId>    
+		<artifactId>hibernate-annotations</artifactId>
+    </dependency>
+    <dependency>
+    <groupId>org.jboss.envers</groupId>
+		<artifactId>jboss-envers</artifactId>
+		<version>1.2.0.GA-hibernate-3.3</version>
+    </dependency>        
+    <!--dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate</artifactId>
     </dependency>
@@ -47,7 +87,7 @@
     <dependency>
       <groupId>c3p0</groupId>
       <artifactId>c3p0</artifactId>
-    </dependency>
+    </dependency-->
     
     <!-- Database connectors -->
     

@@ -181,10 +181,22 @@ function createChart()
     	    barHeight = Math.round( maxBarHeight * historyPoints[i][1] / maxValue );
     		g.drawStringRect( historyPoints[i][1].toFixed(), cellWidth * ( i - 1 ) + cellWidth / 2, barBase - barHeight - verticalPadding - fontSizePixels, cellWidth * 2, 'center' );
         }
+var qstr = '<a href="javascript:openAuditForm(';
+qstr = qstr+ ouid;
+qstr = qstr+ ',';
+qstr = qstr +  coid;
+qstr = qstr+ ',';
+qstr = qstr +  deid;
+qstr = qstr+ ',';
+qstr = qstr +  historyPoints[i][3];
+qstr = qstr +');">';
+qstr = qstr + historyPoints[i][0];
+qstr = qstr + '</a>';
 
-        g.drawStringRect( historyPoints[i][0], cellWidth * i, barBase + verticalPadding, cellWidth, 'center' );
+//        g.drawStringRect( "<a href='javascript:openAuditForm(" + ouid, coid, deid, historyPoints[i][3], historyPoints[i][4], historyPoints[i][5] + ");'>" + historyPoints[i][0] + "</a>", cellWidth * i, barBase + verticalPadding, cellWidth, 'center' );
+        g.drawStringRect( qstr , cellWidth * i, barBase + verticalPadding, cellWidth, 'center' );
     }
-
+    
     g.paint();
 }
 
@@ -269,6 +281,11 @@ function saveMaxLimit( organisationUnitId, dataElementId, optionComboId )
         }
     }
 }
+
+function openAuditForm (idou, idco, idde, psd)
+    {
+		window.open ('../dhis-web-dataentry/viewDataValuePopupForm.action?organisationUnitId=' + idou + '&dataElementComboId=' +idco + '&dataElementId=' + idde +'&periodId=' + psd + '&width=800,height=600,scrollbars=yes');
+    }
 
 function refreshWindow()
 {

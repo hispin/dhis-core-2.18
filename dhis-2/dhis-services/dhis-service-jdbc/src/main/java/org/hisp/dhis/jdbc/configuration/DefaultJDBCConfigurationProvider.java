@@ -27,6 +27,7 @@ package org.hisp.dhis.jdbc.configuration;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hisp.dhis.hibernate.HibernateConfigurationProvider;
 import org.hisp.dhis.jdbc.JDBCConfiguration;
@@ -70,8 +71,9 @@ public class DefaultJDBCConfigurationProvider
 
     public JDBCConfiguration getConfiguration()
     {
-        Configuration hibernateConfiguration = configurationProvider.getConfiguration();
-        
+    	AnnotationConfiguration hibernateConfiguration = configurationProvider.getConfiguration();
+//    	Configuration hibernateConfiguration = configurationProvider.getConfiguration();
+    	
         JDBCConfiguration config = new JDBCConfiguration();
         
         String dialect = hibernateConfiguration.getProperty( KEY_DIALECT );

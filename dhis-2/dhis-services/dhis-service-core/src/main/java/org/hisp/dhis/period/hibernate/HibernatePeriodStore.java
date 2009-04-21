@@ -263,4 +263,16 @@ public class HibernatePeriodStore
         
         return reloadedPeriodType;
     }
+    
+	public Period getPeriodFromDates(Date startDate, Date endDate,
+			PeriodType periodType) {
+        Session session = sessionManager.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( Period.class );
+        criteria.add( Restrictions.eq( "startDate", startDate ) );
+        criteria.add( Restrictions.eq( "endDate", endDate ) );
+        criteria.add( Restrictions.eq( "periodType", periodType ) );
+
+        return (Period) criteria.uniqueResult();
+	}
 }
