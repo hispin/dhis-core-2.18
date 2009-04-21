@@ -60,9 +60,9 @@ public class AddOrUpdateMapOrganisationUnitRelationAction
         this.mapLayerPath = mapLayerPath;
     }
 
-    private Integer organisationUnitId;
+    private int organisationUnitId;
 
-    public void setOrganisationUnitId( Integer organisationUnitId )
+    public void setOrganisationUnitId( int organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }
