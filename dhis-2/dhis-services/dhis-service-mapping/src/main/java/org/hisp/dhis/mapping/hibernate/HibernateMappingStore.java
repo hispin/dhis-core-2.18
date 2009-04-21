@@ -195,21 +195,21 @@ public class HibernateMappingStore
     // LegendSet
     // -------------------------------------------------------------------------    
     
-    public int addLegendSet( LegendSet legendSet )
+    public int addMapLegendSet( LegendSet legendSet )
     {
         Session session = sessionManager.getCurrentSession();
 
         return (Integer) session.save( legendSet );
     }
     
-    public void deleteLegendSet( LegendSet legendSet )
+    public void deleteMapLegendSet( LegendSet legendSet )
     {
         Session session = sessionManager.getCurrentSession();
 
         session.update( legendSet );
     }
     
-    public LegendSet getLegendSet( int id )
+    public LegendSet getMapLegendSet( int id )
     {
         Session session = sessionManager.getCurrentSession();
 
@@ -217,7 +217,7 @@ public class HibernateMappingStore
     }
     
     @SuppressWarnings("unchecked")
-    public Collection<LegendSet> getAllLegendSets()
+    public Collection<LegendSet> getAllMapLegendSets()
     {
         Session session = sessionManager.getCurrentSession();
 
