@@ -29,9 +29,7 @@ package org.hisp.dhis.mapping;
 
 import java.util.Collection;
 
-import org.hisp.dhis.gis.Legend;
 import org.hisp.dhis.gis.LegendSet;
-import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
@@ -250,13 +248,15 @@ public interface MappingService
     // LegendSet
     // -------------------------------------------------------------------------    
     
-    int addLegendSet( LegendSet legendSet );
+    int addMapLegendSet( LegendSet legendSet );
     
-    void deleteLegendSet( LegendSet legendSet );
+    void deleteMapLegendSet( LegendSet legendSet );
     
-    LegendSet getLegendSet( int id );
+    LegendSet getMapLegendSet( int id );
     
-    LegendSet getLegendSetByIndicator( int indicatorId );
+    LegendSet getMapLegendSetByIndicator( int indicatorId );
     
-    Collection<LegendSet> getAllLegendSets();
+    Collection<LegendSet> getAllMapLegendSets();
+    
+    boolean indicatorHasMapLegendSet( int indicatorId );
 }

@@ -267,26 +267,26 @@ public class DefaultMappingService
     // LegendSet
     // -------------------------------------------------------------------------    
     
-    public int addLegendSet( LegendSet legendSet )
+    public int addMapLegendSet( LegendSet legendSet )
     {
-        return mappingStore.addLegendSet( legendSet );
+        return mappingStore.addMapLegendSet( legendSet );
     }
     
-    public void deleteLegendSet( LegendSet legendSet )
+    public void deleteMapLegendSet( LegendSet legendSet )
     {
-        mappingStore.deleteLegendSet( legendSet );
+        mappingStore.deleteMapLegendSet( legendSet );
     }
     
-    public LegendSet getLegendSet( int id )
+    public LegendSet getMapLegendSet( int id )
     {
-        return mappingStore.getLegendSet( id );
+        return mappingStore.getMapLegendSet( id );
     }
     
-    public LegendSet getLegendSetByIndicator( int indicatorId )
+    public LegendSet getMapLegendSetByIndicator( int indicatorId )
     {
         Indicator indicator = indicatorService.getIndicator( indicatorId );
         
-        Collection<LegendSet> legendSets = mappingStore.getAllLegendSets();
+        Collection<LegendSet> legendSets = mappingStore.getAllMapLegendSets();
         
         for ( LegendSet legendSet : legendSets )
         {
@@ -299,16 +299,16 @@ public class DefaultMappingService
         return null;
     }
     
-    public Collection<LegendSet> getAllLegendSets()
+    public Collection<LegendSet> getAllMapLegendSets()
     {
-        return mappingStore.getAllLegendSets();
+        return mappingStore.getAllMapLegendSets();
     }
     
-    public boolean indicatorHasLegendSet( int indicatorId )
+    public boolean indicatorHasMapLegendSet( int indicatorId )
     {
         Indicator indicator = indicatorService.getIndicator( indicatorId );
         
-        Collection<LegendSet> legendSets = mappingStore.getAllLegendSets();
+        Collection<LegendSet> legendSets = mappingStore.getAllMapLegendSets();
         
         for ( LegendSet legendSet : legendSets )
         {
