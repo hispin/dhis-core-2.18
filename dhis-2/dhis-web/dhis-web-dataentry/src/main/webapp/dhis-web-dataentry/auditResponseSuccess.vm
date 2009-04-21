@@ -1,0 +1,13 @@
+<p>$i18n.getString( 'Audit' )</p>
+$dataElement.name &nbsp; $dataElementCategoryOptionCombo.name<br>
+$organisationUnit.name<br>	
+for period of $period.startDate to $period.EndDate <br>	
+	<table border=1><td>Value</td><td>Stored By</td><td>Time</td>
+#foreach( $dataValue in $dataValues )
+			<tr><td> $dataValue.value </td>
+			<td> $dataValue.storedBy </td>
+			<td> $dataValue.timestamp </td>
+			</tr>
+#end
+</table>
+

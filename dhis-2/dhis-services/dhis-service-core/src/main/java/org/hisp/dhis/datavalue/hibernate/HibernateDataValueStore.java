@@ -108,7 +108,9 @@ public class HibernateDataValueStore
     public void addDataValue( DataValue dataValue )
     {
         dataValue.setPeriod( reloadPeriodForceAdd( dataValue.getPeriod() ) );
-
+        //added to comply with annotations changes MLA
+        dataValue.dataValueKey.setPeriodid( dataValue.getPeriod().getId());
+        
         Session session = sessionManager.getCurrentSession();
 
         session.save( dataValue );
@@ -117,6 +119,8 @@ public class HibernateDataValueStore
     public void updateDataValue( DataValue dataValue )
     {
         dataValue.setPeriod( reloadPeriodForceAdd( dataValue.getPeriod() ) );
+        //added to comply with annotations changes MLA
+        dataValue.dataValueKey.setPeriodid( dataValue.getPeriod().getId());
 
         Session session = sessionManager.getCurrentSession();
 

@@ -12,4 +12,22 @@
   <artifactId>dhis-api</artifactId>
   <packaging>jar</packaging>
   <name>DHIS API</name>
+  
+  <!-- Dependencies -->
+  <!-- Hibernate annotations -->
+  <dependencies>
+    <dependency>
+        <groupId>org.hibernate</groupId>    
+		<artifactId>hibernate-annotations</artifactId>
+    </dependency>  
+    <dependency>
+        <groupId>org.hibernate</groupId>    
+		<artifactId>hibernate-annotations</artifactId>
+    </dependency> 
+    <dependency>
+    <groupId>org.jboss.envers</groupId>
+		<artifactId>jboss-envers</artifactId>
+		<version>1.2.0.GA-hibernate-3.3</version>
+    </dependency>
+</dependencies>  
 </project>

@@ -1,0 +1,21 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+        <hibernate-configuration>
+          <session-factory>
+            <mapping class="org.hisp.dhis.datavalue.DataValue"/>
+            <!--mapping package="org.hisp.dhis.dataelement"/>
+            <mapping package="org.hisp.dhis.validation"/-->
+            <listener type="post-insert" class="org.hibernate.envers.event.AuditEventListener"/> 
+            <listener type="post-update" class="org.hibernate.envers.event.AuditEventListener"/>
+            <listener type="post-delete" class="org.hibernate.envers.event.AuditEventListener"/>
+            <listener type="pre-collection-update" class="org.hibernate.envers.event.AuditEventListener"/>
+            <listener type="pre-collection-remove" class="org.hibernate.envers.event.AuditEventListener"/>
+            <listener type="post-collection-recreate" class="org.hibernate.envers.event.AuditEventListener"/>
+            <!--event type="post-update"/>
+				<listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+				</event-->
+          </session-factory>
+          
+        </hibernate-configuration>

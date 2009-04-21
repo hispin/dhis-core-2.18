@@ -312,4 +312,10 @@ public class DefaultPeriodService
     {
         return PeriodType.getPeriodTypeByName( name );
     }
+    
+    //this method is used to get period with id for audit functionality MLA
+	public Period getPeriodFromDates(Date startDate, Date endDate,
+			PeriodType periodType) {
+		return periodStore.getPeriodFromDates( startDate, endDate, periodType );
+	}
 }
