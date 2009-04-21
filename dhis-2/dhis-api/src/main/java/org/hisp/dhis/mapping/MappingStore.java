@@ -29,6 +29,9 @@ package org.hisp.dhis.mapping;
 
 import java.util.Collection;
 
+import org.hisp.dhis.gis.Legend;
+import org.hisp.dhis.gis.LegendSet;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
@@ -161,4 +164,16 @@ public interface MappingStore
      *         given Map.
      */
     Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationByMap( Map map );
+    
+    // -------------------------------------------------------------------------
+    // LegendSet
+    // -------------------------------------------------------------------------    
+    
+    int addLegendSet( LegendSet legendSet );
+    
+    void deleteLegendSet( LegendSet legendSet );
+    
+    LegendSet getLegendSet( int id );
+    
+    Collection<LegendSet> getAllLegendSets();    
 }
