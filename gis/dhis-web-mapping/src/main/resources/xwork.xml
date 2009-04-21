@@ -37,6 +37,10 @@
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonMap.vm</result>
     </action>
     
+    <action name="deleteMap" class="org.hisp.dhis.mapping.action.DeleteMapAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+    </action>
+    
     <action name="getMapValues" class="org.hisp.dhis.mapping.action.GetMapValuesAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonAggregatedMapValues.vm</result>
     </action>
