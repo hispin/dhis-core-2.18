@@ -77,6 +77,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.mapping.MappingService"/>
   </bean>
   
+  <!-- MapLegendSet -->
+  
+  <bean id="org.hisp.dhis.mapping.action.AddMapLegendSetAction"
+    class="org.hisp.dhis.mapping.action.AddMapLegendSetAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+    <property name="indicatorService"
+      ref="org.hisp.dhis.indicator.IndicatorService"/>
+  </bean>
+    
+  <bean id="org.hisp.dhis.mapping.action.DeleteMapLegendSetAction"
+    class="org.hisp.dhis.mapping.action.DeleteMapLegendSetAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+  
   <!-- Indicator -->
     
   <bean id="org.hisp.dhis.mapping.action.GetAllIndicatorGroupsAction"
