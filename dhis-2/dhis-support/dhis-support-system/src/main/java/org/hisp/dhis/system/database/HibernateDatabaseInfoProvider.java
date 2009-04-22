@@ -27,7 +27,6 @@ package org.hisp.dhis.system.database;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hisp.dhis.hibernate.HibernateConfigurationProvider;
 
@@ -66,8 +65,7 @@ public class HibernateDatabaseInfoProvider
 
     public void init()
     {
-//        Configuration config = configurationProvider.getConfiguration();
-    	AnnotationConfiguration config = configurationProvider.getConfiguration();
+        Configuration config = configurationProvider.getConfiguration();
         
         String dialect = config.getProperty( KEY_DIALECT );
         String driverClass = config.getProperty( KEY_DRIVER_CLASS );

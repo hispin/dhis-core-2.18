@@ -39,9 +39,7 @@ import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.CalendarPeriodType;
-import org.hisp.dhis.period.DefaultPeriodService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -68,18 +66,11 @@ public class DefaultHistoryRetriever
         this.dataValueService = dataValueService;
     }
 
-    //period id dependency MLA
-    private PeriodService periodService;
-
-	public void setPeriodService(PeriodService periodService) {
-		this.periodService = periodService;
-	} 
-	
     // -------------------------------------------------------------------------
     // HistoryRetriever implementation
     // -------------------------------------------------------------------------
 
-	public DataElementHistory getHistory( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit,
+    public DataElementHistory getHistory( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit,
         Period lastPeriod, int historyLength )
         throws HistoryRetrieverException
     {
@@ -238,21 +229,11 @@ public class DefaultHistoryRetriever
         CalendarPeriodType periodType = (CalendarPeriodType) lastPeriod.getPeriodType();
 
         Period period = lastPeriod;
-        Period p = new Period();
-        
+
         for ( int i = 0; i < historyLength; ++i )
         {
-            //periods.add( period );
-        	//period = periodType.getPreviousPeriod( period );
-        	
-            //added to retrieve period id MLA
-       	 p = periodService.getPeriodFromDates(period.getStartDate(), period.getEndDate(), periodType);
-       		if(p!=null){
-           		periods.add( p );
-       		}else{
-           		periods.add( period );	
-       		}
-        	period = periodType.getPreviousPeriod( period );
+            periods.add( period );
+            period = periodType.getPreviousPeriod( period );
         }
 
         Collections.reverse( periods );

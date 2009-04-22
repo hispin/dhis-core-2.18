@@ -74,14 +74,10 @@ var maxValue = $dataElementHistory.maxValue;
 var minLimit = #if( $dataElementHistory.minLimit ) $dataElementHistory.minLimit #else Number.NaN #end;
 var maxLimit = #if( $dataElementHistory.maxLimit ) $dataElementHistory.maxLimit #else Number.NaN #end;
 
-var ouid = $dataElementHistory.organisationUnit.id;
-var deid = $dataElementHistory.dataElement.id;
-var coid = $dataElementHistory.optionCombo.id;
-
 var historyPoints = new Array( $dataElementHistory.historyLength );
 #set( $i = 0 )
 #foreach( $historyPoint in $dataElementHistory.historyPoints )
-   historyPoints[$i] = [#if( $historyPoint.period ) '$format.formatPeriod( $historyPoint.period )' #else '-' #end, #if( $historyPoint.value ) $historyPoint.value #else Number.NaN #end, $historyPoint.average, $historyPoint.period.id ];
+   historyPoints[$i] = [#if( $historyPoint.period ) '$format.formatPeriod( $historyPoint.period )' #else '-' #end, #if( $historyPoint.value ) $historyPoint.value #else Number.NaN #end, $historyPoint.average];
    #set( $i = $i + 1 )
 #end
 
