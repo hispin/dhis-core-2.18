@@ -521,7 +521,7 @@ Ext.onReady(function()
 
     shapefilePanel = new Ext.Panel({
         id: 'shapefile_p',
-        title: 'Register shapefiles',
+        title: 'Register shape files',
         items:
         [
             {
@@ -537,21 +537,21 @@ Ext.onReady(function()
                         var em_b = Ext.getCmp('editmap_b');
                         var dm_b = Ext.getCmp('deletemap_b');
                         
-                        if (tab.id == 0)
+                        if (tab.id == 'map0')
                         { 
                             nm_b.setVisible(true);
                             em_b.setVisible(false);
                             dm_b.setVisible(false);
                         }
                         
-                        else if (tab.id == 1)
+                        else if (tab.id == 'map1')
                         {
                             nm_b.setVisible(false);
                             em_b.setVisible(true);
                             dm_b.setVisible(false);
                         }
                         
-                        else if (tab.id == 2)
+                        else if (tab.id == 'map2')
                         {
                             nm_b.setVisible(false);
                             em_b.setVisible(false);
@@ -563,7 +563,7 @@ Ext.onReady(function()
                 [
                     {
                         title:'New map',
-                        id: '0',
+                        id: 'map0',
                         items:
                         [
                             newMapPanel
@@ -572,8 +572,7 @@ Ext.onReady(function()
                     
                     {
                         title:'Edit map',
-                        id: '1',
-                        deferredRender: false,
+                        id: 'map1',
                         items:
                         [
                             editMapPanel
@@ -582,8 +581,7 @@ Ext.onReady(function()
                     
                     {
                         title:'Delete map',
-                        id: '2',
-                        deferredRender: false,
+                        id: 'map2',
                         items:
                         [
                             deleteMapPanel
@@ -601,9 +599,6 @@ Ext.onReady(function()
             deleteMapButton
         ]
     });
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     var legendSetNameTextField = new Ext.form.TextField({
         id: 'legendSetName_tf',
@@ -834,13 +829,13 @@ Ext.onReady(function()
                         var nl_b = Ext.getCmp('newlegendset_b');
                         var dl_b = Ext.getCmp('deletelegendset_b');
                         
-                        if (tab.id == 0)
+                        if (tab.id == 'legendset0')
                         { 
                             nl_b.setVisible(true);
                             dl_b.setVisible(false);
                         }
                         
-                        else if (tab.id == 1)
+                        else if (tab.id == 'legendset1')
                         {
                             nl_b.setVisible(false);
                             dl_b.setVisible(true);
@@ -851,7 +846,7 @@ Ext.onReady(function()
                 [
                     {
                         title:'New legend set',
-                        id: '0',
+                        id: 'legendset0',
                         items:
                         [
                             newLegendSetPanel
@@ -859,9 +854,8 @@ Ext.onReady(function()
                     },
                     
                     {
-                        title:'Edit legend set',
-                        id: '1',
-                        deferredRender: false,
+                        title:'Delete legend set',
+                        id: 'legendset1',
                         items:
                         [
                             deleteLegendSetPanel
