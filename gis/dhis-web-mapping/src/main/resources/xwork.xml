@@ -63,6 +63,10 @@
       <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
     </action>
         
+    <action name="getAllMapLegendSets" class="org.hisp.dhis.mapping.action.GetAllMapLegendSetsAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/jsonminMapLegendSets.vm</result>
+    </action>
+        
     <!-- Indicator -->
     
     <action name="getAllIndicatorGroups" class="org.hisp.dhis.mapping.action.GetAllIndicatorGroupsAction">
