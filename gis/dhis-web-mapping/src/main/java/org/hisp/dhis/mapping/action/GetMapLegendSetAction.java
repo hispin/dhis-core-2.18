@@ -27,6 +27,7 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
 
 import com.opensymphony.xwork.Action;
@@ -61,13 +62,24 @@ public class GetMapLegendSetAction
     }
 
     // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private MapLegendSet object;
+
+    public MapLegendSet getObject()
+    {
+        return object;
+    }
+    
+    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        mappingService.getMapLegendSetByIndicator( indicatorId );
+        object = mappingService.getMapLegendSetByIndicator( indicatorId );
         
         return SUCCESS;
     }
