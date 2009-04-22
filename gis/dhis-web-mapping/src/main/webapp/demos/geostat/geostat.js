@@ -601,7 +601,7 @@ Ext.onReady(function()
     });
     
     var legendSetNameTextField = new Ext.form.TextField({
-        id: 'legendSetName_tf',
+        id: 'legendsetname_tf',
         emptyText: 'Required',
         width: combo_width
     });
@@ -684,7 +684,7 @@ Ext.onReady(function()
     });
     
     var legendSetStore = new Ext.data.JsonStore({
-        url: path + 'getAllLegendSets' + type,
+        url: path + 'getAllMapLegendSets' + type,
         root: 'legendSets',
         fields: ['id', 'name'],
         sortInfo: { field: 'name', direction: 'ASC' },
@@ -712,7 +712,7 @@ Ext.onReady(function()
         text: 'Register new legend set',
         handler: function()
         {
-            var ln = Ext.getCmp('legendSetName_tf').getValue();
+            var ln = Ext.getCmp('legendsetname_tf').getValue();
             var llc = Ext.getCmp('legendsetlowcolor_cp').getValue();
             var lhc = Ext.getCmp('legendsethighcolor_cp').getValue();
             var li = Ext.getCmp('legendsetindicator_cb').getValue();
@@ -727,7 +727,7 @@ Ext.onReady(function()
             {
                 url: path + 'addMapLegendSet' + type,
                 method: 'GET',
-                params: { name: ln, colorLow: llc, colorHigh: lhc, indicatorId: li },
+                params: { name: ln, colorLow: llc, colorHigh: lhc, indicators: li },
 
                 success: function( responseObject )
                 {

@@ -1,6 +1,6 @@
 package org.hisp.dhis.mapping;
 
-import java.util.Collection;
+import java.util.Set;
 
 import org.hisp.dhis.indicator.Indicator;
 
@@ -45,13 +45,13 @@ public class MapLegendSet
     
     private String colorHigh;
     
-    private Collection<Indicator> indicators;
+    private Set<Indicator> indicators;
 
     public MapLegendSet()
     {
     }
 
-    public MapLegendSet( String name, String colorLow, String colorHigh, Collection<Indicator> indicators )
+    public MapLegendSet( String name, String colorLow, String colorHigh, Set<Indicator> indicators )
     {
         this.name = name;
         this.colorLow = colorLow;
@@ -136,12 +136,12 @@ public class MapLegendSet
         this.colorHigh = colorHigh;
     }
 
-    public Collection<Indicator> getIndicators()
+    public Set<Indicator> getIndicators()
     {
         return indicators;
     }
 
-    public void setIndicators( Collection<Indicator> indicators )
+    public void setIndicators( Set<Indicator> indicators )
     {
         this.indicators = indicators;
     }

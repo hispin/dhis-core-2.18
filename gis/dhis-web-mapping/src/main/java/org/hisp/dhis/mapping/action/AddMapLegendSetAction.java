@@ -27,8 +27,8 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -87,9 +87,9 @@ public class AddMapLegendSetAction
         this.colorHigh = colorHigh;
     }
 
-    private Collection<Integer> indicators;
+    private Collection<String> indicators;
 
-    public void setIndicators( Collection<Integer> indicators )
+    public void setIndicators( Collection<String> indicators )
     {
         this.indicators = indicators;
     }
@@ -105,11 +105,11 @@ public class AddMapLegendSetAction
         legendSet.setName( name );
         legendSet.setColorLow( colorLow );
         legendSet.setColorHigh( colorHigh );
-        legendSet.setIndicators( new ArrayList<Indicator>() );        
+        legendSet.setIndicators( new HashSet<Indicator>() );        
         
-        for ( Integer indicator : indicators )
+        for ( String indicator : indicators )
         {
-            legendSet.getIndicators().add( indicatorService.getIndicator( indicator ) );
+            legendSet.getIndicators().add( indicatorService.getIndicator( Integer.valueOf( indicator ) ) );
         }
         
         mappingService.addMapLegendSet( legendSet );
