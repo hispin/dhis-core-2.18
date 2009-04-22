@@ -102,6 +102,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.mapping.MappingService"/>
   </bean>
   
+  <bean id="org.hisp.dhis.mapping.action.GetMapLegendSetAction"
+    class="org.hisp.dhis.mapping.action.GetMapLegendSetAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+  
   <!-- Indicator -->
     
   <bean id="org.hisp.dhis.mapping.action.GetAllIndicatorGroupsAction"
