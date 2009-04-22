@@ -28,7 +28,6 @@ package org.hisp.dhis.hibernate;
  */
 
 import org.hibernate.HibernateException;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 /**
@@ -39,8 +38,7 @@ public interface HibernateConfigurationProvider
 {
     String ID = HibernateConfigurationProvider.class.getName();
 
-//  Configuration getConfiguration()
-    AnnotationConfiguration getConfiguration()
+    Configuration getConfiguration()
         throws HibernateException;
 
     void setEventListener( String type, Object eventListener );

@@ -38,7 +38,6 @@ import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
@@ -53,8 +52,8 @@ public class DefaultHibernateConfigurationProvider
     implements HibernateConfigurationProvider
 {
     private static final Log LOG = LogFactory.getLog( DefaultHibernateConfigurationProvider.class );
-//  private Configuration configuration = null;
-    private AnnotationConfiguration configuration = null;
+
+    private Configuration configuration = null;
 
     private static final String MAPPING_RESOURCES_ROOT = "org/hisp/dhis/";
 
@@ -86,11 +85,8 @@ public class DefaultHibernateConfigurationProvider
     public void initialise()
         throws Exception
     {
-//        Configuration configuration = new Configuration();
+        Configuration configuration = new Configuration();
 
-    	//Changed to AnnotationConfiguration, making annotations available. MLA
-    	AnnotationConfiguration configuration = new AnnotationConfiguration();
-    	
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
         // ---------------------------------------------------------------------
@@ -174,8 +170,7 @@ public class DefaultHibernateConfigurationProvider
             LOG.info( "Could not read external configuration from file system" );
         }
         
-//        this.configuration = configuration;
-        this.configuration = configuration.configure("hibernate.cfg.xml");
+        this.configuration = configuration;
     }
 
     // -------------------------------------------------------------------------
@@ -187,7 +182,7 @@ public class DefaultHibernateConfigurationProvider
         configuration.setListener( type, listener );
     }
 
-    public AnnotationConfiguration getConfiguration()
+    public Configuration getConfiguration()
     {
         return configuration;
     }

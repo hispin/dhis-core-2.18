@@ -28,7 +28,6 @@ package org.hisp.dhis.hibernate;
  */
 
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 /**
@@ -59,14 +58,9 @@ public class DefaultHibernateSessionFactoryManager
     {
         if ( sessionFactory == null )
         {
-//            Configuration configuration = configurationProvider.getConfiguration();
+            Configuration configuration = configurationProvider.getConfiguration();
 
-//            sessionFactory = configuration.buildSessionFactory();
-
-            //Added AnnotationConfiguration to make annotations available. MLA
-            AnnotationConfiguration annotationConfiguration = configurationProvider.getConfiguration();
-            sessionFactory = configurationProvider.getConfiguration().buildSessionFactory();
-            
+            sessionFactory = configuration.buildSessionFactory();
         }
 
         return sessionFactory;

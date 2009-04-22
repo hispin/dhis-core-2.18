@@ -30,13 +30,6 @@ package org.hisp.dhis.datavalue;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import org.hibernate.envers.Audited;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.period.Period;
@@ -46,44 +39,33 @@ import org.hisp.dhis.source.Source;
  * @author Kristian Nordal
  * @version $Id: DataValue.java 4638 2008-02-25 10:06:47Z larshelg $
  */
-@Entity
 public class DataValue
     implements Serializable
 {
-	@EmbeddedId public DataValueKey dataValueKey = new DataValueKey(); 
     /**
      * Part of the DataValue's composite ID
      */
-    @ManyToOne( cascade = {CascadeType.ALL} )
-    @JoinColumn(name="dataelementid", insertable = false, updatable = false )	
     private DataElement dataElement;
 
     /**
      * Part of the DataValue's composite ID
      */
-    @ManyToOne( cascade = {CascadeType.ALL} )
-    @JoinColumn(name="periodid", insertable = false, updatable = false )
     private Period period;
 
     /**
      * Part of the DataValue's composite ID
      */
-    @ManyToOne( cascade = {CascadeType.ALL} )
-    @JoinColumn(name="sourceid", insertable = false, updatable = false )
     private Source source;
 
-    @ManyToOne( cascade = {CascadeType.ALL} )
-    @JoinColumn(name="categoryoptioncomboid", insertable = false, updatable = false )
-    private DataElementCategoryOptionCombo optionCombo;
-    @Audited
     private String value;
-    @Audited
+
     private String storedBy;
-    @Audited
+
     private Date timestamp;
-    @Audited
+
     private String comment;
     
+    private DataElementCategoryOptionCombo optionCombo;
 
     // -------------------------------------------------------------------------
     // Constructors
