@@ -1,0 +1,8 @@
+{ "mapLegendSet":
+  {
+    "id": $!{object.id},
+    "name": "$!encoder.jsEncode( ${object.name} )",
+    "colorLow": "$!encoder.jsEncode( ${object.colorLow} )",
+    "colorHigh": "$!encoder.jsEncode( ${object.colorHigh} )"
+  }
+}
