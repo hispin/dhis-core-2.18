@@ -1,0 +1,58 @@
+This  is a  first attempt  at  building a  lite version  of dhis.   It
+creates an  executable jar which  contains jetty server classes  and a
+simple tray icon controller. 
+
+mvn assembly:assembly
+
+to build the jar.  
+
+On Ubuntu (and other gnome-ish environments).  The java systemtray
+is not supported on fancy 3d enhanced window managers.  To work on
+ubuntu, first run:
+
+metacity --replace
+
+to get back to a vanilla WM.
+
+The application no longer depends on DHIS2_HOME being set. Rather the application
+looks for a dhis2.home system property that is being set by the lite jar.
+
+The expected structure looks like this:
+
+/ dhis2-lite.jar
+/ startup.bat (optional)
+/ conf /
+/ conf / hibernate.properties
+/ database /
+/ log /
+/ webapps /
+/ webapps / dhis
+/ webapps / birt
+
+After that you are away.  The application will install an icon in your
+system tray or equivalent).  The icons are currently crap but they can
+be changed.  If the server is stopped you get a blue one.  While it is
+starting it is orange.  When its running it goes green.
+
+The h2 database is created in the db directory and log file in the log directory.
+
+To exit - right click the icon and select Exit.
+
+A sample hibernate.properties configured for H2 looks like this:
+
+--------------------------------------------------------------------
+hibernate.dialect = org.hisp.dhis.dialect.H2Dialect
+hibernate.connection.driver_class = org.h2.Driver
+hibernate.connection.url = jdbc:h2:./database/dhis2;AUTO_SERVER=TRUE
+hibernate.connection.username = sa
+hibernate.connection.password =
+hibernate.hbm2ddl.auto = update
+--------------------------------------------------------------------
+
+TODO:
+1.  sort out proper logging!
+2.  make a nice "instrument panel" showing application status when you
+click on the tray icon
+3.  test with different databases.  Currently should work with mysql,
+postgres and h2, though the latter (and JavaDB) is targeted.
+4.  Put some nicer icons (animated gifs)
