@@ -333,6 +333,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             }
         },
         
+        { html: '<br>' },
+        
         {
             xtype: 'combo',
             fieldLabel: 'Classes',
@@ -348,7 +350,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 fields: ['value'],
                 data: [[1], [2], [3], [4], [5], [6], [7], [8]]
             })
-        },
+        },        
             
         {
             xtype: 'combo',
@@ -375,24 +377,24 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                         
                         Ext.Ajax.request({
                           
-                          url: url,
-                          method: 'GET',
-                          params: { indicatorId: iId, format: format },
-                          
-                          success: function( responseObject )
-                          {
+                            url: url,
+                            method: 'GET',
+                            params: { indicatorId: iId, format: format },
+
+                            success: function( responseObject )
+                            {
                               var data = Ext.util.JSON.decode(responseObject.responseText);
                               var color1 = "#" + data.legendSet[0]["min-color"];
                               var color2 = "#" + data.legendSet[0]["max-color"];
 
                               Ext.getCmp('colorA_cf').setValue(color1);
                               Ext.getCmp('colorB_cf').setValue(color2);
-                          },
-                          failure: function()
-                          {
+                            },
+                            failure: function()
+                            {
                               alert( 'Status', 'Error while retrieving data' );
-                          } 
-                        });
+                            } 
+                            });
                         
                     },
                     scope: this
@@ -400,7 +402,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             }
 
         },
-        
+ 
         {
             xtype: 'colorfield',
             fieldLabel: 'Color',
