@@ -28,10 +28,8 @@ package org.hisp.dhis.mapping.action;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
 
@@ -41,7 +39,7 @@ import com.opensymphony.xwork.Action;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class AddMapLegendSetAction
+public class GetAllMapLegendSetsAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -55,43 +53,15 @@ public class AddMapLegendSetAction
         this.mappingService = mappingService;
     }
 
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-    
     // -------------------------------------------------------------------------
-    // Input
+    // Output
     // -------------------------------------------------------------------------
-    
-    private String name;
 
-    public void setName( String name )
+    private List<MapLegendSet> object;
+
+    public List<MapLegendSet> getObject()
     {
-        this.name = name;
-    }
-
-    private String colorLow;
-
-    public void setColorLow( String colorLow )
-    {
-        this.colorLow = colorLow;
-    }
-
-    private String colorHigh;
-
-    public void setColorHigh( String colorHigh )
-    {
-        this.colorHigh = colorHigh;
-    }
-
-    private Collection<Integer> indicators;
-
-    public void setIndicators( Collection<Integer> indicators )
-    {
-        this.indicators = indicators;
+        return object;
     }
     
     // -------------------------------------------------------------------------
@@ -100,19 +70,7 @@ public class AddMapLegendSetAction
 
     public String execute()
     {
-        MapLegendSet legendSet = new MapLegendSet();
-        
-        legendSet.setName( name );
-        legendSet.setColorLow( colorLow );
-        legendSet.setColorHigh( colorHigh );
-        legendSet.setIndicators( new ArrayList<Indicator>() );        
-        
-        for ( Integer indicator : indicators )
-        {
-            legendSet.getIndicators().add( indicatorService.getIndicator( indicator ) );
-        }
-        
-        mappingService.addMapLegendSet( legendSet );
+        object = new ArrayList<MapLegendSet>( mappingService.getAllMapLegendSets() );
         
         return SUCCESS;
     }
