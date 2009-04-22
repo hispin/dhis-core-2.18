@@ -194,8 +194,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         });
 
         legendStore = new Ext.data.JsonStore({
-            url: path + 'getLegendMinAndMaxOfIndicator' + type,
-            root: 'legendSet',
+            url: path + 'getMapLegendSetByIndicator' + type,
+            root: 'mapLegendSet',
             fields: ['id', 'name'],
             autoLoad: false
         });
@@ -372,20 +372,18 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     fn: function()
                     {
                         var iId = Ext.getCmp('indicator_cb').getValue();
-                        var url = path + 'getLegendMinAndMaxOfIndicator' + type;
-                        var format = 'json';
-                        
-                        Ext.Ajax.request({
-                          
-                            url: url,
+                       
+                        Ext.Ajax.request(
+                        {
+                            url: path + 'getMapLegendSetByIndicator' + type,
                             method: 'GET',
-                            params: { indicatorId: iId, format: format },
+                            params: { indicatorId: iId, format: 'json' },
 
                             success: function( responseObject )
                             {
                               var data = Ext.util.JSON.decode(responseObject.responseText);
-                              var color1 = "#" + data.legendSet[0]["min-color"];
-                              var color2 = "#" + data.legendSet[0]["max-color"];
+                              var color1 = data.mapLegendSet[0]['colorlow'];
+                              var color2 = data.mapLegendSet[0]['colorhigh'];
 
                               Ext.getCmp('colorA_cf').setValue(color1);
                               Ext.getCmp('colorB_cf').setValue(color2);
