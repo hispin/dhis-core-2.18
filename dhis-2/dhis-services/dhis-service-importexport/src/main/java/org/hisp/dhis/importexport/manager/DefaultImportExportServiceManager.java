@@ -32,7 +32,7 @@ import java.util.Map;
 
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.ImportExportServiceManager;
-import org.hisp.dhis.importexport.ImportInternalProcess;
+import org.hisp.dhis.importexport.ImportService;
 
 /**
  * @author Lars Helge Overland
@@ -45,9 +45,9 @@ public class DefaultImportExportServiceManager
     // Properties
     // -------------------------------------------------------------------------
     
-    private Map<String, ImportInternalProcess> importServices;
+    private Map<String, ImportService> importServices;
 
-    public void setImportServices( Map<String, ImportInternalProcess> importServices )
+    public void setImportServices( Map<String, ImportService> importServices )
     {
         this.importServices = importServices;
     }
@@ -68,7 +68,7 @@ public class DefaultImportExportServiceManager
         return importServices.keySet();
     }
     
-    public ImportInternalProcess getImportService( String format )
+    public ImportService getImportService( String format )
     {
         return importServices.get( format );
     }

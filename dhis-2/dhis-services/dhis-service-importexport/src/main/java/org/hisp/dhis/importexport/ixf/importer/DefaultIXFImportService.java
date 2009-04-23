@@ -146,10 +146,9 @@ public class DefaultIXFImportService
     }
     
     // -------------------------------------------------------------------------
-    // IXFImportService implementation
+    // ImportService implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public void importData( ImportParams params, InputStream inputStream )
     {
         if ( params.isPreview() )

@@ -40,7 +40,7 @@ import org.hisp.dhis.system.util.TimeUtils;
  * @version $Id: ImportInternalProcess.java 6443 2008-11-22 10:12:11Z larshelg $
  */
 public abstract class ImportInternalProcess
-    extends AbstractStatementInternalProcess implements SerialToGroup
+    extends AbstractStatementInternalProcess implements ImportService, SerialToGroup
 {
     private static final String PROCESS_GROUP = "ImportProcessGroup";
     private static final Log log = LogFactory.getLog( ImportInternalProcess.class );
@@ -86,7 +86,5 @@ public abstract class ImportInternalProcess
         log.info( "Import process completed: " + TimeUtils.getHMS() );
         
         TimeUtils.stop();
-    }    
-
-    public abstract void importData( ImportParams params, InputStream inputStream );
+    }
 }
