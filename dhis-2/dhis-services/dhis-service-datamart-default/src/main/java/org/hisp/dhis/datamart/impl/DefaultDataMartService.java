@@ -90,35 +90,7 @@ public class DefaultDataMartService
     {
         this.crossTabService = crossTabService;
     }
-    
-    private DataElementService dataElementService;
 
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-    
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-    
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-    
-    private DataElementCategoryOptionComboService categoryOptionComboService;
-
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
-    {
-        this.categoryOptionComboService = categoryOptionComboService;
-    }
-    
     private DataElementDataMart dataElementDataMart;
 
     public void setDataElementDataMart( DataElementDataMart dataElementDataMart )
@@ -168,6 +140,34 @@ public class DefaultDataMartService
         this.averageBoolAggregator = averageBooleanDataElementAggregator;
     }
 
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+    
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+    
+    private DataElementCategoryOptionComboService categoryOptionComboService;
+
+    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
+    {
+        this.categoryOptionComboService = categoryOptionComboService;
+    }
+    
     // -------------------------------------------------------------------------
     // DataMartInternalProcess implementation
     // -------------------------------------------------------------------------

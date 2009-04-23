@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -54,6 +55,13 @@ public class GetPeriodsByPeriodTypeAction
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
+    }
+    
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -90,6 +98,11 @@ public class GetPeriodsByPeriodTypeAction
         if ( periodType != null )
         {
             object = new ArrayList<Period>( periodService.getPeriodsByPeriodType( periodType ) );
+            
+            for ( Period period : object )
+            {
+                period.setName( format.formatPeriod( period ) );
+            }
             
             Collections.sort( object, new PeriodComparator() );
         }

@@ -43,20 +43,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	  ref="org.hisp.dhis.datamart.DataMartStore"/>
     <property name="crossTabService"
       ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
     <property name="dataElementDataMart"
       ref="org.hisp.dhis.datamart.dataelement.DataElementDataMart"/>
-    <property name="calculatedDataElementDataMart"
-      ref="org.hisp.dhis.datamart.calculateddataelement.CalculatedDataElementDataMart"/>
     <property name="indicatorDataMart"
       ref="org.hisp.dhis.datamart.indicator.IndicatorDataMart"/>
+    <property name="calculatedDataElementDataMart"
+      ref="org.hisp.dhis.datamart.calculateddataelement.CalculatedDataElementDataMart"/>
     <property name="sumIntAggregator"
       ref="org.hisp.dhis.datamart.aggregation.dataelement.SumIntAggregator"/>
     <property name="averageIntAggregator"
@@ -65,6 +57,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.datamart.aggregation.dataelement.SumBoolAggregator"/>
     <property name="averageBoolAggregator"
       ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageBoolAggregator"/>
+    <property name="dataElementService"
+      ref="org.hisp.dhis.dataelement.DataElementService"/>
+    <property name="indicatorService"
+      ref="org.hisp.dhis.indicator.IndicatorService"/>
+    <property name="periodService"
+      ref="org.hisp.dhis.period.PeriodService"/>
+    <property name="categoryOptionComboService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
   </bean>
   
   <!-- Crosstab -->
