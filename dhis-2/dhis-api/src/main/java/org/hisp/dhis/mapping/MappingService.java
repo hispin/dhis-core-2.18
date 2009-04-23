@@ -66,7 +66,7 @@ public interface MappingService
      * @param zoom
      * @return a generated unique id of the added Map.
      */
-    int addMap( String mapLayerPath, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
+    int addMap( String name, String mapLayerPath, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
         String nameColumn, String longitude, String latitude, int zoom );
 
     /**
@@ -85,7 +85,7 @@ public interface MappingService
      * @param latitude
      * @param zoom
      */
-    void addOrUpdateMap( String mapLayerPath, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
+    void addOrUpdateMap( String name, String mapLayerPath, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
         String nameColumn, String longitude, String latitude, int zoom );
 
     /**
