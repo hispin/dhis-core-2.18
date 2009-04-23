@@ -38,6 +38,8 @@ import java.util.Map.Entry;
 
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
+import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.period.Period;
@@ -47,8 +49,30 @@ import org.hisp.dhis.period.Period;
  * @version $Id: AverageBoolAggregator.java 6049 2008-10-28 09:36:17Z larshelg $
  */
 public class AverageBoolAggregator
-    extends DataElementAggregator
+    implements DataElementAggregator
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    protected DataMartStore dataMartStore;
+    
+    public void setDataMartStore( DataMartStore dataMartStore )
+    {
+        this.dataMartStore = dataMartStore;
+    }
+    
+    protected AggregationCache aggregationCache;
+        
+    public void setAggregationCache( AggregationCache aggregationCache )
+    {
+        this.aggregationCache = aggregationCache;
+    }
+
+    // -------------------------------------------------------------------------
+    // DataElementAggregator implementation
+    // -------------------------------------------------------------------------
+
     public Map<Operand, Double> getAggregatedValues( final Map<Operand, Integer> operandIndexMap, final Period period, final OrganisationUnit unit )
     {
         final OrganisationUnitHierarchy hierarchy = aggregationCache.getLatestOrganisationUnitHierarchy();
@@ -77,7 +101,7 @@ public class AverageBoolAggregator
         
     }
     
-    protected Collection<CrossTabDataValue> getCrossTabDataValues( final Map<Operand, Integer> operandIndexMap, 
+    public Collection<CrossTabDataValue> getCrossTabDataValues( final Map<Operand, Integer> operandIndexMap, 
         final Date startDate, final Date endDate, final int parentId, final OrganisationUnitHierarchy hierarchy )
     {
         final Collection<Integer> sourceIds = aggregationCache.getChildren( hierarchy, parentId );
@@ -94,7 +118,7 @@ public class AverageBoolAggregator
         return dataMartStore.getCrossTabDataValues( operandIndexMap, periodIds, sourceIds );
     }
     
-    protected Map<Operand, Double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
+    public Map<Operand, Double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
         final Date startDate, final Date endDate, final Date aggregationStartDate, final Date aggregationEndDate )
     {
         final Map<Operand, Double[]> totalSums = new HashMap<Operand, Double[]>(); // <Operand, [total value, total relevant days]>
