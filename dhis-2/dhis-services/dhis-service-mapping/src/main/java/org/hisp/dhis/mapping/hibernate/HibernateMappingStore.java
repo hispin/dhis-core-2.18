@@ -212,7 +212,7 @@ public class HibernateMappingStore
     {
         Session session = sessionManager.getCurrentSession();
 
-        session.update( legendSet );
+        session.delete( legendSet );
     }
     
     public MapLegendSet getMapLegendSet( int id )
