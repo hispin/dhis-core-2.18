@@ -139,15 +139,13 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      
     newUrl : false,
     
-    currentUrl : false,
-    
     initComponent : function() {
     
         mapStore = new Ext.data.JsonStore({
             url: path + 'getAllMaps' + type,
             baseParams: { format: 'jsonmin' },
             root: 'maps',
-            fields: ['id', 'mapLayerPath', 'organisationUnitLevel'],
+            fields: ['id', 'name', 'mapLayerPath', 'organisationUnitLevel'],
             autoLoad: true
         });
             
@@ -186,7 +184,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 typeAhead: true,
                 editable: false,
                 valueField: 'mapLayerPath',
-                displayField: 'mapLayerPath',
+                displayField: 'name',
                 mode: 'remote',
                 forceSelection: true,
                 triggerAction: 'all',

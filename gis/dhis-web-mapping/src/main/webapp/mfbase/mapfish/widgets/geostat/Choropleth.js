@@ -180,7 +180,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             url: path + 'getAllMaps' + type,
             baseParams: { format: 'jsonmin' },
             root: 'maps',
-            fields: ['id', 'mapLayerPath', 'organisationUnitLevel'],
+            fields: ['id', 'name', 'mapLayerPath', 'organisationUnitLevel'],
             sortInfo: { field: 'mapLayerPath', direction: 'ASC' },
             autoLoad: true
         }); 
@@ -312,7 +312,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             typeAhead: true,
             editable: false,
             valueField: 'mapLayerPath',
-            displayField: 'mapLayerPath',
+            displayField: 'name',
             mode: 'remote',
             forceSelection: true,
             triggerAction: 'all',
