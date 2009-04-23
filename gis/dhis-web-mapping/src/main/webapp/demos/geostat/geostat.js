@@ -291,7 +291,7 @@ Ext.onReady(function()
                 {
                     Ext.Msg.show({
                         title:'Register shapefiles',
-                        msg: '<p style="padding-top:8px">The map <b>' + mlp + '</b> was successfully registered!</b></p>',
+                        msg: '<p style="padding-top:8px">The map <b>' + nn + '</b> was successfully registered!</b></p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
                         minWidth: 400,
@@ -314,31 +314,32 @@ Ext.onReady(function()
         text: 'Save changes',
         handler: function()
         {
-            var em = Ext.getCmp('editmap_cb').getValue();
             var en = Ext.getCmp('editname_tf').getValue();
+            var em = Ext.getCmp('editmap_cb').getValue();
             var uc = Ext.getCmp('edituniquecolumn_tf').getValue();
             var nc = Ext.getCmp('editnamecolumn_tf').getValue();
             var lon = Ext.getCmp('editlongitude_tf').getValue();
             var lat = Ext.getCmp('editlatitude_tf').getValue();
             var zoom = Ext.getCmp('editzoom_cb').getValue();
             
-            if (!em || !en || !uc || !nc || !lon || !lat)
+            if (!en || !em || !uc || !nc || !lon || !lat)
             {
                 Ext.MessageBox.alert('Error', 'Form is not complete');
                 return;
             }
+alert(en + '\n' + em + '\n' + uc + '\n' + nc + '\n' + lon  + '\n' + lat + '\n' + zoom);
            
             Ext.Ajax.request(
             {
                 url: path + 'addOrUpdateMap' + type,
                 method: 'GET',
-                params: { mapLayerPath: em, name: en, uniqueColumn: uc, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom },
+                params: { name: en, mapLayerPath: em, uniqueColumn: uc, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom },
 
                 success: function( responseObject )
                 {
                     Ext.Msg.show({
                         title:'Register shapefiles',
-                        msg: '<p style="padding-top:8px">The map <b>' + em + '</b> was successfully updated!</b></p>',
+                        msg: '<p style="padding-top:8px">The map <b>' + en + '</b> was successfully updated!</b></p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
                         minWidth: 400,
@@ -347,6 +348,7 @@ Ext.onReady(function()
                     
                     Ext.getCmp('map_cb').getStore().reload();
                     Ext.getCmp('maps_cb').getStore().reload();
+                    Ext.getCmp('editmap_cb').getStore().reload();
                 },
                 failure: function()
                 {
@@ -361,7 +363,7 @@ Ext.onReady(function()
         text: 'Delete map',
         handler: function()
         {
-            var mlp = Ext.getCmp('deletemap_cb').getValue();
+            var name = Ext.getCmp('deletemap_cb').getValue();
             
             if (!mlp)
             {
@@ -379,7 +381,7 @@ Ext.onReady(function()
                 {
                     Ext.Msg.show({
                         title:'Register shapefiles',
-                        msg: '<p style="padding-top:8px">The map <b>' + mlp + '</b> was successfully deleted!</b></p>',
+                        msg: '<p style="padding-top:8px">The map <b>' + name + '</b> was successfully deleted!</b></p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
                         minWidth: 400,
@@ -388,6 +390,8 @@ Ext.onReady(function()
                     
                     Ext.getCmp('map_cb').getStore().reload();
                     Ext.getCmp('maps_cb').getStore().reload();
+                    Ext.getCmp('deletemap_cb').getStore().reload();
+                    
                 },
                 failure: function()
                 {
