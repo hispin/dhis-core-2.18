@@ -45,7 +45,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-
 public class HibernateMappingStore
     implements MappingStore
 {
@@ -200,6 +199,13 @@ public class HibernateMappingStore
         Session session = sessionManager.getCurrentSession();
 
         return (Integer) session.save( legendSet );
+    }
+    
+    public void updateMapLegendSet( MapLegendSet legendSet )
+    {
+        Session session = sessionManager.getCurrentSession();
+        
+        session.update( legendSet );
     }
     
     public void deleteMapLegendSet( MapLegendSet legendSet )

@@ -2,10 +2,9 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-  
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">  
 
-	<!-- Service definitions -->
+  <!-- Service definitions -->
 
   <bean id="org.hisp.dhis.mapping.MappingService"
     class="org.hisp.dhis.mapping.DefaultMappingService">
@@ -17,7 +16,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.indicator.IndicatorService"/>
   </bean>
 		
-	<!-- Store definitions -->
+  <!-- Store definitions -->
 
   <bean id="org.hisp.dhis.mapping.MappingStore"
     class="org.hisp.dhis.mapping.hibernate.HibernateMappingStore">
@@ -25,7 +24,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
   </bean>
 
-	<!-- AOP transaction definitions -->
+  <!-- AOP transaction definitions -->
 	
   <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
     <property name="advice" ref="readOnlyTransactionInterceptor"/>
@@ -47,7 +46,27 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-	<!-- Deletion AOP definitions -->
+  <!-- DeletionHandlers -->
+    
+  <bean id="org.hisp.dhis.mapping.MapDeletionHandler"
+    class="org.hisp.dhis.mapping.MapDeletionHandler">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+    
+  <bean id="org.hisp.dhis.mapping.MapLegendSetDeletionHandler"
+    class="org.hisp.dhis.mapping.MapLegendSetDeletionHandler">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+    
+  <bean id="org.hisp.dhis.mapping.MapOrganisationUnitRelationDeletionHandler"
+    class="org.hisp.dhis.mapping.MapOrganisationUnitRelationDeletionHandler">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+    
+  <!-- Deletion AOP definitions -->
   
   <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
     <property name="advice" ref="deletionInterceptor"/>
@@ -58,4 +77,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
+  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="org.hisp.dhis.system.deletion.DeletionManager"/>
+    <property name="targetMethod" value="addDeletionHandlers"/>
+    <property name="arguments">
+      <list>
+        <list>
+          <ref local="org.hisp.dhis.mapping.MapDeletionHandler"/>
+          <ref local="org.hisp.dhis.mapping.MapLegendSetDeletionHandler"/>
+          <ref local="org.hisp.dhis.mapping.MapOrganisationUnitRelationDeletionHandler"/>
+        </list>
+      </list>
+    </property>
+  </bean>
+  
 </beans>

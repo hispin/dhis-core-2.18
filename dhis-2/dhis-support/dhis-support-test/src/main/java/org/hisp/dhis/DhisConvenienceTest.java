@@ -62,10 +62,14 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.mapping.MapLegendSet;
+import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -129,7 +133,9 @@ public class DhisConvenienceTest
     protected DataValueService dataValueService;
     
     protected ResourceTableService resourceTableService;
-    
+        
+    protected MappingService mappingService;
+        
     static
     {
         Calendar calendar = Calendar.getInstance();
@@ -640,6 +646,40 @@ public class DhisConvenienceTest
         importDataValue.setStatus( status.name() );
         
         return importDataValue;
+    }
+    
+    protected static Map createMap( char uniqueCharacter, OrganisationUnit unit, OrganisationUnitLevel level )
+    {
+        Map map = new Map();
+        
+        map.setName( "Map" + uniqueCharacter );
+        map.setOrganisationUnit( unit );
+        map.setOrganisationUnitLevel( level );
+        map.setMapLayerPath( "MapLayerPath" + uniqueCharacter );
+        map.setUniqueColumn( "UniqueColumn" + uniqueCharacter );
+        map.setNameColumn( "NameColumn" + uniqueCharacter );
+        map.setLongitude( "Longitude" + uniqueCharacter );
+        map.setLatitude( "Latitude" + uniqueCharacter );
+        map.setZoom( 1 );
+        map.setStaticMapLayerPaths( new HashSet<String>() );
+        
+        return map;
+    }
+    
+    protected static MapLegendSet createMapLegendSet( char uniqueCharacter, Indicator... indicators )
+    {
+        MapLegendSet legendSet = new MapLegendSet();
+        
+        legendSet.setName( "MapLegendSet" + uniqueCharacter );
+        legendSet.setColorLow( "ColorLow" + uniqueCharacter );
+        legendSet.setColorHigh( "ColorHigh" + uniqueCharacter );
+        
+        for ( Indicator indicator : indicators )
+        {
+            legendSet.getIndicators().add( indicator );
+        }
+        
+        return legendSet;
     }
 
     // -------------------------------------------------------------------------

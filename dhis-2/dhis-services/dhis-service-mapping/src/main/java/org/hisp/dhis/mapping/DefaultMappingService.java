@@ -272,6 +272,11 @@ public class DefaultMappingService
         return mappingStore.addMapLegendSet( legendSet );
     }
     
+    public void updateMapLegendSet( MapLegendSet legendSet )
+    {
+        mappingStore.updateMapLegendSet( legendSet );
+    }
+    
     public void deleteMapLegendSet( MapLegendSet legendSet )
     {
         mappingStore.deleteMapLegendSet( legendSet );

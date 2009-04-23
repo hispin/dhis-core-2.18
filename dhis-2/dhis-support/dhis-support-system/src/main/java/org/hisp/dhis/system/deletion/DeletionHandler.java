@@ -49,6 +49,8 @@ import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -419,6 +421,24 @@ public abstract class DeletionHandler
     }
     
     public boolean allowDeleteDocument( Document document )
+    {
+        return true;
+    }
+    
+    public void deleteMap( Map map )
+    {   
+    }
+    
+    public boolean allowDeleteMap( Map map )
+    {
+        return true;
+    }
+    
+    public void deleteMapLegendSet( MapLegendSet mapLegendSet )
+    {   
+    }
+    
+    public boolean allowDeleteMapLegendSet( MapLegendSet mapLegendSet )
     {
         return true;
     }
