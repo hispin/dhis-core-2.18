@@ -38,6 +38,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
  */
 public interface MappingStore
 {
+    String ID = MappingStore.class.getName();
+    
     // -------------------------------------------------------------------------
     // Map
     // -------------------------------------------------------------------------
@@ -167,6 +169,8 @@ public interface MappingStore
     // -------------------------------------------------------------------------    
     
     int addMapLegendSet( MapLegendSet legendSet );
+    
+    void updateMapLegendSet( MapLegendSet legendSet );
     
     void deleteMapLegendSet( MapLegendSet legendSet );
     

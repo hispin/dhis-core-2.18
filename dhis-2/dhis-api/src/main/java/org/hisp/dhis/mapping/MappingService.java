@@ -38,6 +38,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
  */
 public interface MappingService
 {
+    String ID = MappingService.class.getName();
+    
     // -------------------------------------------------------------------------
     // Map
     // -------------------------------------------------------------------------
@@ -250,6 +252,8 @@ public interface MappingService
     // -------------------------------------------------------------------------    
     
     int addMapLegendSet( MapLegendSet legendSet );
+    
+    void updateMapLegendSet( MapLegendSet legendSet );
     
     void deleteMapLegendSet( MapLegendSet legendSet );
     
