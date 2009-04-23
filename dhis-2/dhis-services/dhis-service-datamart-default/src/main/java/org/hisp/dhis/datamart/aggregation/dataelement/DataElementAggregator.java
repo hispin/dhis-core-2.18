@@ -33,8 +33,6 @@ import java.util.Map;
 
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
-import org.hisp.dhis.datamart.DataMartStore;
-import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.period.Period;
@@ -43,38 +41,20 @@ import org.hisp.dhis.period.Period;
  * @author Lars Helge Overland
  * @version $Id: DataElementAggregator.java 6049 2008-10-28 09:36:17Z larshelg $
  */
-public abstract class DataElementAggregator
+public interface DataElementAggregator
 {
-    protected final String TRUE = "true";
+    final String TRUE = "true";
 
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    protected DataMartStore dataMartStore;
-    
-    public void setDataMartStore( DataMartStore dataMartStore )
-    {
-        this.dataMartStore = dataMartStore;
-    }
-    
-    protected AggregationCache aggregationCache;
-        
-    public void setAggregationCache( AggregationCache aggregationCache )
-    {
-        this.aggregationCache = aggregationCache;
-    }
-    
     // -------------------------------------------------------------------------
     // DataElementAggregator
     // -------------------------------------------------------------------------
 
-    public abstract Map<Operand, Double> getAggregatedValues( 
-        final Map<Operand, Integer> operandIndexMap, final Period period, final OrganisationUnit unit );
+    Map<Operand, Double> getAggregatedValues( final Map<Operand, Integer> operandIndexMap, 
+        final Period period, final OrganisationUnit unit );
     
-    protected abstract Collection<CrossTabDataValue> getCrossTabDataValues( final Map<Operand, Integer> operandIndexMap, 
+    Collection<CrossTabDataValue> getCrossTabDataValues( final Map<Operand, Integer> operandIndexMap, 
         final Date startDate, final Date endDate, final int parentId, final OrganisationUnitHierarchy hierarchy );
     
-    protected abstract Map<Operand, Double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
+    Map<Operand, Double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
         final Date startDate, final Date endDate, final Date aggregationStartDate, final Date aggregationEndDate );
 }
