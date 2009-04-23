@@ -300,6 +300,8 @@ Ext.onReady(function()
                     
                     Ext.getCmp('map_cb').getStore().reload();
                     Ext.getCmp('maps_cb').getStore().reload();
+                    Ext.getCmp('editmap_cb').getStore().reload();
+                    Ext.getCmp('deletemap_cb').getStore().reload();
                 },
                 failure: function()
                 {
@@ -327,7 +329,6 @@ Ext.onReady(function()
                 Ext.MessageBox.alert('Error', 'Form is not complete');
                 return;
             }
-alert(en + '\n' + em + '\n' + uc + '\n' + nc + '\n' + lon  + '\n' + lat + '\n' + zoom);
            
             Ext.Ajax.request(
             {
@@ -349,6 +350,7 @@ alert(en + '\n' + em + '\n' + uc + '\n' + nc + '\n' + lon  + '\n' + lat + '\n' +
                     Ext.getCmp('map_cb').getStore().reload();
                     Ext.getCmp('maps_cb').getStore().reload();
                     Ext.getCmp('editmap_cb').getStore().reload();
+                    Ext.getCmp('deletemap_cb').getStore().reload();
                 },
                 failure: function()
                 {
@@ -363,7 +365,7 @@ alert(en + '\n' + em + '\n' + uc + '\n' + nc + '\n' + lon  + '\n' + lat + '\n' +
         text: 'Delete map',
         handler: function()
         {
-            var name = Ext.getCmp('deletemap_cb').getValue();
+            var mlp = Ext.getCmp('deletemap_cb').getValue();
             
             if (!mlp)
             {
@@ -381,7 +383,7 @@ alert(en + '\n' + em + '\n' + uc + '\n' + nc + '\n' + lon  + '\n' + lat + '\n' +
                 {
                     Ext.Msg.show({
                         title:'Register shapefiles',
-                        msg: '<p style="padding-top:8px">The map <b>' + name + '</b> was successfully deleted!</b></p>',
+                        msg: '<p style="padding-top:8px">The map <b>' + mlp + '</b> was successfully deleted!</b></p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
                         minWidth: 400,
@@ -390,6 +392,7 @@ alert(en + '\n' + em + '\n' + uc + '\n' + nc + '\n' + lon  + '\n' + lat + '\n' +
                     
                     Ext.getCmp('map_cb').getStore().reload();
                     Ext.getCmp('maps_cb').getStore().reload();
+                    Ext.getCmp('editmap_cb').getStore().reload();
                     Ext.getCmp('deletemap_cb').getStore().reload();
                     
                 },
