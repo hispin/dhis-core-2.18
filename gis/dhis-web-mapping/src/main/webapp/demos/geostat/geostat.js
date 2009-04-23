@@ -1,4 +1,4 @@
-// reference local blank image
+    // reference local blank image
 Ext.BLANK_IMAGE_URL = '../../mfbase/ext/resources/images/default/s.gif';
 
 Ext.onReady(function()
@@ -93,7 +93,7 @@ Ext.onReady(function()
             url: path + 'getAllMaps' + type,
             baseParams: { format: 'jsonmin' },
             root: 'maps',
-            fields: ['id', 'mapLayerPath', 'organisationUnitLevel'],
+            fields: ['id', 'name', 'mapLayerPath', 'organisationUnitLevel'],
             autoLoad: true
     });
 
@@ -158,6 +158,18 @@ Ext.onReady(function()
         }
     });
 
+    var newNameTextField = new Ext.form.TextField({
+        id: 'newname_tf',
+        emptyText: 'Required',
+        width: combo_width
+    });
+    
+    var editNameTextField = new Ext.form.TextField({
+        id: 'editname_tf',
+        emptyText: '',
+        width: combo_width
+    });
+    
     var mapLayerPathTextField = new Ext.form.TextField({
         id: 'maplayerpath_tf',
         emptyText: 'Required',
@@ -172,7 +184,7 @@ Ext.onReady(function()
     
     var editUniqueColumnTextField = new Ext.form.TextField({
         id: 'edituniquecolumn_tf',
-        emptyText: 'Required',
+        emptyText: '',
         width: combo_width
     });
     
@@ -184,7 +196,7 @@ Ext.onReady(function()
     
     var editNameColumnTextField = new Ext.form.TextField({
         id: 'editnamecolumn_tf',
-        emptyText: 'Required',
+        emptyText: '',
         width: combo_width
     });
     
@@ -196,7 +208,7 @@ Ext.onReady(function()
     
     var editLongitudeTextField = new Ext.form.TextField({
         id: 'editlongitude_tf',
-        emptyText: 'Required',
+        emptyText: '',
         width: combo_width
     });
     
@@ -208,7 +220,7 @@ Ext.onReady(function()
     
     var editLatitudeTextField = new Ext.form.TextField({
         id: 'editlatitude_tf',
-        emptyText: 'Required',
+        emptyText: '',
         width: combo_width
     });
     
@@ -232,7 +244,7 @@ Ext.onReady(function()
     var editZoomComboBox = new Ext.form.ComboBox({
         id: 'editzoom_cb',
         editable: false,
-        emptyText: 'Required',
+        emptyText: '',
         displayField: 'value',
         valueField: 'value',
         width: combo_width,
@@ -254,14 +266,15 @@ Ext.onReady(function()
             var nm = Ext.getCmp('newmap_cb').getValue();
             var oui = Ext.getCmp('organisationunit_cb').getValue();
             var ouli = Ext.getCmp('organisationunitlevel_cb').getValue();
+            var nn = Ext.getCmp('newname_tf').getValue();
             var mlp = Ext.getCmp('maplayerpath_tf').getValue();
             var uc = Ext.getCmp('newuniquecolumn_tf').getValue();
             var nc = Ext.getCmp('newnamecolumn_tf').getValue();
             var lon = Ext.getCmp('newlongitude_tf').getValue();
             var lat = Ext.getCmp('newlatitude_tf').getValue();
             var zoom = Ext.getCmp('newzoom_cb').getValue();
-            
-            if (!nm || !mlp || !oui || !ouli || !uc || !nc || !lon || !lat)
+             
+            if (!nm || !nn || !mlp || !oui || !ouli || !uc || !nc || !lon || !lat)
             {
                 Ext.MessageBox.alert('Error', 'Form is not complete');
                 return;
@@ -271,7 +284,7 @@ Ext.onReady(function()
             {
                 url: path + 'addOrUpdateMap' + type,
                 method: 'GET',
-                params: { mapLayerPath: mlp, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc,
+                params: { name: nn, mapLayerPath: mlp, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc,
                           longitude: lon, latitude: lat, zoom: zoom},
 
                 success: function( responseObject )
@@ -302,13 +315,14 @@ Ext.onReady(function()
         handler: function()
         {
             var em = Ext.getCmp('editmap_cb').getValue();
+            var en = Ext.getCmp('editname_tf').getValue();
             var uc = Ext.getCmp('edituniquecolumn_tf').getValue();
             var nc = Ext.getCmp('editnamecolumn_tf').getValue();
             var lon = Ext.getCmp('editlongitude_tf').getValue();
             var lat = Ext.getCmp('editlatitude_tf').getValue();
             var zoom = Ext.getCmp('editzoom_cb').getValue();
             
-            if (!em || !uc || !nc || !lon || !lat)
+            if (!em || !en || !uc || !nc || !lon || !lat)
             {
                 Ext.MessageBox.alert('Error', 'Form is not complete');
                 return;
@@ -318,7 +332,7 @@ Ext.onReady(function()
             {
                 url: path + 'addOrUpdateMap' + type,
                 method: 'GET',
-                params: { mapLayerPath: em, uniqueColumn: uc, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom },
+                params: { mapLayerPath: em, name: en, uniqueColumn: uc, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom },
 
                 success: function( responseObject )
                 {
@@ -416,7 +430,7 @@ Ext.onReady(function()
         typeAhead: true,
         editable: false,
         valueField: 'mapLayerPath',
-        displayField: 'mapLayerPath',
+        displayField: 'name',
         emptyText: 'Required',
         mode: 'remote',
         forceSelection: true,
@@ -443,6 +457,7 @@ Ext.onReady(function()
                         {
                             var map = Ext.util.JSON.decode( responseObject.responseText ).map;
                             
+                            Ext.getCmp('editname_tf').setValue(map.name);
                             Ext.getCmp('edituniquecolumn_tf').setValue(map.uniqueColumn);
                             Ext.getCmp('editnamecolumn_tf').setValue(map.nameColumn);
                             Ext.getCmp('editlongitude_tf').setValue(map.longitude);
@@ -468,7 +483,7 @@ Ext.onReady(function()
         typeAhead: true,
         editable: false,
         valueField: 'mapLayerPath',
-        displayField: 'mapLayerPath',
+        displayField: 'name',
         emptyText: 'Required',
         mode: 'remote',
         forceSelection: true,
@@ -487,6 +502,7 @@ Ext.onReady(function()
             { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, newMapComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Organisation unit:</p>' }, organisationUnitComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Divided into level:</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Map name:</p>' }, newNameTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Geoserver map layer path:</p>' }, mapLayerPathTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Unique column:</p>' }, newUniqueColumnTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Name column:</p>' }, newNameColumnTextField, { html: '<br>' },
@@ -502,6 +518,7 @@ Ext.onReady(function()
         items:
         [
             { html: '<p style="padding-bottom:4px">Choose a map:</p>' }, editMapComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Map name:</p>' }, editNameTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Unique column:</p>' }, editUniqueColumnTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Name column:</p>' }, editNameColumnTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Longitude:</p>' }, editLongitudeTextField, { html: '<br>' },

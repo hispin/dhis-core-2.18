@@ -53,6 +53,7 @@ public interface MappingService
     /**
      * Adds a Map.
      * 
+     * @param name, Map description.
      * @param mapLayerPath, the link to Geoserver.
      * @param organisationUnitId, the id of the organisation unit.
      * @param organisationUnitLevelId, the level of the organisation units into
@@ -73,6 +74,7 @@ public interface MappingService
      * Adds a map. If a map with the same mapLayerPath already exists, the map
      * will be updated.
      * 
+     * @param name, Map description.
      * @param mapLayerPath, the link to Geoserver.
      * @param organisationUnitId, the id of the organisation unit.
      * @param organisationUnitLevelId, the level of the organisation units into

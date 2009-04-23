@@ -53,6 +53,13 @@ public class AddOrUpdateMapAction
     // Input
     // -------------------------------------------------------------------------
 
+    private String name;
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+    
     private String mapLayerPath;
 
     public void setMapLayerPath( String mapLayerPath )
@@ -116,7 +123,7 @@ public class AddOrUpdateMapAction
     public String execute()
         throws Exception
     {
-        mappingService.addOrUpdateMap( mapLayerPath, organisationUnitId, 
+        mappingService.addOrUpdateMap( name, mapLayerPath, organisationUnitId, 
             organisationUnitLevelId, uniqueColumn, nameColumn, longitude, latitude, zoom );
         
         return SUCCESS;

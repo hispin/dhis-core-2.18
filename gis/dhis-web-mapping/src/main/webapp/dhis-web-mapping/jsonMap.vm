@@ -1,6 +1,7 @@
 { "map": 
   {
     "id": $!{object.id},
+    "name": "$!encoder.jsEncode( ${object.name} )",
     "mapLayerPath": "$!encoder.jsEncode( ${object.mapLayerPath} )",
     "organisationUnit": "$!encoder.jsEncode( ${object.organisationUnit.name} )",
     "organisationUnitLevel": $!{object.organisationUnitLevel.level},
