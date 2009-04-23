@@ -227,7 +227,7 @@ public class HibernateMappingStore
     {
         Session session = sessionManager.getCurrentSession();
 
-        Criteria criteria = session.createCriteria( MapOrganisationUnitRelation.class );
+        Criteria criteria = session.createCriteria( MapLegendSet.class );
 
         return criteria.list();
     }
