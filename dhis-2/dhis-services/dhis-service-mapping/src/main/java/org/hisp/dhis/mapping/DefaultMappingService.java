@@ -105,7 +105,7 @@ public class DefaultMappingService
 
         if ( map != null )
         {
-            map.setNameColumn( name );
+            map.setName( name );
             map.setUniqueColumn( uniqueColumn );
             map.setNameColumn( nameColumn );
             map.setLongitude( longitude );
