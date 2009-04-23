@@ -73,6 +73,8 @@ Ext.onReady(function()
 
     map.setCenter(new OpenLayers.LonLat(init_longitude, init_latitude), init_zoom); // config.js
     
+    // SHAPEFILE PANEL
+    
     var organisationUnitLevelStore = new Ext.data.JsonStore({
         url: path + 'getOrganisationUnitLevels' + type,
         baseParams: { format: 'json' },
@@ -624,6 +626,8 @@ Ext.onReady(function()
         ]
     });
     
+    // LEGEND SET PANEL
+    
     var legendSetNameTextField = new Ext.form.TextField({
         id: 'legendsetname_tf',
         emptyText: 'Required',
@@ -709,7 +713,7 @@ Ext.onReady(function()
     
     var legendSetStore = new Ext.data.JsonStore({
         url: path + 'getAllMapLegendSets' + type,
-        root: 'legendSets',
+        root: 'mapLegendSets',
         fields: ['id', 'name'],
         sortInfo: { field: 'name', direction: 'ASC' },
         autoLoad: true
@@ -763,8 +767,6 @@ Ext.onReady(function()
                         minWidth: 400,
                         icon: Ext.MessageBox.INFO
                     });
-                    
-                    Ext.getCmp('legend_cb').getStore().reload();
                 },
                 failure: function()
                 {
@@ -779,7 +781,7 @@ Ext.onReady(function()
         text: 'Delete legend set',
         handler: function()
         {
-            var ls = Ext.getCmp('deletelegendset_b').getValue();
+            var ls = Ext.getCmp('legendset_cb').getValue();
             
             if (!ls)
             {
@@ -803,8 +805,6 @@ Ext.onReady(function()
                         minWidth: 400,
                         icon: Ext.MessageBox.INFO
                     });
-                    
-                    Ext.getCmp('legend_cb').getStore().reload();
                 },
                 failure: function()
                 {
