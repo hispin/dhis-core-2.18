@@ -352,7 +352,9 @@ Ext.onReady(function()
                     Ext.getCmp('map_cb').getStore().reload();
                     Ext.getCmp('maps_cb').getStore().reload();
                     Ext.getCmp('editmap_cb').getStore().reload();
+                    Ext.getCmp('editmap_cb').reset();
                     Ext.getCmp('deletemap_cb').getStore().reload();
+                    Ext.getCmp('deletemap_cb').reset();
                 },
                 failure: function()
                 {
@@ -395,7 +397,9 @@ Ext.onReady(function()
                     Ext.getCmp('map_cb').getStore().reload();
                     Ext.getCmp('maps_cb').getStore().reload();
                     Ext.getCmp('editmap_cb').getStore().reload();
+                    Ext.getCmp('editmap_cb').reset();
                     Ext.getCmp('deletemap_cb').getStore().reload();
+                    Ext.getCmp('deletemap_cb').reset();
                     
                 },
                 failure: function()
@@ -767,6 +771,8 @@ Ext.onReady(function()
                         minWidth: 400,
                         icon: Ext.MessageBox.INFO
                     });
+                    
+                    Ext.getCmp('legendset_cb').getStore().reload();
                 },
                 failure: function()
                 {
@@ -805,6 +811,9 @@ Ext.onReady(function()
                         minWidth: 400,
                         icon: Ext.MessageBox.INFO
                     });
+                    
+                    Ext.getCmp('legendset_cb').getStore().reload();
+                    Ext.getCmp('legendset_cb').reset();
                 },
                 failure: function()
                 {
