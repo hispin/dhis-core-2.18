@@ -11,7 +11,7 @@
 			<generator class="native"/>
 		</id>
 			
-		<property name="name" column="name"/>	
+		<property name="name" column="name" unique="true"/>
 	
 		<property name="mapLayerPath" column="maplayerpath"/>
 			
@@ -29,7 +29,7 @@
 			
 		<property name="latitude" column="latitude"/>
 			
-		<property name="zoom" column="zoom"/>			
+		<property name="zoom" column="zoom"/>
 	
 	</class>
 	
