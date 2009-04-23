@@ -194,7 +194,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         });
 
         legendStore = new Ext.data.JsonStore({
-            url: path + 'getMapLegendSetByIndicator' + type,
+            url: path + 'getMapLegendSet' + type,
             root: 'mapLegendSet',
             fields: ['id', 'name'],
             autoLoad: false
@@ -250,11 +250,12 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 'select': {
                     fn: function()
                     {
-                        Ext.getCmp('legend_cb').reset();
-                        
+                        var legend_cb = Ext.getCmp('legend_cb');
                         var iId = Ext.getCmp('indicator_cb').getValue();
-                        legendStore.baseParams = { indicatorId: iId, format: 'json' };
-                        legendStore.reload();
+                        
+                        legend_cb.reset();
+                        legend_cb.getStore().baseParams = { indicatorId: iId, format: 'json' };
+                        legend_cb.getStore().reload();
                     }
                 }
             }
@@ -280,8 +281,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     fn: function()
                     {
                         var ptid = Ext.getCmp('periodtype_cb').getValue();
-                        periodStore.baseParams = { periodTypeId: ptid, format: 'json' };
-                        periodStore.reload();
+                        Ext.getCmp('period_cb').getStore().baseParams = { periodTypeId: ptid, format: 'json' };
+                        Ext.getCmp('period_cb').getStore().reload();
                     },
                     scope: this
                 }
@@ -375,15 +376,15 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                        
                         Ext.Ajax.request(
                         {
-                            url: path + 'getMapLegendSetByIndicator' + type,
+                            url: path + 'getMapLegendSet' + type,
                             method: 'GET',
                             params: { indicatorId: iId, format: 'json' },
 
                             success: function( responseObject )
                             {
                               var data = Ext.util.JSON.decode(responseObject.responseText);
-                              var color1 = data.mapLegendSet[0]['colorlow'];
-                              var color2 = data.mapLegendSet[0]['colorhigh'];
+                              var color1 = data.mapLegendSet[0]['colorLow'];
+                              var color2 = data.mapLegendSet[0]['colorHigh'];
 
                               Ext.getCmp('colorA_cf').setValue(color1);
                               Ext.getCmp('colorB_cf').setValue(color2);
