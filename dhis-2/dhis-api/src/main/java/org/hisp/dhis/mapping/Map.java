@@ -39,6 +39,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 public class Map
 {
     private int id;
+    
+    private String name;
 
     private String mapLayerPath;
     
@@ -62,9 +64,10 @@ public class Map
     {
     }
 
-    public Map( String mapLayerPath, OrganisationUnit organisationUnit, OrganisationUnitLevel organisationUnitLevel, 
+    public Map( String name, String mapLayerPath, OrganisationUnit organisationUnit, OrganisationUnitLevel organisationUnitLevel, 
         String uniqueColumn, String nameColumn, String longitude, String latitude, int zoom, Set<String> staticMapLayerPaths )
     {
+        this.name = name;
         this.mapLayerPath = mapLayerPath;
         this.organisationUnit = organisationUnit;
         this.organisationUnitLevel = organisationUnitLevel;
@@ -121,6 +124,16 @@ public class Map
     public void setId( int id )
     {
         this.id = id;
+    }
+    
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName( String name )
+    {
+        this.name = name;
     }
     
     public String getMapLayerPath()
