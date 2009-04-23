@@ -95,11 +95,11 @@ public class HibernateMappingStore
     {
         Session session = sessionManager.getCurrentSession();
 
-        Query query = session.createQuery( "from Map o where o.mapLayerPath = :mapLayerPath" );
+        Criteria criteria = session.createCriteria( Map.class );
 
-        query.setString( "mapLayerPath", mapLayerPath );
+        criteria.add( Restrictions.eq( "mapLayerPath", mapLayerPath ) );
 
-        return (Map) query.uniqueResult();
+        return (Map) criteria.uniqueResult();
     }
 
     @SuppressWarnings( "unchecked" )
