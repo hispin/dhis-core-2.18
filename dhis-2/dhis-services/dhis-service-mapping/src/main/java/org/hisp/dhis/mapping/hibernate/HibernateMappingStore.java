@@ -30,7 +30,6 @@ package org.hisp.dhis.mapping.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateSessionManager;
