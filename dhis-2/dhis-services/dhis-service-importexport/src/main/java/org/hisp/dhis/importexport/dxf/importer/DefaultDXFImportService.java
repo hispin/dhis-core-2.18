@@ -309,10 +309,9 @@ public class DefaultDXFImportService
     }
     
     // -------------------------------------------------------------------------
-    // DXFImportService implementation
+    // ImportService implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public void importData( ImportParams params, InputStream inputStream )
     {        
         if ( params.isPreview() )

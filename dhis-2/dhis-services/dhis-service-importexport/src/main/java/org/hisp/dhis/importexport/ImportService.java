@@ -27,19 +27,13 @@ package org.hisp.dhis.importexport;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import java.io.InputStream;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: ImportExportServiceManager.java 4646 2008-02-26 14:54:29Z larshelg $
+ * @version $Id: ExportService.java 4646 2008-02-26 14:54:29Z larshelg $
  */
-public interface ImportExportServiceManager
+public interface ImportService
 {
-    Collection<String> getImportFormats();
-    
-    ImportService getImportService( String format );
-    
-    Collection<String> getExportFormats();
-    
-    ExportService getExportService( String format );
+    void importData( ImportParams params, InputStream inputStream );
 }
