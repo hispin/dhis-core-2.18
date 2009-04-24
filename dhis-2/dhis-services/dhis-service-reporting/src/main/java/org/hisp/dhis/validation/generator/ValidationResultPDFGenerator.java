@@ -1,4 +1,4 @@
-package org.hisp.dhis.validationrule.util;
+package org.hisp.dhis.validation.generator;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -47,7 +47,7 @@ import com.lowagie.text.pdf.PdfPTable;
  */
 public class ValidationResultPDFGenerator
     extends PDFUtils
-        implements OutputGenerator
+        implements ValidationResultOutputGenerator
 {
     // -------------------------------------------------------------------------
     // PDF functionality

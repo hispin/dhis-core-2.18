@@ -1,4 +1,4 @@
-package org.hisp.dhis.validationrule.util;
+package org.hisp.dhis.validation.generator;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -38,7 +38,7 @@ import org.hisp.dhis.validation.ValidationResult;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public interface OutputGenerator
+public interface ValidationResultOutputGenerator
 {
     void generateOutput( Collection<ValidationResult> results, OutputStream out, I18n i18n, I18nFormat format );
 }
