@@ -18,5 +18,5 @@ north_height = 0;
 south_height = 70; // viewport south
 
 gridpanel_width = west_width - 15;
-gridpanel_height = 495;
+gridpanel_height = 400;
 combo_width = 150;

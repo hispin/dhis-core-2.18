@@ -1169,8 +1169,10 @@ function onClickSelectChoropleth(feature)
     var organisationUnit = selected.data['organisationUnit'];
     
     var uniqueColumn = mapData.map.uniqueColumn;
+    var nameColumn = mapData.map.nameColumn;
     var mlp = mapData.map.mapLayerPath;
     var featureId = feature.attributes[uniqueColumn];
+    var name = feature.attributes[nameColumn];
 
     Ext.Ajax.request( 
     {
@@ -1181,7 +1183,7 @@ function onClickSelectChoropleth(feature)
         success: function( responseObject )
         {
             var south_panel = Ext.getCmp('south-panel');
-            south_panel.body.dom.innerHTML = organisationUnit + '<font color="#444444"> assigned to </font>' + featureId + "!";
+            south_panel.body.dom.innerHTML = organisationUnit + '<font color="#444444"> assigned to </font>' + name + "!";
             
             loadMapData('assignment');
         },
@@ -1285,7 +1287,6 @@ function loadMapData(redirect)
     });
 }
 
-
 function getChoroplethData()
 {
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
@@ -1308,7 +1309,6 @@ function getChoroplethData()
         } 
     });
 }
-
 
 function getPointData()
 {
@@ -1335,7 +1335,6 @@ function getPointData()
         } 
     });
 }
-
 
 function getAssignOrganisationUnitData()
 {
