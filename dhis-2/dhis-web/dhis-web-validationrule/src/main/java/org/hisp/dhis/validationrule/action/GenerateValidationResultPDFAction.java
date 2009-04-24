@@ -27,18 +27,17 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.util.Collection;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.util.SessionUtils;
 import org.hisp.dhis.validation.ValidationResult;
-import org.hisp.dhis.validationrule.util.OutputGeneratorPipeThread;
-import org.hisp.dhis.validationrule.util.ValidationResultPDFGenerator;
+import org.hisp.dhis.validation.generator.ValidationResultOutputGenerator;
+import org.hisp.dhis.validation.generator.ValidationResultPDFGenerator;
 
 import com.opensymphony.xwork.ActionSupport;
 
@@ -91,32 +90,14 @@ public class GenerateValidationResultPDFAction
         Collection<ValidationResult> results = (Collection<ValidationResult>) SessionUtils.
             getSessionVar( KEY_VALIDATIONRESULT );
         
-        if ( results != null )
-        {
-            // -----------------------------------------------------------------
-            // Pipes are input/output pairs. Data written on the output stream 
-            // shows up on the input stream at the other end of the pipe. 
-            // -----------------------------------------------------------------
-            
-            PipedOutputStream out = new PipedOutputStream();
-            
-            PipedInputStream in = new PipedInputStream( out );
-            
-            OutputGeneratorPipeThread thread = new OutputGeneratorPipeThread();
-            
-            thread.setValidationResults( results );
-            thread.setOutputStream( out );
-            thread.setI18n( i18n );
-            thread.setFormat( format );
-            thread.setOutputGenerator( new ValidationResultPDFGenerator() );
-            
-            thread.start();
-            
-            inputStream = new BufferedInputStream( in );
-            
-            return SUCCESS;
-        }
+        ValidationResultOutputGenerator generator = new ValidationResultPDFGenerator();
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         
-        return NONE;
+        generator.generateOutput( results, out, i18n, format );
+
+        inputStream = new ByteArrayInputStream( out.toByteArray() );
+                
+        return SUCCESS;
     }
 }

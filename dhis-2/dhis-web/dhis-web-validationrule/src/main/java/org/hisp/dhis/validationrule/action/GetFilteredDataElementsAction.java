@@ -39,7 +39,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-import org.hisp.dhis.validationrule.util.FilterUtil;
 
 import com.opensymphony.xwork.ActionSupport;
 
@@ -145,7 +144,7 @@ public class GetFilteredDataElementsAction
             Collection<DataElement> groupElements = dataElementService.getDataElementGroup( dataElementGroupId )
                 .getMembers();
 
-            dataElements = new ArrayList<DataElement>( FilterUtil.getIntegerDataElements( groupElements ) );
+            dataElements = new ArrayList<DataElement>( getIntegerDataElements( groupElements ) );
         }
 
         Collections.sort( dataElements, dataElementComparator );
@@ -175,5 +174,22 @@ public class GetFilteredDataElementsAction
         }
 
         return SUCCESS;
+    }
+
+    // TODO use predicate / commons instead
+    
+    private Collection<DataElement> getIntegerDataElements( Collection<DataElement> dataElements )
+    {
+        Iterator<DataElement> iterator = dataElements.iterator();
+        
+        while ( iterator.hasNext() )
+        {
+            if ( !iterator.next().getType().equals( DataElement.TYPE_INT ) )
+            {
+                iterator.remove();
+            }
+        }
+        
+        return dataElements;
     }
 }

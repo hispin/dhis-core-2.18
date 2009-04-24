@@ -1,4 +1,4 @@
-package org.hisp.dhis.validationrule.util;
+package org.hisp.dhis.validation.generator;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -53,7 +53,7 @@ import org.hisp.dhis.validation.ValidationResult;
  * @version $Id$
  */
 public class ValidationResultWorkbookGenerator
-    implements OutputGenerator
+    implements ValidationResultOutputGenerator
 {
     private final static int MARGIN_LEFT = 1;
     
