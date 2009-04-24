@@ -1,4 +1,4 @@
-package org.hisp.dhis.datamart.aggregation.dataelement;
+package org.hisp.dhis.mapping.action;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,34 +27,53 @@ package org.hisp.dhis.datamart.aggregation.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
+import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.mapping.MappingService;
 
-import org.hisp.dhis.dataelement.Operand;
-import org.hisp.dhis.datamart.CrossTabDataValue;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
-import org.hisp.dhis.period.Period;
+import com.opensymphony.xwork.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DataElementAggregator.java 6049 2008-10-28 09:36:17Z larshelg $
+ * @version $Id$
  */
-public interface DataElementAggregator
+public class DeleteMapOrganisationUnitRelationsByMapAction
+    implements Action
 {
-    final String TRUE = "true";
-
     // -------------------------------------------------------------------------
-    // DataElementAggregator
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    Map<Operand, Double> getAggregatedValues( final Map<Operand, Integer> operandIndexMap, 
-        final Period period, final OrganisationUnit unit );
-    
-    Collection<CrossTabDataValue> getCrossTabDataValues( final Map<Operand, Integer> operandIndexMap, 
-        final Date startDate, final Date endDate, final int parentId, final OrganisationUnitHierarchy hierarchy );
-    
-    Map<Operand, double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
-        final Date startDate, final Date endDate, final Date aggregationStartDate, final Date aggregationEndDate );
+    private MappingService mappingService;
+
+    public void setMappingService( MappingService mappingService )
+    {
+        this.mappingService = mappingService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
+    {
+        Map map = mappingService.getMap( id );
+        
+        if ( map != null )
+        {
+            mappingService.deleteMapOrganisationUnitRelations( map );
+        }
+        
+        return SUCCESS;
+    }
 }

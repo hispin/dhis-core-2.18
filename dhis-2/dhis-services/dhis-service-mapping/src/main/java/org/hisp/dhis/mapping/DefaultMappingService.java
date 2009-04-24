@@ -262,6 +262,16 @@ public class DefaultMappingService
 
         return getAvailableMapOrganisationUnitRelations( map );
     }
+
+    public int deleteMapOrganisationUnitRelations( OrganisationUnit organisationUnit )
+    {
+        return mappingStore.deleteMapOrganisationUnitRelations( organisationUnit );
+    }
+
+    public int deleteMapOrganisationUnitRelations( Map map )
+    {
+        return mappingStore.deleteMapOrganisationUnitRelations( map );
+    }
     
     // -------------------------------------------------------------------------
     // LegendSet

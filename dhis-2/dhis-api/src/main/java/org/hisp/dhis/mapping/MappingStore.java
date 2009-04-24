@@ -164,6 +164,24 @@ public interface MappingStore
      */
     Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationByMap( Map map );
     
+    /**
+     * Deletes all MapOrganisationUnitRelations associated with the given
+     * OrganisationUnit.
+     * 
+     * @param organisationUnit the OrganisationUnit.
+     * @return the number of deleted objects.
+     */
+    int deleteMapOrganisationUnitRelations( OrganisationUnit organisationUnit );
+
+    /**
+     * Deletes all MapOrganisationUnitRelations associated with the given
+     * Map.
+     * 
+     * @param map the Map.
+     * @return the number of deleted objects.
+     */
+    int deleteMapOrganisationUnitRelations( Map map );
+    
     // -------------------------------------------------------------------------
     // LegendSet
     // -------------------------------------------------------------------------    

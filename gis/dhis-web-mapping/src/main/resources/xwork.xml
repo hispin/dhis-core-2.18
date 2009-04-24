@@ -45,12 +45,22 @@
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonAggregatedMapValues.vm</result>
     </action>
     
+    <!-- MapOrganisationUnitRelations -->
+    
     <action name="addOrUpdateMapOrganisationUnitRelation" class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
     </action>
     
     <action name="getAvailableMapOrganisationUnitRelations" class="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapOrganisationUnitRelations.vm</result>
+    </action>
+    
+    <action name="deleteMapOrganisationUnitRelationsByMap" class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsByMapAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+    </action>
+    
+    <action name="deleteMapOrganisationUnitRelation" class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
     </action>
     
     <!-- MapLegendSet -->

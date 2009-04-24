@@ -93,10 +93,10 @@ public class AverageIntAggregator
             final Collection<CrossTabDataValue> crossTabValues = 
                 getCrossTabDataValues( operandIndexMap, period.getStartDate(), period.getEndDate(), unitId, hierarchy );
             
-            final Map<Operand, Double[]> entries = getAggregate( crossTabValues, period.getStartDate(), 
+            final Map<Operand, double[]> entries = getAggregate( crossTabValues, period.getStartDate(), 
                 period.getEndDate(), period.getStartDate(), period.getEndDate() ); // <Operand, [total value, total relevant days]>
             
-            for ( final Entry<Operand, Double[]> entry : entries.entrySet() ) 
+            for ( final Entry<Operand, double[]> entry : entries.entrySet() ) 
             {
                 if ( entry.getValue() != null && entry.getValue()[ 1 ] > 0 )
                 {
@@ -127,10 +127,10 @@ public class AverageIntAggregator
         return dataMartStore.getCrossTabDataValues( operandIndexMap, periodIds, parentId );
     }
     
-    public Map<Operand, Double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
+    public Map<Operand, double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
         final Date startDate, final Date endDate, final Date aggregationStartDate, final Date aggregationEndDate )
     {
-        final Map<Operand, Double[]> totalSums = new HashMap<Operand, Double[]>(); // <Operand, [total value, total relevant days]>
+        final Map<Operand, double[]> totalSums = new HashMap<Operand, double[]>(); // <Operand, [total value, total relevant days]>
 
         Period period = null;
         Date currentStartDate = null;
@@ -192,7 +192,7 @@ public class AverageIntAggregator
                     existingValue = totalSums.containsKey( entry.getKey() ) ? totalSums.get( entry.getKey() )[ 0 ] : 0;
                     existingRelevantDays = totalSums.containsKey( entry.getKey() ) ? totalSums.get( entry.getKey() )[ 1 ] : 0;
                     
-                    final Double[] values = { ( value + existingValue ), ( relevantDays + existingRelevantDays ) };
+                    final double[] values = { ( value + existingValue ), ( relevantDays + existingRelevantDays ) };
                     
                     totalSums.put( entry.getKey(), values );
                 }
