@@ -28,6 +28,14 @@ package org.hisp.dhis.workbook;
  */
 
 import java.io.OutputStream;
+import java.util.Collection;
+
+import org.hisp.dhis.completeness.DataSetCompletenessResult;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.validation.ValidationResult;
 
 /**
  * @author Lars Helge Overland
@@ -39,11 +47,13 @@ public interface WorkbookService
     
     void writeReportTableData( OutputStream outputStream, int id );
     
-    void writeDataSetCompleteness( OutputStream outputStream, int periodId, int organisationUnitId );
-    
     void writeAllDataElements( OutputStream outputStream );
     
     void writeAllIndicators( OutputStream outputStream );
     
     void writeAllOrganisationUnits( OutputStream outputStream );
+
+    void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out, I18n i18n, OrganisationUnit unit, DataSet dataSet );
+    
+    void writeValidationResult( Collection<ValidationResult> results, OutputStream out, I18n i18n, I18nFormat format );
 }

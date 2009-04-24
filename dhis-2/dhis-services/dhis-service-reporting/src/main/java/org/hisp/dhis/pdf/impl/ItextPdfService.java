@@ -27,25 +27,28 @@ package org.hisp.dhis.pdf.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.PDFUtils.addTableToDocument;
-import static org.hisp.dhis.system.util.PDFUtils.getCell;
-import static org.hisp.dhis.system.util.PDFUtils.getHeader3Cell;
-import static org.hisp.dhis.system.util.PDFUtils.getItalicCell;
-import static org.hisp.dhis.system.util.PDFUtils.getPdfPTable;
-import static org.hisp.dhis.system.util.PDFUtils.getTextCell;
+import static org.hisp.dhis.system.util.PDFUtils.*;
 
 import java.io.OutputStream;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.pdf.PdfService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.PDFUtils;
+import org.hisp.dhis.validation.ValidationResult;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.pdf.PdfPTable;
@@ -208,7 +211,101 @@ public class ItextPdfService
         
         PDFUtils.closeDocument( document );
     }
+    
+    public void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out, I18n i18n, OrganisationUnit unit, DataSet dataSet )
+    {
+        Document document = openDocument( out );
+        
+        PdfPTable table = getPdfPTable( true, 0.501f, 0.10f, 0.10f, 0.10f, 0.10f, 0.10f );
+        
+        table.setHeaderRows( 1 );
 
+        String dataSetName = dataSet != null ? " - " + dataSet.getName() : "";
+        
+        table.addCell( getHeader3Cell( i18n.getString( "data_completeness_report" ) + " - " + unit.getName() + dataSetName, 6 ) );
+
+        table.addCell( getCell( 6, 8 ) );
+
+        table.addCell( getTextCell( i18n.getString( "district_health_information_software" ) + " - " + DateUtils.getMediumDateString(), 6 ) );
+
+        table.addCell( getCell( 6, 15 ) );
+        
+        table.addCell( getItalicCell( i18n.getString( "name" ), 1 ) );
+        table.addCell( getItalicCell( i18n.getString( "actual" ), 1 ) );
+        table.addCell( getItalicCell( i18n.getString( "target" ), 1 ) );
+        table.addCell( getItalicCell( i18n.getString( "percent" ), 1 ) );
+        table.addCell( getItalicCell( i18n.getString( "on_time" ), 1 ) );
+        table.addCell( getItalicCell( i18n.getString( "percent" ), 1 ) );
+
+        table.addCell( getCell( 6, 8 ) );
+        
+        if ( results != null )
+        {
+            for ( DataSetCompletenessResult result : results )
+            {
+                table.addCell( getTextCell( result.getName() ) );
+                table.addCell( getTextCell( String.valueOf( result.getRegistrations() ) ) );
+                table.addCell( getTextCell( String.valueOf( result.getSources() ) ) );
+                table.addCell( getTextCell( String.valueOf( result.getPercentage() ) ) );
+                table.addCell( getTextCell( String.valueOf( result.getRegistrationsOnTime() ) ) );
+                table.addCell( getTextCell( String.valueOf( result.getPercentageOnTime() ) ) );
+            }
+        }        
+        
+        addTableToDocument( document, table );
+        
+        closeDocument( document );
+    }
+    
+    public void writeValidationResult( Collection<ValidationResult> results, OutputStream out, I18n i18n, I18nFormat format )
+    {
+        Document document = openDocument( out );
+        
+        PdfPTable table = getPdfPTable( true, 0.19f, 0.13f, 0.21f, 0.07f, 0.12f, 0.07f, 0.21f );
+        
+        table.setHeaderRows( 0 );
+        
+        table.addCell( getHeader3Cell( i18n.getString( "data_quality_report" ), 7 ) );
+
+        table.addCell( getCell( 7, 8 ) );
+        
+        table.addCell( getTextCell( i18n.getString( "district_health_information_software" ) + " - " + DateUtils.getMediumDateString(), 7 ) );
+        
+        table.addCell( getCell( 7, 15 ) );
+        
+        table.addCell( getItalicCell( i18n.getString( "source" ), 1 ) );
+        table.addCell( getItalicCell( i18n.getString( "period" ), 1 ) );
+        table.addCell( getItalicCell( i18n.getString( "left_side_description" ), 1 ) );
+        table.addCell( getItalicCell( i18n.getString( "value" ), 1 ) );
+        table.addCell( getItalicCell( i18n.getString( "operator" ), 1 ) );
+        table.addCell( getItalicCell( i18n.getString( "value" ), 1 ) );
+        table.addCell( getItalicCell( i18n.getString( "right_side_description" ), 1 ) );
+        
+        table.addCell( getCell( 7, 8 ) );
+        
+        if ( results != null )
+        {
+            for ( ValidationResult validationResult : results )
+            {
+                OrganisationUnit unit = (OrganisationUnit) validationResult.getSource();
+                
+                Period period = validationResult.getPeriod();
+                
+                table.addCell( getTextCell( unit.getName() ) );
+                table.addCell( getTextCell( format.formatPeriod( period ) ) );
+                table.addCell( getTextCell( validationResult.getValidationRule().getLeftSide().getDescription() ) );
+                table.addCell( getTextCell( String.valueOf( validationResult.getLeftsideValue() ) ) );
+                table.addCell( getTextCell( i18n.getString( validationResult.getValidationRule().getOperator() ), 1, ALIGN_CENTER ) );
+                table.addCell( getTextCell( String.valueOf( validationResult.getRightsideValue() ) ) );
+                table.addCell( getTextCell( validationResult.getValidationRule().getRightSide().getDescription() ) );                    
+            }
+        }
+        
+        addTableToDocument( document, table );
+        
+        closeDocument( document );
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
