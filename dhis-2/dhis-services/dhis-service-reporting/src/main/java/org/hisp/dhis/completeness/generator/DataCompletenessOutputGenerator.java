@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporting.completeness.util;
+package org.hisp.dhis.completeness.generator;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -39,7 +39,7 @@ import org.hisp.dhis.completeness.DataSetCompletenessResult;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public interface OutputGenerator
+public interface DataCompletenessOutputGenerator
 {
     void generateOutput( Collection<DataSetCompletenessResult> results, OutputStream out, 
         I18n i18n, OrganisationUnit unit, DataSet dataSet );
