@@ -194,7 +194,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 
         legendStore = new Ext.data.JsonStore({
             url: path + 'getMapLegendSet' + type,
-            baseParams: { indicatorId: 52487, format: 'json' },
+            baseParams: { indicatorId: 52487 },
             root: 'mapLegendSet',
             fields: ['id', 'name'],
             autoLoad: true
@@ -250,12 +250,14 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 'select': {
                     fn: function()
                     {
+/*                    
                         var legend_cb = Ext.getCmp('legend_cb');
                         var iId = Ext.getCmp('indicator_cb').getValue();
                         
-                        legend_cb.reset();
+//                        legend_cb.reset();
                         legend_cb.getStore().baseParams = { indicatorId: iId, format: 'json' };
                         legend_cb.getStore().reload();
+*/                        
                     }
                 }
             }
@@ -372,6 +374,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 'select': {
                     fn: function()
                     {
+/*
                         var iId = Ext.getCmp('indicator_cb').getValue();
                        
                         Ext.Ajax.request(
@@ -393,8 +396,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                             {
                               alert( 'Status', 'Error while retrieving data' );
                             } 
-                            });
-                        
+                        });
+*/                        
                     },
                     scope: this
                 }

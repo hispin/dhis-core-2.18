@@ -158,7 +158,6 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 
         gridView = new Ext.grid.GridView({ 
             forceFit: true,
-            draggable: true,
             sortClasses: ['sort-asc'],
             getRowClass: function (row, index){
                 var cls = ''; 
@@ -199,9 +198,9 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                             var mlp = Ext.getCmp('maps_cb').getValue();
                             this.newUrl = mlp;
                             
-                            gridStore.baseParams = { mapLayerPath: mlp, format: 'json' };
-                            gridStore.reload();
-                                
+                            Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
+                            Ext.getCmp('grid_gp').getStore().reload();
+                            
                             this.classify(false);
                         },
                         scope: this
@@ -215,8 +214,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 handler: function()
                 {
                     var mlp = Ext.getCmp('maps_cb').getValue();
-                    gridStore.baseParams = { mapLayerPath: mlp, format: 'json' };
-                    gridStore.reload();
+                    Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
+                    Ext.getCmp('grid_gp').getStore().reload();
                     
                     this.classify(true);
                 },
@@ -232,8 +231,83 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 columns: [ { header: 'Organisation units ', id: 'organisationUnitId', dataIndex: 'organisationUnit', sortable: true } ],
                 width: gridpanel_width,
                 height: gridpanel_height,
-                view: gridView
-            }
+                view: gridView,
+                style: 'left:0px',
+                bbar: new Ext.StatusBar({
+                    defaultText: '',
+                    id: 'basic-statusbar',
+                    items:
+                    [
+                        {
+                            xtype: 'button',
+                            id: 'removerelation_b0',
+                            text: 'Remove relation',
+                            isVisible: false,
+                            handler: function()
+                            {
+                                if (!Ext.getCmp('grid_gp').getSelectionModel().getSelected())
+                                {
+                                    alert('First, select an organisation unit from the list');
+                                    return;
+                                }
+                                    
+                                var selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
+                                var oui = selected.data['organisationUnitId'];
+                                var mlp = Ext.getCmp('maps_cb').getValue();
+                                
+                                Ext.Ajax.request( 
+                                {
+                                    url: path + 'deleteMapOrganisationUnitRelation' + type,
+                                    method: 'GET',
+                                    params: { mapLayerPath: mlp, organisationUnitId: oui },
+
+                                    success: function( responseObject )
+                                    {
+                                        var mlp = Ext.getCmp('maps_cb').getValue();
+                                        Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
+                                        Ext.getCmp('grid_gp').getStore().reload();
+                                    },
+                                    failure: function()
+                                    {
+                                        alert('Error while deleting MapOrganisationUnitRelation');
+                                    } 
+                                });
+                            },
+                            scope: this
+                        },
+                        
+                        {
+                            xtype: 'button',
+                            id: 'removeallrelations_b',
+                            text: 'Remove all relations',
+                            isVisible: false,
+                            handler: function()
+                            {
+                                var mlp = Ext.getCmp('maps_cb').getValue();
+                                
+                                Ext.Ajax.request( 
+                                {
+                                    url: path + 'deleteMapOrganisationUnitRelationsByMap' + type,
+                                    method: 'GET',
+                                    params: { mapLayerPath: mlp },
+
+                                    success: function( responseObject )
+                                    {
+                                        var mlp = Ext.getCmp('maps_cb').getValue();
+                                        Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
+                                        Ext.getCmp('grid_gp').getStore().reload();
+                                    },
+                                    failure: function()
+                                    {
+                                        alert('Error while deleting MapOrganisationUnitRelation');
+                                    } 
+                                });
+                            },
+                            scope: this
+                        }
+                    ]
+                })
+             }
         ];
 
         mapfish.widgets.geostat.Choropleth.superclass.initComponent.apply(this);
