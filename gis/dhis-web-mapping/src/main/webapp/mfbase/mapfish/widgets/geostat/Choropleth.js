@@ -170,9 +170,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             
         periodStore = new Ext.data.JsonStore({
             url: path + 'getPeriodsByPeriodType' + type,
-            baseParams: { periodTypeId: '9', format: 'json' },
             root: 'periods',
-            fields: ['id', 'startDate'],
+            fields: ['id', 'name'],
             autoLoad: true
         });
             
@@ -195,9 +194,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 
         legendStore = new Ext.data.JsonStore({
             url: path + 'getMapLegendSet' + type,
+            baseParams: { indicatorId: 52487, format: 'json' },
             root: 'mapLegendSet',
             fields: ['id', 'name'],
-            autoLoad: false
+            autoLoad: true
         });
 
         this.items = [
@@ -296,7 +296,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             typeAhead: true,
             editable: false,
             valueField: 'id',
-            displayField: 'startDate',
+            displayField: 'name',
             mode: 'remote',
             forceSelection: true,
             triggerAction: 'all',
