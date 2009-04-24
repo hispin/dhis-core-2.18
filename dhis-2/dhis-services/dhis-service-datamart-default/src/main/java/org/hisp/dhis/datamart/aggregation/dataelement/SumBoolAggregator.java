@@ -81,12 +81,12 @@ public class SumBoolAggregator
         final Collection<CrossTabDataValue> crossTabValues = 
             getCrossTabDataValues( operandIndexMap, period.getStartDate(), period.getEndDate(), unit.getId(), hierarchy );
         
-        final Map<Operand, Double[]> entries = getAggregate( crossTabValues, period.getStartDate(), 
+        final Map<Operand, double[]> entries = getAggregate( crossTabValues, period.getStartDate(), 
             period.getEndDate(), period.getStartDate(), period.getEndDate() ); // <data element id, [total value, total relevant days]>
 
         final Map<Operand, Double> values = new HashMap<Operand, Double>( entries.size() ); // <Operand, total value>
         
-        for ( final Entry<Operand, Double[]> entry : entries.entrySet() )
+        for ( final Entry<Operand, double[]> entry : entries.entrySet() )
         {
             if ( entry.getValue() != null && entry.getValue()[ 1 ] > 0 )
             {
@@ -114,10 +114,10 @@ public class SumBoolAggregator
         return dataMartStore.getCrossTabDataValues( operandIndexMap, periodIds, sourceIds );
     }
     
-    public Map<Operand, Double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
+    public Map<Operand, double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
         final Date startDate, final Date endDate, final Date aggregationStartDate, final Date aggregationEndDate )
     {
-        final Map<Operand, Double[]> totalSums = new HashMap<Operand, Double[]>(); // <Operand, [total value, total relevant days]>
+        final Map<Operand, double[]> totalSums = new HashMap<Operand, double[]>(); // <Operand, [total value, total relevant days]>
 
         Period period = null;
         Date currentStartDate = null;
@@ -183,7 +183,7 @@ public class SumBoolAggregator
                         existingValue = totalSums.containsKey( entry.getKey() ) ? totalSums.get( entry.getKey() )[ 0 ] : 0;
                         existingRelevantDays = totalSums.containsKey( entry.getKey() ) ? totalSums.get( entry.getKey() )[ 1 ] : 0;
 
-                        final Double[] values = { ( value + existingValue ), ( relevantDays + existingRelevantDays ) };
+                        final double[] values = { ( value + existingValue ), ( relevantDays + existingRelevantDays ) };
                         
                         totalSums.put( entry.getKey(), values );
                     }
@@ -194,7 +194,3 @@ public class SumBoolAggregator
         return totalSums;
     }
 }
-
-
-
-

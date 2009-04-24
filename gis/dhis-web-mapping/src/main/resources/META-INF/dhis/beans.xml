@@ -63,6 +63,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.datamart.DataMartStore"/>
   </bean>
     
+  <!-- MapOrganisationUnitRelation -->
+    
   <bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction"
     class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction"
     scope="prototype">
@@ -75,6 +77,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="mappingService"
       ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsByMapAction"
+    class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationsByMapAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationAction"
+    class="org.hisp.dhis.mapping.action.DeleteMapOrganisationUnitRelationAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   </bean>
   
   <!-- MapLegendSet -->

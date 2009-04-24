@@ -30,6 +30,7 @@ package org.hisp.dhis.mapping.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateSessionManager;
@@ -187,6 +188,24 @@ public class HibernateMappingStore
         criteria.add( Restrictions.eq( "map", map ) );
 
         return criteria.list();        
+    }
+
+    public int deleteMapOrganisationUnitRelations( OrganisationUnit organisationUnit )
+    {
+        Session session = sessionManager.getCurrentSession();
+        
+        Query query = session.createQuery( "delete from OrganisationUnitRelation where organisationUnit = :organisationUnit" );
+        
+        return query.setParameter( "organisationUnit", organisationUnit ).executeUpdate();
+    }
+
+    public int deleteMapOrganisationUnitRelations( Map map )
+    {
+        Session session = sessionManager.getCurrentSession();
+        
+        Query query = session.createQuery( "delete from OrganisationUnitRelation where map = :map" );
+        
+        return query.setParameter( "map", map ).executeUpdate();
     }
     
     // -------------------------------------------------------------------------

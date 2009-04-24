@@ -246,6 +246,24 @@ public interface MappingService
      * @return a Collection of MapOrganisationUnitRelations.
      */
     Collection<MapOrganisationUnitRelation> getAvailableMapOrganisationUnitRelations( String mapLayerPath );
+
+    /**
+     * Deletes all MapOrganisationUnitRelations associated with the given
+     * OrganisationUnit.
+     * 
+     * @param organisationUnit the OrganisationUnit.
+     * @return the number of deleted objects.
+     */
+    int deleteMapOrganisationUnitRelations( OrganisationUnit organisationUnit );
+
+    /**
+     * Deletes all MapOrganisationUnitRelations associated with the given
+     * Map.
+     * 
+     * @param map the Map.
+     * @return the number of deleted objects.
+     */
+    int deleteMapOrganisationUnitRelations( Map map );
     
     // -------------------------------------------------------------------------
     // LegendSet
