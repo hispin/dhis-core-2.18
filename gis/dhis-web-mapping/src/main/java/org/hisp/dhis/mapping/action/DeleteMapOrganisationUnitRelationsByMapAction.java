@@ -54,11 +54,11 @@ public class DeleteMapOrganisationUnitRelationsByMapAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private String mapLayerPath;
 
-    public void setId( Integer id )
+    public void setMapLayerPath( String mapLayerPath )
     {
-        this.id = id;
+        this.mapLayerPath = mapLayerPath;
     }
 
     // -------------------------------------------------------------------------
@@ -67,7 +67,7 @@ public class DeleteMapOrganisationUnitRelationsByMapAction
 
     public String execute()
     {
-        Map map = mappingService.getMap( id );
+        Map map = mappingService.getMapByMapLayerPath( mapLayerPath );
         
         if ( map != null )
         {

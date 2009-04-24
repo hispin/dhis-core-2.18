@@ -47,12 +47,8 @@ import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.jdbc.JDBCConfiguration;
-import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
-import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.jdbc.StatementHolder;
 import org.hisp.dhis.jdbc.StatementManager;
-import org.hisp.dhis.jdbc.factory.StatementBuilderFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.objectmapper.AggregatedDataValueRowMapper;
@@ -79,13 +75,6 @@ public class JdbcDataMartStore
         this.statementManager = statementManager;
     }
     
-    private JDBCConfigurationProvider configurationProvider;
-
-    public void setConfigurationProvider( JDBCConfigurationProvider configurationProvider )
-    {
-        this.configurationProvider = configurationProvider;
-    }
-
     // -------------------------------------------------------------------------
     // AggregatedDataValue
     // -------------------------------------------------------------------------
@@ -572,13 +561,9 @@ public class JdbcDataMartStore
     {
         final StatementHolder holder = statementManager.getHolder();
         
-        final JDBCConfiguration configuration = configurationProvider.getConfiguration();
-        
-        final StatementBuilder builder = StatementBuilderFactory.createStatementBuilder( configuration.getDialect() );
-        
         try
         {
-            final String sql = builder.getDeleteRelativePeriods();
+            final String sql = statementManager.getStatementBuilder().getDeleteRelativePeriods();
             
             return holder.getStatement().executeUpdate( sql );
         }

@@ -31,12 +31,8 @@ import java.sql.SQLException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.jdbc.JDBCConfiguration;
-import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
-import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.jdbc.StatementHolder;
 import org.hisp.dhis.jdbc.StatementManager;
-import org.hisp.dhis.jdbc.factory.StatementBuilderFactory;
 import org.hisp.dhis.maintenance.MaintenanceStore;
 
 /**
@@ -59,13 +55,6 @@ public class JdbcMaintenanceStore
         this.statementManager = statementManager;
     }
     
-    private JDBCConfigurationProvider configurationProvider;
-
-    public void setConfigurationProvider( JDBCConfigurationProvider configurationProvider )
-    {
-        this.configurationProvider = configurationProvider;
-    }
-    
     // -------------------------------------------------------------------------
     // MaintenanceStore implementation
     // -------------------------------------------------------------------------
@@ -74,13 +63,9 @@ public class JdbcMaintenanceStore
     {
         final StatementHolder holder = statementManager.getHolder();
         
-        final JDBCConfiguration configuration = configurationProvider.getConfiguration();
-        
-        final StatementBuilder builder = StatementBuilderFactory.createStatementBuilder( configuration.getDialect() );
-        
         try
         {
-            final String sql = builder.getDeleteZeroDataValues();
+            final String sql = statementManager.getStatementBuilder().getDeleteZeroDataValues();
             
             log.debug( "Deleting zero values: " + sql );
             

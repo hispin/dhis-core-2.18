@@ -26,8 +26,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.datamart.jdbc.JdbcDataMartStore">
     <property name="statementManager"
       ref="org.hisp.dhis.jdbc.StatementManager"/>
-    <property name="configurationProvider"
-      ref="org.hisp.dhis.jdbc.JDBCConfigurationProvider"/>
   </bean>
 	
   <!-- DataMartService -->
