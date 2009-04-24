@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporting.completeness.workbook;
+package org.hisp.dhis.completeness.generator;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -45,7 +45,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
-import org.hisp.dhis.reporting.completeness.util.OutputGenerator;
 import org.hisp.dhis.system.util.DateUtils;
 
 /**
@@ -53,7 +52,7 @@ import org.hisp.dhis.system.util.DateUtils;
  * @version $Id$
  */
 public class DataCompletenessWorkbookGenerator
-    implements OutputGenerator
+    implements DataCompletenessOutputGenerator
 {
     private final static int MARGIN_LEFT = 1;
         

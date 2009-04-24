@@ -286,8 +286,6 @@
         <param name="contentDisposition">filename="DataCompletenessReport.pdf"</param>
         <param name="bufferSize">10240</param>        
       </result>
-      <result name="none" type="redirect">displayViewDataCompletenessForm.action</result>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="getDataCompletenessWorkbook" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessWorkbookAction">
@@ -297,8 +295,6 @@
         <param name="contentDisposition">filename="DataCompletenessReport.xls"</param>
         <param name="bufferSize">10240</param>        
       </result>
-      <result name="none" type="redirect">displayViewDataCompletenessForm.action</result>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="displayConfigureDataCompletenessForm" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessConfigurationAction">

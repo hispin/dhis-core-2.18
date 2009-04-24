@@ -27,19 +27,18 @@ package org.hisp.dhis.reporting.completeness.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.util.Collection;
 
+import org.hisp.dhis.completeness.DataSetCompletenessResult;
+import org.hisp.dhis.completeness.generator.DataCompletenessOutputGenerator;
+import org.hisp.dhis.completeness.generator.DataCompletenessWorkbookGenerator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.completeness.DataSetCompletenessResult;
-import org.hisp.dhis.reporting.completeness.util.OutputGeneratorPipeThread;
-import org.hisp.dhis.reporting.completeness.workbook.DataCompletenessWorkbookGenerator;
 import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork.Action;
@@ -98,34 +97,14 @@ public class GetDataCompletenessWorkbookAction
         
         OrganisationUnit unit = selectionTreeManager.getSelectedOrganisationUnit();
         
-        if ( results != null && unit != null )
-        {
-            // -----------------------------------------------------------------
-            // Pipes are input/output pairs. Data written on the output stream 
-            // shows up on the input stream at the other end of the pipe. 
-            // -----------------------------------------------------------------
-            
-            PipedOutputStream out = new PipedOutputStream();
-            
-            PipedInputStream in = new PipedInputStream( out );
-            
-            OutputGeneratorPipeThread thread = new OutputGeneratorPipeThread();
-            
-            thread.setCompletenessResults( results );
-            thread.setOutputStream( out );
-            thread.setI18n( i18n );
-            thread.setOrganisationUnit( unit );
-            thread.setDataSet( dataSet );
-            thread.setOutputGenerator( new DataCompletenessWorkbookGenerator() );
-            
-            thread.start();
-
-            inputStream = new BufferedInputStream( in );
-            
-            return SUCCESS;
-        }
+        DataCompletenessOutputGenerator generator = new DataCompletenessWorkbookGenerator();
         
-        return NONE;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        
+        generator.generateOutput( results, out, i18n, unit, dataSet );
+        
+        inputStream = new ByteArrayInputStream( out.toByteArray() );
+                
+        return SUCCESS;
     }
 }
-
