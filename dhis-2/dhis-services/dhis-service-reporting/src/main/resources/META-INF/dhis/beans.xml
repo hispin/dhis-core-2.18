@@ -187,9 +187,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.workbook.WorkbookService"
     class="org.hisp.dhis.workbook.impl.JExcelWorkbookService">   
     <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>  
-    <property name="completenessService"
-      ref="org.hisp.dhis.completeness.DataSetCompletenessService"/>
+      ref="org.hisp.dhis.reporttable.ReportTableService"/> 
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="indicatorService"

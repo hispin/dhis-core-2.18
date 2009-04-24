@@ -34,10 +34,9 @@ import java.util.Collection;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.pdf.PdfService;
 import org.hisp.dhis.util.SessionUtils;
 import org.hisp.dhis.validation.ValidationResult;
-import org.hisp.dhis.validation.generator.ValidationResultOutputGenerator;
-import org.hisp.dhis.validation.generator.ValidationResultPDFGenerator;
 
 import com.opensymphony.xwork.ActionSupport;
 
@@ -54,6 +53,13 @@ public class GenerateValidationResultPDFAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private PdfService pdfService;
+
+    public void setPdfService( PdfService pdfService )
+    {
+        this.pdfService = pdfService;
+    }
+    
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -90,11 +96,9 @@ public class GenerateValidationResultPDFAction
         Collection<ValidationResult> results = (Collection<ValidationResult>) SessionUtils.
             getSessionVar( KEY_VALIDATIONRESULT );
         
-        ValidationResultOutputGenerator generator = new ValidationResultPDFGenerator();
-
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         
-        generator.generateOutput( results, out, i18n, format );
+        pdfService.writeValidationResult( results, out, i18n, format );
 
         inputStream = new ByteArrayInputStream( out.toByteArray() );
                 

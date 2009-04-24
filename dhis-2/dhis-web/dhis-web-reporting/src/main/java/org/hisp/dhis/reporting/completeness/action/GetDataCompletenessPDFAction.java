@@ -33,12 +33,11 @@ import java.io.InputStream;
 import java.util.Collection;
 
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
-import org.hisp.dhis.completeness.generator.DataCompletenessOutputGenerator;
-import org.hisp.dhis.completeness.generator.DataCompletenessPDFGenerator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.pdf.PdfService;
 import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork.Action;
@@ -57,6 +56,13 @@ public class GetDataCompletenessPDFAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private PdfService pdfService;
+
+    public void setPdfService( PdfService pdfService )
+    {
+        this.pdfService = pdfService;
+    }
+    
     private SelectionTreeManager selectionTreeManager;
 
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
@@ -97,11 +103,9 @@ public class GetDataCompletenessPDFAction
         
         OrganisationUnit unit = selectionTreeManager.getSelectedOrganisationUnit();
         
-        DataCompletenessOutputGenerator generator = new DataCompletenessPDFGenerator();
-
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         
-        generator.generateOutput( results, out, i18n, unit, dataSet );
+        pdfService.writeDataSetCompletenessResult( results, out, i18n, unit, dataSet );
 
         inputStream = new ByteArrayInputStream( out.toByteArray() );
                 

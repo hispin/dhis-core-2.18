@@ -36,8 +36,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.util.SessionUtils;
 import org.hisp.dhis.validation.ValidationResult;
-import org.hisp.dhis.validation.generator.ValidationResultOutputGenerator;
-import org.hisp.dhis.validation.generator.ValidationResultWorkbookGenerator;
+import org.hisp.dhis.workbook.WorkbookService;
 
 import com.opensymphony.xwork.Action;
 
@@ -54,6 +53,13 @@ public class GenerateValidationResultWorkbookAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private WorkbookService workbookService;
+
+    public void setWorkbookService( WorkbookService workbookService )
+    {
+        this.workbookService = workbookService;
+    }
+    
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -90,11 +96,9 @@ public class GenerateValidationResultWorkbookAction
         Collection<ValidationResult> results = (Collection<ValidationResult>) SessionUtils.
             getSessionVar( KEY_VALIDATIONRESULT );
         
-        ValidationResultOutputGenerator generator = new ValidationResultWorkbookGenerator();
-    
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         
-        generator.generateOutput( results, out, i18n, format );
+        workbookService.writeValidationResult( results, out, i18n, format );
     
         inputStream = new ByteArrayInputStream( out.toByteArray() );
                 

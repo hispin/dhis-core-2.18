@@ -33,13 +33,12 @@ import java.io.InputStream;
 import java.util.Collection;
 
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
-import org.hisp.dhis.completeness.generator.DataCompletenessOutputGenerator;
-import org.hisp.dhis.completeness.generator.DataCompletenessWorkbookGenerator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.util.SessionUtils;
+import org.hisp.dhis.workbook.WorkbookService;
 
 import com.opensymphony.xwork.Action;
 
@@ -57,6 +56,13 @@ public class GetDataCompletenessWorkbookAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private WorkbookService workbookService;
+
+    public void setWorkbookService( WorkbookService workbookService )
+    {
+        this.workbookService = workbookService;
+    }
+    
     private SelectionTreeManager selectionTreeManager;
 
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
@@ -97,11 +103,9 @@ public class GetDataCompletenessWorkbookAction
         
         OrganisationUnit unit = selectionTreeManager.getSelectedOrganisationUnit();
         
-        DataCompletenessOutputGenerator generator = new DataCompletenessWorkbookGenerator();
-        
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         
-        generator.generateOutput( results, out, i18n, unit, dataSet );
+        workbookService.writeDataSetCompletenessResult( results, out, i18n, unit, dataSet );
         
         inputStream = new ByteArrayInputStream( out.toByteArray() );
                 

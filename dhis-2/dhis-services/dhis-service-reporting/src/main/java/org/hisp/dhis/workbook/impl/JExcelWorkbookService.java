@@ -29,6 +29,7 @@ package org.hisp.dhis.workbook.impl;
 
 import static org.hisp.dhis.system.util.MathUtils.isNumeric;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashMap;
@@ -42,17 +43,24 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
 
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
-import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reporttable.ReportTableData;
 import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.validation.ValidationResult;
 import org.hisp.dhis.workbook.WorkbookService;
 
 /**
@@ -71,13 +79,6 @@ public class JExcelWorkbookService
     public void setReportTableService( ReportTableService reportTableService )
     {
         this.reportTableService = reportTableService;
-    }
-
-    private DataSetCompletenessService completenessService;
-
-    public void setCompletenessService( DataSetCompletenessService completenessService )
-    {
-        this.completenessService = completenessService;
     }
 
     private DataElementService dataElementService;
@@ -167,53 +168,6 @@ public class JExcelWorkbookService
         }
     }
     
-    public void writeDataSetCompleteness( OutputStream outputStream, int periodId, int organisationUnitId )
-    {
-        Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodId, organisationUnitId );
-        
-        try
-        {
-            WritableWorkbook workbook = Workbook.createWorkbook( outputStream );
-            
-            WritableSheet sheet = workbook.createSheet( "Report table data", 0 );
-            
-            int rowNumber = 1;
-
-            sheet.addCell( new Label( 0, rowNumber++, "Data completeness", FORMAT_TTTLE ) );
-            
-            rowNumber++;
-            
-            sheet.addCell( new Label( 0, rowNumber, "Name", FORMAT_LABEL ) );
-            sheet.addCell( new Label( 1, rowNumber, "Target", FORMAT_LABEL ) );
-            sheet.addCell( new Label( 2, rowNumber, "Actual", FORMAT_LABEL ) );
-            sheet.addCell( new Label( 3, rowNumber, "Percentage", FORMAT_LABEL ) );
-            sheet.addCell( new Label( 4, rowNumber, "On time", FORMAT_LABEL ) );
-            sheet.addCell( new Label( 5, rowNumber, "Percentage", FORMAT_LABEL ) );
-
-            rowNumber++;
-            
-            for ( DataSetCompletenessResult result : results )
-            {
-                sheet.addCell( new Label( 0, rowNumber, result.getName(), FORMAT_TEXT ) );
-                sheet.addCell( new Number( 1, rowNumber, result.getSources(), FORMAT_TEXT ) );
-                sheet.addCell( new Number( 2, rowNumber, result.getRegistrations(), FORMAT_TEXT ) );
-                sheet.addCell( new Number( 3, rowNumber, result.getPercentage(), FORMAT_TEXT ) );
-                sheet.addCell( new Number( 4, rowNumber, result.getRegistrationsOnTime(), FORMAT_TEXT ) );
-                sheet.addCell( new Number( 5, rowNumber, result.getPercentageOnTime(), FORMAT_TEXT ) );
-                
-                rowNumber++;
-            }
-            
-            workbook.write();
-            
-            workbook.close();
-        }
-        catch ( Exception ex )
-        {
-            throw new RuntimeException( "Failed to generate workbook for data elements", ex );
-        }
-    }
-
     public void writeAllDataElements( OutputStream outputStream )
     {
         try
@@ -361,6 +315,134 @@ public class JExcelWorkbookService
         }
     }
 
+    public void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out, I18n i18n, OrganisationUnit unit, DataSet dataSet )
+    {
+        final int MARGIN_LEFT = 1;        
+        
+        WritableCellFormat documentTitle = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 15, WritableFont.NO_BOLD, false ) );
+        WritableCellFormat subTitle = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 13, WritableFont.NO_BOLD, false ) );
+        WritableCellFormat columnHeader = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 11, WritableFont.NO_BOLD, true ) );
+        WritableCellFormat text = new WritableCellFormat( new WritableFont( WritableFont.ARIAL, 11, WritableFont.NO_BOLD, false ) );            
+        
+        try
+        {
+            WritableWorkbook workbook = Workbook.createWorkbook( out );
+        
+            WritableSheet sheet = workbook.createSheet( "Data completeness", 0 );
+
+            String dataSetName = dataSet != null ? " - " + dataSet.getName() : "";
+            
+            sheet.addCell( new Label( MARGIN_LEFT, 1, i18n.getString( "data_completeness_report" ) + " - " + unit.getName() + dataSetName, documentTitle ) );
+            
+            sheet.addCell( new Label( MARGIN_LEFT, 3, i18n.getString( "district_health_information_software" ) + " - " + DateUtils.getMediumDateString(), subTitle ) );
+            
+            int row = 5;
+            
+            sheet.addCell( new Label( MARGIN_LEFT, row, i18n.getString( "name" ), columnHeader ) );
+            sheet.addCell( new Label( MARGIN_LEFT + 1, row, i18n.getString( "actual" ), columnHeader ) );
+            sheet.addCell( new Label( MARGIN_LEFT + 2, row, i18n.getString( "target" ), columnHeader ) );
+            sheet.addCell( new Label( MARGIN_LEFT + 3, row, i18n.getString( "percent" ), columnHeader ) );
+            sheet.addCell( new Label( MARGIN_LEFT + 4, row, i18n.getString( "on_time" ), columnHeader ) );
+            sheet.addCell( new Label( MARGIN_LEFT + 5, row, i18n.getString( "percent" ), columnHeader ) );
+            
+            row = 7;
+            
+            for ( DataSetCompletenessResult result : results )
+            {
+                sheet.addCell( new Label( MARGIN_LEFT, row, result.getName(), text ) );
+                sheet.addCell( new Number( MARGIN_LEFT + 1, row, result.getRegistrations(), text ) );
+                sheet.addCell( new Number( MARGIN_LEFT + 2, row, result.getSources(), text ) );
+                sheet.addCell( new Number( MARGIN_LEFT + 3, row, result.getPercentage(), text ) );
+                sheet.addCell( new Number( MARGIN_LEFT + 4, row, result.getRegistrationsOnTime(), text ) );
+                sheet.addCell( new Number( MARGIN_LEFT + 5, row, result.getPercentageOnTime(), text ) );
+                
+                row++;
+            }
+
+            workbook.write();
+            
+            workbook.close();
+        }
+        catch ( IOException ex )
+        {
+            throw new RuntimeException( "Failed to create workbook", ex );
+        }
+        catch ( RowsExceededException ex )
+        {
+            throw new RuntimeException( "Rows exceeded", ex );
+        }
+        catch ( WriteException ex )
+        {
+            throw new RuntimeException( "Write failed", ex );
+        }
+    }
+    
+    public void writeValidationResult( Collection<ValidationResult> results, OutputStream out, I18n i18n, I18nFormat format )
+    {
+        final int MARGIN_LEFT = 1;
+        
+        WritableCellFormat documentTitle = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 15, WritableFont.NO_BOLD, false ) );
+        WritableCellFormat subTitle = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 13, WritableFont.NO_BOLD, false ) );
+        WritableCellFormat columnHeader = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 11, WritableFont.NO_BOLD, true ) );
+        WritableCellFormat text = new WritableCellFormat( new WritableFont( WritableFont.ARIAL, 11, WritableFont.NO_BOLD, false ) );            
+        
+        try
+        {            
+            WritableWorkbook workbook = Workbook.createWorkbook( out );
+            
+            WritableSheet sheet = workbook.createSheet( "Validation results", 0 );
+            
+            sheet.addCell( new Label( MARGIN_LEFT, 1, i18n.getString( "data_quality_report" ), documentTitle ) );
+            
+            sheet.addCell( new Label( MARGIN_LEFT, 3, i18n.getString( "district_health_information_software" ) + " - " + DateUtils.getMediumDateString(), subTitle ) );
+            
+            int row = 5;
+            
+            sheet.addCell( new Label( MARGIN_LEFT + 0, row, i18n.getString( "source" ), columnHeader ) );
+            sheet.addCell( new Label( MARGIN_LEFT + 1, row, i18n.getString( "period" ), columnHeader ) );
+            sheet.addCell( new Label( MARGIN_LEFT + 2, row, i18n.getString( "left_side_description" ), columnHeader ) );
+            sheet.addCell( new Label( MARGIN_LEFT + 3, row, i18n.getString( "value" ), columnHeader ) );
+            sheet.addCell( new Label( MARGIN_LEFT + 4, row, i18n.getString( "operator" ), columnHeader ) );
+            sheet.addCell( new Label( MARGIN_LEFT + 5, row, i18n.getString( "value" ), columnHeader ) );
+            sheet.addCell( new Label( MARGIN_LEFT + 6, row, i18n.getString( "right_side_description" ), columnHeader ) );
+            
+            row = 7;
+            
+            for ( ValidationResult result : results )
+            {
+                OrganisationUnit unit = (OrganisationUnit) result.getSource();
+                
+                Period period = result.getPeriod();
+                
+                sheet.addCell( new Label( MARGIN_LEFT + 0, row, unit.getName(), text ) );
+                sheet.addCell( new Label( MARGIN_LEFT + 1, row, format.formatPeriod( period ), text ) );
+                sheet.addCell( new Label( MARGIN_LEFT + 2, row, result.getValidationRule().getLeftSide().getDescription(), text ) );
+                sheet.addCell( new Number( MARGIN_LEFT + 3, row, result.getLeftsideValue(), text ) );
+                sheet.addCell( new Label( MARGIN_LEFT + 4, row, i18n.getString( result.getValidationRule().getOperator(), text ) ) );
+                sheet.addCell( new Number( MARGIN_LEFT + 5, row, result.getRightsideValue(), text ) );
+                sheet.addCell( new Label( MARGIN_LEFT + 6, row, result.getValidationRule().getRightSide().getDescription(), text ) );
+                
+                row++;
+            }
+            
+            workbook.write();
+            
+            workbook.close();                        
+        }
+        catch ( IOException ex )
+        {
+            throw new RuntimeException( "Failed to create workbook", ex );
+        }
+        catch ( RowsExceededException ex )
+        {
+            throw new RuntimeException( "Rows exceeded", ex );
+        }
+        catch ( WriteException ex )
+        {
+            throw new RuntimeException( "Write failed", ex );
+        }
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
