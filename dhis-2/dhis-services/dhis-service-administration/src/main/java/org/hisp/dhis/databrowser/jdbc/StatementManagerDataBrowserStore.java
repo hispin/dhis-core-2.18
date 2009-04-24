@@ -45,8 +45,7 @@ public class StatementManagerDataBrowserStore
             StringBuffer sqlsb = new StringBuffer();
             sqlsb.append( "SELECT d.datasetid AS ID, d.name AS DataSet, count(*) AS Count " );
             sqlsb.append( "FROM datavalue dv " );
-            sqlsb
-                .append( "JOIN datasetmembers dsm ON (dv.dataelementid = dsm.dataelementid) JOIN dataset d ON (d.datasetid = dsm.datasetid) " );
+            sqlsb.append( "JOIN datasetmembers dsm ON (dv.dataelementid = dsm.dataelementid) JOIN dataset d ON (d.datasetid = dsm.datasetid) " );
             sqlsb.append( "WHERE dv.periodid IN " + splitListHelper( betweenPeriodIds ) + " " );
             sqlsb.append( "GROUP BY d.datasetid, d.name " );
             sqlsb.append( "ORDER BY Count DESC;" );
@@ -263,6 +262,5 @@ public class StatementManagerDataBrowserStore
         Statement stm = con.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY );
         stm.execute( sql );
         return stm.getResultSet();
-
     }
 }

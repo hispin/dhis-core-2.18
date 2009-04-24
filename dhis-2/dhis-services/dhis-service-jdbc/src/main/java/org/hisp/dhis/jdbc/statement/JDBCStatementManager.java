@@ -103,7 +103,7 @@ public class JDBCStatementManager
         
         return new DefaultStatementHolder( getInternalConnection(), false );
     }
-
+    
     public void destroy()
     {
         StatementHolder holder = holderTag.get();
