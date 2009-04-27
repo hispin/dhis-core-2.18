@@ -168,15 +168,19 @@ public class DataSetCompletenessInternalProcess
         Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( organisationUnitIds );
         Collection<DataSet> dataSets = dataSetService.getDataSets( dataSetIds );
         
-        for ( Period period : periods )
+        Collection<Period> intersectingPeriods = null;
+        Date deadline = null;
+        DataSetCompletenessResult result = null;
+        
+        for ( final Period period : periods )
         {
-            Collection<Period> intersectingPeriods = periodService.getIntersectingPeriods( period.getStartDate(), period.getEndDate() );
+            intersectingPeriods = periodService.getIntersectingPeriods( period.getStartDate(), period.getEndDate() );
             
-            for ( OrganisationUnit unit : units )
+            for ( final OrganisationUnit unit : units )
             {
-                for ( DataSet dataSet : dataSets )
+                for ( final DataSet dataSet : dataSets )
                 {
-                    DataSetCompletenessResult aggregatedResult = new DataSetCompletenessResult();
+                    final DataSetCompletenessResult aggregatedResult = new DataSetCompletenessResult();
                     
                     aggregatedResult.setDataSetId( dataSet.getId() );
                     aggregatedResult.setPeriodId( period.getId() );
@@ -184,13 +188,13 @@ public class DataSetCompletenessInternalProcess
                     aggregatedResult.setOrganisationUnitId( unit.getId() );
                     aggregatedResult.setReportTableId( reportTableId );
                     
-                    for ( Period intersectingPeriod : intersectingPeriods )
+                    for ( final Period intersectingPeriod : intersectingPeriods )
                     {
                         if ( intersectingPeriod.getPeriodType().equals( dataSet.getPeriodType() ) )
                         {
-                            Date deadline = completenessCache.getDeadline( intersectingPeriod );
+                            deadline = completenessCache.getDeadline( intersectingPeriod );
                             
-                            DataSetCompletenessResult result = completenessService.getDataSetCompleteness( intersectingPeriod, deadline, unit, dataSet );
+                            result = completenessService.getDataSetCompleteness( intersectingPeriod, deadline, unit, dataSet );
                             
                             aggregatedResult.incrementSources( result.getSources() );
                             aggregatedResult.incrementRegistrations( result.getRegistrations() );
