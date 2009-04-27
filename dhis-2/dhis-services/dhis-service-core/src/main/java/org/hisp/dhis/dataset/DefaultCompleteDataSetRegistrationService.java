@@ -80,7 +80,7 @@ public class DefaultCompleteDataSetRegistrationService
     @SuppressWarnings( "unchecked" )
     public int getCompleteDataSetRegistrationsForDataSet( DataSet dataSet, Collection<? extends Source> sources, Period period )
     {
-        Collection<? extends Source> intersectingSources = CollectionUtils.intersection( sources, dataSet.getSources() );
+        final Collection<? extends Source> intersectingSources = CollectionUtils.intersection( sources, dataSet.getSources() );
         
         if ( intersectingSources == null || intersectingSources.size() == 0 )
         {
@@ -93,7 +93,7 @@ public class DefaultCompleteDataSetRegistrationService
     @SuppressWarnings( "unchecked" )
     public int getCompleteDataSetRegistrationsForDataSet( DataSet dataSet, Collection<? extends Source> sources, Period period, Date deadline )
     {
-        Collection<? extends Source> intersectingSources = CollectionUtils.intersection( sources, dataSet.getSources() );
+        final Collection<? extends Source> intersectingSources = CollectionUtils.intersection( sources, dataSet.getSources() );
         
         if ( intersectingSources == null || intersectingSources.size() == 0 )
         {

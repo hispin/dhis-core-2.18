@@ -131,7 +131,7 @@ public class DefaultDataSetCompletenessService
 
     public Collection<DataSetCompletenessResult> getDataSetCompleteness( int periodId, int organisationUnitId )
     {
-        Period period = periodService.getPeriod( periodId );
+        final Period period = periodService.getPeriod( periodId );
         
         Date deadline = null;
         
@@ -144,15 +144,15 @@ public class DefaultDataSetCompletenessService
             log.warn( "Disabling on-time completeness calculations because no configuration was found" );
         }
         
-        Collection<? extends Source> children = organisationUnitService.getOrganisationUnitWithChildren( organisationUnitId );
+        final Collection<? extends Source> children = organisationUnitService.getOrganisationUnitWithChildren( organisationUnitId );
         
-        Collection<DataSet> dataSets = dataSetService.getDataSetsBySources( children );
+        final Collection<DataSet> dataSets = dataSetService.getDataSetsBySources( children );
         
-        Collection<DataSetCompletenessResult> results = new ArrayList<DataSetCompletenessResult>();
+        final Collection<DataSetCompletenessResult> results = new ArrayList<DataSetCompletenessResult>();
         
-        for ( DataSet dataSet : dataSets )
+        for ( final DataSet dataSet : dataSets )
         {
-            DataSetCompletenessResult result = new DataSetCompletenessResult();
+            final DataSetCompletenessResult result = new DataSetCompletenessResult();
             
             result.setName( dataSet.getName() );
             result.setRegistrations( registrationService.getCompleteDataSetRegistrationsForDataSet( dataSet, children, period ) );
@@ -171,7 +171,7 @@ public class DefaultDataSetCompletenessService
     
     public Collection<DataSetCompletenessResult> getDataSetCompleteness( int periodId, int parentOrganisationUnitId, int dataSetId )
     {
-        Period period = periodService.getPeriod( periodId );
+        final Period period = periodService.getPeriod( periodId );
 
         Date deadline = null;
         
@@ -184,19 +184,21 @@ public class DefaultDataSetCompletenessService
             log.warn( "Disabling on-time completeness calculations because no configuration was found" );
         }
         
-        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        final DataSet dataSet = dataSetService.getDataSet( dataSetId );
         
-        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
+        final OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
         
-        Collection<OrganisationUnit> units = parent.getChildren();
+        final Collection<OrganisationUnit> units = parent.getChildren();
         
-        Collection<DataSetCompletenessResult> results = new ArrayList<DataSetCompletenessResult>();
+        final Collection<DataSetCompletenessResult> results = new ArrayList<DataSetCompletenessResult>();
         
-        for ( OrganisationUnit unit : units )
+        Collection<OrganisationUnit> children = null;
+        
+        for ( final OrganisationUnit unit : units )
         {
-            Collection<OrganisationUnit> children = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
+            children = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
             
-            DataSetCompletenessResult result = new DataSetCompletenessResult();
+            final DataSetCompletenessResult result = new DataSetCompletenessResult();
             
             result.setName( unit.getName() );
             result.setRegistrations( registrationService.getCompleteDataSetRegistrationsForDataSet( dataSet, children, period ) );
@@ -215,9 +217,9 @@ public class DefaultDataSetCompletenessService
 
     public DataSetCompletenessResult getDataSetCompleteness( Period period, Date deadline, OrganisationUnit unit, DataSet dataSet )
     {        
-        Collection<OrganisationUnit> children = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
+        final Collection<OrganisationUnit> children = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
         
-        DataSetCompletenessResult result = new DataSetCompletenessResult();
+        final DataSetCompletenessResult result = new DataSetCompletenessResult();
         
         result.setName( unit.getName() );
         result.setRegistrations( registrationService.getCompleteDataSetRegistrationsForDataSet( dataSet, children, period ) );
