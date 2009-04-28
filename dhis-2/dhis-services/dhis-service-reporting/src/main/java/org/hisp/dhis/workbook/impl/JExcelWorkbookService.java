@@ -114,7 +114,7 @@ public class JExcelWorkbookService
     // WorkbookService implementation
     // -------------------------------------------------------------------------
 
-    public void writeReportTableData( OutputStream outputStream, int id )
+    public String writeReportTableData( OutputStream outputStream, int id )
     {
         ReportTableData data = reportTableService.getReportTableData( id );
         
@@ -166,6 +166,8 @@ public class JExcelWorkbookService
         {
             throw new RuntimeException( "Failed to generate workbook for data elements", ex );
         }
+        
+        return data.getName();
     }
     
     public void writeAllDataElements( OutputStream outputStream )
