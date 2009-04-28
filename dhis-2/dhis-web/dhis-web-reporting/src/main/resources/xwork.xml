@@ -235,6 +235,15 @@
       </result>
     </action>
     
+    <action name="generateTableDataWorkbook" class="org.hisp.dhis.reporting.tablecreator.action.GenerateTableDataWorkbookAction">
+      <result name="success" type="stream">
+        <param name="contentType">application/vnd.ms-excel</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${fileName}"</param>
+        <param name="bufferSize">10240</param>
+      </result>
+    </action>
+    
     <!-- PivotTable -->
     
     <action name="displayPivotTableForm" class="org.hisp.dhis.reporting.action.NoAction">

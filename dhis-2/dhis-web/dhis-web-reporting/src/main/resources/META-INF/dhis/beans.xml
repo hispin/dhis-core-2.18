@@ -259,6 +259,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.importexport.ImportExportServiceManager"/>
   </bean>
   
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.GenerateTableDataWorkbookAction"
+    class="org.hisp.dhis.reporting.tablecreator.action.GenerateTableDataWorkbookAction"
+    scope="prototype">
+    <property name="workbookService"
+      ref="org.hisp.dhis.workbook.WorkbookService"/>
+  </bean>
+  
   <!-- ReportViewer -->
   
   <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportAction"
