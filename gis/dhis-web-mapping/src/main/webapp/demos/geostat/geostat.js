@@ -21,7 +21,8 @@ Ext.onReady(function()
                                            {layers: 'satellite', format: 'image/png'});
                                      
     var vmap0 = new OpenLayers.Layer.WMS("OpenLayers WMS",
-                                         "pageload_geojson.txt");
+                                         "../../../geoserver/wms?", 
+                                         {layers: 'who:WorldCountries2006'});
                                    
     var choroplethLayer = new OpenLayers.Layer.Vector(choroplethLayerName, {
         'visibility': false,
@@ -178,6 +179,22 @@ Ext.onReady(function()
         width: combo_width
     });
     
+    var typeComboBox = new Ext.form.ComboBox({
+        id: 'type_cb',
+        editable: false,
+        displayField: 'name',
+        valueField: 'name',
+        width: combo_width,
+        minListWidth: combo_width + 26,
+        triggerAction: 'all',
+        mode: 'local',
+        value: 'Polygon',
+        store: new Ext.data.SimpleStore({
+            fields: ['name'],
+            data: [['Polygon'], ['Point']]
+        })
+    });
+    
     var newUniqueColumnTextField = new Ext.form.TextField({
         id: 'newuniquecolumn_tf',
         emptyText: 'Required',
@@ -270,6 +287,7 @@ Ext.onReady(function()
             var ouli = Ext.getCmp('organisationunitlevel_cb').getValue();
             var nn = Ext.getCmp('newname_tf').getValue();
             var mlp = Ext.getCmp('maplayerpath_tf').getValue();
+            var t = Ext.getCmp('type_cb').getValue();
             var uc = Ext.getCmp('newuniquecolumn_tf').getValue();
             var nc = Ext.getCmp('newnamecolumn_tf').getValue();
             var lon = Ext.getCmp('newlongitude_tf').getValue();
@@ -286,7 +304,7 @@ Ext.onReady(function()
             {
                 url: path + 'addOrUpdateMap' + type,
                 method: 'GET',
-                params: { name: nn, mapLayerPath: mlp, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc,
+                params: { name: nn, mapLayerPath: mlp, type: t, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc,
                           longitude: lon, latitude: lat, zoom: zoom},
 
                 success: function( responseObject )
@@ -467,7 +485,7 @@ Ext.onReady(function()
 
                         success: function( responseObject )
                         {
-                            var map = Ext.util.JSON.decode( responseObject.responseText ).map;
+                            var map = Ext.util.JSON.decode( responseObject.responseText ).map[0];
                             
                             Ext.getCmp('editname_tf').setValue(map.name);
                             Ext.getCmp('edituniquecolumn_tf').setValue(map.uniqueColumn);
@@ -511,6 +529,7 @@ Ext.onReady(function()
         id: 'newmap_p',
         items:
         [   
+            { html: '<p style="padding-bottom:4px">Map type:</p>' }, typeComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, newMapComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Organisation unit:</p>' }, organisationUnitComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Divided into level:</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
@@ -904,21 +923,7 @@ Ext.onReady(function()
         ]
     });
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+  
     
     // create choropleth widget
     choropleth = new mapfish.widgets.geostat.Choropleth({
@@ -1141,8 +1146,8 @@ function onHoverSelectChoropleth(feature)
     be = '</b>';
     lf = '<br>';
     pe = '</p>';
-    
-    var html = style + feature.attributes[mapData.map.nameColumn] + pe;
+
+    var html = style + feature.attributes[mapData.nameColumn] + pe;
     html += style + bs + 'Value:' + be + space + feature.attributes['value'] + pe;
     
     popup_feature.html = html;
@@ -1168,9 +1173,9 @@ function onClickSelectChoropleth(feature)
     var organisationUnitId = selected.data['organisationUnitId'];
     var organisationUnit = selected.data['organisationUnit'];
     
-    var uniqueColumn = mapData.map.uniqueColumn;
-    var nameColumn = mapData.map.nameColumn;
-    var mlp = mapData.map.mapLayerPath;
+    var uniqueColumn = mapData.uniqueColumn;
+    var nameColumn = mapData.nameColumn;
+    var mlp = mapData.mapLayerPath;
     var featureId = feature.attributes[uniqueColumn];
     var name = feature.attributes[nameColumn];
 
@@ -1269,9 +1274,9 @@ function loadMapData(redirect)
 
         success: function( responseObject )
         {
-            mapData = Ext.util.JSON.decode(responseObject.responseText);
+            mapData = Ext.util.JSON.decode(responseObject.responseText).map[0];
 
-            map.setCenter(new OpenLayers.LonLat(mapData.map.longitude, mapData.map.latitude), mapData.map.zoom);
+            map.setCenter(new OpenLayers.LonLat(mapData.longitude, mapData.latitude), mapData.zoom);
 
             if (redirect == 'choropleth') {
                 getChoroplethData(); }
@@ -1291,7 +1296,7 @@ function getChoroplethData()
 {
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
     var periodId = Ext.getCmp('period_cb').getValue();
-    var level = mapData.map.organisationUnitLevel;
+    var level = mapData.organisationUnitLevel;
 
     Ext.Ajax.request( 
     {
@@ -1338,7 +1343,7 @@ function getPointData()
 
 function getAssignOrganisationUnitData()
 {
-    var mlp = mapData.map.mapLayerPath;
+    var mlp = mapData.mapLayerPath;
     
     Ext.Ajax.request( 
     {
@@ -1364,10 +1369,10 @@ function dataReceivedChoropleth( responseText )
     
     var mapvalues = Ext.util.JSON.decode(responseText).mapvalues;
     
-    var mlp = mapData.map.mapLayerPath;
-    var uniqueColumn = mapData.map.uniqueColumn;
+    var mlp = mapData.mapLayerPath;
+    var uniqueColumn = mapData.uniqueColumn;
     
-    Ext.Ajax.request( 
+    Ext.Ajax.request(
     {
         url: path + 'getAvailableMapOrganisationUnitRelations' + type,
         method: 'GET',
@@ -1441,7 +1446,7 @@ function dataReceivedAssignOrganisationUnit( responseText )
     
     var relations = Ext.util.JSON.decode(responseText).mapOrganisationUnitRelations;
     
-    var uniqueColumn = mapData.map.uniqueColumn;   
+    var uniqueColumn = mapData.uniqueColumn;   
     
     for (var i=0; i < features.length; i++)
     {

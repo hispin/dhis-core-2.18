@@ -82,7 +82,7 @@ public class DefaultMappingService
         return mappingStore.addMap( map );
     }
 
-    public int addMap( String name, String mapLayerPath, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
+    public int addMap( String name, String mapLayerPath, String type, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
         String nameColumn, String longitude, String latitude, int zoom )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
@@ -92,13 +92,13 @@ public class DefaultMappingService
 
         Set<String> staticMapLayerPaths = null;
 
-        Map map = new Map( name, mapLayerPath, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn, longitude,
+        Map map = new Map( name, mapLayerPath, type, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn, longitude,
             latitude, zoom, staticMapLayerPaths );
 
         return addMap( map );
     }
 
-    public void addOrUpdateMap( String name, String mapLayerPath, int organisationUnitId, int organisationUnitLevelId,
+    public void addOrUpdateMap( String name, String mapLayerPath, String type, int organisationUnitId, int organisationUnitLevelId,
         String uniqueColumn, String nameColumn, String longitude, String latitude, int zoom )
     {
         Map map = getMapByMapLayerPath( mapLayerPath );
@@ -121,7 +121,7 @@ public class DefaultMappingService
             OrganisationUnitLevel organisationUnitLevel = organisationUnitService
                 .getOrganisationUnitLevel( organisationUnitLevelId );
 
-            map = new Map( name, mapLayerPath, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn, longitude,
+            map = new Map( name, mapLayerPath, type, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn, longitude,
                 latitude, zoom, null );
 
             addMap( map );

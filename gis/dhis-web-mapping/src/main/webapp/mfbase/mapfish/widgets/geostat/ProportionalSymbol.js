@@ -140,7 +140,7 @@ mapfish.widgets.geostat.ProportionalSymbol = Ext.extend(Ext.FormPanel, {
             mode: 'local',
             emptyText: 'Select indicator',
             selectOnFocus: true,
-//            triggerAction: 'all',
+            triggerAction: 'all',
             store: new Ext.data.SimpleStore({
                 fields: ['value', 'text'],
                 data : this.indicators
