@@ -49,7 +49,7 @@ import org.hisp.dhis.system.process.AbstractStatementInternalProcess;
  * @version $Id$
  */
 public class DataSetCompletenessInternalProcess
-    extends AbstractStatementInternalProcess implements DataSetCompletenessExportService //TODO
+    extends AbstractStatementInternalProcess implements DataSetCompletenessExportService
 {
     public static final String ID = "internal-process-DataSetCompleteness";
     
