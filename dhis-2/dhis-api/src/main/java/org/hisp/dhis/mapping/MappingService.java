@@ -57,6 +57,7 @@ public interface MappingService
      * 
      * @param name, Map description.
      * @param mapLayerPath, the link to Geoserver.
+     * @param type, "polygon" or "point"
      * @param organisationUnitId, the id of the organisation unit.
      * @param organisationUnitLevelId, the level of the organisation units into
      *        which the map is devided.
@@ -69,7 +70,7 @@ public interface MappingService
      * @param zoom
      * @return a generated unique id of the added Map.
      */
-    int addMap( String name, String mapLayerPath, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
+    int addMap( String name, String mapLayerPath, String type, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
         String nameColumn, String longitude, String latitude, int zoom );
 
     /**
@@ -78,6 +79,7 @@ public interface MappingService
      * 
      * @param name, Map description.
      * @param mapLayerPath, the link to Geoserver.
+     * @param type, "polygon" or "point"
      * @param organisationUnitId, the id of the organisation unit.
      * @param organisationUnitLevelId, the level of the organisation units into
      *        which the map is devided.
@@ -89,7 +91,7 @@ public interface MappingService
      * @param latitude
      * @param zoom
      */
-    void addOrUpdateMap( String name, String mapLayerPath, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
+    void addOrUpdateMap( String name, String mapLayerPath, String type, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
         String nameColumn, String longitude, String latitude, int zoom );
 
     /**

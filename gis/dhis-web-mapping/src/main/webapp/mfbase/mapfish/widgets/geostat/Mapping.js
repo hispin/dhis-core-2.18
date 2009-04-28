@@ -153,6 +153,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
             url: path + 'getAvailableMapOrganisationUnitRelations' + type,
             root: 'mapOrganisationUnitRelations',
             fields: ['id', 'organisationUnit', 'organisationUnitId', 'featureId'],
+            sortInfo: { field: 'organisationUnit', direction: 'ASC' },
             autoLoad: false
         });
 

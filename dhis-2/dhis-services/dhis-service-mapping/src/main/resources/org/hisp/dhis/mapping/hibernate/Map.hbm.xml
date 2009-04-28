@@ -14,6 +14,8 @@
 		<property name="name" column="name" unique="true"/>
 	
 		<property name="mapLayerPath" column="maplayerpath"/>
+		
+		<property name="type" column="type"/>
 			
 		<many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" 
 			column="organisationunitid" not-null="true" foreign-key="fk_map_organisationunitid"/>
