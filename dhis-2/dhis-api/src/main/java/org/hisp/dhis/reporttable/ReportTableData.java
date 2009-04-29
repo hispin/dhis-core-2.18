@@ -28,9 +28,7 @@ package org.hisp.dhis.reporttable;
  */
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -46,7 +44,7 @@ public class ReportTableData
     
     private List<String> prettyPrintColumns = new ArrayList<String>();
     
-    private Set<SortedMap<Integer, String>> rows = new HashSet<SortedMap<Integer,String>>();
+    private List<SortedMap<Integer, String>> rows = new ArrayList<SortedMap<Integer,String>>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -90,12 +88,12 @@ public class ReportTableData
         this.prettyPrintColumns = prettyPrintColumns;
     }
 
-    public Set<SortedMap<Integer, String>> getRows()
+    public List<SortedMap<Integer, String>> getRows()
     {
         return rows;
     }
 
-    public void setRows( Set<SortedMap<Integer, String>> rows )
+    public void setRows( List<SortedMap<Integer, String>> rows )
     {
         this.rows = rows;
     }

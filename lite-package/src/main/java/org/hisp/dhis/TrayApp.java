@@ -36,6 +36,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mortbay.component.LifeCycle;
 
+
 /**
  * Describe class <code>TrayApp</code> here.
  *
@@ -48,7 +49,10 @@ public class TrayApp
 {
   private static final Log log = LogFactory.getLog( TrayApp.class );
   private static final String CONFIG_DIR = "/conf";
-  
+  private static final String STOPPED_ICON = "/icons/stopped.png";
+  private static final String STARTING_ICON = "/icons/starting.gif";
+  private static final String FAILED_ICON ="/icons/failed.png";
+  private static final String RUNNING_ICON = "/icons/running.png";
   /**
    * Describe variable <code>appServer</code> here.
    *
@@ -75,8 +79,13 @@ public class TrayApp
   public TrayApp()
     throws Exception
   {
-    installDir = System.getProperty("user.dir");
-   
+    //installDir = System.getProperty("user.dir");
+    installDir = getInstallDir();
+    if (installDir==null) {
+      log.info("jar not installed, setting installdir to DHIS2_HOME: "+System.getenv("DHIS2_HOME"));
+      installDir = System.getenv("DHIS2_HOME");
+    }
+
     System.setProperty("dhis2.home", installDir + CONFIG_DIR);
     System.setProperty("jetty.home", installDir);
     
@@ -85,7 +94,7 @@ public class TrayApp
 
     SystemTray tray = SystemTray.getSystemTray();
 
-    Image image = createImage("/icons/stopped.png", "tray icon");
+    Image image = createImage(STOPPED_ICON, "tray icon");
 
     PopupMenu popup = new PopupMenu();
     MenuItem defaultItem = new MenuItem("Exit");
@@ -148,7 +157,7 @@ public class TrayApp
    */
   public void lifeCycleFailure(LifeCycle arg0, Throwable arg1) {
     log.warn("Lifecycle: server failed");
-    trayIcon.setImage(createImage("/icons/failed.png", "Running icon"));
+    trayIcon.setImage(createImage(FAILED_ICON, "Running icon"));
     String message = "Web server failed to start - see logs for details";
     JOptionPane.showMessageDialog((JFrame)null, message);
     shutdown();
@@ -164,7 +173,7 @@ public class TrayApp
     String url = "http://localhost:" + appServer.getConnectorPort();
     trayIcon.displayMessage("Started","DHIS2 is running. Point your\nbrowser to " + url,TrayIcon.MessageType.INFO);
     trayIcon.setToolTip("DHIS 2 Server running");
-    trayIcon.setImage(createImage("/icons/running.png", "Running icon"));
+    trayIcon.setImage(createImage(RUNNING_ICON, "Running icon"));
   }
 
   /**
@@ -175,7 +184,7 @@ public class TrayApp
   public void lifeCycleStarting(LifeCycle arg0) {
     log.info("Lifecycle: server starting");
     trayIcon.displayMessage("Starting","DHIS 2 is starting.\nPlease be patient.",TrayIcon.MessageType.INFO);
-    trayIcon.setImage(createImage("/icons/starting.gif", "Starting icon"));
+    trayIcon.setImage(createImage(STARTING_ICON, "Starting icon"));
   }
 
   /**
@@ -185,7 +194,7 @@ public class TrayApp
    */
   public void lifeCycleStopped(LifeCycle arg0) {
     log.info("Lifecycle: server stopped");
-    trayIcon.setImage(createImage("/icons/stopped.png", "Running icon"));
+    trayIcon.setImage(createImage(STOPPED_ICON, "Running icon"));
   }
 
   /**
@@ -232,4 +241,19 @@ public class TrayApp
     // ok - we're good to go ...
     new TrayApp();
   }
+
+  public static String getInstallDir() {
+        // find a resource
+        String resourceString = TrayApp.class.getResource("/icons/").toString();
+        // we expect to see something of the form:
+        // "jar:file:<install_dir>/dhis_xxx.jar!/icons"
+        if (!resourceString.startsWith("jar:file:") ) {
+            // we're in trouble - its not in a jar file
+            return null;
+        }
+        // find the last "/" just before the "!"
+        int endIndex = resourceString.lastIndexOf("/", resourceString.lastIndexOf("!"));
+        return resourceString.substring(9, endIndex);
+      }
+
 }

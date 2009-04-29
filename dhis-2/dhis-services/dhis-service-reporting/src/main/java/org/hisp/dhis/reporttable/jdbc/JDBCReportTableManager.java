@@ -161,9 +161,9 @@ public class JDBCReportTableManager
 
             while ( resultSet.next() )
             {
-                Double value = resultSet.getDouble( 1 );
+                final double value = resultSet.getDouble( 1 );
                 
-                StringBuffer identifier = new StringBuffer();
+                final StringBuffer identifier = new StringBuffer();
                 
                 for ( int i = 0; i < columnCount - 1; i++ )
                 {
@@ -172,7 +172,7 @@ public class JDBCReportTableManager
                     identifier.append( resultSet.getInt( columnIndex ) + SEPARATOR );                    
                 }
                 
-                String key = identifier.substring( 0, identifier.lastIndexOf( SEPARATOR ) );
+                final String key = identifier.substring( 0, identifier.lastIndexOf( SEPARATOR ) );
                 
                 map.put( key, value );
             }
@@ -219,7 +219,7 @@ public class JDBCReportTableManager
 
             for ( int i = 0; i < columnCount; i++ )
             {
-                int index = i + 1;
+                final int index = i + 1;
                 
                 data.getColumns().put( index, metaData.getColumnName( index ) );
                 
@@ -236,7 +236,7 @@ public class JDBCReportTableManager
                 
                 for ( int i = 0; i < columnCount; i++ )
                 {
-                    int index = i + 1;
+                    final int index = i + 1;
                                 
                     row.put( index, String.valueOf( resultSet.getObject( index ) ) );
                 }

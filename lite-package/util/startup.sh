@@ -1,6 +1,7 @@
 #!/bin/sh
 
-if [ "${JAVA_HOME:+1}" = "1" ]
+#if [ "${JAVA_HOME:+1}" = "1" ]
+if true
 then
   echo "Starting DHIS 2..."
   java -jar dhis2-lite.jar
