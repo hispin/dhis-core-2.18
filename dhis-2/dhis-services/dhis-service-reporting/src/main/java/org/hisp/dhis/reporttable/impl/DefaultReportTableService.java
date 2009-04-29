@@ -282,7 +282,11 @@ public class DefaultReportTableService
     
     public ReportTableData getReportTableData( int id )
     {
-        return reportTableManager.getReportTable( getReportTable( id ) );
+        ReportTable reportTable = getReportTable( id );
+        
+        reportTable.init();
+        
+        return reportTableManager.getReportTable( reportTable );
     }
 
     // -------------------------------------------------------------------------
