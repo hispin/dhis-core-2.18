@@ -244,6 +244,12 @@
       </result>
     </action>
     
+    <action name="getTableData" class="org.hisp.dhis.reporting.tablecreator.action.GetTableDataAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-reporting/responseReportTableData.vm</param>
+      <param name="menu">/dhis-web-reporting/menu.vm</param>
+    </action>      
+    
     <!-- PivotTable -->
     
     <action name="displayPivotTableForm" class="org.hisp.dhis.reporting.action.NoAction">
