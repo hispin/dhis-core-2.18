@@ -30,6 +30,8 @@ package org.hisp.dhis.dataset.action;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork.Action;
@@ -38,11 +40,9 @@ import com.opensymphony.xwork.Action;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class UnselectLevelAction
+public class SelectOrganisationUnitGroupAction
     implements Action
 {
-    private static final int FIRST_LEVEL = 1;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -54,20 +54,27 @@ public class UnselectLevelAction
         this.selectionTreeManager = selectionTreeManager;
     }
 
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
+    private OrganisationUnitGroupService organisationUnitGroupService;
 
-    private Integer level;
-
-    public Integer getLevel()
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
-        return level;
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Input & output
+    // -------------------------------------------------------------------------
+
+    private Integer organisationUnitGroupId;
+
+    public Integer getOrganisationUnitGroupId()
+    {
+        return organisationUnitGroupId;
     }
 
-    public void setLevel( Integer level )
+    public void setOrganisationUnitGroupId( Integer organisationUnitGroupId )
     {
-        this.level = level;
+        this.organisationUnitGroupId = organisationUnitGroupId;
     }
     
     // -------------------------------------------------------------------------
@@ -75,38 +82,18 @@ public class UnselectLevelAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
-        Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits();
+        OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( organisationUnitGroupId );
         
-        Collection<OrganisationUnit> selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();
-
-        for ( OrganisationUnit rootUnit : rootUnits )
-        {        	
-            unselectLevel( rootUnit, FIRST_LEVEL, selectedUnits );
-        }
-
-        selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
-
-        return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private void unselectLevel( OrganisationUnit orgUnit, int currentLevel, Collection<OrganisationUnit> selectedUnits )
-    {
-        if ( currentLevel == level )
-        {        	
-            selectedUnits.remove( orgUnit );
-        }
-        else
+        if ( group != null )
         {
-            for ( OrganisationUnit child : orgUnit.getChildren() )
-            {            	
-                unselectLevel( child, currentLevel + 1, selectedUnits );
-            }
+            Collection<OrganisationUnit> units = selectionTreeManager.getSelectedOrganisationUnits();
+            
+            units.addAll( group.getMembers() );
+            
+            selectionTreeManager.setSelectedOrganisationUnits( units );
         }
+        
+        return SUCCESS;
     }
 }

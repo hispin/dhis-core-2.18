@@ -60,22 +60,16 @@ public class SelectLevelAction
 
     private Integer level;
 
+    public Integer getLevel()
+    {
+        return level;
+    }
+    
     public void setLevel( Integer level )
     {
         this.level = level;
     }
     
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private Integer selectLevel;
-
-    public Integer getSelectLevel()
-    {
-        return selectLevel;
-    }
-
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
@@ -94,8 +88,6 @@ public class SelectLevelAction
 
         selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
 
-        selectLevel = level;
-        
         return SUCCESS;
     }
 

@@ -46,10 +46,6 @@ import com.opensymphony.xwork.Action;
 public class SetupAssociationsTreeAction
     implements Action
 {
-    private int dataSetId;
-
-    private DataSet dataSet;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -67,26 +63,30 @@ public class SetupAssociationsTreeAction
     {
         this.dataSetService = dataSetService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
-
-    public void setDataSetId( int dataSetId )
-    {
-        this.dataSetId = dataSetId;
-    }
+    
+    private int dataSetId;
 
     public int getDataSetId()
     {
         return dataSetId;
     }
 
+    public void setDataSetId( int dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+    
+    private DataSet dataSet;
+    
     public DataSet getDataSet()
     {
         return dataSet;
     }
-
+    
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------

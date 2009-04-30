@@ -27,49 +27,72 @@ package org.hisp.dhis.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.util.Collection;
 
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class GetNumberOfLevelsAction
-    extends ActionSupport
+public class UnselectOrganisationUnitGroupAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitService organisationUnitService;
+    private SelectionTreeManager selectionTreeManager;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
+    private OrganisationUnitGroupService organisationUnitGroupService;
 
-    private List<OrganisationUnitLevel> levels;
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
     
-    public List<OrganisationUnitLevel> getLevels()
+    // -------------------------------------------------------------------------
+    // Input & output
+    // -------------------------------------------------------------------------
+
+    private Integer organisationUnitGroupId;
+
+    public Integer getOrganisationUnitGroupId()
     {
-        return levels;
+        return organisationUnitGroupId;
     }
 
+    public void setOrganisationUnitGroupId( Integer organisationUnitGroupId )
+    {
+        this.organisationUnitGroupId = organisationUnitGroupId;
+    }
+    
     // -------------------------------------------------------------------------
-    // ActionSupport implementation
+    // Action
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        levels = organisationUnitService.getOrganisationUnitLevels();
+        OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( organisationUnitGroupId );
+        
+        if ( group != null )
+        {
+            Collection<OrganisationUnit> units = selectionTreeManager.getSelectedOrganisationUnits();
+            
+            units.removeAll( group.getMembers() );
+            
+            selectionTreeManager.setSelectedOrganisationUnits( units );
+        }
         
         return SUCCESS;
     }

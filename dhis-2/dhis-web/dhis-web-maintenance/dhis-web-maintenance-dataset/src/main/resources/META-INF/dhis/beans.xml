@@ -128,6 +128,28 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
   
+  <bean id="org.hisp.dhis.dataset.action.SelectOrganisationUnitGroupAction"
+    class="org.hisp.dhis.dataset.action.SelectOrganisationUnitGroupAction"
+    scope="prototype">
+    <property name="selectionTreeManager">
+      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+    </property>
+    <property name="organisationUnitGroupService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+    </property>
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataset.action.UnselectOrganisationUnitGroupAction"
+    class="org.hisp.dhis.dataset.action.UnselectOrganisationUnitGroupAction"
+    scope="prototype">
+    <property name="selectionTreeManager">
+      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+    </property>
+    <property name="organisationUnitGroupService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+    </property>
+  </bean>
+  
   <!-- Validation -->
     
   <bean id="org.hisp.dhis.dataset.action.ValidateDataSetAction"
@@ -233,6 +255,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="dataEntryFormService">
       <ref bean="org.hisp.dhis.dataset.DataEntryFormService"/>
+    </property>
+    <property name="organisationUnitService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    </property>
+    <property name="organisationUnitGroupService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
     </property>
   </bean>
   
