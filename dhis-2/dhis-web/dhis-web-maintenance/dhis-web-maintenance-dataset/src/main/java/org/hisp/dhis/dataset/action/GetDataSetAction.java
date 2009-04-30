@@ -39,6 +39,11 @@ import org.hisp.dhis.dataset.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
 
 import com.opensymphony.xwork.Action;
 
@@ -49,16 +54,6 @@ import com.opensymphony.xwork.Action;
 public class GetDataSetAction
     implements Action
 {
-    private int dataSetId;
-
-    private DataSet dataSet;
-
-    private List<DataElement> dataSetDataElements;
-
-    private DataEntryForm dataEntryForm;
-    
-    private DataElementCategoryCombo categoryCombo;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -91,9 +86,25 @@ public class GetDataSetAction
         this.dataEntryFormService = dataEntryFormService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+    
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
     // -------------------------------------------------------------------------
-    // Getters & Setters
+    // Input & output
     // -------------------------------------------------------------------------
+
+    private int dataSetId;
 
     public int getDataSetId()
     {
@@ -105,26 +116,72 @@ public class GetDataSetAction
         this.dataSetId = dataSetId;
     }
 
+    private DataSet dataSet;
+
     public DataSet getDataSet()
     {
         return dataSet;
     }
+
+    private List<DataElement> dataSetDataElements;
 
     public List<DataElement> getDataSetDataElements()
     {
         return dataSetDataElements;
     }
 
+    private DataEntryForm dataEntryForm;
+    
     public DataEntryForm getDataEntryForm()
     {
         return dataEntryForm;
     }
     
+    private DataElementCategoryCombo categoryCombo;
+
     public DataElementCategoryCombo getCategoryCombo()
     {
     	return categoryCombo;
     }
 
+    private List<OrganisationUnitLevel> levels;
+    
+    public List<OrganisationUnitLevel> getLevels()
+    {
+        return levels;
+    }
+
+    private List<OrganisationUnitGroup> groups;
+
+    public List<OrganisationUnitGroup> getGroups()
+    {
+        return groups;
+    }
+
+    private Integer level;
+
+    public Integer getLevel()
+    {
+        return level;
+    }
+    
+    public void setLevel( Integer level )
+    {
+        this.level = level;
+    }
+
+    private Integer organisationUnitGroupId;
+
+    public Integer getOrganisationUnitGroupId()
+    {
+        return organisationUnitGroupId;
+    }
+
+    public void setOrganisationUnitGroupId( Integer organisationUnitGroupId )
+    {
+        this.organisationUnitGroupId = organisationUnitGroupId;
+    }
+    
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
@@ -141,6 +198,12 @@ public class GetDataSetAction
         displayPropertyHandler.handle( dataSetDataElements );
 
         dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
+        
+        levels = organisationUnitService.getOrganisationUnitLevels();
+
+        groups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
+        
+        Collections.sort( groups, new OrganisationUnitGroupNameComparator() );
         
         return SUCCESS;
     }

@@ -3,20 +3,34 @@ var numberOfSelects = 0;
 
 function selectAllAtLevel( dataSetId )
 {
-	var list = document.getElementById( 'levelList' );
+	var level = getListValue( 'levelList' );
+    var groupId = getListValue( 'groupList' );
     
-    var level = list.options[ list.selectedIndex ].value;
-    
-    window.location.href = 'selectLevel.action?level=' + level + '&dataSetId=' + dataSetId;
+    window.location.href = 'selectLevel.action?level=' + level + '&organisationUnitGroupId=' + groupId + '&dataSetId=' + dataSetId;
 }
 
 function unselectAllAtLevel( dataSetId )
 {
-	var list = document.getElementById( 'levelList' );
+	var level = getListValue( 'levelList' );
+    var groupId = getListValue( 'groupList' );
     
-    var level = list.options[ list.selectedIndex ].value;
+    window.location.href = 'unselectLevel.action?level=' + level + '&organisationUnitGroupId=' + groupId + '&dataSetId=' + dataSetId;
+}
+
+function selectGroup( dataSetId )
+{
+    var level = getListValue( 'levelList' );
+    var groupId = getListValue( 'groupList' );
     
-    window.location.href = 'unselectLevel.action?level=' + level + '&dataSetId=' + dataSetId;
+    window.location.href = 'selectOrganisationUnitGroup.action?level=' + level + '&organisationUnitGroupId=' + groupId + '&dataSetId=' + dataSetId;
+}
+
+function unselectGroup( dataSetId )
+{
+    var level = getListValue( 'levelList' );
+    var groupId = getListValue( 'groupList' );
+    
+    window.location.href = 'unselectOrganisationUnitGroup.action?level=' + level + '&organisationUnitGroupId=' + groupId + '&dataSetId=' + dataSetId;
 }
 
 function treeClicked()
