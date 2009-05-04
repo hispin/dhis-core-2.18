@@ -6,6 +6,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
 	<!-- Store definitions -->
 
+  <bean id="org.hisp.dhis.customvalue.CustomValueStore"
+    class="org.hisp.dhis.customvalue.hibernate.HibernateCustomValueStore">
+    <property name="sessionManager"
+      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+  </bean>
+
   <bean id="org.hisp.dhis.dataelement.DataElementStore"
     class="org.hisp.dhis.dataelement.hibernate.HibernateDataElementStore">
     <property name="sessionManager"
@@ -127,6 +133,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
 	<!-- Service definitions -->
+
+  <bean id="org.hisp.dhis.customvalue.CustomValueService"
+    class="org.hisp.dhis.customvalue.DefaultCustomValueService">
+    <property name="customValueStore"
+      ref="org.hisp.dhis.customvalue.CustomValueStore"/>
+  </bean>
 
   <bean id="org.hisp.dhis.datavalue.DataValueService"
     class="org.hisp.dhis.datavalue.DefaultDataValueService">
@@ -282,6 +294,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="advice" ref="readOnlyTransactionInterceptor"/>
     <property name="patterns">
       <list>
+        <value>.*\.CustomValueStore\.add.*</value>
+        <value>.*\.CustomValueStore\.update.*</value>
+        <value>.*\.CustomValueStore\.delete.*</value>       
         <value>.*\.DataElementDimensionRowOrderStore\.get.*</value>
         <value>.*\.DataElementDimensionColumnOrderStore\.get.*</value>  
         <value>.*\.DataElementCategoryStore\.get.*</value>

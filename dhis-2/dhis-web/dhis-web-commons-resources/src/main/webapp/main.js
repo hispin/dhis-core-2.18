@@ -73,4 +73,10 @@ function LeftBar()
         var request = new Request();
         request.send( '../dhis-web-commons/menu/setMenuHidden.action' );        
     } 
+    
+    
+    this.openHelpForm = function( id )
+    {
+		window.open ("../dhis-web-commons/help/viewDynamicHelp.action?id=" + id,"Help", 'width=800,height=600,scrollbars=yes');
+    }
 }

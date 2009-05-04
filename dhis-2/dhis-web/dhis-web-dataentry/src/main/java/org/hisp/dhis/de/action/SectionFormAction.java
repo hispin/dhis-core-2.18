@@ -27,12 +27,15 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.customvalue.CustomValue;
+import org.hisp.dhis.customvalue.CustomValueService;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -62,6 +65,18 @@ public class SectionFormAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private CustomValueService customValueService;
+
+    public CustomValueService getCustomValueService()
+    {
+        return customValueService;
+    }
+
+    public void setCustomValueService( CustomValueService customValueService )
+    {
+        this.customValueService = customValueService;
+    }
 
     private SectionService sectionService;
 
@@ -115,6 +130,13 @@ public class SectionFormAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
+
+    private List<CustomValue> customValues = new ArrayList<CustomValue>();
+
+    public List<CustomValue> getCustomValues()
+    {
+        return customValues;
+    }
 
     private List<Section> sections;
 
@@ -203,6 +225,8 @@ public class SectionFormAction
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         DataSet dataSet = selectedStateManager.getSelectedDataSet();
+
+        customValues = (List<CustomValue>) customValueService.getCustomValuesByDataSet( dataSet );
 
         Period period = selectedStateManager.getSelectedPeriod();
 
