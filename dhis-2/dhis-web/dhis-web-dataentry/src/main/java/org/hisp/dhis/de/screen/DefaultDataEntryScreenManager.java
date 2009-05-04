@@ -39,6 +39,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.hisp.dhis.customvalue.CustomValue;
+import org.hisp.dhis.customvalue.CustomValueService;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -71,6 +73,13 @@ public class DefaultDataEntryScreenManager
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private CustomValueService customValueService;
+
+    public void setCustomValueService( CustomValueService customValueService )
+    {
+        this.customValueService = customValueService;
+    }
+
     private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
@@ -87,7 +96,8 @@ public class DefaultDataEntryScreenManager
 
     private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setDataElementCategoryOptionComboService(
+        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
     {
         this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
@@ -102,21 +112,21 @@ public class DefaultDataEntryScreenManager
     // -------------------------------------------------------------------------
     // DataEntryScreenManager implementation
     // -------------------------------------------------------------------------
-    
+
     public boolean hasMixOfDimensions( DataSet dataSet )
-    {    	
-    	if ( dataSet.getDataElements().size() > 0 )
-        {       
-    	    Iterator<DataElement> dataElementIterator = dataSet.getDataElements().iterator();
-        	
-    	    DataElementCategoryCombo catCombo = dataElementIterator.next().getCategoryCombo();       	
+    {
+        if ( dataSet.getDataElements().size() > 0 )
+        {
+            Iterator<DataElement> dataElementIterator = dataSet.getDataElements().iterator();
+
+            DataElementCategoryCombo catCombo = dataElementIterator.next().getCategoryCombo();
 
             for ( DataElement de : dataSet.getDataElements() )
-            {           	
-            	if ( catCombo != de.getCategoryCombo() )
-            	{            		
-            	    return true;
-            	}                
+            {
+                if ( catCombo != de.getCategoryCombo() )
+                {
+                    return true;
+                }
             }
         }
 
@@ -259,7 +269,8 @@ public class DefaultDataEntryScreenManager
                 factor = factorMap.get( operandId );
 
                 String dataElementIdString = operandId.substring( 0, operandId.indexOf( SEPARATOR ) );
-                String optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId.length() );
+                String optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId
+                    .length() );
 
                 DataElement de = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
                 DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
@@ -283,12 +294,18 @@ public class DefaultDataEntryScreenManager
 
     public String populateCustomDataEntryScreen( String dataEntryFormCode, Collection<DataValue> dataValues,
         Map<CalculatedDataElement, Integer> calculatedValueMap, Map<Integer, MinMaxDataElement> minMaxMap,
-        String disabled, Boolean saveMode, I18n i18n )
+        String disabled, Boolean saveMode, I18n i18n, DataSet dataSet )
     {
         // ---------------------------------------------------------------------
+        // Populating Custom Value data.
+        // ---------------------------------------------------------------------
+
+        List<CustomValue> customValues = (List<CustomValue>) customValueService.getCustomValuesByDataSet( dataSet );
+
+        // ---------------------------------------------------------------------
         // Inline Javascript to add to HTML before outputting.
-        // ---------------------------------------------------------------------      
-    	
+        // ---------------------------------------------------------------------
+
         final String jsCodeForInputs = " $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME', $SAVEMODE )\" onkeypress=\"return keyPress(event, this)\" style=\"text-align:center\" ";
         final String jsCodeForCombos = " $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\">";
         final String historyCode = " ondblclick='javascript:viewHistory( $DATAELEMENTID, $OPTIONCOMBOID, true )' ";
@@ -297,7 +314,7 @@ public class DefaultDataEntryScreenManager
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting.
         // ---------------------------------------------------------------------
-        
+
         final String metaDataCode = "<span id=\"value[$DATAELEMENTID].name\" style=\"display:none\">$DATAELEMENTNAME</span>"
             + "<span id=\"value[$DATAELEMENTID].type\" style=\"display:none\">$DATAELEMENTTYPE</span>"
             + "<div id=\"value[$DATAELEMENTID:$OPTIONCOMBOID].min\" style=\"display:none\">$MIN</div>"
@@ -308,16 +325,16 @@ public class DefaultDataEntryScreenManager
         // ---------------------------------------------------------------------
         // Pattern to match data elements in the HTML code.
         // ---------------------------------------------------------------------
-        
+
         Pattern patDataElement = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
         Matcher matDataElement = patDataElement.matcher( dataEntryFormCode );
 
         // ---------------------------------------------------------------------
         // Iterate through all matching data element fields.
         // ---------------------------------------------------------------------
-        
+
         boolean result = matDataElement.find();
-        
+
         while ( result )
         {
             // Get input HTML code (HTML input field code).
@@ -327,34 +344,34 @@ public class DefaultDataEntryScreenManager
             Pattern patDataElementId = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
 
             Matcher matDataElementId = patDataElementId.matcher( dataElementCode );
-            
+
             if ( matDataElementId.find() && matDataElementId.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
                 // Get data element ID of data element.
                 // -------------------------------------------------------------
-                
+
                 int dataElementId = Integer.parseInt( matDataElementId.group( 1 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
                 int optionComboId = Integer.parseInt( matDataElementId.group( 2 ) );
-                
+
                 // -------------------------------------------------------------
                 // Find type of data element
                 // -------------------------------------------------------------
-                
+
                 String dataElementType = dataElement.getType();
 
                 // -------------------------------------------------------------
                 // Find existing value of data element in data set.
                 // -------------------------------------------------------------
-                
+
                 String dataElementValue = "";
-                
+
                 if ( (dataElement instanceof CalculatedDataElement) )
                 {
                     CalculatedDataElement cde = (CalculatedDataElement) dataElement;
-                    
+
                     if ( cde.isSaved() )
                     {
                         for ( DataValue dv : dataValues )
@@ -386,8 +403,18 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
                 // Insert value of data element in output code.
                 // -------------------------------------------------------------
-                
-                if ( dataElement.getType().equals( "bool" ) )
+
+                int count = 0;
+                for ( CustomValue customValue : customValues )
+                {
+                    if ( dataElementId == customValue.getDataElement().getId()
+                        && optionComboId == customValue.getOptionCombo().getId() )
+                    {
+                        count += 1;
+                    }
+                }
+
+                if ( dataElement.getType().equals( "bool" ) || (dataElement.getType().equals( "string" ) && count > 0) )
                 {
                     dataElementCode = dataElementCode.replace( "input", "select" );
                     dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
@@ -410,11 +437,11 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
                 // MIN-MAX Values
                 // -------------------------------------------------------------
-                
+
                 MinMaxDataElement minMaxDataElement = minMaxMap.get( dataElement.getId() );
                 String minValue = "No Min";
                 String maxValue = "No Max";
-                
+
                 if ( minMaxDataElement != null )
                 {
                     minValue = String.valueOf( minMaxDataElement.getMin() );
@@ -424,13 +451,13 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
                 // Remove placeholder view attribute from input field.
                 // -------------------------------------------------------------
-                
+
                 dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
 
                 // -------------------------------------------------------------
                 // Insert Title Information - DataElement id,name,type,min,max
                 // -------------------------------------------------------------
-                
+
                 if ( dataElementCode.contains( "title=\"\"" ) )
                 {
                     dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"-- ID:" + dataElement.getId()
@@ -448,7 +475,7 @@ public class DefaultDataEntryScreenManager
                 // persisting to output code, and insert value and type for
                 // fields.
                 // -------------------------------------------------------------
-                
+
                 String appendCode = dataElementCode;
 
                 if ( dataElement.getType().equalsIgnoreCase( "bool" ) )
@@ -477,10 +504,36 @@ public class DefaultDataEntryScreenManager
 
                     appendCode += "</select>";
                 }
+                else if ( dataElement.getType().equalsIgnoreCase( "string" ) && count > 0 )
+                {
+                    appendCode += jsCodeForCombos;
+
+                    appendCode += "<option value=\"\"></option>";
+
+                    for ( CustomValue customValue : customValues )
+                    {
+                        if ( dataElementId == customValue.getDataElement().getId()
+                            && optionComboId == customValue.getOptionCombo().getId() )
+                        {
+                            if ( dataElementValue.equalsIgnoreCase( customValue.getCustomValue() ) )
+                            {
+                                appendCode += "<option value=\"" + customValue.getCustomValue() + "\" selected >"
+                                    + customValue.getCustomValue() + "</option>";
+                            }
+                            else
+                            {
+                                appendCode += "<option value=\"" + customValue.getCustomValue() + "\">"
+                                    + customValue.getCustomValue() + "</option>";
+                            }
+                        }
+                    }
+
+                    appendCode += "</select>";
+                }
                 else
                 {
                     appendCode += jsCodeForInputs;
-                    
+
                     if ( dataElement.getType().equalsIgnoreCase( "int" ) )
                     {
                         appendCode += historyCode;
@@ -493,12 +546,12 @@ public class DefaultDataEntryScreenManager
 
                     appendCode += " />";
                 }
-                
+
                 if ( !dataElement.getAggregationOperator().equalsIgnoreCase( DataElement.AGGREGATION_OPERATOR_SUM ) )
                 {
                     saveMode = true;
                 }
-					
+
                 appendCode += metaDataCode;
                 appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
                 appendCode = appendCode.replace( "$OPTIONCOMBOID", String.valueOf( optionComboId ) );
@@ -517,7 +570,7 @@ public class DefaultDataEntryScreenManager
                     appendCode = appendCode.replace( "$MIN", String.valueOf( minMaxDataElement.getMin() ) );
                     appendCode = appendCode.replace( "$MAX", String.valueOf( minMaxDataElement.getMax() ) );
                 }
-                
+
                 matDataElement.appendReplacement( sb, appendCode );
             }
 
@@ -534,8 +587,13 @@ public class DefaultDataEntryScreenManager
 
     public String populateCustomDataEntryScreenForMultiDimensional( String dataEntryFormCode,
         Collection<DataValue> dataValues, Map<CalculatedDataElement, Integer> calculatedValueMap,
-        Map<String, MinMaxDataElement> minMaxMap, String disabled, Boolean saveMode, I18n i18n )
+        Map<String, MinMaxDataElement> minMaxMap, String disabled, Boolean saveMode, I18n i18n, DataSet dataSet )
     {
+        // ---------------------------------------------------------------------
+        // Populating Custom Value data.
+        // ---------------------------------------------------------------------
+
+        List<CustomValue> customValues = (List<CustomValue>) customValueService.getCustomValuesByDataSet( dataSet );
 
         // ---------------------------------------------------------------------
         // Inline Javascript to add to HTML before outputting.
@@ -552,7 +610,7 @@ public class DefaultDataEntryScreenManager
 
         final String metaDataCode = "<span id=\"value[$DATAELEMENTID].name\" style=\"display:none\">$DATAELEMENTNAME</span>"
             + "<span id=\"value[$DATAELEMENTID].type\" style=\"display:none\">$DATAELEMENTTYPE</span>"
-            + "<div id=\"value[$DATAELEMENTID:$OPTIONCOMBOID].min\" style=\"display:none\">$MIN</div>"            
+            + "<div id=\"value[$DATAELEMENTID:$OPTIONCOMBOID].min\" style=\"display:none\">$MIN</div>"
             + "<div id=\"value[$DATAELEMENTID:$OPTIONCOMBOID].max\" style=\"display:none\">$MAX</div>";
 
         StringBuffer sb = new StringBuffer();
@@ -605,7 +663,7 @@ public class DefaultDataEntryScreenManager
                 if ( (dataElement instanceof CalculatedDataElement) )
                 {
                     CalculatedDataElement cde = (CalculatedDataElement) dataElement;
-                    
+
                     if ( cde.isSaved() )
                     {
                         for ( DataValue dv : dataValues )
@@ -640,7 +698,17 @@ public class DefaultDataEntryScreenManager
                 // Insert value of data element in output code.
                 // -------------------------------------------------------------
 
-                if ( dataElement.getType().equals( "bool" ) )
+                int count = 0;
+                for ( CustomValue customValue : customValues )
+                {
+                    if ( dataElementId == customValue.getDataElement().getId()
+                        && optionComboId == customValue.getOptionCombo().getId() )
+                    {
+                        count += 1;
+                    }
+                }
+
+                if ( dataElement.getType().equals( "bool" ) || (dataElement.getType().equals( "string" ) && count > 0) )
                 {
                     dataElementCode = dataElementCode.replace( "input", "select" );
                     dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
@@ -662,7 +730,7 @@ public class DefaultDataEntryScreenManager
                 // MIN-MAX Values
                 // -------------------------------------------------------------
 
-                MinMaxDataElement minMaxDataElement = minMaxMap.get( dataElement.getId() + ":" + optionComboId);
+                MinMaxDataElement minMaxDataElement = minMaxMap.get( dataElement.getId() + ":" + optionComboId );
                 String minValue = "No Min";
                 String maxValue = "No Max";
 
@@ -728,6 +796,32 @@ public class DefaultDataEntryScreenManager
 
                     appendCode += "</select>";
                 }
+                else if ( dataElement.getType().equalsIgnoreCase( "string" ) && count > 0 )
+                {
+                    appendCode += jsCodeForCombos;
+
+                    appendCode += "<option value=\"\"></option>";
+
+                    for ( CustomValue customValue : customValues )
+                    {
+                        if ( dataElementId == customValue.getDataElement().getId()
+                            && optionComboId == customValue.getOptionCombo().getId() )
+                        {
+                            if ( dataElementValue.equalsIgnoreCase( customValue.getCustomValue() ) )
+                            {
+                                appendCode += "<option value=\"" + customValue.getCustomValue() + "\" selected >"
+                                    + customValue.getCustomValue() + "</option>";
+                            }
+                            else
+                            {
+                                appendCode += "<option value=\"" + customValue.getCustomValue() + "\">"
+                                    + customValue.getCustomValue() + "</option>";
+                            }
+                        }
+                    }
+
+                    appendCode += "</select>";
+                }
                 else
                 {
                     appendCode += jsCodeForInputs;
@@ -744,10 +838,10 @@ public class DefaultDataEntryScreenManager
 
                     appendCode += " />";
                 }
-                
-                if ( ! dataElement.getAggregationOperator().equalsIgnoreCase( DataElement.AGGREGATION_OPERATOR_SUM ) )
+
+                if ( !dataElement.getAggregationOperator().equalsIgnoreCase( DataElement.AGGREGATION_OPERATOR_SUM ) )
                 {
-                	saveMode = true;
+                    saveMode = true;
                 }
 
                 appendCode += metaDataCode;

@@ -4,7 +4,20 @@
   <include file="dhis-web-commons.xml"/>
   
   <package name="dhis-web-maintenance-dataset" extends="dhis-web-commons" namespace="/dhis-web-maintenance-dataset">
+
     
+    <!-- Custom Value -->
+
+    <action name="editDataSetFormCustomValues"
+      class="org.hisp.dhis.dataset.action.dataentryform.SelectDataElementAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataset/editCustomValues.vm</param>
+      <param name="javascripts">javascript/dataSet.js,javascript/dataElementsList.js,javascript/hashtable.js
+      </param>
+      <interceptor-ref name="transactionStack"/>
+      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
+    </action>
+        
     <!-- Entry point -->
     
     <action name="index" class="org.hisp.dhis.dataset.action.DataSetListAction">
@@ -312,6 +325,13 @@
       <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js,javascript/hashtable.js</param>
       <interceptor-ref name="transactionStack"/>
     </action>
-    
+
+    <action name="getCustomValues"
+      class="org.hisp.dhis.dataset.action.dataentryform.GetCustomValuesAction">
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseCustomValue.vm</result>
+      <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js,javascript/hashtable.js</param>
+      <interceptor-ref name="transactionStack"/>
+    </action>
+        
   </package>
 </xwork>

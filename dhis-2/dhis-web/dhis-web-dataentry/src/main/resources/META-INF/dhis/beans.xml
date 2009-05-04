@@ -43,7 +43,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementCategoryOptionComboService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
     <property name="dataValueService"
-      ref="org.hisp.dhis.datavalue.DataValueService"/>        
+      ref="org.hisp.dhis.datavalue.DataValueService"/>
+    <property name="customValueService">
+      <ref bean="org.hisp.dhis.customvalue.CustomValueService"/>
+    </property>              
   </bean>
 
   <bean id="org.hisp.dhis.de.state.StatefulDataValueSaver"
@@ -107,7 +110,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectedStateManager"
       ref="org.hisp.dhis.de.state.SelectedStateManager"/>    
     <property name="systemSettingManager"
-      ref="org.hisp.dhis.options.SystemSettingManager"/>      
+      ref="org.hisp.dhis.options.SystemSettingManager"/>
+    <property name="customValueService">
+      <ref bean="org.hisp.dhis.customvalue.CustomValueService"/>
+    </property>            
   </bean>
 	
   <bean id="org.hisp.dhis.de.action.multidimensional.FormAction"
@@ -136,7 +142,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService"/>
     </property>
 	<property name="systemSettingManager"
-	  ref="org.hisp.dhis.options.SystemSettingManager"/>          
+	  ref="org.hisp.dhis.options.SystemSettingManager"/>  
+	<property name="customValueService">
+      <ref bean="org.hisp.dhis.customvalue.CustomValueService"/>
+    </property>	          
   </bean>
   
    <bean id="org.hisp.dhis.de.action.SectionFormAction"
@@ -154,6 +163,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.de.state.SelectedStateManager"/>
      <property name="sectionService"
       ref="org.hisp.dhis.dataset.SectionService"/>    
+    <property name="customValueService">
+      <ref bean="org.hisp.dhis.customvalue.CustomValueService"/>
+    </property>      
   </bean>	
   
   <bean id="org.hisp.dhis.de.action.SaveValueAction"

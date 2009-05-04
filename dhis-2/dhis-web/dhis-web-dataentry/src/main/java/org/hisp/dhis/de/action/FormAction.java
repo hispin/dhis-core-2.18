@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.customvalue.CustomValue;
+import org.hisp.dhis.customvalue.CustomValueService;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -67,6 +69,16 @@ public class FormAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+	
+	private CustomValueService customValueService;
+	
+    public CustomValueService getCustomValueService() {
+		return customValueService;
+	}
+
+	public void setCustomValueService(CustomValueService customValueService) {
+		this.customValueService = customValueService;
+	}
 	
     private SystemSettingManager systemSettingManager;
 
@@ -222,6 +234,14 @@ public class FormAction
     // Input/output
     // -------------------------------------------------------------------------
 
+
+    private List<CustomValue> customValues = new ArrayList<CustomValue>();
+
+    public List<CustomValue> getCustomValues()
+    {
+        return customValues;
+    }
+    
     private Integer selectedDataSetId;
 
     public void setSelectedDataSetId( Integer selectedDataSetId )
@@ -273,6 +293,8 @@ public class FormAction
 
         DataSet dataSet = selectedStateManager.getSelectedDataSet();
 
+        customValues = (List<CustomValue>) customValueService.getCustomValuesByDataSet(dataSet);
+        
         Period period = selectedStateManager.getSelectedPeriod();   
 
         if ( dataSet.getLockedPeriods().contains( period ) )
@@ -348,7 +370,7 @@ public class FormAction
         
         if ( cdeFormExists )
         {        	
-            customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreen( dataEntryForm.getHtmlCode(), dataValues, calculatedValueMap, minMaxMap, disabled, zeroValueSaveMode, i18n );
+            customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreen( dataEntryForm.getHtmlCode(), dataValues, calculatedValueMap, minMaxMap, disabled, zeroValueSaveMode, i18n, dataSet );
         }            
 
         // ---------------------------------------------------------------------
@@ -361,5 +383,4 @@ public class FormAction
         
         return SUCCESS;
     }
-
 }
