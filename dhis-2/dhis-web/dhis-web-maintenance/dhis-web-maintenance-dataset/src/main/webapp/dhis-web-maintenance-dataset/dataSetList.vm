@@ -13,11 +13,12 @@
           <col width="20">
 		  <col width="20">
 		  <col width="20">
+          <col width="20">
 		  
 		  <tr>
 			<td>$i18n.getString( "filter_by_name" ):&nbsp;<a href="javascript:openHelpForm('datasetsecmanfilter')" title="$i18n.getString( 'help' )"><img src="../images/help.png" alt="$i18n.getString( 'help' )"></a>
 			    <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form></td>
-			<td colspan="7" style="text-align:right">
+			<td colspan="8" style="text-align:right">
 				<input type="button" value="$i18n.getString( "sort" )" onclick="window.location.href='showSortDataSetForm.action'" style="width:70px"><a href="javascript:openHelpForm('datasetsecmansort')" title="$i18n.getString( 'help' )"><img src="../images/help.png" alt="$i18n.getString( 'help' )"></a>
 				<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='addDataSetForm.action'" style="width:70px"><a href="javascript:openHelpForm('datasetsecmanaddnew')" title="$i18n.getString( 'help' )"><img src="../images/help.png" alt="$i18n.getString( 'help' )"></a>
 			</td>
@@ -25,7 +26,7 @@
 
           <tr>
             <th>$i18n.getString( "name" )</th>
-            <th colspan="7">$i18n.getString( "operations" )</th>
+            <th colspan="8">$i18n.getString( "operations" )</th>
           </tr>
 
           <tbody id="list">
