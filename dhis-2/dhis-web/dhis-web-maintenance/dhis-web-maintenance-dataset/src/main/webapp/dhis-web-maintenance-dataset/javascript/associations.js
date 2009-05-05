@@ -1,36 +1,44 @@
 
 var numberOfSelects = 0;
 
-function selectAllAtLevel( dataSetId )
+function selectAllAtLevel()
 {
-	var level = getListValue( 'levelList' );
-    var groupId = getListValue( 'groupList' );
-    
-    window.location.href = 'selectLevel.action?level=' + level + '&organisationUnitGroupId=' + groupId + '&dataSetId=' + dataSetId;
+	var request = new Request();
+    request.setCallbackSuccess( selectReceived );
+    request.send( 'selectLevel.action?level=' + getListValue( 'levelList' ) );
 }
 
-function unselectAllAtLevel( dataSetId )
+function unselectAllAtLevel()
 {
-	var level = getListValue( 'levelList' );
-    var groupId = getListValue( 'groupList' );
-    
-    window.location.href = 'unselectLevel.action?level=' + level + '&organisationUnitGroupId=' + groupId + '&dataSetId=' + dataSetId;
+	var request = new Request();
+    request.setCallbackSuccess( selectReceived );
+    request.send( 'unselectLevel.action?level=' + getListValue( 'levelList' ) );
 }
 
-function selectGroup( dataSetId )
+function selectGroup()
 {
-    var level = getListValue( 'levelList' );
-    var groupId = getListValue( 'groupList' );
-    
-    window.location.href = 'selectOrganisationUnitGroup.action?level=' + level + '&organisationUnitGroupId=' + groupId + '&dataSetId=' + dataSetId;
+    var request = new Request();
+    request.setCallbackSuccess( selectReceived );
+    request.send( 'selectOrganisationUnitGroup.action?organisationUnitGroupId=' + getListValue( 'groupList' ) );
 }
 
-function unselectGroup( dataSetId )
+function unselectGroup()
 {
-    var level = getListValue( 'levelList' );
-    var groupId = getListValue( 'groupList' );
-    
-    window.location.href = 'unselectOrganisationUnitGroup.action?level=' + level + '&organisationUnitGroupId=' + groupId + '&dataSetId=' + dataSetId;
+    var request = new Request();
+    request.setCallbackSuccess( selectReceived );
+    request.send( 'unselectOrganisationUnitGroup.action?organisationUnitGroupId=' + getListValue( 'groupList' ) );
+}
+
+function unselectAll()
+{
+    var request = new Request();
+    request.setCallbackSuccess( selectReceived );
+    request.send( 'unselectAll.action' );
+}
+
+function selectReceived()
+{
+    selectionTree.buildSelectionTree();
 }
 
 function treeClicked()
