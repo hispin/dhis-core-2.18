@@ -81,16 +81,8 @@
       <artifactId>jasperreports</artifactId>
     </dependency>
     <dependency>
-      <groupId>poi</groupId>
-      <artifactId>poi</artifactId>
-    </dependency>
-    <dependency>
       <groupId>jfree</groupId>
       <artifactId>jfreechart</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>eclipse</groupId>
-      <artifactId>jdtcore</artifactId>
     </dependency>
     
     <!-- Other -->
