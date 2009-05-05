@@ -22,7 +22,6 @@
     <module>dhis-services</module>
     <module>dhis-support</module>
     <module>dhis-useradminandsecurity</module>
-    <module>dhis-web</module>
   </modules>
   <!--
   <repositories>
