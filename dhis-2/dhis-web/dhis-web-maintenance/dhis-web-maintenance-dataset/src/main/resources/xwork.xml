@@ -4,7 +4,6 @@
   <include file="dhis-web-commons.xml"/>
   
   <package name="dhis-web-maintenance-dataset" extends="dhis-web-commons" namespace="/dhis-web-maintenance-dataset">
-
     
     <!-- Custom Value -->
 
@@ -81,12 +80,12 @@
       <result name="success" type="redirect">section.action</result>     
     </action>   
     
-     <action name="removeSection" class="org.hisp.dhis.dataset.action.section.RemoveSectionAction">
+    <action name="removeSection" class="org.hisp.dhis.dataset.action.section.RemoveSectionAction">
       <result name="success" type="chain">
         <param name="actionName">section</param>
       </result>
     </action>
-	  
+	
     <!-- Get details -->
     
     <action name="getDataSet"

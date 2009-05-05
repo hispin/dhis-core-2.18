@@ -27,6 +27,33 @@ function userReceived( userElement )
 }
 
 // -----------------------------------------------------------------------------
+// Add / remove organisation units
+// -----------------------------------------------------------------------------
+
+function selectAllInGroup()
+{
+    var id = getListValue( "organisationUnitGroup" );
+    
+    var request = new Request();
+    request.setCallbackSuccess( groupReceived );
+    request.send( 'selectOrganisationUnitGroupMembers.action?organisationUnitGroupId=' + id );    
+}
+
+function removeAllInGroup()
+{
+    var id = getListValue( "organisationUnitGroup" );
+    
+    var request = new Request();
+    request.setCallbackSuccess( groupReceived );
+    request.send( 'removeOrganisationUnitGroupMembers.action?organisationUnitGroupId=' + id );
+}
+
+function groupReceived()
+{
+    selectionTree.buildSelectionTree();
+}
+
+// -----------------------------------------------------------------------------
 // Remove user
 // -----------------------------------------------------------------------------
 

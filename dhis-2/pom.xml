@@ -22,7 +22,6 @@
     <module>dhis-services</module>
     <module>dhis-support</module>
     <module>dhis-useradminandsecurity</module>
-    <module>dhis-web</module>
   </modules>
   <!--
   <repositories>
@@ -382,19 +381,9 @@
         <version>2.24</version>
       </dependency>
       <dependency>
-        <groupId>ognl</groupId>
-        <artifactId>ognl</artifactId>
-        <version>2.6.9</version>
-      </dependency>
-      <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.4</version>
-      </dependency>
-      <dependency>
-        <groupId>xalan</groupId>
-        <artifactId>xalan</artifactId>
-        <version>2.7.0</version>
       </dependency>
       <dependency>
         <groupId>org.amplecode</groupId>
@@ -466,11 +455,6 @@
       <version>1.5.0</version>
     </dependency>
     <dependency>
-      <groupId>geronimo-spec</groupId>
-      <artifactId>geronimo-spec-jta</artifactId>
-      <version>1.0-M1</version>
-    </dependency>
-    <dependency>
       <groupId>c3p0</groupId>
       <artifactId>c3p0</artifactId>
       <version>0.9.1.2</version>
@@ -485,11 +469,6 @@
       <artifactId>postgresql</artifactId>
       <version>8.3-603.jdbc4</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.derby</groupId>
-      <artifactId>derby</artifactId>
-      <version>10.4.2.0</version>
-    </dependency> 
 
     <!-- Security -->
 
@@ -530,16 +509,6 @@
       <groupId>jasperreports</groupId>
       <artifactId>jasperreports</artifactId>
      <version>2.0.2</version>
-    </dependency>
-    <dependency>
-      <groupId>poi</groupId>
-      <artifactId>poi</artifactId>
-      <version>2.5.1-final-20040804</version>
-    </dependency>
-    <dependency>
-      <groupId>eclipse</groupId>
-      <artifactId>jdtcore</artifactId>
-      <version>3.1.0</version>
     </dependency>
     <dependency>
       <groupId>jfree</groupId>
