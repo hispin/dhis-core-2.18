@@ -97,7 +97,7 @@ public class ReportTableDataConverter
                     
                     while ( values.hasNext() )
                     {
-                        writer.write( values.next() );
+                        writer.write( csvEncode( values.next() ) );
                         
                         if ( values.hasNext() )
                         {
