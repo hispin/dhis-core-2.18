@@ -67,11 +67,6 @@ public class SelectOrganisationUnitGroupAction
 
     private Integer organisationUnitGroupId;
 
-    public Integer getOrganisationUnitGroupId()
-    {
-        return organisationUnitGroupId;
-    }
-
     public void setOrganisationUnitGroupId( Integer organisationUnitGroupId )
     {
         this.organisationUnitGroupId = organisationUnitGroupId;
