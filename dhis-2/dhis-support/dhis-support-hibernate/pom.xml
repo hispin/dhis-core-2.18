@@ -37,6 +37,10 @@
       <artifactId>hibernate</artifactId>
     </dependency>
     <dependency>
+      <groupId>geronimo-spec</groupId>
+      <artifactId>geronimo-spec-jta</artifactId>
+    </dependency>
+    <dependency>
       <groupId>net.sf.ehcache</groupId>
       <artifactId>ehcache</artifactId>
     </dependency>
