@@ -160,8 +160,8 @@ public class ANMApp extends MIDlet implements CommandListener {
     private Command monthSettingsCmd;
     private Command settingsBackCmd;
     private Command settingsCmd;
-    private Command exitAlertCmd;
     private Command exitAlertBackCmd;
+    private Command exitAlertCmd;
     private Image nrhmlogo;
     private Image question;
     private Font font;
@@ -609,7 +609,7 @@ public class ANMApp extends MIDlet implements CommandListener {
         } else if (displayable == loadPage) {
             if (command == loadCmd) {//GEN-END:|7-commandAction|37|226-preAction
                 int lastSelected = lastChoice.getSelectedIndex();
-                if (lastSelected == 0) {
+                if (lastSelected == 1) {
                     editingLastReport = true;
                 } else {
                     editingLastReport = false;
@@ -3244,7 +3244,6 @@ public class ANMApp extends MIDlet implements CommandListener {
                             monthPage.delete(1);
                             monthPage.append(dateField);
                         }
-
                     }
                 }
             });
@@ -3262,33 +3261,33 @@ public class ANMApp extends MIDlet implements CommandListener {
         if (monthChoice == null) {//GEN-END:|189-getter|0|189-preInit
             // write pre-init user code here
             monthChoice = new ChoiceGroup("Reporting Month", Choice.POPUP);//GEN-BEGIN:|189-getter|1|189-postInit
-            monthChoice.append("January", null);
-            monthChoice.append("February", null);
-            monthChoice.append("March", null);
-            monthChoice.append("April", null);
-            monthChoice.append("May", null);
-            monthChoice.append("June", null);
-            monthChoice.append("July", null);
-            monthChoice.append("August", null);
-            monthChoice.append("September", null);
-            monthChoice.append("October", null);
-            monthChoice.append("November", null);
-            monthChoice.append("December", null);
+            monthChoice.append("Jan 2009", null);
+            monthChoice.append("Feb 2009", null);
+            monthChoice.append("Mar 2009", null);
+            monthChoice.append("Apr 2009", null);
+            monthChoice.append("May 2009", null);
+            monthChoice.append("Jun 2009", null);
+            monthChoice.append("Jul 2009", null);
+            monthChoice.append("Aug 2009", null);
+            monthChoice.append("Sep 2009", null);
+            monthChoice.append("Oct 2009", null);
+            monthChoice.append("Nov 2009", null);
+            monthChoice.append("Dec 2009", null);
+            monthChoice.append("Jan 2008", null);
+            monthChoice.append("Feb 2008", null);
+            monthChoice.append("Mar 2008", null);
+            monthChoice.append("Apr 2008", null);
+            monthChoice.append("May 2008", null);
+            monthChoice.append("Jun 2008", null);
+            monthChoice.append("Jul 2008", null);
+            monthChoice.append("Aug 2008", null);
+            monthChoice.append("Sep 2008", null);
+            monthChoice.append("Oct 2008", null);
+            monthChoice.append("Nov 2008", null);
+            monthChoice.append("Dec 2008", null);
             monthChoice.setLayout(ImageItem.LAYOUT_CENTER | Item.LAYOUT_TOP | Item.LAYOUT_BOTTOM | Item.LAYOUT_VCENTER | Item.LAYOUT_2);
             monthChoice.setFitPolicy(Choice.TEXT_WRAP_DEFAULT);
-            monthChoice.setSelectedFlags(new boolean[] { false, false, false, false, false, false, false, false, false, false, false, false });
-            monthChoice.setFont(0, null);
-            monthChoice.setFont(1, null);
-            monthChoice.setFont(2, null);
-            monthChoice.setFont(3, null);
-            monthChoice.setFont(4, null);
-            monthChoice.setFont(5, null);
-            monthChoice.setFont(6, null);
-            monthChoice.setFont(7, null);
-            monthChoice.setFont(8, null);
-            monthChoice.setFont(9, null);
-            monthChoice.setFont(10, null);
-            monthChoice.setFont(11, null);//GEN-END:|189-getter|1|189-postInit
+            monthChoice.setSelectedFlags(new boolean[] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false });//GEN-END:|189-getter|1|189-postInit
             try {
                 if (editingLastReport) {
                     if (lastMsgStore.getRecord(10) != null) {
@@ -3496,12 +3495,10 @@ public class ANMApp extends MIDlet implements CommandListener {
     public ChoiceGroup getLastChoice() {
         if (lastChoice == null) {//GEN-END:|222-getter|0|222-preInit
             // write pre-init user code here
-            lastChoice = new ChoiceGroup("Select", Choice.EXCLUSIVE);//GEN-BEGIN:|222-getter|1|222-postInit
-            lastChoice.append("Yes", null);
+            lastChoice = new ChoiceGroup("Select", Choice.POPUP);//GEN-BEGIN:|222-getter|1|222-postInit
             lastChoice.append("No", null);
-            lastChoice.setSelectedFlags(new boolean[] { false, false });
-            lastChoice.setFont(0, null);
-            lastChoice.setFont(1, null);//GEN-END:|222-getter|1|222-postInit
+            lastChoice.append("Yes", null);
+            lastChoice.setSelectedFlags(new boolean[] { false, false });//GEN-END:|222-getter|1|222-postInit
             // write post-init user code here
         }//GEN-BEGIN:|222-getter|2|
         return lastChoice;
@@ -3568,10 +3565,7 @@ public class ANMApp extends MIDlet implements CommandListener {
             reportingChoice.append("Monthly", null);
             reportingChoice.append("Weekly", null);
             reportingChoice.append("Daily", null);
-            reportingChoice.setSelectedFlags(new boolean[] { false, false, false });
-            reportingChoice.setFont(0, null);
-            reportingChoice.setFont(1, null);
-            reportingChoice.setFont(2, null);//GEN-END:|235-getter|1|235-postInit
+            reportingChoice.setSelectedFlags(new boolean[] { false, false, false });//GEN-END:|235-getter|1|235-postInit
 
         }//GEN-BEGIN:|235-getter|2|
         return reportingChoice;
@@ -3714,9 +3708,9 @@ public class ANMApp extends MIDlet implements CommandListener {
      */
     public Command getSendSettingsCmd() {
         if (sendSettingsCmd == null) {//GEN-END:|254-getter|0|254-preInit
-                // write pre-init user code here
+            // write pre-init user code here
             sendSettingsCmd = new Command("Settings", Command.OK, 0);//GEN-LINE:|254-getter|1|254-postInit
-                // write post-init user code here
+            // write post-init user code here
         }//GEN-BEGIN:|254-getter|2|
         return sendSettingsCmd;
     }
@@ -3729,14 +3723,14 @@ public class ANMApp extends MIDlet implements CommandListener {
      */
     public TextField getDateField() {
         if (dateField == null) {//GEN-END:|258-getter|0|258-preInit
-                // write pre-init user code here
+            // write pre-init user code here
             dateField = new TextField("Enter Date (yyyy-mm-dd):", null, 32, TextField.ANY);//GEN-LINE:|258-getter|1|258-postInit
-                // write post-init user code here
+            // write post-init user code here
         }//GEN-BEGIN:|258-getter|2|
         return dateField;
     }
     //</editor-fold>//GEN-END:|258-getter|2|
-        //</editor-fold>
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitAlert ">//GEN-BEGIN:|259-getter|0|259-preInit
     /**
@@ -3745,13 +3739,13 @@ public class ANMApp extends MIDlet implements CommandListener {
      */
     public Alert getExitAlert() {
         if (exitAlert == null) {//GEN-END:|259-getter|0|259-preInit
-                // write pre-init user code here
+            // write pre-init user code here
             exitAlert = new Alert("Exit Warning", "Are you sure you want to exit?\n\nAny unsent data will be lost!", null, AlertType.CONFIRMATION);//GEN-BEGIN:|259-getter|1|259-postInit
             exitAlert.addCommand(getExitAlertCmd());
             exitAlert.addCommand(getExitAlertBackCmd());
             exitAlert.setCommandListener(this);
             exitAlert.setTimeout(Alert.FOREVER);//GEN-END:|259-getter|1|259-postInit
-                // write post-init user code here
+            // write post-init user code here
         }//GEN-BEGIN:|259-getter|2|
         return exitAlert;
     }
@@ -3765,9 +3759,9 @@ public class ANMApp extends MIDlet implements CommandListener {
      */
     public Command getExitAlertCmd() {
         if (exitAlertCmd == null) {//GEN-END:|260-getter|0|260-preInit
-                // write pre-init user code here
+            // write pre-init user code here
             exitAlertCmd = new Command("Yes", Command.EXIT, 0);//GEN-LINE:|260-getter|1|260-postInit
-                // write post-init user code here
+            // write post-init user code here
         }//GEN-BEGIN:|260-getter|2|
         return exitAlertCmd;
     }
@@ -3781,15 +3775,13 @@ public class ANMApp extends MIDlet implements CommandListener {
      */
     public Command getExitAlertBackCmd() {
         if (exitAlertBackCmd == null) {//GEN-END:|262-getter|0|262-preInit
-                // write pre-init user code here
+            // write pre-init user code here
             exitAlertBackCmd = new Command("No", Command.BACK, 0);//GEN-LINE:|262-getter|1|262-postInit
-                // write post-init user code here
+            // write post-init user code here
         }//GEN-BEGIN:|262-getter|2|
         return exitAlertBackCmd;
     }
     //</editor-fold>//GEN-END:|262-getter|2|
-
-
 
     private void getEmptyFields() {
         String ancFormData = pregNum.getString() + "|" + firstTrimesterNum.getString() + "|" + jsyNum.getString() + "|" + threeAncNum.getString() + "|" + tt1Num.getString() + "|" + boosterNum.getString() + "|" + ifaTabletNum.getString() + "|" + hypertensionNum.getString() + "|" + anaemicAncNum.getString();

@@ -995,43 +995,79 @@
                         <Property name="layout" typeID="Pint" value="V16435"/>
                         <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R8"/>
                         <Property name="choiceType" typeID="Pint" value="V4"/>
-                        <Property name="elements" typeID="1C#ChoiceElement" value="A12:4_R1904_R1914_R1924_R1934_R1944_R1954_R1964_R1974_R1984_R1994_R2004_R201"/>
+                        <Property name="elements" typeID="1C#ChoiceElement" value="A24:4_R1904_R1914_R1924_R1934_R1944_R1954_R1964_R1974_R1984_R1994_R2004_R2014_R2714_R2724_R2734_R2744_R2754_R2764_R2774_R2784_R2794_R2804_R2814_R282"/>
                         <Property name="fitPolicy" typeID="Pint" value="V0"/>
                         <Component componentID="190" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VJanuary"/>
+                            <Property name="string" typeID="Pjava.lang.String" value="VJan 2009"/>
                         </Component>
                         <Component componentID="191" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VFebruary"/>
+                            <Property name="string" typeID="Pjava.lang.String" value="VFeb 2009"/>
                         </Component>
                         <Component componentID="201" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VDecember"/>
+                            <Property name="string" typeID="Pjava.lang.String" value="VDec 2009"/>
                         </Component>
                         <Component componentID="200" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VNovember"/>
+                            <Property name="string" typeID="Pjava.lang.String" value="VNov 2009"/>
                         </Component>
                         <Component componentID="197" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VAugust"/>
+                            <Property name="string" typeID="Pjava.lang.String" value="VAug 2009"/>
                         </Component>
                         <Component componentID="196" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VJuly"/>
+                            <Property name="string" typeID="Pjava.lang.String" value="VJul 2009"/>
                         </Component>
                         <Component componentID="199" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VOctober"/>
+                            <Property name="string" typeID="Pjava.lang.String" value="VOct 2009"/>
                         </Component>
                         <Component componentID="198" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VSeptember"/>
+                            <Property name="string" typeID="Pjava.lang.String" value="VSep 2009"/>
                         </Component>
                         <Component componentID="193" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VApril"/>
+                            <Property name="string" typeID="Pjava.lang.String" value="VApr 2009"/>
                         </Component>
                         <Component componentID="192" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VMarch"/>
+                            <Property name="string" typeID="Pjava.lang.String" value="VMar 2009"/>
                         </Component>
                         <Component componentID="195" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VJune"/>
+                            <Property name="string" typeID="Pjava.lang.String" value="VJun 2009"/>
                         </Component>
                         <Component componentID="194" typeID="C#ChoiceElement">
-                            <Property name="string" typeID="Pjava.lang.String" value="VMay"/>
+                            <Property name="string" typeID="Pjava.lang.String" value="VMay 2009"/>
+                        </Component>
+                        <Component componentID="275" typeID="C#ChoiceElement">
+                            <Property name="string" typeID="Pjava.lang.String" value="VMay 2008"/>
+                        </Component>
+                        <Component componentID="274" typeID="C#ChoiceElement">
+                            <Property name="string" typeID="Pjava.lang.String" value="VApr 2008"/>
+                        </Component>
+                        <Component componentID="273" typeID="C#ChoiceElement">
+                            <Property name="string" typeID="Pjava.lang.String" value="VMar 2008"/>
+                        </Component>
+                        <Component componentID="272" typeID="C#ChoiceElement">
+                            <Property name="string" typeID="Pjava.lang.String" value="VFeb 2008"/>
+                        </Component>
+                        <Component componentID="279" typeID="C#ChoiceElement">
+                            <Property name="string" typeID="Pjava.lang.String" value="VSep 2008"/>
+                        </Component>
+                        <Component componentID="278" typeID="C#ChoiceElement">
+                            <Property name="string" typeID="Pjava.lang.String" value="VAug 2008"/>
+                        </Component>
+                        <Component componentID="277" typeID="C#ChoiceElement">
+                            <Property name="string" typeID="Pjava.lang.String" value="VJul 2008"/>
+                        </Component>
+                        <Component componentID="276" typeID="C#ChoiceElement">
+                            <Property name="string" typeID="Pjava.lang.String" value="VJun 2008"/>
+                        </Component>
+                        <Component componentID="282" typeID="C#ChoiceElement">
+                            <Property name="string" typeID="Pjava.lang.String" value="VDec 2008"/>
+                        </Component>
+                        <Component componentID="281" typeID="C#ChoiceElement">
+                            <Property name="string" typeID="Pjava.lang.String" value="VNov 2008"/>
+                        </Component>
+                        <Component componentID="280" typeID="C#ChoiceElement">
+                            <Property name="string" typeID="Pjava.lang.String" value="VOct 2008"/>
+                        </Component>
+                        <Component componentID="271" typeID="C#ChoiceElement">
+                            <Property name="string" typeID="Pjava.lang.String" value="VJan 2008"/>
                         </Component>
                     </Component>
                     <Component componentID="180" typeID="C#CommandEventSource">
@@ -1111,8 +1147,8 @@
                         <Property name="instanceName" typeID="Pjava.lang.String" value="VlastChoice"/>
                         <Property name="label" typeID="Pjava.lang.String" value="VSelect"/>
                         <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R8"/>
-                        <Property name="choiceType" typeID="Pint" value="V1"/>
-                        <Property name="elements" typeID="1C#ChoiceElement" value="A2:4_R2234_R224"/>
+                        <Property name="choiceType" typeID="Pint" value="V4"/>
+                        <Property name="elements" typeID="1C#ChoiceElement" value="A2:4_R2244_R223"/>
                         <Component componentID="223" typeID="C#ChoiceElement">
                             <Property name="string" typeID="Pjava.lang.String" value="VYes"/>
                         </Component>
@@ -1202,15 +1238,6 @@
                     <Property name="string" typeID="Pjava.lang.String" value="VAre you sure you want to exit?&#10;&#10;Any unsent data will be lost!"/>
                     <Property name="timeout" typeID="Pint" value="V-2"/>
                     <Property name="type" typeID="Ejavax.microedition.lcdui.AlertType" value="ECONFIRMATION"/>
-                    <Component componentID="261" typeID="C#CommandEventSource">
-                        <Property name="eventHandler" typeID="C#EventHandler" value="R264"/>
-                        <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R259"/>
-                        <Property name="command" typeID="Cjavax.microedition.lcdui.Command" value="R260"/>
-                        <Component componentID="264" typeID="C#ExitMidletEventHandler">
-                            <Property name="eventSource" typeID="C#EventSource" value="R261"/>
-                            <Property name="mobileDevice" typeID="C#MobileDevice" value="R2"/>
-                        </Component>
-                    </Component>
                     <Component componentID="263" typeID="C#CommandEventSource">
                         <Property name="eventHandler" typeID="C#EventHandler" value="R268"/>
                         <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R259"/>
@@ -1218,6 +1245,15 @@
                         <Component componentID="268" typeID="C#SwitchDisplayableEventHandler">
                             <Property name="eventSource" typeID="C#EventSource" value="R263"/>
                             <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R167"/>
+                        </Component>
+                    </Component>
+                    <Component componentID="261" typeID="C#CommandEventSource">
+                        <Property name="eventHandler" typeID="C#EventHandler" value="R264"/>
+                        <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R259"/>
+                        <Property name="command" typeID="Cjavax.microedition.lcdui.Command" value="R260"/>
+                        <Component componentID="264" typeID="C#ExitMidletEventHandler">
+                            <Property name="eventSource" typeID="C#EventSource" value="R261"/>
+                            <Property name="mobileDevice" typeID="C#MobileDevice" value="R2"/>
                         </Component>
                     </Component>
                 </Component>
@@ -1374,15 +1410,15 @@
                     <Property name="label" typeID="Pjava.lang.String" value="VSave"/>
                     <Property name="type" typeID="Pint" value="V4"/>
                 </Component>
-                <Component componentID="260" typeID="Cjavax.microedition.lcdui.Command">
-                    <Property name="instanceName" typeID="Pjava.lang.String" value="VexitAlertCmd"/>
-                    <Property name="label" typeID="Pjava.lang.String" value="VYes"/>
-                    <Property name="type" typeID="Pint" value="V7"/>
-                </Component>
                 <Component componentID="262" typeID="Cjavax.microedition.lcdui.Command">
                     <Property name="instanceName" typeID="Pjava.lang.String" value="VexitAlertBackCmd"/>
                     <Property name="label" typeID="Pjava.lang.String" value="VNo"/>
                     <Property name="type" typeID="Pint" value="V2"/>
+                </Component>
+                <Component componentID="260" typeID="Cjavax.microedition.lcdui.Command">
+                    <Property name="instanceName" typeID="Pjava.lang.String" value="VexitAlertCmd"/>
+                    <Property name="label" typeID="Pjava.lang.String" value="VYes"/>
+                    <Property name="type" typeID="Pint" value="V7"/>
                 </Component>
             </Component>
             <Component componentID="12" typeID="C#ResourcesCategory">
@@ -1406,21 +1442,21 @@
         </Component>
     </Document>
     <FlowScene version="1">
-        <Node componentID="2" descriptorID="componentNode2" x="-10" y="17"/>
-        <Node componentID="127" descriptorID="componentNode127" x="628" y="74"/>
-        <Node componentID="110" descriptorID="componentNode110" x="354" y="109"/>
-        <Node componentID="44" descriptorID="componentNode44" x="390" y="460"/>
+        <Node componentID="66" descriptorID="componentNode66" x="335" y="347"/>
+        <Node componentID="178" descriptorID="componentNode178" x="-9" y="283"/>
+        <Node componentID="259" descriptorID="componentNode259" x="181" y="103"/>
         <Node componentID="156" descriptorID="componentNode156" x="634" y="345"/>
         <Node componentID="202" descriptorID="componentNode202" x="200" y="21"/>
-        <Node componentID="66" descriptorID="componentNode66" x="335" y="347"/>
-        <Node componentID="219" descriptorID="componentNode219" x="7" y="147"/>
-        <Node componentID="88" descriptorID="componentNode88" x="351" y="241"/>
-        <Node componentID="14" descriptorID="componentNode14" x="-1" y="397"/>
-        <Node componentID="259" descriptorID="componentNode259" x="181" y="103"/>
         <Node componentID="142" descriptorID="componentNode142" x="625" y="222"/>
+        <Node componentID="88" descriptorID="componentNode88" x="351" y="241"/>
+        <Node componentID="2" descriptorID="componentNode2" x="-10" y="17"/>
+        <Node componentID="127" descriptorID="componentNode127" x="628" y="74"/>
         <Node componentID="167" descriptorID="componentNode167" x="661" y="476"/>
-        <Node componentID="26" descriptorID="componentNode26" x="-15" y="508"/>
         <Node componentID="233" descriptorID="componentNode233" x="160" y="248"/>
-        <Node componentID="178" descriptorID="componentNode178" x="-10" y="283"/>
+        <Node componentID="44" descriptorID="componentNode44" x="390" y="460"/>
+        <Node componentID="219" descriptorID="componentNode219" x="7" y="147"/>
+        <Node componentID="26" descriptorID="componentNode26" x="-15" y="508"/>
+        <Node componentID="14" descriptorID="componentNode14" x="-1" y="397"/>
+        <Node componentID="110" descriptorID="componentNode110" x="354" y="109"/>
     </FlowScene>
 </VisualDesign>
