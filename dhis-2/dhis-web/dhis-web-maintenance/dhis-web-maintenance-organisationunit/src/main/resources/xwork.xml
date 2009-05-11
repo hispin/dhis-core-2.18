@@ -1,8 +1,8 @@
 <!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
  "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
 <xwork>
-  <include file="dhis-web-commons.xml"/>
-
+  <include file="dhis-support-webwork.xml"/>
+  
   <package name="dhis-web-maintenance-organisationunit" extends="dhis-web-commons" namespace="/dhis-web-maintenance-organisationunit">
     
     <action name="index" class="org.hisp.dhis.oum.action.NoAction">
