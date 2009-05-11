@@ -154,6 +154,11 @@ public class DefaultMappingService
     {
         return mappingStore.getMapByMapLayerPath( mapLayerPath );
     }
+    
+    public Collection<Map> getMapsByType( String type )
+    {
+        return mappingStore.getMapsByType( type );
+    }
 
     public Collection<Map> getAllMaps()
     {

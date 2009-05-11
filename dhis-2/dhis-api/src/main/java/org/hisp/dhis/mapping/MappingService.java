@@ -123,6 +123,14 @@ public interface MappingService
      * @return a Map.
      */
     Map getMapByMapLayerPath( String mapLayerPath );
+    
+    /**
+     * Returns a Collection<Map> of maps with the right type.
+     * 
+     * @param type, the map type.
+     * @return a Collection<Map>.
+     */
+    Collection<Map> getMapsByType( String type );
 
     /**
      * Returns a Collection of all Maps.

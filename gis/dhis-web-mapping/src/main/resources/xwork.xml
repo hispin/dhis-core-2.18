@@ -36,6 +36,10 @@
     <action name="getMapByMapLayerPath" class="org.hisp.dhis.mapping.action.GetMapByMapLayerPathAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonMap.vm</result>
     </action>
+	  
+	<action name="getMapsByType" class="org.hisp.dhis.mapping.action.GetMapsByTypeAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/jsonminMaps.vm</result>
+    </action>  
     
     <action name="deleteMap" class="org.hisp.dhis.mapping.action.DeleteMapAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
