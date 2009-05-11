@@ -58,6 +58,10 @@ public class HibernateCustomValueStore
     {
         this.sessionManager = sessionManager;
     }
+    
+    // -------------------------------------------------------------------------
+    // CustomValueStore implementation
+    // -------------------------------------------------------------------------
 
     public int addCustomValue( CustomValue customValue )
     {

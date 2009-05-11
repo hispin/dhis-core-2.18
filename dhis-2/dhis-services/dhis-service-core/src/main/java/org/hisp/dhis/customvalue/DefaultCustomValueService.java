@@ -48,15 +48,14 @@ public class DefaultCustomValueService
 
     private CustomValueStore customValueStore;
 
-    public CustomValueStore getCustomValueStore()
-    {
-        return customValueStore;
-    }
-
     public void setCustomValueStore( CustomValueStore customValueStore )
     {
         this.customValueStore = customValueStore;
     }
+    
+    // -------------------------------------------------------------------------
+    // CustomValueService implementation
+    // -------------------------------------------------------------------------
 
     public int addCustomValue( CustomValue customValue )
     {

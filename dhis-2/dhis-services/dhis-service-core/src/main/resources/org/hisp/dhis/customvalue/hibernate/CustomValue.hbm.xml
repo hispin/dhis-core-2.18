@@ -6,8 +6,6 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.customvalue.CustomValue" table="customvalue">
   
-    <cache usage="read-write"/>
-      
     <id name="id" column="customvalueid">
       <generator class="native"/>
     </id>
