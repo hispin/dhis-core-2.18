@@ -101,6 +101,18 @@ public class HibernateMappingStore
 
         return (Map) criteria.uniqueResult();
     }
+    
+    @SuppressWarnings("unchecked")
+    public Collection<Map> getMapsByType( String type )
+    {
+        Session session = sessionManager.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( Map.class );
+
+        criteria.add( Restrictions.eq( "type", type ) );
+
+        return criteria.list();
+    }
 
     @SuppressWarnings( "unchecked" )
     public Collection<Map> getAllMaps()
