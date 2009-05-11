@@ -1,8 +1,7 @@
 <!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
  "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
 <xwork>
-  <!-- use the DHIS web portal default -->
-  <include file="dhis-web-commons.xml"/>
+  <include file="dhis-support-webwork.xml"/>
 
 	<package name="Ethiopia Reports" extends="dhis-web-commons"
 		namespace="/dhis-web-reports">
