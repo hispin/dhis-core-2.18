@@ -10,6 +10,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.resourcetable.hibernate.HibernateResourceTableStore">
     <property name="sessionManager"
       ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="statementManager"
+      ref="org.hisp.dhis.jdbc.StatementManager"/>
   </bean>
     
   <bean id="org.hisp.dhis.resourcetable.ResourceTableService"

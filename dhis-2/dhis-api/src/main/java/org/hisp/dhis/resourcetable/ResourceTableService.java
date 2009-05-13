@@ -52,4 +52,9 @@ public interface ResourceTableService
      * all DataElementCategoryOptionCombos.
      */
     void generateCategoryOptionComboNames();
+    
+    /**
+     * Generates a resource table for all organisation units 
+     */
+    void generateExclusiveGroupSetStructures();
 }

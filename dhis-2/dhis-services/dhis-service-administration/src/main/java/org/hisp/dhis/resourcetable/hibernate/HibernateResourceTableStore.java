@@ -29,14 +29,20 @@ package org.hisp.dhis.resourcetable.hibernate;
 
 import java.util.Collection;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hisp.dhis.hibernate.HibernateSessionManager;
+import org.hisp.dhis.jdbc.Statement;
+import org.hisp.dhis.jdbc.StatementHolder;
+import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.resourcetable.DataElementCategoryOptionComboName;
 import org.hisp.dhis.resourcetable.GroupSetStructure;
 import org.hisp.dhis.resourcetable.OrganisationUnitStructure;
 import org.hisp.dhis.resourcetable.ResourceTableStore;
+import org.hisp.dhis.resourcetable.statement.CreateExclusiveGroupSetTableStatement;
 
 /**
  * @author Lars Helge Overland
@@ -45,6 +51,8 @@ import org.hisp.dhis.resourcetable.ResourceTableStore;
 public class HibernateResourceTableStore
     implements ResourceTableStore
 {
+    private static final Log log = LogFactory.getLog( HibernateResourceTableStore.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -54,6 +62,13 @@ public class HibernateResourceTableStore
     public void setSessionManager( HibernateSessionManager sessionManager )
     {
         this.sessionManager = sessionManager;
+    }
+    
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
     }
 
     // -------------------------------------------------------------------------
@@ -144,5 +159,45 @@ public class HibernateResourceTableStore
         Query query = session.createQuery( "DELETE FROM DataElementCategoryOptionComboName" );
 
         return query.executeUpdate();
+    }
+
+    // -------------------------------------------------------------------------
+    // ExclusiveGroupSetStructure
+    // -------------------------------------------------------------------------
+
+    public void createExclusiveGroupSetStructureTable( Statement statement )
+    {
+        StatementHolder holder = statementManager.getHolder();
+        
+        try
+        {
+            holder.getStatement().executeUpdate( statement.getStatement() );
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to create table: " + statement.getStatement() );
+        }
+        finally
+        {
+            holder.close();
+        }        
+    }
+    
+    public void removeExclusiveGroupSetStructureTable()
+    {
+        StatementHolder holder = statementManager.getHolder();
+        
+        try
+        {
+            holder.getStatement().executeUpdate( "DROP TABLE " + CreateExclusiveGroupSetTableStatement.TABLE_NAME );
+        }
+        catch ( Exception ex )
+        {
+            log.info( "Table " + CreateExclusiveGroupSetTableStatement.TABLE_NAME + " does not exist" );
+        }
+        finally
+        {
+            holder.close();
+        }        
     }    
 }

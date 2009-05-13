@@ -214,4 +214,17 @@ public class DefaultOrganisationUnitGroupService
 
         return result;
     }
+    
+    public OrganisationUnitGroup getOrganisationUnitGroup( OrganisationUnitGroupSet groupSet, OrganisationUnit unit )
+    {
+        for ( OrganisationUnitGroup group : groupSet.getOrganisationUnitGroups() )
+        {
+            if ( group.getMembers().contains( unit ) )
+            {
+                return group;
+            }
+        }
+        
+        return null;
+    }
 }
