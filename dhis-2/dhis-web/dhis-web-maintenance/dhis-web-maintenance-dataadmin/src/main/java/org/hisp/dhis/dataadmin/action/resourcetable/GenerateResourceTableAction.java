@@ -67,6 +67,13 @@ public class GenerateResourceTableAction
         this.groupSet = groupSet;
     }
 
+    private boolean exclusiveGroupSet;
+
+    public void setExclusiveGroupSet( boolean exclusiveGroupSet )
+    {
+        this.exclusiveGroupSet = exclusiveGroupSet;
+    }
+    
     private boolean categoryOptionComboName; 
 
     public void setCategoryOptionComboName( boolean categoryOptionComboName )
@@ -89,6 +96,11 @@ public class GenerateResourceTableAction
         if ( groupSet )
         {
             resourceTableService.generateGroupSetStructures();
+        }
+
+        if ( exclusiveGroupSet )
+        {
+            resourceTableService.generateExclusiveGroupSetStructures();
         }
         
         if ( categoryOptionComboName )

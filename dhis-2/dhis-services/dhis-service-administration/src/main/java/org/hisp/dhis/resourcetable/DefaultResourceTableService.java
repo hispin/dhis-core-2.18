@@ -27,28 +27,31 @@ package org.hisp.dhis.resourcetable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.resourcetable.DataElementCategoryOptionComboName;
-import org.hisp.dhis.resourcetable.GroupSetStructure;
-import org.hisp.dhis.resourcetable.OrganisationUnitStructure;
-import org.hisp.dhis.resourcetable.ResourceTableService;
-import org.hisp.dhis.resourcetable.ResourceTableStore;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.GroupSetStructureBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitStructureBatchHandler;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.jdbc.Statement;
+import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.GroupSetStructureBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitStructureBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
+import org.hisp.dhis.resourcetable.statement.CreateExclusiveGroupSetTableStatement;
 
 /**
  * @author Lars Helge Overland
@@ -219,5 +222,63 @@ public class DefaultResourceTableService
             
             resourceTableStore.addDataElementCategoryOptionComboName( entry );
         }
+    }
+
+    // -------------------------------------------------------------------------
+    // Exclusive GroupSetStructure
+    // -------------------------------------------------------------------------
+    
+    public void generateExclusiveGroupSetStructures()
+    {
+        // ---------------------------------------------------------------------
+        // Drop table
+        // ---------------------------------------------------------------------
+        
+        resourceTableStore.removeExclusiveGroupSetStructureTable();
+
+        // ---------------------------------------------------------------------
+        // Create table
+        // ---------------------------------------------------------------------
+        
+        List<OrganisationUnit> units = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
+        
+        Collections.sort( units, new OrganisationUnitNameComparator() );
+        
+        List<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>( 
+            organisationUnitGroupService.getExclusiveOrganisationUnitGroupSets() );
+        
+        Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
+        
+        Statement statement = new CreateExclusiveGroupSetTableStatement( groupSets );
+        
+        resourceTableStore.createExclusiveGroupSetStructureTable( statement );
+
+        // ---------------------------------------------------------------------
+        // Populate table
+        // ---------------------------------------------------------------------
+        
+        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
+        
+        batchHandler.setTableName( CreateExclusiveGroupSetTableStatement.TABLE_NAME );
+        
+        batchHandler.init();
+        
+        for ( OrganisationUnit unit : units )
+        {
+            final List<String> values = new ArrayList<String>();
+            
+            values.add( String.valueOf( unit.getId() ) );
+            
+            for ( OrganisationUnitGroupSet groupSet : groupSets )
+            {
+                OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( groupSet, unit );
+                
+                values.add( group != null ? group.getName() : Statement.EMPTY );
+            }
+            
+            batchHandler.addObject( values );
+        }
+        
+        batchHandler.flush();
     }
 }

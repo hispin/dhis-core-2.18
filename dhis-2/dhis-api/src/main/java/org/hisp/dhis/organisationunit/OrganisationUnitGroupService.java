@@ -194,4 +194,15 @@ public interface OrganisationUnitGroupService
      */
     Collection<OrganisationUnitGroupSet> getExclusiveOrganisationUnitGroupSetsContainingGroup(
         OrganisationUnitGroup organisationUnitGroup );
+    
+    /**
+     * Returns the OrganisationUnitGroup of which the given OrganisationUnit is
+     * a member of within the OrganisationUnitGroupSet. This will return the first
+     * group found so the given group set should be exclusive.
+     * 
+     * @param groupSet the OrganisationUnitGroupSet.
+     * @param unit the OrganisationUNit.
+     * @return an OrganisationUnitGroup.
+     */
+    OrganisationUnitGroup getOrganisationUnitGroup( OrganisationUnitGroupSet groupSet, OrganisationUnit unit );
 }

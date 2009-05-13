@@ -55,7 +55,7 @@ public interface StatementManager
      * @return a pre-initialized statement object.
      */
     StatementHolder getHolder();
-    
+        
     /**
      * Gets a pre-initialized statement object for an internal, embedded,
      * in-memory database.

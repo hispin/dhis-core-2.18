@@ -2,6 +2,8 @@ package org.hisp.dhis.resourcetable;
 
 import java.util.Collection;
 
+import org.hisp.dhis.jdbc.Statement;
+
 public interface ResourceTableStore
 {
     String ID = ResourceTableStore.class.getName();
@@ -83,4 +85,20 @@ public interface ResourceTableStore
      * @return the number of deleted objects.
      */
     int deleteDataElementCategoryOptionComboNames();
+
+    // -------------------------------------------------------------------------
+    // ExclusiveGroupSetStructure
+    // -------------------------------------------------------------------------
+
+    /**
+     * Creates table.
+     * 
+     * @param statement the Statement.
+     */
+    void createExclusiveGroupSetStructureTable( Statement statement );
+    
+    /**
+     * Removes table.
+     */
+    void removeExclusiveGroupSetStructureTable();
 }
