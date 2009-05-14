@@ -1,7 +1,5 @@
 package org.hisp.dhis.reporttable.statement;
 
-import java.util.Iterator;
-
 import org.hisp.dhis.reporttable.ReportTable;
 
 public class GetReportTableStatement
@@ -23,28 +21,6 @@ public class GetReportTableStatement
     @Override
     protected void init( ReportTable reportTable )
     {
-        StringBuffer buffer = new StringBuffer();
-        
-        buffer.append( "SELECT * FROM " + reportTable.getTableName() );
-        
-        Iterator<String> indexNameColumns = reportTable.getIndexNameColumns().iterator();
-        
-        if ( indexNameColumns.hasNext() )
-        {
-            buffer.append( " ORDER BY " );
-            
-            while ( indexNameColumns.hasNext() )
-            {
-                buffer.append( indexNameColumns.next() );
-                
-                if ( indexNameColumns.hasNext() )
-                {
-                    buffer.append( SEPARATOR );
-                }
-            }
-        }
-        
-        System.out.println( buffer.toString() );
-        statement = buffer.toString();
+        statement = "SELECT * FROM " + reportTable.getTableName();
     }
 }
