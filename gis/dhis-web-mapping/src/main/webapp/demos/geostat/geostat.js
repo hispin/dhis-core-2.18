@@ -1117,6 +1117,7 @@ Ext.onReady(function()
     Ext.get('loading').fadeOut({remove: true});
 });
 
+
 function onHoverSelectChoropleth(feature)
 {
     var center_panel = Ext.getCmp('center');
@@ -1148,7 +1149,7 @@ function onHoverSelectChoropleth(feature)
     pe = '</p>';
 
     var html = style + feature.attributes[mapData.nameColumn] + pe;
-    html += style + bs + 'Value:' + be + space + feature.attributes['value'] + pe;
+    html += style + bs + 'Value:' + be + space + feature.attributes.value + pe;
     
     popup_feature.html = html;
     popup_feature.show();
@@ -1156,7 +1157,7 @@ function onHoverSelectChoropleth(feature)
 
 function onHoverUnselectChoropleth(feature)
 {
-    var infoPanel = Ext.getCmp('south-panel');
+//    var infoPanel = Ext.getCmp('south-panel');
 
     popup_feature.hide();
 }
@@ -1190,6 +1191,7 @@ function onClickSelectChoropleth(feature)
             var south_panel = Ext.getCmp('south-panel');
             south_panel.body.dom.innerHTML = organisationUnit + '<font color="#444444"> assigned to </font>' + name + "!";
             
+            Ext.getCmp('grid_gp').getStore().reload();
             loadMapData('assignment');
         },
         failure: function()
@@ -1206,44 +1208,7 @@ function onClickUnselectChoropleth(feature) {}
 
 function onHoverSelectPoint(feature)
 {
-/*
-    var center_panel = Ext.getCmp('center');
-    var south_panel = Ext.getCmp('south-panel');
 
-    var height = 230;
-    var padding_x = 15;
-    var padding_y = 22;
-
-    var x = center_panel.x + padding_x;
-    var y = south_panel.y - height - padding_y;
-
-    popup_orgunit = new Ext.Window(
-    {
-        title: 'Organisation unit',
-        width: 190,
-        height: height,
-        layout: 'fit',
-        plain: true,
-        bodyStyle: 'padding:5px',
-        x: x,
-        y: y
-    });
-
-    style = '<p style="margin-top: 5px; padding-left:5px;">';
-
-    var html = style + '<b>' + shpcols[1][0].type + ': </b>' + feature.attributes[shpcols[pointLayer][0].parent1] + '</p>';
-    html += style + '<b>' + shpcols[2][0].type + ': </b>' + feature.attributes[shpcols[pointLayer][0].parent2] + '</p>';
-    html += style + '<b>' + shpcols[3][0].type + ': </b>' + feature.attributes[shpcols[pointLayer][0].parent3] + '</p>';
-    html += style + '<b>' + shpcols[4][0].type + ': </b>' + feature.attributes[shpcols[pointLayer][0].name] + '</p>';
-    html += '<br>';
-    html += style + '<b>Value: </b>' + feature.attributes[shpcols[pointLayer][0].value] + '</p>';
-
-    popup_orgunit.html = html;
-    popup_orgunit.show();
-
-    var infoPanel_orgunit = Ext.getCmp('south-panel');
-    infoPanel_orgunit.body.dom.innerHTML = 'More information about the selected organisation unit may be listed here.';
-*/    
 }
 
 function onHoverUnselectPoint(feature)
@@ -1408,6 +1373,21 @@ function dataReceivedChoropleth( responseText )
             }
             
             features_choropleth = features;
+            
+            var options = {};
+            
+            // hidden
+            choropleth.indicator = 'value';
+            choropleth.indicatorText = 'Indicator';
+            options.indicator = choropleth.indicator;
+            
+            options.method = 1;
+            options.numClasses = Ext.getCmp('numClasses').getValue();
+            options.colors = choropleth.getColors();
+            
+            choropleth.coreComp.updateOptions(options);
+            choropleth.coreComp.applyClassification();
+            choropleth.classificationApplied = true;
         },
         failure: function()
         {
@@ -1463,4 +1443,24 @@ function dataReceivedAssignOrganisationUnit( responseText )
     }
     
     features_mapping = features;
+    
+    var options = {};
+        
+    // hidden
+    mapping.indicator = 'value';
+    mapping.indicatorText = 'Indicator';
+    options.indicator = mapping.indicator;
+    
+    options.method = 1;
+    options.numClasses = 2;
+    
+    var colorA = new mapfish.ColorRgb();
+    colorA.setFromHex('#FFFFFF');
+    var colorB = new mapfish.ColorRgb();
+    colorB.setFromHex('#72FF63');
+    options.colors = [colorA, colorB]; 
+    
+    mapping.coreComp.updateOptions(options);
+    mapping.coreComp.applyClassification();
+    mapping.classificationApplied = true;
 }
