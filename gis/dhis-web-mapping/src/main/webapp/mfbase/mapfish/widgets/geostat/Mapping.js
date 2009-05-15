@@ -209,20 +209,6 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 }
             },
 
-            {
-                xtype: 'button',
-                text: 'Load map',
-                handler: function()
-                {
-                    var mlp = Ext.getCmp('maps_cb').getValue();
-                    Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
-                    Ext.getCmp('grid_gp').getStore().reload();
-                    
-                    this.classify(true);
-                },
-                scope: this
-            },
-            
             { html: '<br>' },
 
             {
@@ -236,13 +222,13 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 style: 'left:0px',
                 bbar: new Ext.StatusBar({
                     defaultText: '',
-                    id: 'basic-statusbar',
+                    id: 'relations_sb',
                     items:
                     [
                         {
                             xtype: 'button',
-                            id: 'removerelation_b0',
-                            text: 'Remove relation',
+                            id: 'removerelation_b',
+                            text: 'Remove',
                             isVisible: false,
                             handler: function()
                             {
@@ -267,6 +253,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                         var mlp = Ext.getCmp('maps_cb').getValue();
                                         Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
                                         Ext.getCmp('grid_gp').getStore().reload();
+                                        
+                                        mapping.classify(true);
                                     },
                                     failure: function()
                                     {
@@ -280,7 +268,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                         {
                             xtype: 'button',
                             id: 'removeallrelations_b',
-                            text: 'Remove all relations',
+                            text: 'Remove all',
                             isVisible: false,
                             handler: function()
                             {
@@ -297,6 +285,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                         var mlp = Ext.getCmp('maps_cb').getValue();
                                         Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
                                         Ext.getCmp('grid_gp').getStore().reload();
+                                        
+                                        mapping.classify(true);
                                     },
                                     failure: function()
                                     {
@@ -387,27 +377,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 return;
         }
         
-        loadMapData('assignment', url);
-        
-        var options = {};
-        
-        // hidden
-        this.indicator = 'value';
-        this.indicatorText = 'Indicator';
-        options.indicator = this.indicator;
-        
-        options.method = 1;
-        options.numClasses = 2;
-        
-        var colorA = new mapfish.ColorRgb();
-        colorA.setFromHex('#FFFFFF');
-        var colorB = new mapfish.ColorRgb();
-        colorB.setFromHex('#72FF63');
-        options.colors = [colorA, colorB]; 
-        
-        this.coreComp.updateOptions(options);
-        this.coreComp.applyClassification();
-        this.classificationApplied = true;
+        loadMapData('assignment');
     },
 
     /**

@@ -405,7 +405,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             xtype: 'colorfield',
             fieldLabel: 'Color',
             id: 'colorA_cf',
-            width: 100,
             allowBlank: false,
             width: combo_width,
             value: "#FFFF00"
@@ -415,15 +414,16 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             xtype: 'colorfield',
             fieldLabel: 'Color',
             id: 'colorB_cf',
-            width: 100,
             allowBlank: false,
             width: combo_width,
             value: "#FF0000"
         },
         
+        { html: '<br>' },
+        
         {
             xtype: 'button',
-            text: 'Load map',
+            text: 'Refresh map',
             handler: function()
             {
                 this.layer.setVisibility(true);
@@ -513,21 +513,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         }
         
         loadMapData('choropleth');
-        
-        var options = {};
-        
-        // hidden
-        this.indicator = 'value';
-        this.indicatorText = 'Indicator';
-        options.indicator = this.indicator;
-        
-        options.method = 1;
-        options.numClasses = Ext.getCmp('numClasses').getValue();
-        options.colors = this.getColors();
-        
-        this.coreComp.updateOptions(options);
-        this.coreComp.applyClassification();
-        this.classificationApplied = true;
     },
 
     /**
