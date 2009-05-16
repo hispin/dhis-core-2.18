@@ -253,10 +253,10 @@ Ext.onReady(function()
         minListWidth: combo_width + 26,
         triggerAction: 'all',
         mode: 'local',
-        value: 5,
+        value: 7,
         store: new Ext.data.SimpleStore({
             fields: ['value'],
-            data: [[3], [4], [5], [6], [7], [8]]
+            data: [[5], [6], [7], [8], [9]]
         })
     });
     
@@ -273,7 +273,7 @@ Ext.onReady(function()
         value: 5,
         store: new Ext.data.SimpleStore({
             fields: ['value'],
-            data: [[3], [4], [5], [6], [7], [8]]
+            data: [[5], [6], [7], [8], [9]]
         })
     });
     
@@ -933,7 +933,7 @@ Ext.onReady(function()
         title: 'Thematic map',
         nameAttribute: "NAME",
         indicators: [['value', 'Indicator']],
-        url: 'pageload_geojson.txt',
+        url: 'pageload.geojson',
         featureSelection: false,
         loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
         legendDiv: 'choroplethLegend',
@@ -958,7 +958,7 @@ Ext.onReady(function()
         title: 'Assign organisation units',
         nameAttribute: 'NAME',
         indicators: [['value', 'Indicator']],
-        url: 'pageload_geojson.txt',
+        url: 'pageload.geojson',
         featureSelection: false,
         loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
         legendDiv: 'choroplethLegend',
@@ -983,7 +983,7 @@ Ext.onReady(function()
         title: 'Proportional symbol',
         nameAttribute: "ouname",
         indicators: [['PERIMETER', 'Perimeter']],
-        url: 'pageload_geojson.txt',
+        url: 'pageload.geojson',
         featureSelection: false,
         loadMask : {msg: 'Loading Data...', msgCls: 'x-mask-loading'},
         defaults: {width: 130},
@@ -1117,6 +1117,7 @@ Ext.onReady(function()
     Ext.get('loading').fadeOut({remove: true});
 });
 
+// SELECT FEATURES
 
 function onHoverSelectChoropleth(feature)
 {
@@ -1157,8 +1158,6 @@ function onHoverSelectChoropleth(feature)
 
 function onHoverUnselectChoropleth(feature)
 {
-//    var infoPanel = Ext.getCmp('south-panel');
-
     popup_feature.hide();
 }
 
@@ -1206,10 +1205,7 @@ function onClickSelectChoropleth(feature)
 function onClickUnselectChoropleth(feature) {}
 
 
-function onHoverSelectPoint(feature)
-{
-
-}
+function onHoverSelectPoint(feature) {}
 
 function onHoverUnselectPoint(feature)
 {
@@ -1245,10 +1241,12 @@ function loadMapData(redirect)
 
             if (redirect == 'choropleth') {
                 getChoroplethData(); }
-            if (redirect == 'point') {
+            else if (redirect == 'point') {
                 getPointData(); }
-            if (redirect == 'assignment') {
+            else if (redirect == 'assignment') {
                 getAssignOrganisationUnitData(); }
+            else if (redirect == 'auto-assignment') {
+                getAutoAssignOrganisationUnitData(); }
         },
         failure: function()
         {
@@ -1284,7 +1282,7 @@ function getPointData()
 {
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
     var periodId = Ext.getCmp('period_cb').getValue();
-    var level = pointLayer;
+    var level = mapData.organisationUnitLevel;
 
     var url = 'getMapValues' + type;
     format = 'json';
@@ -1323,6 +1321,27 @@ function getAssignOrganisationUnitData()
         failure: function()
         {
             alert( 'Error while retrieving data: getAssignOrganisationUnitData' );
+        } 
+    });
+}
+
+function getAutoAssignOrganisationUnitData()
+{
+    var level = mapData.organisationUnitLevel;
+
+    Ext.Ajax.request( 
+    {
+        url: path + 'getOrganisationUnitsAtLevel' + type,
+        method: 'GET',
+        params: { level: level, format: 'json' },
+
+        success: function( responseObject )
+        {
+            dataReceivedAutoAssignOrganisationUnit( responseObject.responseText );
+        },
+        failure: function()
+        {
+            alert( 'Status', 'Error while retrieving data' );
         } 
     });
 }
@@ -1463,4 +1482,52 @@ function dataReceivedAssignOrganisationUnit( responseText )
     mapping.coreComp.updateOptions(options);
     mapping.coreComp.applyClassification();
     mapping.classificationApplied = true;
+}
+
+function dataReceivedAutoAssignOrganisationUnit( responseText )
+{
+    var layers = this.myMap.getLayersByName(choroplethLayerName);
+    var features = layers[0]['features'];
+    var organisationUnits = Ext.util.JSON.decode(responseText).organisationUnits;
+    var uniqueColumn = mapData.uniqueColumn;
+    var nameColumn = mapData.nameColumn;
+    var mlp = mapData.mapLayerPath;
+    var count = 0;
+
+    for ( var j=0; j < features.length; j++ ) 
+    {
+        for ( var i=0; i < organisationUnits.length; i++ )
+        {
+            if (features[j].attributes[uniqueColumn] == organisationUnits[i].name)
+            {
+                var organisationUnitId = organisationUnits[i].id;
+                var organisationUnit = organisationUnits[i].name;
+                var featureId = features[j].attributes[uniqueColumn];
+                var featureName = features[j].attributes[nameColumn];
+                count++;
+                
+                Ext.Ajax.request( 
+                {
+                    url: path + 'addOrUpdateMapOrganisationUnitRelation' + type,
+                    method: 'GET',
+                    params: { mapLayerPath: mlp, organisationUnitId: organisationUnitId, featureId: featureId },
+
+                    success: function( responseObject )
+                    {
+                        
+                    },
+                    failure: function()
+                    {
+                        alert( 'Status', 'Error while retrieving data: dataReceivedAutoAssignOrganisationUnit' );
+                    } 
+                });
+            }
+        }
+    }
+    
+    var south_panel = Ext.getCmp('south-panel');
+    south_panel.body.dom.innerHTML = count + '<font color="#444444"> organisation units assigned!</font>';
+    
+    Ext.getCmp('grid_gp').getStore().reload();
+    loadMapData('assignment');
 }
