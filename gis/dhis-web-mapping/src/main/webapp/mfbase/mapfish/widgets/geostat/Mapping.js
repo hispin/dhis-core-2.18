@@ -227,6 +227,18 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                     [
                         {
                             xtype: 'button',
+                            id: 'autoassign_be',
+                            text: 'Auto-assign',
+                            isVisible: false,
+                            handler: function()
+                            {
+                                loadMapData('auto-assignment');
+                            },
+                            scope: this
+                        },
+                        
+                        {
+                            xtype: 'button',
                             id: 'removerelation_b',
                             text: 'Remove',
                             isVisible: false,
