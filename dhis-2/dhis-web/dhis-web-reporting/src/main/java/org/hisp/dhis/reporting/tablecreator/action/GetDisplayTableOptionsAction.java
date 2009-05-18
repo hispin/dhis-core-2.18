@@ -43,7 +43,9 @@ public class GetDisplayTableOptionsAction
     {
         reportTable = reportTableService.getReportTable( id );
         
-        columns = reportTableService.getFilledReportTableColumns( id );
+        reportTable.init();
+        
+        columns = reportTable.getFilledReportTableColumns();
         
         return SUCCESS;
     }

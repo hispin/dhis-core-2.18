@@ -444,6 +444,29 @@ public class ReportTable
     // Public methods
     // -------------------------------------------------------------------------
 
+    public List<ReportTableColumn> getFilledReportTableColumns()
+    {
+        List<String> columns = getAllColumns();
+        
+        List<ReportTableColumn> displayColumns = new ArrayList<ReportTableColumn>( getDisplayColumns() );
+        
+        for ( String column : columns )
+        {
+            if ( !hasDisplayColumn( column ) )
+            {
+                ReportTableColumn displayColumn = new ReportTableColumn();
+                
+                displayColumn.setName( column );
+                displayColumn.setHeader( column );
+                displayColumn.setHidden( true );
+                
+                displayColumns.add( displayColumn );
+            }
+        }
+        
+        return displayColumns;
+    }
+    
     public List<String> getAllColumns()
     {
         List<String> columns = new ArrayList<String>();
