@@ -83,7 +83,7 @@ public class CreateReportTableStatement
         // Reporting month name
         // ---------------------------------------------------------------------
 
-        buffer.append( REPORTING_MONTH_COLUMN_NAME + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR );
+        buffer.append( ReportTable.REPORTING_MONTH_COLUMN_NAME + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR );
 
         // ---------------------------------------------------------------------
         // Crosstab columns

@@ -66,6 +66,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/>
   </bean>
+  
+  <!-- Design -->
+
+  <bean id="org.hisp.dhis.design.DesignStore"
+    class="org.hisp.dhis.design.hibernate.HibernateDesignStore">
+    <property name="sessionManager"
+      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+  </bean>
+
+  <bean id="org.hisp.dhis.design.DesignService"
+    class="org.hisp.dhis.design.impl.DefaultDesignService">
+    <property name="designStore"
+      ref="org.hisp.dhis.design.DesignStore"/>
+  </bean>
 
   <!-- Report -->
   
@@ -218,6 +232,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <list>
         <value>.*\.OlapURLStore\.get.*</value>
         <value>.*\.ReportTableStore\.get.*</value>
+        <value>.*\.ReportTemplateStore\.get.*</value>
         <value>.*\.ReportStore\.get.*</value>
         <value>.*\.ChartStore\.get.*</value>
       </list>
@@ -231,7 +246,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <value>.*\.OlapURLStore\.save.*</value>
         <value>.*\.OlapURLStore\.delete.*</value>
         <value>.*\.ReportTableStore\.save.*</value>
+        <value>.*\.ReportTableStore\.update.*</value>
         <value>.*\.ReportTableStore\.delete.*</value>
+        <value>.*\.ReportTemplateStore\.save.*</value>
+        <value>.*\.ReportTemplateStore\.update.*</value>
+        <value>.*\.ReportTemplateStore\.delete.*</value>
         <value>.*\.ReportStore\.save.*</value>
         <value>.*\.ReportStore\.delete.*</value>
         <value>.*\.ChartStore\.save.*</value>

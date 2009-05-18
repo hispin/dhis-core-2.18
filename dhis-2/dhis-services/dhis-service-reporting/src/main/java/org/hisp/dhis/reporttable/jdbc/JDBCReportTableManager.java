@@ -46,8 +46,10 @@ import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.reporttable.ReportTableColumn;
 import org.hisp.dhis.reporttable.ReportTableData;
 import org.hisp.dhis.reporttable.statement.CreateReportTableStatement;
+import org.hisp.dhis.reporttable.statement.DisplayReportTableStatement;
 import org.hisp.dhis.reporttable.statement.GetReportTableDataStatement;
 import org.hisp.dhis.reporttable.statement.GetReportTableStatement;
 import org.hisp.dhis.reporttable.statement.RemoveReportTableStatement;
@@ -189,7 +191,72 @@ public class JDBCReportTableManager
         }
     }
     
-    public ReportTableData getReportTable( ReportTable reportTable )
+    public ReportTableData getDisplayReportTableData( ReportTable reportTable )
+    {
+        ReportTableData data = new ReportTableData();
+        
+        // ---------------------------------------------------------------------
+        // Set name
+        // ---------------------------------------------------------------------
+
+        data.setName( reportTable.getName() );
+
+        ReportTableStatement statement = new DisplayReportTableStatement( reportTable );
+        
+        StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
+            
+            log.debug( "Get display report table data statement: " + statement.getStatement() );
+            
+            // -----------------------------------------------------------------
+            // Set columns
+            // -----------------------------------------------------------------
+
+            int index = 1;
+            
+            for ( ReportTableColumn column : reportTable.getDisplayColumns() )
+            {
+                data.getColumns().put( index++, column.getName() );
+                
+                data.getPrettyPrintColumns().add( column.getHeader() );                        
+            }
+
+            // -----------------------------------------------------------------
+            // Set data
+            // -----------------------------------------------------------------
+
+            while ( resultSet.next() )
+            {
+                SortedMap<Integer, String> row = new TreeMap<Integer, String>();
+                
+                index = 1;
+                
+                for ( ReportTableColumn column : reportTable.getDisplayColumns() )
+                {
+                    row.put( index++, String.valueOf( resultSet.getObject( column.getName() ) ) );
+                }
+                
+                data.getRows().add( row );
+            }
+            
+            log.debug( "Number of rows: " + data.getRows().size() );
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to get display report table data", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+        
+        return data;
+    }
+    
+    public ReportTableData getReportTableData( ReportTable reportTable )
     {
         ReportTableData data = new ReportTableData();
         

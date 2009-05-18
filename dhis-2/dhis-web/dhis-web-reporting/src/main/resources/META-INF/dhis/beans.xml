@@ -273,6 +273,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
   </bean>
   
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetDisplayTableOptionsAction"
+    class="org.hisp.dhis.reporting.tablecreator.action.GetDisplayTableOptionsAction"
+    scope="prototype">
+    <property name="reportTableService"
+      ref="org.hisp.dhis.reporttable.ReportTableService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.SaveDisplayTableAction"
+    class="org.hisp.dhis.reporting.tablecreator.action.SaveDisplayTableAction"
+    scope="prototype">
+    <property name="reportTableService"
+      ref="org.hisp.dhis.reporttable.ReportTableService"/>
+  </bean>
+  
   <!-- ReportViewer -->
   
   <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportAction"

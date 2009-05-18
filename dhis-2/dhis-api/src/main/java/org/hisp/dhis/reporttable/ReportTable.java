@@ -61,6 +61,8 @@ public class ReportTable
     public static final String PERIOD_NAME = "periodname";
     public static final String ORGANISATIONUNIT_ID = "organisationunitid";
     public static final String ORGANISATIONUNIT_NAME = "organisationunitname";
+
+    public static final String REPORTING_MONTH_COLUMN_NAME = "reporting_month_name";
     
     public static final String SEPARATOR = "_";
     
@@ -113,6 +115,8 @@ public class ReportTable
     private RelativePeriods relatives;
 
     private ReportParams reportParams;
+
+    private List<ReportTableColumn> displayColumns = new ArrayList<ReportTableColumn>();
     
     // -------------------------------------------------------------------------
     // Transient properties
@@ -214,7 +218,7 @@ public class ReportTable
      * The name of the reporting month.
      */
     private String reportingMonthName;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -440,6 +444,38 @@ public class ReportTable
     // Public methods
     // -------------------------------------------------------------------------
 
+    public List<String> getAllColumns()
+    {
+        List<String> columns = new ArrayList<String>();
+        
+        columns.addAll( getIndexColumns() );
+        columns.addAll( getIndexNameColumns() );
+        columns.addAll( getCrossTabColumns() );
+        
+        if ( isRegression() )
+        {
+            for ( String regressionColumn : getCrossTabColumns() )
+            {
+                columns.add( REGRESSION_COLUMN_PREFIX + regressionColumn );
+            }
+        }
+        
+        return columns;
+    }
+    
+    public boolean hasDisplayColumn( String name )
+    {
+        for ( ReportTableColumn column : displayColumns )
+        {
+            if ( column.getName().equals( name ) && column.getHeader() != null && column.getHeader().trim().length() > 0 )
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
     public boolean isRegression()
     {
         return regression != null && regression;
@@ -854,6 +890,16 @@ public class ReportTable
     public void setReportParams( ReportParams reportParams )
     {
         this.reportParams = reportParams;
+    }
+
+    public List<ReportTableColumn> getDisplayColumns()
+    {
+        return displayColumns;
+    }
+
+    public void setDisplayColumns( List<ReportTableColumn> displayColumns )
+    {
+        this.displayColumns = displayColumns;
     }
 
     // -------------------------------------------------------------------------

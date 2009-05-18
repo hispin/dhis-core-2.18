@@ -27,71 +27,48 @@ package org.hisp.dhis.reporttable.statement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.jdbc.StatementBuilder;
-import org.hisp.dhis.jdbc.factory.StatementBuilderFactory;
-import org.hisp.dhis.jdbc.StatementDialect;
+import java.util.Iterator;
+
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.reporttable.ReportTableColumn;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public abstract class ReportTableStatement
+public class DisplayReportTableStatement
+    extends ReportTableStatement
 {
-    protected static final String NUMERIC_COLUMN_TYPE = "INTEGER NOT NULL";
-    protected static final String SHORT_TEXT_COLUMN_TYPE = "VARCHAR (15)";
-    protected static final String LONG_TEXT_COLUMN_TYPE = "VARCHAR (40)";
-    protected static final String SPACE = " ";
-    protected static final String SEPARATOR = ", ";
-    protected static final String QUERY_PARAM_ID = ":";
-
-    protected StatementBuilder statementBuilder;
-    
-    protected String statement;
-
     // -------------------------------------------------------------------------
-    // Constructors
+    // Constructor
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unused" )
-    private ReportTableStatement()
+    public DisplayReportTableStatement( ReportTable reportTable )
     {
+        super( reportTable );
     }
-    
-    public ReportTableStatement( ReportTable reportTable )
+
+    // -------------------------------------------------------------------------
+    // ReportTableStatement implementation
+    // -------------------------------------------------------------------------
+
+    @Override
+    protected void init( ReportTable reportTable )
     {
-        init( reportTable );
-    }
-    
-    public ReportTableStatement( ReportTable reportTable, StatementDialect dialect )
-    {
-        statementBuilder = StatementBuilderFactory.createStatementBuilder( dialect );
+        StringBuffer buffer = new StringBuffer( "SELECT " );
         
-        init( reportTable );
+        Iterator<ReportTableColumn> columns = reportTable.getDisplayColumns().iterator();
+        
+        while ( columns.hasNext() )
+        {
+            ReportTableColumn column = columns.next();
+            
+            if ( !column.isHidden() )
+            {            
+                buffer.append( column.getName() + ( columns.hasNext() ? SEPARATOR : SPACE ) );
+            }
+        }
+        
+        buffer.append( "FROM " + reportTable.getTableName() );
     }
-
-    // -------------------------------------------------------------------------
-    // Public methods
-    // -------------------------------------------------------------------------
-
-    public String getStatement()
-    {
-        return statement;
-    }
-    
-    public void setString( String param, String value )
-    {
-        statement = statement.replace( QUERY_PARAM_ID + param, value );
-    }
-    
-    public void setInt( String param, Integer value )
-    {        
-        statement = statement.replace( QUERY_PARAM_ID + param, String.valueOf( value ) );
-    }
-    
-    // -------------------------------------------------------------------------
-    // Abstract methods
-    // -------------------------------------------------------------------------
-
-    protected abstract void init( ReportTable reportTable );
 }

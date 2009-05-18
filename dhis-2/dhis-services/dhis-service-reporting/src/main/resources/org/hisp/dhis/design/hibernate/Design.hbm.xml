@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.design.Design" table="design">
+  
+    <id name="id" column="designid">
+      <generator class="native"/>
+    </id>
+    
+    <property name="name" not-null="true" unique="true"/>
+    
+    <list name="charts" table="designcharts">
+      <key column="designid"/>
+      <list-index column="sort_order" base="0"/>
+      <many-to-many class="org.hisp.dhis.chart.Chart"
+        column="chartid" foreign-key="fk_design_chart"/>
+    </list>
+    
+    <list name="reportTables" table="designreporttables">
+      <key column="designid"/>
+      <list-index column="sort_order" base="0"/>
+      <many-to-many class="org.hisp.dhis.reporttable.ReportTable"
+        column="reporttableid" foreign-key="fk_design_reporttable"/>
+    </list>
+    
+  </class>
+</hibernate-mapping>
