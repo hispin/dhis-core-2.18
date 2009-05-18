@@ -444,7 +444,7 @@ public class ReportTable
     // Public methods
     // -------------------------------------------------------------------------
 
-    public List<ReportTableColumn> getFilledReportTableColumns()
+    public List<ReportTableColumn> getFilledDisplayColumns()
     {
         List<String> columns = getAllColumns();
         
@@ -457,8 +457,8 @@ public class ReportTable
                 ReportTableColumn displayColumn = new ReportTableColumn();
                 
                 displayColumn.setName( column );
-                displayColumn.setHeader( column );
-                displayColumn.setHidden( true );
+                displayColumn.setHeader( prettyPrintColumn( column ) );
+                displayColumn.setHidden( false );
                 
                 displayColumns.add( displayColumn );
             }
@@ -497,6 +497,12 @@ public class ReportTable
         }
         
         return false;
+    }
+    
+    public String prettyPrintColumn( String column )
+    {
+        column = column.replaceAll( "_", " " );
+        return column.substring( 0, 1 ).toUpperCase() + column.substring( 1, column.length() );
     }
     
     public boolean isRegression()
