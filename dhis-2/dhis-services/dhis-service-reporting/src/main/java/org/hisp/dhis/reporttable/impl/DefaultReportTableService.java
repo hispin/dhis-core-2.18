@@ -41,7 +41,6 @@ import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.RelativePeriodType;
 import org.hisp.dhis.reporttable.RelativePeriods;
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableColumn;
 import org.hisp.dhis.reporttable.ReportTableData;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.reporttable.ReportTableStore;
@@ -288,33 +287,6 @@ public class DefaultReportTableService
         reportTable.init();
         
         return reportTableManager.getReportTableData( reportTable );
-    }
-    
-    public List<ReportTableColumn> getFilledReportTableColumns( int id )
-    {
-        ReportTable reportTable = getReportTable( id );
-        
-        reportTable.init();
-        
-        List<String> columns = reportTable.getAllColumns();
-        
-        List<ReportTableColumn> displayColumns = new ArrayList<ReportTableColumn>( reportTable.getDisplayColumns() );
-        
-        for ( String column : columns )
-        {
-            if ( !reportTable.hasDisplayColumn( column ) )
-            {
-                ReportTableColumn displayColumn = new ReportTableColumn();
-                
-                displayColumn.setName( column );
-                displayColumn.setHeader( column );
-                displayColumn.setHidden( true );
-                
-                displayColumns.add( displayColumn );
-            }
-        }
-        
-        return displayColumns;
     }
     
     // -------------------------------------------------------------------------
