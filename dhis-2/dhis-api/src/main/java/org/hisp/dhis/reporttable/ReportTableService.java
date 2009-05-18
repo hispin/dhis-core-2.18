@@ -122,4 +122,13 @@ public interface ReportTableService
      * @return a ReportTableData object.
      */
     ReportTableData getReportTableData( int id );
+    
+    /**
+     * Returns a list with ReportTableColumns for the ReportTable with the given
+     * identifier. ReportTableColumns are generated and injected where missing.
+     * 
+     * @param id the identifier of the ReportTable.
+     * @return a list of ReportTableColumns.
+     */
+    List<ReportTableColumn> getFilledReportTableColumns( int id );
 }

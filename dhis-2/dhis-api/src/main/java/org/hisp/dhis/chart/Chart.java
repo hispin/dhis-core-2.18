@@ -89,6 +89,11 @@ public class Chart
     public Chart()
     {   
     }
+    
+    public Chart( String title )
+    {
+        this.title = title;
+    }
 
     // -------------------------------------------------------------------------
     // hashCode, equals, toString

@@ -1,0 +1,35 @@
+
+<script type="text/javascript">
+
+$( document ).ready( function()
+{
+	$( "#columnTable" ).tableDnD();
+} );
+
+</script>
+
+<input type="hidden" id="reportTableId" value="$!reportTable.id">
+
+<h3>$i18n.getString( "display_report_table" )</h3>
+
+<h4>$encoder.htmlEncode( $reportTable.name )</h4>
+
+<p>
+<table id="columnTable">
+	<tr>
+		<th>$i18n.getString( "column_name" )</th>
+		<th>$i18n.getString( "display_name" )</th>
+        <th>$i18n.getString( "visible" )</th>
+	</tr>
+	#foreach( $column in $columns )
+	<tr>
+		<td style="min-width:200px">$encoder.htmlEncode( $column.name )</td>
+		<td style="width:200px"><input type="text" id="$!encoder.htmlEncode( $column.name )" value="$!column.header" style="width:200px"/></td>
+		<td style="width:24px"><input type="checkbox" #if ( !$column.hidden )checked="checked"#end></td>
+	</tr>
+	#end
+</table>
+</p>
+
+<p><input type="button" value="$i18n.getString( "save" )" onclick="saveDisplayTable()" style="width:100px"><input
+          type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='displayManageTableForm.action'" style="width:100px"></p>
