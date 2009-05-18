@@ -57,18 +57,17 @@ public class DisplayReportTableStatement
     {
         StringBuffer buffer = new StringBuffer( "SELECT " );
         
-        Iterator<ReportTableColumn> columns = reportTable.getDisplayColumns().iterator();
+        Iterator<ReportTableColumn> columns = reportTable.getFilledDisplayColumns().iterator();
         
         while ( columns.hasNext() )
         {
             ReportTableColumn column = columns.next();
             
-            if ( !column.isHidden() )
-            {            
-                buffer.append( column.getName() + ( columns.hasNext() ? SEPARATOR : SPACE ) );
-            }
+            buffer.append( column.getName() + ( columns.hasNext() ? SEPARATOR : SPACE ) );
         }
         
         buffer.append( "FROM " + reportTable.getTableName() );
+        
+        statement = buffer.toString();
     }
 }

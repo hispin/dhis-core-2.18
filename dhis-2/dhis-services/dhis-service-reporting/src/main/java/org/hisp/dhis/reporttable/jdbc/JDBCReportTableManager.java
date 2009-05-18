@@ -207,9 +207,9 @@ public class JDBCReportTableManager
 
         try
         {
-            ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
-            
             log.debug( "Get display report table data statement: " + statement.getStatement() );
+            
+            ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
             
             // -----------------------------------------------------------------
             // Set columns
@@ -217,11 +217,14 @@ public class JDBCReportTableManager
 
             int index = 1;
             
-            for ( ReportTableColumn column : reportTable.getDisplayColumns() )
+            for ( ReportTableColumn column : reportTable.getFilledDisplayColumns() )
             {
-                data.getColumns().put( index++, column.getName() );
+                if ( !column.isHidden() )
+                {
+                    data.getColumns().put( index++, column.getName() );
                 
-                data.getPrettyPrintColumns().add( column.getHeader() );                        
+                    data.getPrettyPrintColumns().add( column.getHeader() );
+                }
             }
 
             // -----------------------------------------------------------------
@@ -234,9 +237,12 @@ public class JDBCReportTableManager
                 
                 index = 1;
                 
-                for ( ReportTableColumn column : reportTable.getDisplayColumns() )
+                for ( ReportTableColumn column : reportTable.getFilledDisplayColumns() )
                 {
-                    row.put( index++, String.valueOf( resultSet.getObject( column.getName() ) ) );
+                    if ( !column.isHidden() )
+                    {
+                        row.put( index++, String.valueOf( resultSet.getObject( column.getName() ) ) );
+                    }
                 }
                 
                 data.getRows().add( row );
@@ -272,9 +278,9 @@ public class JDBCReportTableManager
 
         try
         {
-            ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
-            
             log.debug( "Get report table data statement: " + statement.getStatement() );
+            
+            ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
             
             ResultSetMetaData metaData = resultSet.getMetaData();
             
@@ -290,7 +296,7 @@ public class JDBCReportTableManager
                 
                 data.getColumns().put( index, metaData.getColumnName( index ) );
                 
-                data.getPrettyPrintColumns().add( prettyPrintColumn( metaData.getColumnName( index ) ) );                        
+                data.getPrettyPrintColumns().add( reportTable.prettyPrintColumn( metaData.getColumnName( index ) ) );                        
             }
 
             // -----------------------------------------------------------------
@@ -323,15 +329,5 @@ public class JDBCReportTableManager
         }
         
         return data;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private String prettyPrintColumn( String column )
-    {
-        column = column.replaceAll( "_", " " );
-        return column.substring( 0, 1 ).toUpperCase() + column.substring( 1, column.length() );
     }
 }

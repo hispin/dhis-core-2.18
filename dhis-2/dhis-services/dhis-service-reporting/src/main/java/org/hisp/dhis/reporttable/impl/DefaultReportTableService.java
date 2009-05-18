@@ -286,9 +286,9 @@ public class DefaultReportTableService
         
         reportTable.init();
         
-        return reportTableManager.getReportTableData( reportTable );
+        return reportTableManager.getDisplayReportTableData( reportTable );
     }
-    
+        
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
