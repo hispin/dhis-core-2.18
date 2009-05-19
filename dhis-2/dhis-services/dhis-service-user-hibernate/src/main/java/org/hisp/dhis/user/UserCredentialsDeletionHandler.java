@@ -31,6 +31,7 @@ import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.report.Report;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -108,6 +109,7 @@ public class UserCredentialsDeletionHandler
         }
     }
     
+    @Override
     public void deleteDocument( Document document )
     {
         for ( UserCredentials credentials : userStore.getAllUserCredentials() )
@@ -116,6 +118,18 @@ public class UserCredentialsDeletionHandler
             {
                 userStore.updateUserCredentials( credentials );
             }
+        }
+    }
+    
+    @Override
+    public void deleteReportTable( ReportTable reportTable )
+    {
+        for ( UserCredentials credentials : userStore.getAllUserCredentials() )
+        {
+            if ( credentials.getDashboardReportTables().remove( reportTable ) )
+            {
+                userStore.updateUserCredentials( credentials );
+            }                
         }
     }
 }

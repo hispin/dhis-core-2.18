@@ -6,12 +6,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- Content providers -->
   
-  <bean id="rssHealthContentProvider" 
-    class="org.hisp.dhis.dashboard.provider.RssContentProvider">
-    <property name="url" value="http://health.yahoo.com/news/rss/health"/>
-    <property name="key" value="healthItems"/>
-  </bean>
-  
   <bean id="reportContentProvider" 
     class="org.hisp.dhis.dashboard.provider.ReportContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
@@ -34,6 +28,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="key" value="dataMartExports"/>
   </bean>
   
+  <bean id="reportTableContentProvider"
+    class="org.hisp.dhis.dashboard.provider.ReportTableContentProvider">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+    <property name="key" value="reportTables"/>
+  </bean>
+    
   <bean id="olapUrlContentProvider"
     class="org.hisp.dhis.dashboard.provider.OlapUrlContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
@@ -41,6 +42,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="key" value="olapUrls"/>
   </bean>
     
+  <bean id="rssHealthContentProvider" 
+    class="org.hisp.dhis.dashboard.provider.RssContentProvider">
+    <property name="url" value="http://health.yahoo.com/news/rss/health"/>
+    <property name="key" value="healthItems"/>
+  </bean>
+  
   <!-- Manager -->
   
   <bean id="org.hisp.dhis.dashboard.manager.DashboardManager" 
@@ -59,6 +66,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <entry>
           <key><value>data_mart_export</value></key>
           <ref local="dataMartExportContentProvider"/>
+        </entry>
+        <entry>
+          <key><value>report_table</value></key>
+          <ref local="reportTableContentProvider"/>
         </entry>
         <entry>
           <key><value>olap_url</value></key>
@@ -129,6 +140,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
     <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
     <property name="documentService" ref="org.hisp.dhis.document.DocumentService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.dashboard.action.RemoveReportTableAction"
+    class="org.hisp.dhis.dashboard.action.RemoveReportTableAction"
+    scope="prototype">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService"/>
   </bean>
   
 </beans>
