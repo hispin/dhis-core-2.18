@@ -1,10 +1,5 @@
 package org.hisp.dhis.reporting.tablecreator.action;
 
-import org.hisp.dhis.reporttable.ReportTableData;
-import org.hisp.dhis.reporttable.ReportTableService;
-
-import com.opensymphony.xwork.Action;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -31,6 +26,11 @@ import com.opensymphony.xwork.Action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import org.hisp.dhis.reporttable.ReportTableData;
+import org.hisp.dhis.reporttable.ReportTableService;
+
+import com.opensymphony.xwork.Action;
 
 /**
  * @author Lars Helge Overland

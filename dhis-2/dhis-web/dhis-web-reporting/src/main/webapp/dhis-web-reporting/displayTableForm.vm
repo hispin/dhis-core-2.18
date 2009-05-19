@@ -25,7 +25,7 @@ $( document ).ready( function()
 	<tr>
 		<td style="min-width:200px">$encoder.htmlEncode( $column.name )</td>
 		<td style="width:200px"><input type="text" id="$!encoder.htmlEncode( $column.name )" value="$!column.header" style="width:200px"/></td>
-		<td style="width:24px"><input type="checkbox" #if ( !$column.hidden )checked="checked"#end></td>
+		<td style="width:55px"><input type="checkbox" #if ( !$column.hidden )checked="checked"#end></td>
 	</tr>
 	#end
 </table>
