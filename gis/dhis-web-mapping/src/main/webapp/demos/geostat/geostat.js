@@ -15,6 +15,8 @@ Ext.onReady(function()
     features_mapping = null;
     
     url = null;
+    
+    active_panel = 'choropleth';
 
     var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
                                            "http://labs.metacarta.com/wms-c/Basic.py?", 
@@ -963,12 +965,17 @@ Ext.onReady(function()
         defaults: {width: 130},
         listeners: {
             expand: {
-                fn: function() {
+                fn: function()
+                {
                     choroplethLayer.setVisibility(false);
                     choropleth.classify(false);
-                    if (features_choropleth != null) {
+                    
+                    if (features_choropleth != null)
+                    {
                         features = features_choropleth;
                     }
+                    
+                    active_panel = 'choropleth';
                 }
             }
         }
@@ -988,12 +995,16 @@ Ext.onReady(function()
         defaults: {width: 130},
         listeners: {
             expand: {
-                // show layer if expanded
-                fn: function() {
+                fn: function()
+                {
                     choroplethLayer.setVisibility(false);
-                    if (features_mapping != null) {
+                    
+                    if (features_mapping != null)
+                    {
                         features = features_mapping;
                     }
+                    
+                    active_panel = 'mapping';
                 }
             }
         }
@@ -1012,10 +1023,14 @@ Ext.onReady(function()
         defaults: {width: 130},
         listeners: {
             expand: {
-                fn: function() {
-                    if (this.classificationApplied) {
+                fn: function()
+                {
+                    if (this.classificationApplied)
+                    {
                         this.layer.setVisibility(true);
                     }
+                    
+                    active_panel = 'point';
                 }
             }
         }
@@ -1187,43 +1202,48 @@ function onHoverUnselectChoropleth(feature)
 
 function onClickSelectChoropleth(feature)
 {
-    if (!Ext.getCmp('grid_gp').getSelectionModel().getSelected())
+    if (active_panel == 'mapping')
     {
-        alert('First, select an organisation unit from the list');
-        return;
+        if (!Ext.getCmp('grid_gp').getSelectionModel().getSelected())
+        {
+            alert('First, select an organisation unit from the list');
+            return;
+        }
+        
+        var selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
+        var organisationUnitId = selected.data['organisationUnitId'];
+        var organisationUnit = selected.data['organisationUnit'];
+        
+        var uniqueColumn = mapData.uniqueColumn;
+        var nameColumn = mapData.nameColumn;
+        var mlp = mapData.mapLayerPath;
+        var featureId = feature.attributes[uniqueColumn];
+        var name = feature.attributes[nameColumn];
+
+        Ext.Ajax.request( 
+        {
+            url: path + 'addOrUpdateMapOrganisationUnitRelation' + type,
+            method: 'GET',
+            params: { mapLayerPath: mlp, organisationUnitId: organisationUnitId, featureId: featureId },
+
+            success: function( responseObject )
+            {
+                var south_panel = Ext.getCmp('south-panel');
+                south_panel.body.dom.innerHTML = organisationUnit + '<font color="#444444"> assigned to </font>' + name + "!";
+                
+                Ext.getCmp('grid_gp').getStore().reload();
+                loadMapData('assignment');
+            },
+            failure: function()
+            {
+                alert( 'Status', 'Error while retrieving data' );
+            } 
+        });
+        
+        popup_feature.hide();
     }
     
-    var selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
-    var organisationUnitId = selected.data['organisationUnitId'];
-    var organisationUnit = selected.data['organisationUnit'];
     
-    var uniqueColumn = mapData.uniqueColumn;
-    var nameColumn = mapData.nameColumn;
-    var mlp = mapData.mapLayerPath;
-    var featureId = feature.attributes[uniqueColumn];
-    var name = feature.attributes[nameColumn];
-
-    Ext.Ajax.request( 
-    {
-        url: path + 'addOrUpdateMapOrganisationUnitRelation' + type,
-        method: 'GET',
-        params: { mapLayerPath: mlp, organisationUnitId: organisationUnitId, featureId: featureId },
-
-        success: function( responseObject )
-        {
-            var south_panel = Ext.getCmp('south-panel');
-            south_panel.body.dom.innerHTML = organisationUnit + '<font color="#444444"> assigned to </font>' + name + "!";
-            
-            Ext.getCmp('grid_gp').getStore().reload();
-            loadMapData('assignment');
-        },
-        failure: function()
-        {
-            alert( 'Status', 'Error while retrieving data' );
-        } 
-    });
-    
-    popup_feature.hide();
 }
 
 function onClickUnselectChoropleth(feature) {}
