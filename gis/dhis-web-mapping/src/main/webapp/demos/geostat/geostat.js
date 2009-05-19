@@ -58,8 +58,12 @@ Ext.onReady(function()
 
     var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
         choroplethLayer,
-        {onClickSelect: onClickSelectChoropleth, onClickUnselect: onClickUnselectChoropleth,
-        onHoverSelect: onHoverSelectChoropleth, onHoverUnselect: onHoverUnselectChoropleth}
+        {
+            onClickSelect: onClickSelectChoropleth,
+            onClickUnselect: onClickUnselectChoropleth,
+            onHoverSelect: onHoverSelectChoropleth,
+            onHoverUnselect: onHoverUnselectChoropleth
+        }
     );
 
     var selectFeaturePoint = new OpenLayers.Control.newSelectFeature( propSymbolLayer,
@@ -1354,7 +1358,7 @@ function dataReceivedChoropleth( responseText )
             choropleth.indicatorText = 'Indicator';
             options.indicator = choropleth.indicator;
             
-            options.method = 1;
+            options.method = Ext.getCmp('method').getValue();
             options.numClasses = Ext.getCmp('numClasses').getValue();
             options.colors = choropleth.getColors();
             

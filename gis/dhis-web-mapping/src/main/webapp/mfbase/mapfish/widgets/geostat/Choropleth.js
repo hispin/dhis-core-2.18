@@ -338,6 +338,24 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         
         {
             xtype: 'combo',
+            fieldLabel: 'Method',
+            id: 'method',
+            editable: false,
+            valueField: 'value',
+            displayField: 'text',
+            mode: 'local',
+            emptyText: 'Required',
+            value: 2,
+            triggerAction: 'all',
+            width: combo_width,
+            store: new Ext.data.SimpleStore({
+                fields: ['value', 'text'],
+                data: [[2, 'Distributed values'], [1, 'Equal intervals']]
+            })
+        },   
+        
+        {
+            xtype: 'combo',
             fieldLabel: 'Classes',
             id: 'numClasses',
             editable: false,
@@ -351,8 +369,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 fields: ['value'],
                 data: [[1], [2], [3], [4], [5], [6], [7], [8]]
             })
-        },        
-            
+        },
+        
         {
             xtype: 'combo',
             id: 'maplegend_cb',

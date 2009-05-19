@@ -363,7 +363,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
      *   nBins - {Integer} Total number of bins
      */
     defaultLabelGenerator: function(bin, binIndex, nbBins) {
-        return bin.lowerBound.toFixed(1) + ' - ' + bin.upperBound.toFixed(1) + ' (' + bin.nbVal + ')'
+        return bin.lowerBound.toFixed(1) + ' - ' + bin.upperBound.toFixed(1) + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )'
     },
 
     classifyWithBounds: function(bounds) {
