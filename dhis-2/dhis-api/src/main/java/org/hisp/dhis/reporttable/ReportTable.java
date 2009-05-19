@@ -29,7 +29,9 @@ package org.hisp.dhis.reporttable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,6 +67,7 @@ public class ReportTable
     public static final String REPORTING_MONTH_COLUMN_NAME = "reporting_month_name";
     
     public static final String SEPARATOR = "_";
+    public static final String SPACE = " ";
     
     public static final String MODE_DATAELEMENTS = "dataelements";
     public static final String MODE_INDICATORS = "indicators";
@@ -203,6 +206,12 @@ public class ReportTable
      * Generated names for crosstabulated columns in the report table.
      */
     private List<String> crossTabColumns = new ArrayList<String>();
+    
+    /**
+     * Generated pretty-print names for crosstabulated columns in the report table,
+     * where key is column name and value is pretty column name.
+     */
+    private Map<String, String> prettyCrossTabColumns = new HashMap<String, String>();
     
     /**
      * Generated unique identifiers used to retrieve the corresponding value from the datavalue table. 
@@ -430,9 +439,11 @@ public class ReportTable
                     for ( OrganisationUnit unit : crossTabUnits )
                     {
                         String columnName = getColumnName( indicator, categoryOptionCombo, period, unit );
+                        String prettyColumnName = getPrettyColumnName( indicator, categoryOptionCombo, period, unit );
                         String columnIdentifier = getColumnIdentifier( indicator, categoryOptionCombo, period, unit );
                         
                         crossTabColumns.add( columnName );
+                        prettyCrossTabColumns.put( columnName, prettyColumnName );
                         crossTabIdentifiers.add( columnIdentifier );
                     }
                 }
@@ -454,10 +465,13 @@ public class ReportTable
         {
             if ( !hasDisplayColumn( column ) )
             {
+                String prettyColumn = prettyCrossTabColumns.get( column ) != null ? 
+                    prettyCrossTabColumns.get( column ) : prettyPrintColumn( column );
+                    
                 ReportTableColumn displayColumn = new ReportTableColumn();
                 
                 displayColumn.setName( column );
-                displayColumn.setHeader( prettyPrintColumn( column ) );
+                displayColumn.setHeader( prettyColumn );
                 displayColumn.setHidden( false );
                 
                 displayColumns.add( displayColumn );
@@ -473,6 +487,7 @@ public class ReportTable
         
         columns.addAll( getIndexColumns() );
         columns.addAll( getIndexNameColumns() );
+        columns.add( ReportTable.REPORTING_MONTH_COLUMN_NAME );
         columns.addAll( getCrossTabColumns() );
         
         if ( isRegression() )
@@ -605,6 +620,32 @@ public class ReportTable
         return list != null && list.size() > 0;
     }
     
+    private String getPrettyColumnName( MetaObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
+    {
+        StringBuffer buffer = new StringBuffer();
+        
+        if ( metaObject != null )
+        {
+            buffer.append( metaObject.getShortName() + SPACE );
+        }
+        if ( categoryOptionCombo != null )
+        {
+            buffer.append( categoryOptionCombo.getShortName() + SPACE );
+        }
+        if ( period != null )
+        {
+            String periodName = period.getName() != null ? period.getName() : i18nFormat.formatPeriod( period );
+            
+            buffer.append( periodName + SPACE );
+        }
+        if ( unit != null )
+        {
+            buffer.append( unit.getShortName() + SPACE );
+        }
+
+        return buffer.length() > 0 ? buffer.substring( 0, buffer.lastIndexOf( SPACE ) ) : buffer.toString();
+    }
+        
     private String getColumnName( MetaObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
     {
         StringBuffer buffer = new StringBuffer();
