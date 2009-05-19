@@ -54,7 +54,7 @@ Ext.onReady(function()
         })
     });
 
-    map.addLayers([jpl_wms, vmap0, choroplethLayer]);
+    map.addLayers([jpl_wms, vmap0, choroplethLayer, propSymbolLayer]);
 
     var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
         choroplethLayer,
@@ -86,6 +86,7 @@ Ext.onReady(function()
 
     var organisationUnitStore = new Ext.data.JsonStore({
         url: path + 'getOrganisationUnitsAtLevel' + type,
+        baseParams: { level: 1, format: 'json' },
         root: 'organisationUnits',
         fields: ['id', 'name'],
         sortInfo: { field: 'name', direction: 'ASC' },
@@ -282,52 +283,70 @@ Ext.onReady(function()
         text: 'Register new map',
         handler: function()
         {
-            var nm = Ext.getCmp('newmap_cb').getValue();
-            var oui = Ext.getCmp('organisationunit_cb').getValue();
-            var ouli = Ext.getCmp('organisationunitlevel_cb').getValue();
-            var nn = Ext.getCmp('newname_tf').getValue();
-            var mlp = Ext.getCmp('maplayerpath_tf').getValue();
-            var t = Ext.getCmp('type_cb').getValue();
-            var uc = Ext.getCmp('newuniquecolumn_tf').getValue();
-            var nc = Ext.getCmp('newnamecolumn_tf').getValue();
-            var lon = Ext.getCmp('newlongitude_tf').getValue();
-            var lat = Ext.getCmp('newlatitude_tf').getValue();
-            var zoom = Ext.getCmp('newzoom_cb').getValue();
-             
-            if (!nm || !nn || !mlp || !oui || !ouli || !uc || !nc || !lon || !lat)
-            {
-                Ext.MessageBox.alert('Error', 'Form is not complete');
-                return;
-            }
-            
+//            var nm = Ext.getCmp('newmap_cb').getValue();
+//            var oui = Ext.getCmp('organisationunit_cb').getValue();
+
             Ext.Ajax.request(
             {
-                url: path + 'addOrUpdateMap' + type,
+                url: path + 'getOrganisationUnitsAtLevel' + type,
                 method: 'GET',
-                params: { name: nn, mapLayerPath: mlp, type: t, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc,
-                          longitude: lon, latitude: lat, zoom: zoom},
+                params: { level: 1, format: 'json' },
 
                 success: function( responseObject )
                 {
-                    Ext.Msg.show({
-                        title:'Register shapefiles',
-                        msg: '<p style="padding-top:8px">The map <b>' + nn + '</b> was successfully registered!</b></p>',
-                        buttons: Ext.Msg.OK,
-                        animEl: 'elId',
-                        minWidth: 400,
-                        icon: Ext.MessageBox.INFO
-                    });
+                    var oui = Ext.util.JSON.decode( responseObject.responseText ).organisationUnits[0].id;
+                    var ouli = Ext.getCmp('organisationunitlevel_cb').getValue();
+                    var nn = Ext.getCmp('newname_tf').getValue();
+                    var mlp = Ext.getCmp('maplayerpath_tf').getValue();
+                    var t = Ext.getCmp('type_cb').getValue();
+                    var uc = Ext.getCmp('newuniquecolumn_tf').getValue();
+                    var nc = Ext.getCmp('newnamecolumn_tf').getValue();
+                    var lon = Ext.getCmp('newlongitude_tf').getValue();
+                    var lat = Ext.getCmp('newlatitude_tf').getValue();
+                    var zoom = Ext.getCmp('newzoom_cb').getValue();
+                     
+                    if (!nn || !mlp || !oui || !ouli || !uc || !nc || !lon || !lat)
+                    {
+                        Ext.MessageBox.alert('Error', 'Form is not complete');
+                        return;
+                    }
                     
-                    Ext.getCmp('map_cb').getStore().reload();
-                    Ext.getCmp('maps_cb').getStore().reload();
-                    Ext.getCmp('editmap_cb').getStore().reload();
-                    Ext.getCmp('deletemap_cb').getStore().reload();
+                    Ext.Ajax.request(
+                    {
+                        url: path + 'addOrUpdateMap' + type,
+                        method: 'GET',
+                        params: { name: nn, mapLayerPath: mlp, type: t, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc,
+                                  longitude: lon, latitude: lat, zoom: zoom},
+
+                        success: function( responseObject )
+                        {
+                            Ext.Msg.show({
+                                title:'Register shapefiles',
+                                msg: '<p style="padding-top:8px">The map <b>' + nn + '</b> was successfully registered!</b></p>',
+                                buttons: Ext.Msg.OK,
+                                animEl: 'elId',
+                                minWidth: 400,
+                                icon: Ext.MessageBox.INFO
+                            });
+                            
+                            Ext.getCmp('map_cb').getStore().reload();
+                            Ext.getCmp('maps_cb').getStore().reload();
+                            Ext.getCmp('editmap_cb').getStore().reload();
+                            Ext.getCmp('deletemap_cb').getStore().reload();
+                        },
+                        failure: function()
+                        {
+                            alert( 'Status', 'Error while saving data' );
+                        }
+                    });
                 },
                 failure: function()
                 {
                     alert( 'Status', 'Error while saving data' );
                 }
             });
+            
+            
         }
     });
     
@@ -530,9 +549,9 @@ Ext.onReady(function()
         items:
         [   
             { html: '<p style="padding-bottom:4px">Map type:</p>' }, typeComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, newMapComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px">Organisation unit:</p>' }, organisationUnitComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px">Divided into level:</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
+//            { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, newMapComboBox, { html: '<br>' },
+//            { html: '<p style="padding-bottom:4px">Organisation unit:</p>' }, organisationUnitComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Map name:</p>' }, newNameTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Geoserver map layer path:</p>' }, mapLayerPathTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Unique column:</p>' }, newUniqueColumnTextField, { html: '<br>' },
@@ -976,14 +995,14 @@ Ext.onReady(function()
         }
     });
 
-    var propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
+    propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
         id: 'propsymbol',
         map: map,
         layer: propSymbolLayer,
         title: 'Proportional symbol',
         nameAttribute: "ouname",
-        indicators: [['PERIMETER', 'Perimeter']],
-        url: 'pageload.geojson',
+        indicators: [['value', 'Value']],
+        url: '../../../geoserver/wfs?request=GetFeature&typename=who:clinics&outputformat=json&version=1.0.0',
         featureSelection: false,
         loadMask : {msg: 'Loading Data...', msgCls: 'x-mask-loading'},
         defaults: {width: 130},
@@ -1088,6 +1107,7 @@ Ext.onReady(function()
                 items:
                 [
                     choropleth,
+                    //propSymbol,
                     mapping,
                     shapefilePanel,
                     legendsetPanel
@@ -1113,7 +1133,7 @@ Ext.onReady(function()
     }));
 
     map.addControl(new OpenLayers.Control.OverviewMap({div: $('overviewmap')}));
-
+    
     Ext.get('loading').fadeOut({remove: true});
 });
 
@@ -1222,11 +1242,12 @@ function onClickSelectPoint(feature) {}
 function onClickUnselectPoint(feature) {}
 
 
-
+// MAP DATA
 mapData = null;
 
 function loadMapData(redirect)
 {
+                                                 if (url == null) {url = 'who:clinics';}
     Ext.Ajax.request( 
     {
         url: path + 'getMapByMapLayerPath' + type,
@@ -1255,6 +1276,7 @@ function loadMapData(redirect)
     });
 }
 
+// CHOROPLETH
 function getChoroplethData()
 {
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
@@ -1270,74 +1292,6 @@ function getChoroplethData()
         success: function( responseObject )
         {
             dataReceivedChoropleth( responseObject.responseText );
-        },
-        failure: function()
-        {
-            alert( 'Status', 'Error while retrieving data' );
-        } 
-    });
-}
-
-function getPointData()
-{
-    var indicatorId = Ext.getCmp('indicator_cb').getValue();
-    var periodId = Ext.getCmp('period_cb').getValue();
-    var level = mapData.organisationUnitLevel;
-
-    var url = 'getMapValues' + type;
-    format = 'json';
-
-    Ext.Ajax.request( 
-    {
-        url: url,
-        method: 'GET',
-        params: { indicatorId: indicatorId, periodId: periodId, level: level, format: format },
-
-        success: function( responseObject )
-        {
-            dataReceivedPoint( responseObject.responseText );
-        },
-        failure: function()
-        {
-            alert( 'Status', 'Error while retrieving data' );
-        } 
-    });
-}
-
-function getAssignOrganisationUnitData()
-{
-    var mlp = mapData.mapLayerPath;
-    
-    Ext.Ajax.request( 
-    {
-        url: path + 'getAvailableMapOrganisationUnitRelations' + type,
-        method: 'GET',
-        params: { mapLayerPath: mlp, format: 'json' },
-
-        success: function( responseObject )
-        {
-            dataReceivedAssignOrganisationUnit( responseObject.responseText );
-        },
-        failure: function()
-        {
-            alert( 'Error while retrieving data: getAssignOrganisationUnitData' );
-        } 
-    });
-}
-
-function getAutoAssignOrganisationUnitData()
-{
-    var level = mapData.organisationUnitLevel;
-
-    Ext.Ajax.request( 
-    {
-        url: path + 'getOrganisationUnitsAtLevel' + type,
-        method: 'GET',
-        params: { level: level, format: 'json' },
-
-        success: function( responseObject )
-        {
-            dataReceivedAutoAssignOrganisationUnit( responseObject.responseText );
         },
         failure: function()
         {
@@ -1415,27 +1369,105 @@ function dataReceivedChoropleth( responseText )
     });
 }
 
+// PROPORTIONAL SYMBOL
+function getPointData()
+{
+    var indicatorId = Ext.getCmp('indicator_cb').getValue();
+    var periodId = Ext.getCmp('period_cb').getValue();
+    var level = mapData.organisationUnitLevel;
+
+    Ext.Ajax.request( 
+    {
+        url: path + 'getMapValues' + type,
+        method: 'GET',
+        params: { indicatorId: indicatorId, periodId: periodId, level: level, format: 'json' },
+
+        success: function( responseObject )
+        {
+            dataReceivedPoint( responseObject.responseText );
+        },
+        failure: function()
+        {
+            alert( 'Status', 'Error while retrieving data' );
+        } 
+    });
+}
+
 function dataReceivedPoint( responseText )
 {
-    var layers = this.myMap.getLayersByName(propSymbolLayerName);
-    var features = layers[0]["features"];
-    var featuresLength = features.length;
-    var data = Ext.util.JSON.decode(responseText);
-    var dataLength = data.mapvalues.length;
+    var layers = this.myMap.getLayersByName(choroplethLayerName);
+    var features = layers[0]['features'];
 
-    for ( var j=0; j < featuresLength; j++ ) 
+    var mapvalues = Ext.util.JSON.decode(responseText).mapvalues;
+    
+    var mlp = mapData.mapLayerPath;
+    var uniqueColumn = mapData.uniqueColumn;
+    
+    Ext.Ajax.request(
     {
-        features[j].attributes["value"] = 0;
-        
-        for ( var i=0; i < dataLength; i++ )
+        url: path + 'getAvailableMapOrganisationUnitRelations' + type,
+        method: 'GET',
+        params: { mapLayerPath: mlp, format: 'json' },
+
+        success: function( responseObject )
         {
-            if (features[j].attributes[shpcols[pointLayer][0].geocode] == data.mapvalues[i].geoCode)
+            var relations = Ext.util.JSON.decode(responseObject.responseText).mapOrganisationUnitRelations;
+
+            for (var i=0; i < relations.length; i++)
             {
-                features[j].attributes["name"] = data.mapvalues[i].orgUnit;
-                features[j].attributes["value"] = data.mapvalues[i].value;
+                var orgunitid = relations[i].organisationUnitId;
+                var featureid = relations[i].featureId;
+                
+                for (var j=0; j < mapvalues.length; j++)
+                {
+                    if (orgunitid == mapvalues[j].organisationUnitId)
+                    {
+                        for (var k=0; k < features.length; k++)
+                        {
+                            if (features[k].attributes['value'] == null)
+                            {
+                                features[k].attributes['value'] = 0;
+                            }
+                            
+                            if (featureid == features[k].attributes[uniqueColumn])
+                            {
+                                features[k].attributes['value'] = mapvalues[j].value;
+                            }
+                        }
+                    }
+                }
             }
-        }
-    }
+            
+//            proportionalsymbol.coreComp.applyClassification();
+//            proportionalsymbol.classificationApplied = true;
+        },
+        failure: function()
+        {
+            alert( 'Error while retrieving data: dataReceivedChoropleth' );
+        } 
+    });
+}
+
+// MAPPING
+function getAssignOrganisationUnitData()
+{
+    var mlp = mapData.mapLayerPath;
+    
+    Ext.Ajax.request( 
+    {
+        url: path + 'getAvailableMapOrganisationUnitRelations' + type,
+        method: 'GET',
+        params: { mapLayerPath: mlp, format: 'json' },
+
+        success: function( responseObject )
+        {
+            dataReceivedAssignOrganisationUnit( responseObject.responseText );
+        },
+        failure: function()
+        {
+            alert( 'Error while retrieving data: getAssignOrganisationUnitData' );
+        } 
+    });
 }
 
 function dataReceivedAssignOrganisationUnit( responseText )
@@ -1482,6 +1514,29 @@ function dataReceivedAssignOrganisationUnit( responseText )
     mapping.coreComp.updateOptions(options);
     mapping.coreComp.applyClassification();
     mapping.classificationApplied = true;
+}
+
+// AUTO MAPPING
+
+function getAutoAssignOrganisationUnitData()
+{
+    var level = mapData.organisationUnitLevel;
+
+    Ext.Ajax.request( 
+    {
+        url: path + 'getOrganisationUnitsAtLevel' + type,
+        method: 'GET',
+        params: { level: level, format: 'json' },
+
+        success: function( responseObject )
+        {
+            dataReceivedAutoAssignOrganisationUnit( responseObject.responseText );
+        },
+        failure: function()
+        {
+            alert( 'Status', 'Error while retrieving data' );
+        } 
+    });
 }
 
 function dataReceivedAutoAssignOrganisationUnit( responseText )

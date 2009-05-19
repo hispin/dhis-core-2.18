@@ -223,12 +223,15 @@ mapfish.widgets.geostat.ProportionalSymbol = Ext.extend(Ext.FormPanel, {
             }
             return;
         }
+
         this.indicator = this.form.findField('indicator').getValue();
         this.indicatorText = this.form.findField('indicator').getRawValue();
+
         if (!this.indicator) {
             Ext.MessageBox.alert('Error', 'You must choose an indicator');
             return;
         }
+
         var minSize = this.form.findField('minSize').getValue();
         var maxSize = this.form.findField('maxSize').getValue();
         this.coreComp.updateOptions({
@@ -237,8 +240,8 @@ mapfish.widgets.geostat.ProportionalSymbol = Ext.extend(Ext.FormPanel, {
             'maxSize': maxSize
         });
         
-        getPointData();
-        
+        loadMapData('point');
+
         this.coreComp.applyClassification();
         this.classificationApplied = true;
     },
