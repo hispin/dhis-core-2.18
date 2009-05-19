@@ -31,6 +31,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.workbook.WorkbookService;
 
 import com.opensymphony.xwork.Action;
@@ -51,6 +52,13 @@ public class GenerateTableDataWorkbookAction
     public void setWorkbookService( WorkbookService workbookService )
     {
         this.workbookService = workbookService;
+    }
+    
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -90,7 +98,7 @@ public class GenerateTableDataWorkbookAction
     {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         
-        fileName = workbookService.writeReportTableData( out, id );
+        fileName = workbookService.writeReportTableData( out, id, format );
 
         inputStream = new ByteArrayInputStream( out.toByteArray() );
                 

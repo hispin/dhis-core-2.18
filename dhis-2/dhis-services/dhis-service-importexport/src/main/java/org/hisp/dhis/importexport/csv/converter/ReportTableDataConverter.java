@@ -75,7 +75,7 @@ public class ReportTableDataConverter
         {
             for ( Integer id : params.getReportTables() ) //TODO more than one?
             {
-                ReportTableData data = reportTableService.getReportTableData( id );
+                ReportTableData data = reportTableService.getReportTableData( id, params.getFormat() );
                 
                 Iterator<String> columns = data.getPrettyPrintColumns().iterator();
                 
