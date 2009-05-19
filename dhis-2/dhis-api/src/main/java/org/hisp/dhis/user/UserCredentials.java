@@ -37,6 +37,7 @@ import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.report.Report;
+import org.hisp.dhis.reporttable.ReportTable;
 
 /**
  * @author Nguyen Hong Duc
@@ -73,6 +74,8 @@ public class UserCredentials
     private List<OlapURL> dashboardOlapUrls = new ArrayList<OlapURL>();
     
     private List<Document> dashboardDocuments = new ArrayList<Document>();
+    
+    private List<ReportTable> dashboardReportTables = new ArrayList<ReportTable>();
 
     // -------------------------------------------------------------------------
     // Logic
@@ -126,6 +129,19 @@ public class UserCredentials
             while ( dashboardDocuments.size() > MAX_DASHBOARD_ELEMENTS )
             {
                 dashboardDocuments.remove( MAX_DASHBOARD_ELEMENTS );
+            }
+        }
+    }
+    
+    public void addReportTable( ReportTable reportTable )
+    {
+        if ( !dashboardReportTables.contains( reportTable ) )
+        {
+            dashboardReportTables.add( 0, reportTable );
+            
+            while ( dashboardReportTables.size() > MAX_DASHBOARD_ELEMENTS )
+            {
+                dashboardReportTables.remove( MAX_DASHBOARD_ELEMENTS );
             }
         }
     }
@@ -255,5 +271,15 @@ public class UserCredentials
     public void setDashboardDocuments( List<Document> dashboardDocuments )
     {
         this.dashboardDocuments = dashboardDocuments;
+    }
+
+    public List<ReportTable> getDashboardReportTables()
+    {
+        return dashboardReportTables;
+    }
+
+    public void setDashboardReportTables( List<ReportTable> dashboardReportTables )
+    {
+        this.dashboardReportTables = dashboardReportTables;
     }
 }

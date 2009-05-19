@@ -24,7 +24,7 @@ $( document ).ready( function()
 	#foreach( $column in $columns )
 	<tr>
 		<td style="width:400px"><input type="text" id="$!encoder.htmlEncode( $column.name )" value="$!column.header" style="width:400px"/></td>
-		<td style="width:55px"><input type="checkbox" #if ( !$column.hidden )checked="checked"#end></td>
+		<td style="width:55px;text-align:center"><input type="checkbox" #if ( !$column.hidden )checked="checked"#end></td>
 		<td style="width:90px; color:#808080">$i18n.getString( "click_and_drag" )</td>
 	</tr>
 	#end

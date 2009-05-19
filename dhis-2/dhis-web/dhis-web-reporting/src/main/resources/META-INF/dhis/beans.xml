@@ -287,6 +287,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
   </bean>
   
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.AddReportTableToDashboardAction"
+    class="org.hisp.dhis.reporting.tablecreator.action.AddReportTableToDashboardAction"
+    scope="prototype">
+    <property name="currentUserService"
+      ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="userStore"
+      ref="org.hisp.dhis.user.UserStore"/>
+    <property name="reportTableService"
+      ref="org.hisp.dhis.reporttable.ReportTableService"/>
+  </bean>
+  
   <!-- ReportViewer -->
   
   <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportAction"

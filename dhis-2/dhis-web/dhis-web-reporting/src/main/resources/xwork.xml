@@ -245,6 +245,7 @@
     </action>
     
     <action name="getTableData" class="org.hisp.dhis.reporting.tablecreator.action.GetTableDataAction">
+      <result name="blank" type="velocity">/dhis-web-reporting/responseReportTableData.vm</result>
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/responseReportTableData.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
@@ -258,6 +259,11 @@
     
     <action name="saveDisplayTable" class="org.hisp.dhis.reporting.tablecreator.action.SaveDisplayTableAction">
       <result name="success" type="velocity">/dhis-web-reporting/responseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <action name="addReportTableToDashboard" class="org.hisp.dhis.reporting.tablecreator.action.AddReportTableToDashboardAction">
+      <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     

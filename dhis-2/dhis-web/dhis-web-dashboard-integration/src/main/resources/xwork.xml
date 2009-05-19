@@ -46,5 +46,9 @@
       <result name="success" type="redirect">index.action</result>
     </action>
     
+    <action name="removeReportTable" class="org.hisp.dhis.dashboard.action.RemoveReportTableAction">
+      <result name="success" type="redirect">index.action</result>
+    </action>
+    
   </package>
 </xwork>

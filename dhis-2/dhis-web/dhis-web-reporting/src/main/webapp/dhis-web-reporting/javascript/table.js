@@ -290,6 +290,21 @@ function toggleRegression()
 }
 
 // -----------------------------------------------------------------------------
+// Dashboard
+// -----------------------------------------------------------------------------
+
+function addReportTableToDashboard( id )
+{
+    var dialog = window.confirm( i18n_confirm_add_report_table_to_dashboard );
+    
+    if ( dialog )
+    {
+        var request = new Request(); 
+        request.send( "addReportTableToDashboard.action?id=" + id );
+    }
+}
+
+// -----------------------------------------------------------------------------
 // Display
 // -----------------------------------------------------------------------------
 
