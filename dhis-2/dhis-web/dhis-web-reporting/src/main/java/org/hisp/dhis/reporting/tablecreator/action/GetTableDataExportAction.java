@@ -29,6 +29,7 @@ package org.hisp.dhis.reporting.tablecreator.action;
 
 import java.io.InputStream;
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.ImportExportServiceManager;
@@ -51,6 +52,13 @@ public class GetTableDataExportAction
     public void setServiceManager( ImportExportServiceManager serviceManager )
     {
         this.serviceManager = serviceManager;
+    }
+    
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -100,6 +108,7 @@ public class GetTableDataExportAction
         ExportParams params = new ExportParams();
         
         params.getReportTables().add( id );
+        params.setFormat( format );
         
         inputStream = exportService.exportData( params );
         

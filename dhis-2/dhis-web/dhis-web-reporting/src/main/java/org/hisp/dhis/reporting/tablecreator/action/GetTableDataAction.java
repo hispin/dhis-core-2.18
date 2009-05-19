@@ -27,6 +27,7 @@ package org.hisp.dhis.reporting.tablecreator.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.reporttable.ReportTableData;
 import org.hisp.dhis.reporttable.ReportTableService;
 
@@ -50,6 +51,13 @@ public class GetTableDataAction
         this.reportTableService = reportTableService;
     }
 
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -78,8 +86,8 @@ public class GetTableDataAction
 
     public String execute()
     {
-        data = reportTableService.getReportTableData( id );
+        data = reportTableService.getReportTableData( id, format );
         
         return SUCCESS;
-    }    
+    } 
 }

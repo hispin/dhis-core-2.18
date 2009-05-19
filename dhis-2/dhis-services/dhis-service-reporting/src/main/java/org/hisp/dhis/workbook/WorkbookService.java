@@ -45,7 +45,7 @@ public interface WorkbookService
 {
     String ID = WorkbookService.class.getName();
     
-    String writeReportTableData( OutputStream outputStream, int id );
+    String writeReportTableData( OutputStream outputStream, int id, I18nFormat format );
     
     void writeAllDataElements( OutputStream outputStream );
     

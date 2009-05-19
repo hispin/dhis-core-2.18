@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -280,10 +281,11 @@ public class DefaultReportTableService
         return reportTableStore.getReportTableByName( name );
     }
     
-    public ReportTableData getReportTableData( int id )
+    public ReportTableData getReportTableData( int id, I18nFormat format )
     {
         ReportTable reportTable = getReportTable( id );
         
+        reportTable.setI18nFormat( format );
         reportTable.init();
         
         return reportTableManager.getDisplayReportTableData( reportTable );

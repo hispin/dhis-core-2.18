@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.Period;
 
 /**
@@ -121,5 +122,5 @@ public interface ReportTableService
      *        based on.
      * @return a ReportTableData object.
      */
-    ReportTableData getReportTableData( int id );
+    ReportTableData getReportTableData( int id, I18nFormat format );
 }

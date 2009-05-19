@@ -114,9 +114,9 @@ public class JExcelWorkbookService
     // WorkbookService implementation
     // -------------------------------------------------------------------------
 
-    public String writeReportTableData( OutputStream outputStream, int id )
+    public String writeReportTableData( OutputStream outputStream, int id, I18nFormat format )
     {
-        ReportTableData data = reportTableService.getReportTableData( id );
+        ReportTableData data = reportTableService.getReportTableData( id, format );
         
         try
         {
