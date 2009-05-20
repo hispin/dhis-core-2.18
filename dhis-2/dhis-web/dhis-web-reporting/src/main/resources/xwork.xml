@@ -245,10 +245,13 @@
     </action>
     
     <action name="getTableData" class="org.hisp.dhis.reporting.tablecreator.action.GetTableDataAction">
-      <result name="blank" type="velocity">/dhis-web-reporting/responseReportTableData.vm</result>
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/responseReportTableData.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
+    </action>
+    
+    <action name="getBlankTableData" class="org.hisp.dhis.reporting.tablecreator.action.GetTableDataAction">
+      <result name="success" type="velocity">/dhis-web-reporting/responseBlankReportTableData.vm</result>
     </action>
     
     <action name="displayTable" class="org.hisp.dhis.reporting.tablecreator.action.GetDisplayTableOptionsAction">
