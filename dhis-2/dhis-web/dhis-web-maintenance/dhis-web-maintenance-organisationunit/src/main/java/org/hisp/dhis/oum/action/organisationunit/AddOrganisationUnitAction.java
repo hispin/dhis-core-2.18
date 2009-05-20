@@ -107,6 +107,13 @@ public class AddOrganisationUnitAction
     {
         this.comment = comment;
     }
+    
+    private String url;
+
+    public void setUrl( String url )
+    {
+        this.url = url;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -150,6 +157,7 @@ public class AddOrganisationUnitAction
         OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, 
             code, date, null, true, comment );
         
+        organisationUnit.setUrl( url );
         organisationUnit.setParent( parent );
 
         organisationUnitService.addOrganisationUnit( organisationUnit );

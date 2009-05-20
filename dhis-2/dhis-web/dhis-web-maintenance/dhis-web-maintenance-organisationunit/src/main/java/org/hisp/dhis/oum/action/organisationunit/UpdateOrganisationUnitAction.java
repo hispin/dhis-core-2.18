@@ -120,6 +120,13 @@ public class UpdateOrganisationUnitAction
         this.comment = comment;
     }
 
+    private String url;
+
+    public void setUrl( String url )
+    {
+        this.url = url;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -159,6 +166,7 @@ public class UpdateOrganisationUnitAction
         organisationUnit.setOpeningDate( oDate );
         organisationUnit.setClosedDate( cDate );
         organisationUnit.setComment( comment );
+        organisationUnit.setUrl( url );
 
         organisationUnitService.updateOrganisationUnit( organisationUnit );
 
