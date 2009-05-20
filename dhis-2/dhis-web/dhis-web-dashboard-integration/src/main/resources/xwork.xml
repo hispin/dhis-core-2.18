@@ -16,7 +16,7 @@
     <action name="getChart" class="org.hisp.dhis.dashboard.action.GetChartAction">
       <result name="success" type="chart">
         <param name="width">305</param>
-        <param name="height">280</param>
+        <param name="height">300</param>
       </result>
     </action>
     
