@@ -69,6 +69,8 @@ public class OrganisationUnit
     
     private String longitude;
     
+    private String url;
+    
     private transient int level;
     
     // -------------------------------------------------------------------------
@@ -304,6 +306,16 @@ public class OrganisationUnit
     public void setLongitude( String longitude )
     {
         this.longitude = longitude;
+    }
+
+    public String getUrl()
+    {
+        return url;
+    }
+
+    public void setUrl( String url )
+    {
+        this.url = url;
     }
 
     public int getLevel()

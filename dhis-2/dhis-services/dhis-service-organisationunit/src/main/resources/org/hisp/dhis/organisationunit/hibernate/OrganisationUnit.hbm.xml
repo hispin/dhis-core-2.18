@@ -46,6 +46,8 @@
     <property name="latitude"/>
       
     <property name="longitude"/>
+    
+    <property name="url"/>
 		
   </joined-subclass>
 </hibernate-mapping>

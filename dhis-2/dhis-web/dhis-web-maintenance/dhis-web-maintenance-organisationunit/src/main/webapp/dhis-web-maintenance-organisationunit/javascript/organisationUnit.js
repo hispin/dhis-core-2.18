@@ -37,6 +37,8 @@ function organisationUnitReceived( unitElement )
     var active = getElementValue( unitElement, 'active' );
     setFieldValue( 'activeField', active == 'true' ? yes : no );
     
+    setFieldValue( 'urlField', getElementValue( unitElement, 'url' ) );
+    
     showDetails();
 }
 

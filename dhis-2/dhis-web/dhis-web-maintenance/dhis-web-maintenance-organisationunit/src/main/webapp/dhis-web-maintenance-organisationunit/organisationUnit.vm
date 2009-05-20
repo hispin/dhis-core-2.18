@@ -54,6 +54,7 @@
 				<p><label>$i18n.getString( "closed_date" ):</label><br><span id="closedDateField"></span></p>
 				<p><label>$i18n.getString( "registers_date" ):</label><br><span id="activeField"></span></p>
 				<p><label>$i18n.getString( "comment" ):</label><br><span id="commentField"></span></p>
+                <p><label>$i18n.getString( "url" ):</label><br><span id="urlField"></span></p>
 			</div>
 
             <div id="warningArea" style="display:none">

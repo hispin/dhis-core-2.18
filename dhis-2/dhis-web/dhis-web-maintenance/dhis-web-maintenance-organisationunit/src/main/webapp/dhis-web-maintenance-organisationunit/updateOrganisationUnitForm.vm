@@ -53,6 +53,10 @@
 		<td><label for="comment">$i18n.getString( "comment" )</label></td>
 		<td><textarea id="comment" name="comment" style="width:20em; height:5em">$!encoder.htmlEncode( $organisationUnit.comment )</textarea></td>
 	</tr>
+    <tr>
+        <td><label for="url">$i18n.getString( "url" )</label></td>
+        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $organisationUnit.url )" style="width:20em"></td>
+    </tr>
 	<tr>
 		<td></td>
 		<td><input type="submit" value="$i18n.getString( "save" )" style="width:10em"><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='organisationUnit.action'" style="width:10em"></td>
