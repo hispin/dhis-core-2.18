@@ -112,6 +112,13 @@ public class AddIndicatorAction
         this.indicatorTypeId = indicatorTypeId;
     }
     
+    private String url;
+
+    public void setUrl( String url )
+    {
+        this.url = url;
+    }
+    
     private String numerator;
 
     public void setNumerator( String numerator )
@@ -190,6 +197,7 @@ public class AddIndicatorAction
         indicator.setDescription( description );
         indicator.setAnnualized( annualized );
         indicator.setIndicatorType( indicatorType );
+        indicator.setUrl( url );
         indicator.setNumerator( numerator );
         indicator.setNumeratorDescription( numeratorDescription );
         indicator.setNumeratorAggregationOperator( numeratorAggregationOperator );

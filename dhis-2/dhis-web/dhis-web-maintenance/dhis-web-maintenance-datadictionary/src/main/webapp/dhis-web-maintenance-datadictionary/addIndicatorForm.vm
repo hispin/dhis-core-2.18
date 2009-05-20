@@ -56,6 +56,10 @@
 			</select>
 		</td>
 	</tr>
+    <tr>
+        <td><label for="url">$i18n.getString( "url" )</label></td>
+        <td><input type="text" id="url" name="url" style="width:20em"></td>
+    </tr>
 	<tr>
 		<td></td>
 		<td><input type="button" value="$i18n.getString( 'edit_numerator' )" onclick="showEditNumeratorForm()" style="width:10em"><input

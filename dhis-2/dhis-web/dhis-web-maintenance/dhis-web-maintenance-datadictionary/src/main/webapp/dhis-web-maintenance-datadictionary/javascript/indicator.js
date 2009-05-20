@@ -47,6 +47,9 @@ function indicatorReceived( indicatorElement )
     var denominatorDescription = getElementValue( indicatorElement, 'denominatorDescription' );
     setFieldValue( 'denominatorDescriptionField', denominatorDescription ? denominatorDescription : '[' + i18n_none + ']' );
 
+    var url = getElementValue( indicatorElement, 'url' );
+    setFieldValue( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + i18n_none + ']' );
+    
     showDetails();
 }
 

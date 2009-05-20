@@ -130,6 +130,13 @@ public class AddDataElementAction
         this.calculated = calculated;
     }
 
+    private String url;
+
+    public void setUrl( String url )
+    {
+        this.url = url;
+    }
+    
     private String saved;
 
     public void setSaved( String saved )
@@ -242,19 +249,19 @@ public class AddDataElementAction
         }
         
         dataElement.setName( name );
-        dataElement.setShortName( shortName );
+        dataElement.setAlternativeName( alternativeName );
+        dataElement.setShortName( shortName );      
+        dataElement.setCode( code );
         dataElement.setDescription( description );
         dataElement.setActive( true );
         dataElement.setType( type );
         dataElement.setAggregationOperator( aggregationOperator );
-        dataElement.setParent( null );        
-        dataElement.setAlternativeName( alternativeName );
-        dataElement.setCode( code );
-        
+        dataElement.setParent( null );  
+        dataElement.setUrl( url );        
         dataElement.setCategoryCombo( categoryCombo );
 
         dataElementService.addDataElement( dataElement );
 
         return SUCCESS;
-    }    
+    }  
 }

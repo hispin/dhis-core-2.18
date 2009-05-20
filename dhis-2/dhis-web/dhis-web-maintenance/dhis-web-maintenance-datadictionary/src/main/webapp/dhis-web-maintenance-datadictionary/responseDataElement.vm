@@ -9,5 +9,6 @@
 	<active>$dataElement.active</active>
 	<type>$dataElement.type</type>
 	<aggregationOperator>$dataElement.aggregationOperator</aggregationOperator>
+	<url>$!encoder.xmlEncode( $dataElement.url )</url>
 	<categoryCombo>$dataElement.categoryCombo.name</categoryCombo>
 </dataElement>
