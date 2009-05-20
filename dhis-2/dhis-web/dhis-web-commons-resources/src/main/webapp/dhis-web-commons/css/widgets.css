@@ -532,3 +532,20 @@ div#warningArea
 {
   background-image: url('../images/calendar_icon.gif');
 }
+
+/*----------------------------------------------------------------------------*/
+/* ReportTable                                                                */
+/*----------------------------------------------------------------------------*/
+
+.reportTableHeader
+{
+  text-align: left;
+  color: #3f5d8e;
+  font-weight: bold;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #cad5e5;
+  padding-left: 7px;
+  height: 19px;
+  background-color: #ebf0f6;
+}
