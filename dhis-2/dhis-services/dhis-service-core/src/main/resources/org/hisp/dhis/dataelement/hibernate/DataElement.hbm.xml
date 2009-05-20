@@ -58,5 +58,11 @@
     
     <property name="url"/>
     
+    <set name="dataSets" table="datasetmembers" inverse="true">
+      <key column="dataelementid"/>
+      <many-to-many class="org.hisp.dhis.dataset.DataSet" 
+          column="datasetid"/>
+    </set>
+    
   </class>
 </hibernate-mapping>
