@@ -33,6 +33,8 @@ import java.util.Set;
 
 import org.hisp.dhis.common.MetaObject;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.period.PeriodType;
 
 /**
  * A DataElement is a definition (meta-information about) of the entities that
@@ -144,6 +146,11 @@ public class DataElement
      */
     private String url;
     
+    /**
+     * The data sets which this data element is a member of.
+     */
+    private Set<DataSet> dataSets = new HashSet<DataSet>();
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -191,6 +198,32 @@ public class DataElement
         return "[" + name + "]";
     }
 
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public PeriodType getPeriodType()
+    {
+        return dataSets != null && dataSets.size() > 0 ? dataSets.iterator().next().getPeriodType() : null;
+    }
+    
+    public boolean periodTypeIsValid()
+    {
+        PeriodType periodType = null;
+        
+        for ( DataSet dataSet : dataSets )
+        {
+            if ( periodType != null && !periodType.equals( dataSet.getPeriodType() ) )
+            {
+                return false;
+            }
+            
+            periodType = dataSet.getPeriodType();
+        }
+        
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -354,5 +387,15 @@ public class DataElement
     public void setUrl( String url )
     {
         this.url = url;
+    }
+
+    public Set<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
+
+    public void setDataSets( Set<DataSet> dataSets )
+    {
+        this.dataSets = dataSets;
     }
 }

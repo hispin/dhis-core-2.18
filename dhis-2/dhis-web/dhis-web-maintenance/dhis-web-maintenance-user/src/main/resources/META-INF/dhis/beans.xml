@@ -46,6 +46,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="userStore">
       <ref bean="org.hisp.dhis.user.UserStore"/>
     </property>
+    <property name="organisationUnitGroupService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+    </property>
   </bean>
   
   <bean id="org.hisp.dhis.user.action.GetOrgunitUserListAction"
