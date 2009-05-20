@@ -45,7 +45,11 @@
 				<option value="average">$i18n.getString( "average" )</option>
 			</select>
 		</td>
-	</tr>	
+	</tr>
+    <tr>
+        <td><label for="url">$i18n.getString( "url" )</label></td>
+        <td><input type="text" id="url" name="url" style="width:20em"></td>
+    </tr>
 	<tr>	
 		<td><label for="selectedCategoryComboId">$i18n.getString( "category_combo" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>

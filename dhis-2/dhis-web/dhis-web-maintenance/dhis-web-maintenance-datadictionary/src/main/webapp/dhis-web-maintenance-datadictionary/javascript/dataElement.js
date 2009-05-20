@@ -57,6 +57,9 @@ function dataElementReceived( dataElementElement )
     
     setFieldValue( 'categoryComboField', getElementValue( dataElementElement, 'categoryCombo' ) );
     
+    var url = getElementValue( dataElementElement, 'url' );
+    setFieldValue( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + i18n_none + ']' );
+    
     showDetails();
 }
 

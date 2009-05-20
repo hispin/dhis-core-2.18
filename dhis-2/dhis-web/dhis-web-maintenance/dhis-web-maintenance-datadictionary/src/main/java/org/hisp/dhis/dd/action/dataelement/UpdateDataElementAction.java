@@ -132,6 +132,13 @@ public class UpdateDataElementAction
     {
         this.aggregationOperator = aggregationOperator;
     }
+
+    private String url;
+
+    public void setUrl( String url )
+    {
+        this.url = url;
+    }
     
     private String saved;
     
@@ -201,6 +208,7 @@ public class UpdateDataElementAction
         dataElement.setActive( active );
         dataElement.setType( type );
         dataElement.setAggregationOperator( aggregationOperator );
+        dataElement.setUrl( url );
         dataElement.setCategoryCombo( categoryCombo );        
 
         // ---------------------------------------------------------------------

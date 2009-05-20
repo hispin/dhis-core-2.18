@@ -85,8 +85,9 @@
 				<p><label>$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
 				<p><label>$i18n.getString( "annualized" ):</label><br><span id="annualizedField"></span></p>
                 <p><label>$i18n.getString( "indicator_type" ):</label><br><span id="indicatorTypeNameField"></span></p>
-				<p><label>$i18n.getString( "numerator_description" ):</label><br><span id="numeratorDescriptionField"></span></p>
+                <p><label>$i18n.getString( "numerator_description" ):</label><br><span id="numeratorDescriptionField"></span></p>
 				<p><label>$i18n.getString( "denominator_description" ):</label><br><span id="denominatorDescriptionField"></span></p>
+			    <p><label>$i18n.getString( "url" ):</label><br><span id="urlField"></span></p>                
 			</div>
 
             <div id="warningArea" style="display:none">
