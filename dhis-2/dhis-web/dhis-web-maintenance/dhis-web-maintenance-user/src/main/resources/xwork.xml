@@ -65,19 +65,13 @@
     </action>
     
     <action name="showUpdateUserForm" class="org.hisp.dhis.user.action.SetupTreeAction">
-      <result name="success" type="chain">showUpdateUserFormChain</result>
-      <interceptor-ref name="transactionStack"/>
-      <param name="requiredAuthorities">F_USER_UPDATE</param>
-    </action>
-    
-    <action name="showUpdateUserFormChain" class="org.hisp.dhis.user.action.GetUserAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/updateUserForm.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/user.js,javascript/dataElementsList.js</param>
       <interceptor-ref name="organisationUnitTreeStack"/>
       <param name="requiredAuthorities">F_USER_UPDATE</param>
     </action>
-    
+        
     <action name="updateUser" class="org.hisp.dhis.user.action.UpdateUserAction">
       <result name="success" type="redirect">alluser.action</result>
       <result name="error" type="redirect">showUpdateUserForm.action</result>

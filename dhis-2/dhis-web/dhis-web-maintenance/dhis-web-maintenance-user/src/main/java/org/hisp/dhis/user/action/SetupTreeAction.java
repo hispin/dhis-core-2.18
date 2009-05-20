@@ -41,6 +41,7 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork.Action;
@@ -106,6 +107,13 @@ public class SetupTreeAction
     // Output
     // -------------------------------------------------------------------------
 
+    private UserCredentials userCredentials;
+
+    public UserCredentials getUserCredentials()
+    {
+        return userCredentials;
+    }
+
     private Collection<UserAuthorityGroup> userAuthorityGroups;
 
     public Collection<UserAuthorityGroup> getUserAuthorityGroups()
@@ -113,11 +121,6 @@ public class SetupTreeAction
         return userAuthorityGroups;
     }
 
-    public void setUserAuthorityGroups( Collection<UserAuthorityGroup> userAuthorityGroups )
-    {
-        this.userAuthorityGroups = userAuthorityGroups;
-    }
-    
     private List<OrganisationUnitGroup> organisationUnitGroups;
 
     public List<OrganisationUnitGroup> getOrganisationUnitGroups()
@@ -144,6 +147,8 @@ public class SetupTreeAction
 
         selectionTreeManager.clearSelectedOrganisationUnits();
 
+        userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userStore.getAllUserAuthorityGroups() );
+        
         if ( id != null )
         {
             User user = userStore.getUser( id );
@@ -152,6 +157,10 @@ public class SetupTreeAction
             {
                 selectionTreeManager.setSelectedOrganisationUnits( user.getOrganisationUnits() );
             }
+            
+            userCredentials = userStore.getUserCredentials( userStore.getUser( id ) );            
+
+            userAuthorityGroups.removeAll( userCredentials.getUserAuthorityGroups() );
         }
         else
         {
@@ -160,8 +169,6 @@ public class SetupTreeAction
                 selectionTreeManager.setSelectedOrganisationUnits( selectionManager.getSelectedOrganisationUnits() );
             }
         }
-
-        userAuthorityGroups = userStore.getAllUserAuthorityGroups();
 
         organisationUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
         
