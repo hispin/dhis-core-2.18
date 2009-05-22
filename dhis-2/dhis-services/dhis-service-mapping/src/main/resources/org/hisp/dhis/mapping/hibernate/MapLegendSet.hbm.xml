@@ -13,6 +13,10 @@
 	
 		<property name="name" column="name" unique="true"/>
 	
+		<property name="method" column="method"/>
+		
+		<property name="classes" column="classes"/>
+		
 		<property name="colorLow" column="colorlow"/>
 			
 		<property name="colorHigh" column="colorhigh"/>	

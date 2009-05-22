@@ -548,14 +548,23 @@ Ext.onReady(function()
         minListWidth: combo_width + 26,
         store: existingMapsStore
     });
-    
+    /*
+    var temptest = new Ext.ux.Multiselect(
+    {
+        store: existingMapsStore,
+        valueField: 'mapLayerPath',
+        displayField: 'name',
+        mode: 'remote',
+        id: 'testtemp'
+    });
+    */
     var newMapPanel = new Ext.Panel(
     {   
         id: 'newmap_p',
         items:
         [   
             { html: '<p style="padding-bottom:4px">Map type:</p>' }, typeComboBox, { html: '<br>' },
-//            { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, newMapComboBox, { html: '<br>' },
+//            { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, temptest, { html: '<br>' },
 //            { html: '<p style="padding-bottom:4px">Organisation unit:</p>' }, organisationUnitComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Map name:</p>' }, newNameTextField, { html: '<br>' },
@@ -681,6 +690,38 @@ Ext.onReady(function()
         width: combo_width
     });
     
+    var legendSetMethodComboBox = new Ext.form.ComboBox({
+        id: 'legendsetmethod_cb',
+        editable: false,
+        valueField: 'value',
+        displayField: 'text',
+        mode: 'local',
+        emptyText: 'Required',
+        triggerAction: 'all',
+        width: combo_width,
+        minListWidth: combo_width + 26,
+        store: new Ext.data.SimpleStore({
+            fields: ['value', 'text'],
+            data: [[2, 'Distributed values'], [1, 'Equal intervals']]
+        })
+    });
+    
+    var legendSetClassesComboBox = new Ext.form.ComboBox({
+        id: 'legendsetclasses_cb',
+        editable: false,
+        valueField: 'value',
+        displayField: 'value',
+        mode: 'local',
+        emptyText: 'Required',
+        triggerAction: 'all',
+        width: combo_width,
+        minListWidth: combo_width + 26,
+        store: new Ext.data.SimpleStore({
+            fields: ['value'],
+            data: [[1], [2], [3], [4], [5], [6], [7], [8]]
+        })
+    });
+    
     var legendSetLowColorColorPalette = new Ext.ux.ColorField({
         id: 'legendsetlowcolor_cp',
         allowBlank: false,
@@ -788,11 +829,13 @@ Ext.onReady(function()
         handler: function()
         {
             var ln = Ext.getCmp('legendsetname_tf').getValue();
+//            var lm = Ext.getCmp('legendsetmethod_cb').getValue();
+            var lc = Ext.getCmp('legendsetclasses_cb').getValue();            
             var llc = Ext.getCmp('legendsetlowcolor_cp').getValue();
             var lhc = Ext.getCmp('legendsethighcolor_cp').getValue();
             var li = Ext.getCmp('legendsetindicator_cb').getValue();
             
-            if (!ln || !li)
+            if (!lc || !ln || !li)
             {
                 Ext.MessageBox.alert('Error', 'Form is not complete');
                 return;
@@ -802,7 +845,7 @@ Ext.onReady(function()
             {
                 url: path + 'addMapLegendSet' + type,
                 method: 'GET',
-                params: { name: ln, colorLow: llc, colorHigh: lhc, indicators: li },
+                params: { name: ln, method: 2, classes: lc, colorLow: llc, colorHigh: lhc, indicators: li },
 
                 success: function( responseObject )
                 {
@@ -872,6 +915,8 @@ Ext.onReady(function()
         items:
         [   
             { html: '<p style="padding-bottom:4px">Name:</p>' }, legendSetNameTextField, { html: '<br>' },
+//            { html: '<p style="padding-bottom:4px">Method:</p>' }, legendSetMethodComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Classes:</p>' }, legendSetClassesComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Lowest value color:</p>' }, legendSetLowColorColorPalette, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Highest value color:</p>' }, legendSetHighColorColorPalette, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Indicator group:</p>' }, legendSetIndicatorGroupComboBox, { html: '<br>' },
@@ -1138,7 +1183,9 @@ Ext.onReady(function()
                 id: 'center',
                 title: 'Map',
                 xtype: 'mapcomponent',
-                map: map
+                map: map,
+                width: 1000,
+                height: 1000
             }
         ]
     });
@@ -1271,7 +1318,6 @@ mapData = null;
 
 function loadMapData(redirect)
 {
-                                                 if (url == null) {url = 'who:clinics';}
     Ext.Ajax.request( 
     {
         url: path + 'getMapByMapLayerPath' + type,
