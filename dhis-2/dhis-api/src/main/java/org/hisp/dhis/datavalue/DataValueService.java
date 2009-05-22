@@ -255,4 +255,15 @@ public interface DataValueService
      */
     Collection<DataValue> getDataValues( DataElement dataElement );
     
+    /**
+     * Returns all DataValueAudits for a given DataElement, CategoryOptionCombo, Period,
+     * Sources.
+     * 
+     * @param dataElement the DataElement of the DataValue.
+     * @param optionCombo the DataElementCategoryOptionCombo of the DataElement.
+     * @param source the Source of the DataValue.
+     * @param period the Period of the DataValue.
+     * @return a collection of all DataValueAudits which match the given parameters.
+     */    
+    Collection<DataValueAudit> getDataValueAudits( Source source, Period period, DataElement dataElement, DataElementCategoryOptionCombo optionCombo  );
 }

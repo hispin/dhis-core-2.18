@@ -166,4 +166,11 @@ public class DefaultDataValueService
     {
     	return dataValueStore.getDataValues( dataElement );
     }
+
+	public Collection<DataValueAudit> getDataValueAudits(Source source,
+			Period period, DataElement dataElement,
+			DataElementCategoryOptionCombo optionCombo) 
+	{
+		return dataValueStore.getDataValueAudits(  source, period,  dataElement, optionCombo );
+	}
 }

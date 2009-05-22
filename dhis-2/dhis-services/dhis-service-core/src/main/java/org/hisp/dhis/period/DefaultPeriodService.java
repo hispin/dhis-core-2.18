@@ -312,4 +312,9 @@ public class DefaultPeriodService
     {
         return PeriodType.getPeriodTypeByName( name );
     }
+    
+	public Period getPeriodFromDates(Date startDate, Date endDate,
+			PeriodType periodType) {
+		return periodStore.getPeriodFromDates( startDate, endDate, periodType );
+	}
 }
