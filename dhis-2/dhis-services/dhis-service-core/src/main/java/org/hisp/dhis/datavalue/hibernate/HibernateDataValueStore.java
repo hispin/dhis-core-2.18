@@ -40,6 +40,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueAudit;
 import org.hisp.dhis.datavalue.DataValueStore;
 import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.period.Period;
@@ -112,6 +113,11 @@ public class HibernateDataValueStore
         Session session = sessionManager.getCurrentSession();
 
         session.save( dataValue );
+        
+        DataValueAudit dataValueAudit = new DataValueAudit(dataValue);
+        dataValueAudit.setRevisionType("dv_added");
+        
+        session.save( dataValueAudit );
     }
 
     public void updateDataValue( DataValue dataValue )
@@ -121,6 +127,11 @@ public class HibernateDataValueStore
         Session session = sessionManager.getCurrentSession();
 
         session.update( dataValue );
+        
+        DataValueAudit dataValueAudit = new DataValueAudit(dataValue);
+        dataValueAudit.setRevisionType("dv_updated");
+        
+        session.save( dataValueAudit );
     }
 
     public void deleteDataValue( DataValue dataValue )
@@ -128,6 +139,11 @@ public class HibernateDataValueStore
         Session session = sessionManager.getCurrentSession();
 
         session.delete( dataValue );
+        
+        DataValueAudit dataValueAudit = new DataValueAudit(dataValue);
+        dataValueAudit.setRevisionType("dv_deleted");
+        
+        session.save( dataValueAudit );
     }
 
     public int deleteDataValuesBySource( Source source )
@@ -420,6 +436,21 @@ public class HibernateDataValueStore
 
         Criteria criteria = session.createCriteria( DataValue.class );        
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
+
+        return criteria.list();
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataValueAudit> getDataValueAudits( Source source, Period period, DataElement dataElement, DataElementCategoryOptionCombo optionCombo  )
+    {
+
+        Session session = sessionManager.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DataValueAudit.class );
+        criteria.add( Restrictions.eq( "source", source ) );
+        criteria.add( Restrictions.eq( "period", period ) );
+        criteria.add( Restrictions.eq( "dataElement", dataElement ) );
+        criteria.add( Restrictions.eq( "optionCombo", optionCombo ) );
 
         return criteria.list();
     }

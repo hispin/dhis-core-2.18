@@ -88,6 +88,16 @@ public interface PeriodStore
     Collection<Period> getAllPeriods();
 
     /**
+     * Returns a Period.
+     * 
+     * @param startDate the start date of the Period.
+     * @param endDate the end date of the Period.
+     * @param periodType the PeriodType of the Period
+     * @return the Period matching the dates and periodtype, or null if no match.
+     */
+    Period getPeriodFromDates( Date startDate, Date endDate, PeriodType periodType );
+    
+    /**
      * Returns all Periods with start date after or equal the specified start
      * date and end date before or equal the specified end date.
      * 

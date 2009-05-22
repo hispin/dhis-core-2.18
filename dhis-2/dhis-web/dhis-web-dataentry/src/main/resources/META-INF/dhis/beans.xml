@@ -20,6 +20,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.minmax.MinMaxDataElementStore"/>
     <property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>
+    <property name="periodService"
+      ref="org.hisp.dhis.period.PeriodService"/>   
   </bean>
   
   <bean id="org.hisp.dhis.de.state.SelectedStateManager"
@@ -379,6 +381,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService"/>
     <property name="selectedStateManager"
       ref="org.hisp.dhis.de.state.SelectedStateManager"/>
+  </bean>
+
+  <!-- Audit -->
+  
+  <bean id="org.hisp.dhis.de.action.ViewDataValueAuditPopupAction"
+    class="org.hisp.dhis.de.action.ViewDataValueAuditPopupAction">
+    <property name="sessionManager"
+      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="dataElementCategoryOptionComboService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="dataValueService"
+      ref="org.hisp.dhis.datavalue.DataValueService"/>   
+    <property name="dataElementService"
+      ref="org.hisp.dhis.dataelement.DataElementService"/>
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="periodService"
+      ref="org.hisp.dhis.period.PeriodService"/>               
   </bean>
   
   <!-- Validate -->
