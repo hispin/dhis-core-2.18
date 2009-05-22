@@ -24,6 +24,7 @@
 
 Ext.namespace('mapfish.widgets', 'mapfish.widgets.geostat');
 
+     
 /**
  * Class: mapfish.widgets.geostat.Choropleth
  * Use this class to create a widget allowing to display choropleths
@@ -139,8 +140,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
      
     newUrl : false,
     
-    currentUrl : false,
-    
     initComponent : function() {
     
         indicatorGroupStore = new Ext.data.JsonStore({
@@ -250,13 +249,36 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 'select': {
                     fn: function()
                     {
-                        var legend_cb = Ext.getCmp('maplegend_cb');
                         var iId = Ext.getCmp('indicator_cb').getValue();
                         
-                        legend_cb.reset();
-                        legend_cb.getStore().baseParams = { indicatorId: iId, format: 'json' };
-                        legend_cb.getStore().reload();
-                    }
+                        Ext.Ajax.request(
+                        {
+                            url: path + 'getMapLegendSet' + type,
+                            method: 'GET',
+                            params: { indicatorId: iId, format: 'json' },
+
+                            success: function( responseObject )
+                            {
+                                var data = Ext.util.JSON.decode(responseObject.responseText);
+                                
+                                if (data.mapLegendSet[0].id != '')
+                                {
+//                                    Ext.getCmp('method').setValue(data.mapLegendSet[0].method);
+                                    Ext.getCmp('numClasses').setValue(data.mapLegendSet[0].classes);
+
+                                    Ext.getCmp('colorA_cf').setValue(data.mapLegendSet[0].colorLow);
+                                    Ext.getCmp('colorB_cf').setValue(data.mapLegendSet[0].colorHigh);
+                                }
+                                
+                                choropleth.classify(false);
+                            },
+                            failure: function()
+                            {
+                              alert( 'Status', 'Error while retrieving data' );
+                            } 
+                        });
+                    },
+                    scope: this
                 }
             }
         },
@@ -303,7 +325,16 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             emptyText: 'Required',
             selectOnFocus: true,
             width: combo_width,
-            store: periodStore
+            store: periodStore,
+            listeners: {
+                'select': {
+                    fn: function()
+                    {
+                        this.classify(false);
+                    },
+                    scope: this
+                }
+            }
         },
         
         {
@@ -335,7 +366,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         },
         
         { html: '<br>' },
-        
+
         {
             xtype: 'combo',
             fieldLabel: 'Method',
@@ -351,9 +382,18 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             store: new Ext.data.SimpleStore({
                 fields: ['value', 'text'],
                 data: [[2, 'Distributed values'], [1, 'Equal intervals']]
-            })
-        },   
-        
+            }),
+            listeners: {
+                'select': {
+                    fn: function()
+                    {
+                        this.classify(false);
+                    },
+                    scope: this
+                }
+            }
+        },
+
         {
             xtype: 'combo',
             fieldLabel: 'Classes',
@@ -368,9 +408,18 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             store: new Ext.data.SimpleStore({
                 fields: ['value'],
                 data: [[1], [2], [3], [4], [5], [6], [7], [8]]
-            })
+            }),
+            listeners: {
+                'select': {
+                    fn: function()
+                    {
+                        this.classify(false);
+                    },
+                    scope: this
+                }
+            }
         },
-        
+/*        
         {
             xtype: 'combo',
             id: 'maplegend_cb',
@@ -412,36 +461,41 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                               alert( 'Status', 'Error while retrieving data' );
                             } 
                         });
+                        
+                        this.classify(false);
                     },
                     scope: this
                 }
             }
 
         },
+ */
  
         {
             xtype: 'colorfield',
-            fieldLabel: 'Color',
+            fieldLabel: 'Low color',
             id: 'colorA_cf',
             allowBlank: false,
+            isFormField: true,
             width: combo_width,
             value: "#FFFF00"
         },
         
         {
             xtype: 'colorfield',
-            fieldLabel: 'Color',
+            fieldLabel: 'High color',
             id: 'colorB_cf',
             allowBlank: false,
+            isFormField: true,
             width: combo_width,
             value: "#FF0000"
         },
         
-        { html: '<br>' },
-        
-        {
+        { html: '<br>' }
+
+        ,{
             xtype: 'button',
-            text: 'Refresh map',
+            text: 'Refresh colors',
             handler: function()
             {
                 this.layer.setVisibility(true);
@@ -449,7 +503,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             },
             scope: this
         }
-        
+
         ];
 
         mapfish.widgets.geostat.Choropleth.superclass.initComponent.apply(this);
@@ -484,7 +538,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     requestFailure: function(request) {
         OpenLayers.Console.error('Ajax request failed');
     },
-
+    
     /**
      * Method: getColors
      *    Retrieves the colors from form elements
@@ -515,12 +569,14 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             return;
         }
         
+//        this.layer.setVisibility(true);
+        
         if (this.newUrl) {
             url = this.newUrl;
             this.newUrl = false;
             this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + url + '&outputformat=json&version=1.0.0');
         }
-        
+                
         if (!Ext.getCmp('indicator_cb').getValue() ||
             !Ext.getCmp('period_cb').getValue() ||
             !Ext.getCmp('map_cb').getValue()) {

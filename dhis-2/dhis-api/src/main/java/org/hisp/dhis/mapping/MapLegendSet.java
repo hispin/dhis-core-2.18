@@ -41,6 +41,10 @@ public class MapLegendSet
 
     private String name;
     
+    private int method;
+    
+    private int classes;
+    
     private String colorLow;
     
     private String colorHigh;
@@ -51,9 +55,11 @@ public class MapLegendSet
     {
     }
 
-    public MapLegendSet( String name, String colorLow, String colorHigh, Set<Indicator> indicators )
+    public MapLegendSet( String name, int method, int classes, String colorLow, String colorHigh, Set<Indicator> indicators )
     {
         this.name = name;
+        this.method = method;
+        this.classes = classes;
         this.colorLow = colorLow;
         this.colorHigh = colorHigh;
         this.indicators = indicators;
@@ -114,6 +120,26 @@ public class MapLegendSet
     public void setName( String name )
     {
         this.name = name;
+    }
+    
+    public int getMethod()
+    {
+        return method;
+    }
+
+    public void setMethod( int method )
+    {
+        this.method = method;
+    }
+
+    public int getClasses()
+    {
+        return classes;
+    }
+
+    public void setClasses( int classes )
+    {
+        this.classes = classes;
     }
 
     public String getColorLow()

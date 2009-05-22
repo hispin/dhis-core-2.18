@@ -72,6 +72,20 @@ public class AddMapLegendSetAction
     {
         this.name = name;
     }
+    
+    private int method;
+    
+    public void setMethod( int method )
+    {
+        this.method = method;
+    }
+    
+    private int classes;
+
+    public void setClasses( int classes )
+    {
+        this.classes = classes;
+    }
 
     private String colorLow;
 
@@ -103,6 +117,8 @@ public class AddMapLegendSetAction
         MapLegendSet legendSet = new MapLegendSet();
         
         legendSet.setName( name );
+        legendSet.setMethod( method );
+        legendSet.setClasses( classes );
         legendSet.setColorLow( colorLow );
         legendSet.setColorHigh( colorHigh );
         legendSet.setIndicators( new HashSet<Indicator>() );        
