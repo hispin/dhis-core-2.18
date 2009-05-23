@@ -214,5 +214,30 @@ public class DataMartServiceAggregationLevelsTest
         assertEquals( 55.0, dataMartStore.getAggregatedValue( dataElement, period, unitK ) );
         assertEquals( 75.0, dataMartStore.getAggregatedValue( dataElement, period, unitL ) );
         assertEquals( 60.0, dataMartStore.getAggregatedValue( dataElement, period, unitM ) );
+    }
+
+    public void testAverageIntDataElementDataMart()
+    {
+        dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
+        dataElement.setType( DataElement.TYPE_INT );
+        dataElement.setAggregationLevels( Arrays.asList( 3, 5 ) );        
+        
+        dataElementService.updateDataElement( dataElement );
+        
+        dataMartInternalProcess.export( dataElementIds, new ArrayList<Integer>(), periodIds, organisationUnitIds );
+        
+        assertEquals( 280.0, dataMartStore.getAggregatedValue( dataElement, period, unitA ) );
+        assertEquals( 240.0, dataMartStore.getAggregatedValue( dataElement, period, unitB ) );
+        assertEquals( 40.0, dataMartStore.getAggregatedValue( dataElement, period, unitC ) );
+        assertEquals( 60.0, dataMartStore.getAggregatedValue( dataElement, period, unitD ) );
+        assertEquals( 70.0, dataMartStore.getAggregatedValue( dataElement, period, unitE ) );
+        assertEquals( 90.0, dataMartStore.getAggregatedValue( dataElement, period, unitF ) );
+        assertEquals( 315.0, dataMartStore.getAggregatedValue( dataElement, period, unitG ) );
+        assertEquals( 75.0, dataMartStore.getAggregatedValue( dataElement, period, unitH ) );
+        assertEquals( 100.0, dataMartStore.getAggregatedValue( dataElement, period, unitI ) );
+        assertEquals( 200.0, dataMartStore.getAggregatedValue( dataElement, period, unitJ ) );
+        assertEquals( 55.0, dataMartStore.getAggregatedValue( dataElement, period, unitK ) );
+        assertEquals( 75.0, dataMartStore.getAggregatedValue( dataElement, period, unitL ) );
+        assertEquals( 60.0, dataMartStore.getAggregatedValue( dataElement, period, unitM ) );
     }    
 }
