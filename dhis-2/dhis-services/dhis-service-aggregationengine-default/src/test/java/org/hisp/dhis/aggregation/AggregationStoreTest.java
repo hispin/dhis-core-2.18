@@ -28,26 +28,23 @@ package org.hisp.dhis.aggregation;
  */
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.jdbc.StatementManager;
+import org.hisp.dhis.DhisConvenienceTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
-import org.hisp.dhis.system.util.UUIdUtils;
 import org.hisp.dhis.transaction.TransactionManager;
 
 /**
@@ -55,7 +52,7 @@ import org.hisp.dhis.transaction.TransactionManager;
  * @version $Id: AggregationStoreTest.java 5942 2008-10-16 15:44:57Z larshelg $
  */
 public class AggregationStoreTest
-    extends DhisSpringTest
+    extends DhisConvenienceTest
 {
     private TransactionManager transactionManager;
 
@@ -70,8 +67,6 @@ public class AggregationStoreTest
     private SourceStore sourceStore;
 
     private DataValueService dataValueService;    
-    
-    private Calendar calendar;
     
     private DataElementCategoryOptionCombo optionCombo;
     
@@ -94,8 +89,6 @@ public class AggregationStoreTest
 
         dataValueService = (DataValueService) getBean( DataValueService.ID );
 
-        calendar = Calendar.getInstance();
-
         optionCombo = new DataElementCategoryOptionCombo();
         
         categoryOptionComboService.addDataElementCategoryOptionCombo( optionCombo );
@@ -106,14 +99,6 @@ public class AggregationStoreTest
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------
-
-    private Date getDay( int day )
-    {
-        calendar.clear();
-        calendar.set( Calendar.DAY_OF_YEAR, day );
-
-        return calendar.getTime();
-    }
     
     private Collection<Integer> getPeriodIds( Collection<Period> periods )
     {
@@ -127,22 +112,6 @@ public class AggregationStoreTest
         return periodIds;
     }
 
-    private DataElement createDataElement( char uniqueCharacter )
-    {
-        DataElement dataElement = new DataElement();
-
-        dataElement.setUuid( UUIdUtils.getUUId() );
-        dataElement.setName( "DataElement" + uniqueCharacter );
-        dataElement.setAlternativeName( "AlternativeName" + uniqueCharacter );
-        dataElement.setShortName( "DE" + uniqueCharacter );
-        dataElement.setCode( "Code" + uniqueCharacter );
-        dataElement.setDescription( "DataElementDescription" + uniqueCharacter );
-        dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        dataElement.setType( DataElement.TYPE_INT );
-
-        return dataElement;
-    }
-
     // -------------------------------------------------------------------------
     // AggregationStore test
     // -------------------------------------------------------------------------
@@ -152,16 +121,14 @@ public class AggregationStoreTest
     {
         DataElement dataElementA = createDataElement( 'A' );
         
-        PeriodType periodType = periodService.getAllPeriodTypes().iterator().next();
-        
-        Period periodA = new Period( periodType, getDay( 5 ), getDay( 6 ) );
-        Period periodB = new Period( periodType, getDay( 6 ), getDay( 7 ) );
-        Period periodC = new Period( periodType, getDay( 7 ), getDay( 8 ) );
-        Period periodD = new Period( periodType, getDay( 8 ), getDay( 9 ) );
-        Period periodE = new Period( periodType, getDay( 9 ), getDay( 10 ) );
-        Period periodF = new Period( periodType, getDay( 5 ), getDay( 7 ) );
-        Period periodG = new Period( periodType, getDay( 8 ), getDay( 10 ) );
-        Period periodH = new Period( periodType, getDay( 5 ), getDay( 10 ) );
+        Period periodA = createPeriod( getDay( 5 ), getDay( 6 ) );
+        Period periodB = createPeriod( getDay( 6 ), getDay( 7 ) );
+        Period periodC = createPeriod( getDay( 7 ), getDay( 8 ) );
+        Period periodD = createPeriod( getDay( 8 ), getDay( 9 ) );
+        Period periodE = createPeriod( getDay( 9 ), getDay( 10 ) );
+        Period periodF = createPeriod( getDay( 5 ), getDay( 7 ) );
+        Period periodG = createPeriod( getDay( 8 ), getDay( 10 ) );
+        Period periodH = createPeriod( getDay( 5 ), getDay( 10 ) );
 
         Source sourceA = new OrganisationUnit( "nameA", null, "shortNameA", "codeA", null, null, false, null );
         Source sourceB = new OrganisationUnit( "nameB", null, "shortNameB", "codeB", null, null, false, null );

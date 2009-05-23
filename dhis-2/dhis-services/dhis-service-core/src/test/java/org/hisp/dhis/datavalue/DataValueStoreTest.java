@@ -123,11 +123,10 @@ public class DataValueStoreTest
         dataElementStore.addDataElement( dataElementC );
         dataElementStore.addDataElement( dataElementD );
 
-        PeriodType periodType = periodStore.getAllPeriodTypes().iterator().next();
-        periodA = new Period( periodType, getDay( 5 ), getDay( 6 ) );
-        periodB = new Period( periodType, getDay( 6 ), getDay( 7 ) );
-        periodC = new Period( periodType, getDay( 7 ), getDay( 8 ) );
-        periodD = new Period( periodType, getDay( 8 ), getDay( 9 ) );
+        periodA = createPeriod( getDay( 5 ), getDay( 6 ) );
+        periodB = createPeriod( getDay( 6 ), getDay( 7 ) );
+        periodC = createPeriod( getDay( 7 ), getDay( 8 ) );
+        periodD = createPeriod( getDay( 8 ), getDay( 9 ) );
 
         periodStore.addPeriod( periodA );
         periodStore.addPeriod( periodB );
