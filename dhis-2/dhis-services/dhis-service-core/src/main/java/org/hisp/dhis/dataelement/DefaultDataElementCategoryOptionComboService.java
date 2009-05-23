@@ -539,24 +539,22 @@ public class DefaultDataElementCategoryOptionComboService
         
         for ( DataElement dataElement : dataElements )
         {
-            DataElementCategoryCombo categoryCombo = dataElement.getCategoryCombo();
-
-            Set<DataElementCategoryOptionCombo> categoryOptionCombos = categoryCombo.getOptionCombos();
+            Set<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
 
             if ( categoryOptionCombos.size() > 1 && !(dataElement instanceof CalculatedDataElement) )
             {
                 for ( DataElementCategoryOptionCombo optionCombo : categoryOptionCombos )
                 {
                     Operand operand = new Operand( dataElement.getId(), optionCombo.getId(), dataElement.getName()
-                        + getOptionNames( optionCombo ) );
+                        + getOptionNames( optionCombo ), dataElement.getAggregationLevels() );
 
                     operands.add( operand );
                 }
             }
             else
             {
-                Operand operand = new Operand( dataElement.getId(), categoryOptionCombos.iterator().next().getId(), dataElement
-                    .getName() );
+                Operand operand = new Operand( dataElement.getId(), categoryOptionCombos.iterator().next().getId(), 
+                    dataElement.getName(), dataElement.getAggregationLevels() );
 
                 operands.add( operand );
             }

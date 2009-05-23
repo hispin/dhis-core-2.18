@@ -49,5 +49,7 @@ public interface AggregationCache
     
     Period getPeriod( int id );
     
+    int getLevelOfOrganisationUnit( int id );
+    
     void clearCache();
 }

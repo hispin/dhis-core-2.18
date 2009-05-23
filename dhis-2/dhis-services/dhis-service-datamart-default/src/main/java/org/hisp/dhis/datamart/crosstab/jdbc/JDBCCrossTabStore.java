@@ -97,7 +97,7 @@ public class JDBCCrossTabStore
         }
     }
 
-    public Map<Integer, String> getCrossTabTableColumns()
+    public Map<String, Integer> getCrossTabTableColumns()
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -107,7 +107,7 @@ public class JDBCCrossTabStore
             
             final ResultSetMetaData metaData = holder.getStatement().executeQuery( sql ).getMetaData();
             
-            final Map<Integer, String> indexColumnNameMap = new HashMap<Integer, String>();
+            final Map<String, Integer> columnIndexMap = new HashMap<String, Integer>();
             
             for ( int i = 0; i < metaData.getColumnCount(); i++ )
             {
@@ -115,10 +115,10 @@ public class JDBCCrossTabStore
                 
                 final String columnName = metaData.getColumnName( index ).toLowerCase();
                 
-                indexColumnNameMap.put( index, columnName );
+                columnIndexMap.put( columnName, index );
             }
             
-            return indexColumnNameMap;
+            return columnIndexMap;
         }
         catch ( SQLException ex )
         {

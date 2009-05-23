@@ -64,5 +64,11 @@
           column="datasetid"/>
     </set>
     
+    <list name="aggregationLevels" table="dataelementaggregationlevels">
+      <key column="dataelementid"/>
+      <list-index column="sort_order" base="0"/>
+      <element column="aggregationlevel" type="integer"/>
+    </list>
+    
   </class>
 </hibernate-mapping>

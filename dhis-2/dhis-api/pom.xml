@@ -12,4 +12,12 @@
   <artifactId>dhis-api</artifactId>
   <packaging>jar</packaging>
   <name>DHIS API</name>
+  
+  <dependencies>    
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+  </dependencies>
+  
 </project>

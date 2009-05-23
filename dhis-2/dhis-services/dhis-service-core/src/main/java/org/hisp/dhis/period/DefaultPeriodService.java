@@ -79,29 +79,29 @@ public class DefaultPeriodService
     {
         return periodStore.getPeriod( startDate, endDate, periodType );
     }
-    
+
     public Collection<Period> getAllPeriods()
     {
         return periodStore.getAllPeriods();
     }
-    
+
     public Collection<Period> getPeriods( Collection<Integer> identifiers )
     {
         if ( identifiers == null )
         {
             return getAllPeriods();
         }
-        
+
         Collection<Period> objects = new ArrayList<Period>();
-        
+
         for ( Integer id : identifiers )
         {
             objects.add( getPeriod( id ) );
         }
-        
+
         return objects;
     }
-    
+
     public Collection<Period> getPeriodsByPeriodType( PeriodType periodType )
     {
         return periodStore.getPeriodsByPeriodType( periodType );
@@ -111,17 +111,17 @@ public class DefaultPeriodService
     {
         return periodStore.getPeriodsBetweenDates( startDate, endDate );
     }
-    
+
     public Collection<Period> getPeriodsBetweenDates( PeriodType periodType, Date startDate, Date endDate )
     {
         return periodStore.getPeriodsBetweenDates( periodType, startDate, endDate );
     }
-    
+
     public Collection<Period> getIntersectingPeriodsByPeriodType( PeriodType periodType, Date startDate, Date endDate )
     {
-    	return periodStore.getIntersectingPeriodsByPeriodType( periodType, startDate, endDate );
+        return periodStore.getIntersectingPeriodsByPeriodType( periodType, startDate, endDate );
     }
-    
+
     public Collection<Period> getIntersectingPeriods( Date startDate, Date endDate )
     {
         return periodStore.getIntersectingPeriods( startDate, endDate );
@@ -130,55 +130,56 @@ public class DefaultPeriodService
     public Collection<Period> getBoundaryPeriods( Period period, Collection<Period> periods )
     {
         Collection<Period> immutablePeriods = new ArrayList<Period>( periods );
-        
+
         Iterator<Period> iterator = immutablePeriods.iterator();
-        
-        while( iterator.hasNext() )
-        {
-             Period iterated = iterator.next();
-             
-             if ( !DateUtils.strictlyBetween( period.getStartDate(), iterated.getStartDate(), iterated.getEndDate() ) &&
-                 !DateUtils.strictlyBetween( period.getEndDate(), iterated.getStartDate(), iterated.getEndDate() ) )
-             {
-                 iterator.remove();
-             }
-        }
-        
-        return immutablePeriods;
-    }
-    
-    public Collection<Period> getInclusivePeriods( Period period, Collection<Period> periods )
-    {
-        Collection<Period> immutablePeriods = new ArrayList<Period>( periods );
-        
-        Iterator<Period> iterator = immutablePeriods.iterator();
-        
-        while( iterator.hasNext() )
+
+        while ( iterator.hasNext() )
         {
             Period iterated = iterator.next();
-            
-            if ( !DateUtils.between( iterated.getStartDate(), period.getStartDate(), period.getEndDate() ) ||
-                !DateUtils.between( iterated.getEndDate(), period.getStartDate(), period.getEndDate() ) )
+
+            if ( !DateUtils.strictlyBetween( period.getStartDate(), iterated.getStartDate(), iterated.getEndDate() )
+                && !DateUtils.strictlyBetween( period.getEndDate(), iterated.getStartDate(), iterated.getEndDate() ) )
             {
                 iterator.remove();
             }
         }
-        
+
         return immutablePeriods;
     }
 
-    public Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements, Collection<? extends Source> sources )
+    public Collection<Period> getInclusivePeriods( Period period, Collection<Period> periods )
+    {
+        Collection<Period> immutablePeriods = new ArrayList<Period>( periods );
+
+        Iterator<Period> iterator = immutablePeriods.iterator();
+
+        while ( iterator.hasNext() )
+        {
+            Period iterated = iterator.next();
+
+            if ( !DateUtils.between( iterated.getStartDate(), period.getStartDate(), period.getEndDate() )
+                || !DateUtils.between( iterated.getEndDate(), period.getStartDate(), period.getEndDate() ) )
+            {
+                iterator.remove();
+            }
+        }
+
+        return immutablePeriods;
+    }
+
+    public Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements,
+        Collection<? extends Source> sources )
     {
         return periodStore.getPeriods( period, dataElements, sources );
     }
-    
+
     public Period getRelativePeriod( Date date, int startMonths, int endMonths )
     {
         if ( startMonths >= endMonths )
         {
             throw new IllegalArgumentException( "End months must be greater than start months" );
         }
-        
+
         PeriodType periodType = periodStore.getPeriodType( RelativePeriodType.class );
 
         // ---------------------------------------------------------------------
@@ -188,24 +189,24 @@ public class DefaultPeriodService
         if ( periodType == null )
         {
             periodType = new RelativePeriodType();
-            
+
             periodStore.addPeriodType( periodType );
         }
-        
+
         Calendar cal = PeriodType.createCalendarInstance( date );
-        
+
         cal.add( Calendar.MONTH, startMonths );
         cal.set( Calendar.DAY_OF_MONTH, cal.getActualMinimum( Calendar.DAY_OF_MONTH ) );
-        
+
         Date startDate = cal.getTime();
-        
+
         cal = PeriodType.createCalendarInstance( date );
-        
+
         cal.add( Calendar.MONTH, endMonths - 1 );
         cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
-        
+
         Date endDate = cal.getTime();
-        
+
         Period period = new Period( periodType, startDate, endDate );
 
         // ---------------------------------------------------------------------
@@ -213,7 +214,7 @@ public class DefaultPeriodService
         // ---------------------------------------------------------------------
 
         Period persistedPeriod = getPeriod( startDate, endDate, periodType );
-        
+
         if ( persistedPeriod == null )
         {
             addPeriod( period );
@@ -222,17 +223,17 @@ public class DefaultPeriodService
         {
             period = persistedPeriod;
         }
-        
+
         return period;
     }
-    
+
     public Period getRelativePeriod( Date date, int months )
     {
         if ( months == 0 )
         {
             throw new IllegalArgumentException( "Months cannot be zero" );
         }
-        
+
         PeriodType periodType = periodStore.getPeriodType( RelativePeriodType.class );
 
         // ---------------------------------------------------------------------
@@ -242,38 +243,38 @@ public class DefaultPeriodService
         if ( periodType == null )
         {
             periodType = new RelativePeriodType();
-            
+
             periodStore.addPeriodType( periodType );
         }
-        
+
         Calendar cal = PeriodType.createCalendarInstance( date );
 
         Date startDate = null;
         Date endDate = null;
-        
+
         if ( months > 0 )
-        {        
+        {
             cal.set( Calendar.DAY_OF_MONTH, cal.getActualMinimum( Calendar.DAY_OF_MONTH ) );
-            
+
             startDate = cal.getTime();
-    
-            cal.add( Calendar.MONTH, months - 1 );        
+
+            cal.add( Calendar.MONTH, months - 1 );
             cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
-            
+
             endDate = cal.getTime();
         }
         else
         {
             cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
-            
+
             endDate = cal.getTime();
-            
+
             cal.add( Calendar.MONTH, months + 1 );
             cal.set( Calendar.DAY_OF_MONTH, cal.getActualMinimum( Calendar.DAY_OF_MONTH ) );
-            
+
             startDate = cal.getTime();
         }
-        
+
         Period period = new Period( periodType, startDate, endDate );
 
         // ---------------------------------------------------------------------
@@ -281,7 +282,7 @@ public class DefaultPeriodService
         // ---------------------------------------------------------------------
 
         Period persistedPeriod = getPeriod( startDate, endDate, periodType );
-        
+
         if ( persistedPeriod == null )
         {
             addPeriod( period );
@@ -290,10 +291,10 @@ public class DefaultPeriodService
         {
             period = persistedPeriod;
         }
-        
+
         return period;
     }
-    
+
     // -------------------------------------------------------------------------
     // PeriodType
     // -------------------------------------------------------------------------
@@ -312,9 +313,9 @@ public class DefaultPeriodService
     {
         return PeriodType.getPeriodTypeByName( name );
     }
-    
-	public Period getPeriodFromDates(Date startDate, Date endDate,
-			PeriodType periodType) {
-		return periodStore.getPeriodFromDates( startDate, endDate, periodType );
-	}
+
+    public Period getPeriodFromDates( Date startDate, Date endDate, PeriodType periodType )
+    {
+        return periodStore.getPeriodFromDates( startDate, endDate, periodType );
+    }
 }

@@ -28,7 +28,9 @@ package org.hisp.dhis.dataelement;
  */
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.MetaObject;
@@ -151,6 +153,11 @@ public class DataElement
      */
     private Set<DataSet> dataSets = new HashSet<DataSet>();
     
+    /**
+     * The lower organisation unit levels for aggregation.
+     */
+    private List<Integer> aggregationLevels = new ArrayList<Integer>();
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -202,11 +209,19 @@ public class DataElement
     // Logic
     // -------------------------------------------------------------------------
 
+    /**
+     * Returns the PeriodType of the DataElement, based on the PeriodType of the
+     * DataSet which the DataElement is registered for.
+     */
     public PeriodType getPeriodType()
     {
         return dataSets != null && dataSets.size() > 0 ? dataSets.iterator().next().getPeriodType() : null;
     }
     
+    /**
+     * Tests whether a PeriodType can be defined for the DataElement, which requires
+     * that the DataElement is registered for DataSets with the same PeriodType.
+     */
     public boolean periodTypeIsValid()
     {
         PeriodType periodType = null;
@@ -397,5 +412,15 @@ public class DataElement
     public void setDataSets( Set<DataSet> dataSets )
     {
         this.dataSets = dataSets;
+    }
+
+    public List<Integer> getAggregationLevels()
+    {
+        return aggregationLevels;
+    }
+
+    public void setAggregationLevels( List<Integer> aggregationLevels )
+    {
+        this.aggregationLevels = aggregationLevels;
     }
 }

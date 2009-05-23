@@ -36,7 +36,8 @@ import org.hisp.dhis.source.Source;
 
 /**
  * @author Kristian Nordal
- * @version $Id: DefaultDataValueService.java 5715 2008-09-17 14:05:28Z larshelg $
+ * @version $Id: DefaultDataValueService.java 5715 2008-09-17 14:05:28Z larshelg
+ *          $
  */
 public class DefaultDataValueService
     implements DataValueService
@@ -58,7 +59,7 @@ public class DefaultDataValueService
 
     public void addDataValue( DataValue dataValue )
     {
-        if ( !( dataValue.getValue() == null && dataValue.getComment() == null ) )
+        if ( !(dataValue.getValue() == null && dataValue.getComment() == null) )
         {
             dataValueStore.addDataValue( dataValue );
         }
@@ -80,12 +81,12 @@ public class DefaultDataValueService
     {
         dataValueStore.deleteDataValue( dataValue );
     }
-    
+
     public int deleteDataValuesBySource( Source source )
     {
         return dataValueStore.deleteDataValuesBySource( source );
     }
-    
+
     public int deleteDataValuesByDataElement( DataElement dataElement )
     {
         return dataValueStore.deleteDataValuesByDataElement( dataElement );
@@ -95,8 +96,9 @@ public class DefaultDataValueService
     {
         return dataValueStore.getDataValue( source, dataElement, period );
     }
-    
-    public DataValue getDataValue( Source source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo )
+
+    public DataValue getDataValue( Source source, DataElement dataElement, Period period,
+        DataElementCategoryOptionCombo optionCombo )
     {
         return dataValueStore.getDataValue( source, dataElement, period, optionCombo );
     }
@@ -109,7 +111,7 @@ public class DefaultDataValueService
     {
         return dataValueStore.getAllDataValues();
     }
-    
+
     public Collection<DataValue> getDataValues( Source source, Period period )
     {
         return dataValueStore.getDataValues( source, period );
@@ -129,48 +131,50 @@ public class DefaultDataValueService
     {
         return dataValueStore.getDataValues( source, period, dataElements );
     }
-    
-    public Collection<DataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements, Collection<DataElementCategoryOptionCombo> optionCombos )
+
+    public Collection<DataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements,
+        Collection<DataElementCategoryOptionCombo> optionCombos )
     {
         return dataValueStore.getDataValues( source, period, dataElements, optionCombos );
     }
 
-    public Collection<DataValue> getDataValues( DataElement dataElement, Period period, Collection<? extends Source> sources )
+    public Collection<DataValue> getDataValues( DataElement dataElement, Period period,
+        Collection<? extends Source> sources )
     {
         return dataValueStore.getDataValues( dataElement, period, sources );
     }
-    
-    public Collection<DataValue> getDataValues( DataElement dataElement, Collection<Period> periods, Collection<? extends Source> sources )
+
+    public Collection<DataValue> getDataValues( DataElement dataElement, Collection<Period> periods,
+        Collection<? extends Source> sources )
     {
         return dataValueStore.getDataValues( dataElement, periods, sources );
     }
-    
-    public Collection<DataValue> getDataValues( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, 
+
+    public Collection<DataValue> getDataValues( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
         Collection<Period> periods, Collection<? extends Source> sources )
     {
         return dataValueStore.getDataValues( dataElement, optionCombo, periods, sources );
     }
-    
-    public Collection<DataValue> getDataValues( Collection<DataElement> dataElements, Collection<Period> periods, 
+
+    public Collection<DataValue> getDataValues( Collection<DataElement> dataElements, Collection<Period> periods,
         Collection<? extends Source> sources, int firstResult, int maxResults )
     {
         return dataValueStore.getDataValues( dataElements, periods, sources, firstResult, maxResults );
     }
-    
+
     public Collection<DataValue> getDataValues( Collection<DataElementCategoryOptionCombo> optionCombos )
     {
-    	return dataValueStore.getDataValues( optionCombos );    	
-    }
-    
-    public Collection<DataValue> getDataValues( DataElement dataElement )
-    {
-    	return dataValueStore.getDataValues( dataElement );
+        return dataValueStore.getDataValues( optionCombos );
     }
 
-	public Collection<DataValueAudit> getDataValueAudits(Source source,
-			Period period, DataElement dataElement,
-			DataElementCategoryOptionCombo optionCombo) 
-	{
-		return dataValueStore.getDataValueAudits(  source, period,  dataElement, optionCombo );
-	}
+    public Collection<DataValue> getDataValues( DataElement dataElement )
+    {
+        return dataValueStore.getDataValues( dataElement );
+    }
+
+    public Collection<DataValueAudit> getDataValueAudits( Source source, Period period, DataElement dataElement,
+        DataElementCategoryOptionCombo optionCombo )
+    {
+        return dataValueStore.getDataValueAudits( source, period, dataElement, optionCombo );
+    }
 }

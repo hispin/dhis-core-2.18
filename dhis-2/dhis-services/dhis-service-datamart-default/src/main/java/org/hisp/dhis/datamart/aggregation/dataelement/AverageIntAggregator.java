@@ -77,7 +77,8 @@ public class AverageIntAggregator
     // DataElementAggregator implementation
     // -------------------------------------------------------------------------
 
-    public Map<Operand, Double> getAggregatedValues( final Map<Operand, Integer> operandIndexMap, final Period period, final OrganisationUnit unit )
+    public Map<Operand, Double> getAggregatedValues( final Map<Operand, Integer> operandIndexMap, 
+        final Period period, final OrganisationUnit unit, int unitLevel )
     {
         final OrganisationUnitHierarchy hierarchy = aggregationCache.getLatestOrganisationUnitHierarchy();
         
@@ -94,7 +95,7 @@ public class AverageIntAggregator
                 getCrossTabDataValues( operandIndexMap, period.getStartDate(), period.getEndDate(), unitId, hierarchy );
             
             final Map<Operand, double[]> entries = getAggregate( crossTabValues, period.getStartDate(), 
-                period.getEndDate(), period.getStartDate(), period.getEndDate() ); // <Operand, [total value, total relevant days]>
+                period.getEndDate(), period.getStartDate(), period.getEndDate(), unitLevel ); // <Operand, [total value, total relevant days]>
             
             for ( final Entry<Operand, double[]> entry : entries.entrySet() ) 
             {
@@ -128,7 +129,7 @@ public class AverageIntAggregator
     }
     
     public Map<Operand, double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
-        final Date startDate, final Date endDate, final Date aggregationStartDate, final Date aggregationEndDate )
+        final Date startDate, final Date endDate, final Date aggregationStartDate, final Date aggregationEndDate, int unitLevel )
     {
         final Map<Operand, double[]> totalSums = new HashMap<Operand, double[]>(); // <Operand, [total value, total relevant days]>
 
@@ -140,6 +141,8 @@ public class AverageIntAggregator
         double relevantDays = 0.0;
         double existingValue = 0.0;
         double existingRelevantDays = 0.0;
+
+        int dataValueLevel = 0;
         
         for ( final CrossTabDataValue crossTabValue : crossTabValues )
         {
@@ -147,10 +150,12 @@ public class AverageIntAggregator
             
             currentStartDate = period.getStartDate();
             currentEndDate = period.getEndDate();
+
+            dataValueLevel = aggregationCache.getLevelOfOrganisationUnit( crossTabValue.getSourceId() );
             
             for ( final Entry<Operand, String> entry : crossTabValue.getValueMap().entrySet() ) // <Operand, value>
             {
-                if ( entry.getValue() != null )
+                if ( entry.getValue() != null && entry.getKey().aggregationLevelIsValid( unitLevel, dataValueLevel )  )
                 {
                     value = 0.0;
                     

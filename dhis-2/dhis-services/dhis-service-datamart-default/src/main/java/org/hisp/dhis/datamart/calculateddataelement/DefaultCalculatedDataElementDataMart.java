@@ -170,8 +170,8 @@ public class DefaultCalculatedDataElementDataMart
             
             for ( final Period period : periods )
             {
-                sumIntValueMap = sumIntAggregator.getAggregatedValues( sumOperandIndexMap, period, unit );                
-                averageIntValueMap = averageIntAggregator.getAggregatedValues( averageOperandIndexMap, period, unit );
+                sumIntValueMap = sumIntAggregator.getAggregatedValues( sumOperandIndexMap, period, unit, level );                
+                averageIntValueMap = averageIntAggregator.getAggregatedValues( averageOperandIndexMap, period, unit, level );
                                 
                 valueMapMap = new HashMap<String, Map<Operand, Double>>( 2 );
                 

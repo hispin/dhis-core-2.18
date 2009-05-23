@@ -186,25 +186,17 @@ public class DefaultCrossTabService
     
     public Map<Operand, Integer> getOperandIndexMap( Collection<Operand> operands )
     {
-        final Map<Integer, String> columnNames = crossTabStore.getCrossTabTableColumns();
+        final Map<String, Integer> columnNameIndexMap = crossTabStore.getCrossTabTableColumns();
 
         final Map<Operand, Integer> operandMap = new HashMap<Operand, Integer>();
         
-        for ( final Map.Entry<Integer, String> entry : columnNames.entrySet() )
+        for ( Operand operand : operands )
         {
-            if ( entry.getValue().startsWith( CrossTabStore.COLUMN_PREFIX ) )
+            final String key = CrossTabStore.COLUMN_PREFIX + operand.getDataElementId() + CrossTabStore.SEPARATOR + operand.getOptionComboId();
+            
+            if ( columnNameIndexMap.containsKey( key ) )
             {
-                final String operandString = entry.getValue().replace( CrossTabStore.COLUMN_PREFIX, "" );
-                
-                final int dataElementId = Integer.parseInt( operandString.substring( 0, operandString.indexOf( CrossTabStore.SEPARATOR ) ) );
-                final int categoryOptionComboId = Integer.parseInt( operandString.substring( operandString.indexOf( CrossTabStore.SEPARATOR ) + 1 ) );
-                
-                final Operand operand = new Operand( dataElementId, categoryOptionComboId );
-                
-                if ( operands.contains( operand ) )
-                {
-                    operandMap.put( operand, entry.getKey() );
-                }
+                operandMap.put( operand, columnNameIndexMap.get( key ) );
             }
         }
         

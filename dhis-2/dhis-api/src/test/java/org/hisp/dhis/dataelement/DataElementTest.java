@@ -1,4 +1,4 @@
-package org.hisp.dhis.datamart.aggregation.dataelement;
+package org.hisp.dhis.dataelement;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,34 +27,56 @@ package org.hisp.dhis.datamart.aggregation.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
-import org.hisp.dhis.dataelement.Operand;
-import org.hisp.dhis.datamart.CrossTabDataValue;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
-import org.hisp.dhis.period.Period;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.period.MonthlyPeriodType;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.QuarterlyPeriodType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DataElementAggregator.java 6049 2008-10-28 09:36:17Z larshelg $
+ * @version $Id$
  */
-public interface DataElementAggregator
+public class DataElementTest
 {
-    final String TRUE = "true";
+    @Test
+    public void getPeriodType()
+    {
+        PeriodType periodType = new MonthlyPeriodType();
+        
+        DataElement element = new DataElement();
+        
+        DataSet dataSetA = new DataSet( "A", periodType );
+        DataSet dataSetB = new DataSet( "B", periodType );
+        DataSet dataSetC = new DataSet( "C", periodType );
+        
+        element.getDataSets().add( dataSetA );
+        element.getDataSets().add( dataSetB );
+        element.getDataSets().add( dataSetC );
+        
+        assertEquals( periodType, element.getPeriodType() );
+    }
 
-    // -------------------------------------------------------------------------
-    // DataElementAggregator
-    // -------------------------------------------------------------------------
+    @Test
+    public void periodTypeIsValid()
+    {
+        DataElement element = new DataElement();
+        
+        DataSet dataSetA = new DataSet( "A", new MonthlyPeriodType() );
+        DataSet dataSetB = new DataSet( "B", new MonthlyPeriodType() );
+        DataSet dataSetC = new DataSet( "C", new QuarterlyPeriodType() );
+        
+        element.getDataSets().add( dataSetA );
+        element.getDataSets().add( dataSetB );
+        
+        assertTrue( element.periodTypeIsValid() );
 
-    Map<Operand, Double> getAggregatedValues( final Map<Operand, Integer> operandIndexMap, 
-        final Period period, final OrganisationUnit unit, int unitLevel );
-    
-    Collection<CrossTabDataValue> getCrossTabDataValues( final Map<Operand, Integer> operandIndexMap, 
-        final Date startDate, final Date endDate, final int parentId, final OrganisationUnitHierarchy hierarchy );
-    
-    Map<Operand, double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
-        final Date startDate, final Date endDate, final Date aggregationStartDate, final Date aggregationEndDate, int unitLevel );
+        element.getDataSets().add( dataSetC );
+        
+        assertFalse( element.periodTypeIsValid() );
+    }
 }

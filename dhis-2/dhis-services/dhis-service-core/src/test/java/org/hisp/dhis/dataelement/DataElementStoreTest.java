@@ -27,9 +27,11 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -487,6 +489,20 @@ public class DataElementStoreTest
         assertEquals( 1, dataElementStore.getDataElementsByType( DataElement.TYPE_INT ).size() );
         assertEquals( 3, dataElementStore.getDataElementsByType( DataElement.TYPE_BOOL ).size() );
     }
+    
+    public void testGetDataElementAggregationLevels()
+    {
+        List<Integer> aggregationLevels = Arrays.asList( 3, 5 );
+        
+        DataElement dataElementA = createDataElement( 'A' );
+        dataElementA.setAggregationLevels( aggregationLevels );
+        
+        int idA = dataElementStore.addDataElement( dataElementA );
+        
+        assertNotNull( dataElementStore.getDataElement( idA ).getAggregationLevels() );
+        assertEquals( 2, dataElementStore.getDataElement( idA ).getAggregationLevels().size() );
+        assertEquals( aggregationLevels, dataElementStore.getDataElement( idA ).getAggregationLevels() );
+    }
 
     // -------------------------------------------------------------------------
     // CalculatedDataElements
@@ -563,7 +579,6 @@ public class DataElementStoreTest
         dataElements.add(deE);
         cdes = dataElementStore.getCalculatedDataElementsByDataElements( dataElements );
         assertEquals( 2, cdes.size() );
-
     }
     
     // -------------------------------------------------------------------------

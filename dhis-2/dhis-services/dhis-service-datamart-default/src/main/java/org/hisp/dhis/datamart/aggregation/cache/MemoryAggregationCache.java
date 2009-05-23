@@ -59,6 +59,8 @@ public class MemoryAggregationCache
     private final ThreadLocal<Map<String, Collection<Period>>> intersectingPeriodCache = new ThreadLocal<Map<String,Collection<Period>>>();
 
     private final ThreadLocal<Map<String, Period>> periodCache = new ThreadLocal<Map<String,Period>>();
+
+    private final ThreadLocal<Map<String, Integer>> organisationUnitLevelCache = new ThreadLocal<Map<String, Integer>>();
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -192,6 +194,30 @@ public class MemoryAggregationCache
         periodCache.set( cache );
         
         return period;
+    }
+
+    public int getLevelOfOrganisationUnit( final int id )
+    {
+        final String key = String.valueOf( id );
+        
+        Map<String, Integer> cache = organisationUnitLevelCache.get();
+        
+        Integer level = null;
+        
+        if ( cache != null && ( level = cache.get( key ) ) != null )
+        {
+            return level;
+        }
+                
+        level = organisationUnitService.getLevelOfOrganisationUnit( organisationUnitService.getOrganisationUnit( id ) );
+        
+        cache = ( cache == null ) ? new HashMap<String, Integer>() : cache;
+        
+        cache.put( key, level );
+        
+        organisationUnitLevelCache.set( cache );
+        
+        return level;
     }
     
     public void clearCache()

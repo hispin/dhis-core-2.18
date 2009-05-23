@@ -121,7 +121,7 @@ public class DefaultDataElementDataMart
             
             for ( final Period period : periods )
             {
-                valueMap = dataElementAggregator.getAggregatedValues( operandIndexMap, period, unit );
+                valueMap = dataElementAggregator.getAggregatedValues( operandIndexMap, period, unit, level );
                 
                 periodType = period.getPeriodType();
                 
