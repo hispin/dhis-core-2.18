@@ -28,6 +28,9 @@ package org.hisp.dhis.dataelement;
  */
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Abyot Asalefew
@@ -45,6 +48,8 @@ public class Operand
     private int optionComboId;
 
     private String operandName;
+    
+    private List<Integer> aggregationLevels = new ArrayList<Integer>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -69,6 +74,63 @@ public class Operand
         this.operandName = operandName;
     }
 
+    public Operand( int dataElementId, int optionComboId, String operandName, List<Integer> aggregationLevels )
+    {
+        this.id = dataElementId + SEPARATOR + optionComboId;
+        this.dataElementId = dataElementId;
+        this.optionComboId = optionComboId;
+        this.operandName = operandName;
+        this.aggregationLevels = aggregationLevels;
+    }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    /**
+     * Tests whether the hierarchy level of the OrganisationUnit associated with
+     * the relevant DataValue is equal to or higher than the relevant aggregation
+     * level. Returns true if no aggregation levels exist.
+     * 
+     * @param organisationUnitLevel the hierarchy level of the aggregation OrganisationUnit.
+     * @param dataValueLevel the hierarchy level of the OrganisationUnit associated 
+     *        with the relevant DataValue.
+     */
+    public boolean aggregationLevelIsValid( int organisationUnitLevel, int dataValueLevel )
+    {
+        if ( aggregationLevels == null || aggregationLevels.size() == 0 )
+        {
+            return true;
+        }
+        
+        final Integer aggregationLevel = getRelevantAggregationLevel( organisationUnitLevel );
+        
+        return aggregationLevel == null || dataValueLevel <= aggregationLevel;
+    }
+    
+    /**
+     * Returns the relevant aggregation level for the DataElement. The relevant
+     * aggregation level will be the next in ascending order after the organisation
+     * unit level. If no aggregation levels lower than the organisation unit level
+     * exist, null is returned.
+     * 
+     * @param organisationUnitLevel the hiearchy level of the relevant OrganisationUnit.
+     */
+    public Integer getRelevantAggregationLevel( int organisationUnitLevel )
+    {
+        Collections.sort( aggregationLevels );
+        
+        for ( final Integer aggregationLevel : aggregationLevels )
+        {
+            if ( aggregationLevel >= organisationUnitLevel )
+            {
+                return aggregationLevel;
+            }
+        }
+        
+        return null;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters & setters
     // -------------------------------------------------------------------------
@@ -111,6 +173,16 @@ public class Operand
     public void setOptionComboId( int optionComboId )
     {
         this.optionComboId = optionComboId;
+    }
+
+    public List<Integer> getAggregationLevels()
+    {
+        return aggregationLevels;
+    }
+
+    public void setAggregationLevels( List<Integer> aggregationLevels )
+    {
+        this.aggregationLevels = aggregationLevels;
     }
 
     // -------------------------------------------------------------------------

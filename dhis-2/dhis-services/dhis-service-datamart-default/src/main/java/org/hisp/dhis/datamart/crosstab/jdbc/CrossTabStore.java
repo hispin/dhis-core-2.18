@@ -45,7 +45,7 @@ public interface CrossTabStore
     
     void createCrossTabTable( List<Operand> operands );
 
-    Map<Integer, String> getCrossTabTableColumns();
+    Map<String, Integer> getCrossTabTableColumns();
     
     void dropCrossTabTable();
     

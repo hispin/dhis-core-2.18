@@ -39,15 +39,15 @@ public class CrossTabStoreTest
     {
         crossTabStore.createCrossTabTable( operands );
         
-        Map<Integer, String> columnNames = crossTabStore.getCrossTabTableColumns();
+        Map<String, Integer> columnNames = crossTabStore.getCrossTabTableColumns();
         
         assertEquals( 6, columnNames.size() );
-        assertEquals( "periodid", columnNames.get( 1 ) );
-        assertEquals( "sourceid", columnNames.get( 2 ) );
-        assertEquals( "de1_1", columnNames.get( 3 ) );
-        assertEquals( "de1_2", columnNames.get( 4 ) );
-        assertEquals( "de2_1", columnNames.get( 5 ) );
-        assertEquals( "de2_2", columnNames.get( 6 ) );        
+        assertEquals( new Integer( 1 ), columnNames.get( "periodid" ) );
+        assertEquals( new Integer( 2 ), columnNames.get( "sourceid" ) );
+        assertEquals( new Integer( 3 ), columnNames.get( "de1_1" ) );
+        assertEquals( new Integer( 4 ), columnNames.get( "de1_2" ) );
+        assertEquals( new Integer( 5 ), columnNames.get( "de2_1" ) );
+        assertEquals( new Integer( 6 ), columnNames.get( "de2_2" ) );        
     }
     
     public void testDropCrossTabTable()

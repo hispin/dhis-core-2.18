@@ -609,5 +609,5 @@ public class JdbcDataMartStore
         }
         
         return values;
-    } 
+    }
 }

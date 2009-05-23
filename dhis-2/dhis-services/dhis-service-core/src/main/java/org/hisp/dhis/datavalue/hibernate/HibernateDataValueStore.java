@@ -443,7 +443,6 @@ public class HibernateDataValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataValueAudit> getDataValueAudits( Source source, Period period, DataElement dataElement, DataElementCategoryOptionCombo optionCombo  )
     {
-
         Session session = sessionManager.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValueAudit.class );
