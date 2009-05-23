@@ -71,6 +71,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -507,7 +508,7 @@ public class DhisConvenienceTest
     }
     
     /**
-     * @param uniqueCharacter A unique character to identify the object.
+     * @param type The PeriodType.
      * @param startDate The start date.
      * @param endDate The end date.
      */
@@ -516,6 +517,21 @@ public class DhisConvenienceTest
         Period period = new Period();
         
         period.setPeriodType( type );
+        period.setStartDate( startDate );
+        period.setEndDate( endDate );
+        
+        return period;
+    }
+    
+    /**
+     * @param startDate The start date.
+     * @param endDate The end date.
+     */
+    protected static Period createPeriod( Date startDate, Date endDate )
+    {
+        Period period = new Period();
+        
+        period.setPeriodType( new MonthlyPeriodType() );
         period.setStartDate( startDate );
         period.setEndDate( endDate );
         

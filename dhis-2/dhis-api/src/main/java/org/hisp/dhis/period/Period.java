@@ -67,7 +67,7 @@ public class Period
     {
     }
 
-    public Period( PeriodType periodType, Date startDate, Date endDate )
+    protected Period( PeriodType periodType, Date startDate, Date endDate )
     {
         this.periodType = periodType;
         this.startDate = startDate;

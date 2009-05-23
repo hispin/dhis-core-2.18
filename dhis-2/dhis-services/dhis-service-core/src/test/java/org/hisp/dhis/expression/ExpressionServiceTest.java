@@ -28,7 +28,6 @@ package org.hisp.dhis.expression;
  */
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -43,7 +42,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
@@ -124,7 +122,7 @@ public class ExpressionServiceTest
         
         categoryOptionComboId = categoryOptionCombo.getId();
         
-        period = new Period( PeriodType.getAvailablePeriodTypes().iterator().next(), new Date(), new Date() );
+        period = createPeriod( getDate( 2000, 1, 1 ), getDate( 2000, 2, 1 ) );
         
         source = new DummySource( "SourceA" );
         
