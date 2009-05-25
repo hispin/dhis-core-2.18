@@ -30,8 +30,8 @@
     </action>
 
     <action name="getAvailableLocalesDb" class="org.hisp.dhis.settings.action.user.GetAvailableLocalesDbAction">
-			<result name="success" type="chain">getAvailableSortOrders</result>
-		</action>
+      <result name="success" type="chain">getAvailableSortOrders</result>
+    </action>
 
     <action name="getAvailableSortOrders" class="org.hisp.dhis.settings.action.user.GetAvailableSortOrdersAction">
       <result name="success" type="chain">getAvailableDisplayProperties</result>

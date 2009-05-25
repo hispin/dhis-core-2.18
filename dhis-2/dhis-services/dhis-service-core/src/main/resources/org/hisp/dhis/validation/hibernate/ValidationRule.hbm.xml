@@ -21,9 +21,11 @@
       <column name="operator" not-null="true" unique="false"/>
     </property>
 
-    <many-to-one name="leftSide" column="leftexpressionid" class="org.hisp.dhis.expression.Expression"/>
+    <many-to-one name="leftSide" column="leftexpressionid" 
+      class="org.hisp.dhis.expression.Expression" cascade="all"/>
     
-    <many-to-one name="rightSide" column="rightexpressionid" class="org.hisp.dhis.expression.Expression"/>
+    <many-to-one name="rightSide" column="rightexpressionid" 
+      class="org.hisp.dhis.expression.Expression" cascade="all"/>
       
   </class>
 

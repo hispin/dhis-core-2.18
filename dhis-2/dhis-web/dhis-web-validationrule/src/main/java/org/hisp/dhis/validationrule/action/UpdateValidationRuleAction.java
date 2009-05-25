@@ -27,7 +27,6 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
@@ -127,28 +126,18 @@ public class UpdateValidationRuleAction
     public String execute()
     {
         ValidationRule validationRule = validationRuleService.getValidationRule( id );
-        
-        Expression leftSide = expressionService.getExpression( validationRule.getLeftSide().getId() );
-        
-        Expression rightSide = expressionService.getExpression( validationRule.getRightSide().getId() );
-        
-        leftSide.setExpression( leftSideExpression );
-        leftSide.setDescription( leftSideDescription );
-        leftSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( leftSideExpression ) );
-        
-        expressionService.updateExpression( leftSide );
-        
-        rightSide.setExpression( rightSideExpression );
-        rightSide.setDescription( rightSideDescription );
-        rightSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( rightSideExpression ) );
-        
-        expressionService.updateExpression( rightSide );
-        
+
         validationRule.setName( name );
         validationRule.setDescription( description );
         validationRule.setOperator( operator );
-        validationRule.setLeftSide( leftSide );
-        validationRule.setRightSide( rightSide );
+        
+        validationRule.getLeftSide().setExpression( leftSideExpression );
+        validationRule.getLeftSide().setDescription( leftSideDescription );
+        validationRule.getLeftSide().setDataElementsInExpression( expressionService.getDataElementsInExpression( leftSideExpression ) );
+        
+        validationRule.getRightSide().setExpression( rightSideExpression );
+        validationRule.getRightSide().setDescription( rightSideDescription );
+        validationRule.getRightSide().setDataElementsInExpression( expressionService.getDataElementsInExpression( rightSideExpression ) );
         
         validationRuleService.updateValidationRule( validationRule );
         

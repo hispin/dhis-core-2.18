@@ -127,8 +127,6 @@ public class AddValidationRuleAction
         leftSide.setDescription( leftSideDescription );
         leftSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( leftSideExpression ) );
         
-        expressionService.addExpression( leftSide );
-        
         Expression rightSide = new Expression();
         
         rightSide.setExpression( rightSideExpression );
@@ -136,8 +134,6 @@ public class AddValidationRuleAction
         rightSide.setDataElementsInExpression( expressionService.getDataElementsInExpression( rightSideExpression ) );
         
         ValidationRule validationRule = new ValidationRule();
-        
-        expressionService.addExpression( rightSide );
         
         validationRule.setName( name );
         validationRule.setDescription( description );

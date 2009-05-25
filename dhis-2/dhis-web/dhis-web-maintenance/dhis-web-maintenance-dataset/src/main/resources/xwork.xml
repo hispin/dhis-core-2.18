@@ -11,9 +11,7 @@
       class="org.hisp.dhis.dataset.action.dataentryform.SelectDataElementAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/editCustomValues.vm</param>
-      <param name="javascripts">javascript/dataSet.js,javascript/dataElementsList.js,javascript/hashtable.js
-      </param>
-      <interceptor-ref name="transactionStack"/>
+      <param name="javascripts">javascript/dataSet.js,javascript/dataElementsList.js,javascript/hashtable.js</param>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
         
@@ -24,7 +22,6 @@
       <param name="page">/dhis-web-maintenance-dataset/dataSetList.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
       <param name="javascripts">javascript/dataSet.js,javascript/filterTable.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <!-- Section -->
@@ -34,25 +31,20 @@
       <param name="page">/dhis-web-maintenance-dataset/sectionList.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
       <param name="javascripts">javascript/section.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="addSectionAction" class="org.hisp.dhis.dataset.action.section.AddSectionAction">
       <result name="input" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/addSection.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
-      <result name="success" type="chain">
-        <param name="actionName">section</param>
-      </result>
+      <result name="success" type="chain">section</result>
       <param name="javascripts">javascript/dataElementsList.js,javascript/section.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
      <action name="validateSection"
       class="org.hisp.dhis.dataset.action.section.ValidateSectionAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-dataset/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -60,11 +52,8 @@
       <result name="input" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/sortOrderSection.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
-      <result name="success" type="chain">
-        <param name="actionName">section</param>
-      </result>
+      <result name="success" type="chain">section</result>
       <param name="javascripts">javascript/dataElementsList.js,javascript/dataSet.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="editSectionAction" 
@@ -81,9 +70,7 @@
     </action>   
     
     <action name="removeSection" class="org.hisp.dhis.dataset.action.section.RemoveSectionAction">
-      <result name="success" type="chain">
-        <param name="actionName">section</param>
-      </result>
+      <result name="success" type="chain">section</result>
     </action>
 	
     <!-- Get details -->
@@ -91,7 +78,6 @@
     <action name="getDataSet"
       class="org.hisp.dhis.dataset.action.GetDataSetAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseDataSetObject.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -112,19 +98,13 @@
     
     <action name="addDataSetForm"
       class="org.hisp.dhis.dataset.action.DataElementListAction">
-      <result name="success" type="chain">
-        <param name="actionName">dataElementGroupListAddChain</param>
-      </result>
-      <interceptor-ref name="transactionStack"/>
+      <result name="success" type="chain">dataElementGroupListAddChain</result>
       <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
     
     <action name="dataElementGroupListAddChain"
       class="org.hisp.dhis.dataset.action.DataElementGroupListAction">
-      <result name="success" type="chain">
-        <param name="actionName">periodTypeListAddChain</param>
-      </result>
-      <interceptor-ref name="transactionStack"/>
+      <result name="success" type="chain">periodTypeListAddChain</result>
       <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>           
     
@@ -133,7 +113,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/addDataSet.vm</param>
       <param name="javascripts">javascript/dataSet.js,javascript/dataElementsList.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
     
@@ -141,28 +120,19 @@
     
     <action name="editDataSetForm"
       class="org.hisp.dhis.dataset.action.DataElementListFilteredByGroup">
-      <result name="success" type="chain">
-        <param name="actionName">dataElementGroupListEditChain</param>
-      </result>
-      <interceptor-ref name="transactionStack"/>
+      <result name="success" type="chain">dataElementGroupListEditChain</result>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
     
     <action name="dataElementGroupListEditChain"
       class="org.hisp.dhis.dataset.action.DataElementGroupListAction">
-      <result name="success" type="chain">
-        <param name="actionName">getDataSetEditChain</param>
-      </result>
-      <interceptor-ref name="transactionStack"/>
+      <result name="success" type="chain">getDataSetEditChain</result>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
     
     <action name="getDataSetEditChain"
       class="org.hisp.dhis.dataset.action.GetDataSetAction">
-      <result name="success" type="chain">
-        <param name="actionName">periodTypeListEditChain</param>
-      </result>
-      <interceptor-ref name="transactionStack"/>
+      <result name="success" type="chain">periodTypeListEditChain</result>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>    
     
@@ -170,9 +140,7 @@
       class="org.hisp.dhis.dataset.action.PeriodTypeListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/editDataSet.vm</param>
-      <param name="javascripts">javascript/dataSet.js,javascript/dataElementsList.js
-      </param>
-      <interceptor-ref name="transactionStack"/>
+      <param name="javascripts">javascript/dataSet.js,javascript/dataElementsList.js</param>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
     
@@ -182,28 +150,24 @@
       class="org.hisp.dhis.dataset.action.ValidateDataSetAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-dataset/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="addDataSet"
       class="org.hisp.dhis.dataset.action.AddDataSetAction">
       <result name="success" type="redirect">index.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
     
     <action name="updateDataSet"
       class="org.hisp.dhis.dataset.action.UpdateDataSetAction">
       <result name="success" type="redirect">index.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
     
     <action name="delDataSet"
       class="org.hisp.dhis.dataset.action.DelDataSetAction">
       <result name="success" type="redirect">index.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATASET_DELETE</param>
     </action>
     
@@ -212,7 +176,6 @@
     <action name="filterAvailableDataElementsByDataElementGroup"
       class="org.hisp.dhis.dataset.action.DataElementListFilteredByGroup">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseDataElementGroup.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -227,7 +190,6 @@
     <action name="defineDataSetAssociations"
       class="org.hisp.dhis.dataset.action.DefineDataSetAssociationsAction">
       <result name="success" type="redirect">index.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
     
@@ -266,7 +228,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/dataSetAssociations.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataElementsList.js,javascript/associations.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
     
@@ -278,13 +239,11 @@
       <param name="page">/dhis-web-maintenance-dataset/viewDataEntryForm.vm</param>
       <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js,javascript/hashtable.js</param>
       <param name="stylesheets">css/cde.css</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="saveDataEntryForm"
       class="org.hisp.dhis.dataset.action.dataentryform.SaveDataEntryFormAction">
       <result name="success" type="redirect">index.action</result>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="validateDataEntryForm"
@@ -292,7 +251,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-dataset/responseInput.vm</result>
       <result name="mismatch" type="velocity-xml">/dhis-web-maintenance-dataset/responseMismatch.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -300,7 +258,6 @@
       class="org.hisp.dhis.dataset.action.dataentryform.DelDataEntryFormAction">
       <result name="success" type="redirect">index.action</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-dataset/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="selectDataElement"
@@ -308,28 +265,24 @@
       <result name="success" type="velocity">selectDataElement.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-dataset/responseInput.vm</result>
       <param name="javascripts">javascript/hashtable.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="getSelectedDataElements"
       class="org.hisp.dhis.dataset.action.dataentryform.GetSelectedDataElementsAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSelDataElementList.vm</result>
       <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js,javascript/hashtable.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="getOptionCombos"
       class="org.hisp.dhis.dataset.action.dataentryform.GetOptionCombosAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseOptionCombo.vm</result>
       <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js,javascript/hashtable.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
 
     <action name="getCustomValues"
       class="org.hisp.dhis.dataset.action.dataentryform.GetCustomValuesAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseCustomValue.vm</result>
       <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js,javascript/hashtable.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
         
   </package>

@@ -38,14 +38,12 @@
     
     <action name="getUser" class="org.hisp.dhis.user.action.GetUserAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-user/responseUser.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="removeUser" class="org.hisp.dhis.user.action.RemoveUserAction">
       <result name="success" type="redirect">alluser.action</result>
       <result name="logout" type="redirect">/dhis-web-commons-security/logout.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_USER_DELETE</param>
     </action>
     
@@ -60,7 +58,6 @@
     <action name="addUser" class="org.hisp.dhis.user.action.AddUserAction">
       <result name="success" type="redirect">alluser.action</result>
       <result name="error" type="redirect">showAddUserForm.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_USER_ADD</param>
     </action>
     
@@ -75,7 +72,6 @@
     <action name="updateUser" class="org.hisp.dhis.user.action.UpdateUserAction">
       <result name="success" type="redirect">alluser.action</result>
       <result name="error" type="redirect">showUpdateUserForm.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_USER_UPDATE</param>
     </action>
     
@@ -83,7 +79,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-user/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-user/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-user/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -104,19 +99,16 @@
       <param name="page">/dhis-web-maintenance-user/allRole.vm</param>
       <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
       <param name="javascripts">javascript/role.js,javascript/filterTable.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="getRole" class="org.hisp.dhis.user.action.GetRoleAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-user/responseRole.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="removeRole" class="org.hisp.dhis.user.action.RemoveRoleAction">
       <result name="success" type="redirect">allRole.action</result>
       <result name="logout" type="redirect">/</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_USERROLE_DELETE</param>
     </action>
     
@@ -124,14 +116,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/addRoleForm.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/role.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_USERROLE_ADD</param>
     </action>
     
     <action name="addRole" class="org.hisp.dhis.user.action.AddRoleAction">
       <result name="success" type="redirect">allRole.action</result>
       <result name="error" type="redirect">showAddRoleForm.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_USERROLE_ADD</param>
     </action>
     
@@ -139,14 +129,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/updateRoleForm.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/role.js</param>
-      <interceptor-ref name="transactionStack"/>
-     <param name="requiredAuthorities">F_USERROLE_UPDATE</param>
+      <param name="requiredAuthorities">F_USERROLE_UPDATE</param>
     </action>
     
     <action name="updateRole" class="org.hisp.dhis.user.action.UpdateRoleAction">
       <result name="success" type="redirect">allRole.action</result>
       <result name="error" type="redirect">showUpdateRoleForm.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_USERROLE_UPDATE</param>
     </action>
     
@@ -154,7 +142,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-user/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-user/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-user/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
