@@ -872,8 +872,6 @@ Ext.onReady(function()
                 params += array[i];
             }
             
-            alert(params);
-            
             Ext.Ajax.request(
             {
                 url: path + 'addMapLegendSet.action' + params,
