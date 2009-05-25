@@ -10,7 +10,7 @@
     <!-- Default -->
   
     <action name="index" class="org.hisp.dhis.mapping.action.NoAction">
-      <result name="success" type="redirect">../demos/geostat/index.html</result>
+      <result name="success" type="redirect">../mapping/geostat/index.html</result>
     </action>
     
     <!-- OrganisationUnit -->
