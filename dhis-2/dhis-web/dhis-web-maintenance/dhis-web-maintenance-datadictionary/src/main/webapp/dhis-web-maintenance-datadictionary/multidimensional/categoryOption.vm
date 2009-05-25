@@ -49,7 +49,7 @@
 				</div>
 				<p><label>$i18n.getString( "id" )</label><br><span id="idField"></span></p>
 				<p><label>$i18n.getString( "name" )</label><br><span id="nameField"></span></p>
-				<p><label>$i18n.getString( "shortName" )</label><br><span id="shortNameField"></span></p>			
+				<p><label>$i18n.getString( "short_name" )</label><br><span id="shortNameField"></span></p>			
 			</div>
 			
             <div id="warningArea" style="display:none">

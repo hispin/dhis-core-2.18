@@ -21,7 +21,6 @@
       <param name="page">/dhis-web-maintenance-datadictionary/dataElement.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
       <param name="javascripts">javascript/dataElement.js,javascript/dataDictionary.js,javascript/filterTable.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="showSortDataElementForm"
@@ -38,21 +37,18 @@
     <action name="getDataElement"
       class="org.hisp.dhis.dd.action.dataelement.GetDataElementAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseDataElement.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="getDataElements"
       class="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseDataElements.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 	  
    <action name="getDataElementGroupMembers"
       class="org.hisp.dhis.dd.action.dataelement.GetDataElementGroupMembersAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseOperandList.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -60,7 +56,6 @@
       class="org.hisp.dhis.dd.action.dataelement.RemoveDataElementAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
@@ -77,7 +72,6 @@
     <action name="addDataElement"
       class="org.hisp.dhis.dd.action.dataelement.AddDataElementAction">
       <result name="success" type="redirect">dataElement.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>
     
@@ -87,14 +81,12 @@
       <param name="page">/dhis-web-maintenance-datadictionary/updateDataElementForm.vm</param>
       <param name="javascripts">javascript/shortName.js,javascript/dataElement.js,javascript/updateLoad.js</param>
       <param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
     
     <action name="updateDataElement"
       class="org.hisp.dhis.dd.action.dataelement.UpdateDataElementAction">
       <result name="success" type="redirect">dataElement.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
     
@@ -103,7 +95,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 	
@@ -115,40 +106,34 @@
 	  <param name="page">/dhis-web-maintenance-datadictionary/dataElementGroupEditor.vm</param>
 	  <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
 	  <param name="javascripts">javascript/dataElementGroupEditor.js</param>
-	  <interceptor-ref name="transactionStack"/>
     </action>
 	
 	<action name="getDataElementGroupEditor"
       class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupAction">
 	  <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responsedataElementGroupSuccess.vm</result>
-	  <interceptor-ref name="transactionStack"/>
     </action>   
 	
 	<action name="addDataElementGroupEditor"
       class="org.hisp.dhis.dd.action.dataelementgroup.AddDataElementGroupAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseAddDataElementGroupSuccess.vm</result>	  
-      <interceptor-ref name="transactionStack"/>
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseAddDataElementGroupSuccess.vm</result>
 	  <param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
     </action>
 	
 	<action name="renameDataElementGroupEditor"
       class="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseAddDataElementGroupSuccess.vm</result>	  
-      <interceptor-ref name="transactionStack"/>
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseAddDataElementGroupSuccess.vm</result>
 	  <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
 	
 	<action name="deleteDataElemenGroupEditor"
       class="org.hisp.dhis.dd.action.dataelementgroup.RemoveDataElementGroupAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-      <interceptor-ref name="transactionStack"/>
 	  <param name="requiredAuthorities">F_DATAELEMENTGROUP_DELETE</param>
     </action>
 	
 	<action name="updateDataElementGroupEditor"
       class="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>	 
-      <interceptor-ref name="transactionStack"/>
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
 	  <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
     
@@ -160,19 +145,16 @@
       <param name="page">/dhis-web-maintenance-datadictionary/dataElementGroup.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
       <param name="javascripts">javascript/dataElementGroup.js,javascript/filterTable.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="getDataElementGroup"
       class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseDataElementGroup.vm</result>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="removeDataElementGroup"
       class="org.hisp.dhis.dd.action.dataelementgroup.RemoveDataElementGroupAction">
       <result name="success" type="redirect">dataElementGroup.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENTGROUP_DELETE</param>
     </action>
     
@@ -181,21 +163,18 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addDataElementGroupForm.vm</param>
       <param name="javascripts">javascript/dataElementGroup.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
     </action>
     
     <action name="addDataElementGroup"
       class="org.hisp.dhis.dd.action.dataelementgroup.AddDataElementGroupAction">
       <result name="success" type="redirect">dataElementGroup.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
     </action>
     
     <action name="showUpdateDataElementGroupForm"
       class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupAction">
       <result name="success" type="chain">getGroupMembersAndAvailableElements</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
     
@@ -204,14 +183,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateDataElementGroupForm.vm</param>
       <param name="javascripts">javascript/dataElementGroup.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
     
     <action name="updateDataElementGroup"
       class="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction">
       <result name="success" type="redirect">dataElementGroup.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
     
@@ -220,7 +197,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <!-- Indicator Group Editor -->
@@ -232,40 +208,34 @@
 	  <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
 	  <param name="javascripts">javascript/indicatorGroupEditor.js</param>
 	  <param name="stylesheets">style/indicatorGroupEditor.css</param>
-	  <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="getIndicatorGroupEditor"
       class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupAction">
 	  <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseIndicatorGroup.vm</result>
-	  <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="addIndicatorGroupEditor"
       class="org.hisp.dhis.dd.action.indicatorgroup.AddIndicatorGroupAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseIndicatorGroup.vm</result>	  
-      <interceptor-ref name="transactionStack"/>
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseIndicatorGroup.vm</result>
 	  <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
     </action>
     
     <action name="renameIndicatorGroupEditor"
       class="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseIndicatorGroup.vm</result>	  
-      <interceptor-ref name="transactionStack"/>
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseIndicatorGroup.vm</result>
 	  <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
 	
 	<action name="deleteIndicatorGroupEditor"
       class="org.hisp.dhis.dd.action.indicatorgroup.RemoveIndicatorGroupAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-      <interceptor-ref name="transactionStack"/>
 	  <param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
     </action>
 	
 	<action name="updateIndicatorGroupEditor"
       class="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseIndicatorGroup.vm</result>	 
-      <interceptor-ref name="transactionStack"/>
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseIndicatorGroup.vm</result>
 	  <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
         
@@ -277,20 +247,17 @@
       <param name="page">/dhis-web-maintenance-datadictionary/indicatorGroup.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
       <param name="javascripts">javascript/indicatorGroup.js,javascript/filterTable.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="getIndicatorGroup"
       class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseIndicatorGroup.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="removeIndicatorGroup"
       class="org.hisp.dhis.dd.action.indicatorgroup.RemoveIndicatorGroupAction">
       <result name="success" type="redirect">indicatorGroup.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
     </action>
     
@@ -299,21 +266,18 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addIndicatorGroupForm.vm</param>
       <param name="javascripts">javascript/indicatorGroup.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
     </action>
     
     <action name="addIndicatorGroup"
       class="org.hisp.dhis.dd.action.indicatorgroup.AddIndicatorGroupAction">
       <result name="success" type="redirect">indicatorGroup.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
     </action>
     
     <action name="showUpdateIndicatorGroupForm"
       class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupAction">
       <result name="success" type="chain">getGroupMembersAndAvailableIndicators</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
     
@@ -322,14 +286,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorGroupForm.vm</param>
       <param name="javascripts">javascript/indicatorGroup.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
     
     <action name="updateIndicatorGroup"
       class="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction">
       <result name="success" type="redirect">indicatorGroup.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
     
@@ -338,7 +300,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -350,13 +311,11 @@
       <param name="page">/dhis-web-maintenance-datadictionary/indicatorType.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
       <param name="javascripts">javascript/indicatorType.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="getIndicatorType"
       class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseIndicatorType.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -364,7 +323,6 @@
       class="org.hisp.dhis.dd.action.indicatortype.RemoveIndicatorTypeAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_INDICATORTYPE_DELETE</param>
     </action>
@@ -380,7 +338,6 @@
     <action name="addIndicatorType"
       class="org.hisp.dhis.dd.action.indicatortype.AddIndicatorTypeAction">
       <result name="success" type="redirect">indicatorType.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATORTYPE_ADD</param>
     </action>
     
@@ -389,14 +346,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorTypeForm.vm</param>
       <param name="javascripts">javascript/indicatorType.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATORTYPE_UPDATE</param>
     </action>
     
     <action name="updateIndicatorType"
       class="org.hisp.dhis.dd.action.indicatortype.UpdateIndicatorTypeAction">
       <result name="success" type="redirect">indicatorType.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATORTYPE_UPDATE</param>
     </action>
     
@@ -405,7 +360,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -417,7 +371,6 @@
       <param name="page">/dhis-web-maintenance-datadictionary/indicator.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
       <param name="javascripts">javascript/indicator.js,javascript/dataDictionary.js,javascript/filterTable.js,javascript/denum.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="showSortIndicatorForm"
@@ -434,7 +387,6 @@
     <action name="getIndicator"
       class="org.hisp.dhis.dd.action.indicator.GetIndicatorAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseIndicator.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -442,7 +394,6 @@
       class="org.hisp.dhis.dd.action.indicator.RemoveIndicatorAction">      
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_INDICATOR_DELETE</param>
     </action>
@@ -452,21 +403,18 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addIndicatorForm.vm</param>
       <param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATOR_ADD</param>
     </action>
     
     <action name="addIndicator"
       class="org.hisp.dhis.dd.action.indicator.AddIndicatorAction">
       <result name="success" type="redirect">indicator.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATOR_ADD</param>
     </action>
     
     <action name="showUpdateIndicatorForm"
       class="org.hisp.dhis.dd.action.indicator.GetIndicatorAction">
       <result name="success" type="chain">getIndicatorTypeList</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
     </action>
     
@@ -475,14 +423,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorForm.vm</param>
       <param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
     </action>
     
     <action name="updateIndicator"
       class="org.hisp.dhis.dd.action.indicator.UpdateIndicatorAction">
       <result name="success" type="redirect">indicator.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
     </action>
     
@@ -491,7 +437,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -502,21 +447,18 @@
       <result name="success" type="velocity">/popup.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/editDenumForm.vm</param>
       <param name="javascripts">javascript/denum.js</param>
-	  <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
     </action>
     
     <action name="getFilteredDataElements"
       class="org.hisp.dhis.dd.action.indicatordenum.GetFilteredDataElementsAction">    			
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseOperandList.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 		
     <action name="getFormulaText"
       class="org.hisp.dhis.dd.action.indicatordenum.GetFormulaTextAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseFormulaText.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 	  
@@ -540,20 +482,17 @@
       <param name="page">/dhis-web-maintenance-datadictionary/dataDictionary.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
       <param name="javascripts">javascript/dataDictionary.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
 		
     <action name="getDataDictionary"
       class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseDataDictionary.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 		
     <action name="removeDataDictionary"
       class="org.hisp.dhis.dd.action.datadictionary.RemoveDataDictionaryAction">
       <result name="success" type="redirect">dataDictionary.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATADICTIONARY_DELETE</param>
     </action>
     
@@ -562,13 +501,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addDataDictionaryForm.vm</param>
       <param name="javascripts">javascript/dataDictionary.js</param>
-			<param name="requiredAuthorities">F_DATADICTIONARY_ADD</param>
+      <param name="requiredAuthorities">F_DATADICTIONARY_ADD</param>
     </action>
     
     <action name="addDataDictionary"
       class="org.hisp.dhis.dd.action.datadictionary.AddDataDictionaryAction">
       <result name="success" type="redirect">dataDictionary.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATADICTIONARY_ADD</param>
     </action>
     
@@ -577,14 +515,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateDataDictionaryForm.vm</param>
       <param name="javascripts">javascript/dataDictionary.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATADICTIONARY_UPDATE</param>
     </action>
     
     <action name="updateDataDictionary"
       class="org.hisp.dhis.dd.action.datadictionary.UpdateDataDictionaryAction">
       <result name="success" type="redirect">dataDictionary.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATADICTIONARY_UPDATE</param>
     </action>
     
@@ -593,7 +529,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -611,7 +546,6 @@
     <action name="addExtendedDataElement"
       class="org.hisp.dhis.dd.action.extendeddataelement.AddExtendedDataElementAction">
       <result name="success" type="redirect">dataElement.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>
     
@@ -626,14 +560,12 @@
       <param name="page">/dhis-web-maintenance-datadictionary/updateExtendedDataElementForm.vm</param>
       <param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
       <param name="javascripts">javascript/shortName.js,javascript/dataElement.js,javascript/extendedDataElement.js,javascript/formula.js,javascript/updateLoad.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
     
     <action name="updateExtendedDataElement"
       class="org.hisp.dhis.dd.action.extendeddataelement.UpdateExtendedDataElementAction">
       <result name="success" type="redirect">dataElement.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
     
@@ -642,7 +574,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -660,7 +591,6 @@
     <action name="addExtendedIndicator"
       class="org.hisp.dhis.dd.action.extendedindicator.AddExtendedIndicatorAction">
       <result name="success" type="redirect">indicator.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATOR_ADD</param>
     </action>
     
@@ -675,14 +605,12 @@
       <param name="page">/dhis-web-maintenance-datadictionary/updateExtendedIndicatorForm.vm</param>
       <param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
       <param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js,javascript/extendedIndicator.js,javascript/updateLoad.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
     </action>
     
     <action name="updateExtendedIndicator"
       class="org.hisp.dhis.dd.action.extendedindicator.UpdateExtendedIndicatorAction">
       <result name="success" type="redirect">indicator.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
     </action>
     
@@ -691,7 +619,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 	  
@@ -711,7 +638,6 @@
     <action name="addDataElementCategory"
       class="org.hisp.dhis.dd.action.category.AddDataElementCategoryAction">
       <result name="success" type="redirect">category.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>        
     
@@ -720,7 +646,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     	
@@ -730,20 +655,17 @@
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/category.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
       <param name="javascripts">javascript/category.js,javascript/filterTable.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="getDataElementCategory"
       class="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/multidimensional/responseCategory.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 	  
     <action name="updateDataElementCategory"
       class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryAction">
       <result name="success" type="redirect">category.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
     
@@ -752,7 +674,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryForm.vm</param>
       <param name="javascripts">javascript/dataElementCategoryOptionList.js,javascript/category.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
     
@@ -760,7 +681,6 @@
       class="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
@@ -778,8 +698,7 @@
     
     <action name="addDataElementCategoryCombo"
       class="org.hisp.dhis.dd.action.categorycombo.AddDataElementCategoryComboAction">
-      <result name="success" type="redirect">categoryCombo.action</result>	  
-      <interceptor-ref name="transactionStack"/>
+      <result name="success" type="redirect">categoryCombo.action</result>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>        
     
@@ -788,7 +707,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -798,20 +716,17 @@
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/categoryCombo.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
       <param name="javascripts">javascript/categoryCombo.js,javascript/filterTable.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
 	  
     <action name="getDataElementCategoryCombo"
       class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/multidimensional/responseCategoryCombo.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="updateDataElementCategoryCombo"
       class="org.hisp.dhis.dd.action.categorycombo.UpdateDataElementCategoryComboAction">
-      <result name="success" type="redirect">categoryCombo.action</result>	  
-      <interceptor-ref name="transactionStack"/>
+      <result name="success" type="redirect">categoryCombo.action</result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
     
@@ -819,15 +734,13 @@
       class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryComboForm.vm</param>      
-      <param name="javascripts">javascript/dataElementCategoryList.js,javascript/categoryCombo.js</param>	
-      <interceptor-ref name="transactionStack"/>
+      <param name="javascripts">javascript/dataElementCategoryList.js,javascript/categoryCombo.js</param>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>   
     
     <action name="removeDataElementCategoryCombo"
       class="org.hisp.dhis.dd.action.categorycombo.RemoveDataElementCategoryComboAction">
       <result name="success" type="redirect">categoryCombo.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
      
@@ -839,7 +752,6 @@
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/categoryOption.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
       <param name="javascripts">javascript/categoryOption.js,javascript/filterTable.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="dataElementCategoryOption"
@@ -848,13 +760,11 @@
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/categoryOption.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
       <param name="javascripts">javascript/categoryOption.js,javascript/filterTable.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
     <action name="getDataElementCategoryOption"
       class="org.hisp.dhis.dd.action.categoryoption.GetDataElementCategoryOptionAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/multidimensional/responseCategoryOption.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>   
 	
@@ -870,7 +780,6 @@
     <action name="addDataElementCategoryOption"
       class="org.hisp.dhis.dd.action.categoryoption.AddDataElementCategoryOptionAction">
       <result name="success" type="redirect">categoryOption.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>
     
@@ -879,7 +788,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action> 
     
@@ -887,7 +795,6 @@
       class="org.hisp.dhis.dd.action.categoryoption.RemoveDataElementCategoryOptionAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
@@ -895,7 +802,6 @@
     <action name="updateDataElementCategoryOption"
       class="org.hisp.dhis.dd.action.categoryoption.UpdateDataElementCategoryOptionAction">
       <result name="success" type="redirect">categoryOption.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
     
@@ -904,7 +810,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryOptionForm.vm</param>
       <param name="javascripts">javascript/shortName.js,javascript/categoryOption.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
     
