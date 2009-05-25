@@ -154,37 +154,31 @@
     
     <action name="getDataElements" class="org.hisp.dhis.commons.action.GetDataElementsAction">
 	  <result name="success" type="velocity">/dhis-web-commons/ajax/responseDataElement.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 		
     <action name="getDataSets" class="org.hisp.dhis.commons.action.GetDataSetsAction">
       <result name="success" type="velocity">/dhis-web-commons/ajax/responseDataSet.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 		
     <action name="getIndicators" class="org.hisp.dhis.commons.action.GetIndicatorsAction">
       <result name="success" type="velocity">/dhis-web-commons/ajax/responseIndicator.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 		
     <action name="getOrganisationUnitChildren" class="org.hisp.dhis.commons.action.GetOrganisationUnitChildrenAction">
       <result name="success" type="velocity">/dhis-web-commons/ajax/responseOrganisationUnit.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 		
     <action name="getOrganisationUnits" class="org.hisp.dhis.commons.action.GetOrganisationUnitsAction">
       <result name="success" type="velocity">/dhis-web-commons/ajax/responseOrganisationUnit.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="getPeriods" class="org.hisp.dhis.commons.action.GetPeriodsAction">
       <result name="success" type="velocity">/dhis-web-commons/ajax/responsePeriod.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 		

@@ -2,83 +2,8 @@
 <!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
   "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
 <xwork>
-  <package name="webwork-default">
-    <result-types>
-      <result-type name="chain" class="com.opensymphony.xwork.ActionChainResult"/>
-      <result-type name="dispatcher" class="com.opensymphony.webwork.dispatcher.ServletDispatcherResult" default="true"/>
-      <result-type name="freemarker" class="com.opensymphony.webwork.views.freemarker.FreemarkerResult"/>
-      <result-type name="httpheader" class="com.opensymphony.webwork.dispatcher.HttpHeaderResult"/>
-      <result-type name="jasper" class="com.opensymphony.webwork.views.jasperreports.JasperReportsResult"/>
-      <result-type name="redirect" class="com.opensymphony.webwork.dispatcher.ServletRedirectResult"/>
-      <result-type name="redirect-action" class="com.opensymphony.webwork.dispatcher.ServletActionRedirectResult"/>
-      <result-type name="stream" class="com.opensymphony.webwork.dispatcher.StreamResult"/>
-      <result-type name="tiles" class="com.opensymphony.webwork.views.tiles.TilesResult"/>
-      <result-type name="velocity" class="com.opensymphony.webwork.dispatcher.VelocityResult"/>
-      <result-type name="xslt" class="com.opensymphony.webwork.views.xslt.XSLTResult"/>
-      <result-type name="plaintext" class="com.opensymphony.webwork.dispatcher.PlainTextResult" />
-      <result-type name="flash" class="com.opensymphony.webwork.dispatcher.FlashResult" />            
-    </result-types>
-
-    <interceptors>
-      <interceptor name="alias" class="com.opensymphony.xwork.interceptor.AliasInterceptor"/>
-      <interceptor name="autowiring" class="com.opensymphony.xwork.spring.interceptor.ActionAutowiringInterceptor"/>
-      <interceptor name="chain" class="com.opensymphony.xwork.interceptor.ChainingInterceptor"/>
-      <interceptor name="component" class="com.opensymphony.xwork.interceptor.component.ComponentInterceptor"/>
-      <interceptor name="conversionError" class="com.opensymphony.webwork.interceptor.WebWorkConversionErrorInterceptor"/>
-      <interceptor name="createSession" class="com.opensymphony.webwork.interceptor.CreateSessionInterceptor" />
-      <interceptor name="debugging" class="com.opensymphony.webwork.interceptor.debugging.DebuggingInterceptor" />
-      <interceptor name="external-ref" class="com.opensymphony.xwork.interceptor.ExternalReferencesInterceptor"/>
-      <interceptor name="execAndWait" class="com.opensymphony.webwork.interceptor.ExecuteAndWaitInterceptor"/>
-      <interceptor name="exception" class="com.opensymphony.xwork.interceptor.ExceptionMappingInterceptor"/>
-      <interceptor name="fileUpload" class="com.opensymphony.webwork.interceptor.FileUploadInterceptor"/>
-      <interceptor name="i18n" class="com.opensymphony.xwork.interceptor.I18nInterceptor"/>
-      <interceptor name="logger" class="com.opensymphony.xwork.interceptor.LoggingInterceptor"/>
-      <interceptor name="model-driven" class="com.opensymphony.xwork.interceptor.ModelDrivenInterceptor"/>
-      <interceptor name="params" class="com.opensymphony.xwork.interceptor.ParametersInterceptor"/>
-      <interceptor name="prepare" class="com.opensymphony.xwork.interceptor.PrepareInterceptor"/>
-      <interceptor name="static-params" class="com.opensymphony.xwork.interceptor.StaticParametersInterceptor"/>
-      <interceptor name="scope" class="com.opensymphony.webwork.interceptor.ScopeInterceptor"/>
-      <interceptor name="servlet-config" class="com.opensymphony.webwork.interceptor.ServletConfigInterceptor"/>
-      <interceptor name="sessionAutowiring" class="com.opensymphony.webwork.spring.interceptor.SessionContextAutowiringInterceptor"/>
-      <interceptor name="timer" class="com.opensymphony.xwork.interceptor.TimerInterceptor"/>
-      <interceptor name="token" class="com.opensymphony.webwork.interceptor.TokenInterceptor"/>
-      <interceptor name="token-session" class="com.opensymphony.webwork.interceptor.TokenSessionStoreInterceptor"/>
-      <interceptor name="validation" class="com.opensymphony.xwork.validator.ValidationInterceptor"/>
-      <interceptor name="workflow" class="com.opensymphony.xwork.interceptor.DefaultWorkflowInterceptor"/>
-      <interceptor name="paramFilter" class="com.opensymphony.xwork.interceptor.ParameterFilterInterceptor" />
-      <interceptor name="paramRemover" class="com.opensymphony.xwork.interceptor.ParameterRemoverInterceptor" />
-      <interceptor name="sessionInvalidation" class="com.opensymphony.webwork.interceptor.SessionInvalidationInterceptor" />
-      <interceptor name="flash" class="com.opensymphony.webwork.interceptor.FlashInterceptor" />
-      <interceptor name="cookie" class="com.opensymphony.webwork.interceptor.CookieInterceptor" />
-      <interceptor name="store" class="com.opensymphony.webwork.interceptor.MessageStoreInterceptor" />
-      <interceptor name="booleanTweaker" class="com.opensymphony.webwork.interceptor.BooleanTweaker" />
-            
-      <interceptor-stack name="defaultStack">
-        <interceptor-ref name="exception"/>
-        <interceptor-ref name="alias"/>
-        <interceptor-ref name="servlet-config"/>
-        <interceptor-ref name="prepare"/>
-        <interceptor-ref name="i18n"/>
-        <interceptor-ref name="chain"/>
-        <interceptor-ref name="debugging"/>
-        <interceptor-ref name="model-driven"/>
-        <interceptor-ref name="fileUpload"/>
-        <interceptor-ref name="static-params"/>
-        <interceptor-ref name="params"/>
-        <interceptor-ref name="conversionError"/>
-        <interceptor-ref name="validation">
-          <param name="excludeMethods">input,back,cancel,browse</param>
-        </interceptor-ref>
-        <interceptor-ref name="workflow">
-          <param name="excludeMethods">input,back,cancel,browse</param>
-        </interceptor-ref>
-      </interceptor-stack>
-
-    </interceptors>
-
-    <default-interceptor-ref name="defaultStack"/>
-  </package>
-  
+  <include file="webwork-default.xml"/>
+    
   <package name="dhis-support-webwork" extends="webwork-default">
     <result-types>
       <result-type name="plainTextErrorResult" 

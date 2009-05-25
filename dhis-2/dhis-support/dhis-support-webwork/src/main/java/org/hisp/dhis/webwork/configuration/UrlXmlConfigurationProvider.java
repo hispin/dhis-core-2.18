@@ -272,18 +272,13 @@ public class UrlXmlConfigurationProvider
         PackageConfig check = configuration.getPackageConfig( newPackage.getName() );
         if ( check != null )
         {
-            if ( LOG.isDebugEnabled() )
-            {
-                LOG.debug( "Package is allready loaded! " + newPackage.getName() );
-            }
+            LOG.debug( "Package is already loaded! " + newPackage.getName() );
+            
             return;
         }
 
-        if ( LOG.isDebugEnabled() )
-        {
-            LOG.debug( "Loaded " + newPackage );
-        }
-
+        LOG.info( "Loaded " + newPackage.getName() );
+        
         // add result types (and default result) to this package
         addResultTypes( newPackage, packageElement );
 
@@ -311,7 +306,6 @@ public class UrlXmlConfigurationProvider
         // load the default action reference for this package
         loadDefaultActionRef( newPackage, packageElement );
         configuration.addPackageConfig( newPackage.getName(), newPackage );
-
     }
 
     protected void addResultTypes( PackageConfig packageContext, Element element )

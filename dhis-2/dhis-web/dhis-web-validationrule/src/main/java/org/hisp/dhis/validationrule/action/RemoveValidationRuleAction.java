@@ -27,7 +27,6 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
@@ -51,13 +50,6 @@ public class RemoveValidationRuleAction
         this.validationRuleService = validationRuleService;
     }
     
-    private ExpressionService expressionService;
-    
-    public void setExpressionService( ExpressionService expressionService )
-    {
-        this.expressionService = expressionService;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -78,9 +70,6 @@ public class RemoveValidationRuleAction
     {
         ValidationRule validationRule = validationRuleService.getValidationRule( id );
 
-        expressionService.deleteExpression( validationRule.getRightSide() );
-        expressionService.deleteExpression( validationRule.getLeftSide() );
-        
         validationRuleService.deleteValidationRule( validationRule );
         
         return SUCCESS;

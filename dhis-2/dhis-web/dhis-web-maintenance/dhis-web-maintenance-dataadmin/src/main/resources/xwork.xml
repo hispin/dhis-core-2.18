@@ -26,7 +26,6 @@
 		
     <action name="getDataSets" class="org.hisp.dhis.dataadmin.action.datalocking.GetDataSetsAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseDataSet.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     

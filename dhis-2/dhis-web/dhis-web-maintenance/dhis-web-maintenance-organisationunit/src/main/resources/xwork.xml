@@ -22,7 +22,6 @@
     
     <action name="getOrganisationUnit" class="org.hisp.dhis.oum.action.organisationunit.GetOrganisationUnitAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseOrganisationUnitObject.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -30,7 +29,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
         
@@ -51,7 +49,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitForm.vm</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/shortName.js,javascript/organisationUnit.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_UPDATE</param>
     </action>
     
@@ -82,7 +79,6 @@
     
     <action name="getOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseOrganisationUnitGroupObject.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -90,7 +86,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
         
@@ -103,7 +98,6 @@
     
     <action name="addOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.AddOrganisationUnitGroupAction">
       <result name="success" type="redirect">organisationUnitGroup.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_ORGUNITGROUP_ADD</param>
     </action>
       
@@ -111,19 +105,16 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitGroupForm.vm</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/oust/oust.js,javascript/organisationUnitGroup.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_ORGUNITGROUP_UPDATE</param>
     </action>
     
     <action name="updateOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.UpdateOrganisationUnitGroupAction">
       <result name="success" type="redirect">organisationUnitGroup.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_ORGUNITGROUP_UPDATE</param>
     </action>
     
     <action name="removeOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.RemoveOrganisationUnitGroupAction">
       <result name="success" type="redirect">organisationUnitGroup.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_ORGUNITGROUP_DELETE</param>
     </action>
 		
@@ -135,18 +126,15 @@
       <param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>
       <param name="menuTreeHeight">321</param>
       <param name="javascripts">javascript/organisationUnitGroupSet.js</param>
-	  <interceptor-ref name="transactionStack"/>
     </action>
 		
     <action name="getOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.GetGroupSetAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseOrganisationUnitGroupSetObject.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 		
 	<action name="addOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.AddGroupSetAction">
 	  <result name="success" type="redirect">organisationUnitGroupSet.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_ORGUNITGROUPSET_ADD</param>
     </action>
 		
@@ -154,7 +142,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 		
@@ -162,29 +149,25 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitGroupSetForm.vm</param>
 	  <param name="javascripts">javascript/organisationUnitGroupSet.js</param>
-	  <interceptor-ref name="transactionStack"/>
-      <param name="requiredAuthorities">F_ORGUNITGROUPSET_ADD</param>
+	  <param name="requiredAuthorities">F_ORGUNITGROUPSET_ADD</param>
     </action>
 		
 	<action name="showUpdateOrganisationUnitGroupSetForm" class="org.hisp.dhis.oum.action.organisationunitgroupset.PrepareUpdateGroupSetAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitGroupSetForm.vm</param>
       <param name="javascripts">javascript/organisationUnitGroupSet.js</param>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_ORGUNITGROUPSET_UPDATE</param>
     </action>
 		
-		<action name="removeOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.RemoveGroupSetAction">
-			<result name="success" type="redirect">organisationUnitGroupSet.action</result>
-      <interceptor-ref name="transactionStack"/>
+    <action name="removeOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.RemoveGroupSetAction">
+      <result name="success" type="redirect">organisationUnitGroupSet.action</result>
       <param name="requiredAuthorities">F_ORGUNITGROUPSET_DELETE</param>
-		</action>
+    </action>
 		
-		<action name="updateOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.UpdateGroupSetAction">
-			<result name="success" type="redirect">organisationUnitGroupSet.action</result>
-			<interceptor-ref name="transactionStack"/>
+    <action name="updateOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.UpdateGroupSetAction">
+      <result name="success" type="redirect">organisationUnitGroupSet.action</result>
       <param name="requiredAuthorities">F_ORGUNITGROUPSET_UPDATE</param>
-		</action>
+	</action>
     
     <!-- Hierarchy -->
     
@@ -202,7 +185,6 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_MOVE</param>
     </action>
@@ -211,14 +193,12 @@
       <result name="success" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseError.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseInput.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_MOVE</param>
     </action>
       
     <action name="moveOrganisationUnit" class="org.hisp.dhis.oum.action.hierarchy.MoveOrganisationUnitAction">
       <result name="success" type="redirect">hierarchyOperations.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_MOVE</param>
     </action>
     
