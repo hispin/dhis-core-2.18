@@ -50,20 +50,9 @@
       <artifactId>dhis-web-commons-resources</artifactId>
       <type>war</type>
     </dependency>
-    
-    <!-- WebWork -->
-    
-    <dependency>
-      <groupId>com.opensymphony</groupId>
-      <artifactId>webwork</artifactId>
-    </dependency>
-    
+        
     <!-- Other -->
     
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring</artifactId>
