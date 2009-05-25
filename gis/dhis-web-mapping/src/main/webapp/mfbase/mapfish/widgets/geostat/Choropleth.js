@@ -156,7 +156,21 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             root: 'indicators',
             fields: ['id', 'name'],
             sortInfo: { field: 'name', direction: 'ASC' },
-            autoLoad: false
+            autoLoad: false,
+            listeners: {
+                'load': {
+                    fn: function() {
+                        indicatorStore.each( function fn(record) {
+                                var name = record.get('name');
+                                name = name.replace('&lt;', '<').replace('&gt;', '>');
+                                record.set('name', name);
+                            },  this
+                        );
+                        Ext.getCmp('indicator_cb').reset();
+                    },
+                    scope: this
+                }
+            }
         });
         
         periodTypeStore = new Ext.data.JsonStore({
@@ -470,7 +484,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 
         },
  */
- 
         {
             xtype: 'colorfield',
             fieldLabel: 'Low color',
@@ -491,9 +504,9 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             value: "#FF0000"
         },
         
-        { html: '<br>' }
+        { html: '<br>' },
 
-        ,{
+        {
             xtype: 'button',
             text: 'Refresh colors',
             handler: function()
