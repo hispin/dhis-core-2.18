@@ -94,6 +94,10 @@
     <action name="getIndicatorsByIndicatorGroup" class="org.hisp.dhis.mapping.action.GetIndicatorsByIndicatorGroupAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonminIndicators.vm</result>
     </action>
+	  
+	<action name="getAllIndicators" class="org.hisp.dhis.mapping.action.GetAllIndicatorsAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/jsonminIndicators.vm</result>
+    </action>  
     
     <!-- Period -->
     
