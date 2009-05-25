@@ -121,11 +121,14 @@ public class AddMapLegendSetAction
         legendSet.setClasses( classes );
         legendSet.setColorLow( colorLow );
         legendSet.setColorHigh( colorHigh );
-        legendSet.setIndicators( new HashSet<Indicator>() );        
+        legendSet.setIndicators( new HashSet<Indicator>() );
         
-        for ( String indicator : indicators )
+        if ( indicators != null )
         {
-            legendSet.getIndicators().add( indicatorService.getIndicator( Integer.valueOf( indicator ) ) );
+            for ( String indicator : indicators )
+            {
+                legendSet.getIndicators().add( indicatorService.getIndicator( Integer.valueOf( indicator ) ) );
+            }
         }
         
         mappingService.addMapLegendSet( legendSet );

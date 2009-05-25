@@ -548,24 +548,15 @@ Ext.onReady(function()
         minListWidth: combo_width + 26,
         store: existingMapsStore
     });
-    /*
-    var temptest = new Ext.ux.Multiselect(
-    {
-        store: existingMapsStore,
-        valueField: 'mapLayerPath',
-        displayField: 'name',
-        mode: 'remote',
-        id: 'testtemp'
-    });
-    */
+    
     var newMapPanel = new Ext.Panel(
     {   
         id: 'newmap_p',
         items:
         [   
             { html: '<p style="padding-bottom:4px">Map type:</p>' }, typeComboBox, { html: '<br>' },
-//            { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, temptest, { html: '<br>' },
-//            { html: '<p style="padding-bottom:4px">Organisation unit:</p>' }, organisationUnitComboBox, { html: '<br>' },
+//            { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, newMapComboBox, { html: '<br>' },
+//            { html: '<p style="padding-bottom:4px">Organisation unit:</p>' }, multi, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Map name:</p>' }, newNameTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Geoserver map layer path:</p>' }, mapLayerPathTextField, { html: '<br>' },
@@ -737,7 +728,7 @@ Ext.onReady(function()
         minListWidth: combo_width + 26,
         value: "#FF0000"
     });
-    
+/*    
     var legendSetIndicatorGroupStore = new Ext.data.JsonStore({
         url: path + 'getAllIndicatorGroups' + type,
         baseParams: { format: 'json' },
@@ -754,7 +745,7 @@ Ext.onReady(function()
         sortInfo: { field: 'name', direction: 'ASC' },
         autoLoad: false
     });
-    
+   
     var legendSetIndicatorGroupComboBox = new Ext.form.ComboBox({
         id: 'legendsetindicatorgroup_cb',
         typeAhead: true,
@@ -798,6 +789,32 @@ Ext.onReady(function()
         minListWidth: combo_width + 26,
         store: legendSetIndicatorStore
     });
+*/
+/*
+    var legendSetIndicatorStore = new Ext.data.SimpleStore({
+        fields: ['id', 'name', 'title'],
+        data: [['AL', 'Alabama', 'The Heart of Dixie'], ['AK', 'Alaska', 'The Land of the Midnight Sun'], ['AZ', 'Arizona', 'The Grand Canyon State'],
+               ['WD', 'Sfdfs', 'The Heart of Dixie'], ['ED', 'BGgsdf', 'The Heart of Dixie'], ['DS', 'Fdwwd', 'The Heart of Dixie'],
+               ['FF', 'Ewwes', 'The Heart of Dixie']]
+    });
+*/    
+    var legendSetIndicatorStore = new Ext.data.JsonStore({
+        url: path + 'getAllIndicators' + type,
+        root: 'indicators',
+        fields: ['id', 'name'],
+        sortInfo: { field: 'name', direction: 'ASC' },
+        autoLoad: true
+    });
+    
+    var legendSetIndicatorMultiSelect = new Ext.ux.Multiselect({
+        id: 'legendsetindicator_ms',
+        dataFields: ['id', 'name'], 
+        valueField: 'id',
+        displayField: 'name',
+        width: gridpanel_width - 25,
+        height: multiselect_height,
+        store: legendSetIndicatorStore
+    });
     
     var legendSetStore = new Ext.data.JsonStore({
         url: path + 'getAllMapLegendSets' + type,
@@ -833,19 +850,35 @@ Ext.onReady(function()
             var lc = Ext.getCmp('legendsetclasses_cb').getValue();            
             var llc = Ext.getCmp('legendsetlowcolor_cp').getValue();
             var lhc = Ext.getCmp('legendsethighcolor_cp').getValue();
-            var li = Ext.getCmp('legendsetindicator_cb').getValue();
+//            var li = Ext.getCmp('legendsetindicator_cb').getValue();
+            var lims = Ext.getCmp('legendsetindicator_ms').getValue();
             
-            if (!lc || !ln || !li)
+            if (!lc || !ln || !lims)
             {
                 Ext.MessageBox.alert('Error', 'Form is not complete');
                 return;
             }
             
+//            var params = '?name=' + ln + '&method=2&classes=' + lc + '&colorLow=' + llc + '&colorHigh=' + lhc;
+            var params;
+            var array = new Array();
+            array = lims.split(',');
+            
+            params = '?indicators=' + array[0];
+            
+            for (var i = 1; i < array.length; i++)
+            {
+                array[i] = '&indicators=' + array[i];
+                params += array[i];
+            }
+            
+            alert(params);
+            
             Ext.Ajax.request(
             {
-                url: path + 'addMapLegendSet' + type,
-                method: 'GET',
-                params: { name: ln, method: 2, classes: lc, colorLow: llc, colorHigh: lhc, indicators: li },
+                url: path + 'addMapLegendSet.action' + params,
+                method: 'POST',
+                params: { name: ln, method: 2, classes: lc, colorLow: llc, colorHigh: lhc },
 
                 success: function( responseObject )
                 {
@@ -919,8 +952,9 @@ Ext.onReady(function()
             { html: '<p style="padding-bottom:4px">Classes:</p>' }, legendSetClassesComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Lowest value color:</p>' }, legendSetLowColorColorPalette, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Highest value color:</p>' }, legendSetHighColorColorPalette, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px">Indicator group:</p>' }, legendSetIndicatorGroupComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px">Indicator:</p>' }, legendSetIndicatorComboBox
+//            { html: '<p style="padding-bottom:4px">Indicator group:</p>' }, legendSetIndicatorGroupComboBox, { html: '<br>' },
+//            { html: '<p style="padding-bottom:4px">Indicator:</p>' }, legendSetIndicatorComboBox
+            { html: '<p style="padding-bottom:4px">Indicators:</p>' }, legendSetIndicatorMultiSelect
         ]
     });
     
@@ -1657,7 +1691,7 @@ function dataReceivedAutoAssignOrganisationUnit( responseText )
     }
     
     var south_panel = Ext.getCmp('south-panel');
-    south_panel.body.dom.innerHTML = count_match + '<font color="#444444"> organisation units assigned (</font>' + count_orgunits/count_features + '<font color="#444444"> in database, </font>' + count_features + '<font color="#444444"> in shapefile).</font>';
+    south_panel.body.dom.innerHTML = count_match + '<font color="#444444"> organisation units assigned (database: </font>' + count_orgunits/count_features + '<font color="#444444">, shapefile: </font>' + count_features + '<font color="#444444">)</font>';
     
     Ext.getCmp('grid_gp').getStore().reload();
     loadMapData('assignment');
