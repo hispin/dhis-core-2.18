@@ -1617,19 +1617,25 @@ function dataReceivedAutoAssignOrganisationUnit( responseText )
     var uniqueColumn = mapData.uniqueColumn;
     var nameColumn = mapData.nameColumn;
     var mlp = mapData.mapLayerPath;
-    var count = 0;
+    var count_features = 0;
+    var count_orgunits = 0;
+    var count_match = 0;
 
     for ( var j=0; j < features.length; j++ ) 
     {
+        count_features++;
+        
         for ( var i=0; i < organisationUnits.length; i++ )
         {
+            count_orgunits++;
+            
             if (features[j].attributes[uniqueColumn] == organisationUnits[i].name)
             {
                 var organisationUnitId = organisationUnits[i].id;
                 var organisationUnit = organisationUnits[i].name;
                 var featureId = features[j].attributes[uniqueColumn];
                 var featureName = features[j].attributes[nameColumn];
-                count++;
+                count_match++;
                 
                 Ext.Ajax.request( 
                 {
@@ -1639,7 +1645,7 @@ function dataReceivedAutoAssignOrganisationUnit( responseText )
 
                     success: function( responseObject )
                     {
-                        
+
                     },
                     failure: function()
                     {
@@ -1651,7 +1657,7 @@ function dataReceivedAutoAssignOrganisationUnit( responseText )
     }
     
     var south_panel = Ext.getCmp('south-panel');
-    south_panel.body.dom.innerHTML = count + '<font color="#444444"> organisation units assigned!</font>';
+    south_panel.body.dom.innerHTML = count_match + '<font color="#444444"> organisation units assigned (</font>' + count_orgunits/count_features + '<font color="#444444"> in database, </font>' + count_features + '<font color="#444444"> in shapefile).</font>';
     
     Ext.getCmp('grid_gp').getStore().reload();
     loadMapData('assignment');
