@@ -3,6 +3,81 @@
 <xwork>
   <include file="dhis-support-webwork.xml"/>
   
+  <!-- DHIS Web Commons -->
+  
+  <package name="dhis-web-commons" extends="dhis-support-webwork" namespace="/dhis-web-commons">
+
+    <interceptors>
+      <interceptor name="portalParamsInterceptor"
+        class="org.hisp.dhis.webportal.interceptor.WebWorkPortalParamsInterceptor"/>
+      <interceptor name="portalModuleInterceptor"
+        class="org.hisp.dhis.webportal.interceptor.WebWorkPortalModuleInterceptor"/>
+      <interceptor name="portalMenuInterceptor"
+        class="org.hisp.dhis.webportal.interceptor.WebWorkPortalMenuInterceptor"/>
+      <interceptor name="organisationUnitTreeInterceptor"
+        class="org.hisp.dhis.ouwt.interceptor.OrganisationUnitTreeInterceptor"/>
+      <interceptor name="portalUserInterceptor"
+        class="org.hisp.dhis.webportal.interceptor.WebWorkPortalUserInterceptor"/>
+      <interceptor name="securityInterceptor"
+        class="org.hisp.dhis.security.intercept.WebWorkSecurityInterceptor"/>
+      <interceptor name="execAndWait"
+        class="org.hisp.dhis.hibernate.interceptor.OpenSessionExecuteAndWaitInterceptor"/>
+      
+      <interceptor-stack name="commonInterceptors">
+        <interceptor-ref name="static-params"/>
+        <interceptor-ref name="params"/>
+        <interceptor-ref name="chain"/>
+        <interceptor-ref name="i18nInterceptor"/>
+        <!--
+        The securityInterceptor is put after the i18nInterceptor so that the
+        access denied error pages can use internationalisation.
+        -->
+        <interceptor-ref name="securityInterceptor"/>
+        <interceptor-ref name="sortOrderInterceptor"/>
+        <interceptor-ref name="displayPropertyInterceptor"/>
+        <interceptor-ref name="dataDictionaryModeInterceptor"/>
+        <interceptor-ref name="systemSettingInterceptor"/>
+        <interceptor-ref name="styleInterceptor"/>
+        <interceptor-ref name="portalParamsInterceptor"/>
+        <interceptor-ref name="portalMenuInterceptor"/>
+        <interceptor-ref name="portalModuleInterceptor"/>
+        <interceptor-ref name="portalUserInterceptor"/>
+      </interceptor-stack>
+      
+      <interceptor-stack name="exceptionStack">
+        <interceptor-ref name="exceptionInterceptor"/>
+        <interceptor-ref name="commonInterceptors"/>
+      </interceptor-stack>
+      
+      <interceptor-stack name="transactionStack">
+        <interceptor-ref name="exceptionStack"/>
+        <interceptor-ref name="transactionInterceptor"/>
+      </interceptor-stack>
+      
+      <interceptor-stack name="fileUploadStack">
+        <interceptor-ref name="exceptionInterceptor"/>
+        <interceptor-ref name="fileUpload"/>
+        <interceptor-ref name="commonInterceptors"/>
+      </interceptor-stack>
+      
+      <interceptor-stack name="organisationUnitTreeStack">
+        <interceptor-ref name="transactionStack"/>
+        <interceptor-ref name="organisationUnitTreeInterceptor"/>
+      </interceptor-stack>
+    </interceptors>
+    
+    <default-interceptor-ref name="exceptionStack"/>
+    
+    <global-results>
+      <result name="exceptionDefault" type="velocity">/exception.vm</result>
+      <result name="accessDenied" type="velocity">/accessDenied.vm</result>
+      <result name="plainTextError" type="plainTextErrorResult">
+        <param name="parse">true</param>
+        <param name="message">${exception.class.name}: ${exception.message}</param>
+      </result>
+    </global-results>    
+  </package>
+  
   <!-- Organisation Unit Selection Tree -->
   
   <package name="dhis-web-commons-oust" extends="dhis-web-commons" namespace="/dhis-web-commons/oust">
