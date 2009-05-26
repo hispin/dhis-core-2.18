@@ -33,14 +33,14 @@ import java.util.Map;
 import org.hisp.dhis.options.style.StyleManager;
 
 import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.AroundInterceptor;
+import com.opensymphony.xwork.interceptor.Interceptor;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class WebWorkStyleInterceptor
-    extends AroundInterceptor
+    implements Interceptor
 {
     private static final String KEY_STYLE = "stylesheet";
     private static final String KEY_STYLE_DIRECTORY = "stylesheetDirectory";
@@ -61,7 +61,19 @@ public class WebWorkStyleInterceptor
     // AroundInterceptor implementation
     // -------------------------------------------------------------------------
 
-    protected void before( ActionInvocation invocation )
+    public void destroy()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void init()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public String intercept( ActionInvocation invocation )
         throws Exception
     {
         Map<String, Object> map = new HashMap<String, Object>( 2 );
@@ -73,11 +85,7 @@ public class WebWorkStyleInterceptor
         map.put( KEY_STYLE_DIRECTORY, styleDirectory );
         
         invocation.getStack().push( map );
-    }
-    
-    protected void after( ActionInvocation invocation, String result )
-        throws Exception
-    {
-
+        
+        return invocation.invoke();        
     }
 }
