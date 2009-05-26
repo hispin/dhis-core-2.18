@@ -27,25 +27,25 @@ package org.hisp.dhis.webwork.interceptor;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_FORUM_INTEGRATION;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.options.SystemSettingManager;
 
 import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.AroundInterceptor;
-
-import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_FORUM_INTEGRATION;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
+import com.opensymphony.xwork.interceptor.Interceptor;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class WebWorkSystemSettingInterceptor
-    extends AroundInterceptor
+    implements Interceptor
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -62,7 +62,19 @@ public class WebWorkSystemSettingInterceptor
     // AroundInterceptor implementation
     // -------------------------------------------------------------------------
 
-    protected void before( ActionInvocation invocation )
+    public void destroy()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void init()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public String intercept( ActionInvocation invocation )
         throws Exception
     {
         Map<String, Object> map = new HashMap<String, Object>( 2 );
@@ -78,10 +90,7 @@ public class WebWorkSystemSettingInterceptor
         map.put( KEY_START_MODULE, startModule );
         
         invocation.getStack().push( map );
-    }
-    
-    protected void after( ActionInvocation invocation, String result )
-        throws Exception
-    {
+        
+        return invocation.invoke();
     }
 }

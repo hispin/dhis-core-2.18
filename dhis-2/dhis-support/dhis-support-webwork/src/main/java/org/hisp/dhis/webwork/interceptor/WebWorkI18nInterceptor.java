@@ -39,14 +39,14 @@ import org.hisp.dhis.i18n.I18nManager;
 
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.AroundInterceptor;
+import com.opensymphony.xwork.interceptor.Interceptor;
 
 /**
  * @author Nguyen Dang Quang
  * @version $Id: WebWorkI18nInterceptor.java 6335 2008-11-20 11:11:26Z larshelg $
  */
 public class WebWorkI18nInterceptor
-    extends AroundInterceptor
+    implements Interceptor
 {
     private static final String KEY_I18N = "i18n";
 
@@ -67,12 +67,19 @@ public class WebWorkI18nInterceptor
     // AroundInterceptor implementation
     // -------------------------------------------------------------------------
 
-    protected void after( ActionInvocation invocation, String result )
-        throws Exception
+    public void destroy()
     {
+        // TODO Auto-generated method stub
+        
     }
 
-    protected void before( ActionInvocation invocation )
+    public void init()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public String intercept( ActionInvocation invocation )
         throws Exception
     {
         Action action = (Action) invocation.getAction();
@@ -111,5 +118,7 @@ public class WebWorkI18nInterceptor
         catch ( NoSuchPropertyException e )
         {
         }
+        
+        return invocation.invoke();
     }
 }
