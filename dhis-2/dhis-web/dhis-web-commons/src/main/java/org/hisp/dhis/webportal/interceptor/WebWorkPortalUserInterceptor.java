@@ -33,14 +33,14 @@ import java.util.Map;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.AroundInterceptor;
+import com.opensymphony.xwork.interceptor.Interceptor;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: WebWorkPortalUserInterceptor.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class WebWorkPortalUserInterceptor
-    extends AroundInterceptor
+    implements Interceptor
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -57,13 +57,20 @@ public class WebWorkPortalUserInterceptor
     // Interceptor implementation
     // -------------------------------------------------------------------------
 
-    @Override
-    protected void after( ActionInvocation invocation, String result ) throws Exception
+    public void destroy()
     {
+        // TODO Auto-generated method stub
+        
     }
 
-    @Override
-    protected void before( ActionInvocation invocation ) throws Exception
+    public void init()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public String intercept( ActionInvocation invocation )
+        throws Exception
     {
         Map<String, Object> map = new HashMap<String, Object>( 3 );
 
@@ -71,5 +78,7 @@ public class WebWorkPortalUserInterceptor
         map.put( "currentUser", currentUserService.getCurrentUser() );
 
         invocation.getStack().push( map );
+        
+        return invocation.invoke();
     }
 }
