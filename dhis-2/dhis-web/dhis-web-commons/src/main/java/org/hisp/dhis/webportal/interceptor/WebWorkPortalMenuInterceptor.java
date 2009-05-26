@@ -34,14 +34,14 @@ import org.hisp.dhis.webportal.menu.MenuState;
 import org.hisp.dhis.webportal.menu.MenuStateManager;
 
 import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.AroundInterceptor;
+import com.opensymphony.xwork.interceptor.Interceptor;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: WebWorkPortalMenuInterceptor.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class WebWorkPortalMenuInterceptor
-    extends AroundInterceptor
+    implements Interceptor
 {
     private static final String KEY_MENU_STATE = "menuState";
 
@@ -60,13 +60,20 @@ public class WebWorkPortalMenuInterceptor
     // AroundInterceptor implementation
     // -------------------------------------------------------------------------
 
-    @Override
-    protected void after( ActionInvocation invocation, String result ) throws Exception
+    public void destroy()
     {
+        // TODO Auto-generated method stub
+        
     }
 
-    @Override
-    protected void before( ActionInvocation invocation ) throws Exception
+    public void init()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public String intercept( ActionInvocation invocation )
+        throws Exception
     {
         Map<String, MenuState> menuStateMap = new HashMap<String, MenuState>( 1 );
 
@@ -80,5 +87,7 @@ public class WebWorkPortalMenuInterceptor
         menuStateMap.put( KEY_MENU_STATE, menuState );
 
         invocation.getStack().push( menuStateMap );
+        
+        return invocation.invoke();
     }
 }

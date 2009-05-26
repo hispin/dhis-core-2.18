@@ -33,14 +33,14 @@ import java.util.Map;
 import org.hisp.dhis.webportal.module.ModuleManager;
 
 import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.AroundInterceptor;
+import com.opensymphony.xwork.interceptor.Interceptor;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: WebWorkPortalModuleInterceptor.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class WebWorkPortalModuleInterceptor
-    extends AroundInterceptor
+    implements Interceptor
 {
     private static final String KEY_MAINTENANCE_MODULES = "maintenanceModules";
     private static final String KEY_SERVICE_MODULES = "serviceModules";
@@ -60,14 +60,19 @@ public class WebWorkPortalModuleInterceptor
     // AroundInterceptor implementation
     // -------------------------------------------------------------------------
 
-    @Override
-    protected void after( ActionInvocation actionInvocation, String result )
-        throws Exception
+    public void destroy()
     {
+        // TODO Auto-generated method stub
+        
     }
 
-    @Override
-    protected void before( ActionInvocation actionInvocation )
+    public void init()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public String intercept( ActionInvocation actionInvocation )
         throws Exception
     {
         Map<String, Object> handle = new HashMap<String, Object>( 2 );
@@ -76,5 +81,7 @@ public class WebWorkPortalModuleInterceptor
         handle.put( KEY_SERVICE_MODULES, moduleManager.getServiceMenuModules() );
 
         actionInvocation.getStack().push( handle );
+        
+        return actionInvocation.invoke();
     }
 }

@@ -34,14 +34,14 @@ import java.util.Set;
 
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.config.entities.ActionConfig;
-import com.opensymphony.xwork.interceptor.AroundInterceptor;
+import com.opensymphony.xwork.interceptor.Interceptor;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: WebWorkPortalParamsInterceptor.java 4559 2008-02-09 18:47:24Z torgeilo $
  */
 public class WebWorkPortalParamsInterceptor
-    extends AroundInterceptor
+    implements Interceptor
 {
     // -------------------------------------------------------------------------
     // External configuration
@@ -65,51 +65,56 @@ public class WebWorkPortalParamsInterceptor
     // AroundInterceptor implementation
     // -------------------------------------------------------------------------
 
-    @Override
-    protected void after( ActionInvocation actionInvocation, String result )
-        throws Exception
+    public void destroy()
     {
+        // TODO Auto-generated method stub
+        
     }
 
-    @Override
+    public void init()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
     @SuppressWarnings( "unchecked" )
-    protected void before( ActionInvocation actionInvocation )
+    public String intercept( ActionInvocation actionInvocation )
         throws Exception
     {
         ActionConfig actionConfig = actionInvocation.getProxy().getConfig();
 
         final Map<String, String> staticParams = actionConfig.getParams();
 
-        if ( staticParams == null )
-        {
-            return;
-        }
-
-        // ---------------------------------------------------------------------
-        // Push the specified static parameters onto the value stack
-        // ---------------------------------------------------------------------
-
-        Map<String, Object> matches = new HashMap<String, Object>();
-
-        for ( Map.Entry<String, String> entry : staticParams.entrySet() )
-        {
-            if ( standardParams.contains( entry.getKey() ) )
+        if ( staticParams != null )
+        {            
+            // ---------------------------------------------------------------------
+            // Push the specified static parameters onto the value stack
+            // ---------------------------------------------------------------------
+    
+            Map<String, Object> matches = new HashMap<String, Object>();
+    
+            for ( Map.Entry<String, String> entry : staticParams.entrySet() )
             {
-                matches.put( entry.getKey(), entry.getValue() );
-            }
-            else if ( commaSeparatedParams.contains( entry.getKey() ) )
-            {
-                String[] values = entry.getValue().split( "," );
-
-                for ( int i = 0; i < values.length; i++ )
+                if ( standardParams.contains( entry.getKey() ) )
                 {
-                    values[i] = values[i].trim();
+                    matches.put( entry.getKey(), entry.getValue() );
                 }
-                
-                matches.put( entry.getKey(), values );
+                else if ( commaSeparatedParams.contains( entry.getKey() ) )
+                {
+                    String[] values = entry.getValue().split( "," );
+    
+                    for ( int i = 0; i < values.length; i++ )
+                    {
+                        values[i] = values[i].trim();
+                    }
+                    
+                    matches.put( entry.getKey(), values );
+                }
             }
+    
+            actionInvocation.getStack().push( matches );
         }
-
-        actionInvocation.getStack().push( matches );
+        
+        return actionInvocation.invoke();
     }
 }
