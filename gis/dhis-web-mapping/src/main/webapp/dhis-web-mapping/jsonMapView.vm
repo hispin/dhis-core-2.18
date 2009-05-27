@@ -1,0 +1,15 @@
+{ "mapView": 
+  [{
+    "id": $!{object.id},
+    "name": "$!encoder.jsEncode( ${object.name} )",
+    "indicatorGroupId": $!{object.indicatorGroup.id},
+    "indicatorId": $!{object.indicator.id},
+    "periodTypeId": $!{object.periodType.id},
+    "periodId": $!{object.period.id},
+    "mapLayerPath": "$!encoder.jsEncode( ${object.map.mapLayerPath} )",
+    "method": $!{object.method},
+    "classes": $!{object.classes},
+    "colorLow": "$!encoder.jsEncode( ${object.colorLow} )",
+    "colorHigh": "$!encoder.jsEncode( ${object.colorHigh} )"
+  }]
+}

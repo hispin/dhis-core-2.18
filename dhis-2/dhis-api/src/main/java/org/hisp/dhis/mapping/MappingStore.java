@@ -191,7 +191,7 @@ public interface MappingStore
     int deleteMapOrganisationUnitRelations( Map map );
     
     // -------------------------------------------------------------------------
-    // LegendSet
+    // MapLegendSet
     // -------------------------------------------------------------------------    
     
     int addMapLegendSet( MapLegendSet legendSet );
@@ -202,5 +202,21 @@ public interface MappingStore
     
     MapLegendSet getMapLegendSet( int id );
     
-    Collection<MapLegendSet> getAllMapLegendSets();    
+    Collection<MapLegendSet> getAllMapLegendSets();
+    
+    // -------------------------------------------------------------------------
+    // MapView
+    // -------------------------------------------------------------------------    
+    
+    int addMapView( MapView mapView );
+    
+    void updateMapView( MapView mapView );
+    
+    void deleteMapView( MapView view );
+    
+    MapView getMapView( int id );
+    
+    MapView getMapViewByName( String name );
+    
+    Collection<MapView> getAllMapViews();
 }
