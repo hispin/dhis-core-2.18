@@ -19,6 +19,34 @@ Ext.onReady(function()
     ACTIVEPANEL = 'choropleth';
     MAPVIEW = false;
     MAPVIEWACTIVE = false;    
+    URLACTIVE = false;
+    PARAMETER = null;
+    
+    function getUrlParam(strParamName)
+    {
+        var output = "";
+        var strHref = window.location.href;
+        if ( strHref.indexOf("?") > -1 )
+        {
+            var strQueryString = strHref.substr(strHref.indexOf("?")).toLowerCase();
+            var aQueryString = strQueryString.split("&");
+            for ( var iParam = 0; iParam < aQueryString.length; iParam++ )
+            {
+                if (aQueryString[iParam].indexOf(strParamName.toLowerCase() + "=") > -1 )
+                {
+                    var aParam = aQueryString[iParam].split("=");
+                    output = aParam[1];
+                    break;
+                }
+            }
+        }
+        return unescape(output);
+    }
+    
+    if (getUrlParam('view') != '') {
+        PARAMETER = getUrlParam('view');
+        URLACTIVE = true;
+    }
 
     var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
                                            "http://labs.metacarta.com/wms-c/Basic.py?", 
@@ -1356,6 +1384,7 @@ Ext.onReady(function()
     map.addControl(new OpenLayers.Control.OverviewMap({div: $('overviewmap')}));
     
     Ext.get('loading').fadeOut({remove: true});
+   
 });
 
 // SELECT FEATURES

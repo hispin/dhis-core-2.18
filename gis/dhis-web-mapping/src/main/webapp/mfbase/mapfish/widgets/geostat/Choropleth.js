@@ -147,7 +147,46 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             root: 'mapViews',
             fields: ['id', 'name'],
             sortInfo: { field: 'name', direction: 'ASC' },
-            autoLoad: true
+            autoLoad: true,
+            listeners: {
+                'load': {
+                    fn: function()
+                    {
+                        if (URLACTIVE)
+                        {
+                            Ext.Ajax.request(
+                            {
+                                url: path + 'getMapView' + type,
+                                method: 'POST',
+                                params: { id: PARAMETER },
+
+                                success: function( responseObject )
+                                {
+                                    MAPVIEWACTIVE = true;
+                                    MAPVIEW = Ext.util.JSON.decode(responseObject.responseText).mapView[0];
+                                    
+                                    Ext.getCmp('mapview_cb').setValue(MAPVIEW.id);
+                                    
+                                    Ext.getCmp('numClasses').setValue(MAPVIEW.classes);
+                                    Ext.getCmp('colorA_cf').setValue(MAPVIEW.colorLow);
+                                    Ext.getCmp('colorB_cf').setValue(MAPVIEW.colorHigh);
+
+                                    Ext.getCmp('indicatorgroup_cb').setValue(MAPVIEW.indicatorGroupId);
+                                    
+                                    var igId = Ext.getCmp('indicatorgroup_cb').getValue();
+                                    indicatorStore.baseParams = { indicatorGroupId: igId, format: 'json' };
+                                    indicatorStore.reload();
+                                },
+                                failure: function()
+                                {
+                                  alert( 'Status', 'Error while retrieving data' );
+                                } 
+                            });
+                        }
+                    },
+                    scope: this
+                }
+            }
         });
     
         indicatorGroupStore = new Ext.data.JsonStore({
@@ -329,6 +368,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 'select': {
                     fn: function()
                     {
+                        if (Ext.getCmp('mapview_cb').getValue() != '') {
+                            Ext.getCmp('mapview_cb').reset();
+                        }
+                        
                         Ext.getCmp('indicator_cb').reset();
                         var igId = Ext.getCmp('indicatorgroup_cb').getValue();
                         indicatorStore.baseParams = { indicatorGroupId: igId, format: 'json' };
@@ -358,6 +401,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 'select': {
                     fn: function()
                     {
+                        if (Ext.getCmp('mapview_cb').getValue() != '') {
+                            Ext.getCmp('mapview_cb').reset();
+                        }
+                        
                         var iId = Ext.getCmp('indicator_cb').getValue();
                         
                         Ext.Ajax.request(
@@ -411,6 +458,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 'select': {
                     fn: function()
                     {
+                        if (Ext.getCmp('mapview_cb').getValue() != '') {
+                            Ext.getCmp('mapview_cb').reset();
+                        }
+                        
                         var ptid = Ext.getCmp('periodtype_cb').getValue();
                         Ext.getCmp('period_cb').getStore().baseParams = { periodTypeId: ptid, format: 'json' };
                         Ext.getCmp('period_cb').getStore().reload();
@@ -439,6 +490,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 'select': {
                     fn: function()
                     {
+                        if (Ext.getCmp('mapview_cb').getValue() != '') {
+                            Ext.getCmp('mapview_cb').reset();
+                        }
+                        
                         this.classify(false);
                     },
                     scope: this
@@ -463,9 +518,13 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             store: mapStore,
             listeners: {
                 'select': {
-                    fn: function() {
+                    fn: function()
+                    {
+                        if (Ext.getCmp('mapview_cb').getValue() != '') {
+                            Ext.getCmp('mapview_cb').reset();
+                        }
+                        
                         var mlp = Ext.getCmp('map_cb').getValue();
-                                     
                         this.newUrl = mlp;
                         this.classify(false);
                     },
@@ -522,6 +581,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 'select': {
                     fn: function()
                     {
+                        if (Ext.getCmp('mapview_cb').getValue() != '') {
+                            Ext.getCmp('mapview_cb').reset();
+                        }
+                        
                         this.classify(false);
                     },
                     scope: this
