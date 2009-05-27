@@ -142,6 +142,14 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     
     initComponent : function() {
     
+        mapViewStore = new Ext.data.JsonStore({
+            url: path + 'getAllMapViews' + type,
+            root: 'mapViews',
+            fields: ['id', 'name'],
+            sortInfo: { field: 'name', direction: 'ASC' },
+            autoLoad: true
+        });
+    
         indicatorGroupStore = new Ext.data.JsonStore({
             url: path + 'getAllIndicatorGroups' + type,
             baseParams: { format: 'json' },
@@ -167,6 +175,16 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                             },  this
                         );
                         Ext.getCmp('indicator_cb').reset();
+
+                        if (MAPVIEWACTIVE) {
+                            Ext.getCmp('indicator_cb').setValue(MAPVIEW.indicatorId);
+                            
+                            var periodTypeId = getPeriodTypeIdByName(MAPVIEW.periodTypeId);
+                            Ext.getCmp('periodtype_cb').setValue(periodTypeId);
+                            
+                            periodStore.baseParams = { periodTypeId: periodTypeId, format: 'json' };
+                            periodStore.reload();
+                        }
                     },
                     scope: this
                 }
@@ -185,7 +203,22 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             url: path + 'getPeriodsByPeriodType' + type,
             root: 'periods',
             fields: ['id', 'name'],
-            autoLoad: false
+            autoLoad: false,
+            listeners: {
+                'load': {
+                    fn: function() {
+                        if (MAPVIEWACTIVE) {
+                            Ext.getCmp('period_cb').setValue(MAPVIEW.periodId);
+                            Ext.getCmp('map_cb').setValue(MAPVIEW.mapLayerPath);
+                            MAPVIEWACTIVE = false;
+                            
+                            this.newUrl = MAPVIEW.mapLayerPath;
+                            choropleth.classify(false);
+                        }
+                    },
+                    scope: this
+                }
+            }
         });
             
         mapStore = new Ext.data.JsonStore({
@@ -197,14 +230,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             autoLoad: true
         }); 
             
-        levelStore = new Ext.data.JsonStore({
-            url: path + 'getOrganisationUnitLevels' + type,
-            baseParams: { format: 'json' },
-            root: 'organisationUnitLevels',
-            fields: ['level', 'name'],
-            autoLoad: true
-        });
-
         legendStore = new Ext.data.JsonStore({
             url: path + 'getMapLegendSet' + type,
             baseParams: { format: 'json' },
@@ -212,9 +237,79 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             fields: ['id', 'name'],
             autoLoad: false
         });
-
+        
+        function getPeriodTypeIdByName(name)
+        {
+            if (name == 'Daily') { return 6 }
+            else if (name == 'Weekly') { return 7 }
+            else if (name == 'Monthly') { return 8 }
+            else if (name == 'Quarterly') { return 9 }
+            else if (name == 'SixMonthly') { return 10 }
+            else if (name == 'Yearly') { return 11 }
+            else { return 12 }
+        }
+            
         this.items = [
          
+        {
+            xtype: 'combo',
+            id: 'mapview_cb',
+            fieldLabel: 'Map view',
+            typeAhead: true,
+            editable: false,
+            valueField: 'id',
+            displayField: 'name',
+            mode: 'remote',
+            forceSelection: true,
+            triggerAction: 'all',
+            emptyText: 'Optional',
+            selectOnFocus: true,
+            width: combo_width,
+            store: mapViewStore,
+            listeners: {
+                'select': {
+                    fn: function()
+                    {
+                        var mId = Ext.getCmp('mapview_cb').getValue();
+                        
+                        Ext.Ajax.request(
+                        {
+                            url: path + 'getMapView' + type,
+                            method: 'POST',
+                            params: { id: mId },
+
+                            success: function( responseObject )
+                            {
+                                MAPVIEWACTIVE = true;
+                                MAPVIEW = Ext.util.JSON.decode(responseObject.responseText).mapView[0];
+                                
+                                Ext.getCmp('numClasses').setValue(MAPVIEW.classes);
+                                Ext.getCmp('colorA_cf').setValue(MAPVIEW.colorLow);
+                                Ext.getCmp('colorB_cf').setValue(MAPVIEW.colorHigh);
+                                Ext.getCmp('indicatorgroup_cb').setValue(MAPVIEW.indicatorGroupId);
+                                
+                                var igId = Ext.getCmp('indicatorgroup_cb').getValue();
+                                indicatorStore.baseParams = { indicatorGroupId: igId, format: 'json' };
+                                indicatorStore.reload();
+
+                                
+
+                                
+                                
+                            },
+                            failure: function()
+                            {
+                              alert( 'Status', 'Error while retrieving data' );
+                            } 
+                        });
+                    },
+                    scope: this
+                }
+            }
+        },
+        
+        { html: '<br>' },
+        
         {
             xtype: 'combo',
             id: 'indicatorgroup_cb',
@@ -585,9 +680,9 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 //        this.layer.setVisibility(true);
         
         if (this.newUrl) {
-            url = this.newUrl;
+            URL = this.newUrl;
             this.newUrl = false;
-            this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + url + '&outputformat=json&version=1.0.0');
+            this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + URL + '&outputformat=json&version=1.0.0');
         }
                 
         if (!Ext.getCmp('indicator_cb').getValue() ||
