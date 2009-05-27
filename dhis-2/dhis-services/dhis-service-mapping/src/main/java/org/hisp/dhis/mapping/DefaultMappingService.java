@@ -32,10 +32,14 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 
 /**
  * @author Jan Henrik Overland
@@ -61,12 +65,19 @@ public class DefaultMappingService
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private IndicatorService indicatorService;
-    
+
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
+    }
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
     }
 
     // -------------------------------------------------------------------------
@@ -82,8 +93,8 @@ public class DefaultMappingService
         return mappingStore.addMap( map );
     }
 
-    public int addMap( String name, String mapLayerPath, String type, int organisationUnitId, int organisationUnitLevelId, String uniqueColumn,
-        String nameColumn, String longitude, String latitude, int zoom )
+    public int addMap( String name, String mapLayerPath, String type, int organisationUnitId,
+        int organisationUnitLevelId, String uniqueColumn, String nameColumn, String longitude, String latitude, int zoom )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
@@ -92,14 +103,14 @@ public class DefaultMappingService
 
         Set<String> staticMapLayerPaths = null;
 
-        Map map = new Map( name, mapLayerPath, type, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn, longitude,
-            latitude, zoom, staticMapLayerPaths );
+        Map map = new Map( name, mapLayerPath, type, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn,
+            longitude, latitude, zoom, staticMapLayerPaths );
 
         return addMap( map );
     }
 
-    public void addOrUpdateMap( String name, String mapLayerPath, String type, int organisationUnitId, int organisationUnitLevelId,
-        String uniqueColumn, String nameColumn, String longitude, String latitude, int zoom )
+    public void addOrUpdateMap( String name, String mapLayerPath, String type, int organisationUnitId,
+        int organisationUnitLevelId, String uniqueColumn, String nameColumn, String longitude, String latitude, int zoom )
     {
         Map map = getMapByMapLayerPath( mapLayerPath );
 
@@ -121,8 +132,8 @@ public class DefaultMappingService
             OrganisationUnitLevel organisationUnitLevel = organisationUnitService
                 .getOrganisationUnitLevel( organisationUnitLevelId );
 
-            map = new Map( name, mapLayerPath, type, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn, longitude,
-                latitude, zoom, null );
+            map = new Map( name, mapLayerPath, type, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn,
+                longitude, latitude, zoom, null );
 
             addMap( map );
         }
@@ -154,7 +165,7 @@ public class DefaultMappingService
     {
         return mappingStore.getMapByMapLayerPath( mapLayerPath );
     }
-    
+
     public Collection<Map> getMapsByType( String type )
     {
         return mappingStore.getMapsByType( type );
@@ -197,8 +208,7 @@ public class DefaultMappingService
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        MapOrganisationUnitRelation mapOrganisationUnitRelation = getMapOrganisationUnitRelation( map,
-            organisationUnit );
+        MapOrganisationUnitRelation mapOrganisationUnitRelation = getMapOrganisationUnitRelation( map, organisationUnit );
 
         if ( mapOrganisationUnitRelation != null )
         {
@@ -277,67 +287,166 @@ public class DefaultMappingService
     {
         return mappingStore.deleteMapOrganisationUnitRelations( map );
     }
-    
+
     // -------------------------------------------------------------------------
-    // LegendSet
-    // -------------------------------------------------------------------------    
-    
+    // MapLegendSet
+    // -------------------------------------------------------------------------
+
     public int addMapLegendSet( MapLegendSet legendSet )
     {
         return mappingStore.addMapLegendSet( legendSet );
     }
-    
+
     public void updateMapLegendSet( MapLegendSet legendSet )
     {
         mappingStore.updateMapLegendSet( legendSet );
     }
-    
+
     public void deleteMapLegendSet( MapLegendSet legendSet )
     {
         mappingStore.deleteMapLegendSet( legendSet );
     }
-    
+
     public MapLegendSet getMapLegendSet( int id )
     {
         return mappingStore.getMapLegendSet( id );
     }
-    
+
     public MapLegendSet getMapLegendSetByIndicator( int indicatorId )
     {
         Indicator indicator = indicatorService.getIndicator( indicatorId );
-        
+
         Collection<MapLegendSet> legendSets = mappingStore.getAllMapLegendSets();
-        
+
         for ( MapLegendSet legendSet : legendSets )
         {
-            if ( legendSet.getIndicators().contains( indicator ))
+            if ( legendSet.getIndicators().contains( indicator ) )
             {
                 return legendSet;
             }
         }
-        
+
         return null;
     }
-    
+
     public Collection<MapLegendSet> getAllMapLegendSets()
     {
         return mappingStore.getAllMapLegendSets();
     }
-    
+
     public boolean indicatorHasMapLegendSet( int indicatorId )
     {
         Indicator indicator = indicatorService.getIndicator( indicatorId );
-        
+
         Collection<MapLegendSet> legendSets = mappingStore.getAllMapLegendSets();
-        
+
         for ( MapLegendSet legendSet : legendSets )
         {
-            if ( legendSet.getIndicators().contains( indicator ))
+            if ( legendSet.getIndicators().contains( indicator ) )
             {
                 return true;
             }
         }
-        
+
         return false;
+    }
+
+    // -------------------------------------------------------------------------
+    // MapView
+    // -------------------------------------------------------------------------
+
+    public int addMapView( MapView mapView )
+    {
+        return mappingStore.addMapView( mapView );
+    }
+    
+    public int addMapView( String name, int indicatorGroupId, int indicatorId, int periodTypeId, int periodId,
+        String mapLayerPath, int method, int classes, String colorLow, String colorHigh )
+    {
+        MapView mapView = new MapView();
+
+        IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( indicatorGroupId );
+
+        Indicator indicator = indicatorService.getIndicator( indicatorId );
+
+        PeriodType periodType = periodService.getPeriodType( periodTypeId );
+
+        Period period = periodService.getPeriod( periodId );
+
+        Map map = mappingStore.getMapByMapLayerPath( mapLayerPath );
+
+        mapView.setIndicatorGroup( indicatorGroup );
+        mapView.setIndicator( indicator );
+        mapView.setPeriodType( periodType );
+        mapView.setPeriod( period );
+        mapView.setMap( map );
+        mapView.setMethod( method );
+        mapView.setClasses( classes );
+        mapView.setColorLow( colorLow );
+        mapView.setColorHigh( colorHigh );
+
+        return mappingStore.addMapView( mapView );
+    }
+
+    public void updateMapView( MapView mapView )
+    {
+        mappingStore.updateMapView( mapView );
+    }
+
+    public void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, int periodTypeId, int periodId,
+        String mapLayerPath, int method, int classes, String colorLow, String colorHigh )
+    {
+        IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( indicatorGroupId );
+        
+        Indicator indicator = indicatorService.getIndicator( indicatorId );
+
+        PeriodType periodType = periodService.getPeriodType( periodTypeId );
+
+        Period period = periodService.getPeriod( periodId );
+
+        Map map = mappingStore.getMapByMapLayerPath( mapLayerPath );
+        
+        MapView mapView = mappingStore.getMapViewByName( name );
+
+        if ( mapView != null )
+        {
+            mapView.setIndicatorGroup( indicatorGroup );
+            mapView.setIndicator( indicator );
+            mapView.setPeriodType( periodType );
+            mapView.setPeriod( period );
+            mapView.setMap( map );
+            mapView.setMethod( method );
+            mapView.setClasses( classes );
+            mapView.setColorLow( colorLow );
+            mapView.setColorHigh( colorHigh );
+            
+            updateMapView( mapView );
+        }
+        else
+        {
+            mapView = new MapView( name, indicatorGroup, indicator, periodType, period, map, method, classes, colorLow, colorHigh );
+            
+            addMapView( mapView );
+        }
+    }
+
+    public void deleteMapView( MapView view )
+    {
+        mappingStore.deleteMapView( view );
+    }
+
+    public MapView getMapView( int id )
+    {
+        return mappingStore.getMapView( id );
+    }
+
+    public MapView getMapViewByName( String name )
+    {
+        return mappingStore.getMapViewByName( name );
+    }
+
+    public Collection<MapView> getAllMapViews()
+    {
+        return mappingStore.getAllMapViews();
     }
 }

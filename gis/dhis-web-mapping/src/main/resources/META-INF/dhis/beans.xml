@@ -133,6 +133,36 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="mappingService"
       ref="org.hisp.dhis.mapping.MappingService"/>
   </bean>
+	
+  <!-- MapView -->
+	
+  <bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapViewAction"
+    class="org.hisp.dhis.mapping.action.AddOrUpdateMapViewAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+	
+  <bean id="org.hisp.dhis.mapping.action.DeleteMapViewAction"
+    class="org.hisp.dhis.mapping.action.DeleteMapViewAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>	
+	
+  <bean id="org.hisp.dhis.mapping.action.GetMapViewAction"
+    class="org.hisp.dhis.mapping.action.GetMapViewAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+	
+  <bean id="org.hisp.dhis.mapping.action.GetAllMapViewsAction"
+    class="org.hisp.dhis.mapping.action.GetAllMapViewsAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>		
   
   <!-- Indicator -->
     

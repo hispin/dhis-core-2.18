@@ -276,7 +276,7 @@ public interface MappingService
     int deleteMapOrganisationUnitRelations( Map map );
     
     // -------------------------------------------------------------------------
-    // LegendSet
+    // MapLegendSet
     // -------------------------------------------------------------------------    
     
     int addMapLegendSet( MapLegendSet legendSet );
@@ -292,4 +292,26 @@ public interface MappingService
     Collection<MapLegendSet> getAllMapLegendSets();
     
     boolean indicatorHasMapLegendSet( int indicatorId );
+    
+    // -------------------------------------------------------------------------
+    // MapView
+    // -------------------------------------------------------------------------    
+    
+    int addMapView( MapView mapView );
+    
+    int addMapView( String name, int indicatorGroupId, int indicatorId, int periodTypeId, int periodId,
+        String mapLayerPath, int method, int classes, String colorLow, String colorHigh );
+    
+    void updateMapView( MapView mapView );
+    
+    void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, int periodTypeId, int periodId,
+        String mapLayerPath, int method, int classes, String colorLow, String colorHigh );
+    
+    void deleteMapView( MapView view );
+    
+    MapView getMapView( int id );
+    
+    MapView getMapViewByName( String name );
+    
+    Collection<MapView> getAllMapViews();
 }

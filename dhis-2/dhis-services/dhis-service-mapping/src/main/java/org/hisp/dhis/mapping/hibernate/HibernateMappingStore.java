@@ -37,6 +37,7 @@ import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapOrganisationUnitRelation;
+import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -90,7 +91,7 @@ public class HibernateMappingStore
 
         return (Map) session.get( Map.class, id );
     }
-    
+
     public Map getMapByMapLayerPath( String mapLayerPath )
     {
         Session session = sessionManager.getCurrentSession();
@@ -101,8 +102,8 @@ public class HibernateMappingStore
 
         return (Map) criteria.uniqueResult();
     }
-    
-    @SuppressWarnings("unchecked")
+
+    @SuppressWarnings( "unchecked" )
     public Collection<Map> getMapsByType( String type )
     {
         Session session = sessionManager.getCurrentSession();
@@ -123,14 +124,14 @@ public class HibernateMappingStore
 
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<Map> getMapsAtLevel( OrganisationUnitLevel organisationUnitLevel )
     {
         Session session = sessionManager.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Map.class );
-        
+
         criteria.add( Restrictions.eq( "organisationUnitLevel", organisationUnitLevel ) );
 
         return criteria.list();
@@ -167,16 +168,16 @@ public class HibernateMappingStore
 
         return (MapOrganisationUnitRelation) session.get( MapOrganisationUnitRelation.class, id );
     }
-    
+
     public MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit )
     {
         Session session = sessionManager.getCurrentSession();
-        
+
         Criteria criteria = session.createCriteria( MapOrganisationUnitRelation.class );
-        
-        criteria.add( Restrictions.eq( "map", map ) );        
+
+        criteria.add( Restrictions.eq( "map", map ) );
         criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
-        
+
         return (MapOrganisationUnitRelation) criteria.uniqueResult();
     }
 
@@ -189,75 +190,129 @@ public class HibernateMappingStore
 
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationByMap( Map map )
     {
         Session session = sessionManager.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MapOrganisationUnitRelation.class );
-        
+
         criteria.add( Restrictions.eq( "map", map ) );
 
-        return criteria.list();        
+        return criteria.list();
     }
 
     public int deleteMapOrganisationUnitRelations( OrganisationUnit organisationUnit )
     {
         Session session = sessionManager.getCurrentSession();
-        
-        Query query = session.createQuery( "delete from OrganisationUnitRelation where organisationUnit = :organisationUnit" );
-        
+
+        Query query = session
+            .createQuery( "delete from OrganisationUnitRelation where organisationUnit = :organisationUnit" );
+
         return query.setParameter( "organisationUnit", organisationUnit ).executeUpdate();
     }
 
     public int deleteMapOrganisationUnitRelations( Map map )
     {
         Session session = sessionManager.getCurrentSession();
-        
+
         Query query = session.createQuery( "delete from OrganisationUnitRelation where map = :map" );
-        
+
         return query.setParameter( "map", map ).executeUpdate();
     }
-    
+
     // -------------------------------------------------------------------------
-    // LegendSet
-    // -------------------------------------------------------------------------    
-    
+    // MapLegendSet
+    // -------------------------------------------------------------------------
+
     public int addMapLegendSet( MapLegendSet legendSet )
     {
         Session session = sessionManager.getCurrentSession();
 
         return (Integer) session.save( legendSet );
     }
-    
+
     public void updateMapLegendSet( MapLegendSet legendSet )
     {
         Session session = sessionManager.getCurrentSession();
-        
+
         session.update( legendSet );
     }
-    
+
     public void deleteMapLegendSet( MapLegendSet legendSet )
     {
         Session session = sessionManager.getCurrentSession();
 
         session.delete( legendSet );
     }
-    
+
     public MapLegendSet getMapLegendSet( int id )
     {
         Session session = sessionManager.getCurrentSession();
 
         return (MapLegendSet) session.get( MapLegendSet.class, id );
     }
-    
-    @SuppressWarnings("unchecked")
+
+    @SuppressWarnings( "unchecked" )
     public Collection<MapLegendSet> getAllMapLegendSets()
     {
         Session session = sessionManager.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MapLegendSet.class );
+
+        return criteria.list();
+    }
+
+    // -------------------------------------------------------------------------
+    // MapView
+    // -------------------------------------------------------------------------
+
+    public int addMapView( MapView view )
+    {
+        Session session = sessionManager.getCurrentSession();
+
+        return (Integer) session.save( view );
+    }
+
+    public void updateMapView( MapView view )
+    {
+        Session session = sessionManager.getCurrentSession();
+
+        session.update( view );
+    }
+
+    public void deleteMapView( MapView view )
+    {
+        Session session = sessionManager.getCurrentSession();
+
+        session.delete( view );
+    }
+
+    public MapView getMapView( int id )
+    {
+        Session session = sessionManager.getCurrentSession();
+
+        return (MapView) session.get( MapView.class, id );
+    }
+
+    public MapView getMapViewByName( String name )
+    {
+        Session session = sessionManager.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( MapView.class );
+
+        criteria.add( Restrictions.eq( "name", name ) );
+
+        return (MapView) criteria.uniqueResult();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<MapView> getAllMapViews()
+    {
+        Session session = sessionManager.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( MapView.class );
 
         return criteria.list();
     }

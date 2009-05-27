@@ -1,0 +1,18 @@
+#set( $size = $object.size() )
+{ "mapViews": [
+#foreach( $mapView in $object )
+  {
+    "id": $!{mapView.id},
+    "name": "$!encoder.jsEncode( ${mapView.name} )",
+    "indicatorGroupId": $!{mapView.indicatorGroup.id},
+    "indicatorId": $!{mapView.indicator.id},
+    "periodTypeId": $!{mapView.periodType.id},
+    "periodId": $!{mapView.period.id},
+    "mapLayerPath": "$!encoder.jsEncode( ${mapView.map.mapLayerPath} )",
+    "method": $!{mapView.method},
+    "classes": $!{mapView.classes},
+    "colorLow": "$!encoder.jsEncode( ${mapView.colorLow} )",
+    "colorHigh": "$!encoder.jsEncode( ${mapView.colorHigh} )"
+  }#if( $velocityCount < $size ),#end
+#end
+] }

@@ -84,6 +84,28 @@
     <action name="getMapLegendSet" class="org.hisp.dhis.mapping.action.GetMapLegendSetAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapLegendSet.vm</result>
     </action>
+	  
+	<!-- MapView -->
+	  
+	<action name="addOrUpdateMapView" class="org.hisp.dhis.mapping.action.AddOrUpdateMapViewAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+    </action>
+
+	<action name="deleteMapView" class="org.hisp.dhis.mapping.action.DeleteMapViewAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+    </action>
+	  
+	<action name="getMapView" class="org.hisp.dhis.mapping.action.GetMapViewAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapView.vm</result>
+    </action>
+
+	<action name="getAllMapViews" class="org.hisp.dhis.mapping.action.GetAllMapViewsAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapViews.vm</result>
+    </action>
+	  
+	<action name="getAllMapViewsMin" class="org.hisp.dhis.mapping.action.GetAllMapViewsAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/jsonminMapViews.vm</result>
+    </action>
         
     <!-- Indicator -->
     

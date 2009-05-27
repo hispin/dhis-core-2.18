@@ -1,0 +1,9 @@
+#set( $size = $object.size() )
+{ "mapViews": [
+#foreach( $mapView in $object )
+  {
+    "id": $!{mapView.id},
+    "name": "$!encoder.jsEncode( ${mapView.name} )",
+  }#if( $velocityCount < $size ),#end
+#end
+] }
