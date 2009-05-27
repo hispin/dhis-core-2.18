@@ -4,7 +4,7 @@
     "name": "$!encoder.jsEncode( ${object.name} )",
     "indicatorGroupId": $!{object.indicatorGroup.id},
     "indicatorId": $!{object.indicator.id},
-    "periodTypeId": $!{object.periodType.id},
+    "periodTypeId": "$!encoder.jsEncode( ${object.periodType.name} )",
     "periodId": $!{object.period.id},
     "mapLayerPath": "$!encoder.jsEncode( ${object.map.mapLayerPath} )",
     "method": $!{object.method},

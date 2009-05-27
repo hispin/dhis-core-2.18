@@ -1,4 +1,4 @@
-    // reference local blank image
+// reference local blank image
 Ext.BLANK_IMAGE_URL = '../../mfbase/ext/resources/images/default/s.gif';
 
 Ext.onReady(function()
@@ -14,9 +14,11 @@ Ext.onReady(function()
     features_choropleth = null;
     features_mapping = null;
     
-    url = null;
-    
-    active_panel = 'choropleth';
+    MAPDATA = null;
+    URL = null;
+    ACTIVEPANEL = 'choropleth';
+    MAPVIEW = false;
+    MAPVIEWACTIVE = false;    
 
     var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
                                            "http://labs.metacarta.com/wms-c/Basic.py?", 
@@ -594,7 +596,7 @@ Ext.onReady(function()
 
     shapefilePanel = new Ext.Panel({
         id: 'shapefile_p',
-        title: 'Register shape files',
+        title: 'Register shapefiles',
         items:
         [
             {
@@ -728,76 +730,7 @@ Ext.onReady(function()
         minListWidth: combo_width + 26,
         value: "#FF0000"
     });
-/*    
-    var legendSetIndicatorGroupStore = new Ext.data.JsonStore({
-        url: path + 'getAllIndicatorGroups' + type,
-        baseParams: { format: 'json' },
-        root: 'indicatorGroups',
-        fields: ['id', 'name'],
-        sortInfo: { field: 'name', direction: 'ASC' },
-        autoLoad: true
-    });
-        
-    var legendSetIndicatorStore = new Ext.data.JsonStore({
-        url: path + 'getIndicatorsByIndicatorGroup' + type,
-        root: 'indicators',
-        fields: ['id', 'name'],
-        sortInfo: { field: 'name', direction: 'ASC' },
-        autoLoad: false
-    });
-   
-    var legendSetIndicatorGroupComboBox = new Ext.form.ComboBox({
-        id: 'legendsetindicatorgroup_cb',
-        typeAhead: true,
-        editable: false,
-        valueField: 'id',
-        displayField: 'name',
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        emptyText: 'Required',
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_width + 26,
-        store: legendSetIndicatorGroupStore,
-        listeners: {
-            'select': {
-                fn: function()
-                {
-                    Ext.getCmp('legendsetindicator_cb').reset();
-                    var ligId = Ext.getCmp('legendsetindicatorgroup_cb').getValue();
-                    legendSetIndicatorStore.baseParams = { indicatorGroupId: ligId, format: 'json' };
-                    legendSetIndicatorStore.reload();
-                },
-                scope: this
-            }
-        }
-    });
-        
-    var legendSetIndicatorComboBox = new Ext.form.ComboBox({
-        id: 'legendsetindicator_cb',
-        typeAhead: true,
-        editable: false,
-        valueField: 'id',
-        displayField: 'name',
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        emptyText: 'Required',
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_width + 26,
-        store: legendSetIndicatorStore
-    });
-*/
-/*
-    var legendSetIndicatorStore = new Ext.data.SimpleStore({
-        fields: ['id', 'name', 'title'],
-        data: [['AL', 'Alabama', 'The Heart of Dixie'], ['AK', 'Alaska', 'The Land of the Midnight Sun'], ['AZ', 'Arizona', 'The Grand Canyon State'],
-               ['WD', 'Sfdfs', 'The Heart of Dixie'], ['ED', 'BGgsdf', 'The Heart of Dixie'], ['DS', 'Fdwwd', 'The Heart of Dixie'],
-               ['FF', 'Ewwes', 'The Heart of Dixie']]
-    });
-*/    
+
     var legendSetIndicatorStore = new Ext.data.JsonStore({
         url: path + 'getAllIndicators' + type,
         root: 'indicators',
@@ -859,12 +792,9 @@ Ext.onReady(function()
                 return;
             }
             
-//            var params = '?name=' + ln + '&method=2&classes=' + lc + '&colorLow=' + llc + '&colorHigh=' + lhc;
-            var params;
             var array = new Array();
             array = lims.split(',');
-            
-            params = '?indicators=' + array[0];
+            var params = '?indicators=' + array[0];
             
             for (var i = 1; i < array.length; i++)
             {
@@ -1025,6 +955,208 @@ Ext.onReady(function()
         ]
     });
     
+    // VIEW PANEL
+    
+    var viewNameTextField = new Ext.form.TextField({
+        id: 'viewname_tf',
+        emptyText: 'Required',
+        width: combo_width
+    });
+    
+    var viewStore = new Ext.data.JsonStore({
+        url: path + 'getAllMapViews' + type,
+        root: 'mapViews',
+        fields: ['id', 'name'],
+        sortInfo: { field: 'name', direction: 'ASC' },
+        autoLoad: true
+    });
+    
+    var viewComboBox = new Ext.form.ComboBox({
+        id: 'view_cb',
+        typeAhead: true,
+        editable: false,
+        valueField: 'id',
+        displayField: 'name',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        emptyText: 'Required',
+        selectOnFocus: true,
+        width: combo_width,
+        minListWidth: combo_width + 26,
+        store: viewStore
+    });
+    
+    var newViewButton = new Ext.Button({
+        id: 'newview_b',
+        text: 'Register new view',
+        handler: function()
+        {
+            var vn = Ext.getCmp('viewname_tf').getValue();
+            var ig = Ext.getCmp('indicatorgroup_cb').getValue();
+            var i = Ext.getCmp('indicator_cb').getValue();
+            var pt = Ext.getCmp('periodtype_cb').getValue();
+            var p = Ext.getCmp('period_cb').getValue();
+            var m = Ext.getCmp('map_cb').getValue();
+            var c = Ext.getCmp('numClasses').getValue();
+            var ca = Ext.getCmp('colorA_cf').getValue();
+            var cb = Ext.getCmp('colorB_cf').getValue();
+            
+            if (!vn || !ig || !i || !pt || !p || !m || !c )
+            {
+                Ext.MessageBox.alert('Error', 'Thematic map form is not complete');
+                return;
+            }
+            
+            Ext.Ajax.request(
+            {
+                url: path + 'addOrUpdateMapView' + type,
+                method: 'POST',
+                params: { name: vn, indicatorGroupId: ig, indicatorId: i, periodTypeId: pt, periodId: p, mapLayerPath: m, method: 2, classes: c, colorLow: ca, colorHigh: cb },
+
+                success: function( responseObject )
+                {
+                    Ext.Msg.show({
+                        title:'Register legend sets',
+                        msg: '<p style="padding-top:8px">The legend set <b>' + vn + '</b> was successfully registered!</b></p>',
+                        buttons: Ext.Msg.OK,
+                        animEl: 'elId',
+                        minWidth: 400,
+                        icon: Ext.MessageBox.INFO
+                    });
+                    
+                    Ext.getCmp('view_cb').getStore().reload();
+                    Ext.getCmp('mapview_cb').getStore().reload();
+                },
+                failure: function()
+                {
+                    alert( 'Status', 'Error while saving data' );
+                }
+            });
+        }
+    });
+    
+    var deleteViewButton = new Ext.Button({
+        id: 'deleteview_b',
+        text: 'Delete view',
+        handler: function()
+        {
+            var v = Ext.getCmp('view_cb').getValue();
+            
+            if (!v)
+            {
+                Ext.MessageBox.alert('Error', 'Select a view');
+                return;
+            }
+            
+            Ext.Ajax.request(
+            {
+                url: path + 'deleteMapView' + type,
+                method: 'POST',
+                params: { id: v },
+
+                success: function( responseObject )
+                {
+                    Ext.Msg.show({
+                        title:'Register legend sets',
+                        msg: '<p style="padding-top:8px">The view <b>' + v + '</b> was successfully deleted!</b></p>',
+                        buttons: Ext.Msg.OK,
+                        animEl: 'elId',
+                        minWidth: 400,
+                        icon: Ext.MessageBox.INFO
+                    });
+                    
+                    Ext.getCmp('view_cb').getStore().reload();
+                    Ext.getCmp('view_cb').reset();
+                    Ext.getCmp('mapview_cb').getStore().reload();
+                },
+                failure: function()
+                {
+                    alert( 'Status', 'Error while saving data' );
+                }
+            });
+        }
+    });
+    
+    var newViewPanel = new Ext.Panel(
+    {   
+        id: 'newview_p',
+        items:
+        [   
+            { html: '<p style="padding-bottom:4px">Name:</p>' }, viewNameTextField
+        ]
+    });
+    
+    var deleteViewPanel = new Ext.Panel(
+    {   
+        id: 'deleteview_p',
+        items:
+        [   
+            { html: '<p style="padding-bottom:4px">View:</p>' }, viewComboBox
+        ]
+    });
+    
+    var viewPanel = new Ext.Panel({
+        id: 'view_p',
+        title: 'Register views',
+        items:
+        [
+            {
+                xtype: 'tabpanel',
+                activeTab: 0,
+                deferredRender: false,
+                plain: true,
+                defaults: {layout: 'fit', bodyStyle: 'padding:8px'},
+                listeners: {
+                    tabchange: function(panel, tab)
+                    {
+                        var nv_b = Ext.getCmp('newview_b');
+                        var dv_b = Ext.getCmp('deleteview_b');
+                        
+                        if (tab.id == 'view0')
+                        { 
+                            nv_b.setVisible(true);
+                            dv_b.setVisible(false);
+                        }
+                        
+                        else if (tab.id == 'view1')
+                        {
+                            nv_b.setVisible(false);
+                            dv_b.setVisible(true);
+                        }
+                    }
+                },
+                items:
+                [
+                    {
+                        title:'New view',
+                        id: 'view0',
+                        items:
+                        [
+                            newViewPanel
+                        ]
+                    },
+                    
+                    {
+                        title:'Delete view',
+                        id: 'view1',
+                        items:
+                        [
+                            deleteViewPanel
+                        ]
+                    }
+                ]
+            },
+            
+            { html: '<br>' },
+            
+            newViewButton,
+            
+            deleteViewButton
+        ]
+    });
+    
+    
   
     
     // create choropleth widget
@@ -1047,12 +1179,7 @@ Ext.onReady(function()
                     choroplethLayer.setVisibility(false);
                     choropleth.classify(false);
                     
-                    if (features_choropleth != null)
-                    {
-                        features = features_choropleth;
-                    }
-                    
-                    active_panel = 'choropleth';
+                    ACTIVEPANEL = 'choropleth';
                 }
             }
         }
@@ -1076,12 +1203,7 @@ Ext.onReady(function()
                 {
                     choroplethLayer.setVisibility(false);
                     
-                    if (features_mapping != null)
-                    {
-                        features = features_mapping;
-                    }
-                    
-                    active_panel = 'mapping';
+                    ACTIVEPANEL = 'mapping';
                 }
             }
         }
@@ -1107,7 +1229,7 @@ Ext.onReady(function()
                         this.layer.setVisibility(true);
                     }
                     
-                    active_panel = 'point';
+                    ACTIVEPANEL = 'point';
                 }
             }
         }
@@ -1206,7 +1328,8 @@ Ext.onReady(function()
                     //propSymbol,
                     mapping,
                     shapefilePanel,
-                    legendsetPanel
+                    legendsetPanel,
+                    viewPanel
                 ]
             },
             
@@ -1267,7 +1390,7 @@ function onHoverSelectChoropleth(feature)
     lf = '<br>';
     pe = '</p>';
 
-    var html = style + feature.attributes[mapData.nameColumn] + pe;
+    var html = style + feature.attributes[MAPDATA.nameColumn] + pe;
     html += style + bs + 'Value:' + be + space + feature.attributes.value + pe;
     
     popup_feature.html = html;
@@ -1281,7 +1404,7 @@ function onHoverUnselectChoropleth(feature)
 
 function onClickSelectChoropleth(feature)
 {
-    if (active_panel == 'mapping')
+    if (ACTIVEPANEL == 'mapping')
     {
         if (!Ext.getCmp('grid_gp').getSelectionModel().getSelected())
         {
@@ -1293,9 +1416,9 @@ function onClickSelectChoropleth(feature)
         var organisationUnitId = selected.data['organisationUnitId'];
         var organisationUnit = selected.data['organisationUnit'];
         
-        var uniqueColumn = mapData.uniqueColumn;
-        var nameColumn = mapData.nameColumn;
-        var mlp = mapData.mapLayerPath;
+        var uniqueColumn = MAPDATA.uniqueColumn;
+        var nameColumn = MAPDATA.nameColumn;
+        var mlp = MAPDATA.mapLayerPath;
         var featureId = feature.attributes[uniqueColumn];
         var name = feature.attributes[nameColumn];
 
@@ -1346,7 +1469,6 @@ function onClickUnselectPoint(feature) {}
 
 
 // MAP DATA
-mapData = null;
 
 function loadMapData(redirect)
 {
@@ -1354,13 +1476,13 @@ function loadMapData(redirect)
     {
         url: path + 'getMapByMapLayerPath' + type,
         method: 'GET',
-        params: { mapLayerPath: url, format: 'json' },
+        params: { mapLayerPath: URL, format: 'json' },
 
         success: function( responseObject )
         {
-            mapData = Ext.util.JSON.decode(responseObject.responseText).map[0];
+            MAPDATA = Ext.util.JSON.decode(responseObject.responseText).map[0];
 
-            map.setCenter(new OpenLayers.LonLat(mapData.longitude, mapData.latitude), mapData.zoom);
+            map.setCenter(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude), MAPDATA.zoom);
 
             if (redirect == 'choropleth') {
                 getChoroplethData(); }
@@ -1383,7 +1505,7 @@ function getChoroplethData()
 {
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
     var periodId = Ext.getCmp('period_cb').getValue();
-    var level = mapData.organisationUnitLevel;
+    var level = MAPDATA.organisationUnitLevel;
 
     Ext.Ajax.request( 
     {
@@ -1409,8 +1531,8 @@ function dataReceivedChoropleth( responseText )
     
     var mapvalues = Ext.util.JSON.decode(responseText).mapvalues;
     
-    var mlp = mapData.mapLayerPath;
-    var uniqueColumn = mapData.uniqueColumn;
+    var mlp = MAPDATA.mapLayerPath;
+    var uniqueColumn = MAPDATA.uniqueColumn;
     
     Ext.Ajax.request(
     {
@@ -1476,7 +1598,7 @@ function getPointData()
 {
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
     var periodId = Ext.getCmp('period_cb').getValue();
-    var level = mapData.organisationUnitLevel;
+    var level = MAPDATA.organisationUnitLevel;
 
     Ext.Ajax.request( 
     {
@@ -1502,8 +1624,8 @@ function dataReceivedPoint( responseText )
 
     var mapvalues = Ext.util.JSON.decode(responseText).mapvalues;
     
-    var mlp = mapData.mapLayerPath;
-    var uniqueColumn = mapData.uniqueColumn;
+    var mlp = MAPDATA.mapLayerPath;
+    var uniqueColumn = MAPDATA.uniqueColumn;
     
     Ext.Ajax.request(
     {
@@ -1553,7 +1675,7 @@ function dataReceivedPoint( responseText )
 // MAPPING
 function getAssignOrganisationUnitData()
 {
-    var mlp = mapData.mapLayerPath;
+    var mlp = MAPDATA.mapLayerPath;
     
     Ext.Ajax.request( 
     {
@@ -1579,7 +1701,7 @@ function dataReceivedAssignOrganisationUnit( responseText )
     
     var relations = Ext.util.JSON.decode(responseText).mapOrganisationUnitRelations;
     
-    var uniqueColumn = mapData.uniqueColumn;   
+    var uniqueColumn = MAPDATA.uniqueColumn;   
     
     for (var i=0; i < features.length; i++)
     {
@@ -1622,7 +1744,7 @@ function dataReceivedAssignOrganisationUnit( responseText )
 
 function getAutoAssignOrganisationUnitData()
 {
-    var level = mapData.organisationUnitLevel;
+    var level = MAPDATA.organisationUnitLevel;
 
     Ext.Ajax.request( 
     {
@@ -1646,9 +1768,9 @@ function dataReceivedAutoAssignOrganisationUnit( responseText )
     var layers = this.myMap.getLayersByName(choroplethLayerName);
     var features = layers[0]['features'];
     var organisationUnits = Ext.util.JSON.decode(responseText).organisationUnits;
-    var uniqueColumn = mapData.uniqueColumn;
-    var nameColumn = mapData.nameColumn;
-    var mlp = mapData.mapLayerPath;
+    var uniqueColumn = MAPDATA.uniqueColumn;
+    var nameColumn = MAPDATA.nameColumn;
+    var mlp = MAPDATA.mapLayerPath;
     var count_features = 0;
     var count_orgunits = 0;
     var count_match = 0;

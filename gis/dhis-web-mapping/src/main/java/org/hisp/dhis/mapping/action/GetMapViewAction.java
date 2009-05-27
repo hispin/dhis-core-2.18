@@ -79,10 +79,9 @@ public class GetMapViewAction
     public String execute()
         throws Exception
     {
-        System.out.println( mappingService );
-        System.out.println( id );
-        
         object = mappingService.getMapView( id );
+        
+        System.out.println(object.getPeriodType().getId());
         
         return SUCCESS;
     }

@@ -134,9 +134,6 @@ public class WeeklyPeriodType
 
             if ( cal.get( Calendar.YEAR ) != cal2.get( Calendar.YEAR ) )
             {
-                // Use saturday as Calendar has sunday as first day of week.
-                cal2.add( Calendar.DAY_OF_WEEK, -1 );
-
                 if ( cal2.get( Calendar.WEEK_OF_YEAR ) == 1 )
                 {
                     cal = cal2;
@@ -149,9 +146,16 @@ public class WeeklyPeriodType
         // Generate weeks
         // ---------------------------------------------------------------------
 
+        // Enforce ISO8601 week to match createPeriod, getNextPeriod etc
+        // [Note: perhaps there is need for another weekly type based on locale]
+        // 1st day of week is Monday
+        // 1st week of the year is the first week with a Thursday
+        cal.setMinimalDaysInFirstWeek(4);
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        
         cal.set( Calendar.WEEK_OF_YEAR, 1 );
         cal.set( Calendar.DAY_OF_WEEK, Calendar.MONDAY );
-
+        
         int firstWeek = cal.get( Calendar.WEEK_OF_YEAR );
 
         ArrayList<Period> weeks = new ArrayList<Period>();
