@@ -27,31 +27,21 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.hibernate.Session;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueAudit;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 
-import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
-
 
 /**
  * @author Latifov Murodillo Abdusamadovich
@@ -59,35 +49,43 @@ import com.opensymphony.xwork.Action;
  */
 
 public class ViewDataValueAuditPopupAction
-implements Action
+    implements Action
 {
-	private Integer organisationUnitId;
-	private Integer dataElementComboId;
-	private Integer dataElementId;
-	private Integer periodId;
-	private List<DataValueAudit> dataValueAudits;
-	private DataValueAudit dataValueAudit;
-	private OrganisationUnit organisationUnit;
-	private Period period;
-	private DataElementCategoryOptionCombo dataElementCategoryOptionCombo;
-	private DataElement dataElement;
-	
+    private Integer organisationUnitId;
+
+    private Integer dataElementComboId;
+
+    private Integer dataElementId;
+
+    private Integer periodId;
+
+    private List<DataValueAudit> dataValueAudits;
+
+    private DataValueAudit dataValueAudit;
+
+    private OrganisationUnit organisationUnit;
+
+    private Period period;
+
+    private DataElementCategoryOptionCombo dataElementCategoryOptionCombo;
+
+    private DataElement dataElement;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-	public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo() 
-	{
-		return dataElementCategoryOptionCombo;
-	}
+    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo()
+    {
+        return dataElementCategoryOptionCombo;
+    }
 
-	public void setDataElementCategoryOptionCombo(
-			DataElementCategoryOptionCombo dataElementCategoryOptionCombo) 
-	{
-		this.dataElementCategoryOptionCombo = dataElementCategoryOptionCombo;
-	}
+    public void setDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo )
+    {
+        this.dataElementCategoryOptionCombo = dataElementCategoryOptionCombo;
+    }
 
-	private HibernateSessionManager sessionManager;
+    private HibernateSessionManager sessionManager;
 
     public void setSessionManager( HibernateSessionManager sessionManager )
     {
@@ -100,154 +98,142 @@ implements Action
     {
         this.dataValueService = dataValueService;
     }
-    
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
-    
+
     private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    public void setDataElementCategoryOptionComboService(
-			DataElementCategoryOptionComboService dataElementCategoryOptionComboService) 
+    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
     {
-		this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
-	}
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+    }
 
-	private PeriodService periodService;
+    private PeriodService periodService;
 
-	public void setPeriodService(PeriodService periodService) 
-	{
-		this.periodService = periodService;
-	}
-	
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
     private OrganisationUnitService organisationUnitService;
 
-	public void setOrganisationUnitService(
-			OrganisationUnitService organisationUnitService) 
-	{
-		this.organisationUnitService = organisationUnitService;
-	}
-
-	public DataElement getDataElement() 
-	{
-		return dataElement;
-	}
-
-	public void setDataElement(DataElement dataElement) 
-	{
-		this.dataElement = dataElement;
-	}
-
-	public OrganisationUnit getOrganisationUnit() 
-	{
-		return organisationUnit;
-	}
-
-	public void setOrganisationUnit(OrganisationUnit organisationUnit)
-	{
-		this.organisationUnit = organisationUnit;
-	}
-
-	public Period getPeriod()
-	{
-		return period;
-	}
-
-	public void setPeriod(Period period) 
-	{
-		this.period = period;
-	}
-	
-	public DataValueAudit getDataValueAudit() 
-	{
-		return dataValueAudit;
-	}
-
-	public void setDataValueAudit(DataValueAudit dataValueAudit)
-	{
-		this.dataValueAudit = dataValueAudit;
-	}
-
-
-    
-	public List<DataValueAudit> getDataValueAudits()
-	{
-		return dataValueAudits;
-	}
-
-
-	public void setDataValueAudits(List<DataValueAudit> dataValueAudits)
-	{
-		this.dataValueAudits = dataValueAudits;
-	}
-
-    public Integer getOrganisationUnitId() 
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
-		return organisationUnitId;
-	}
+        this.organisationUnitService = organisationUnitService;
+    }
 
+    public DataElement getDataElement()
+    {
+        return dataElement;
+    }
 
-	public void setOrganisationUnitId(Integer organisationUnitId)
-	{
-		this.organisationUnitId = organisationUnitId;
-	}
+    public void setDataElement( DataElement dataElement )
+    {
+        this.dataElement = dataElement;
+    }
 
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
 
-	public Integer getDataElementComboId()
-	{
-		return dataElementComboId;
-	}
+    public void setOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        this.organisationUnit = organisationUnit;
+    }
 
+    public Period getPeriod()
+    {
+        return period;
+    }
 
-	public void setDataElementComboId(Integer dataElementComboId) 
-	{
-		this.dataElementComboId = dataElementComboId;
-	}
+    public void setPeriod( Period period )
+    {
+        this.period = period;
+    }
 
+    public DataValueAudit getDataValueAudit()
+    {
+        return dataValueAudit;
+    }
 
-	public Integer getDataElementId() 
-	{
-		return dataElementId;
-	}
+    public void setDataValueAudit( DataValueAudit dataValueAudit )
+    {
+        this.dataValueAudit = dataValueAudit;
+    }
 
+    public List<DataValueAudit> getDataValueAudits()
+    {
+        return dataValueAudits;
+    }
 
-	public void setDataElementId(Integer dataElementId)
-	{
-		this.dataElementId = dataElementId;
-	}
+    public void setDataValueAudits( List<DataValueAudit> dataValueAudits )
+    {
+        this.dataValueAudits = dataValueAudits;
+    }
 
+    public Integer getOrganisationUnitId()
+    {
+        return organisationUnitId;
+    }
 
-	public Integer getPeriodId()
-	{
-		return periodId;
-	}
+    public void setOrganisationUnitId( Integer organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
+    }
 
+    public Integer getDataElementComboId()
+    {
+        return dataElementComboId;
+    }
 
-	public void setPeriodId(Integer periodId)
-	{
-		this.periodId = periodId;
-	}
+    public void setDataElementComboId( Integer dataElementComboId )
+    {
+        this.dataElementComboId = dataElementComboId;
+    }
 
+    public Integer getDataElementId()
+    {
+        return dataElementId;
+    }
 
-	public HibernateSessionManager getSessionManager()
-	{
-		return sessionManager;
-	}
+    public void setDataElementId( Integer dataElementId )
+    {
+        this.dataElementId = dataElementId;
+    }
 
+    public Integer getPeriodId()
+    {
+        return periodId;
+    }
 
-	public String execute()
+    public void setPeriodId( Integer periodId )
+    {
+        this.periodId = periodId;
+    }
+
+    public HibernateSessionManager getSessionManager()
+    {
+        return sessionManager;
+    }
+
+    public String execute()
         throws Exception
     {
-		dataElement = dataElementService.getDataElement(getDataElementId());
-		organisationUnit = organisationUnitService.getOrganisationUnit(getOrganisationUnitId());
-		period = periodService.getPeriod(getPeriodId());
-		dataElementCategoryOptionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo(getDataElementComboId());
-		
-		dataValueAudits = (List<DataValueAudit>) dataValueService.getDataValueAudits(  organisationUnit, period,  dataElement, dataElementCategoryOptionCombo );
-		
-		return SUCCESS;
+        dataElement = dataElementService.getDataElement( getDataElementId() );
+        organisationUnit = organisationUnitService.getOrganisationUnit( getOrganisationUnitId() );
+        period = periodService.getPeriod( getPeriodId() );
+        dataElementCategoryOptionCombo = dataElementCategoryOptionComboService
+            .getDataElementCategoryOptionCombo( getDataElementComboId() );
+
+        dataValueAudits = (List<DataValueAudit>) dataValueService.getDataValueAudits( organisationUnit, period,
+            dataElement, dataElementCategoryOptionCombo );
+
+        return SUCCESS;
     }
 }

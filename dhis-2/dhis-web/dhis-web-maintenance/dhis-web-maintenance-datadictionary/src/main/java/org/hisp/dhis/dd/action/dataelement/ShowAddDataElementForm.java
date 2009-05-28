@@ -35,6 +35,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork.Action;
 
@@ -63,6 +65,13 @@ public class ShowAddDataElementForm
     	this.dataElementCategoryComboService = dataElementCategoryComboService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+    
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -95,6 +104,13 @@ public class ShowAddDataElementForm
     	return defaultCategoryCombo;
     }
     
+    private List<OrganisationUnitLevel> organisationUnitLevels;
+
+    public List<OrganisationUnitLevel> getOrganisationUnitLevels()
+    {
+        return organisationUnitLevels;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -106,6 +122,8 @@ public class ShowAddDataElementForm
         dataElementGroups = dataElementService.getAllDataElementGroups();
         
         dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryComboService.getAllDataElementCategoryCombos() );
+        
+        organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
         
         return SUCCESS;
     }

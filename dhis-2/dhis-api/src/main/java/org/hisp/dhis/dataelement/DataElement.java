@@ -239,6 +239,11 @@ public class DataElement
         return true;
     }
     
+    public boolean hasAggregationLevels()
+    {
+        return aggregationLevels != null && aggregationLevels.size() > 0;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

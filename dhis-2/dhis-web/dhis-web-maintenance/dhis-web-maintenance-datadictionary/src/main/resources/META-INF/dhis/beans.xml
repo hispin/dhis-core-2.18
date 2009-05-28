@@ -51,6 +51,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementCategoryComboService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
     </property>
+    <property name="organisationUnitService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    </property>
   </bean>
   
   <bean id="org.hisp.dhis.dd.action.dataelement.GetDataElementAction"
@@ -97,7 +100,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>  
 	<property name="dataElementCategoryOptionComboService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    </property>  
+    </property>    
+    <property name="organisationUnitService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    </property>
   </bean>
   
   <bean id="org.hisp.dhis.dd.action.dataelement.ValidateDataElementAction"

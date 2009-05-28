@@ -43,6 +43,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork.ActionSupport;
 
@@ -78,6 +80,13 @@ public class ShowUpdateDataElementFormAction
     	this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }   
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+    
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -137,7 +146,21 @@ public class ShowUpdateDataElementFormAction
     {
         return dataElementCategoryCombos;
     }
-        
+
+    private List<OrganisationUnitLevel> organisationUnitLevels;
+
+    public List<OrganisationUnitLevel> getOrganisationUnitLevels()
+    {
+        return organisationUnitLevels;
+    }
+    
+    private List<OrganisationUnitLevel> aggregationLevels = new ArrayList<OrganisationUnitLevel>();
+
+    public List<OrganisationUnitLevel> getAggregationLevels()
+    {
+        return aggregationLevels;
+    }
+     
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -147,6 +170,15 @@ public class ShowUpdateDataElementFormAction
     	dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryComboService.getAllDataElementCategoryCombos() );
     	
         dataElement = dataElementService.getDataElement( id );       
+
+        organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
+        
+        for ( Integer level : dataElement.getAggregationLevels() )
+        {
+            aggregationLevels.add( organisationUnitService.getOrganisationUnitLevelByLevel( level ) );
+        }
+        
+        organisationUnitLevels.removeAll( aggregationLevels );
         
         if ( dataElement != null && dataElement instanceof CalculatedDataElement )
         {

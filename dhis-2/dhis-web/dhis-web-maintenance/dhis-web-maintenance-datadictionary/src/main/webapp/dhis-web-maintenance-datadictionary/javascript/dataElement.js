@@ -355,7 +355,7 @@ function updateValidationCompleted( messageElement )
  * Either add the selected ones, or add all.
  * @param requireSelect Whether to only add the selected data elements
  */
-function addCDEDataElements( requireSelected )
+function addCDEDataElements()
 {
     var available = byId('availableDataElements');
     var option;
@@ -366,13 +366,11 @@ function addCDEDataElements( requireSelected )
     {
     	option = available.options[i];
 
-        if ( requireSelected && ! option.selected )
+        if ( option.selected )
         {
-            continue;
+            available.remove(i);
+            addCDEDataElement( option.value, option.firstChild.nodeValue );
         }
-        
-        available.remove(i);
-        addCDEDataElement( option.value, option.firstChild.nodeValue );
     }
 }
 
@@ -380,8 +378,7 @@ function addCDEDataElements( requireSelected )
  * Add a single data element to the CDE table.
  */
 function addCDEDataElement( id, name )
-{		
-	//Add data to the table of selected data elements
+{
     var tr = document.createElement('tr');
 
     var nameTd = tr.appendChild(document.createElement('td'));
@@ -398,8 +395,7 @@ function addCDEDataElement( id, name )
     factorInput.value = 1;
 
     var opTd = tr.appendChild(document.createElement('td'));
-    var button = opTd.appendChild(document.createElement('button'));
-    // i18n?
+    var button = opTd.appendChild(document.createElement('button')); //TODO: i18n
     button.setAttribute('title', 'Remove from list');
     button.setAttribute('type', 'button');
     button.onclick = removeCDEDataElement;
@@ -413,35 +409,25 @@ function addCDEDataElement( id, name )
 
 /**
  * Remove all elements from the CDE table.
- * Note that the factor information is lost in this process.
  */
 function removeCDEDataElements( e )
 {
     var selectedDataElements = byId('selectedDataElements');
     var trs = selectedDataElements.getElementsByTagName('tr');
 
-    if ( trs.length < 2 ) { //Don't want to delete the headings
+    if ( trs.length < 2 ) // Skip headings
+    { 
         return;
     }
 
-    var availableDataElements = byId('availableDataElements');
     var tr;
-    var td;
-    var option;
     
     for ( var i = trs.length - 1; i > 0; i-- )
     {
         tr = trs[i];
 		
-        //Add data element back to the available list
-        td = tr.getElementsByTagName('td')[0];
-        option = document.createElement('option');
-        option.value = td.getElementsByTagName('input')[0].value;
-        option.appendChild(document.createTextNode(td.textContent));
-        availableDataElements.add(option, null);
-        
-        tr.parentNode.removeChild(tr);        
-    }    
+        removeCDE( tr );       
+    }
 }
 
 /**
@@ -451,13 +437,16 @@ function removeCDEDataElement( e )
 {    
     var tr = this.parentNode.parentNode;
 
+    removeCDE( tr );
+}
+
+function removeCDE( tr )
+{
     //Add data back to the list of available data elements
-    var nameTd = tr.getElementsByTagName('td')[0];
-    var dataElementName = nameTd.firstChild.nodeValue;
-    var dataElementId = nameTd.getElementsByTagName('input')[0].value;
+    var td = tr.getElementsByTagName('td')[0];
     var option = document.createElement('option');
-    option.value = dataElementId;
-    option.appendChild(document.createTextNode(dataElementName));
+    option.value = td.getElementsByTagName('input')[0].value;
+    option.text = td.firstChild.nodeValue;
     byId('availableDataElements').add(option, null);
 
     //Remove data from the table of data elements
@@ -496,15 +485,29 @@ function toggleByIdAndFlagIfDefaultCombo( id, display, defaultId )
 		return;
 	}
 	
-	if ( ! node )
+	if ( !node )
 	{
 		return;
 	}	
 	
-	if( comboId == defaultId )
+	if ( comboId == defaultId )
 	{
 		node.style.display = (display ? 'block' : 'none');		
 	}
 	
     return;
+}
+
+function submitAddDataElement()
+{
+    selectAllById( "aggregationLevels" );
+    
+    document.getElementById( "addDataElementForm" ).submit();
+}
+
+function submitUpdateDataElement()
+{
+    selectAllById( "aggregationLevels" );
+    
+    document.getElementById( "updateDataElementForm" ).submit();
 }

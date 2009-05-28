@@ -107,7 +107,7 @@ public class MapView
             return false;
         }
         
-        MapView other = (MapView) object;
+        final MapView other = (MapView) object;
         
         return name.equals( other.name );
     }
