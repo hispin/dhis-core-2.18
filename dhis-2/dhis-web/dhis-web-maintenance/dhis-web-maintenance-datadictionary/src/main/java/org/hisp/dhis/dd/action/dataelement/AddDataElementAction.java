@@ -29,6 +29,8 @@ package org.hisp.dhis.dd.action.dataelement;
 
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +41,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.Expression;
+import org.hisp.dhis.system.util.ConversionUtils;
 
 import com.opensymphony.xwork.ActionSupport;
 
@@ -135,6 +138,13 @@ public class AddDataElementAction
     public void setUrl( String url )
     {
         this.url = url;
+    }
+    
+    private Collection<String> aggregationLevels;
+
+    public void setAggregationLevels( Collection<String> aggregationLevels )
+    {
+        this.aggregationLevels = aggregationLevels;
     }
     
     private String saved;
@@ -256,12 +266,13 @@ public class AddDataElementAction
         dataElement.setActive( true );
         dataElement.setType( type );
         dataElement.setAggregationOperator( aggregationOperator );
-        dataElement.setParent( null );  
+        dataElement.setParent( null );
         dataElement.setUrl( url );        
         dataElement.setCategoryCombo( categoryCombo );
+        dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils.getIntegerCollection( aggregationLevels ) ) );
 
         dataElementService.addDataElement( dataElement );
 
         return SUCCESS;
-    }  
+    }
 }

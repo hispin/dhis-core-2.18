@@ -27,6 +27,8 @@ package org.hisp.dhis.dd.action.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,6 +39,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.Expression;
+import org.hisp.dhis.system.util.ConversionUtils;
 
 import com.opensymphony.xwork.ActionSupport;
 
@@ -139,6 +142,13 @@ public class UpdateDataElementAction
     {
         this.url = url;
     }
+
+    private Collection<String> aggregationLevels;
+
+    public void setAggregationLevels( Collection<String> aggregationLevels )
+    {
+        this.aggregationLevels = aggregationLevels;
+    }
     
     private String saved;
     
@@ -210,6 +220,7 @@ public class UpdateDataElementAction
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
         dataElement.setCategoryCombo( categoryCombo );        
+        dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils.getIntegerCollection( aggregationLevels ) ) );
 
         // ---------------------------------------------------------------------
         // Calculated data element

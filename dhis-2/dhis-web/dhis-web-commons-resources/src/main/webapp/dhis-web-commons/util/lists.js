@@ -1,15 +1,15 @@
 var NS4 = (navigator.appName == "Netscape" && parseInt(navigator.appVersion) < 5);
 
-function addValue(theSel, theText, theValue) {
-    var newOpt = new Option(theText, theValue);
+function addValue( theSel, theText, theValue ) {
+    var newOpt = new Option( theText, theValue );
     var selLength = theSel.length;
-    theSel.options[selLength] = newOpt;
+    theSel.options[ selLength ] = newOpt;
 }
 
-function deleteValue(theSel, theIndex) {
+function deleteValue( theSel, theIndex ) {
     var selLength = theSel.length;
     if(selLength>0) {
-        theSel.options[theIndex] = null;
+        theSel.options[ theIndex ] = null;
     }
 }
 

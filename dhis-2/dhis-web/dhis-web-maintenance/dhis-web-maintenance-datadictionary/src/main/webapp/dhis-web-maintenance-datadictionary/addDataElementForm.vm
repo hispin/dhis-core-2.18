@@ -8,7 +8,7 @@
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
-		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td style="width:200px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em"></td>
 	</tr>
 	<tr>
@@ -60,59 +60,62 @@
 			#end
 			</select>
 		</td>
-		<td></td>		
 	</tr>
-	
+    <tr>
+        <td style="height:10px"></td>
+    </tr>
 	<tr>
 		<td><label for="calculated">$i18n.getString( "calculated" )</label></td>
 		<td><input type="checkbox" id="calculated" name="calculated" onclick="toggleByIdAndFlagIfDefaultCombo( 'calculatedContainer', this.checked, $defaultCategoryCombo.id )"></td>
-    </tr>		
-	
+    </tr>
 </table>
 
-<div id="calculatedContainer" class="hidden">
+<div id="calculatedContainer" class="hidden" style="border:1px solid #808080; padding:10px; width:465px;">
 
 <table>
-	<tr>
-		<td style="height:5px" colspan="3"></td>
-	</tr>
     <tr>
-      <td><label for="saved">$i18n.getString( "saved" )</label></td>
-      <td><input type="checkbox" id="saved" name="saved" #if( $calculatedDataElement.saved ) checked="checked" #end></td>
-      <td></td>
+        <td><label for="saved">$i18n.getString( "saved" )</label>&nbsp;
+            <input type="checkbox" id="saved" name="saved" #if( $calculatedDataElement.saved ) checked="checked" #end>
+        </td>
     </tr>
     <tr>
-    	<td><b>$i18n.getString( "available_dataelements" )<b></td>
-    	<td></td>
-    	<td><b>$i18n.getString( "selected_dataelements" )</b></td>
+        <td style="height:10px"></td>
+    </tr>
+    <tr>
+    	<th style="width:450px">$i18n.getString( "available_dataelements" )</td>
     </tr>
     <tr>
     	<td>
-	    	<select id="dataElementGroupId" name="dataElementGroupId" onchange="getDataElements( this.options[this.selectedIndex].value, 'int', true )" style="width:30em">
+	    	<select id="dataElementGroupId" name="dataElementGroupId" onchange="getDataElements( this.options[this.selectedIndex].value, 'int', true )" style="width:450px">
 				<option value="[select]" selected="selected">[ $i18n.getString( "select_dataelementgroup" ) ]</option>
 				<option value="$ALL">[ $i18n.getString( "all_dataelements" ) ]</option>
 				#foreach ( $group in $dataElementGroups )
 					<option value="$group.id">$group.name</option>
 				#end
 			</select><br>
-			<select id="availableDataElements" size="5" multiple="multiple" style="width:30em">
+			<select id="availableDataElements" size="5" multiple="multiple" style="width:450px">
 	            #foreach( $operand in $operands )
 					<option value="[$operand.id]">$encoder.htmlEncode( $operand.operandName )</option>
 				#end             
 	        </select>		
 		</td>
+    </tr>
+    <tr>
 		<td>
-			<br>
-			<input id="selectOneButton" type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="addCDEDataElements(true)" style="width:4em"><br>
-			<input id="selectAllButton" type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" onclick="addCDEDataElements(false)" style="width:4em"><br>
-        	<input id="deselectAllButton" type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" onclick="removeCDEDataElements()" style="width:4em">
+			<input id="selectOneButton" type="button" value="$i18n.getString('add_selected')" title="$i18n.getString('add_selected')" onclick="addCDEDataElements()" style="width:120px"><input 
+			       id="deselectAllButton" type="button" value="$i18n.getString('remove_all')" title="$i18n.getString('remove_all')" onclick="removeCDEDataElements()" style="width:120px">
 		</td>
-		<td valign="top">
+    </tr>    
+    <tr>
+        <th style="width:450px">$i18n.getString( "selected_dataelements" )</td>
+    </tr>
+    <tr>
+		<td>
 			<table id="selectedDataElements">
 				<tr>
-					<th style="width:16em">$i18n.getString( "data_element" )</th>
-					<th style="width:7em">$i18n.getString( "factor" )</th>
-					<th style="width:7em">$i18n.getString( "remove" )</th>					
+					<td style="width:290px; font-weight:bold;">$i18n.getString( "data_element" )</td>
+					<td style="width:80px; font-weight:bold;">$i18n.getString( "factor" )</td>
+					<td style="width:80px; font-weight:bold;">$i18n.getString( "remove" )</td>					
 				</tr>
           		<tr class="placeholder">
           			<td colspan="2">None selected</td>
@@ -121,9 +124,54 @@
 		</td>
 	</tr>
 </table>
+
 </div>
 
-<p><input type="submit" value="$i18n.getString( "add" )" style="width:10em"><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='dataElement.action'" style="width:10em"></p>
+<table>
+	<tr>
+		<td style="height:10px" colspan="2"></td>
+	</tr>
+	<tr>
+		<td style="width:200px">$i18n.getString( "aggregation_levels" )</td>
+		<td><input type="checkbox" onclick="toggleById( 'aggregationLevelsContainer' )"></td>
+	</tr>
+</table>
+
+<div id="aggregationLevelsContainer" class="hidden" style="border:1px solid #808080; padding:10px; width:465px;">
+
+<table>
+	<tr>
+		<th style="width:450px">$i18n.getString( "available_aggregation_levels" )</th>
+	</tr>
+	<tr>
+		<td>
+			<select multiple size="4" id="organisationUnitLevels" style="width:450px" ondblclick="moveSelectedById( 'organisationUnitLevels', 'aggregationLevels' )">
+			#foreach( $level in $organisationUnitLevels )
+				<option value="$level.level">$level.name</option>
+			#end
+			</select>
+		</td>
+    </tr>
+    <tr>
+    	<td>
+		    <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add' )" style="width:120px" onclick="moveSelectedById( 'organisationUnitLevels', 'aggregationLevels' )"><input 
+		           type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove' )" style="width:120px" onclick="moveSelectedById( 'aggregationLevels', 'organisationUnitLevels' )">
+        </td>
+    </tr>
+    <tr>
+        <th style="width:450px">$i18n.getString( "selected_aggregation_levels" )</th>
+    </tr>
+    </tr>
+        <td>
+        	<select multiple size="4" id="aggregationLevels" name="aggregationLevels" style="width:450px" ondblclick="moveSelectedById( 'aggregationLevels', 'organisationUnitLevels' )">
+            </select>
+        </td>
+	</tr>
+</table>
+
+</div>
+
+<p><input type="button" value="$i18n.getString( "add" )" style="width:10em" onclick="submitAddDataElement()"><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='dataElement.action'" style="width:10em"></p>
 
 </form>
 

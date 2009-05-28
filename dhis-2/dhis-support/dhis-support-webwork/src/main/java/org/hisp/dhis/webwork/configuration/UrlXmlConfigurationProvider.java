@@ -277,7 +277,7 @@ public class UrlXmlConfigurationProvider
             return;
         }
 
-        LOG.info( "Loaded " + newPackage.getName() );
+        LOG.info( "Loading " + newPackage.getName() );
         
         // add result types (and default result) to this package
         addResultTypes( newPackage, packageElement );
