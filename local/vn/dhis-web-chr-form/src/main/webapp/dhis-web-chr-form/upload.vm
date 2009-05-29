@@ -1,0 +1,28 @@
+<html>
+<link rel='stylesheet' type='text/css' href='style-table.css' />
+<body id='wrap'>
+  <h2>Upload files here</h2>
+  <div id='selectfile'>
+
+	<form action="upload.action" method="post" enctype="multipart/form-data">
+      <input type="file" name="upload">
+      <input type="submit" value="Upload">
+  	</form>
+  	
+   </div>
+   <div id='listfile'>
+   <table>
+	#foreach($file in $files)
+	<tr>
+	<td class='tableitemleft' align='left'>
+		#set($size = $file.length())
+		<a href="#" onclick="window.opener.document.getElementById('note').value='$file.name'; self.close();">$file.name - $size Byte</a>
+	</td>
+	</tr>
+	#end 
+	</table> 	
+   </div>
+   
+</form>
+</body>
+</html>
