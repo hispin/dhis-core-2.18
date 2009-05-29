@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<id>$form.id</id>
+	<name>$encoder.xmlEncode( $form.name )</name>
+	<label>$encoder.xmlEncode($form.label)</label>	
+	<noRow>$form.noRow</noRow>
+	<noColumn>$form.noColumn</noColumn>
+	<noColumnLink>$form.noColumnLink</noColumnLink>
+	<icon>$encoder.xmlEncode($form.icon)</icon>
+	<visible>$encoder.xmlEncode($form.visible)</visible>
+	<attached>$encoder.xmlEncode($form.attached)</attached>
+	<!-- <desc1>$encoder.xmlEncode($form.desc1)</desc1> -->
+	
+	<availabelEgroups>
+		#foreach($egroup in $egroups)
+			<egroup>
+				<id>$egroup.id</id>
+				<name>$encoder.xmlEncode( $egroup.name )</name>
+				<sortOrder>$egroup.sortOrder</sortOrder>
+			</egroup>
+		#end
+	</availabelEgroups>
+	
+	<availabelElements>
+		#foreach($element in $availableElements)
+			<element>
+				<id>$element.id</id>
+				<name>$encoder.xmlEncode( $element.name )</name>
+				<label>$encoder.xmlEncode($element.label)</label>	
+				<type>$encoder.xmlEncode($element.type)</type>
+				<controlType>$encoder.xmlEncode($element.controlType)</controlType>	
+				<initialValue>$encoder.xmlEncode($element.initialValue)</initialValue>
+				<formLink>$element.formLink</formLink>
+				<required>$encoder.xmlEncode($element.required)</required>
+				<sortOrder>$element.sortOrder </sortOrder>
+			</element>
+		#end
+	</availabelElements>
+	
+</form>
