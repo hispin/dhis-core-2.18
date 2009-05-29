@@ -201,7 +201,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         indicatorStore = new Ext.data.JsonStore({
             url: path + 'getIndicatorsByIndicatorGroup' + type,
             root: 'indicators',
-            fields: ['id', 'name'],
+            fields: ['id', 'name', 'shortName'],
             sortInfo: { field: 'name', direction: 'ASC' },
             autoLoad: false,
             listeners: {
@@ -213,6 +213,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                                 record.set('name', name);
                             },  this
                         );
+                        
                         Ext.getCmp('indicator_cb').reset();
 
                         if (MAPVIEWACTIVE) {
@@ -330,11 +331,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                                 var igId = Ext.getCmp('indicatorgroup_cb').getValue();
                                 indicatorStore.baseParams = { indicatorGroupId: igId, format: 'json' };
                                 indicatorStore.reload();
-
-                                
-
-                                
-                                
                             },
                             failure: function()
                             {
@@ -389,7 +385,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             typeAhead: true,
             editable: false,
             valueField: 'id',
-            displayField: 'name',
+            displayField: 'shortName',
             mode: 'remote',
             forceSelection: true,
             triggerAction: 'all',
@@ -743,12 +739,11 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             return;
         }
         
-//        this.layer.setVisibility(true);
-        
         if (this.newUrl) {
             URL = this.newUrl;
             this.newUrl = false;
-            this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + URL + '&outputformat=json&version=1.0.0');
+            this.setUrl('geojson/' + URL);
+            //this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + URL + '&outputformat=json&version=1.0.0');
         }
                 
         if (!Ext.getCmp('indicator_cb').getValue() ||

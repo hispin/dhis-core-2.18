@@ -47,7 +47,13 @@ Ext.onReady(function()
         PARAMETER = getUrlParam('view');
         URLACTIVE = true;
     }
-
+    
+    function validateInput(name)
+    {
+        if (name.length > 25) { return false; }
+        else { return true; }
+    }
+    
     var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
                                            "http://labs.metacarta.com/wms-c/Basic.py?", 
                                            {layers: 'satellite', format: 'image/png'});
@@ -86,7 +92,7 @@ Ext.onReady(function()
         })
     });
 
-    map.addLayers([jpl_wms, vmap0, choroplethLayer, propSymbolLayer]);
+    map.addLayers([jpl_wms, vmap0, choroplethLayer]);
 
     var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
         choroplethLayer,
@@ -181,7 +187,7 @@ Ext.onReady(function()
                         organisationUnitLevelComboBox.reset();
                         
                         Ext.Msg.show({
-                        title:'Register shapefiles',
+                        title:'Shapefile',
                         msg: '<p style="padding-top:8px">The organisation unit selected above must be divided into a lower level than itself.</p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
@@ -321,7 +327,7 @@ Ext.onReady(function()
         {
 //            var nm = Ext.getCmp('newmap_cb').getValue();
 //            var oui = Ext.getCmp('organisationunit_cb').getValue();
-
+    
             Ext.Ajax.request(
             {
                 url: path + 'getOrganisationUnitsAtLevel' + type,
@@ -347,6 +353,19 @@ Ext.onReady(function()
                         return;
                     }
                     
+                    if (validateInput(nn) == false)
+                    {
+                        Ext.Msg.show({
+                            title:'Shapefile',
+                            msg: '<p style="padding-top:8px"><b>Map name</b> cannot be longer than <b>25</b> characters.</b></p>',
+                            buttons: Ext.Msg.OK,
+                            animEl: 'elId',
+                            minWidth: 400,
+                            icon: Ext.MessageBox.WARNING
+                        });
+                        return;
+                    }
+                    
                     Ext.Ajax.request(
                     {
                         url: path + 'addOrUpdateMap' + type,
@@ -357,7 +376,7 @@ Ext.onReady(function()
                         success: function( responseObject )
                         {
                             Ext.Msg.show({
-                                title:'Register shapefiles',
+                                title:'Shapefile',
                                 msg: '<p style="padding-top:8px">The map <b>' + nn + '</b> was successfully registered!</b></p>',
                                 buttons: Ext.Msg.OK,
                                 animEl: 'elId',
@@ -404,6 +423,19 @@ Ext.onReady(function()
                 Ext.MessageBox.alert('Error', 'Form is not complete');
                 return;
             }
+            
+            if (validateInput(en) == false)
+            {
+                Ext.Msg.show({
+                    title:'Shapefile',
+                    msg: '<p style="padding-top:8px"><b>Map name</b> cannot be longer than <b>25</b> characters.</b></p>',
+                    buttons: Ext.Msg.OK,
+                    animEl: 'elId',
+                    minWidth: 400,
+                    icon: Ext.MessageBox.WARNING
+                });
+                return;
+            }
            
             Ext.Ajax.request(
             {
@@ -414,7 +446,7 @@ Ext.onReady(function()
                 success: function( responseObject )
                 {
                     Ext.Msg.show({
-                        title:'Register shapefiles',
+                        title:'Shapefile',
                         msg: '<p style="padding-top:8px">The map <b>' + en + '</b> was successfully updated!</b></p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
@@ -459,7 +491,7 @@ Ext.onReady(function()
                 success: function( responseObject )
                 {
                     Ext.Msg.show({
-                        title:'Register shapefiles',
+                        title:'Shapefile',
                         msg: '<p style="padding-top:8px">The map <b>' + mlp + '</b> was successfully deleted!</b></p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
@@ -820,6 +852,19 @@ Ext.onReady(function()
                 return;
             }
             
+            if (validateInput(ln) == false)
+            {
+                Ext.Msg.show({
+                    title:'Legend set',
+                    msg: '<p style="padding-top:8px"><b>Legend set name</b> cannot be longer than <b>25</b> characters.</b></p>',
+                    buttons: Ext.Msg.OK,
+                    animEl: 'elId',
+                    minWidth: 400,
+                    icon: Ext.MessageBox.WARNING
+                });
+                return;
+            }
+            
             var array = new Array();
             array = lims.split(',');
             var params = '?indicators=' + array[0];
@@ -839,7 +884,7 @@ Ext.onReady(function()
                 success: function( responseObject )
                 {
                     Ext.Msg.show({
-                        title:'Register legend sets',
+                        title:'Legend set',
                         msg: '<p style="padding-top:8px">The legend set <b>' + ln + '</b> was successfully registered!</b></p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
@@ -879,7 +924,7 @@ Ext.onReady(function()
                 success: function( responseObject )
                 {
                     Ext.Msg.show({
-                        title:'Register legend sets',
+                        title:'Legend set',
                         msg: '<p style="padding-top:8px">The legend set <b>' + ls + '</b> was successfully deleted!</b></p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
@@ -903,7 +948,7 @@ Ext.onReady(function()
         id: 'newlegendset_p',
         items:
         [   
-            { html: '<p style="padding-bottom:4px">Name:</p>' }, legendSetNameTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Legend set name:</p>' }, legendSetNameTextField, { html: '<br>' },
 //            { html: '<p style="padding-bottom:4px">Method:</p>' }, legendSetMethodComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Classes:</p>' }, legendSetClassesComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Lowest value color:</p>' }, legendSetLowColorColorPalette, { html: '<br>' },
@@ -1015,6 +1060,22 @@ Ext.onReady(function()
         store: viewStore
     });
     
+    var view2ComboBox = new Ext.form.ComboBox({
+        id: 'view2_cb',
+        typeAhead: true,
+        editable: false,
+        valueField: 'id',
+        displayField: 'name',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        emptyText: 'Required',
+        selectOnFocus: true,
+        width: combo_width,
+        minListWidth: combo_width + 26,
+        store: viewStore
+    });
+    
     var newViewButton = new Ext.Button({
         id: 'newview_b',
         text: 'Register new view',
@@ -1036,6 +1097,19 @@ Ext.onReady(function()
                 return;
             }
             
+            if (validateInput(vn) == false)
+            {
+                Ext.Msg.show({
+                    title:'View',
+                    msg: '<p style="padding-top:8px"><b>View name</b> cannot be longer than <b>25</b> characters.</b></p>',
+                    buttons: Ext.Msg.OK,
+                    animEl: 'elId',
+                    minWidth: 400,
+                    icon: Ext.MessageBox.WARNING
+                });
+                return;
+            }
+            
             Ext.Ajax.request(
             {
                 url: path + 'addOrUpdateMapView' + type,
@@ -1045,7 +1119,7 @@ Ext.onReady(function()
                 success: function( responseObject )
                 {
                     Ext.Msg.show({
-                        title:'Register legend sets',
+                        title:'View',
                         msg: '<p style="padding-top:8px">The view <b>' + vn + '</b> was successfully registered!</b></p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
@@ -1086,8 +1160,50 @@ Ext.onReady(function()
                 success: function( responseObject )
                 {
                     Ext.Msg.show({
-                        title:'Register legend sets',
+                        title:'View',
                         msg: '<p style="padding-top:8px">The view <b>' + v + '</b> was successfully deleted!</b></p>',
+                        buttons: Ext.Msg.OK,
+                        animEl: 'elId',
+                        minWidth: 400,
+                        icon: Ext.MessageBox.INFO
+                    });
+                    
+                    Ext.getCmp('view_cb').getStore().reload();
+                    Ext.getCmp('view_cb').reset();
+                    Ext.getCmp('mapview_cb').getStore().reload();
+                },
+                failure: function()
+                {
+                    alert( 'Status', 'Error while saving data' );
+                }
+            });
+        }
+    });
+    
+    var dashboardViewButton = new Ext.Button({
+        id: 'dashboardview_b',
+        text: 'Add view to dashboard',
+        handler: function()
+        {
+            var v2 = Ext.getCmp('view2_cb').getValue();
+            
+            if (!v2)
+            {
+                Ext.MessageBox.alert('Error', 'Select a view');
+                return;
+            }
+            
+            Ext.Ajax.request(
+            {
+                url: path + 'addMapViewToDashboard' + type,
+                method: 'POST',
+                params: { id: v2 },
+
+                success: function( responseObject )
+                {
+                    Ext.Msg.show({
+                        title:'View',
+                        msg: '<p style="padding-top:8px">The view <b>' + v + '</b> was successfully added to dashboard.</b></p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
                         minWidth: 400,
@@ -1124,6 +1240,15 @@ Ext.onReady(function()
         ]
     });
     
+    var dashboardViewPanel = new Ext.Panel(
+    {   
+        id: 'dashboardview_p',
+        items:
+        [   
+            { html: '<p style="padding-bottom:4px">View:</p>' }, view2ComboBox
+        ]
+    });
+    
     var viewPanel = new Ext.Panel({
         id: 'view_p',
         title: 'Register views',
@@ -1140,17 +1265,27 @@ Ext.onReady(function()
                     {
                         var nv_b = Ext.getCmp('newview_b');
                         var dv_b = Ext.getCmp('deleteview_b');
+                        var dbv_b = Ext.getCmp('dashboardview_b');
                         
                         if (tab.id == 'view0')
                         { 
                             nv_b.setVisible(true);
                             dv_b.setVisible(false);
+                            dbv_b.setVisible(false);
                         }
                         
                         else if (tab.id == 'view1')
                         {
                             nv_b.setVisible(false);
                             dv_b.setVisible(true);
+                            dbv_b.setVisible(false);
+                        }
+                        
+                        else if (tab.id == 'view2')
+                        {
+                            nv_b.setVisible(false);
+                            dv_b.setVisible(false);
+                            dbv_b.setVisible(true);
                         }
                     }
                 },
@@ -1172,6 +1307,15 @@ Ext.onReady(function()
                         [
                             deleteViewPanel
                         ]
+                    },
+                    
+                    {
+                        title:'Dashboard view',
+                        id: 'view2',
+                        items:
+                        [
+                            dashboardViewPanel
+                        ]
                     }
                 ]
             },
@@ -1180,7 +1324,9 @@ Ext.onReady(function()
             
             newViewButton,
             
-            deleteViewButton
+            deleteViewButton,
+            
+            dashboardViewButton
         ]
     });
     
@@ -1195,7 +1341,7 @@ Ext.onReady(function()
         title: 'Thematic map',
         nameAttribute: "NAME",
         indicators: [['value', 'Indicator']],
-        url: 'pageload.geojson',
+        url: 'geojson/pageload',
         featureSelection: false,
         loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
         legendDiv: 'choroplethLegend',
@@ -1220,7 +1366,7 @@ Ext.onReady(function()
         title: 'Assign organisation units',
         nameAttribute: 'NAME',
         indicators: [['value', 'Indicator']],
-        url: 'pageload.geojson',
+        url: 'geojson/pageload',
         featureSelection: false,
         loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
         legendDiv: 'choroplethLegend',
@@ -1236,7 +1382,7 @@ Ext.onReady(function()
             }
         }
     });
-
+/*
     propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
         id: 'propsymbol',
         map: map,
@@ -1244,7 +1390,7 @@ Ext.onReady(function()
         title: 'Proportional symbol',
         nameAttribute: "ouname",
         indicators: [['value', 'Value']],
-        url: '../../../geoserver/wfs?request=GetFeature&typename=who:clinics&outputformat=json&version=1.0.0',
+        url: 'geojson/sl_clincs',
         featureSelection: false,
         loadMask : {msg: 'Loading Data...', msgCls: 'x-mask-loading'},
         defaults: {width: 130},
@@ -1262,6 +1408,7 @@ Ext.onReady(function()
             }
         }
     });
+*/    
     
     viewport = new Ext.Viewport({
         layout: 'border',
