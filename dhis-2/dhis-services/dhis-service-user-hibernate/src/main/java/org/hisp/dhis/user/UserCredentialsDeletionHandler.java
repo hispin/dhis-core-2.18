@@ -29,6 +29,7 @@ package org.hisp.dhis.user;
 
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.document.Document;
+import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -130,6 +131,18 @@ public class UserCredentialsDeletionHandler
             {
                 userStore.updateUserCredentials( credentials );
             }                
+        }
+    }
+    
+    @Override
+    public void deleteMapView( MapView mapView )
+    {
+        for ( UserCredentials credentials : userStore.getAllUserCredentials() )
+        {
+            if ( credentials.getDashboardMapViews().remove( mapView ) )
+            {
+                userStore.updateUserCredentials( credentials );
+            }
         }
     }
 }
