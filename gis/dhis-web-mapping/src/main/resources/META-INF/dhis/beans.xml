@@ -169,7 +169,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="mappingService"
       ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>		
+  </bean>
+  
+  <bean id="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction"
+    class="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction"
+    scope="prototype">
+    <property name="currentUserService"
+      ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="userStore"
+      ref="org.hisp.dhis.user.UserStore"/>
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
   
   <!-- Indicator -->
     

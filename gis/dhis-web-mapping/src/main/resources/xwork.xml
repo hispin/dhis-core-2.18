@@ -106,6 +106,10 @@
 	<action name="getAllMapViewsMin" class="org.hisp.dhis.mapping.action.GetAllMapViewsAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonminMapViews.vm</result>
     </action>
+    
+    <action name="addMapViewToDashboard" class="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+    </action>
         
     <!-- Indicator -->
     
