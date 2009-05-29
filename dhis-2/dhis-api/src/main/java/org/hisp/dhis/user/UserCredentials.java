@@ -35,6 +35,7 @@ import java.util.Set;
 
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.document.Document;
+import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -77,6 +78,8 @@ public class UserCredentials
     
     private List<ReportTable> dashboardReportTables = new ArrayList<ReportTable>();
 
+    private List<MapView> dashboardMapViews = new ArrayList<MapView>();
+    
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -140,6 +143,19 @@ public class UserCredentials
             dashboardReportTables.add( 0, reportTable );
             
             while ( dashboardReportTables.size() > MAX_DASHBOARD_ELEMENTS )
+            {
+                dashboardReportTables.remove( MAX_DASHBOARD_ELEMENTS );
+            }
+        }
+    }
+    
+    public void addMapView( MapView mapView )
+    {
+        if ( !dashboardMapViews.contains( mapView ) )
+        {
+            dashboardMapViews.add( 0, mapView );
+            
+            while ( dashboardMapViews.size() > MAX_DASHBOARD_ELEMENTS )
             {
                 dashboardReportTables.remove( MAX_DASHBOARD_ELEMENTS );
             }
@@ -281,5 +297,15 @@ public class UserCredentials
     public void setDashboardReportTables( List<ReportTable> dashboardReportTables )
     {
         this.dashboardReportTables = dashboardReportTables;
+    }
+
+    public List<MapView> getDashboardMapViews()
+    {
+        return dashboardMapViews;
+    }
+
+    public void setDashboardMapViews( List<MapView> dashboardMapViews )
+    {
+        this.dashboardMapViews = dashboardMapViews;
     }
 }
