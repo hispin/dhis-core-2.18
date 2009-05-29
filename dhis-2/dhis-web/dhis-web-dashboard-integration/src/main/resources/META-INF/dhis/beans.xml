@@ -86,10 +86,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
           <key><value>olap_url</value></key>
           <ref local="olapUrlContentProvider"/>
         </entry>
+        <!-- 
         <entry>
           <key><value>rss_health</value></key>
           <ref local="rssHealthContentProvider"/>
         </entry>
+        -->
       </map>
     </property>
   </bean>
