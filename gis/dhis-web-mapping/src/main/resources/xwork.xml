@@ -69,7 +69,7 @@
     
     <!-- MapLegendSet -->
     
-    <action name="addMapLegendSet" class="org.hisp.dhis.mapping.action.AddMapLegendSetAction">
+    <action name="addOrUpdateMapLegendSet" class="org.hisp.dhis.mapping.action.AddOrUpdateMapLegendSetAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
     </action>
     

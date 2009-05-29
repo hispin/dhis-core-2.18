@@ -283,9 +283,14 @@ public interface MappingService
     
     void updateMapLegendSet( MapLegendSet legendSet );
     
+    void addOrUpdateMapLegendSet( String name, int method, int classes, String colorLow, String colorHigh,
+        Collection<String> indicators );
+    
     void deleteMapLegendSet( MapLegendSet legendSet );
     
     MapLegendSet getMapLegendSet( int id );
+    
+    MapLegendSet getMapLegendSetByName( String name );
     
     MapLegendSet getMapLegendSetByIndicator( int indicatorId );
     
