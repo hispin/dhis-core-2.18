@@ -1,0 +1,17 @@
+
+<table class="contentProviderTable">
+    <tr>
+        <th colspan="2">$i18n.getString( "map_view" )</th>
+    </tr>
+    #foreach ( $view in $mapViews )
+    <tr>
+        <td>
+            <a href="javascript:window.location.href='../dhis-web-mapping/geostat/index.html?view=$view.id'">$encoder.htmlEncode( $view.name )</a>
+        </td>
+        <td style="width:16px">
+            <a href="javascript:window.location.href='removeMapView.action?id=$view.id'" title="$i18n.getString( 'remove' )">
+            <img src="../images/close.png" alt="$i18n.getString( 'remove' )"></a>
+        </td>
+    </tr>
+    #end
+</table>
