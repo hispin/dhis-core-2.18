@@ -253,6 +253,17 @@ public class HibernateMappingStore
 
         return (MapLegendSet) session.get( MapLegendSet.class, id );
     }
+    
+    public MapLegendSet getMapLegendSetByName( String name )
+    {
+        Session session = sessionManager.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( MapLegendSet.class );
+
+        criteria.add( Restrictions.eq( "name", name ) );
+
+        return (MapLegendSet) criteria.uniqueResult();
+    }
 
     @SuppressWarnings( "unchecked" )
     public Collection<MapLegendSet> getAllMapLegendSets()

@@ -832,7 +832,7 @@ Ext.onReady(function()
             
             Ext.Ajax.request(
             {
-                url: path + 'addMapLegendSet.action' + params,
+                url: path + 'addOrUpdateMapLegendSet.action' + params,
                 method: 'POST',
                 params: { name: ln, method: 2, classes: lc, colorLow: llc, colorHigh: lhc },
 
@@ -1046,7 +1046,7 @@ Ext.onReady(function()
                 {
                     Ext.Msg.show({
                         title:'Register legend sets',
-                        msg: '<p style="padding-top:8px">The legend set <b>' + vn + '</b> was successfully registered!</b></p>',
+                        msg: '<p style="padding-top:8px">The view <b>' + vn + '</b> was successfully registered!</b></p>',
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
                         minWidth: 400,

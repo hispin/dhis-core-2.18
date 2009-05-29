@@ -202,6 +202,8 @@ public interface MappingStore
     
     MapLegendSet getMapLegendSet( int id );
     
+    MapLegendSet getMapLegendSetByName( String name );
+    
     Collection<MapLegendSet> getAllMapLegendSets();
     
     // -------------------------------------------------------------------------

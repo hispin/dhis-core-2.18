@@ -29,6 +29,7 @@ package org.hisp.dhis.mapping;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.indicator.Indicator;
@@ -292,19 +293,49 @@ public class DefaultMappingService
     // MapLegendSet
     // -------------------------------------------------------------------------
 
-    public int addMapLegendSet( MapLegendSet legendSet )
+    public int addMapLegendSet( MapLegendSet mapLegendSet )
     {
-        return mappingStore.addMapLegendSet( legendSet );
+        return mappingStore.addMapLegendSet( mapLegendSet );
     }
 
-    public void updateMapLegendSet( MapLegendSet legendSet )
+    public void updateMapLegendSet( MapLegendSet mapLegendSet )
     {
-        mappingStore.updateMapLegendSet( legendSet );
+        mappingStore.updateMapLegendSet( mapLegendSet );
     }
 
-    public void deleteMapLegendSet( MapLegendSet legendSet )
+    public void addOrUpdateMapLegendSet( String name, int method, int classes, String colorLow, String colorHigh,
+        Collection<String> indicators )
     {
-        mappingStore.deleteMapLegendSet( legendSet );
+        MapLegendSet mapLegendSet = getMapLegendSetByName( name );
+
+        Set<Indicator> indicatorSet = new HashSet<Indicator>();
+        
+        for ( String indicator : indicators )
+        {
+            indicatorSet.add( indicatorService.getIndicator( Integer.parseInt( indicator ) ) );
+        }
+        
+        if ( mapLegendSet != null )
+        {
+            mapLegendSet.setMethod( method );
+            mapLegendSet.setClasses( classes );
+            mapLegendSet.setColorLow( colorLow );
+            mapLegendSet.setColorHigh( colorHigh );
+            mapLegendSet.setIndicators( indicatorSet );
+
+            mappingStore.updateMapLegendSet( mapLegendSet );
+        }
+        else
+        {
+            mapLegendSet = new MapLegendSet( name, method, classes, colorLow, colorHigh, indicatorSet );
+            
+            mappingStore.addMapLegendSet( mapLegendSet );
+        }
+    }
+
+    public void deleteMapLegendSet( MapLegendSet mapLegendSet )
+    {
+        mappingStore.deleteMapLegendSet( mapLegendSet );
     }
 
     public MapLegendSet getMapLegendSet( int id )
@@ -312,17 +343,22 @@ public class DefaultMappingService
         return mappingStore.getMapLegendSet( id );
     }
 
+    public MapLegendSet getMapLegendSetByName( String name )
+    {
+        return mappingStore.getMapLegendSetByName( name );
+    }
+
     public MapLegendSet getMapLegendSetByIndicator( int indicatorId )
     {
         Indicator indicator = indicatorService.getIndicator( indicatorId );
 
-        Collection<MapLegendSet> legendSets = mappingStore.getAllMapLegendSets();
+        Collection<MapLegendSet> mapLegendSets = mappingStore.getAllMapLegendSets();
 
-        for ( MapLegendSet legendSet : legendSets )
+        for ( MapLegendSet mapLegendSet : mapLegendSets )
         {
-            if ( legendSet.getIndicators().contains( indicator ) )
+            if ( mapLegendSet.getIndicators().contains( indicator ) )
             {
-                return legendSet;
+                return mapLegendSet;
             }
         }
 
@@ -338,11 +374,11 @@ public class DefaultMappingService
     {
         Indicator indicator = indicatorService.getIndicator( indicatorId );
 
-        Collection<MapLegendSet> legendSets = mappingStore.getAllMapLegendSets();
+        Collection<MapLegendSet> mapLegendSets = mappingStore.getAllMapLegendSets();
 
-        for ( MapLegendSet legendSet : legendSets )
+        for ( MapLegendSet mapLegendSet : mapLegendSets )
         {
-            if ( legendSet.getIndicators().contains( indicator ) )
+            if ( mapLegendSet.getIndicators().contains( indicator ) )
             {
                 return true;
             }
@@ -359,7 +395,7 @@ public class DefaultMappingService
     {
         return mappingStore.addMapView( mapView );
     }
-    
+
     public int addMapView( String name, int indicatorGroupId, int indicatorId, int periodTypeId, int periodId,
         String mapLayerPath, int method, int classes, String colorLow, String colorHigh )
     {
@@ -397,7 +433,7 @@ public class DefaultMappingService
         String mapLayerPath, int method, int classes, String colorLow, String colorHigh )
     {
         IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( indicatorGroupId );
-        
+
         Indicator indicator = indicatorService.getIndicator( indicatorId );
 
         PeriodType periodType = periodService.getPeriodType( periodTypeId );
@@ -405,7 +441,7 @@ public class DefaultMappingService
         Period period = periodService.getPeriod( periodId );
 
         Map map = mappingStore.getMapByMapLayerPath( mapLayerPath );
-        
+
         MapView mapView = mappingStore.getMapViewByName( name );
 
         if ( mapView != null )
@@ -419,13 +455,14 @@ public class DefaultMappingService
             mapView.setClasses( classes );
             mapView.setColorLow( colorLow );
             mapView.setColorHigh( colorHigh );
-            
+
             updateMapView( mapView );
         }
         else
         {
-            mapView = new MapView( name, indicatorGroup, indicator, periodType, period, map, method, classes, colorLow, colorHigh );
-            
+            mapView = new MapView( name, indicatorGroup, indicator, periodType, period, map, method, classes, colorLow,
+                colorHigh );
+
             addMapView( mapView );
         }
     }
