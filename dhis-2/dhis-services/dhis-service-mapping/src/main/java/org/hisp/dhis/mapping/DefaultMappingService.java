@@ -396,7 +396,7 @@ public class DefaultMappingService
         return mappingStore.addMapView( mapView );
     }
 
-    public int addMapView( String name, int indicatorGroupId, int indicatorId, int periodTypeId, int periodId,
+    public int addMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
         String mapLayerPath, int method, int classes, String colorLow, String colorHigh )
     {
         MapView mapView = new MapView();
@@ -405,7 +405,7 @@ public class DefaultMappingService
 
         Indicator indicator = indicatorService.getIndicator( indicatorId );
 
-        PeriodType periodType = periodService.getPeriodType( periodTypeId );
+        PeriodType periodType = periodService.getPeriodTypeByClass( PeriodType.getPeriodTypeByName( periodTypeName ).getClass() );
 
         Period period = periodService.getPeriod( periodId );
 
@@ -429,14 +429,14 @@ public class DefaultMappingService
         mappingStore.updateMapView( mapView );
     }
 
-    public void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, int periodTypeId, int periodId,
+    public void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
         String mapLayerPath, int method, int classes, String colorLow, String colorHigh )
     {
         IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( indicatorGroupId );
 
         Indicator indicator = indicatorService.getIndicator( indicatorId );
 
-        PeriodType periodType = periodService.getPeriodType( periodTypeId );
+        PeriodType periodType = periodService.getPeriodTypeByClass( PeriodType.getPeriodTypeByName( periodTypeName ).getClass() );
 
         Period period = periodService.getPeriod( periodId );
 

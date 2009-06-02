@@ -253,4 +253,12 @@ public interface PeriodService
      * @return the PeriodType with the given name, or null if no match.
      */
     PeriodType getPeriodTypeByName( String name );
+    
+    /**
+     * Returns a PeriodType represented by the given Class.
+     * 
+     * @param periodType the Class type of the PeriodType.
+     * @return a PeriodType instance.
+     */
+    PeriodType getPeriodTypeByClass( Class<? extends PeriodType> periodType );
 }

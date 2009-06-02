@@ -219,10 +219,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                         if (MAPVIEWACTIVE) {
                             Ext.getCmp('indicator_cb').setValue(MAPVIEW.indicatorId);
                             
-                            var periodTypeId = getPeriodTypeIdByName(MAPVIEW.periodTypeId);
-                            Ext.getCmp('periodtype_cb').setValue(periodTypeId);
+                            var name = MAPVIEW.periodTypeId;
+                            Ext.getCmp('periodtype_cb').setValue(name);
                             
-                            periodStore.baseParams = { periodTypeId: periodTypeId, format: 'json' };
+                            periodStore.baseParams = { name: name, format: 'json' };
                             periodStore.reload();
                         }
                     },
@@ -233,9 +233,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         
         periodTypeStore = new Ext.data.JsonStore({
             url: path + 'getAllPeriodTypes' + type,
-            baseParams: { format: 'json' },
             root: 'periodTypes',
-            fields: ['id', 'name'],
+            fields: ['name'],
             autoLoad: true
         });
             
@@ -441,7 +440,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             fieldLabel: 'Period type',
             typeAhead: true,
             editable: false,
-            valueField: 'id',
+            valueField: 'name',
             displayField: 'name',
             mode: 'remote',
             forceSelection: true,
@@ -458,8 +457,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                             Ext.getCmp('mapview_cb').reset();
                         }
                         
-                        var ptid = Ext.getCmp('periodtype_cb').getValue();
-                        Ext.getCmp('period_cb').getStore().baseParams = { periodTypeId: ptid, format: 'json' };
+                        var pt = Ext.getCmp('periodtype_cb').getValue();
+                        Ext.getCmp('period_cb').getStore().baseParams = { name: pt, format: 'json' };
                         Ext.getCmp('period_cb').getStore().reload();
                     },
                     scope: this

@@ -313,7 +313,12 @@ public class DefaultPeriodService
     {
         return PeriodType.getPeriodTypeByName( name );
     }
-
+    
+    public PeriodType getPeriodTypeByClass( Class<? extends PeriodType> periodType )
+    {
+        return periodStore.getPeriodType( periodType );
+    }
+    
     public Period getPeriodFromDates( Date startDate, Date endDate, PeriodType periodType )
     {
         return periodStore.getPeriodFromDates( startDate, endDate, periodType );

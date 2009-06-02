@@ -59,7 +59,7 @@ public class HibernateMappingStore
     {
         this.sessionManager = sessionManager;
     }
-
+    
     // -------------------------------------------------------------------------
     // Map
     // -------------------------------------------------------------------------
@@ -289,7 +289,7 @@ public class HibernateMappingStore
     public void updateMapView( MapView view )
     {
         Session session = sessionManager.getCurrentSession();
-
+        
         session.update( view );
     }
 

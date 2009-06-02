@@ -68,11 +68,11 @@ public class GetPeriodsByPeriodTypeAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer periodTypeId;
+    private String name;
 
-    public void setPeriodTypeId( Integer periodTypeId )
+    public void setName( String name )
     {
-        this.periodTypeId = periodTypeId;
+        this.name = name;
     }
     
     // -------------------------------------------------------------------------
@@ -93,7 +93,7 @@ public class GetPeriodsByPeriodTypeAction
     public String execute()
         throws Exception
     {
-        PeriodType periodType = periodService.getPeriodType( periodTypeId );
+        PeriodType periodType = PeriodType.getPeriodTypeByName( name );
         
         if ( periodType != null )
         {
@@ -105,8 +105,10 @@ public class GetPeriodsByPeriodTypeAction
             }
             
             Collections.sort( object, new PeriodComparator() );
+            
+            System.out.println(object);
         }
-        
+                
         return SUCCESS;
     }
 }
