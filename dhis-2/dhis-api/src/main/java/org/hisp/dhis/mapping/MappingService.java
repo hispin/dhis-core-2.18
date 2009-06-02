@@ -304,12 +304,12 @@ public interface MappingService
     
     int addMapView( MapView mapView );
     
-    int addMapView( String name, int indicatorGroupId, int indicatorId, int periodTypeId, int periodId,
+    int addMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
         String mapLayerPath, int method, int classes, String colorLow, String colorHigh );
     
     void updateMapView( MapView mapView );
     
-    void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, int periodTypeId, int periodId,
+    void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
         String mapLayerPath, int method, int classes, String colorLow, String colorHigh );
     
     void deleteMapView( MapView view );

@@ -74,9 +74,9 @@ public class AddOrUpdateMapViewAction
         this.indicatorId = indicatorId;
     }
     
-    private int periodTypeId;
+    private String periodTypeId;
     
-    public void setPeriodTypeId( int periodTypeId )
+    public void setPeriodTypeId( String periodTypeId )
     {
         this.periodTypeId = periodTypeId;
     }
