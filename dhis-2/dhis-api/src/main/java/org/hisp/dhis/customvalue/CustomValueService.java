@@ -60,28 +60,28 @@ public interface CustomValueService
     /**
      * Get all CustomValues by DataSet.
      * 
-     * @return A collection containing all CustomValues.
+     * @return A collection containing all CustomValues within given dataset.
      */
     Collection<CustomValue> getCustomValuesByDataSet( DataSet dataSet );
 
     /**
      * Get all CustomValues by DataElement.
      * 
-     * @return A collection containing all CustomValues.
+     * @return A collection containing all CustomValues within given dataelement.
      */
     Collection<CustomValue> getCustomValuesByDataElement( DataElement dataElement );
 
     /**
      * Get all CustomValues by DataElementCategoryCombo.
      * 
-     * @return A collection containing all CustomValues.
+     * @return A collection containing all CustomValues within given categorycombo.
      */
     Collection<CustomValue> getCustomValuesByCategoryCombo( DataElementCategoryCombo categoryCombo );
 
     /**
      * Get all CustomValues by DataSet, DataElement, DataElementCategoryCombo.
      * 
-     * @return A collection containing all CustomValues.
+     * @return A collection containing all CustomValues in a given criteria.
      */
     Collection<CustomValue> getCustomValues( DataSet dataSet, DataElement dataElement,
         DataElementCategoryOptionCombo dataElementCategoryOptionCombo );
@@ -92,4 +92,12 @@ public interface CustomValueService
      * @return CustomValue object.
      */
     CustomValue getCustomValuesById( Integer id );
+    
+    /**
+     * Get CustomValue by value.
+     * 
+     * @return A collection containing found CustomValues.
+     */
+    Collection<CustomValue> findCustomValues( String searchValue );
+    
 }

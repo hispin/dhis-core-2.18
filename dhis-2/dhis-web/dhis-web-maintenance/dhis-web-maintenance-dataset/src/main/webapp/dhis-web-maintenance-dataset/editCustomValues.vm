@@ -661,6 +661,9 @@ function getCustomValuesCompleted( customValueElement )
   }
   
   var messageContainer = document.getElementById('message');
+  
+  //here add if single value dissable and make the only element selected
+  
   if( (custom_ValueList.length ==1 &&  custom_ValueList[0]=="NULL") || (custom_ValueList.length ==0) )
   {
     messageContainer.innerHTML = "$i18n.getString( "no_more_categories_to_select" )";   
@@ -716,6 +719,83 @@ function getCustomValues(operation)
 }
 
 
+//get suggestions for custom value
+function getSuggestedCustomValuesCompleted( customValueElement )
+{
+  var custom_Values = customValueElement.getElementsByTagName( 'customValues' )[0];
+  var custom_ValueList = customValueElement.getElementsByTagName( 'customValue' );
+
+  var availableCustomValue = document.getElementById( 'availableCustomValue' );
+  
+  for ( var i = 0; i < custom_ValueList.length; i++ )
+  {
+    var custom_ValueOption = custom_ValueList[i];
+    var name = custom_ValueOption.firstChild.nodeValue;
+    var id = custom_ValueOption.getAttribute( 'id' );   
+        
+    var option = new Option( name, name );
+        
+    availableCustomValue.add( option, null );
+  }
+  
+  var messageContainer = document.getElementById('message');
+  
+  //here add if single value dissable and make the only element selected
+  
+  if( (custom_ValueList.length ==1 &&  custom_ValueList[0]=="NULL") || (custom_ValueList.length ==0) )
+  {
+    messageContainer.innerHTML = " ";   
+  }
+  else
+  {
+    messageContainer.innerHTML = " ";   
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Get Suggested CustomValues for typed chars
+// -----------------------------------------------------------------------------
+function getSuggestedCustomValues(operation)
+{
+  var request = new Request();
+  request.setResponseTypeXML( 'customValue' );
+  request.setCallbackSuccess( getSuggestedCustomValuesCompleted );
+  
+  var dataElementSelector = document.getElementById( 'dataElementSelector' );
+  var dataElementId = dataElementSelector.options[dataElementSelector.selectedIndex].value;
+  
+  var optionComboSelector = document.getElementById( 'optionComboSelector' );
+  var categoryoptioncomboid = optionComboSelector.options[optionComboSelector.selectedIndex].value;
+
+  if(operation=='delete')
+  {
+  var customValueSelector = document.getElementById( 'customValueSelector' );
+  var customValueId = customValueSelector.options[customValueSelector.selectedIndex].value;
+  }
+  
+  // Clear the suggestedcustomValue list
+  var availableCustomValueList = document.getElementById( 'availableCustomValue' );
+  availableCustomValueList.options.length = 0;
+
+  var requestString = 'getCustomValues.action';
+  
+  var params = 'dataElementId=' + dataElementId;
+  var params = params + '&categoryOptionComboId='+categoryoptioncomboid;  
+  var params = params + '&dataSetId='+ document.getElementById( 'dataSetIdField' ).value;
+  var params = params + '&operation='+operation;
+  var params = params + '&value='+ document.getElementById( 'newCustomValue' ).value;
+  
+  if(operation=='delete')
+  {
+  var params = params + '&customValueId='+customValueId;
+  }
+  
+  request.sendAsPost( params );
+  request.send( requestString );
+
+  return false;
+}
+
 function addNew()
 {
 
@@ -756,28 +836,50 @@ alert("\nYou must make a selection from the DataElement and ComboOptions panels 
 }
 
 function remove()
-{
-
-if (document.getElementById( 'dataElementSelector' )==-1) 
-{
-alert("\nYou must make a selection from the DataElement panel first.");
-}
-else
-if (document.getElementById( 'optionComboSelector' ).selectedIndex==-1) 
-{
-alert("\nYou must make a selection from the ComboOptions panel first.");
-}
-else
-if (document.getElementById( 'customValueSelector' ).selectedIndex==-1) 
-{
-alert("\nYou must make a selection from the CustomValues panel first.");
-}
-else
     {
-      getCustomValues('delete');
+    
+    if (document.getElementById( 'dataElementSelector' )==-1) 
+    {
+    alert("\nYou must make a selection from the DataElement panel first.");
+    }
+    else
+    if (document.getElementById( 'optionComboSelector' ).selectedIndex==-1) 
+    {
+    alert("\nYou must make a selection from the ComboOptions panel first.");
+    }
+    else
+    if (document.getElementById( 'customValueSelector' ).selectedIndex==-1) 
+    {
+    alert("\nYou must make a selection from the CustomValues panel first.");
+    }
+    else
+        {
+          getCustomValues('delete');
     } 
 }
 
+function findSimilar()
+	{
+	
+	if(document.getElementById( 'newCustomValue' ).value.length>1)
+	{
+	getSuggestedCustomValues('find');
+	}
+	else
+	{
+	  // Clear the suggestedcustomValue list
+  var availableCustomValueList = document.getElementById( 'availableCustomValue' );
+  availableCustomValueList.options.length = 0;
+	}
+	}
+	
+function setSuggestedCustomValue()
+	{
+	var availableCustomValue = document.getElementById( 'availableCustomValue' );
+    var availableCustomValueSelected = availableCustomValue.options[availableCustomValue.selectedIndex].value;
+  
+	document.getElementById( 'newCustomValue' ).value = availableCustomValueSelected;
+	}
 </script>
 
 <style type="text/css">
@@ -817,7 +919,7 @@ h4 {
             </td>
         </tr>                       
         <tr>
-            <td><input type="text" name="newCustomValue" id="newCustomValue" maxlength="160" style="min-width:25em" size="60"/>&nbsp;&nbsp;
+            <td><input type="text" name="newCustomValue" id="newCustomValue" onkeydown="findSimilar()" maxlength="160" style="min-width:25em" size="60"/>&nbsp;&nbsp;
             </td>
             <td>
                 <button type="button" onclick="addNew()">$i18n.getString( "add_new_custom_value" )</button>&nbsp;&nbsp;
@@ -838,7 +940,7 @@ h4 {
     <tbody>
         <tr>  
             <td>
-                <select name="availableCustomValue" id="availableCustomValue" style="min-width:25em" size="10">
+                <select name="availableCustomValue" id="availableCustomValue" onchange="setSuggestedCustomValue()" style="min-width:25em" size="10">
                 </select>
             </td>                  
             <td>

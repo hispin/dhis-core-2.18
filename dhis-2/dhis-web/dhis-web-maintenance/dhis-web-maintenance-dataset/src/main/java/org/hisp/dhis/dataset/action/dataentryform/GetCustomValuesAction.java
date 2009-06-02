@@ -204,10 +204,17 @@ public class GetCustomValuesAction
             customValue = customValueService.getCustomValuesById( customValueId );
             customValueService.deleteCustomValue( customValue );
         }
-
-        List<CustomValue> customValues = new ArrayList<CustomValue>( customValueService.getCustomValues( dataSet,
-            dataElement, dataElementCategoryOptionCombo ) );
-
+        List<CustomValue> customValues = null;
+        
+        if ( operation.equalsIgnoreCase( "find" ) )
+        {
+            customValues = new ArrayList<CustomValue>( customValueService.findCustomValues( value ) );
+        }else
+        {
+	        customValues = new ArrayList<CustomValue>( customValueService.getCustomValues( dataSet,
+	            dataElement, dataElementCategoryOptionCombo ) );
+        }
+        
         Iterator<CustomValue> customValueIterator = customValues.iterator();
 
         while ( customValueIterator.hasNext() )

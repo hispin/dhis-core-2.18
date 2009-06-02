@@ -31,6 +31,8 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.customvalue.CustomValue;
 import org.hisp.dhis.customvalue.CustomValueStore;
@@ -132,4 +134,16 @@ public class HibernateCustomValueStore
 
         return criteria.list();
     }
+
+	@SuppressWarnings("unchecked")
+	public Collection<CustomValue> findCustomValues(String searchValue) 
+	{
+        Session session = sessionManager.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( CustomValue.class );
+//        criteria.setProjection(Projections.distinct(Projections.property("customValue")));
+        criteria.add( Restrictions.like( "customValue", searchValue, MatchMode.ANYWHERE ) );
+
+        return criteria.list();
+	}
 }
