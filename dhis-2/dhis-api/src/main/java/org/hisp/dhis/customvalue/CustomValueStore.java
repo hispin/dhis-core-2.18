@@ -92,4 +92,12 @@ public interface CustomValueStore
      * @return CustomValue object.
      */
     CustomValue getCustomValuesById( Integer id );
+    
+    /**
+     * Get CustomValue by value.
+     * 
+     * @return A collection containing found CustomValues.
+     */
+    Collection<CustomValue> findCustomValues( String searchValue );
+
 }

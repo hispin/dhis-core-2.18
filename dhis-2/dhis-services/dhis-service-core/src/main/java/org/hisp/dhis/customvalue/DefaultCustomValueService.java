@@ -99,4 +99,9 @@ public class DefaultCustomValueService
     {
         return customValueStore.getCustomValues( dataSet, dataElement, dataElementCategoryOptionCombo );
     }
+
+	public Collection<CustomValue> findCustomValues(String searchValue) 
+	{
+		return customValueStore.findCustomValues( searchValue );
+	}
 }
