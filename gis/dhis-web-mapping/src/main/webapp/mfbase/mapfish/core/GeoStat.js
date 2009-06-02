@@ -193,7 +193,6 @@ mapfish.GeoStat = OpenLayers.Class({
      */
     onSuccess: function(request) {
     
-// alert("onSuccess i GeoStat.js");    
         var doc = request.responseXML;
         if (!doc || !doc.documentElement) {
             doc = request.responseText;
@@ -363,7 +362,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
      *   nBins - {Integer} Total number of bins
      */
     defaultLabelGenerator: function(bin, binIndex, nbBins) {
-        return bin.lowerBound.toFixed(1) + ' - ' + bin.upperBound.toFixed(1) + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )'
+        return bin.lowerBound.toFixed(1) + ' - ' + bin.upperBound.toFixed(1) + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
     },
 
     classifyWithBounds: function(bounds) {
@@ -453,8 +452,42 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
      */
     classify: function(method, nbBins, bounds) {
     
-//        bounds = [this.minVal,100,this.maxVal];
-
+        if (method == 0)
+        {
+            var str = Ext.getCmp('bounds').getValue();
+            
+            for (var i = 0; i < str.length; i++){
+                str = str.replace(' ','');
+            }
+            
+            if (str.charAt(str.length-1) == ','){
+                str = str.substring(0, str.length-1);
+            }
+            
+            bounds = new Array();
+            bounds = str.split(',');
+            
+            for (var i = 0; i < bounds.length; i++)
+            {
+                bounds[i] = parseInt(bounds[i]);
+                
+                if (bounds[i] < this.minVal || bounds[i] > this.maxVal)
+                {
+                    Ext.Msg.show({
+                        title:'Bounds',
+                        msg: '<p style="padding-top:8px">Bounds should be within ' + this.minVal + ' -  ' + this.maxVal + '</p>',
+                        buttons: Ext.Msg.OK,
+                        animEl: 'elId',
+                        width: 250,
+                        icon: Ext.MessageBox.WARNING
+                    });
+                }
+            }
+            
+            bounds.unshift(this.minVal);
+            bounds.push(this.maxVal);
+        }
+        
         var classification = null;
         if (!nbBins) {
             nbBins = this.sturgesRule();

@@ -1,4 +1,4 @@
-/*
+    /*
  * Copyright (C) 2007-2008  Camptocamp
  *
  * This file is part of MapFish Client
@@ -224,26 +224,15 @@ mapfish.widgets.geostat.ProportionalSymbol = Ext.extend(Ext.FormPanel, {
             return;
         }
 
-        this.indicator = this.form.findField('indicator').getValue();
-        this.indicatorText = this.form.findField('indicator').getRawValue();
+        this.indicator = 'value';
+        this.indicatorText = 'Indicator';
 
         if (!this.indicator) {
             Ext.MessageBox.alert('Error', 'You must choose an indicator');
             return;
         }
 
-        var minSize = this.form.findField('minSize').getValue();
-        var maxSize = this.form.findField('maxSize').getValue();
-        this.coreComp.updateOptions({
-            'indicator': this.indicator,
-            'minSize': minSize,
-            'maxSize': maxSize
-        });
-        
         loadMapData('point');
-
-        this.coreComp.applyClassification();
-        this.classificationApplied = true;
     },
 
     /**

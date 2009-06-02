@@ -4,6 +4,41 @@ Ext.BLANK_IMAGE_URL = '../../mfbase/ext/resources/images/default/s.gif';
 Ext.onReady(function()
 {
     Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+    
+    Ext.override(Ext.layout.FormLayout, {
+    renderItem : function(c, position, target){
+        if(c && !c.rendered && c.isFormField && c.inputType != 'hidden'){
+            var args = [
+                   c.id, c.fieldLabel,
+                   c.labelStyle||this.labelStyle||'',
+                   this.elementStyle||'',
+                   typeof c.labelSeparator == 'undefined' ? this.labelSeparator : c.labelSeparator,
+                   (c.itemCls||this.container.itemCls||'') + (c.hideLabel ? ' x-hide-label' : ''),
+                   c.clearCls || 'x-form-clear-left' 
+            ];
+            if(typeof position == 'number'){
+                position = target.dom.childNodes[position] || null;
+            }
+            if(position){
+                c.formItem = this.fieldTpl.insertBefore(position, args, true);
+            }else{
+                c.formItem = this.fieldTpl.append(target, args, true);
+            }
+            c.actionMode = 'formItem';
+            c.render('x-form-el-'+c.id);
+            c.container = c.formItem;
+            c.actionMode = 'container';
+            }else {
+                Ext.layout.FormLayout.superclass.renderItem.apply(this, arguments);
+            }
+        }
+    });
+
+    Ext.override(Ext.form.TriggerField, {
+        actionMode: 'wrap',
+        onShow: Ext.form.TriggerField.superclass.onShow,
+        onHide: Ext.form.TriggerField.superclass.onHide
+    });
 
     myMap: null;
 
@@ -21,6 +56,7 @@ Ext.onReady(function()
     MAPVIEWACTIVE = false;    
     URLACTIVE = false;
     PARAMETER = null;
+    BOUNDS = 0;
     
     function getUrlParam(strParamName)
     {
@@ -59,8 +95,8 @@ Ext.onReady(function()
                                            {layers: 'satellite', format: 'image/png'});
                                      
     var vmap0 = new OpenLayers.Layer.WMS("OpenLayers WMS",
-                                         "../../../geoserver/wms?", 
-                                         {layers: 'who:WorldCountries2006'});
+                                           "http://labs.metacarta.com/wms/vmap0", 
+                                           {layers: 'basic'});
                                    
     var choroplethLayer = new OpenLayers.Layer.Vector(choroplethLayerName, {
         'visibility': false,
@@ -92,7 +128,7 @@ Ext.onReady(function()
         })
     });
 
-    map.addLayers([jpl_wms, vmap0, choroplethLayer]);
+    map.addLayers([vmap0, jpl_wms, choroplethLayer]);
 
     var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
         choroplethLayer,
@@ -1389,8 +1425,8 @@ Ext.onReady(function()
         layer: propSymbolLayer,
         title: 'Proportional symbol',
         nameAttribute: "ouname",
-        indicators: [['value', 'Value']],
-        url: 'geojson/sl_clincs',
+        indicators: [['value', 'Indicator']],
+        url: 'geojson/sl_facilities',
         featureSelection: false,
         loadMask : {msg: 'Loading Data...', msgCls: 'x-mask-loading'},
         defaults: {width: 130},
@@ -1409,7 +1445,6 @@ Ext.onReady(function()
         }
     });
 */    
-    
     viewport = new Ext.Viewport({
         layout: 'border',
         items:
@@ -1838,8 +1873,16 @@ function dataReceivedPoint( responseText )
                 }
             }
             
-//            proportionalsymbol.coreComp.applyClassification();
-//            proportionalsymbol.classificationApplied = true;
+            var minSize = Ext.getCmp('minSize').getValue();
+            var maxSize = Ext.getCmp('maxSize').getValue();
+            proportionalsymbol.coreComp.updateOptions({
+                'indicator': this.indicator,
+                'minSize': minSize,
+                'maxSize': maxSize
+            });
+            
+            proportionalsymbol.coreComp.applyClassification();
+            proportionalsymbol.classificationApplied = true;
         },
         failure: function()
         {

@@ -277,17 +277,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             autoLoad: false
         });
         
-        function getPeriodTypeIdByName(name)
-        {
-            if (name == 'Daily') { return 6 }
-            else if (name == 'Weekly') { return 7 }
-            else if (name == 'Monthly') { return 8 }
-            else if (name == 'Quarterly') { return 9 }
-            else if (name == 'SixMonthly') { return 10 }
-            else if (name == 'Yearly') { return 11 }
-            else { return 12 }
-        }
-            
         this.items = [
          
         {
@@ -544,19 +533,40 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             width: combo_width,
             store: new Ext.data.SimpleStore({
                 fields: ['value', 'text'],
-                data: [[2, 'Distributed values'], [1, 'Equal intervals']]
+                data: [[2, 'Distributed values'], [1, 'Equal intervals'], [0, 'Fixed bounds']]
             }),
             listeners: {
                 'select': {
                     fn: function()
                     {
-                        this.classify(false);
+                        if (Ext.getCmp('method').getValue() == 0)
+                        {
+                            Ext.getCmp('bounds').show();
+                            Ext.getCmp('numClasses').hide();
+                        }
+                        else
+                        {
+                            Ext.getCmp('bounds').hide();
+                            Ext.getCmp('numClasses').show();
+                            
+                            this.classify(false);
+                        }
                     },
                     scope: this
                 }
             }
         },
-
+        
+        {
+            xtype: 'textfield',
+            id: 'bounds',
+            fieldLabel: 'Bounds',
+            emptyText: 'Comma separated values',
+            isFormField: true,
+            width: combo_width,
+            hidden: true
+        },
+        
         {
             xtype: 'combo',
             fieldLabel: 'Classes',
@@ -664,7 +674,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             isFormField: true,
             fieldLabel: '',
             labelStyle: 'color:#dfe8f6;',
-            text: 'Refresh colors',
+            text: 'Refresh',
             handler: function()
             {
                 this.layer.setVisibility(true);
