@@ -11,10 +11,10 @@
 			<generator class="native"/>
 		</id>
 	
-		<many-to-one name="map" class="org.hisp.dhis.mapping.Map" 
+		<many-to-one name="map" class="org.hisp.dhis.mapping.Map" unique-key="key_maporganisationunitrelation"
 			column="mapid" not-null="true" foreign-key="fk_maporganisationunitrelation_mapid"/>
 		  
-		<many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" 
+		<many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" unique-key="key_maporganisationunitrelation" 
 			column="organisationunitid" not-null="true" foreign-key="fk_map_organisationunitid"/>
 		  
 		<property name="featureId" column="featureid"/>
