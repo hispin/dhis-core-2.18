@@ -377,9 +377,10 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         }
         
         if (this.newUrl) {
-            url = this.newUrl;
+            URL = this.newUrl;
             this.newUrl = false;
-            this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + url + '&outputformat=json&version=1.0.0');
+            this.setUrl('geojson/' + URL);
+            //this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + URL + '&outputformat=json&version=1.0.0');
         }
         
         if (!Ext.getCmp('maps_cb').getValue()) {
