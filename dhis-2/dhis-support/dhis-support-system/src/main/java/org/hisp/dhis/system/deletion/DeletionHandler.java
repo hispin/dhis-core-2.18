@@ -51,6 +51,7 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapLegendSet;
+import org.hisp.dhis.mapping.MapOrganisationUnitRelation;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.olap.OlapURL;
@@ -440,6 +441,15 @@ public abstract class DeletionHandler
     }
     
     public boolean allowDeleteMapLegendSet( MapLegendSet mapLegendSet )
+    {
+        return true;
+    }
+    
+    public void deleteMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
+    {   
+    }
+    
+    public boolean allowDeleteMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
     {
         return true;
     }
