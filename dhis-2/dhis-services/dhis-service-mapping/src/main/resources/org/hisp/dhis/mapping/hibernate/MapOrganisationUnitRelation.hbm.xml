@@ -14,9 +14,9 @@
 		<many-to-one name="map" class="org.hisp.dhis.mapping.Map" unique-key="key_maporganisationunitrelation"
 			column="mapid" not-null="true" foreign-key="fk_maporganisationunitrelation_mapid"/>
 		  
-		<many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" unique-key="key_maporganisationunitrelation" 
-			column="organisationunitid" not-null="true" foreign-key="fk_map_organisationunitid"/>
-		  
+		<many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" 
+			column="organisationunitid" not-null="true" foreign-key="fk_maporganisationunitrelation_organisationunitid"/>
+ 
 		<property name="featureId" column="featureid"/>
 		
 	</class>
