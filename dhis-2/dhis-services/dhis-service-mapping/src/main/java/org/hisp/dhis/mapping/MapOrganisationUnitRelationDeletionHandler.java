@@ -27,7 +27,7 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -70,11 +70,12 @@ public class MapOrganisationUnitRelationDeletionHandler
         }
     }
     
-    public void deleteOrganisationUnit( OrganisationUnit organisationUnit )
+    @Override
+    public void deleteSource( Source source )
     {
         for ( MapOrganisationUnitRelation relation : mappingService.getAllMapOrganisationUnitRelations() )
         {
-            if ( relation.getOrganisationUnit().equals( organisationUnit ) )
+            if ( relation.getOrganisationUnit().equals( source ) )
             {
                 mappingService.deleteMapOrganisationUnitRelation( relation );
             }
