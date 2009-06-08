@@ -81,8 +81,6 @@ public class GetMapViewAction
     {
         object = mappingService.getMapView( id );
         
-        System.out.println(object.getPeriodType().getId());
-        
         return SUCCESS;
     }
 }
