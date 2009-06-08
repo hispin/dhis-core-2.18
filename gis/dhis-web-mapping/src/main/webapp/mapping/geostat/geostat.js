@@ -270,7 +270,9 @@ Ext.onReady(function()
         value: 'Polygon',
         store: new Ext.data.SimpleStore({
             fields: ['name'],
-            data: [['Polygon'], ['Point']]
+            data: [['Polygon']//,
+                   //['Point']
+                  ]
         })
     });
     
