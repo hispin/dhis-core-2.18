@@ -68,6 +68,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.mapping.MappingService"/>
   </bean>
     
+  <bean id="org.hisp.dhis.mapping.MapViewDeletionHandler"
+    class="org.hisp.dhis.mapping.MapViewDeletionHandler">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+    
   <!-- Deletion AOP definitions -->
   
   <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
@@ -88,6 +94,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
           <ref local="org.hisp.dhis.mapping.MapDeletionHandler"/>
           <ref local="org.hisp.dhis.mapping.MapLegendSetDeletionHandler"/>
           <ref local="org.hisp.dhis.mapping.MapOrganisationUnitRelationDeletionHandler"/>
+		  <ref local="org.hisp.dhis.mapping.MapViewDeletionHandler"/>
         </list>
       </list>
     </property>
