@@ -541,6 +541,8 @@ Ext.onReady(function()
                     Ext.getCmp('editmap_cb').reset();
                     Ext.getCmp('deletemap_cb').getStore().reload();
                     Ext.getCmp('deletemap_cb').reset();
+                    Ext.getCmp('mapview_cb').getStore().reload();
+                    Ext.getCmp('mapview_cb').reset();
                 },
                 failure: function()
                 {
