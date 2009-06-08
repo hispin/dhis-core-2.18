@@ -105,8 +105,6 @@ public class GetPeriodsByPeriodTypeAction
             }
             
             Collections.sort( object, new PeriodComparator() );
-            
-            System.out.println(object);
         }
                 
         return SUCCESS;
