@@ -27,9 +27,14 @@ package org.hisp.dhis.importexport.importobject;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
@@ -37,13 +42,14 @@ import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObject;
 import org.hisp.dhis.importexport.ImportObjectStatus;
 import org.hisp.dhis.importexport.ImportObjectStore;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ImportObjectStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private ImportObjectStore importObjectStore;
     
@@ -83,6 +89,7 @@ public class ImportObjectStoreTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         importObjectStore = (ImportObjectStore) getBean( ImportObjectStore.ID );
@@ -124,7 +131,7 @@ public class ImportObjectStoreTest
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private void assertEquals( ImportObject importObject, ImportObjectStatus status, Class<?> clazz, GroupMemberType type, Object object, Object compareObject )
+    private void assertEq( ImportObject importObject, ImportObjectStatus status, Class<?> clazz, GroupMemberType type, Object object, Object compareObject )
     {
         assertEquals( importObject.getStatus(), status );
         assertEquals( importObject.getClassName(), clazz.getName() );
@@ -152,19 +159,21 @@ public class ImportObjectStoreTest
     // -------------------------------------------------------------------------
     // ImportObject
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddGetImportObject()
     {
-        assertEquals( importObjectStore.getImportObject( idA ), ImportObjectStatus.NEW, DataElement.class, GroupMemberType.NONE, dataElementA, null );        
-        assertEquals( importObjectStore.getImportObject( idC ), ImportObjectStatus.UPDATE, DataElement.class, GroupMemberType.NONE, dataElementC, null );
-        assertEquals( importObjectStore.getImportObject( idH ), ImportObjectStatus.MATCH, GroupMemberAssociation.class, GroupMemberType.DATAELEMENTGROUP, associationB, null );
+        assertEq( importObjectStore.getImportObject( idA ), ImportObjectStatus.NEW, DataElement.class, GroupMemberType.NONE, dataElementA, null );        
+        assertEq( importObjectStore.getImportObject( idC ), ImportObjectStatus.UPDATE, DataElement.class, GroupMemberType.NONE, dataElementC, null );
+        assertEq( importObjectStore.getImportObject( idH ), ImportObjectStatus.MATCH, GroupMemberAssociation.class, GroupMemberType.DATAELEMENTGROUP, associationB, null );
     }
-    
+
+    @Test
     public void testUpdateImportObject()
     {
-        assertEquals( importObjectStore.getImportObject( idA ), ImportObjectStatus.NEW, DataElement.class, GroupMemberType.NONE, dataElementA, null );        
-        assertEquals( importObjectStore.getImportObject( idC ), ImportObjectStatus.UPDATE, DataElement.class, GroupMemberType.NONE, dataElementC, null );
-        assertEquals( importObjectStore.getImportObject( idH ), ImportObjectStatus.MATCH, GroupMemberAssociation.class, GroupMemberType.DATAELEMENTGROUP, associationB, null );
+        assertEq( importObjectStore.getImportObject( idA ), ImportObjectStatus.NEW, DataElement.class, GroupMemberType.NONE, dataElementA, null );        
+        assertEq( importObjectStore.getImportObject( idC ), ImportObjectStatus.UPDATE, DataElement.class, GroupMemberType.NONE, dataElementC, null );
+        assertEq( importObjectStore.getImportObject( idH ), ImportObjectStatus.MATCH, GroupMemberAssociation.class, GroupMemberType.DATAELEMENTGROUP, associationB, null );
         
         importObjectA.setClassName( DataElementGroup.class.getName() );
         importObjectC.setStatus( ImportObjectStatus.MATCH );
@@ -174,11 +183,12 @@ public class ImportObjectStoreTest
         importObjectStore.updateImportObject( importObjectC );
         importObjectStore.updateImportObject( importObjectH );
         
-        assertEquals( importObjectStore.getImportObject( idA ), ImportObjectStatus.NEW, DataElementGroup.class, GroupMemberType.NONE, dataElementA, null );        
-        assertEquals( importObjectStore.getImportObject( idC ), ImportObjectStatus.MATCH, DataElement.class, GroupMemberType.NONE, dataElementC, null );
-        assertEquals( importObjectStore.getImportObject( idH ), ImportObjectStatus.MATCH, GroupMemberAssociation.class, GroupMemberType.DATAELEMENTGROUP, dataElementA, null );        
+        assertEq( importObjectStore.getImportObject( idA ), ImportObjectStatus.NEW, DataElementGroup.class, GroupMemberType.NONE, dataElementA, null );        
+        assertEq( importObjectStore.getImportObject( idC ), ImportObjectStatus.MATCH, DataElement.class, GroupMemberType.NONE, dataElementC, null );
+        assertEq( importObjectStore.getImportObject( idH ), ImportObjectStatus.MATCH, GroupMemberAssociation.class, GroupMemberType.DATAELEMENTGROUP, dataElementA, null );        
     }
-    
+
+    @Test
     public void testGetImportObjectsByClass()
     {
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataElement.class );
@@ -198,6 +208,7 @@ public class ImportObjectStoreTest
         assertTrue( importObjects.contains( importObjectI ) );        
     }
 
+    @Test
     public void testGetImportObjectsByStatusClass()
     {
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( ImportObjectStatus.NEW, DataElement.class );
@@ -215,6 +226,7 @@ public class ImportObjectStoreTest
         assertTrue( importObjects.contains( importObjectI ) );        
     }
 
+    @Test
     public void testGetImportObjectsByGroupMemberType()
     {
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( GroupMemberType.NONE );
@@ -237,6 +249,7 @@ public class ImportObjectStoreTest
         assertTrue( importObjects.contains( importObjectI ) );        
     }
 
+    @Test
     public void testDeleteImportObject()
     {
         assertNotNulls( idA, idB, idC );
@@ -256,6 +269,7 @@ public class ImportObjectStoreTest
         assertNulls( idA, idB, idC );
     }
 
+    @Test
     public void testDeleteImportObjectsByClass()
     {
         assertNotNulls( idA, idB, idC, idD, idE, idF, idG, idH, idI );
@@ -291,6 +305,7 @@ public class ImportObjectStoreTest
         assertEquals( importObjectStore.getImportObjects( GroupMemberAssociation.class ).size(), 0 );
     }
 
+    @Test
     public void testDeleteImportObjectsByGroupMemberType()
     {
         assertNotNulls( idA, idB, idC, idD, idE, idF, idG, idH, idI );
@@ -313,7 +328,8 @@ public class ImportObjectStoreTest
         assertEquals( importObjectStore.getImportObjects( GroupMemberType.NONE ).size(), 0 );
         assertEquals( importObjectStore.getImportObjects( GroupMemberType.DATAELEMENTGROUP ).size(), 0 );
     }
-    
+
+    @Test
     public void testDeleteAllImportObjects()
     {
         assertNotNulls( idA, idB, idC, idD, idE, idF, idG, idH, idI );

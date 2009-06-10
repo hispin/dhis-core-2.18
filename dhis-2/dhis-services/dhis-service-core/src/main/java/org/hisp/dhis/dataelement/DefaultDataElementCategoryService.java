@@ -33,11 +33,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.hisp.dhis.i18n.I18nService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Abyot Asalefew
  * @version $Id$
  */
+@Transactional
 public class DefaultDataElementCategoryService
     implements DataElementCategoryService
 {

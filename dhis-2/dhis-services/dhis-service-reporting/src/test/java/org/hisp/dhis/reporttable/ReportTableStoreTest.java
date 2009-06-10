@@ -27,11 +27,16 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -48,13 +53,14 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ReportTableStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private ReportTableStore reportTableStore;
     
@@ -90,6 +96,7 @@ public class ReportTableStoreTest
         
     private I18nFormat i18nFormat;
     
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -179,7 +186,8 @@ public class ReportTableStoreTest
 
         i18nFormat = new MockI18nFormat();        
     }
-    
+
+    @Test
     public void testSaveGetReportTable()
     {
         ReportTable reportTableA = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
@@ -230,7 +238,8 @@ public class ReportTableStoreTest
         assertEquals( true, reportTableC.isDoUnits() );
         assertEquals( relatives, reportTableC.getRelatives() );
     }
-    
+
+    @Test
     public void testDeleteReportTable()
     {
         ReportTable reportTableA = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
@@ -256,7 +265,8 @@ public class ReportTableStoreTest
         assertNull( reportTableStore.getReportTable( idA ) );
         assertNull( reportTableStore.getReportTable( idB ) );
     }
-    
+
+    @Test
     public void testGetAllReportTables()
     {
         ReportTable reportTableA = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
@@ -275,6 +285,7 @@ public class ReportTableStoreTest
         assertTrue( reportTables.contains( reportTableB ) );
     }
 
+    @Test
     public void testGetReportTableByName()
     {
         ReportTable reportTableA = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,

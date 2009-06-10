@@ -27,16 +27,12 @@ package org.hisp.dhis.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
@@ -49,11 +45,11 @@ public class DataValueDeletionHandler
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private StatementManager statementManager;
+    private JdbcTemplate jdbcTemplate;
 
-    public void setStatementManager( StatementManager statementManager )
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
-        this.statementManager = statementManager;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     // -------------------------------------------------------------------------
@@ -69,100 +65,32 @@ public class DataValueDeletionHandler
     @Override
     public boolean allowDeleteDataElement( DataElement dataElement )
     {
-        StatementHolder holder = statementManager.getHolder();
+        String sql = "SELECT COUNT(*) FROM datavalue where dataelementid=" + dataElement.getId();
         
-        try
-        {
-            String sql = "SELECT COUNT(*) FROM datavalue where dataelementid=" + dataElement.getId();
-            
-            ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            int count = resultSet.next() ? resultSet.getInt( 1 ) : 0;
-            
-            return count == 0;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get number of datavalues for dataelement", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return jdbcTemplate.queryForInt( sql ) == 0;
     }
     
     @Override
     public boolean allowDeletePeriod( Period period )
     {
-        StatementHolder holder = statementManager.getHolder();
+        String sql = "SELECT COUNT(*) FROM datavalue where periodid=" + period.getId();
         
-        try
-        {
-            String sql = "SELECT COUNT(*) FROM datavalue where periodid=" + period.getId();
-            
-            ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            int count = resultSet.next() ? resultSet.getInt( 1 ) : 0;
-            
-            return count == 0;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get number of datavalues for period", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return jdbcTemplate.queryForInt( sql ) == 0;
     }
     
     @Override
     public boolean allowDeleteSource( Source source )
     {
-        StatementHolder holder = statementManager.getHolder();
+        String sql = "SELECT COUNT(*) FROM datavalue where sourceid=" + source.getId();
         
-        try
-        {
-            String sql = "SELECT COUNT(*) FROM datavalue where sourceid=" + source.getId();
-            
-            ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            int count = resultSet.next() ? resultSet.getInt( 1 ) : 0;
-            
-            return count == 0;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get number of datavalues for source", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return jdbcTemplate.queryForInt( sql ) == 0;
     }
     
     @Override
     public boolean allowDeleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo combo )
     {
-        StatementHolder holder = statementManager.getHolder();
+        String sql = "SELECT COUNT(*) FROM datavalue where categoryoptioncomboid=" + combo.getId();
         
-        try
-        {
-            String sql = "SELECT COUNT(*) FROM datavalue where categoryoptioncomboid=" + combo.getId();
-            
-            ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            int count = resultSet.next() ? resultSet.getInt( 1 ) : 0;
-            
-            return count == 0;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get number of datavalues for dataelementcategoryoptioncombo", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return jdbcTemplate.queryForInt( sql ) == 0;
     }
 }

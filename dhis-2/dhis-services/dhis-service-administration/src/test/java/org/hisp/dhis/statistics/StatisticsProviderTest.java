@@ -27,46 +27,63 @@ package org.hisp.dhis.statistics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+
 import java.util.Map;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.Objects;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.statistics.StatisticsProvider;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class StatisticsProviderTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private StatisticsProvider statisticsProvider;
 
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
     {
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
         statisticsProvider = (StatisticsProvider) getBean( StatisticsProvider.ID );
+        
+        dataElementService.addDataElement( createDataElement( 'A' ) );
+        dataElementService.addDataElement( createDataElement( 'B' ) );
+        dataElementService.addDataElement( createDataElement( 'C' ) );
+        
+        dataElementService.addDataElementGroup( createDataElementGroup( 'A' ) );
+        dataElementService.addDataElementGroup( createDataElementGroup( 'B' ) );
     }
 
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
-    public void testGetObjectCounts()
+
+    @Test
+    public void testGetDataElementObjectCount()
     {
-        dataElementService.addDataElement( createDataElement( 'A' ) );
-        dataElementService.addDataElement( createDataElement( 'B' ) );
-        dataElementService.addDataElement( createDataElement( 'C' ) );
-        
         Map<Objects, Integer> counts = statisticsProvider.getObjectCounts();
         
         assertNotNull( counts );
         assertEquals( new Integer( 3 ), counts.get( Objects.DATAELEMENT ) );
+    }
+
+    @Test
+    public void testGetDataElementGroupObjectCounts()
+    {
+        Map<Objects, Integer> counts = statisticsProvider.getObjectCounts();
+        
+        assertNotNull( counts );
+        assertEquals( new Integer( 2 ), counts.get( Objects.DATAELEMENTGROUP ) );
     }
 }

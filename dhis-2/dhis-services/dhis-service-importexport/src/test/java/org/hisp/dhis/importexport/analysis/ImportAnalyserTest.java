@@ -27,22 +27,25 @@ package org.hisp.dhis.importexport.analysis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.importexport.analysis.IndicatorFormulaIdentifier.*;
+import static org.hisp.dhis.importexport.analysis.IndicatorFormulaIdentifier.DENOMINATOR;
+import static org.hisp.dhis.importexport.analysis.IndicatorFormulaIdentifier.NUMERATOR;
+import static junit.framework.Assert.*;
 
 import java.util.List;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ImportAnalyserTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private ImportAnalyser analyser;
 
@@ -60,6 +63,7 @@ public class ImportAnalyserTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testUniqueConstraintViolations()
     {
         analyser.addObject( createDataElement( 'A' ) );
@@ -103,7 +107,8 @@ public class ImportAnalyserTest
         assertTrue( violations.contains( new EntityPropertyValue( OrganisationUnit.class, "shortname", "ShortNameA" ) ) );
         assertTrue( violations.contains( new EntityPropertyValue( OrganisationUnit.class, "code", "CodeA" ) ) );
     }
-    
+
+    @Test
     public void testNonExistingDataElementIdentifiers()
     {
         DataElement dataElementA = new DataElement();

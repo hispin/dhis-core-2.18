@@ -27,12 +27,15 @@ package org.hisp.dhis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
@@ -65,6 +68,7 @@ import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -86,8 +90,7 @@ import org.hisp.dhis.validation.ValidationRuleService;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class DhisConvenienceTest
-    extends DhisSpringTest
+public abstract class DhisConvenienceTest
 {
     private static final String BASE_UUID = "C3C2E28D-9686-4634-93FD-BE3133935EC";
 
@@ -158,7 +161,7 @@ public class DhisConvenienceTest
      * @param day the day of month.
      * @return a date.
      */
-    protected static Date getDate( int year, int month, int day )
+    public static Date getDate( int year, int month, int day )
     {
         final Calendar calendar = Calendar.getInstance();
         
@@ -174,7 +177,7 @@ public class DhisConvenienceTest
      * @param day the day of the year.
      * @return a date.
      */
-    protected Date getDay( int day )
+    public Date getDay( int day )
     {
         final Calendar calendar = Calendar.getInstance();
         
@@ -194,7 +197,7 @@ public class DhisConvenienceTest
      * @param reference the reference objects to check against.
      * @return true if the collections are equal, false otherwise.
      */
-    protected static boolean equals( Collection<?> actual, Object... reference )
+    public static boolean equals( Collection<?> actual, Object... reference )
     {
         final Collection<Object> collection = new HashSet<Object>();
         
@@ -236,6 +239,61 @@ public class DhisConvenienceTest
         
         return true;
     }
+
+    // -------------------------------------------------------------------------
+    // Dependency injection methods
+    // -------------------------------------------------------------------------
+
+    /**
+     * Sets a dependency on the target service. This method can be used to set
+     * mock implementations of dependencies on services for testing purposes. The
+     * advantage of using this method over setting the services directly is that
+     * the test can still be executed against the interface type of the service;
+     * making the test unaware of the implementation and thus re-usable. A weakness
+     * is that the field name of the dependency must be assumed.
+     * 
+     * @param targetService the target service.
+     * @param fieldName the name of the dependency field in the target service.
+     * @param dependency the dependency.
+     */
+    protected void setDependency( Object targetService, String fieldName, Object dependency )
+    {
+        Class<?> clazz = dependency.getClass().getInterfaces()[0];
+        
+        setDependency( targetService, fieldName, dependency, clazz );
+    }
+    
+    /**
+     * Sets a dependency on the target service. This method can be used to set
+     * mock implementations of dependencies on services for testing purposes. The
+     * advantage of using this method over setting the services directly is that
+     * the test can still be executed against the interface type of the service;
+     * making the test unaware of the implementation and thus re-usable. A weakness
+     * is that the field name of the dependency must be assumed.
+     * 
+     * @param targetService the target service.
+     * @param fieldName the name of the dependency field in the target service.
+     * @param dependency the dependency.
+     * @param clazz the class type of the dependency.
+     */
+    protected void setDependency( Object targetService, String fieldName, Object dependency, Class<?> clazz )
+    {
+        try
+        {
+            String setMethodName = "set" + fieldName.substring( 0, 1 ).toUpperCase() + 
+                fieldName.substring( 1, fieldName.length() );
+            
+            Class<?>[] argumentClass = new Class<?>[] { clazz };
+            
+            Method method = targetService.getClass().getMethod( setMethodName, argumentClass );
+            
+            method.invoke( targetService, dependency );
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to set dependency on service: " + fieldName, ex );
+        }
+    }    
     
     // -------------------------------------------------------------------------
     // Create object methods 
@@ -244,7 +302,7 @@ public class DhisConvenienceTest
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
-    protected static DataElement createDataElement( char uniqueCharacter )
+    public static DataElement createDataElement( char uniqueCharacter )
     {
         DataElement dataElement = new DataElement();
         
@@ -265,7 +323,7 @@ public class DhisConvenienceTest
      * @param uniqueCharacter A unique character to identify the object.
      * @param categoryCombo The category combo.
      */
-    protected static DataElement createDataElement( char uniqueCharacter, DataElementCategoryCombo categoryCombo )
+    public static DataElement createDataElement( char uniqueCharacter, DataElementCategoryCombo categoryCombo )
     {
         DataElement dataElement = createDataElement( uniqueCharacter );
         
@@ -279,7 +337,7 @@ public class DhisConvenienceTest
      * @param type The type.
      * @param aggregationOperator The aggregation operator.
      */
-    protected static DataElement createDataElement( char uniqueCharacter, String type, String aggregationOperator )
+    public static DataElement createDataElement( char uniqueCharacter, String type, String aggregationOperator )
     {
         DataElement dataElement = createDataElement( uniqueCharacter );
         
@@ -295,7 +353,7 @@ public class DhisConvenienceTest
      * @param aggregationOperator The aggregation operator.
      * @param categoryCombo The category combo.
      */
-    protected static DataElement createDataElement( char uniqueCharacter, String type, String aggregationOperator, DataElementCategoryCombo categoryCombo )
+    public static DataElement createDataElement( char uniqueCharacter, String type, String aggregationOperator, DataElementCategoryCombo categoryCombo )
     {
         DataElement dataElement = createDataElement( uniqueCharacter );
         
@@ -310,7 +368,7 @@ public class DhisConvenienceTest
      * @param uniqueCharacter A unique character to identify the object.
      * @param expression The Expression.
      */
-    protected static CalculatedDataElement createCalculatedDataElement( char uniqueCharacter, String type, String aggregationOperator, DataElementCategoryCombo categoryCombo, Expression expression )
+    public static CalculatedDataElement createCalculatedDataElement( char uniqueCharacter, String type, String aggregationOperator, DataElementCategoryCombo categoryCombo, Expression expression )
     {
         CalculatedDataElement dataElement = new CalculatedDataElement();
         
@@ -335,7 +393,7 @@ public class DhisConvenienceTest
      * @param categoryOptionUniqueIdentifiers Unique characters to identify the category options.
      * @return
      */
-    protected static DataElementCategoryOptionCombo createCategoryOptionCombo( char categoryComboUniqueIdentifier, char... categoryOptionUniqueIdentifiers )
+    public static DataElementCategoryOptionCombo createCategoryOptionCombo( char categoryComboUniqueIdentifier, char... categoryOptionUniqueIdentifiers )
     {
         DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();
         
@@ -352,7 +410,7 @@ public class DhisConvenienceTest
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
-    protected static DataElementGroup createDataElementGroup( char uniqueCharacter )
+    public static DataElementGroup createDataElementGroup( char uniqueCharacter )
     {
         DataElementGroup group = new DataElementGroup();
         
@@ -365,7 +423,7 @@ public class DhisConvenienceTest
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
-    protected static DataDictionary createDataDictionary( char uniqueCharacter )
+    public static DataDictionary createDataDictionary( char uniqueCharacter )
     {
         DataDictionary dictionary = new DataDictionary();
         
@@ -379,7 +437,7 @@ public class DhisConvenienceTest
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
-    protected static IndicatorType createIndicatorType( char uniqueCharacter )
+    public static IndicatorType createIndicatorType( char uniqueCharacter )
     {
         IndicatorType type = new IndicatorType();
         
@@ -393,7 +451,7 @@ public class DhisConvenienceTest
      * @param uniqueCharacter A unique character to identify the object.
      * @param type The type.
      */
-    protected static Indicator createIndicator( char uniqueCharacter, IndicatorType type )
+    public static Indicator createIndicator( char uniqueCharacter, IndicatorType type )
     {
         Indicator indicator = new Indicator();
         
@@ -418,7 +476,7 @@ public class DhisConvenienceTest
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
-    protected static IndicatorGroup createIndicatorGroup( char uniqueCharacter )
+    public static IndicatorGroup createIndicatorGroup( char uniqueCharacter )
     {
         IndicatorGroup group = new IndicatorGroup();
         
@@ -432,7 +490,7 @@ public class DhisConvenienceTest
      * @param uniqueCharacter A unique character to identify the object.
      * @param periodType The period type.
      */
-    protected static DataSet createDataSet( char uniqueCharacter, PeriodType periodType )
+    public static DataSet createDataSet( char uniqueCharacter, PeriodType periodType )
     {
         DataSet dataSet = new DataSet();
         
@@ -447,7 +505,7 @@ public class DhisConvenienceTest
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
-    protected static OrganisationUnit createOrganisationUnit( char uniqueCharacter )
+    public static OrganisationUnit createOrganisationUnit( char uniqueCharacter )
     {
         OrganisationUnit unit = new OrganisationUnit();
         
@@ -470,7 +528,7 @@ public class DhisConvenienceTest
      * @param uniqueCharacter A unique character to identify the object.
      * @param parent The parent.
      */
-    protected static OrganisationUnit createOrganisationUnit( char uniqueCharacter, OrganisationUnit parent )
+    public static OrganisationUnit createOrganisationUnit( char uniqueCharacter, OrganisationUnit parent )
     {
         OrganisationUnit unit = createOrganisationUnit( uniqueCharacter );
         
@@ -482,7 +540,7 @@ public class DhisConvenienceTest
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
-    protected static OrganisationUnitGroup createOrganisationUnitGroup( char uniqueCharacter )
+    public static OrganisationUnitGroup createOrganisationUnitGroup( char uniqueCharacter )
     {
         OrganisationUnitGroup group = new OrganisationUnitGroup();
         
@@ -495,7 +553,7 @@ public class DhisConvenienceTest
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
-    protected static OrganisationUnitGroupSet createOrganisationUnitGroupSet( char uniqueCharacter )
+    public static OrganisationUnitGroupSet createOrganisationUnitGroupSet( char uniqueCharacter )
     {
         OrganisationUnitGroupSet groupSet = new OrganisationUnitGroupSet();
         
@@ -512,7 +570,7 @@ public class DhisConvenienceTest
      * @param startDate The start date.
      * @param endDate The end date.
      */
-    protected static Period createPeriod( PeriodType type, Date startDate, Date endDate )
+    public static Period createPeriod( PeriodType type, Date startDate, Date endDate )
     {
         Period period = new Period();
         
@@ -527,7 +585,7 @@ public class DhisConvenienceTest
      * @param startDate The start date.
      * @param endDate The end date.
      */
-    protected static Period createPeriod( Date startDate, Date endDate )
+    public static Period createPeriod( Date startDate, Date endDate )
     {
         Period period = new Period();
         
@@ -545,7 +603,7 @@ public class DhisConvenienceTest
      * @param value The value.
      * @param categoryOptionCombo The data element category option combo.
      */
-    protected static DataValue createDataValue( DataElement dataElement, Period period, Source source, String value, DataElementCategoryOptionCombo categoryOptionCombo )
+    public static DataValue createDataValue( DataElement dataElement, Period period, Source source, String value, DataElementCategoryOptionCombo categoryOptionCombo )
     {
         DataValue dataValue = new DataValue();
         
@@ -567,7 +625,7 @@ public class DhisConvenienceTest
      * @param leftSide The left side expression.
      * @param rightSide The right side expression.
      */
-    protected static ValidationRule createValidationRule( char uniqueCharacter, String operator, Expression leftSide, Expression rightSide )
+    public static ValidationRule createValidationRule( char uniqueCharacter, String operator, Expression leftSide, Expression rightSide )
     {
         ValidationRule validationRule = new ValidationRule();
         
@@ -585,7 +643,7 @@ public class DhisConvenienceTest
      * @param uniqueCharacter A unique character to identify the object.
      * @return
      */
-    protected static ValidationRuleGroup createValidationRuleGroup( char uniqueCharacter )
+    public static ValidationRuleGroup createValidationRuleGroup( char uniqueCharacter )
     {
         ValidationRuleGroup group = new ValidationRuleGroup();
         
@@ -600,7 +658,7 @@ public class DhisConvenienceTest
      * @param expressionString The expression string.
      * @param dataElementsInExpression A collection of the data elements entering into the expression.
      */
-    protected static Expression createExpression( char uniqueCharacter, String expressionString, Set<DataElement> dataElementsInExpression )
+    public static Expression createExpression( char uniqueCharacter, String expressionString, Set<DataElement> dataElementsInExpression )
     {
         Expression expression = new Expression();
         
@@ -614,7 +672,7 @@ public class DhisConvenienceTest
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
-    protected static DataElement createExtendedDataElement( char uniqueCharacter )
+    public static DataElement createExtendedDataElement( char uniqueCharacter )
     {
         DataElement dataElement = createDataElement( uniqueCharacter );
         
@@ -629,7 +687,7 @@ public class DhisConvenienceTest
      * @param uniqueCharacter A unique character to identify the object.
      * @param type The type.
      */
-    protected static Indicator createExtendedIndicator( char uniqueCharacter, IndicatorType type )
+    public static Indicator createExtendedIndicator( char uniqueCharacter, IndicatorType type )
     {
         Indicator indicator = createIndicator( uniqueCharacter, type );
 
@@ -647,7 +705,7 @@ public class DhisConvenienceTest
      * @param sourceId The source identifier.
      * @param status The status.
      */
-    protected static ImportDataValue createImportDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId, ImportObjectStatus status )
+    public static ImportDataValue createImportDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId, ImportObjectStatus status )
     {
         ImportDataValue importDataValue = new ImportDataValue();
         
@@ -664,7 +722,7 @@ public class DhisConvenienceTest
         return importDataValue;
     }
     
-    protected static Map createMap( char uniqueCharacter, OrganisationUnit unit, OrganisationUnitLevel level )
+    public static Map createMap( char uniqueCharacter, OrganisationUnit unit, OrganisationUnitLevel level )
     {
         Map map = new Map();
         
@@ -682,7 +740,7 @@ public class DhisConvenienceTest
         return map;
     }
     
-    protected static MapLegendSet createMapLegendSet( char uniqueCharacter, Indicator... indicators )
+    public static MapLegendSet createMapLegendSet( char uniqueCharacter, Indicator... indicators )
     {
         MapLegendSet legendSet = new MapLegendSet();
         
@@ -696,6 +754,29 @@ public class DhisConvenienceTest
         }
         
         return legendSet;
+    }
+    
+    public static Chart createChart( char uniqueCharacter, List<Indicator> indicators, List<Period> periods, List<OrganisationUnit> units )
+    {
+        Chart chart = new Chart();
+        
+        chart.setTitle( "Chart" + uniqueCharacter );
+        chart.setDimension( Chart.DIMENSION_PERIOD );
+        chart.setIndicators( indicators );
+        chart.setPeriods( periods );
+        chart.setOrganisationUnits( units );
+        
+        return chart;
+    }
+
+    public static OlapURL createOlapURL( char uniqueCharacter )
+    {
+        OlapURL olapURL = new OlapURL();
+        
+        olapURL.setName( "OlapURL" + uniqueCharacter );
+        olapURL.setUrl( "URL" + uniqueCharacter );
+        
+        return olapURL;
     }
 
     // -------------------------------------------------------------------------

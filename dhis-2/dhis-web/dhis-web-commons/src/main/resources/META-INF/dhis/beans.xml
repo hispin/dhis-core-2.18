@@ -245,15 +245,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
   
-  <!-- General tools -->
-    
-  <bean id="org.hisp.dhis.hibernate.interceptor.OpenSessionExecuteAndWaitInterceptor"
-    class="org.hisp.dhis.hibernate.interceptor.OpenSessionExecuteAndWaitInterceptor">
-    <property name="sessionManager">
-      <ref bean="org.hisp.dhis.hibernate.HibernateSessionManager"/>
-    </property>
-  </bean>
-  
   <!-- Security -->
   
   <bean id="org.hisp.dhis.security.action.LoggedInAction"
@@ -332,10 +323,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.security.authority.SystemAuthoritiesProvider"/>
   </bean>
   
+  <!-- 
   <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
     <property name="advice" ref="readWriteTransactionInterceptor"/>
     <property name="pattern" value=".*\.AutomaticAccessProvider\.init.*"/>
   </bean>
+  -->
   
   <bean id="requiredLoginFilter"
     class="org.hisp.dhis.security.filter.RequiredLoginFilter">

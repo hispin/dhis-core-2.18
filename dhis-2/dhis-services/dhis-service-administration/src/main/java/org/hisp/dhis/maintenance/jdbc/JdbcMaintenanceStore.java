@@ -27,13 +27,10 @@ package org.hisp.dhis.maintenance.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.SQLException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.StatementManager;
+import org.hisp.dhis.jdbc.StatementDialect;
+import org.hisp.dhis.jdbc.factory.StatementBuilderFactory;
 import org.hisp.dhis.maintenance.MaintenanceStore;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
@@ -42,17 +39,22 @@ import org.hisp.dhis.maintenance.MaintenanceStore;
 public class JdbcMaintenanceStore
     implements MaintenanceStore
 {
-    private static final Log log = LogFactory.getLog( JdbcMaintenanceStore.class );
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private StatementManager statementManager;
+    private JdbcTemplate jdbcTemplate;
 
-    public void setStatementManager( StatementManager statementManager )
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
-        this.statementManager = statementManager;
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
+    private StatementDialect statementDialect;
+
+    public void setStatementDialect( StatementDialect statementDialect )
+    {
+        this.statementDialect = statementDialect;
     }
     
     // -------------------------------------------------------------------------
@@ -61,24 +63,8 @@ public class JdbcMaintenanceStore
 
     public int deleteZeroDataValues()
     {
-        final StatementHolder holder = statementManager.getHolder();
+        final String sql = StatementBuilderFactory.createStatementBuilder( statementDialect ).getDeleteZeroDataValues();
         
-        try
-        {
-            final String sql = statementManager.getStatementBuilder().getDeleteZeroDataValues();
-            
-            log.debug( "Deleting zero values: " + sql );
-            
-            return holder.getStatement().executeUpdate( sql );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to delete zero data values", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return jdbcTemplate.update( sql );
     }
-    
 }

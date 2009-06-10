@@ -6,8 +6,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitStore"
     class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitStore">
-    <property name="sessionManager"
-      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
     <property name="sourceStore"
       ref="org.hisp.dhis.source.SourceStore"/>
   </bean>
@@ -24,8 +23,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore"
     class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitGroupStore">
-    <property name="sessionManager"
-      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"
@@ -36,36 +34,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
   
-  <!-- Transactio AOP definitions -->
-  
-  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-    <property name="advice" ref="readOnlyTransactionInterceptor"/>
-    <property name="patterns">
-      <list>
-        <value>.*\.OrganisationUnitStore\.get.*</value>
-        <value>.*\.OrganisationUnitGroupStore\.get.*</value>
-        <value>.*\.OrganisationUnitService\.get.*</value>
-        <value>.*\.OrganisationUnitGroupService\.getExclusiveOrganisationUnitGroupSetsContainingGroup.*</value>
-      </list>
-    </property>
-  </bean>
-  
-  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-    <property name="advice" ref="readWriteTransactionInterceptor"/>
-    <property name="patterns">
-      <list>
-        <value>.*\.OrganisationUnitStore\.add.*</value>
-        <value>.*\.OrganisationUnitStore\.update.*</value>
-        <value>.*\.OrganisationUnitStore\.delete.*</value>
-        <value>.*\.OrganisationUnitStore\.clear.*</value>
-        <value>.*\.OrganisationUnitService\.delete.*</value>
-        <value>.*\.OrganisationUnitGroupStore\.add.*</value>
-        <value>.*\.OrganisationUnitGroupStore\.update.*</value>
-        <value>.*\.OrganisationUnitGroupStore\.delete.*</value>
-      </list>
-    </property>
-  </bean>
-
   <!-- Startup routine definitions -->
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitHierarchyVerifier"

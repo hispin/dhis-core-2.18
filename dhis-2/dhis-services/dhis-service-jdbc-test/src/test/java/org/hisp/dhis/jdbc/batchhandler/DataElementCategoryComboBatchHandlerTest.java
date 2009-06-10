@@ -27,20 +27,26 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementCategoryComboBatchHandlerTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
@@ -53,7 +59,8 @@ public class DataElementCategoryComboBatchHandlerTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
     {
         categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
@@ -69,15 +76,23 @@ public class DataElementCategoryComboBatchHandlerTest
         categoryComboC = new DataElementCategoryCombo( "categoryComboC" );
     }
 
+    @Override
     public void tearDownTest()
     {
         batchHandler.flush();
     }
-
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddObject()
     {
         batchHandler.addObject( categoryComboA );
@@ -92,7 +107,8 @@ public class DataElementCategoryComboBatchHandlerTest
         assertTrue( categoryCombos.contains( categoryComboB  ) );
         assertTrue( categoryCombos.contains( categoryComboC  ) );
     }
-    
+
+    @Test
     public void testInsertObject()
     {
         int idA = batchHandler.insertObject( categoryComboA, true );
@@ -103,7 +119,8 @@ public class DataElementCategoryComboBatchHandlerTest
         assertNotNull( categoryComboService.getDataElementCategoryCombo( idB ) );
         assertNotNull( categoryComboService.getDataElementCategoryCombo( idC ) );
     }
-    
+
+    @Test
     public void testUpdateObject()
     {
         int id = categoryComboService.addDataElementCategoryCombo( categoryComboA );
@@ -114,7 +131,8 @@ public class DataElementCategoryComboBatchHandlerTest
         
         assertEquals( "UpdatedName", categoryComboService.getDataElementCategoryCombo( id ).getName() );
     }
-    
+
+    @Test
     public void testGetObjectIdentifier()
     {
         int referenceId = categoryComboService.addDataElementCategoryCombo( categoryComboA );
@@ -123,7 +141,8 @@ public class DataElementCategoryComboBatchHandlerTest
         
         assertEquals( referenceId, retrievedId );
     }
-    
+
+    @Test
     public void testObjectExists()
     {
         categoryComboService.addDataElementCategoryCombo( categoryComboA );

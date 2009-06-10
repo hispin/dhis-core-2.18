@@ -37,6 +37,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.writer.XMLWriter;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
@@ -114,6 +115,13 @@ public class DefaultDXFExportService
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
+    
     private DataElementCategoryService categoryService;
 
     public void setCategoryService( DataElementCategoryService categoryService )
@@ -260,7 +268,7 @@ public class DefaultDXFExportService
             // Writes to one end of the pipe 
             // -----------------------------------------------------------------
             
-            ExportPipeThread thread = new ExportPipeThread();
+            ExportPipeThread thread = new ExportPipeThread( sessionFactory );
             
             thread.setZipOutputStream( zipOut );
             thread.setParams( params );

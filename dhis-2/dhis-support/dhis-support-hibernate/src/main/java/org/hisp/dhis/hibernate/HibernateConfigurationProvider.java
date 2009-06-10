@@ -27,8 +27,11 @@ package org.hisp.dhis.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
+import org.springframework.core.io.Resource;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -42,4 +45,8 @@ public interface HibernateConfigurationProvider
         throws HibernateException;
 
     void setEventListener( String type, Object eventListener );
+    
+    List<Resource> getJarResources();
+    
+    List<Resource> getDirectoryResources();
 }

@@ -27,24 +27,30 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: IndicatorBatchHandlerTest.java 4949 2008-04-21 07:59:54Z larshelg $
  */
 public class IndicatorBatchHandlerTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
-	private HibernateCacheManager cacheManager;
+    private HibernateCacheManager cacheManager;
 	
     private BatchHandlerFactory batchHandlerFactory;
     
@@ -57,7 +63,8 @@ public class IndicatorBatchHandlerTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
     {
     	cacheManager = (HibernateCacheManager) getBean( HibernateCacheManager.ID );
@@ -79,15 +86,23 @@ public class IndicatorBatchHandlerTest
         indicatorC = createIndicator( 'C', indicatorType );
     }
 
+    @Override
     public void tearDownTest()
     {
         batchHandler.flush();
     }
-
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddObject()
     {
         batchHandler.addObject( indicatorA );
@@ -104,7 +119,8 @@ public class IndicatorBatchHandlerTest
         assertTrue( indicators.contains( indicatorB  ) );
         assertTrue( indicators.contains( indicatorC  ) );
     }
-    
+
+    @Test
     public void testInsertObject()
     {
         int idA = batchHandler.insertObject( indicatorA, true );
@@ -117,7 +133,8 @@ public class IndicatorBatchHandlerTest
         assertNotNull( indicatorService.getIndicator( idB ) );
         assertNotNull( indicatorService.getIndicator( idC ) );
     }
-    
+
+    @Test
     public void testUpdateObject()
     {
         int id = indicatorService.addIndicator( indicatorA );
@@ -131,6 +148,7 @@ public class IndicatorBatchHandlerTest
         assertEquals( indicatorService.getIndicator( id ).getName(), "UpdatedName" );
     }
 
+    @Test
     public void testGetObjectIdentifier()
     {
         int referenceId = indicatorService.addIndicator( indicatorA );
@@ -139,7 +157,8 @@ public class IndicatorBatchHandlerTest
         
         assertEquals( referenceId, retrievedId );
     }
-    
+
+    @Test
     public void testObjectExists()
     {
         indicatorService.addIndicator( indicatorA );

@@ -32,8 +32,8 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObject;
 import org.hisp.dhis.importexport.ImportObjectStatus;
@@ -50,13 +50,13 @@ public class HibernateImportObjectStore
     // Dependencies
     // ----------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-    
+
     // ----------------------------------------------------------------------
     // ImportObjectStore implementation
     // ----------------------------------------------------------------------
@@ -67,21 +67,21 @@ public class HibernateImportObjectStore
 
     public int addImportObject( ImportObject importObject )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         return (Integer) session.save( importObject );
     }
     
     public void updateImportObject( ImportObject importObject )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         session.saveOrUpdate( importObject );
     }
     
     public ImportObject getImportObject( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
                 
         return (ImportObject) session.get( ImportObject.class, id );
     }
@@ -89,7 +89,7 @@ public class HibernateImportObjectStore
     @SuppressWarnings( "unchecked" )
     public Collection<ImportObject> getImportObjects( Class<?> clazz )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( ImportObject.class );
         
@@ -101,7 +101,7 @@ public class HibernateImportObjectStore
     @SuppressWarnings( "unchecked" )
     public Collection<ImportObject> getImportObjects( ImportObjectStatus status, Class<?> clazz )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( ImportObject.class );
         
@@ -114,7 +114,7 @@ public class HibernateImportObjectStore
     @SuppressWarnings( "unchecked" )
     public Collection<ImportObject> getImportObjects( GroupMemberType groupMemberType )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( ImportObject.class );
         
@@ -125,7 +125,7 @@ public class HibernateImportObjectStore
     
     public void deleteImportObject( ImportObject importObject )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         session.delete( importObject );
     }
@@ -133,7 +133,7 @@ public class HibernateImportObjectStore
     @SuppressWarnings( "unchecked" )
     public void deleteImportObjects( Class<?> clazz )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         String hql = "from ImportObject where className = :className";
         
@@ -160,7 +160,7 @@ public class HibernateImportObjectStore
     @SuppressWarnings( "unchecked" )
     public void deleteImportObjects( GroupMemberType groupMemberType )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         String hql = "from ImportObject where groupMemberType = :groupMemberType";
         
@@ -187,7 +187,7 @@ public class HibernateImportObjectStore
     @SuppressWarnings( "unchecked" )
     public void deleteImportObjects()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         String hql = "from ImportObject";
         

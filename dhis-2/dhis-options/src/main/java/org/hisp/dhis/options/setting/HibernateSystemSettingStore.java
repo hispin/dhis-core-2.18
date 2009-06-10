@@ -31,15 +31,17 @@ import java.util.Collection;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.options.SystemSetting;
 import org.hisp.dhis.options.SystemSettingStore;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Stian Strandli
  * @author Lars Helge Overland
  * @version $Id: HibernateSystemSettingStore.java 6530 2008-11-28 15:02:47Z eivindwa $
  */
+@Transactional
 public class HibernateSystemSettingStore
     implements SystemSettingStore
 {
@@ -47,34 +49,34 @@ public class HibernateSystemSettingStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-
+    
     // -------------------------------------------------------------------------
     // Implementations
     // -------------------------------------------------------------------------
 
     public void addSystemSetting( SystemSetting setting )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.save( setting );
     }
-    
+
     public void updateSystemSetting( SystemSetting setting )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( setting );
     }
 
     public void deleteSystemSetting( SystemSetting setting )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( setting );
     }
@@ -82,14 +84,14 @@ public class HibernateSystemSettingStore
     @SuppressWarnings( "unchecked" )
     public Collection<SystemSetting> getAllSystemSettings()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         return session.createQuery( "from SystemSetting " ).setCacheable( true ).list();
     }
 
     public SystemSetting getSystemSetting( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Query query = session.createQuery( "from SystemSetting where name = :name" );
         

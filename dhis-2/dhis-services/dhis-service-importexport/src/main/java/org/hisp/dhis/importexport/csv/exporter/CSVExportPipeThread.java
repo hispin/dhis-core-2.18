@@ -33,8 +33,10 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.importexport.CSVConverter;
 import org.hisp.dhis.importexport.ExportParams;
+import org.hisp.dhis.system.process.OpenSessionThread;
 import org.hisp.dhis.system.util.StreamUtils;
 
 /**
@@ -42,7 +44,7 @@ import org.hisp.dhis.system.util.StreamUtils;
  * @version $Id$
  */
 public class CSVExportPipeThread
-    extends Thread
+    extends OpenSessionThread
 {
     private static final Log log = LogFactory.getLog( CSVExportPipeThread.class );
 
@@ -71,15 +73,16 @@ public class CSVExportPipeThread
     // Constructor
     // -------------------------------------------------------------------------
     
-    public CSVExportPipeThread()
+    public CSVExportPipeThread( SessionFactory sessionFactory )
     {   
+        super( sessionFactory );
     }
     
     // -------------------------------------------------------------------------
     // Thread implementation
     // -------------------------------------------------------------------------
     
-    public void run()
+    public void doRun()
     {
         try
         {

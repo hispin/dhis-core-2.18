@@ -27,10 +27,13 @@ package org.hisp.dhis.completeness;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -43,18 +46,15 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriodType;
 import org.hisp.dhis.reporttable.ReportTable;
-
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class DataSetCompletenessInternalProcessTest
-    extends DhisConvenienceTest
+public class DataSetCompletenessServiceExportTest
+    extends DhisTest
 {
-    private DataSetCompletenessInternalProcess process;
-
     private DataSetCompletenessStore completenessStore;
 
     private DataSetCompletenessService completenessService;
@@ -80,10 +80,9 @@ public class DataSetCompletenessInternalProcessTest
     
     private ReportTable reportTable;
     
+    @Override
     public void setUpTest()
     {
-        process = (DataSetCompletenessInternalProcess) getBean( DataSetCompletenessInternalProcess.ID );
-        
         completenessStore = (DataSetCompletenessStore) getBean( DataSetCompletenessStore.ID );
         
         completenessService = (DataSetCompletenessService) getBean( DataSetCompletenessService.ID );
@@ -147,6 +146,13 @@ public class DataSetCompletenessInternalProcessTest
         reportTable.setId( 1 );
     }
     
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+
+    @Test
     public void testExportDataSetCompleteness()
     {
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitB, null ) );
@@ -168,7 +174,7 @@ public class DataSetCompletenessInternalProcessTest
         assertEquals( new DataSetCompletenessResult( unitC.getName(), 1, 0, 0 ), resultE );
         assertEquals( new DataSetCompletenessResult( unitA.getName(), 3, 2, 0 ), resultF );
         
-        process.exportDataSetCompleteness( getIdentifiers( DataSet.class, dataSets ),
+        completenessService.exportDataSetCompleteness( getIdentifiers( DataSet.class, dataSets ),
             getIdentifiers( Period.class, periods ), getIdentifiers( OrganisationUnit.class, units ),  reportTable.getId() );
         
         assertEquals( 100.0, completenessStore.getPercentage( dataSetA.getId(), periodA.getId(), unitB.getId() ) );

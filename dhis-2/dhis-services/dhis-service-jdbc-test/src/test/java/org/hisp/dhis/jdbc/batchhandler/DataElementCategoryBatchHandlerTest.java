@@ -27,20 +27,26 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementCategoryBatchHandlerTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
@@ -53,7 +59,8 @@ public class DataElementCategoryBatchHandlerTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
     {
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
@@ -68,16 +75,24 @@ public class DataElementCategoryBatchHandlerTest
         categoryB = new DataElementCategory( "categoryB" );
         categoryC = new DataElementCategory( "categoryC" );
     }
-    
+
+    @Override
     public void tearDownTest()
     {
         batchHandler.flush();
     }
-
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddObject()
     {
         batchHandler.addObject( categoryA );
@@ -92,7 +107,8 @@ public class DataElementCategoryBatchHandlerTest
         assertTrue( categories.contains( categoryB ) );
         assertTrue( categories.contains( categoryC ) );        
     }
-    
+
+    @Test
     public void testInsertObject()
     {
         int idA = batchHandler.insertObject( categoryA, true );
@@ -103,7 +119,8 @@ public class DataElementCategoryBatchHandlerTest
         assertNotNull( categoryService.getDataElementCategory( idB ) );
         assertNotNull( categoryService.getDataElementCategory( idC ) );
     }
-    
+
+    @Test
     public void testUpdateObject()
     {
         int id = categoryService.addDataElementCategory( categoryA );
@@ -114,7 +131,8 @@ public class DataElementCategoryBatchHandlerTest
         
         assertEquals( "updatedName", categoryService.getDataElementCategory( id ).getName() );
     }
-    
+
+    @Test
     public void testGetObjectIdentifier()
     {
         int referenceId = categoryService.addDataElementCategory( categoryA );
@@ -123,7 +141,8 @@ public class DataElementCategoryBatchHandlerTest
         
         assertEquals( referenceId, retrievedId );
     }
-    
+
+    @Test
     public void testObjectExists()
     {
         categoryService.addDataElementCategory( categoryA );

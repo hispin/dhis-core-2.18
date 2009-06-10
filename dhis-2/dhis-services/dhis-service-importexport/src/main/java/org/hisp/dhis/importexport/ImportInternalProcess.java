@@ -39,8 +39,8 @@ import org.hisp.dhis.system.util.TimeUtils;
  * @author Lars Helge Overland
  * @version $Id: ImportInternalProcess.java 6443 2008-11-22 10:12:11Z larshelg $
  */
-public abstract class ImportInternalProcess
-    extends AbstractStatementInternalProcess implements ImportService, SerialToGroup
+public class ImportInternalProcess
+    extends AbstractStatementInternalProcess implements SerialToGroup
 {
     private static final String PROCESS_GROUP = "ImportProcessGroup";
     private static final Log log = LogFactory.getLog( ImportInternalProcess.class );
@@ -64,6 +64,17 @@ public abstract class ImportInternalProcess
     }
 
     // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private ImportService importService;
+
+    public void setImportService( ImportService importService )
+    {
+        this.importService = importService;
+    }
+    
+    // -------------------------------------------------------------------------
     // SerialToGroup implementation
     // -------------------------------------------------------------------------
 
@@ -78,13 +89,17 @@ public abstract class ImportInternalProcess
 
     public void executeStatements()
         throws Exception
-    {
+    {        
+        setMessage( "import_process_started" );
+        
         TimeUtils.start();
         
-        importData( params, inputStream );
+        importService.importData( params, inputStream );
         
         log.info( "Import process completed: " + TimeUtils.getHMS() );
         
         TimeUtils.stop();
+        
+        setMessage( "import_process_done" );
     }
 }

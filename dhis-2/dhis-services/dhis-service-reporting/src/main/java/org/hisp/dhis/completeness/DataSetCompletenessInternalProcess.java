@@ -28,20 +28,8 @@ package org.hisp.dhis.completeness;
  */
 
 import java.util.Collection;
-import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.completeness.cache.DataSetCompletenessCache;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
-import org.hisp.dhis.jdbc.batchhandler.DataSetCompletenessResultBatchHandler;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
+import org.amplecode.cave.process.SerialToGroup;
 import org.hisp.dhis.system.process.AbstractStatementInternalProcess;
 
 /**
@@ -49,11 +37,11 @@ import org.hisp.dhis.system.process.AbstractStatementInternalProcess;
  * @version $Id$
  */
 public class DataSetCompletenessInternalProcess
-    extends AbstractStatementInternalProcess implements DataSetCompletenessExportService
+    extends AbstractStatementInternalProcess implements SerialToGroup
 {
     public static final String ID = "internal-process-DataSetCompleteness";
-    
-    private static final Log log = LogFactory.getLog( DataSetCompletenessInternalProcess.class );
+
+    private static final String PROCESS_GROUP = "DataMartProcessGroup";
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -66,48 +54,6 @@ public class DataSetCompletenessInternalProcess
         this.completenessService = completenessService;
     }
 
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
-    private BatchHandlerFactory batchHandlerFactory;
-
-    public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
-    {
-        this.batchHandlerFactory = batchHandlerFactory;
-    }
-    
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-    
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-    
-    private DataSetCompletenessCache completenessCache;
-
-    public void setCompletenessCache( DataSetCompletenessCache completenessCache )
-    {
-        this.completenessCache = completenessCache;
-    }
-
-    private DataSetCompletenessStore completenessStore;
-
-    public void setCompletenessStore( DataSetCompletenessStore completenessStore )
-    {
-        this.completenessStore = completenessStore;
-    }
-    
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
@@ -139,83 +85,23 @@ public class DataSetCompletenessInternalProcess
     {
         this.reportTableId = reportTableId;
     }
+
+    // -------------------------------------------------------------------------
+    // SerialToGroup implementation
+    // -------------------------------------------------------------------------
+
+    public String getGroup()
+    {
+        return PROCESS_GROUP;
+    }
     
     // -------------------------------------------------------------------------
     // AbstractTransactionalInternalProcess implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void executeStatements()
     {
-        exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds, reportTableId );
-    }
-
-    // -------------------------------------------------------------------------
-    // Process methods
-    // -------------------------------------------------------------------------
-
-    public void exportDataSetCompleteness( Collection<Integer> dataSetIds, 
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Integer reportTableId )
-    {
-        log.info( "Data completeness export process started" );
-        
-        completenessStore.deleteDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
-        
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataSetCompletenessResultBatchHandler.class );
-        
-        batchHandler.init();
-        
-        Collection<Period> periods = periodService.getPeriods( periodIds );
-        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( organisationUnitIds );
-        Collection<DataSet> dataSets = dataSetService.getDataSets( dataSetIds );
-        
-        Collection<Period> intersectingPeriods = null;
-        Date deadline = null;
-        DataSetCompletenessResult result = null;
-        
-        for ( final Period period : periods )
-        {
-            intersectingPeriods = periodService.getIntersectingPeriods( period.getStartDate(), period.getEndDate() );
-            
-            for ( final OrganisationUnit unit : units )
-            {
-                for ( final DataSet dataSet : dataSets )
-                {
-                    final DataSetCompletenessResult aggregatedResult = new DataSetCompletenessResult();
-                    
-                    aggregatedResult.setDataSetId( dataSet.getId() );
-                    aggregatedResult.setPeriodId( period.getId() );
-                    aggregatedResult.setPeriodName( period.getName() );
-                    aggregatedResult.setOrganisationUnitId( unit.getId() );
-                    aggregatedResult.setReportTableId( reportTableId );
-                    
-                    for ( final Period intersectingPeriod : intersectingPeriods )
-                    {
-                        if ( intersectingPeriod.getPeriodType().equals( dataSet.getPeriodType() ) )
-                        {
-                            deadline = completenessCache.getDeadline( intersectingPeriod );
-                            
-                            result = completenessService.getDataSetCompleteness( intersectingPeriod, deadline, unit, dataSet );
-                            
-                            aggregatedResult.incrementSources( result.getSources() );
-                            aggregatedResult.incrementRegistrations( result.getRegistrations() );
-                            aggregatedResult.incrementRegistrationsOnTime( result.getRegistrationsOnTime() );
-                        }
-                    }
-                    
-                    if ( aggregatedResult.getSources() > 0 )
-                    {
-                        batchHandler.addObject( aggregatedResult );
-                    }
-                }
-            }
-            
-            log.info( "Exported data completeness for period " + period.getId() );
-        }
-        
-        completenessCache.clear();
-        
-        batchHandler.flush();
-        
-        log.info( "Export process done" );
+        completenessService.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds, reportTableId );
     }
 }

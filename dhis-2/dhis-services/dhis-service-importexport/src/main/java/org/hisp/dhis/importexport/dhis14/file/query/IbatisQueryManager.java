@@ -31,6 +31,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.hisp.dhis.importexport.dhis14.file.sqlmap.SqlMapClientProvider;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ibatis.sqlmap.client.event.RowHandler;
@@ -119,11 +120,13 @@ public class IbatisQueryManager
         }
     }
 
+    @Transactional
     public void queryWithRowhandler( String query, RowHandler rowHandler )
     {
         queryWithRowhandler( query, rowHandler, null );
     }
     
+    @Transactional
     public void queryWithRowhandler( String query, RowHandler rowHandler, Object parameter )
     {
         SqlMapClient sqlMapClient = sqlMapClientProvider.getSqlMapClient();

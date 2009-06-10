@@ -29,10 +29,10 @@ package org.hisp.dhis.document.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 
 /**
  * @author Lars Helge Overland
@@ -45,11 +45,11 @@ public class HibernateDocumentStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -58,28 +58,28 @@ public class HibernateDocumentStore
 
     public int saveDocument( Document document )
     {
-        return (Integer) sessionManager.getCurrentSession().save( document );
+        return (Integer) sessionFactory.getCurrentSession().save( document );
     }
     
     public Document getDocument( int id )
     {
-        return (Document) sessionManager.getCurrentSession().get( Document.class, id );
+        return (Document) sessionFactory.getCurrentSession().get( Document.class, id );
     }
     
     public void deleteDocument( Document document )
     {
-        sessionManager.getCurrentSession().delete( document );
+        sessionFactory.getCurrentSession().delete( document );
     }
     
     @SuppressWarnings( "unchecked" )
     public Collection<Document> getAllDocuments()
     {
-        return sessionManager.getCurrentSession().createCriteria( Document.class ).list();
+        return sessionFactory.getCurrentSession().createCriteria( Document.class ).list();
     }
     
     public Document getDocumentByName( String name )
     {
-        return (Document) sessionManager.getCurrentSession().
+        return (Document) sessionFactory.getCurrentSession().
             createCriteria( Document.class ).add( Restrictions.eq( "name", name ) ).uniqueResult();
     } 
 }

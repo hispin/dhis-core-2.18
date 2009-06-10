@@ -6,20 +6,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.gis.FeatureStore"
     class="org.hisp.dhis.gis.hibernate.HibernateFeatureStore">
-    <property name="sessionManager"
-   	  ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
   <bean id="org.hisp.dhis.gis.GISConfigurationStore"
     class="org.hisp.dhis.gis.hibernate.HibernateGISConfigurationStore">
-    <property name="sessionManager"
-   	  ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
   </bean>  
   
   <bean id="org.hisp.dhis.gis.LegendStore"
     class="org.hisp.dhis.gis.hibernate.HibernateLegendStore">
-    <property name="sessionManager"
-   	  ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
 	<property name="indicatorService"
    	  ref="org.hisp.dhis.indicator.IndicatorService"/>
   </bean>  
@@ -44,30 +41,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.gis.hibernate.JDBCIndicatorService"
     class="org.hisp.dhis.gis.hibernate.JDBCIndicatorService">
-    <property name="statementManager"
-      ref="org.hisp.dhis.jdbc.StatementManager"/>
+    <property name="jdbcTemplate" ref="jdbcTemplate"/>
   </bean>
-  
-  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-    <property name="advice" ref="readWriteTransactionInterceptor"/>
-    <property name="patterns">
-      <list>       
-        <value>.*\.FeatureStore\.add.*</value>
-        <value>.*\.FeatureStore\.update.*</value>
-        <value>.*\.FeatureStore\.save.*</value>
-        <value>.*\.FeatureStore\.delete.*</value>
-        <value>.*\.LegendStore\.add.*</value>
-        <value>.*\.LegendStore\.update.*</value>
-        <value>.*\.LegendStore\.save.*</value>
-        <value>.*\.LegendStore\.remove.*</value>
-        <value>.*\.LegendStore\.delete.*</value>
-        <value>.*\.GISConfigurationStore\.add.*</value>
-        <value>.*\.GISConfigurationStore\.update.*</value>
-        <value>.*\.GISConfigurationStore\.save.*</value>
-        <value>.*\.GISConfigurationStore\.remove.*</value>
-        <value>.*\.GISConfigurationStore\.delete.*</value>	
-      </list>
-    </property>
-  </bean>	
-  
+    
 </beans>

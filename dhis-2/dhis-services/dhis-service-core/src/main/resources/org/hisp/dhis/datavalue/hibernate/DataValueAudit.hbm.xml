@@ -10,17 +10,17 @@
     </id>    
 
       <many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement"
-          column="dataelementid" foreign-key="fk_datavalue_dataelementid"/>
+          column="dataelementid" foreign-key="fk_datavalueaudit_dataelementid"/>
       <many-to-one name="period" class="org.hisp.dhis.period.Period" 
-          column="periodid" foreign-key="fk_datavalue_periodid"/>
+          column="periodid" foreign-key="fk_datavalueaudit_periodid"/>
       <!--
         The source relationship is made not lazy so that Hibernate won't put a
         proxy on the reference which cannot be casted to the desired subclass.
       -->
       <many-to-one name="source" class="org.hisp.dhis.source.Source" lazy="false"
-          column="sourceid" foreign-key="fk_datavalue_sourceid"/>
+          column="sourceid" foreign-key="fk_datavalueaudit_sourceid"/>
 	    <many-to-one name="optionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" 
-          column="categoryoptioncomboid" foreign-key="fk_datavalue_categoryoptioncomboid"/>
+          column="categoryoptioncomboid" foreign-key="fk_datavalueaudit_categoryoptioncomboid"/>
     
     <property name="value"/>
     <property name="storedBy" column="storedby" length="31"/>

@@ -27,10 +27,15 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
@@ -42,13 +47,14 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.jfree.chart.JFreeChart;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ChartServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private ChartService chartService;
     
@@ -69,26 +75,10 @@ public class ChartServiceTest
     private Chart chartC;
 
     // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Chart createChart( char uniqueCharacter, List<Indicator> indicators, List<Period> periods, List<OrganisationUnit> units )
-    {
-        Chart chart = new Chart();
-        
-        chart.setTitle( "Chart" + uniqueCharacter );
-        chart.setDimension( Chart.DIMENSION_PERIOD );
-        chart.setIndicators( indicators );
-        chart.setPeriods( periods );
-        chart.setOrganisationUnits( units );
-        
-        return chart;
-    }
-
-    // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -165,6 +155,7 @@ public class ChartServiceTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testGetBarChart()
     {
         int id = chartService.saveChart( chartA );
@@ -173,7 +164,8 @@ public class ChartServiceTest
         
         assertNotNull( jFreeChart );        
     }
-    
+
+    @Test
     public void testSaveGet()
     {
         int idA = chartService.saveChart( chartA );
@@ -188,7 +180,8 @@ public class ChartServiceTest
         assertTrue( equals( chartService.getChart( idA ).getPeriods(), periodA, periodB, periodC ) );
         assertTrue( equals( chartService.getChart( idA ).getOrganisationUnits(), unitA, unitB, unitC ) );
     }
-    
+
+    @Test
     public void testDelete()
     {
         int idA = chartService.saveChart( chartA );
@@ -211,7 +204,8 @@ public class ChartServiceTest
         assertNull( chartService.getChart( idB ) );
         assertNotNull( chartService.getChart( idC ) );        
     }
-    
+
+    @Test
     public void testGetAll()
     {
         chartService.saveChart( chartA );
@@ -220,7 +214,8 @@ public class ChartServiceTest
         
         assertTrue( equals( chartService.getAllCharts(), chartA, chartB, chartC ) );
     }
-    
+
+    @Test
     public void testGetByTitle()
     {
         chartService.saveChart( chartA );

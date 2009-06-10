@@ -28,9 +28,10 @@ package org.hisp.dhis.importexport.dhis14;
  */
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.importexport.ImportType;
-import org.hisp.dhis.importexport.ImportInternalProcess;
 import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.ImportService;
+import org.hisp.dhis.importexport.ImportType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
@@ -40,7 +41,7 @@ public class Dhis14ImportServiceTest
     extends DhisSpringTest
 {
     @SuppressWarnings( "unused" )
-    private ImportInternalProcess importService;
+    private ImportService importService;
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -48,13 +49,14 @@ public class Dhis14ImportServiceTest
 
     public void setUpTest()
     {
-        importService = (ImportInternalProcess) getBean( "internal-process-DHIS14FILEImportService" );
+        importService = (ImportService) getBean( "org.hisp.dhis.importexport.Dhis14FILEImportService" );
     }
 
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testImport()
         throws Exception
     {

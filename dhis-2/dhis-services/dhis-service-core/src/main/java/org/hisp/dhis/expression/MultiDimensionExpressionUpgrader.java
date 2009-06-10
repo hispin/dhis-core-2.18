@@ -39,6 +39,7 @@ import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Abyot Aselefew
@@ -52,19 +53,19 @@ public class MultiDimensionExpressionUpgrader
     // -------------------------------------------------------------------------
 
     private ExpressionService expressionService;
-    
+
     public void setExpressionService( ExpressionService expressionService )
     {
         this.expressionService = expressionService;
     }
-    
+
     private IndicatorService indicatorService;
-    
+
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
     }
-     
+
     private DataElementCategoryOptionComboService categoryOptionComboService;
 
     public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
@@ -76,62 +77,64 @@ public class MultiDimensionExpressionUpgrader
     // Execute
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void execute()
         throws Exception
     {
-        DataElementCategoryOptionCombo defaultOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
-                
+        DataElementCategoryOptionCombo defaultOptionCombo = categoryOptionComboService
+            .getDefaultDataElementCategoryOptionCombo();
+
         int defaultId = defaultOptionCombo.getId();
 
         Collection<Expression> expressions = expressionService.getAllExpressions();
-        
+
         Collection<Indicator> indicators = indicatorService.getAllIndicators();
-    
+
         // ---------------------------------------------------------------------
         // Any expression containing an operand of the form [dataElementId] will
-        // be upgraded to the form [dataElementId.defaultOptionComboId] 
+        // be upgraded to the form [dataElementId.defaultOptionComboId]
         // ---------------------------------------------------------------------
-        
-		for ( Expression expression : expressions )
-    	{
-			String expressionString = upgradeExpression( expression.getExpression(), defaultId );
-			
-			if ( expressionString != null )
-			{
-				expression.setExpression( expressionString );
-				
-				if( expression.getDescription() == null )
+
+        for ( Expression expression : expressions )
+        {
+            String expressionString = upgradeExpression( expression.getExpression(), defaultId );
+
+            if ( expressionString != null )
+            {
+                expression.setExpression( expressionString );
+
+                if ( expression.getDescription() == null )
                 {
-					expression.setDescription( expressionService.getExpressionDescription( expressionString ) );
+                    expression.setDescription( expressionService.getExpressionDescription( expressionString ) );
                 }
-	            
-	            expressionService.updateExpression( expression );
-			}			
+
+                expressionService.updateExpression( expression );
+            }
         }
-        
-        for( Indicator indicator : indicators )
-		{
+
+        for ( Indicator indicator : indicators )
+        {
             String numerator = upgradeExpression( indicator.getNumerator(), defaultId );
-			
-			String denominator = upgradeExpression( indicator.getDenominator(), defaultId );
-            
-			if ( numerator != null )
-			{
-				indicator.setNumerator( numerator );				
-			}
-            
-			if ( denominator != null )
-			{				
-				indicator.setDenominator( denominator );				
-			}		
-			
-			if ( numerator != null || denominator != null )
-			{
-				indicatorService.updateIndicator( indicator );
-			}
-		}
+
+            String denominator = upgradeExpression( indicator.getDenominator(), defaultId );
+
+            if ( numerator != null )
+            {
+                indicator.setNumerator( numerator );
+            }
+
+            if ( denominator != null )
+            {
+                indicator.setDenominator( denominator );
+            }
+
+            if ( numerator != null || denominator != null )
+            {
+                indicatorService.updateIndicator( indicator );
+            }
+        }
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -141,32 +144,33 @@ public class MultiDimensionExpressionUpgrader
         StringBuffer buffer = new StringBuffer();
 
         boolean matched = false;
-        
+
         if ( expression != null )
         {
-        	Matcher matcher = getMatcher( "(\\[\\d+\\])", expression );
-            
+            Matcher matcher = getMatcher( "(\\[\\d+\\])", expression );
+
             while ( matcher.find() )
             {
                 matched = true;
-                
+
                 String replaceString = matcher.group();
-                
-                replaceString = replaceString.substring( 0, replaceString.length() - 1 ) + SEPARATOR + defaultOptionComboId + "]";                
-                
+
+                replaceString = replaceString.substring( 0, replaceString.length() - 1 ) + SEPARATOR
+                    + defaultOptionComboId + "]";
+
                 matcher.appendReplacement( buffer, replaceString );
             }
-            
+
             matcher.appendTail( buffer );
         }
-        
+
         return matched ? buffer.toString() : null;
     }
-    
+
     private Matcher getMatcher( String regex, String expression )
     {
         Pattern pattern = Pattern.compile( regex );
-        
+
         return pattern.matcher( expression );
     }
 }

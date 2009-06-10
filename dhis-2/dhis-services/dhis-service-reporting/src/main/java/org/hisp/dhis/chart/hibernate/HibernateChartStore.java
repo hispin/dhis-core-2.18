@@ -30,10 +30,10 @@ package org.hisp.dhis.chart.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 
 /**
  * @author Lars Helge Overland
@@ -46,11 +46,11 @@ public class HibernateChartStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -59,33 +59,33 @@ public class HibernateChartStore
 
     public int saveChart( Chart chart )
     {
-        return (Integer) sessionManager.getCurrentSession().save( chart );
+        return (Integer) sessionFactory.getCurrentSession().save( chart );
     }
     
     public void saveOrUpdate( Chart chart )
     {
-        sessionManager.getCurrentSession().saveOrUpdate( chart );
+        sessionFactory.getCurrentSession().saveOrUpdate( chart );
     }
     
     public Chart getChart( int id )
     {
-        return (Chart) sessionManager.getCurrentSession().get( Chart.class, id );
+        return (Chart) sessionFactory.getCurrentSession().get( Chart.class, id );
     }
     
     public void deleteChart( Chart chart )
     {
-        sessionManager.getCurrentSession().delete( chart );
+        sessionFactory.getCurrentSession().delete( chart );
     }
     
     @SuppressWarnings( "unchecked" )
     public Collection<Chart> getAllCharts()
     {
-        return sessionManager.getCurrentSession().createCriteria( Chart.class ).list();
+        return sessionFactory.getCurrentSession().createCriteria( Chart.class ).list();
     }
     
     public Chart getChartByTitle( String title )
     {
-        Criteria criteria = sessionManager.getCurrentSession().createCriteria( Chart.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( Chart.class );
         criteria.add( Restrictions.eq( "title", title ) );
         return (Chart) criteria.uniqueResult();
     }

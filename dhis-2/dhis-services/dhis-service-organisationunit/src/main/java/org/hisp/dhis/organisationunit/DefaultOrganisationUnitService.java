@@ -36,17 +36,21 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
 import org.hisp.dhis.source.SourceStore;
 import org.hisp.dhis.system.util.UUIdUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: DefaultOrganisationUnitService.java 5951 2008-10-16 17:41:34Z larshelg $
  */
+@Transactional
 public class DefaultOrganisationUnitService
     implements OrganisationUnitService
 {
@@ -319,6 +323,11 @@ public class DefaultOrganisationUnitService
         }
     }
 
+    public int getLevelOfOrganisationUnit( int id )
+    {
+        return getLevelOfOrganisationUnit( getOrganisationUnit( id ) );
+    }
+    
     public int getLevelOfOrganisationUnit( OrganisationUnit organisationUnit )
     {
         int level = 1;
@@ -415,9 +424,34 @@ public class DefaultOrganisationUnitService
         organisationUnitStore.addOrganisationUnitHierarchy( calendar.getTime() );
     }
 
-    public Collection<Integer> getChildren( OrganisationUnitHierarchy hierarchy, int parentId )
+    public Collection<Integer> getChildren( int organisationUnitHierarchyId, int parentId )
     {
-        return organisationUnitStore.getChildren( hierarchy, parentId );
+        OrganisationUnitHierarchy hierarchy = getOrganisationUnitHierarchy( organisationUnitHierarchyId );
+        
+        Set<Entry<Integer, Integer>> structureEntries = hierarchy.getStructure().entrySet();
+
+        List<Integer> children = new ArrayList<Integer>();
+        children.add( 0, parentId );
+
+        int childCounter = 1;
+
+        // ---------------------------------------------------------------------
+        // Sorts out the children of parent organisation unit from structure
+        // and adds them to children
+        // ---------------------------------------------------------------------
+
+        for ( int i = 0; i < childCounter; i++ )
+        {
+            for ( Entry<Integer, Integer> entry : structureEntries )
+            {
+                if ( entry.getValue().intValue() == children.get( i ).intValue() )
+                {
+                    children.add( childCounter++, entry.getKey() );
+                }
+            }
+        }
+        
+        return children;
     }
 
     // -------------------------------------------------------------------------

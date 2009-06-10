@@ -52,6 +52,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.resourcetable.statement.CreateExclusiveGroupSetTableStatement;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -105,6 +106,7 @@ public class DefaultResourceTableService
     // OrganisationUnitStructure
     // -------------------------------------------------------------------------
     
+    @Transactional
     public void generateOrganisationUnitStructures()
     {
         resourceTableStore.deleteOrganisationUnitStructures();
@@ -166,6 +168,7 @@ public class DefaultResourceTableService
     // GroupSetStructure
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void generateGroupSetStructures()
     {
         resourceTableStore.deleteGroupSetStructures();
@@ -207,7 +210,8 @@ public class DefaultResourceTableService
     // -------------------------------------------------------------------------
     // DataElementCategoryOptionComboName
     // -------------------------------------------------------------------------
-    
+
+    @Transactional
     public void generateCategoryOptionComboNames()
     {
         resourceTableStore.deleteDataElementCategoryOptionComboNames();

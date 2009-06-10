@@ -34,7 +34,9 @@ import java.util.zip.ZipOutputStream;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.system.process.OpenSessionThread;
 import org.hisp.dhis.system.util.StreamUtils;
 
 /**
@@ -42,7 +44,7 @@ import org.hisp.dhis.system.util.StreamUtils;
  * @version $Id$
  */
 public class ExportPipeThread
-    extends Thread
+    extends OpenSessionThread
 {
     protected static final Log log = LogFactory.getLog( ExportPipeThread.class );
     
@@ -101,8 +103,9 @@ public class ExportPipeThread
     // Constructor
     // -------------------------------------------------------------------------
     
-    public ExportPipeThread()
-    {   
+    public ExportPipeThread( SessionFactory sessionFactory )
+    {
+        super( sessionFactory );
     }
     
     // -------------------------------------------------------------------------
@@ -123,7 +126,7 @@ public class ExportPipeThread
     // Thread implementation
     // -------------------------------------------------------------------------
 
-    public void run()
+    public void doRun()
     {
         try
         {

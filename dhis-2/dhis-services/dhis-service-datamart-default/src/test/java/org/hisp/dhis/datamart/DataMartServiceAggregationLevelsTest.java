@@ -27,13 +27,15 @@ package org.hisp.dhis.datamart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
@@ -46,15 +48,16 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataMartServiceAggregationLevelsTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
-    private DataMartInternalProcess dataMartInternalProcess;
+    private DataMartService dataMartService;
     
     private DataMartStore dataMartStore;
 
@@ -91,7 +94,7 @@ public class DataMartServiceAggregationLevelsTest
     @Override
     public void setUpTest()
     {
-        dataMartInternalProcess = (DataMartInternalProcess) getBean( DataMartInternalProcess.ID );
+        dataMartService = (DataMartService) getBean( DataMartService.ID );
 
         dataMartStore = (DataMartStore) getBean( DataMartStore.ID );
         
@@ -187,10 +190,17 @@ public class DataMartServiceAggregationLevelsTest
         dataValueService.addDataValue( createDataValue( dataElement, period, unitM, "60", categoryOptionCombo ) );        
     }
 
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testSumIntDataElementDataMart()
     {
         dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
@@ -199,7 +209,7 @@ public class DataMartServiceAggregationLevelsTest
         
         dataElementService.updateDataElement( dataElement );
         
-        dataMartInternalProcess.export( dataElementIds, new ArrayList<Integer>(), periodIds, organisationUnitIds );
+        dataMartService.export( dataElementIds, new ArrayList<Integer>(), periodIds, organisationUnitIds );
         
         assertEquals( 280.0, dataMartStore.getAggregatedValue( dataElement, period, unitA ) );
         assertEquals( 240.0, dataMartStore.getAggregatedValue( dataElement, period, unitB ) );
@@ -216,6 +226,7 @@ public class DataMartServiceAggregationLevelsTest
         assertEquals( 60.0, dataMartStore.getAggregatedValue( dataElement, period, unitM ) );
     }
 
+    @Test
     public void testAverageIntDataElementDataMart()
     {
         dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
@@ -224,7 +235,7 @@ public class DataMartServiceAggregationLevelsTest
         
         dataElementService.updateDataElement( dataElement );
         
-        dataMartInternalProcess.export( dataElementIds, new ArrayList<Integer>(), periodIds, organisationUnitIds );
+        dataMartService.export( dataElementIds, new ArrayList<Integer>(), periodIds, organisationUnitIds );
         
         assertEquals( 280.0, dataMartStore.getAggregatedValue( dataElement, period, unitA ) );
         assertEquals( 240.0, dataMartStore.getAggregatedValue( dataElement, period, unitB ) );

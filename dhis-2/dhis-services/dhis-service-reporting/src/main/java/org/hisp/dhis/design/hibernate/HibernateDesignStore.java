@@ -29,9 +29,9 @@ package org.hisp.dhis.design.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.design.Design;
 import org.hisp.dhis.design.DesignStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 
 /**
  * @author Lars Helge Overland
@@ -40,36 +40,36 @@ import org.hisp.dhis.hibernate.HibernateSessionManager;
 public class HibernateDesignStore
     implements DesignStore
 {
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-    
+
     public int saveDesign( Design design )
     {
-        return (Integer) sessionManager.getCurrentSession().save( design );
+        return (Integer) sessionFactory.getCurrentSession().save( design );
     }
     
     public void updateDesign( Design design )
     {
-        sessionManager.getCurrentSession().update( design );
+        sessionFactory.getCurrentSession().update( design );
     }
     
     public Design getDesign( int id )
     {
-        return (Design) sessionManager.getCurrentSession().get( Design.class, id );
+        return (Design) sessionFactory.getCurrentSession().get( Design.class, id );
     }
     
     public void deleteDesign( Design design )
     {
-        sessionManager.getCurrentSession().delete( design );
+        sessionFactory.getCurrentSession().delete( design );
     }
     
     @SuppressWarnings( "unchecked" )
     public Collection<Design> getAllDesigns()
     {
-        return sessionManager.getCurrentSession().createCriteria( Design.class ).list();
+        return sessionFactory.getCurrentSession().createCriteria( Design.class ).list();
     }
 }

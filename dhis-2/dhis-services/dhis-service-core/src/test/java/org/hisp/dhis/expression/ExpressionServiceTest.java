@@ -27,13 +27,19 @@ package org.hisp.dhis.expression;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static org.hisp.dhis.expression.Expression.SEPARATOR;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
@@ -45,15 +51,14 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
-
-import static org.hisp.dhis.expression.Expression.SEPARATOR;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ExpressionServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private ExpressionService expressionService;
 
@@ -92,7 +97,8 @@ public class ExpressionServiceTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -146,7 +152,8 @@ public class ExpressionServiceTest
     // -------------------------------------------------------------------------
     // Business logic tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testGetExpressionValue()
     {
         Expression expression = new Expression( expressionA, descriptionA, dataElements );
@@ -161,7 +168,8 @@ public class ExpressionServiceTest
         
         assertEquals( value, 0.0 );
     }
-    
+
+    @Test
     public void testGetDataElementsInExpression()
     {
         Set<DataElement> dataElements = expressionService.getDataElementsInExpression( expressionA );
@@ -170,7 +178,8 @@ public class ExpressionServiceTest
         assertTrue( dataElements.contains( dataElementA ) );
         assertTrue( dataElements.contains( dataElementB ) );        
     }
-    
+
+    @Test
     public void testGetOperandsInExpression()
     {
         Set<Operand> operands = expressionService.getOperandsInExpression( expressionA );
@@ -184,7 +193,8 @@ public class ExpressionServiceTest
         assertTrue( operands.contains( operandA ) );
         assertTrue( operands.contains( operandB ) );
     }
-    
+
+    @Test
     public void testConvertExpression()
     {
         Map<Object, Integer> dataElementMapping = new HashMap<Object, Integer>();
@@ -200,7 +210,8 @@ public class ExpressionServiceTest
         
         assertEquals( expected, expressionService.convertExpression( expression, dataElementMapping, categoryOptionComboMapping ) );
     }
-    
+
+    @Test
     public void testExpressionIsValid()
     {
     	assertEquals( ExpressionService.VALID, expressionService.expressionIsValid( expressionA ) );
@@ -230,14 +241,16 @@ public class ExpressionServiceTest
 
         assertEquals( ExpressionService.EXPRESSION_NOT_WELL_FORMED, expressionService.expressionIsValid( expressionA ) );        
     }
-    
+
+    @Test
     public void testGetExpressionDescription()
     {
         String description = expressionService.getExpressionDescription( expressionA );        
         
         assertEquals( description, "DataElementA + DataElementB" );
     }
-    
+
+    @Test
     public void testGenerateExpression()
     {
         String expression = expressionService.generateExpression( expressionA, period, source );
@@ -252,7 +265,8 @@ public class ExpressionServiceTest
     // -------------------------------------------------------------------------
     // CRUD tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddGetExpression()
     {
         Expression expression = new Expression( expressionA, descriptionA, dataElements );
@@ -265,7 +279,8 @@ public class ExpressionServiceTest
         assertEquals( expression.getDescription(), descriptionA );
         assertEquals( expression.getDataElementsInExpression(), dataElements );
     }
-    
+
+    @Test
     public void testUpdateExpression()
     {
         Expression expression = new Expression( expressionA, descriptionA, dataElements );
@@ -287,7 +302,8 @@ public class ExpressionServiceTest
         assertEquals( expression.getExpression(), expressionB );
         assertEquals( expression.getDescription(), descriptionB );
     }
-    
+
+    @Test
     public void testDeleteExpression()
     {
         Expression exprA = new Expression( expressionA, descriptionA, dataElements );
@@ -309,7 +325,8 @@ public class ExpressionServiceTest
         assertNull( expressionService.getExpression( idA ) );
         assertNull( expressionService.getExpression( idB ) );
     }
-    
+
+    @Test
     public void testGetAllExpressions()
     {
         Expression exprA = new Expression( expressionA, descriptionA, dataElements );

@@ -274,6 +274,13 @@ public interface DataElementService
      */
     Collection<String> getOperandIds( CalculatedDataElement calculatedDataElement );
     
+    /**
+     * 
+     * @param identifiers
+     * @return
+     */
+    Map<Integer, String> getCalculatedDataElementExpressionMap( Collection<Integer> identifiers );
+    
     // -------------------------------------------------------------------------
     // DataElementGroup
     // -------------------------------------------------------------------------

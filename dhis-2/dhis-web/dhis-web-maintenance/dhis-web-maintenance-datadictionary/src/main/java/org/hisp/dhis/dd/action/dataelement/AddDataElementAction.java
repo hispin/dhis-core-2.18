@@ -266,7 +266,6 @@ public class AddDataElementAction
         dataElement.setActive( true );
         dataElement.setType( type );
         dataElement.setAggregationOperator( aggregationOperator );
-        dataElement.setParent( null );
         dataElement.setUrl( url );        
         dataElement.setCategoryCombo( categoryCombo );
         dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils.getIntegerCollection( aggregationLevels ) ) );

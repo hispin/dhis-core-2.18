@@ -34,6 +34,9 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.importexport.ixf.config.IXFConfiguration;
 import org.hisp.dhis.importexport.ixf.config.IXFConfigurationManager;
 import org.hisp.dhis.importexport.ixf.config.IXFCountry;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -48,6 +51,7 @@ public class IXFConfigurationManagerTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -61,6 +65,7 @@ public class IXFConfigurationManagerTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testSetGetConfiguration()
     {
         IXFCountry country = new IXFCountry( "Key", "Number", "Name", "LongName", "IsoCode", "LevelNumber" );
@@ -73,7 +78,8 @@ public class IXFConfigurationManagerTest
         
         assertEquals( configuration, receivedConfiguration );
     }
-    
+
+    @Test
     public void testGetCountries()
         throws Exception
     {
@@ -81,7 +87,8 @@ public class IXFConfigurationManagerTest
         
         assertTrue( countries.size() > 200 );        
     }
-    
+
+    @Test
     public void testGetCountry()
     {
         IXFCountry country = configurationManager.getCountry( "161" );

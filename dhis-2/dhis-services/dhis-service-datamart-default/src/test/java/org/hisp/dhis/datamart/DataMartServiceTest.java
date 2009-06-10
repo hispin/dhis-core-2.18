@@ -27,11 +27,13 @@ package org.hisp.dhis.datamart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -50,18 +52,19 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: DataMartServiceTest.java 5519 2008-08-05 09:00:31Z larshelg $
  */
 public class DataMartServiceTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {    
     private final String T = "true";
     private final String F = "false";
     
-    private DataMartInternalProcess dataMartInternalProcess;
+    private DataMartService dataMartService;
     
     private DataMartStore dataMartStore;
 
@@ -95,8 +98,8 @@ public class DataMartServiceTest
     @Override
     public void setUpTest()
     {
-        dataMartInternalProcess = (DataMartInternalProcess) getBean( DataMartInternalProcess.ID );
-
+        dataMartService = (DataMartService) getBean( DataMartService.ID );
+        
         dataMartStore = (DataMartStore) getBean( DataMartStore.ID );
         
         categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
@@ -233,14 +236,21 @@ public class DataMartServiceTest
         dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitG, T, categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitH, T, categoryOptionCombo ) );
     }
-    
+
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+
+    @Test
     public void testSumIntDataElementDataMart()
     {
         dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         
         dataElementService.updateDataElement( dataElementA );
         
-        dataMartInternalProcess.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
         
         assertEquals( dataMartStore.getAggregatedValue( dataElementA, periodA, unitA ), 240.0 );
         assertEquals( dataMartStore.getAggregatedValue( dataElementA, periodA, unitB ), 150.0 );
@@ -260,14 +270,15 @@ public class DataMartServiceTest
         assertEquals( dataMartStore.getAggregatedValue( dataElementA, periodD, unitG ), 90.0 );
         assertEquals( dataMartStore.getAggregatedValue( dataElementA, periodD, unitH ), 145.0 );
     }
-    
+
+    @Test
     public void testAverageIntDataElementDataMart()
     {
         dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
         
         dataElementService.updateDataElement( dataElementA );
         
-        dataMartInternalProcess.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
 
         assertEquals( dataMartStore.getAggregatedValue( dataElementA, periodA, unitA ), 240.0 );
         assertEquals( dataMartStore.getAggregatedValue( dataElementA, periodA, unitB ), 150.0 );
@@ -287,14 +298,15 @@ public class DataMartServiceTest
         assertEquals( dataMartStore.getAggregatedValue( dataElementA, periodD, unitG ), 30.2 );
         assertEquals( dataMartStore.getAggregatedValue( dataElementA, periodD, unitH ), 48.6 );
     }
-    
+
+    @Test
     public void testSumBoolDataElementDataMart()
     {
         dataElementB.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
 
         dataElementService.updateDataElement( dataElementB );
         
-        dataMartInternalProcess.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
 
         assertEquals( dataMartStore.getAggregatedValue( dataElementB, periodA, unitA ), 4.0 );
         assertEquals( dataMartStore.getAggregatedValue( dataElementB, periodA, unitB ), 3.0 );
@@ -314,14 +326,15 @@ public class DataMartServiceTest
         assertEquals( dataMartStore.getAggregatedValue( dataElementB, periodD, unitG ), 1.0 );
         assertEquals( dataMartStore.getAggregatedValue( dataElementB, periodD, unitH ), 3.0 );
     }
-    
+
+    @Test
     public void testAverageBoolDataElementDataMart()
     {
         dataElementB.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
         
         dataElementService.updateDataElement( dataElementB );
         
-        dataMartInternalProcess.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
 
         assertEquals( dataMartStore.getAggregatedValue( dataElementB, periodA, unitA ), 66.7 );
         assertEquals( dataMartStore.getAggregatedValue( dataElementB, periodA, unitB ), 60.0 );
@@ -341,7 +354,8 @@ public class DataMartServiceTest
         assertEquals( dataMartStore.getAggregatedValue( dataElementB, periodD, unitG ), 34.1 );
         assertEquals( dataMartStore.getAggregatedValue( dataElementB, periodD, unitH ), 100.0 );
     }
-    
+
+    @Test
     public void testIndicatorDataMart()
     {
         // ---------------------------------------------------------------------
@@ -422,7 +436,7 @@ public class DataMartServiceTest
         
         indicatorIds.add( indicatorService.addIndicator( indicatorA ) );
         
-        dataMartInternalProcess.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
 
         // ---------------------------------------------------------------------
         // Assert
@@ -437,6 +451,7 @@ public class DataMartServiceTest
         assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodD, unitH ), 482.6 );
     }
 
+    @Test
     public void testAnnualizedIndicatorDataMart()
     {
         // ---------------------------------------------------------------------
@@ -495,7 +510,7 @@ public class DataMartServiceTest
         
         indicatorIds.add( indicatorService.addIndicator( indicatorA ) );
         
-        dataMartInternalProcess.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
 
         // ---------------------------------------------------------------------
         // Assert
@@ -505,7 +520,8 @@ public class DataMartServiceTest
         assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodC, unitG ), 16.1 );
         assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodC, unitH ), 412.1 );
     }
-    
+
+    @Test
     public void testCalculatedDataElementDataMart()
     {
         // ---------------------------------------------------------------------
@@ -557,7 +573,7 @@ public class DataMartServiceTest
         dataElementIds.clear();
         dataElementIds.add( dataElementService.addDataElement( calculated ) );
         
-        dataMartInternalProcess.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
 
         // ---------------------------------------------------------------------
         // Assert

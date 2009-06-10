@@ -27,20 +27,26 @@ package org.hisp.dhis.expression;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ExpressionStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private ExpressionStore expressionStore;
     
@@ -60,7 +66,8 @@ public class ExpressionStoreTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -94,6 +101,7 @@ public class ExpressionStoreTest
     // Tests
     // -------------------------------------------------------------------------
     
+    @Test
     public void testAddGetExpression()
     {
         Expression expr = new Expression( expressionA, descriptionA, dataElements );
@@ -106,7 +114,8 @@ public class ExpressionStoreTest
         assertEquals( expr.getDescription(), descriptionA );
         assertEquals( expr.getDataElementsInExpression(), dataElements );
     }
-    
+
+    @Test
     public void testUpdateExpression()
     {
         Expression expr = new Expression( expressionA, descriptionA, dataElements );
@@ -128,7 +137,8 @@ public class ExpressionStoreTest
         assertEquals( expr.getExpression(), expressionB );
         assertEquals( expr.getDescription(), descriptionB );
     }
-    
+
+    @Test
     public void testDeleteExpression()
     {
         Expression exprA = new Expression( expressionA, descriptionA, dataElements );
@@ -150,7 +160,8 @@ public class ExpressionStoreTest
         assertNull( expressionStore.getExpression( idA ) );
         assertNull( expressionStore.getExpression( idB ) );
     }
-    
+
+    @Test
     public void testGetAllExpressions()
     {
         Expression exprA = new Expression( expressionA, descriptionA, dataElements );

@@ -23,7 +23,7 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-support-transaction</artifactId>
+      <artifactId>dhis-support-test</artifactId>
     </dependency>
     
   </dependencies>

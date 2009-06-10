@@ -27,10 +27,16 @@ package org.hisp.dhis.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
@@ -40,14 +46,14 @@ import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
-import org.hisp.dhis.transaction.TransactionManager;
+import org.junit.Test;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: DataValueStoreTest.java 5715 2008-09-17 14:05:28Z larshelg $
  */
 public class DataValueStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DataValueStore dataValueStore;
 
@@ -57,8 +63,6 @@ public class DataValueStoreTest
 
     private SourceStore sourceStore;
 
-    private TransactionManager transactionManager;
-    
     // -------------------------------------------------------------------------
     // Supporting data
     // -------------------------------------------------------------------------
@@ -93,6 +97,7 @@ public class DataValueStoreTest
     // Set up/tear down
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -105,8 +110,6 @@ public class DataValueStoreTest
         periodStore = (PeriodStore) getBean( PeriodStore.ID );
         
         sourceStore = (SourceStore) getBean( SourceStore.ID );
-        
-        transactionManager = (TransactionManager) getBean( TransactionManager.ID );
         
         // ---------------------------------------------------------------------
         // Add supporting data
@@ -151,6 +154,7 @@ public class DataValueStoreTest
     // Basic DataValue
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddDataValue()
         throws Exception
     {
@@ -178,17 +182,12 @@ public class DataValueStoreTest
             // Expected
         }
 
-        transactionManager.enter();
-
         dataValueA = dataValueStore.getDataValue( sourceA, dataElementA, periodA );
         assertNotNull( dataValueA );
         assertEquals( sourceA.getId(), dataValueA.getSource().getId() );
         assertEquals( dataElementA, dataValueA.getDataElement() );
         assertEquals( periodA, dataValueA.getPeriod() );
         assertEquals( "1", dataValueA.getValue() );
-
-        transactionManager.leave();
-        transactionManager.enter();
 
         dataValueB = dataValueStore.getDataValue( sourceA, dataElementB, periodA );
         assertNotNull( dataValueB );
@@ -197,19 +196,15 @@ public class DataValueStoreTest
         assertEquals( periodA, dataValueB.getPeriod() );
         assertEquals( "2", dataValueB.getValue() );
 
-        transactionManager.leave();
-        transactionManager.enter();
-
         dataValueC = dataValueStore.getDataValue( sourceA, dataElementC, periodC );
         assertNotNull( dataValueC );
         assertEquals( sourceA.getId(), dataValueC.getSource().getId() );
         assertEquals( dataElementC, dataValueC.getDataElement() );
         assertEquals( periodC, dataValueC.getPeriod() );
         assertEquals( "3", dataValueC.getValue() );
-
-        transactionManager.leave();
     }
 
+    @Test
     public void testUpdataDataValue()
         throws Exception
     {
@@ -236,6 +231,7 @@ public class DataValueStoreTest
         assertEquals( "2", dataValueB.getValue() );
     }
 
+    @Test
     public void testDeleteAndGetDataValue()
         throws Exception
     {
@@ -283,6 +279,7 @@ public class DataValueStoreTest
         assertNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
     }
 
+    @Test
     public void testDeleteDataValuesBySource()
         throws Exception
     {
@@ -330,6 +327,7 @@ public class DataValueStoreTest
         assertNull( dataValueStore.getDataValue( sourceB, dataElementD, periodC ) );
     }
 
+    @Test
     public void testDeleteDataValuesByDataElement()
         throws Exception
     {
@@ -381,6 +379,7 @@ public class DataValueStoreTest
     // Collections of DataValues
     // -------------------------------------------------------------------------
 
+    @Test
     public void testGetAllDataValues()
         throws Exception
     {
@@ -402,7 +401,8 @@ public class DataValueStoreTest
         assertNotNull( dataValues );
         assertEquals( 4, dataValues.size() );
     }   
-        
+
+    @Test
     public void testGetDataValuesSourcePeriod()
         throws Exception
     {
@@ -433,6 +433,7 @@ public class DataValueStoreTest
         assertEquals( 0, dataValues.size() );
     }
 
+    @Test
     public void testGetDataValuesSourceDataElement()
         throws Exception
     {
@@ -463,6 +464,7 @@ public class DataValueStoreTest
         assertEquals( 0, dataValues.size() );
     }
 
+    @Test
     public void testGetDataValuesSourcesDataElement()
         throws Exception
     {
@@ -497,6 +499,7 @@ public class DataValueStoreTest
         assertEquals( 0, dataValues.size() );
     }
 
+    @Test
     public void testGetDataValuesSourcePeriodDataElements()
         throws Exception
     {
@@ -530,7 +533,8 @@ public class DataValueStoreTest
         assertNotNull( dataValues );
         assertEquals( 0, dataValues.size() );
     }
-    
+
+    @Test
     public void testGetDataValuesDataElementPeriodsSources()
         throws Exception
     {
@@ -563,6 +567,7 @@ public class DataValueStoreTest
         assertTrue( dataValues.contains( dataValueB ) );
     }
 
+    @Test
     public void testGetDataValuesOptionComboDataElementPeriodsSources()
         throws Exception
     {
@@ -594,7 +599,8 @@ public class DataValueStoreTest
         assertTrue( dataValues.contains( dataValueA ) );
         assertTrue( dataValues.contains( dataValueB ) );
     }
-    
+
+    @Test
     public void testGetDataValuesDataElementsPeriodsSourcesFirstResultMaxResults()
         throws Exception
     {

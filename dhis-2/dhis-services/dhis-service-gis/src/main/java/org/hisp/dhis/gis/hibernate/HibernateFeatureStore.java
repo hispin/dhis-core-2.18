@@ -31,12 +31,13 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.gis.Feature;
 import org.hisp.dhis.gis.FeatureStore;
 import org.hisp.dhis.gis.MapFile;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Tran Thanh Tri
@@ -48,120 +49,129 @@ public class HibernateFeatureStore
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
+    private SessionFactory sessionFactory;
 
-    private HibernateSessionManager sessionManager;
-
-    public HibernateSessionManager getSessionManager()
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        return sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-
+    
     // -------------------------------------------------------------------------
     // FeatureStore implementation
     // -------------------------------------------------------------------------
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
-    {
-        this.sessionManager = sessionManager;
-    }
-
+    @Transactional
     public void add( Feature feature )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         session.save( feature );
     }
 
+    @Transactional
     public void delete( Feature feature )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         session.delete( feature );
     }
 
+    @Transactional
     public Feature get( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Feature) session.get( Feature.class, new Integer( id ) );
     }
 
+    @Transactional
     public Feature get( String featureCode )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria( Feature.class );
         criteria.add( Restrictions.eq( "featureCode", featureCode ) );
         return (Feature) criteria.uniqueResult();
     }
 
+    @Transactional
     public Feature get( OrganisationUnit organisationUnit )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Feature) session.createQuery( "from Feature as f where f.organisationUnit = ?" ).setEntity( 0,
             organisationUnit ).uniqueResult();
     }
 
+    @Transactional
     @SuppressWarnings( "unchecked" )
     public Collection<Feature> getAll()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return session.createCriteria( Feature.class ).list();
     }
 
+    @Transactional
     public void update( Feature feature )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( feature );
     }
 
+    @Transactional
     public void delete( String featureCode )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.createQuery( "delete Feature as f where f.featureCode = ?" ).setEntity( 0, featureCode );
     }
 
+    @Transactional
     public void addMapFile( MapFile arg0 )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.save( arg0 );
     }
 
+    @Transactional
     public void deleteMapFile( MapFile arg0 )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( arg0 );
     }
 
+    @Transactional
     @SuppressWarnings( "unchecked" )
     public Collection<MapFile> getAllMapFile()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return session.createCriteria( MapFile.class ).list();
     }
 
+    @Transactional
     public MapFile getMapFile( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (MapFile) session.get( MapFile.class, new Integer( id ) );
     }
 
+    @Transactional
     public MapFile getMapFile( OrganisationUnit organisationUnit )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (MapFile) session.createQuery( "from MapFile as f where f.organisationUnit = ?" ).setEntity( 0,
             organisationUnit ).uniqueResult();
     }
 
+    @Transactional
     public void updateMapFile( MapFile arg0 )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( arg0 );
     }

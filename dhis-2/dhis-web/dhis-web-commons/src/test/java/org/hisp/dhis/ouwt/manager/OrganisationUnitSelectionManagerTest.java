@@ -35,7 +35,9 @@ import java.util.Set;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.transaction.TransactionManager;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -46,16 +48,13 @@ public class OrganisationUnitSelectionManagerTest
 {
     private OrganisationUnitService organisationUnitService;
 
-    private TransactionManager transactionManager;
-
     private OrganisationUnitSelectionManager selectionManager;
 
+    @Override
     public void setUpTest()
         throws Exception
     {
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
-        transactionManager = (TransactionManager) getBean( TransactionManager.ID );
 
         // ---------------------------------------------------------------------
         // Have to replace the session part with a dummy
@@ -69,7 +68,6 @@ public class OrganisationUnitSelectionManagerTest
         // Add a couple of org units
         // ---------------------------------------------------------------------
 
-        transactionManager.enter();
         OrganisationUnit parentUnit = new OrganisationUnit( "OrganisationUnit1", "OrgUnit1", "OU1", new Date(),
             new Date(), true, "Comment1" );
         organisationUnitService.addOrganisationUnit( parentUnit );
@@ -77,91 +75,66 @@ public class OrganisationUnitSelectionManagerTest
             new Date(), new Date(), true, "Comment2" );
         parentUnit.getChildren().add( childUnit );
         organisationUnitService.addOrganisationUnit( childUnit );
-        transactionManager.leave();
     }
 
+    @Test
     public void testRoot()
         throws Exception
     {
-        transactionManager.enter();
         OrganisationUnit rootUnit = getSingleRootOrganisationUnit();
         OrganisationUnit child = rootUnit.getChildren().iterator().next();
-        transactionManager.leave();
 
         assertNotNull( rootUnit );
 
-        transactionManager.enter();
         setSingleRootOrganisationUnitParent( child );
         assertEquals( child.getId(), getSingleRootOrganisationUnit().getId() );
-        transactionManager.leave();
 
-        transactionManager.enter();
         selectionManager.resetRootOrganisationUnits();
         assertEquals( rootUnit.getId(), getSingleRootOrganisationUnit().getId() );
-        transactionManager.leave();
     }
 
+    @Test
     public void testSelection()
         throws Exception
     {
-        transactionManager.enter();
         assertTrue( selectionManager.getSelectedOrganisationUnits().isEmpty() );
-        transactionManager.leave();
 
-        transactionManager.enter();
         OrganisationUnit rootUnit = getSingleRootOrganisationUnit();
         OrganisationUnit child = rootUnit.getChildren().iterator().next();
-        transactionManager.leave();
 
-        transactionManager.enter();
         setSingleSelectedOrganisationUnit( child );
         assertEquals( child.getId(), getSingleSelectedOrganisationUnit().getId() );
-        transactionManager.leave();
 
-        transactionManager.enter();
         selectionManager.clearSelectedOrganisationUnits();
         assertTrue( selectionManager.getSelectedOrganisationUnits().isEmpty() );
-        transactionManager.leave();
     }
 
+    @Test
     public void testParentChildPaths()
         throws Exception
     {
-        transactionManager.enter();
         OrganisationUnit rootUnit = getSingleRootOrganisationUnit();
         OrganisationUnit child = rootUnit.getChildren().iterator().next();
-        transactionManager.leave();
 
-        transactionManager.enter();
         setSingleRootOrganisationUnitParent( rootUnit );
         setSingleSelectedOrganisationUnit( child );
         assertEquals( rootUnit.getId(), getSingleRootOrganisationUnit().getId() );
         assertEquals( child.getId(), getSingleSelectedOrganisationUnit().getId() );
-        transactionManager.leave();
 
-        transactionManager.enter();
         setSingleRootOrganisationUnitParent( child );
         assertEquals( child.getId(), getSingleRootOrganisationUnit().getId() );
         assertNull( getSingleSelectedOrganisationUnit() );
-        transactionManager.leave();
 
-        transactionManager.enter();
         setSingleSelectedOrganisationUnit( rootUnit );
-        //assertTrue( selectionManager.getSelectedOrganisationUnits().size() == 0 );
-        transactionManager.leave();
 
-        transactionManager.enter();
         setSingleRootOrganisationUnitParent( rootUnit );
         setSingleSelectedOrganisationUnit( rootUnit );
         assertEquals( rootUnit.getId(), getSingleRootOrganisationUnit().getId() );
         assertEquals( rootUnit.getId(), getSingleSelectedOrganisationUnit().getId() );
-        transactionManager.leave();
 
-        transactionManager.enter();
         setSingleRootOrganisationUnitParent( child );
         assertEquals( child.getId(), getSingleRootOrganisationUnit().getId() );
         assertNull( getSingleSelectedOrganisationUnit() );
-        transactionManager.leave();
     }
 
     private void setSingleRootOrganisationUnitParent( OrganisationUnit unit )

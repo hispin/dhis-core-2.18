@@ -27,27 +27,31 @@ package org.hisp.dhis.importexport.dhis14;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
+import static org.hisp.dhis.importexport.dhis14.util.Dhis14ExpressionConverter.convertExpressionFromDhis14;
+import static org.hisp.dhis.importexport.dhis14.util.Dhis14ExpressionConverter.convertExpressionToDhis14;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hisp.dhis.importexport.dhis14.util.Dhis14ExpressionConverter.*;
-import static org.hisp.dhis.dataelement.DataElement.*;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class Dhis14ExpressionConverterTest
-    extends TestCase
 {
     private static final String dhis2Expression = "(([43.4]*1)+([53.4]*1)+([63.4]*1))";
 
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testConvertFromDhis14()
     {
         Map<Object, Integer> mapping = new HashMap<Object, Integer>();
@@ -61,7 +65,8 @@ public class Dhis14ExpressionConverterTest
         
         assertEquals( dhis2Expression, actual );
     }
-    
+
+    @Test
     public void testConvertToDhis14()
     {
         Map<Object, String> mapping = new HashMap<Object, String>();

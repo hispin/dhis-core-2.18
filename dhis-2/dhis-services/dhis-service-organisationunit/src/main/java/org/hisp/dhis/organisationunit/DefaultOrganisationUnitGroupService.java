@@ -29,6 +29,7 @@ package org.hisp.dhis.organisationunit;
 
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.UUIdUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +39,7 @@ import java.util.HashSet;
  * @author Torgeir Lorange Ostby
  * @version $Id: DefaultOrganisationUnitGroupService.java 5017 2008-04-25 09:19:19Z larshelg $
  */
+@Transactional
 public class DefaultOrganisationUnitGroupService
     implements OrganisationUnitGroupService
 {

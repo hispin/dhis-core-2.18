@@ -168,17 +168,7 @@ public class DataElementCategoryOptionCombo
             return true;
         }
         
-        if ( object == null )
-        {
-            return false;
-        }
-        
-        if ( object.getCategoryCombo() == null )
-        {
-            return false;
-        }
-        
-        if ( object.getCategoryOptions() == null )
+        if ( object == null || object.getCategoryCombo() == null || object.getCategoryOptions() == null )
         {
             return false;
         }
@@ -193,8 +183,8 @@ public class DataElementCategoryOptionCombo
             return false;
         }
         
-        Set<String> names1 = new HashSet<String>();
-        Set<String> names2 = new HashSet<String>();
+        final Set<String> names1 = new HashSet<String>();
+        final Set<String> names2 = new HashSet<String>();
         
         for ( DataElementCategoryOption option : categoryOptions )
         {
@@ -206,7 +196,7 @@ public class DataElementCategoryOptionCombo
             names2.add( option.getName() );
         }
         
-        return names1.equals( names2 );
+        return  names1.equals( names2 );
     }
     
     /**

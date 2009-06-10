@@ -27,12 +27,16 @@ package org.hisp.dhis.databrowser;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNotSame;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
@@ -48,13 +52,15 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
- * @author Joakim Bj�rnstad
+ * @author Joakim Bjornstad
  * @version $Id$
  */
 public class DataBrowserServiceTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private DataBrowserService dataBrowserService;
 
@@ -91,7 +97,8 @@ public class DataBrowserServiceTest
     private OrganisationUnit unitG;
     private OrganisationUnit unitH;
     private OrganisationUnit unitI;
-
+    
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -252,6 +259,8 @@ public class DataBrowserServiceTest
 
     }
 
+    @Ignore
+    @Test
     public void testGetAllCountDataSetsByPeriodType()
     {
         DataBrowserTable table = dataBrowserService.getAllCountDataSetsByPeriodType( periodA.getPeriodType() );
@@ -275,6 +284,8 @@ public class DataBrowserServiceTest
 
     }
 
+    @Ignore
+    @Test
     public void testGetAllCountDataElementsByPeriodType()
     {
         DataBrowserTable table = dataBrowserService.getAllCountDataElementsByPeriodType( dataSetA.getId(), periodA
@@ -296,6 +307,8 @@ public class DataBrowserServiceTest
             .intValue() );
     }
 
+    @Ignore
+    @Test
     public void testGetAllCountOrgUnitsByPeriodType()
     {
         DataBrowserTable table = dataBrowserService.getAllCountOrgUnitsByPeriodType( unitB.getId(), periodA
@@ -320,6 +333,8 @@ public class DataBrowserServiceTest
 
     }
 
+    @Ignore
+    @Test
     public void testGetCountDataSetsInPeriod()
     {
 
@@ -344,6 +359,8 @@ public class DataBrowserServiceTest
             .intValue() );
     }
 
+    @Ignore
+    @Test
     public void testGetCountDataElementsInPeriod()
     {
         DataBrowserTable table = dataBrowserService.getCountDataElementsInPeriod( dataSetA.getId(), "2005-02-28",
@@ -365,6 +382,8 @@ public class DataBrowserServiceTest
             .intValue() );
     }
 
+    @Ignore
+    @Test
     public void testGetCountOrgUnitsInPeriod()
     {
         DataBrowserTable table = dataBrowserService.getCountOrgUnitsInPeriod( unitB.getId(), "2005-02-28",

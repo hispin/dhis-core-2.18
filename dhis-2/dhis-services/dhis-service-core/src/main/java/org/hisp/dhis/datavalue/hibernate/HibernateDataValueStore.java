@@ -35,6 +35,7 @@ import java.util.HashSet;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
@@ -42,7 +43,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueAudit;
 import org.hisp.dhis.datavalue.DataValueStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.source.Source;
@@ -58,11 +58,11 @@ public class HibernateDataValueStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     private PeriodStore periodStore;
@@ -78,7 +78,7 @@ public class HibernateDataValueStore
 
     private final Period reloadPeriod( Period period )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         if ( session.contains( period ) )
         {
@@ -110,7 +110,7 @@ public class HibernateDataValueStore
     {
         dataValue.setPeriod( reloadPeriodForceAdd( dataValue.getPeriod() ) );
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.save( dataValue );
         
@@ -124,7 +124,7 @@ public class HibernateDataValueStore
     {
         dataValue.setPeriod( reloadPeriodForceAdd( dataValue.getPeriod() ) );
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( dataValue );
         
@@ -136,7 +136,7 @@ public class HibernateDataValueStore
 
     public void deleteDataValue( DataValue dataValue )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( dataValue );
         
@@ -148,27 +148,27 @@ public class HibernateDataValueStore
 
     public int deleteDataValuesBySource( Source source )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "delete DataValue where source = :source" );
         query.setEntity( "source", source );
 
         return query.executeUpdate();
     }
-    
+
     public int deleteDataValuesByDataElement( DataElement dataElement )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "delete DataValue where dataElement = :dataElement" );
         query.setEntity( "dataElement", dataElement );
 
         return query.executeUpdate();    
     }
-    
+
     public DataValue getDataValue( Source source, DataElement dataElement, Period period )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Period storedPeriod = reloadPeriod( period );
 
@@ -184,10 +184,10 @@ public class HibernateDataValueStore
 
         return (DataValue) criteria.uniqueResult();
     }
-    
+
     public DataValue getDataValue( Source source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Period storedPeriod = reloadPeriod( period );
 
@@ -212,7 +212,7 @@ public class HibernateDataValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataValue> getAllDataValues()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValue.class );
 
@@ -229,7 +229,7 @@ public class HibernateDataValueStore
             return Collections.emptySet();
         }
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValue.class );
         criteria.add( Restrictions.eq( "source", source ) );
@@ -241,7 +241,7 @@ public class HibernateDataValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataValue> getDataValues( Source source, DataElement dataElement )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValue.class );
         criteria.add( Restrictions.eq( "source", source ) );
@@ -253,7 +253,7 @@ public class HibernateDataValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataValue> getDataValues( Collection<? extends Source> sources, DataElement dataElement )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValue.class );
         criteria.add( Restrictions.in( "source", sources ) );
@@ -272,7 +272,7 @@ public class HibernateDataValueStore
             return Collections.emptySet();
         }
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValue.class );
         criteria.add( Restrictions.eq( "source", source ) );
@@ -281,7 +281,7 @@ public class HibernateDataValueStore
 
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataValue> getDataValues( Source source, Period period, Collection<DataElement> dataElements, Collection<DataElementCategoryOptionCombo> optionCombos  )
     {
@@ -292,7 +292,7 @@ public class HibernateDataValueStore
             return Collections.emptySet();
         }
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValue.class );
         criteria.add( Restrictions.eq( "source", source ) );
@@ -313,7 +313,7 @@ public class HibernateDataValueStore
             return new HashSet<DataValue>();
         }
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValue.class );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
@@ -322,7 +322,7 @@ public class HibernateDataValueStore
 
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataValue> getDataValues( DataElement dataElement, Collection<Period> periods,
         Collection<? extends Source> sources )
@@ -339,7 +339,7 @@ public class HibernateDataValueStore
             }
         }
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValue.class );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
@@ -365,7 +365,7 @@ public class HibernateDataValueStore
             }
         }
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValue.class );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
@@ -375,7 +375,7 @@ public class HibernateDataValueStore
 
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataValue> getDataValues( Collection<DataElement> dataElements, Collection<Period> periods,
         Collection<? extends Source> sources, int firstResult, int maxResults )
@@ -397,7 +397,7 @@ public class HibernateDataValueStore
             return Collections.emptySet();
         }
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValue.class );
 
@@ -417,33 +417,33 @@ public class HibernateDataValueStore
 
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataValue> getDataValues( Collection<DataElementCategoryOptionCombo> optionCombos )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValue.class );        
         criteria.add( Restrictions.in( "optionCombo", optionCombos ) );
 
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataValue> getDataValues( DataElement dataElement )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValue.class );        
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
 
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataValueAudit> getDataValueAudits( Source source, Period period, DataElement dataElement, DataElementCategoryOptionCombo optionCombo  )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValueAudit.class );
         criteria.add( Restrictions.eq( "source", source ) );

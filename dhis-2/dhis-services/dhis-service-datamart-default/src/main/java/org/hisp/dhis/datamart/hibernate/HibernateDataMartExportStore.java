@@ -30,15 +30,17 @@ package org.hisp.dhis.datamart.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.DataMartExportStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional
 public class HibernateDataMartExportStore
     implements DataMartExportStore
 {
@@ -46,11 +48,11 @@ public class HibernateDataMartExportStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
-    
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    private SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -59,28 +61,28 @@ public class HibernateDataMartExportStore
 
     public void saveDataMartExport( DataMartExport export )
     {
-        sessionManager.getCurrentSession().saveOrUpdate( export );
+        sessionFactory.getCurrentSession().saveOrUpdate( export );
     }
 
     public DataMartExport getDataMartExport( int id )
     {
-        return (DataMartExport) sessionManager.getCurrentSession().get( DataMartExport.class, id );
+        return (DataMartExport) sessionFactory.getCurrentSession().get( DataMartExport.class, id );
     }
     
     public void deleteDataMartExport( DataMartExport export )
     {
-        sessionManager.getCurrentSession().delete( export );
+        sessionFactory.getCurrentSession().delete( export );
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<DataMartExport> getAllDataMartExports()
     {
-        return sessionManager.getCurrentSession().createCriteria( DataMartExport.class ).list();
+        return sessionFactory.getCurrentSession().createCriteria( DataMartExport.class ).list();
     }
     
     public DataMartExport getDataMartExportByName( String name )
     {
-        Criteria criteria = sessionManager.getCurrentSession().createCriteria( DataMartExport.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( DataMartExport.class );
         
         criteria.add( Restrictions.eq( "name", name ) );
         

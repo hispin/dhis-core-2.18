@@ -126,6 +126,13 @@ public interface DataElementCategoryOptionComboService
      * @return a DataElementCategoryOptionCombo name.
      */
     String getOptionNames( DataElementCategoryOptionCombo dataElementCategoryOptionCombo );
+
+    /**
+     * 
+     * @param dataElementIdentifiers
+     * @return
+     */
+    Collection<Operand> getOperandsByIds( Collection<Integer> dataElementIdentifiers );
     
     /**
      * Gets the Operands for the given Collection of DataElements.
@@ -133,5 +140,5 @@ public interface DataElementCategoryOptionComboService
      * @param dataElements the Collection of DataElements.
      * @return the Operands for the given Collection of DataElements.
      */
-    Collection<Operand> getOperands( Collection<DataElement> dataElements );
+    Collection<Operand> getOperands( Collection<DataElement> dataElements );    
 }

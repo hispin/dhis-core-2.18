@@ -27,10 +27,13 @@ package org.hisp.dhis.dataintegrity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.Map;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -47,13 +50,14 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataIntegrityServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DataIntegrityService dataIntegrityService;
     
@@ -215,13 +219,15 @@ public class DataIntegrityServiceTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testGetDataElementsWithoutDataSet()
     {
         Collection<DataElement> expected = dataIntegrityService.getDataElementsWithoutDataSet();
         
         assertTrue( equals( expected, elementC ) );
     }
-    
+
+    @Test
     public void testGetDataElementsWithoutGroups()
     {
         Collection<DataElement> expected = dataIntegrityService.getDataElementsWithoutGroups();
@@ -229,6 +235,7 @@ public class DataIntegrityServiceTest
         assertTrue( equals( expected, elementB, elementC ) );
     }
 
+    @Test
     public void testGetDataElementsAssignedToDataSetsWithDifferentPeriodType()
     {
         Map<DataElement, Collection<DataSet>> expected = dataIntegrityService.getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
@@ -237,70 +244,80 @@ public class DataIntegrityServiceTest
         assertEquals( elementA, expected.keySet().iterator().next() );
         assertTrue( equals( expected.get( elementA ), dataSetA, dataSetB ) );
     }
-    
+
+    @Test
     public void testGetDataSetsNotAssignedToOrganisationUnits()
     {
         Collection<DataSet> expected = dataIntegrityService.getDataSetsNotAssignedToOrganisationUnits();
         
         assertTrue( equals( expected, dataSetB ) );
     }
-    
+
+    @Test
     public void testGetIndicatorsWithBlankFormulas()
     {
         Collection<Indicator> expected = dataIntegrityService.getIndicatorsWithBlankFormulas();
         
         assertTrue( equals( expected, indicatorA ) );
     }
-    
+
+    @Test
     public void testGetIndicatorsWithIdenticalFormulas()
     {
         Collection<Indicator> expected = dataIntegrityService.getIndicatorsWithIdenticalFormulas();
         
         assertTrue( equals( expected, indicatorC ) );
     }
-    
+
+    @Test
     public void testGetIndicatorsWithoutGroups()
     {
         Collection<Indicator> expected = dataIntegrityService.getIndicatorsWithoutGroups();
         
         assertTrue( equals( expected, indicatorB, indicatorC ) );
     }
-    
+
+    @Test
     public void testGetOrganisationUnitsWithCyclicReferences()
     {
         Collection<OrganisationUnit> expected = dataIntegrityService.getOrganisationUnitsWithCyclicReferences();
         
         assertTrue( equals( expected, unitA, unitB, unitC ) );
     }
-    
+
+    @Test
     public void testGetOrphanedOrganisationUnits()
     {
         Collection<OrganisationUnit> expected = dataIntegrityService.getOrphanedOrganisationUnits();
         
         assertTrue( equals( expected, unitF ) );
     }
-    
+
+    @Test
     public void testGetOrganisationUnitsWithoutGroups()
     {
         Collection<OrganisationUnit> expected = dataIntegrityService.getOrganisationUnitsWithoutGroups();
         
         assertTrue( equals( expected, unitD, unitE ) );
     }
-    
+
+    @Test
     public void testGetOrganisationUnitsViolatingCompulsoryGroupSets()
     {
         Collection<OrganisationUnit> expected = dataIntegrityService.getOrganisationUnitsViolatingCompulsoryGroupSets();
         
         assertTrue( equals( expected, unitD, unitE, unitF ) );
     }
-    
+
+    @Test
     public void testGetOrganisationUnitsViolatingExclusiveGroupSets()
     {
         Collection<OrganisationUnit> expected = dataIntegrityService.getOrganisationUnitsViolatingExclusiveGroupSets();
         
         assertTrue( equals( expected, unitA, unitB ) );
     }
-    
+
+    @Test
     public void testGetOrganisationUnitGroupsWithoutGroupSets()
     {
         Collection<OrganisationUnitGroup> expected = dataIntegrityService.getOrganisationUnitGroupsWithoutGroupSets();

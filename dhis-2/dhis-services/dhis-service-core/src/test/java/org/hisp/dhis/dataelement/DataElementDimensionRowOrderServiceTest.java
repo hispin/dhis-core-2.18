@@ -27,14 +27,19 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.DhisConvenienceTest;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementDimensionRowOrderServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DataElementCategory categoryA;
     private DataElementCategory categoryB;
@@ -72,6 +77,7 @@ public class DataElementDimensionRowOrderServiceTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGet()
     {
         DataElementDimensionRowOrder dimensionRowOrderA = new DataElementDimensionRowOrder( categoryComboA, categoryA, 1 );
@@ -86,7 +92,8 @@ public class DataElementDimensionRowOrderServiceTest
         assertEquals( dimensionRowOrderB, dimensionRowOrderService.getDataElementDimensionRowOrder( categoryComboA, categoryB ) );
         assertEquals( dimensionRowOrderC, dimensionRowOrderService.getDataElementDimensionRowOrder( categoryComboB, categoryB ) );        
     }
-    
+
+    @Test
     public void testDeleteByCategoryCombo()
     {
         DataElementDimensionRowOrder dimensionRowOrderA = new DataElementDimensionRowOrder( categoryComboA, categoryA, 1 );
@@ -103,7 +110,8 @@ public class DataElementDimensionRowOrderServiceTest
         assertNull( dimensionRowOrderService.getDataElementDimensionRowOrder( categoryComboA, categoryB ) );
         assertNotNull( dimensionRowOrderService.getDataElementDimensionRowOrder( categoryComboB, categoryB ) );    
     }
-    
+
+    @Test
     public void testDeleteByCategory()
     {
         DataElementDimensionRowOrder dimensionRowOrderA = new DataElementDimensionRowOrder( categoryComboA, categoryA, 1 );

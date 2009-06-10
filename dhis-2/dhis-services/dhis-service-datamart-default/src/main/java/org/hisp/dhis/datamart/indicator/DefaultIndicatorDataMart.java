@@ -41,6 +41,7 @@ import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.indicator.Indicator;
@@ -125,7 +126,14 @@ public class DefaultIndicatorDataMart
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    }    
+    }
+    
+    private AggregationCache aggregationCache;
+
+    public void setAggregationCache( AggregationCache aggregationCache )
+    {
+        this.aggregationCache = aggregationCache;
+    }
 
     // -------------------------------------------------------------------------
     // IndicatorDataMart implementation
@@ -173,7 +181,7 @@ public class DefaultIndicatorDataMart
         
         for ( final OrganisationUnit unit : organisationUnits )
         {
-            level = organisationUnitService.getLevelOfOrganisationUnit( unit );
+            level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
             
             for ( final Period period : periods )
             {

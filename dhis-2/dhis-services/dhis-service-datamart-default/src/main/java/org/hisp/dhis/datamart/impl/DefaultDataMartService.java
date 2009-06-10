@@ -27,6 +27,8 @@ package org.hisp.dhis.datamart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.datamart.util.ParserUtil.getDataElementIdsInExpression;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -39,7 +41,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
-import org.hisp.dhis.datamart.DataMartInternalProcess;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
@@ -47,6 +49,7 @@ import org.hisp.dhis.datamart.calculateddataelement.CalculatedDataElementDataMar
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.datamart.dataelement.DataElementDataMart;
 import org.hisp.dhis.datamart.indicator.IndicatorDataMart;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
@@ -54,15 +57,14 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TimeUtils;
-
-import static org.hisp.dhis.datamart.util.ParserUtil.getDataElementIdsInExpression;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: DefaultDataMartService.java 6260 2008-11-11 15:58:43Z larshelg $
  */
 public class DefaultDataMartService
-    extends DataMartInternalProcess
+    implements DataMartService
 {
     private static final Log log = LogFactory.getLog( DefaultDataMartService.class );
     
@@ -168,10 +170,18 @@ public class DefaultDataMartService
         this.categoryOptionComboService = categoryOptionComboService;
     }
     
+    private ExpressionService expressionService;
+
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
+    
     // -------------------------------------------------------------------------
     // DataMartInternalProcess implementation
     // -------------------------------------------------------------------------
 
+    @Transactional
     public int export( final Collection<Integer> dataElementIds, final Collection<Integer> indicatorIds,
         final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds )
     {   
@@ -181,7 +191,7 @@ public class DefaultDataMartService
         
         TimeUtils.start();
 
-        setMessage( "deleting_existing_aggregated_data" );
+        //setMessage( "deleting_existing_aggregated_data" );
 
         // ---------------------------------------------------------------------
         // Delete existing aggregated data
@@ -207,10 +217,10 @@ public class DefaultDataMartService
         allDataElementIds.addAll( nonCalculatedDataElementIds );
         allDataElementIds.addAll( dataElementInIndicatorIds );
         allDataElementIds.addAll( dataElementInCalculatedDataElementIds );
-        
-        final Collection<Operand> allDataElementOperands = categoryOptionComboService.getOperands( dataElementService.getDataElements( allDataElementIds ) );
-        final Collection<Operand> dataElementInIndicatorOperands = categoryOptionComboService.getOperands( dataElementService.getDataElements( dataElementInIndicatorIds ) );
-        final Collection<Operand> dataElementInCalculatedDataElementOperands = categoryOptionComboService.getOperands( dataElementService.getDataElements( dataElementInCalculatedDataElementIds ) );
+
+        final Collection<Operand> allDataElementOperands = categoryOptionComboService.getOperandsByIds( allDataElementIds );
+        final Collection<Operand> dataElementInIndicatorOperands = categoryOptionComboService.getOperandsByIds( dataElementInIndicatorIds );
+        final Collection<Operand> dataElementInCalculatedDataElementOperands = categoryOptionComboService.getOperandsByIds( dataElementInCalculatedDataElementIds );
 
         // ---------------------------------------------------------------------
         // Validate crosstabtable
@@ -219,15 +229,15 @@ public class DefaultDataMartService
         if ( crossTabService.validateCrossTabTable( allDataElementOperands ) != 0 )
         {
             int excess = crossTabService.validateCrossTabTable( allDataElementOperands );
-            
+
             log.warn( "Cannot crosstabulate since the number of data elements exceeded maximum columns: " + excess );
             
-            setMessage( "could_not_export_too_many_data_elements" );
+            //setMessage( "could_not_export_too_many_data_elements" );
             
             return 0;
         }           
 
-        setMessage( "crosstabulating_data" );
+        //setMessage( "crosstabulating_data" );
 
         final Collection<Operand> emptyOperands = crossTabService.populateCrossTabTable( allDataElementOperands, getIntersectingIds( periodIds ), 
             getIdsWithChildren( organisationUnitIds ) );
@@ -249,7 +259,7 @@ public class DefaultDataMartService
         // Data element export
         // ---------------------------------------------------------------------
 
-        setMessage( "exporting_data_for_data_elements" );
+        //setMessage( "exporting_data_for_data_elements" );
 
         if ( sumIntOperands.size() > 0 )
         {
@@ -279,7 +289,7 @@ public class DefaultDataMartService
             log.info( "Exported values for data elements with average aggregation operator of type yes/no (" + averageBooleanOperands.size() + "): " + TimeUtils.getHMS() );
         }
 
-        setMessage( "exporting_data_for_indicators" );
+        //setMessage( "exporting_data_for_indicators" );
 
         // ---------------------------------------------------------------------
         // Indicator export
@@ -292,7 +302,7 @@ public class DefaultDataMartService
             log.info( "Exported values for indicators (" + indicatorIds.size() + "): " + TimeUtils.getHMS() );
         }
 
-        setMessage( "exporting_data_for_calculated_data_elements" );
+        //setMessage( "exporting_data_for_calculated_data_elements" );
 
         // ---------------------------------------------------------------------
         // Calculated data element export
@@ -311,7 +321,7 @@ public class DefaultDataMartService
         
         TimeUtils.stop();
 
-        setMessage( "export_process_done" );
+        //setMessage( "export_process_done" );
         
         aggregationCache.clearCache();
         
@@ -372,18 +382,11 @@ public class DefaultDataMartService
         
         for ( final Integer id : calculatedDataElementIds )
         {
-            final DataElement element = dataElementService.getDataElement( id );
+            final Set<DataElement> dataElements = expressionService.getDataElementsInCalculatedDataElement( id );
             
-            if ( element instanceof CalculatedDataElement )
+            if ( dataElements != null )
             {
-                final CalculatedDataElement calculatedElement = (CalculatedDataElement) element;
-                
-                final Set<Integer> dataElementIds = getDataElementIdsInExpression( calculatedElement.getExpression().getExpression() );
-                
-                if ( dataElementIds != null )
-                {
-                    identifiers.addAll( dataElementIds );
-                }
+                identifiers.addAll( ConversionUtils.getIdentifiers( DataElement.class, dataElements ) );
             }
         }
         
@@ -433,16 +436,16 @@ public class DefaultDataMartService
      */
     private Collection<Operand> getOperands( final Collection<DataElement> dataElements, String aggregationOperator, String type )
     {
-        final Collection<DataElement> section = new ArrayList<DataElement>();
+        final Collection<Integer> section = new ArrayList<Integer>();
         
         for ( final DataElement element : dataElements )
         {
             if ( element.getAggregationOperator().equals( aggregationOperator ) && element.getType().equals( type ) )
             {
-                section.add( element );
+                section.add( element.getId() );
             }
         }
         
-        return categoryOptionComboService.getOperands( section );
+        return categoryOptionComboService.getOperandsByIds( section );
     }
 }

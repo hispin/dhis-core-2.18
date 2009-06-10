@@ -1,13 +1,16 @@
 package org.hisp.dhis.design;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 public class DesignStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DesignStore designStore;
     
@@ -24,6 +27,7 @@ public class DesignStoreTest
     private ReportTable reportTableA = new ReportTable( "ReportTableA", "TableNameA" );
     private ReportTable reportTableB = new ReportTable( "ReportTableB", "TableNameB" );    
     
+    @Override
     public void setUpTest()
     {
         designStore = (DesignStore) getBean( DesignStore.ID );
@@ -54,7 +58,8 @@ public class DesignStoreTest
         designStore.saveDesign( designA );
         designStore.saveDesign( designB );
     }
-    
+
+    @Test
     public void testSave()
     {
         int idA = designStore.saveDesign( designA );
@@ -69,7 +74,8 @@ public class DesignStoreTest
         assertEquals( designStore.getDesign( idA ).getCharts().size(), 2 );
         assertEquals( designStore.getDesign( idA ).getReportTables().size(), 2 );
     }
-    
+
+    @Test
     public void testDelete()
     {
         int idA = designStore.saveDesign( designA );
@@ -88,7 +94,8 @@ public class DesignStoreTest
         assertNull( designStore.getDesign( idA ) );
         assertNull( designStore.getDesign( idB ) );        
     }
-   
+
+    @Test
     public void testGetAll()
     {
         designStore.saveDesign( designA );

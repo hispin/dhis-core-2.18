@@ -1,15 +1,18 @@
 package org.hisp.dhis.datamart.crosstab;
 
+import static junit.framework.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
+import org.junit.Test;
 
 public class CrossTabStoreTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private CrossTabStore crossTabStore;
     
@@ -31,10 +34,17 @@ public class CrossTabStoreTest
         operands.add( new Operand( 2, 2 ) );        
     }
 
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testCreateGetCrossTabTable()
     {
         crossTabStore.createCrossTabTable( operands );
@@ -50,6 +60,7 @@ public class CrossTabStoreTest
         assertEquals( new Integer( 6 ), columnNames.get( "de2_2" ) );        
     }
     
+    @Test
     public void testDropCrossTabTable()
     {
         crossTabStore.createCrossTabTable( operands );

@@ -27,23 +27,29 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: DataSetBatchHandlerTest.java 4949 2008-04-21 07:59:54Z larshelg $
  */
 public class DataSetBatchHandlerTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
@@ -56,7 +62,8 @@ public class DataSetBatchHandlerTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
     {
         dataSetService = (DataSetService) getBean( DataSetService.ID );
@@ -76,15 +83,23 @@ public class DataSetBatchHandlerTest
         dataSetC = createDataSet( 'C', periodType );        
     }
 
+    @Override
     public void tearDownTest()
     {
         batchHandler.flush();
     }
-
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddObject()
     {
         batchHandler.addObject( dataSetA );
@@ -99,7 +114,8 @@ public class DataSetBatchHandlerTest
         assertTrue( dataSets.contains( dataSetB ) );
         assertTrue( dataSets.contains( dataSetC ) );
     }
-    
+
+    @Test
     public void testInsertObject()
     {
         int idA = batchHandler.insertObject( dataSetA, true );
@@ -110,7 +126,8 @@ public class DataSetBatchHandlerTest
         assertNotNull( dataSetService.getDataSet( idB ) );
         assertNotNull( dataSetService.getDataSet( idC ) );
     }
-    
+
+    @Test
     public void testUpdateObject()
     {
         int id = dataSetService.addDataSet( dataSetA );
@@ -121,7 +138,8 @@ public class DataSetBatchHandlerTest
         
         assertEquals( dataSetService.getDataSet( id ).getName(), "UpdatedName" );
     }
-    
+
+    @Test
     public void testGetObjectIdentifier()
     {
         int referenceId = dataSetService.addDataSet( dataSetA );
@@ -130,7 +148,8 @@ public class DataSetBatchHandlerTest
         
         assertEquals( referenceId, retrievedId );
     }
-    
+
+    @Test
     public void testObjectExists()
     {
         dataSetService.addDataSet( dataSetA );

@@ -93,7 +93,7 @@ public class ReportTableDataConverter
                 
                 for ( SortedMap<Integer, String> row : data.getRows() )
                 {
-                    Iterator<String> values = row.values().iterator();
+                    final Iterator<String> values = row.values().iterator();
                     
                     while ( values.hasNext() )
                     {

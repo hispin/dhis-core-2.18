@@ -31,8 +31,8 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableStore;
 
@@ -47,11 +47,11 @@ public class HibernateReportTableStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
-    
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    private SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -60,33 +60,33 @@ public class HibernateReportTableStore
 
     public int saveReportTable( ReportTable reportTable )
     {
-        return (Integer) sessionManager.getCurrentSession().save( reportTable );
+        return (Integer) sessionFactory.getCurrentSession().save( reportTable );
     }
     
     public void updateReportTable( ReportTable reportTable )
     {
-        sessionManager.getCurrentSession().update( reportTable );
+        sessionFactory.getCurrentSession().update( reportTable );
     }
 
     public void deleteReportTable( ReportTable reportTable )
     {
-        sessionManager.getCurrentSession().delete( reportTable );
+        sessionFactory.getCurrentSession().delete( reportTable );
     }
     
     public ReportTable getReportTable( int id )
     {
-        return (ReportTable) sessionManager.getCurrentSession().get( ReportTable.class, id );
+        return (ReportTable) sessionFactory.getCurrentSession().get( ReportTable.class, id );
     }
     
     @SuppressWarnings( "unchecked" )
     public Collection<ReportTable> getAllReportTables()
     {
-        return sessionManager.getCurrentSession().createCriteria( ReportTable.class ).list();
+        return sessionFactory.getCurrentSession().createCriteria( ReportTable.class ).list();
     }
     
     public ReportTable getReportTableByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( ReportTable.class );        
         criteria.add( Restrictions.eq( "name", name ) );

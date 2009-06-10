@@ -27,10 +27,10 @@ package org.hisp.dhis.reporting.completeness.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
-import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.completeness.DataSetCompletenessConfiguration;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
+import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
+import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork.Action;
 

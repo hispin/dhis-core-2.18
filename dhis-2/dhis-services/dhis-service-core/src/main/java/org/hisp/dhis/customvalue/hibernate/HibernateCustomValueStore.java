@@ -31,8 +31,8 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.customvalue.CustomValue;
 import org.hisp.dhis.customvalue.CustomValueStore;
@@ -40,7 +40,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 
 /**
  * @author Latifov Murodillo Abdusamadovich
@@ -54,37 +53,37 @@ public class HibernateCustomValueStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-    
+
     // -------------------------------------------------------------------------
     // CustomValueStore implementation
     // -------------------------------------------------------------------------
 
     public int addCustomValue( CustomValue customValue )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Integer id = (Integer) session.save( customValue );
 
         return id;
     }
-
+    
     public void deleteCustomValue( CustomValue customValue )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( customValue );
     }
-
+    
     @SuppressWarnings( "unchecked" )
     public Collection<CustomValue> getCustomValuesByDataSet( DataSet dataSet )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( CustomValue.class );
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
@@ -95,7 +94,7 @@ public class HibernateCustomValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<CustomValue> getCustomValuesByCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( CustomValue.class );
         criteria.add( Restrictions.eq( "optionCombo", categoryCombo ) );
@@ -106,26 +105,26 @@ public class HibernateCustomValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<CustomValue> getCustomValuesByDataElement( DataElement dataElement )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( CustomValue.class );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
 
         return criteria.list();
     }
-
+    
     public CustomValue getCustomValuesById( Integer id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (CustomValue) session.get( CustomValue.class, id );
     }
-
+    
     @SuppressWarnings( "unchecked" )
     public Collection<CustomValue> getCustomValues( DataSet dataSet, DataElement dataElement,
         DataElementCategoryOptionCombo dataElementCategoryOptionCombo )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( CustomValue.class );
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
@@ -135,15 +134,14 @@ public class HibernateCustomValueStore
         return criteria.list();
     }
 
-	@SuppressWarnings("unchecked")
-	public Collection<CustomValue> findCustomValues(String searchValue) 
-	{
-        Session session = sessionManager.getCurrentSession();
+    @SuppressWarnings( "unchecked" )
+    public Collection<CustomValue> findCustomValues( String searchValue )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( CustomValue.class );
-//        criteria.setProjection(Projections.distinct(Projections.property("customValue")));
         criteria.add( Restrictions.like( "customValue", searchValue, MatchMode.ANYWHERE ) );
 
         return criteria.list();
-	}
+    }
 }

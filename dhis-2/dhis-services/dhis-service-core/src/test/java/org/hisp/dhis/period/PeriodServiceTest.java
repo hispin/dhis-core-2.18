@@ -27,13 +27,19 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
@@ -43,13 +49,14 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
+import org.junit.Test;
 
 /**
  * @author Kristian Nordal
  * @version $Id: PeriodServiceTest.java 5983 2008-10-17 17:42:44Z larshelg $
  */
 public class PeriodServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private PeriodService periodService;
     
@@ -67,6 +74,7 @@ public class PeriodServiceTest
     // Set up/tear down
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         periodService = (PeriodService) getBean( PeriodService.ID );
@@ -88,6 +96,7 @@ public class PeriodServiceTest
     // Period
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddPeriod()
     {
         Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
@@ -136,6 +145,7 @@ public class PeriodServiceTest
         assertEquals( getDay( 3 ), periodC.getEndDate() );
     }
 
+    @Test
     public void testDeleteAndGetPeriod()
     {
         Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
@@ -182,6 +192,7 @@ public class PeriodServiceTest
         assertNull( periodService.getPeriod( idD ) );
     }
 
+    @Test
     public void testGetPeriod()
     {
         Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
@@ -242,6 +253,7 @@ public class PeriodServiceTest
         assertNull( periodService.getPeriod( getDay( 5 ), getDay( 6 ), periodTypeA ) );
     }
 
+    @Test
     public void testGetAllPeriods()
     {
         PeriodType periodType = periodService.getAllPeriodTypes().iterator().next();
@@ -262,7 +274,8 @@ public class PeriodServiceTest
         assertTrue( periods.contains( periodB ) );
         assertTrue( periods.contains( periodC ) );        
     }
-    
+
+    @Test
     public void testGetPeriodsBetweenDates()
     {
         Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
@@ -304,6 +317,7 @@ public class PeriodServiceTest
         assertTrue( periods.contains( periodD ) );
     }
 
+    @Test
     public void testGetIntersectingPeriodsByPeriodType()
         throws Exception
     {
@@ -381,6 +395,7 @@ public class PeriodServiceTest
         assertEquals( 6, periodsB.size() );
     }
 
+    @Test
     public void testGetIntersectingPeriods()
     {
         PeriodType type = periodService.getAllPeriodTypes().iterator().next();
@@ -418,7 +433,8 @@ public class PeriodServiceTest
         assertTrue( periods.contains( periodI ) );
         assertTrue( periods.contains( periodJ ) );
     }
-    
+
+    @Test
     public void testGetPeriodsByPeriodType()
     {
         Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
@@ -456,6 +472,7 @@ public class PeriodServiceTest
         assertEquals( 0, periodsC.size() );
     }
 
+    @Test
     public void testGetPeriodsWithAssociatedDataValues()
         throws Exception
     {
@@ -570,7 +587,8 @@ public class PeriodServiceTest
         
         periods = periodService.getPeriods( mar, dataElements2, sources2 );
     }
-    
+
+    @Test
     public void testGetBoundaryPeriods()
     {
         PeriodType periodType = periodService.getAllPeriodTypes().iterator().next();
@@ -613,7 +631,8 @@ public class PeriodServiceTest
         
         assertTrue( boundaryPeriods.size() == 0 );
     }
-    
+
+    @Test
     public void testGetInclusivePeriods()
     {
         PeriodType periodType = periodService.getAllPeriodTypes().iterator().next();
@@ -658,7 +677,8 @@ public class PeriodServiceTest
         
         assertTrue( inclusivePeriods.size() == 0 );
     }
-    
+
+    @Test
     public void testGetRelativePeriodDateIntInt()
     {
         Date date = getDate( 2000, 7, 10 );
@@ -693,7 +713,8 @@ public class PeriodServiceTest
         assertEquals( getDate( 2000, 3, 31 ), period.getEndDate() );
         assertNotNull( periodService.getPeriod( getDate( 2000, 1, 1 ), getDate( 2000, 3, 31 ), periodType ) );
     }
-    
+
+    @Test
     public void testGetRelativePeriodDateInt()
     {
         Date date = getDate( 2000, 6, 10 );
@@ -744,6 +765,7 @@ public class PeriodServiceTest
     // PeriodType
     // -------------------------------------------------------------------------
 
+    @Test
     public void testGetAndGetAllPeriodTypes()
         throws Exception
     {
@@ -760,6 +782,7 @@ public class PeriodServiceTest
         assertNotNull( periodService.getPeriodTypeByName( periodTypeD.getName() ) );
     }
 
+    @Test
     public void testGetPeriodTypeByName()
         throws Exception
     {

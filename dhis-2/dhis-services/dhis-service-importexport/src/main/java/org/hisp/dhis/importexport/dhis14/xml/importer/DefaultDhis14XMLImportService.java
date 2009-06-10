@@ -45,9 +45,9 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.CSVConverter;
-import org.hisp.dhis.importexport.ImportInternalProcess;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.dhis14.xml.converter.CalculatedDataElementAssociationConverter;
@@ -61,6 +61,7 @@ import org.hisp.dhis.importexport.dhis14.xml.converter.IndicatorTypeConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.OrganisationUnitConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.OrganisationUnitHierarchyConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.PeriodConverter;
+import org.hisp.dhis.importexport.invoker.ConverterInvoker;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -77,7 +78,7 @@ import org.hisp.dhis.system.util.StreamUtils;
  * @version $Id$
  */
 public class DefaultDhis14XMLImportService
-    extends ImportInternalProcess
+    implements ImportService
 {
     private static final Log log = LogFactory.getLog( DefaultDhis14XMLImportService.class );
     
@@ -179,6 +180,13 @@ public class DefaultDhis14XMLImportService
         this.cacheManager = cacheManager;
     }
 
+    private ConverterInvoker converterInvoker;
+
+    public void setConverterInvoker( ConverterInvoker converterInvoker )
+    {
+        this.converterInvoker = converterInvoker;
+    }
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -193,7 +201,7 @@ public class DefaultDhis14XMLImportService
     // -------------------------------------------------------------------------
 
     public void importData( ImportParams params, InputStream inputStream )
-    {
+    {        
         if ( !( params.isPreview() || params.isAnalysis() ) )
         {
             throw new RuntimeException( "Only preview mode allowed for DHIS 1.4 XML import" );
@@ -223,7 +231,7 @@ public class DefaultDhis14XMLImportService
 
                 Map<Integer, String> expressionMap = new AppendingHashMap<Integer, String>();
                 
-                setMessage( "importing_meta_data" );
+                //setMessage( "importing_meta_data" );
                 
                 log.info( "Importing meta data" );
         
@@ -248,31 +256,31 @@ public class DefaultDhis14XMLImportService
                 {
                     if ( reader.isStartElement( CalculatedDataElementAssociationConverter.ELEMENT_NAME ) )
                     {
-                        calculatedDataElementAssociationConverter.read( reader, params );
+                        converterInvoker.invokeRead( calculatedDataElementAssociationConverter, reader, params );
                     }
                     else if ( reader.isStartElement( DataElementConverter.ELEMENT_NAME ) )
                     {
-                        dataElementConverter.read( reader, params );  
+                        converterInvoker.invokeRead( dataElementConverter, reader, params );  
                     }
                     else if ( reader.isStartElement( IndicatorTypeConverter.ELEMENT_NAME ) )
                     {
-                        indicatorTypeConverter.read( reader, params );
+                        converterInvoker.invokeRead( indicatorTypeConverter, reader, params );
                     }
                     else if ( reader.isStartElement( IndicatorConverter.ELEMENT_NAME ) )
                     {
-                        indicatorConverter.read( reader, params );
+                        converterInvoker.invokeRead( indicatorConverter, reader, params );
                     }
                     else if ( reader.isStartElement( OrganisationUnitConverter.ELEMENT_NAME ) )
                     {
-                        organisationUnitConverter.read( reader, params );
+                        converterInvoker.invokeRead( organisationUnitConverter, reader, params );
                     }
                     else if ( reader.isStartElement( OrganisationUnitHierarchyConverter.ELEMENT_NAME ) )
                     {
-                        hierarchyConverter.read( reader, params );
+                        converterInvoker.invokeRead( hierarchyConverter, reader, params );
                     }
                     else if ( reader.isStartElement( PeriodConverter.ELEMENT_NAME ) )
                     {
-                        periodConverter.read( reader, params );
+                        converterInvoker.invokeRead( periodConverter, reader, params );
                     }
                 }
                 
@@ -284,7 +292,7 @@ public class DefaultDhis14XMLImportService
                 // Data
                 // -------------------------------------------------------------
 
-                setMessage( "importing_data_values" );
+                //setMessage( "importing_data_values" );
                 
                 log.info( "Importing DataValues" );
     
@@ -309,12 +317,12 @@ public class DefaultDhis14XMLImportService
 
         if ( params.isAnalysis() )
         {
-            setOutput( importAnalyser.getImportAnalysis() );
+            //setOutput( importAnalyser.getImportAnalysis() ); //TODO fix
         }
 
         log.info( "Import process done" );
         
-        setMessage( "import_process_done" );
+        //setMessage( "import_process_done" );
         
         StreamUtils.closeInputStream( zipIn );
 

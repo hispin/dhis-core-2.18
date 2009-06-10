@@ -27,10 +27,13 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
@@ -48,13 +51,14 @@ import org.hisp.dhis.reporttable.statement.CreateReportTableStatement;
 import org.hisp.dhis.reporttable.statement.GetReportTableDataStatement;
 import org.hisp.dhis.reporttable.statement.RemoveReportTableStatement;
 import org.hisp.dhis.reporttable.statement.ReportTableStatement;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ReportTableStatementTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private JDBCConfigurationProvider configurationProvider;
     
@@ -139,6 +143,7 @@ public class ReportTableStatementTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testCreateReportTableStatement()
     {
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
@@ -171,7 +176,8 @@ public class ReportTableStatementTest
 
         assertNotNull( statement.getStatement() );
     }
-    
+
+    @Test
     public void testGetReportTableDataStatementIndicatorsMode()
     {
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false, 
@@ -189,6 +195,7 @@ public class ReportTableStatementTest
         assertEquals( "SELECT value, indicatorid, periodid FROM aggregatedindicatorvalue WHERE organisationunitid='10' ", statement.getStatement() );
     }
 
+    @Test
     public void testGetReportTableDataStatementDataElementsModeWithCategoryOptionCombos()
     {        
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
@@ -206,6 +213,7 @@ public class ReportTableStatementTest
         assertEquals( "SELECT value, dataelementid, categoryoptioncomboid FROM aggregateddatavalue WHERE periodid='5' AND organisationunitid='10' ", statement.getStatement() );
     }
 
+    @Test
     public void testGetReportTableDataStatementDataElementsMode()
     {        
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
@@ -222,7 +230,8 @@ public class ReportTableStatementTest
         assertNotNull( statement.getStatement() );
         assertEquals( "SELECT value, dataelementid, periodid FROM aggregateddatavalue WHERE organisationunitid='10' ", statement.getStatement() );
     }
-    
+
+    @Test
     public void testGetReportTableDataStatementDataSetsMode()
     {
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATASETS, false,
@@ -239,7 +248,8 @@ public class ReportTableStatementTest
         assertNotNull( statement.getStatement() );
         assertEquals( "SELECT value, datasetid, periodid FROM aggregateddatasetcompleteness WHERE organisationunitid='10' ", statement.getStatement() );
     }
-    
+
+    @Test
     public void testRemoveReportTableStatement()
     {
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,

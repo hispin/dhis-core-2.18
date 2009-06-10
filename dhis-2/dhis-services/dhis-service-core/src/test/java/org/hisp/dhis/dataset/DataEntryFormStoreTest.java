@@ -27,11 +27,17 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Test;
 
 /**
  * @author Bharath
@@ -48,6 +54,7 @@ public class DataEntryFormStoreTest
 
     private PeriodType periodType;
 
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -64,6 +71,7 @@ public class DataEntryFormStoreTest
     // DataEntryForm
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddDataEntryForm()
     {
         DataSet dataSetA = new DataSet( "DataSet-A", periodType );
@@ -80,6 +88,7 @@ public class DataEntryFormStoreTest
         assertEquals( "DataEntryForm-A", dataEntryFormA.getName() );
     }
 
+    @Test
     public void testUpdateDataEntryForm()
     {
         DataSet dataSetA = new DataSet( "DataSet-A", periodType );
@@ -103,6 +112,7 @@ public class DataEntryFormStoreTest
         assertEquals( dataEntryForm.getName(), "DataEntryForm-X" );
     }
 
+    @Test
     public void testDeleteAndGetDataEntryForm()
     {
         DataSet dataSetA = new DataSet( "DataSet-A", periodType );
@@ -122,6 +132,7 @@ public class DataEntryFormStoreTest
         assertNull( dataEntryFormStore.getDataEntryForm( id ) );
     }
 
+    @Test
     public void testGetDataEntryFormByName()
         throws Exception
     {
@@ -139,25 +150,27 @@ public class DataEntryFormStoreTest
         assertNull( dataEntryFormStore.getDataEntryFormByName( "DataEntryForm-X" ) );
     }
 
+    @Test
     public void testGetDataEntryFormByDataSet()
         throws Exception
     {
         DataSet dataSetA = new DataSet( "DataSet-A", periodType );
 
-        int dataSetAid = dataSetStore.addDataSet( dataSetA );
+        dataSetStore.addDataSet( dataSetA );
 
         DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A", dataSetA );
 
-        dataEntryFormStore.addDataEntryForm( dataEntryForm );
+        int id = dataEntryFormStore.addDataEntryForm( dataEntryForm );
 
         DataSet dataSetB = new DataSet( "DataSet-B", periodType );
 
         dataSetStore.addDataSet( dataSetB );
 
-        assertEquals( dataEntryFormStore.getDataEntryFormByDataSet( dataSetA ).getId(), dataSetAid );
+        assertEquals( dataEntryFormStore.getDataEntryFormByDataSet( dataSetA ).getId(), id );
         assertNull( dataEntryFormStore.getDataEntryFormByDataSet( dataSetB ) );
     }
 
+    @Test
     public void testGetAllDataEntryForms()
     {
         DataSet dataSetA = new DataSet( "DataSet-A", periodType );

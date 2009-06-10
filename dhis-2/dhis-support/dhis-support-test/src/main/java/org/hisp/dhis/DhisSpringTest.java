@@ -29,220 +29,89 @@ package org.hisp.dhis;
 
 import java.lang.reflect.Method;
 
+import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Trygve Laugst&oslash;l
+ * @author Lars Helge Overland
  * @version $Id: DhisSpringTest.java 6335 2008-11-20 11:11:26Z larshelg $
  */
-@SuppressWarnings( "unchecked" )
-public class DhisSpringTest
-    extends DhisTest
-    implements BeanFactory
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath*:/META-INF/dhis/beans.xml"})
+@Transactional
+public abstract class DhisSpringTest
+    extends DhisConvenienceTest implements ApplicationContextAware
 {
-    private AbstractApplicationContext beanFactory;
-
     // -------------------------------------------------------------------------
-    // Abstract methods
+    // ApplicationContextAware implementation
     // -------------------------------------------------------------------------
 
-    public void setUpTest()
-        throws Exception
-    {
-    }
+    private ApplicationContext context;
 
-    public void tearDownTest()
-        throws Exception
+    public void setApplicationContext( ApplicationContext context )
+        throws BeansException
     {
+        this.context = context;
     }
 
     // -------------------------------------------------------------------------
-    // JUnit TestCase fixture methods
+    // Fixture
     // -------------------------------------------------------------------------
 
-    @Override
-    public final void setUp()
+    @Before
+    public final void before()
         throws Exception
-    {
-        super.setUp();
-
-        setUpSpring();
-
+    {       
         executeStartupRoutines();
-
+        
         setUpTest();
     }
-
-    @Override
-    public final void tearDown()
+    
+    /**
+     * Method to override.
+     */
+    protected void setUpTest()
         throws Exception
-    {
-        tearDownTest();
-
-        closeSession();
-
-        tearDownSpring();
-
-        super.tearDown();
+    {   
     }
 
     // -------------------------------------------------------------------------
-    // Spring support methods
+    // Utility methods
     // -------------------------------------------------------------------------
 
-    private final void setUpSpring()
+    /**
+     * Retrieves a bean from the application context.
+     * 
+     * @param beanId the identifier of the bean.
+     */
+    protected Object getBean( String beanId )
     {
-        String location = "classpath*:/META-INF/dhis/beans.xml";
-
-        beanFactory = new ClassPathXmlApplicationContext( location );
-    }
-
-    private final void tearDownSpring()
-    {
-        beanFactory.close();
+        return context.getBean( beanId );
     }
 
     // -------------------------------------------------------------------------
-    // Other support methods
+    // Supportive methods
     // -------------------------------------------------------------------------
-
-    private void closeSession()
-        throws Exception
-    {
-        String id = "org.hisp.dhis.hibernate.HibernateSessionManager";
-
-        if ( beanFactory.containsBean( id ) )
-        {
-            Object object = beanFactory.getBean( id );
-
-            Method method = object.getClass().getMethod( "closeCurrentSession", new Class[0] );
-
-            method.invoke( object, new Object[0] );
-        }
-    }
 
     private void executeStartupRoutines()
         throws Exception
     {
         String id = "org.hisp.dhis.system.startup.StartupRoutineExecutor";
 
-        if ( beanFactory.containsBean( id ) )
+        if ( context.containsBean( id ) )
         {
-            Object object = beanFactory.getBean( id );
+            Object object = context.getBean( id );
 
-            Method method = object.getClass().getMethod( "execute", new Class[0] );
+            Method method = object.getClass().getMethod( "executeForTesting", new Class[ 0 ] );
 
-            method.invoke( object, new Object[0] );
+            method.invoke( object, new Object[ 0 ] );
         }
-    }
-
-    /**
-     * Sets a dependency on the target service. This method can be used to set
-     * mock implementations of dependencies on services for testing purposes. The
-     * advantage of using this method over setting the services directly is that
-     * the test can still be executed against the interface type of the service;
-     * making the test unaware of the implementation and thus re-usable. A weakness
-     * is that the field name of the dependency must be assumed.
-     * 
-     * @param targetService the target service.
-     * @param fieldName the name of the dependency field in the target service.
-     * @param dependency the dependency.
-     */
-    protected void setDependency( Object targetService, String fieldName, Object dependency )
-    {
-        Class<?> clazz = dependency.getClass().getInterfaces()[0];
-        
-        setDependency( targetService, fieldName, dependency, clazz );
-    }
-    
-    /**
-     * Sets a dependency on the target service. This method can be used to set
-     * mock implementations of dependencies on services for testing purposes. The
-     * advantage of using this method over setting the services directly is that
-     * the test can still be executed against the interface type of the service;
-     * making the test unaware of the implementation and thus re-usable. A weakness
-     * is that the field name of the dependency must be assumed.
-     * 
-     * @param targetService the target service.
-     * @param fieldName the name of the dependency field in the target service.
-     * @param dependency the dependency.
-     * @param clazz the class type of the dependency.
-     */
-    protected void setDependency( Object targetService, String fieldName, Object dependency, Class<?> clazz )
-    {
-        try
-        {
-            String setMethodName = "set" + fieldName.substring( 0, 1 ).toUpperCase() + 
-                fieldName.substring( 1, fieldName.length() );
-            
-            Class<?>[] argumentClass = new Class<?>[] { clazz };
-            
-            Method method = targetService.getClass().getMethod( setMethodName, argumentClass );
-            
-            method.invoke( targetService, dependency );
-        }
-        catch ( Exception ex )
-        {
-            throw new RuntimeException( "Failed to set dependency on service: " + fieldName, ex );
-        }
-    }
-    
-    // -------------------------------------------------------------------------
-    // BeanFactory Implementation
-    // -------------------------------------------------------------------------
-
-    public Object getBean( String id )
-    {
-        return beanFactory.getBean( id );
-    }
-
-    public Object getBean( String id, Class clazz )
-    {
-        return beanFactory.getBean( id, clazz );
-    }
-
-    public boolean containsBean( String s )
-    {
-        return beanFactory.containsBean( s );
-    }
-
-    public boolean isSingleton( String s )
-        throws NoSuchBeanDefinitionException
-    {
-        return beanFactory.isSingleton( s );
-    }
-
-    public boolean isPrototype( String s )
-        throws NoSuchBeanDefinitionException
-    {
-        return beanFactory.isPrototype( s );
-    }
-
-    public Class getType( String s )
-        throws NoSuchBeanDefinitionException
-    {
-        return beanFactory.getType( s );
-    }
-
-    public String[] getAliases( String s )
-        throws NoSuchBeanDefinitionException
-    {
-        return beanFactory.getAliases( s );
-    }
-
-    public boolean isTypeMatch( String s, Class clazz )
-        throws NoSuchBeanDefinitionException
-    {
-        return beanFactory.isTypeMatch( s, clazz );
-    }
-
-    public Object getBean( String s, Object[] arg )
-        throws BeansException
-    {
-        return beanFactory.getBean( s, arg );
     }
 }

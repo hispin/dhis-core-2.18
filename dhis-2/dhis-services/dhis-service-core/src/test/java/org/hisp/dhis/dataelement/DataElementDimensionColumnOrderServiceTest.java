@@ -27,14 +27,19 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.DhisConvenienceTest;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementDimensionColumnOrderServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DataElementCategory categoryA;
     private DataElementCategory categoryB;
@@ -71,6 +76,7 @@ public class DataElementDimensionColumnOrderServiceTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGet()
     {
         DataElementDimensionColumnOrder dimensionColumnOrderA = new DataElementDimensionColumnOrder( categoryA, categoryOptionA, 1 );
@@ -85,7 +91,8 @@ public class DataElementDimensionColumnOrderServiceTest
         assertEquals( dimensionColumnOrderB, dimensionColumnOrderService.getDataElementDimensionColumnOrder( categoryA, categoryOptionB ) );
         assertEquals( dimensionColumnOrderC, dimensionColumnOrderService.getDataElementDimensionColumnOrder( categoryB, categoryOptionB ) );        
     }
-    
+
+    @Test
     public void testDeleteByCategory()
     {
         DataElementDimensionColumnOrder dimensionColumnOrderA = new DataElementDimensionColumnOrder( categoryA, categoryOptionA, 1 );
@@ -102,7 +109,8 @@ public class DataElementDimensionColumnOrderServiceTest
         assertNull( dimensionColumnOrderService.getDataElementDimensionColumnOrder( categoryA, categoryOptionB ) );
         assertNotNull( dimensionColumnOrderService.getDataElementDimensionColumnOrder( categoryB, categoryOptionB ) );
     }
-    
+
+    @Test
     public void testDeleteByCategoryOption()
     {
         DataElementDimensionColumnOrder dimensionColumnOrderA = new DataElementDimensionColumnOrder( categoryA, categoryOptionA, 1 );

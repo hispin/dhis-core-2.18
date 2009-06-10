@@ -37,6 +37,7 @@ import java.util.Map.Entry;
 
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.jdbc.BatchHandler;
@@ -87,7 +88,14 @@ public class DefaultDataElementDataMart
     public void setCrossTabService( CrossTabService crossTabService )
     {
         this.crossTabService = crossTabService;
-    }    
+    }
+    
+    private AggregationCache aggregationCache;
+
+    public void setAggregationCache( AggregationCache aggregationCache )
+    {
+        this.aggregationCache = aggregationCache;
+    }
 
     // -------------------------------------------------------------------------
     // DataMart functionality
@@ -117,7 +125,7 @@ public class DefaultDataElementDataMart
         
         for ( final OrganisationUnit unit : organisationUnits )
         {
-            level = organisationUnitService.getLevelOfOrganisationUnit( unit );
+            level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
             
             for ( final Period period : periods )
             {

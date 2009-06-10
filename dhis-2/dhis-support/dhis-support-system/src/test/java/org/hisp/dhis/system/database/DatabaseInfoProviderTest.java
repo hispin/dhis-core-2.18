@@ -27,7 +27,11 @@ package org.hisp.dhis.system.database;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertNotNull;
+
 import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
+import org.springframework.test.annotation.NotTransactional;
 
 /**
  * @author Lars Helge Overland
@@ -42,6 +46,7 @@ public class DatabaseInfoProviderTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         provider = (DatabaseInfoProvider) getBean( DatabaseInfoProvider.ID );
@@ -51,6 +56,8 @@ public class DatabaseInfoProviderTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
+    @NotTransactional
     public void testGetDatabaseInfo()
     {
         DatabaseInfo info = provider.getDatabaseInfo();

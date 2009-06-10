@@ -33,7 +33,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
@@ -41,6 +43,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.Configuration;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.util.ResourceUtils;
 
 /**
@@ -66,7 +70,21 @@ public class DefaultHibernateConfigurationProvider
     private String regularPropertiesFile = "hibernate.properties";
 
     private String testPropertiesFile = "hibernate-test.properties";
-
+    
+    private List<Resource> jarResources = new ArrayList<Resource>();
+    
+    public List<Resource> getJarResources() 
+    {
+        return jarResources;
+    }
+    
+    private List<Resource> dirResources = new ArrayList<Resource>();
+    
+    public List<Resource> getDirectoryResources() 
+    {
+        return dirResources;
+    }    
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -104,7 +122,9 @@ public class DefaultHibernateConfigurationProvider
                 URL jarFile = ResourceUtils.extractJarFileURL( resource );
 
                 File file = ResourceUtils.getFile( jarFile );
-
+                
+                this.jarResources.add( new FileSystemResource( file.getAbsolutePath() ) );
+                
                 LOG.debug( "Adding jar in which to search for hbm.xml files: " + file.getAbsolutePath() );
 
                 configuration.addJar( file );
@@ -113,8 +133,10 @@ public class DefaultHibernateConfigurationProvider
             {
                 File file = ResourceUtils.getFile( resource );
 
+                this.dirResources.add( new FileSystemResource( file ) );
+                
                 LOG.debug( "Adding directory in which to search for hbm.xml files: " + file.getAbsolutePath() );
-
+                
                 configuration.addDirectory( file );
             }
         }
@@ -172,7 +194,7 @@ public class DefaultHibernateConfigurationProvider
         
         this.configuration = configuration;
     }
-
+    
     // -------------------------------------------------------------------------
     // HibernateConfigurationProvider implementation
     // -------------------------------------------------------------------------

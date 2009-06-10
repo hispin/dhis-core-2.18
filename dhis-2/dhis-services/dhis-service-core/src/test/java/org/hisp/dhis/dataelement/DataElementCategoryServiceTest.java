@@ -27,18 +27,24 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementCategoryServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DataElementCategoryOption categoryOptionA;
     private DataElementCategoryOption categoryOptionB;
@@ -80,6 +86,7 @@ public class DataElementCategoryServiceTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGet()
     {
         categoryA = new DataElementCategory( "CategoryA", categoryOptions );
@@ -98,7 +105,8 @@ public class DataElementCategoryServiceTest
         assertEquals( categoryOptions, categoryService.getDataElementCategory( idB ).getCategoryOptions() );
         assertEquals( categoryOptions, categoryService.getDataElementCategory( idC ).getCategoryOptions() );        
     }
-    
+
+    @Test
     public void testDelete()
     {
         categoryA = new DataElementCategory( "CategoryA", categoryOptions );
@@ -125,7 +133,8 @@ public class DataElementCategoryServiceTest
         assertNull( categoryService.getDataElementCategory( idB ) );
         assertNotNull( categoryService.getDataElementCategory( idC ) );        
     }
-    
+
+    @Test
     public void testGetAll()
     {
         categoryA = new DataElementCategory( "CategoryA", categoryOptions );

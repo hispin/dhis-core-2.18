@@ -27,6 +27,7 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -35,9 +36,11 @@ import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.expression.Expression;
-import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.system.util.UUIdUtils;
-import org.hisp.dhis.transaction.TransactionManager;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Kristian Nordal
@@ -47,34 +50,22 @@ public class DataElementServiceTest
     extends DhisSpringTest
 {
     private DataElementService dataElementService;
-    
-    private TransactionManager transactionManager;
 
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
         throws Exception
     {
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        transactionManager = (TransactionManager) getBean( TransactionManager.ID );
     }
 
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------
-
-    private DataElement createDataElement( char uniqueCharacter )
-    {
-        DataElement dataElement = new DataElement();
-
-        setDataElementFields(dataElement, uniqueCharacter);
-
-        return dataElement;
-    }
-
+    
     private DataElement setDataElementFields( DataElement dataElement, char uniqueCharacter )
     {
         dataElement.setUuid( UUIdUtils.getUUId() );
@@ -88,25 +79,14 @@ public class DataElementServiceTest
         return dataElement;
     }
     
-    private void assertEquals( char uniqueCharacter, DataElement dataElement )
-    {
-        assertEquals( "DataElement" + uniqueCharacter, dataElement.getName() );
-        assertEquals( "AlternativeName" + uniqueCharacter, dataElement.getAlternativeName() );
-        assertEquals( "DE" + uniqueCharacter, dataElement.getShortName() );
-        assertEquals( "Code" + uniqueCharacter, dataElement.getCode() );
-        assertEquals( "DataElementDescription" + uniqueCharacter, dataElement.getDescription() );
-        assertEquals( DataElement.TYPE_INT, dataElement.getType() );
-    }
-
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddDataElement()
         throws Exception
     {
-        transactionManager.enter();
-
         DataElement dataElementA = createDataElement( 'A' );
         DataElement dataElementB = createDataElement( 'B' );
         DataElement dataElementC = createDataElement( 'C' );
@@ -115,8 +95,6 @@ public class DataElementServiceTest
         int idA = dataElementService.addDataElement( dataElementA );
         int idB = dataElementService.addDataElement( dataElementB );
         int idC = dataElementService.addDataElement( dataElementC );
-
-        transactionManager.leave();
 
         try
         {
@@ -129,26 +107,23 @@ public class DataElementServiceTest
             // Expected
         }
 
-        transactionManager.enter();
-
         dataElementA = dataElementService.getDataElement( idA );
         assertNotNull( dataElementA );
         assertEquals( idA, dataElementA.getId() );
-        assertEquals( 'A', dataElementA );
+        assertEquals( "DataElementA", dataElementA.getName() );
 
         dataElementB = dataElementService.getDataElement( idB );
         assertNotNull( dataElementB );
         assertEquals( idB, dataElementB.getId() );
-        assertEquals( 'B', dataElementB );
+        assertEquals( "DataElementB", dataElementB.getName() );
 
         dataElementC = dataElementService.getDataElement( idC );
         assertNotNull( dataElementC );
         assertEquals( idC, dataElementC.getId() );
-        assertEquals( 'C', dataElementC );
-
-        transactionManager.leave();
+        assertEquals( "DataElementC", dataElementC.getName() );
     }
 
+    @Test
     public void testUpdateDataElement()
         throws Exception
     {
@@ -164,6 +139,7 @@ public class DataElementServiceTest
         assertEquals( DataElement.TYPE_BOOL, dataElementA.getType() );
     }
 
+    @Test
     public void testDeleteAndGetDataElement()
         throws Exception
     {
@@ -181,37 +157,6 @@ public class DataElementServiceTest
         assertNotNull( dataElementService.getDataElement( idB ) );
         assertNotNull( dataElementService.getDataElement( idC ) );
         assertNotNull( dataElementService.getDataElement( idD ) );
-
-        transactionManager.enter();
-
-        dataElementA.setParent( dataElementB );
-        dataElementB.getChildren().add( dataElementA );
-        dataElementService.updateDataElement( dataElementA );
-
-        transactionManager.leave();
-        transactionManager.enter();
-
-        dataElementA = dataElementService.getDataElement( idA );
-        dataElementB = dataElementService.getDataElement( idB );
-
-        try
-        {
-            dataElementService.deleteDataElement( dataElementB );
-            fail();
-        }
-        catch ( HierarchyViolationException e )
-        {
-            // Expected
-        }
-
-        transactionManager.leave();
-        transactionManager.enter();
-
-        dataElementA.setParent( null );
-        dataElementService.updateDataElement( dataElementA );
-
-        transactionManager.leave();
-        transactionManager.enter();
 
         dataElementA = dataElementService.getDataElement( idA );
         dataElementB = dataElementService.getDataElement( idB );
@@ -241,10 +186,9 @@ public class DataElementServiceTest
         assertNull( dataElementService.getDataElement( idB ) );
         assertNull( dataElementService.getDataElement( idC ) );
         assertNull( dataElementService.getDataElement( idD ) );
-
-        transactionManager.leave();
     }
 
+    @Test
     public void testGetDataElementByUUID()
         throws Exception
     {
@@ -259,6 +203,7 @@ public class DataElementServiceTest
         assertEquals( dataElementA, dataElementB );
     }
 
+    @Test
     public void testGetDataElementByName()
         throws Exception
     {
@@ -270,17 +215,18 @@ public class DataElementServiceTest
         dataElementA = dataElementService.getDataElementByName( "DataElementA" );
         assertNotNull( dataElementA );
         assertEquals( idA, dataElementA.getId() );
-        assertEquals( 'A', dataElementA );
+        assertEquals( "DataElementA", dataElementA.getName() );
 
         dataElementB = dataElementService.getDataElementByName( "DataElementB" );
         assertNotNull( dataElementB );
         assertEquals( idB, dataElementB.getId() );
-        assertEquals( 'B', dataElementB );
+        assertEquals( "DataElementB", dataElementB.getName() );
 
         DataElement dataElementC = dataElementService.getDataElementByName( "DataElementC" );
         assertNull( dataElementC );
     }
 
+    @Test
     public void testGetDataElementByAlternativeName()
         throws Exception
     {
@@ -292,17 +238,18 @@ public class DataElementServiceTest
         dataElementA = dataElementService.getDataElementByAlternativeName( "AlternativeNameA" );
         assertNotNull( dataElementA );
         assertEquals( idA, dataElementA.getId() );
-        assertEquals( 'A', dataElementA );
+        assertEquals( "DataElementA", dataElementA.getName() );
 
         dataElementB = dataElementService.getDataElementByAlternativeName( "AlternativeNameB" );
         assertNotNull( dataElementB );
         assertEquals( idB, dataElementB.getId() );
-        assertEquals( 'B', dataElementB );
+        assertEquals( "DataElementB", dataElementB.getName() );
 
         DataElement dataElementC = dataElementService.getDataElementByAlternativeName( "AlternativeNameC" );
         assertNull( dataElementC );
     }
 
+    @Test
     public void testGetDataElementByShortName()
         throws Exception
     {
@@ -311,20 +258,21 @@ public class DataElementServiceTest
         int idA = dataElementService.addDataElement( dataElementA );
         int idB = dataElementService.addDataElement( dataElementB );
 
-        dataElementA = dataElementService.getDataElementByShortName( "DEA" );
+        dataElementA = dataElementService.getDataElementByShortName( "ShortNameA" );
         assertNotNull( dataElementA );
         assertEquals( idA, dataElementA.getId() );
-        assertEquals( 'A', dataElementA );
+        assertEquals( "DataElementA", dataElementA.getName() );
 
-        dataElementB = dataElementService.getDataElementByShortName( "DEB" );
+        dataElementB = dataElementService.getDataElementByShortName( "ShortNameB" );
         assertNotNull( dataElementB );
         assertEquals( idB, dataElementB.getId() );
-        assertEquals( 'B', dataElementB );
+        assertEquals( "DataElementB", dataElementB.getName() );
 
-        DataElement dataElementC = dataElementService.getDataElementByShortName( "DEC" );
+        DataElement dataElementC = dataElementService.getDataElementByShortName( "ShortNameC" );
         assertNull( dataElementC );
     }
 
+    @Test
     public void testGetDataElementByCode()
         throws Exception
     {
@@ -336,17 +284,18 @@ public class DataElementServiceTest
         dataElementA = dataElementService.getDataElementByCode( "CodeA" );
         assertNotNull( dataElementA );
         assertEquals( idA, dataElementA.getId() );
-        assertEquals( 'A', dataElementA );
+        assertEquals( "DataElementA", dataElementA.getName() );
 
         dataElementB = dataElementService.getDataElementByCode( "CodeB" );
         assertNotNull( dataElementB );
         assertEquals( idB, dataElementB.getId() );
-        assertEquals( 'B', dataElementB );
+        assertEquals( "DataElementB", dataElementB.getName() );
 
         DataElement dataElementC = dataElementService.getDataElementByCode( "CodeC" );
         assertNull( dataElementC );
     }
 
+    @Test
     public void testGetAllDataElements()
         throws Exception
     {
@@ -368,16 +317,13 @@ public class DataElementServiceTest
         dataElementsRef.add( dataElementC );
         dataElementsRef.add( dataElementD );
 
-        transactionManager.enter();
-
         Collection<DataElement> dataElements = dataElementService.getAllDataElements();
         assertNotNull( dataElements );
         assertEquals( dataElementsRef.size(), dataElements.size() );
         assertTrue( dataElements.containsAll( dataElementsRef ) );
-
-        transactionManager.leave();
     }
 
+    @Test
     public void testGetAggregateableDataElements()
     {
         assertEquals( 0, dataElementService.getAggregateableDataElements().size() );
@@ -402,16 +348,13 @@ public class DataElementServiceTest
         dataElementsRef.add( dataElementB );
         dataElementsRef.add( dataElementD );
 
-        transactionManager.enter();
-
         Collection<DataElement> dataElements = dataElementService.getAggregateableDataElements();
         assertNotNull( dataElements );
         assertEquals( dataElementsRef.size(), dataElements.size() );
         assertTrue( dataElements.containsAll( dataElementsRef ) );
-
-        transactionManager.leave();
     }
-    
+
+    @Test
     public void testGetAllActiveDataElements()
         throws Exception
     {
@@ -424,6 +367,7 @@ public class DataElementServiceTest
         DataElement dataElementC = createDataElement( 'C' );
         dataElementC.setActive( true );
         DataElement dataElementD = createDataElement( 'D' );
+        dataElementD.setActive( false );
 
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
@@ -435,18 +379,15 @@ public class DataElementServiceTest
         dataElementsRef.add( dataElementB );
         dataElementsRef.add( dataElementC );
 
-        transactionManager.enter();
-
         assertEquals( dataElementsRef.size() + 1, dataElementService.getAllDataElements().size() );
 
         Collection<DataElement> dataElements = dataElementService.getAllActiveDataElements();
         assertNotNull( dataElements );
         assertEquals( dataElementsRef.size(), dataElements.size() );
         assertTrue( dataElements.containsAll( dataElementsRef ) );
-
-        transactionManager.leave();
     }
 
+    @Test
     public void testGetDataElementsByAggregationOperator()
         throws Exception
     {
@@ -475,6 +416,7 @@ public class DataElementServiceTest
             .size() );
     }
 
+    @Test
     public void testGetDataElementsByType()
     {
         assertEquals( 0, dataElementService.getDataElementsByType( DataElement.TYPE_INT ).size() );
@@ -502,6 +444,8 @@ public class DataElementServiceTest
     // CalculatedDataElements
     // -------------------------------------------------------------------------
 
+    @Ignore //TODO
+    @Test
     public void testCalculatedDataElements()
         throws Exception
     {
@@ -581,13 +525,13 @@ public class DataElementServiceTest
         assertEquals( new Integer(2), factorMap.get(deA));
         assertTrue(factorMap.keySet().contains(deB));
         assertEquals( new Integer(3), factorMap.get(deB));
-
     }
     
     // -------------------------------------------------------------------------
     // DataElementGroup
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddDataElementGroup()
         throws Exception
     {
@@ -627,6 +571,7 @@ public class DataElementServiceTest
         assertEquals( "DataElementGroupC", dataElementGroupC.getName() );
     }
 
+    @Test
     public void testUpdateDataElementGroup()
         throws Exception
     {
@@ -662,6 +607,7 @@ public class DataElementServiceTest
         assertEquals( "DataElementGroupC", dataElementGroupC.getName() );
     }
 
+    @Test
     public void testDeleteAndGetDataElementGroup()
         throws Exception
     {
@@ -705,6 +651,7 @@ public class DataElementServiceTest
         assertNull( dataElementService.getDataElementGroup( idD ) );
     }
 
+    @Test
     public void testGetDataElementGroupByUUID()
         throws Exception
     {
@@ -719,6 +666,7 @@ public class DataElementServiceTest
         assertEquals( groupA, groupB );
     }
 
+    @Test
     public void testGetDataElementGroupByName()
         throws Exception
     {
@@ -744,15 +692,9 @@ public class DataElementServiceTest
         assertNull( dataElementGroupC );
     }
 
-    public void testGetAllDataElementGroups()
-        throws Exception
-    {
-    }
-    
+    @Test
     public void testGetGroupsContainingDataElement() throws Exception
     {
-        transactionManager.enter();
-        
         DataElement dataElementA = createDataElement( 'A' );
         DataElement dataElementB = createDataElement( 'B' );
         DataElement dataElementC = createDataElement( 'C' );
@@ -761,9 +703,6 @@ public class DataElementServiceTest
         dataElementService.addDataElement( dataElementB );
         dataElementService.addDataElement( dataElementC );
         dataElementService.addDataElement( dataElementD );
-        
-        transactionManager.leave();
-        transactionManager.enter();
         
         DataElementGroup dataElementGroupA = new DataElementGroup( "DataElementGroupA" );
         DataElementGroup dataElementGroupB = new DataElementGroup( "DataElementGroupB" );
@@ -788,8 +727,6 @@ public class DataElementServiceTest
         dataElementService.addDataElementGroup( dataElementGroupB );
         dataElementService.addDataElementGroup( dataElementGroupC );
         dataElementService.addDataElementGroup( dataElementGroupD );
-        
-        transactionManager.leave();
         
         Collection<DataElementGroup> groupsA = dataElementService.getGroupsContainingDataElement( dataElementA );
         

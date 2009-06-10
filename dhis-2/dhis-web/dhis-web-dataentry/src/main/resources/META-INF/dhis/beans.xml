@@ -387,8 +387,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.de.action.ViewDataValueAuditPopupAction"
     class="org.hisp.dhis.de.action.ViewDataValueAuditPopupAction">
-    <property name="sessionManager"
-      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
     <property name="dataElementCategoryOptionComboService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
     <property name="dataValueService"

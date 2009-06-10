@@ -34,10 +34,10 @@ import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
@@ -56,11 +56,11 @@ public class HibernatePeriodStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -71,28 +71,28 @@ public class HibernatePeriodStore
     {
         period.setPeriodType( reloadPeriodType( period.getPeriodType() ) );
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( period );
     }
 
     public void deletePeriod( Period period )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( period );
     }
 
     public Period getPeriod( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Period) session.get( Period.class, id );
     }
 
     public Period getPeriod( Date startDate, Date endDate, PeriodType periodType )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Period.class );
         criteria.add( Restrictions.eq( "startDate", startDate ) );
@@ -105,7 +105,7 @@ public class HibernatePeriodStore
     @SuppressWarnings( "unchecked" )
     public Collection<Period> getAllPeriods()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return session.createCriteria( Period.class ).list();
     }
@@ -113,7 +113,7 @@ public class HibernatePeriodStore
     @SuppressWarnings( "unchecked" )
     public Collection<Period> getPeriodsBetweenDates( Date startDate, Date endDate )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Period.class );
         criteria.add( Restrictions.ge( "startDate", startDate ) );
@@ -125,7 +125,7 @@ public class HibernatePeriodStore
     @SuppressWarnings( "unchecked" )
     public Collection<Period> getPeriodsBetweenDates( PeriodType periodType, Date startDate, Date endDate )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Period.class );
         criteria.add( Restrictions.eq( "periodType", reloadPeriodType( periodType ) ) );
@@ -138,7 +138,7 @@ public class HibernatePeriodStore
     @SuppressWarnings( "unchecked" )
     public Collection<Period> getIntersectingPeriodsByPeriodType( PeriodType periodType, Date startDate, Date endDate )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Period.class );
         criteria.add( Restrictions.eq( "periodType", reloadPeriodType( periodType ) ) );
@@ -151,7 +151,7 @@ public class HibernatePeriodStore
     @SuppressWarnings( "unchecked" )
     public Collection<Period> getIntersectingPeriods( Date startDate, Date endDate )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Period.class );
         criteria.add( Restrictions.gt( "endDate", startDate ) );
@@ -163,7 +163,7 @@ public class HibernatePeriodStore
     @SuppressWarnings( "unchecked" )
     public Collection<Period> getPeriodsByPeriodType( PeriodType periodType )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Period.class );
         criteria.add( Restrictions.eq( "periodType", reloadPeriodType( periodType ) ) );
@@ -177,7 +177,7 @@ public class HibernatePeriodStore
     {
         Set<Period> periods = new HashSet<Period>();
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Collection<Period> intersectingPeriods = getIntersectingPeriods( period.getStartDate(), period.getEndDate() );
 
@@ -205,28 +205,28 @@ public class HibernatePeriodStore
 
     public int addPeriodType( PeriodType periodType )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( periodType );
     }
 
     public void deletePeriodType( PeriodType periodType )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( periodType );
     }
 
     public PeriodType getPeriodType( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (PeriodType) session.get( PeriodType.class, id );
     }
 
     public PeriodType getPeriodType( Class<? extends PeriodType> periodType )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( periodType );
 
@@ -236,7 +236,7 @@ public class HibernatePeriodStore
     @SuppressWarnings( "unchecked" )
     public Collection<PeriodType> getAllPeriodTypes()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return session.createCriteria( PeriodType.class ).list();
     }
@@ -247,7 +247,7 @@ public class HibernatePeriodStore
 
     private PeriodType reloadPeriodType( PeriodType periodType )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         if ( periodType == null || session.contains( periodType ) )
         {
@@ -267,7 +267,7 @@ public class HibernatePeriodStore
 
     public Period getPeriodFromDates( Date startDate, Date endDate, PeriodType periodType )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Period.class );
         criteria.add( Restrictions.eq( "startDate", startDate ) );

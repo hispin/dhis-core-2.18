@@ -31,10 +31,10 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 
 /**
  * @author Jan Henrik Overland
@@ -47,58 +47,58 @@ public class HibernateDataElementCategoryOptionStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-
+    
     // -------------------------------------------------------------------------
     // DataElementCategoryOption
     // -------------------------------------------------------------------------
 
     public int addDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( dataElementCategoryOption );
     }
 
     public void updateDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( dataElementCategoryOption );
     }
 
     public void deleteDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( dataElementCategoryOption );
     }
 
     public DataElementCategoryOption getDataElementCategoryOption( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (DataElementCategoryOption) session.get( DataElementCategoryOption.class, id );
     }
 
     public DataElementCategoryOption getDataElementCategoryOptionByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElementCategoryOption.class );
         criteria.add( Restrictions.eq( "name", name ) );
 
         return (DataElementCategoryOption) criteria.uniqueResult();
     }
-    
+
     public DataElementCategoryOption getDataElementCategoryOptionByShortName( String shortName )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( DataElementCategoryOption.class );
         criteria.add( Restrictions.eq( "shortName", shortName ) );
@@ -109,7 +109,7 @@ public class HibernateDataElementCategoryOptionStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataElementCategoryOption> getAllDataElementCategoryOptions()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElementCategoryOption.class );
 

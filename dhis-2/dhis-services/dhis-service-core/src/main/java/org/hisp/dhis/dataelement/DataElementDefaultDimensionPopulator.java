@@ -32,6 +32,7 @@ import java.util.Collection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * When storing DataValues without associated dimensions there is a need to
@@ -79,6 +80,7 @@ public class DataElementDefaultDimensionPopulator
     // Execute
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void execute()
         throws Exception
     {

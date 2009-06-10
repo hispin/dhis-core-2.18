@@ -25,7 +25,7 @@
     <module>dhis-service-mapping</module>
     <module>dhis-service-jdbc</module>
     <module>dhis-service-jdbc-test</module>
-	<module>dhis-service-aggregationengine-default</module>
+    <module>dhis-service-aggregationengine-default</module>
   </modules>
   
   <dependencies>
@@ -35,10 +35,6 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-support-transaction</artifactId>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>

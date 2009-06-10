@@ -37,6 +37,7 @@ import java.io.PipedOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.csv.converter.ReportTableDataConverter;
@@ -55,6 +56,13 @@ public class DefaultCSVExportService
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
+    
     private ReportTableService reportTableService;
 
     public void setReportTableService( ReportTableService reportTableService )
@@ -89,7 +97,7 @@ public class DefaultCSVExportService
             // Writes to one end of the pipe 
             // -----------------------------------------------------------------
 
-            CSVExportPipeThread thread = new CSVExportPipeThread();
+            CSVExportPipeThread thread = new CSVExportPipeThread( sessionFactory );
 
             thread.setWriter( writer );
             thread.setParams( params );

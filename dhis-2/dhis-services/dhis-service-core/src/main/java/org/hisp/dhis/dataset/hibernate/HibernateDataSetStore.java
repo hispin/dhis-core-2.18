@@ -31,11 +31,11 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetStore;
 import org.hisp.dhis.dataset.FrequencyOverrideAssociation;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
@@ -51,13 +51,13 @@ public class HibernateDataSetStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-
+    
     private PeriodStore periodStore;
 
     public void setPeriodStore( PeriodStore periodStore )
@@ -75,7 +75,7 @@ public class HibernateDataSetStore
 
         dataSet.setPeriodType( periodType );
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( dataSet );
     }
@@ -86,28 +86,28 @@ public class HibernateDataSetStore
 
         dataSet.setPeriodType( periodType );
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( dataSet );
     }
 
     public void deleteDataSet( DataSet dataSet )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( dataSet );
     }
 
     public DataSet getDataSet( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (DataSet) session.get( DataSet.class, id );
     }
 
     public DataSet getDataSetByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataSet.class );
         criteria.add( Restrictions.eq( "name", name ) );
@@ -117,7 +117,7 @@ public class HibernateDataSetStore
 
     public DataSet getDataSetByShortName( String shortName )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataSet.class );
         criteria.add( Restrictions.eq( "shortName", shortName ) );
@@ -127,7 +127,7 @@ public class HibernateDataSetStore
 
     public DataSet getDataSetByCode( String code )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataSet.class );
         criteria.add( Restrictions.eq( "code", code ) );
@@ -136,21 +136,9 @@ public class HibernateDataSetStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataSet> getDataSetsBySource( Source source )
-    {
-        Session session = sessionManager.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataSet.class );
-        criteria.createAlias( "sources", "s" );
-        criteria.add( Restrictions.eq( "s.id", source.getId() ) );
-
-        return criteria.list();
-    }
-
-    @SuppressWarnings( "unchecked" )
     public Collection<DataSet> getAllDataSets()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return session.createCriteria( DataSet.class ).list();
     }
@@ -167,7 +155,7 @@ public class HibernateDataSetStore
 
         frequencyOverrideAssociation.setPeriodType( periodType );
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.save( frequencyOverrideAssociation );
     }
@@ -180,21 +168,21 @@ public class HibernateDataSetStore
 
         frequencyOverrideAssociation.setPeriodType( periodType );
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( frequencyOverrideAssociation );
     }
 
     public void removeFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( frequencyOverrideAssociation );
     }
 
     public FrequencyOverrideAssociation getFrequencyOverrideAssociation( DataSet dataSet, Source source )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( FrequencyOverrideAssociation.class );
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
@@ -206,7 +194,7 @@ public class HibernateDataSetStore
     @SuppressWarnings( "unchecked" )
     public Collection<FrequencyOverrideAssociation> getFrequencyOverrideAssociationsByDataSet( DataSet dataSet )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( FrequencyOverrideAssociation.class );
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
@@ -217,7 +205,7 @@ public class HibernateDataSetStore
     @SuppressWarnings( "unchecked" )
     public Collection<FrequencyOverrideAssociation> getFrequencyOverrideAssociationsBySource( Source source )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( FrequencyOverrideAssociation.class );
         criteria.add( Restrictions.eq( "source", source ) );

@@ -27,9 +27,13 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.report.manager.ReportConfiguration;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
@@ -44,6 +48,7 @@ public class ReportManagerTest
     // Fixture
     // -------------------------------------------------------------------------
  
+    @Override
     public void setUpTest()
     {
         reportManager = (ReportManager) getBean( ReportManager.ID );
@@ -56,6 +61,7 @@ public class ReportManagerTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testConfiguration()
         throws NoConfigurationFoundException
     {

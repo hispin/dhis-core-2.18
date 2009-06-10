@@ -27,24 +27,30 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: PeriodBatchHandlerTest.java 4949 2008-04-21 07:59:54Z larshelg $
  */
 public class PeriodBatchHandlerTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
@@ -64,7 +70,8 @@ public class PeriodBatchHandlerTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
     {
         periodService = (PeriodService) getBean( PeriodService.ID );
@@ -101,16 +108,24 @@ public class PeriodBatchHandlerTest
         periodB = createPeriod( periodType, dateB, dateC );
         periodC = createPeriod( periodType, dateC, dateD );
     }
-    
+
+    @Override
     public void tearDownTest()
     {
         batchHandler.flush();
     }
-
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddObject()
     {
         batchHandler.addObject( periodA );
@@ -126,6 +141,7 @@ public class PeriodBatchHandlerTest
         assertTrue( periods.contains( periodC ) );
     }    
 
+    @Test
     public void testInsertObject()
     {
         int idA = batchHandler.insertObject( periodA, true );
@@ -136,7 +152,8 @@ public class PeriodBatchHandlerTest
         assertNotNull( periodService.getPeriod( idB ) );
         assertNotNull( periodService.getPeriod( idC ) );
     }
-    
+
+    @Test
     public void testUpdateObject()
     {
         int id = periodService.addPeriod( periodA );
@@ -147,7 +164,8 @@ public class PeriodBatchHandlerTest
         
         assertEquals( periodService.getPeriod( id ).getStartDate(), dateA );
     }
-    
+
+    @Test
     public void testGetObjectIdentifier()
     {
         int referenceId = periodService.addPeriod( periodA );
@@ -156,7 +174,8 @@ public class PeriodBatchHandlerTest
         
         assertEquals( referenceId, retrievedId );
     }
-    
+
+    @Test
     public void testObjectExists()
     {
         periodService.addPeriod( periodA );

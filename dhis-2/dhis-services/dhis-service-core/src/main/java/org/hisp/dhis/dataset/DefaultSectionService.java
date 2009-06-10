@@ -25,11 +25,13 @@ package org.hisp.dhis.dataset;
 
 import java.util.Collection;
 import org.hisp.dhis.dataset.Section;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Tri
  * @version $Id$
  */
+@Transactional
 public class DefaultSectionService
     implements SectionService
 {

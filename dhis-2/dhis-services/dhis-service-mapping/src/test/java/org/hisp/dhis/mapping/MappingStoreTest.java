@@ -27,7 +27,11 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.DhisConvenienceTest;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -39,13 +43,14 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class MappingStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private MappingStore mappingStore;
     
@@ -105,6 +110,7 @@ public class MappingStoreTest
     // Map tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGetMap()
     {
         int idA = mappingStore.addMap( mapA );
@@ -113,7 +119,8 @@ public class MappingStoreTest
         assertEquals( mapA, mappingStore.getMap( idA ) );
         assertEquals( mapB, mappingStore.getMap( idB ) );
     }
-    
+
+    @Test
     public void testDeleteMap()
     {
         int idA = mappingStore.addMap( mapA );
@@ -134,9 +141,10 @@ public class MappingStoreTest
     }
 
     // -------------------------------------------------------------------------
-    // Map tests
+    // MapView tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGetMapView()
     {
         mappingStore.addMap( mapA );

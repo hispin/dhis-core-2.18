@@ -23,15 +23,10 @@
 
 package org.hisp.dhis.gis.hibernate;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Tran Thanh Tri
@@ -43,11 +38,11 @@ public class JDBCIndicatorService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private StatementManager statementManager;
+    private JdbcTemplate jdbcTemplate;
 
-    public void setStatementManager( StatementManager statementManager )
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
-        this.statementManager = statementManager;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     // -------------------------------------------------------------------------
@@ -56,36 +51,11 @@ public class JDBCIndicatorService
 
     public double getIndicatorvalue( OrganisationUnit organisationUnit, Period period, Indicator indicator )
     {
-        StatementHolder holder = statementManager.getHolder();
-
-        Statement statement = holder.getStatement();
-
-        ResultSet resultSet;
-
         String sql = "select value from aggregatedindicatorvalue where indicatorid=" + indicator.getId()
             + " and organisationunitid=" + organisationUnit.getId() + " and periodid= " + period.getId();
 
-        try
-        {
-            resultSet = statement.executeQuery( sql );
-
-            if ( resultSet != null )
-            {
-                while ( resultSet.next() )
-                {
-                    return resultSet.getDouble( "value" );
-                }
-            }
-        }
-        catch ( SQLException e )
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            holder.close();
-        }
-
-        return -1;
+        final Double value = (Double) jdbcTemplate.queryForObject( sql, Double.class );
+        
+        return value != null ? value : -1;
     }
 }

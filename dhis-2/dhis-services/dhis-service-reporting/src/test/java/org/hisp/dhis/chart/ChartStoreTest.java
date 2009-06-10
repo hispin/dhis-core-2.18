@@ -27,10 +27,15 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
@@ -40,13 +45,14 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ChartStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private ChartStore chartStore;
 
@@ -67,26 +73,10 @@ public class ChartStoreTest
     private Chart chartC;
 
     // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Chart createChart( char uniqueCharacter, List<Indicator> indicators, List<Period> periods, List<OrganisationUnit> units )
-    {
-        Chart chart = new Chart();
-        
-        chart.setTitle( "Chart" + uniqueCharacter );
-        chart.setDimension( Chart.DIMENSION_PERIOD );
-        chart.setIndicators( indicators );
-        chart.setPeriods( periods );
-        chart.setOrganisationUnits( units );
-        
-        return chart;
-    }
-
-    // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         chartStore = (ChartStore) getBean( ChartStore.ID );
@@ -162,6 +152,7 @@ public class ChartStoreTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testSaveGet()
     {
         int idA = chartStore.saveChart( chartA );
@@ -176,7 +167,8 @@ public class ChartStoreTest
         assertTrue( equals( chartStore.getChart( idA ).getPeriods(), periodA, periodB, periodC ) );
         assertTrue( equals( chartStore.getChart( idA ).getOrganisationUnits(), unitA, unitB, unitC ) );
     }
-    
+
+    @Test
     public void testDelete()
     {
         int idA = chartStore.saveChart( chartA );
@@ -199,7 +191,8 @@ public class ChartStoreTest
         assertNull( chartStore.getChart( idB ) );
         assertNotNull( chartStore.getChart( idC ) );        
     }
-    
+
+    @Test
     public void testGetAll()
     {
         chartStore.saveChart( chartA );
@@ -208,7 +201,8 @@ public class ChartStoreTest
         
         assertTrue( equals( chartStore.getAllCharts(), chartA, chartB, chartC ) );
     }
-    
+
+    @Test
     public void testGetByTitle()
     {
         chartStore.saveChart( chartA );

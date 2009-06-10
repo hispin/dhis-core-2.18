@@ -27,15 +27,12 @@ package org.hisp.dhis.statistics.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.common.Objects;
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.statistics.StatisticsProvider;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
@@ -48,11 +45,11 @@ public class JdbcStatisticsProvider
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private StatementManager statementManager;
+    private JdbcTemplate jdbcTemplate;
 
-    public void setStatementManager( StatementManager statementManager )
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
-        this.statementManager = statementManager;
+        this.jdbcTemplate = jdbcTemplate;
     }
     
     // -------------------------------------------------------------------------
@@ -63,43 +60,18 @@ public class JdbcStatisticsProvider
     {
         final Map<Objects, Integer> objectCounts = new HashMap<Objects, Integer>();
         
-        final StatementHolder holder = statementManager.getHolder();
+        objectCounts.put( Objects.DATAELEMENT, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM dataelement" ) );
+        objectCounts.put( Objects.DATAELEMENTGROUP, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM dataelementgroup" ) );
+        objectCounts.put( Objects.INDICATORTYPE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM indicatortype" ) );
+        objectCounts.put( Objects.INDICATOR, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM indicator" ) );
+        objectCounts.put( Objects.INDICATORGROUP, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM indicatorgroup" ) );
+        objectCounts.put( Objects.DATASET, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM dataset" ) );
+        objectCounts.put( Objects.DATADICTIONARY, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM datadictionary" ) );
+        objectCounts.put( Objects.SOURCE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM source" ) );
+        objectCounts.put( Objects.VALIDATIONRULE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM validationrule" ) );
+        objectCounts.put( Objects.PERIOD, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM period" ) );
+        objectCounts.put( Objects.DATAVALUE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM datavalue" ) );
         
-        try
-        {
-            objectCounts.put( Objects.DATAELEMENT, getObjectCount( holder, "SELECT COUNT(*) FROM dataelement" ) );
-            objectCounts.put( Objects.DATAELEMENTGROUP, getObjectCount( holder, "SELECT COUNT(*) FROM dataelementgroup" ) );
-            objectCounts.put( Objects.INDICATORTYPE, getObjectCount( holder, "SELECT COUNT(*) FROM indicatortype" ) );
-            objectCounts.put( Objects.INDICATOR, getObjectCount( holder, "SELECT COUNT(*) FROM indicator" ) );
-            objectCounts.put( Objects.INDICATORGROUP, getObjectCount( holder, "SELECT COUNT(*) FROM indicatorgroup" ) );
-            objectCounts.put( Objects.DATASET, getObjectCount( holder, "SELECT COUNT(*) FROM dataset" ) );
-            objectCounts.put( Objects.DATADICTIONARY, getObjectCount( holder, "SELECT COUNT(*) FROM datadictionary" ) );
-            objectCounts.put( Objects.SOURCE, getObjectCount( holder, "SELECT COUNT(*) FROM source" ) );
-            objectCounts.put( Objects.VALIDATIONRULE, getObjectCount( holder, "SELECT COUNT(*) FROM validationrule" ) );
-            objectCounts.put( Objects.PERIOD, getObjectCount( holder, "SELECT COUNT(*) FROM period" ) );
-            objectCounts.put( Objects.DATAVALUE, getObjectCount( holder, "SELECT COUNT(*) FROM datavalue" ) );
-            
-            return objectCounts;            
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get aggregated data value", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-    
-    private Integer getObjectCount( StatementHolder holder, String sql )
-        throws SQLException
-    {
-        final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-        
-        return resultSet.next() ? resultSet.getInt( 1 ) : 0;
+        return objectCounts;
     }
 }

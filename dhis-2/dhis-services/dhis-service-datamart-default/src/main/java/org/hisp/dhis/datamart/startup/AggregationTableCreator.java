@@ -27,17 +27,13 @@ package org.hisp.dhis.datamart.startup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.SQLException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.jdbc.StatementBuilder;
-import org.hisp.dhis.jdbc.JDBCConfiguration;
-import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
+import org.hisp.dhis.jdbc.StatementDialect;
 import org.hisp.dhis.jdbc.factory.StatementBuilderFactory;
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
@@ -52,97 +48,82 @@ public class AggregationTableCreator
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private StatementManager statementManager;
+    private JdbcTemplate jdbcTemplate;
 
-    public void setStatementManager( StatementManager statementManager )
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
-        this.statementManager = statementManager;
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    private StatementDialect statementDialect;
+
+    public void setStatementDialect( StatementDialect statementDialect )
+    {
+        this.statementDialect = statementDialect;
     }
     
-    private JDBCConfigurationProvider configurationProvider;
-
-    public void setConfigurationProvider( JDBCConfigurationProvider configurationProvider )
-    {
-        this.configurationProvider = configurationProvider;
-    }
-
     // -------------------------------------------------------------------------
     // StartupRoutine implementation
     // -------------------------------------------------------------------------
 
     public void execute()
     {
-        StatementHolder holder = statementManager.getHolder(); 
-        
-        JDBCConfiguration configuration = configurationProvider.getConfiguration();
-        
-        StatementBuilder builder = StatementBuilderFactory.createStatementBuilder( configuration.getDialect() );
+        StatementBuilder builder = StatementBuilderFactory.createStatementBuilder( statementDialect );
         
         try
-        {
-            // -----------------------------------------------------------------
-            // Aggregated data value table
-            // -----------------------------------------------------------------
+        {                
+            jdbcTemplate.execute( builder.getCreateAggregatedDataValueTable() );
             
-            try
-            {                
-                holder.getStatement().executeUpdate( builder.getCreateAggregatedDataValueTable() );
-                
-                log.info( "Created table aggregateddatavalue" );
-            }
-            catch ( SQLException ex )
-            {
-                log.info( "Table aggregateddatavalue exists" );
-            }
-    
-            // -----------------------------------------------------------------
-            // Aggregated indicator value table
-            // -----------------------------------------------------------------
-    
-            try
-            {
-                holder.getStatement().executeUpdate( builder.getCreateAggregatedIndicatorTable() );
-                
-                log.info( "Created table aggregatedindicatorvalue" );
-            }
-            catch ( SQLException ex )
-            {
-                log.info( "Table aggregatedindicatorvalue exists" );
-            }
-            
-            // -----------------------------------------------------------------
-            // Crosstab index on datavalue table
-            // -----------------------------------------------------------------
-    
-            try
-            {
-                holder.getStatement().executeUpdate( builder.getCreateDataValueIndex() );
-                
-                log.info( "Created index crosstab on table datavalue" );
-            }
-            catch ( SQLException ex )
-            {
-                log.info( "Index crosstab exists on table datavalue" );
-            }
-            
-            // -----------------------------------------------------------------
-            // DataSetCompleteness
-            // -----------------------------------------------------------------
-    
-            try
-            {
-                holder.getStatement().executeUpdate( builder.getCreateDataSetCompletenessTable() );
-                
-                log.info( "Created table aggregateddatasetcompleteness" );
-            }
-            catch ( SQLException ex )
-            {
-                log.info( "Table aggregateddatasetcompleteness exists" );
-            }
+            log.info( "Created table aggregateddatavalue" );
         }
-        finally
-        {        
-            holder.close();
+        catch ( Exception ex )
+        {
+            log.info( "Table aggregateddatavalue exists" );
+        }
+
+        // -----------------------------------------------------------------
+        // Aggregated indicator value table
+        // -----------------------------------------------------------------
+
+        try
+        {
+            jdbcTemplate.execute( builder.getCreateAggregatedIndicatorTable() );
+            
+            log.info( "Created table aggregatedindicatorvalue" );
+        }
+        catch ( Exception ex )
+        {
+            log.info( "Table aggregatedindicatorvalue exists" );
+        }
+        
+        // -----------------------------------------------------------------
+        // Crosstab index on datavalue table
+        // -----------------------------------------------------------------
+
+        try
+        {
+            jdbcTemplate.execute( builder.getCreateDataValueIndex() );
+            
+            log.info( "Created index crosstab on table datavalue" );
+        }
+        catch ( Exception ex )
+        {
+            log.info( "Index crosstab exists on table datavalue" );
+        }
+        
+        // -----------------------------------------------------------------
+        // DataSetCompleteness
+        // -----------------------------------------------------------------
+
+        try
+        {
+            jdbcTemplate.execute( builder.getCreateDataSetCompletenessTable() );
+            
+            log.info( "Created table aggregateddatasetcompleteness" );
+        }
+        catch ( Exception ex )
+        {
+            log.info( "Table aggregateddatasetcompleteness exists" );
         }
     }
 }

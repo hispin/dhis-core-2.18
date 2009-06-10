@@ -27,9 +27,14 @@ package org.hisp.dhis.options;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 /**
  * @author Stian Strandli
@@ -38,14 +43,13 @@ import org.hisp.dhis.DhisSpringTest;
 public class SystemSettingStoreTest
     extends DhisSpringTest
 {
-    SystemSettingStore systemSettingStore;
+    private SystemSettingStore systemSettingStore;
 
-    SystemSetting settingA;
+    private SystemSetting settingA;
+    private SystemSetting settingB;
+    private SystemSetting settingC;
 
-    SystemSetting settingB;
-
-    SystemSetting settingC;
-
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -64,6 +68,7 @@ public class SystemSettingStoreTest
         settingC.setValue( new String( "Value3" ) );
     }
 
+    @Test
     public void testAddSystemSetting()
     {
         systemSettingStore.addSystemSetting( settingA );
@@ -83,7 +88,8 @@ public class SystemSettingStoreTest
         assertEquals( "Setting1", s.getName() );
         assertEquals( "Value1.1", s.getValue() );        
     }
-    
+
+    @Test
     public void testUpdateSystemSetting()
     {
         systemSettingStore.addSystemSetting( settingA );
@@ -101,6 +107,7 @@ public class SystemSettingStoreTest
         assertEquals( "Value2", (String) settingA.getValue() );
     }
 
+    @Test
     public void testDeleteSystemSetting()
     {
         systemSettingStore.addSystemSetting( settingA );
@@ -113,6 +120,7 @@ public class SystemSettingStoreTest
         assertEquals( 2, systemSettingStore.getAllSystemSettings().size() );
     }
 
+    @Test
     public void testGetSystemSetting()
     {
         systemSettingStore.addSystemSetting( settingA );
@@ -127,6 +135,7 @@ public class SystemSettingStoreTest
         assertNull( s );
     }
 
+    @Test
     public void testGetAllSystemSettings()
     {
         Collection<SystemSetting> m = systemSettingStore.getAllSystemSettings();

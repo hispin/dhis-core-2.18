@@ -27,11 +27,18 @@ package org.hisp.dhis.external.location;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
+import org.springframework.test.annotation.NotTransactional;
 
 /**
  * @author Lars Helge Overland
@@ -52,6 +59,7 @@ public class LocationManagerTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         locationManager = (LocationManager) getBean( LocationManager.ID );
@@ -65,6 +73,8 @@ public class LocationManagerTest
     // InputStream
     // -------------------------------------------------------------------------
 
+    @Test
+    @NotTransactional
     public void testGetInputStream()
     {
         try
@@ -90,6 +100,8 @@ public class LocationManagerTest
         }
     }
 
+    @Test
+    @NotTransactional
     public void testInputStreamWithDirs()
     {
         try
@@ -119,6 +131,8 @@ public class LocationManagerTest
     // File for reading
     // -------------------------------------------------------------------------
 
+    @Test
+    @NotTransactional
     public void testGetFileForReading()
     {
         try
@@ -146,6 +160,8 @@ public class LocationManagerTest
         }
     }
 
+    @Test
+    @NotTransactional
     public void testGetFileForReadingWithDirs()
     {
         try
@@ -177,6 +193,8 @@ public class LocationManagerTest
     // OutputStream
     // -------------------------------------------------------------------------
 
+    @Test
+    @NotTransactional
     public void testGetOutputStream()
     {
         try
@@ -190,7 +208,9 @@ public class LocationManagerTest
             System.out.println( "External directory not set" );
         }
     }
-    
+
+    @Test
+    @NotTransactional
     public void testGetOutputStreamWithDirs()
     {
         try
@@ -209,6 +229,8 @@ public class LocationManagerTest
     // File for writing
     // -------------------------------------------------------------------------
 
+    @Test
+    @NotTransactional
     public void testGetFileForWriting()
     {
         try
@@ -237,7 +259,9 @@ public class LocationManagerTest
             System.out.println( "External directory not set" );
         }
     }
-    
+
+    @Test
+    @NotTransactional
     public void testGetFileForWritingWithDirs()
     {
         try
@@ -271,6 +295,8 @@ public class LocationManagerTest
     // External directory and environment variables
     // -------------------------------------------------------------------------
 
+    @Test
+    @NotTransactional
     public void testGetExternalDirectory()
     {
         try
@@ -286,7 +312,9 @@ public class LocationManagerTest
             System.out.println( "External directory not set" );
         }
     }
-    
+
+    @Test
+    @NotTransactional
     public void testExternalDirectorySet()
     {        
         boolean set = locationManager.externalDirectorySet();
@@ -300,7 +328,9 @@ public class LocationManagerTest
             System.out.println( "External directory not set" );
         }
     }
-    
+
+    @Test
+    @NotTransactional
     public void testGetEnvironmentVariable()
     {
         String env = locationManager.getEnvironmentVariable();

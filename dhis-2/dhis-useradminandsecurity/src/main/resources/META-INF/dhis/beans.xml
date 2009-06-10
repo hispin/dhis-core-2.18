@@ -4,15 +4,16 @@
   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
   
+  <!-- 
   <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
     <property name="advice" ref="readOnlyTransactionInterceptor"/>
     <property name="patterns">
       <list>
-        <value>.*\.UserDetailsService\.load.*</value>
         <value>.*\.AutomaticAccessManager\.isLoginEnabled.*</value>
       </list>
     </property>
   </bean>
+  -->
   
   <!-- DHIS beans -->
   
@@ -43,7 +44,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.acegisecurity.userdetails.UserDetailsService"
     class="org.hisp.dhis.security.hibernate.HibernateUserDetailsService">
-    <property name="sessionManager" ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
   <bean id="org.acegisecurity.providers.encoding.PasswordEncoder"

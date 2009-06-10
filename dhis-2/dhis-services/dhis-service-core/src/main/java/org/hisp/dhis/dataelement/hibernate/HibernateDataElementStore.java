@@ -33,13 +33,13 @@ import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
 /**
@@ -54,27 +54,27 @@ public class HibernateDataElementStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-
+    
     // -------------------------------------------------------------------------
     // DataElement
     // -------------------------------------------------------------------------
 
     public int addDataElement( DataElement dataElement )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( dataElement );
     }
 
     public void updateDataElement( DataElement dataElement )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( dataElement );
     }
@@ -82,26 +82,21 @@ public class HibernateDataElementStore
     public void deleteDataElement( DataElement dataElement )
         throws HierarchyViolationException
     {
-        if ( !dataElement.getChildren().isEmpty() )
-        {
-            throw new HierarchyViolationException( "Not allowed to delete DataElements with children" );
-        }
-
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( dataElement );
     }
 
     public DataElement getDataElement( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (DataElement) session.get( DataElement.class, id );
     }
 
     public DataElement getDataElement( String uuid )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.add( Restrictions.eq( "uuid", uuid ) );
@@ -111,7 +106,7 @@ public class HibernateDataElementStore
 
     public DataElement getDataElementByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.add( Restrictions.eq( "name", name ) );
@@ -121,7 +116,7 @@ public class HibernateDataElementStore
 
     public DataElement getDataElementByAlternativeName( String alternativeName )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.add( Restrictions.eq( "alternativeName", alternativeName ) );
@@ -131,7 +126,7 @@ public class HibernateDataElementStore
 
     public DataElement getDataElementByShortName( String shortName )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.add( Restrictions.eq( "shortName", shortName ) );
@@ -141,7 +136,7 @@ public class HibernateDataElementStore
 
     public DataElement getDataElementByCode( String code )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.add( Restrictions.eq( "code", code ) );
@@ -152,7 +147,7 @@ public class HibernateDataElementStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getAllDataElements()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.setCacheable( true );
@@ -163,7 +158,7 @@ public class HibernateDataElementStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getAggregateableDataElements()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Set<String> types = new HashSet<String>();
 
@@ -180,7 +175,7 @@ public class HibernateDataElementStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getAllActiveDataElements()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.add( Restrictions.eq( "active", true ) );
@@ -191,7 +186,7 @@ public class HibernateDataElementStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getDataElementsByAggregationOperator( String aggregationOperator )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.add( Restrictions.eq( "aggregationOperator", aggregationOperator ) );
@@ -202,18 +197,18 @@ public class HibernateDataElementStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getDataElementsByType( String type )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.add( Restrictions.eq( "type", type ) );
 
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getDataElementByCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.add( Restrictions.eq( "categoryCombo", categoryCombo ) );
@@ -228,7 +223,7 @@ public class HibernateDataElementStore
     @SuppressWarnings( "unchecked" )
     public Collection<CalculatedDataElement> getAllCalculatedDataElements()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( CalculatedDataElement.class );
 
@@ -237,7 +232,7 @@ public class HibernateDataElementStore
 
     public CalculatedDataElement getCalculatedDataElementByDataElement( DataElement dataElement )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Set<Integer> dataElementIds = new HashSet<Integer>();
         dataElementIds.add( dataElement.getId() );
@@ -252,7 +247,7 @@ public class HibernateDataElementStore
     public Collection<CalculatedDataElement> getCalculatedDataElementsByDataElements(
         Collection<DataElement> dataElements )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Set<Integer> dataElementIds = new HashSet<Integer>();
 
@@ -274,35 +269,35 @@ public class HibernateDataElementStore
 
     public int addDataElementGroup( DataElementGroup dataElementGroup )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( dataElementGroup );
     }
 
     public void updateDataElementGroup( DataElementGroup dataElementGroup )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( dataElementGroup );
     }
 
     public void deleteDataElementGroup( DataElementGroup dataElementGroup )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( dataElementGroup );
     }
 
     public DataElementGroup getDataElementGroup( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (DataElementGroup) session.get( DataElementGroup.class, id );
     }
 
     public DataElementGroup getDataElementGroup( String uuid )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElementGroup.class );
         criteria.add( Restrictions.eq( "uuid", uuid ) );
@@ -312,7 +307,7 @@ public class HibernateDataElementStore
 
     public DataElementGroup getDataElementGroupByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElementGroup.class );
         criteria.add( Restrictions.eq( "name", name ) );
@@ -323,7 +318,7 @@ public class HibernateDataElementStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataElementGroup> getAllDataElementGroups()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElementGroup.class );
         criteria.setCacheable( true );

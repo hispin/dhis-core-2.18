@@ -29,9 +29,11 @@ package org.hisp.dhis.importexport.pdf.exporter;
 
 import java.io.OutputStream;
 
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
 import org.hisp.dhis.importexport.pdf.util.PDFPrintUtil;
+import org.hisp.dhis.system.process.OpenSessionThread;
 import org.hisp.dhis.system.util.PDFUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 
@@ -42,7 +44,7 @@ import com.lowagie.text.Document;
  * @version $Id: PDFPipeThread.java 4646 2008-02-26 14:54:29Z larshelg $
  */
 public class PDFPipeThread
-    extends Thread
+    extends OpenSessionThread
 {
     private OutputStream outputStream;
 
@@ -92,12 +94,21 @@ public class PDFPipeThread
     {
         this.organisationUnitConverter = organisationUnitConverter;
     }
+
+    // -------------------------------------------------------------------------
+    // Constructor
+    // -------------------------------------------------------------------------
+    
+    public PDFPipeThread( SessionFactory sessionFactory )
+    {
+        super( sessionFactory );
+    }
     
     // -------------------------------------------------------------------------
     // Thread implementation
     // -------------------------------------------------------------------------
     
-    public void run()
+    public void doRun()
     {
         Document document = null;
         

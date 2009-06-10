@@ -27,11 +27,10 @@ package org.hisp.dhis.resourcetable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.resourcetable.DataElementCategoryOptionComboName;
-import org.hisp.dhis.resourcetable.GroupSetStructure;
-import org.hisp.dhis.resourcetable.OrganisationUnitStructure;
-import org.hisp.dhis.resourcetable.ResourceTableStore;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
@@ -57,6 +56,7 @@ public class ResourceTableStoreTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testOrganisationUnitStructure()
     {
         OrganisationUnitStructure structure1 = new OrganisationUnitStructure();
@@ -88,6 +88,7 @@ public class ResourceTableStoreTest
         assertEquals( 0, resourceTableStore.getOrganisationUnitStructures().size() );
     }
 
+    @Test
     public void testGroupSetStructure()
     {
         GroupSetStructure structure1 = new GroupSetStructure( 1, 1, 1 );
@@ -104,7 +105,8 @@ public class ResourceTableStoreTest
         
         assertEquals( 0, resourceTableStore.getGroupSetStructures().size() );
     }
-    
+
+    @Test
     public void testDataElementCategoryOptionComboName()
     {
         DataElementCategoryOptionComboName name1 = new DataElementCategoryOptionComboName( 1, "A" );

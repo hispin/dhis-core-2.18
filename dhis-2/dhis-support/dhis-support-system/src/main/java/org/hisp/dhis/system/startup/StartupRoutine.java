@@ -55,9 +55,8 @@ public interface StartupRoutine
     int getRunlevel();
     
     /**
-     * Indicating whether a StartupRoutine will be executed or not.
      * 
-     * @return whether a StartupRoutine will executed or not.
+     * @return
      */
-    boolean isDisabled();
+    boolean skipInTests();
 }

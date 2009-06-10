@@ -32,10 +32,13 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * @author Abyot Asalefew
  * @version $Id$
  */
+@Transactional
 public class DefaultDataElementCategoryComboService
     implements DataElementCategoryComboService
 {
@@ -63,9 +66,7 @@ public class DefaultDataElementCategoryComboService
 
     public int addDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo )
     {
-        int id = dataElementCategoryComboStore.addDataElementCategoryCombo( dataElementCategoryCombo );
-        
-        return id;
+        return dataElementCategoryComboStore.addDataElementCategoryCombo( dataElementCategoryCombo );
     }
 
     public void updateDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo )

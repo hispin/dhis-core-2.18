@@ -29,10 +29,13 @@ package org.hisp.dhis.dataset;
 
 import java.util.Collection;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * @author Bharath Kumar
  * @version $Id$
  */
+@Transactional
 public class DefaultDataEntryFormService
     implements DataEntryFormService
 {

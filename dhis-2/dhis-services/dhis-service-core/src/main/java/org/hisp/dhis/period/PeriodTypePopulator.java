@@ -32,14 +32,15 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.system.startup.AbstractTransactionalStartupRoutine;
+import org.hisp.dhis.system.startup.AbstractStartupRoutine;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: PeriodTypePopulator.java 3217 2007-04-02 08:54:21Z torgeilo $
  */
 public class PeriodTypePopulator
-    extends AbstractTransactionalStartupRoutine
+    extends AbstractStartupRoutine
 {
     private static final Log LOG = LogFactory.getLog( PeriodTypePopulator.class );
 
@@ -58,7 +59,8 @@ public class PeriodTypePopulator
     // Execute
     // -------------------------------------------------------------------------
 
-    public void executeRoutine()
+    @Transactional
+    public void execute()
         throws Exception
     {
         List<PeriodType> types = PeriodType.getAvailablePeriodTypes();

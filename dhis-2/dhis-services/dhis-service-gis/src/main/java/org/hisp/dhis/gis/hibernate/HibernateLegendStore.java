@@ -31,13 +31,14 @@ import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.gis.Legend;
 import org.hisp.dhis.gis.LegendSet;
 import org.hisp.dhis.gis.LegendStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Tran Thanh Tri
@@ -50,56 +51,61 @@ public class HibernateLegendStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-
+    
     private IndicatorService indicatorService;
-
-    public void updateLegendSet( LegendSet legendSet )
-    {
-        Session session = sessionManager.getCurrentSession();
-
-        session.update( legendSet );
-    }
-
-    // -------------------------------------------------------------------------
-    // LegendStore implementation
-    // -------------------------------------------------------------------------
 
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
     }
 
+    // -------------------------------------------------------------------------
+    // LegendStore implementation
+    // -------------------------------------------------------------------------
+
+    @Transactional
     public void addLegend( Legend legend )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.save( legend );
     }
 
+    @Transactional
+    public void updateLegendSet( LegendSet legendSet )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.update( legendSet );
+    }
+
+    @Transactional
     public void deleteLegend( Legend legend )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( legend );
     }
 
+    @Transactional
     public Legend getLegend( int legendId )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Legend) session.get( Legend.class, new Integer( legendId ) );
     }
 
+    @Transactional
     @SuppressWarnings( "unchecked" )
     public Set<Legend> getLegendByMaxMin( double max, double min )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Legend.class );
         criteria.add( Restrictions.eq( "max", max ) );
@@ -108,27 +114,30 @@ public class HibernateLegendStore
         return (Set<Legend>) criteria.list();
     }
 
+    @Transactional
     public void updateLegend( Legend legend )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( legend );
 
     }
 
+    @Transactional
     @SuppressWarnings( "unchecked" )
     public Set<Legend> getAllLegend()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Legend.class );
 
         return new HashSet<Legend>( criteria.list() );
     }
 
+    @Transactional
     public Legend getLegendByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Legend.class );
         criteria.add( Restrictions.eq( "name", name ) );
@@ -136,45 +145,51 @@ public class HibernateLegendStore
         return (Legend) criteria.uniqueResult();
     }
 
+    @Transactional
     public void addLegendSet( LegendSet legendSet )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.save( legendSet );
     }
 
+    @Transactional
     public void deleteLegendSet( LegendSet legendSet )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( legendSet );
     }
 
+    @Transactional
     @SuppressWarnings( "unchecked" )
     public Set<LegendSet> getAllLegendSet()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( LegendSet.class );
 
         return new HashSet<LegendSet>( criteria.list() );
     }
 
+    @Transactional
     public LegendSet getLegendSet( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (LegendSet) session.get( LegendSet.class, new Integer( id ) );
     }
 
+    @Transactional
     public LegendSet getLegendSet( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria( LegendSet.class );
         criteria.add( Restrictions.eq( "name", name ) );
         return (LegendSet) criteria.uniqueResult();
     }
 
+    @Transactional
     public LegendSet getLegendSet( Indicator indicator )
     {
         Set<LegendSet> legendSets = getAllLegendSet();
@@ -193,9 +208,9 @@ public class HibernateLegendStore
         return null;
     }
 
+    @Transactional
     public LegendSet getLegendSetOfIndicator( int indicatorId )
     {
         return this.getLegendSet( indicatorService.getIndicator( indicatorId ) );
     }
-
 }

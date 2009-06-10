@@ -35,6 +35,7 @@ import java.io.PipedOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
@@ -57,6 +58,13 @@ public class ITextPDFExportService
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
+    
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -99,7 +107,7 @@ public class ITextPDFExportService
             
             zipOut.putNextEntry( new ZipEntry( "Export.pdf" ) );
 
-            PDFPipeThread thread = new PDFPipeThread();
+            PDFPipeThread thread = new PDFPipeThread( sessionFactory );
             
             thread.setOutputStream( zipOut );
             thread.setExportParams( params );

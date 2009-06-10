@@ -27,9 +27,15 @@ package org.hisp.dhis.olap;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
@@ -54,16 +60,7 @@ public class OlapURLStoreTest
     // Tests
     // -------------------------------------------------------------------------
 
-    private OlapURL createOlapURL( char uniqueCharacter )
-    {
-        OlapURL olapURL = new OlapURL();
-        
-        olapURL.setName( "OlapURL" + uniqueCharacter );
-        olapURL.setUrl( "www.hisp.info" );
-        
-        return olapURL;
-    }
-    
+    @Test
     public void testSaveOlapURL()
     {
         OlapURL olapURL = createOlapURL( 'A' );
@@ -73,9 +70,10 @@ public class OlapURLStoreTest
         olapURL = olapURLStore.getOlapURL( id );
         
         assertEquals( "OlapURLA", olapURL.getName() );
-        assertEquals( "www.hisp.info", olapURL.getUrl() );
+        assertEquals( "URLA", olapURL.getUrl() );
     }
-    
+
+    @Test
     public void testDeleteOlapURL()
     {
         OlapURL olapURLA = createOlapURL( 'A' );
@@ -97,7 +95,8 @@ public class OlapURLStoreTest
         assertNull( olapURLStore.getOlapURL( idA ) );
         assertNull( olapURLStore.getOlapURL( idB ) );
     }
-    
+
+    @Test
     public void testGetAllOlapURLs()
     {
         OlapURL olapURLA = createOlapURL( 'A' );

@@ -62,11 +62,13 @@ import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.validation.ValidationResult;
 import org.hisp.dhis.workbook.WorkbookService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional
 public class JExcelWorkbookService
     implements WorkbookService
 {

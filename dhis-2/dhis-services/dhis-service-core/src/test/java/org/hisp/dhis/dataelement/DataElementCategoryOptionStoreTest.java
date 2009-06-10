@@ -27,16 +27,21 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
-
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementCategoryOptionStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DataElementCategoryOptionStore categoryOptionStore;
     
@@ -58,6 +63,7 @@ public class DataElementCategoryOptionStoreTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGet()
     {
         categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
@@ -72,7 +78,8 @@ public class DataElementCategoryOptionStoreTest
         assertEquals( categoryOptionB, categoryOptionStore.getDataElementCategoryOption( idB ) );
         assertEquals( categoryOptionC, categoryOptionStore.getDataElementCategoryOption( idC ) );
     }
-    
+
+    @Test
     public void testDelete()
     {
         categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
@@ -99,7 +106,8 @@ public class DataElementCategoryOptionStoreTest
         assertNull( categoryOptionStore.getDataElementCategoryOption( idB ) );
         assertNotNull( categoryOptionStore.getDataElementCategoryOption( idC ) );
     }
-    
+
+    @Test
     public void testGetAll()
     {
         categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );

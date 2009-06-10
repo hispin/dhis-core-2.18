@@ -57,14 +57,14 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.system.startup.AbstractTransactionalStartupRoutine;
+import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.hisp.dhis.system.util.SystemUtils;
 
 /**
  * @author Oyvind Brucker
  */
 public class I18nUpgrader
-    extends AbstractTransactionalStartupRoutine
+    extends AbstractStartupRoutine
 {
     private static Log log = LogFactory.getLog( I18nUpgrader.class );
 
@@ -144,12 +144,12 @@ public class I18nUpgrader
         this.localeManager = localeManager;
     }
 
-    private TranslationStore translationStore;
+    private TranslationService translationService;
 
-    public void setTranslationStore( TranslationStore translationStore )
+    public void setTranslationService( TranslationService translationService )
     {
-        this.translationStore = translationStore;
-    }
+        this.translationService = translationService;
+    }    
 
     private I18nService i18nService;
 
@@ -169,7 +169,8 @@ public class I18nUpgrader
     // Execute
     // -------------------------------------------------------------------------
 
-    public void executeRoutine()
+    
+    public void execute()
     {
         // ---------------------------------------------------------------------
         // Check permission to run
@@ -184,7 +185,7 @@ public class I18nUpgrader
         // Check if it should run - if so make the i18n service aware of all objects
         // ---------------------------------------------------------------------
 
-        Collection<Translation> translations = translationStore.getAllTranslations();
+        Collection<Translation> translations = translationService.getAllTranslations();
 
         if ( translations == null || translations.isEmpty() )
         {

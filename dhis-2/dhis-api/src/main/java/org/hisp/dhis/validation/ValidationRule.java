@@ -119,6 +119,12 @@ public class ValidationRule
     {
         return "[" + name + "]";
     }
+    
+    public void clearExpressions()
+    {
+        this.leftSide = null;
+        this.rightSide = null;
+    }
 
     // -------------------------------------------------------------------------
     // Set and get methods

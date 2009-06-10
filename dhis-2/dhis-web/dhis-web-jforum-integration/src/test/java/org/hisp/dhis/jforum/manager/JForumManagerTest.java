@@ -28,15 +28,18 @@ package org.hisp.dhis.jforum.manager;
  */
 
 import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class JForumManagerTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private JForumManager forumManager;
 
@@ -44,6 +47,7 @@ public class JForumManagerTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         forumManager = (JForumManager) getBean( JForumManager.ID );
@@ -57,11 +61,9 @@ public class JForumManagerTest
     // Tests
     // -------------------------------------------------------------------------
 
-    public void testTemp()
-    {	
-    }
-    
-    public void _testPopulate()
+    @Ignore
+    @Test
+    public void testPopulate()
     {
         dataElementService.addDataElement( createDataElement( 'A' ) );
         dataElementService.addDataElement( createDataElement( 'B' ) );

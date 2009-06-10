@@ -32,12 +32,12 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementDimensionRowOrder;
 import org.hisp.dhis.dataelement.DataElementDimensionRowOrderStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 
 /**
  * @author Abyot Asalefew
@@ -50,36 +50,36 @@ public class HibernateDataElementDimensionRowOrderStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-
+    
     // -------------------------------------------------------------------------
     // DataElementDimensionRowOrder
     // -------------------------------------------------------------------------
 
     public void addDataElementDimensionRowOrder( DataElementDimensionRowOrder dataElementDimensionRowOrder )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.save( dataElementDimensionRowOrder );
     }
 
     public void deleteDataElementDimensionRowOrder( DataElementDimensionRowOrder dataElementDimensionRowOrder )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( dataElementDimensionRowOrder );
     }
-    
+
     public int deleteDataElementDimensionRowOrder( DataElementCategoryCombo categoryCombo )
     {
         String hql = "delete from DataElementDimensionRowOrder d where d.categoryCombo = :categoryCombo";
         
-        Query query = sessionManager.getCurrentSession().createQuery( hql );
+        Query query = sessionFactory.getCurrentSession().createQuery( hql );
         
         query.setEntity( "categoryCombo", categoryCombo );
         
@@ -90,17 +90,17 @@ public class HibernateDataElementDimensionRowOrderStore
     {
         String hql = "delete from DataElementDimensionRowOrder d where d.category = :category";
         
-        Query query = sessionManager.getCurrentSession().createQuery( hql );
+        Query query = sessionFactory.getCurrentSession().createQuery( hql );
         
         query.setEntity( "category", category );
         
         return query.executeUpdate();
     }
-    
+
     public DataElementDimensionRowOrder getDataElementDimensionRowOrder( DataElementCategoryCombo categoryCombo,
         DataElementCategory category )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElementDimensionRowOrder.class );
         criteria.add( Restrictions.eq( "categoryCombo", categoryCombo ) );
@@ -108,12 +108,12 @@ public class HibernateDataElementDimensionRowOrderStore
 
         return (DataElementDimensionRowOrder) criteria.uniqueResult();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataElementDimensionRowOrder> getDataElementDimensionRowOrders(
         DataElementCategoryCombo categoryCombo )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElementDimensionRowOrder.class );
         criteria.add( Restrictions.eq( "categoryCombo", categoryCombo ) );
@@ -123,7 +123,7 @@ public class HibernateDataElementDimensionRowOrderStore
 
     public void updateDataElementDimensionRowOrder( DataElementDimensionRowOrder dataElementDimensionRowOrder )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( dataElementDimensionRowOrder );
     }

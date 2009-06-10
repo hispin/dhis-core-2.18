@@ -30,8 +30,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.aggregation.impl.cache.AggregationCache"
     class="org.hisp.dhis.aggregation.impl.cache.MemoryAggregationCache">
-    <property name="organisationUnitStore"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitStore"/>
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		<property name="periodService"
 			ref="org.hisp.dhis.period.PeriodService"/>
 		<property name="aggregationService"

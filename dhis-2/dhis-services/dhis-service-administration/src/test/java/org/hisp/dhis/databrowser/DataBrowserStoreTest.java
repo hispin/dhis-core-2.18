@@ -27,6 +27,10 @@ package org.hisp.dhis.databrowser;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNotSame;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -34,7 +38,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
@@ -50,13 +54,15 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
- * @author Joakim Bj�rnstad
+ * @author Joakim Bjornstad
  * @version $Id$
  */
 public class DataBrowserStoreTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private DataBrowserStore dataBrowserStore;
 
@@ -95,6 +101,7 @@ public class DataBrowserStoreTest
     private OrganisationUnit unitH;
     private OrganisationUnit unitI;
 
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -255,6 +262,8 @@ public class DataBrowserStoreTest
         dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitH, T, categoryOptionCombo ) );
     }
 
+    @Ignore
+    @Test
     public void testGetDataSetsInPeriod()
     {
         List<Integer> betweenPeriodIds = new ArrayList<Integer>();
@@ -285,6 +294,8 @@ public class DataBrowserStoreTest
             .intValue() );
     }
 
+    @Ignore
+    @Test
     public void testSetDataElementStructureForDataSetBetweenPeriods()
     {
         List<Integer> pList = new ArrayList<Integer>();
@@ -303,6 +314,8 @@ public class DataBrowserStoreTest
         assertEquals( dataElementA.getId(), table.getRows().get( 0 ).getId().intValue() );
     }
 
+    @Ignore
+    @Test
     public void testSetCountDataElementsInOnePeriod()
     {
         List<Integer> pList = new ArrayList<Integer>();
@@ -325,6 +338,8 @@ public class DataBrowserStoreTest
             .get( 0 ).intValue() );
     }
 
+    @Ignore
+    @Test
     public void testSetStructureForOrgUnitBetweenPeriods()
     {
         List<Integer> pList = new ArrayList<Integer>();
@@ -349,6 +364,8 @@ public class DataBrowserStoreTest
 
     }
 
+    @Ignore
+    @Test
     public void testSetCountOrgUnitsInOnePeriod()
     {
         List<Integer> pList = new ArrayList<Integer>();

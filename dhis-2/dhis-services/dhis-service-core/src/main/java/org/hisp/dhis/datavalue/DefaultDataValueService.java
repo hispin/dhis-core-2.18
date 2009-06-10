@@ -33,12 +33,14 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Kristian Nordal
  * @version $Id: DefaultDataValueService.java 5715 2008-09-17 14:05:28Z larshelg
  *          $
  */
+@Transactional
 public class DefaultDataValueService
     implements DataValueService
 {

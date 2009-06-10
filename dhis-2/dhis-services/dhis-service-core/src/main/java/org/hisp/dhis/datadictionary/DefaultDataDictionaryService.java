@@ -31,11 +31,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.i18n.I18nService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional
 public class DefaultDataDictionaryService
     implements DataDictionaryService
 {

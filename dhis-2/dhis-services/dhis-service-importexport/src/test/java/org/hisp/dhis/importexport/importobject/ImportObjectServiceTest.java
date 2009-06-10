@@ -27,16 +27,22 @@ package org.hisp.dhis.importexport.importobject;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static org.hisp.dhis.expression.Expression.SEPARATOR;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.importexport.GroupMemberAssociation;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObject;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -46,15 +52,14 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.period.MonthlyPeriodType;
-
-import static org.hisp.dhis.expression.Expression.SEPARATOR;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ImportObjectServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private ImportObjectService importObjectService;
     
@@ -104,6 +109,7 @@ public class ImportObjectServiceTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         importObjectService = (ImportObjectService) getBean( ImportObjectService.ID );
@@ -177,12 +183,17 @@ public class ImportObjectServiceTest
         idH = importObjectService.addImportObject( ImportObjectStatus.MATCH, GroupMemberType.DATAELEMENTGROUP, associationB );
         idI = importObjectService.addImportObject( ImportObjectStatus.MATCH, GroupMemberType.DATAELEMENTGROUP, associationC );
     }
+    
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private void assertEquals( ImportObject importObject, ImportObjectStatus status, Class<?> clazz, GroupMemberType type, Object object, Object compareObject )
+    private void assertEq( ImportObject importObject, ImportObjectStatus status, Class<?> clazz, GroupMemberType type, Object object, Object compareObject )
     {
         assertEquals( importObject.getStatus(), status );
         assertEquals( importObject.getClassName(), clazz.getName() );
@@ -211,24 +222,27 @@ public class ImportObjectServiceTest
     // ImportObject
     // -------------------------------------------------------------------------
     
+    @Test
     public void testAddGetImportObject()
     {
-        assertEquals( importObjectService.getImportObject( idA ), ImportObjectStatus.NEW, DataElement.class, GroupMemberType.NONE, dataElementA, null );        
-        assertEquals( importObjectService.getImportObject( idC ), ImportObjectStatus.UPDATE, DataElement.class, GroupMemberType.NONE, dataElementC, null );
-        assertEquals( importObjectService.getImportObject( idH ), ImportObjectStatus.MATCH, GroupMemberAssociation.class, GroupMemberType.DATAELEMENTGROUP, associationB, null );
+        assertEq( importObjectService.getImportObject( idA ), ImportObjectStatus.NEW, DataElement.class, GroupMemberType.NONE, dataElementA, null );        
+        assertEq( importObjectService.getImportObject( idC ), ImportObjectStatus.UPDATE, DataElement.class, GroupMemberType.NONE, dataElementC, null );
+        assertEq( importObjectService.getImportObject( idH ), ImportObjectStatus.MATCH, GroupMemberAssociation.class, GroupMemberType.DATAELEMENTGROUP, associationB, null );
     }
-    
+
+    @Test
     public void testAddGetImportObjectWithCompareObject()
     {
         int importObjectIdA = importObjectService.addImportObject( ImportObjectStatus.NEW, dataElementA, dataElementB );
         int importObjectIdB = importObjectService.addImportObject( ImportObjectStatus.UPDATE, dataElementB, dataElementC );
         int importObjectIdC = importObjectService.addImportObject( ImportObjectStatus.MATCH, dataElementC, dataElementA );
         
-        assertEquals( importObjectService.getImportObject( importObjectIdA ), ImportObjectStatus.NEW, DataElement.class, GroupMemberType.NONE, dataElementA, dataElementB );
-        assertEquals( importObjectService.getImportObject( importObjectIdB ), ImportObjectStatus.UPDATE, DataElement.class, GroupMemberType.NONE, dataElementB, dataElementC );
-        assertEquals( importObjectService.getImportObject( importObjectIdC ), ImportObjectStatus.MATCH, DataElement.class, GroupMemberType.NONE, dataElementC, dataElementA );
+        assertEq( importObjectService.getImportObject( importObjectIdA ), ImportObjectStatus.NEW, DataElement.class, GroupMemberType.NONE, dataElementA, dataElementB );
+        assertEq( importObjectService.getImportObject( importObjectIdB ), ImportObjectStatus.UPDATE, DataElement.class, GroupMemberType.NONE, dataElementB, dataElementC );
+        assertEq( importObjectService.getImportObject( importObjectIdC ), ImportObjectStatus.MATCH, DataElement.class, GroupMemberType.NONE, dataElementC, dataElementA );
     }
 
+    @Test
     public void testGetImportObjectsByClass()
     {
         Collection<ImportObject> importObjects = importObjectService.getImportObjects( DataElement.class );
@@ -248,6 +262,7 @@ public class ImportObjectServiceTest
         assertTrue( importObjects.contains( importObjectService.getImportObject( idI ) ) );        
     }
 
+    @Test
     public void testGetImportObjectsByStatusClass()
     {
         Collection<ImportObject> importObjects = importObjectService.getImportObjects( ImportObjectStatus.NEW, DataElement.class );
@@ -265,6 +280,7 @@ public class ImportObjectServiceTest
         assertTrue( importObjects.contains( importObjectService.getImportObject( idI )  ) );        
     }
 
+    @Test
     public void testGetImportObjectsByGroupMemberType()
     {
         Collection<ImportObject> importObjects = importObjectService.getImportObjects( GroupMemberType.NONE );
@@ -286,7 +302,8 @@ public class ImportObjectServiceTest
         assertTrue( importObjects.contains( importObjectService.getImportObject( idH ) ) );
         assertTrue( importObjects.contains( importObjectService.getImportObject( idI ) ) );        
     }
-    
+
+    @Test
     public void testDeleteImportObject()
     {
         assertNotNulls( idA, idB, idC );
@@ -305,7 +322,8 @@ public class ImportObjectServiceTest
 
         assertNulls( idA, idB, idC );
     }
-    
+
+    @Test
     public void testDeleteImportObjectsByClass()
     {
         assertNotNulls( idA, idB, idC, idD, idE, idF, idG, idH, idI );
@@ -320,7 +338,8 @@ public class ImportObjectServiceTest
         assertNotNulls( idG, idH, idI );
         assertNulls( idA, idB, idC, idD, idE, idF );
     }
-    
+
+    @Test
     public void testCascadeDeleteImportObject()
     {
         int idJ = importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.DATAELEMENTGROUP, associationD );
@@ -367,7 +386,8 @@ public class ImportObjectServiceTest
         
         assertNulls( idM, idO, idP );
     }
-    
+
+    @Test
     public void testCascadeDeleteIndicatorsContainingDataElement()
     {
         String suffix = SEPARATOR + categoryComboA.getId();
@@ -398,7 +418,8 @@ public class ImportObjectServiceTest
         assertEquals( importObjectService.getImportObjects( DataElement.class ).size(), 1 );
         assertEquals( importObjectService.getImportObjects( Indicator.class ).size(), 0 );
     }
-    
+
+    @Test
     public void testCascadeDeleteImportObjects()
     {
         int idJ = importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.DATAELEMENTGROUP, associationD );
@@ -432,7 +453,8 @@ public class ImportObjectServiceTest
     // -------------------------------------------------------------------------
     // Object
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testMatchObject()
     {
         indicatorService.addIndicatorType( indicatorTypeA );

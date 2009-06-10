@@ -27,11 +27,15 @@ package org.hisp.dhis.completeness;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -39,23 +43,24 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataSetCompletenessServiceTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private CompleteDataSetRegistrationService registrationService;
     
     private DataSetCompletenessService completenessService;
     
-    private PeriodType monthly;
+    private PeriodType periodType;
     
     private Period periodA;
     private Period periodB;
@@ -89,6 +94,7 @@ public class DataSetCompletenessServiceTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         periodService = (PeriodService) getBean( PeriodService.ID );
@@ -101,10 +107,10 @@ public class DataSetCompletenessServiceTest
         
         completenessService = (DataSetCompletenessService) getBean( DataSetCompletenessService.ID );
 
-        monthly = new MonthlyPeriodType();
+        periodType = periodService.getAllPeriodTypes().iterator().next();
         
-        periodA = createPeriod( monthly, getDate( 2000, 1, 1 ), getDate( 2000, 1, 31 ) );
-        periodB = createPeriod( monthly, getDate( 2000, 2, 1 ), getDate( 2000, 2, 28 ) );
+        periodA = createPeriod( periodType, getDate( 2000, 1, 1 ), getDate( 2000, 1, 31 ) );
+        periodB = createPeriod( periodType, getDate( 2000, 2, 1 ), getDate( 2000, 2, 28 ) );
         
         periodIdA = periodService.addPeriod( periodA );
         periodService.addPeriod( periodB );
@@ -145,9 +151,9 @@ public class DataSetCompletenessServiceTest
         sources.add( unitB );
         sources.add( unitC );
         
-        dataSetA = createDataSet( 'A', monthly );
-        dataSetB = createDataSet( 'B', monthly );
-        dataSetC = createDataSet( 'C', monthly );
+        dataSetA = createDataSet( 'A', periodType );
+        dataSetB = createDataSet( 'B', periodType );
+        dataSetC = createDataSet( 'C', periodType );
 
         onTimeA = getDate( 2000, 2, 10 );
         tooLateA = getDate( 2000, 2, 25 );
@@ -156,19 +162,23 @@ public class DataSetCompletenessServiceTest
         // ---------------------------------------------------------------------
         // Configure DataSetCompleteness
         // ---------------------------------------------------------------------
-
-        setDependency( completenessService, "configDir", "test_reports", String.class );
-        setDependency( completenessService, "configFile", "safeToDeleteB.xml", String.class );
         
         DataSetCompletenessConfiguration config = new DataSetCompletenessConfiguration( 15 );
                 
         completenessService.setConfiguration( config );
     }
 
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testGetPercentage()
     {
         DataSetCompletenessResult resultA = new DataSetCompletenessResult( dataSetA.getName(), 20, 15, 10 );
@@ -180,7 +190,8 @@ public class DataSetCompletenessServiceTest
         assertEquals( 50.0, resultA.getPercentageOnTime() );
         assertEquals( 0.0, resultB.getPercentageOnTime() );
     }
-    
+
+    @Test
     public void testGetDataSetCompletenessByDataSetA()
     {
         dataSetA.getSources().add( unitA );
@@ -219,7 +230,8 @@ public class DataSetCompletenessServiceTest
         assertTrue( results.contains( resultB ) );
         assertTrue( results.contains( resultC ) );        
     }
-    
+
+    @Test
     public void testGetDataSetCompletenessByDataSetB()
     {
         dataSetA.getSources().add( unitA );
@@ -260,7 +272,8 @@ public class DataSetCompletenessServiceTest
         assertTrue( results.contains( resultB ) );
         assertTrue( results.contains( resultC ) );
     }
-    
+
+    @Test
     public void testGetDataSetCompletenessByDataSetC()
     {
         dataSetA.getSources().add( unitA );
@@ -287,7 +300,8 @@ public class DataSetCompletenessServiceTest
         assertEquals( 1, results.size() );        
         assertTrue( results.contains( resultA ) );
     }
-    
+
+    @Test
     public void testGetDataSetCompletenessByOrganisationUnitA()
     {
         dataSetA.getSources().add( unitE );
@@ -311,7 +325,8 @@ public class DataSetCompletenessServiceTest
         assertTrue( results.contains( resultA ) );
         assertTrue( results.contains( resultB ) );
     }
-    
+
+    @Test
     public void testGetDataSetCompletenessByOrganisationUnitB()
     {
         dataSetA.getSources().add( unitE );
@@ -334,7 +349,8 @@ public class DataSetCompletenessServiceTest
         assertTrue( results.contains( resultA ) );
         assertTrue( results.contains( resultB ) );        
     }
-    
+
+    @Test
     public void testGetDataSetCompletenessByOrganisationUnitC()
     {
         dataSetA.getSources().add( unitE );
@@ -359,7 +375,8 @@ public class DataSetCompletenessServiceTest
         assertTrue( results.contains( resultA ) );
         assertTrue( results.contains( resultB ) );        
     }
-    
+
+    @Test
     public void testGetDataSetCompletenessPeriodOrganisationUnitDataSet()
     {
         dataSetA.getSources().add( unitE );
@@ -382,7 +399,9 @@ public class DataSetCompletenessServiceTest
         assertEquals( referenceB, resultB );
         assertEquals( referenceC, resultC );        
     }
-    
+
+    @Ignore
+    @Test
     public void testConfiguration()
         throws NoConfigurationFoundException
     {

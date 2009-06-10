@@ -27,22 +27,30 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: DataElementGroupBatchHandlerTest.java 4949 2008-04-21 07:59:54Z larshelg $
  */
 public class DataElementGroupBatchHandlerTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private BatchHandlerFactory batchHandlerFactory;
+    
+    private DataElementService dataElementService;
     
     private BatchHandler batchHandler;
     
@@ -53,7 +61,8 @@ public class DataElementGroupBatchHandlerTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
     {
         dataElementService = (DataElementService) getBean( DataElementService.ID );
@@ -69,15 +78,23 @@ public class DataElementGroupBatchHandlerTest
         groupC = createDataElementGroup( 'C' );
     }
 
+    @Override
     public void tearDownTest()
     {
         batchHandler.flush();
     }
-
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddObject()
     {
         batchHandler.addObject( groupA );
@@ -92,7 +109,8 @@ public class DataElementGroupBatchHandlerTest
         assertTrue( groups.contains( groupB ) );
         assertTrue( groups.contains( groupC ) );
     }
-    
+
+    @Test
     public void testInsertObject()
     {
         int idA = batchHandler.insertObject( groupA, true );
@@ -103,7 +121,8 @@ public class DataElementGroupBatchHandlerTest
         assertNotNull( dataElementService.getDataElementGroup( idB ) );
         assertNotNull( dataElementService.getDataElementGroup( idC ) );
     }
-    
+
+    @Test
     public void testUpdateObject()
     {
         int id = dataElementService.addDataElementGroup( groupA );
@@ -114,7 +133,8 @@ public class DataElementGroupBatchHandlerTest
         
         assertEquals( dataElementService.getDataElementGroup( id ).getName(), "UpdatedName" );
     }
-    
+
+    @Test
     public void testGetObjectIdentifier()
     {
         int referenceId = dataElementService.addDataElementGroup( groupA );
@@ -123,7 +143,8 @@ public class DataElementGroupBatchHandlerTest
         
         assertEquals( referenceId, retrievedId );
     }
-    
+
+    @Test
     public void testObjectExists()
     {
         dataElementService.addDataElementGroup( groupA );

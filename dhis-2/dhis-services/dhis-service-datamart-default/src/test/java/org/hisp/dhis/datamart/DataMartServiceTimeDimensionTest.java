@@ -27,10 +27,12 @@ package org.hisp.dhis.datamart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
@@ -45,15 +47,16 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: DataMartServiceTest.java 5164 2008-05-16 12:23:58Z larshelg $
  */
 public class DataMartServiceTimeDimensionTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
-    private DataMartInternalProcess dataMartInternalProcess;
+    private DataMartService dataMartService;
 
     private DataMartStore dataMartStore;
 
@@ -69,7 +72,7 @@ public class DataMartServiceTimeDimensionTest
     @Override
     public void setUpTest()
     {
-        dataMartInternalProcess = (DataMartInternalProcess) getBean( DataMartInternalProcess.ID );
+        dataMartService = (DataMartService) getBean( DataMartService.ID );
         
         dataMartStore = (DataMartStore) getBean( DataMartStore.ID );
 
@@ -94,7 +97,14 @@ public class DataMartServiceTimeDimensionTest
         periodIds = new HashSet<Integer>();
         organisationUnitIds = new HashSet<Integer>();        
     }
-    
+
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+
+    @Test
     public void testAverageIntDataElement()
     {
         DataElement dataElement = createDataElement( 'A', categoryCombo );
@@ -120,13 +130,14 @@ public class DataMartServiceTimeDimensionTest
         periodIds.add( periodService.addPeriod( periodB ) );
         periodIds.add( periodService.addPeriod( periodC ) );
         
-        dataMartInternalProcess.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
         
         assertEquals( 100.0, dataMartStore.getAggregatedValue( dataElement, periodA, unit ) );
         assertEquals( 100.0, dataMartStore.getAggregatedValue( dataElement, periodB, unit ) );
         assertEquals( 100.0, dataMartStore.getAggregatedValue( dataElement, periodC, unit ) );
     }
-    
+
+    @Test
     public void testSumIntDataElement()
     {
         DataElement dataElement = createDataElement( 'A', categoryCombo );
@@ -152,7 +163,7 @@ public class DataMartServiceTimeDimensionTest
         
         periodIds.add( periodService.addPeriod( periodA ) );
 
-        dataMartInternalProcess.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
         
         assertEquals( 60.0, dataMartStore.getAggregatedValue( dataElement, periodA, unit ) );
     }

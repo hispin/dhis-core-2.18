@@ -31,14 +31,17 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementCategoryOptionComboServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DataElementCategory categoryA;
     private DataElementCategory categoryB;
@@ -59,6 +62,7 @@ public class DataElementCategoryOptionComboServiceTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -79,7 +83,7 @@ public class DataElementCategoryOptionComboServiceTest
         categoryOptionService.addDataElementCategoryOption( categoryOptionB );
         categoryOptionService.addDataElementCategoryOption( categoryOptionC );
         categoryOptionService.addDataElementCategoryOption( categoryOptionD );
-                
+        
         categoryA = new DataElementCategory( "Gender" );
         categoryB = new DataElementCategory( "Agegroup" );
         
@@ -106,6 +110,7 @@ public class DataElementCategoryOptionComboServiceTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGetDataElementCategoryOptionCombo()
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();
@@ -126,7 +131,8 @@ public class DataElementCategoryOptionComboServiceTest
         assertEquals( categoryComboA, categoryOptionComboA.getCategoryCombo() );
         assertEquals( categoryOptions, categoryOptionComboA.getCategoryOptions() );
     }
-    
+
+    @Test
     public void testUpdateGetDataElementCategoryOptionCombo()
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();
@@ -157,7 +163,8 @@ public class DataElementCategoryOptionComboServiceTest
         assertEquals( categoryComboB, categoryOptionComboA.getCategoryCombo() );
         assertEquals( categoryOptions, categoryOptionComboA.getCategoryOptions() );
     }
-    
+
+    @Test
     public void testDeleteDataElementCategoryOptionCombo()
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();
@@ -190,7 +197,8 @@ public class DataElementCategoryOptionComboServiceTest
         assertNull( categoryOptionComboService.getDataElementCategoryOptionCombo( idB ) );
         assertNull( categoryOptionComboService.getDataElementCategoryOptionCombo( idC ) );
     }
-    
+
+    @Test
     public void testGetAllDataElementCategoryOptionCombos()
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();

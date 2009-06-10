@@ -38,12 +38,14 @@ import java.util.regex.Pattern;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.UUIdUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Kristian Nordal
  * @version $Id: DefaultDataElementService.java 5243 2008-05-25 10:18:58Z
  *          larshelg $
  */
+@Transactional
 public class DefaultDataElementService
     implements DataElementService
 {
@@ -328,6 +330,20 @@ public class DefaultDataElementService
         }
 
         return operands;
+    }
+    
+    public Map<Integer, String> getCalculatedDataElementExpressionMap( Collection<Integer> identifiers )
+    {
+        Map<Integer, String> map = new HashMap<Integer, String>();
+        
+        for ( Integer id : identifiers )
+        {
+            CalculatedDataElement element = (CalculatedDataElement) getDataElement( id );
+            
+            map.put( element.getId(), element.getExpression().getExpression() );
+        }
+        
+        return map;
     }
 
     // -------------------------------------------------------------------------

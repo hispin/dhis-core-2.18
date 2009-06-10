@@ -38,6 +38,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -82,6 +83,7 @@ public class DefaultLockingManager
     // LockingManager implementation
     // -------------------------------------------------------------------------
 
+    @Transactional
     public boolean currentImportContainsLockedData()
     {
         Collection<DataElement> dataElements = getDataElements( objectMappingGenerator.getDataElementMapping( false ).values() );

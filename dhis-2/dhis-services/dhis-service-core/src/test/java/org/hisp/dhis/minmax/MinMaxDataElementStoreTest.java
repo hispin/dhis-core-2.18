@@ -27,6 +27,10 @@ package org.hisp.dhis.minmax;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -38,6 +42,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
+import org.junit.Test;
 
 /**
  * @author Kristian Nordal
@@ -54,6 +59,7 @@ public class MinMaxDataElementStoreTest
 
     private MinMaxDataElementStore minMaxDataElementStore;
 
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -66,14 +72,7 @@ public class MinMaxDataElementStoreTest
         minMaxDataElementStore = (MinMaxDataElementStore) getBean( MinMaxDataElementStore.ID );
     }
 
-    public void tearDownTest()
-        throws Exception
-    {
-        sourceStore = null;
-
-        dataElementService = null;
-    }
-
+    @Test
     public void testBasic()
         throws Exception
     {

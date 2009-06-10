@@ -27,23 +27,29 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: DataElementBatchHandlerTest.java 4999 2008-04-23 15:45:08Z larshelg $
  */
 public class DataElementBatchHandlerTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private HibernateCacheManager cacheManager;
 	
@@ -60,7 +66,8 @@ public class DataElementBatchHandlerTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
     {
     	cacheManager = (HibernateCacheManager) getBean( HibernateCacheManager.ID );
@@ -81,16 +88,24 @@ public class DataElementBatchHandlerTest
         dataElementB = createDataElement( 'B', categoryCombo );
         dataElementC = createDataElement( 'C', categoryCombo );
     }
-    
+
+    @Override
     public void tearDownTest()
     {
         batchHandler.flush();
     }
-
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddObject()
     {
         batchHandler.addObject( dataElementA );
@@ -107,7 +122,8 @@ public class DataElementBatchHandlerTest
         assertTrue( dataElements.contains( dataElementB ) );
         assertTrue( dataElements.contains( dataElementC ) );
     }
-    
+
+    @Test
     public void testInsertObject()
     {
         int idA = batchHandler.insertObject( dataElementA, true );
@@ -120,7 +136,8 @@ public class DataElementBatchHandlerTest
         assertNotNull( dataElementService.getDataElement( idB ) );
         assertNotNull( dataElementService.getDataElement( idC ) );
     }
-    
+
+    @Test
     public void testInsertWithSpecialCharacters()
     {
         dataElementA.setDescription( "'quote'" );
@@ -131,7 +148,8 @@ public class DataElementBatchHandlerTest
         batchHandler.insertObject( dataElementB, false );
         batchHandler.insertObject( dataElementC, false );
     }
-    
+
+    @Test
     public void testUpdateObject()
     {
         int id = dataElementService.addDataElement( dataElementA );
@@ -144,7 +162,8 @@ public class DataElementBatchHandlerTest
         
         assertEquals( dataElementService.getDataElement( id ).getName(), "UpdatedName" );
     }
-    
+
+    @Test
     public void testGetObjectIdentifier()
     {
         int referenceId = dataElementService.addDataElement( dataElementA );
@@ -153,7 +172,8 @@ public class DataElementBatchHandlerTest
         
         assertEquals( referenceId, retrievedId );
     }
-    
+
+    @Test
     public void testObjectExists()
     {
         dataElementService.addDataElement( dataElementA );

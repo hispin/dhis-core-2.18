@@ -31,14 +31,17 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementCategoryComboStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DataElementCategoryComboStore categoryComboStore;
     
@@ -82,6 +85,7 @@ public class DataElementCategoryComboStoreTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGet()
     {
         categoryComboA = new DataElementCategoryCombo( "CategoryComboA", categories );
@@ -100,7 +104,8 @@ public class DataElementCategoryComboStoreTest
         assertEquals( categories, categoryComboStore.getDataElementCategoryCombo( idB ).getCategories() );
         assertEquals( categories, categoryComboStore.getDataElementCategoryCombo( idC ).getCategories() );        
     }
-    
+
+    @Test
     public void testDelete()
     {
         categoryComboA = new DataElementCategoryCombo( "CategoryComboA", categories );
@@ -127,7 +132,8 @@ public class DataElementCategoryComboStoreTest
         assertNull( categoryComboStore.getDataElementCategoryCombo( idB ) );
         assertNotNull( categoryComboStore.getDataElementCategoryCombo( idC ) );        
     }
-    
+
+    @Test
     public void testGetAll()
     {
         categoryComboA = new DataElementCategoryCombo( "CategoryComboA", categories );

@@ -43,6 +43,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.jdbc.BatchHandler;
@@ -122,6 +123,13 @@ public class DefaultCalculatedDataElementDataMart
     {
         this.categoryOptionComboService = categoryOptionComboService;
     }
+    
+    private AggregationCache aggregationCache;
+
+    public void setAggregationCache( AggregationCache aggregationCache )
+    {
+        this.aggregationCache = aggregationCache;
+    }    
 
     // -------------------------------------------------------------------------
     // CalculatedDataElementDataMart implementation
@@ -139,7 +147,7 @@ public class DefaultCalculatedDataElementDataMart
         final Collection<DataElement> calculatedDataElements = dataElementService.getDataElements( calculatedDataElementIds );       
         final Collection<Period> periods = periodService.getPeriods( periodIds );
         final Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnits( organisationUnitIds );
-
+        
         final DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
         
         final BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
@@ -166,7 +174,7 @@ public class DefaultCalculatedDataElementDataMart
 
         for ( final OrganisationUnit unit : organisationUnits )
         {
-            level = organisationUnitService.getLevelOfOrganisationUnit( unit );
+            level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
             
             for ( final Period period : periods )
             {
@@ -231,5 +239,5 @@ public class DefaultCalculatedDataElementDataMart
         }
         
         return filteredOperands;
-    }    
+    }
 }

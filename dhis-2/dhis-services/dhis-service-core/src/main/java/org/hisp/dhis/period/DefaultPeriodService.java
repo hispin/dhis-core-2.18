@@ -37,11 +37,13 @@ import java.util.List;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.DateUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Kristian Nordal
  * @version $Id: DefaultPeriodService.java 5983 2008-10-17 17:42:44Z larshelg $
  */
+@Transactional
 public class DefaultPeriodService
     implements PeriodService
 {

@@ -27,9 +27,13 @@ package org.hisp.dhis.options;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 /**
  * @author Stian Strandli
@@ -39,22 +43,16 @@ import org.hisp.dhis.DhisSpringTest;
 public class SystemSettingManagerTest
     extends DhisSpringTest
 {
-    SystemSettingManager systemSettingManager;
+    private SystemSettingManager systemSettingManager;
 
-    SystemSetting settingA;
-
-    SystemSetting settingB;
-
-    SystemSetting settingC;
-
-    SystemSetting settingD;
-
+    @Override
     public void setUpTest()
         throws Exception
     {
         systemSettingManager = (SystemSettingManager) getBean( SystemSettingManager.ID );
     }
 
+    @Test
     public void testSaveGetSystemSetting()
     {
         systemSettingManager.saveSystemSetting( "settingA", new String( "valueA" ) );
@@ -63,13 +61,15 @@ public class SystemSettingManagerTest
         assertEquals( new String( "valueA" ), systemSettingManager.getSystemSetting( "settingA" ) );
         assertEquals( new String( "valueB" ), systemSettingManager.getSystemSetting( "settingB" ) );
     }
-    
+
+    @Test
     public void testGetDefaultSystemSetting()
     {
         assertEquals( new String( "valueA" ), systemSettingManager.getSystemSetting( "settingA", new String( "valueA" ) ) );
         assertEquals( new String( "valueB" ), systemSettingManager.getSystemSetting( "settingB", new String( "valueB" ) ) );
     }
-    
+
+    @Test
     public void testGetAllSystemSettings()
     {
         systemSettingManager.saveSystemSetting( "settingA", new String( "valueA" ) );

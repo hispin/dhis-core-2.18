@@ -24,14 +24,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
   <bean id="org.hisp.dhis.jdbc.StatementManager"
     class="org.hisp.dhis.jdbc.statement.JDBCStatementManager">
-      <property name="configurationProvider"
-        ref="org.hisp.dhis.jdbc.JDBCConfigurationProvider"/>
+    <property name="configurationProvider"
+      ref="org.hisp.dhis.jdbc.JDBCConfigurationProvider"/>
   </bean>
   
   <!-- BatchHandlerFactory -->
 	
   <bean id="org.hisp.dhis.jdbc.BatchHandlerFactory"
     class="org.hisp.dhis.jdbc.factory.DefaultBatchHandlerFactory">
+    <property name="configurationProvider"
+      ref="org.hisp.dhis.jdbc.JDBCConfigurationProvider"/>
+  </bean>
+  
+  <!-- StatementDialect -->
+
+  <bean id="statementDialect" class="org.hisp.dhis.jdbc.statement.StatementDialectFactoryBean">
     <property name="configurationProvider"
       ref="org.hisp.dhis.jdbc.JDBCConfigurationProvider"/>
   </bean>

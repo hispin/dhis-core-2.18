@@ -3,6 +3,9 @@ package org.hisp.dhis.document;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 public class DocumentStoreTest
     extends DhisSpringTest
@@ -22,14 +25,16 @@ public class DocumentStoreTest
         documentB = new Document( "DocumentB", "UrlB", true );
         documentC = new Document( "DocumentC", "UrlC", false );
     }
-    
+
+    @Test
     public void testSaveGet()
     {
         int id = documentStore.saveDocument( documentA );
         
         assertEquals( documentA, documentStore.getDocument( id ) );
     }
-    
+
+    @Test
     public void testDelete()
     {
         int idA = documentStore.saveDocument( documentA );
@@ -48,7 +53,8 @@ public class DocumentStoreTest
         assertNull( documentStore.getDocument( idA ) );
         assertNull( documentStore.getDocument( idB ) );
     }
-    
+
+    @Test
     public void testGetAll()
     {
         documentStore.saveDocument( documentA );
@@ -62,7 +68,8 @@ public class DocumentStoreTest
         assertTrue( actual.contains( documentB ) );
         assertTrue( actual.contains( documentC ) );        
     }
-    
+
+    @Test
     public void testGetByName()
     {
         documentStore.saveDocument( documentA );

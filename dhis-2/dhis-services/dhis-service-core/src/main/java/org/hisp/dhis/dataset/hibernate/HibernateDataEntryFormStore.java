@@ -31,11 +31,11 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataset.DataEntryForm;
 import org.hisp.dhis.dataset.DataEntryFormStore;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 
 /**
  * @author Bharath Kumar
@@ -48,48 +48,48 @@ public class HibernateDataEntryFormStore
     // Dependencies
     // ------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-
+    
     // ------------------------------------------------------------------------
     // DataEntryFormStore implementation
     // ------------------------------------------------------------------------
 
     public int addDataEntryForm( DataEntryForm dataEntryForm )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( dataEntryForm );
     }
 
     public void updateDataEntryForm( DataEntryForm dataEntryForm )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( dataEntryForm );
     }
 
     public void deleteDataEntryForm( DataEntryForm dataEntryForm )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( dataEntryForm );
     }
 
     public DataEntryForm getDataEntryForm( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (DataEntryForm) session.get( DataEntryForm.class, id );
     }
 
     public DataEntryForm getDataEntryFormByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataEntryForm.class );
         criteria.add( Restrictions.eq( "name", name ) );
@@ -99,7 +99,7 @@ public class HibernateDataEntryFormStore
 
     public DataEntryForm getDataEntryFormByDataSet( DataSet dataSet )
     {   
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataEntryForm.class );
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
@@ -110,7 +110,7 @@ public class HibernateDataEntryFormStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataEntryForm> getAllDataEntryForms()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataEntryForm.class );
 
