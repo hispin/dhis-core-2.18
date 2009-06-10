@@ -29,15 +29,19 @@ package org.hisp.dhis.indicator;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.UUIdUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional
 public class DefaultIndicatorService
     implements IndicatorService
 {
@@ -141,7 +145,19 @@ public class DefaultIndicatorService
     public Indicator getIndicatorByCode( String code )
     {
         return indicatorStore.getIndicatorByCode( code );
-    }    
+    }
+    
+    public Map<Integer, Integer> getIndicatorFactorMap( Collection<Integer> identifiers )
+    {
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        
+        for ( Integer id : identifiers )
+        {
+            map.put( id, getIndicator( id ).getIndicatorType().getFactor() );
+        }
+        
+        return map;
+    }
 
     // -------------------------------------------------------------------------
     // IndicatorType

@@ -30,8 +30,8 @@ package org.hisp.dhis.olap.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.olap.OlapURLStore;
 
@@ -46,11 +46,11 @@ public class HibernateOlapURLStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
-    
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    private SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -59,33 +59,33 @@ public class HibernateOlapURLStore
 
     public int saveOlapURL( OlapURL olapURL )
     {
-        return (Integer) sessionManager.getCurrentSession().save( olapURL );
+        return (Integer) sessionFactory.getCurrentSession().save( olapURL );
     }
     
     public void updateOlapURL( OlapURL olapURL )
     {
-        sessionManager.getCurrentSession().update( olapURL );
+        sessionFactory.getCurrentSession().update( olapURL );
     }
     
     public OlapURL getOlapURL( int id )
     {
-        return (OlapURL) sessionManager.getCurrentSession().get( OlapURL.class, id );
+        return (OlapURL) sessionFactory.getCurrentSession().get( OlapURL.class, id );
     }
     
     public void deleteOlapURL( OlapURL olapURL )
     {
-        sessionManager.getCurrentSession().delete( olapURL );
+        sessionFactory.getCurrentSession().delete( olapURL );
     }
     
     @SuppressWarnings( "unchecked" )
     public Collection<OlapURL> getAllOlapURLs()
     {
-        return sessionManager.getCurrentSession().createCriteria( OlapURL.class ).list();
+        return sessionFactory.getCurrentSession().createCriteria( OlapURL.class ).list();
     }
     
     public OlapURL getOlapURLByName( String name )
     {
-        Criteria criteria = sessionManager.getCurrentSession().createCriteria( OlapURL.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OlapURL.class );
         
         criteria.add( Restrictions.eq( "name", name ) );
         

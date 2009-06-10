@@ -27,19 +27,22 @@ package org.hisp.dhis.importexport.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+
 import org.hisp.dhis.importexport.AssociationType;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
-
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GroupMemberAssociationVerifierTest
-    extends TestCase
 {
+    @Test
     public void testGroupMemberAssociationSet()
     {
         GroupMemberAssociationVerifier.clear();
@@ -62,7 +65,8 @@ public class GroupMemberAssociationVerifierTest
         assertFalse( GroupMemberAssociationVerifier.isUnique( associationE, typeA ) );
         assertTrue( GroupMemberAssociationVerifier.isUnique( associationF, typeA ) );
     }
-    
+
+    @Test
     public void testGroupMemberAssociationList()
     {
         GroupMemberAssociationVerifier.clear();
@@ -85,7 +89,8 @@ public class GroupMemberAssociationVerifierTest
         assertFalse( GroupMemberAssociationVerifier.isUnique( associationE, typeA ) );
         assertTrue( GroupMemberAssociationVerifier.isUnique( associationF, typeA ) );
     }
-    
+
+    @Test
     public void testGroupMemberAssocation()
     {
         GroupMemberAssociationVerifier.clear();

@@ -27,20 +27,26 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataDictionaryBatchHandlerTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
@@ -53,7 +59,8 @@ public class DataDictionaryBatchHandlerTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
     {
         dataDictionaryService = (DataDictionaryService) getBean( DataDictionaryService.ID );
@@ -69,15 +76,23 @@ public class DataDictionaryBatchHandlerTest
         dataDictionaryC = createDataDictionary( 'C' );
     }
 
+    @Override
     public void tearDownTest()
     {
         batchHandler.flush();
     }
-
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
     
+    @Test
     public void testAddObject()
     {
         batchHandler.addObject( dataDictionaryA );
@@ -92,7 +107,8 @@ public class DataDictionaryBatchHandlerTest
         assertTrue( dataDictionaries.contains( dataDictionaryB ) );
         assertTrue( dataDictionaries.contains( dataDictionaryC ) );
     }
-    
+
+    @Test
     public void testInsertObject()
     {
         int idA = batchHandler.insertObject( dataDictionaryA, true );
@@ -103,7 +119,8 @@ public class DataDictionaryBatchHandlerTest
         assertNotNull( dataDictionaryService.getDataDictionary( idB ) );
         assertNotNull( dataDictionaryService.getDataDictionary( idC ) );
     }
-    
+
+    @Test
     public void testUpdateObject()
     {
         int id = dataDictionaryService.saveDataDictionary( dataDictionaryA );
@@ -114,7 +131,8 @@ public class DataDictionaryBatchHandlerTest
         
         assertEquals( dataDictionaryService.getDataDictionary( id ).getName(), "UpdatedName" );
     }
-    
+
+    @Test
     public void testGetObjectIdentifier()
     {
         int referenceId = dataDictionaryService.saveDataDictionary( dataDictionaryA );
@@ -123,7 +141,8 @@ public class DataDictionaryBatchHandlerTest
         
         assertEquals( referenceId, retrievedId );
     }
-    
+
+    @Test
     public void testObjectExists()
     {
         dataDictionaryService.saveDataDictionary( dataDictionaryA );

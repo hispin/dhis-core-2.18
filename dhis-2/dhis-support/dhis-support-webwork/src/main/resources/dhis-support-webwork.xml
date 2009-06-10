@@ -17,8 +17,6 @@
     </result-types>
     
     <interceptors>
-      <interceptor name="transactionInterceptor"
-        class="org.hisp.dhis.webwork.interceptor.WebWorkTransactionInterceptor"/>
       <interceptor name="exceptionInterceptor"
         class="org.hisp.dhis.webwork.interceptor.WebWorkExceptionInterceptor"/>
       <interceptor name="i18nInterceptor"

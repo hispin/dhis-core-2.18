@@ -27,12 +27,17 @@ package org.hisp.dhis.external.configuration;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
+import org.junit.Test;
+import org.springframework.test.annotation.NotTransactional;
 
 /**
  * @author Lars Helge Overland
@@ -49,6 +54,7 @@ public class ConfigurationManagerTest
     private DummyConfiguration configurationB;
     
     @SuppressWarnings( "unchecked" )
+    @Override
     public void setUpTest()
     {
         configurationManager = (ConfigurationManager<DummyConfiguration>) getBean( ConfigurationManager.ID );
@@ -59,6 +65,8 @@ public class ConfigurationManagerTest
         configurationB = new DummyConfiguration( "homeB", "directoryB" );
     }
     
+    @Test
+    @NotTransactional
     public void testSetGet()
         throws Exception
     {

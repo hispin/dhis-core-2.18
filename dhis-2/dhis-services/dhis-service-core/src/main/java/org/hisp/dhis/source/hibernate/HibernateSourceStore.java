@@ -30,7 +30,7 @@ package org.hisp.dhis.source.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Session;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
 
@@ -45,11 +45,11 @@ public class HibernateSourceStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -58,21 +58,21 @@ public class HibernateSourceStore
 
     public <S extends Source> int addSource( S source )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( source );
     }
 
     public <S extends Source> void updateSource( S source )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( source );
     }
 
     public <S extends Source> void deleteSource( S source )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( source );
     }
@@ -80,7 +80,7 @@ public class HibernateSourceStore
     @SuppressWarnings( "unchecked" )
     public <S extends Source> S getSource( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (S) session.get( Source.class, id );
     }
@@ -88,7 +88,7 @@ public class HibernateSourceStore
     @SuppressWarnings( "unchecked" )
     public <S extends Source> Collection<S> getAllSources( Class<S> clazz )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return session.createCriteria( clazz ).list();
     }
@@ -96,7 +96,7 @@ public class HibernateSourceStore
     @SuppressWarnings( "unchecked" )
     public <S extends Source> Collection<S> getAllSources()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return session.createCriteria( Source.class ).list();
     }

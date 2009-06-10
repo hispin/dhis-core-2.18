@@ -27,30 +27,36 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataValueBatchHandlerTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
@@ -76,7 +82,8 @@ public class DataValueBatchHandlerTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
     {
         dataValueService = (DataValueService) getBean( DataValueService.ID );
@@ -120,16 +127,24 @@ public class DataValueBatchHandlerTest
         
         batchHandler.init();
     }
-    
+
+    @Override
     public void tearDownTest()
     {
         batchHandler.flush();
     }
-
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddObject()
     {
         batchHandler.addObject( dataValueA );
@@ -149,7 +164,8 @@ public class DataValueBatchHandlerTest
         assertTrue( values.contains( dataValueC ) );
         assertTrue( values.contains( dataValueD ) );
     }
-    
+
+    @Test
     public void testInsertObject()
     {
         batchHandler.insertObject( dataValueA, false );
@@ -162,7 +178,8 @@ public class DataValueBatchHandlerTest
         assertNotNull( dataValueService.getDataValue( unitA, dataElementA, periodB, categoryOptionComboA ) );
         assertNotNull( dataValueService.getDataValue( unitB, dataElementA, periodB, categoryOptionComboA ) );
     }
-    
+
+    @Test
     public void testUpdateObject()
     {
         dataValueService.addDataValue( dataValueA );
@@ -175,7 +192,8 @@ public class DataValueBatchHandlerTest
         
         assertEquals( "20", dataValueA.getValue() );
     }
-    
+
+    @Test
     public void testObjectExists()
     {
         dataValueService.addDataValue( dataValueA );

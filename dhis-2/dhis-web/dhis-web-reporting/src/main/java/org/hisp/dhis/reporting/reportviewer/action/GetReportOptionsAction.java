@@ -31,10 +31,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportStore;
+import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.reporttable.comparator.ReportTableComparator;
 
 import com.opensymphony.xwork.Action;

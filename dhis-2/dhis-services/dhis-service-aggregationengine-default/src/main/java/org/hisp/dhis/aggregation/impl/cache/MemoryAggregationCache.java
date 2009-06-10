@@ -38,7 +38,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
-import org.hisp.dhis.organisationunit.OrganisationUnitStore;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 
@@ -63,11 +63,11 @@ public class MemoryAggregationCache
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitStore organisationUnitStore;
+    private OrganisationUnitService organisationUnitService;
 
-    public void setOrganisationUnitStore( OrganisationUnitStore organisationUnitStore )
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
-        this.organisationUnitStore = organisationUnitStore;
+        this.organisationUnitService = organisationUnitService;
     }
     
     private PeriodService periodService;
@@ -99,7 +99,7 @@ public class MemoryAggregationCache
             return children;
         }
 
-        children = organisationUnitStore.getChildren( hierarchy, parentId );
+        children = organisationUnitService.getChildren( hierarchy.getId(), parentId );
         
         childrenCache.put( key, children );
         
@@ -117,7 +117,7 @@ public class MemoryAggregationCache
             return hierarchies;
         }
 
-        hierarchies = organisationUnitStore.getOrganisationUnitHierarchies( startDate, endDate );
+        hierarchies = organisationUnitService.getOrganisationUnitHierarchies( startDate, endDate );
         
         hierarchyCache.put( key, hierarchies );
         

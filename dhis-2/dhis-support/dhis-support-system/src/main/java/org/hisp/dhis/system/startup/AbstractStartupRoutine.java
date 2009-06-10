@@ -44,12 +44,11 @@ public abstract class AbstractStartupRoutine
         this.runlevel = runlevel;
     }
     
-    private boolean disabled = false;
+    private boolean skipInTests;
 
-
-    public void setDisabled( boolean disabled )
+    public void setSkipInTests( boolean skipInTests )
     {
-        this.disabled = disabled;
+        this.skipInTests = skipInTests;
     }
     
     // -------------------------------------------------------------------------
@@ -60,9 +59,9 @@ public abstract class AbstractStartupRoutine
     {
         return runlevel;
     }
-
-    public boolean isDisabled()
+    
+    public boolean skipInTests()
     {
-        return disabled;
+        return skipInTests;
     }
 }

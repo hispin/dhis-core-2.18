@@ -27,12 +27,14 @@ package org.hisp.dhis.aggregation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
@@ -45,17 +47,15 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
-import org.hisp.dhis.transaction.TransactionManager;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: AggregationStoreTest.java 5942 2008-10-16 15:44:57Z larshelg $
  */
 public class AggregationStoreTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
-    private TransactionManager transactionManager;
-
     private AggregationStore aggregationStore;
 
     private DataElementService dataElementService;
@@ -72,11 +72,10 @@ public class AggregationStoreTest
     
     private StatementManager statementManager;
 
+    @Override
     public void setUpTest()
         throws Exception
     {
-        transactionManager = (TransactionManager) getBean( TransactionManager.ID );
-
         aggregationStore = (AggregationStore) getBean( AggregationStore.ID );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
@@ -94,6 +93,12 @@ public class AggregationStoreTest
         categoryOptionComboService.addDataElementCategoryOptionCombo( optionCombo );
         
         statementManager = (StatementManager) getBean( StatementManager.ID );
+    }
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
     }
 
     // -------------------------------------------------------------------------
@@ -116,6 +121,7 @@ public class AggregationStoreTest
     // AggregationStore test
     // -------------------------------------------------------------------------
 
+    @Test
     public void testRetrieveDataValuesDataElementSourcesDates()
         throws Exception
     {
@@ -151,8 +157,6 @@ public class AggregationStoreTest
         DataValue dataValueH = new DataValue( dataElementA, periodH, sourceB, optionCombo );
         dataValueH.setValue( "8" );
         
-        transactionManager.enter();
-
         dataElementService.addDataElement( dataElementA );
 
         periodService.addPeriod( periodA );
@@ -176,8 +180,6 @@ public class AggregationStoreTest
         dataValueService.addDataValue( dataValueF );
         dataValueService.addDataValue( dataValueG );
         dataValueService.addDataValue( dataValueH );
-
-        transactionManager.leave();
 
         Date startDate = getDay( 6 );
         Date endDate = getDay( 9 );

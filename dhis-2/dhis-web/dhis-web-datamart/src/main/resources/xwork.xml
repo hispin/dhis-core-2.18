@@ -16,7 +16,6 @@
       <param name="page">/dhis-web-datamart/exportForm.vm</param>
       <param name="menu">/dhis-web-datamart/menu.vm</param>
       <param name="javascripts">javascript/datamart.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
 		
 	<!-- Ajax requests -->

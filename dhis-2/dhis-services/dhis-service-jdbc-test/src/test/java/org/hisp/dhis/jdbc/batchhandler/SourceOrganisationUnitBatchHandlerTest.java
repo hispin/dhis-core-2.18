@@ -27,20 +27,26 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: SourceOrganisationUnitBatchHandlerTest.java 4949 2008-04-21 07:59:54Z larshelg $
  */
 public class SourceOrganisationUnitBatchHandlerTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
@@ -55,7 +61,8 @@ public class SourceOrganisationUnitBatchHandlerTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
     {
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
@@ -74,18 +81,25 @@ public class SourceOrganisationUnitBatchHandlerTest
         unitB = createOrganisationUnit( 'B' );
         unitC = createOrganisationUnit( 'C' );
     }
-    
+
+    @Override
     public void tearDownTest()
     {
         sourceBatchHandler.flush();
-        
         organisationUnitbatchHandler.flush();
     }
-
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddObject()
     {
         int idA = sourceBatchHandler.insertObject( unitA, true );
@@ -109,6 +123,7 @@ public class SourceOrganisationUnitBatchHandlerTest
         assertTrue( units.contains( unitC ) );
     }    
 
+    @Test
     public void testInsertObject()
     {
         int idA = sourceBatchHandler.insertObject( unitA, true );
@@ -128,6 +143,7 @@ public class SourceOrganisationUnitBatchHandlerTest
         assertNotNull( organisationUnitService.getOrganisationUnit( idC ) );
     }    
 
+    @Test
     public void testUpdateObject()
     {
         int id = organisationUnitService.addOrganisationUnit( unitA );
@@ -138,7 +154,8 @@ public class SourceOrganisationUnitBatchHandlerTest
         
         assertEquals( organisationUnitService.getOrganisationUnit( id ).getName(), "UpdatedName" );
     }
-    
+
+    @Test
     public void testGetObjectIdentifier()
     {
         int referenceId = organisationUnitService.addOrganisationUnit( unitA );
@@ -147,7 +164,8 @@ public class SourceOrganisationUnitBatchHandlerTest
 
         assertEquals( referenceId, retrievedId );
     }
-    
+
+    @Test
     public void testObjectExists()
     {
         organisationUnitService.addOrganisationUnit( unitA );

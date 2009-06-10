@@ -27,21 +27,27 @@ package org.hisp.dhis.datadictionary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataDictionaryStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DataDictionaryStore dataDictionaryStore;
 
@@ -60,6 +66,7 @@ public class DataDictionaryStoreTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -87,6 +94,7 @@ public class DataDictionaryStoreTest
     // DataDictionary tests
     // -------------------------------------------------------------------------
     
+    @Test
     public void testSaveGetDataDictionary()
     {
         dataElementService.addDataElement( dataElementA );
@@ -129,6 +137,7 @@ public class DataDictionaryStoreTest
         assertEquals( dataDictionaryA.getRegion(), "RegionB" );
     }
 
+    @Test
     public void testGetDataDictionaryByName()
     {
         dataDictionaryStore.saveDataDictionary( dataDictionaryA );
@@ -141,6 +150,7 @@ public class DataDictionaryStoreTest
         assertEquals( dataDictionaryA.getDescription(), "DescriptionA" );
     }
 
+    @Test
     public void testDeleteDataDictionary()
     {
         int idA = dataDictionaryStore.saveDataDictionary( dataDictionaryA );
@@ -159,7 +169,8 @@ public class DataDictionaryStoreTest
         assertNull( dataDictionaryStore.getDataDictionary( idA ) );
         assertNull( dataDictionaryStore.getDataDictionary( idB ) );
     }
-    
+
+    @Test
     public void testGetAllDataDictionaries()
     {
         dataDictionaryStore.saveDataDictionary( dataDictionaryA );
@@ -176,6 +187,7 @@ public class DataDictionaryStoreTest
     // ExtendedDataElement tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGetExtendedDataElement()
     {
         int id = dataElementService.addDataElement( dataElementA );
@@ -188,7 +200,8 @@ public class DataDictionaryStoreTest
         assertEquals( dataElementA.getExtended().getDataDomain(), "DataDomainA" );
         assertEquals( dataElementA.getExtended().getLocation(), "LocationA" );
     }
-    
+
+    @Test
     public void testUpdateExtendedDataElement()
     {
         int id = dataElementService.addDataElement( dataElementA );
@@ -215,7 +228,8 @@ public class DataDictionaryStoreTest
         assertEquals( dataElementA.getExtended().getDataDomain(), "DataDomainB" );
         assertEquals( dataElementA.getExtended().getLocation(), "LocationB" );
     }
-    
+
+    @Test
     public void testDeleteExtendedDataElement()
         throws Exception
     {
@@ -240,6 +254,7 @@ public class DataDictionaryStoreTest
     // ExtendedIndicator tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGetExtendedIndicator()
     {
         int id = indicatorService.addIndicator( indicatorA );
@@ -252,7 +267,8 @@ public class DataDictionaryStoreTest
         assertEquals( indicatorA.getExtended().getDataDomain(), "DataDomainA" );
         assertEquals( indicatorA.getExtended().getLocation(), "LocationA" );
     }
-    
+
+    @Test
     public void testUpdateExtendedIndicator()
     {
         int id = indicatorService.addIndicator( indicatorA );
@@ -279,7 +295,8 @@ public class DataDictionaryStoreTest
         assertEquals( indicatorA.getExtended().getDataDomain(), "DataDomainB" );
         assertEquals( indicatorA.getExtended().getLocation(), "LocationB" );
     }
-    
+
+    @Test
     public void testDeleteExtendedIndicator()
         throws Exception
     {

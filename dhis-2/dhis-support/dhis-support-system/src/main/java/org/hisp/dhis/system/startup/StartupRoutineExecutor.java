@@ -40,6 +40,9 @@ public interface StartupRoutineExecutor
 {
     String ID = StartupRoutineExecutor.class.getName();
 
+    void executeForTesting()
+        throws Exception;
+    
     void addStartupRoutine( StartupRoutine routine );
 
     void addStartupRoutines( Collection<StartupRoutine> routines );

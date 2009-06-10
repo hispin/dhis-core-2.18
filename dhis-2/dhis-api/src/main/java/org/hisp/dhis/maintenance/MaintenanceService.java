@@ -33,6 +33,8 @@ package org.hisp.dhis.maintenance;
  */
 public interface MaintenanceService
 {
+    final String ID = MaintenanceService.class.getName();
+    
     /**
      * Deletes data values registered with 0 as value and associated with
      * data elements with sum as aggregation operator.

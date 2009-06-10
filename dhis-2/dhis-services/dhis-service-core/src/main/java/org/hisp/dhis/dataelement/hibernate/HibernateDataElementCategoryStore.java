@@ -31,10 +31,10 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 
 /**
  * @author Jan Henrik Overland
@@ -47,48 +47,48 @@ public class HibernateDataElementCategoryStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-
+    
     // -------------------------------------------------------------------------
     // DataElementCategory
     // -------------------------------------------------------------------------
 
     public int addDataElementCategory( DataElementCategory dataElementCategory )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( dataElementCategory );
     }
 
     public void updateDataElementCategory( DataElementCategory dataElementCategory )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( dataElementCategory );
     }
 
     public void deleteDataElementCategory( DataElementCategory dataElementCategory )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( dataElementCategory );
     }
 
     public DataElementCategory getDataElementCategory( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (DataElementCategory) session.get( DataElementCategory.class, id );
     }
 
     public DataElementCategory getDataElementCategoryByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElementCategory.class );
         criteria.add( Restrictions.eq( "name", name ) );
@@ -99,7 +99,7 @@ public class HibernateDataElementCategoryStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataElementCategory> getAllDataElementCategories()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElementCategory.class );
 

@@ -30,9 +30,9 @@ package org.hisp.dhis.expression.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 
 /**
  * @author Margrethe Store
@@ -45,11 +45,11 @@ public class HibernateExpressionStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -58,36 +58,36 @@ public class HibernateExpressionStore
 
     public int addExpression( Expression expression )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( expression );
     }
-    
+
     public void deleteExpression( Expression expression )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( expression );
     }
 
     public Expression getExpression( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Expression) session.get( Expression.class, id );
     }
 
     public void updateExpression( Expression expression )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( expression );
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<Expression> getAllExpressions()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return session.createCriteria( Expression.class ).list();
     }

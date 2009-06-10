@@ -34,28 +34,29 @@ import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataElementBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.SourceBatchHandler;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.importexport.ImportInternalProcess;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.XMLConverter;
+import org.hisp.dhis.importexport.invoker.ConverterInvoker;
 import org.hisp.dhis.importexport.ixf.converter.IndicatorConverter;
 import org.hisp.dhis.importexport.ixf.converter.SourceConverter;
 import org.hisp.dhis.importexport.ixf.converter.TimePeriodConverter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.jdbc.batchhandler.DataElementBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.SourceBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.StreamUtils;
@@ -65,7 +66,7 @@ import org.hisp.dhis.system.util.StreamUtils;
  * @version $Id: DefaultIXFImportService.java 6425 2008-11-22 00:08:57Z larshelg $
  */
 public class DefaultIXFImportService
-    extends ImportInternalProcess
+    implements ImportService
 {
     private static final Log log = LogFactory.getLog( DefaultIXFImportService.class );
     
@@ -136,6 +137,13 @@ public class DefaultIXFImportService
         this.cacheManager = cacheManager;
     }
 
+    private ConverterInvoker converterInvoker;
+
+    public void setConverterInvoker( ConverterInvoker converterInvoker )
+    {
+        this.converterInvoker = converterInvoker;
+    }
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -166,7 +174,7 @@ public class DefaultIXFImportService
         {
             if ( reader.isStartElement( TimePeriodConverter.COLLECTION_NAME ) )
             {
-                setMessage( "importing_periods" );
+                //setMessage( "importing_periods" );
                 
                 BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
                 
@@ -175,7 +183,7 @@ public class DefaultIXFImportService
                 XMLConverter converter = new TimePeriodConverter( batchHandler, 
                     periodService, importObjectService, objectMappingGenerator.getPeriodTypeMapping() );
                 
-                converter.read( reader, params );
+                converterInvoker.invokeRead( converter, reader, params );
                 
                 batchHandler.flush();
                 
@@ -183,7 +191,7 @@ public class DefaultIXFImportService
             }
             else if ( reader.isStartElement( SourceConverter.COLLECTION_NAME ) )
             {
-                setMessage( "importing_organisation_units" );
+                //setMessage( "importing_organisation_units" );
                 
                 BatchHandler sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class );
                 BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
@@ -193,9 +201,9 @@ public class DefaultIXFImportService
                 
                 XMLConverter converter = new SourceConverter( batchHandler,
                     sourceBatchHandler, importObjectService, organisationUnitService );
-                
-                converter.read( reader, params );
 
+                converterInvoker.invokeRead( converter, reader, params );
+                
                 sourceBatchHandler.flush();
                 batchHandler.flush();
                 
@@ -203,7 +211,7 @@ public class DefaultIXFImportService
             }
             else if ( reader.isStartElement( IndicatorConverter.COLLECTION_NAME ) )
             {
-                setMessage( "importing_data_elements" );
+                //setMessage( "importing_data_elements" );
 
                 BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );                
                 BatchHandler dataValueBatchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
@@ -225,8 +233,8 @@ public class DefaultIXFImportService
                     categoryOptionCombo,
                     objectMappingGenerator.getPeriodMapping( params.skipMapping() ),
                     objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ) );
-                
-                converter.read( reader, params );
+
+                converterInvoker.invokeRead( converter, reader, params );
                 
                 batchHandler.flush();
                 dataValueBatchHandler.flush();
@@ -235,7 +243,7 @@ public class DefaultIXFImportService
             }
         }
         
-        setMessage( "import_process_done" );
+        //setMessage( "import_process_done" );
         
         StreamUtils.closeInputStream( zipIn );
         

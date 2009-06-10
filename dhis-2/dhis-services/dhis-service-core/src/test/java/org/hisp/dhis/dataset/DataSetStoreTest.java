@@ -27,9 +27,14 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
@@ -38,13 +43,14 @@ import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
+import org.junit.Test;
 
 /**
  * @author Kristian Nordal
  * @version $Id: DataSetStoreTest.java 3451 2007-07-09 12:28:19Z torgeilo $
  */
 public class DataSetStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private PeriodStore periodStore;
 
@@ -54,6 +60,7 @@ public class DataSetStoreTest
     
     private PeriodType periodType;
 
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -70,7 +77,7 @@ public class DataSetStoreTest
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private void assertEquals( char uniqueCharacter, DataSet dataSet )
+    private void assertEq( char uniqueCharacter, DataSet dataSet )
     {
         assertEquals( "DataSet" + uniqueCharacter, dataSet.getName() );
         assertEquals( "ShortName" + uniqueCharacter, dataSet.getShortName() );
@@ -81,6 +88,7 @@ public class DataSetStoreTest
     // DataSet
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddDataSet()
     {
         DataSet dataSetA = createDataSet( 'A', periodType );
@@ -93,12 +101,13 @@ public class DataSetStoreTest
         dataSetB = dataSetStore.getDataSet( idB );
 
         assertEquals( idA, dataSetA.getId() );
-        assertEquals( 'A', dataSetA );
+        assertEq( 'A', dataSetA );
 
         assertEquals( idB, dataSetB.getId() );
-        assertEquals( 'B', dataSetB );
+        assertEq( 'B', dataSetB );
     }
 
+    @Test
     public void testUpdateDataSet()
     {
         DataSet dataSet = createDataSet( 'A', periodType );
@@ -107,7 +116,7 @@ public class DataSetStoreTest
 
         dataSet = dataSetStore.getDataSet( id );
 
-        assertEquals( 'A', dataSet );
+        assertEq( 'A', dataSet );
 
         dataSet.setName( "DataSetB" );
 
@@ -118,6 +127,7 @@ public class DataSetStoreTest
         assertEquals( dataSet.getName(), "DataSetB" );
     }
 
+    @Test
     public void testDeleteAndGetDataSet()
     {
         DataSet dataSetA = createDataSet( 'A', periodType );
@@ -140,6 +150,7 @@ public class DataSetStoreTest
         assertNull( dataSetStore.getDataSet( idB ) );
     }
 
+    @Test
     public void testGetDataSetByName()
         throws Exception
     {
@@ -154,6 +165,7 @@ public class DataSetStoreTest
         assertNull( dataSetStore.getDataSetByName( "DataSetC" ) );
     }
 
+    @Test
     public void testGetDataSetByShortName()
         throws Exception
     {
@@ -168,51 +180,7 @@ public class DataSetStoreTest
         assertNull( dataSetStore.getDataSetByShortName( "ShortNameC" ) );
     }
 
-    public void testGetDataSets()
-    {
-        Source sourceA = new DummySource( "A" );
-        sourceStore.addSource( sourceA );
-        Source sourceB = new DummySource( "B" );
-        sourceStore.addSource( sourceB );
-        Source sourceC = new DummySource( "C" );
-        sourceStore.addSource( sourceC );
-        Source sourceD = new DummySource( "D" );
-        sourceStore.addSource( sourceD );
-
-        DataSet dataSetA = new DataSet( "A", new WeeklyPeriodType() );
-        dataSetA.getSources().add( sourceA );
-        dataSetStore.addDataSet( dataSetA );
-
-        DataSet dataSetB = new DataSet( "B", new WeeklyPeriodType() );
-        dataSetB.getSources().add( sourceB );
-        dataSetB.getSources().add( sourceC );
-        dataSetStore.addDataSet( dataSetB );
-
-        DataSet dataSetC = new DataSet( "C", new WeeklyPeriodType() );
-        dataSetC.getSources().add( sourceA );
-        dataSetC.getSources().add( sourceB );
-        dataSetStore.addDataSet( dataSetC );
-
-        Collection<DataSet> result;
-
-        result = dataSetStore.getDataSetsBySource( sourceA );
-        assertEquals( 2, result.size() );
-        assertTrue( result.contains( dataSetA ) );
-        assertTrue( result.contains( dataSetC ) );
-
-        result = dataSetStore.getDataSetsBySource( sourceB );
-        assertEquals( 2, result.size() );
-        assertTrue( result.contains( dataSetB ) );
-        assertTrue( result.contains( dataSetC ) );
-
-        result = dataSetStore.getDataSetsBySource( sourceC );
-        assertEquals( 1, result.size() );
-        assertTrue( result.contains( dataSetB ) );
-
-        result = dataSetStore.getDataSetsBySource( sourceD );
-        assertEquals( 0, result.size() );
-    }
-
+    @Test
     public void testGetAllDataSets()
     {
         DataSet dataSetA = createDataSet( 'A', periodType );
@@ -232,6 +200,7 @@ public class DataSetStoreTest
     // FrequencyOverrideAssociation
     // -------------------------------------------------------------------------
 
+    @Test
     public void testFrequencyOverrideAssociation()
         throws Exception
     {

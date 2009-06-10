@@ -32,10 +32,10 @@ import java.util.Collections;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Expression;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementStore;
 import org.hisp.dhis.source.Source;
@@ -51,11 +51,11 @@ public class HibernateMinMaxDataElementStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -64,14 +64,14 @@ public class HibernateMinMaxDataElementStore
 
     public int addMinMaxDataElement( MinMaxDataElement minMaxDataElement )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( minMaxDataElement );
     }
 
     public void delMinMaxDataElement( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         MinMaxDataElement minMaxDataElement = (MinMaxDataElement) session.get( MinMaxDataElement.class, id );
 
@@ -80,21 +80,21 @@ public class HibernateMinMaxDataElementStore
 
     public void updateMinMaxDataElement( MinMaxDataElement minMaxDataElement )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( minMaxDataElement );
     }
 
     public MinMaxDataElement getMinMaxDataElement( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (MinMaxDataElement) session.get( MinMaxDataElement.class, id );
     }
 
     public MinMaxDataElement getMinMaxDataElement( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MinMaxDataElement.class );
         criteria.add( Expression.eq( "source", source ) );
@@ -103,11 +103,11 @@ public class HibernateMinMaxDataElementStore
 
         return (MinMaxDataElement) criteria.uniqueResult();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<MinMaxDataElement> getMinMaxDataElements( Source source, DataElement dataElement )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MinMaxDataElement.class );
         criteria.add( Expression.eq( "source", source ) );
@@ -125,7 +125,7 @@ public class HibernateMinMaxDataElementStore
             return Collections.emptySet();
         }
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MinMaxDataElement.class );
         criteria.add( Expression.eq( "source", source ) );
@@ -133,11 +133,11 @@ public class HibernateMinMaxDataElementStore
 
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<MinMaxDataElement> getAllMinMaxDataElements()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         return session.createCriteria( MinMaxDataElement.class ).list();
     }

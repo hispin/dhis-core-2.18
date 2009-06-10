@@ -11,12 +11,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.amplecode.cave.process.SpringProcessCoordinator"
     destroy-method="close"/>
 
-  <bean id="org.hisp.dhis.system.session.SessionUtil"
-    class="org.hisp.dhis.system.session.HibernateSessionUtil">
-		<property name="sessionManager"
-      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>    
-  </bean>
-  
   <bean id="org.hisp.dhis.system.deletion.DeletionManager"
     class="org.hisp.dhis.system.deletion.DefaultDeletionManager"/>
   

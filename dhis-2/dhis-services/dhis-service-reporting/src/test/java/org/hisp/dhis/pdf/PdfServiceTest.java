@@ -31,19 +31,20 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.StreamUtils;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class PdfServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private PdfService pdfService;
     
@@ -57,6 +58,7 @@ public class PdfServiceTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         pdfService = (PdfService) getBean( PdfService.ID );
@@ -87,6 +89,7 @@ public class PdfServiceTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testWriteAllDataElements()
         throws Exception
     {        
@@ -99,7 +102,8 @@ public class PdfServiceTest
             StreamUtils.closeOutputStream( outputStream );
         }
     }
-    
+
+    @Test
     public void testWriteAllIndicators()
         throws Exception
     {
@@ -112,7 +116,8 @@ public class PdfServiceTest
             StreamUtils.closeOutputStream( outputStreamB );
         }
     }
-    
+
+    @Test
     public void testWriteAllOrganisationUnits()
         throws Exception
     {

@@ -35,13 +35,8 @@ import org.hisp.dhis.jdbc.StatementManager;
  * @version $Id$
  */
 public abstract class AbstractStatementInternalProcess
-    implements Process<OutputHolderState>
-{
-    public final Class<OutputHolderState> getStateClass()
-    {
-        return OutputHolderState.class;
-    }
-    
+    implements Process<OutputHolderState> 
+{    
     private OutputHolderState state;
 
     public void setMessage( String message )
@@ -60,21 +55,26 @@ public abstract class AbstractStatementInternalProcess
         }
     }
 
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependencies
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private StatementManager statementManager;
-        
+
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
     }
-
+    
     // -------------------------------------------------------------------------
-    // InternalProcess
+    // InternalProcess implementation
     // -------------------------------------------------------------------------
-
+    
+    public final Class<OutputHolderState> getStateClass()
+    {
+        return OutputHolderState.class;
+    }
+    
     /**
      * Delegates process execution to {@link #executeStatements()}.
      */
@@ -82,7 +82,7 @@ public abstract class AbstractStatementInternalProcess
         throws Exception
     {
         this.state = state;
-        
+
         statementManager.initialise();
         
         try

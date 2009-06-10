@@ -37,11 +37,13 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: DefaultDataSetService.java 6255 2008-11-10 16:01:24Z larshelg $
  */
+@Transactional
 public class DefaultDataSetService
     implements DataSetService
 {
@@ -119,16 +121,34 @@ public class DefaultDataSetService
 
     public Collection<DataSet> getDataSetsBySource( Source source )
     {
-        return dataSetStore.getDataSetsBySource( source );
+        Set<DataSet> dataSets = new HashSet<DataSet>();
+        
+        for ( DataSet dataSet : getAllDataSets() )
+        {
+            if ( dataSet.getSources().contains( source ) )
+            {
+                dataSets.add( dataSet );
+            }
+        }
+        
+        return dataSets;
     }
 
     public Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources )
     {
         Set<DataSet> dataSets = new HashSet<DataSet>();
         
-        for ( Source source : sources )
+        dataSets: for ( DataSet dataSet : getAllDataSets() )
         {
-            dataSets.addAll( dataSetStore.getDataSetsBySource( source ) );
+            for ( Source source : sources )
+            {
+                if ( dataSet.getSources().contains( source ) )
+                {
+                    dataSets.add( dataSet );
+                    
+                    continue dataSets;
+                }
+            }
         }
         
         return dataSets;

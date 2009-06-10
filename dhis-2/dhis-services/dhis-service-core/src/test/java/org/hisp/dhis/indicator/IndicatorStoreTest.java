@@ -27,16 +27,17 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.indicator.IndicatorStore;
-import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.system.util.UUIdUtils;
-import org.hisp.dhis.transaction.TransactionManager;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
-import java.util.*;
+import java.util.Collection;
+
+import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.system.util.UUIdUtils;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
@@ -45,19 +46,16 @@ import java.util.*;
 public class IndicatorStoreTest
     extends DhisSpringTest
 {
-    private TransactionManager transactionManager;
-
     private IndicatorStore indicatorStore;
 
     // -------------------------------------------------------------------------
     // Set up/tear down
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
         throws Exception
     {
-        transactionManager = (TransactionManager) getBean( TransactionManager.ID );
-
         indicatorStore = (IndicatorStore) getBean( IndicatorStore.ID );
     }
 
@@ -65,28 +63,7 @@ public class IndicatorStoreTest
     // Support methods
     // -------------------------------------------------------------------------
 
-    private Indicator createIndicator( char uniqueCharacter, IndicatorType type )
-    {
-        Indicator indicator = new Indicator();
-        
-        indicator.setUuid( UUIdUtils.getUUId() );
-        indicator.setName( "Indicator" + uniqueCharacter );
-        indicator.setAlternativeName( "AlternativeName" + uniqueCharacter );
-        indicator.setShortName( "ShortName" + uniqueCharacter );
-        indicator.setCode( "Code" + uniqueCharacter );
-        indicator.setDescription( "Description" + uniqueCharacter );
-        indicator.setIndicatorType( type );
-        indicator.setNumerator( "Numerator" );
-        indicator.setNumeratorDescription( "NumeratorDescription" );
-        indicator.setNumeratorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        indicator.setDenominator( "Denominator" );
-        indicator.setDenominatorDescription( "DenominatorDescription" );
-        indicator.setDenominatorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        
-        return indicator;
-    }
-    
-    private void assertEquals( char uniqueCharacter, Indicator indicator )
+    private void assertEq( char uniqueCharacter, Indicator indicator )
     {
         assertEquals( "Indicator" + uniqueCharacter, indicator.getName() );
         assertEquals( "AlternativeName" + uniqueCharacter, indicator.getAlternativeName() );
@@ -99,11 +76,10 @@ public class IndicatorStoreTest
     // IndicatorType
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddIndicatorType()
         throws Exception
-    {
-        transactionManager.enter();
-        
+    {        
         IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
         IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1 );
         IndicatorType typeC = new IndicatorType( "IndicatorTypeA", 100 );
@@ -111,8 +87,6 @@ public class IndicatorStoreTest
         int idA = indicatorStore.addIndicatorType( typeA );
         int idB = indicatorStore.addIndicatorType( typeB );
         
-        transactionManager.leave();
-
         try
         {
             indicatorStore.addIndicatorType( typeC );
@@ -122,8 +96,6 @@ public class IndicatorStoreTest
         {
         }
 
-        transactionManager.enter();
-
         typeA = indicatorStore.getIndicatorType( idA );
         assertNotNull( typeA );
         assertEquals( idA, typeA.getId() );
@@ -131,10 +103,9 @@ public class IndicatorStoreTest
         typeB = indicatorStore.getIndicatorType( idB );
         assertNotNull( typeB );
         assertEquals( idB, typeB.getId() );
-        
-        transactionManager.leave();
     }
-    
+
+    @Test
     public void testUpdateIndicatorType()
         throws Exception
     {
@@ -149,7 +120,8 @@ public class IndicatorStoreTest
         assertNotNull( typeA );
         assertEquals( typeA.getName(), "IndicatorTypeB" );
     }
-    
+
+    @Test
     public void testGetAndDeleteIndicatorType()
         throws Exception
     {
@@ -172,7 +144,8 @@ public class IndicatorStoreTest
         assertNull( indicatorStore.getIndicatorType( idA ) );
         assertNull( indicatorStore.getIndicatorType( idB ) );        
     }
-    
+
+    @Test
     public void testGetAllIndicatorTypes()
         throws Exception
     {
@@ -188,7 +161,8 @@ public class IndicatorStoreTest
         assertTrue( types.contains( typeA ) );
         assertTrue( types.contains( typeB ) );
     }
-    
+
+    @Test
     public void testGetIndicatorTypeByName()
         throws Exception
     {
@@ -213,11 +187,10 @@ public class IndicatorStoreTest
     // IndicatorGroup
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddIndicatorGroup()
         throws Exception
-    {
-        transactionManager.enter();
-        
+    {        
         IndicatorGroup groupA = new IndicatorGroup( "IndicatorGroupA" );
         IndicatorGroup groupB = new IndicatorGroup( "IndicatorGroupB" );
         IndicatorGroup groupC = new IndicatorGroup( "IndicatorGroupA" );
@@ -225,8 +198,6 @@ public class IndicatorStoreTest
         int idA = indicatorStore.addIndicatorGroup( groupA );
         int idB = indicatorStore.addIndicatorGroup( groupB );
         
-        transactionManager.leave();
-
         try
         {
             indicatorStore.addIndicatorGroup( groupC );
@@ -236,8 +207,6 @@ public class IndicatorStoreTest
         {
         }
 
-        transactionManager.enter();
-
         groupA = indicatorStore.getIndicatorGroup( idA );
         assertNotNull( groupA );
         assertEquals( idA, groupA.getId() );
@@ -245,10 +214,9 @@ public class IndicatorStoreTest
         groupB = indicatorStore.getIndicatorGroup( idB );
         assertNotNull( groupB );
         assertEquals( idB, groupB.getId() );
-        
-        transactionManager.leave();
     }
-    
+
+    @Test
     public void testUpdateIndicatorGroup()
         throws Exception
     {
@@ -263,7 +231,8 @@ public class IndicatorStoreTest
         assertNotNull( groupA );
         assertEquals( groupA.getName(), "IndicatorGroupB" );
     }
-    
+
+    @Test
     public void testGetAndDeleteIndicatorGroup()
         throws Exception
     {
@@ -286,7 +255,8 @@ public class IndicatorStoreTest
         assertNull( indicatorStore.getIndicatorGroup( idA ) );
         assertNull( indicatorStore.getIndicatorGroup( idB ) );        
     }
-    
+
+    @Test
     public void testGetIndicatorGroupByUUID()
         throws Exception
     {
@@ -302,7 +272,8 @@ public class IndicatorStoreTest
         assertNotNull( groupA );
         assertEquals( groupA.getUuid(), uuid );
     }
-    
+
+    @Test
     public void testGetAllIndicatorGroups()
         throws Exception
     {
@@ -318,7 +289,8 @@ public class IndicatorStoreTest
         assertTrue( groups.contains( groupA ) );
         assertTrue( groups.contains( groupB ) );
     }
-    
+
+    @Test
     public void testGetIndicatorGroupByName()
         throws Exception
     {
@@ -343,11 +315,10 @@ public class IndicatorStoreTest
     // Indicator
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddIndicator()
         throws Exception
-    {
-        transactionManager.enter();
-        
+    {        
         IndicatorType type = new IndicatorType( "IndicatorType", 100 );
         
         indicatorStore.addIndicatorType( type );
@@ -359,8 +330,6 @@ public class IndicatorStoreTest
         int idA = indicatorStore.addIndicator( indicatorA );
         int idB = indicatorStore.addIndicator( indicatorB );
         
-        transactionManager.leave();
-
         try
         {
             indicatorStore.addIndicator( indicatorC );
@@ -370,19 +339,16 @@ public class IndicatorStoreTest
         {
         }
 
-        transactionManager.enter();
-
         indicatorA = indicatorStore.getIndicator( idA );
         assertNotNull( indicatorA );
-        assertEquals( 'A', indicatorA );
+        assertEq( 'A', indicatorA );
         
         indicatorB = indicatorStore.getIndicator( idB );
         assertNotNull( indicatorB );
-        assertEquals( 'B', indicatorB );
-        
-        transactionManager.leave();
+        assertEq( 'B', indicatorB );
     }
-    
+
+    @Test
     public void testUpdateIndicator()
         throws Exception
     {
@@ -393,7 +359,7 @@ public class IndicatorStoreTest
         Indicator indicatorA = createIndicator( 'A', type );
         int idA = indicatorStore.addIndicator( indicatorA );
         indicatorA = indicatorStore.getIndicator( idA );
-        assertEquals( 'A', indicatorA );
+        assertEq( 'A', indicatorA );
         
         indicatorA.setName( "IndicatorB" );
         indicatorStore.updateIndicator( indicatorA );
@@ -401,7 +367,8 @@ public class IndicatorStoreTest
         assertNotNull( indicatorA );
         assertEquals( indicatorA.getName(), "IndicatorB" );
     }
-    
+
+    @Test
     public void testGetAndDeleteIndicator()
         throws Exception
     {
@@ -428,7 +395,8 @@ public class IndicatorStoreTest
         assertNull( indicatorStore.getIndicator( idA ) );
         assertNull( indicatorStore.getIndicator( idB ) );        
     }
-    
+
+    @Test
     public void testGetIndicatorByUUID()
         throws Exception
     {
@@ -447,7 +415,8 @@ public class IndicatorStoreTest
         assertNotNull( indicatorA );
         assertEquals( indicatorA.getUuid(), uuid );
     }
-    
+
+    @Test
     public void testGetAllIndicators()
         throws Exception
     {
@@ -467,7 +436,8 @@ public class IndicatorStoreTest
         assertTrue( indicators.contains( indicatorA ) );
         assertTrue( indicators.contains( indicatorB ) );
     }
-    
+
+    @Test
     public void testGetIndicatorByName()
         throws Exception
     {
@@ -486,12 +456,13 @@ public class IndicatorStoreTest
         
         indicatorA = indicatorStore.getIndicatorByName( "IndicatorA" );
         assertNotNull( indicatorA );
-        assertEquals( 'A', indicatorA );
+        assertEq( 'A', indicatorA );
         
         Indicator indicatorC = indicatorStore.getIndicatorByName( "IndicatorC" );
         assertNull( indicatorC );
     }    
 
+    @Test
     public void testGetIndicatorByAlternativeName()
         throws Exception
     {
@@ -510,12 +481,13 @@ public class IndicatorStoreTest
         
         indicatorA = indicatorStore.getIndicatorByAlternativeName( "AlternativeNameA" );
         assertNotNull( indicatorA );
-        assertEquals( 'A', indicatorA );
+        assertEq( 'A', indicatorA );
         
         Indicator indicatorC = indicatorStore.getIndicatorByAlternativeName( "AlternativeNameC" );
         assertNull( indicatorC );
     }
-    
+
+    @Test
     public void testGetIndicatorByShortName()
         throws Exception
     {
@@ -534,12 +506,13 @@ public class IndicatorStoreTest
         
         indicatorA = indicatorStore.getIndicatorByShortName( "ShortNameA" );
         assertNotNull( indicatorA );
-        assertEquals( 'A', indicatorA );
+        assertEq( 'A', indicatorA );
         
         Indicator indicatorC = indicatorStore.getIndicatorByShortName( "ShortNameC" );
         assertNull( indicatorC );
     }    
 
+    @Test
     public void testGetIndicatorByCodeName()
         throws Exception
     {
@@ -558,7 +531,7 @@ public class IndicatorStoreTest
         
         indicatorA = indicatorStore.getIndicatorByCode( "CodeA" );
         assertNotNull( indicatorA );
-        assertEquals( 'A', indicatorA );
+        assertEq( 'A', indicatorA );
         
         Indicator indicatorC = indicatorStore.getIndicatorByCode( "CodeC" );
         assertNull( indicatorC );

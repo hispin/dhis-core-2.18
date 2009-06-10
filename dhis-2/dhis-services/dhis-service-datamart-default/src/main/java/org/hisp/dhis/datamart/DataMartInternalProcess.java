@@ -43,14 +43,25 @@ import org.hisp.dhis.system.process.AbstractStatementInternalProcess;
  * 
  * @version $Id: DataMartInternalProcess.java 6222 2008-11-07 12:20:46Z larshelg $
  */
-public abstract class DataMartInternalProcess
-    extends AbstractStatementInternalProcess implements DataMartService, SerialToGroup
+public class DataMartInternalProcess
+    extends AbstractStatementInternalProcess implements SerialToGroup
 {
     public static final String ID = "internal-process-DataMart";
     public static final String PROCESS_TYPE = "DataMart";
     
     private static final String PROCESS_GROUP = "DataMartProcessGroup";
 
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+    
+    private DataMartService dataMartService;
+
+    public void setDataMartService( DataMartService dataMartService )
+    {
+        this.dataMartService = dataMartService;
+    }
+    
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
@@ -108,6 +119,6 @@ public abstract class DataMartInternalProcess
     protected void executeStatements()
         throws Exception
     {
-        export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );        
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );        
     }
 }

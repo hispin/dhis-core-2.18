@@ -31,13 +31,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
-import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.AggregatedIndicatorValueBatchHandler;
-import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -54,6 +50,10 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.AggregatedIndicatorValueBatchHandler;
 import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -61,16 +61,17 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class ReportTableCreatorTest
-    extends DhisConvenienceTest
+public class ReportTableServiceTest
+    extends DhisTest
 {
-    private ReportTableCreator reportTableCreator;
-
+    private ReportTableService reportTableService;
+    
     private BatchHandlerFactory batchHandlerFactory;
     
     private List<DataElement> dataElements;
@@ -139,8 +140,8 @@ public class ReportTableCreatorTest
     public void setUpTest()
         throws Exception
     {
-        reportTableCreator = (ReportTableCreator) getBean( ReportTableInternalProcess.ID );
-
+        reportTableService = (ReportTableService) getBean( ReportTableService.ID );
+        
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );        
@@ -327,141 +328,182 @@ public class ReportTableCreatorTest
         
         dataValueBatchHandler.flush();
     }
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
 
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testCreateDataElementReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
+        reportTableService.saveReportTable( reportTable );
+        
         reportTable.init();
         
-        reportTableCreator.createReportTable( reportTable, false );
+        reportTableService.createReportTable( reportTable, false );
     }
-    
+
+    @Test
     public void testCreateDataElementReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
+        reportTableService.saveReportTable( reportTable );
+        
         reportTable.init();
         
-        reportTableCreator.createReportTable( reportTable, false );
+        reportTableService.createReportTable( reportTable, false );
     }
-    
+
+    @Test
     public void testCreateDataElementReportTableC()
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
+        reportTableService.saveReportTable( reportTable );
+        
         reportTable.init();
         
-        reportTableCreator.createReportTable( reportTable, false );
+        reportTableService.createReportTable( reportTable, false );
     }
 
+    @Test
     public void testCreateDataElementWithCategoryOptionComboReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
+        reportTableService.saveReportTable( reportTable );
+        
         reportTable.init();
         
-        reportTableCreator.createReportTable( reportTable, false );
+        reportTableService.createReportTable( reportTable, false );
     }
 
-    
+    @Test    
     public void testCreateDataElementWithCategoryOptionComboReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             false, true, false, true, relatives, null, i18nFormat, "january_2000" );
 
+        reportTableService.saveReportTable( reportTable );
+        
         reportTable.init();
         
-        reportTableCreator.createReportTable( reportTable, false );
+        reportTableService.createReportTable( reportTable, false );
     }
-    
+
+    @Test
     public void testCreateDataElementWithCategoryOptionComboReportTableC()
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
+        reportTableService.saveReportTable( reportTable );
+        
         reportTable.init();
         
-        reportTableCreator.createReportTable( reportTable, false );
+        reportTableService.createReportTable( reportTable, false );
     }
-    
+
+    @Test
     public void testCreateIndicatorReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_INDICATORS, false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
+        reportTableService.saveReportTable( reportTable );
+        
         reportTable.init();
         
-        reportTableCreator.createReportTable( reportTable, false );
+        reportTableService.createReportTable( reportTable, false );
     }
-    
+
+    @Test
     public void testCreateIndicatorReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_INDICATORS, false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
+        reportTableService.saveReportTable( reportTable );
+        
         reportTable.init();
         
-        reportTableCreator.createReportTable( reportTable, false );
+        reportTableService.createReportTable( reportTable, false );
     }
-    
+
+    @Test
     public void testCreateIndicatorReportTableC()
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_INDICATORS, false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
+        reportTableService.saveReportTable( reportTable );
+        
         reportTable.init();
         
-        reportTableCreator.createReportTable( reportTable, false );
+        reportTableService.createReportTable( reportTable, false );
     }
 
+    @Test
     public void testCreateDataSetReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATASETS, false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
+        reportTableService.saveReportTable( reportTable );
+        
         reportTable.init();
         
-        reportTableCreator.createReportTable( reportTable, false );
+        reportTableService.createReportTable( reportTable, false );
     }
-    
+
+    @Test
     public void testCreateDataSetReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATASETS, false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
+        reportTableService.saveReportTable( reportTable );
+        
         reportTable.init();
         
-        reportTableCreator.createReportTable( reportTable, false );
+        reportTableService.createReportTable( reportTable, false );
     }
-    
+
+    @Test
     public void testCreateDataSetReportTableC()
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATASETS, false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             true, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
+        reportTableService.saveReportTable( reportTable );
+        
         reportTable.init();
         
-        reportTableCreator.createReportTable( reportTable, false );
+        reportTableService.createReportTable( reportTable, false );
     }
 }

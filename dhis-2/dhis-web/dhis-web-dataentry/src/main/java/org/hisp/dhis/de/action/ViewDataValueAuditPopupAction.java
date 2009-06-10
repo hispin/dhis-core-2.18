@@ -35,7 +35,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValueAudit;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -47,7 +46,6 @@ import com.opensymphony.xwork.Action;
  * @author Latifov Murodillo Abdusamadovich
  * @version $Id$
  */
-
 public class ViewDataValueAuditPopupAction
     implements Action
 {
@@ -83,13 +81,6 @@ public class ViewDataValueAuditPopupAction
     public void setDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo )
     {
         this.dataElementCategoryOptionCombo = dataElementCategoryOptionCombo;
-    }
-
-    private HibernateSessionManager sessionManager;
-
-    public void setSessionManager( HibernateSessionManager sessionManager )
-    {
-        this.sessionManager = sessionManager;
     }
 
     private DataValueService dataValueService;
@@ -217,17 +208,13 @@ public class ViewDataValueAuditPopupAction
         this.periodId = periodId;
     }
 
-    public HibernateSessionManager getSessionManager()
-    {
-        return sessionManager;
-    }
-
     public String execute()
         throws Exception
     {
         dataElement = dataElementService.getDataElement( getDataElementId() );
         organisationUnit = organisationUnitService.getOrganisationUnit( getOrganisationUnitId() );
         period = periodService.getPeriod( getPeriodId() );
+        
         dataElementCategoryOptionCombo = dataElementCategoryOptionComboService
             .getDataElementCategoryOptionCombo( getDataElementComboId() );
 

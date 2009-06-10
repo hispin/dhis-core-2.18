@@ -30,10 +30,13 @@ package org.hisp.dhis.olap;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional
 public class DefaultOlapURLService
     implements OlapURLService
 {

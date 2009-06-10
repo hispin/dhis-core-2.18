@@ -35,8 +35,8 @@ import java.util.Locale;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.i18n.Translation;
 import org.hisp.dhis.i18n.TranslationStore;
 
@@ -50,11 +50,11 @@ public class HibernateTranslationStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -63,21 +63,21 @@ public class HibernateTranslationStore
 
     public void addTranslation( Translation translation )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.save( translation );
     }
 
     public void updateTranslation( Translation translation )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( translation );
     }
 
     public Translation getTranslation( String className, int id, Locale locale, String property )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Translation.class );
 
@@ -92,7 +92,7 @@ public class HibernateTranslationStore
     @SuppressWarnings( "unchecked" )
     public Collection<Translation> getTranslations( String className, int id, Locale locale )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Translation.class );
 
@@ -108,7 +108,7 @@ public class HibernateTranslationStore
     @SuppressWarnings( "unchecked" )
     public Collection<Translation> getTranslations( String className, Locale locale )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Translation.class );
 
@@ -121,7 +121,7 @@ public class HibernateTranslationStore
     @SuppressWarnings( "unchecked" )
     public Collection<Translation> getAllTranslations()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Translation.class );
 
@@ -130,7 +130,7 @@ public class HibernateTranslationStore
 
     public void deleteTranslation( Translation translation )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( translation );
     }
@@ -138,7 +138,7 @@ public class HibernateTranslationStore
     @SuppressWarnings( "unchecked" )
     public void deleteTranslations( String className, int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from Translation t where t.className = :className and t.id = :id" );
 
@@ -156,7 +156,7 @@ public class HibernateTranslationStore
     @SuppressWarnings( "unchecked" )
     public Collection<Locale> getAvailableLocales()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         List<Object> objlist = session.createQuery( "select distinct translation.locale from Translation translation" )
             .list();
@@ -172,6 +172,10 @@ public class HibernateTranslationStore
 
         return locales;
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
 
     /**
      * Creates a Locale object based on the input String

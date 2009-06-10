@@ -28,6 +28,7 @@ package org.hisp.dhis.importexport.dhis14.xml.exporter;
  */
 
 import org.amplecode.staxwax.writer.XMLWriter;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.importexport.ExportPipeThread;
 
 /**
@@ -41,6 +42,11 @@ public class Dhis14ExportPipeThread
     private static final String DATA_ROOT_NAME = "dataroot";
     private static final String[] DATA_ROOT_PROPERTIES = { "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance" };
 
+    public Dhis14ExportPipeThread( SessionFactory sessionFactory )
+    {
+        super( sessionFactory );
+    }
+    
     @Override
     protected void beforeXSD( XMLWriter writer )
     {

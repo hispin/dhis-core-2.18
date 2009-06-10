@@ -31,11 +31,13 @@ import java.util.Collection;
 
 import org.hisp.dhis.design.Design;
 import org.hisp.dhis.design.DesignStore;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional
 public class DefaultDesignService
 {
     private DesignStore designStore;

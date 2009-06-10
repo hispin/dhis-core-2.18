@@ -27,18 +27,24 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementCategoryStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DataElementCategoryStore categoryStore;
     
@@ -82,6 +88,7 @@ public class DataElementCategoryStoreTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGet()
     {
         categoryA = new DataElementCategory( "CategoryA", categoryOptions );
@@ -100,7 +107,8 @@ public class DataElementCategoryStoreTest
         assertEquals( categoryOptions, categoryStore.getDataElementCategory( idB ).getCategoryOptions() );
         assertEquals( categoryOptions, categoryStore.getDataElementCategory( idC ).getCategoryOptions() );        
     }
-    
+
+    @Test
     public void testDelete()
     {
         categoryA = new DataElementCategory( "CategoryA", categoryOptions );
@@ -127,7 +135,8 @@ public class DataElementCategoryStoreTest
         assertNull( categoryStore.getDataElementCategory( idB ) );
         assertNotNull( categoryStore.getDataElementCategory( idC ) );        
     }
-    
+
+    @Test
     public void testGetAll()
     {
         categoryA = new DataElementCategory( "CategoryA", categoryOptions );

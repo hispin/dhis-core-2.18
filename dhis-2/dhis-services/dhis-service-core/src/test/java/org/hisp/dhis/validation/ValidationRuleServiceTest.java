@@ -27,13 +27,18 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
@@ -52,13 +57,14 @@ import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
 import org.hisp.dhis.system.util.MathUtils;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ValidationRuleServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {    
     private ValidationRuleService validationRuleService;
 
@@ -108,7 +114,8 @@ public class ValidationRuleServiceTest
     // ----------------------------------------------------------------------
     // Fixture
     // ----------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
         throws Exception
     {       
@@ -196,6 +203,7 @@ public class ValidationRuleServiceTest
     // Business logic tests
     // ----------------------------------------------------------------------
 
+    @Test
     public void testValidateDateDateSources()
     {
         dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "1", categoryOptionCombo ) );
@@ -246,7 +254,8 @@ public class ValidationRuleServiceTest
         assertEquals( results.size(), 8 );
         assertEquals( reference, results );
     }
-    
+
+    @Test
     public void testValidateDateDateSourcesGroup()
     {
         dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "1", categoryOptionCombo ) );
@@ -297,7 +306,8 @@ public class ValidationRuleServiceTest
         assertEquals( results.size(), 4 );
         assertEquals( reference, results );
     }
-    
+
+    @Test
     public void testValidateDateDateSource()
     {
         dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "1", categoryOptionCombo ) );
@@ -333,7 +343,8 @@ public class ValidationRuleServiceTest
         assertEquals( results.size(), 4 );
         assertEquals( reference, results );
     }
-    
+
+    @Test
     public void testValidateDataSetPeriodSource()
     {
         dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "1", categoryOptionCombo ) );
@@ -366,7 +377,8 @@ public class ValidationRuleServiceTest
     // ----------------------------------------------------------------------
     // CURD functionality tests
     // ----------------------------------------------------------------------
-    
+
+    @Test
     public void testAddGetValidationRule()
     {
         int id = validationRuleService.addValidationRule( validationRuleA );
@@ -380,7 +392,8 @@ public class ValidationRuleServiceTest
         assertNotNull( validationRuleA.getLeftSide().getExpression() );
         assertNotNull( validationRuleA.getRightSide().getExpression() );
     }
-    
+
+    @Test
     public void testUpdateValidationRule()
     {
         int id = validationRuleService.addValidationRule( validationRuleA );
@@ -406,7 +419,8 @@ public class ValidationRuleServiceTest
         assertEquals( validationRuleA.getType(), ValidationRule.TYPE_STATISTICAL );
         assertEquals( validationRuleA.getOperator(), ValidationRule.OPERATOR_GREATER );
     }
-    
+
+    @Test
     public void testDeleteValidationRule()
     {
         int idA = validationRuleService.addValidationRule( validationRuleA );
@@ -414,18 +428,23 @@ public class ValidationRuleServiceTest
         
         assertNotNull( validationRuleService.getValidationRule( idA ) );
         assertNotNull( validationRuleService.getValidationRule( idB ) );
+
+        validationRuleA.clearExpressions();
         
         validationRuleService.deleteValidationRule( validationRuleA );
 
         assertNull( validationRuleService.getValidationRule( idA ) );
         assertNotNull( validationRuleService.getValidationRule( idB ) );
-                
+
+        validationRuleB.clearExpressions();
+        
         validationRuleService.deleteValidationRule( validationRuleB );
         
         assertNull( validationRuleService.getValidationRule( idA ) );
         assertNull( validationRuleService.getValidationRule( idB ) );
     }
-    
+
+    @Test
     public void testGetAllValidationRules()
     {
         validationRuleService.addValidationRule( validationRuleA );
@@ -438,6 +457,7 @@ public class ValidationRuleServiceTest
         assertTrue( rules.contains( validationRuleB ) );        
     }
 
+    @Test
     public void testGetValidationRuleByName()
     {
         int id = validationRuleService.addValidationRule( validationRuleA );
@@ -453,6 +473,7 @@ public class ValidationRuleServiceTest
     // ValidationRuleGroup
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddValidationRuleGroup()
     {
         ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
@@ -479,6 +500,7 @@ public class ValidationRuleServiceTest
         assertEquals( groupB, validationRuleService.getValidationRuleGroup( idB ) );
     }
 
+    @Test
     public void testUpdateValidationRuleGroup()
     {
         ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
@@ -514,6 +536,7 @@ public class ValidationRuleServiceTest
         assertEquals( groupB, validationRuleService.getValidationRuleGroup( idB ) );        
     }
 
+    @Test
     public void testDeleteValidationRuleGroup()
     {
         ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
@@ -550,6 +573,7 @@ public class ValidationRuleServiceTest
         assertNull( validationRuleService.getValidationRuleGroup( idB ) );
     }
 
+    @Test
     public void testGetAllValidationRuleGroup()
     {
         ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
@@ -579,6 +603,7 @@ public class ValidationRuleServiceTest
         assertTrue( groups.contains( groupB ) );
     }
 
+    @Test
     public void testGetValidationRuleGroupByName()
     {
         ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );

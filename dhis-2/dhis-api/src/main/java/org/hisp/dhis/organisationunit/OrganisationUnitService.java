@@ -187,6 +187,15 @@ public interface OrganisationUnitService
      * Returns the hierarchical level in which the given OrganisationUnit
      * resides.
      * 
+     * @param id the identifier of the OrganisationUnit.
+     * @return the hierarchical level of the given OrganisationUnit.
+     */
+    int getLevelOfOrganisationUnit( int id );
+    
+    /**
+     * Returns the hierarchical level in which the given OrganisationUnit
+     * resides.
+     * 
      * @param organisationUnit the OrganisationUnit.
      * @return the hierarchical level of the given OrganisationUnit.
      */
@@ -236,7 +245,7 @@ public interface OrganisationUnitService
     /**
      * This method is not intended to be used by other modules!
      */
-    Collection<Integer> getChildren( OrganisationUnitHierarchy hierarchy, int parentId );
+    Collection<Integer> getChildren( int organisationUnitHierarchyId, int parentId );
 
     // -------------------------------------------------------------------------
     // OrganisationUnitLevel

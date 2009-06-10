@@ -32,14 +32,13 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
-
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -54,6 +53,13 @@ public class DataElementCategoryOptionComboStartupRoutine
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
     private DataElementCategoryOptionComboService categoryOptionComboService;
     
     public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
@@ -68,76 +74,62 @@ public class DataElementCategoryOptionComboStartupRoutine
         this.categoryComboService = categoryComboService;
     }
 
-    private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
-
     // -------------------------------------------------------------------------
     // AbstractStartupRoutine implementation
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void execute()
         throws Exception
     {
-        StatementHolder holder = statementManager.getHolder();
         
-        try
+        List<DataElementCategoryOptionCombo> combos = new ArrayList<DataElementCategoryOptionCombo>();
+        
+        for ( DataElementCategoryOptionCombo combo : categoryOptionComboService.getAllDataElementCategoryOptionCombos() )
         {
-            List<DataElementCategoryOptionCombo> combos = new ArrayList<DataElementCategoryOptionCombo>();
+            DataElementCategoryOptionCombo duplicate = combo.get( combos );
             
-            for ( DataElementCategoryOptionCombo combo : categoryOptionComboService.getAllDataElementCategoryOptionCombos() )
+            if ( duplicate != null )
             {
-                DataElementCategoryOptionCombo duplicate = combo.get( combos );
+                final DataElementCategoryOptionCombo combo1 = combo;
+                final DataElementCategoryOptionCombo combo2 = duplicate;
                 
-                if ( duplicate != null )
+                duplicate = combo1.getId() > combo2.getId() ? combo1 : combo2;
+                combo = combo1.getId() < combo2.getId() ? combo1 : combo2;
+                
+                log.warn( "Categoryoptioncombo id='" + combo.getId() + "' duplicate id='" + duplicate.getId() + "'" );
+                
+                try
+                {                    
+                    String sql = "update datavalue set categoryoptioncomboid=" + combo.getId() + " where categoryoptioncomboid=" + duplicate.getId();
+                
+                    int result = jdbcTemplate.update( sql );
+                    
+                    log.info( "Moved " + result + " datavalues from duplicate to existing categoryoptioncombo" );                        
+                }
+                catch ( Exception ex ) // Moving values resulted in duplicate datavalues
                 {
-                    final DataElementCategoryOptionCombo combo1 = combo;
-                    final DataElementCategoryOptionCombo combo2 = duplicate;
+                    String sql = "delete from datavalue where categoryoptioncomboid=" + duplicate.getId();
                     
-                    duplicate = combo1.getId() > combo2.getId() ? combo1 : combo2;
-                    combo = combo1.getId() < combo2.getId() ? combo1 : combo2;
+                    int result = jdbcTemplate.update( sql );
                     
-                    log.warn( "Categoryoptioncombo id='" + combo.getId() + "' duplicate id='" + duplicate.getId() + "'" );
-                    
-                    try
-                    {                    
-                        String sql = "update datavalue set categoryoptioncomboid=" + combo.getId() + " where categoryoptioncomboid=" + duplicate.getId();
-                    
-                        int result = holder.getStatement().executeUpdate( sql );
-                        
-                        log.info( "Moved " + result + " datavalues from duplicate to existing categoryoptioncombo" );                        
-                    }
-                    catch ( Exception ex ) // Moving values resulted in duplicate datavalues
-                    {
-                        String sql = "delete from datavalue where categoryoptioncomboid=" + duplicate.getId();
-                        
-                        int result = holder.getStatement().executeUpdate( sql );
-                        
-                        log.info( "Deleted " + result + " datavalues registered for duplicate categoryoptioncombo" );
-                    }
-                    
-                    DataElementCategoryCombo categoryCombo = duplicate.getCategoryCombo();
-                    
-                    categoryCombo.getOptionCombos().remove( duplicate );
-                    
-                    categoryComboService.updateDataElementCategoryCombo( categoryCombo );
+                    log.info( "Deleted " + result + " datavalues registered for duplicate categoryoptioncombo" );
+                }
+                
+                DataElementCategoryCombo categoryCombo = duplicate.getCategoryCombo();
+                
+                categoryCombo.getOptionCombos().remove( duplicate );
+                
+                categoryComboService.updateDataElementCategoryCombo( categoryCombo );
 
-                    categoryOptionComboService.deleteDataElementCategoryOptionCombo( duplicate );
-                    
-                    log.info( "Deleted duplicate categoryoptioncombo" );
-                }
-                else
-                {
-                    combos.add( combo );
-                }
+                categoryOptionComboService.deleteDataElementCategoryOptionCombo( duplicate );
+                
+                log.info( "Deleted duplicate categoryoptioncombo" );
             }
-        }
-        finally
-        {
-            holder.close();
+            else
+            {
+                combos.add( combo );
+            }
         }
         
         log.info( "Verified CategoryOptionCombos" );

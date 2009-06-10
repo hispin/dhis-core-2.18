@@ -20,8 +20,6 @@
         class="org.hisp.dhis.webportal.interceptor.WebWorkPortalUserInterceptor"/>
       <interceptor name="securityInterceptor"
         class="org.hisp.dhis.security.intercept.WebWorkSecurityInterceptor"/>
-      <interceptor name="execAndWait"
-        class="org.hisp.dhis.hibernate.interceptor.OpenSessionExecuteAndWaitInterceptor"/>
       
       <interceptor-stack name="commonInterceptors">
         <interceptor-ref name="static-params"/>
@@ -49,11 +47,6 @@
         <interceptor-ref name="commonInterceptors"/>
       </interceptor-stack>
       
-      <interceptor-stack name="transactionStack">
-        <interceptor-ref name="exceptionStack"/>
-        <interceptor-ref name="transactionInterceptor"/>
-      </interceptor-stack>
-      
       <interceptor-stack name="fileUploadStack">
         <interceptor-ref name="exceptionInterceptor"/>
         <interceptor-ref name="fileUpload"/>
@@ -61,8 +54,8 @@
       </interceptor-stack>
       
       <interceptor-stack name="organisationUnitTreeStack">
-        <interceptor-ref name="transactionStack"/>
         <interceptor-ref name="organisationUnitTreeInterceptor"/>
+        <interceptor-ref name="commonInterceptors"/>
       </interceptor-stack>
     </interceptors>
     
@@ -84,32 +77,27 @@
     
     <action name="expandSubtree" class="org.hisp.dhis.oust.action.ExpandSubtreeAction">
       <result name="success" type="velocity">/dhis-web-commons/ouwt/responseExpand.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="getExpandedTree" class="org.hisp.dhis.oust.action.GetExpandedTreeAction">
       <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseTree.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="setorgunit" class="org.hisp.dhis.oust.action.SetSelectedOrganisationUnitAction">
       <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseSelect.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="addorgunit" class="org.hisp.dhis.oust.action.AddSelectedOrganisationUnitAction">
       <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseSelect.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="removeorgunit"
       class="org.hisp.dhis.oust.action.RemoveSelectedOrganisationUnitAction">
       <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseSelect.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -121,38 +109,32 @@
     
     <action name="expandSubtree" class="org.hisp.dhis.ouwt.action.ExpandSubtreeAction">
       <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseExpand.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="collapseSubtree" class="org.hisp.dhis.ouwt.action.CollapseSubtreeAction">
       <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseCollapse.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="getExpandedTree" class="org.hisp.dhis.ouwt.action.GetExpandedTreeAction">
       <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseTree.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="setorgunit" class="org.hisp.dhis.ouwt.action.SetSelectedOrganisationUnitAction">
       <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseSelect.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="addorgunit" class="org.hisp.dhis.ouwt.action.AddSelectedOrganisationUnitAction">
       <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseSelect.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="removeorgunit"
       class="org.hisp.dhis.ouwt.action.RemoveSelectedOrganisationUnitAction">
       <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseSelect.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -195,7 +177,6 @@
     
     <action name="loggedIn" class="org.hisp.dhis.security.action.LoggedInAction">
       <result name="success" type="redirect">/</result>
-      <interceptor-ref name="transactionStack"/>
     </action>
     
   </package>
@@ -208,7 +189,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-commons/i18n/translate.vm</param>
       <param name="javascripts">../dhis-web-commons/i18n/i18n.js,../dhis-web-commons/lists/lists.js</param>
-      <interceptor-ref name="transactionStack"/>
     </action>
 
     <action name="translate" class="org.hisp.dhis.i18n.action.TranslateAction">
@@ -217,7 +197,6 @@
 
     <action name="getTranslations" class="org.hisp.dhis.i18n.action.GetTranslationsAction">
       <result name="success" type="velocity">/dhis-web-commons/i18n/responseTranslations.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     

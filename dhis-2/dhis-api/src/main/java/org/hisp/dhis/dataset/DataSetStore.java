@@ -98,11 +98,6 @@ public interface DataSetStore
     DataSet getDataSetByCode( String code );
     
     /**
-     * Returns all DataSets associated with the specified source.
-     */
-    Collection<DataSet> getDataSetsBySource( Source source );
-
-    /**
      * Get all DataSets.
      * 
      * @return A collection containing all DataSets.

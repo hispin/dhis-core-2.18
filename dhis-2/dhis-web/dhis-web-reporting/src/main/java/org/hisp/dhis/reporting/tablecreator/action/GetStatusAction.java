@@ -27,7 +27,9 @@ package org.hisp.dhis.reporting.tablecreator.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.util.InternalProcessUtil.*;
+import static org.hisp.dhis.util.InternalProcessUtil.PROCESS_KEY_REPORT;
+import static org.hisp.dhis.util.InternalProcessUtil.getCurrentRunningProcess;
+import static org.hisp.dhis.util.InternalProcessUtil.processIsRunning;
 
 import org.amplecode.cave.process.ProcessCoordinator;
 import org.amplecode.cave.process.ProcessExecutor;

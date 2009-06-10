@@ -37,10 +37,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * @author Abyot Asalefew
  * @version $Id$
  */
+@Transactional
 public class DefaultDataElementCategoryOptionComboService
     implements DataElementCategoryOptionComboService
 {
@@ -93,6 +96,13 @@ public class DefaultDataElementCategoryOptionComboService
         DataElementDimensionColumnOrderService dataElementDimensionColumnOrderService )
     {
         this.dataElementDimensionColumnOrderService = dataElementDimensionColumnOrderService;
+    }
+    
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -532,6 +542,13 @@ public class DefaultDataElementCategoryOptionComboService
 
         return "(" + optionsName + ")";
     }
+    
+    public Collection<Operand> getOperandsByIds( Collection<Integer> dataElementIdentifiers )
+    {
+        Collection<DataElement> dataElements = dataElementService.getDataElements( dataElementIdentifiers );
+        
+        return getOperands( dataElements );
+    }
 
     public Collection<Operand> getOperands( Collection<DataElement> dataElements )
     {
@@ -546,7 +563,7 @@ public class DefaultDataElementCategoryOptionComboService
                 for ( DataElementCategoryOptionCombo optionCombo : categoryOptionCombos )
                 {
                     Operand operand = new Operand( dataElement.getId(), optionCombo.getId(), dataElement.getName()
-                        + getOptionNames( optionCombo ), dataElement.getAggregationLevels() );
+                        + getOptionNames( optionCombo ), new ArrayList<Integer>( dataElement.getAggregationLevels() ) );
 
                     operands.add( operand );
                 }
@@ -554,7 +571,7 @@ public class DefaultDataElementCategoryOptionComboService
             else
             {
                 Operand operand = new Operand( dataElement.getId(), categoryOptionCombos.iterator().next().getId(), 
-                    dataElement.getName(), dataElement.getAggregationLevels() );
+                    dataElement.getName(), new ArrayList<Integer>( dataElement.getAggregationLevels() ) );
 
                 operands.add( operand );
             }

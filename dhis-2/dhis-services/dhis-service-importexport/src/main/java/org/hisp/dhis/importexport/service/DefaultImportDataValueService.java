@@ -33,11 +33,13 @@ import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportDataValueService;
 import org.hisp.dhis.importexport.ImportDataValueStore;
 import org.hisp.dhis.importexport.ImportObjectStatus;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: DefaultImportDataValueService.java 4665 2008-02-29 12:48:06Z larshelg $
  */
+@Transactional
 public class DefaultImportDataValueService
     implements ImportDataValueService
 {

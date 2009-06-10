@@ -27,6 +27,11 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -34,22 +39,24 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.system.session.SessionUtil;
+import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.dbms.DbmsManager;
+import org.junit.Test;
 
 /**
  * @author Kristian Nordal
  * @version $Id: OrganisationUnitServiceTest.java 6251 2008-11-10 14:37:05Z larshelg $
  */
 public class OrganisationUnitServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private OrganisationUnitService organisationUnitService;
 
     private OrganisationUnitGroupService organisationUnitGroupService;
     
-    private SessionUtil sessionUtil;
+    private DbmsManager dbmsManager;
 
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -58,14 +65,15 @@ public class OrganisationUnitServiceTest
         organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
         
         organisationUnitService.removeOrganisationUnitHierarchies( OrganisationUnitHierarchyVerifier.START_OF_TIME );
-                
-        sessionUtil = (SessionUtil) getBean( SessionUtil.ID );
+
+        dbmsManager = (DbmsManager) getBean( DbmsManager.ID );
     }
 
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
 
+    @Test
     public void testBasicOrganisationUnitCoarseGrained()
         throws Exception
     {
@@ -73,28 +81,13 @@ public class OrganisationUnitServiceTest
         String organisationUnitName1 = "organisationUnitName1";
         OrganisationUnit organisationUnit1 = new OrganisationUnit( organisationUnitName1, "shortName1",
             "organisationUnitCode1", new Date(), new Date(), true, "comment" );
-        OrganisationUnit organisationUnit1b = new OrganisationUnit( organisationUnitName1, "shortName1",
-            "organisationUnitCode1", new Date(), new Date(), true, "comment" );
 
         int id1 = organisationUnitService.addOrganisationUnit( organisationUnit1 );
 
         // assert getOrganisationUnit
         assertNotNull( organisationUnitService.getOrganisationUnit( id1 ) );
 
-        // assert unique constraint
-        try
-        {
-            organisationUnitService.addOrganisationUnit( organisationUnit1b );
-            fail( "Expected exception" );
-        }
-        catch ( Exception ex )
-        {
-            // expected
-        }
-
         assertNull( organisationUnitService.getOrganisationUnit( -1 ) );
-
-        organisationUnit1 = organisationUnitService.getOrganisationUnit( id1 );
 
         // OrganisationUnit with parent
         String organisationUnitName2 = "organisationUnitName2";
@@ -104,9 +97,7 @@ public class OrganisationUnitServiceTest
         int id2 = organisationUnitService.addOrganisationUnit( organisationUnit2 );
 
         assertTrue( organisationUnitService.getOrganisationUnit( id2 ).getParent().getId() == id1 );
-        assertTrue( organisationUnitService.getOrganisationUnit( id1 ).getChildren().contains(
-            organisationUnitService.getOrganisationUnit( id2 ) ) );
-
+        
         organisationUnitService.deleteOrganisationUnit( organisationUnitService.getOrganisationUnit( id2 ) );
         
         organisationUnitService.deleteOrganisationUnit( organisationUnitService.getOrganisationUnit( id1 ) );
@@ -116,6 +107,7 @@ public class OrganisationUnitServiceTest
         assertNull( organisationUnitService.getOrganisationUnit( id2 ) );
     }
 
+    @Test
     public void testUpdateOrganisationUnit()
         throws Exception
     {
@@ -140,6 +132,7 @@ public class OrganisationUnitServiceTest
         assertEquals( updatedOrganisationUnit.getShortName(), updatedShortName );
     }
 
+    @Test
     public void testGetOrganisationUnitWithChildren()
         throws Exception
     {
@@ -162,6 +155,7 @@ public class OrganisationUnitServiceTest
         assertTrue( organisationUnitService.getOrganisationUnitWithChildren( id1 ).size() == 3 );
     }
 
+    @Test
     public void testGetOrganisationUnitsByFields()
         throws Exception
     {
@@ -199,6 +193,7 @@ public class OrganisationUnitServiceTest
         assertNull( unit4 );
     }
 
+    @Test
     public void testGetOrganisationUnitByUUID()
         throws Exception
     {
@@ -213,6 +208,7 @@ public class OrganisationUnitServiceTest
         assertEquals( unit1, unit2 );
     }
 
+    @Test
     public void testGetOrganisationUnitGraph()
         throws Exception
     {
@@ -237,7 +233,8 @@ public class OrganisationUnitServiceTest
         orgUnit = graph.get( 2 );
         assertEquals( orgId3, orgUnit.getId() );
     }
-    
+
+    @Test
     public void testGetAllOrganisationUnitsAndGetRootOrganisationUnit()
         throws Exception
     {
@@ -287,7 +284,8 @@ public class OrganisationUnitServiceTest
         assertTrue( rootOrganisationUnit1.getId() == id1 );
         assertTrue( rootOrganisationUnit2.getId() == id4 );
     }
-    
+
+    @Test
     public void testGetOrganisationUnitsAtLevel()
         throws Exception
     {
@@ -331,7 +329,8 @@ public class OrganisationUnitServiceTest
         assertTrue( organisationUnitService.getLevelOfOrganisationUnit( unit1 ) == 1 );
         assertTrue( organisationUnitService.getLevelOfOrganisationUnit( unit6 ) == 4 );
     }
-    
+
+    @Test
     public void testGetOrganisationUnitAtLevelAndBranch()
         throws Exception
     {
@@ -391,6 +390,7 @@ public class OrganisationUnitServiceTest
     // OrganisationUnitGroup
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddAndDelOrganisationUnitGroup()
         throws Exception
     {
@@ -403,19 +403,6 @@ public class OrganisationUnitServiceTest
 
         assertEquals( organisationUnitGroupService.getOrganisationUnitGroup( id1 ).getName(), "OUGname" );
 
-        // assert unique constraint
-        OrganisationUnitGroup organisationUnitGroup2 = new OrganisationUnitGroup( "OUGname" );
-
-        try
-        {
-            organisationUnitGroupService.addOrganisationUnitGroup( organisationUnitGroup2 );
-            fail( "Expected exception" );
-        }
-        catch ( Exception ex )
-        {
-            // expected
-        }
-
         organisationUnitGroupService.deleteOrganisationUnitGroup( organisationUnitGroupService
             .getOrganisationUnitGroup( id1 ) );
 
@@ -423,6 +410,7 @@ public class OrganisationUnitServiceTest
         assertNull( organisationUnitGroupService.getOrganisationUnitGroup( id1 ) );
     }
 
+    @Test
     public void testUpdateOrganisationUnitGroup()
         throws Exception
     {
@@ -450,6 +438,7 @@ public class OrganisationUnitServiceTest
         assertTrue( organisationUnitGroupService.getOrganisationUnitGroup( ougid ).getMembers().size() == 1 );
     }
 
+    @Test
     public void testGetAllOrganisationUnitGroups()
         throws Exception
     {
@@ -480,6 +469,7 @@ public class OrganisationUnitServiceTest
         assertTrue( organisationUnitGroup4.getId() == gid4 );
     }
 
+    @Test
     public void testGetOrganisationUnitGroupByName()
         throws Exception
     {
@@ -499,6 +489,7 @@ public class OrganisationUnitServiceTest
         assertEquals( group2.getName(), oUG2Name );
     }
 
+    @Test
     public void testGetOrganisationUnitGroupByUUID()
         throws Exception
     {
@@ -517,6 +508,7 @@ public class OrganisationUnitServiceTest
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGetOrganisationUnitHierarchy()
         throws Exception
     {
@@ -556,37 +548,34 @@ public class OrganisationUnitServiceTest
         Collection<OrganisationUnitHierarchy> hierarchies = organisationUnitService.getOrganisationUnitHierarchies(
             date1, date3 );
 
-        Iterator<OrganisationUnitHierarchy> iterator = hierarchies.iterator();
-
-        OrganisationUnitHierarchy hierarchy = iterator.next();
+        OrganisationUnitHierarchy hierarchy = hierarchies.iterator().next();
 
         // retrieves children from hierarchyVersion ver_id and parentId id2
-        Collection<Integer> children1 = organisationUnitService.getChildren( hierarchy, unit2.getId() );
-        Iterator<Integer> iterator1 = children1.iterator();
-
-        // asserts 4, 5, 6 are children of 2
-        assertTrue( iterator1.next().intValue() == id2 );
-        assertTrue( iterator1.next().intValue() == id4 );
-        assertTrue( iterator1.next().intValue() == id5 );
-        assertTrue( iterator1.next().intValue() == id6 );
-        assertTrue( iterator1.hasNext() == false );
-
+        Collection<Integer> children1 = organisationUnitService.getChildren( hierarchy.getId(), unit2.getId() );
+        
+        // assert 4, 5, 6 are children of 2
+        assertEquals( 4, children1.size() );
+        assertTrue( children1.contains( id2 ) );
+        assertTrue( children1.contains( id4 ) );
+        assertTrue( children1.contains( id5 ) );
+        assertTrue( children1.contains( id6 ) );
+                
         // retrieves children from hierarchyVersion ver_id and parentId id1
-        Collection<Integer> children2 = organisationUnitService.getChildren( hierarchy, unit1.getId() );
+        Collection<Integer> children2 = organisationUnitService.getChildren( hierarchy.getId(), unit1.getId() );
 
         // assert the number of children
         assertTrue( children2.size() == 6 );
 
         // retrieves children from hierarchyVersion ver_id and parentId id5
-        Collection<Integer> children3 = organisationUnitService.getChildren( hierarchy, unit5.getId() );
-        Iterator<Integer> iterator3 = children3.iterator();
-
-        // assert 6 is children of 5 and the number of children
-        assertTrue( iterator3.next().intValue() == id5 );
-        assertTrue( iterator3.next().intValue() == id6 );
-        assertTrue( children3.size() == 2 );
+        Collection<Integer> children3 = organisationUnitService.getChildren( hierarchy.getId(), unit5.getId() );
+        
+        // assert 6 is children of 5
+        assertEquals( 2, children3.size() );
+        assertTrue( children3.contains( id5 ) );
+        assertTrue( children3.contains( id6 ) );        
     }
-    
+
+    @Test
     public void testGetLatestOrganisationUnitHierarchy()
     {
         Calendar cal = Calendar.getInstance();
@@ -608,6 +597,7 @@ public class OrganisationUnitServiceTest
         assertEquals( hierarchy.getId(), idB );
     }
 
+    @Test
     public void testAddOrganisationUnitHierarchiesOnSameDate()
         throws Exception
     {
@@ -656,6 +646,7 @@ public class OrganisationUnitServiceTest
 
     }
 
+    @Test
     public void testGetOrganisationUnitHierarchies()
         throws Exception
     {
@@ -731,6 +722,7 @@ public class OrganisationUnitServiceTest
         assertTrue( hierarchy3.getDate().equals( jul15 ) );
     }
 
+    @Test
     public void testClearOrganisationUnitHierarchyHistory()
         throws Exception
     {
@@ -786,6 +778,7 @@ public class OrganisationUnitServiceTest
     // OrganisationUnitGroupSets
     // -------------------------------------------------------------------------
 
+    @Test
     public void testOrganisationUnitGroupSetsBasic()
         throws Exception
     {
@@ -845,6 +838,7 @@ public class OrganisationUnitServiceTest
         assertNull( organisationUnitGroupService.getOrganisationUnitGroupSet( id2 ) );
     }
 
+    @Test
     public void testGetOrganisationUnitGroupSetsByName()
         throws Exception
     {
@@ -905,6 +899,7 @@ public class OrganisationUnitServiceTest
     // OrganisationUnitLevel
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGetOrganisationUnitLevel()
     {
         OrganisationUnitLevel levelA = new OrganisationUnitLevel( 1, "National" );
@@ -916,7 +911,8 @@ public class OrganisationUnitServiceTest
         assertEquals( levelA, organisationUnitService.getOrganisationUnitLevel( idA ) );
         assertEquals( levelB, organisationUnitService.getOrganisationUnitLevel( idB ) );        
     }
-    
+
+    @Test
     public void testGetOrganisationUnitLevels()
     {
         OrganisationUnitLevel level1 = new OrganisationUnitLevel( 1, "National" );
@@ -952,7 +948,8 @@ public class OrganisationUnitServiceTest
         assertEquals( 4, level4.getLevel() );
         assertEquals( "PHU", level4.getName() );
     }
-    
+
+    @Test
     public void testRemoveOrganisationUnitLevel()
     {
         OrganisationUnitLevel levelA = new OrganisationUnitLevel( 1, "National" );
@@ -975,6 +972,7 @@ public class OrganisationUnitServiceTest
         assertNull( organisationUnitService.getOrganisationUnitLevel( idB ) );        
     }
 
+    @Test
     public void testRemoveOrganisationUnitLevels()
     {
         OrganisationUnitLevel levelA = new OrganisationUnitLevel( 1, "National" );
@@ -988,7 +986,7 @@ public class OrganisationUnitServiceTest
         
         organisationUnitService.deleteOrganisationUnitLevels();
         
-        sessionUtil.clearCurrentSession();
+        dbmsManager.clearSession();
 
         assertNull( organisationUnitService.getOrganisationUnitLevel( idA ) );
         assertNull( organisationUnitService.getOrganisationUnitLevel( idB ) ); 

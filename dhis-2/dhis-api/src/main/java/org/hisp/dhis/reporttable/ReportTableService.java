@@ -41,6 +41,31 @@ import org.hisp.dhis.period.Period;
 public interface ReportTableService
 {
     String ID = ReportTableService.class.getName();
+
+    /**
+     * 
+     * @param id
+     * @param mode
+     * @param reportingPeriod
+     * @param parentOrganisationUnitId
+     * @param organisationUnitId
+     * @param format
+     */
+    void createReportTables( int id, String mode, Integer reportingPeriod, 
+        Integer parentOrganisationUnitId, Integer organisationUnitId, I18nFormat format );
+    
+    /**
+     * 
+     * @param reportTable
+     * @param doDataMart
+     */
+    void createReportTable( ReportTable reportTable, boolean doDataMart );
+    
+    /**
+     * 
+     * @param reportTable
+     */
+    void removeReportTable( ReportTable reportTable );
     
     /**
      * Retrieves a List of Periods of the RelativePeriodType.

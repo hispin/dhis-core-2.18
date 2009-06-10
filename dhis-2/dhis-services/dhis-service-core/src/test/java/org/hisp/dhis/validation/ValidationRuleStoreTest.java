@@ -27,22 +27,28 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: ValidationRuleStoreTest.java 3679 2007-10-22 18:25:18Z larshelg $
  */
 public class ValidationRuleStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {    
     private ValidationRuleStore validationRuleStore;
 
@@ -61,7 +67,8 @@ public class ValidationRuleStoreTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
         throws Exception
     {       
@@ -99,6 +106,7 @@ public class ValidationRuleStoreTest
     // ValidationRule
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGetValidationRule()
     {
         ValidationRule validationRule = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
@@ -114,7 +122,8 @@ public class ValidationRuleStoreTest
         assertNotNull( validationRule.getLeftSide().getExpression() );
         assertNotNull( validationRule.getRightSide().getExpression() );
     }
-    
+
+    @Test
     public void testUpdateValidationRule()
     {
         ValidationRule validationRule = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
@@ -142,7 +151,8 @@ public class ValidationRuleStoreTest
         assertEquals( validationRule.getType(), ValidationRule.TYPE_STATISTICAL );
         assertEquals( validationRule.getOperator(), ValidationRule.OPERATOR_GREATER );
     }
-    
+
+    @Test
     public void testDeleteValidationRule()
     {
         ValidationRule validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
@@ -154,17 +164,22 @@ public class ValidationRuleStoreTest
         assertNotNull( validationRuleStore.getValidationRule( idA ) );
         assertNotNull( validationRuleStore.getValidationRule( idB ) );
         
+        validationRuleA.clearExpressions();
+        
         validationRuleStore.deleteValidationRule( validationRuleA );
 
         assertNull( validationRuleStore.getValidationRule( idA ) );
         assertNotNull( validationRuleStore.getValidationRule( idB ) );
-                
+
+        validationRuleB.clearExpressions();
+        
         validationRuleStore.deleteValidationRule( validationRuleB );
         
         assertNull( validationRuleStore.getValidationRule( idA ) );
         assertNull( validationRuleStore.getValidationRule( idB ) );
     }
-    
+
+    @Test
     public void testGetAllValidationRules()
     {
         ValidationRule validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
@@ -179,7 +194,8 @@ public class ValidationRuleStoreTest
         assertTrue( rules.contains( validationRuleA ) );
         assertTrue( rules.contains( validationRuleB ) );        
     }
-    
+
+    @Test
     public void testGetValidationRuleByName()
     {
         ValidationRule validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
@@ -198,6 +214,7 @@ public class ValidationRuleStoreTest
     // ValidationRuleGroup
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddValidationRuleGroup()
     {
         ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
@@ -224,6 +241,7 @@ public class ValidationRuleStoreTest
         assertEquals( groupB, validationRuleStore.getValidationRuleGroup( idB ) );
     }
 
+    @Test
     public void testUpdateValidationRuleGroup()
     {
         ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
@@ -259,6 +277,7 @@ public class ValidationRuleStoreTest
         assertEquals( groupB, validationRuleStore.getValidationRuleGroup( idB ) );        
     }
 
+    @Test
     public void testDeleteValidationRuleGroup()
     {
         ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
@@ -295,6 +314,7 @@ public class ValidationRuleStoreTest
         assertNull( validationRuleStore.getValidationRuleGroup( idB ) );
     }
 
+    @Test
     public void testGetAllValidationRuleGroup()
     {
         ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
@@ -324,6 +344,7 @@ public class ValidationRuleStoreTest
         assertTrue( groups.contains( groupB ) );
     }
 
+    @Test
     public void testGetValidationRuleGroupByName()
     {
         ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );

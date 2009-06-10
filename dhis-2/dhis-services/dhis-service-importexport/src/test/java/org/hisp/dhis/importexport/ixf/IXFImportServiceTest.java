@@ -1,14 +1,17 @@
 package org.hisp.dhis.importexport.ixf;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+
 import java.io.InputStream;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.importexport.ImportInternalProcess;
 import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.importexport.util.ImportExportUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -16,25 +19,27 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.junit.Test;
 
 public class IXFImportServiceTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private InputStream inputStreamA;
 
-    private ImportInternalProcess importService;
+    private ImportService importService;
     
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         
         inputStreamA = classLoader.getResourceAsStream( "ixfA.zip" );
         
-        importService = (ImportInternalProcess) getBean( "internal-process-IXFImportService" );
+        importService = (ImportService) getBean( "org.hisp.dhis.importexport.IXFImportService" );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
@@ -45,16 +50,24 @@ public class IXFImportServiceTest
         dataValueService = (DataValueService) getBean( DataValueService.ID );
     }
 
+    @Override
     public void tearDownTest()
         throws Exception
     {
         inputStreamA.close();
     }
 
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testImport()
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, true, false );

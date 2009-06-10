@@ -34,6 +34,9 @@ import java.util.Set;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableStore;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -54,6 +57,7 @@ public class ReportStoreTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         reportStore = (ReportStore) getBean( ReportStore.ID );
@@ -72,6 +76,7 @@ public class ReportStoreTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testSaveGet()
     {
         Report reportA = new Report( "ReportA", "DesignA", reportTables );
@@ -83,7 +88,8 @@ public class ReportStoreTest
         assertEquals( reportA, reportStore.getReport( idA ) );
         assertEquals( reportB, reportStore.getReport( idB ) );
     }
-    
+
+    @Test
     public void testSaveGetUpdate()
     {
         Report reportA = new Report( "ReportA", "DesignA", reportTables );
@@ -107,7 +113,8 @@ public class ReportStoreTest
         assertEquals( "UpdatedDesignA", reportStore.getReport( updatedIdA ).getDesign() );
         assertEquals( "UpdatedDesignB", reportStore.getReport( updatedIdB ).getDesign() );
     }
-    
+
+    @Test
     public void testDelete()
     {
         Report reportA = new Report( "ReportA", "DesignA", reportTables );
@@ -129,7 +136,8 @@ public class ReportStoreTest
         assertNull( reportStore.getReport( idA ) );
         assertNull( reportStore.getReport( idB ) );
     }
-    
+
+    @Test
     public void testGetAll()
     {
         Report reportA = new Report( "ReportA", "DesignA", reportTables );

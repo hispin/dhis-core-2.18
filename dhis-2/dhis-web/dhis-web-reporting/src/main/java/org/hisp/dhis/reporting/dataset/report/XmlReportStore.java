@@ -27,6 +27,11 @@ package org.hisp.dhis.reporting.dataset.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.reporting.dataset.utils.FileUtils.JRXML_DIR;
+import static org.hisp.dhis.reporting.dataset.utils.FileUtils.XML_DIR;
+import static org.hisp.dhis.reporting.dataset.utils.FileUtils.getJRXMLFileName;
+import static org.hisp.dhis.reporting.dataset.utils.FileUtils.getXMLFileName;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -49,11 +54,6 @@ import org.hisp.dhis.reporting.dataset.utils.FileUtils;
 import org.hisp.dhis.reporting.dataset.utils.JRXmlFilter;
 import org.hisp.dhis.reporting.dataset.utils.XMLUtils;
 import org.hisp.dhis.reporting.dataset.utils.XmlFilter;
-
-import static org.hisp.dhis.reporting.dataset.utils.FileUtils.getXMLFileName;
-import static org.hisp.dhis.reporting.dataset.utils.FileUtils.getJRXMLFileName;
-import static org.hisp.dhis.reporting.dataset.utils.FileUtils.XML_DIR;
-import static org.hisp.dhis.reporting.dataset.utils.FileUtils.JRXML_DIR;
 
 import com.thoughtworks.xstream.XStream;
 

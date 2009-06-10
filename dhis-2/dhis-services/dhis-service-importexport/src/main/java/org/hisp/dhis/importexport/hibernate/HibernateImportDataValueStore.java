@@ -32,9 +32,9 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.importexport.ImportDataValue;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.importexport.ImportDataValueStore;
 import org.hisp.dhis.importexport.ImportObjectStatus;
 
@@ -49,11 +49,11 @@ public class HibernateImportDataValueStore
     // Dependencies
     // ----------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // ----------------------------------------------------------------------
@@ -62,7 +62,7 @@ public class HibernateImportDataValueStore
 
     public void addImportDataValue( ImportDataValue importDataValue )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         session.save( importDataValue );
     }
@@ -70,7 +70,7 @@ public class HibernateImportDataValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<ImportDataValue> getImportDataValues( ImportObjectStatus status )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( ImportDataValue.class );
         
@@ -81,7 +81,7 @@ public class HibernateImportDataValueStore
 
     public void deleteImportDataValues()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         String hql = "DELETE FROM ImportDataValue";
         
@@ -90,7 +90,7 @@ public class HibernateImportDataValueStore
     
     public void deleteImportDataValuesByDataElement( int dataElementId )
     {        
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         String hql = "DELETE FROM ImportDataValue WHERE dataElementId = :dataElementId";
         
@@ -103,7 +103,7 @@ public class HibernateImportDataValueStore
     
     public void deleteImportDataValuesBySource( int sourceId )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         String hql = "DELETE FROM ImportDataValue WHERE sourceId = :sourceId";
         

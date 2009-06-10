@@ -120,11 +120,6 @@ public interface OrganisationUnitStore
      */    
     void deleteOrganisationUnitHierarchies();
     
-    /**
-     * This method is not intended to be used by other modules!
-     */
-    Collection<Integer> getChildren( OrganisationUnitHierarchy hierarchy, int parentId );
-
     // -------------------------------------------------------------------------
     // OrganisationUnitLevel
     // -------------------------------------------------------------------------

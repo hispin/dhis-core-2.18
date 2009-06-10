@@ -30,10 +30,10 @@ package org.hisp.dhis.datadictionary.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 
 /**
  * @author Lars Helge Overland
@@ -46,11 +46,11 @@ public class HibernateDataDictionaryStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
     
     // -------------------------------------------------------------------------
@@ -59,32 +59,32 @@ public class HibernateDataDictionaryStore
 
     public int saveDataDictionary( DataDictionary dataDictionary )
     {
-        return (Integer) sessionManager.getCurrentSession().save( dataDictionary );
+        return (Integer) sessionFactory.getCurrentSession().save( dataDictionary );
     }
-    
+
     public DataDictionary getDataDictionary( int id )
     {
-        return (DataDictionary) sessionManager.getCurrentSession().get( DataDictionary.class, id );
+        return (DataDictionary) sessionFactory.getCurrentSession().get( DataDictionary.class, id );
     }
-    
+
     public void deleteDataDictionary( DataDictionary dataDictionary )
     {
-        sessionManager.getCurrentSession().delete( dataDictionary );
+        sessionFactory.getCurrentSession().delete( dataDictionary );
     }
-    
+
     public DataDictionary getDataDictionaryByName( String name )
     {
-        Criteria criteria = sessionManager.getCurrentSession().createCriteria( DataDictionary.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( DataDictionary.class );
         
         criteria.add( Restrictions.eq( "name", name ) );
         
         return (DataDictionary) criteria.uniqueResult();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataDictionary> getAllDataDictionaries()
     {
-        Criteria criteria = sessionManager.getCurrentSession().createCriteria( DataDictionary.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( DataDictionary.class );
         
         return criteria.setCacheable( true ).list();
     }

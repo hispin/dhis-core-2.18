@@ -74,6 +74,18 @@ public class DefaultStartupRoutineExecutor
     public void execute()
         throws Exception
     {
+        execute( false );
+    }
+    
+    public void executeForTesting()
+        throws Exception
+    {
+        execute( true );
+    }
+    
+    private void execute( boolean testing )
+        throws Exception
+    {
         Collections.sort( routines, new StartupRoutineComparator() );
 
         int total = routines.size();
@@ -81,13 +93,13 @@ public class DefaultStartupRoutineExecutor
 
         for ( StartupRoutine routine : routines )
         {
-            if ( !routine.isDisabled() )
+            if ( !( testing && routine.skipInTests() ) )
             {
                 LOG.info( "Executing startup routine [" + index + " of " + total + ", runlevel " + routine.getRunlevel()
                     + "]: " + routine.getClass().getSimpleName() );
 
                 routine.execute();
-
+                
                 ++index;
             }
         }

@@ -27,12 +27,16 @@ package org.hisp.dhis.datamart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
@@ -43,13 +47,14 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataMartExportStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DataMartExportStore dataMartExportStore;
     
@@ -133,6 +138,7 @@ public class DataMartExportStoreTest
     // Tests
     // -------------------------------------------------------------------------
     
+    @Test
     public void testSaveGet()
     {
         dataMartExportStore.saveDataMartExport( exportA );
@@ -150,7 +156,8 @@ public class DataMartExportStoreTest
         assertEquals( organisationUnits, export.getOrganisationUnits() );
         assertEquals( periods, export.getPeriods() );
     }
-    
+
+    @Test
     public void testDelete()    
     {
         dataMartExportStore.saveDataMartExport( exportA );
@@ -173,7 +180,8 @@ public class DataMartExportStoreTest
         assertNull( dataMartExportStore.getDataMartExport( exportB.getId() ) );
         assertNotNull( dataMartExportStore.getDataMartExport( exportC.getId() ) );        
     }
-    
+
+    @Test
     public void testGetAll()
     {
         dataMartExportStore.saveDataMartExport( exportA );
@@ -189,7 +197,8 @@ public class DataMartExportStoreTest
         
         assertEquals( expected, actual );
     }
-    
+
+    @Test
     public void testGetByName()
     {
         dataMartExportStore.saveDataMartExport( exportA );

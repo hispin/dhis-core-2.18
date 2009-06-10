@@ -33,12 +33,14 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Latifov Murodillo Abdusamadovich
  * 
  * @version $Id$
  */
+@Transactional
 public class DefaultCustomValueService
     implements CustomValueService
 {
@@ -52,7 +54,7 @@ public class DefaultCustomValueService
     {
         this.customValueStore = customValueStore;
     }
-    
+
     // -------------------------------------------------------------------------
     // CustomValueService implementation
     // -------------------------------------------------------------------------
@@ -100,8 +102,8 @@ public class DefaultCustomValueService
         return customValueStore.getCustomValues( dataSet, dataElement, dataElementCategoryOptionCombo );
     }
 
-	public Collection<CustomValue> findCustomValues(String searchValue) 
-	{
-		return customValueStore.findCustomValues( searchValue );
-	}
+    public Collection<CustomValue> findCustomValues( String searchValue )
+    {
+        return customValueStore.findCustomValues( searchValue );
+    }
 }

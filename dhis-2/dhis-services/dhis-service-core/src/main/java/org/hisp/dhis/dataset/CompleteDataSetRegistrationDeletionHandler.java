@@ -27,14 +27,10 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
@@ -54,11 +50,11 @@ public class CompleteDataSetRegistrationDeletionHandler
         this.completeDataSetRegistrationService = completeDataSetRegistrationService;
     }
 
-    private StatementManager statementManager;
+    private JdbcTemplate jdbcTemplate;
 
-    public void setStatementManager( StatementManager statementManager )
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
-        this.statementManager = statementManager;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     // -------------------------------------------------------------------------
@@ -79,50 +75,17 @@ public class CompleteDataSetRegistrationDeletionHandler
     
     @Override
     public boolean allowDeletePeriod( Period period )
-    {
-        StatementHolder holder = statementManager.getHolder();
+    {        
+        String sql = "SELECT COUNT(*) FROM completedatasetregistration where periodid=" + period.getId();
         
-        try
-        {
-            String sql = "SELECT COUNT(*) FROM completedatasetregistration where periodid=" + period.getId();
-            
-            ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            int count = resultSet.next() ? resultSet.getInt( 1 ) : 0;
-            
-            return count == 0;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get number of completedatasetregistrations for period", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return jdbcTemplate.queryForInt( sql ) == 0;
     }
+    
     @Override
     public boolean allowDeleteSource( Source source )
     {
-        StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            String sql = "SELECT COUNT(*) FROM completedatasetregistration where sourceid=" + source.getId();
-            
-            ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            int count = resultSet.next() ? resultSet.getInt( 1 ) : 0;
-            
-            return count == 0;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get number of completedatasetregistrations for source", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        String sql = "SELECT COUNT(*) FROM completedatasetregistration where sourceid=" + source.getId();
+    
+        return jdbcTemplate.queryForInt( sql ) == 0;
     }
 }

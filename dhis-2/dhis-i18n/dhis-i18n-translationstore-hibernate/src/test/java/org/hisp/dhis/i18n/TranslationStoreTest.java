@@ -27,17 +27,22 @@ package org.hisp.dhis.i18n;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+
 import java.util.Collection;
 import java.util.Locale;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.junit.Test;
 
 /**
  * @author Oyvind Brucker
  */
-public class TranslationStoreTest extends DhisSpringTest
+public class TranslationStoreTest 
+    extends DhisSpringTest
 {
     private TranslationStore translationStore;
 
@@ -76,6 +81,7 @@ public class TranslationStoreTest extends DhisSpringTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGetUpdateDelete()
         throws Exception
     {
@@ -131,6 +137,7 @@ public class TranslationStoreTest extends DhisSpringTest
         assertEquals( "Unexpected amount of translations received after delete", 2, col.size() );
     }
 
+    @Test
     public void testGetAvailableLocales()
         throws Exception
     {

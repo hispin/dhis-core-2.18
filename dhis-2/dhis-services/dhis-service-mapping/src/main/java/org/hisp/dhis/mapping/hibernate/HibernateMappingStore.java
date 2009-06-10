@@ -32,8 +32,8 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapOrganisationUnitRelation;
@@ -41,6 +41,7 @@ import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Jan Henrik Overland
@@ -53,48 +54,53 @@ public class HibernateMappingStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
     
     // -------------------------------------------------------------------------
     // Map
     // -------------------------------------------------------------------------
 
+    @Transactional
     public int addMap( Map map )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( map );
     }
 
+    @Transactional
     public void updateMap( Map map )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( map );
     }
 
+    @Transactional
     public void deleteMap( Map map )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( map );
     }
 
+    @Transactional
     public Map getMap( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Map) session.get( Map.class, id );
     }
 
+    @Transactional
     public Map getMapByMapLayerPath( String mapLayerPath )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Map.class );
 
@@ -103,10 +109,11 @@ public class HibernateMappingStore
         return (Map) criteria.uniqueResult();
     }
 
+    @Transactional
     @SuppressWarnings( "unchecked" )
     public Collection<Map> getMapsByType( String type )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Map.class );
 
@@ -115,20 +122,22 @@ public class HibernateMappingStore
         return criteria.list();
     }
 
+    @Transactional
     @SuppressWarnings( "unchecked" )
     public Collection<Map> getAllMaps()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Map.class );
 
         return criteria.list();
     }
 
+    @Transactional
     @SuppressWarnings( "unchecked" )
     public Collection<Map> getMapsAtLevel( OrganisationUnitLevel organisationUnitLevel )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Map.class );
 
@@ -141,37 +150,42 @@ public class HibernateMappingStore
     // MapOrganisationUnitRelation
     // -------------------------------------------------------------------------
 
+    @Transactional
     public int addMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( mapOrganisationUnitRelation );
     }
 
+    @Transactional
     public void updateMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( mapOrganisationUnitRelation );
     }
 
+    @Transactional
     public void deleteMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( mapOrganisationUnitRelation );
     }
 
+    @Transactional
     public MapOrganisationUnitRelation getMapOrganisationUnitRelation( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (MapOrganisationUnitRelation) session.get( MapOrganisationUnitRelation.class, id );
     }
 
+    @Transactional
     public MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MapOrganisationUnitRelation.class );
 
@@ -181,20 +195,22 @@ public class HibernateMappingStore
         return (MapOrganisationUnitRelation) criteria.uniqueResult();
     }
 
+    @Transactional
     @SuppressWarnings( "unchecked" )
     public Collection<MapOrganisationUnitRelation> getAllMapOrganisationUnitRelations()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MapOrganisationUnitRelation.class );
 
         return criteria.list();
     }
 
+    @Transactional
     @SuppressWarnings( "unchecked" )
     public Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationByMap( Map map )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MapOrganisationUnitRelation.class );
 
@@ -203,9 +219,10 @@ public class HibernateMappingStore
         return criteria.list();
     }
 
+    @Transactional
     public int deleteMapOrganisationUnitRelations( OrganisationUnit organisationUnit )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session
             .createQuery( "delete from OrganisationUnitRelation where organisationUnit = :organisationUnit" );
@@ -213,9 +230,10 @@ public class HibernateMappingStore
         return query.setParameter( "organisationUnit", organisationUnit ).executeUpdate();
     }
 
+    @Transactional
     public int deleteMapOrganisationUnitRelations( Map map )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "delete from OrganisationUnitRelation where map = :map" );
 
@@ -226,37 +244,42 @@ public class HibernateMappingStore
     // MapLegendSet
     // -------------------------------------------------------------------------
 
+    @Transactional
     public int addMapLegendSet( MapLegendSet legendSet )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( legendSet );
     }
 
+    @Transactional
     public void updateMapLegendSet( MapLegendSet legendSet )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( legendSet );
     }
 
+    @Transactional
     public void deleteMapLegendSet( MapLegendSet legendSet )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( legendSet );
     }
 
+    @Transactional
     public MapLegendSet getMapLegendSet( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (MapLegendSet) session.get( MapLegendSet.class, id );
     }
-    
+
+    @Transactional
     public MapLegendSet getMapLegendSetByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MapLegendSet.class );
 
@@ -265,10 +288,11 @@ public class HibernateMappingStore
         return (MapLegendSet) criteria.uniqueResult();
     }
 
+    @Transactional
     @SuppressWarnings( "unchecked" )
     public Collection<MapLegendSet> getAllMapLegendSets()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MapLegendSet.class );
 
@@ -279,37 +303,42 @@ public class HibernateMappingStore
     // MapView
     // -------------------------------------------------------------------------
 
+    @Transactional
     public int addMapView( MapView view )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( view );
     }
 
+    @Transactional
     public void updateMapView( MapView view )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         session.update( view );
     }
 
+    @Transactional
     public void deleteMapView( MapView view )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( view );
     }
 
+    @Transactional
     public MapView getMapView( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (MapView) session.get( MapView.class, id );
     }
 
+    @Transactional
     public MapView getMapViewByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MapView.class );
 
@@ -318,10 +347,11 @@ public class HibernateMappingStore
         return (MapView) criteria.uniqueResult();
     }
 
+    @Transactional
     @SuppressWarnings( "unchecked" )
     public Collection<MapView> getAllMapViews()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MapView.class );
 

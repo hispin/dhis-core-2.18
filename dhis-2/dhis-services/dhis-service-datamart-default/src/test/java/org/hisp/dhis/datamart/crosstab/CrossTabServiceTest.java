@@ -27,13 +27,17 @@ package org.hisp.dhis.datamart.crosstab;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -53,13 +57,14 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.WeeklyPeriodType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: CrossTabServiceTest.java 6217 2008-11-06 18:53:04Z larshelg $
  */
 public class CrossTabServiceTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private CrossTabService crossTabService;
     
@@ -75,8 +80,8 @@ public class CrossTabServiceTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
-        throws Exception
     {
         crossTabService = (CrossTabService) getBean( CrossTabService.ID );
         
@@ -109,6 +114,12 @@ public class CrossTabServiceTest
         generatedPeriods = periodType.generatePeriods( period ).iterator();
         
         setUpTestData();
+    }
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
     }
 
     private void setUpTestData()
@@ -179,6 +190,7 @@ public class CrossTabServiceTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testPopulateCrossTabValue()
     {
         crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
@@ -206,7 +218,8 @@ public class CrossTabServiceTest
             }
         }
     }
-    
+
+    @Test
     public void testTrimCrossTabTable()
     {
         Collection<Operand> operandsWithData = crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
@@ -214,6 +227,7 @@ public class CrossTabServiceTest
         crossTabService.trimCrossTabTable( operandsWithData );
     }
     
+    @Test
     public void testGetOperandIndexMap()
     {
         crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );

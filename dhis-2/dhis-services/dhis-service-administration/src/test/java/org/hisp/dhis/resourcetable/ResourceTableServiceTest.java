@@ -27,22 +27,31 @@ package org.hisp.dhis.resourcetable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.resourcetable.ResourceTableService;
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ResourceTableServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
+    // -------------------------------------------------------------------------
+    // Fixture
+    // -------------------------------------------------------------------------
+
     @Override
     public void setUpTest()
     {
         resourceTableService = (ResourceTableService) getBean( ResourceTableService.ID );
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
+
+    @Test
     public void test()
     {
         // TODO

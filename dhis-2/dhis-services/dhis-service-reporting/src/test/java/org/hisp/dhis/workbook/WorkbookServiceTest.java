@@ -31,19 +31,21 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.StreamUtils;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class WorkbookServiceTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private WorkbookService workbookService;
     
@@ -57,6 +59,7 @@ public class WorkbookServiceTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         workbookService = (WorkbookService) getBean( WorkbookService.ID );
@@ -87,42 +90,39 @@ public class WorkbookServiceTest
     // Tests
     // -------------------------------------------------------------------------
     
+    @Ignore
+    @Test
     public void testWriteAllDataElements()
         throws Exception
-    {        
-        if ( false )
-        {
-            OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "dataElementsTest.xls" ) );
-            
-            workbookService.writeAllDataElements( outputStream );
-            
-            StreamUtils.closeOutputStream( outputStream );
-        }
+    {    
+        OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "dataElementsTest.xls" ) );
+        
+        workbookService.writeAllDataElements( outputStream );
+        
+        StreamUtils.closeOutputStream( outputStream );
     }
-    
+
+    @Ignore
+    @Test
     public void testWriteAllIndicators()
         throws Exception
-    {
-        if ( false )
-        {            
-            OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "indicatorsTest.xls" ) );
-            
-            workbookService.writeAllIndicators( outputStream );
-            
-            StreamUtils.closeOutputStream( outputStream );
-        }
+    {           
+        OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "indicatorsTest.xls" ) );
+        
+        workbookService.writeAllIndicators( outputStream );
+        
+        StreamUtils.closeOutputStream( outputStream );
     }
-    
+
+    @Ignore
+    @Test
     public void testWriteAllOrganisationUnits()
         throws Exception
     {
-        if ( false )
-        {
-            OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "organisationUnitsTest.xls" ) );
+        OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "organisationUnitsTest.xls" ) );
             
-            workbookService.writeAllOrganisationUnits( outputStream );
+        workbookService.writeAllOrganisationUnits( outputStream );
             
-            StreamUtils.closeOutputStream( outputStream );
-        }
+        StreamUtils.closeOutputStream( outputStream );
     }
 }

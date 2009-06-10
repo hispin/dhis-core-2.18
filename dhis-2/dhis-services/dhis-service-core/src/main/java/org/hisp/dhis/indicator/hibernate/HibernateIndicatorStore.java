@@ -32,8 +32,8 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorStore;
@@ -50,11 +50,11 @@ public class HibernateIndicatorStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -63,35 +63,35 @@ public class HibernateIndicatorStore
 
     public int addIndicator( Indicator indicator )
     {        
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( indicator );
     }
 
     public void updateIndicator( Indicator indicator )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( indicator );
     }
 
     public void deleteIndicator( Indicator indicator )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( indicator );
     }
 
     public Indicator getIndicator( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Indicator) session.get( Indicator.class, id );
     }
-    
+
     public Indicator getIndicator( String uuid )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( Indicator.class );
         criteria.add( Restrictions.eq( "uuid", uuid ) );
@@ -102,7 +102,7 @@ public class HibernateIndicatorStore
     @SuppressWarnings("unchecked")
     public Collection<Indicator> getAllIndicators()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Indicator.class );
         criteria.setCacheable( true );
@@ -112,7 +112,7 @@ public class HibernateIndicatorStore
 
     public Indicator getIndicatorByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from Indicator i where i.name = :name" );
 
@@ -123,7 +123,7 @@ public class HibernateIndicatorStore
 
     public Indicator getIndicatorByShortName( String shortName )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from Indicator i where i.shortName = :shortName" );
 
@@ -134,7 +134,7 @@ public class HibernateIndicatorStore
 
     public Indicator getIndicatorByAlternativeName( String alternativeName )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from Indicator i where i.alternativeName = :alternativeName" );
 
@@ -145,7 +145,7 @@ public class HibernateIndicatorStore
 
     public Indicator getIndicatorByCode( String code )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from Indicator i where i.code = :code" );
 
@@ -160,28 +160,28 @@ public class HibernateIndicatorStore
 
     public int addIndicatorType( IndicatorType indicatorType )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( indicatorType );
     }
 
     public void updateIndicatorType( IndicatorType indicatorType )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( indicatorType );
     }
 
     public void deleteIndicatorType( IndicatorType indicatorType )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( indicatorType );
     }
 
     public IndicatorType getIndicatorType( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (IndicatorType) session.get( IndicatorType.class, id );
     }
@@ -189,14 +189,14 @@ public class HibernateIndicatorStore
     @SuppressWarnings("unchecked")
     public Collection<IndicatorType> getAllIndicatorTypes()
     {
-        Criteria criteria = sessionManager.getCurrentSession().createCriteria( IndicatorType.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( IndicatorType.class );
         
         return criteria.setCacheable( true ).list();
     }
 
     public IndicatorType getIndicatorTypeByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from IndicatorType i where i.name = :name" );
 
@@ -211,35 +211,35 @@ public class HibernateIndicatorStore
 
     public int addIndicatorGroup( IndicatorGroup indicatorGroup )
     {        
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( indicatorGroup );
     }
 
     public void updateIndicatorGroup( IndicatorGroup indicatorGroup )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         session.update( indicatorGroup );
     }
 
     public void deleteIndicatorGroup( IndicatorGroup indicatorGroup )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( indicatorGroup );
     }
 
     public IndicatorGroup getIndicatorGroup( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (IndicatorGroup) session.get( IndicatorGroup.class, id );
     }
-    
+
     public IndicatorGroup getIndicatorGroup( String uuid )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( IndicatorGroup.class );
         criteria.add( Restrictions.eq( "uuid", uuid ) );
@@ -250,14 +250,14 @@ public class HibernateIndicatorStore
     @SuppressWarnings("unchecked")
     public Collection<IndicatorGroup> getAllIndicatorGroups()
     {
-        Criteria criteria = sessionManager.getCurrentSession().createCriteria( IndicatorGroup.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( IndicatorGroup.class );
         
         return criteria.setCacheable( true ).list();
     }
 
     public IndicatorGroup getIndicatorGroupByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from IndicatorGroup i where i.name = :name" );
 

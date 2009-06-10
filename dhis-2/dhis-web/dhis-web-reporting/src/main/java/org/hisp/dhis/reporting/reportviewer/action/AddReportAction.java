@@ -34,15 +34,15 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.jdbc.JDBCConfiguration;
 import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportManager;
 import org.hisp.dhis.report.ReportStore;
 import org.hisp.dhis.report.manager.ReportConfiguration;
+import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.system.util.CollectionConversionUtils;
 import org.hisp.dhis.system.util.ConversionUtils;

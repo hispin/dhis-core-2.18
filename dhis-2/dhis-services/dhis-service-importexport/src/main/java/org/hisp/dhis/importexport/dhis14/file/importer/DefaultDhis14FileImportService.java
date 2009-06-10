@@ -47,9 +47,9 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
-import org.hisp.dhis.importexport.ImportInternalProcess;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.dhis14.file.query.QueryManager;
 import org.hisp.dhis.importexport.dhis14.file.rowhandler.CalculatedDataElementRowHandler;
@@ -112,7 +112,7 @@ import com.ibatis.sqlmap.client.event.RowHandler;
  * @version $Id: DefaultDhis14FileImportService.java 6425 2008-11-22 00:08:57Z larshelg $
  */
 public class DefaultDhis14FileImportService
-    extends ImportInternalProcess
+    implements ImportService
 {
     private final Log log = LogFactory.getLog( DefaultDhis14FileImportService.class );
     
@@ -247,6 +247,8 @@ public class DefaultDhis14FileImportService
 
     public void importData( ImportParams params, InputStream inputStream )
     {
+        NameMappingUtil.clearMapping();
+        
         if ( params.isPreview() )
         {
             importObjectService.deleteImportObjects();
@@ -285,10 +287,10 @@ public class DefaultDhis14FileImportService
         
         if ( params.isAnalysis() )
         {
-            setOutput( importAnalyser.getImportAnalysis() );
+            //setOutput( importAnalyser.getImportAnalysis() ); //TODO fix
         }
         
-        setMessage( "import_process_done" );
+        //setMessage( "import_process_done" );
         
         NameMappingUtil.clearMapping();
         Dhis14PeriodUtil.clear();
@@ -302,7 +304,7 @@ public class DefaultDhis14FileImportService
 
     private void importDataElements( ImportParams params )
     {
-        setMessage( "importing_data_elements" );
+        //setMessage( "importing_data_elements" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
         
@@ -327,7 +329,7 @@ public class DefaultDhis14FileImportService
 
     private void importCalculatedDataElements( ImportParams params, Map<Integer, String> calculatedEntryMap )
     {
-        setMessage( "importing_data_elements" );
+        //setMessage( "importing_data_elements" );
         
         DataElementCategoryCombo categoryCombo = categoryComboService.
             getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
@@ -349,7 +351,7 @@ public class DefaultDhis14FileImportService
     
     private void importIndicatorTypes( ImportParams params )
     {
-        setMessage( "importing_indicator_types" );
+        //setMessage( "importing_indicator_types" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( IndicatorTypeBatchHandler.class );
         
@@ -369,7 +371,7 @@ public class DefaultDhis14FileImportService
     
     private void importIndicators( ImportParams params )
     {
-        setMessage( "importing_indicators" );
+        //setMessage( "importing_indicators" );
         
         BatchHandler indicatorBatchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class );
         BatchHandler dataElementBatchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
@@ -399,7 +401,7 @@ public class DefaultDhis14FileImportService
     
     private void importDataElementGroups( ImportParams params )
     {
-        setMessage( "importing_data_element_groups" );
+        //setMessage( "importing_data_element_groups" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupBatchHandler.class );
         
@@ -419,7 +421,7 @@ public class DefaultDhis14FileImportService
     
     private void importIndicatorGroups( ImportParams params )
     {
-        setMessage( "importing_indicator_groups" );
+        //setMessage( "importing_indicator_groups" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupBatchHandler.class );
         
@@ -439,7 +441,7 @@ public class DefaultDhis14FileImportService
     
     private void importDataElementGroupMembers( ImportParams params )
     {
-        setMessage( "importing_data_element_group_members" );
+        //setMessage( "importing_data_element_group_members" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupMemberBatchHandler.class );
         
@@ -460,7 +462,7 @@ public class DefaultDhis14FileImportService
 
     private void importIndicatorGroupMembers( ImportParams params )
     {
-        setMessage( "importing_indicator_group_members" );
+        //setMessage( "importing_indicator_group_members" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupMemberBatchHandler.class );
         
@@ -485,7 +487,7 @@ public class DefaultDhis14FileImportService
 
     private void importDataSets( ImportParams params )
     {
-        setMessage( "importing_data_sets" );
+        //setMessage( "importing_data_sets" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class );
         
@@ -507,7 +509,7 @@ public class DefaultDhis14FileImportService
     
     private void importDataSetMembers( ImportParams params )
     {
-        setMessage( "importing_data_set_members" );
+        //setMessage( "importing_data_set_members" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataSetMemberBatchHandler.class );
         
@@ -532,7 +534,7 @@ public class DefaultDhis14FileImportService
 
     private void importOrganisationUnits( ImportParams params )
     {
-        setMessage( "importing_organisation_units" );
+        //setMessage( "importing_organisation_units" );
         
         BatchHandler sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class );
         BatchHandler organisationUnitBatchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
@@ -557,7 +559,7 @@ public class DefaultDhis14FileImportService
     
     private void importOrganisationUnitGroups( ImportParams params )
     {
-        setMessage( "importing_organisation_unit_groups" );
+        //setMessage( "importing_organisation_unit_groups" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupBatchHandler.class );
         
@@ -577,7 +579,7 @@ public class DefaultDhis14FileImportService
     
     private void importOrganisationUnitGroupMembers( ImportParams params )
     {
-        setMessage( "importing_organisation_unit_group_members" );
+        //setMessage( "importing_organisation_unit_group_members" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupMemberBatchHandler.class );
         
@@ -598,7 +600,7 @@ public class DefaultDhis14FileImportService
     
     private void importGroupSets( ImportParams params )
     {
-        setMessage( "importing_organisation_unit_group_sets" );
+        //setMessage( "importing_organisation_unit_group_sets" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( GroupSetBatchHandler.class );
         
@@ -618,7 +620,7 @@ public class DefaultDhis14FileImportService
     
     private void importGroupSetMembers( ImportParams params )
     {
-        setMessage( "importing_organisation_unit_group_set_members" );
+        //setMessage( "importing_organisation_unit_group_set_members" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( GroupSetMemberBatchHandler.class );
         
@@ -639,7 +641,7 @@ public class DefaultDhis14FileImportService
 
     private void importOrganisationUnitRelationships( ImportParams params )
     {
-        setMessage( "importing_organisation_unit_relationships" );
+        //setMessage( "importing_organisation_unit_relationships" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
         
@@ -660,7 +662,7 @@ public class DefaultDhis14FileImportService
     
     private void importOrganisationUnitHierarchy()
     {
-        setMessage( "importing_organisation_unit_hierarchy" );
+        //setMessage( "importing_organisation_unit_hierarchy" );
         
         organisationUnitService.addOrganisationUnitHierarchy( DateUtils.getEpoch() );
         
@@ -673,7 +675,7 @@ public class DefaultDhis14FileImportService
 
     private void importDataSetOrganisationUnitAssociations( ImportParams params )
     {
-        setMessage( "importing_data_set_organisation_unit_associations" );
+        //setMessage( "importing_data_set_organisation_unit_associations" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataSetSourceAssociationBatchHandler.class );
         
@@ -698,7 +700,7 @@ public class DefaultDhis14FileImportService
 
     private void importPeriods( ImportParams params )
     {   
-        setMessage( "importing_periods" );
+        //setMessage( "importing_periods" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
         
@@ -724,7 +726,7 @@ public class DefaultDhis14FileImportService
 
     private void importRoutineDataValues( ImportParams params )
     {
-        setMessage( "importing_routine_data_values" );
+        //setMessage( "importing_routine_data_values" );
 
         DataElementCategoryCombo categoryCombo = categoryComboService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
         
@@ -769,7 +771,7 @@ public class DefaultDhis14FileImportService
 
     private void importOnChangePeriods( ImportParams params )
     {
-        setMessage( "importing_on_change_periods" );
+        //setMessage( "importing_on_change_periods" );
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
         
@@ -794,7 +796,7 @@ public class DefaultDhis14FileImportService
 
     private void importSemiPermanentDataValues( ImportParams params )
     {
-        setMessage( "importing_semi_permanent_data_values" );
+        //setMessage( "importing_semi_permanent_data_values" );
 
         DataElementCategoryCombo categoryCombo = categoryComboService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
         

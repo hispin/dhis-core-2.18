@@ -27,19 +27,23 @@ package org.hisp.dhis.importexport.importobject;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportDataValueService;
 import org.hisp.dhis.importexport.ImportObjectStatus;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ImportDataValueServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private ImportDataValueService importDataValueService;
     
@@ -47,15 +51,17 @@ public class ImportDataValueServiceTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         importDataValueService = (ImportDataValueService) getBean( ImportDataValueService.ID );
     }
-
+    
     // -------------------------------------------------------------------------
     // ImportDataValue
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGetImportDataValues()
     {
         ImportDataValue valueA = createImportDataValue( 1, 1, 1, 1, ImportObjectStatus.NEW );
@@ -80,6 +86,7 @@ public class ImportDataValueServiceTest
         assertTrue( values.contains( valueC ) );
     }
 
+    @Test
     public void testDeleteImportDataValues()
     {
         ImportDataValue valueA = createImportDataValue( 1, 1, 1, 1, ImportObjectStatus.NEW );
@@ -108,7 +115,8 @@ public class ImportDataValueServiceTest
         
         assertEquals( values.size(), 0 );
     }
-    
+
+    @Test
     public void testDeleteImportDataValuesByDataElement()
     {
         ImportDataValue valueA = createImportDataValue( 1, 1, 1, 1, ImportObjectStatus.NEW );
@@ -132,6 +140,7 @@ public class ImportDataValueServiceTest
         assertTrue( values.contains( valueC ) );
     }
 
+    @Test
     public void testDeleteImportDataValuesBySource()
     {
         ImportDataValue valueA = createImportDataValue( 1, 1, 1, 1, ImportObjectStatus.NEW );

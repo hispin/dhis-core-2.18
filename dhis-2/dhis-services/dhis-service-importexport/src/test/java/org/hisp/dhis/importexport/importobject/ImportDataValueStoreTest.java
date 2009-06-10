@@ -29,17 +29,20 @@ package org.hisp.dhis.importexport.importobject;
 
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportDataValueStore;
 import org.hisp.dhis.importexport.ImportObjectStatus;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ImportDataValueStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private ImportDataValueStore importDataValueStore;
     
@@ -47,6 +50,7 @@ public class ImportDataValueStoreTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         importDataValueStore = (ImportDataValueStore) getBean( ImportDataValueStore.ID );
@@ -56,6 +60,7 @@ public class ImportDataValueStoreTest
     // ImportDataValue
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGetImportDataValues()
     {
         ImportDataValue valueA = createImportDataValue( 1, 1, 1, 1, ImportObjectStatus.NEW );
@@ -80,6 +85,7 @@ public class ImportDataValueStoreTest
         assertTrue( values.contains( valueC ) );
     }
     
+    @Test
     public void testDeleteImportDataValues()
     {
         ImportDataValue valueA = createImportDataValue( 1, 1, 1, 1, ImportObjectStatus.NEW );
@@ -108,7 +114,8 @@ public class ImportDataValueStoreTest
         
         assertEquals( values.size(), 0 );
     }
-    
+
+    @Test
     public void testDeleteImportDataValuesByDataElement()
     {
         ImportDataValue valueA = createImportDataValue( 1, 1, 1, 1, ImportObjectStatus.NEW );
@@ -132,6 +139,7 @@ public class ImportDataValueStoreTest
         assertTrue( values.contains( valueC ) );
     }
 
+    @Test
     public void testDeleteImportDataValuesBySource()
     {
         ImportDataValue valueA = createImportDataValue( 1, 1, 1, 1, ImportObjectStatus.NEW );

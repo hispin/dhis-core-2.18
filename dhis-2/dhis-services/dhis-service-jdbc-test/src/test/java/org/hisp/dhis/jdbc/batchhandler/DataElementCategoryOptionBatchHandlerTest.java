@@ -27,22 +27,28 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.system.util.UUIdUtils;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementCategoryOptionBatchHandlerTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
@@ -57,7 +63,8 @@ public class DataElementCategoryOptionBatchHandlerTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
     {
         categoryOptionService = (DataElementCategoryOptionService) getBean( DataElementCategoryOptionService.ID );
@@ -75,15 +82,23 @@ public class DataElementCategoryOptionBatchHandlerTest
         categoryOptionC = new DataElementCategoryOption( "categoryOptionC" );
     }
 
+    @Override
     public void tearDownTest()
     {
         batchHandler.flush();
     }
-
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddObject()
     {
         batchHandler.addObject( categoryOptionA );
@@ -98,7 +113,8 @@ public class DataElementCategoryOptionBatchHandlerTest
         assertTrue( categoryOptions.contains( categoryOptionB ) );
         assertTrue( categoryOptions.contains( categoryOptionC ) );
     }
-    
+
+    @Test
     public void testInsertObject()
     {
         int idA = batchHandler.insertObject( categoryOptionA, true );
@@ -109,7 +125,8 @@ public class DataElementCategoryOptionBatchHandlerTest
         assertNotNull( categoryOptionService.getDataElementCategoryOption( idB ) );
         assertNotNull( categoryOptionService.getDataElementCategoryOption( idC ) );
     }
-    
+
+    @Test
     public void testUpdateObject()
     {
         int id = categoryOptionService.addDataElementCategoryOption( categoryOptionA );
@@ -120,7 +137,8 @@ public class DataElementCategoryOptionBatchHandlerTest
         
         assertEquals( "UpdatedName", categoryOptionService.getDataElementCategoryOption( id ).getName() );
     }
-    
+
+    @Test
     public void testGetObjectIdentifier()
     {
         int referenceId = categoryOptionService.addDataElementCategoryOption( categoryOptionA );
@@ -129,7 +147,8 @@ public class DataElementCategoryOptionBatchHandlerTest
         
         assertEquals( referenceId, retrievedId );
     }
-    
+
+    @Test
     public void testObjectExists()
     {
         categoryOptionService.addDataElementCategoryOption( categoryOptionA );

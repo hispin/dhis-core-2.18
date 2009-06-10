@@ -38,6 +38,10 @@ import java.util.Map;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.junit.Before;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Oyvind Brucker
@@ -53,6 +57,7 @@ public class I18nServiceTest
     // Set up/tear down
     // -------------------------------------------------------------------------
 
+    @Before
     public void setUpTest()
         throws Exception
     {
@@ -77,6 +82,7 @@ public class I18nServiceTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testUpdateTranslation()
         throws Exception
     {
@@ -146,6 +152,7 @@ public class I18nServiceTest
         }
     }
 
+    @Test
     public void testAddObject()
         throws Exception
     {
@@ -188,6 +195,7 @@ public class I18nServiceTest
         assertEquals( "org-1", organisationUnit1.getShortName() );
     }
 
+    @Test
     public void testVerify()
         throws Exception
     {
@@ -238,6 +246,7 @@ public class I18nServiceTest
         assertEquals( "orgunit_1", organisationUnit1.getName() );
     }
 
+    @Test
     public void testGetAvailableLocales()
         throws Exception
     {
@@ -262,6 +271,7 @@ public class I18nServiceTest
         }
     }
 
+    @Test
     public void testAddTranslation()
         throws Exception
     {
@@ -278,6 +288,7 @@ public class I18nServiceTest
         assertEquals( "orgunit-1", organisationUnit1.getName() );
     }
 
+    @Test
     public void testSetToFallback()
         throws Exception
     {

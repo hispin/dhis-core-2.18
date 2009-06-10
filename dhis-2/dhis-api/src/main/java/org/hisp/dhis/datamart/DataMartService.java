@@ -35,6 +35,8 @@ import java.util.Collection;
  */
 public interface DataMartService
 {
+    final String ID = DataMartService.class.getName();
+    
     /**
      * Exports to data mart for the given arguments.
      * 

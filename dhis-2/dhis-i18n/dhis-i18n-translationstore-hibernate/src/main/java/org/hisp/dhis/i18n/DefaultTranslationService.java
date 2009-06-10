@@ -30,10 +30,13 @@ package org.hisp.dhis.i18n;
 import java.util.Collection;
 import java.util.Locale;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional
 public class DefaultTranslationService
     implements TranslationService
 {

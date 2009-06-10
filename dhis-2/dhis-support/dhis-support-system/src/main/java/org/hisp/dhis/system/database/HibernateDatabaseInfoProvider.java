@@ -94,8 +94,7 @@ public class HibernateDatabaseInfoProvider
         info.setDialect( dialect );
         info.setDriverClass( driverClass );
         info.setUrl( url );
-    }
-    
+    }    
     
     // -------------------------------------------------------------------------
     // DatabaseInfoProvider implementation

@@ -29,20 +29,17 @@ package org.hisp.dhis.resourcetable.hibernate;
 
 import java.util.Collection;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.jdbc.Statement;
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.resourcetable.DataElementCategoryOptionComboName;
 import org.hisp.dhis.resourcetable.GroupSetStructure;
 import org.hisp.dhis.resourcetable.OrganisationUnitStructure;
 import org.hisp.dhis.resourcetable.ResourceTableStore;
 import org.hisp.dhis.resourcetable.statement.CreateExclusiveGroupSetTableStatement;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
@@ -51,25 +48,23 @@ import org.hisp.dhis.resourcetable.statement.CreateExclusiveGroupSetTableStateme
 public class HibernateResourceTableStore
     implements ResourceTableStore
 {
-    private static final Log log = LogFactory.getLog( HibernateResourceTableStore.class );
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
     
-    private StatementManager statementManager;
+    private JdbcTemplate jdbcTemplate;
 
-    public void setStatementManager( StatementManager statementManager )
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
-        this.statementManager = statementManager;
-    }
+        this.jdbcTemplate = jdbcTemplate;
+    }    
 
     // -------------------------------------------------------------------------
     // OrganisationUnitStructure
@@ -77,15 +72,15 @@ public class HibernateResourceTableStore
 
     public int addOrganisationUnitStructure( OrganisationUnitStructure structure )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( structure );
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnitStructure> getOrganisationUnitStructures()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( OrganisationUnitStructure.class );
 
@@ -94,7 +89,7 @@ public class HibernateResourceTableStore
 
     public int deleteOrganisationUnitStructures()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "DELETE FROM OrganisationUnitStructure" );
 
@@ -107,15 +102,15 @@ public class HibernateResourceTableStore
 
     public int addGroupSetStructure( GroupSetStructure structure )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( structure );
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<GroupSetStructure> getGroupSetStructures()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( GroupSetStructure.class );
 
@@ -124,7 +119,7 @@ public class HibernateResourceTableStore
 
     public int deleteGroupSetStructures()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "DELETE FROM GroupSetStructure" );
 
@@ -137,24 +132,24 @@ public class HibernateResourceTableStore
 
     public int addDataElementCategoryOptionComboName( DataElementCategoryOptionComboName name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( name );
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataElementCategoryOptionComboName> getDataElementCategoryOptionComboNames()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElementCategoryOptionComboName.class );
 
         return criteria.list();
     }
-    
+
     public int deleteDataElementCategoryOptionComboNames()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "DELETE FROM DataElementCategoryOptionComboName" );
 
@@ -167,37 +162,11 @@ public class HibernateResourceTableStore
 
     public void createExclusiveGroupSetStructureTable( Statement statement )
     {
-        StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            holder.getStatement().executeUpdate( statement.getStatement() );
-        }
-        catch ( Exception ex )
-        {
-            throw new RuntimeException( "Failed to create table: " + statement.getStatement() );
-        }
-        finally
-        {
-            holder.close();
-        }        
+        jdbcTemplate.update( statement.getStatement() );
     }
-    
+
     public void removeExclusiveGroupSetStructureTable()
     {
-        StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            holder.getStatement().executeUpdate( "DROP TABLE " + CreateExclusiveGroupSetTableStatement.TABLE_NAME );
-        }
-        catch ( Exception ex )
-        {
-            log.info( "Table " + CreateExclusiveGroupSetTableStatement.TABLE_NAME + " does not exist" );
-        }
-        finally
-        {
-            holder.close();
-        }        
-    }    
+        jdbcTemplate.update( "DROP TABLE " + CreateExclusiveGroupSetTableStatement.TABLE_NAME );    
+    }
 }

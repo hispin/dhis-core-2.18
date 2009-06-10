@@ -29,7 +29,6 @@ package org.hisp.dhis.reporting.tablecreator.action;
 
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
-import org.hisp.dhis.reporttable.ReportTableCreator;
 
 import com.opensymphony.xwork.Action;
 
@@ -50,14 +49,7 @@ public class RemoveTableAction
     {
         this.reportTableService = reportTableService;
     }
-    
-    private ReportTableCreator reportTableCreator;
-
-    public void setReportTableCreator( ReportTableCreator reportTableCreator )
-    {
-        this.reportTableCreator = reportTableCreator;
-    }
-    
+        
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -81,7 +73,7 @@ public class RemoveTableAction
             
             if ( table != null )
             {
-                reportTableCreator.removeReportTable( table );
+                reportTableService.removeReportTable( table );
                 
                 reportTableService.deleteReportTable( table );
             }

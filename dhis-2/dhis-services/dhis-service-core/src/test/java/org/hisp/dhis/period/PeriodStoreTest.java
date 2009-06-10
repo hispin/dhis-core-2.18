@@ -27,13 +27,19 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
@@ -43,13 +49,14 @@ import org.hisp.dhis.datavalue.DataValueStore;
 import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
+import org.junit.Test;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: PeriodStoreTest.java 5983 2008-10-17 17:42:44Z larshelg $
  */
 public class PeriodStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private PeriodStore periodStore;
     
@@ -67,6 +74,7 @@ public class PeriodStoreTest
     // Set up/tear down
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -89,6 +97,7 @@ public class PeriodStoreTest
     // Period
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddPeriod()
         throws Exception
     {
@@ -138,6 +147,7 @@ public class PeriodStoreTest
         assertEquals( getDay( 3 ), periodC.getEndDate() );
     }
 
+    @Test
     public void testDeleteAndGetPeriod()
         throws Exception
     {
@@ -185,6 +195,7 @@ public class PeriodStoreTest
         assertNull( periodStore.getPeriod( idD ) );
     }
 
+    @Test
     public void testGetPeriod()
         throws Exception
     {
@@ -245,7 +256,8 @@ public class PeriodStoreTest
         assertNull( periodStore.getPeriod( getDay( 4 ), getDay( 3 ), periodTypeB ) );
         assertNull( periodStore.getPeriod( getDay( 5 ), getDay( 6 ), periodTypeA ) );
     }
-    
+
+    @Test
     public void testGetAllPeriods()
         throws Exception
     {
@@ -267,7 +279,8 @@ public class PeriodStoreTest
         assertTrue( periods.contains( periodB ) );
         assertTrue( periods.contains( periodC ) );        
     }
-    
+
+    @Test
     public void testGetPeriodsBetweenDates()
         throws Exception
     {
@@ -310,6 +323,7 @@ public class PeriodStoreTest
         assertTrue( periods.contains( periodD ) );
     }
 
+    @Test
     public void testGetIntersectingPeriodsByPeriodType()
         throws Exception
     {
@@ -386,7 +400,8 @@ public class PeriodStoreTest
     	assertNotNull( periodsB );
     	assertEquals( 6, periodsB.size() );
     }
-    
+
+    @Test
     public void testGetIntersectingPeriods()
         throws Exception
     {
@@ -425,7 +440,8 @@ public class PeriodStoreTest
         assertTrue( periods.contains( periodI ) );
         assertTrue( periods.contains( periodJ ) );
     }
-    
+
+    @Test
     public void testGetPeriodsByPeriodType()
         throws Exception
     {
@@ -464,6 +480,7 @@ public class PeriodStoreTest
         assertEquals( 0, periodsC.size() );
     }
 
+    @Test
     public void testGetPeriodsWithAssociatedDataValues()
         throws Exception
     {
@@ -583,6 +600,7 @@ public class PeriodStoreTest
     // PeriodType
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddPeriodType()
         throws Exception
     {
@@ -616,6 +634,7 @@ public class PeriodStoreTest
         assertEquals( refC.getName(), periodTypeC.getName() );
     }
 
+    @Test
     public void testDeleteAndGetPeriodType()
         throws Exception
     {

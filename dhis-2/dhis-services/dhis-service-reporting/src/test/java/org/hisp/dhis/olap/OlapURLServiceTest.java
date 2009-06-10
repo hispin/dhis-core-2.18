@@ -27,7 +27,10 @@ package org.hisp.dhis.olap;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+
 import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
@@ -52,6 +55,7 @@ public class OlapURLServiceTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testGetMapURL()
     {
         String url = olapURLService.getMapURL( "openhealth-fp", "ind_ou4", "BCG < 1 y coverage", 

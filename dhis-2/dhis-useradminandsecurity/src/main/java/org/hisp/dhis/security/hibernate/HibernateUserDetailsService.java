@@ -37,11 +37,12 @@ import org.acegisecurity.userdetails.UserDetailsService;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Creates and returns org.acegisecurity.userdetails.UserDetails objects based
@@ -60,17 +61,18 @@ public class HibernateUserDetailsService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-
+    
     // -------------------------------------------------------------------------
     // UserDetailsService implementation
     // -------------------------------------------------------------------------
 
+    @Transactional
     public final UserDetails loadUserByUsername( String username )
         throws UsernameNotFoundException, DataAccessException
     {
@@ -100,7 +102,7 @@ public class HibernateUserDetailsService
     private UserCredentials loadUserCredentials( String username )
         throws UsernameNotFoundException
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( UserCredentials.class );
         criteria.add( Restrictions.eq( "username", username ) );

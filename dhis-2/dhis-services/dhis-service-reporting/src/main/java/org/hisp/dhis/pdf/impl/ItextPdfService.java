@@ -49,6 +49,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.PDFUtils;
 import org.hisp.dhis.validation.ValidationResult;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.pdf.PdfPTable;
@@ -57,6 +58,7 @@ import com.lowagie.text.pdf.PdfPTable;
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional
 public class ItextPdfService
     implements PdfService
 {

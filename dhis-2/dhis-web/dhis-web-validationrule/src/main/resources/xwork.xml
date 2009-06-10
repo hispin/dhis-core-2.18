@@ -116,7 +116,6 @@
     </action>
     
     <action name="showUpdateValidationRuleGroupForm" class="org.hisp.dhis.validationrule.action.validationrulegroup.GetValidationRuleGroupAction">
-      <interceptor-ref name="transactionStack"/>
       <result name="success" type="chain">getGroupMembersAndAvailableValidationRules</result>
       <param name="requiredAuthorities">F_VALIDATIONRULEGROUP_UPDATE</param>
     </action>

@@ -27,7 +27,6 @@ package org.hisp.dhis.organisationunit.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -35,15 +34,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -61,13 +58,13 @@ public class HibernateOrganisationUnitStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-
+    
     private SourceStore sourceStore;
 
     public void setSourceStore( SourceStore sourceStore )
@@ -81,17 +78,17 @@ public class HibernateOrganisationUnitStore
 
     public OrganisationUnit getOrganisationUnit( String uuid )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( OrganisationUnit.class );
         criteria.add( Restrictions.eq( "uuid", uuid ) );
         
         return (OrganisationUnit) criteria.uniqueResult();                
     }
-    
+
     public OrganisationUnit getOrganisationUnitByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from OrganisationUnit o where o.name = :name" );
 
@@ -102,7 +99,7 @@ public class HibernateOrganisationUnitStore
 
     public OrganisationUnit getOrganisationUnitByShortName( String shortName )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from OrganisationUnit o where o.shortName = :shortName" );
 
@@ -113,7 +110,7 @@ public class HibernateOrganisationUnitStore
 
     public OrganisationUnit getOrganisationUnitByCode( String code )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from OrganisationUnit o where o.code = :code" );
 
@@ -125,7 +122,7 @@ public class HibernateOrganisationUnitStore
     @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnit> getRootOrganisationUnits()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return session.createQuery( "from OrganisationUnit o where o.parent is null" ).list();
     }
@@ -145,7 +142,7 @@ public class HibernateOrganisationUnitStore
      */
     public int addOrganisationUnitHierarchy( Date date )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         // -----------------------------------------------------------------
         // Removes any hierarchies registered on the same date
@@ -178,17 +175,17 @@ public class HibernateOrganisationUnitStore
 
         return (Integer) session.save( organisationUnitHierarchy );
     }
-    
+
     public OrganisationUnitHierarchy getOrganisationUnitHierarchy( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         return (OrganisationUnitHierarchy) session.get( OrganisationUnitHierarchy.class, id );
     }
-    
+
     public OrganisationUnitHierarchy getLatestOrganisationUnitHierarchy()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( OrganisationUnitHierarchy.class );
         
@@ -197,11 +194,11 @@ public class HibernateOrganisationUnitStore
         
         return (OrganisationUnitHierarchy) criteria.uniqueResult();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public void removeOrganisationUnitHierarchies( Date date )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from OrganisationUnitHierarchy o where o.date = :date" );
         query.setDate( "date", date );
@@ -226,7 +223,7 @@ public class HibernateOrganisationUnitStore
     @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnitHierarchy> getOrganisationUnitHierarchies( Date startDate, Date endDate )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         // -----------------------------------------------------------------
         // Counts number of hierarchies between start and end date
@@ -269,11 +266,11 @@ public class HibernateOrganisationUnitStore
 
         return list;
     }
-    
+
     @SuppressWarnings( "unchecked" )    
     public void deleteOrganisationUnitHierarchies()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( OrganisationUnitHierarchy.class );
                 
@@ -285,88 +282,53 @@ public class HibernateOrganisationUnitStore
         }
     }
     
-    /**
-     * Retrieves the ids of the children of the given parent organisation unit
-     * from the given organisation unit hierarchy.
-     * 
-     * @param organisationUnitHierarchyId Id of the hierarchy
-     * @param parentId Id of the parent organisation unit
-     */
-    public Collection<Integer> getChildren( OrganisationUnitHierarchy hierarchy, int parentId )
-    {
-        Set<Entry<Integer, Integer>> structureEntries = hierarchy.getStructure().entrySet();
-
-        List<Integer> children = new ArrayList<Integer>();
-        children.add( 0, parentId );
-
-        int childCounter = 1;
-
-        // ---------------------------------------------------------------------
-        // Sorts out the children of parent organisation unit from structure
-        // and adds them to children
-        // ---------------------------------------------------------------------
-
-        for ( int i = 0; i < childCounter; i++ )
-        {
-            for ( Entry<Integer, Integer> entry : structureEntries )
-            {
-                if ( entry.getValue().intValue() == children.get( i ).intValue() )
-                {
-                    children.add( childCounter++, entry.getKey() );
-                }
-            }
-        }
-        
-        return children;
-    }
-
     // -------------------------------------------------------------------------
     // OrganisationUnitLevel
     // -------------------------------------------------------------------------
 
     public int addOrganisationUnitLevel( OrganisationUnitLevel level )
     {
-        return (Integer) sessionManager.getCurrentSession().save( level );
+        return (Integer) sessionFactory.getCurrentSession().save( level );
     }
-    
+
     public void updateOrganisationUnitLevel( OrganisationUnitLevel level )
     {
-        sessionManager.getCurrentSession().update( level );
+        sessionFactory.getCurrentSession().update( level );
     }
-    
+
     public OrganisationUnitLevel getOrganisationUnitLevel( int id )
     {
-        return (OrganisationUnitLevel) sessionManager.getCurrentSession().get( OrganisationUnitLevel.class, id );
+        return (OrganisationUnitLevel) sessionFactory.getCurrentSession().get( OrganisationUnitLevel.class, id );
     }
-    
+
     public void deleteOrganisationUnitLevel( OrganisationUnitLevel level )
     {
-        sessionManager.getCurrentSession().delete( level );
+        sessionFactory.getCurrentSession().delete( level );
     }
-    
+
     public void deleteOrganisationUnitLevels()
     {
         String hql = "delete from OrganisationUnitLevel";
         
-        sessionManager.getCurrentSession().createQuery( hql ).executeUpdate();
+        sessionFactory.getCurrentSession().createQuery( hql ).executeUpdate();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnitLevel> getOrganisationUnitLevels()
     {
-        return sessionManager.getCurrentSession().createCriteria( OrganisationUnitLevel.class ).list();
+        return sessionFactory.getCurrentSession().createCriteria( OrganisationUnitLevel.class ).list();
     }
 
     public OrganisationUnitLevel getOrganisationUnitLevelByLevel( int level )
     {
-        Criteria criteria = sessionManager.getCurrentSession().createCriteria( OrganisationUnitLevel.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnitLevel.class );
         
         return (OrganisationUnitLevel) criteria.add( Restrictions.eq( "level", level ) ).uniqueResult();
     }
-    
+
     public OrganisationUnitLevel getOrganisationUnitLevelByName( String name )
     {
-        Criteria criteria = sessionManager.getCurrentSession().createCriteria( OrganisationUnitLevel.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnitLevel.class );
         
         return (OrganisationUnitLevel) criteria.add( Restrictions.eq( "name", name ) ).uniqueResult();
     }

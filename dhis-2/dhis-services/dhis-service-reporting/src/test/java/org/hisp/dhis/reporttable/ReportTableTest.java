@@ -27,12 +27,15 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 import static org.hisp.dhis.reporttable.ReportTable.SEPARATOR;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
@@ -44,13 +47,14 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ReportTableTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private List<DataElement> dataElements;
     private List<DataElementCategoryOptionCombo> categoryOptionCombos;
@@ -186,6 +190,7 @@ public class ReportTableTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testIndicatorReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_INDICATORS, false,
@@ -241,7 +246,8 @@ public class ReportTableTest
         assertTrue( reportTable.getReportPeriods().contains( null ) );
         assertTrue( reportTable.getReportUnits().size() == 2 );
     }
-    
+
+    @Test
     public void testIndicatorReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_INDICATORS, false,
@@ -289,7 +295,8 @@ public class ReportTableTest
         assertTrue( reportTable.getReportPeriods().size() == 4 );
         assertTrue( reportTable.getReportUnits().contains( null ) );
     }
-    
+
+    @Test
     public void testIndicatorReportTableC()
     {        
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_INDICATORS, false, 
@@ -342,6 +349,7 @@ public class ReportTableTest
         assertTrue( reportTable.getReportUnits().contains( null ) );
     }
 
+    @Test
     public void testDataElementReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
@@ -397,7 +405,8 @@ public class ReportTableTest
         assertTrue( reportTable.getReportPeriods().contains( null ) );
         assertTrue( reportTable.getReportUnits().size() == 2 );
     }
-    
+
+    @Test
     public void testDataElementReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
@@ -446,7 +455,8 @@ public class ReportTableTest
         assertTrue( reportTable.getReportPeriods().size() == 4 );
         assertTrue( reportTable.getReportUnits().contains( null ) );
     }
-    
+
+    @Test
     public void testDataElementReportTableC()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
@@ -499,6 +509,7 @@ public class ReportTableTest
         assertTrue( reportTable.getReportUnits().contains( null ) );
     }
 
+    @Test
     public void testDataElementWithCategoryOptionReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
@@ -568,7 +579,8 @@ public class ReportTableTest
         assertTrue( reportTable.getReportPeriods().contains( null ) );
         assertTrue( reportTable.getReportUnits().size() == 2 );
     }
-    
+
+    @Test
     public void testDataElementWithCategoryOptionReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
@@ -622,7 +634,8 @@ public class ReportTableTest
         assertTrue( reportTable.getReportPeriods().size() == 4 );
         assertTrue( reportTable.getReportUnits().contains( null ) );
     }
-    
+
+    @Test
     public void testDataElementWithCategoryOptionReportTableC()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATAELEMENTS, false,
@@ -677,6 +690,7 @@ public class ReportTableTest
         assertTrue( reportTable.getReportUnits().contains( null ) );
     }
 
+    @Test
     public void testDataSetReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATASETS, false,
@@ -731,7 +745,8 @@ public class ReportTableTest
         assertTrue( reportTable.getReportPeriods().contains( null ) );
         assertTrue( reportTable.getReportUnits().size() == 2 );
     }
-    
+
+    @Test
     public void testDataSetReportTableB()
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATASETS, false,
@@ -779,7 +794,8 @@ public class ReportTableTest
         assertTrue( reportTable.getReportPeriods().size() == 4 );
         assertTrue( reportTable.getReportUnits().contains( null ) );
     }
-    
+
+    @Test
     public void testDataSetReportTableC()
     {        
         ReportTable reportTable = new ReportTable( "Embezzlement", ReportTable.MODE_DATASETS, false, 

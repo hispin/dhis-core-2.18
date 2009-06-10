@@ -4,13 +4,6 @@
   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
   
-  <bean id="org.hisp.dhis.webwork.interceptor.WebWorkTransactionInterceptor"
-    class="org.hisp.dhis.webwork.interceptor.WebWorkTransactionInterceptor">
-    <property name="transactionManager">
-      <ref bean="org.hisp.dhis.transaction.TransactionManager"/>
-    </property>
-  </bean>
-  
   <bean id="org.hisp.dhis.webwork.interceptor.WebWorkExceptionInterceptor"
     class="org.hisp.dhis.webwork.interceptor.WebWorkExceptionInterceptor">
     <property name="showStackTrace">
@@ -62,12 +55,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="styleManager">
       <ref bean="org.hisp.dhis.options.style.StyleManager"/>
     </property>
-  </bean>
-  
-  <bean id="org.hisp.dhis.servlet.filter.OpenSessionInViewFilter"
-    class="org.hisp.dhis.servlet.filter.OpenSessionInViewFilter">
-    <property name="sessionManager"
-      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
   </bean>
   
 </beans>

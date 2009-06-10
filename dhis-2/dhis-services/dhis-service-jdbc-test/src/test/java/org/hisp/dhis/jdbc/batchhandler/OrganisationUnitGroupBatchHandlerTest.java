@@ -27,20 +27,26 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: OrganisationUnitGroupBatchHandlerTest.java 4949 2008-04-21 07:59:54Z larshelg $
  */
 public class OrganisationUnitGroupBatchHandlerTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
@@ -53,7 +59,8 @@ public class OrganisationUnitGroupBatchHandlerTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
     {
         organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
@@ -69,15 +76,23 @@ public class OrganisationUnitGroupBatchHandlerTest
         groupC = createOrganisationUnitGroup( 'C' );
     }
 
+    @Override
     public void tearDownTest()
     {
         batchHandler.flush();
     }
-
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddObject()
     {
         batchHandler.addObject( groupA );
@@ -93,6 +108,7 @@ public class OrganisationUnitGroupBatchHandlerTest
         assertTrue( groups.contains( groupC ) );
     }
 
+    @Test
     public void testInsertObject()
     {
         int idA = batchHandler.insertObject( groupA, true );
@@ -103,7 +119,8 @@ public class OrganisationUnitGroupBatchHandlerTest
         assertNotNull( organisationUnitGroupService.getOrganisationUnitGroup( idB ) );
         assertNotNull( organisationUnitGroupService.getOrganisationUnitGroup( idC ) );
     }
-    
+
+    @Test
     public void testUpdateObject()
     {
         int id = organisationUnitGroupService.addOrganisationUnitGroup( groupA );
@@ -115,6 +132,7 @@ public class OrganisationUnitGroupBatchHandlerTest
         assertEquals( organisationUnitGroupService.getOrganisationUnitGroup( id ).getName(), "UpdatedName" );
     }
 
+    @Test
     public void testGetObjectIdentifier()
     {
         int referenceId = organisationUnitGroupService.addOrganisationUnitGroup( groupA );
@@ -123,7 +141,8 @@ public class OrganisationUnitGroupBatchHandlerTest
 
         assertEquals( referenceId, retrievedId );
     }
-    
+
+    @Test
     public void testObjectExists()
     {
         organisationUnitGroupService.addOrganisationUnitGroup( groupA );

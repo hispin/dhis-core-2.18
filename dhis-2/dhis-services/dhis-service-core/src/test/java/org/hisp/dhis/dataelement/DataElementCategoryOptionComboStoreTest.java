@@ -27,18 +27,23 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementCategoryOptionComboStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DataElementCategoryOptionComboStore categoryOptionComboStore;
     
@@ -61,6 +66,7 @@ public class DataElementCategoryOptionComboStoreTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -108,6 +114,7 @@ public class DataElementCategoryOptionComboStoreTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGetDataElementCategoryOptionCombo()
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();
@@ -128,7 +135,8 @@ public class DataElementCategoryOptionComboStoreTest
         assertEquals( categoryComboA, categoryOptionComboA.getCategoryCombo() );
         assertEquals( categoryOptions, categoryOptionComboA.getCategoryOptions() );
     }
-    
+
+    @Test
     public void testUpdateGetDataElementCategoryOptionCombo()
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();
@@ -159,7 +167,8 @@ public class DataElementCategoryOptionComboStoreTest
         assertEquals( categoryComboB, categoryOptionComboA.getCategoryCombo() );
         assertEquals( categoryOptions, categoryOptionComboA.getCategoryOptions() );
     }
-    
+
+    @Test
     public void testDeleteDataElementCategoryOptionCombo()
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();
@@ -192,7 +201,8 @@ public class DataElementCategoryOptionComboStoreTest
         assertNull( categoryOptionComboStore.getDataElementCategoryOptionCombo( idB ) );
         assertNull( categoryOptionComboStore.getDataElementCategoryOptionCombo( idC ) );
     }
-    
+
+    @Test
     public void testGetAllDataElementCategoryOptionCombos()
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();

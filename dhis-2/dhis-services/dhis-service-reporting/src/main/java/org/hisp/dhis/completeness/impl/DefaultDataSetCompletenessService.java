@@ -1,4 +1,4 @@
-package org.hisp.dhis.completeness;
+package org.hisp.dhis.completeness.impl;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -35,6 +35,11 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.completeness.DataSetCompletenessConfiguration;
+import org.hisp.dhis.completeness.DataSetCompletenessResult;
+import org.hisp.dhis.completeness.DataSetCompletenessService;
+import org.hisp.dhis.completeness.DataSetCompletenessStore;
+import org.hisp.dhis.completeness.cache.DataSetCompletenessCache;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -42,16 +47,21 @@ import org.hisp.dhis.external.configuration.ConfigurationManager;
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.jdbc.batchhandler.DataSetCompletenessResultBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional
 public class DefaultDataSetCompletenessService
     implements DataSetCompletenessService
 {
@@ -79,6 +89,13 @@ public class DefaultDataSetCompletenessService
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private BatchHandlerFactory batchHandlerFactory;
+
+    public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
+    {
+        this.batchHandlerFactory = batchHandlerFactory;
+    }
+    
     private OrganisationUnitService organisationUnitService;
     
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -120,6 +137,20 @@ public class DefaultDataSetCompletenessService
     {
         this.configurationManager = configurationManager;
     }
+
+    private DataSetCompletenessCache completenessCache;
+
+    public void setCompletenessCache( DataSetCompletenessCache completenessCache )
+    {
+        this.completenessCache = completenessCache;
+    }
+
+    private DataSetCompletenessStore completenessStore;
+
+    public void setCompletenessStore( DataSetCompletenessStore completenessStore )
+    {
+        this.completenessStore = completenessStore;
+    }
     
     // -------------------------------------------------------------------------
     // DataSetCompletenessService implementation
@@ -129,6 +160,72 @@ public class DefaultDataSetCompletenessService
     // DataSetCompleteness
     // -------------------------------------------------------------------------
 
+    public void exportDataSetCompleteness( Collection<Integer> dataSetIds, 
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Integer reportTableId )
+    {
+        log.info( "Data completeness export process started" );
+        
+        completenessStore.deleteDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
+        
+        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataSetCompletenessResultBatchHandler.class );
+        
+        batchHandler.init();
+        
+        Collection<Period> periods = periodService.getPeriods( periodIds );
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( organisationUnitIds );
+        Collection<DataSet> dataSets = dataSetService.getDataSets( dataSetIds );
+        
+        Collection<Period> intersectingPeriods = null;
+        Date deadline = null;
+        DataSetCompletenessResult result = null;
+        
+        for ( final Period period : periods )
+        {
+            intersectingPeriods = periodService.getIntersectingPeriods( period.getStartDate(), period.getEndDate() );
+            
+            for ( final OrganisationUnit unit : units )
+            {
+                for ( final DataSet dataSet : dataSets )
+                {
+                    final DataSetCompletenessResult aggregatedResult = new DataSetCompletenessResult();
+                    
+                    aggregatedResult.setDataSetId( dataSet.getId() );
+                    aggregatedResult.setPeriodId( period.getId() );
+                    aggregatedResult.setPeriodName( period.getName() );
+                    aggregatedResult.setOrganisationUnitId( unit.getId() );
+                    aggregatedResult.setReportTableId( reportTableId );
+                    
+                    for ( final Period intersectingPeriod : intersectingPeriods )
+                    {
+                        if ( intersectingPeriod.getPeriodType().equals( dataSet.getPeriodType() ) )
+                        {
+                            deadline = completenessCache.getDeadline( intersectingPeriod );
+                            
+                            result = getDataSetCompleteness( intersectingPeriod, deadline, unit, dataSet );
+                            
+                            aggregatedResult.incrementSources( result.getSources() );
+                            aggregatedResult.incrementRegistrations( result.getRegistrations() );
+                            aggregatedResult.incrementRegistrationsOnTime( result.getRegistrationsOnTime() );
+                        }
+                    }
+                    
+                    if ( aggregatedResult.getSources() > 0 )
+                    {
+                        batchHandler.addObject( aggregatedResult );
+                    }
+                }
+            }
+            
+            log.info( "Exported data completeness for period " + period.getId() );
+        }
+        
+        completenessCache.clear();
+        
+        batchHandler.flush();
+        
+        log.info( "Export process done" );
+    }
+    
     public Collection<DataSetCompletenessResult> getDataSetCompleteness( int periodId, int organisationUnitId )
     {
         final Period period = periodService.getPeriod( periodId );

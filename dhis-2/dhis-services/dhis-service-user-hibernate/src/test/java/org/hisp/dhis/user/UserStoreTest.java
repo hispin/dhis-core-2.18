@@ -27,6 +27,10 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -34,7 +38,7 @@ import java.util.HashSet;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.transaction.TransactionManager;
+import org.junit.Test;
 
 /**
  * @author Nguyen Hong Duc
@@ -45,20 +49,18 @@ public class UserStoreTest
 {
     private UserStore userStore;
 
-    private TransactionManager transactionManager;
-
     private OrganisationUnitService organisationUnitService;
 
+    @Override
     public void setUpTest()
         throws Exception
     {
         userStore = (UserStore) getBean( UserStore.ID );
 
-        transactionManager = (TransactionManager) getBean( TransactionManager.ID );
-
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
     }
 
+    @Test
     public void testBasicUser()
         throws Exception
     {
@@ -102,9 +104,7 @@ public class UserStoreTest
         // Test getUser
         assertEquals( userStore.getUser( user.getId() ).getSurname(), "User1" );
         assertEquals( userStore.getUser( user.getId() ).getFirstName(), userName );
-        transactionManager.enter();
         assertEquals( 2, userStore.getUser( user.getId() ).getOrganisationUnits().size() );
-        transactionManager.leave();
         assertEquals( userStore.getUser( user.getId() ).getId(), 1 );
 
         // Test getAllUsers
@@ -147,6 +147,7 @@ public class UserStoreTest
         assertEquals( userStore.getAllUsers().size(), 2 );
     }
 
+    @Test
     public void testBasicUserCredentials()
         throws Exception
     {
@@ -168,9 +169,7 @@ public class UserStoreTest
 
         userStore.addUserCredentials( userCredentials );
 
-        transactionManager.enter();
         assertEquals( userStore.getUserCredentials( user ).getUser().getId(), user.getId() );
-        transactionManager.leave();
         assertEquals( userStore.getUserCredentials( user ).getUsername(), username );
         assertEquals( userStore.getUserCredentials( user ).getPassword(), password );
 
@@ -201,6 +200,7 @@ public class UserStoreTest
         assertNull( userStore.getUserCredentials( user ) );
     }
 
+    @Test
     public void testBasicUserAuthorityGroup()
         throws Exception
     {
@@ -212,9 +212,7 @@ public class UserStoreTest
         UserAuthorityGroup userAuthorityGroup = new UserAuthorityGroup();
         userAuthorityGroup.setName( name );
         userStore.addUserAuthorityGroup( userAuthorityGroup );
-        transactionManager.enter();
         assertEquals( userStore.getUserAuthorityGroup( userAuthorityGroup.getId() ).getName(), name );
-        transactionManager.leave();
 
         // Test updateUserAuthorityGroup
         userAuthorityGroup.setName( name1 );
@@ -244,6 +242,7 @@ public class UserStoreTest
         assertEquals( userStore.getAllUserAuthorityGroups().size(), 1 );
     }
 
+    @Test
     public void testBasicUserSettings()
         throws Exception
     {
@@ -275,9 +274,7 @@ public class UserStoreTest
 
         // Test getUserSetting
         assertEquals( userStore.getUserSetting( userSetting.getUser(), name ).getName(), name );
-        transactionManager.enter();
         assertEquals( userStore.getUserSetting( userSetting.getUser(), name ).getUser().getId(), user.getId() );
-        transactionManager.leave();
         assertEquals( userStore.getUserSetting( userSetting.getUser(), name ).getValue(), value1 );
 
         // Test getAllUserSettings

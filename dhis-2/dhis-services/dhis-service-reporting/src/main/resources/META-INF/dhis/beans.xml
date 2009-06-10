@@ -8,8 +8,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.olap.OlapURLStore"
     class="org.hisp.dhis.olap.hibernate.HibernateOlapURLStore">
-    <property name="sessionManager"
-      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
   <bean id="org.hisp.dhis.olap.OlapURLService"
@@ -21,28 +20,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- ReportTable -->
   
   <bean id="internal-process-ReportTable"
-    class="org.hisp.dhis.reporttable.DefaultReportTableCreator"
+    class="org.hisp.dhis.reporttable.ReportTableInternalProcess"
     scope="prototype">
     <property name="statementManager"
       ref="org.hisp.dhis.jdbc.StatementManager"/>
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
-    <property name="reportStore"
-      ref="org.hisp.dhis.report.ReportStore"/>
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    <property name="reportTableManager"
-      ref="org.hisp.dhis.reporttable.jdbc.ReportTableManager"/>
-    <property name="batchHandlerFactory"
-      ref="org.hisp.dhis.jdbc.BatchHandlerFactory"/>
-    <property name="dataMartService"
-      ref="internal-process-DataMart"/>
-    <property name="dataMartStore"
-      ref="org.hisp.dhis.datamart.DataMartStore"/>
-    <property name="completenessExportService"
-      ref="internal-process-DataSetCompleteness"/>
+    <property name="reportTableService" 
+        ref="org.hisp.dhis.reporttable.ReportTableService"/>
   </bean>
-  
+    
   <bean id="org.hisp.dhis.reporttable.jdbc.ReportTableManager"
     class="org.hisp.dhis.reporttable.jdbc.JDBCReportTableManager">
     <property name="statementManager"
@@ -53,26 +38,36 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.reporttable.ReportTableStore"
     class="org.hisp.dhis.reporttable.hibernate.HibernateReportTableStore">
-    <property name="sessionManager"
-      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporttable.ReportTableService"
     class="org.hisp.dhis.reporttable.impl.DefaultReportTableService">
-    <property name="reportTableStore"
-      ref="org.hisp.dhis.reporttable.ReportTableStore"/>
     <property name="reportTableManager"
       ref="org.hisp.dhis.reporttable.jdbc.ReportTableManager"/>
+    <property name="reportTableStore"
+      ref="org.hisp.dhis.reporttable.ReportTableStore"/>
+    <property name="reportStore"
+      ref="org.hisp.dhis.report.ReportStore"/>
     <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/>
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="batchHandlerFactory"
+      ref="org.hisp.dhis.jdbc.BatchHandlerFactory"/>
+    <property name="dataMartService"
+      ref="org.hisp.dhis.datamart.DataMartService"/>
+    <property name="dataMartStore"
+      ref="org.hisp.dhis.datamart.DataMartStore"/>
+    <property name="completenessService"
+      ref="org.hisp.dhis.completeness.DataSetCompletenessService"/>
   </bean>
   
   <!-- Design -->
 
   <bean id="org.hisp.dhis.design.DesignStore"
     class="org.hisp.dhis.design.hibernate.HibernateDesignStore">
-    <property name="sessionManager"
-      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 
   <bean id="org.hisp.dhis.design.DesignService"
@@ -85,8 +80,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.report.ReportStore"
     class="org.hisp.dhis.report.hibernate.HibernateReportStore">
-    <property name="sessionManager"
-      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
   <bean id="org.hisp.dhis.report.ReportManager"
@@ -105,8 +99,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.chart.ChartStore"
     class="org.hisp.dhis.chart.hibernate.HibernateChartStore">
-    <property name="sessionManager"
-      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
   <bean id="org.hisp.dhis.chart.ChartService"
@@ -121,8 +114,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
   <bean id="org.hisp.dhis.document.DocumentStore"
     class="org.hisp.dhis.document.hibernate.HibernateDocumentStore">
-    <property name="sessionManager"
-      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
   <bean id="org.hisp.dhis.document.DocumentService"
@@ -134,11 +126,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- DataSetCompleteness -->
   
   <bean id="org.hisp.dhis.completeness.DataSetCompletenessService"
-    class="org.hisp.dhis.completeness.DefaultDataSetCompletenessService">
+    class="org.hisp.dhis.completeness.impl.DefaultDataSetCompletenessService">
     <property name="configDir"
       value="reports"/>
     <property name="configFile"
       value="dataSetCompletenessConfiguration.xml"/>
+    <property name="batchHandlerFactory"
+      ref="org.hisp.dhis.jdbc.BatchHandlerFactory"/>
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="dataSetService"
@@ -151,6 +145,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.external.location.LocationManager"/>
     <property name="configurationManager"
       ref="org.hisp.dhis.external.configuration.ConfigurationManager"/>
+    <property name="completenessCache"
+      ref="org.hisp.dhis.completeness.cache.DataSetCompletenessCache"/>
+    <property name="completenessStore"
+      ref="org.hisp.dhis.completeness.DataSetCompletenessStore"/>
   </bean>
   
   <bean id="org.hisp.dhis.completeness.DataSetCompletenessStore"
@@ -162,20 +160,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="internal-process-DataSetCompleteness"
     class="org.hisp.dhis.completeness.DataSetCompletenessInternalProcess"
     scope="prototype">
+    <property name="statementManager" 
+        ref="org.hisp.dhis.jdbc.StatementManager"/>
     <property name="completenessService"
       ref="org.hisp.dhis.completeness.DataSetCompletenessService"/>
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>   
-    <property name="batchHandlerFactory"
-      ref="org.hisp.dhis.jdbc.BatchHandlerFactory"/>
-    <property name="dataSetService"
-      ref="org.hisp.dhis.dataset.DataSetService"/>
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    <property name="completenessCache"
-      ref="org.hisp.dhis.completeness.cache.DataSetCompletenessCache"/>
-    <property name="completenessStore"
-      ref="org.hisp.dhis.completeness.DataSetCompletenessStore"/>
   </bean>
   
   <bean id="org.hisp.dhis.completeness.cache.DataSetCompletenessCache"
@@ -223,44 +211,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitService" 
         ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   </bean>
-      
-  <!-- AOP transaction definitions -->
-	
-  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-    <property name="advice" ref="readOnlyTransactionInterceptor"/>
-    <property name="patterns">
-      <list>
-        <value>.*\.OlapURLStore\.get.*</value>
-        <value>.*\.ReportTableStore\.get.*</value>
-        <value>.*\.ReportTemplateStore\.get.*</value>
-        <value>.*\.ReportStore\.get.*</value>
-        <value>.*\.ChartStore\.get.*</value>
-      </list>
-    </property>
-  </bean>
-	
-  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-    <property name="advice" ref="readWriteTransactionInterceptor"/>
-    <property name="patterns">
-      <list>
-        <value>.*\.OlapURLStore\.save.*</value>
-        <value>.*\.OlapURLStore\.delete.*</value>
-        <value>.*\.ReportTableStore\.save.*</value>
-        <value>.*\.ReportTableStore\.update.*</value>
-        <value>.*\.ReportTableStore\.delete.*</value>
-        <value>.*\.ReportTemplateStore\.save.*</value>
-        <value>.*\.ReportTemplateStore\.update.*</value>
-        <value>.*\.ReportTemplateStore\.delete.*</value>
-        <value>.*\.ReportStore\.save.*</value>
-        <value>.*\.ReportStore\.delete.*</value>
-        <value>.*\.ChartStore\.save.*</value>
-        <value>.*\.ChartStore\.delete.*</value>
-        <value>.*\.DocumentStore\.save.*</value>
-        <value>.*\.DocumentStore\.delete.*</value>
-      </list>
-    </property>
-  </bean>	
-	
+      	
   <!-- AOP statement definitions -->
   
   <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">

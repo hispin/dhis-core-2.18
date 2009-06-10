@@ -6,6 +6,10 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.DhisConvenienceTest;
 import org.hisp.dhis.dataelement.DataElement;
+import org.junit.Test;
+import org.springframework.test.annotation.NotTransactional;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -14,6 +18,8 @@ import org.hisp.dhis.dataelement.DataElement;
 public class AggregateableDataElementPredicateTest
     extends DhisConvenienceTest
 {
+    @Test
+    @NotTransactional
     public void testPredicate()
     {
         DataElement elementA = createDataElement( 'A' );

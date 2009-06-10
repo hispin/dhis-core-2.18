@@ -137,7 +137,7 @@ public class MemoryAggregationCache
             return children;
         }
         
-        children = organisationUnitService.getChildren( hierarchy, parentId );
+        children = organisationUnitService.getChildren( hierarchy.getId(), parentId );
         
         cache = ( cache == null ) ? new HashMap<String, Collection<Integer>>() : cache;
         
@@ -209,7 +209,7 @@ public class MemoryAggregationCache
             return level;
         }
                 
-        level = organisationUnitService.getLevelOfOrganisationUnit( organisationUnitService.getOrganisationUnit( id ) );
+        level = organisationUnitService.getLevelOfOrganisationUnit( id );
         
         cache = ( cache == null ) ? new HashMap<String, Integer>() : cache;
         

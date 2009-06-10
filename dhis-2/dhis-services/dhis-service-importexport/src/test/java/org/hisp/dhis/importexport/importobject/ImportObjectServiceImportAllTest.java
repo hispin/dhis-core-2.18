@@ -29,10 +29,7 @@ package org.hisp.dhis.importexport.importobject;
 
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ImportDataValueBatchHandler;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -46,18 +43,24 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.dbms.DbmsManager;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportObjectStatus;
+import org.hisp.dhis.jdbc.BatchHandler;
+import org.hisp.dhis.jdbc.BatchHandlerFactory;
+import org.hisp.dhis.jdbc.batchhandler.ImportDataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.session.SessionUtil;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -65,13 +68,13 @@ import org.hisp.dhis.system.session.SessionUtil;
  */
 @SuppressWarnings( "unused" )
 public class ImportObjectServiceImportAllTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private ImportObjectService importObjectService;
     
     private BatchHandlerFactory batchHandlerFactory;
     
-    private SessionUtil sessionUtil;
+    private DbmsManager dbmsManager;
 
     // -------------------------------------------------------------------------
     // CategoryOption
@@ -234,6 +237,7 @@ public class ImportObjectServiceImportAllTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         // ---------------------------------------------------------------------
@@ -244,7 +248,7 @@ public class ImportObjectServiceImportAllTest
         
         batchHandlerFactory = (BatchHandlerFactory) getBean( BatchHandlerFactory.ID );
         
-        sessionUtil = (SessionUtil) getBean( SessionUtil.ID );
+        dbmsManager = (DbmsManager) getBean( DbmsManager.ID );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
@@ -533,11 +537,18 @@ public class ImportObjectServiceImportAllTest
         dataValueHDuplicate = createDataValue( dataElementCModified, periodADuplicate, organisationUnitBModified, "10", categoryOptionComboADuplicate );
         dataValueIDuplicate = createDataValue( dataElementCModified, periodADuplicate, organisationUnitCModified, "10", categoryOptionComboADuplicate );        
     }
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
 
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testImportAllWithNewOnly()
     {
         importObjectService.addImportObject( ImportObjectStatus.NEW, dataElementAModified, null );
@@ -558,7 +569,7 @@ public class ImportObjectServiceImportAllTest
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.DATAELEMENTGROUP, dataElementGroupAssociationJ );
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.DATAELEMENTGROUP, dataElementGroupAssociationK );
 
-        sessionUtil.clearCurrentSession();
+        dbmsManager.clearSession();
 
         importObjectService.importAll();
         
@@ -590,6 +601,7 @@ public class ImportObjectServiceImportAllTest
         assertEquals( importObjectService.getImportObjects( GroupMemberAssociation.class ).size(), 0 );
     }
 
+    @Test
     public void testImportAllWithUpdatesOnly()
     {
         dataElementService.addDataElement( dataElementA );
@@ -619,7 +631,7 @@ public class ImportObjectServiceImportAllTest
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.DATAELEMENTGROUP, dataElementGroupAssociationJ );
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.DATAELEMENTGROUP, dataElementGroupAssociationK );
         
-        sessionUtil.clearCurrentSession();
+        dbmsManager.clearSession();
         
         importObjectService.importAll();
 
@@ -650,7 +662,8 @@ public class ImportObjectServiceImportAllTest
         assertEquals( importObjectService.getImportObjects( DataElementGroup.class ).size(), 0 );
         assertEquals( importObjectService.getImportObjects( GroupMemberAssociation.class ).size(), 0 );
     }
-    
+
+    @Test
     public void testImportAllWithMatchOnly()
     {
         dataElementService.addDataElement( dataElementA );
@@ -679,8 +692,8 @@ public class ImportObjectServiceImportAllTest
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.DATAELEMENTGROUP, dataElementGroupAssociationG );
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.DATAELEMENTGROUP, dataElementGroupAssociationJ );
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.DATAELEMENTGROUP, dataElementGroupAssociationK );
-        
-        sessionUtil.clearCurrentSession();
+
+        dbmsManager.clearSession();
         
         importObjectService.importAll();
 
@@ -712,6 +725,7 @@ public class ImportObjectServiceImportAllTest
         assertEquals( importObjectService.getImportObjects( GroupMemberAssociation.class ).size(), 0 );
     }
 
+    @Test
     public void testMatchAndImportAll()
     {
         int existingObjectIdA = dataElementService.addDataElement( dataElementA );
@@ -734,7 +748,7 @@ public class ImportObjectServiceImportAllTest
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.DATAELEMENTGROUP, dataElementGroupAssociationK );
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.DATAELEMENTGROUP, dataElementGroupAssociationL );
 
-        sessionUtil.clearCurrentSession();        
+        dbmsManager.clearSession();
         
         importObjectService.matchObject( importObjectIdA, existingObjectIdA );
         importObjectService.matchObject( importObjectIdB, existingObjectIdA );
@@ -767,7 +781,8 @@ public class ImportObjectServiceImportAllTest
         assertEquals( importObjectService.getImportObjects( DataElementGroup.class ).size(), 0 );
         assertEquals( importObjectService.getImportObjects( GroupMemberAssociation.class ).size(), 0 );
     }
-    
+
+    @Test
     public void testDeleteAndImportAll()
     {
         dataElementService.addDataElement( dataElementA );
@@ -790,7 +805,7 @@ public class ImportObjectServiceImportAllTest
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.DATAELEMENTGROUP, dataElementGroupAssociationK );
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.DATAELEMENTGROUP, dataElementGroupAssociationL );
 
-        sessionUtil.clearCurrentSession();        
+        dbmsManager.clearSession();
         
         importObjectService.cascadeDeleteImportObject( importObjectIdA );
         importObjectService.cascadeDeleteImportObject( importObjectIdB );
@@ -821,7 +836,8 @@ public class ImportObjectServiceImportAllTest
         assertEquals( importObjectService.getImportObjects( DataElementGroup.class ).size(), 0 );
         assertEquals( importObjectService.getImportObjects( GroupMemberAssociation.class ).size(), 0 );
     }
-    
+
+    @Test
     public void testImportOrganisationUnitRelationships()
     {
         importObjectService.addImportObject( ImportObjectStatus.NEW, organisationUnitAModified, null );
@@ -830,8 +846,8 @@ public class ImportObjectServiceImportAllTest
         
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.ORGANISATIONUNITRELATIONSHIP, relationshipAssociationA );
         importObjectService.addImportObject( ImportObjectStatus.NEW, GroupMemberType.ORGANISATIONUNITRELATIONSHIP, relationshipAssociationB );
-        
-        sessionUtil.clearCurrentSession();        
+
+        dbmsManager.clearSession();       
         
         importObjectService.importAll();
         
@@ -853,7 +869,8 @@ public class ImportObjectServiceImportAllTest
         assertEquals( importObjectService.getImportObjects( OrganisationUnit.class ).size(), 0 );
         assertEquals( importObjectService.getImportObjects( GroupMemberAssociation.class ).size(), 0 );
     }
-    
+
+    @Test
     public void testImportDataValueImportAll()
     {
         importObjectService.addImportObject( ImportObjectStatus.NEW, dataElementAModified, null );
@@ -881,8 +898,8 @@ public class ImportObjectServiceImportAllTest
         batchHandler.addObject( new ImportDataValue( dataValueIDuplicate, ImportObjectStatus.NEW ) );
         
         batchHandler.flush();
-        
-        sessionUtil.clearCurrentSession();
+
+        dbmsManager.clearSession();
         
         importObjectService.importAll();
         
@@ -898,7 +915,8 @@ public class ImportObjectServiceImportAllTest
         assertEquals( importObjectService.getImportObjects( Period.class ).size(), 0 );
         assertEquals( importObjectService.getImportObjects( OrganisationUnit.class ).size(), 0 );
     }
-    
+
+    @Test
     public void testImportDataValueImportAllWithUpdates()
     {
         dataElementService.addDataElement( dataElementA );
@@ -938,8 +956,8 @@ public class ImportObjectServiceImportAllTest
         batchHandler.addObject( new ImportDataValue( dataValueIDuplicate, ImportObjectStatus.UPDATE ) );
         
         batchHandler.flush();
-        
-        sessionUtil.clearCurrentSession();
+
+        dbmsManager.clearSession();
         
         importObjectService.importAll();
 

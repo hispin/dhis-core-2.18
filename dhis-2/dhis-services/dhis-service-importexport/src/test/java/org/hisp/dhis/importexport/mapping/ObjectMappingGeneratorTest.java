@@ -27,9 +27,11 @@ package org.hisp.dhis.importexport.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+
 import java.util.Map;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
@@ -44,13 +46,14 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ObjectMappingGeneratorTest
-    extends DhisConvenienceTest 
+    extends DhisTest
 {
     private ObjectMappingGenerator objectMappingGenerator;
     
@@ -58,6 +61,7 @@ public class ObjectMappingGeneratorTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         objectMappingGenerator = (ObjectMappingGenerator) getBean( ObjectMappingGenerator.ID );
@@ -75,15 +79,23 @@ public class ObjectMappingGeneratorTest
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
     }
     
+    @Override
     public void tearDownTest()
     {
         NameMappingUtil.clearMapping();
+    }
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
     }
 
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testGetDataElementMapping()
     {
         DataElement dataElementA = createDataElement( 'A' );
@@ -108,7 +120,8 @@ public class ObjectMappingGeneratorTest
         assertEquals( mapping.get( Integer.valueOf( 'A' ) ), Integer.valueOf( 'A' ) );
         assertEquals( mapping.get( Integer.valueOf( 'B' ) ), Integer.valueOf( 'B' ) );
     }
-    
+
+    @Test
     public void testGetCategoryOptionComboMapping()
     {
         DataElementCategoryCombo categoryComboA = new DataElementCategoryCombo( "CategoryComboA" );
@@ -153,7 +166,8 @@ public class ObjectMappingGeneratorTest
         assertEquals( mapping.get( Integer.valueOf( 'A' ) ), Integer.valueOf( 'A' ) );
         assertEquals( mapping.get( Integer.valueOf( 'B' ) ), Integer.valueOf( 'B' ) );
     }
-    
+
+    @Test
     public void testGetPeriodMapping()
     {        
         PeriodType periodTypeA = periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
@@ -180,7 +194,8 @@ public class ObjectMappingGeneratorTest
         assertEquals( mapping.get( Integer.valueOf( 'A' ) ), Integer.valueOf( 'A' ) );
         assertEquals( mapping.get( Integer.valueOf( 'B' ) ), Integer.valueOf( 'B' ) );
     }
-    
+
+    @Test
     public void testOrganisationUnitMapping()
     {
         OrganisationUnit organisationUnitA = createOrganisationUnit( 'A' );
@@ -205,7 +220,8 @@ public class ObjectMappingGeneratorTest
         assertEquals( mapping.get( Integer.valueOf( 'A' ) ), Integer.valueOf( 'A' ) );
         assertEquals( mapping.get( Integer.valueOf( 'B' ) ), Integer.valueOf( 'B' ) );        
     }
-    
+
+    @Test
     public void testOrganisationUnitMappingWithUUID()
     {
         OrganisationUnit organisationUnitA = createOrganisationUnit( 'A' );

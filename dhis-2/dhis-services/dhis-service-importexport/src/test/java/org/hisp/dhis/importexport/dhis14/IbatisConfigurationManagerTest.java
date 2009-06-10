@@ -32,6 +32,9 @@ import java.util.Properties;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.importexport.IbatisConfiguration;
 import org.hisp.dhis.importexport.IbatisConfigurationManager;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -51,6 +54,7 @@ public class IbatisConfigurationManagerTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         configurationManager = (IbatisConfigurationManager) getBean( IbatisConfigurationManager.ID );
@@ -63,6 +67,7 @@ public class IbatisConfigurationManagerTest
     // Tests
     // -------------------------------------------------------------------------
     
+    @Test
     public void testSetGetIbatisConfiguration()
         throws Exception
     {
@@ -79,7 +84,8 @@ public class IbatisConfigurationManagerTest
         
         assertEquals( config, receivedConfig );
     }
-    
+
+    @Test
     public void testGetPropertiesConfiguration()
         throws Exception
     {

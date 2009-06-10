@@ -31,8 +31,8 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupStore;
@@ -48,11 +48,11 @@ public class HibernateOrganisationUnitGroupStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -61,45 +61,45 @@ public class HibernateOrganisationUnitGroupStore
 
     public int addOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( organisationUnitGroup );
     }
 
     public void updateOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( organisationUnitGroup );
     }
 
     public void deleteOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( organisationUnitGroup );
     }
 
     public OrganisationUnitGroup getOrganisationUnitGroup( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (OrganisationUnitGroup) session.get( OrganisationUnitGroup.class, id );
     }
 
     public OrganisationUnitGroup getOrganisationUnitGroup( String uuid )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( OrganisationUnitGroup.class );
         criteria.add( Restrictions.eq( "uuid", uuid ) );
         
         return (OrganisationUnitGroup) criteria.uniqueResult();                
     }
-    
+
     public OrganisationUnitGroup getOrganisationUnitGroupByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( OrganisationUnitGroup.class );
         criteria.add( Restrictions.eq( "name", name ) );
@@ -110,7 +110,7 @@ public class HibernateOrganisationUnitGroupStore
     @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnitGroup> getAllOrganisationUnitGroups()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( OrganisationUnitGroup.class );
 
@@ -123,35 +123,35 @@ public class HibernateOrganisationUnitGroupStore
 
     public int addOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( organisationUnitGroupSet );
     }
 
     public void updateOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( organisationUnitGroupSet );
     }
 
     public void deleteOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( organisationUnitGroupSet );
     }
 
     public OrganisationUnitGroupSet getOrganisationUnitGroupSet( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (OrganisationUnitGroupSet) session.get( OrganisationUnitGroupSet.class, id );
     }
 
     public OrganisationUnitGroupSet getOrganisationUnitGroupSetByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( OrganisationUnitGroupSet.class );
         criteria.add( Restrictions.eq( "name", name ) );
@@ -162,7 +162,7 @@ public class HibernateOrganisationUnitGroupStore
     @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnitGroupSet> getAllOrganisationUnitGroupSets()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( OrganisationUnitGroupSet.class );
 
@@ -172,7 +172,7 @@ public class HibernateOrganisationUnitGroupStore
     @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSets()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( OrganisationUnitGroupSet.class );
         criteria.add( Restrictions.eq( "compulsory", true ) );
@@ -183,7 +183,7 @@ public class HibernateOrganisationUnitGroupStore
     @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnitGroupSet> getExclusiveOrganisationUnitGroupSets()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( OrganisationUnitGroupSet.class );
         criteria.add( Restrictions.eq( "exclusive", true ) );

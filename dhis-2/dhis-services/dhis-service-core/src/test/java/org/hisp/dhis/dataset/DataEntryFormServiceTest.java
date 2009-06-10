@@ -27,12 +27,18 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Test;
 
 /**
  * @author Bharath
@@ -52,7 +58,8 @@ public class DataEntryFormServiceTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -68,7 +75,8 @@ public class DataEntryFormServiceTest
     // -------------------------------------------------------------------------
     // DataEntryForm
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddDataEntryForm()
     {
         DataSet dataSetA = new DataSet( "DataSet-A", periodType );
@@ -85,6 +93,7 @@ public class DataEntryFormServiceTest
         assertEquals( "DataEntryForm-A", dataEntryFormA.getName() );
     }
 
+    @Test
     public void testUpdateDataEntryForm()
     {
         DataSet dataSetA = new DataSet( "DataSet-A", periodType );
@@ -108,6 +117,7 @@ public class DataEntryFormServiceTest
         assertEquals( dataEntryForm.getName(), "DataEntryForm-X" );
     }
 
+    @Test
     public void testDeleteAndGetDataEntryForm()
     {
         DataSet dataSetA = new DataSet( "DataSet-A", periodType );
@@ -127,8 +137,8 @@ public class DataEntryFormServiceTest
         assertNull( dataEntryFormService.getDataEntryForm( id ) );
     }
 
+    @Test
     public void testGetDataEntryFormByName()
-        throws Exception
     {
         DataSet dataSetA = new DataSet( "DataSet-A", periodType );
 
@@ -144,25 +154,26 @@ public class DataEntryFormServiceTest
         assertNull( dataEntryFormService.getDataEntryFormByName( "DataEntryForm-X" ) );
     }
 
+    @Test
     public void testGetDataEntryFormByDataSet()
-        throws Exception
     {
         DataSet dataSetA = new DataSet( "DataSet-A", periodType );
 
-        int dataSetAid = dataSetService.addDataSet( dataSetA );
+        dataSetService.addDataSet( dataSetA );
 
         DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A", dataSetA );
 
-        dataEntryFormService.addDataEntryForm( dataEntryForm );
+        int id = dataEntryFormService.addDataEntryForm( dataEntryForm );
 
         DataSet dataSetB = new DataSet( "DataSet-B", periodType );
 
         dataSetService.addDataSet( dataSetB );
 
-        assertEquals( dataEntryFormService.getDataEntryFormByDataSet( dataSetA ).getId(), dataSetAid );
+        assertEquals( dataEntryFormService.getDataEntryFormByDataSet( dataSetA ).getId(), id );
         assertNull( dataEntryFormService.getDataEntryFormByDataSet( dataSetB ) );
     }
 
+    @Test
     public void testGetAllDataEntryForms()
     {
         DataSet dataSetA = new DataSet( "DataSet-A", periodType );
@@ -184,6 +195,7 @@ public class DataEntryFormServiceTest
         assertTrue( dataEntryForms.contains( dataEntryFormB ) );
     }
 
+    @Test
     public void testGetAvailableDataSets()
     {
         DataSet dataSetA = new DataSet( "DataSet-A", periodType );
@@ -205,6 +217,7 @@ public class DataEntryFormServiceTest
         assertEquals( dataSets.size(), 1 );
     }
 
+    @Test
     public void testGetAssignedDataSets()
     {
         DataSet dataSetA = new DataSet( "DataSet-A", periodType );

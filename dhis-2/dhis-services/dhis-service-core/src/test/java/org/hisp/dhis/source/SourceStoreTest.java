@@ -27,7 +27,12 @@ package org.hisp.dhis.source;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
 import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -42,6 +47,7 @@ public class SourceStoreTest
     // Set up/tear down
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -52,59 +58,68 @@ public class SourceStoreTest
     // Tests
     // -------------------------------------------------------------------------
 
-    public void testSource()
-        throws Exception
+    @Test
+    public void addGetSource()
     {
-        String sourceAName = "DummySourceA";
-        String sourceBName = "DummySourceB";
-
-        Source sourceA = new DummySource( sourceAName );
-        Source sourceB = new DummySource( sourceBName );
-
-        assertEquals( 0, sourceStore.getAllSources().size() );
-        assertEquals( 0, sourceStore.getAllSources( DummySource.class ).size() );
-
-        int sourceAId = sourceStore.addSource( sourceA );
-        DummySource sourceAA = sourceStore.getSource( sourceAId );
-        assertEquals( sourceAId, sourceAA.getId() );
-        assertEquals( sourceAName, sourceAA.getName() );
-
-        assertEquals( 1, sourceStore.getAllSources().size() );
-        assertEquals( 1, sourceStore.getAllSources( DummySource.class ).size() );
-
-        int sourceBId = sourceStore.addSource( sourceB );
-        DummySource sourceBB = sourceStore.getSource( sourceBId );
-        assertEquals( sourceBId, sourceBB.getId() );
-        assertEquals( sourceBName, sourceBB.getName() );
-
-        assertEquals( 2, sourceStore.getAllSources().size() );
-        assertEquals( 2, sourceStore.getAllSources( DummySource.class ).size() );
-
-        try
-        {
-            sourceStore.addSource( new DummySource( sourceAName ) );
-            fail();
-        }
-        catch ( Exception e )
-        {
-            // Expected
-        }
-
-        sourceAName = "DummySourceAA";
-        sourceAA.setName( sourceAName );
-        sourceStore.updateSource( sourceAA );
-        sourceAA = sourceStore.getSource( sourceAId );
-        assertEquals( sourceAId, sourceAA.getId() );
-        assertEquals( sourceAName, sourceAA.getName() );
-
-        assertEquals( 2, sourceStore.getAllSources().size() );
-
-        sourceStore.deleteSource( sourceAA );
-        assertNull( sourceStore.getSource( sourceAId ) );
-        assertEquals( 1, sourceStore.getAllSources().size() );
-        sourceBB = sourceStore.getSource( sourceBId);
-        sourceStore.deleteSource( sourceBB );
-        assertNull( sourceStore.getSource( sourceBId ) );
-        assertEquals( 0, sourceStore.getAllSources().size() );
+        Source sourceA = new DummySource( "SourceA" );
+        Source sourceB = new DummySource( "SourceB" );
+        
+        int idA = sourceStore.addSource( sourceA );
+        int idB = sourceStore.addSource( sourceB );
+        
+        assertEquals( sourceA, sourceStore.getSource( idA ) );
+        assertEquals( sourceB, sourceStore.getSource( idB ) );        
+    }
+    
+    @Test
+    public void updateSource()
+    {
+        DummySource source = new DummySource( "SourceA" );
+        
+        int id = sourceStore.addSource( source );
+        
+        assertEquals( source, sourceStore.getSource( id ) );
+        
+        source.setName( "SourceB" );
+        
+        sourceStore.updateSource( source );
+        
+        assertEquals( source, sourceStore.getSource( id ) );
+    }
+    
+    @Test
+    public void delete()
+    {
+        Source sourceA = new DummySource( "SourceA" );
+        Source sourceB = new DummySource( "SourceB" );
+        
+        int idA = sourceStore.addSource( sourceA );
+        int idB = sourceStore.addSource( sourceB );
+        
+        assertNotNull( sourceStore.getSource( idA ) );
+        assertNotNull( sourceStore.getSource( idB ) );
+        
+        sourceStore.deleteSource( sourceA );
+        
+        assertNull( sourceStore.getSource( idA ) );
+        assertNotNull( sourceStore.getSource( idB ) );
+        
+        sourceStore.deleteSource( sourceB );
+        
+        assertNull( sourceStore.getSource( idA ) );
+        assertNull( sourceStore.getSource( idB ) );        
+    }
+    
+    @Test
+    public void getAll()
+    {
+        Source sourceA = new DummySource( "SourceA" );
+        Source sourceB = new DummySource( "SourceB" );
+        
+        sourceStore.addSource( sourceA );
+        sourceStore.addSource( sourceB );
+                
+        assertNotNull( sourceStore.getAllSources() );
+        assertEquals( sourceStore.getAllSources().size(), 2 );
     }
 }

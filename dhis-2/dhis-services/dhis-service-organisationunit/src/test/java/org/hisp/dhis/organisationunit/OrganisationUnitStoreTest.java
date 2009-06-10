@@ -27,33 +27,41 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.system.session.SessionUtil;
+import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.dbms.DbmsManager;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class OrganisationUnitStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private OrganisationUnitStore organisationUnitStore;
     
-    private SessionUtil sessionUtil;
+    private DbmsManager dbmsManager;
     
+    @Override
     public void setUpTest()
     {
         organisationUnitStore = (OrganisationUnitStore) getBean( OrganisationUnitStore.ID );
         
-        sessionUtil = (SessionUtil) getBean( SessionUtil.ID );
+        dbmsManager = (DbmsManager) getBean( DbmsManager.ID );
     }
     
     // -------------------------------------------------------------------------
     // OrganisationUnitLevel
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGetOrganisationUnitLevel()
     {
         OrganisationUnitLevel levelA = new OrganisationUnitLevel( 1, "National" );
@@ -65,7 +73,8 @@ public class OrganisationUnitStoreTest
         assertEquals( levelA, organisationUnitStore.getOrganisationUnitLevel( idA ) );
         assertEquals( levelB, organisationUnitStore.getOrganisationUnitLevel( idB ) );        
     }
-    
+
+    @Test
     public void testGetOrganisationUnitLevels()
     {
         OrganisationUnitLevel levelA = new OrganisationUnitLevel( 1, "National" );
@@ -81,7 +90,8 @@ public class OrganisationUnitStoreTest
         assertTrue( actual.contains( levelA ) );
         assertTrue( actual.contains( levelB ) );
     }
-    
+
+    @Test
     public void testRemoveOrganisationUnitLevel()
     {
         OrganisationUnitLevel levelA = new OrganisationUnitLevel( 1, "National" );
@@ -103,7 +113,8 @@ public class OrganisationUnitStoreTest
         assertNull( organisationUnitStore.getOrganisationUnitLevel( idA ) );
         assertNull( organisationUnitStore.getOrganisationUnitLevel( idB ) );        
     }
-    
+
+    @Test
     public void testRemoveOrganisationUnitLevels()
     {
         OrganisationUnitLevel levelA = new OrganisationUnitLevel( 1, "National" );
@@ -117,7 +128,7 @@ public class OrganisationUnitStoreTest
         
         organisationUnitStore.deleteOrganisationUnitLevels();
         
-        sessionUtil.clearCurrentSession();
+        dbmsManager.clearSession();
 
         assertNull( organisationUnitStore.getOrganisationUnitLevel( idA ) );
         assertNull( organisationUnitStore.getOrganisationUnitLevel( idB ) ); 

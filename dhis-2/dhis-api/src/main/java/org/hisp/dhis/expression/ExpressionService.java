@@ -103,6 +103,13 @@ public interface ExpressionService
     Double getExpressionValue( Expression expression, Period period, Source source );
     
     /**
+     * 
+     * @param id
+     * @return
+     */
+    Set<DataElement> getDataElementsInCalculatedDataElement( int id );
+    
+    /**
      * Returns all DataElements included in the given expression string.
      * 
      * @param expression The expression string.

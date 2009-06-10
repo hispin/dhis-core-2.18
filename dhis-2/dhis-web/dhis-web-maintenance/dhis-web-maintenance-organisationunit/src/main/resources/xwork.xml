@@ -41,7 +41,6 @@
     
     <action name="addOrganisationUnit" class="org.hisp.dhis.oum.action.organisationunit.AddOrganisationUnitAction">
       <result name="success" type="redirect">organisationUnit.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_ADD</param>
     </action>
       
@@ -54,14 +53,12 @@
     
     <action name="updateOrganisationUnit" class="org.hisp.dhis.oum.action.organisationunit.UpdateOrganisationUnitAction">
       <result name="success" type="redirect">organisationUnit.action</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_UPDATE</param>
     </action>
     
     <action name="removeOrganisationUnit" class="org.hisp.dhis.oum.action.organisationunit.RemoveOrganisationUnitAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-maintenance-organisationunit/responseError.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_DELETE</param>
     </action>

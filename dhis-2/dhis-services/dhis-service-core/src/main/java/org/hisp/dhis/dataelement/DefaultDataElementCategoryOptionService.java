@@ -31,11 +31,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.i18n.I18nService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Abyot Asalefew
  * @version $Id$
  */
+@Transactional
 public class DefaultDataElementCategoryOptionService
     implements DataElementCategoryOptionService
 {
@@ -72,7 +74,7 @@ public class DefaultDataElementCategoryOptionService
 
     public void updateDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
     {
-        dataElementCategoryOptionStore.addDataElementCategoryOption( dataElementCategoryOption );
+        dataElementCategoryOptionStore.updateDataElementCategoryOption( dataElementCategoryOption );
         
         i18nService.verify( dataElementCategoryOption );
     }

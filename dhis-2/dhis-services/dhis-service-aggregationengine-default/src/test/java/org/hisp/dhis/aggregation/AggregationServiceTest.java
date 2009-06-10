@@ -27,10 +27,12 @@ package org.hisp.dhis.aggregation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static org.hisp.dhis.expression.Expression.SEPARATOR;
+
 import java.util.Date;
 
-import org.hisp.dhis.DhisConvenienceTest;
-import org.hisp.dhis.jdbc.StatementManager;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
@@ -40,20 +42,21 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-
-import static org.hisp.dhis.expression.Expression.SEPARATOR;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: AggregationServiceTest.java 5942 2008-10-16 15:44:57Z larshelg $
  */
 public class AggregationServiceTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private AggregationService aggregationService;
 
@@ -75,6 +78,7 @@ public class AggregationServiceTest
     
     private DataElementCategoryOptionCombo categoryOptionCombo;
     
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -101,15 +105,24 @@ public class AggregationServiceTest
         statementManager.initialise();
     }
     
-    public void tearDownTest() throws Exception
+    @Override
+    public void tearDownTest() 
+        throws Exception
     {
         statementManager.destroy();
+    }
+
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
     }
 
     // -------------------------------------------------------------------------
     // DataElement
     // -------------------------------------------------------------------------
 
+    @Test
     public void testSumIntDataElementAggregatedValue()
         throws Exception
     {
@@ -223,6 +236,8 @@ public class AggregationServiceTest
         assertEquals( aggregatedValue3, AggregationService.NO_VALUES_REGISTERED );
     }
 
+    @Test
+    @Ignore
     public void testAverageIntDataElementAggregatedValue()
         throws Exception
     {
@@ -320,6 +335,8 @@ public class AggregationServiceTest
         assertEquals( aggregatedValue2, AggregationService.NO_VALUES_REGISTERED );
     }
 
+    @Ignore
+    @Test
     public void testSumBoolDataElementAggregatedValue()
         throws Exception
     {
@@ -426,6 +443,8 @@ public class AggregationServiceTest
         assertEquals( aggregatedValue3, AggregationService.NO_VALUES_REGISTERED );
     }
 
+    @Ignore
+    @Test
     public void testAverageBoolDataElementAggregatedValue()
         throws Exception
     {
@@ -529,6 +548,8 @@ public class AggregationServiceTest
     // Indicator
     // -------------------------------------------------------------------------
 
+    @Test
+    @Ignore
     public void testIndicatorAggregatedValue()
         throws Exception
     {

@@ -27,24 +27,31 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class CompleteDataSetRegistrationServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private CompleteDataSetRegistration registrationA;
     private CompleteDataSetRegistration registrationB;
@@ -81,6 +88,7 @@ public class CompleteDataSetRegistrationServiceTest
     // Fixture
     // -------------------------------------------------------------------------
     
+    @Override
     public void setUpTest()
     {
         completeDataSetRegistrationService = (CompleteDataSetRegistrationService) getBean( CompleteDataSetRegistrationService.ID );
@@ -131,7 +139,8 @@ public class CompleteDataSetRegistrationServiceTest
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testSaveGet()
     {
         registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date() );
@@ -156,7 +165,8 @@ public class CompleteDataSetRegistrationServiceTest
             // Expected unique constraint exception
         }
     }
-    
+
+    @Test
     public void testDelete()
     {
         registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date() );
@@ -179,6 +189,7 @@ public class CompleteDataSetRegistrationServiceTest
         assertNull( completeDataSetRegistrationService.getCompleteDataSetRegistration( dataSetB, periodB, sourceA ) );        
     }
 
+    @Test
     public void testGetAll()
     {
         registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date() );
@@ -194,6 +205,7 @@ public class CompleteDataSetRegistrationServiceTest
         assertTrue( registrations.contains( registrationB ) );
     }
 
+    @Test
     public void testGetDataSetsSourcesPeriods()
     {
         registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date() );
@@ -235,7 +247,8 @@ public class CompleteDataSetRegistrationServiceTest
         assertTrue( registrations.contains( registrationB ) );
         assertTrue( registrations.contains( registrationF ) );        
     }
-    
+
+    @Test
     public void testGetDataSetSourcesPeriod()
     {
         registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date() );
@@ -279,6 +292,7 @@ public class CompleteDataSetRegistrationServiceTest
         assertEquals( 0, completeDataSetRegistrationService.getCompleteDataSetRegistrationsForDataSet( dataSetC, sources, periodB ) );        
     }
 
+    @Test
     public void testGetDataSetSourcesPeriodDate()
     {
         registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, onTimeA );
@@ -322,6 +336,7 @@ public class CompleteDataSetRegistrationServiceTest
         assertEquals( 0, completeDataSetRegistrationService.getCompleteDataSetRegistrationsForDataSet( dataSetC, sources, periodB, deadlineB ) );        
     }
 
+    @Test
     public void testDeleteByDataSet()
     {
         registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, onTimeA );

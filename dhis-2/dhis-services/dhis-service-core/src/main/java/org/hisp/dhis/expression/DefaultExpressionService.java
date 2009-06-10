@@ -51,12 +51,14 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.MathUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Margrethe Store
  * @author Lars Helge Overland
  * @version $Id: DefaultExpressionService.java 6463 2008-11-24 12:05:46Z larshelg $
  */
+@Transactional
 public class DefaultExpressionService
     implements ExpressionService
 {
@@ -134,6 +136,20 @@ public class DefaultExpressionService
         String expressionString = generateExpression( expression.getExpression(), period, source );
 
         return expressionString != null ? calculateExpression( expressionString ) : null;
+    }
+    
+    public Set<DataElement> getDataElementsInCalculatedDataElement( int id )
+    {
+        DataElement dataElement = dataElementService.getDataElement( id );
+        
+        if ( dataElement != null && dataElement instanceof CalculatedDataElement )
+        {
+            CalculatedDataElement calculatedDataElement = (CalculatedDataElement) dataElement;
+            
+            return getDataElementsInExpression( calculatedDataElement.getExpression().getExpression() );
+        }
+        
+        return null;
     }
 
     public Set<DataElement> getDataElementsInExpression( String expression )
@@ -239,7 +255,7 @@ public class DefaultExpressionService
 
         return operandsInExpression;
     }
-
+    
     public int expressionIsValid( String formula )
     {
         StringBuffer buffer = new StringBuffer();

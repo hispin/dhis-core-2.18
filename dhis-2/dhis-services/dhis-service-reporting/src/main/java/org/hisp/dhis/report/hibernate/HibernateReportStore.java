@@ -29,14 +29,16 @@ package org.hisp.dhis.report.hibernate;
 
 import java.util.Collection;
 
-import org.hisp.dhis.hibernate.HibernateSessionManager;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportStore;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional //TODO make service layer
 public class HibernateReportStore
     implements ReportStore
 {
@@ -44,11 +46,11 @@ public class HibernateReportStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
-    
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    private SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -57,22 +59,22 @@ public class HibernateReportStore
 
     public int saveReport( Report report )
     {
-        return (Integer) sessionManager.getCurrentSession().save( report );
+        return (Integer) sessionFactory.getCurrentSession().save( report );
     }    
 
     public Report getReport( int id )
     {
-        return (Report) sessionManager.getCurrentSession().get( Report.class, id );
+        return (Report) sessionFactory.getCurrentSession().get( Report.class, id );
     }
     
     public void deleteReport( Report report )
     {
-        sessionManager.getCurrentSession().delete( report );        
+        sessionFactory.getCurrentSession().delete( report );        
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<Report> getAllReports()
     {
-        return sessionManager.getCurrentSession().createCriteria( Report.class ).list();
+        return sessionFactory.getCurrentSession().createCriteria( Report.class ).list();
     }    
 }

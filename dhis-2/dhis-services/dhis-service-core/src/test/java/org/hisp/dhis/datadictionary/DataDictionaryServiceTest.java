@@ -27,21 +27,27 @@ package org.hisp.dhis.datadictionary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataDictionaryServiceTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DataDictionaryService dataDictionaryService;
     
@@ -60,6 +66,7 @@ public class DataDictionaryServiceTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
         throws Exception
     {
@@ -87,6 +94,7 @@ public class DataDictionaryServiceTest
     // DataDictionary tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testSaveGetDataDictionary()
     {
         dataElementService.addDataElement( dataElementA );
@@ -129,6 +137,7 @@ public class DataDictionaryServiceTest
         assertEquals( dataDictionaryA.getRegion(), "RegionB" );
     }
 
+    @Test
     public void testGetDataDictionaryByName()
     {
         dataDictionaryService.saveDataDictionary( dataDictionaryA );
@@ -141,6 +150,7 @@ public class DataDictionaryServiceTest
         assertEquals( dataDictionaryA.getDescription(), "DescriptionA" );
     }
 
+    @Test
     public void testDeleteDataDictionary()
     {
         int idA = dataDictionaryService.saveDataDictionary( dataDictionaryA );
@@ -159,7 +169,8 @@ public class DataDictionaryServiceTest
         assertNull( dataDictionaryService.getDataDictionary( idA ) );
         assertNull( dataDictionaryService.getDataDictionary( idB ) );
     }
-    
+
+    @Test
     public void testGetAllDataDictionaries()
     {
         dataDictionaryService.saveDataDictionary( dataDictionaryA );

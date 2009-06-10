@@ -53,6 +53,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.LoggingHashMap;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -318,6 +319,7 @@ public class DefaultObjectMappingGenerator
     // PeriodType
     // -------------------------------------------------------------------------
 
+    @Transactional
     public Map<String, Integer> getPeriodTypeMapping()
     {
         Map<String, Integer> periodTypeMap = new LoggingHashMap<String, Integer>();

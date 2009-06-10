@@ -7,10 +7,10 @@
     maxElementsInMemory="40000"
     eternal="false"
     timeToIdleSeconds="360"
-    timeToLiveSeconds="360"
+    timeToLiveSeconds="720"
     overflowToDisk="false"
     diskPersistent="false"
-    diskExpiryThreadIntervalSeconds="360"
+    diskExpiryThreadIntervalSeconds="720"
     memoryStoreEvictionPolicy="LRU"
   />
 
@@ -61,7 +61,7 @@
   />
   
   <cache name="org.hisp.dhis.i18n.Translation"
-    maxElementsInMemory="4000"
+    maxElementsInMemory="6000"
   />
   
   <!-- Hibernate Query Cache -->

@@ -27,9 +27,11 @@ package org.hisp.dhis.importexport.dxf;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+
 import java.io.InputStream;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
@@ -44,10 +46,10 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportDataValueService;
-import org.hisp.dhis.importexport.ImportInternalProcess;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportObjectStatus;
 import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.importexport.util.ImportExportUtils;
 import org.hisp.dhis.indicator.Indicator;
@@ -61,6 +63,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
+import org.junit.Test;
 
 /**
  * <p>dxfA.zip contains 3 objects of each meta-data type.</p>
@@ -79,13 +82,13 @@ import org.hisp.dhis.validation.ValidationRuleService;
  * @version $Id$
  */
 public class DXFImportServiceTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private final int dataASize = 3;
     private final int dataBSize = 5;
     private final int dataCSize = 5;
     
-    private ImportInternalProcess importService;
+    private ImportService importService;
     
     private InputStream inputStreamA;
     
@@ -107,6 +110,7 @@ public class DXFImportServiceTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    @Override
     public void setUpTest()
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -123,7 +127,7 @@ public class DXFImportServiceTest
         
         inputStreamF = classLoader.getResourceAsStream( "dxfF.zip" );
         
-        importService = (ImportInternalProcess) getBean( "internal-process-DXFImportService" );
+        importService = (ImportService) getBean( "org.hisp.dhis.importexport.DXFImportService" );
         
         categoryOptionService = (DataElementCategoryOptionService) getBean( DataElementCategoryOptionService.ID );
         
@@ -156,6 +160,7 @@ public class DXFImportServiceTest
         importDataValueService = (ImportDataValueService) getBean( ImportDataValueService.ID );
     }
     
+    @Override
     public void tearDownTest()
         throws Exception
     {
@@ -172,12 +177,19 @@ public class DXFImportServiceTest
         inputStreamF.close();
     }
     
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
     
     // TODO Improve test on duplicate GroupMemberAssociations
-    
+
+    @Test
     public void testImportMetaData()
     {        
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
@@ -186,7 +198,8 @@ public class DXFImportServiceTest
         
         assertObjects( dataASize );
     }
-    
+
+    @Test
     public void testImportMetaDataWithPreview()
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, true, false, false );
@@ -197,7 +210,8 @@ public class DXFImportServiceTest
         
         assertGroupMembers( dataASize );
     }
-    
+
+    @Test
     public void testImportMetaDataWithPreviewAndDuplicates()
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
@@ -216,7 +230,8 @@ public class DXFImportServiceTest
         
         assertGroupMembers( dataBSize );
     }
-    
+
+    @Test
     public void testImportMetaDataWithPreviewAndUpdates()
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, false, false );
@@ -235,7 +250,8 @@ public class DXFImportServiceTest
         
         assertGroupMembers( dataCSize );
     }
-    
+
+    @Test
     public void testImportDataValues()
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, true, false );
@@ -248,7 +264,8 @@ public class DXFImportServiceTest
         
         assertEquals( dataValueService.getAllDataValues().size(), 8 );
     }
-    
+
+    @Test
     public void testImportDataValuesWithPreview()
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, true, true, false );
@@ -262,6 +279,7 @@ public class DXFImportServiceTest
         assertEquals( importDataValueService.getImportDataValues( ImportObjectStatus.NEW ).size(), 8 );
     }
 
+    @Test
     public void testImportDataValuesWithPreviewAndDuplicates()
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, true, false );
@@ -284,7 +302,8 @@ public class DXFImportServiceTest
         
         assertEquals( importDataValueService.getImportDataValues( ImportObjectStatus.NEW ).size(), 12 );        
     }
-    
+
+    @Test
     public void testImportDataValuesWithPreviewAndUpdates()
     {
         ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, true, false );

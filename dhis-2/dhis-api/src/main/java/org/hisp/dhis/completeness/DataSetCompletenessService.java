@@ -44,6 +44,16 @@ public interface DataSetCompletenessService
     String ID = DataSetCompletenessService.class.getName();
     
     /**
+     * 
+     * @param dataSetIds
+     * @param periodIds
+     * @param organisationUnitIds
+     * @param reportTableId
+     */
+    void exportDataSetCompleteness( Collection<Integer> dataSetIds, 
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Integer reportTableId );
+    
+    /**
      * Returns a Collection of DataSetCompletenessResults. The DataSetCompletenessResult
      * object contains the name of the associated DataSet, the number of
      * sources being associated with the DataSet AND being a child of the given 

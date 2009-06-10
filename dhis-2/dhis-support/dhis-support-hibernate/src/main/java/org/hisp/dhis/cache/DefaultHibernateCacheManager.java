@@ -32,7 +32,6 @@ import java.util.Map;
 import org.hibernate.SessionFactory;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.stat.Statistics;
-import org.hisp.dhis.hibernate.HibernateSessionFactoryManager;
 
 /**
  * @author Lars Helge Overland
@@ -45,11 +44,11 @@ public class DefaultHibernateCacheManager
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionFactoryManager sessionFactoryManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionFactoryManager( HibernateSessionFactoryManager sessionFactoryManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionFactoryManager = sessionFactoryManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -59,28 +58,24 @@ public class DefaultHibernateCacheManager
     @SuppressWarnings( "unchecked" )
     public void clearObjectCache()
     {
-        SessionFactory factory = sessionFactoryManager.getSessionFactory();
-        
-        Map<String, ClassMetadata> classMetaData = factory.getAllClassMetadata();
+        Map<String, ClassMetadata> classMetaData = sessionFactory.getAllClassMetadata();
         
         for ( String entityName : classMetaData.keySet() )
         {
-            factory.evictEntity( entityName );
+            sessionFactory.evictEntity( entityName );
         }
 
-        Map<String, ClassMetadata> collectionMetaData = factory.getAllCollectionMetadata();
+        Map<String, ClassMetadata> collectionMetaData = sessionFactory.getAllCollectionMetadata();
         
         for ( String roleName : collectionMetaData.keySet() )
         {
-            factory.evictCollection( roleName );
+            sessionFactory.evictCollection( roleName );
         }
     }
     
     public void clearQueryCache()
     {
-        SessionFactory factory = sessionFactoryManager.getSessionFactory();
-        
-        factory.evictQueries();
+        sessionFactory.evictQueries();
     }
     
     public void clearCache()
@@ -92,6 +87,6 @@ public class DefaultHibernateCacheManager
     
     public Statistics getStatistics()
     {
-        return sessionFactoryManager.getSessionFactory().getStatistics();
+        return sessionFactory.getStatistics();
     }
 }

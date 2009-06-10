@@ -27,20 +27,26 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: GroupSetBatchHandlerTest.java 4949 2008-04-21 07:59:54Z larshelg $
  */
 public class GroupSetBatchHandlerTest
-    extends DhisConvenienceTest
+    extends DhisTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
@@ -53,7 +59,8 @@ public class GroupSetBatchHandlerTest
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
-    
+
+    @Override
     public void setUpTest()
     {
         organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
@@ -69,15 +76,23 @@ public class GroupSetBatchHandlerTest
         groupSetC = createOrganisationUnitGroupSet( 'C' );
     }    
 
+    @Override
     public void tearDownTest()
     {
         batchHandler.flush();
     }
-
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
+
+    @Test
     public void testAddObject()
     {
         batchHandler.addObject( groupSetA );
@@ -92,7 +107,8 @@ public class GroupSetBatchHandlerTest
         assertTrue( groupSets.add( groupSetB ) );
         assertTrue( groupSets.add( groupSetC ) );
     }
-    
+
+    @Test
     public void testInsertObject()
     {
         int idA = batchHandler.insertObject( groupSetA, true );
@@ -103,7 +119,8 @@ public class GroupSetBatchHandlerTest
         assertNotNull( organisationUnitGroupService.getOrganisationUnitGroupSet( idB ) );
         assertNotNull( organisationUnitGroupService.getOrganisationUnitGroupSet( idC ) );
     }
-    
+
+    @Test
     public void testUpdateObject()
     {
         int id = organisationUnitGroupService.addOrganisationUnitGroupSet( groupSetA );
@@ -114,7 +131,8 @@ public class GroupSetBatchHandlerTest
         
         assertEquals( organisationUnitGroupService.getOrganisationUnitGroupSet( id ).getName(), "UpdatedName" );
     }
-    
+
+    @Test
     public void testGetObjectIdentifier()
     {
         int referenceId = organisationUnitGroupService.addOrganisationUnitGroupSet( groupSetA );
@@ -123,7 +141,8 @@ public class GroupSetBatchHandlerTest
         
         assertEquals( referenceId, retrievedId );
     }
-    
+
+    @Test
     public void testObjectExists()
     {
         organisationUnitGroupService.addOrganisationUnitGroupSet( groupSetA );

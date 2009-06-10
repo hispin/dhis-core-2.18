@@ -33,19 +33,21 @@ import java.util.Iterator;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserStore;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Nguyen Hong Duc
  * @version $Id: HibernateUserStore.java 6530 2008-11-28 15:02:47Z eivindwa $
  */
+@Transactional
 public class HibernateUserStore
     implements UserStore
 {
@@ -53,11 +55,11 @@ public class HibernateUserStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
@@ -66,29 +68,29 @@ public class HibernateUserStore
 
     public int addUser( User user )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( user );
     }
 
     public void updateUser( User user )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( user );
     }
 
     public User getUser( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (User) session.get( User.class, id );
     }
-
+    
     @SuppressWarnings( "unchecked" )
     public Collection<User> getAllUsers()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return session.createQuery( "from User" ).list();
     }
@@ -129,7 +131,7 @@ public class HibernateUserStore
 
     public void deleteUser( User user )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( user );
     }
@@ -140,7 +142,7 @@ public class HibernateUserStore
 
     public User addUserCredentials( UserCredentials userCredentials )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         int id = (Integer) session.save( userCredentials );
 
@@ -149,21 +151,21 @@ public class HibernateUserStore
 
     public void updateUserCredentials( UserCredentials userCredentials )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( userCredentials );
     }
 
     public UserCredentials getUserCredentials( User user )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (UserCredentials) session.get( UserCredentials.class, user.getId() );
     }
 
     public UserCredentials getUserCredentialsByUsername( String username )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from UserCredentials uc where uc.username = :username" );
 
@@ -172,18 +174,18 @@ public class HibernateUserStore
 
         return (UserCredentials) query.uniqueResult();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<UserCredentials> getAllUserCredentials()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         return session.createCriteria( UserCredentials.class ).list();
     }
 
     public void deleteUserCredentials( UserCredentials userCredentials )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( userCredentials );
     }
@@ -194,28 +196,28 @@ public class HibernateUserStore
 
     public int addUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( userAuthorityGroup );
     }
 
     public void updateUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( userAuthorityGroup );
     }
-
+    
     public UserAuthorityGroup getUserAuthorityGroup( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (UserAuthorityGroup) session.get( UserAuthorityGroup.class, id );
     }
-    
+
     public UserAuthorityGroup getUserAuthorityGroupByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( UserAuthorityGroup.class );
         
@@ -227,14 +229,14 @@ public class HibernateUserStore
     @SuppressWarnings( "unchecked" )
     public Collection<UserAuthorityGroup> getAllUserAuthorityGroups()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return session.createQuery( "from UserAuthorityGroup" ).list();
     }
 
     public void deleteUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( userAuthorityGroup );
     }
@@ -245,21 +247,21 @@ public class HibernateUserStore
 
     public void addUserSetting( UserSetting userSetting )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.save( userSetting );
     }
 
     public void updateUserSetting( UserSetting userSetting )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( userSetting );
     }
 
     public UserSetting getUserSetting( User user, String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from UserSetting us where us.user = :user and us.name = :name" );
 
@@ -273,7 +275,7 @@ public class HibernateUserStore
     @SuppressWarnings( "unchecked" )
     public Collection<UserSetting> getAllUserSettings( User user )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from UserSetting us where us.user = :user" );
 
@@ -284,7 +286,7 @@ public class HibernateUserStore
 
     public void deleteUserSetting( UserSetting userSetting )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( userSetting );
     }

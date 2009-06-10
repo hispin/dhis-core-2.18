@@ -60,6 +60,6 @@ public class AbstractDataElementCategoryOptionComboConverter
     
     protected boolean isIdentical( DataElementCategoryOptionCombo object, DataElementCategoryOptionCombo existing )
     {
-        return object.getCategoryCombo().equals( existing.getCategoryCombo() ) && object.getCategoryOptions().equals( existing.getCategoryOptions() );
+        return object.equalsOnName( existing );
     }
 }

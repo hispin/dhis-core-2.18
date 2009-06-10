@@ -27,9 +27,9 @@ package org.hisp.dhis.reporting.dataset.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-
 import static java.io.File.separator;
+
+import java.io.File;
 
 /**
  * @author Lars Helge Overland

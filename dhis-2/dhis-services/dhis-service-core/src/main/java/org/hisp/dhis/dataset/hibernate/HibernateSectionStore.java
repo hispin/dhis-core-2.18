@@ -27,11 +27,11 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 
 /**
  * @author Tri
@@ -40,46 +40,49 @@ import org.hisp.dhis.hibernate.HibernateSessionManager;
 public class HibernateSectionStore
     implements SectionStore
 {
-    private HibernateSessionManager sessionManager;
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    private SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
-    public HibernateSessionManager getSessionManager()
-    {
-        return sessionManager;
-    }
+    // -------------------------------------------------------------------------
+    // SectionStore implementation
+    // -------------------------------------------------------------------------
 
     public int addSection( Section section )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         return (Integer) session.save( section );
     }
 
     public void deleteSection( Section section )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         session.delete( section );
     }
 
     @SuppressWarnings("unchecked")
     public Collection<Section> getAllSections()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         return session.createCriteria( Section.class ).list();
     }
 
     public Section getSection( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         return (Section) session.get( Section.class, id );
     }
 
     public Section getSectionByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria( Section.class );
         criteria.add( Restrictions.eq( "name", name ) );
         return (Section) criteria.uniqueResult();
@@ -87,14 +90,14 @@ public class HibernateSectionStore
 
     public void updateSection( Section section )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         session.update( section );
     }
 
     @SuppressWarnings("unchecked")
     public Collection<Section> getSectionByDataSet( DataSet dataSet )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         
         return session.createQuery( "from Section as sec where sec.dataSet = ?" ).setEntity( 0, dataSet ).list();
     }

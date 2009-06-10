@@ -42,12 +42,14 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Margrethe Store
  * @author Lars Helge Overland
  * @version $Id
  */
+@Transactional
 public class DefaultValidationRuleService
     implements ValidationRuleService
 {

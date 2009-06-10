@@ -31,10 +31,10 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 
 /**
  * @author Jan Henrik Overland
@@ -47,48 +47,48 @@ public class HibernateDataElementCategoryComboStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
-
+    
     // -------------------------------------------------------------------------
     // DataElementCategoryCombo
     // -------------------------------------------------------------------------
 
     public int addDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( dataElementCategoryCombo );
     }
 
     public void updateDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( dataElementCategoryCombo );
     }
 
     public void deleteDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( dataElementCategoryCombo );
     }
 
     public DataElementCategoryCombo getDataElementCategoryCombo( int id )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (DataElementCategoryCombo) session.get( DataElementCategoryCombo.class, id );
     }
 
     public DataElementCategoryCombo getDataElementCategoryComboByName( String name )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElementCategoryCombo.class );
         criteria.add( Restrictions.eq( "name", name ) );
@@ -99,7 +99,7 @@ public class HibernateDataElementCategoryComboStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataElementCategoryCombo> getAllDataElementCategoryCombos()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataElementCategoryCombo.class );
 

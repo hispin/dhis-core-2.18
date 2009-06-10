@@ -28,11 +28,11 @@ import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationStore;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
@@ -48,11 +48,11 @@ public class HibernateCompleteDataSetRegistrationStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
     
     private PeriodService periodService;
@@ -89,14 +89,14 @@ public class HibernateCompleteDataSetRegistrationStore
     {
         registration.setPeriod( reloadPeriod( registration.getPeriod() ) );
         
-        sessionManager.getCurrentSession().save( registration );
+        sessionFactory.getCurrentSession().save( registration );
     }
-    
+
     public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, Source source )
     {
         period = reloadPeriod( period );
         
-        Criteria criteria = sessionManager.getCurrentSession().createCriteria( CompleteDataSetRegistration.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( CompleteDataSetRegistration.class );
         
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
         criteria.add( Restrictions.eq( "period", period ) );
@@ -104,19 +104,19 @@ public class HibernateCompleteDataSetRegistrationStore
         
         return (CompleteDataSetRegistration) criteria.uniqueResult();
     }
-    
+
     public void deleteCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
-        sessionManager.getCurrentSession().delete( registration );
+        sessionFactory.getCurrentSession().delete( registration );
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
         DataSet dataSet, Collection<? extends Source> sources, Period period )
     {
         period = reloadPeriod( period );
         
-        Criteria criteria = sessionManager.getCurrentSession().createCriteria( CompleteDataSetRegistration.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( CompleteDataSetRegistration.class );
         
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
         criteria.add( Restrictions.in( "source", sources ) );
@@ -128,7 +128,7 @@ public class HibernateCompleteDataSetRegistrationStore
     @SuppressWarnings( "unchecked" )
     public Collection<CompleteDataSetRegistration> getAllCompleteDataSetRegistrations()
     {
-        return sessionManager.getCurrentSession().createCriteria( CompleteDataSetRegistration.class ).list();
+        return sessionFactory.getCurrentSession().createCriteria( CompleteDataSetRegistration.class ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -140,7 +140,7 @@ public class HibernateCompleteDataSetRegistrationStore
             period = reloadPeriod( period );
         }        
         
-        Criteria criteria = sessionManager.getCurrentSession().createCriteria( CompleteDataSetRegistration.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( CompleteDataSetRegistration.class );
         
         criteria.add( Restrictions.in( "dataSet", dataSets ) );
         criteria.add( Restrictions.in( "source", sources ) );
@@ -148,14 +148,14 @@ public class HibernateCompleteDataSetRegistrationStore
         
         return criteria.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<CompleteDataSetRegistration> getCompleteDataSetRegistrations( 
         DataSet dataSet, Collection<? extends Source> sources, Period period, Date deadline )
     {
         period = reloadPeriod( period );
         
-        Criteria criteria = sessionManager.getCurrentSession().createCriteria( CompleteDataSetRegistration.class );
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( CompleteDataSetRegistration.class );
         
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
         criteria.add( Restrictions.in( "source", sources ) );
@@ -164,12 +164,12 @@ public class HibernateCompleteDataSetRegistrationStore
         
         return criteria.list();
     }
-    
+
     public void deleteCompleteDataSetRegistrations( DataSet dataSet )
     {
         String hql = "delete from CompleteDataSetRegistration c where c.dataSet = :dataSet";
         
-        Query query = sessionManager.getCurrentSession().createQuery( hql );
+        Query query = sessionFactory.getCurrentSession().createQuery( hql );
         
         query.setEntity( "dataSet", dataSet );
         

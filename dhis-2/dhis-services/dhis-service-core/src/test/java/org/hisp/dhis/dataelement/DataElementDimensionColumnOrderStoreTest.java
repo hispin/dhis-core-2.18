@@ -27,14 +27,19 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.DhisConvenienceTest;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataElementDimensionColumnOrderStoreTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private DataElementDimensionColumnOrderStore dimensionColumnOrderStore;
     
@@ -73,6 +78,7 @@ public class DataElementDimensionColumnOrderStoreTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     public void testAddGet()
     {
         DataElementDimensionColumnOrder dimensionColumnOrderA = new DataElementDimensionColumnOrder( categoryA, categoryOptionA, 1 );
@@ -87,7 +93,8 @@ public class DataElementDimensionColumnOrderStoreTest
         assertEquals( dimensionColumnOrderB, dimensionColumnOrderStore.getDataElementDimensionColumnOrder( categoryA, categoryOptionB ) );
         assertEquals( dimensionColumnOrderC, dimensionColumnOrderStore.getDataElementDimensionColumnOrder( categoryB, categoryOptionB ) );        
     }
-    
+
+    @Test
     public void testDeleteByCategory()
     {
         DataElementDimensionColumnOrder dimensionColumnOrderA = new DataElementDimensionColumnOrder( categoryA, categoryOptionA, 1 );
@@ -104,7 +111,8 @@ public class DataElementDimensionColumnOrderStoreTest
         assertNull( dimensionColumnOrderStore.getDataElementDimensionColumnOrder( categoryA, categoryOptionB ) );
         assertNotNull( dimensionColumnOrderStore.getDataElementDimensionColumnOrder( categoryB, categoryOptionB ) );
     }
-    
+
+    @Test
     public void testDeleteByCategoryOption()
     {
         DataElementDimensionColumnOrder dimensionColumnOrderA = new DataElementDimensionColumnOrder( categoryA, categoryOptionA, 1 );
