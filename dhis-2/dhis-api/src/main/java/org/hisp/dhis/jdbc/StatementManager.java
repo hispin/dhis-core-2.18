@@ -43,36 +43,16 @@ public interface StatementManager
     void initialise();
     
     /**
-     * Initalizes a database connection and statement object for an internal, embedded,
-     * in-memory database which can be re-used
-     * for multiple operations.
-     */
-    void initialiseInternal();
-    
-    /**
      * Gets a pre-initialized statement object.
      * 
      * @return a pre-initialized statement object.
      */
     StatementHolder getHolder();
-        
-    /**
-     * Gets a pre-initialized statement object for an internal, embedded,
-     * in-memory database.
-     * 
-     * @return a pre-initialized statement object.
-     */
-    StatementHolder getInternalHolder();
-    
+       
     /**
      * Closes the statement object and the database connection.
      */
     void destroy();
-    
-    /**
-     * Closes the statement object and the internal database connection.
-     */
-    void destroyInternal();
     
     /**
      * Gets the current StatementBuilder.

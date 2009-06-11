@@ -43,13 +43,4 @@ public interface JDBCConfigurationProvider
      * @return a JDBCConfiguration.
      */
     JDBCConfiguration getConfiguration();
-    
-    /**
-     * Creates a JDBCConfiguration, which holds properties for dialect, driverClass,
-     * connectionURL, username, and password for an internal, embedded, in-memory
-     * database.
-     * 
-     * @return a JDBCConfiguration.
-     */
-    JDBCConfiguration getInternalConfiguration();
 }
