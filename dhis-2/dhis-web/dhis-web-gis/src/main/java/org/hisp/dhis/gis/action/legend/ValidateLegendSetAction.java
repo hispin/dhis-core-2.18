@@ -28,7 +28,6 @@ package org.hisp.dhis.gis.action.legend;
  */
 
 import java.util.Collection;
-import java.util.Set;
 
 import org.hisp.dhis.gis.LegendService;
 import org.hisp.dhis.gis.LegendSet;

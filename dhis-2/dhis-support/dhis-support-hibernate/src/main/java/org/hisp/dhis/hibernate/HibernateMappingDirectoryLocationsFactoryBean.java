@@ -59,7 +59,7 @@ public class HibernateMappingDirectoryLocationsFactoryBean
     }
 
     @SuppressWarnings("unchecked")
-	public Class getObjectType()
+    public Class getObjectType()
     {
         return Resource.class;
     }

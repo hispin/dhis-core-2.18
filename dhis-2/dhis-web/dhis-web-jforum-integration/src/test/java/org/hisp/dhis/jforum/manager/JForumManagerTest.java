@@ -27,7 +27,6 @@ package org.hisp.dhis.jforum.manager;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.DhisConvenienceTest;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.IndicatorService;
