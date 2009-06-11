@@ -104,17 +104,4 @@ public class DefaultJDBCConfigurationProvider
         
         return config;
     }
-    
-    public JDBCConfiguration getInternalConfiguration()
-    {
-        JDBCConfiguration config = new JDBCConfiguration();
-        
-        config.setDialect( StatementDialect.H2 );
-        config.setDriverClass( "org.h2.Driver" );
-        config.setConnectionUrl( "jdbc:h2:mem:dhis2internal;DB_CLOSE_DELAY=-1" );
-        config.setUsername( "sa" );
-        config.setPassword( "" );
-        
-        return config;
-    }
 }

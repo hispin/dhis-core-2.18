@@ -45,7 +45,6 @@ public class JDBCStatementManager
     implements StatementManager
 {
     private ThreadLocal<StatementHolder> holderTag = new ThreadLocal<StatementHolder>();
-    private ThreadLocal<StatementHolder> internalHolderTag = new ThreadLocal<StatementHolder>();
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -71,15 +70,6 @@ public class JDBCStatementManager
         holderTag.set( holder );
     }
     
-    public void initialiseInternal()
-    {
-        Connection connection = getInternalConnection();
-
-        StatementHolder holder = new DefaultStatementHolder( connection, true );
-        
-        internalHolderTag.set( holder );
-    }
-
     public StatementHolder getHolder()
     {
         StatementHolder holder = holderTag.get();
@@ -91,19 +81,7 @@ public class JDBCStatementManager
         
         return new DefaultStatementHolder( getConnection(), false );        
     }
-    
-    public StatementHolder getInternalHolder()
-    {
-        StatementHolder holder = internalHolderTag.get();
         
-        if ( holder != null )
-        {
-            return holder;
-        }
-        
-        return new DefaultStatementHolder( getInternalConnection(), false );
-    }
-    
     public void destroy()
     {
         StatementHolder holder = holderTag.get();
@@ -115,19 +93,7 @@ public class JDBCStatementManager
             holderTag.remove();
         }
     }
-    
-    public void destroyInternal()
-    {
-        StatementHolder holder = internalHolderTag.get();
         
-        if ( holder != null )
-        {
-            holder.close();
-        
-            internalHolderTag.remove();
-        }
-    }
-    
     public StatementBuilder getStatementBuilder()
     {
         return StatementBuilderFactory.createStatementBuilder( configurationProvider.getConfiguration().getDialect() );
@@ -155,27 +121,6 @@ public class JDBCStatementManager
         catch ( Exception ex )
         {
             throw new RuntimeException( "Failed to create connection", ex );
-        }
-    }
-
-    private Connection getInternalConnection()
-    {
-        try
-        {
-            JDBCConfiguration configuration = configurationProvider.getInternalConfiguration();
-            
-            Class.forName( configuration.getDriverClass() );
-            
-            Connection connection = DriverManager.getConnection( 
-                configuration.getConnectionUrl(),
-                configuration.getUsername(),
-                configuration.getPassword() );
-            
-            return connection;
-        }
-        catch ( Exception ex )
-        {
-            throw new RuntimeException( "Failed to create internal connection", ex );
         }
     }
 }

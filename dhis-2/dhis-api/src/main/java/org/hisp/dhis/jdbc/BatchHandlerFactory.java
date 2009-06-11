@@ -43,12 +43,4 @@ public interface BatchHandlerFactory
      * @return a BatchHandler instance.
      */
     BatchHandler createBatchHandler( Class<? extends BatchHandler> clazz );
-    
-    /**
-     * Creates a BatchHandler instance connected to the internal database.
-     * 
-     * @param clazz the BatchHandler class to create.
-     * @return a BatchHandler instance.
-     */
-    BatchHandler createInternalBatchHandler( Class<? extends BatchHandler> clazz );
 }

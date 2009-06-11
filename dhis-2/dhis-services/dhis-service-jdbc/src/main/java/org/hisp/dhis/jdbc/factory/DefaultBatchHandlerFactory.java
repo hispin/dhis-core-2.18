@@ -70,20 +70,6 @@ public class DefaultBatchHandlerFactory
         }
     }
 
-    public BatchHandler createInternalBatchHandler( Class<? extends BatchHandler> clazz )
-    {
-        try
-        {
-            JDBCConfiguration configuration = configurationProvider.getInternalConfiguration();
-            
-            return createBatchHandler( clazz, configuration );
-        }
-        catch ( Exception ex )
-        {
-            throw new RuntimeException( "Failed to get BatchHandler", ex );
-        }
-    }
-
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
