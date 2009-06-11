@@ -29,8 +29,8 @@ package org.hisp.dhis.datamart.startup;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.jdbc.JDBCConfiguration;
 import org.hisp.dhis.jdbc.StatementBuilder;
-import org.hisp.dhis.jdbc.StatementDialect;
 import org.hisp.dhis.jdbc.factory.StatementBuilderFactory;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -55,11 +55,11 @@ public class AggregationTableCreator
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private StatementDialect statementDialect;
+    private JDBCConfiguration jdbcConfiguration;
 
-    public void setStatementDialect( StatementDialect statementDialect )
+    public void setJdbcConfiguration( JDBCConfiguration jdbcConfiguration )
     {
-        this.statementDialect = statementDialect;
+        this.jdbcConfiguration = jdbcConfiguration;
     }
     
     // -------------------------------------------------------------------------
@@ -68,7 +68,7 @@ public class AggregationTableCreator
 
     public void execute()
     {
-        StatementBuilder builder = StatementBuilderFactory.createStatementBuilder( statementDialect );
+        StatementBuilder builder = StatementBuilderFactory.createStatementBuilder( jdbcConfiguration.getDialect() );
         
         try
         {                

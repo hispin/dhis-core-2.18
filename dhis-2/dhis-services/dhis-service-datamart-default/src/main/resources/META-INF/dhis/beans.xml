@@ -237,7 +237,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.datamart.startup.AggregationTableCreator">
     <property name="runlevel" value="3"/>
     <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    <property name="statementDialect" ref="statementDialect"/>
+    <property name="jdbcConfiguration" ref="jdbcConfiguration"/>
   </bean>
   
   <bean id="org.hisp.dhis.datamart.startup.DataElementCategoryOptionComboStartupRoutine"

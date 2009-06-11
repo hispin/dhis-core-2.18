@@ -30,15 +30,15 @@ package org.hisp.dhis.jdbc.configuration;
 import org.hibernate.cfg.Configuration;
 import org.hisp.dhis.hibernate.HibernateConfigurationProvider;
 import org.hisp.dhis.jdbc.JDBCConfiguration;
-import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
 import org.hisp.dhis.jdbc.StatementDialect;
+import org.springframework.beans.factory.FactoryBean;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: DefaultJDBCConfigurationProvider.java 5714 2008-09-17 13:05:36Z larshelg $
  */
-public class DefaultJDBCConfigurationProvider
-    implements JDBCConfigurationProvider
+public class JdbcConfigurationFactoryBean
+implements FactoryBean
 {
     private static final String KEY_DIALECT = "hibernate.dialect";
     private static final String KEY_DRIVER = "hibernate.connection.driver_class";
@@ -64,11 +64,13 @@ public class DefaultJDBCConfigurationProvider
         this.configurationProvider = configurationProvider;
     }
     
-    // -------------------------------------------------------------------------
-    // JDBCConfigurationProvider implementation
-    // -------------------------------------------------------------------------
+    private JDBCConfiguration jdbcConfiguration;
 
-    public JDBCConfiguration getConfiguration()
+    // -------------------------------------------------------------------------
+    // Initialisation
+    // -------------------------------------------------------------------------
+    
+    public void init()
     {
         Configuration hibernateConfiguration = configurationProvider.getConfiguration();
         
@@ -102,6 +104,26 @@ public class DefaultJDBCConfigurationProvider
         config.setUsername( hibernateConfiguration.getProperty( KEY_USERNAME ) );
         config.setPassword( hibernateConfiguration.getProperty( KEY_PASSWORD ) );
         
-        return config;
+        this.jdbcConfiguration = config;
+    }
+
+    // -------------------------------------------------------------------------
+    // FactoryBean implementation
+    // -------------------------------------------------------------------------
+    
+    public Object getObject()
+        throws Exception
+    {
+        return jdbcConfiguration;
+    }
+
+    public Class<?> getObjectType()
+    {
+        return JDBCConfiguration.class;
+    }
+
+    public boolean isSingleton()
+    {
+        return true;
     }
 }

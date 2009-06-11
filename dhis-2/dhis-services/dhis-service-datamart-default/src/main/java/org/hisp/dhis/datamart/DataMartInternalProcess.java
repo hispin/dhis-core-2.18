@@ -119,6 +119,10 @@ public class DataMartInternalProcess
     protected void executeStatements()
         throws Exception
     {
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );        
+        setMessage( "export_process_started" );
+        
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        
+        setMessage( "export_process_finished" );
     }
 }
