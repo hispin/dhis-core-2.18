@@ -40,7 +40,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.MetaObject;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
+import org.hisp.dhis.jdbc.JDBCConfiguration;
 import org.hisp.dhis.jdbc.StatementHolder;
 import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -74,13 +74,13 @@ public class JDBCReportTableManager
     {
         this.statementManager = statementManager;
     }
-    
-    private JDBCConfigurationProvider configurationProvider;
 
-    public void setConfigurationProvider( JDBCConfigurationProvider configurationProvider )
+    private JDBCConfiguration jdbcConfiguration;
+
+    public void setJdbcConfiguration( JDBCConfiguration jdbcConfiguration )
     {
-        this.configurationProvider = configurationProvider;
-    }
+        this.jdbcConfiguration = jdbcConfiguration;
+    }    
 
     // -------------------------------------------------------------------------
     // ReportTableManager implementation
@@ -92,8 +92,7 @@ public class JDBCReportTableManager
         
         StatementHolder holder = statementManager.getHolder();
         
-        ReportTableStatement statement = new CreateReportTableStatement( reportTable, 
-            configurationProvider.getConfiguration().getDialect() );
+        ReportTableStatement statement = new CreateReportTableStatement( reportTable, jdbcConfiguration.getDialect() );
         
         log.debug( "Creating report table with SQL statement: '" + statement.getStatement() + "'" );
         

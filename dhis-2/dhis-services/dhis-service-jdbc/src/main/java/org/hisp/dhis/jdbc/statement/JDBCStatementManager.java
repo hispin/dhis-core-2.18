@@ -31,7 +31,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 import org.hisp.dhis.jdbc.JDBCConfiguration;
-import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.jdbc.StatementHolder;
 import org.hisp.dhis.jdbc.StatementManager;
@@ -50,11 +49,11 @@ public class JDBCStatementManager
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private JDBCConfigurationProvider configurationProvider;
+    private JDBCConfiguration jdbcConfiguration;
 
-    public void setConfigurationProvider( JDBCConfigurationProvider configurationProvider )
+    public void setJdbcConfiguration( JDBCConfiguration jdbcConfiguration )
     {
-        this.configurationProvider = configurationProvider;
+        this.jdbcConfiguration = jdbcConfiguration;
     }
     
     // -------------------------------------------------------------------------
@@ -96,7 +95,7 @@ public class JDBCStatementManager
         
     public StatementBuilder getStatementBuilder()
     {
-        return StatementBuilderFactory.createStatementBuilder( configurationProvider.getConfiguration().getDialect() );
+        return StatementBuilderFactory.createStatementBuilder( jdbcConfiguration.getDialect() );
     }
 
     // -------------------------------------------------------------------------
@@ -106,15 +105,13 @@ public class JDBCStatementManager
     private Connection getConnection()
     {
         try
-        {
-            JDBCConfiguration configuration = configurationProvider.getConfiguration();
-            
-            Class.forName( configuration.getDriverClass() );
+        {            
+            Class.forName( jdbcConfiguration.getDriverClass() );
             
             Connection connection = DriverManager.getConnection( 
-                configuration.getConnectionUrl(),
-                configuration.getUsername(),
-                configuration.getPassword() );
+                jdbcConfiguration.getConnectionUrl(),
+                jdbcConfiguration.getUsername(),
+                jdbcConfiguration.getPassword() );
             
             return connection;
         }

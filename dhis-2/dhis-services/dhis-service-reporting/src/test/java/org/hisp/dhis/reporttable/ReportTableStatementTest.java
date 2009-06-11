@@ -40,7 +40,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
+import org.hisp.dhis.jdbc.JDBCConfiguration;
 import org.hisp.dhis.jdbc.StatementDialect;
 import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -60,7 +60,7 @@ import org.junit.Test;
 public class ReportTableStatementTest
     extends DhisSpringTest
 {
-    private JDBCConfigurationProvider configurationProvider;
+    private JDBCConfiguration jdbcConfiguration;
     
     private StatementDialect dialect;
     
@@ -88,9 +88,9 @@ public class ReportTableStatementTest
     public void setUpTest()
         throws Exception
     {
-        configurationProvider = (JDBCConfigurationProvider) getBean( JDBCConfigurationProvider.ID );
+        jdbcConfiguration = (JDBCConfiguration) getBean( "jdbcConfiguration" );
         
-        dialect = configurationProvider.getConfiguration().getDialect();
+        dialect = jdbcConfiguration.getDialect();
         
         dataElements = new ArrayList<DataElement>();
         categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();

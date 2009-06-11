@@ -32,8 +32,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.reporttable.jdbc.JDBCReportTableManager">
     <property name="statementManager"
       ref="org.hisp.dhis.jdbc.StatementManager"/>
-    <property name="configurationProvider"
-      ref="org.hisp.dhis.jdbc.JDBCConfigurationProvider"/>
+    <property name="jdbcConfiguration" ref="jdbcConfiguration"/>
   </bean>
 
   <bean id="org.hisp.dhis.reporttable.ReportTableStore"

@@ -32,7 +32,6 @@ import java.lang.reflect.Constructor;
 import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.jdbc.JDBCConfiguration;
-import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
 
 /**
  * @author Lars Helge Overland
@@ -44,12 +43,12 @@ public class DefaultBatchHandlerFactory
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
-    private JDBCConfigurationProvider configurationProvider;
 
-    public void setConfigurationProvider( JDBCConfigurationProvider configurationProvider )
+    private JDBCConfiguration jdbcConfiguration;
+
+    public void setJdbcConfiguration( JDBCConfiguration jdbcConfiguration )
     {
-        this.configurationProvider = configurationProvider;
+        this.jdbcConfiguration = jdbcConfiguration;
     }
     
     // -------------------------------------------------------------------------
@@ -60,9 +59,7 @@ public class DefaultBatchHandlerFactory
     {
         try
         {
-            JDBCConfiguration configuration = configurationProvider.getConfiguration();
-            
-            return createBatchHandler( clazz, configuration );
+            return createBatchHandler( clazz, jdbcConfiguration );
         }
         catch ( Exception ex )
         {

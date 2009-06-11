@@ -47,7 +47,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.maintenance.MaintenanceStore"
     class="org.hisp.dhis.maintenance.jdbc.JdbcMaintenanceStore">
     <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    <property name="statementDialect" ref="statementDialect"/>
+    <property name="jdbcConfiguration" ref="jdbcConfiguration"/>
   </bean>
   
   <bean id="org.hisp.dhis.maintenance.MaintenanceService"
