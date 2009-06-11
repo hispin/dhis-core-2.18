@@ -151,6 +151,10 @@ public class HibernateDbmsManager
         sessionFactory.getCurrentSession().clear();
     }
 
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
     private void emptyTable( String table )
     {
         try

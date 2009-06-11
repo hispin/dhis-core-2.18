@@ -28,7 +28,6 @@ package org.hisp.dhis.indicator;
  */
 
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * @author Lars Helge Overland
@@ -63,8 +62,6 @@ public interface IndicatorService
     Indicator getIndicatorByAlternativeName( String alternativeName );
 
     Indicator getIndicatorByCode( String code );
-    
-    Map<Integer, Integer> getIndicatorFactorMap( Collection<Integer> identifiers );
 
     // -------------------------------------------------------------------------
     // IndicatorType

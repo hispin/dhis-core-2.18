@@ -30,13 +30,12 @@ package org.hisp.dhis.gis.action.export;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import jxl.Workbook;
 
+import jxl.Workbook;
 import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
@@ -47,6 +46,7 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableImage;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
+
 import org.hisp.dhis.gis.Legend;
 import org.hisp.dhis.gis.action.configuration.GISConfigurationManagerService;
 import org.hisp.dhis.gis.state.SelectionManager;
@@ -131,7 +131,6 @@ public class ExportExcelAction
     }
 
     private File getLegends( File directory, List<Legend> legends )
-        throws IOException, InterruptedException
     {
 
         if ( fileFeatureStore.createLegends( legends ) )

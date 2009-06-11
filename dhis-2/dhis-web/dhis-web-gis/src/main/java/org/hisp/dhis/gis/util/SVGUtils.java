@@ -12,6 +12,7 @@ import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 
+@SuppressWarnings( "deprecation" )
 public class SVGUtils
 {
 
@@ -27,7 +28,7 @@ public class SVGUtils
         try
         {
             // Create the transcoder input.
-            String svgURI = new File( inputPath ).toURL().toString();
+            String svgURI = new File( inputPath ).toURL().toString(); //TODO fix
             TranscoderInput input = new TranscoderInput( svgURI );
             // Create the transcoder output.
             OutputStream ostream = new FileOutputStream( outputPath );

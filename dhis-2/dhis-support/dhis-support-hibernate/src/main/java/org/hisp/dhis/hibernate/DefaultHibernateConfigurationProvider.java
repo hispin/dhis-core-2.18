@@ -73,17 +73,7 @@ public class DefaultHibernateConfigurationProvider
     
     private List<Resource> jarResources = new ArrayList<Resource>();
     
-    public List<Resource> getJarResources() 
-    {
-        return jarResources;
-    }
-    
     private List<Resource> dirResources = new ArrayList<Resource>();
-    
-    public List<Resource> getDirectoryResources() 
-    {
-        return dirResources;
-    }    
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -199,16 +189,26 @@ public class DefaultHibernateConfigurationProvider
     // HibernateConfigurationProvider implementation
     // -------------------------------------------------------------------------
 
-    public void setEventListener( String type, Object listener )
-    {
-        configuration.setListener( type, listener );
-    }
-
     public Configuration getConfiguration()
     {
         return configuration;
     }
 
+    public void setEventListener( String type, Object listener )
+    {
+        configuration.setListener( type, listener );
+    }
+
+    public List<Resource> getJarResources() 
+    {
+        return jarResources;
+    }
+
+    public List<Resource> getDirectoryResources() 
+    {
+        return dirResources;
+    }    
+    
     // -------------------------------------------------------------------------
     // Supporting methods
     // -------------------------------------------------------------------------
