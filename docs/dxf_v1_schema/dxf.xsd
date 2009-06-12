@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <!-- TODO: -->
+  <!-- ns="http://www.dhis.org/schema/dxf" > -->
+  <!-- Toplevel elements of dxf format -->
+  <xs:element name="dxf">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="categoryOptions"/>
+        <xs:element ref="categories"/>
+        <xs:element ref="categoryCombos"/>
+        <xs:element ref="categoryOptionCombos"/>
+        <xs:element ref="categoryCategoryOptionAssociations"/>
+        <xs:element ref="categoryComboCategoryAssociations"/>
+        <xs:element ref="dataElements"/>
+        <xs:element ref="dataSets"/>
+        <xs:element ref="dataSetMembers"/>
+        <xs:element ref="organisationUnits"/>
+        <xs:element ref="organisationUnitRelationships"/>
+        <xs:element ref="dataSetSourceAssociations"/>
+        <xs:element ref="periods"/>
+        <xs:element ref="completeDataSetRegistrations"/>
+        <xs:element minOccurs="0" ref="dataValues"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- Metadata sections -->
+  <!-- Categories -->
+  <xs:element name="categoryOptions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="categoryOption">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="id"/>
+              <xs:element ref="name"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="id" type="xs:integer"/>
+  <xs:element name="name" type="xs:string"/>
+  <xs:element name="categories">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="category">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="id"/>
+              <xs:element ref="name"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="categoryCombos">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="categoryCombo"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="categoryCombo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="id"/>
+        <xs:element ref="name"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="categoryOptionCombos">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="categoryOptionCombo">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="id"/>
+              <xs:element ref="categoryCombo"/>
+              <xs:element ref="categoryOptions"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="categoryCategoryOptionAssociations">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="categoryCategoryOptionAssociation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="categoryCategoryOptionAssociation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="category" type="xs:integer"/>
+        <xs:element name="categoryOption" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="categoryComboCategoryAssociations">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="categoryComboCategoryAssociation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="categoryComboCategoryAssociation">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="categoryCombo" type="xs:integer"/>
+        <xs:element name="category" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- Data elements -->
+  <xs:element name="dataElements">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="dataElement"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dataElement">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="id"/>
+        <xs:element ref="uuid"/>
+        <xs:element ref="name"/>
+        <xs:element ref="alternativeName"/>
+        <xs:element ref="shortName"/>
+        <xs:element ref="code"/>
+        <xs:element ref="description"/>
+        <xs:element ref="active"/>
+        <xs:element ref="type"/>
+        <xs:element ref="aggregationOperator"/>
+        <xs:element name="categoryCombo" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="uuid" type="xs:string"/>
+  <xs:element name="alternativeName" type="xs:string"/>
+  <xs:element name="shortName" type="xs:string"/>
+  <xs:element name="code" type="xs:string"/>
+  <xs:element name="description" type="xs:string"/>
+  <xs:element name="active" type="xs:string"/>
+  <xs:element name="type" type="xs:string"/>
+  <xs:element name="aggregationOperator" type="xs:string"/>
+  <xs:element name="dataSets">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="dataSet"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dataSet">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="id"/>
+        <xs:element ref="name"/>
+        <xs:element ref="shortName"/>
+        <xs:element ref="code"/>
+        <xs:element ref="periodType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="periodType" type="xs:string"/>
+  <xs:element name="dataSetMembers">
+    <xs:complexType>
+      <xs:group ref="anyElements"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="organisationUnits">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="organisationUnit"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="organisationUnit">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="id"/>
+        <xs:element ref="uuid"/>
+        <xs:element ref="name"/>
+        <xs:element ref="shortName"/>
+        <xs:element ref="code"/>
+        <xs:element ref="openingDate"/>
+        <xs:element ref="closedDate"/>
+        <xs:element ref="active"/>
+        <xs:element ref="comment"/>
+        <xs:element ref="geoCode"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="openingDate" type="xs:date"/>
+  <xs:element name="closedDate" type="xs:string"/>
+  <xs:element name="comment" type="xs:string"/>
+  <xs:element name="geoCode" type="xs:string"/>
+  <xs:element name="organisationUnitRelationships">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="organisationUnitRelationship"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="organisationUnitRelationship">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="parent"/>
+        <xs:element ref="child"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parent" type="xs:integer"/>
+  <xs:element name="child" type="xs:integer"/>
+  <xs:element name="dataSetSourceAssociations">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="dataSetSourceAssociation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dataSetSourceAssociation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="dataSet" type="xs:integer"/>
+        <xs:element ref="source"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="source" type="xs:integer"/>
+  <!-- Periods -->
+  <xs:element name="periods">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="period">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="id"/>
+              <xs:element ref="periodType"/>
+              <xs:element ref="startDate"/>
+              <xs:element ref="endDate"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="startDate" type="xs:date"/>
+  <xs:element name="endDate" type="xs:date"/>
+  <xs:element name="completeDataSetRegistrations">
+    <xs:complexType>
+      <xs:group ref="anyElements"/>
+    </xs:complexType>
+  </xs:element>
+  <!-- DataValue Section -->
+  <xs:element name="dataValues">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="dataValue"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dataValue">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="dataElement" type="xs:integer"/>
+        <xs:element name="period" type="xs:integer"/>
+        <xs:element ref="source"/>
+        <xs:element ref="value"/>
+        <xs:element ref="storedBy"/>
+        <xs:element ref="timeStamp"/>
+        <xs:element ref="comment"/>
+        <xs:element name="categoryOptionCombo" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="value" type="xs:string"/>
+  <xs:element name="storedBy">
+    <xs:simpleType>
+      <xs:union memberTypes="xs:integer">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:length value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:union>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="timeStamp" type="xs:string"/>
+  <!-- Convenience (from odf spec) for filling in the "dark spots" -->
+  <xs:group name="anyAttListOrElements">
+    <xs:sequence>
+      <xs:group ref="anyElements"/>
+    </xs:sequence>
+  </xs:group>
+  <xs:attributeGroup name="anyAttListOrElements">
+    <xs:anyAttribute processContents="skip"/>
+  </xs:attributeGroup>
+  <xs:group name="anyElements">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+    </xs:sequence>
+  </xs:group>
+</xs:schema>

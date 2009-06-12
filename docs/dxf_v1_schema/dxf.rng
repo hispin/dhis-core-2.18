@@ -1,0 +1,311 @@
+<grammar datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" 
+	 xmlns="http://relaxng.org/ns/structure/1.0" >
+
+  <!--   TODO: -->
+  <!-- 	 ns="http://www.dhis.org/schema/dxf" > -->
+
+
+  <!-- Toplevel elements of dxf format -->
+  <start>
+    <element name="dxf" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" >
+      <!-- Metadata elements -->
+      <ref name="categoryOptions" />
+      <ref name="categories" />
+      <ref name="categoryCombos" />
+      <ref name="categoryOptionCombos" />
+      <ref name="categoryCategoryOptionAssociations" />
+      <ref name="categoryComboCategoryAssociations" />
+
+      <ref name="dataElements" />
+      <ref name="dataSets" />
+      <ref name="dataSetMembers" />
+
+      <ref name="organisationUnits" />
+      <ref name="organisationUnitRelationships" />
+      <ref name="dataSetSourceAssociations" />
+
+      <ref name="periods" />
+
+      <ref name="completeDataSetRegistrations" />
+
+      <!-- DataValues -->
+      <optional>
+	<ref name="dataValues" />
+      </optional>
+
+    </element>
+  </start>
+
+
+<!--   Metadata sections -->
+
+
+<!--   Categories -->
+
+  <define name="categoryOptions">
+    <element name="categoryOptions">
+      <oneOrMore>
+	<element name="categoryOption">
+	  <element name="id">
+	    <data type="integer" />
+	  </element>
+	  <element name="name">
+	    <text />
+	  </element>
+	</element>
+      </oneOrMore>
+    </element>
+  </define>
+
+  <define name="categories">
+    <element name="categories">
+      <oneOrMore>
+	<element name="category">
+	  <element name="id">
+	    <data type="integer" />
+	  </element>
+	  <element name="name">
+	    <text />
+	  </element>
+	</element>
+      </oneOrMore>
+    </element>
+  </define>
+  
+  <define name="categoryCombos">
+    <element name="categoryCombos">
+      <oneOrMore>
+	<ref name="categoryCombo"/>
+      </oneOrMore>
+    </element>
+  </define>
+  
+  <define name="categoryCombo">
+    <element name="categoryCombo">
+      <element name="id">
+	<data type="integer" />
+      </element>
+      <element name="name">
+	<text />
+      </element>
+    </element>
+  </define>
+
+  <define name="categoryOptionCombos">
+    <element name="categoryOptionCombos">
+      <zeroOrMore>
+	<element name="categoryOptionCombo">
+	  <element name="id">
+	    <data type="integer" />
+	  </element>
+	  <ref name="categoryCombo" />
+	  <ref name="categoryOptions" />
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="categoryCategoryOptionAssociations" >
+    <element name="categoryCategoryOptionAssociations">
+      <zeroOrMore>
+	<ref name="categoryCategoryOptionAssociation"/>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="categoryCategoryOptionAssociation" >
+    <element name="categoryCategoryOptionAssociation">
+      <element name="category">
+	<data type="integer" />
+      </element>
+      <element name="categoryOption">
+	<data type="integer" />
+      </element>
+    </element>
+  </define>
+
+  <define name="categoryComboCategoryAssociations" >
+    <element name="categoryComboCategoryAssociations">
+      <zeroOrMore>
+	<ref name="categoryComboCategoryAssociation"/>
+      </zeroOrMore>
+    </element>    
+  </define>
+
+  <define name="categoryComboCategoryAssociation" >
+    <element name="categoryComboCategoryAssociation">
+      <zeroOrMore>
+	<element name="categoryCombo" >
+	  <data type="integer" />
+	</element>
+	<element name="category" >
+	  <data type="integer" />
+	</element>
+      </zeroOrMore>
+    </element>    
+  </define>
+
+
+  <!--   Data elements -->
+  <define name="dataElements">
+    <element name="dataElements" >
+      <zeroOrMore>
+	<ref name="dataElement" />
+      </zeroOrMore>
+    </element>
+  </define>
+
+
+  <define name="dataElement">
+    <element name="dataElement" >
+      <element name="id"><data type="integer" /></element>
+      <element name="uuid"><text /></element>
+      <element name="name"><text /></element>
+      <element name="alternativeName"><text /></element>
+      <element name="shortName"><text /></element>
+      <element name="code"><text /></element>
+      <element name="description"><text /></element>
+      <element name="active"><text /></element>
+      <element name="type"><text /></element>
+      <element name="aggregationOperator"><text /></element>
+      <element name="categoryCombo"><data type="integer" /></element>
+    </element>
+  </define>
+
+
+  <define name="dataSets">
+    <element name="dataSets">
+      <zeroOrMore>
+	<ref name="dataSet" />
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="dataSet">
+    <element name="dataSet">
+      <element name="id"><data type="integer" /></element>
+      <element name="name"><text /></element>
+      <element name="shortName"><text /></element>
+      <element name="code"><text /></element>
+      <element name="periodType"><text /></element>
+    </element>
+  </define>
+  
+  <define name="dataSetMembers">
+    <element name="dataSetMembers">
+      <!--  TODO: check dataSetMembers -->
+      <ref name="anyElements"/>
+    </element>
+  </define>
+
+  <define name="organisationUnits">
+    <element name="organisationUnits">
+      <zeroOrMore>
+	<ref name="organisationUnit" />
+      </zeroOrMore>
+    </element>
+  </define>
+  
+  <define name="organisationUnit">
+    <element name="organisationUnit">
+      <element name="id"><data type="integer" /></element>
+      <element name="uuid"><text /></element>
+      <element name="name"><text /></element>
+      <element name="shortName"><text /></element>
+      <element name="code"><text /></element>
+      <element name="openingDate"><data type="date"/></element>
+      <!-- TODO: accept Date or nothing -->
+      <element name="closedDate"><text /></element>
+      <element name="active"><text /></element>
+      <element name="comment"><text /></element>
+      <element name="geoCode"><text /></element>
+      <!-- TODO: URL in dxf? -->
+    </element>
+  </define>
+
+  <define name="organisationUnitRelationships">
+    <element name="organisationUnitRelationships">
+      <zeroOrMore>
+	<element name="organisationUnitRelationship">
+	  <element name="parent"><data type="integer" /></element>
+	  <element name="child"><data type="integer" /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="dataSetSourceAssociations">
+    <element name="dataSetSourceAssociations">
+      <zeroOrMore>
+	<element name="dataSetSourceAssociation">
+	  <element name="dataSet"><data type="integer" /></element>
+	  <element name="source"><data type="integer" /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <!--   Periods -->
+  <define name="periods">
+    <element name="periods">
+      <zeroOrMore>
+	<element name="period">
+	  <element name="id"><data type="integer" /></element>	  
+	  <element name="periodType"><text /></element>	  
+	  <element name="startDate"><data type="date" /></element>	  
+	  <element name="endDate"><data type="date"/></element>	  
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="completeDataSetRegistrations">
+    <element name="completeDataSetRegistrations">
+      <!--  TODO: check completeDataSetRegistrations -->
+      <ref name="anyElements" />
+    </element>
+  </define>
+
+
+<!--   DataValue Section -->
+
+  <define name="dataValues">
+    <element name="dataValues">
+      <zeroOrMore>
+	<element name="dataValue">
+	  <element name="dataElement"><data type="integer" /></element>	  
+	  <element name="period"><data type="integer" /></element>	  
+	  <element name="source"><data type="integer" /></element>	  
+	  <element name="value"><text /></element>
+	  <!-- TODO: Don't use storedBy -->
+	  <element name="storedBy"><optional><data type="integer" /></optional></element>	  
+	  <element name="timeStamp"><text /></element>	  
+	  <element name="comment"><text /></element>
+	  <element name="categoryOptionCombo"><data type="integer" /></element>	  
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <!--   Convenience (from odf spec) for filling in the "dark spots" -->
+  <define name="anyAttListOrElements">
+    <zeroOrMore>
+      <attribute>
+	<anyName/>
+	<text/>
+      </attribute>
+    </zeroOrMore>
+    <ref name="anyElements"/>
+  </define>
+  <define name="anyElements">
+    <zeroOrMore>
+      <element>
+	<anyName/>
+	<mixed>
+	  <ref name="anyAttListOrElements"/>
+	</mixed>
+      </element>
+    </zeroOrMore>
+  </define>
+  
+</grammar>

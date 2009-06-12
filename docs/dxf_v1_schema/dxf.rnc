@@ -1,0 +1,173 @@
+# TODO:
+
+# ns="http://www.dhis.org/schema/dxf" >
+
+# Toplevel elements of dxf format
+start =
+  element dxf {
+    # Metadata elements
+    categoryOptions,
+    categories,
+    categoryCombos,
+    categoryOptionCombos,
+    categoryCategoryOptionAssociations,
+    categoryComboCategoryAssociations,
+    dataElements,
+    dataSets,
+    dataSetMembers,
+    organisationUnits,
+    organisationUnitRelationships,
+    dataSetSourceAssociations,
+    periods,
+    completeDataSetRegistrations,
+    # DataValues
+    dataValues?
+  }
+# Metadata sections
+
+# Categories
+categoryOptions =
+  element categoryOptions {
+    element categoryOption {
+      element id { xsd:integer },
+      element name { text }
+    }+
+  }
+categories =
+  element categories {
+    element category {
+      element id { xsd:integer },
+      element name { text }
+    }+
+  }
+categoryCombos = element categoryCombos { categoryCombo+ }
+categoryCombo =
+  element categoryCombo {
+    element id { xsd:integer },
+    element name { text }
+  }
+categoryOptionCombos =
+  element categoryOptionCombos {
+    element categoryOptionCombo {
+      element id { xsd:integer },
+      categoryCombo,
+      categoryOptions
+    }*
+  }
+categoryCategoryOptionAssociations =
+  element categoryCategoryOptionAssociations {
+    categoryCategoryOptionAssociation*
+  }
+categoryCategoryOptionAssociation =
+  element categoryCategoryOptionAssociation {
+    element category { xsd:integer },
+    element categoryOption { xsd:integer }
+  }
+categoryComboCategoryAssociations =
+  element categoryComboCategoryAssociations {
+    categoryComboCategoryAssociation*
+  }
+categoryComboCategoryAssociation =
+  element categoryComboCategoryAssociation {
+    (element categoryCombo { xsd:integer },
+     element category { xsd:integer })*
+  }
+# Data elements
+dataElements = element dataElements { dataElement* }
+dataElement =
+  element dataElement {
+    element id { xsd:integer },
+    element uuid { text },
+    element name { text },
+    element alternativeName { text },
+    element shortName { text },
+    element code { text },
+    element description { text },
+    element active { text },
+    element type { text },
+    element aggregationOperator { text },
+    element categoryCombo { xsd:integer }
+  }
+dataSets = element dataSets { dataSet* }
+dataSet =
+  element dataSet {
+    element id { xsd:integer },
+    element name { text },
+    element shortName { text },
+    element code { text },
+    element periodType { text }
+  }
+dataSetMembers =
+  element dataSetMembers {
+    # TODO: check dataSetMembers
+    anyElements
+  }
+organisationUnits = element organisationUnits { organisationUnit* }
+organisationUnit =
+  element organisationUnit {
+    element id { xsd:integer },
+    element uuid { text },
+    element name { text },
+    element shortName { text },
+    element code { text },
+    element openingDate { xsd:date },
+    # TODO: accept Date or nothing
+    element closedDate { text },
+    element active { text },
+    element comment { text },
+    element geoCode { text }
+    # TODO: URL in dxf?
+    
+  }
+organisationUnitRelationships =
+  element organisationUnitRelationships {
+    element organisationUnitRelationship {
+      element parent { xsd:integer },
+      element child { xsd:integer }
+    }*
+  }
+dataSetSourceAssociations =
+  element dataSetSourceAssociations {
+    element dataSetSourceAssociation {
+      element dataSet { xsd:integer },
+      element source { xsd:integer }
+    }*
+  }
+# Periods
+periods =
+  element periods {
+    element period {
+      element id { xsd:integer },
+      element periodType { text },
+      element startDate { xsd:date },
+      element endDate { xsd:date }
+    }*
+  }
+completeDataSetRegistrations =
+  element completeDataSetRegistrations {
+    # TODO: check completeDataSetRegistrations
+    anyElements
+  }
+# DataValue Section
+dataValues =
+  element dataValues {
+    element dataValue {
+      element dataElement { xsd:integer },
+      element period { xsd:integer },
+      element source { xsd:integer },
+      element value { text },
+      # TODO: Don't use storedBy
+      element storedBy { xsd:integer? },
+      element timeStamp { text },
+      element comment { text },
+      element categoryOptionCombo { xsd:integer }
+    }*
+  }
+# Convenience (from odf spec) for filling in the "dark spots"
+anyAttListOrElements =
+  attribute * { text }*,
+  anyElements
+anyElements =
+  element * {
+    mixed { anyAttListOrElements }
+  }*
