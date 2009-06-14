@@ -26,7 +26,6 @@
     <module>dhis-web-gis</module>
     <module>dhis-web-openhealth-integration</module>
     <module>dhis-web-dashboard-integration</module>
-    <module>dhis-web-jforum-integration</module>
     <module>dhis-web-portal</module>
   </modules>
 
