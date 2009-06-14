@@ -36,13 +36,13 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.amplecode.quick.StatementHolder;
+import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.MetaObject;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.jdbc.JDBCConfiguration;
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.StatementManager;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -75,12 +75,12 @@ public class JDBCReportTableManager
         this.statementManager = statementManager;
     }
 
-    private JDBCConfiguration jdbcConfiguration;
+    private StatementBuilder statementBuilder;
 
-    public void setJdbcConfiguration( JDBCConfiguration jdbcConfiguration )
+    public void setStatementBuilder( StatementBuilder statementBuilder )
     {
-        this.jdbcConfiguration = jdbcConfiguration;
-    }    
+        this.statementBuilder = statementBuilder;
+    }
 
     // -------------------------------------------------------------------------
     // ReportTableManager implementation
@@ -92,7 +92,7 @@ public class JDBCReportTableManager
         
         StatementHolder holder = statementManager.getHolder();
         
-        ReportTableStatement statement = new CreateReportTableStatement( reportTable, jdbcConfiguration.getDialect() );
+        ReportTableStatement statement = new CreateReportTableStatement( reportTable, statementBuilder );
         
         log.debug( "Creating report table with SQL statement: '" + statement.getStatement() + "'" );
         

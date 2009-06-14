@@ -34,11 +34,11 @@ import static junit.framework.Assert.assertTrue;
 
 import java.util.Collection;
 
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -70,7 +70,7 @@ public class DataSetBatchHandlerTest
         
         periodService = (PeriodService) getBean( PeriodService.ID );
         
-        batchHandlerFactory = (BatchHandlerFactory) getBean( BatchHandlerFactory.ID );
+        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class );
 

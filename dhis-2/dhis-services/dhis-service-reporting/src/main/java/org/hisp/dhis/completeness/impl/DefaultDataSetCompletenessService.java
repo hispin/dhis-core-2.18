@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.completeness.DataSetCompletenessConfiguration;
@@ -47,8 +49,6 @@ import org.hisp.dhis.external.configuration.ConfigurationManager;
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.jdbc.batchhandler.DataSetCompletenessResultBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;

@@ -30,8 +30,9 @@ package org.hisp.dhis.jdbc.batchhandler;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.amplecode.quick.JdbcConfiguration;
+import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.resourcetable.OrganisationUnitStructure;
-import org.hisp.dhis.jdbc.JDBCConfiguration;
 /**
  * @author Lars Helge Overland
  * @version $Id: OrganisationUnitStructureBatchHandler.java 5359 2008-06-06 10:36:39Z larshelg $
@@ -43,7 +44,7 @@ public class OrganisationUnitStructureBatchHandler
     // Constructor
     // -------------------------------------------------------------------------
  
-    public OrganisationUnitStructureBatchHandler( JDBCConfiguration configuration )
+    public OrganisationUnitStructureBatchHandler( JdbcConfiguration configuration )
     {
         super( configuration );
     }

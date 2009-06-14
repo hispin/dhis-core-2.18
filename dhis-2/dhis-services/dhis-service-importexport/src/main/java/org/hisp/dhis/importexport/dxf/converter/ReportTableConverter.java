@@ -30,6 +30,7 @@ package org.hisp.dhis.importexport.dxf.converter;
 import java.util.Collection;
 import java.util.Map;
 
+import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.importexport.ExportParams;
@@ -39,7 +40,6 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractReportTableConverter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
-import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.reporttable.RelativePeriods;
 import org.hisp.dhis.reporttable.ReportParams;
 import org.hisp.dhis.reporttable.ReportTable;

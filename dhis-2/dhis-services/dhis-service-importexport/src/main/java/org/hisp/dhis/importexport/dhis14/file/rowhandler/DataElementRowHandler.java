@@ -27,7 +27,7 @@ package org.hisp.dhis.importexport.dhis14.file.rowhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.jdbc.BatchHandler;
+import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementService;

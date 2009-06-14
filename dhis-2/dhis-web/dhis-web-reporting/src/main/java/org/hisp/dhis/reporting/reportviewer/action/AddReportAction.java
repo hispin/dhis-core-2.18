@@ -29,21 +29,17 @@ package org.hisp.dhis.reporting.reportviewer.action;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.jdbc.JDBCConfiguration;
-import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportManager;
 import org.hisp.dhis.report.ReportStore;
 import org.hisp.dhis.report.manager.ReportConfiguration;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
-import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.system.util.CollectionConversionUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.StreamUtils;
@@ -59,15 +55,6 @@ public class AddReportAction
 {
     private static final Log log = LogFactory.getLog( AddReportAction.class );
     
-    private static final String START_TAG_DRIVER = "<property name=\"odaDriverClass\">";
-    private static final String START_TAG_URL = "<property name=\"odaURL\">";
-    private static final String START_TAG_USER_NAME = "<property name=\"odaUser\">";
-    private static final String START_TAG_PASSWORD = "<encrypted-property name=\"odaPassword\" encryptionID=\"base64\">";
-    private static final String END_TAG_DRIVER = "</property>";
-    private static final String END_TAG_URL = "</property>";
-    private static final String END_TAG_USER_NAME = "</property>";
-    private static final String END_TAG_PASSWORD = "</encrypted-property>";    
-	
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -91,13 +78,6 @@ public class AddReportAction
     public void setReportTableService( ReportTableService reportTableService )
     {
         this.reportTableService = reportTableService;
-    }
-    
-    private JDBCConfigurationProvider configurationProvider;
-
-    public void setConfigurationProvider( JDBCConfigurationProvider configurationProvider )
-    {
-        this.configurationProvider = configurationProvider;
     }
     
     // -----------------------------------------------------------------------
@@ -229,22 +209,11 @@ public class AddReportAction
 
         if ( file != null )
         {
-            JDBCConfiguration jdbcConfig = configurationProvider.getConfiguration();
+            Map<String[], String> connectionMap = reportManager.getReportConnectionMap();
             
-            String encryptedPassword = CodecUtils.encryptBase64( jdbcConfig.getPassword() );
-            
-            Map<String[], String> replaceMap = new HashMap<String[], String>();
-
-            replaceMap.put( new String[] { START_TAG_DRIVER, END_TAG_DRIVER }, START_TAG_DRIVER + jdbcConfig.getDriverClass() + END_TAG_DRIVER );
-            replaceMap.put( new String[] { START_TAG_URL, END_TAG_URL }, START_TAG_URL + jdbcConfig.getConnectionUrl() + END_TAG_URL );
-            replaceMap.put( new String[] { START_TAG_USER_NAME, END_TAG_USER_NAME }, START_TAG_USER_NAME + jdbcConfig.getUsername() + END_TAG_USER_NAME );
-            replaceMap.put( new String[] { START_TAG_PASSWORD, END_TAG_PASSWORD }, START_TAG_PASSWORD + encryptedPassword + END_TAG_PASSWORD );
-
-            StringBuffer in = StreamUtils.readContent( file, replaceMap );
+            StringBuffer in = StreamUtils.readContent( file, connectionMap );
 
             StreamUtils.writeContent( design, in );
-
-            log.info( "Report connection URL: " + jdbcConfig.getConnectionUrl() );
         }
         
         // ---------------------------------------------------------------------

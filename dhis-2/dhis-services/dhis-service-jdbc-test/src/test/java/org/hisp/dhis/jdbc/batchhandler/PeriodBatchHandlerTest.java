@@ -36,9 +36,9 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -98,7 +98,7 @@ public class PeriodBatchHandlerTest
         
         dateD = calendar.getTime();
         
-        batchHandlerFactory = (BatchHandlerFactory) getBean( BatchHandlerFactory.ID );
+        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
         

@@ -34,11 +34,11 @@ import static junit.framework.Assert.assertTrue;
 
 import java.util.Collection;
 
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.junit.Test;
 
 /**
@@ -65,7 +65,7 @@ public class DataElementCategoryBatchHandlerTest
     {
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        batchHandlerFactory = (BatchHandlerFactory) getBean( BatchHandlerFactory.ID );
+        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryBatchHandler.class );
         

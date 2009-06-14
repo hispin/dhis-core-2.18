@@ -36,6 +36,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
@@ -46,8 +48,6 @@ import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;

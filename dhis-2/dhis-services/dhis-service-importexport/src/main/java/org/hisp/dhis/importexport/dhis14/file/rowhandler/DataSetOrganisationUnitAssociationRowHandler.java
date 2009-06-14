@@ -29,6 +29,7 @@ package org.hisp.dhis.importexport.dhis14.file.rowhandler;
 
 import java.util.Map;
 
+import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.importexport.AssociationType;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
@@ -36,7 +37,6 @@ import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
 import org.hisp.dhis.importexport.dhis14.object.Dhis14GroupMemberAssociation;
-import org.hisp.dhis.jdbc.BatchHandler;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 

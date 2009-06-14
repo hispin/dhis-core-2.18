@@ -27,8 +27,15 @@ package org.hisp.dhis.importexport.importobject;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -49,8 +56,6 @@ import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportObjectStatus;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.jdbc.batchhandler.ImportDataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -59,8 +64,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -246,7 +249,7 @@ public class ImportObjectServiceImportAllTest
 
         importObjectService = (ImportObjectService) getBean( ImportObjectService.ID );
         
-        batchHandlerFactory = (BatchHandlerFactory) getBean( BatchHandlerFactory.ID );
+        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         dbmsManager = (DbmsManager) getBean( DbmsManager.ID );
         

@@ -30,7 +30,8 @@ package org.hisp.dhis.jdbc.batchhandler;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.jdbc.JDBCConfiguration;
+import org.amplecode.quick.JdbcConfiguration;
+import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 
 /**
@@ -44,7 +45,7 @@ public class DataElementCategoryComboBatchHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public DataElementCategoryComboBatchHandler( JDBCConfiguration configuration )
+    public DataElementCategoryComboBatchHandler( JdbcConfiguration configuration )
     {
         super( configuration );
     }

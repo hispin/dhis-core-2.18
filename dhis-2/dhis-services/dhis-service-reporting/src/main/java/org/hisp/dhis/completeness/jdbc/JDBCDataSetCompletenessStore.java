@@ -33,9 +33,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 
+import org.amplecode.quick.StatementHolder;
+import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.StatementManager;
 
 /**
  * @author Lars Helge Overland

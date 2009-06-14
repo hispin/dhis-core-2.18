@@ -30,12 +30,9 @@ package org.hisp.dhis.importexport.dxf.converter;
 import java.util.Collection;
 import java.util.Map;
 
-import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.util.DateUtils;
-import org.hisp.dhis.jdbc.BatchHandler;
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.staxwax.reader.XMLReader;
+import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -43,8 +40,11 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractPeriodConverter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
-import org.amplecode.staxwax.reader.XMLReader;
-import org.amplecode.staxwax.writer.XMLWriter;
+import org.hisp.dhis.period.MonthlyPeriodType;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.DateUtils;
 
 /**
  * @author Lars Helge Overland

@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -41,7 +42,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -92,7 +92,7 @@ public class AggregationStoreTest
         
         categoryOptionComboService.addDataElementCategoryOptionCombo( optionCombo );
         
-        statementManager = (StatementManager) getBean( StatementManager.ID );
+        statementManager = (StatementManager) getBean( "statementManager" );
     }
     
     @Override

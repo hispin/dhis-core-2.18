@@ -30,10 +30,10 @@ package org.hisp.dhis.importexport.mapping;
 import java.util.Collection;
 import java.util.Map;
 
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryBatchHandler;

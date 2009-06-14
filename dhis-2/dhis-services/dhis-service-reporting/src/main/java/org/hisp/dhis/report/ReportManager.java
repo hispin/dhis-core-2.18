@@ -27,6 +27,8 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Map;
+
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.report.manager.ReportConfiguration;
 
@@ -42,4 +44,6 @@ public interface ReportManager
     
     ReportConfiguration getConfiguration()
         throws NoConfigurationFoundException;
+    
+    Map<String[], String> getReportConnectionMap();
 }

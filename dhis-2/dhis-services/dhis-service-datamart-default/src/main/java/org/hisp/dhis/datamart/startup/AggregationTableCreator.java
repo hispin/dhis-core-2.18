@@ -29,9 +29,7 @@ package org.hisp.dhis.datamart.startup;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.jdbc.JDBCConfiguration;
 import org.hisp.dhis.jdbc.StatementBuilder;
-import org.hisp.dhis.jdbc.factory.StatementBuilderFactory;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -55,11 +53,11 @@ public class AggregationTableCreator
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private JDBCConfiguration jdbcConfiguration;
+    private StatementBuilder statementBuilder;
 
-    public void setJdbcConfiguration( JDBCConfiguration jdbcConfiguration )
+    public void setStatementBuilder( StatementBuilder statementBuilder )
     {
-        this.jdbcConfiguration = jdbcConfiguration;
+        this.statementBuilder = statementBuilder;
     }
     
     // -------------------------------------------------------------------------
@@ -68,11 +66,9 @@ public class AggregationTableCreator
 
     public void execute()
     {
-        StatementBuilder builder = StatementBuilderFactory.createStatementBuilder( jdbcConfiguration.getDialect() );
-        
         try
-        {                
-            jdbcTemplate.execute( builder.getCreateAggregatedDataValueTable() );
+        {
+            jdbcTemplate.execute( statementBuilder.getCreateAggregatedDataValueTable() );
             
             log.info( "Created table aggregateddatavalue" );
         }
@@ -87,7 +83,7 @@ public class AggregationTableCreator
 
         try
         {
-            jdbcTemplate.execute( builder.getCreateAggregatedIndicatorTable() );
+            jdbcTemplate.execute( statementBuilder.getCreateAggregatedIndicatorTable() );
             
             log.info( "Created table aggregatedindicatorvalue" );
         }
@@ -102,7 +98,7 @@ public class AggregationTableCreator
 
         try
         {
-            jdbcTemplate.execute( builder.getCreateDataValueIndex() );
+            jdbcTemplate.execute( statementBuilder.getCreateDataValueIndex() );
             
             log.info( "Created index crosstab on table datavalue" );
         }
@@ -117,7 +113,7 @@ public class AggregationTableCreator
 
         try
         {
-            jdbcTemplate.execute( builder.getCreateDataSetCompletenessTable() );
+            jdbcTemplate.execute( statementBuilder.getCreateDataSetCompletenessTable() );
             
             log.info( "Created table aggregateddatasetcompleteness" );
         }

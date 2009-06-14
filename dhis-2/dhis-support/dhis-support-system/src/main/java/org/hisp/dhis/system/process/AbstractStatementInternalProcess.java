@@ -28,7 +28,7 @@ package org.hisp.dhis.system.process;
  */
 
 import org.amplecode.cave.process.Process;
-import org.hisp.dhis.jdbc.StatementManager;
+import org.amplecode.quick.StatementManager;
 
 /**
  * @author Lars Helge Overland

@@ -27,14 +27,14 @@ package org.hisp.dhis.importexport.dhis14;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+
 import java.util.Properties;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.importexport.IbatisConfiguration;
 import org.hisp.dhis.importexport.IbatisConfigurationManager;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland

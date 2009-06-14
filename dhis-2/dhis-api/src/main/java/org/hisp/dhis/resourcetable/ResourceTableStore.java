@@ -2,8 +2,6 @@ package org.hisp.dhis.resourcetable;
 
 import java.util.Collection;
 
-import org.hisp.dhis.jdbc.Statement;
-
 public interface ResourceTableStore
 {
     String ID = ResourceTableStore.class.getName();
@@ -95,7 +93,7 @@ public interface ResourceTableStore
      * 
      * @param statement the Statement.
      */
-    void createExclusiveGroupSetStructureTable( Statement statement );
+    void createExclusiveGroupSetStructureTable( String statement );
     
     /**
      * Removes table.

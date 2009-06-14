@@ -28,8 +28,6 @@ package org.hisp.dhis.reporttable.statement;
  */
 
 import org.hisp.dhis.jdbc.StatementBuilder;
-import org.hisp.dhis.jdbc.factory.StatementBuilderFactory;
-import org.hisp.dhis.jdbc.StatementDialect;
 import org.hisp.dhis.reporttable.ReportTable;
 
 /**
@@ -63,9 +61,9 @@ public abstract class ReportTableStatement
         init( reportTable );
     }
     
-    public ReportTableStatement( ReportTable reportTable, StatementDialect dialect )
+    public ReportTableStatement( ReportTable reportTable, StatementBuilder statementBuilder )
     {
-        statementBuilder = StatementBuilderFactory.createStatementBuilder( dialect );
+        this.statementBuilder = statementBuilder;
         
         init( reportTable );
     }

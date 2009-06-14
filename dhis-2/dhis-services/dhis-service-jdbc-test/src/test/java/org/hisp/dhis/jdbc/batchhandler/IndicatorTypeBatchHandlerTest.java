@@ -34,11 +34,11 @@ import static junit.framework.Assert.assertTrue;
 
 import java.util.Collection;
 
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.junit.Test;
 
 /**
@@ -67,7 +67,7 @@ public class IndicatorTypeBatchHandlerTest
     {
         indicatorService = (IndicatorService) getBean( IndicatorService.ID );
         
-        batchHandlerFactory = (BatchHandlerFactory) getBean( BatchHandlerFactory.ID );
+        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         batchHandler = batchHandlerFactory.createBatchHandler( IndicatorTypeBatchHandler.class );
 

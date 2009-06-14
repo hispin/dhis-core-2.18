@@ -29,13 +29,13 @@ package org.hisp.dhis.importexport.dhis14.file.rowhandler;
 
 import java.util.Map;
 
+import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.converter.AbstractPeriodConverter;
 import org.hisp.dhis.importexport.dhis14.util.Dhis14PeriodUtil;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
-import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 

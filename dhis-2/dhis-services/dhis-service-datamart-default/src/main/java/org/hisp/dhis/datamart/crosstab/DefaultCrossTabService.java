@@ -36,13 +36,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.jdbc.batchhandler.DataValueCrossTabBatchHandler;
 
 /**

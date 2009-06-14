@@ -27,7 +27,8 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.jdbc.JDBCConfiguration;
+import org.amplecode.quick.JdbcConfiguration;
+import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 
 /**
  * @author Lars Helge Overland
@@ -40,7 +41,7 @@ public class SourceBatchHandler
     // Constructor
     // -------------------------------------------------------------------------
  
-    public SourceBatchHandler( JDBCConfiguration configuration )
+    public SourceBatchHandler( JdbcConfiguration configuration )
     {
         super( configuration );
     }

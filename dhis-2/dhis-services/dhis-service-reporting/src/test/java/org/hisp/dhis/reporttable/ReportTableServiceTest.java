@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
@@ -50,8 +52,6 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.jdbc.BatchHandlerFactory;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedIndicatorValueBatchHandler;
 import org.hisp.dhis.mock.MockI18nFormat;
@@ -154,7 +154,7 @@ public class ReportTableServiceTest
         periodService = (PeriodService) getBean( PeriodService.ID );
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
         
-        batchHandlerFactory = (BatchHandlerFactory) getBean( BatchHandlerFactory.ID );
+        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         dataElements = new ArrayList<DataElement>();
         categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();

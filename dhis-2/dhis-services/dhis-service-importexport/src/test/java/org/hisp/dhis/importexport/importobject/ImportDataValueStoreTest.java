@@ -27,6 +27,9 @@ package org.hisp.dhis.importexport.importobject;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -34,8 +37,6 @@ import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportDataValueStore;
 import org.hisp.dhis.importexport.ImportObjectStatus;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland

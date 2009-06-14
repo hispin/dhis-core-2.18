@@ -29,6 +29,7 @@ package org.hisp.dhis.importexport.dhis14.file.rowhandler;
 
 import java.util.Map;
 
+import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
@@ -37,7 +38,6 @@ import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.converter.AbstractDataValueConverter;
 import org.hisp.dhis.importexport.dhis14.object.Dhis14SemiPermanentDataValue;
-import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;

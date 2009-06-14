@@ -1,4 +1,4 @@
-package org.hisp.dhis.jdbc.factory;
+package org.hisp.dhis.jdbc.statementbuilder;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,46 +27,78 @@ package org.hisp.dhis.jdbc.factory;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.jdbc.StatementDialect;
-import org.hisp.dhis.jdbc.identifier.DerbyIdentifierExtractor;
-import org.hisp.dhis.jdbc.identifier.H2IdentifierExtractor;
-import org.hisp.dhis.jdbc.identifier.IdentifierExtractor;
-import org.hisp.dhis.jdbc.identifier.MySQLIdentifierExtractor;
-import org.hisp.dhis.jdbc.identifier.PostgreSQLIdentifierExtractor;
+import org.amplecode.quick.JdbcConfiguration;
+import org.amplecode.quick.StatementDialect;
+import org.hisp.dhis.jdbc.StatementBuilder;
+import org.springframework.beans.factory.FactoryBean;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: IdentifierExtractorFactory.java 4646 2008-02-26 14:54:29Z larshelg $
+ * @version $Id$
  */
-public class IdentifierExtractorFactory
+public class StatementBuilderFactoryBean
+    implements FactoryBean
 {
-    /**
-     * Creates an IdentifierExtractor instance based on the given dialect.
-     * 
-     * @param dialect the StatementDialect.
-     * @return an IdentifierExtractor instance based on the given dialect.
-     */
-    public static IdentifierExtractor createIdentifierExtractor( StatementDialect dialect )
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+    
+    private JdbcConfiguration jdbcConfiguration;
+
+    public void setJdbcConfiguration( JdbcConfiguration jdbcConfiguration )
     {
+        this.jdbcConfiguration = jdbcConfiguration;
+    }
+    
+    private StatementBuilder statementBuilder;
+
+    // -------------------------------------------------------------------------
+    // Initialisation
+    // -------------------------------------------------------------------------
+    
+    public void init()
+    {
+        StatementDialect dialect = jdbcConfiguration.getDialect();
+        
         if ( dialect.equals( StatementDialect.MYSQL ) )
         {
-            return new MySQLIdentifierExtractor();
+            this.statementBuilder = new MySQLStatementBuilder();
         }
         else if ( dialect.equals( StatementDialect.POSTGRESQL ) )
         {
-            return new PostgreSQLIdentifierExtractor();
+            this.statementBuilder = new PostgreSQLStatementBuilder();
         }
         else if ( dialect.equals( StatementDialect.H2 ) )
         {
-            return new H2IdentifierExtractor();
+            this.statementBuilder = new H2StatementBuilder();
         }
         else if ( dialect.equals( StatementDialect.DERBY ) )
         {
-            return new DerbyIdentifierExtractor();
+            this.statementBuilder = new DerbyStatementBuilder();
         }
         else
         {
-            throw new RuntimeException( "Unsupported dialect: " + dialect );
+            throw new RuntimeException( "Unsupported dialect: " + dialect.toString() );
         }
+    }
+
+    // -------------------------------------------------------------------------
+    // FactoryBean implementation
+    // -------------------------------------------------------------------------
+    
+    public Object getObject()
+        throws Exception
+    {
+        return statementBuilder;
+    }
+
+    public Class<?> getObjectType()
+    {
+        return StatementBuilder.class;
+    }
+
+    public boolean isSingleton()
+    {
+        return true;
     }
 }

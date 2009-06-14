@@ -34,6 +34,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.amplecode.quick.StatementManager;
+import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.gis.FeatureService;
 import org.hisp.dhis.gis.GISConfiguration;
@@ -49,12 +51,10 @@ import org.hisp.dhis.gis.state.SelectionManager;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.aggregation.AggregationService;
 
 import com.opensymphony.xwork.Action;
 

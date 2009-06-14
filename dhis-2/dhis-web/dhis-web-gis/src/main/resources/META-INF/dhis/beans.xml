@@ -184,7 +184,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="dataMartStore" ref="org.hisp.dhis.datamart.DataMartStore" />
 		<property name="selectionGISManager" ref="org.hisp.dhis.gis.state.SelectionManager" />
-		<property name="statementManager" ref="org.hisp.dhis.jdbc.StatementManager" />
+		<property name="statementManager" ref="statementManager" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="gisConfigurationService"
 			ref="org.hisp.dhis.gis.GISConfigurationService" />

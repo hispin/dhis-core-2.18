@@ -35,6 +35,7 @@ import java.io.PipedOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.amplecode.quick.StatementManager;
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hibernate.SessionFactory;
@@ -93,7 +94,6 @@ import org.hisp.dhis.importexport.dxf.converter.ReportTableOrganisationUnitConve
 import org.hisp.dhis.importexport.dxf.converter.ReportTablePeriodConverter;
 import org.hisp.dhis.importexport.dxf.converter.ValidationRuleConverter;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;

@@ -36,6 +36,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.amplecode.quick.StatementHolder;
+import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
@@ -47,8 +49,7 @@ import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.StatementManager;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.objectmapper.AggregatedDataValueRowMapper;
@@ -73,6 +74,13 @@ public class JdbcDataMartStore
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
+    }
+    
+    private StatementBuilder statementBuilder;
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
     }
     
     // -------------------------------------------------------------------------
@@ -563,7 +571,7 @@ public class JdbcDataMartStore
         
         try
         {
-            final String sql = statementManager.getStatementBuilder().getDeleteRelativePeriods();
+            final String sql = statementBuilder.getDeleteRelativePeriods();
             
             return holder.getStatement().executeUpdate( sql );
         }

@@ -27,8 +27,7 @@ package org.hisp.dhis.maintenance.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.jdbc.JDBCConfiguration;
-import org.hisp.dhis.jdbc.factory.StatementBuilderFactory;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.maintenance.MaintenanceStore;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -50,11 +49,11 @@ public class JdbcMaintenanceStore
         this.jdbcTemplate = jdbcTemplate;
     }
     
-    private JDBCConfiguration jdbcConfiguration;
+    private StatementBuilder statementBuilder;
 
-    public void setJdbcConfiguration( JDBCConfiguration jdbcConfiguration )
+    public void setStatementBuilder( StatementBuilder statementBuilder )
     {
-        this.jdbcConfiguration = jdbcConfiguration;
+        this.statementBuilder = statementBuilder;
     }
     
     // -------------------------------------------------------------------------
@@ -63,8 +62,6 @@ public class JdbcMaintenanceStore
 
     public int deleteZeroDataValues()
     {
-        final String sql = StatementBuilderFactory.createStatementBuilder( jdbcConfiguration.getDialect() ).getDeleteZeroDataValues();
-        
-        return jdbcTemplate.update( sql );
+        return jdbcTemplate.update( statementBuilder.getDeleteZeroDataValues() );
     }
 }

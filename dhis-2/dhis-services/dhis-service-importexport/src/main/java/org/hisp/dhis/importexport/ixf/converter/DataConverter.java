@@ -30,9 +30,9 @@ package org.hisp.dhis.importexport.ixf.converter;
 import java.util.Collection;
 import java.util.Map;
 
+import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
-import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;

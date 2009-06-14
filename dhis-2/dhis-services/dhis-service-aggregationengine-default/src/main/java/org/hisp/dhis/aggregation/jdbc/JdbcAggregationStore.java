@@ -33,9 +33,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.amplecode.quick.StatementHolder;
+import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationStore;
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.period.Period;
 

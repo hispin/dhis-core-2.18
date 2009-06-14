@@ -34,11 +34,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.amplecode.quick.StatementHolder;
+import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.Operand;
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.StatementManager;
+import org.hisp.dhis.jdbc.StatementBuilder;
 
 /**
  * @author Lars Helge Overland
@@ -58,6 +59,13 @@ public class JDBCCrossTabStore
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
+    }
+
+    private StatementBuilder statementBuilder;
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
     }
     
     // -------------------------------------------------------------------------
@@ -225,7 +233,7 @@ public class JDBCCrossTabStore
     
     public int validateCrossTabTable( final Collection<Operand> operands )
     {
-        int maxColumns = statementManager.getStatementBuilder().getMaximumNumberOfColumns();
+        int maxColumns = statementBuilder.getMaximumNumberOfColumns();
         
         return ( operands != null && operands.size() > maxColumns ) ? operands.size() - maxColumns : 0;
     }

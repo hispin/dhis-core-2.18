@@ -30,6 +30,7 @@ package org.hisp.dhis.importexport.dxf.converter;
 import java.util.Collection;
 import java.util.Map;
 
+import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
@@ -44,7 +45,6 @@ import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.system.util.DateUtils;
 
 /**

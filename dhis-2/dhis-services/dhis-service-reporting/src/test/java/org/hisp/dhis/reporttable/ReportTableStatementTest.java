@@ -40,8 +40,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.jdbc.JDBCConfiguration;
-import org.hisp.dhis.jdbc.StatementDialect;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -60,9 +59,7 @@ import org.junit.Test;
 public class ReportTableStatementTest
     extends DhisSpringTest
 {
-    private JDBCConfiguration jdbcConfiguration;
-    
-    private StatementDialect dialect;
+    private StatementBuilder statementBuilder;
     
     private List<DataElement> dataElements;
     private List<DataElementCategoryOptionCombo> categoryOptionCombos;
@@ -88,9 +85,7 @@ public class ReportTableStatementTest
     public void setUpTest()
         throws Exception
     {
-        jdbcConfiguration = (JDBCConfiguration) getBean( "jdbcConfiguration" );
-        
-        dialect = jdbcConfiguration.getDialect();
+        statementBuilder = (StatementBuilder) getBean( "statementBuilder" );
         
         dataElements = new ArrayList<DataElement>();
         categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
@@ -152,7 +147,7 @@ public class ReportTableStatementTest
         
         reportTable.init();
         
-        ReportTableStatement statement = new CreateReportTableStatement( reportTable, dialect );
+        ReportTableStatement statement = new CreateReportTableStatement( reportTable, statementBuilder );
 
         assertNotNull( statement.getStatement() );
         
@@ -162,7 +157,7 @@ public class ReportTableStatementTest
 
         reportTable.init();
         
-        statement = new CreateReportTableStatement( reportTable, dialect );
+        statement = new CreateReportTableStatement( reportTable, statementBuilder );
         
         assertNotNull( statement.getStatement() );
         
@@ -172,7 +167,7 @@ public class ReportTableStatementTest
 
         reportTable.init();
         
-        statement = new CreateReportTableStatement( reportTable, dialect );
+        statement = new CreateReportTableStatement( reportTable, statementBuilder );
 
         assertNotNull( statement.getStatement() );
     }

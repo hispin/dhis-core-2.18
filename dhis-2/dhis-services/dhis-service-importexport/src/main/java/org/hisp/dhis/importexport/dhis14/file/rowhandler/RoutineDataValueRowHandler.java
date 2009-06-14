@@ -29,7 +29,7 @@ package org.hisp.dhis.importexport.dhis14.file.rowhandler;
 
 import java.util.Map;
 
-import org.hisp.dhis.jdbc.BatchHandler;
+import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;

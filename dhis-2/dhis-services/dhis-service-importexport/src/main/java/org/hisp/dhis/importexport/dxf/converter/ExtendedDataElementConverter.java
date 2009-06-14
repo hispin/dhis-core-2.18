@@ -30,7 +30,9 @@ package org.hisp.dhis.importexport.dxf.converter;
 import java.util.Collection;
 import java.util.Map;
 
-import org.hisp.dhis.jdbc.BatchHandler;
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.staxwax.reader.XMLReader;
+import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -43,8 +45,6 @@ import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractExtendedDataElementConverter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.system.util.DateUtils;
-import org.amplecode.staxwax.reader.XMLReader;
-import org.amplecode.staxwax.writer.XMLWriter;
 
 /**
  * @author Lars Helge Overland

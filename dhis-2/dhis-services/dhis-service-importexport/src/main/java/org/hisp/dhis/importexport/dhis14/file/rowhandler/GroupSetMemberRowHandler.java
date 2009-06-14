@@ -29,7 +29,7 @@ package org.hisp.dhis.importexport.dhis14.file.rowhandler;
 
 import java.util.Map;
 
-import org.hisp.dhis.jdbc.BatchHandler;
+import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.importexport.AssociationType;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;

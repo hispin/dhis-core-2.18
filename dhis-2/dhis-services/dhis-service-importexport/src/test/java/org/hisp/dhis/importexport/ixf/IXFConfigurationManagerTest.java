@@ -27,6 +27,9 @@ package org.hisp.dhis.importexport.ixf;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +38,6 @@ import org.hisp.dhis.importexport.ixf.config.IXFConfiguration;
 import org.hisp.dhis.importexport.ixf.config.IXFConfigurationManager;
 import org.hisp.dhis.importexport.ixf.config.IXFCountry;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland

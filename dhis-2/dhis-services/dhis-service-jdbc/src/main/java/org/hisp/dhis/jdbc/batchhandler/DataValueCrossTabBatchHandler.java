@@ -29,7 +29,8 @@ package org.hisp.dhis.jdbc.batchhandler;
 
 import java.util.List;
 
-import org.hisp.dhis.jdbc.JDBCConfiguration;
+import org.amplecode.quick.JdbcConfiguration;
+import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 
 /**
  * @author Lars Helge Overland
@@ -42,7 +43,7 @@ public class DataValueCrossTabBatchHandler
     // Constructor
     // -------------------------------------------------------------------------
  
-    public DataValueCrossTabBatchHandler( JDBCConfiguration configuration )
+    public DataValueCrossTabBatchHandler( JdbcConfiguration configuration )
     {
         super( configuration );
         
