@@ -27,12 +27,14 @@ package org.hisp.dhis.importexport.ixf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.TextUtils.subString;
+
 import java.util.Collection;
 import java.util.Random;
 
+import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
-import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -42,8 +44,6 @@ import org.hisp.dhis.importexport.converter.AbstractOrganisationUnitConverter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-
-import static org.hisp.dhis.system.util.TextUtils.subString;
 
 /**
  * @author Lars Helge Overland

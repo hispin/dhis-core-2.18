@@ -89,8 +89,7 @@
 
   <bean id="org.hisp.dhis.importexport.ImportObjectManager"
     class="org.hisp.dhis.importexport.service.DefaultImportObjectManager">
-    <property name="batchHandlerFactory" 
-      ref="org.hisp.dhis.jdbc.BatchHandlerFactory"/>
+    <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
     <property name="objectMappingGenerator" 
       ref="org.hisp.dhis.importexport.mapping.ObjectMappingGenerator"/>
     <property name="importObjectStore"
@@ -156,8 +155,7 @@
   <bean id="internal-process-ImportPreview"
     class="org.hisp.dhis.importexport.ImportPreviewInternalProcess"
     scope="prototype">
-    <property name="statementManager"
-      ref="org.hisp.dhis.jdbc.StatementManager"/>
+    <property name="statementManager" ref="statementManager"/>
     <property name="importObjectService"
       ref="org.hisp.dhis.importexport.ImportObjectService"/>
   </bean>
@@ -169,8 +167,7 @@
   <bean id="internal-process-DHIS14XMLImportService"
     class="org.hisp.dhis.importexport.ImportInternalProcess"
     scope="prototype">
-    <property name="statementManager"
-      ref="org.hisp.dhis.jdbc.StatementManager"/>
+    <property name="statementManager" ref="statementManager"/>
     <property name="importService" 
         ref="org.hisp.dhis.importexport.Dhis14XMLImportService"/>
   </bean>
@@ -195,8 +192,7 @@
       ref="org.hisp.dhis.datavalue.DataValueService"/>
     <property name="importObjectService"
       ref="org.hisp.dhis.importexport.ImportObjectService"/>
-    <property name="batchHandlerFactory" 
-      ref="org.hisp.dhis.jdbc.BatchHandlerFactory"/>
+    <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
     <property name="objectMappingGenerator" 
       ref="org.hisp.dhis.importexport.mapping.ObjectMappingGenerator"/>
     <property name="importAnalyser"
@@ -214,8 +210,7 @@
   <bean id="internal-process-DHIS14FILEImportService"
     class="org.hisp.dhis.importexport.ImportInternalProcess"
     scope="prototype">
-    <property name="statementManager"
-      ref="org.hisp.dhis.jdbc.StatementManager"/>
+    <property name="statementManager" ref="statementManager"/>
     <property name="importService" 
         ref="org.hisp.dhis.importexport.Dhis14FILEImportService"/>
   </bean>
@@ -227,8 +222,7 @@
       ref="org.hisp.dhis.importexport.dhis14.file.query.QueryManager"/>
     <property name="objectMappingGenerator"	
       ref="org.hisp.dhis.importexport.mapping.ObjectMappingGenerator"/>
-    <property name="batchHandlerFactory" 
-      ref="org.hisp.dhis.jdbc.BatchHandlerFactory"/>
+    <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
     <property name="importObjectService"
       ref="org.hisp.dhis.importexport.ImportObjectService"/>
     <property name="expressionService"
@@ -290,8 +284,7 @@
   <bean id="internal-process-DXFImportService"
     class="org.hisp.dhis.importexport.ImportInternalProcess"
     scope="prototype">
-    <property name="statementManager"
-      ref="org.hisp.dhis.jdbc.StatementManager"/>
+    <property name="statementManager" ref="statementManager"/>
     <property name="importService" 
       ref="org.hisp.dhis.importexport.DXFImportService"/>
   </bean>
@@ -332,8 +325,7 @@
       ref="org.hisp.dhis.period.PeriodService"/>
     <property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>
-    <property name="batchHandlerFactory" 
-      ref="org.hisp.dhis.jdbc.BatchHandlerFactory"/>			
+    <property name="batchHandlerFactory" ref="batchHandlerFactory"/>		
     <property name="objectMappingGenerator"	
       ref="org.hisp.dhis.importexport.mapping.ObjectMappingGenerator"/>
     <property name="lockingManager"
@@ -354,8 +346,7 @@
   <bean id="internal-process-IXFImportService"
     class="org.hisp.dhis.importexport.ImportInternalProcess"
     scope="prototype">
-    <property name="statementManager"
-      ref="org.hisp.dhis.jdbc.StatementManager"/>
+    <property name="statementManager" ref="statementManager"/>
     <property name="importService" 
       ref="org.hisp.dhis.importexport.IXFImportService"/>
   </bean>
@@ -375,8 +366,7 @@
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/>
-    <property name="batchHandlerFactory" 
-      ref="org.hisp.dhis.jdbc.BatchHandlerFactory"/>   
+    <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
     <property name="objectMappingGenerator" 
       ref="org.hisp.dhis.importexport.mapping.ObjectMappingGenerator"/>
     <property name="cacheManager"
@@ -424,8 +414,7 @@
       ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService"/>
     <property name="dataMartStore"
       ref="org.hisp.dhis.datamart.DataMartStore"/>
-    <property name="statementManager"
-      ref="org.hisp.dhis.jdbc.StatementManager"/>
+    <property name="statementManager" ref="statementManager"/>
   </bean>
   
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -503,9 +492,8 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	
   <bean id="org.hisp.dhis.importexport.mapping.ObjectMappingGenerator"
-    class="org.hisp.dhis.importexport.mapping.DefaultObjectMappingGenerator">		
-    <property name="batchHandlerFactory" 
-      ref="org.hisp.dhis.jdbc.BatchHandlerFactory"/>
+    class="org.hisp.dhis.importexport.mapping.DefaultObjectMappingGenerator">	
+    <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
     <property name="periodStore"
       ref="org.hisp.dhis.period.PeriodStore"/>
     <property name="categoryOptionComboService"

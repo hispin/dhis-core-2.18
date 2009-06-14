@@ -30,21 +30,21 @@ package org.hisp.dhis.importexport.dxf.converter;
 import java.util.Collection;
 import java.util.Map;
 
-import org.hisp.dhis.jdbc.BatchHandler;
-import org.hisp.dhis.importexport.GroupMemberAssociation;
+import org.amplecode.quick.BatchHandler;
+import org.amplecode.staxwax.reader.XMLReader;
+import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.AssociationType;
 import org.hisp.dhis.importexport.ExportParams;
+import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractGroupMemberConverter;
-import org.amplecode.staxwax.reader.XMLReader;
-import org.amplecode.staxwax.writer.XMLWriter;
 
 /**
  * @author Lars Helge Overland

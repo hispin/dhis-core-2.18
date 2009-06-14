@@ -27,7 +27,10 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.jdbc.JDBCConfiguration;
+import static org.hisp.dhis.system.util.DateUtils.getSqlDateString;
+
+import org.amplecode.quick.JdbcConfiguration;
+import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.period.Period;
 
 /**
@@ -41,7 +44,7 @@ public class PeriodBatchHandler
     // Constructor
     // -------------------------------------------------------------------------
  
-    public PeriodBatchHandler( JDBCConfiguration configuration )
+    public PeriodBatchHandler( JdbcConfiguration configuration )
     {
         super( configuration );
     }
@@ -83,14 +86,20 @@ public class PeriodBatchHandler
     {
         Period period = (Period) objectName;
         
-        return statementBuilder.getPeriodIdentifierStatement( period );
+        return 
+            "SELECT periodid FROM period WHERE periodtypeid=" + period.getPeriodType().getId() + " " + 
+            "AND startdate='" + getSqlDateString( period.getStartDate() ) + "' " +
+            "AND enddate='" + getSqlDateString( period.getEndDate() ) + "'";
     }
     
     protected String getUniquenessStatement( Object object )
     {
         Period period = (Period) object;
         
-        return statementBuilder.getPeriodIdentifierStatement( period );
+        return 
+            "SELECT periodid FROM period WHERE periodtypeid=" + period.getPeriodType().getId() + " " + 
+            "AND startdate='" + getSqlDateString( period.getStartDate() ) + "' " +
+            "AND enddate='" + getSqlDateString( period.getEndDate() ) + "'";
     }
     
     protected void addColumns()

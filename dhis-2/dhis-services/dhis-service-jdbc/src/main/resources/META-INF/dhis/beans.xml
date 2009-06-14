@@ -4,35 +4,34 @@
        xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
   
-  <!-- Interceptor -->
-	
-  <bean id="statementInterceptor"
-    class="org.hisp.dhis.jdbc.statement.StatementInterceptor">
-    <property name="statementManager"
-    ref="org.hisp.dhis.jdbc.StatementManager"/>
-  </bean>
-	
-  <!-- JdbcConfiguration -->
-	
-  <bean id="jdbcConfiguration"
-    class="org.hisp.dhis.jdbc.configuration.JdbcConfigurationFactoryBean"
-    init-method="init">
-    <property name="configurationProvider"
-      ref="org.hisp.dhis.hibernate.HibernateConfigurationProvider"/>	
-  </bean>
-	
   <!-- StatementManager -->
-	
-  <bean id="org.hisp.dhis.jdbc.StatementManager"
-    class="org.hisp.dhis.jdbc.statement.JDBCStatementManager">
+    
+  <bean id="statementManager" class="org.amplecode.quick.statement.JdbcStatementManager">
     <property name="jdbcConfiguration" ref="jdbcConfiguration"/>
   </bean>
   
   <!-- BatchHandlerFactory -->
-	
-  <bean id="org.hisp.dhis.jdbc.BatchHandlerFactory"
-    class="org.hisp.dhis.jdbc.factory.DefaultBatchHandlerFactory">
+    
+  <bean id="batchHandlerFactory" class="org.amplecode.quick.factory.DefaultBatchHandlerFactory">
     <property name="jdbcConfiguration" ref="jdbcConfiguration"/>
   </bean>
   
+  <!-- Interceptor -->
+    
+  <bean id="statementInterceptor" class="org.amplecode.quick.statement.StatementInterceptor">
+    <property name="statementManager" ref="statementManager"/>
+  </bean>
+    
+  <!-- JdbcConfiguration -->
+    
+  <bean id="jdbcConfiguration" class="org.hisp.dhis.jdbc.configuration.JdbcConfigurationFactoryBean" init-method="init">
+    <property name="configurationProvider" ref="org.hisp.dhis.hibernate.HibernateConfigurationProvider"/>   
+  </bean>
+    
+  <!-- StatementBuilder -->
+    
+  <bean id="statementBuilder" class="org.hisp.dhis.jdbc.statementbuilder.StatementBuilderFactoryBean" init-method="init">
+    <property name="jdbcConfiguration" ref="jdbcConfiguration"/>
+  </bean>
+    
 </beans>

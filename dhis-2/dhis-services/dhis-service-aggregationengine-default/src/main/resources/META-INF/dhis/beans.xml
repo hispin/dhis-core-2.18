@@ -8,8 +8,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<bean id="org.hisp.dhis.aggregation.AggregationStore"
 		class="org.hisp.dhis.aggregation.jdbc.JdbcAggregationStore">
-		<property name="statementManager"
-			ref="org.hisp.dhis.jdbc.StatementManager"/>
+		<property name="statementManager" ref="statementManager"/>
 	</bean>
 	
 	<!-- AggregationService -->

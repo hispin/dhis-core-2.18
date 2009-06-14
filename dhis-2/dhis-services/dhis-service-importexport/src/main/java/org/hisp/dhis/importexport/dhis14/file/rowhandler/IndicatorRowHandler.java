@@ -33,6 +33,7 @@ import static org.hisp.dhis.importexport.dhis14.util.Dhis14ExpressionConverter.g
 
 import java.util.Map;
 
+import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -42,7 +43,6 @@ import org.hisp.dhis.importexport.converter.AbstractIndicatorConverter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.jdbc.BatchHandler;
 import org.hisp.dhis.system.util.UUIdUtils;
 
 import com.ibatis.sqlmap.client.event.RowHandler;

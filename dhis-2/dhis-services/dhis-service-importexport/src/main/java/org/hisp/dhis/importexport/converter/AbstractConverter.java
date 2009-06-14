@@ -32,6 +32,7 @@ import static org.hisp.dhis.importexport.ImportObjectStatus.NEW;
 import static org.hisp.dhis.importexport.ImportObjectStatus.UPDATE;
 import static org.hisp.dhis.importexport.ImportStrategy.NEW_AND_UPDATES;
 
+import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportDataValue;
@@ -39,7 +40,6 @@ import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportObjectStatus;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
-import org.hisp.dhis.jdbc.BatchHandler;
 
 /**
  * @author Lars Helge Overland

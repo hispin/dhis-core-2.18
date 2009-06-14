@@ -237,4 +237,27 @@ public class DateUtils
         
         return calendar.getTime();        
     }
+
+    /**
+     * Returns a date formatted in ANSI SQL.
+     * 
+     * @param date the Date.
+     * @return a date String.
+     */
+    public static String getSqlDateString( Date date )
+    {
+        Calendar cal = Calendar.getInstance();
+        
+        cal.setTime( date );
+        
+        int year = cal.get( Calendar.YEAR );
+        int month = cal.get( Calendar.MONTH ) + 1;
+        int day = cal.get( Calendar.DAY_OF_MONTH );
+        
+        String yearString = String.valueOf( year );
+        String monthString = month < 10 ? "0" + month : String.valueOf( month );
+        String dayString = day < 10 ? "0" + day : String.valueOf( day );
+        
+        return yearString + "-" + monthString + "-" + dayString;
+    }
 }

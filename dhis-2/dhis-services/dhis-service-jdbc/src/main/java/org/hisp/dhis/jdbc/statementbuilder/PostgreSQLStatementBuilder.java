@@ -27,10 +27,9 @@ package org.hisp.dhis.jdbc.statementbuilder;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
+import static org.hisp.dhis.system.util.DateUtils.getSqlDateString;
 
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriodType;
 
@@ -39,138 +38,8 @@ import org.hisp.dhis.period.RelativePeriodType;
  * @version $Id: PostgreSQLStatementBuilder.java 5715 2008-09-17 14:05:28Z larshelg $
  */
 public class PostgreSQLStatementBuilder
-    extends AbstractStatementBuilder
-{
-    private static final String AUTO_INCREMENT = "nextval('hibernate_sequence')";
-    
-    // -------------------------------------------------------------------------
-    // Constructor
-    // -------------------------------------------------------------------------
- 
-    public PostgreSQLStatementBuilder()
-    {
-        super();
-    }    
-
-    // -------------------------------------------------------------------------
-    // AbstractStatementBuilder implementation
-    // -------------------------------------------------------------------------
- 
-    public String getInsertStatementOpening( String table )
-    {
-        if ( autoIncrementColumnIndex != null && autoIncrementColumnName != null )
-        {
-            columns.add( autoIncrementColumnIndex, autoIncrementColumnName );
-        }
-        
-        final StringBuffer buffer = new StringBuffer();
-        
-        buffer.append( "INSERT INTO " + table + " (" );
-        
-        for ( String column : columns )
-        {
-            buffer.append( column + SEPARATOR );
-        }
-        
-        if ( columns.size() > 0 )
-        {
-            buffer.deleteCharAt( buffer.length() - 1 );
-        }
-        
-        buffer.append( BRACKET_END + " VALUES " );
-        
-        columns.clear();
-        
-        return buffer.toString();
-    }
-
-    public String getNoColumnInsertStatementOpening( String table )
-    {
-        return "INSERT INTO " + table + " VALUES ";
-    }
-        
-    public String getInsertStatementValues()
-    {
-        if ( autoIncrementColumnIndex != null )
-        {
-            values.add( autoIncrementColumnIndex, AUTO_INCREMENT );
-        }
-        
-        final StringBuffer buffer = new StringBuffer();
-        
-        buffer.append( BRACKET_START );
-        
-        for ( String value : values )
-        {
-            buffer.append( value + SEPARATOR );
-        }
-        
-        if ( values.size() > 0 )
-        {
-            buffer.deleteCharAt( buffer.length() - 1 );
-        }
-        
-        buffer.append( BRACKET_END + SEPARATOR );
-        
-        values.clear();
-        
-        return buffer.toString();
-    }
-
-    public String getUpdateStatement( String table )
-    {
-        final StringBuffer buffer = new StringBuffer();
-        
-        buffer.append( "UPDATE " + table + " SET " );
-
-        Iterator<String> columnIterator = columns.iterator();
-        Iterator<String> valueIterator = values.iterator();
-        
-        while ( columnIterator.hasNext() )
-        {
-            buffer.append( columnIterator.next() + "=" + valueIterator.next() + SEPARATOR );
-        }
-        
-        if ( columns.size() > 0 && values.size() > 0 )
-        {
-            buffer.deleteCharAt( buffer.length() - 1 );
-        }
-        
-        buffer.append( " WHERE " + identifierColumnName + "=" + identifierColumnValue );
-        
-        columns.clear();
-        values.clear();
-        
-        return buffer.toString();
-    }
-    
-    public String getValueStatement( String table, String returnField, String compareField, String value )
-    {
-        return "SELECT " + returnField + " FROM " + table + " WHERE " + compareField + " = '" + sqlEncode( value ) + "'";
-    }
-
-    public String getValueStatement( String table, String returnField1, String returnField2, String compareField1, String value1, String compareField2, String value2 )
-    {
-        return "SELECT " + returnField1 + ", " + returnField2 + " FROM " + table + " WHERE " + compareField1 + "='" + sqlEncode( value1 ) + "' AND " + compareField2 + "='" + sqlEncode( value2 ) + "'";
-    }
-
-    public String getValueStatement( String table, String returnField, Map<String, String> fieldMap, boolean union )
-    {
-        final String operator = union ? " AND " : " OR ";
-        
-        final StringBuffer sqlBuffer = new StringBuffer( "SELECT " ).append( returnField ).append( " FROM " ).append( table ).append( " WHERE " );
-        
-        for ( Entry<String, String> entry : fieldMap.entrySet() )
-        {
-            sqlBuffer.append( entry.getKey() ).append( "='" ).append( sqlEncode( entry.getValue() ) ).append( "'" ).append( operator );
-        }
-
-        String sql = sqlBuffer.toString();
-        sql = sql.substring( 0, sql.length() - operator.length() );
-        
-        return sql;
-    }
-    
+    implements StatementBuilder
+{    
     public String getDoubleColumnType()
     {
         return "DOUBLE PRECISION";
@@ -180,8 +49,8 @@ public class PostgreSQLStatementBuilder
     {
         return
             "SELECT periodid FROM period WHERE periodtypeid=" + period.getPeriodType().getId() + " " + 
-            "AND startdate='" + getDateString( period.getStartDate() ) + "' " +
-            "AND enddate='" + getDateString( period.getEndDate() ) + "'";
+            "AND startdate='" + getSqlDateString( period.getStartDate() ) + "' " +
+            "AND enddate='" + getSqlDateString( period.getEndDate() ) + "'";
     }
 
     public String getCreateAggregatedDataValueTable()

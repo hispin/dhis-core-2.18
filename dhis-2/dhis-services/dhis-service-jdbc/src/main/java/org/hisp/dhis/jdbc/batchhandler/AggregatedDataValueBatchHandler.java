@@ -30,8 +30,9 @@ package org.hisp.dhis.jdbc.batchhandler;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.amplecode.quick.JdbcConfiguration;
+import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
-import org.hisp.dhis.jdbc.JDBCConfiguration;
 
 /**
  * @author Lars Helge Overland
@@ -44,7 +45,7 @@ public class AggregatedDataValueBatchHandler
     // Constructor
     // -------------------------------------------------------------------------
     
-    public AggregatedDataValueBatchHandler( JDBCConfiguration configuration )
+    public AggregatedDataValueBatchHandler( JdbcConfiguration configuration )
     {
         super( configuration );
         

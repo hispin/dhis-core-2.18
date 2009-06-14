@@ -36,17 +36,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
+import org.amplecode.quick.JdbcConfiguration;
+import org.amplecode.quick.StatementDialect;
+import org.amplecode.quick.StatementHolder;
+import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.jdbc.JDBCConfiguration;
-import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
-import org.hisp.dhis.jdbc.StatementDialect;
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.statement.JDBCStatementManager;
 
 /**
  * Requires a forum called 'Data dictionary'.
@@ -66,20 +65,6 @@ public class JdbcJForumManager
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private JDBCConfigurationProvider configurationProvider;
-
-    public void setConfigurationProvider( JDBCConfigurationProvider configurationProvider )
-    {
-        this.configurationProvider = configurationProvider;
-    }
-    
-    private JDBCStatementManager statementManager;
-
-    public void setStatementManager( JDBCStatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
-    
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -93,6 +78,20 @@ public class JdbcJForumManager
     {
         this.indicatorService = indicatorService;
     }
+    
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
+    
+    private JdbcConfiguration jdbcConfiguration;
+
+    public void setJdbcConfiguration( JdbcConfiguration jdbcConfiguration )
+    {
+        this.jdbcConfiguration = jdbcConfiguration;
+    }
         
     // -------------------------------------------------------------------------
     // JForumManager implementation
@@ -100,8 +99,6 @@ public class JdbcJForumManager
 
     public void populateJForum()
     {
-        JDBCConfiguration configuration = configurationProvider.getConfiguration();
-        
         Connection connection = getJForumConnection();
         
         try
@@ -110,7 +107,7 @@ public class JdbcJForumManager
             
             addJForumTopics( statement );
             
-            addJForumPosts( statement, configuration.getDialect() );
+            addJForumPosts( statement, jdbcConfiguration.getDialect() );
         }
         catch ( Exception ex )
         {
@@ -390,14 +387,12 @@ public class JdbcJForumManager
     {
         try
         {
-            JDBCConfiguration configuration = configurationProvider.getConfiguration();
-            
-            Class.forName( configuration.getDriverClass() );
+            Class.forName( jdbcConfiguration.getDriverClass() );
             
             Connection connection = DriverManager.getConnection( 
-                getJForumConnectionUrl( configuration.getConnectionUrl(), configuration.getDialect() ),
-                configuration.getUsername(),
-                configuration.getPassword() );
+                getJForumConnectionUrl( jdbcConfiguration.getConnectionUrl(), jdbcConfiguration.getDialect() ),
+                jdbcConfiguration.getUsername(),
+                jdbcConfiguration.getPassword() );
             
             return connection;
         }

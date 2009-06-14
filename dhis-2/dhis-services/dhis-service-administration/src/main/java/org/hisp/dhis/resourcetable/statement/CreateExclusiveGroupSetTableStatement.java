@@ -29,7 +29,7 @@ package org.hisp.dhis.resourcetable.statement;
 
 import java.util.List;
 
-import org.hisp.dhis.jdbc.Statement;
+import org.amplecode.quick.Statement;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 
 /**

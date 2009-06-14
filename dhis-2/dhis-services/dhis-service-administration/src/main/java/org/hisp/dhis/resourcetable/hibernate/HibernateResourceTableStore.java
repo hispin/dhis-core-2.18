@@ -33,7 +33,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hisp.dhis.jdbc.Statement;
 import org.hisp.dhis.resourcetable.DataElementCategoryOptionComboName;
 import org.hisp.dhis.resourcetable.GroupSetStructure;
 import org.hisp.dhis.resourcetable.OrganisationUnitStructure;
@@ -160,9 +159,9 @@ public class HibernateResourceTableStore
     // ExclusiveGroupSetStructure
     // -------------------------------------------------------------------------
 
-    public void createExclusiveGroupSetStructureTable( Statement statement )
+    public void createExclusiveGroupSetStructureTable( String statement )
     {
-        jdbcTemplate.update( statement.getStatement() );
+        jdbcTemplate.update( statement );
     }
 
     public void removeExclusiveGroupSetStructureTable()

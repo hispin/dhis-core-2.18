@@ -76,5 +76,9 @@
       <groupId>org.amplecode</groupId>
       <artifactId>cave-process</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.amplecode</groupId>
+      <artifactId>quick</artifactId>
+    </dependency>
   </dependencies>
 </project>

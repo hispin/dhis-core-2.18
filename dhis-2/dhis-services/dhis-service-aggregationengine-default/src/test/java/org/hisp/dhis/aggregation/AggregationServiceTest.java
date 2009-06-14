@@ -32,6 +32,7 @@ import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
 import java.util.Date;
 
+import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -42,7 +43,6 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -100,7 +100,7 @@ public class AggregationServiceTest
 
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
 
-        statementManager = (StatementManager) getBean( StatementManager.ID );
+        statementManager = (StatementManager) getBean( "statementManager" );
         
         statementManager.initialise();
     }

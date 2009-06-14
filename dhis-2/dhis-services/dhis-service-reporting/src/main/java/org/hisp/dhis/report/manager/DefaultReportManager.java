@@ -29,12 +29,16 @@ package org.hisp.dhis.report.manager;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.amplecode.quick.JdbcConfiguration;
 import org.hisp.dhis.external.configuration.ConfigurationManager;
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.report.ReportManager;
+import org.hisp.dhis.system.util.CodecUtils;
 
 /**
  * @author Lars Helge Overland
@@ -45,7 +49,16 @@ public class DefaultReportManager
 {
     private static final String BIRT_HOME_SYSTEM_PROPERTY = "birt.home";
     private static final String BIRT_DIR_SYSTEM_PROPERTY = "birt.context.path";
-    
+
+    private static final String START_TAG_DRIVER = "<property name=\"odaDriverClass\">";
+    private static final String START_TAG_URL = "<property name=\"odaURL\">";
+    private static final String START_TAG_USER_NAME = "<property name=\"odaUser\">";
+    private static final String START_TAG_PASSWORD = "<encrypted-property name=\"odaPassword\" encryptionID=\"base64\">";
+    private static final String END_TAG_DRIVER = "</property>";
+    private static final String END_TAG_URL = "</property>";
+    private static final String END_TAG_USER_NAME = "</property>";
+    private static final String END_TAG_PASSWORD = "</encrypted-property>";    
+        
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
@@ -62,6 +75,13 @@ public class DefaultReportManager
     public void setReportConfigFile( String reportConfigFile )
     {
         this.reportConfigFile = reportConfigFile;
+    }
+    
+    private JdbcConfiguration jdbcConfiguration;
+
+    public void setJdbcConfiguration( JdbcConfiguration jdbcConfiguration )
+    {
+        this.jdbcConfiguration = jdbcConfiguration;
     }
     
     // -------------------------------------------------------------------------
@@ -129,5 +149,19 @@ public class DefaultReportManager
         {
             throw new NoConfigurationFoundException( "No configuration file found" );
         }
+    }
+    
+    public Map<String[], String> getReportConnectionMap()
+    {
+        String encryptedPassword = CodecUtils.encryptBase64( jdbcConfiguration.getPassword() );
+        
+        Map<String[], String> map = new HashMap<String[], String>();
+
+        map.put( new String[] { START_TAG_DRIVER, END_TAG_DRIVER }, START_TAG_DRIVER + jdbcConfiguration.getDriverClass() + END_TAG_DRIVER );
+        map.put( new String[] { START_TAG_URL, END_TAG_URL }, START_TAG_URL + jdbcConfiguration.getConnectionUrl() + END_TAG_URL );
+        map.put( new String[] { START_TAG_USER_NAME, END_TAG_USER_NAME }, START_TAG_USER_NAME + jdbcConfiguration.getUsername() + END_TAG_USER_NAME );
+        map.put( new String[] { START_TAG_PASSWORD, END_TAG_PASSWORD }, START_TAG_PASSWORD + encryptedPassword + END_TAG_PASSWORD );
+        
+        return map;
     }
 }

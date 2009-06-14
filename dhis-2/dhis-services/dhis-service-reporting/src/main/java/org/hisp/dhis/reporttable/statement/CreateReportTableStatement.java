@@ -31,7 +31,7 @@ import static org.hisp.dhis.reporttable.ReportTable.REGRESSION_COLUMN_PREFIX;
 
 import java.util.Iterator;
 
-import org.hisp.dhis.jdbc.StatementDialect;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.reporttable.ReportTable;
 
 /**
@@ -45,9 +45,11 @@ public class CreateReportTableStatement
     // Constructor
     // -------------------------------------------------------------------------
 
-    public CreateReportTableStatement( ReportTable reportTable, StatementDialect dialect )
-    {
-        super( reportTable, dialect );
+    public CreateReportTableStatement( ReportTable reportTable, StatementBuilder statementBuilder )
+    {        
+        super( reportTable, statementBuilder );
+        
+        this.statementBuilder = statementBuilder;
     }
 
     // -------------------------------------------------------------------------

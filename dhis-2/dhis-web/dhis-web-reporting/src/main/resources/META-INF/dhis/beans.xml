@@ -307,8 +307,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.report.ReportStore"/>
     <property name="reportTableService"
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
-    <property name="configurationProvider"
-      ref="org.hisp.dhis.jdbc.JDBCConfigurationProvider"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportOptionsAction"

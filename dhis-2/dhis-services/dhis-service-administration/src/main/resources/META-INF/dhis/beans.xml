@@ -22,8 +22,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
     <property name="categoryOptionComboService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    <property name="batchHandlerFactory"
-      ref="org.hisp.dhis.jdbc.BatchHandlerFactory"/>
+    <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
   </bean>
   
   <!-- Data integrity -->
@@ -47,7 +46,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.maintenance.MaintenanceStore"
     class="org.hisp.dhis.maintenance.jdbc.JdbcMaintenanceStore">
     <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    <property name="jdbcConfiguration" ref="jdbcConfiguration"/>
+    <property name="statementBuilder" ref="statementBuilder"/>
   </bean>
   
   <bean id="org.hisp.dhis.maintenance.MaintenanceService"

@@ -27,10 +27,10 @@ package org.hisp.dhis.jdbc.configuration;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.amplecode.quick.JdbcConfiguration;
+import org.amplecode.quick.StatementDialect;
 import org.hibernate.cfg.Configuration;
 import org.hisp.dhis.hibernate.HibernateConfigurationProvider;
-import org.hisp.dhis.jdbc.JDBCConfiguration;
-import org.hisp.dhis.jdbc.StatementDialect;
 import org.springframework.beans.factory.FactoryBean;
 
 /**
@@ -38,7 +38,7 @@ import org.springframework.beans.factory.FactoryBean;
  * @version $Id: DefaultJDBCConfigurationProvider.java 5714 2008-09-17 13:05:36Z larshelg $
  */
 public class JdbcConfigurationFactoryBean
-implements FactoryBean
+    implements FactoryBean
 {
     private static final String KEY_DIALECT = "hibernate.dialect";
     private static final String KEY_DRIVER = "hibernate.connection.driver_class";
@@ -64,7 +64,7 @@ implements FactoryBean
         this.configurationProvider = configurationProvider;
     }
     
-    private JDBCConfiguration jdbcConfiguration;
+    private JdbcConfiguration jdbcConfiguration;
 
     // -------------------------------------------------------------------------
     // Initialisation
@@ -74,7 +74,7 @@ implements FactoryBean
     {
         Configuration hibernateConfiguration = configurationProvider.getConfiguration();
         
-        JDBCConfiguration config = new JDBCConfiguration();
+        JdbcConfiguration config = new JdbcConfiguration();
         
         String dialect = hibernateConfiguration.getProperty( KEY_DIALECT );
         
@@ -119,7 +119,7 @@ implements FactoryBean
 
     public Class<?> getObjectType()
     {
-        return JDBCConfiguration.class;
+        return JdbcConfiguration.class;
     }
 
     public boolean isSingleton()

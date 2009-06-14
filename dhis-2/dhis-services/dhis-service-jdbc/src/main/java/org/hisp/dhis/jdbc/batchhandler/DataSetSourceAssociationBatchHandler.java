@@ -1,7 +1,8 @@
 package org.hisp.dhis.jdbc.batchhandler;
 
+import org.amplecode.quick.JdbcConfiguration;
+import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
-import org.hisp.dhis.jdbc.JDBCConfiguration;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -41,7 +42,7 @@ public class DataSetSourceAssociationBatchHandler
     // Constructor
     // -------------------------------------------------------------------------
     
-    public DataSetSourceAssociationBatchHandler( JDBCConfiguration configuration )
+    public DataSetSourceAssociationBatchHandler( JdbcConfiguration configuration )
     {
         super( configuration );
         

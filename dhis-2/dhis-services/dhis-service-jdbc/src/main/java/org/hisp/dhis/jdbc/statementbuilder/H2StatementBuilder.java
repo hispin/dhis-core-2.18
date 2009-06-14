@@ -27,10 +27,9 @@ package org.hisp.dhis.jdbc.statementbuilder;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
+import static org.hisp.dhis.system.util.DateUtils.getSqlDateString;
 
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriodType;
 
@@ -39,127 +38,8 @@ import org.hisp.dhis.period.RelativePeriodType;
  * @version $Id: H2StatementBuilder.java 5715 2008-09-17 14:05:28Z larshelg $
  */
 public class H2StatementBuilder
-    extends AbstractStatementBuilder
+    implements StatementBuilder
 {
-    // -------------------------------------------------------------------------
-    // Constructor
-    // -------------------------------------------------------------------------
-
-    public H2StatementBuilder()
-    {
-        super();
-    }    
-
-    // -------------------------------------------------------------------------
-    // AbstractStatementBuilder implementation
-    // -------------------------------------------------------------------------
- 
-    public String getInsertStatementOpening( String table )
-    {
-        final StringBuffer buffer = new StringBuffer();
-        
-        buffer.append( "INSERT INTO " + table + " (" );
-        
-        for ( String column : columns )
-        {
-            buffer.append( column + SEPARATOR );
-        }
-        
-        if ( columns.size() > 0 )
-        {
-            buffer.deleteCharAt( buffer.length() - 1 );
-        }
-        
-        buffer.append( BRACKET_END + " VALUES " );
-        
-        columns.clear();
-        
-        return buffer.toString();
-    }
-    
-    public String getNoColumnInsertStatementOpening( String table )
-    {
-        return "INSERT INTO " + table + " VALUES ";
-    }
-    
-    public String getInsertStatementValues()
-    {
-        final StringBuffer buffer = new StringBuffer();
-        
-        buffer.append( BRACKET_START );
-        
-        for ( String value : values )
-        {
-            buffer.append( value + SEPARATOR );
-        }
-        
-        if ( values.size() > 0 )
-        {
-            buffer.deleteCharAt( buffer.length() - 1 );
-        }
-        
-        buffer.append( BRACKET_END + SEPARATOR );
-        
-        values.clear();
-        
-        return buffer.toString();
-    }
-    
-    public String getUpdateStatement( String table )
-    {
-        final StringBuffer buffer = new StringBuffer();
-        
-        buffer.append( "UPDATE " + table + " SET " );
-
-        Iterator<String> columnIterator = columns.iterator();
-        Iterator<String> valueIterator = values.iterator();
-        
-        while ( columnIterator.hasNext() )
-        {
-            buffer.append( columnIterator.next() + "=" + valueIterator.next() + SEPARATOR );
-        }
-        
-        if ( columns.size() > 0 && values.size() > 0 )
-        {
-            buffer.deleteCharAt( buffer.length() - 1 );
-        }
-        
-        buffer.append( " WHERE " + identifierColumnName + "=" + identifierColumnValue );
-        
-        columns.clear();
-        values.clear();
-        
-        return buffer.toString();
-    }
-    
-    public String getValueStatement( String table, String returnField, String compareField, String value )
-    {
-        return "SELECT " + returnField + " FROM " + table + " WHERE " + compareField + " = '" + sqlEncode( value ) + "'";
-    }
-    
-    public String getValueStatement( String table, String returnField1, String returnField2, String compareField1, String value1, String compareField2, String value2 )
-    {
-        return "SELECT " + returnField1 + ", " + returnField2 + " FROM " + table + " WHERE " + compareField1 + "='" + sqlEncode( value1 ) + "' AND " + compareField2 + "='" + sqlEncode( value2 ) + "'";
-    }
-    
-    public String getValueStatement( String table, String returnField, Map<String, String> fieldMap, boolean union )
-    {
-        final String operator = union ? " AND " : " OR ";
-        
-        final StringBuffer sqlBuffer = new StringBuffer();
-        sqlBuffer.append( "SELECT " ).append( returnField ).append( " FROM " ).append( table ).append( " WHERE " );
-        
-        for ( Entry<String, String> entry : fieldMap.entrySet() )
-        {
-            sqlBuffer.append( entry.getKey() ).append( "='" ).append( sqlEncode( entry.getValue() ) ).append( "'" ).append( operator );
-        }
-
-        String sql = sqlBuffer.toString();        
-        sql = sql.substring( 0, sql.length() - operator.length() );
-        
-        return sql;
-    }
-
     public String getDoubleColumnType()
     {
         return "DOUBLE";
@@ -169,8 +49,8 @@ public class H2StatementBuilder
     {
         return
             "SELECT periodid FROM period WHERE periodtypeid=" + period.getPeriodType().getId() + " " + 
-            "AND startdate='" + getDateString( period.getStartDate() ) + "' " +
-            "AND enddate='" + getDateString( period.getEndDate() ) + "'";
+            "AND startdate='" + getSqlDateString( period.getStartDate() ) + "' " +
+            "AND enddate='" + getSqlDateString( period.getEndDate() ) + "'";
     }
     
     public String getCreateAggregatedDataValueTable()
@@ -245,23 +125,5 @@ public class H2StatementBuilder
     public int getMaximumNumberOfColumns()
     {
         return 1580; // TODO verify
-    }
-
-    // -------------------------------------------------------------------------
-    // AbstractStatementBuilder overridden methods
-    // -------------------------------------------------------------------------
-    
-    @Override
-    protected String sqlEncode( String string )
-    {
-        if ( string != null )
-        {
-            string = string.endsWith( "\\" ) ? string.substring( 0, string.length() - 1 ) : string;
-            string = string.replaceAll( QUOTE, QUOTE + QUOTE );
-            
-            return string;
-        }
-        
-        return null;
     }
 }

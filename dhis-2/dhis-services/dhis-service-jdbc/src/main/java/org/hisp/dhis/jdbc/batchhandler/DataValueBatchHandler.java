@@ -30,7 +30,8 @@ package org.hisp.dhis.jdbc.batchhandler;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.jdbc.JDBCConfiguration;
+import org.amplecode.quick.JdbcConfiguration;
+import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.datavalue.DataValue;
 
 /**
@@ -44,7 +45,7 @@ public class DataValueBatchHandler
     // Constructor
     // -------------------------------------------------------------------------
  
-    public DataValueBatchHandler( JDBCConfiguration configuration )
+    public DataValueBatchHandler( JdbcConfiguration configuration )
     {
         super( configuration );
         

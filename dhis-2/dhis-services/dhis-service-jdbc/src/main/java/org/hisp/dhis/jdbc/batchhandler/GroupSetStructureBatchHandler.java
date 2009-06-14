@@ -27,8 +27,9 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.amplecode.quick.JdbcConfiguration;
+import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.resourcetable.GroupSetStructure;
-import org.hisp.dhis.jdbc.JDBCConfiguration;
 
 /**
  * @author Lars Helge Overland
@@ -41,7 +42,7 @@ public class GroupSetStructureBatchHandler
     // Constructor
     // -------------------------------------------------------------------------
  
-    public GroupSetStructureBatchHandler( JDBCConfiguration configuration )
+    public GroupSetStructureBatchHandler( JdbcConfiguration configuration )
     {
         super( configuration );
         
