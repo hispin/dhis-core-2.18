@@ -81,7 +81,6 @@ public class DefaultResourceBundleManager
     // -------------------------------------------------------------------------
 
     public ResourceBundle getSpecificResourceBundle( Class<?> clazz, Locale locale )
-        throws ResourceBundleManagerException
     {
         String path = PathUtils.getClassPath( clazz.getName() );
 

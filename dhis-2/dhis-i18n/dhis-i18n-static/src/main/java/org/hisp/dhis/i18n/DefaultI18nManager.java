@@ -31,7 +31,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.i18n.locale.LocaleManagerException;
 import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
 import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManagerException;
 
@@ -99,28 +98,12 @@ public class DefaultI18nManager
     }
 
     private ResourceBundle getSpecificResourceBundle( Class<?> clazz )
-        throws I18nManagerException
     {
-        try
-        {
-            return resourceBundleManager.getSpecificResourceBundle( clazz, getCurrentLocale() );
-        }
-        catch ( ResourceBundleManagerException e )
-        {
-            throw new I18nManagerException( "Failed to get specific resource bundle", e );
-        }
+        return resourceBundleManager.getSpecificResourceBundle( clazz, getCurrentLocale() );
     }
 
     private Locale getCurrentLocale()
-        throws I18nManagerException
     {
-        try
-        {
-            return localeManager.getCurrentLocale();
-        }
-        catch ( LocaleManagerException e )
-        {
-            throw new I18nManagerException( "Failed to get current locale", e );
-        }
+        return localeManager.getCurrentLocale();
     }
 }

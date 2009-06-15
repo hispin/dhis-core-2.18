@@ -91,44 +91,4 @@ public class I18n
         
         return translation;
     }
-    
-    /**
-     * Get a translated String for a given key, with variables, for the currently 
-     * selected locale
-     * 
-     * @param key the key for a given translation
-     * @param variables One or more variables due to be inserted into the 
-     *  translation. May be null.
-     * @return a translated String for a given key, or the key if no translation 
-     *  is found
-     */
-    public String getString( String key, Object ... variables )
-    {
-        String translation = getString( key );
-
-        if ( translation != null && variables != null )
-        {
-            if ( variables.length > 0 )
-            {
-                /*
-                 * Reverse replacement to make sure we replace %10 before %1, so 
-                 * that there's no need for spaces/end-delimiter around the variable 
-                 * replacement positions
-                 */ 
-                for ( int i = variables.length - 1; i >= 0; i-- )
-                {
-                    if ( variables[i] != null )
-                    {
-                        translation = translation.replace( "%" + ( i + 1 ), variables[i].toString() );
-                    }
-                    else
-                    {
-                        translation = translation.replace( "%" + ( i + 1 ), "<null>" );
-                    }
-                }
-            }
-        }
-        
-        return translation;
-    }
 }

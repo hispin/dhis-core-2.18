@@ -71,7 +71,6 @@ public class UserSettingLocaleManager
     // -------------------------------------------------------------------------
 
     public Locale getCurrentLocale()
-        throws LocaleManagerException
     {
         Locale locale = getUserSelectedLocale();
 
@@ -89,7 +88,6 @@ public class UserSettingLocaleManager
     }
 
     public void setCurrentLocale( Locale locale )
-        throws LocaleManagerException
     {
         try
         {
@@ -102,7 +100,6 @@ public class UserSettingLocaleManager
     }
 
     public List<Locale> getLocalesOrderedByPriority()
-        throws LocaleManagerException
     {
         List<Locale> locales = new ArrayList<Locale>();
 

@@ -40,11 +40,11 @@ public interface LocaleManager
 
     Locale DHIS_STANDARD_LOCALE = Locale.UK;
 
-    Locale getCurrentLocale() throws LocaleManagerException;
+    Locale getCurrentLocale();
 
-    void setCurrentLocale( Locale locale ) throws LocaleManagerException;
+    void setCurrentLocale( Locale locale );
 
-    List<Locale> getLocalesOrderedByPriority() throws LocaleManagerException;
+    List<Locale> getLocalesOrderedByPriority();
 
     Locale getFallbackLocale();
 }
