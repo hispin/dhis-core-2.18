@@ -40,7 +40,7 @@ public interface ResourceBundleManager
 {
     String ID = ResourceBundleManager.class.getName();
 
-    ResourceBundle getSpecificResourceBundle( Class<?> clazz, Locale locale ) throws ResourceBundleManagerException;
+    ResourceBundle getSpecificResourceBundle( Class<?> clazz, Locale locale );
 
     ResourceBundle getGlobalResourceBundle( Locale locale ) throws ResourceBundleManagerException;
 

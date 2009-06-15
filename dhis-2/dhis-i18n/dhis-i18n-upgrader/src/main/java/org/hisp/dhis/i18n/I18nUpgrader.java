@@ -46,7 +46,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetStore;
 import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.i18n.locale.LocaleManagerException;
 import org.hisp.dhis.i18n.util.LocaleUtils;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
@@ -189,29 +188,20 @@ public class I18nUpgrader
 
         if ( translations == null || translations.isEmpty() )
         {
-            Locale orgLocale = null;
+            Locale orgLocale = localeManager.getCurrentLocale();
 
-            try
+            localeManager.setCurrentLocale( localeManager.getFallbackLocale() );
+
+            String alternativeNameDescription = "";
+
+            if ( alternativeNameLocale != null )
             {
-                orgLocale = localeManager.getCurrentLocale();
-
-                localeManager.setCurrentLocale( localeManager.getFallbackLocale() );
-
-                String alternativeNameDescription = "";
-
-                if ( alternativeNameLocale != null )
-                {
-                    alternativeNameDescription = " and " + alternativeNameLocale.getDisplayName()
-                        + " for alternative names";
-                }
-
-                log.info( "I18n Upgrader running using locale " + localeManager.getFallbackLocale().getDisplayName()
-                    + alternativeNameDescription );
+                alternativeNameDescription = " and " + alternativeNameLocale.getDisplayName()
+                    + " for alternative names";
             }
-            catch ( LocaleManagerException e )
-            {
-                orgLocale = localeManager.getFallbackLocale();
-            }
+
+            log.info( "I18n Upgrader running using locale " + localeManager.getFallbackLocale().getDisplayName()
+                + alternativeNameDescription );
 
             // ---------------------------------------------------------------------
             // DataElement
@@ -387,13 +377,7 @@ public class I18nUpgrader
                 }
             }
 
-            try
-            {
-                localeManager.setCurrentLocale( orgLocale );
-            }
-            catch ( LocaleManagerException e )
-            {
-            }
+            localeManager.setCurrentLocale( orgLocale );
             
             // ---------------------------------------------------------------------
             // DataElementCategory
@@ -411,13 +395,7 @@ public class I18nUpgrader
                 }
             }
 
-            try
-            {
-                localeManager.setCurrentLocale( orgLocale );
-            }
-            catch ( LocaleManagerException e )
-            {
-            }
+            localeManager.setCurrentLocale( orgLocale );
             
             // ---------------------------------------------------------------------
             // DataElementCategoryOption
@@ -435,13 +413,7 @@ public class I18nUpgrader
                 }
             }
 
-            try
-            {
-                localeManager.setCurrentLocale( orgLocale );
-            }
-            catch ( LocaleManagerException e )
-            {
-            }
+            localeManager.setCurrentLocale( orgLocale );
             
             // ---------------------------------------------------------------------
             // DataElementCategoryCombo
@@ -459,13 +431,7 @@ public class I18nUpgrader
                 }
             }
 
-            try
-            {
-                localeManager.setCurrentLocale( orgLocale );
-            }
-            catch ( LocaleManagerException e )
-            {
-            }
+            localeManager.setCurrentLocale( orgLocale );
         }
     }
 }

@@ -49,7 +49,6 @@ public class SessionLocaleManager
     }
 
     public Locale getCurrentLocale()
-        throws LocaleManagerException
     {
         if ( locale == null )
         {
@@ -60,13 +59,11 @@ public class SessionLocaleManager
     }
 
     public void setCurrentLocale( Locale locale )
-        throws LocaleManagerException
     {
         this.locale = locale;
     }
 
     public List<Locale> getLocalesOrderedByPriority()
-        throws LocaleManagerException
     {
         List<Locale> locales = new ArrayList<Locale>();
 

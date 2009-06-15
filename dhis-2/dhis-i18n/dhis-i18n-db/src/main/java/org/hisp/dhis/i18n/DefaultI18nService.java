@@ -39,7 +39,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.i18n.locale.LocaleManagerException;
 
 /**
  * @author Oyvind Brucker
@@ -137,15 +136,8 @@ public class DefaultI18nService
 
         Locale locale = null;
 
-        try
-        {
-            locale = localeManager.getCurrentLocale();
-        }
-        catch ( LocaleManagerException e )
-        {
-
-        }
-
+        locale = localeManager.getCurrentLocale();
+        
         if ( locale == null )
         {
             log.error( "Unable to get current locale" );
@@ -158,17 +150,7 @@ public class DefaultI18nService
 
     public void internationaliseCollection( Collection<?> intObjects )
     {
-        Locale locale = null;
-
-        try
-        {
-            locale = localeManager.getCurrentLocale();
-        }
-        catch ( LocaleManagerException e )
-        {
-            log.error( "Unable to get current locale: " + e );
-            return;
-        }
+        Locale locale = localeManager.getCurrentLocale();
 
         if ( locale == null || intObjects == null )
         {
@@ -327,18 +309,7 @@ public class DefaultI18nService
             return;
         }
 
-        Locale locale = null;
-
-        try
-        {
-
-            locale = localeManager.getCurrentLocale();
-        }
-        catch ( LocaleManagerException e )
-        {
-            log.error( "Unable to get current locale: " + e );
-            return;
-        }
+        Locale locale = localeManager.getCurrentLocale();
 
         /**
          * Save translations
@@ -393,16 +364,7 @@ public class DefaultI18nService
             return;
         }
 
-        Locale locale = null;
-
-        try
-        {
-            locale = localeManager.getCurrentLocale();
-        }
-        catch ( LocaleManagerException e )
-        {
-            // Handled in the next block
-        }
+        Locale locale = localeManager.getCurrentLocale();
 
         if ( locale == null )
         {
@@ -475,16 +437,7 @@ public class DefaultI18nService
 
     public Collection<Locale> getAvailableLocales()
     {
-        List<Locale> locales;
-
-        try
-        {
-            locales = localeManager.getLocalesOrderedByPriority();
-        }
-        catch ( LocaleManagerException e )
-        {
-            locales = new ArrayList<Locale>();
-        }
+        List<Locale> locales = localeManager.getLocalesOrderedByPriority();
 
         Collection<Locale> translationLocales = translationService.getAvailableLocales();
 

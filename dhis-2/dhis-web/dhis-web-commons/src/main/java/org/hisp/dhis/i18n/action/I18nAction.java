@@ -35,7 +35,6 @@ import java.util.Map;
 
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.i18n.locale.LocaleManagerException;
 
 import com.opensymphony.xwork.Action;
 
@@ -142,14 +141,7 @@ public class I18nAction
 
     public Locale getCurrentLocale()
     {
-        try
-        {
-            return localeManager.getCurrentLocale();
-        }
-        catch ( LocaleManagerException e )
-        {
-            return localeManager.getFallbackLocale();
-        }
+        return localeManager.getCurrentLocale();
     }
 
     public Locale getCurrentRefLocale()
