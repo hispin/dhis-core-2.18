@@ -49,10 +49,26 @@
 			</select>
 		</td>
 	</tr>
+    <tr>
+        <td><label for="type">$i18n.getString( "type" )</label></td>
+        <td><input type="text" id="type" name="type" value="$!encoder.htmlEncode( $organisationUnit.type )" style="width:20em"></td>
+    </tr>
 	<tr>
 		<td><label for="comment">$i18n.getString( "comment" )</label></td>
 		<td><textarea id="comment" name="comment" style="width:20em; height:5em">$!encoder.htmlEncode( $organisationUnit.comment )</textarea></td>
 	</tr>
+    <tr>
+        <td><label for="geoCode">$i18n.getString( "geo_code" )</label></td>
+        <td><input type="text" id="geoCode" name="geoCode" value="$!encoder.htmlEncode( $organisationUnit.geoCode )" style="width:20em"></td>
+    </tr>
+    <tr>
+        <td><label for="latitude">$i18n.getString( "latitude" )</label></td>
+        <td><input type="text" id="latitude" name="latitude" value="$!encoder.htmlEncode( $organisationUnit.latitude )" style="width:20em"></td>
+    </tr>
+    <tr>
+        <td><label for="longitude">$i18n.getString( "longitude" )</label></td>
+        <td><input type="text" id="longitude" name="longitude" value="$!encoder.htmlEncode( $organisationUnit.longitude )" style="width:20em"></td>
+    </tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
         <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $organisationUnit.url )" style="width:20em"></td>

@@ -113,11 +113,39 @@ public class UpdateOrganisationUnitAction
         this.closedDate = closedDate;
     }
 
+    private String type;
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
     private String comment;
 
     public void setComment( String comment )
     {
         this.comment = comment;
+    }
+
+    private String geoCode;
+
+    public void setGeoCode( String geoCode )
+    {
+        this.geoCode = geoCode;
+    }
+    
+    private String latitude;
+
+    public void setLatitude( String latitude )
+    {
+        this.latitude = latitude;
+    }
+    
+    private String longitude;
+
+    public void setLongitude( String longitude )
+    {
+        this.longitude = longitude;
     }
 
     private String url;
@@ -165,7 +193,11 @@ public class UpdateOrganisationUnitAction
         organisationUnit.setActive( active.booleanValue() );
         organisationUnit.setOpeningDate( oDate );
         organisationUnit.setClosedDate( cDate );
+        organisationUnit.setType( type );
         organisationUnit.setComment( comment );
+        organisationUnit.setGeoCode( geoCode );
+        organisationUnit.setLatitude( latitude );
+        organisationUnit.setLongitude( longitude );
         organisationUnit.setUrl( url );
 
         organisationUnitService.updateOrganisationUnit( organisationUnit );

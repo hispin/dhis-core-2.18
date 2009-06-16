@@ -100,12 +100,40 @@ public class AddOrganisationUnitAction
     {
         this.openingDate = openingDate;
     }
+    
+    private String type;
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
 
     private String comment;
 
     public void setComment( String comment )
     {
         this.comment = comment;
+    }
+    
+    private String geoCode;
+
+    public void setGeoCode( String geoCode )
+    {
+        this.geoCode = geoCode;
+    }
+    
+    private String latitude;
+
+    public void setLatitude( String latitude )
+    {
+        this.latitude = latitude;
+    }
+    
+    private String longitude;
+
+    public void setLongitude( String longitude )
+    {
+        this.longitude = longitude;
     }
     
     private String url;
@@ -157,6 +185,10 @@ public class AddOrganisationUnitAction
         OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, 
             code, date, null, true, comment );
         
+        organisationUnit.setType( type );
+        organisationUnit.setGeoCode( geoCode );
+        organisationUnit.setLatitude( latitude );
+        organisationUnit.setLongitude( longitude );
         organisationUnit.setUrl( url );
         organisationUnit.setParent( parent );
 
