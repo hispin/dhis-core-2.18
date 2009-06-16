@@ -27,11 +27,16 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_FORUM_INTEGRATION;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MODE;
+
 import org.hisp.dhis.options.SystemSettingManager;
 
 import com.opensymphony.xwork.Action;
-
-import static org.hisp.dhis.options.SystemSettingManager.*;
 
 /**
  * @author Lars Helge Overland
@@ -90,6 +95,13 @@ public class SetSystemSettingsAction
         this.forumIntegration = forumIntegration;
     }
     
+    private Boolean omitIndicatorsZeroNumeratorDataMart;
+
+    public void setOmitIndicatorsZeroNumeratorDataMart( Boolean omitIndicatorsZeroNumeratorDataMart )
+    {
+        this.omitIndicatorsZeroNumeratorDataMart = omitIndicatorsZeroNumeratorDataMart;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -116,7 +128,8 @@ public class SetSystemSettingsAction
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
         systemSettingManager.saveSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, zeroValueSaveMode );
         systemSettingManager.saveSystemSetting( KEY_FORUM_INTEGRATION, forumIntegration );
+        systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
         
         return SUCCESS;
-    } 
+    }
 }
