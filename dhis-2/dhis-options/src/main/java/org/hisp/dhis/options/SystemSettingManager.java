@@ -37,13 +37,14 @@ import java.util.SortedMap;
  */
 public interface SystemSettingManager
 {
-    String ID = SystemSettingManager.class.getName();
+    final String ID = SystemSettingManager.class.getName();
     
-    String KEY_ZERO_VALUE_SAVE_MODE = "zeroValueSaveMode";
-    String KEY_APPLICATION_TITLE = "applicationTitle";
-    String KEY_FLAG = "flag";
-    String KEY_START_MODULE = "startModule";
-    String KEY_FORUM_INTEGRATION = "forumIntegration";
+    final String KEY_ZERO_VALUE_SAVE_MODE = "zeroValueSaveMode";
+    final String KEY_APPLICATION_TITLE = "applicationTitle";
+    final String KEY_FLAG = "flag";
+    final String KEY_START_MODULE = "startModule";
+    final String KEY_FORUM_INTEGRATION = "forumIntegration";
+    final String KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART = "omitIndicatorsZeroNumeratorDataMart";
 
     void saveSystemSetting( String name, Serializable value );   
 

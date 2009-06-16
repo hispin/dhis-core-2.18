@@ -36,8 +36,6 @@ import org.hisp.dhis.webportal.module.ModuleManager;
 
 import com.opensymphony.xwork.Action;
 
-import static org.hisp.dhis.options.SystemSettingManager.*;
-
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -80,21 +78,7 @@ public class GetSystemSettingsAction
     {
         return modules;
     }
-    
-    private String currentStartModule;
-
-    public String getCurrentStartModule()
-    {
-        return currentStartModule;
-    }
-
-    private Boolean zeroValueSaveMode;
-
-    public Boolean getZeroValueSaveMode()
-    {
-        return zeroValueSaveMode;
-    }
-    
+        
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -104,10 +88,6 @@ public class GetSystemSettingsAction
     	flags = systemSettingManager.getFlags();
         
         modules = moduleManager.getMenuModules();
-        
-        currentStartModule = (String) systemSettingManager.getSystemSetting( KEY_START_MODULE );
-        
-        zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );
         
         return SUCCESS;
     }

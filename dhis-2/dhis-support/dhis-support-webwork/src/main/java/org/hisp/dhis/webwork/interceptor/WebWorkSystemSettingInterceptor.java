@@ -30,7 +30,9 @@ package org.hisp.dhis.webwork.interceptor;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FORUM_INTEGRATION;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MODE;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,15 +65,11 @@ public class WebWorkSystemSettingInterceptor
     // -------------------------------------------------------------------------
 
     public void destroy()
-    {
-        // TODO Auto-generated method stub
-        
+    {        
     }
 
     public void init()
     {
-        // TODO Auto-generated method stub
-        
     }
 
     public String intercept( ActionInvocation invocation )
@@ -79,15 +77,12 @@ public class WebWorkSystemSettingInterceptor
     {
         Map<String, Object> map = new HashMap<String, Object>( 2 );
         
-        String applicationTitle = (String) systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE );
-        String flag = (String) systemSettingManager.getSystemSetting( KEY_FLAG );
-        Boolean forumIntegration = (Boolean) systemSettingManager.getSystemSetting( KEY_FORUM_INTEGRATION );
-        String startModule = (String) systemSettingManager.getSystemSetting( KEY_START_MODULE );
-        
-        map.put( KEY_APPLICATION_TITLE, applicationTitle );
-        map.put( KEY_FLAG, flag );
-        map.put( KEY_FORUM_INTEGRATION, forumIntegration );
-        map.put( KEY_START_MODULE, startModule );
+        map.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE ) );
+        map.put( KEY_FLAG, systemSettingManager.getSystemSetting( KEY_FLAG ) );
+        map.put( KEY_START_MODULE, systemSettingManager.getSystemSetting( KEY_START_MODULE ) );
+        map.put( KEY_ZERO_VALUE_SAVE_MODE, systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE ) );
+        map.put( KEY_FORUM_INTEGRATION, systemSettingManager.getSystemSetting( KEY_FORUM_INTEGRATION ) );
+        map.put( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, systemSettingManager.getSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART ) );
         
         invocation.getStack().push( map );
         
