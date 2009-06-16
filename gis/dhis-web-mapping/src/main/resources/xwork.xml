@@ -134,6 +134,12 @@
     <action name="getPeriodsByPeriodType" class="org.hisp.dhis.mapping.action.GetPeriodsByPeriodTypeAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonPeriods.vm</result>
     </action>
+    
+    <!-- Shapefile -->
+      
+    <action name="getPointShapefile" class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/pointShapefile.vm</result>
+    </action>
       
   </package>
 </xwork>
