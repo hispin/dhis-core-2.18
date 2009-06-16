@@ -38,6 +38,8 @@
     <property name="closedDate" column="closeddate" type="date"/>
 		
     <property name="active"/>
+    
+    <property name="type"/>
 		
     <property name="comment" length="360"/>
     

@@ -31,10 +31,26 @@
             button         :    "getOpeningDate"   // trigger for the calendar (button ID)
         });
   	</script>
+    <tr>
+        <td><label for="type">$i18n.getString( "type" )</label></td>
+        <td><input type="text" id="type" name="type" style="width:20em"></td>
+    </tr>
 	<tr>
 		<td><label for="comment">$i18n.getString( "comment" )</label></td>
 		<td><textarea id="comment" name="comment" style="width:20em; height:5em" rows="5" cols="20"></textarea></td>
 	</tr>
+    <tr>
+        <td><label for="geoCode">$i18n.getString( "geo_code" )</label></td>
+        <td><input type="text" id="geoCode" name="geoCode" style="width:20em"></td>
+    </tr>
+    <tr>
+        <td><label for="latitude">$i18n.getString( "latitude" )</label></td>
+        <td><input type="text" id="latitude" name="latitude" style="width:20em"></td>
+    </tr>
+    <tr>
+        <td><label for="longitude">$i18n.getString( "longitude" )</label></td>
+        <td><input type="text" id="longitude" name="longitude" style="width:20em"></td>
+    </tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
         <td><input type="text" id="url" name="url" style="width:20em"></td>

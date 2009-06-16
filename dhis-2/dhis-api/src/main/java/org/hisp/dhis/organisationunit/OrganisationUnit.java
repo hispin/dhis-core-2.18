@@ -60,6 +60,8 @@ public class OrganisationUnit
     private Date closedDate;
 
     private boolean active;
+    
+    private String type;
 
     private String comment;
     
@@ -275,6 +277,16 @@ public class OrganisationUnit
     public void setActive( boolean active )
     {
         this.active = active;
+    }
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
     }
 
     public String getComment()
