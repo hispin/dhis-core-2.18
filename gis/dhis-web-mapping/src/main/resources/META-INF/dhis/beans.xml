@@ -221,4 +221,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.period.PeriodService"/>
   </bean>
   
+  <!-- Shapefile -->
+  
+  <bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction"
+    class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction"
+    scope="prototype">
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+  </bean>
+  
 </beans>
