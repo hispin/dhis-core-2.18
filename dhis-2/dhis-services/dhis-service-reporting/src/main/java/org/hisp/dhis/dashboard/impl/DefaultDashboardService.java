@@ -1,4 +1,4 @@
-package org.hisp.dhis.dashboard.action;
+package org.hisp.dhis.dashboard.impl;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -29,76 +29,40 @@ package org.hisp.dhis.dashboard.action;
 
 import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardService;
-import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportStore;
-import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.dashboard.DashboardStore;
 import org.hisp.dhis.user.User;
-
-import com.opensymphony.xwork.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class RemoveReportAction
-    implements Action
+public class DefaultDashboardService
+    implements DashboardService
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private CurrentUserService currentUserService;
+    private DashboardStore dashboardStore;
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
+    public void setDashboardStore( DashboardStore dashboardStore )
     {
-        this.currentUserService = currentUserService;
+        this.dashboardStore = dashboardStore;
     }
 
-    private DashboardService dashboardService;
-
-    public void setDashboardService( DashboardService dashboardService )
+    // -------------------------------------------------------------------------
+    // DashboardService implementation
+    // -------------------------------------------------------------------------
+    
+    public void saveDashboardContent( DashboardContent dashboardContent )
     {
-        this.dashboardService = dashboardService;
+        dashboardStore.saveDashboardContent( dashboardContent );
     }
     
-    private ReportStore reportStore;
-
-    public void setReportStore( ReportStore reportStore )
+    public DashboardContent getDashboardContent( User user )
     {
-        this.reportStore = reportStore;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private Integer id;
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-    {
-        User user = currentUserService.getCurrentUser();
+        DashboardContent content = dashboardStore.getDashboardContent( user );
         
-        if ( user != null )
-        {
-            DashboardContent content = dashboardService.getDashboardContent( user );
-            
-            Report report = reportStore.getReport( id );
-            
-            if ( content.getReports().remove( report ) )
-            {
-                dashboardService.saveDashboardContent( content );
-            }            
-        }
-        
-        return SUCCESS;
+        return content != null ? content : new DashboardContent( user );        
     }
 }

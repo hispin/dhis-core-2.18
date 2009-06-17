@@ -32,12 +32,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.dashboard.DashboardContent;
+import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.olap.comparator.OlapURLNameComparator;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
 
 /**
  * @author Lars Helge Overland
@@ -56,12 +56,12 @@ public class OlapUrlContentProvider
     {
         this.currentUserService = currentUserService;
     }
-    
-    private UserStore userStore;
 
-    public void setUserStore( UserStore userStore )
+    private DashboardService dashboardService;
+
+    public void setDashboardService( DashboardService dashboardService )
     {
-        this.userStore = userStore;
+        this.dashboardService = dashboardService;
     }
     
     private String key;
@@ -83,9 +83,9 @@ public class OlapUrlContentProvider
         
         if ( user != null )
         {
-            UserCredentials credentials = userStore.getUserCredentials( user );
+            DashboardContent dashboardContent = dashboardService.getDashboardContent( user );
             
-            List<OlapURL> urls = credentials.getDashboardOlapUrls();
+            List<OlapURL> urls = dashboardContent.getOlapUrls();
             
             Collections.sort( urls, new OlapURLNameComparator() );
             

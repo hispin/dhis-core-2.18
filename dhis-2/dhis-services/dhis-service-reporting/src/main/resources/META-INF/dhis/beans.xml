@@ -205,6 +205,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitService" 
         ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   </bean>
+  
+  <!-- Dashboard -->
+      	
+  <bean id="org.hisp.dhis.dashboard.DashboardStore"
+    class="org.hisp.dhis.dashboard.hibernate.HibernateDashboardStore">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.dashboard.DashboardService"
+    class="org.hisp.dhis.dashboard.impl.DefaultDashboardService">
+    <property name="dashboardStore"
+      ref="org.hisp.dhis.dashboard.DashboardStore"/>
+  </bean>
       	
   <!-- AOP statement definitions -->
   

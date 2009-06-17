@@ -38,6 +38,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dashboard.DashboardContent;
+import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportManager;
@@ -45,8 +47,6 @@ import org.hisp.dhis.report.comparator.ReportComparator;
 import org.hisp.dhis.report.manager.ReportConfiguration;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.webwork.ServletActionContext;
 
@@ -72,12 +72,12 @@ public class ReportContentProvider
     {
         this.currentUserService = currentUserService;
     }
-    
-    private UserStore userStore;
 
-    public void setUserStore( UserStore userStore )
+    private DashboardService dashboardService;
+
+    public void setDashboardService( DashboardService dashboardService )
     {
-        this.userStore = userStore;
+        this.dashboardService = dashboardService;
     }
     
     private ReportManager reportManager;
@@ -106,7 +106,7 @@ public class ReportContentProvider
         
         if ( user != null )
         {
-            UserCredentials credentials = userStore.getUserCredentials( user );
+            DashboardContent dashboardContent = dashboardService.getDashboardContent( user );
                         
             try
             {
@@ -116,7 +116,7 @@ public class ReportContentProvider
                 
                 String birtURL = getBaseUrl( request ) + config.getDirectory() + SEPARATOR + BASE_QUERY;
                 
-                List<Report> reports = credentials.getDashboardReports();
+                List<Report> reports = dashboardContent.getReports();
                 
                 for ( Report report : reports )
                 {

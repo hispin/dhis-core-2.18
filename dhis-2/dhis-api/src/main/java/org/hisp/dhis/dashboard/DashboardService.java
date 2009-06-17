@@ -1,4 +1,4 @@
-package org.hisp.dhis.design.hibernate;
+package org.hisp.dhis.dashboard;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,57 +27,17 @@ package org.hisp.dhis.design.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
-import org.hibernate.SessionFactory;
-import org.hisp.dhis.design.Design;
-import org.hisp.dhis.design.DesignStore;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class HibernateDesignStore
-    implements DesignStore
+public interface DashboardService
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
-
-    // -------------------------------------------------------------------------
-    // DesignStore implementation
-    // -------------------------------------------------------------------------
-
-    public int saveDesign( Design design )
-    {
-        return (Integer) sessionFactory.getCurrentSession().save( design );
-    }
+    final String ID = DashboardService.class.getName();
     
-    public void updateDesign( Design design )
-    {
-        sessionFactory.getCurrentSession().update( design );
-    }
-    
-    public Design getDesign( int id )
-    {
-        return (Design) sessionFactory.getCurrentSession().get( Design.class, id );
-    }
-    
-    public void deleteDesign( Design design )
-    {
-        sessionFactory.getCurrentSession().delete( design );
-    }
-    
-    @SuppressWarnings( "unchecked" )
-    public Collection<Design> getAllDesigns()
-    {
-        return sessionFactory.getCurrentSession().createCriteria( Design.class ).list();
-    }
+    void saveDashboardContent( DashboardContent dashboardContent );
+        
+    DashboardContent getDashboardContent( User user );
 }

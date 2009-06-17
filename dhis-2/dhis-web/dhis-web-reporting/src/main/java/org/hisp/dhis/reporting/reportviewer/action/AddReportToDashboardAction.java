@@ -29,12 +29,12 @@ package org.hisp.dhis.reporting.reportviewer.action;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dashboard.DashboardContent;
+import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportStore;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork.Action;
 
@@ -58,13 +58,13 @@ public class AddReportToDashboardAction
         this.currentUserService = currentUserService;
     }
 
-    private UserStore userStore;
+    private DashboardService dashboardService;
 
-    public void setUserStore( UserStore userStore )
+    public void setDashboardService( DashboardService dashboardService )
     {
-        this.userStore = userStore;
+        this.dashboardService = dashboardService;
     }
-
+    
     private ReportStore reportStore;
 
     public void setReportStore( ReportStore reportStore )
@@ -93,15 +93,15 @@ public class AddReportToDashboardAction
         
         if ( user != null )
         {        
-            UserCredentials credentials = userStore.getUserCredentials( user );
+            DashboardContent content = dashboardService.getDashboardContent( user );
         
             Report report = reportStore.getReport( id );
             
-            credentials.addReport( report );
+            content.addReport( report );
             
-            userStore.updateUserCredentials( credentials );
+            dashboardService.saveDashboardContent( content );
             
-            log.info( "Added report '" + report.getName() + "' to dashboard for user '" + credentials.getUsername() + "'" );
+            log.info( "Added report '" + report.getName() + "' to dashboard for user '" + user.getName() + "'" );
         }
         else
         {

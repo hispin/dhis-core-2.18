@@ -1,11 +1,11 @@
 package org.hisp.dhis.dashboard.action;
 
+import org.hisp.dhis.dashboard.DashboardContent;
+import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork.Action;
 
@@ -22,12 +22,12 @@ public class RemoveMapViewAction
     {
         this.currentUserService = currentUserService;
     }
-    
-    private UserStore userStore;
-    
-    public void setUserStore( UserStore userStore )
+
+    private DashboardService dashboardService;
+
+    public void setDashboardService( DashboardService dashboardService )
     {
-        this.userStore = userStore;
+        this.dashboardService = dashboardService;
     }
     
     private MappingService mappingService;
@@ -58,13 +58,13 @@ public class RemoveMapViewAction
         
         if ( user != null )
         {
-            UserCredentials credentials = userStore.getUserCredentials( user );
+            DashboardContent content = dashboardService.getDashboardContent( user );
             
             MapView mapView = mappingService.getMapView( id );
             
-            if ( credentials.getDashboardMapViews().remove( mapView ) )
+            if ( content.getMapViews().remove( mapView ) )
             {
-                userStore.updateUserCredentials( credentials );
+                dashboardService.saveDashboardContent( content );
             }
         }
         

@@ -82,6 +82,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
@@ -777,6 +778,18 @@ public abstract class DhisConvenienceTest
         olapURL.setUrl( "URL" + uniqueCharacter );
         
         return olapURL;
+    }
+    
+    public static User createUser( char uniqueCharacter )
+    {
+        User user = new User();
+        
+        user.setFirstName( "FirstName" + uniqueCharacter );
+        user.setSurname( "Surname" + uniqueCharacter );
+        user.setEmail( "Email" + uniqueCharacter );
+        user.setPhoneNumber( "PhoneNumber" + uniqueCharacter );
+        
+        return user;
     }
 
     // -------------------------------------------------------------------------

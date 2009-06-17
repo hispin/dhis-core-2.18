@@ -103,9 +103,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.datamart.action.AddDataMartExportToDashboardAction"
     class="org.hisp.dhis.datamart.action.AddDataMartExportToDashboardAction"
     scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
-    <property name="dataMartExportService" ref="org.hisp.dhis.datamart.DataMartExportService"/>
+    <property name="currentUserService" 
+      ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="dashboardService"
+      ref="org.hisp.dhis.dashboard.DashboardService"/>
+    <property name="dataMartExportService" 
+      ref="org.hisp.dhis.datamart.DataMartExportService"/>
   </bean>
   
 </beans>

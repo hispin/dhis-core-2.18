@@ -2,12 +2,12 @@ package org.hisp.dhis.reporting.document.action;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dashboard.DashboardContent;
+import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork.Action;
 
@@ -27,11 +27,11 @@ public class AddDocumentToDashboardAction
         this.currentUserService = currentUserService;
     }
 
-    private UserStore userStore;
+    private DashboardService dashboardService;
 
-    public void setUserStore( UserStore userStore )
+    public void setDashboardService( DashboardService dashboardService )
     {
-        this.userStore = userStore;
+        this.dashboardService = dashboardService;
     }
     
     private DocumentService documentService;
@@ -62,15 +62,15 @@ public class AddDocumentToDashboardAction
         
         if ( user != null )
         {        
-            UserCredentials credentials = userStore.getUserCredentials( user );
+            DashboardContent content = dashboardService.getDashboardContent( user );
         
             Document document = documentService.getDocument( id );
             
-            credentials.addDocument( document );
+            content.addDocument( document );
             
-            userStore.updateUserCredentials( credentials );
+            dashboardService.saveDashboardContent( content );
             
-            log.info( "Added document '" + document.getName() + "' to dashboard for user '" + credentials.getUsername() + "'" );
+            log.info( "Added document '" + document.getName() + "' to dashboard for user '" + user.getName() + "'" );
         }
         else
         {

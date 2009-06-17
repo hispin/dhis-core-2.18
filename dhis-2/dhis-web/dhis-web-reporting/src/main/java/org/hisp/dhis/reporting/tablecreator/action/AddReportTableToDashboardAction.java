@@ -29,12 +29,12 @@ package org.hisp.dhis.reporting.tablecreator.action;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dashboard.DashboardContent;
+import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork.Action;
 
@@ -58,13 +58,13 @@ public class AddReportTableToDashboardAction
         this.currentUserService = currentUserService;
     }
 
-    private UserStore userStore;
+    private DashboardService dashboardService;
 
-    public void setUserStore( UserStore userStore )
+    public void setDashboardService( DashboardService dashboardService )
     {
-        this.userStore = userStore;
+        this.dashboardService = dashboardService;
     }
-
+    
     private ReportTableService reportTableService;
 
     public void setReportTableService( ReportTableService reportTableService )
@@ -93,15 +93,15 @@ public class AddReportTableToDashboardAction
         
         if ( user != null )
         {        
-            UserCredentials credentials = userStore.getUserCredentials( user );
+            DashboardContent content = dashboardService.getDashboardContent( user );
             
             ReportTable reportTable = reportTableService.getReportTable( id );
             
-            credentials.addReportTable( reportTable );
+            content.addReportTable( reportTable );
             
-            userStore.updateUserCredentials( credentials );
+            dashboardService.saveDashboardContent( content );
             
-            log.info( "Added report table '" + reportTable.getName() + "' to dashboard for user '" + credentials.getUsername() + "'" );
+            log.info( "Added report table '" + reportTable.getName() + "' to dashboard for user '" + user.getName() + "'" );
         }
         else
         {
