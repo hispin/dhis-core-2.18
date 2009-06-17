@@ -9,7 +9,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="reportContentProvider" 
     class="org.hisp.dhis.dashboard.provider.ReportContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="reportManager" ref="org.hisp.dhis.report.ReportManager"/>
     <property name="key" value="reports"/>
   </bean>
@@ -17,35 +17,35 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="documentContentProvider" 
     class="org.hisp.dhis.dashboard.provider.DocumentContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="key" value="documents"/>
   </bean>
   
   <bean id="dataMartExportContentProvider"
     class="org.hisp.dhis.dashboard.provider.DataMartExportContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="key" value="dataMartExports"/>
   </bean>
   
   <bean id="reportTableContentProvider"
     class="org.hisp.dhis.dashboard.provider.ReportTableContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="key" value="reportTables"/>
   </bean>
     
   <bean id="mapViewContentProvider"
     class="org.hisp.dhis.dashboard.provider.MapViewContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="key" value="mapViews"/>
   </bean>
   
   <bean id="olapUrlContentProvider"
     class="org.hisp.dhis.dashboard.provider.OlapUrlContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="key" value="olapUrls"/>
   </bean>
     
@@ -127,7 +127,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.dashboard.action.RemoveReportAction"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="reportStore" ref="org.hisp.dhis.report.ReportStore"/>
   </bean>
   
@@ -135,7 +135,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.dashboard.action.RemoveDataMartExportAction"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="dataMartExportService" ref="org.hisp.dhis.datamart.DataMartExportService"/>
   </bean>
   
@@ -143,7 +143,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.dashboard.action.RemoveOlapUrlAction"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="olapURLService" ref="org.hisp.dhis.olap.OlapURLService"/>
   </bean>
   
@@ -151,7 +151,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.dashboard.action.RemoveDocumentAction"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="documentService" ref="org.hisp.dhis.document.DocumentService"/>
   </bean>
   
@@ -159,7 +159,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.dashboard.action.RemoveReportTableAction"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService"/>
   </bean>
   
@@ -167,7 +167,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.dashboard.action.RemoveMapViewAction"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService"/>
   </bean>
   

@@ -1,4 +1,4 @@
-package org.hisp.dhis.dashboard.action;
+package org.hisp.dhis.dashboard.hibernate;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,78 +27,45 @@ package org.hisp.dhis.dashboard.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.dashboard.DashboardContent;
-import org.hisp.dhis.dashboard.DashboardService;
-import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportStore;
-import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.dashboard.DashboardStore;
 import org.hisp.dhis.user.User;
-
-import com.opensymphony.xwork.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class RemoveReportAction
-    implements Action
+public class HibernateDashboardStore
+    implements DashboardStore
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private CurrentUserService currentUserService;
+    private SessionFactory sessionFactory;
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.currentUserService = currentUserService;
-    }
-
-    private DashboardService dashboardService;
-
-    public void setDashboardService( DashboardService dashboardService )
-    {
-        this.dashboardService = dashboardService;
-    }
-    
-    private ReportStore reportStore;
-
-    public void setReportStore( ReportStore reportStore )
-    {
-        this.reportStore = reportStore;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // DashboardStore implementation
     // -------------------------------------------------------------------------
 
-    private Integer id;
-
-    public void setId( Integer id )
+    public void saveDashboardContent( DashboardContent dashboardContent )
     {
-        this.id = id;
+        sessionFactory.getCurrentSession().saveOrUpdate( dashboardContent );
     }
-    
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
 
-    public String execute()
+    public DashboardContent getDashboardContent( User user )
     {
-        User user = currentUserService.getCurrentUser();
-        
-        if ( user != null )
-        {
-            DashboardContent content = dashboardService.getDashboardContent( user );
-            
-            Report report = reportStore.getReport( id );
-            
-            if ( content.getReports().remove( report ) )
-            {
-                dashboardService.saveDashboardContent( content );
-            }            
-        }
-        
-        return SUCCESS;
+        return (DashboardContent) sessionFactory.getCurrentSession().get( DashboardContent.class, user.getId() );
+    }
+
+    public void deleteDashboardContent( DashboardContent dashboardContent )
+    {
+        sessionFactory.getCurrentSession().delete( dashboardContent );        
     }
 }

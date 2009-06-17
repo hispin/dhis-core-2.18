@@ -1,4 +1,4 @@
-package org.hisp.dhis.dashboard.action;
+package org.hisp.dhis.dashboard;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,78 +27,63 @@ package org.hisp.dhis.dashboard.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dashboard.DashboardContent;
-import org.hisp.dhis.dashboard.DashboardService;
+import org.hisp.dhis.datamart.DataMartExport;
+import org.hisp.dhis.document.Document;
+import org.hisp.dhis.mapping.MapView;
+import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportStore;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
-
-import com.opensymphony.xwork.Action;
+import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class RemoveReportAction
-    implements Action
+public class DashboardContentDeletionHandler
+    extends DeletionHandler
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // DeletionHandler implementation
     // -------------------------------------------------------------------------
 
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
+    public String getClassName()
     {
-        this.currentUserService = currentUserService;
-    }
-
-    private DashboardService dashboardService;
-
-    public void setDashboardService( DashboardService dashboardService )
-    {
-        this.dashboardService = dashboardService;
+        return DashboardContent.class.getSimpleName();
     }
     
-    private ReportStore reportStore;
-
-    public void setReportStore( ReportStore reportStore )
+    @Override
+    public void deleteReport( Report report )
     {
-        this.reportStore = reportStore;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private Integer id;
-
-    public void setId( Integer id )
-    {
-        this.id = id;
+        
     }
     
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
+    @Override
+    public void deleteOlapURL( OlapURL olapURL )
     {
-        User user = currentUserService.getCurrentUser();
         
-        if ( user != null )
-        {
-            DashboardContent content = dashboardService.getDashboardContent( user );
-            
-            Report report = reportStore.getReport( id );
-            
-            if ( content.getReports().remove( report ) )
-            {
-                dashboardService.saveDashboardContent( content );
-            }            
-        }
+    }
+    
+    @Override
+    public void deleteDataMartExport( DataMartExport dataMartExport )
+    {
         
-        return SUCCESS;
+    }
+    
+    @Override
+    public void deleteDocument( Document document )
+    {
+        
+    }
+    
+    @Override
+    public void deleteReportTable( ReportTable reportTable )
+    {
+        
+    }
+    
+    @Override
+    public void deleteMapView( MapView mapView )
+    {
+        
     }
 }

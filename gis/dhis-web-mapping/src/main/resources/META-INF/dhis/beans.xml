@@ -176,8 +176,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="currentUserService"
       ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore"
-      ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService"
+      ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="mappingService"
       ref="org.hisp.dhis.mapping.MappingService"/>
   </bean>

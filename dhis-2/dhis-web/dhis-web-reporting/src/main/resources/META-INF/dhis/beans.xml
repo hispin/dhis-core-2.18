@@ -62,8 +62,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="currentUserService"
       ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore"
-      ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService"
+      ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="documentService"
       ref="org.hisp.dhis.document.DocumentService"/>
   </bean>
@@ -290,8 +290,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="currentUserService"
       ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore"
-      ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService"
+      ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="reportTableService"
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
   </bean>
@@ -364,8 +364,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="currentUserService"
       ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="userStore"
-      ref="org.hisp.dhis.user.UserStore"/>
+    <property name="dashboardService"
+      ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="reportStore"
       ref="org.hisp.dhis.report.ReportStore"/>
   </bean>

@@ -29,12 +29,12 @@ package org.hisp.dhis.openhealth.action;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dashboard.DashboardContent;
+import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork.Action;
 
@@ -58,11 +58,11 @@ public class AddOlapURLToDashboardAction
         this.currentUserService = currentUserService;
     }
 
-    private UserStore userStore;
+    private DashboardService dashboardService;
 
-    public void setUserStore( UserStore userStore )
+    public void setDashboardService( DashboardService dashboardService )
     {
-        this.userStore = userStore;
+        this.dashboardService = dashboardService;
     }
     
     private OlapURLService olapURLService;
@@ -93,15 +93,15 @@ public class AddOlapURLToDashboardAction
         
         if ( user != null )
         {        
-            UserCredentials credentials = userStore.getUserCredentials( user );
+            DashboardContent content = dashboardService.getDashboardContent( user );
         
             OlapURL url = olapURLService.getOlapURL( id );
             
-            credentials.addOlapUrl( url );
-
-            userStore.updateUserCredentials( credentials );
+            content.getOlapUrls().add( url );
             
-            log.info( "Added olap url '" + url.getName() + "' to dashboard for user '" + credentials.getUsername() + "'" );
+            dashboardService.saveDashboardContent( content );
+            
+            log.info( "Added olap url '" + url.getName() + "' to dashboard for user '" + user.getName() + "'" );
         }
         else
         {

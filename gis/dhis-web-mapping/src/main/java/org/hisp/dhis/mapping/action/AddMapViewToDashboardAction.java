@@ -29,12 +29,12 @@ package org.hisp.dhis.mapping.action;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dashboard.DashboardContent;
+import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork.Action;
 
@@ -58,11 +58,11 @@ public class AddMapViewToDashboardAction
         this.currentUserService = currentUserService;
     }
 
-    private UserStore userStore;
+    private DashboardService dashboardService;
 
-    public void setUserStore( UserStore userStore )
+    public void setDashboardService( DashboardService dashboardService )
     {
-        this.userStore = userStore;
+        this.dashboardService = dashboardService;
     }
     
     private MappingService mappingService;
@@ -93,15 +93,15 @@ public class AddMapViewToDashboardAction
         
         if ( user != null )
         {        
-            UserCredentials credentials = userStore.getUserCredentials( user );
+            DashboardContent content = dashboardService.getDashboardContent( user );
             
             MapView mapView = mappingService.getMapView( id );
             
-            credentials.addMapView( mapView );
+            content.addMapView( mapView );
             
-            userStore.updateUserCredentials( credentials );
+            dashboardService.saveDashboardContent( content );
             
-            log.info( "Added mapview '" + mapView.getName() + "' to dashboard for user '" + credentials.getUsername() + "'" );
+            log.info( "Added mapview '" + mapView.getName() + "' to dashboard for user '" + user.getName() + "'" );
         }
         else
         {

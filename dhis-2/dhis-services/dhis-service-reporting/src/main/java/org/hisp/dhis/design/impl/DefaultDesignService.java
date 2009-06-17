@@ -30,6 +30,7 @@ package org.hisp.dhis.design.impl;
 import java.util.Collection;
 
 import org.hisp.dhis.design.Design;
+import org.hisp.dhis.design.DesignService;
 import org.hisp.dhis.design.DesignStore;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,13 +40,22 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class DefaultDesignService
+implements DesignService
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private DesignStore designStore;
 
     public void setDesignStore( DesignStore designStore )
     {
         this.designStore = designStore;
     }
+
+    // -------------------------------------------------------------------------
+    // DesignService implementation
+    // -------------------------------------------------------------------------
 
     public int saveDesign( Design design )
     {
@@ -62,7 +72,7 @@ public class DefaultDesignService
         return designStore.getDesign( id );
     }
     
-    public void deleteReportTemplate( Design design )
+    public void deleteDesign( Design design )
     {
         designStore.deleteDesign( design );
     }

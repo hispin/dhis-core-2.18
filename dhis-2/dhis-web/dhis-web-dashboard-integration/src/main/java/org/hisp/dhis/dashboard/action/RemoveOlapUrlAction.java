@@ -1,11 +1,11 @@
 package org.hisp.dhis.dashboard.action;
 
+import org.hisp.dhis.dashboard.DashboardContent;
+import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork.Action;
 
@@ -53,12 +53,12 @@ implements Action
     {
         this.currentUserService = currentUserService;
     }
-    
-    private UserStore userStore;
-    
-    public void setUserStore( UserStore userStore )
+
+    private DashboardService dashboardService;
+
+    public void setDashboardService( DashboardService dashboardService )
     {
-        this.userStore = userStore;
+        this.dashboardService = dashboardService;
     }
     
     private OlapURLService olapURLService;
@@ -90,13 +90,13 @@ implements Action
         
         if ( user != null )
         {
-            UserCredentials credentials = userStore.getUserCredentials( user );
+            DashboardContent content = dashboardService.getDashboardContent( user );
             
             OlapURL url = olapURLService.getOlapURL( id );
             
-            if ( credentials.getDashboardOlapUrls().remove( url ) )
+            if ( content.getOlapUrls().remove( url ) )
             {
-                userStore.updateUserCredentials( credentials );
+                dashboardService.saveDashboardContent( content );
             }
         }
         

@@ -32,12 +32,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.dashboard.DashboardContent;
+import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.comparator.DataMartExportComparator;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
 
 /**
  * @author Lars Helge Overland
@@ -57,11 +57,11 @@ public class DataMartExportContentProvider
         this.currentUserService = currentUserService;
     }
     
-    private UserStore userStore;
+    private DashboardService dashboardService;
 
-    public void setUserStore( UserStore userStore )
+    public void setDashboardService( DashboardService dashboardService )
     {
-        this.userStore = userStore;
+        this.dashboardService = dashboardService;
     }
     
     private String key;
@@ -83,9 +83,9 @@ public class DataMartExportContentProvider
         
         if ( user != null )
         {
-            UserCredentials credentials = userStore.getUserCredentials( user );                        
+            DashboardContent dashboardContent = dashboardService.getDashboardContent( user );
             
-            List<DataMartExport> exports = credentials.getDashboardDataMartExports();
+            List<DataMartExport> exports = dashboardContent.getDataMartExports();
             
             Collections.sort( exports, new DataMartExportComparator() );
             

@@ -28,17 +28,8 @@ package org.hisp.dhis.user;
  */
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
-import org.hisp.dhis.datamart.DataMartExport;
-import org.hisp.dhis.document.Document;
-import org.hisp.dhis.mapping.MapView;
-import org.hisp.dhis.olap.OlapURL;
-import org.hisp.dhis.report.Report;
-import org.hisp.dhis.reporttable.ReportTable;
 
 /**
  * @author Nguyen Hong Duc
@@ -46,9 +37,7 @@ import org.hisp.dhis.reporttable.ReportTable;
  */
 public class UserCredentials
     implements Serializable
-{
-    private final static int MAX_DASHBOARD_ELEMENTS = 6;
-    
+{    
     private int id;
 
     /**
@@ -67,100 +56,6 @@ public class UserCredentials
     private String password;
 
     private Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<UserAuthorityGroup>();
-
-    private List<Report> dashboardReports = new ArrayList<Report>();
-    
-    private List<DataMartExport> dashboardDataMartExports = new ArrayList<DataMartExport>();
-    
-    private List<OlapURL> dashboardOlapUrls = new ArrayList<OlapURL>();
-    
-    private List<Document> dashboardDocuments = new ArrayList<Document>();
-    
-    private List<ReportTable> dashboardReportTables = new ArrayList<ReportTable>();
-
-    private List<MapView> dashboardMapViews = new ArrayList<MapView>();
-    
-    // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
-
-    public void addReport( Report report )
-    {
-        if ( !dashboardReports.contains( report ) )
-        {
-            dashboardReports.add( 0, report );
-            
-            while ( dashboardReports.size() > MAX_DASHBOARD_ELEMENTS )
-            {
-                dashboardReports.remove( MAX_DASHBOARD_ELEMENTS );
-            }
-        }
-    }
-    
-    public void addDataMartExport( DataMartExport export )
-    {
-        if ( !dashboardDataMartExports.contains( export ) )
-        {
-            dashboardDataMartExports.add( 0, export );
-            
-            while ( dashboardDataMartExports.size() > MAX_DASHBOARD_ELEMENTS )
-            {
-                dashboardDataMartExports.remove( MAX_DASHBOARD_ELEMENTS );
-            }
-        }
-    }
-    
-    public void addOlapUrl( OlapURL url )
-    {
-        if ( !dashboardOlapUrls.contains( url ) )
-        {
-            dashboardOlapUrls.add( 0, url );
-            
-            while ( dashboardOlapUrls.size() > MAX_DASHBOARD_ELEMENTS )
-            {
-                dashboardOlapUrls.remove( MAX_DASHBOARD_ELEMENTS );
-            }
-        }
-    }
-    
-    public void addDocument( Document document )
-    {
-        if ( !dashboardDocuments.contains( document ) )
-        {
-            dashboardDocuments.add( 0, document );
-            
-            while ( dashboardDocuments.size() > MAX_DASHBOARD_ELEMENTS )
-            {
-                dashboardDocuments.remove( MAX_DASHBOARD_ELEMENTS );
-            }
-        }
-    }
-    
-    public void addReportTable( ReportTable reportTable )
-    {
-        if ( !dashboardReportTables.contains( reportTable ) )
-        {
-            dashboardReportTables.add( 0, reportTable );
-            
-            while ( dashboardReportTables.size() > MAX_DASHBOARD_ELEMENTS )
-            {
-                dashboardReportTables.remove( MAX_DASHBOARD_ELEMENTS );
-            }
-        }
-    }
-    
-    public void addMapView( MapView mapView )
-    {
-        if ( !dashboardMapViews.contains( mapView ) )
-        {
-            dashboardMapViews.add( 0, mapView );
-            
-            while ( dashboardMapViews.size() > MAX_DASHBOARD_ELEMENTS )
-            {
-                dashboardReportTables.remove( MAX_DASHBOARD_ELEMENTS );
-            }
-        }
-    }
     
     // -------------------------------------------------------------------------
     // hashCode and equals
@@ -247,65 +142,5 @@ public class UserCredentials
     public void setId( int id )
     {
         this.id = id;
-    }
-
-    public List<Report> getDashboardReports()
-    {
-        return dashboardReports;
-    }
-
-    public void setDashboardReports( List<Report> dashboardReports )
-    {
-        this.dashboardReports = dashboardReports;
-    }
-
-    public List<DataMartExport> getDashboardDataMartExports()
-    {
-        return dashboardDataMartExports;
-    }
-
-    public void setDashboardDataMartExports( List<DataMartExport> dashboardDataMartExports )
-    {
-        this.dashboardDataMartExports = dashboardDataMartExports;
-    }
-
-    public List<OlapURL> getDashboardOlapUrls()
-    {
-        return dashboardOlapUrls;
-    }
-
-    public void setDashboardOlapUrls( List<OlapURL> dashboardOlapUrls )
-    {
-        this.dashboardOlapUrls = dashboardOlapUrls;
-    }
-
-    public List<Document> getDashboardDocuments()
-    {
-        return dashboardDocuments;
-    }
-
-    public void setDashboardDocuments( List<Document> dashboardDocuments )
-    {
-        this.dashboardDocuments = dashboardDocuments;
-    }
-
-    public List<ReportTable> getDashboardReportTables()
-    {
-        return dashboardReportTables;
-    }
-
-    public void setDashboardReportTables( List<ReportTable> dashboardReportTables )
-    {
-        this.dashboardReportTables = dashboardReportTables;
-    }
-
-    public List<MapView> getDashboardMapViews()
-    {
-        return dashboardMapViews;
-    }
-
-    public void setDashboardMapViews( List<MapView> dashboardMapViews )
-    {
-        this.dashboardMapViews = dashboardMapViews;
     }
 }

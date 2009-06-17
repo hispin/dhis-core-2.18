@@ -27,12 +27,6 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.datamart.DataMartExport;
-import org.hisp.dhis.document.Document;
-import org.hisp.dhis.mapping.MapView;
-import org.hisp.dhis.olap.OlapURL;
-import org.hisp.dhis.report.Report;
-import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -68,78 +62,6 @@ public class UserCredentialsDeletionHandler
         for ( UserCredentials credentials : userStore.getAllUserCredentials() )
         {
             if ( credentials.getUserAuthorityGroups().remove( authorityGroup ) )
-            {
-                userStore.updateUserCredentials( credentials );
-            }
-        }
-    }
-    
-    @Override
-    public void deleteReport( Report report )
-    {
-        for ( UserCredentials credentials : userStore.getAllUserCredentials() )
-        {
-            if ( credentials.getDashboardReports().remove( report ) )
-            {
-                userStore.updateUserCredentials( credentials );
-            }
-        }
-    }
-    
-    @Override
-    public void deleteOlapURL( OlapURL olapURL )
-    {
-        for ( UserCredentials credentials : userStore.getAllUserCredentials() )
-        {
-            if ( credentials.getDashboardOlapUrls().remove( olapURL ) )
-            {
-                userStore.updateUserCredentials( credentials );
-            }
-        }
-    }
-    
-    @Override
-    public void deleteDataMartExport( DataMartExport dataMartExport )
-    {
-        for ( UserCredentials credentials : userStore.getAllUserCredentials() )
-        {
-            if ( credentials.getDashboardDataMartExports().remove( dataMartExport ) )
-            {
-                userStore.updateUserCredentials( credentials );
-            }
-        }
-    }
-    
-    @Override
-    public void deleteDocument( Document document )
-    {
-        for ( UserCredentials credentials : userStore.getAllUserCredentials() )
-        {
-            if ( credentials.getDashboardDocuments().remove( document ) )
-            {
-                userStore.updateUserCredentials( credentials );
-            }
-        }
-    }
-    
-    @Override
-    public void deleteReportTable( ReportTable reportTable )
-    {
-        for ( UserCredentials credentials : userStore.getAllUserCredentials() )
-        {
-            if ( credentials.getDashboardReportTables().remove( reportTable ) )
-            {
-                userStore.updateUserCredentials( credentials );
-            }                
-        }
-    }
-    
-    @Override
-    public void deleteMapView( MapView mapView )
-    {
-        for ( UserCredentials credentials : userStore.getAllUserCredentials() )
-        {
-            if ( credentials.getDashboardMapViews().remove( mapView ) )
             {
                 userStore.updateUserCredentials( credentials );
             }
