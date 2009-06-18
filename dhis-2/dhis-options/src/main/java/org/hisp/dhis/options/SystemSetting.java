@@ -45,6 +45,11 @@ public class SystemSetting
     {
 
     }
+    
+    public boolean hasValue()
+    {
+        return value != null;
+    }
 
     public int getId()
     {

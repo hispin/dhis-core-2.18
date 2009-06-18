@@ -177,7 +177,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.i18n.locale.LocaleManagerDb"/>
     </property>
     <property name="translationService">
-      <ref bean="org.hisp.dhis.i18n.TranslationService"/>
+      <ref bean="org.hisp.dhis.translation.TranslationService"/>
     </property>
     <property name="objects">
       <list>
@@ -195,6 +195,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <ref bean="I18nDataElementCategoryOption"/>
       </list>
     </property>
+  </bean>
+  
+  <!-- Translation -->
+  
+  <bean id="org.hisp.dhis.translation.TranslationStore"
+    class="org.hisp.dhis.translation.hibernate.HibernateTranslationStore">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+
+  <bean id="org.hisp.dhis.translation.TranslationService"
+    class="org.hisp.dhis.translation.impl.DefaultTranslationService">
+    <property name="translationStore"
+      ref="org.hisp.dhis.translation.TranslationStore"/>
   </bean>
   
   <!-- I81n AOP definitions -->

@@ -94,14 +94,14 @@ public class DefaultSystemSettingManager
     {
         SystemSetting setting = systemSettingStore.getSystemSetting( name );
         
-        return setting != null ? setting.getValue() : null;
+        return setting != null && setting.hasValue() ? setting.getValue() : null;
     }   
     
     public Serializable getSystemSetting( String name, Serializable defaultValue )
     {
         SystemSetting setting = systemSettingStore.getSystemSetting( name );
         
-        return setting != null ? setting.getValue() : defaultValue;
+        return setting != null && setting.hasValue() ? setting.getValue() : defaultValue;
     }
 
     public Collection<SystemSetting> getAllSystemSettings()

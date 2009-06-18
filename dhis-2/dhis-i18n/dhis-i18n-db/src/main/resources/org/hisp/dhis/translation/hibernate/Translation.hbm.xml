@@ -3,7 +3,7 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.i18n.Translation" table="translation">
+  <class name="org.hisp.dhis.translation.Translation" table="translation">
 
     <cache usage="read-write"/>
     

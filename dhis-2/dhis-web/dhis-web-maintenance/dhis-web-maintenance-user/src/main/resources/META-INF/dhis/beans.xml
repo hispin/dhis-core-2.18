@@ -159,9 +159,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
-    <property name="reportStore">
-      <ref bean="org.hisp.dhis.report.ReportStore"/>
-    </property>
   </bean>
   
   <bean id="org.hisp.dhis.user.action.GetRoleAction" 
@@ -172,9 +169,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
-    </property>
-    <property name="reportStore">
-      <ref bean="org.hisp.dhis.report.ReportStore"/>
     </property>
     <property name="authoritiesProvider"
       ref="org.hisp.dhis.security.authority.SystemAuthoritiesProvider"/>
@@ -202,9 +196,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="userStore">
       <ref bean="org.hisp.dhis.user.UserStore"/>
     </property>
-    <property name="reportStore">
-      <ref bean="org.hisp.dhis.report.ReportStore"/>
-    </property>
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
@@ -216,11 +207,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
-    <property name="reportStore">
-      <ref bean="org.hisp.dhis.report.ReportStore"/>
+    <property name="authoritiesProvider">
+      <ref bean="org.hisp.dhis.security.authority.SystemAuthoritiesProvider"/>
     </property>
-    <property name="authoritiesProvider"
-      ref="org.hisp.dhis.security.authority.SystemAuthoritiesProvider"/>
   </bean>
   
   <bean id="org.hisp.dhis.user.action.ValidateRoleAction"

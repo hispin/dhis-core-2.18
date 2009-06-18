@@ -29,13 +29,13 @@ package org.hisp.dhis.user.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportStore;
-import org.hisp.dhis.report.comparator.ReportComparator;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 
 import com.opensymphony.xwork.Action;
@@ -57,13 +57,6 @@ public class SetupRoleAction
     {
         this.dataSetService = dataSetService;
     }
-
-    private ReportStore reportStore;
-
-    public void setReportStore( ReportStore reportStore )
-    {
-        this.reportStore = reportStore;
-    }
     
     private SystemAuthoritiesProvider authoritiesProvider;
 
@@ -72,6 +65,20 @@ public class SetupRoleAction
         this.authoritiesProvider = authoritiesProvider;
     }
 
+    private Comparator<DataSet> dataSetComparator;
+
+    public void setDataSetComparator( Comparator<DataSet> dataSetComparator )
+    {
+        this.dataSetComparator = dataSetComparator;
+    }
+    
+    private DisplayPropertyHandler displayPropertyHandler;
+
+    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
+    {
+        this.displayPropertyHandler = displayPropertyHandler;
+    }
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -106,9 +113,9 @@ public class SetupRoleAction
     {
         availableDataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
         
-        availableReports = new ArrayList<Report>( reportStore.getAllReports() );
+        Collections.sort( availableDataSets, dataSetComparator );
         
-        Collections.sort( availableReports, new ReportComparator() );
+        displayPropertyHandler.handle( availableDataSets );
         
         availableAuthorities = new ArrayList<String>( authoritiesProvider.getSystemAuthorities() );
 

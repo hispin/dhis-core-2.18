@@ -120,12 +120,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="styles">
       <map>
         <entry>
-          <key><value>blue</value></key>
-          <value>blue/blue.css</value>
-        </entry>
-        <entry>
           <key><value>light_blue</value></key>
           <value>light_blue/light_blue.css</value>
+        </entry>
+        <entry>
+          <key><value>blue</value></key>
+          <value>blue/blue.css</value>
         </entry>
 		<entry>
           <key><value>green</value></key>

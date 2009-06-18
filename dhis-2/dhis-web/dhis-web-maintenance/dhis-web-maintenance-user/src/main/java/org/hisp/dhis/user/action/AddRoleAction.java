@@ -32,8 +32,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportStore;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserStore;
 
@@ -63,13 +61,6 @@ public class AddRoleAction
     {
         this.dataSetService = dataSetService;
     }
-
-    private ReportStore reportStore;
-
-    public void setReportStore( ReportStore reportStore )
-    {
-        this.reportStore = reportStore;
-    }
     
     // -------------------------------------------------------------------------
     // Input
@@ -94,13 +85,6 @@ public class AddRoleAction
     public void setSelectedList( Collection<String> selectedList )
     {
         this.selectedList = selectedList;
-    }
-
-    private Collection<String> selectedListReport = new ArrayList<String>();
-
-    public void setSelectedListReport( Collection<String> selectedListReport )
-    {
-        this.selectedListReport = selectedListReport;
     }
     
     private Collection<String> selectedListAuthority = new ArrayList<String>();
@@ -129,13 +113,6 @@ public class AddRoleAction
             group.getDataSets().add( dataSet );
         }
         
-        for ( String id : selectedListReport )
-        {
-            Report report = reportStore.getReport( Integer.parseInt( id ) );
-            
-            group.getReports().add( report );
-        }
-
         group.getAuthorities().addAll( selectedListAuthority );
 
         userStore.addUserAuthorityGroup( group );

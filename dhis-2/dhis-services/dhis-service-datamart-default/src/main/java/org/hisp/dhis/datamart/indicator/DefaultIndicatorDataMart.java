@@ -31,6 +31,7 @@ import static org.hisp.dhis.datamart.util.ParserUtil.generateExpression;
 import static org.hisp.dhis.system.util.DateUtils.DAYS_IN_YEAR;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,6 +50,7 @@ import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedIndicatorValueBatchHandler;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -135,6 +137,13 @@ public class DefaultIndicatorDataMart
         this.aggregationCache = aggregationCache;
     }
 
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
+    
     // -------------------------------------------------------------------------
     // IndicatorDataMart implementation
     // -------------------------------------------------------------------------
@@ -177,6 +186,8 @@ public class DefaultIndicatorDataMart
         double aggregatedValue = 0.0;
         double annualizedFactor = 0.0;
         
+        final boolean omitZeroNumerator = (Boolean) systemSettingManager.getSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, false );
+        
         final AggregatedIndicatorValue indicatorValue = new AggregatedIndicatorValue();
         
         for ( final OrganisationUnit unit : organisationUnits )
@@ -217,7 +228,7 @@ public class DefaultIndicatorDataMart
                     // AggregatedIndicatorValue
                     // ---------------------------------------------------------
 
-                    if ( denominatorValue != 0 )
+                    if ( denominatorValue != 0 && !( omitZeroNumerator && numeratorValue == 0 ) )
                     {
                         annualizationFactor = getAnnualizationFactor( indicator, period );
                         

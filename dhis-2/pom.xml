@@ -165,11 +165,6 @@
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-i18n-translationstore-hibernate</artifactId>
-        <version>${version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-options</artifactId>
         <version>${version}</version>
       </dependency>

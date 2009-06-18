@@ -58,6 +58,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.hisp.dhis.system.util.SystemUtils;
+import org.hisp.dhis.translation.Translation;
+import org.hisp.dhis.translation.TranslationService;
 
 /**
  * @author Oyvind Brucker

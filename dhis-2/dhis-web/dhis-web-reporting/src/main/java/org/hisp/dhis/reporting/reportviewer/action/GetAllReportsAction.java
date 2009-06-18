@@ -30,9 +30,7 @@ package org.hisp.dhis.reporting.reportviewer.action;
 import static org.hisp.dhis.util.ContextUtils.getBaseUrl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,11 +40,6 @@ import org.hisp.dhis.report.ReportManager;
 import org.hisp.dhis.report.ReportStore;
 import org.hisp.dhis.report.comparator.ReportComparator;
 import org.hisp.dhis.report.manager.ReportConfiguration;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
@@ -71,21 +64,7 @@ public class GetAllReportsAction
     {
         this.reportManager = reportManager;
     }
-    
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-    
-    private UserStore userStore;
-
-    public void setUserStore( UserStore userStore )
-    {
-        this.userStore = userStore;
-    }
-    
+            
     private ReportStore reportStore;
 
     public void setReportStore( ReportStore reportStore )
@@ -123,7 +102,7 @@ public class GetAllReportsAction
         
         if ( birtHome != null && birtDirectory != null )
         {
-            for ( Report report : getUserReports() )
+            for ( Report report : reportStore.getAllReports() )
             {
                 String url = birtURL + report.getDesign();
                 
@@ -136,32 +115,5 @@ public class GetAllReportsAction
         Collections.sort( reports, new ReportComparator() );
         
         return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Collection<Report> getUserReports()
-    {
-        User currentUser = currentUserService.getCurrentUser();
-        
-        if ( currentUserService.currentUserIsSuper() || currentUser == null )
-        {
-            return reportStore.getAllReports();
-        }
-        else
-        {
-            Collection<Report> reports = new HashSet<Report>();
-                        
-            UserCredentials credentials = userStore.getUserCredentials( currentUser );
-                
-            for ( UserAuthorityGroup group : credentials.getUserAuthorityGroups() )
-            {
-                reports.addAll( group.getReports() );
-            }
-            
-            return reports;
-        }
     }
 }
