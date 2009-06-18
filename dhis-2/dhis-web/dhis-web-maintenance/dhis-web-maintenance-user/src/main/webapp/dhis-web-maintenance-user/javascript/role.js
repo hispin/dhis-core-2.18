@@ -16,7 +16,6 @@ function roleReceived( xmlObject )
     setFieldValue( 'nameField', getElementValue( xmlObject, 'name' ) );
     setFieldValue( 'membersField', getElementValue( xmlObject, 'members' ) );
     setFieldValue( 'dataSetsField', getElementValue( xmlObject, 'dataSets' ) );
-    setFieldValue( 'reportsField', getElementValue( xmlObject, 'reports' ) );
 
     showDetails();
 }
@@ -57,7 +56,6 @@ function addValidationCompleted( messageElement )
     if ( type == 'success' )
     {
         selectAll( document.getElementById( 'selectedList' ) );
-        selectAll( document.getElementById( 'selectedListReport' ) );
 		selectAll( document.getElementById( 'selectedListAuthority' ) );
 
         var form = document.getElementById( 'addRoleForm' );
@@ -99,7 +97,6 @@ function updateValidationCompleted( messageElement )
     if ( type == 'success' )
     {
         selectAll( document.getElementById( 'selectedList' ) );
-        selectAll( document.getElementById( 'selectedListReport' ) );
 		selectAll( document.getElementById( 'selectedListAuthority' ) );
 
         var form = document.getElementById( 'updateRoleForm' );

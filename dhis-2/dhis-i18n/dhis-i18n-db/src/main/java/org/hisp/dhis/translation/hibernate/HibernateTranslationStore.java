@@ -1,4 +1,4 @@
-package org.hisp.dhis.i18n.hibernate;
+package org.hisp.dhis.translation.hibernate;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -37,8 +37,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.i18n.Translation;
-import org.hisp.dhis.i18n.TranslationStore;
+import org.hisp.dhis.translation.Translation;
+import org.hisp.dhis.translation.TranslationStore;
 
 /**
  * @author Oyvind Brucker

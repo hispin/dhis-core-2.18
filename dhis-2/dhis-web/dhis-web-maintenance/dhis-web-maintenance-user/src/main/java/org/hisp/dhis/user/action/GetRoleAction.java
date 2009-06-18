@@ -34,9 +34,6 @@ import java.util.List;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
-import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportStore;
-import org.hisp.dhis.report.comparator.ReportComparator;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserStore;
@@ -68,13 +65,6 @@ public class GetRoleAction
         this.dataSetService = dataSetService;
     }
 
-    private ReportStore reportStore;
-
-    public void setReportStore( ReportStore reportStore )
-    {
-        this.reportStore = reportStore;
-    }
-    
     private SystemAuthoritiesProvider authoritiesProvider;
 
     public void setAuthoritiesProvider( SystemAuthoritiesProvider authoritiesProvider )
@@ -117,21 +107,7 @@ public class GetRoleAction
     {
         return roleDataSets;
     }
-    
-    private List<Report> availableReports;
-
-    public List<Report> getAvailableReports()
-    {
-        return availableReports;
-    }
-
-    private List<Report> roleReports;
-
-    public List<Report> getRoleReports()
-    {
-        return roleReports;
-    }
-    
+        
     private List<String> availableAuthorities;
 
     public List<String> getAvailableAuthorities()
@@ -169,20 +145,6 @@ public class GetRoleAction
         
         Collections.sort( roleDataSets, new DataSetNameComparator() );
 
-        // ---------------------------------------------------------------------
-        // Reports
-        // ---------------------------------------------------------------------
-
-        availableReports = new ArrayList<Report>( reportStore.getAllReports() );
-        
-        availableReports.removeAll( userAuthorityGroup.getReports() );
-        
-        Collections.sort( availableReports, new ReportComparator() );
-        
-        roleReports = new ArrayList<Report>( userAuthorityGroup.getReports() );
-        
-        Collections.sort( roleReports, new ReportComparator() );
-        
         // ---------------------------------------------------------------------
         // Authorities
         // ---------------------------------------------------------------------

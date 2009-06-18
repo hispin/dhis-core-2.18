@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.report.Report;
 
 /**
  * @author Nguyen Hong Duc
@@ -54,8 +53,6 @@ public class UserAuthorityGroup
     
     private Set<DataSet> dataSets = new HashSet<DataSet>();
     
-    private Set<Report> reports = new HashSet<Report>();
-
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -151,15 +148,5 @@ public class UserAuthorityGroup
     public void setDataSets( Set<DataSet> dataSets )
     {
         this.dataSets = dataSets;
-    }
-
-    public Set<Report> getReports()
-    {
-        return reports;
-    }
-
-    public void setReports( Set<Report> reports )
-    {
-        this.reports = reports;
     }
 }

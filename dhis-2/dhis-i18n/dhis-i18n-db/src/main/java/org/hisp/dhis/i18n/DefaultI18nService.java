@@ -39,6 +39,8 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.locale.LocaleManager;
+import org.hisp.dhis.translation.Translation;
+import org.hisp.dhis.translation.TranslationService;
 
 /**
  * @author Oyvind Brucker

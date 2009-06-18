@@ -1,4 +1,4 @@
-package org.hisp.dhis.i18n;
+package org.hisp.dhis.translation.impl;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -30,6 +30,9 @@ package org.hisp.dhis.i18n;
 import java.util.Collection;
 import java.util.Locale;
 
+import org.hisp.dhis.translation.Translation;
+import org.hisp.dhis.translation.TranslationService;
+import org.hisp.dhis.translation.TranslationStore;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

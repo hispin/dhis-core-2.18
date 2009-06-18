@@ -28,7 +28,6 @@ package org.hisp.dhis.user;
  */
 
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.report.Report;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -65,18 +64,6 @@ public class UserAuthorityGroupDeletionHandler
         for ( UserAuthorityGroup group : userStore.getAllUserAuthorityGroups() )
         {
             if ( group.getDataSets().remove( dataSet ) )
-            {
-                userStore.updateUserAuthorityGroup( group );
-            }
-        }
-    }
-    
-    @Override
-    public void deleteReport( Report report )
-    {
-        for ( UserAuthorityGroup group : userStore.getAllUserAuthorityGroups() )
-        {
-            if ( group.getReports().remove( report ) )
             {
                 userStore.updateUserAuthorityGroup( group );
             }

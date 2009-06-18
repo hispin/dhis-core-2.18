@@ -46,24 +46,6 @@
         </td>
 	</tr>
 	<tr>
-		<td><label>$i18n.getString( "reports" )</label></td>
-		<td>
-			<select size="15" id="availableListReport" name="availableListReport" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'availableListReport', 'selectedListReport' )">
-				#foreach( $report in $availableReports )
-					<option value="$report.id">$encoder.htmlEncode( $report.name )</option>
-				#end
-			</select>
-		</td>
-		<td>
-          <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveSelectedById( 'selectedListReport', 'availableListReport' )">
-          <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveSelectedById( 'availableListReport', 'selectedListReport' )">
-        </td>
-        <td>
-          <select id="selectedListReport" name="selectedListReport" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'selectedListReport', 'availableListReport' )">
-          </select>
-        </td>
-	</tr>
-	<tr>
 		<td><label>$i18n.getString( "authorities" )</label></td>		
 		<td>
           <select size="15" id="availableListAuthority" name="availableListAuthority" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'availableListAuthority', 'selectedListAuthority' )">
