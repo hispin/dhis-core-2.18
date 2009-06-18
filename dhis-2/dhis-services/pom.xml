@@ -25,7 +25,6 @@
     <module>dhis-service-mapping</module>
     <module>dhis-service-jdbc</module>
     <module>dhis-service-jdbc-test</module>
-    <module>dhis-service-aggregationengine-default</module>
   </modules>
   
   <dependencies>
