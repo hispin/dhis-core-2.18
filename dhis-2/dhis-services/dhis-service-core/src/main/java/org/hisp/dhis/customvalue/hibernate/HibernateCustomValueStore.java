@@ -111,7 +111,7 @@ public class HibernateCustomValueStore
         return criteria.list();
     }
     
-    public CustomValue getCustomValuesById( Integer id )
+    public CustomValue getCustomValue( int id )
     {
         Session session = sessionFactory.getCurrentSession();
 

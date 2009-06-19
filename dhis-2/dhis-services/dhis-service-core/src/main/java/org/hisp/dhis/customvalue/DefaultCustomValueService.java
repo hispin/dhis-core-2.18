@@ -91,9 +91,9 @@ public class DefaultCustomValueService
         return customValueStore.getCustomValuesByDataSet( dataSet );
     }
 
-    public CustomValue getCustomValuesById( Integer id )
+    public CustomValue getCustomValue( int id )
     {
-        return customValueStore.getCustomValuesById( id );
+        return customValueStore.getCustomValue( id );
     }
 
     public Collection<CustomValue> getCustomValues( DataSet dataSet, DataElement dataElement,

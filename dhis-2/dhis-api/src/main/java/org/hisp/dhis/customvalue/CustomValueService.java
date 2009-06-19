@@ -91,7 +91,7 @@ public interface CustomValueService
      * 
      * @return CustomValue object.
      */
-    CustomValue getCustomValuesById( Integer id );
+    CustomValue getCustomValue( int id );
     
     /**
      * Get CustomValue by value.
