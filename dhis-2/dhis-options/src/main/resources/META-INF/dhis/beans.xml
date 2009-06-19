@@ -23,7 +23,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 	
   <bean id="org.hisp.dhis.options.SystemSettingStore"
-    class="org.hisp.dhis.options.setting.HibernateSystemSettingStore"> 
+    class="org.hisp.dhis.options.setting.HibernateSystemSettingStore">
+    <property name="clazz" value="org.hisp.dhis.options.SystemSetting"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 

@@ -60,7 +60,7 @@ public abstract class AbstractAction
     {
         this.reportStore = reportStore;
     }
-
+    
     protected ReportDataAccess reportDataAccess;
 
     public void setReportDataAccess( ReportDataAccess reportDataAccess )

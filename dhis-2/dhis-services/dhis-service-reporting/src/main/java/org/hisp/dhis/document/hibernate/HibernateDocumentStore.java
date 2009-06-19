@@ -27,59 +27,20 @@ package org.hisp.dhis.document.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentStore;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class HibernateDocumentStore
-    implements DocumentStore
+    extends HibernateGenericStore<Document> implements DocumentStore
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
+    public Document getByName( String name )
     {
-        this.sessionFactory = sessionFactory;
-    }
-
-    // -------------------------------------------------------------------------
-    // DocumentStore implementation
-    // -------------------------------------------------------------------------
-
-    public int saveDocument( Document document )
-    {
-        return (Integer) sessionFactory.getCurrentSession().save( document );
-    }
-    
-    public Document getDocument( int id )
-    {
-        return (Document) sessionFactory.getCurrentSession().get( Document.class, id );
-    }
-    
-    public void deleteDocument( Document document )
-    {
-        sessionFactory.getCurrentSession().delete( document );
-    }
-    
-    @SuppressWarnings( "unchecked" )
-    public Collection<Document> getAllDocuments()
-    {
-        return sessionFactory.getCurrentSession().createCriteria( Document.class ).list();
-    }
-    
-    public Document getDocumentByName( String name )
-    {
-        return (Document) sessionFactory.getCurrentSession().
-            createCriteria( Document.class ).add( Restrictions.eq( "name", name ) ).uniqueResult();
+        return getObject( Restrictions.eq( "name", name ) );
     } 
 }

@@ -128,7 +128,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
     <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="reportStore" ref="org.hisp.dhis.report.ReportStore"/>
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService"/>
   </bean>
   
   <bean id="org.hisp.dhis.dashboard.action.RemoveDataMartExportAction"

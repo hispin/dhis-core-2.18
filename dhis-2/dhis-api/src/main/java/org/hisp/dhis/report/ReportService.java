@@ -1,6 +1,5 @@
 package org.hisp.dhis.report;
 
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -34,9 +33,9 @@ import java.util.Collection;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public interface ReportStore
+public interface ReportService
 {
-    String ID = ReportStore.class.getName();
+    final String ID = ReportService.class.getName();
     
     /**
      * Saves a Report.

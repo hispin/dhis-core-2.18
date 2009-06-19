@@ -32,7 +32,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportStore;
+import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
@@ -64,12 +64,12 @@ public class AddReportToDashboardAction
     {
         this.dashboardService = dashboardService;
     }
-    
-    private ReportStore reportStore;
 
-    public void setReportStore( ReportStore reportStore )
+    private ReportService reportService;
+
+    public void setReportService( ReportService reportService )
     {
-        this.reportStore = reportStore;
+        this.reportService = reportService;
     }
 
     // -------------------------------------------------------------------------
@@ -95,7 +95,7 @@ public class AddReportToDashboardAction
         {        
             DashboardContent content = dashboardService.getDashboardContent( user );
         
-            Report report = reportStore.getReport( id );
+            Report report = reportService.getReport( id );
             
             content.addReport( report );
             

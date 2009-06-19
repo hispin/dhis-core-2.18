@@ -8,6 +8,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.olap.OlapURLStore"
     class="org.hisp.dhis.olap.hibernate.HibernateOlapURLStore">
+    <property name="clazz" value="org.hisp.dhis.olap.OlapURL"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
@@ -35,6 +36,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.reporttable.ReportTableStore"
     class="org.hisp.dhis.reporttable.hibernate.HibernateReportTableStore">
+    <property name="clazz" value="org.hisp.dhis.reporttable.ReportTable"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
@@ -44,8 +46,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.reporttable.jdbc.ReportTableManager"/>
     <property name="reportTableStore"
       ref="org.hisp.dhis.reporttable.ReportTableStore"/>
-    <property name="reportStore"
-      ref="org.hisp.dhis.report.ReportStore"/>
+    <property name="reportService"
+      ref="org.hisp.dhis.report.ReportService"/>
     <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/>
     <property name="organisationUnitService"
@@ -62,7 +64,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- Design -->
 
   <bean id="org.hisp.dhis.design.DesignStore"
-    class="org.hisp.dhis.design.hibernate.HibernateDesignStore">
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.design.Design"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 
@@ -75,8 +78,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- Report -->
   
   <bean id="org.hisp.dhis.report.ReportStore"
-    class="org.hisp.dhis.report.hibernate.HibernateReportStore">
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.report.Report"/>
     <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.report.ReportService"
+    class="org.hisp.dhis.report.impl.DefaultReportService">
+    <property name="reportStore"
+      ref="org.hisp.dhis.report.ReportStore"/>
   </bean>
   
   <bean id="org.hisp.dhis.report.ReportManager"
@@ -96,6 +106,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.chart.ChartStore"
     class="org.hisp.dhis.chart.hibernate.HibernateChartStore">
+    <property name="clazz" value="org.hisp.dhis.chart.Chart"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
@@ -111,6 +122,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
   <bean id="org.hisp.dhis.document.DocumentStore"
     class="org.hisp.dhis.document.hibernate.HibernateDocumentStore">
+    <property name="clazz" value="org.hisp.dhis.document.Document"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
@@ -208,15 +220,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <!-- Dashboard -->
       	
-  <bean id="org.hisp.dhis.dashboard.DashboardStore"
-    class="org.hisp.dhis.dashboard.hibernate.HibernateDashboardStore">
+  <bean id="org.hisp.dhis.dashboard.DashboardContentStore"
+    class="org.hisp.dhis.dashboard.hibernate.HibernateDashboardContentStore">
+    <property name="clazz" value="org.hisp.dhis.dashboard.DashboardContent"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
   <bean id="org.hisp.dhis.dashboard.DashboardService"
     class="org.hisp.dhis.dashboard.impl.DefaultDashboardService">
-    <property name="dashboardStore"
-      ref="org.hisp.dhis.dashboard.DashboardStore"/>
+    <property name="dashboardContentStore"
+      ref="org.hisp.dhis.dashboard.DashboardContentStore"/>
   </bean>
       	
   <!-- AOP statement definitions -->
@@ -262,8 +275,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.report.ReportDeletionHandler"
     class="org.hisp.dhis.report.ReportDeletionHandler">
-    <property name="reportStore"
-      ref="org.hisp.dhis.report.ReportStore"/>
+    <property name="reportService"
+      ref="org.hisp.dhis.report.ReportService"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporttable.ReportTableDeletionHandler"

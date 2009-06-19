@@ -27,27 +27,32 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableStore;
+import org.hisp.dhis.reporttable.ReportTableService;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@SuppressWarnings( "unchecked" )
 public class ReportStoreTest
     extends DhisSpringTest
 {
-    private ReportStore reportStore;
+    private GenericStore<Report> reportStore;
     
-    private ReportTableStore reportTableStore;
+    private ReportTableService reportTableService;
     
     private ReportTable reportTableA;
     
@@ -60,16 +65,16 @@ public class ReportStoreTest
     @Override
     public void setUpTest()
     {
-        reportStore = (ReportStore) getBean( ReportStore.ID );
+        reportStore = (GenericStore<Report>) getBean( "org.hisp.dhis.report.ReportStore" );
         
-        reportTableStore = (ReportTableStore) getBean( ReportTableStore.ID );
+        reportTableService = (ReportTableService) getBean( ReportTableService.ID );
         
         reportTableA = new ReportTable( "ReportTableA", "ReportTableA" );
 
         reportTables = new HashSet<ReportTable>();
         reportTables.add( reportTableA );
         
-        reportTableStore.saveReportTable( reportTableA );
+        reportTableService.saveReportTable( reportTableA );
     }
 
     // -------------------------------------------------------------------------
@@ -82,11 +87,11 @@ public class ReportStoreTest
         Report reportA = new Report( "ReportA", "DesignA", reportTables );
         Report reportB = new Report( "ReportB", "DesignB", reportTables );
         
-        int idA = reportStore.saveReport( reportA );
-        int idB = reportStore.saveReport( reportB );
+        int idA = reportStore.save( reportA );
+        int idB = reportStore.save( reportB );
         
-        assertEquals( reportA, reportStore.getReport( idA ) );
-        assertEquals( reportB, reportStore.getReport( idB ) );
+        assertEquals( reportA, reportStore.get( idA ) );
+        assertEquals( reportB, reportStore.get( idB ) );
     }
 
     @Test
@@ -95,23 +100,23 @@ public class ReportStoreTest
         Report reportA = new Report( "ReportA", "DesignA", reportTables );
         Report reportB = new Report( "ReportB", "DesignB", reportTables );
         
-        int idA = reportStore.saveReport( reportA );
-        int idB = reportStore.saveReport( reportB );
+        int idA = reportStore.save( reportA );
+        int idB = reportStore.save( reportB );
         
-        assertEquals( reportA, reportStore.getReport( idA ) );
-        assertEquals( reportB, reportStore.getReport( idB ) );
+        assertEquals( reportA, reportStore.get( idA ) );
+        assertEquals( reportB, reportStore.get( idB ) );
         
         reportA.setDesign( "UpdatedDesignA" );
         reportB.setDesign( "UpdatedDesignB" );
         
-        int updatedIdA = reportStore.saveReport( reportA );
-        int updatedIdB = reportStore.saveReport( reportB );
+        int updatedIdA = reportStore.save( reportA );
+        int updatedIdB = reportStore.save( reportB );
         
         assertEquals( idA, updatedIdA );
         assertEquals( idB, updatedIdB );
         
-        assertEquals( "UpdatedDesignA", reportStore.getReport( updatedIdA ).getDesign() );
-        assertEquals( "UpdatedDesignB", reportStore.getReport( updatedIdB ).getDesign() );
+        assertEquals( "UpdatedDesignA", reportStore.get( updatedIdA ).getDesign() );
+        assertEquals( "UpdatedDesignB", reportStore.get( updatedIdB ).getDesign() );
     }
 
     @Test
@@ -120,21 +125,21 @@ public class ReportStoreTest
         Report reportA = new Report( "ReportA", "DesignA", reportTables );
         Report reportB = new Report( "ReportB", "DesignB", reportTables );
         
-        int idA = reportStore.saveReport( reportA );
-        int idB = reportStore.saveReport( reportB );
+        int idA = reportStore.save( reportA );
+        int idB = reportStore.save( reportB );
         
-        assertNotNull( reportStore.getReport( idA ) );
-        assertNotNull( reportStore.getReport( idB ) );
+        assertNotNull( reportStore.get( idA ) );
+        assertNotNull( reportStore.get( idB ) );
         
-        reportStore.deleteReport( reportA );
+        reportStore.delete( reportA );
 
-        assertNull( reportStore.getReport( idA ) );
-        assertNotNull( reportStore.getReport( idB ) );
+        assertNull( reportStore.get( idA ) );
+        assertNotNull( reportStore.get( idB ) );
 
-        reportStore.deleteReport( reportB );
+        reportStore.delete( reportB );
 
-        assertNull( reportStore.getReport( idA ) );
-        assertNull( reportStore.getReport( idB ) );
+        assertNull( reportStore.get( idA ) );
+        assertNull( reportStore.get( idB ) );
     }
 
     @Test
@@ -143,10 +148,10 @@ public class ReportStoreTest
         Report reportA = new Report( "ReportA", "DesignA", reportTables );
         Report reportB = new Report( "ReportB", "DesignB", reportTables );
         
-        reportStore.saveReport( reportA );
-        reportStore.saveReport( reportB );
+        reportStore.save( reportA );
+        reportStore.save( reportB );
         
-        Collection<Report> reports = reportStore.getAllReports();
+        Collection<Report> reports = reportStore.getAll();
         
         assertNotNull( reports );
         assertEquals( 2, reports.size() );

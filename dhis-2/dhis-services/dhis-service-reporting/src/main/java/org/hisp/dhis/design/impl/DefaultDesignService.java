@@ -29,9 +29,9 @@ package org.hisp.dhis.design.impl;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.design.Design;
 import org.hisp.dhis.design.DesignService;
-import org.hisp.dhis.design.DesignStore;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -46,9 +46,9 @@ implements DesignService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DesignStore designStore;
+    private GenericStore<Design> designStore;
 
-    public void setDesignStore( DesignStore designStore )
+    public void setDesignStore( GenericStore<Design> designStore )
     {
         this.designStore = designStore;
     }
@@ -59,26 +59,26 @@ implements DesignService
 
     public int saveDesign( Design design )
     {
-        return designStore.saveDesign( design );
+        return designStore.save( design );
     }
     
     public void updateDesign( Design reportTemplate )
     {
-        designStore.updateDesign( reportTemplate );
+        designStore.update( reportTemplate );
     }
     
     public Design getDesign( int id )
     {
-        return designStore.getDesign( id );
+        return designStore.get( id );
     }
     
     public void deleteDesign( Design design )
     {
-        designStore.deleteDesign( design );
+        designStore.delete( design );
     }
     
     public Collection<Design> getAllDesigns()
     {
-        return designStore.getAllDesigns();
+        return designStore.getAll();
     }
 }

@@ -147,15 +147,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="i18nService"
       ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
-  
-	<bean id="org.hisp.dhis.indicator.IndicatorService"
-		class="org.hisp.dhis.indicator.DefaultIndicatorService">
-    <property name="indicatorStore"
-      ref="org.hisp.dhis.indicator.IndicatorStore"/>
-    <property name="i18nService"
-      ref="org.hisp.dhis.i18n.I18nService"/>
-	</bean>
-	
+ 
+  <bean id="org.hisp.dhis.indicator.IndicatorService"
+	class="org.hisp.dhis.indicator.DefaultIndicatorService">
+   <property name="indicatorStore"
+     ref="org.hisp.dhis.indicator.IndicatorStore"/>
+   <property name="i18nService"
+     ref="org.hisp.dhis.i18n.I18nService"/>
+  </bean>
+
   <bean id="org.hisp.dhis.period.PeriodService"
     class="org.hisp.dhis.period.DefaultPeriodService">
     <property name="periodStore"
@@ -178,7 +178,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationStore"/>
   </bean>
   
-	<bean id="org.hisp.dhis.dataset.SectionService"
+  <bean id="org.hisp.dhis.dataset.SectionService"
     class="org.hisp.dhis.dataset.DefaultSectionService">
     <property name="sectionStore"
       ref="org.hisp.dhis.dataset.SectionStore"/>

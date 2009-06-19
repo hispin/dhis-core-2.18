@@ -41,11 +41,11 @@ public class ReportDeletionHandler
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ReportStore reportStore;
+    private ReportService reportService;
 
-    public void setReportStore( ReportStore reportStore )
+    public void setReportService( ReportService reportService )
     {
-        this.reportStore = reportStore;
+        this.reportService = reportService;
     }
 
     // -------------------------------------------------------------------------
@@ -60,13 +60,13 @@ public class ReportDeletionHandler
     @Override
     public void deleteReportTable( ReportTable reportTable )
     {
-        for ( Report report : reportStore.getAllReports() )
+        for ( Report report : reportService.getAllReports() )
         {
             for ( ReportTable table : report.getReportTables() )
             {
                 if ( table.equals( reportTable ) )
                 {
-                    reportStore.deleteReport( report );
+                    reportService.deleteReport( report );
                 }
             }
         }

@@ -28,7 +28,7 @@ package org.hisp.dhis.reporting.reportviewer.action;
  */
 
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportStore;
+import org.hisp.dhis.report.ReportService;
 
 import com.opensymphony.xwork.Action;
 
@@ -43,11 +43,11 @@ public class GetReportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ReportStore reportStore;
+    private ReportService reportService;
 
-    public void setReportStore( ReportStore reportStore )
+    public void setReportService( ReportService reportService )
     {
-        this.reportStore = reportStore;
+        this.reportService = reportService;
     }
 
     // -------------------------------------------------------------------------
@@ -80,7 +80,7 @@ public class GetReportAction
     {
         if ( id != null )
         {
-            report = reportStore.getReport( id );
+            report = reportService.getReport( id );
         }
         
         return SUCCESS;

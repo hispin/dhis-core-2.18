@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportManager;
-import org.hisp.dhis.report.ReportStore;
+import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.report.manager.ReportConfiguration;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
@@ -66,12 +66,12 @@ public class AddReportAction
         this.reportManager = reportManager;
     }
     
-    private ReportStore reportStore;
+    private ReportService reportService;
 
-    public void setReportStore( ReportStore reportStore )
+    public void setReportService( ReportService reportService )
     {
-        this.reportStore = reportStore;
-    }    
+        this.reportService = reportService;
+    }
 
     private ReportTableService reportTableService;
 
@@ -220,14 +220,14 @@ public class AddReportAction
         // Create and save report
         // ---------------------------------------------------------------------
 
-        Report report = ( id == null ) ? new Report() : reportStore.getReport( id );
+        Report report = ( id == null ) ? new Report() : reportService.getReport( id );
         
         report.setName( name );
         report.setDesign( fileName );
         report.setReportTables( selectedReportTables != null ? new CollectionConversionUtils<ReportTable>().getSet( 
             reportTableService.getReportTables( ConversionUtils.getIntegerCollection( selectedReportTables ) ) ) : null );
         
-        reportStore.saveReport( report );
+        reportService.saveReport( report );
         
         return SUCCESS;
     }

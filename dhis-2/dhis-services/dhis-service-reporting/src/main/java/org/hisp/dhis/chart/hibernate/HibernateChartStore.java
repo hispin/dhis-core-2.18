@@ -27,66 +27,20 @@ package org.hisp.dhis.chart.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
-import org.hibernate.Criteria;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartStore;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class HibernateChartStore
-    implements ChartStore
+    extends HibernateGenericStore<Chart> implements ChartStore
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
+    public Chart getByTitle( String title )
     {
-        this.sessionFactory = sessionFactory;
-    }
-
-    // -------------------------------------------------------------------------
-    // ChartStore implementation
-    // -------------------------------------------------------------------------
-
-    public int saveChart( Chart chart )
-    {
-        return (Integer) sessionFactory.getCurrentSession().save( chart );
-    }
-    
-    public void saveOrUpdate( Chart chart )
-    {
-        sessionFactory.getCurrentSession().saveOrUpdate( chart );
-    }
-    
-    public Chart getChart( int id )
-    {
-        return (Chart) sessionFactory.getCurrentSession().get( Chart.class, id );
-    }
-    
-    public void deleteChart( Chart chart )
-    {
-        sessionFactory.getCurrentSession().delete( chart );
-    }
-    
-    @SuppressWarnings( "unchecked" )
-    public Collection<Chart> getAllCharts()
-    {
-        return sessionFactory.getCurrentSession().createCriteria( Chart.class ).list();
-    }
-    
-    public Chart getChartByTitle( String title )
-    {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( Chart.class );
-        criteria.add( Restrictions.eq( "title", title ) );
-        return (Chart) criteria.uniqueResult();
+        return getObject( Restrictions.eq( "title", title ) );
     }
 }

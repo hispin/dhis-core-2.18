@@ -41,7 +41,7 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportStore;
+import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportParams;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
@@ -69,14 +69,14 @@ public class GetReportParamsAction
     {
         this.reportTableService = reportTableService;
     }
-    
-    private ReportStore reportStore;
 
-    public void setReportStore( ReportStore reportStore )
+    private ReportService reportService;
+
+    public void setReportService( ReportService reportService )
     {
-        this.reportStore = reportStore;
+        this.reportService = reportService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -236,7 +236,7 @@ public class GetReportParamsAction
         }
         else if ( mode.equals( MODE_REPORT ) )
         {
-            Report report = reportStore.getReport( id );
+            Report report = reportService.getReport( id );
             
             for ( ReportTable reportTable : report.getReportTables() )
             {                

@@ -1,5 +1,7 @@
 package org.hisp.dhis.olap;
 
+import org.hisp.dhis.common.GenericStore;
+
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -27,25 +29,15 @@ package org.hisp.dhis.olap;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public interface OlapURLStore
+    extends GenericStore<OlapURL>
 {
     String ID = OlapURLStore.class.getName();
     
-    int saveOlapURL( OlapURL olapURL );
-    
-    void updateOlapURL( OlapURL olapURL );
-    
-    OlapURL getOlapURL( int id );
-    
-    void deleteOlapURL( OlapURL olapURL );
-    
-    Collection<OlapURL> getAllOlapURLs();
-    
-    OlapURL getOlapURLByName( String name );
+    OlapURL getByName( String name );
 }

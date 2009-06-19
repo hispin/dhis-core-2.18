@@ -27,12 +27,8 @@ package org.hisp.dhis.reporttable.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableStore;
 
@@ -41,56 +37,10 @@ import org.hisp.dhis.reporttable.ReportTableStore;
  * @version $Id$
  */
 public class HibernateReportTableStore
-    implements ReportTableStore
-{
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
+    extends HibernateGenericStore<ReportTable> implements ReportTableStore
+{   
+    public ReportTable getByName( String name )
     {
-        this.sessionFactory = sessionFactory;
-    }
-
-    // -------------------------------------------------------------------------
-    // ReportTableStore implementation
-    // -------------------------------------------------------------------------
-
-    public int saveReportTable( ReportTable reportTable )
-    {
-        return (Integer) sessionFactory.getCurrentSession().save( reportTable );
-    }
-    
-    public void updateReportTable( ReportTable reportTable )
-    {
-        sessionFactory.getCurrentSession().update( reportTable );
-    }
-
-    public void deleteReportTable( ReportTable reportTable )
-    {
-        sessionFactory.getCurrentSession().delete( reportTable );
-    }
-    
-    public ReportTable getReportTable( int id )
-    {
-        return (ReportTable) sessionFactory.getCurrentSession().get( ReportTable.class, id );
-    }
-    
-    @SuppressWarnings( "unchecked" )
-    public Collection<ReportTable> getAllReportTables()
-    {
-        return sessionFactory.getCurrentSession().createCriteria( ReportTable.class ).list();
-    }
-    
-    public ReportTable getReportTableByName( String name )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        
-        Criteria criteria = session.createCriteria( ReportTable.class );        
-        criteria.add( Restrictions.eq( "name", name ) );
-        
-        return (ReportTable) criteria.uniqueResult();
+        return getObject( Restrictions.eq( "name", name ) );
     }
 }

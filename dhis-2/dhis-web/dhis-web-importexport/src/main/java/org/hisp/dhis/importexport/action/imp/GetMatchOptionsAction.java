@@ -38,7 +38,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.reporttable.ReportTableStore;
+import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.validation.ValidationRuleService;
 
 import com.opensymphony.xwork.ActionSupport;
@@ -156,11 +156,11 @@ public class GetMatchOptionsAction
         this.validationRuleService = validationRuleService;
     }
     
-    private ReportTableStore reportTableStore;
+    private ReportTableService reportTableService;
 
-    public void setReportTableStore( ReportTableStore reportTableStore )
+    public void setReportTableService( ReportTableService reportTableService )
     {
-        this.reportTableStore = reportTableStore;
+        this.reportTableService = reportTableService;
     }
     
     private OlapURLService olapURLService;
@@ -233,7 +233,7 @@ public class GetMatchOptionsAction
         }
         else if ( objectType.equals( ClassMapUtil.ObjectType.REPORTTABLE.name() ) )
         {
-            objects = reportTableStore.getAllReportTables();
+            objects = reportTableService.getAllReportTables();
         }
         else if ( objectType.equals( ClassMapUtil.ObjectType.OLAPURL.name() ) )
         {
