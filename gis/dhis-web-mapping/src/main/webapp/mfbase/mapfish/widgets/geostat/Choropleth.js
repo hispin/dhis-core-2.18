@@ -752,7 +752,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             URL = this.newUrl;
             this.newUrl = false;
             this.setUrl('geojson/' + URL);
-            //this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + URL + '&outputformat=json&version=1.0.0');
+            //this.setUrl(path + 'getPointShapefile.action?level=4');
+            //this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=sl:districts&outputformat=json&version=1.0.0');
+            
+            //this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + URL + 'sl:districts&outputformat=json&version=1.0.0');
         }
                 
         if (!Ext.getCmp('indicator_cb').getValue() ||

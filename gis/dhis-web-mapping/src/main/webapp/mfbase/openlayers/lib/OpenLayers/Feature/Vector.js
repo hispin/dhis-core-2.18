@@ -332,11 +332,11 @@ OpenLayers.Feature.Vector = OpenLayers.Class(OpenLayers.Feature, {
  */ 
 OpenLayers.Feature.Vector.style = {
     'default': {
-        fillColor: "#ee9900",
-        fillOpacity: 0.4, 
+        fillColor: "#eeeeee",
+        fillOpacity: 1, 
         hoverFillColor: "white",
         hoverFillOpacity: 0.8,
-        strokeColor: "#ee9900",
+        strokeColor: "#eeeeee",
         strokeOpacity: 1,
         strokeWidth: 1,
         strokeLinecap: "round",
