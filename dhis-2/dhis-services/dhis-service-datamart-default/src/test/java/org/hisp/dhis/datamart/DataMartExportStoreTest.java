@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericNameStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
@@ -53,10 +54,11 @@ import org.junit.Test;
  * @author Lars Helge Overland
  * @version $Id$
  */
+@SuppressWarnings( "unchecked" )
 public class DataMartExportStoreTest
     extends DhisSpringTest
 {
-    private DataMartExportStore dataMartExportStore;
+    private GenericNameStore<DataMartExport> dataMartExportStore;
     
     private DataMartExport exportA;
     private DataMartExport exportB;
@@ -74,7 +76,7 @@ public class DataMartExportStoreTest
     @Override
     public void setUpTest()
     {
-        dataMartExportStore = (DataMartExportStore) getBean( DataMartExportStore.ID );
+        dataMartExportStore = (GenericNameStore<DataMartExport>) getBean( "org.hisp.dhis.datamart.DataMartExportStore" );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
@@ -141,15 +143,15 @@ public class DataMartExportStoreTest
     @Test
     public void testSaveGet()
     {
-        dataMartExportStore.saveDataMartExport( exportA );
-        dataMartExportStore.saveDataMartExport( exportB );
-        dataMartExportStore.saveDataMartExport( exportC );
+        dataMartExportStore.save( exportA );
+        dataMartExportStore.save( exportB );
+        dataMartExportStore.save( exportC );
         
-        assertEquals( exportA, dataMartExportStore.getDataMartExport( exportA.getId() ) );
-        assertEquals( exportB, dataMartExportStore.getDataMartExport( exportB.getId() ) );
-        assertEquals( exportC, dataMartExportStore.getDataMartExport( exportC.getId() ) );
+        assertEquals( exportA, dataMartExportStore.get( exportA.getId() ) );
+        assertEquals( exportB, dataMartExportStore.get( exportB.getId() ) );
+        assertEquals( exportC, dataMartExportStore.get( exportC.getId() ) );
         
-        DataMartExport export = dataMartExportStore.getDataMartExport( exportA.getId() );
+        DataMartExport export = dataMartExportStore.get( exportA.getId() );
         
         assertEquals( dataElements, export.getDataElements() );
         assertEquals( indicators, export.getIndicators() );
@@ -160,40 +162,40 @@ public class DataMartExportStoreTest
     @Test
     public void testDelete()    
     {
-        dataMartExportStore.saveDataMartExport( exportA );
-        dataMartExportStore.saveDataMartExport( exportB );
-        dataMartExportStore.saveDataMartExport( exportC );
+        dataMartExportStore.save( exportA );
+        dataMartExportStore.save( exportB );
+        dataMartExportStore.save( exportC );
         
-        assertNotNull( dataMartExportStore.getDataMartExport( exportA.getId() ) );
-        assertNotNull( dataMartExportStore.getDataMartExport( exportB.getId() ) );
-        assertNotNull( dataMartExportStore.getDataMartExport( exportC.getId() ) );
+        assertNotNull( dataMartExportStore.get( exportA.getId() ) );
+        assertNotNull( dataMartExportStore.get( exportB.getId() ) );
+        assertNotNull( dataMartExportStore.get( exportC.getId() ) );
         
-        dataMartExportStore.deleteDataMartExport( exportA );
+        dataMartExportStore.delete( exportA );
         
-        assertNull( dataMartExportStore.getDataMartExport( exportA.getId() ) );
-        assertNotNull( dataMartExportStore.getDataMartExport( exportB.getId() ) );
-        assertNotNull( dataMartExportStore.getDataMartExport( exportC.getId() ) );
+        assertNull( dataMartExportStore.get( exportA.getId() ) );
+        assertNotNull( dataMartExportStore.get( exportB.getId() ) );
+        assertNotNull( dataMartExportStore.get( exportC.getId() ) );
 
-        dataMartExportStore.deleteDataMartExport( exportB );
+        dataMartExportStore.delete( exportB );
         
-        assertNull( dataMartExportStore.getDataMartExport( exportA.getId() ) );
-        assertNull( dataMartExportStore.getDataMartExport( exportB.getId() ) );
-        assertNotNull( dataMartExportStore.getDataMartExport( exportC.getId() ) );        
+        assertNull( dataMartExportStore.get( exportA.getId() ) );
+        assertNull( dataMartExportStore.get( exportB.getId() ) );
+        assertNotNull( dataMartExportStore.get( exportC.getId() ) );        
     }
 
     @Test
     public void testGetAll()
     {
-        dataMartExportStore.saveDataMartExport( exportA );
-        dataMartExportStore.saveDataMartExport( exportB );
-        dataMartExportStore.saveDataMartExport( exportC );
+        dataMartExportStore.save( exportA );
+        dataMartExportStore.save( exportB );
+        dataMartExportStore.save( exportC );
         
         Collection<DataMartExport> expected = new ArrayList<DataMartExport>();
         expected.add( exportA );
         expected.add( exportB );
         expected.add( exportC );
         
-        Collection<DataMartExport> actual = dataMartExportStore.getAllDataMartExports();
+        Collection<DataMartExport> actual = dataMartExportStore.getAll();
         
         assertEquals( expected, actual );
     }
@@ -201,11 +203,11 @@ public class DataMartExportStoreTest
     @Test
     public void testGetByName()
     {
-        dataMartExportStore.saveDataMartExport( exportA );
-        dataMartExportStore.saveDataMartExport( exportB );
-        dataMartExportStore.saveDataMartExport( exportC );
+        dataMartExportStore.save( exportA );
+        dataMartExportStore.save( exportB );
+        dataMartExportStore.save( exportC );
         
-        DataMartExport actualA = dataMartExportStore.getDataMartExportByName( exportA.getName() );
+        DataMartExport actualA = dataMartExportStore.getByName( exportA.getName() );
         
         assertEquals( exportA, actualA );
     }

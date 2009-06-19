@@ -7,7 +7,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- DataMartExportStore -->
   
   <bean id="org.hisp.dhis.datamart.DataMartExportStore"
-    class="org.hisp.dhis.datamart.hibernate.HibernateDataMartExportStore">    
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.datamart.DataMartExport"/>   
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   

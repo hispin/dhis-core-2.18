@@ -7,7 +7,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- OLAP -->
   
   <bean id="org.hisp.dhis.olap.OlapURLStore"
-    class="org.hisp.dhis.olap.hibernate.HibernateOlapURLStore">
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="clazz" value="org.hisp.dhis.olap.OlapURL"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
@@ -35,7 +35,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="org.hisp.dhis.reporttable.ReportTableStore"
-    class="org.hisp.dhis.reporttable.hibernate.HibernateReportTableStore">
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="clazz" value="org.hisp.dhis.reporttable.ReportTable"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
@@ -121,7 +121,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- Document -->
     
   <bean id="org.hisp.dhis.document.DocumentStore"
-    class="org.hisp.dhis.document.hibernate.HibernateDocumentStore">
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="clazz" value="org.hisp.dhis.document.Document"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>

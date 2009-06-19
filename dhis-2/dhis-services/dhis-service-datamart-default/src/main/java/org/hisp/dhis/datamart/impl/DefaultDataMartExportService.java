@@ -29,9 +29,9 @@ package org.hisp.dhis.datamart.impl;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericNameStore;
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.DataMartExportService;
-import org.hisp.dhis.datamart.DataMartExportStore;
 
 /**
  * @author Lars Helge Overland
@@ -44,9 +44,9 @@ public class DefaultDataMartExportService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataMartExportStore dataMartExportStore;
+    private GenericNameStore<DataMartExport> dataMartExportStore;
 
-    public void setDataMartExportStore( DataMartExportStore dataMartExportStore )
+    public void setDataMartExportStore( GenericNameStore<DataMartExport> dataMartExportStore )
     {
         this.dataMartExportStore = dataMartExportStore;
     }
@@ -57,26 +57,26 @@ public class DefaultDataMartExportService
 
     public void saveDataMartExport( DataMartExport export )
     {
-        dataMartExportStore.saveDataMartExport( export );
+        dataMartExportStore.save( export );
     }
     
     public void deleteDataMartExport( DataMartExport export )
     {
-        dataMartExportStore.deleteDataMartExport( export );
+        dataMartExportStore.delete( export );
     }
 
     public DataMartExport getDataMartExport( int id )
     {
-        return dataMartExportStore.getDataMartExport( id );
+        return dataMartExportStore.get( id );
     }
 
     public Collection<DataMartExport> getAllDataMartExports()
     {
-        return dataMartExportStore.getAllDataMartExports();
+        return dataMartExportStore.getAll();
     }
     
     public DataMartExport getDataMartExportByName( String name )
     {
-        return dataMartExportStore.getDataMartExportByName( name );
+        return dataMartExportStore.getByName( name );
     }
 }

@@ -35,16 +35,18 @@ import static junit.framework.Assert.assertTrue;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericNameStore;
 import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@SuppressWarnings( "unchecked" )
 public class OlapURLStoreTest
     extends DhisSpringTest
 {
-    private OlapURLStore olapURLStore;
+    private GenericNameStore<OlapURL> olapURLStore;
     
     // -------------------------------------------------------------------------
     // Fixture
@@ -53,7 +55,7 @@ public class OlapURLStoreTest
     @Override
     public void setUpTest()
     {
-        olapURLStore = (OlapURLStore) getBean( OlapURLStore.ID );
+        olapURLStore = (GenericNameStore<OlapURL>) getBean( "org.hisp.dhis.olap.OlapURLStore" );
     }
     
     // -------------------------------------------------------------------------
