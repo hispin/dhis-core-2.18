@@ -380,7 +380,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
             URL = this.newUrl;
             this.newUrl = false;
             this.setUrl('geojson/' + URL);
-            //this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + URL + '&outputformat=json&version=1.0.0');
+            //this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=sl:districts&outputformat=json&version=1.0.0');
         }
         
         if (!Ext.getCmp('maps_cb').getValue()) {
@@ -400,8 +400,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
     onRender: function(ct, position) {
         mapfish.widgets.geostat.Choropleth.superclass.onRender.apply(this, arguments);
         if(this.loadMask){
-            this.loadMask = new Ext.LoadMask(this.bwrap,
-                    this.loadMask);
+            this.loadMask = new Ext.LoadMask(this.bwrap, this.loadMask);
             this.loadMask.show();
         }
 

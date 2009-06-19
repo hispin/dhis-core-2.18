@@ -89,46 +89,47 @@ Ext.onReady(function()
         if (name.length > 25) { return false; }
         else { return true; }
     }
-    
-    var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
+
+/*    var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
                                            "http://labs.metacarta.com/wms-c/Basic.py?", 
-                                           {layers: 'satellite', format: 'image/png'});
-                                     
+                                           {layers: 'satellite', format: 'image/png'});*/
+
     var vmap0 = new OpenLayers.Layer.WMS("OpenLayers WMS",
                                            "http://labs.metacarta.com/wms/vmap0", 
                                            {layers: 'basic'});
+                                           
+    var local_wfs = new OpenLayers.Layer.WMS("Africa",
+                                             "../../../geoserver/wfs?", 
+                                             {layers: 'world:africa'});
                                    
-    var choroplethLayer = new OpenLayers.Layer.Vector(choroplethLayerName, {
-        'visibility': false,
+    var choroplethLayer = new OpenLayers.Layer.Vector(CHOROPLETH_LAYERNAME, {
+        'visibility': true,
         'styleMap': new OpenLayers.StyleMap({
             'default': new OpenLayers.Style(
                 OpenLayers.Util.applyDefaults(
-                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'opacity': 0.6},
+                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1},
                     OpenLayers.Feature.Vector.style['default']
                 )
             ),
             'select': new OpenLayers.Style(
-                {'fillOpacity': 1, 'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+                {'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
             )
         })
     });
-
-    var propSymbolLayer = new OpenLayers.Layer.Vector(propSymbolLayerName, {
+    
+    var static1Layer = new OpenLayers.Layer.Vector(STATIC1_LAYERNAME, {
         'visibility': false,
         'styleMap': new OpenLayers.StyleMap({
             'default': new OpenLayers.Style(
                 OpenLayers.Util.applyDefaults(
-                    {'fillOpacity': 0.6, 'fillColor': 'Khaki', 'strokeWidth': 1, 'strokeColor': '#222222' },
+                    {'fillOpacity': 1, 'strokeWidth': 1, 'strokeColor': '#000000', 'strokeOpacity': 1 },
                     OpenLayers.Feature.Vector.style['default']
                 )
-            ),
-            'select': new OpenLayers.Style(
-                {'strokeWidth': 2, 'strokeColor': '#000000', 'cursor': 'pointer'}
             )
         })
     });
-
-    map.addLayers([vmap0, jpl_wms, choroplethLayer]);
+    
+    map.addLayers([ local_wfs, vmap0, choroplethLayer, static1Layer ]);
 
     var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
         choroplethLayer,
@@ -139,20 +140,13 @@ Ext.onReady(function()
             onHoverUnselect: onHoverUnselectChoropleth
         }
     );
-
-    var selectFeaturePoint = new OpenLayers.Control.newSelectFeature( propSymbolLayer,
-        {onClickSelect: onClickSelectPoint, onClickUnselect: onClickUnselectPoint,
-        onHoverSelect: onHoverSelectPoint, onHoverUnselect: onHoverUnselectPoint }
-    );
-
-    map.addControl(selectFeatureChoropleth);
-    map.addControl(selectFeaturePoint);
-    selectFeatureChoropleth.activate();
-    selectFeaturePoint.activate();
-
-    map.setCenter(new OpenLayers.LonLat(init_longitude, init_latitude), init_zoom); // config.js
     
-    // SHAPEFILE PANEL
+    map.addControl(selectFeatureChoropleth);
+    selectFeatureChoropleth.activate();
+
+    map.setCenter(new OpenLayers.LonLat(init_longitude, init_latitude), init_zoom);
+    
+    // REGISTER SHAPEFILE PANEL
     
     var organisationUnitLevelStore = new Ext.data.JsonStore({
         url: path + 'getOrganisationUnitLevels' + type,
@@ -1370,10 +1364,6 @@ Ext.onReady(function()
         ]
     });
     
-    
-  
-    
-    // create choropleth widget
     choropleth = new mapfish.widgets.geostat.Choropleth({
         id: 'choropleth',
         map: map,
@@ -1381,7 +1371,7 @@ Ext.onReady(function()
         title: 'Thematic map',
         nameAttribute: "NAME",
         indicators: [['value', 'Indicator']],
-        url: 'geojson/init',
+        url: INIT_URL,
         featureSelection: false,
         loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
         legendDiv: 'choroplethLegend',
@@ -1406,7 +1396,7 @@ Ext.onReady(function()
         title: 'Assign organisation units',
         nameAttribute: 'NAME',
         indicators: [['value', 'Indicator']],
-        url: 'geojson/init',
+        url: INIT_URL,
         featureSelection: false,
         loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
         legendDiv: 'choroplethLegend',
@@ -1422,34 +1412,31 @@ Ext.onReady(function()
             }
         }
     });
-/*
-    propSymbol = new mapfish.widgets.geostat.ProportionalSymbol({
-        id: 'propsymbol',
+    
+    static1 = new mapfish.widgets.geostat.Static({
+        id: 'static1',
         map: map,
-        layer: propSymbolLayer,
-        title: 'Proportional symbol',
-        nameAttribute: "ouname",
+        layer: static1Layer,
+        title: STATIC1_LAYERNAME,
+        nameAttribute: 'NAME',
         indicators: [['value', 'Indicator']],
-        url: 'geojson/sl_facilities',
+        url: STATIC1_URL,
+        //url: INIT_URL,
         featureSelection: false,
-        loadMask : {msg: 'Loading Data...', msgCls: 'x-mask-loading'},
+        loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
+        legendDiv: 'choroplethLegend',
         defaults: {width: 130},
         listeners: {
             expand: {
-                fn: function()
-                {
-                    if (this.classificationApplied)
-                    {
-                        this.layer.setVisibility(true);
-                    }
-                    
-                    ACTIVEPANEL = 'point';
-                }
+                fn: function() {}
             }
         }
     });
-*/    
+    
+    static1.hide();
+
     viewport = new Ext.Viewport({
+        id: 'viewport',
         layout: 'border',
         items:
         [
@@ -1478,6 +1465,7 @@ Ext.onReady(function()
             
             {
                 region: 'east',
+                id: 'east',
                 title: ' ',
                 width: 200,
                 collapsible: true,
@@ -1491,6 +1479,7 @@ Ext.onReady(function()
                 [
                     {
                         title: 'Layers',
+                        id: 'layertree',
                         autoHeight: true,
                         xtype: 'layertree',
                         map: map,
@@ -1539,11 +1528,11 @@ Ext.onReady(function()
                 items:
                 [
                     choropleth,
-                    //propSymbol,
                     mapping,
                     shapefilePanel,
                     legendsetPanel,
-                    viewPanel
+                    viewPanel,
+                    static1
                 ]
             },
             
@@ -1569,8 +1558,27 @@ Ext.onReady(function()
 
     map.addControl(new OpenLayers.Control.OverviewMap({div: $('overviewmap')}));
     
-    Ext.get('loading').fadeOut({remove: true});
-   
+    map.events.on(
+    {
+        changelayer: function(e)
+        {
+            if (e.property == 'visibility' && e.layer == static1Layer)
+            {
+                if (static1Layer.visibility)
+                {
+alert("deactivate");                
+                    selectFeatureChoropleth.deactivate();
+                }
+                else
+                {
+alert("activate");                  
+                    selectFeatureChoropleth.activate();
+                }
+            }
+        }
+    });  
+    
+    Ext.get('loading').fadeOut({remove: true});   
 });
 
 // SELECT FEATURES
@@ -1666,23 +1674,6 @@ function onClickSelectChoropleth(feature)
 function onClickUnselectChoropleth(feature) {}
 
 
-function onHoverSelectPoint(feature) {}
-
-function onHoverUnselectPoint(feature)
-{
-/*
-    var infoPanel_orgunit = Ext.getCmp('south-panel');
-    infoPanel_orgunit.body.dom.innerHTML = '';
-
-    popup_orgunit.hide();
-*/    
-}
-
-function onClickSelectPoint(feature) {}
-
-function onClickUnselectPoint(feature) {}
-
-
 // MAP DATA
 
 function loadMapData(redirect)
@@ -1741,7 +1732,7 @@ function getChoroplethData()
 
 function dataReceivedChoropleth( responseText )
 {
-    var layers = this.myMap.getLayersByName(choroplethLayerName);
+    var layers = this.myMap.getLayersByName(CHOROPLETH_LAYERNAME);
     var features = layers[0]['features'];
     
     var mapvalues = Ext.util.JSON.decode(responseText).mapvalues;
@@ -1919,7 +1910,7 @@ function getAssignOrganisationUnitData()
 
 function dataReceivedAssignOrganisationUnit( responseText )
 {
-    var layers = this.myMap.getLayersByName(choroplethLayerName);
+    var layers = this.myMap.getLayersByName(CHOROPLETH_LAYERNAME);
     features = layers[0]['features'];
     
     var relations = Ext.util.JSON.decode(responseText).mapOrganisationUnitRelations;
@@ -1988,7 +1979,7 @@ function getAutoAssignOrganisationUnitData()
 
 function dataReceivedAutoAssignOrganisationUnit( responseText )
 {
-    var layers = this.myMap.getLayersByName(choroplethLayerName);
+    var layers = this.myMap.getLayersByName(CHOROPLETH_LAYERNAME);
     var features = layers[0]['features'];
     var organisationUnits = Ext.util.JSON.decode(responseText).organisationUnits;
     var uniqueColumn = MAPDATA.uniqueColumn;

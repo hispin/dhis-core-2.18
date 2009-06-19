@@ -4,13 +4,18 @@ path = '../../dhis-web-mapping/';
 type = '.action';
 
 // MAP
-init_longitude = 0;
+init_longitude = 15;
 init_latitude = 0;
 init_zoom = 3;
 
-// LAYER NAMES
-choroplethLayerName = "Choropleth";
-propSymbolLayerName = "Proportional Symbol";
+// LAYERS/WIDGETS/URLS
+INIT_URL = 'geojson/init';
+
+CHOROPLETH_LAYERNAME = 'Thematic map';
+
+
+STATIC1_LAYERNAME = 'Main roads';
+STATIC1_URL = 'geojson/sl_mainroadz';
 
 // LAYOUT
 west_width = 270; // viewport west
