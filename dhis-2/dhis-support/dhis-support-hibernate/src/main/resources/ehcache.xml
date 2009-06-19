@@ -60,7 +60,7 @@
     maxElementsInMemory="200"
   />
   
-  <cache name="org.hisp.dhis.i18n.Translation"
+  <cache name="org.hisp.dhis.translation.Translation"
     maxElementsInMemory="6000"
   />
   
