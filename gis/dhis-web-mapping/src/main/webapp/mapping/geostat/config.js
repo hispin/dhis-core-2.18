@@ -15,7 +15,7 @@ CHOROPLETH_LAYERNAME = 'Thematic map';
 
 
 STATIC1_LAYERNAME = 'Main roads';
-STATIC1_URL = 'geojson/sl_mainroadz';
+STATIC1_URL = 'geojson/sl_mainroads';
 
 // LAYOUT
 west_width = 270; // viewport west

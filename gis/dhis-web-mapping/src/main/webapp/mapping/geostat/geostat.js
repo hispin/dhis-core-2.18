@@ -122,7 +122,7 @@ Ext.onReady(function()
         'styleMap': new OpenLayers.StyleMap({
             'default': new OpenLayers.Style(
                 OpenLayers.Util.applyDefaults(
-                    {'fillOpacity': 1, 'strokeWidth': 1, 'strokeColor': '#000000', 'strokeOpacity': 1 },
+                    {'fillOpacity': 1, 'strokeWidth': 2, 'strokeColor': '#000000', 'strokeOpacity': 1 },
                     OpenLayers.Feature.Vector.style['default']
                 )
             )
@@ -1421,7 +1421,6 @@ Ext.onReady(function()
         nameAttribute: 'NAME',
         indicators: [['value', 'Indicator']],
         url: STATIC1_URL,
-        //url: INIT_URL,
         featureSelection: false,
         loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
         legendDiv: 'choroplethLegend',
@@ -1558,20 +1557,18 @@ Ext.onReady(function()
 
     map.addControl(new OpenLayers.Control.OverviewMap({div: $('overviewmap')}));
     
+    map.addControl(new OpenLayers.Control.ZoomBox());
+    
     map.events.on(
     {
         changelayer: function(e)
         {
             if (e.property == 'visibility' && e.layer == static1Layer)
             {
-                if (static1Layer.visibility)
-                {
-alert("deactivate");                
+                if (static1Layer.visibility) {
                     selectFeatureChoropleth.deactivate();
                 }
-                else
-                {
-alert("activate");                  
+                else {
                     selectFeatureChoropleth.activate();
                 }
             }
