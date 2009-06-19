@@ -59,26 +59,26 @@ public class DefaultDocumentService
 
     public int saveDocument( Document document )
     {
-        return documentStore.saveDocument( document );
+        return documentStore.save( document );
     }
 
     public Document getDocument( int id )
     {
-        return documentStore.getDocument( id );
+        return documentStore.get( id );
     }
 
     public void deleteDocument( Document document )
     {
-        documentStore.deleteDocument( document );
+        documentStore.delete( document );
     }
     
     public Collection<Document> getAllDocuments()
     {
-        return documentStore.getAllDocuments();
+        return documentStore.getAll();
     }
 
     public Document getDocumentByName( String name )
     {
-        return documentStore.getDocumentByName( name );
+        return documentStore.getByName( name );
     }
 }

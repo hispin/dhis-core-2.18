@@ -27,23 +27,16 @@ package org.hisp.dhis.options;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import org.hisp.dhis.common.GenericStore;
 
 /**
  * @author Stian Strandli
  * @version $Id: SystemSettingStore.java 4866 2008-04-11 10:40:35Z larshelg $
  */
 public interface SystemSettingStore
+    extends GenericStore<SystemSetting>
 {
     String ID = SystemSettingStore.class.getName();
     
-    void addSystemSetting( SystemSetting setting );
-    
-    void updateSystemSetting( SystemSetting setting );
-
-    void deleteSystemSetting( SystemSetting setting );
-
-    SystemSetting getSystemSetting( String name );
-
-    Collection<SystemSetting> getAllSystemSettings();
+    SystemSetting getByName( String name );
 }

@@ -1,4 +1,4 @@
-package org.hisp.dhis.design.hibernate;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -29,55 +29,63 @@ package org.hisp.dhis.design.hibernate;
 
 import java.util.Collection;
 
-import org.hibernate.SessionFactory;
-import org.hisp.dhis.design.Design;
-import org.hisp.dhis.design.DesignStore;
-
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class HibernateDesignStore
-    implements DesignStore
+public interface GenericStore<T>
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
-
-    // -------------------------------------------------------------------------
-    // DesignStore implementation
-    // -------------------------------------------------------------------------
-
-    public int saveDesign( Design design )
-    {
-        return (Integer) sessionFactory.getCurrentSession().save( design );
-    }
+    /**
+     * Saves the given object instance.
+     * 
+     * @param object the object instance.
+     * @return the generated identifier.
+     */
+    int save( T object );
     
-    public void updateDesign( Design design )
-    {
-        sessionFactory.getCurrentSession().update( design );
-    }
+    /**
+     * Updates the given object instance.
+     * 
+     * @param object the object instance.
+     */
+    void update( T object );
     
-    public Design getDesign( int id )
-    {
-        return (Design) sessionFactory.getCurrentSession().get( Design.class, id );
-    }
+    /**
+     * Saves or updates the given object instance depending on the object's
+     * persistent state.
+     * 
+     * @param object the object instance.
+     */
+    void saveOrUpdate( T object );
     
-    public void deleteDesign( Design design )
-    {
-        sessionFactory.getCurrentSession().delete( design );
-    }
+    /**
+     * Retrieves the object with the given identifier. This method will first
+     * look in the current Session, then hit the database if not existing.
+     * 
+     * @param id the object identifier.
+     * @return the object identified by the given identifier.
+     */
+    T get( int id );
     
-    @SuppressWarnings( "unchecked" )
-    public Collection<Design> getAllDesigns()
-    {
-        return sessionFactory.getCurrentSession().createCriteria( Design.class ).list();
-    }
+    /**
+     * Retrieves the object with the given identifier, assuming it exists.
+     * 
+     * @param id the object identifier.
+     * @return the object identified by the given identifier or a generated proxy.
+     */
+    T load( int id );
+    
+    /**
+     * Retrieves a Collection of all objects.
+     * 
+     * @return a Collection of all objects.
+     */
+    Collection<T> getAll();
+    
+    /**
+     * Removes the given object instance.
+     * 
+     * @param object the object instance to delete.
+     */
+    void delete( T object );
 }

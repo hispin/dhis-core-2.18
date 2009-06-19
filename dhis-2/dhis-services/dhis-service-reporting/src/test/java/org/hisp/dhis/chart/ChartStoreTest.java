@@ -155,60 +155,60 @@ public class ChartStoreTest
     @Test
     public void testSaveGet()
     {
-        int idA = chartStore.saveChart( chartA );
-        int idB = chartStore.saveChart( chartB );
-        int idC = chartStore.saveChart( chartC );
+        int idA = chartStore.save( chartA );
+        int idB = chartStore.save( chartB );
+        int idC = chartStore.save( chartC );
         
-        assertEquals( chartA, chartStore.getChart( idA ) );
-        assertEquals( chartB, chartStore.getChart( idB ) );
-        assertEquals( chartC, chartStore.getChart( idC ) );
+        assertEquals( chartA, chartStore.get( idA ) );
+        assertEquals( chartB, chartStore.get( idB ) );
+        assertEquals( chartC, chartStore.get( idC ) );
         
-        assertTrue( equals( chartStore.getChart( idA ).getIndicators(), indicatorA, indicatorB, indicatorC ) );
-        assertTrue( equals( chartStore.getChart( idA ).getPeriods(), periodA, periodB, periodC ) );
-        assertTrue( equals( chartStore.getChart( idA ).getOrganisationUnits(), unitA, unitB, unitC ) );
+        assertTrue( equals( chartStore.get( idA ).getIndicators(), indicatorA, indicatorB, indicatorC ) );
+        assertTrue( equals( chartStore.get( idA ).getPeriods(), periodA, periodB, periodC ) );
+        assertTrue( equals( chartStore.get( idA ).getOrganisationUnits(), unitA, unitB, unitC ) );
     }
 
     @Test
     public void testDelete()
     {
-        int idA = chartStore.saveChart( chartA );
-        int idB = chartStore.saveChart( chartB );
-        int idC = chartStore.saveChart( chartC );
+        int idA = chartStore.save( chartA );
+        int idB = chartStore.save( chartB );
+        int idC = chartStore.save( chartC );
         
-        assertNotNull( chartStore.getChart( idA ) );
-        assertNotNull( chartStore.getChart( idB ) );
-        assertNotNull( chartStore.getChart( idC ) );
+        assertNotNull( chartStore.get( idA ) );
+        assertNotNull( chartStore.get( idB ) );
+        assertNotNull( chartStore.get( idC ) );
         
-        chartStore.deleteChart( chartA );
+        chartStore.delete( chartA );
 
-        assertNull( chartStore.getChart( idA ) );
-        assertNotNull( chartStore.getChart( idB ) );
-        assertNotNull( chartStore.getChart( idC ) );
+        assertNull( chartStore.get( idA ) );
+        assertNotNull( chartStore.get( idB ) );
+        assertNotNull( chartStore.get( idC ) );
 
-        chartStore.deleteChart( chartB );
+        chartStore.delete( chartB );
 
-        assertNull( chartStore.getChart( idA ) );
-        assertNull( chartStore.getChart( idB ) );
-        assertNotNull( chartStore.getChart( idC ) );        
+        assertNull( chartStore.get( idA ) );
+        assertNull( chartStore.get( idB ) );
+        assertNotNull( chartStore.get( idC ) );        
     }
 
     @Test
     public void testGetAll()
     {
-        chartStore.saveChart( chartA );
-        chartStore.saveChart( chartB );
-        chartStore.saveChart( chartC );
+        chartStore.save( chartA );
+        chartStore.save( chartB );
+        chartStore.save( chartC );
         
-        assertTrue( equals( chartStore.getAllCharts(), chartA, chartB, chartC ) );
+        assertTrue( equals( chartStore.getAll(), chartA, chartB, chartC ) );
     }
 
     @Test
     public void testGetByTitle()
     {
-        chartStore.saveChart( chartA );
-        chartStore.saveChart( chartB );
-        chartStore.saveChart( chartC );
+        chartStore.save( chartA );
+        chartStore.save( chartB );
+        chartStore.save( chartC );
         
-        assertEquals( chartB, chartStore.getChartByTitle( "ChartB" ) );
+        assertEquals( chartB, chartStore.getByTitle( "ChartB" ) );
     }
 }

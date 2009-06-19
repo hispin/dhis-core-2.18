@@ -415,7 +415,7 @@ public class DefaultChartService
 
     public int saveChart( Chart chart )
     {
-        return chartStore.saveChart( chart );
+        return chartStore.save( chart );
     }
     
     public void saveOrUpdate( Chart chart )
@@ -425,21 +425,21 @@ public class DefaultChartService
     
     public Chart getChart( int id )
     {
-        return chartStore.getChart( id );
+        return chartStore.get( id );
     }
     
     public void deleteChart( Chart chart )
     {
-        chartStore.deleteChart( chart );
+        chartStore.delete( chart );
     }
     
     public Collection<Chart> getAllCharts()
     {
-        return chartStore.getAllCharts();
+        return chartStore.getAll();
     }
     
     public Chart getChartByTitle( String name )
     {
-        return chartStore.getChartByTitle( name );
+        return chartStore.getByTitle( name );
     }
 }

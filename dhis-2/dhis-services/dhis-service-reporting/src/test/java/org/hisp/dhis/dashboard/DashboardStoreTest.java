@@ -36,7 +36,7 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportStore;
+import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserStore;
 import org.junit.Test;
@@ -51,11 +51,11 @@ public class DashboardStoreTest
 {
     private UserStore userStore;
     
-    private ReportStore reportStore;
+    private ReportService reportService;
     
     private OlapURLService olapURLService;
     
-    private DashboardStore dashboardStore;
+    private DashboardContentStore dashboardContentStore;
     
     private User userA;
     
@@ -71,17 +71,17 @@ public class DashboardStoreTest
     {
         userStore = (UserStore) getBean( UserStore.ID );
         
-        reportStore = (ReportStore) getBean( ReportStore.ID );
+        reportService = (ReportService) getBean( ReportService.ID );
 
         olapURLService = (OlapURLService) getBean( OlapURLService.ID );
         
-        dashboardStore = (DashboardStore) getBean( DashboardStore.ID );
+        dashboardContentStore = (DashboardContentStore) getBean( DashboardContentStore.ID );
         
         userA = createUser( 'A' );
         userStore.addUser( userA );
         
         reportA = new Report( "ReportA", "DesignA", null );
-        reportStore.saveReport( reportA );
+        reportService.saveReport( reportA );
         
         urlA = createOlapURL( 'A' );
         olapURLService.saveOlapURL( urlA );
@@ -97,12 +97,12 @@ public class DashboardStoreTest
         contentA.getReports().add( reportA );
         contentA.getOlapUrls().add( urlA );
         
-        dashboardStore.saveDashboardContent( contentA );
+        dashboardContentStore.save( contentA );
         
-        assertEquals( contentA, dashboardStore.getDashboardContent( userA ) );
-        assertEquals( userA, dashboardStore.getDashboardContent( userA ).getUser() );
-        assertEquals( reportA, dashboardStore.getDashboardContent( userA ).getReports().iterator().next() );
-        assertEquals( urlA, dashboardStore.getDashboardContent( userA ).getOlapUrls().iterator().next() );
+        assertEquals( contentA, dashboardContentStore.get( userA ) );
+        assertEquals( userA, dashboardContentStore.get( userA ).getUser() );
+        assertEquals( reportA, dashboardContentStore.get( userA ).getReports().iterator().next() );
+        assertEquals( urlA, dashboardContentStore.get( userA ).getOlapUrls().iterator().next() );
     }
     
     @Test
@@ -112,8 +112,8 @@ public class DashboardStoreTest
         contentA.setUser( userA );
         contentB.setUser( userA );
         
-        dashboardStore.saveDashboardContent( contentA );
-        dashboardStore.saveDashboardContent( contentB );        
+        dashboardContentStore.save( contentA );
+        dashboardContentStore.save( contentB );        
     }
     
     @Test
@@ -122,17 +122,17 @@ public class DashboardStoreTest
         contentA.setUser( userA );
         contentA.getReports().add( reportA );
 
-        dashboardStore.saveDashboardContent( contentA );
+        dashboardContentStore.save( contentA );
         
-        assertEquals( contentA, dashboardStore.getDashboardContent( userA ) );
-        assertEquals( reportA, dashboardStore.getDashboardContent( userA ).getReports().iterator().next() );
+        assertEquals( contentA, dashboardContentStore.get( userA ) );
+        assertEquals( reportA, dashboardContentStore.get( userA ).getReports().iterator().next() );
         
         contentA.getOlapUrls().add( urlA );
 
-        dashboardStore.saveDashboardContent( contentA );
+        dashboardContentStore.save( contentA );
 
-        assertEquals( contentA, dashboardStore.getDashboardContent( userA ) );
-        assertEquals( urlA, dashboardStore.getDashboardContent( userA ).getOlapUrls().iterator().next() );
+        assertEquals( contentA, dashboardContentStore.get( userA ) );
+        assertEquals( urlA, dashboardContentStore.get( userA ).getOlapUrls().iterator().next() );
     }
     
     @Test
@@ -141,12 +141,12 @@ public class DashboardStoreTest
         contentA.setUser( userA );
         contentA.getReports().add( reportA );
         
-        dashboardStore.saveDashboardContent( contentA );
+        dashboardContentStore.save( contentA );
         
-        assertNotNull( dashboardStore.getDashboardContent( userA ) );
+        assertNotNull( dashboardContentStore.get( userA ) );
         
-        dashboardStore.deleteDashboardContent( contentA );
+        dashboardContentStore.delete( contentA );
         
-        assertNull( dashboardStore.getDashboardContent( userA ) );
+        assertNull( dashboardContentStore.get( userA ) );
     }
 }

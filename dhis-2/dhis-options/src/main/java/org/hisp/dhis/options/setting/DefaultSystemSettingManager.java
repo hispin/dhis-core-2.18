@@ -34,12 +34,14 @@ import java.util.SortedMap;
 import org.hisp.dhis.options.SystemSetting;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.options.SystemSettingStore;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Stian Strandli
  * @author Lars Helge Overland
  * @version $Id: DefaultSystemSettingManager.java 4910 2008-04-15 17:55:02Z larshelg $
  */
+@Transactional
 public class DefaultSystemSettingManager
     implements SystemSettingManager
 {
@@ -71,7 +73,7 @@ public class DefaultSystemSettingManager
     
     public void saveSystemSetting( String name, Serializable value )
     {
-        SystemSetting setting = systemSettingStore.getSystemSetting( name );
+        SystemSetting setting = systemSettingStore.getByName( name );
         
         if ( setting == null )
         {
@@ -80,42 +82,42 @@ public class DefaultSystemSettingManager
             setting.setName( name );
             setting.setValue( value );
             
-            systemSettingStore.addSystemSetting( setting );
+            systemSettingStore.save( setting );
         }
         else
         {
             setting.setValue( value );
             
-            systemSettingStore.updateSystemSetting( setting );
+            systemSettingStore.update( setting );
         }
     }
 
     public Serializable getSystemSetting( String name )
     {
-        SystemSetting setting = systemSettingStore.getSystemSetting( name );
+        SystemSetting setting = systemSettingStore.getByName( name );
         
         return setting != null && setting.hasValue() ? setting.getValue() : null;
     }   
     
     public Serializable getSystemSetting( String name, Serializable defaultValue )
     {
-        SystemSetting setting = systemSettingStore.getSystemSetting( name );
+        SystemSetting setting = systemSettingStore.getByName( name );
         
         return setting != null && setting.hasValue() ? setting.getValue() : defaultValue;
     }
 
     public Collection<SystemSetting> getAllSystemSettings()
     {
-        return systemSettingStore.getAllSystemSettings();
+        return systemSettingStore.getAll();
     }
 
     public void deleteSystemSetting( String name )
     {
-        SystemSetting setting = systemSettingStore.getSystemSetting( name );
+        SystemSetting setting = systemSettingStore.getByName( name );
         
         if ( setting != null )
         {
-            systemSettingStore.deleteSystemSetting( setting );
+            systemSettingStore.delete( setting );
         }
     }
 

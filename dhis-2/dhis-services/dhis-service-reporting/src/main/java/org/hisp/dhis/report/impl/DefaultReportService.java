@@ -1,4 +1,4 @@
-package org.hisp.dhis.report.hibernate;
+package org.hisp.dhis.report.impl;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -29,52 +29,43 @@ package org.hisp.dhis.report.hibernate;
 
 import java.util.Collection;
 
-import org.hibernate.SessionFactory;
+import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportStore;
+import org.hisp.dhis.report.ReportService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-@Transactional //TODO make service layer
-public class HibernateReportStore
-    implements ReportStore
+@Transactional
+public class DefaultReportService
+    implements ReportService
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+    private GenericStore<Report> reportStore;
 
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
+    public void setReportStore( GenericStore<Report> reportStore )
     {
-        this.sessionFactory = sessionFactory;
+        this.reportStore = reportStore;
     }
-
-    // -------------------------------------------------------------------------
-    // OlapURLStore implementation
-    // -------------------------------------------------------------------------
 
     public int saveReport( Report report )
     {
-        return (Integer) sessionFactory.getCurrentSession().save( report );
-    }    
+        return reportStore.save( report );
+    }
+
+    public void deleteReport( Report report )
+    {
+        reportStore.delete( report );
+    }
+
+    public Collection<Report> getAllReports()
+    {
+        return reportStore.getAll();
+    }
 
     public Report getReport( int id )
     {
-        return (Report) sessionFactory.getCurrentSession().get( Report.class, id );
+        return reportStore.get( id );
     }
-    
-    public void deleteReport( Report report )
-    {
-        sessionFactory.getCurrentSession().delete( report );        
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<Report> getAllReports()
-    {
-        return sessionFactory.getCurrentSession().createCriteria( Report.class ).list();
-    }    
 }

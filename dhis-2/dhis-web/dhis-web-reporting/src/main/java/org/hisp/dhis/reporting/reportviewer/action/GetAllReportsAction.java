@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportManager;
-import org.hisp.dhis.report.ReportStore;
+import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.report.comparator.ReportComparator;
 import org.hisp.dhis.report.manager.ReportConfiguration;
 
@@ -64,14 +64,14 @@ public class GetAllReportsAction
     {
         this.reportManager = reportManager;
     }
-            
-    private ReportStore reportStore;
 
-    public void setReportStore( ReportStore reportStore )
+    private ReportService reportService;
+
+    public void setReportService( ReportService reportService )
     {
-        this.reportStore = reportStore;
+        this.reportService = reportService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -102,7 +102,7 @@ public class GetAllReportsAction
         
         if ( birtHome != null && birtDirectory != null )
         {
-            for ( Report report : reportStore.getAllReports() )
+            for ( Report report : reportService.getAllReports() )
             {
                 String url = birtURL + report.getDesign();
                 

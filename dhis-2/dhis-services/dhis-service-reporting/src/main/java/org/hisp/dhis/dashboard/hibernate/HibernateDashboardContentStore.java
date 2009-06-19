@@ -27,45 +27,20 @@ package org.hisp.dhis.dashboard.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hibernate.SessionFactory;
 import org.hisp.dhis.dashboard.DashboardContent;
-import org.hisp.dhis.dashboard.DashboardStore;
+import org.hisp.dhis.dashboard.DashboardContentStore;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class HibernateDashboardStore
-    implements DashboardStore
-{
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
-
-    // -------------------------------------------------------------------------
-    // DashboardStore implementation
-    // -------------------------------------------------------------------------
-
-    public void saveDashboardContent( DashboardContent dashboardContent )
-    {
-        sessionFactory.getCurrentSession().saveOrUpdate( dashboardContent );
-    }
-
-    public DashboardContent getDashboardContent( User user )
+public class HibernateDashboardContentStore
+    extends HibernateGenericStore<DashboardContent> implements DashboardContentStore
+{    
+    public DashboardContent get( User user )
     {
         return (DashboardContent) sessionFactory.getCurrentSession().get( DashboardContent.class, user.getId() );
-    }
-
-    public void deleteDashboardContent( DashboardContent dashboardContent )
-    {
-        sessionFactory.getCurrentSession().delete( dashboardContent );        
     }
 }

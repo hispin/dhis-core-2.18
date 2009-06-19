@@ -28,8 +28,8 @@ package org.hisp.dhis.dashboard.impl;
  */
 
 import org.hisp.dhis.dashboard.DashboardContent;
+import org.hisp.dhis.dashboard.DashboardContentStore;
 import org.hisp.dhis.dashboard.DashboardService;
-import org.hisp.dhis.dashboard.DashboardStore;
 import org.hisp.dhis.user.User;
 
 /**
@@ -43,11 +43,11 @@ public class DefaultDashboardService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DashboardStore dashboardStore;
+    private DashboardContentStore dashboardContentStore;
 
-    public void setDashboardStore( DashboardStore dashboardStore )
+    public void setDashboardContentStore( DashboardContentStore dashboardContentStore )
     {
-        this.dashboardStore = dashboardStore;
+        this.dashboardContentStore = dashboardContentStore;
     }
 
     // -------------------------------------------------------------------------
@@ -56,12 +56,12 @@ public class DefaultDashboardService
     
     public void saveDashboardContent( DashboardContent dashboardContent )
     {
-        dashboardStore.saveDashboardContent( dashboardContent );
+        dashboardContentStore.save( dashboardContent );
     }
     
     public DashboardContent getDashboardContent( User user )
     {
-        DashboardContent content = dashboardStore.getDashboardContent( user );
+        DashboardContent content = dashboardContentStore.get( user );
         
         return content != null ? content : new DashboardContent( user );        
     }

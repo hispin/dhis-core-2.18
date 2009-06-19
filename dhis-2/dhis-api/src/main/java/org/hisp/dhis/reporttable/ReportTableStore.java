@@ -27,52 +27,16 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import org.hisp.dhis.common.GenericStore;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public interface ReportTableStore
+    extends GenericStore<ReportTable>
 {
     String ID = ReportTableStore.class.getName();
-
-    /**
-     * Saves a ReportTable.
-     * 
-     * @param reportTable the ReportTable to save.
-     * @return the generated identifier.
-     */
-    int saveReportTable( ReportTable reportTable );
-
-    /**
-     * Updates a ReportTable.
-     * 
-     * @param reportTable the ReportTable to update.
-     */
-    void updateReportTable( ReportTable reportTable );
-
-    /**
-     * Deletes a ReportTable.
-     * 
-     * @param reportTable the ReportTable to delete.
-     */
-    void deleteReportTable( ReportTable reportTable );
-
-    /**
-     * Retrieves the ReportTable with the given identifier.
-     * 
-     * @param id the identifier of the ReportTable to retrieve.
-     * @return the ReportTable.
-     */
-    ReportTable getReportTable( int id );
-
-    /**
-     * Retrieves a Collection of all ReportTables.
-     * 
-     * @return a Collection of ReportTables.
-     */
-    Collection<ReportTable> getAllReportTables();
 
     /**
      * Retrieves the ReportTable with the given name.
@@ -80,5 +44,5 @@ public interface ReportTableStore
      * @param name the name of the ReportTable.
      * @return the ReportTable.
      */
-    ReportTable getReportTableByName( String name );
+    ReportTable getByName( String name );
 }

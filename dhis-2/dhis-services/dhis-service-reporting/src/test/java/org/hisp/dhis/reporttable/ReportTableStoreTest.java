@@ -200,13 +200,13 @@ public class ReportTableStoreTest
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
         
-        int idA = reportTableStore.saveReportTable( reportTableA );
-        int idB = reportTableStore.saveReportTable( reportTableB );
-        int idC = reportTableStore.saveReportTable( reportTableC );
+        int idA = reportTableStore.save( reportTableA );
+        int idB = reportTableStore.save( reportTableB );
+        int idC = reportTableStore.save( reportTableC );
         
-        reportTableA = reportTableStore.getReportTable( idA );
-        reportTableB = reportTableStore.getReportTable( idB );
-        reportTableC = reportTableStore.getReportTable( idC );
+        reportTableA = reportTableStore.get( idA );
+        reportTableB = reportTableStore.get( idB );
+        reportTableC = reportTableStore.get( idC );
         
         assertEquals( "Immunization", reportTableA.getName() );
         assertEquals( indicators, reportTableA.getIndicators() );
@@ -249,21 +249,21 @@ public class ReportTableStoreTest
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
         
-        int idA = reportTableStore.saveReportTable( reportTableA );
-        int idB = reportTableStore.saveReportTable( reportTableB );
+        int idA = reportTableStore.save( reportTableA );
+        int idB = reportTableStore.save( reportTableB );
         
-        assertNotNull( reportTableStore.getReportTable( idA ) );
-        assertNotNull( reportTableStore.getReportTable( idB ) );
+        assertNotNull( reportTableStore.get( idA ) );
+        assertNotNull( reportTableStore.get( idB ) );
         
-        reportTableStore.deleteReportTable( reportTableA );
+        reportTableStore.delete( reportTableA );
 
-        assertNull( reportTableStore.getReportTable( idA ) );
-        assertNotNull( reportTableStore.getReportTable( idB ) );
+        assertNull( reportTableStore.get( idA ) );
+        assertNotNull( reportTableStore.get( idB ) );
         
-        reportTableStore.deleteReportTable( reportTableB );
+        reportTableStore.delete( reportTableB );
 
-        assertNull( reportTableStore.getReportTable( idA ) );
-        assertNull( reportTableStore.getReportTable( idB ) );
+        assertNull( reportTableStore.get( idA ) );
+        assertNull( reportTableStore.get( idB ) );
     }
 
     @Test
@@ -276,10 +276,10 @@ public class ReportTableStoreTest
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
         
-        reportTableStore.saveReportTable( reportTableA );
-        reportTableStore.saveReportTable( reportTableB );
+        reportTableStore.save( reportTableA );
+        reportTableStore.save( reportTableB );
         
-        Collection<ReportTable> reportTables = reportTableStore.getAllReportTables();
+        Collection<ReportTable> reportTables = reportTableStore.getAll();
         
         assertTrue( reportTables.contains( reportTableA ) );
         assertTrue( reportTables.contains( reportTableB ) );
@@ -295,10 +295,10 @@ public class ReportTableStoreTest
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             false, false, false, true, relatives, null, i18nFormat, "january_2000" );
         
-        reportTableStore.saveReportTable( reportTableA );
-        reportTableStore.saveReportTable( reportTableB );
+        reportTableStore.save( reportTableA );
+        reportTableStore.save( reportTableB );
         
-        ReportTable receivedReportTableA = reportTableStore.getReportTableByName( "Immunization" );
+        ReportTable receivedReportTableA = reportTableStore.getByName( "Immunization" );
         
         assertNotNull( receivedReportTableA );
         assertEquals( reportTableA.getName(), receivedReportTableA.getName() );

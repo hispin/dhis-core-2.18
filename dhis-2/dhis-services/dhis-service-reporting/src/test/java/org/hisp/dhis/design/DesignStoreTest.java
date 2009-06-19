@@ -27,23 +27,27 @@ package org.hisp.dhis.design;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
+import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@SuppressWarnings( "unchecked" )
 public class DesignStoreTest
     extends DhisSpringTest
 {
-    private DesignStore designStore;
+    private GenericStore<Design> designStore;
     
     private ChartService chartService;
     
@@ -61,7 +65,7 @@ public class DesignStoreTest
     @Override
     public void setUpTest()
     {
-        designStore = (DesignStore) getBean( DesignStore.ID );
+        designStore = (GenericStore<Design>) getBean( "org.hisp.dhis.design.DesignStore" );
         
         chartService = (ChartService) getBean( ChartService.ID );
         
@@ -86,52 +90,52 @@ public class DesignStoreTest
         designB.getReportTables().add( reportTableA );
         designB.getReportTables().add( reportTableB );
                 
-        designStore.saveDesign( designA );
-        designStore.saveDesign( designB );
+        designStore.save( designA );
+        designStore.save( designB );
     }
 
     @Test
     public void testSave()
     {
-        int idA = designStore.saveDesign( designA );
-        int idB = designStore.saveDesign( designB );
+        int idA = designStore.save( designA );
+        int idB = designStore.save( designB );
         
-        assertEquals( designA, designStore.getDesign( idA ) );
-        assertEquals( designB, designStore.getDesign( idB ) );
+        assertEquals( designA, designStore.get( idA ) );
+        assertEquals( designB, designStore.get( idB ) );
 
-        assertNotNull( designStore.getDesign( idA ).getCharts() );
-        assertNotNull( designStore.getDesign( idA ).getReportTables() );
+        assertNotNull( designStore.get( idA ).getCharts() );
+        assertNotNull( designStore.get( idA ).getReportTables() );
         
-        assertEquals( designStore.getDesign( idA ).getCharts().size(), 2 );
-        assertEquals( designStore.getDesign( idA ).getReportTables().size(), 2 );
+        assertEquals( designStore.get( idA ).getCharts().size(), 2 );
+        assertEquals( designStore.get( idA ).getReportTables().size(), 2 );
     }
 
     @Test
     public void testDelete()
     {
-        int idA = designStore.saveDesign( designA );
-        int idB = designStore.saveDesign( designB );
+        int idA = designStore.save( designA );
+        int idB = designStore.save( designB );
         
-        assertNotNull( designStore.getDesign( idA ) );
-        assertNotNull( designStore.getDesign( idB ) );
+        assertNotNull( designStore.get( idA ) );
+        assertNotNull( designStore.get( idB ) );
         
-        designStore.deleteDesign( designA );
+        designStore.delete( designA );
 
-        assertNull( designStore.getDesign( idA ) );
-        assertNotNull( designStore.getDesign( idB ) );
+        assertNull( designStore.get( idA ) );
+        assertNotNull( designStore.get( idB ) );
 
-        designStore.deleteDesign( designB );
+        designStore.delete( designB );
 
-        assertNull( designStore.getDesign( idA ) );
-        assertNull( designStore.getDesign( idB ) );        
+        assertNull( designStore.get( idA ) );
+        assertNull( designStore.get( idB ) );        
     }
 
     @Test
     public void testGetAll()
     {
-        designStore.saveDesign( designA );
-        designStore.saveDesign( designB );
+        designStore.save( designA );
+        designStore.save( designB );
         
-        equals( designStore.getAllDesigns(), designA, designB );
+        equals( designStore.getAll(), designA, designB );
     }
 }

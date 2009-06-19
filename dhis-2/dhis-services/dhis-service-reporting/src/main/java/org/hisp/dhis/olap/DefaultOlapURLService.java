@@ -75,17 +75,17 @@ public class DefaultOlapURLService
     
     public int saveOlapURL( OlapURL olapURL )
     {
-        return olapURLStore.saveOlapURL( olapURL );
+        return olapURLStore.save( olapURL );
     }
     
     public void updateOlapURL( OlapURL olapURL )
     {
-        olapURLStore.updateOlapURL( olapURL );
+        olapURLStore.update( olapURL );
     }
     
     public OlapURL getOlapURL( int id )
     {
-        return olapURLStore.getOlapURL( id );
+        return olapURLStore.get( id );
     }
     
     public Collection<OlapURL> getOlapURLs( Collection<Integer> identifiers )
@@ -107,16 +107,16 @@ public class DefaultOlapURLService
     
     public void deleteOlapURL( OlapURL olapURL )
     {
-        olapURLStore.deleteOlapURL( olapURL );
+        olapURLStore.delete( olapURL );
     }
     
     public Collection<OlapURL> getAllOlapURLs()
     {
-        return olapURLStore.getAllOlapURLs();
+        return olapURLStore.getAll();
     }    
 
     public OlapURL getOlapURLByName( String name )
     {
-        return olapURLStore.getOlapURLByName( name );
+        return olapURLStore.getByName( name );
     }
 }

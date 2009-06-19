@@ -60,39 +60,39 @@ public class DocumentStoreTest
     @Test
     public void testSaveGet()
     {
-        int id = documentStore.saveDocument( documentA );
+        int id = documentStore.save( documentA );
         
-        assertEquals( documentA, documentStore.getDocument( id ) );
+        assertEquals( documentA, documentStore.get( id ) );
     }
 
     @Test
     public void testDelete()
     {
-        int idA = documentStore.saveDocument( documentA );
-        int idB = documentStore.saveDocument( documentB );
+        int idA = documentStore.save( documentA );
+        int idB = documentStore.save( documentB );
         
-        assertNotNull( documentStore.getDocument( idA ) );
-        assertNotNull( documentStore.getDocument( idB ) );
+        assertNotNull( documentStore.get( idA ) );
+        assertNotNull( documentStore.get( idB ) );
         
-        documentStore.deleteDocument( documentA );
+        documentStore.delete( documentA );
         
-        assertNull( documentStore.getDocument( idA ) );
-        assertNotNull( documentStore.getDocument( idB ) );
+        assertNull( documentStore.get( idA ) );
+        assertNotNull( documentStore.get( idB ) );
         
-        documentStore.deleteDocument( documentB );
+        documentStore.delete( documentB );
 
-        assertNull( documentStore.getDocument( idA ) );
-        assertNull( documentStore.getDocument( idB ) );
+        assertNull( documentStore.get( idA ) );
+        assertNull( documentStore.get( idB ) );
     }
 
     @Test
     public void testGetAll()
     {
-        documentStore.saveDocument( documentA );
-        documentStore.saveDocument( documentB );
-        documentStore.saveDocument( documentC );
+        documentStore.save( documentA );
+        documentStore.save( documentB );
+        documentStore.save( documentC );
         
-        Collection<Document> actual = documentStore.getAllDocuments();
+        Collection<Document> actual = documentStore.getAll();
         
         assertEquals( 3, actual.size() );
         assertTrue( actual.contains( documentA ) );
@@ -103,10 +103,10 @@ public class DocumentStoreTest
     @Test
     public void testGetByName()
     {
-        documentStore.saveDocument( documentA );
-        documentStore.saveDocument( documentB );
-        documentStore.saveDocument( documentC );
+        documentStore.save( documentA );
+        documentStore.save( documentB );
+        documentStore.save( documentC );
         
-        assertEquals( documentA, documentStore.getDocumentByName( "DocumentA" ) );
+        assertEquals( documentA, documentStore.getByName( "DocumentA" ) );
     }
 }

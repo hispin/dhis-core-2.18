@@ -209,8 +209,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="reportTableService"
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
-    <property name="reportStore"
-      ref="org.hisp.dhis.report.ReportStore"/>
+    <property name="reportService"
+      ref="org.hisp.dhis.report.ReportService"/>
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   </bean>
@@ -303,8 +303,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="reportManager"
       ref="org.hisp.dhis.report.ReportManager"/>
-    <property name="reportStore"
-      ref="org.hisp.dhis.report.ReportStore"/>
+    <property name="reportService"
+      ref="org.hisp.dhis.report.ReportService"/>
     <property name="reportTableService"
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
   </bean>
@@ -312,8 +312,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportOptionsAction"
     class="org.hisp.dhis.reporting.reportviewer.action.GetReportOptionsAction"
     scope="prototype">
-    <property name="reportStore"
-      ref="org.hisp.dhis.report.ReportStore"/>
+    <property name="reportService"
+      ref="org.hisp.dhis.report.ReportService"/>
     <property name="reportTableService"
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
   </bean>
@@ -323,22 +323,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="reportManager"
       ref="org.hisp.dhis.report.ReportManager"/>
-    <property name="reportStore"
-      ref="org.hisp.dhis.report.ReportStore"/>
+    <property name="reportService"
+      ref="org.hisp.dhis.report.ReportService"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportAction"
     class="org.hisp.dhis.reporting.reportviewer.action.GetReportAction"
     scope="prototype">
-    <property name="reportStore"
-      ref="org.hisp.dhis.report.ReportStore"/>
+    <property name="reportService"
+      ref="org.hisp.dhis.report.ReportService"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.reportviewer.action.RemoveReportAction"
     class="org.hisp.dhis.reporting.reportviewer.action.RemoveReportAction"
     scope="prototype">
-    <property name="reportStore"
-      ref="org.hisp.dhis.report.ReportStore"/>
+    <property name="reportService"
+      ref="org.hisp.dhis.report.ReportService"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.reportviewer.action.SetReportConfigurationAction"
@@ -362,8 +362,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.user.CurrentUserService"/>
     <property name="dashboardService"
       ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="reportStore"
-      ref="org.hisp.dhis.report.ReportStore"/>
+    <property name="reportService"
+      ref="org.hisp.dhis.report.ReportService"/>
   </bean>
   
   <!-- PivotTable -->
@@ -522,9 +522,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="tabularReportGenerator"
       ref="org.hisp.dhis.reporting.dataset.generators.TabularReportGenerator"/>
     <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>		
+      ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="reportStore"
-	  ref="org.hisp.dhis.reporting.dataset.report.ReportStore"/>
+      ref="org.hisp.dhis.reporting.dataset.report.ReportStore"/>
     <property name="dataMartStore"
       ref="org.hisp.dhis.datamart.DataMartStore"/>
     <property name="selectedStateManager"

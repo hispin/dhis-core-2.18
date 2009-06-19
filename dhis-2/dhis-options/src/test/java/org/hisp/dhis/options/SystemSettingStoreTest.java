@@ -71,19 +71,19 @@ public class SystemSettingStoreTest
     @Test
     public void testAddSystemSetting()
     {
-        systemSettingStore.addSystemSetting( settingA );
-        systemSettingStore.addSystemSetting( settingB );
-        systemSettingStore.addSystemSetting( settingC );
+        systemSettingStore.save( settingA );
+        systemSettingStore.save( settingB );
+        systemSettingStore.save( settingC );
 
-        SystemSetting s = systemSettingStore.getSystemSetting( settingA.getName() );
+        SystemSetting s = systemSettingStore.getByName( settingA.getName() );
         assertNotNull( s );
         assertEquals( "Setting1", s.getName() );
         assertEquals( "Value1", s.getValue() );
 
         settingA.setValue( new String( "Value1.1" ) );
-        systemSettingStore.addSystemSetting( settingA );
+        systemSettingStore.save( settingA );
 
-        s = systemSettingStore.getSystemSetting( settingA.getName() );
+        s = systemSettingStore.getByName( settingA.getName() );
         assertNotNull( s );
         assertEquals( "Setting1", s.getName() );
         assertEquals( "Value1.1", s.getValue() );        
@@ -92,17 +92,17 @@ public class SystemSettingStoreTest
     @Test
     public void testUpdateSystemSetting()
     {
-        systemSettingStore.addSystemSetting( settingA );
+        systemSettingStore.save( settingA );
         
-        settingA = systemSettingStore.getSystemSetting( "Setting1" );
+        settingA = systemSettingStore.getByName( "Setting1" );
         
         assertEquals( "Value1", (String) settingA.getValue() );
         
         settingA.setValue( new String( "Value2" ) );
         
-        systemSettingStore.updateSystemSetting( settingA );
+        systemSettingStore.update( settingA );
 
-        settingA = systemSettingStore.getSystemSetting( "Setting1" );
+        settingA = systemSettingStore.getByName( "Setting1" );
         
         assertEquals( "Value2", (String) settingA.getValue() );
     }
@@ -110,42 +110,42 @@ public class SystemSettingStoreTest
     @Test
     public void testDeleteSystemSetting()
     {
-        systemSettingStore.addSystemSetting( settingA );
-        systemSettingStore.addSystemSetting( settingB );
-        systemSettingStore.addSystemSetting( settingC );
+        systemSettingStore.save( settingA );
+        systemSettingStore.save( settingB );
+        systemSettingStore.save( settingC );
 
-        systemSettingStore.deleteSystemSetting( systemSettingStore.getSystemSetting( settingA.getName() ) );
+        systemSettingStore.delete( systemSettingStore.getByName( settingA.getName() ) );
 
-        assertNull( systemSettingStore.getSystemSetting( settingA.getName() ) );
-        assertEquals( 2, systemSettingStore.getAllSystemSettings().size() );
+        assertNull( systemSettingStore.getByName( settingA.getName() ) );
+        assertEquals( 2, systemSettingStore.getAll().size() );
     }
 
     @Test
     public void testGetSystemSetting()
     {
-        systemSettingStore.addSystemSetting( settingA );
-        systemSettingStore.addSystemSetting( settingB );
+        systemSettingStore.save( settingA );
+        systemSettingStore.save( settingB );
 
-        SystemSetting s = systemSettingStore.getSystemSetting( "Setting1" );
+        SystemSetting s = systemSettingStore.getByName( "Setting1" );
         assertNotNull( s );
         assertEquals( "Setting1", s.getName() );
         assertEquals( "Value1", s.getValue() );
 
-        s = systemSettingStore.getSystemSetting( "Setting3" );
+        s = systemSettingStore.getByName( "Setting3" );
         assertNull( s );
     }
 
     @Test
     public void testGetAllSystemSettings()
     {
-        Collection<SystemSetting> m = systemSettingStore.getAllSystemSettings();
+        Collection<SystemSetting> m = systemSettingStore.getAll();
         assertNotNull( m );
         assertEquals( 0, m.size() );
 
-        systemSettingStore.addSystemSetting( settingA );
-        systemSettingStore.addSystemSetting( settingB );
+        systemSettingStore.save( settingA );
+        systemSettingStore.save( settingB );
 
-        m = systemSettingStore.getAllSystemSettings();
+        m = systemSettingStore.getAll();
         assertNotNull( m );
         assertEquals( 2, m.size() );
     }

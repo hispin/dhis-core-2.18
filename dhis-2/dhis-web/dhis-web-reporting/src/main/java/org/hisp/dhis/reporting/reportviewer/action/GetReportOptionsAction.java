@@ -32,7 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportStore;
+import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.reporttable.comparator.ReportTableComparator;
@@ -50,13 +50,13 @@ public class GetReportOptionsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ReportStore reportStore;
+    private ReportService reportService;
 
-    public void setReportStore( ReportStore reportStore )
+    public void setReportService( ReportService reportService )
     {
-        this.reportStore = reportStore;
+        this.reportService = reportService;
     }
-    
+
     private ReportTableService reportTableService;
 
     public void setReportTableService( ReportTableService reportTableService )
@@ -112,7 +112,7 @@ public class GetReportOptionsAction
         
         if ( id != null )
         {
-            report = reportStore.getReport( id );
+            report = reportService.getReport( id );
             
             reportTables.removeAll( report.getReportTables() );
             

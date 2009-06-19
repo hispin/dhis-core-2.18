@@ -65,9 +65,9 @@ public class OlapURLStoreTest
     {
         OlapURL olapURL = createOlapURL( 'A' );
         
-        int id = olapURLStore.saveOlapURL( olapURL );
+        int id = olapURLStore.save( olapURL );
         
-        olapURL = olapURLStore.getOlapURL( id );
+        olapURL = olapURLStore.get( id );
         
         assertEquals( "OlapURLA", olapURL.getName() );
         assertEquals( "URLA", olapURL.getUrl() );
@@ -79,21 +79,21 @@ public class OlapURLStoreTest
         OlapURL olapURLA = createOlapURL( 'A' );
         OlapURL olapURLB = createOlapURL( 'B' );
         
-        int idA = olapURLStore.saveOlapURL( olapURLA );
-        int idB = olapURLStore.saveOlapURL( olapURLB );
+        int idA = olapURLStore.save( olapURLA );
+        int idB = olapURLStore.save( olapURLB );
         
-        assertNotNull( olapURLStore.getOlapURL( idA ) );
-        assertNotNull( olapURLStore.getOlapURL( idB ) );
+        assertNotNull( olapURLStore.get( idA ) );
+        assertNotNull( olapURLStore.get( idB ) );
         
-        olapURLStore.deleteOlapURL( olapURLA );
+        olapURLStore.delete( olapURLA );
 
-        assertNull( olapURLStore.getOlapURL( idA ) );
-        assertNotNull( olapURLStore.getOlapURL( idB ) );
+        assertNull( olapURLStore.get( idA ) );
+        assertNotNull( olapURLStore.get( idB ) );
 
-        olapURLStore.deleteOlapURL( olapURLB );
+        olapURLStore.delete( olapURLB );
         
-        assertNull( olapURLStore.getOlapURL( idA ) );
-        assertNull( olapURLStore.getOlapURL( idB ) );
+        assertNull( olapURLStore.get( idA ) );
+        assertNull( olapURLStore.get( idB ) );
     }
 
     @Test
@@ -102,10 +102,10 @@ public class OlapURLStoreTest
         OlapURL olapURLA = createOlapURL( 'A' );
         OlapURL olapURLB = createOlapURL( 'B' );
         
-        olapURLStore.saveOlapURL( olapURLA );
-        olapURLStore.saveOlapURL( olapURLB );
+        olapURLStore.save( olapURLA );
+        olapURLStore.save( olapURLB );
         
-        Collection<OlapURL> olapURLs = olapURLStore.getAllOlapURLs();
+        Collection<OlapURL> olapURLs = olapURLStore.getAll();
         
         assertNotNull( olapURLs );
         assertEquals( 2, olapURLs.size() );

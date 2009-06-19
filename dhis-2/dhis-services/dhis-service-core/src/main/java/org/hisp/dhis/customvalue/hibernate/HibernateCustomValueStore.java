@@ -68,9 +68,7 @@ public class HibernateCustomValueStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Integer id = (Integer) session.save( customValue );
-
-        return id;
+        return (Integer) session.save( customValue );
     }
     
     public void deleteCustomValue( CustomValue customValue )

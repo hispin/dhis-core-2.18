@@ -1,4 +1,4 @@
-package org.hisp.dhis.design;
+package org.hisp.dhis.dashboard;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,23 +27,17 @@ package org.hisp.dhis.design;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public interface DesignStore
+public interface DashboardContentStore
+    extends GenericStore<DashboardContent>
 {
-    final String ID = DesignStore.class.getName();
+    final String ID = DashboardContentStore.class.getName();
     
-    int saveDesign( Design design );
-    
-    void updateDesign( Design design );
-    
-    Design getDesign( int id );
-    
-    void deleteDesign( Design design );
-    
-    Collection<Design> getAllDesigns();
+    DashboardContent get( User user );
 }

@@ -58,7 +58,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.RelativePeriodType;
-import org.hisp.dhis.report.ReportStore;
+import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.RelativePeriods;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableData;
@@ -72,6 +72,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional
 public class DefaultReportTableService
     implements ReportTableService
 {
@@ -99,11 +100,11 @@ public class DefaultReportTableService
         this.reportTableStore = reportTableStore;
     }
 
-    protected ReportStore reportStore;
+    protected ReportService reportService;
 
-    public void setReportStore( ReportStore reportStore )
+    public void setReportService( ReportService reportService )
     {
-        this.reportStore = reportStore;
+        this.reportService = reportService;
     }
 
     private PeriodService periodService;
@@ -469,25 +470,25 @@ public class DefaultReportTableService
     @Transactional
     public int saveReportTable( ReportTable reportTable )
     {
-        return reportTableStore.saveReportTable( reportTable );
+        return reportTableStore.save( reportTable );
     }
 
     @Transactional
     public void updateReportTable( ReportTable reportTable )
     {
-        reportTableStore.updateReportTable( reportTable );
+        reportTableStore.update( reportTable );
     }
 
     @Transactional
     public void deleteReportTable( ReportTable reportTable )
     {
-        reportTableStore.deleteReportTable( reportTable );
+        reportTableStore.delete( reportTable );
     }
 
     @Transactional
     public ReportTable getReportTable( int id )
     {
-        return reportTableStore.getReportTable( id );
+        return reportTableStore.get( id );
     }
 
     @Transactional
@@ -511,13 +512,13 @@ public class DefaultReportTableService
     @Transactional
     public Collection<ReportTable> getAllReportTables()
     {
-        return reportTableStore.getAllReportTables();
+        return reportTableStore.getAll();
     }
 
     @Transactional
     public ReportTable getReportTableByName( String name )
     {
-        return reportTableStore.getReportTableByName( name );
+        return reportTableStore.getByName( name );
     }
 
     @Transactional
@@ -690,7 +691,7 @@ public class DefaultReportTableService
         }
         else if ( mode.equals( MODE_REPORT ) )
         {
-            reportTables = reportStore.getReport( id ).getReportTables();
+            reportTables = reportService.getReport( id ).getReportTables();
         }
 
         return reportTables;

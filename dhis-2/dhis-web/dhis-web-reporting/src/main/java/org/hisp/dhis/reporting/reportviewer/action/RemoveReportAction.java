@@ -28,7 +28,7 @@ package org.hisp.dhis.reporting.reportviewer.action;
  */
 
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportStore;
+import org.hisp.dhis.report.ReportService;
 
 import com.opensymphony.xwork.Action;
 
@@ -43,11 +43,11 @@ public class RemoveReportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ReportStore reportStore;
+    private ReportService reportService;
 
-    public void setReportStore( ReportStore reportStore )
+    public void setReportService( ReportService reportService )
     {
-        this.reportStore = reportStore;
+        this.reportService = reportService;
     }
 
     // -------------------------------------------------------------------------
@@ -68,11 +68,11 @@ public class RemoveReportAction
     public String execute() 
         throws Exception
     {
-        Report report = reportStore.getReport( id );
+        Report report = reportService.getReport( id );
         
         if ( report != null )
         {
-            reportStore.deleteReport( report );
+            reportService.deleteReport( report );
         }
         
         return SUCCESS;
