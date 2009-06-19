@@ -30,6 +30,7 @@ package org.hisp.dhis.document;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericNameStore;
 import org.junit.Test;
 
 import static junit.framework.Assert.*;
@@ -38,10 +39,11 @@ import static junit.framework.Assert.*;
  * @author Lars Helge Overland
  * @version $Id$
  */
+@SuppressWarnings( "unchecked" )
 public class DocumentStoreTest
     extends DhisSpringTest
 {
-    private DocumentStore documentStore;
+    private GenericNameStore<Document> documentStore;
     
     private Document documentA;
     private Document documentB;
@@ -50,7 +52,7 @@ public class DocumentStoreTest
     @Override
     public void setUpTest()
     {
-        documentStore = (DocumentStore) getBean( DocumentStore.ID );
+        documentStore = (GenericNameStore<Document>) getBean( "org.hisp.dhis.document.DocumentStore" );
         
         documentA = new Document( "DocumentA", "UrlA", true );
         documentB = new Document( "DocumentB", "UrlB", true );

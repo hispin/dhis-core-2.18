@@ -34,14 +34,15 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
-import org.hisp.dhis.common.GenericStore;
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.GenericNameStore;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class HibernateGenericStore<T>
-    implements GenericStore<T>
+    implements GenericNameStore<T>
 {
     protected SessionFactory sessionFactory;
 
@@ -165,6 +166,11 @@ public class HibernateGenericStore<T>
     public final T load( int id )
     {
         return (T) sessionFactory.getCurrentSession().load( getClazz(), id );
+    }
+    
+    public final T getByName( String name )
+    {
+        return getObject( Restrictions.eq( "name", name ) );
     }
     
     @SuppressWarnings( "unchecked" )

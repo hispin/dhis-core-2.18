@@ -34,16 +34,18 @@ import static junit.framework.Assert.assertNull;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericNameStore;
 import org.junit.Test;
 
 /**
  * @author Stian Strandli
  * @version $Id: SystemSettingStoreTest.java 4866 2008-04-11 10:40:35Z larshelg $
  */
+@SuppressWarnings( "unchecked" )
 public class SystemSettingStoreTest
     extends DhisSpringTest
 {
-    private SystemSettingStore systemSettingStore;
+    private GenericNameStore<SystemSetting> systemSettingStore;
 
     private SystemSetting settingA;
     private SystemSetting settingB;
@@ -53,7 +55,7 @@ public class SystemSettingStoreTest
     public void setUpTest()
         throws Exception
     {
-        systemSettingStore = (SystemSettingStore) getBean( SystemSettingStore.ID );
+        systemSettingStore = (GenericNameStore<SystemSetting>) getBean( "org.hisp.dhis.options.SystemSettingStore" );
 
         settingA = new SystemSetting();
         settingA.setName( "Setting1" );

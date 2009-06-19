@@ -30,6 +30,7 @@ package org.hisp.dhis.olap;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericNameStore;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -46,9 +47,9 @@ public class DefaultOlapURLService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OlapURLStore olapURLStore;
+    private GenericNameStore<OlapURL> olapURLStore;
 
-    public void setOlapURLStore( OlapURLStore olapURLStore )
+    public void setOlapURLStore( GenericNameStore<OlapURL> olapURLStore )
     {
         this.olapURLStore = olapURLStore;
     }

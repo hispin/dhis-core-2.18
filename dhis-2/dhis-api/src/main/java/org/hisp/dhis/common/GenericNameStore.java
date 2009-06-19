@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporttable.hibernate;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,20 +27,18 @@ package org.hisp.dhis.reporttable.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableStore;
-
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class HibernateReportTableStore
-    extends HibernateGenericStore<ReportTable> implements ReportTableStore
-{   
-    public ReportTable getByName( String name )
-    {
-        return getObject( Restrictions.eq( "name", name ) );
-    }
+public interface GenericNameStore<T>
+    extends GenericStore<T>
+{
+    /**
+     * Retrieves the object with the given name.
+     * 
+     * @param name the name.
+     * @return the object with the given name.
+     */
+    T getByName( String name );
 }

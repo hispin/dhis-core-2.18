@@ -31,9 +31,9 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.SortedMap;
 
+import org.hisp.dhis.common.GenericNameStore;
 import org.hisp.dhis.options.SystemSetting;
 import org.hisp.dhis.options.SystemSettingManager;
-import org.hisp.dhis.options.SystemSettingStore;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -49,9 +49,9 @@ public class DefaultSystemSettingManager
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SystemSettingStore systemSettingStore;
+    private GenericNameStore<SystemSetting> systemSettingStore;
 
-    public void setSystemSettingStore( SystemSettingStore systemSettingStore )
+    public void setSystemSettingStore( GenericNameStore<SystemSetting> systemSettingStore )
     {
         this.systemSettingStore = systemSettingStore;
     }

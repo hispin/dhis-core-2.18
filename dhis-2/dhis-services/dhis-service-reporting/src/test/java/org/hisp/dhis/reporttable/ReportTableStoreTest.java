@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericNameStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -59,10 +60,11 @@ import org.junit.Test;
  * @author Lars Helge Overland
  * @version $Id$
  */
+@SuppressWarnings( "unchecked" )
 public class ReportTableStoreTest
     extends DhisSpringTest
 {
-    private ReportTableStore reportTableStore;
+    private GenericNameStore<ReportTable> reportTableStore;
     
     private IndicatorType indicatorType;
 
@@ -107,7 +109,7 @@ public class ReportTableStoreTest
         relativePeriods = new ArrayList<Period>();
         units = new ArrayList<OrganisationUnit>();
         
-        reportTableStore = (ReportTableStore) getBean( ReportTableStore.ID );
+        reportTableStore = (GenericNameStore<ReportTable>) getBean( "org.hisp.dhis.reporttable.ReportTableStore" );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
