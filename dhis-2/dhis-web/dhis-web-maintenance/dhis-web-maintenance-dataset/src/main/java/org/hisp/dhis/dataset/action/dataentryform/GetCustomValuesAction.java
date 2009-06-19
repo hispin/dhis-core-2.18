@@ -201,7 +201,7 @@ public class GetCustomValuesAction
 
         if ( operation.equalsIgnoreCase( "delete" ) )
         {
-            customValue = customValueService.getCustomValuesById( customValueId );
+            customValue = customValueService.getCustomValue( customValueId );
             customValueService.deleteCustomValue( customValue );
         }
         List<CustomValue> customValues = null;
