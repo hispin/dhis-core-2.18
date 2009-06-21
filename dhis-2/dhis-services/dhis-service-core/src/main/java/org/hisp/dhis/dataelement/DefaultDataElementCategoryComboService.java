@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.hisp.dhis.common.GenericNameStore;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -46,9 +47,9 @@ public class DefaultDataElementCategoryComboService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementCategoryComboStore dataElementCategoryComboStore;
+    private GenericNameStore<DataElementCategoryCombo> dataElementCategoryComboStore;
 
-    public void setDataElementCategoryComboStore( DataElementCategoryComboStore dataElementCategoryComboStore )
+    public void setDataElementCategoryComboStore( GenericNameStore<DataElementCategoryCombo> dataElementCategoryComboStore )
     {
         this.dataElementCategoryComboStore = dataElementCategoryComboStore;
     }
@@ -66,27 +67,27 @@ public class DefaultDataElementCategoryComboService
 
     public int addDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo )
     {
-        return dataElementCategoryComboStore.addDataElementCategoryCombo( dataElementCategoryCombo );
+        return dataElementCategoryComboStore.save( dataElementCategoryCombo );
     }
 
     public void updateDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo )
     {
-        dataElementCategoryComboStore.updateDataElementCategoryCombo( dataElementCategoryCombo );
+        dataElementCategoryComboStore.save( dataElementCategoryCombo );
     }
 
     public void deleteDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo )
     {
-        dataElementCategoryComboStore.deleteDataElementCategoryCombo( dataElementCategoryCombo );
+        dataElementCategoryComboStore.delete( dataElementCategoryCombo );
     }
 
     public Collection<DataElementCategoryCombo> getAllDataElementCategoryCombos()
     {
-        return dataElementCategoryComboStore.getAllDataElementCategoryCombos();
+        return dataElementCategoryComboStore.getAll();
     }
 
     public DataElementCategoryCombo getDataElementCategoryCombo( int id )
     {
-        return dataElementCategoryComboStore.getDataElementCategoryCombo( id );
+        return dataElementCategoryComboStore.get( id );
     }
     
     public Collection<DataElementCategoryCombo> getDataElementCategoryCombos( Collection<Integer> identifiers )
@@ -108,7 +109,7 @@ public class DefaultDataElementCategoryComboService
 
     public DataElementCategoryCombo getDataElementCategoryComboByName( String name )
     {
-        return dataElementCategoryComboStore.getDataElementCategoryComboByName( name );
+        return dataElementCategoryComboStore.getByName( name );
     }
 
     public Collection<DataElementCategory> getOrderCategories( DataElementCategoryCombo dataElementCategoryCombo )

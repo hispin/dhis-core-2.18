@@ -35,6 +35,7 @@ import static junit.framework.Assert.assertTrue;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericNameStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
@@ -46,10 +47,11 @@ import org.junit.Test;
  * @author Lars Helge Overland
  * @version $Id$
  */
+@SuppressWarnings( "unchecked" )
 public class DataDictionaryStoreTest
     extends DhisSpringTest
 {
-    private DataDictionaryStore dataDictionaryStore;
+    private GenericNameStore<DataDictionary> dataDictionaryStore;
 
     private DataElement dataElementA;
     private DataElement dataElementB;
@@ -70,7 +72,7 @@ public class DataDictionaryStoreTest
     public void setUpTest()
         throws Exception
     {
-        dataDictionaryStore = (DataDictionaryStore) getBean( DataDictionaryStore.ID );
+        dataDictionaryStore = (GenericNameStore<DataDictionary>) getBean( "org.hisp.dhis.datadictionary.DataDictionaryStore" );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
@@ -109,9 +111,9 @@ public class DataDictionaryStoreTest
         dataDictionaryA.getIndicators().add( indicatorA );
         dataDictionaryA.getIndicators().add( indicatorB );
                 
-        int id = dataDictionaryStore.saveDataDictionary( dataDictionaryA );
+        int id = dataDictionaryStore.save( dataDictionaryA );
         
-        dataDictionaryA = dataDictionaryStore.getDataDictionary( id );
+        dataDictionaryA = dataDictionaryStore.get( id );
         
         assertEquals( dataDictionaryA.getName(), "DataDictionaryA" );
         assertEquals( dataDictionaryA.getDescription(), "DescriptionA" );
@@ -128,9 +130,9 @@ public class DataDictionaryStoreTest
         dataDictionaryA.setDescription( "DescriptionB" );
         dataDictionaryA.setRegion( "RegionB" );
         
-        dataDictionaryStore.saveDataDictionary( dataDictionaryA );
+        dataDictionaryStore.save( dataDictionaryA );
         
-        dataDictionaryA = dataDictionaryStore.getDataDictionary( id );
+        dataDictionaryA = dataDictionaryStore.get( id );
         
         assertEquals( dataDictionaryA.getName(), "DataDictionaryB" );
         assertEquals( dataDictionaryA.getDescription(), "DescriptionB" );
@@ -140,10 +142,10 @@ public class DataDictionaryStoreTest
     @Test
     public void testGetDataDictionaryByName()
     {
-        dataDictionaryStore.saveDataDictionary( dataDictionaryA );
-        dataDictionaryStore.saveDataDictionary( dataDictionaryB );
+        dataDictionaryStore.save( dataDictionaryA );
+        dataDictionaryStore.save( dataDictionaryB );
         
-        dataDictionaryA = dataDictionaryStore.getDataDictionaryByName( "DataDictionaryA" );
+        dataDictionaryA = dataDictionaryStore.getByName( "DataDictionaryA" );
         
         assertNotNull( dataDictionaryA );
         assertEquals( dataDictionaryA.getName(), "DataDictionaryA" );
@@ -153,30 +155,30 @@ public class DataDictionaryStoreTest
     @Test
     public void testDeleteDataDictionary()
     {
-        int idA = dataDictionaryStore.saveDataDictionary( dataDictionaryA );
-        int idB = dataDictionaryStore.saveDataDictionary( dataDictionaryB );
+        int idA = dataDictionaryStore.save( dataDictionaryA );
+        int idB = dataDictionaryStore.save( dataDictionaryB );
         
-        assertNotNull( dataDictionaryStore.getDataDictionary( idA ) );
-        assertNotNull( dataDictionaryStore.getDataDictionary( idB ) );
+        assertNotNull( dataDictionaryStore.get( idA ) );
+        assertNotNull( dataDictionaryStore.get( idB ) );
         
-        dataDictionaryStore.deleteDataDictionary( dataDictionaryA );
+        dataDictionaryStore.delete( dataDictionaryA );
 
-        assertNull( dataDictionaryStore.getDataDictionary( idA ) );
-        assertNotNull( dataDictionaryStore.getDataDictionary( idB ) );
+        assertNull( dataDictionaryStore.get( idA ) );
+        assertNotNull( dataDictionaryStore.get( idB ) );
 
-        dataDictionaryStore.deleteDataDictionary( dataDictionaryB );
+        dataDictionaryStore.delete( dataDictionaryB );
 
-        assertNull( dataDictionaryStore.getDataDictionary( idA ) );
-        assertNull( dataDictionaryStore.getDataDictionary( idB ) );
+        assertNull( dataDictionaryStore.get( idA ) );
+        assertNull( dataDictionaryStore.get( idB ) );
     }
 
     @Test
     public void testGetAllDataDictionaries()
     {
-        dataDictionaryStore.saveDataDictionary( dataDictionaryA );
-        dataDictionaryStore.saveDataDictionary( dataDictionaryB );
+        dataDictionaryStore.save( dataDictionaryA );
+        dataDictionaryStore.save( dataDictionaryB );
         
-        Collection<DataDictionary> dictionaries = dataDictionaryStore.getAllDataDictionaries();
+        Collection<DataDictionary> dictionaries = dataDictionaryStore.getAll();
         
         assertTrue( dictionaries.size() == 2 );
         assertTrue( dictionaries.contains( dataDictionaryA ) );

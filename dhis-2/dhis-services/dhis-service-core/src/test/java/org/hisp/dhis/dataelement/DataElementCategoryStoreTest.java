@@ -37,16 +37,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericNameStore;
 import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@SuppressWarnings( "unchecked" )
 public class DataElementCategoryStoreTest
     extends DhisSpringTest
 {
-    private DataElementCategoryStore categoryStore;
+    private GenericNameStore<DataElementCategory> categoryStore;
     
     private DataElementCategoryOption categoryOptionA;
     private DataElementCategoryOption categoryOptionB;
@@ -67,7 +69,7 @@ public class DataElementCategoryStoreTest
     {
         categoryOptionService = (DataElementCategoryOptionService) getBean( DataElementCategoryOptionService.ID );
         
-        categoryStore = (DataElementCategoryStore) getBean( DataElementCategoryStore.ID );
+        categoryStore = (GenericNameStore<DataElementCategory>) getBean( "org.hisp.dhis.dataelement.DataElementCategoryStore" );
 
         categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
         categoryOptionB = new DataElementCategoryOption( "CategoryOptionB" );
@@ -95,17 +97,17 @@ public class DataElementCategoryStoreTest
         categoryB = new DataElementCategory( "CategoryB", categoryOptions );
         categoryC = new DataElementCategory( "CategoryC", categoryOptions );
         
-        int idA = categoryStore.addDataElementCategory( categoryA );
-        int idB = categoryStore.addDataElementCategory( categoryB );
-        int idC = categoryStore.addDataElementCategory( categoryC );
+        int idA = categoryStore.save( categoryA );
+        int idB = categoryStore.save( categoryB );
+        int idC = categoryStore.save( categoryC );
         
-        assertEquals( categoryA, categoryStore.getDataElementCategory( idA ) );
-        assertEquals( categoryB, categoryStore.getDataElementCategory( idB ) );
-        assertEquals( categoryC, categoryStore.getDataElementCategory( idC ) );
+        assertEquals( categoryA, categoryStore.get( idA ) );
+        assertEquals( categoryB, categoryStore.get( idB ) );
+        assertEquals( categoryC, categoryStore.get( idC ) );
         
-        assertEquals( categoryOptions, categoryStore.getDataElementCategory( idA ).getCategoryOptions() );
-        assertEquals( categoryOptions, categoryStore.getDataElementCategory( idB ).getCategoryOptions() );
-        assertEquals( categoryOptions, categoryStore.getDataElementCategory( idC ).getCategoryOptions() );        
+        assertEquals( categoryOptions, categoryStore.get( idA ).getCategoryOptions() );
+        assertEquals( categoryOptions, categoryStore.get( idB ).getCategoryOptions() );
+        assertEquals( categoryOptions, categoryStore.get( idC ).getCategoryOptions() );        
     }
 
     @Test
@@ -115,25 +117,25 @@ public class DataElementCategoryStoreTest
         categoryB = new DataElementCategory( "CategoryB", categoryOptions );
         categoryC = new DataElementCategory( "CategoryC", categoryOptions );
         
-        int idA = categoryStore.addDataElementCategory( categoryA );
-        int idB = categoryStore.addDataElementCategory( categoryB );
-        int idC = categoryStore.addDataElementCategory( categoryC );
+        int idA = categoryStore.save( categoryA );
+        int idB = categoryStore.save( categoryB );
+        int idC = categoryStore.save( categoryC );
         
-        assertNotNull( categoryStore.getDataElementCategory( idA ) );
-        assertNotNull( categoryStore.getDataElementCategory( idB ) );
-        assertNotNull( categoryStore.getDataElementCategory( idC ) );
+        assertNotNull( categoryStore.get( idA ) );
+        assertNotNull( categoryStore.get( idB ) );
+        assertNotNull( categoryStore.get( idC ) );
         
-        categoryStore.deleteDataElementCategory( categoryA );
+        categoryStore.delete( categoryA );
 
-        assertNull( categoryStore.getDataElementCategory( idA ) );
-        assertNotNull( categoryStore.getDataElementCategory( idB ) );
-        assertNotNull( categoryStore.getDataElementCategory( idC ) );
+        assertNull( categoryStore.get( idA ) );
+        assertNotNull( categoryStore.get( idB ) );
+        assertNotNull( categoryStore.get( idC ) );
 
-        categoryStore.deleteDataElementCategory( categoryB );
+        categoryStore.delete( categoryB );
 
-        assertNull( categoryStore.getDataElementCategory( idA ) );
-        assertNull( categoryStore.getDataElementCategory( idB ) );
-        assertNotNull( categoryStore.getDataElementCategory( idC ) );        
+        assertNull( categoryStore.get( idA ) );
+        assertNull( categoryStore.get( idB ) );
+        assertNotNull( categoryStore.get( idC ) );        
     }
 
     @Test
@@ -143,11 +145,11 @@ public class DataElementCategoryStoreTest
         categoryB = new DataElementCategory( "CategoryB", categoryOptions );
         categoryC = new DataElementCategory( "CategoryC", categoryOptions );
 
-        categoryStore.addDataElementCategory( categoryA );
-        categoryStore.addDataElementCategory( categoryB );
-        categoryStore.addDataElementCategory( categoryC );
+        categoryStore.save( categoryA );
+        categoryStore.save( categoryB );
+        categoryStore.save( categoryC );
         
-        Collection<DataElementCategory> categories = categoryStore.getAllDataElementCategories();
+        Collection<DataElementCategory> categories = categoryStore.getAll();
         
         assertEquals( 4, categories.size() ); // Including default
         assertTrue( categories.contains( categoryA ) );

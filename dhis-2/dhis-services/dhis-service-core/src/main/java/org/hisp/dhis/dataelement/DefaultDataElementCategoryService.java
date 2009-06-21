@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.hisp.dhis.common.GenericNameStore;
 import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,9 +48,9 @@ public class DefaultDataElementCategoryService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementCategoryStore dataElementCategoryStore;
+    private GenericNameStore<DataElementCategory> dataElementCategoryStore;
 
-    public void setDataElementCategoryStore( DataElementCategoryStore dataElementCategoryStore )
+    public void setDataElementCategoryStore( GenericNameStore<DataElementCategory> dataElementCategoryStore )
     {
         this.dataElementCategoryStore = dataElementCategoryStore;
     }
@@ -74,7 +75,7 @@ public class DefaultDataElementCategoryService
 
     public int addDataElementCategory( DataElementCategory dataElementCategory )
     {
-        int id = dataElementCategoryStore.addDataElementCategory( dataElementCategory );
+        int id = dataElementCategoryStore.save( dataElementCategory );
         
         i18nService.addObject( dataElementCategory );
         
@@ -83,7 +84,7 @@ public class DefaultDataElementCategoryService
 
     public void updateDataElementCategory( DataElementCategory dataElementCategory )
     {
-        dataElementCategoryStore.updateDataElementCategory( dataElementCategory );
+        dataElementCategoryStore.update( dataElementCategory );
         
         i18nService.verify( dataElementCategory );
     }
@@ -92,17 +93,17 @@ public class DefaultDataElementCategoryService
     {
         i18nService.removeObject( dataElementCategory );
         
-        dataElementCategoryStore.deleteDataElementCategory( dataElementCategory );
+        dataElementCategoryStore.delete( dataElementCategory );
     }
 
     public Collection<DataElementCategory> getAllDataElementCategories()
     {
-        return dataElementCategoryStore.getAllDataElementCategories();
+        return dataElementCategoryStore.getAll();
     }
 
     public DataElementCategory getDataElementCategory( int id )
     {
-        return dataElementCategoryStore.getDataElementCategory( id );
+        return dataElementCategoryStore.get( id );
     }
     
     public Collection<DataElementCategory> getDataElementCategories( Collection<Integer> identifiers )
@@ -124,7 +125,7 @@ public class DefaultDataElementCategoryService
 
     public DataElementCategory getDataElementCategoryByName( String name )
     {
-        return dataElementCategoryStore.getDataElementCategoryByName( name );
+        return dataElementCategoryStore.getByName( name );
     }
 
     public Collection<DataElementCategoryOption> getOrderedOptions( DataElementCategory category )

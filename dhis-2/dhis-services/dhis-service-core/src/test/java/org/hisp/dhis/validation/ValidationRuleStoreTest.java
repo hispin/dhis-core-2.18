@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericNameStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.Expression;
@@ -47,10 +48,11 @@ import org.junit.Test;
  * @author Lars Helge Overland
  * @version $Id: ValidationRuleStoreTest.java 3679 2007-10-22 18:25:18Z larshelg $
  */
+@SuppressWarnings( "unchecked" )
 public class ValidationRuleStoreTest
     extends DhisSpringTest
-{    
-    private ValidationRuleStore validationRuleStore;
+{
+    private GenericNameStore<ValidationRule> validationRuleStore;
 
     private ExpressionService expressionService;
     
@@ -72,7 +74,7 @@ public class ValidationRuleStoreTest
     public void setUpTest()
         throws Exception
     {       
-        validationRuleStore = (ValidationRuleStore) getBean( ValidationRuleStore.ID );
+        validationRuleStore = (GenericNameStore<ValidationRule>) getBean( "org.hisp.dhis.validation.ValidationRuleStore" );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
@@ -111,9 +113,9 @@ public class ValidationRuleStoreTest
     {
         ValidationRule validationRule = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
         
-        int id = validationRuleStore.addValidationRule( validationRule );
+        int id = validationRuleStore.save( validationRule );
         
-        validationRule = validationRuleStore.getValidationRule( id );
+        validationRule = validationRuleStore.get( id );
         
         assertEquals( validationRule.getName(), "ValidationRuleA" );
         assertEquals( validationRule.getDescription(), "DescriptionA" );
@@ -128,9 +130,9 @@ public class ValidationRuleStoreTest
     {
         ValidationRule validationRule = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
         
-        int id = validationRuleStore.addValidationRule( validationRule );
+        int id = validationRuleStore.save( validationRule );
         
-        validationRule = validationRuleStore.getValidationRule( id );
+        validationRule = validationRuleStore.get( id );
         
         assertEquals( validationRule.getName(), "ValidationRuleA" );
         assertEquals( validationRule.getDescription(), "DescriptionA" );
@@ -142,9 +144,9 @@ public class ValidationRuleStoreTest
         validationRule.setType( ValidationRule.TYPE_STATISTICAL );
         validationRule.setOperator( ValidationRule.OPERATOR_GREATER );
         
-        validationRuleStore.updateValidationRule( validationRule );
+        validationRuleStore.update( validationRule );
 
-        validationRule = validationRuleStore.getValidationRule( id );
+        validationRule = validationRuleStore.get( id );
         
         assertEquals( validationRule.getName(), "ValidationRuleB" );
         assertEquals( validationRule.getDescription(), "DescriptionB" );
@@ -158,25 +160,25 @@ public class ValidationRuleStoreTest
         ValidationRule validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
         ValidationRule validationRuleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
 
-        int idA = validationRuleStore.addValidationRule( validationRuleA );
-        int idB = validationRuleStore.addValidationRule( validationRuleB );
+        int idA = validationRuleStore.save( validationRuleA );
+        int idB = validationRuleStore.save( validationRuleB );
         
-        assertNotNull( validationRuleStore.getValidationRule( idA ) );
-        assertNotNull( validationRuleStore.getValidationRule( idB ) );
+        assertNotNull( validationRuleStore.get( idA ) );
+        assertNotNull( validationRuleStore.get( idB ) );
         
         validationRuleA.clearExpressions();
         
-        validationRuleStore.deleteValidationRule( validationRuleA );
+        validationRuleStore.delete( validationRuleA );
 
-        assertNull( validationRuleStore.getValidationRule( idA ) );
-        assertNotNull( validationRuleStore.getValidationRule( idB ) );
+        assertNull( validationRuleStore.get( idA ) );
+        assertNotNull( validationRuleStore.get( idB ) );
 
         validationRuleB.clearExpressions();
         
-        validationRuleStore.deleteValidationRule( validationRuleB );
+        validationRuleStore.delete( validationRuleB );
         
-        assertNull( validationRuleStore.getValidationRule( idA ) );
-        assertNull( validationRuleStore.getValidationRule( idB ) );
+        assertNull( validationRuleStore.get( idA ) );
+        assertNull( validationRuleStore.get( idB ) );
     }
 
     @Test
@@ -185,10 +187,10 @@ public class ValidationRuleStoreTest
         ValidationRule validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
         ValidationRule validationRuleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
 
-        validationRuleStore.addValidationRule( validationRuleA );
-        validationRuleStore.addValidationRule( validationRuleB );
+        validationRuleStore.save( validationRuleA );
+        validationRuleStore.save( validationRuleB );
         
-        Collection<ValidationRule> rules = validationRuleStore.getAllValidationRules();
+        Collection<ValidationRule> rules = validationRuleStore.getAll();
         
         assertTrue( rules.size() == 2 );
         assertTrue( rules.contains( validationRuleA ) );
@@ -201,174 +203,12 @@ public class ValidationRuleStoreTest
         ValidationRule validationRuleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
         ValidationRule validationRuleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, expressionA, expressionB );
 
-        int id = validationRuleStore.addValidationRule( validationRuleA );
-        validationRuleStore.addValidationRule( validationRuleB );
+        int id = validationRuleStore.save( validationRuleA );
+        validationRuleStore.save( validationRuleB );
         
-        ValidationRule rule = validationRuleStore.getValidationRuleByName( "ValidationRuleA" );
+        ValidationRule rule = validationRuleStore.getByName( "ValidationRuleA" );
         
         assertEquals( rule.getId(), id );
         assertEquals( rule.getName(), "ValidationRuleA" ); 
-    }
-
-    // -------------------------------------------------------------------------
-    // ValidationRuleGroup
-    // -------------------------------------------------------------------------
-
-    @Test
-    public void testAddValidationRuleGroup()
-    {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null );
-        
-        validationRuleStore.addValidationRule( ruleA );
-        validationRuleStore.addValidationRule( ruleB );
-        
-        Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
-        rules.add( ruleA );
-        rules.add( ruleB );
-        
-        ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
-        ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
-        groupA.setMembers( rules );
-        groupB.setMembers( rules );
-        
-        int idA = validationRuleStore.addValidationRuleGroup( groupA );
-        int idB = validationRuleStore.addValidationRuleGroup( groupB );
-        
-        assertEquals( groupA, validationRuleStore.getValidationRuleGroup( idA ) );
-        assertEquals( groupB, validationRuleStore.getValidationRuleGroup( idB ) );
-    }
-
-    @Test
-    public void testUpdateValidationRuleGroup()
-    {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null );
-        
-        validationRuleStore.addValidationRule( ruleA );
-        validationRuleStore.addValidationRule( ruleB );
-        
-        Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
-        rules.add( ruleA );
-        rules.add( ruleB );
-        
-        ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
-        ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
-        groupA.setMembers( rules );
-        groupB.setMembers( rules );
-        
-        int idA = validationRuleStore.addValidationRuleGroup( groupA );
-        int idB = validationRuleStore.addValidationRuleGroup( groupB );
-        
-        assertEquals( groupA, validationRuleStore.getValidationRuleGroup( idA ) );
-        assertEquals( groupB, validationRuleStore.getValidationRuleGroup( idB ) );
-        
-        ruleA.setName( "UpdatedValidationRuleA" );
-        ruleB.setName( "UpdatedValidationRuleB" );
-        
-        validationRuleStore.updateValidationRuleGroup( groupA );
-        validationRuleStore.updateValidationRuleGroup( groupB );
-
-        assertEquals( groupA, validationRuleStore.getValidationRuleGroup( idA ) );
-        assertEquals( groupB, validationRuleStore.getValidationRuleGroup( idB ) );        
-    }
-
-    @Test
-    public void testDeleteValidationRuleGroup()
-    {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null );
-        
-        validationRuleStore.addValidationRule( ruleA );
-        validationRuleStore.addValidationRule( ruleB );
-        
-        Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
-        rules.add( ruleA );
-        rules.add( ruleB );
-        
-        ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
-        ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
-        groupA.setMembers( rules );
-        groupB.setMembers( rules );
-        
-        int idA = validationRuleStore.addValidationRuleGroup( groupA );
-        int idB = validationRuleStore.addValidationRuleGroup( groupB );
-        
-        assertNotNull( validationRuleStore.getValidationRuleGroup( idA ) );
-        assertNotNull( validationRuleStore.getValidationRuleGroup( idB ) );
-        
-        validationRuleStore.deleteValidationRuleGroup( groupA );
-
-        assertNull( validationRuleStore.getValidationRuleGroup( idA ) );
-        assertNotNull( validationRuleStore.getValidationRuleGroup( idB ) );
-        
-        validationRuleStore.deleteValidationRuleGroup( groupB );
-
-        assertNull( validationRuleStore.getValidationRuleGroup( idA ) );
-        assertNull( validationRuleStore.getValidationRuleGroup( idB ) );
-    }
-
-    @Test
-    public void testGetAllValidationRuleGroup()
-    {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null );
-        
-        validationRuleStore.addValidationRule( ruleA );
-        validationRuleStore.addValidationRule( ruleB );
-        
-        Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
-        rules.add( ruleA );
-        rules.add( ruleB );
-        
-        ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
-        ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
-        groupA.setMembers( rules );
-        groupB.setMembers( rules );
-        
-        validationRuleStore.addValidationRuleGroup( groupA );
-        validationRuleStore.addValidationRuleGroup( groupB );
-        
-        Collection<ValidationRuleGroup> groups = validationRuleStore.getAllValidationRuleGroups();
-        
-        assertEquals( 2, groups.size() );
-        assertTrue( groups.contains( groupA ) );
-        assertTrue( groups.contains( groupB ) );
-    }
-
-    @Test
-    public void testGetValidationRuleGroupByName()
-    {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null );
-        
-        validationRuleStore.addValidationRule( ruleA );
-        validationRuleStore.addValidationRule( ruleB );
-        
-        Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        
-        rules.add( ruleA );
-        rules.add( ruleB );
-        
-        ValidationRuleGroup groupA = createValidationRuleGroup( 'A' );
-        ValidationRuleGroup groupB = createValidationRuleGroup( 'B' );
-        
-        groupA.setMembers( rules );
-        groupB.setMembers( rules );
-        
-        validationRuleStore.addValidationRuleGroup( groupA );
-        validationRuleStore.addValidationRuleGroup( groupB );
-        
-        ValidationRuleGroup groupByName = validationRuleStore.getValidationRuleGroupByName( groupA.getName() );
-        
-        assertEquals( groupA, groupByName );
     }
 }
