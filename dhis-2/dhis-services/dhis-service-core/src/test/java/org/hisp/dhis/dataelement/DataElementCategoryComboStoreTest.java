@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericNameStore;
 import org.junit.Test;
 
 import static junit.framework.Assert.*;
@@ -40,10 +41,11 @@ import static junit.framework.Assert.*;
  * @author Lars Helge Overland
  * @version $Id$
  */
+@SuppressWarnings( "unchecked" )
 public class DataElementCategoryComboStoreTest
     extends DhisSpringTest
 {
-    private DataElementCategoryComboStore categoryComboStore;
+    private GenericNameStore<DataElementCategoryCombo> categoryComboStore;
     
     private DataElementCategoryCombo categoryComboA;
     private DataElementCategoryCombo categoryComboB;
@@ -62,7 +64,7 @@ public class DataElementCategoryComboStoreTest
     @Override
     public void setUpTest()
     {
-        categoryComboStore = (DataElementCategoryComboStore) getBean( DataElementCategoryComboStore.ID );
+        categoryComboStore = (GenericNameStore<DataElementCategoryCombo>) getBean( "org.hisp.dhis.dataelement.DataElementCategoryComboStore" );
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
@@ -92,17 +94,17 @@ public class DataElementCategoryComboStoreTest
         categoryComboB = new DataElementCategoryCombo( "CategoryComboB", categories );
         categoryComboC = new DataElementCategoryCombo( "CategoryComboC", categories );
         
-        int idA = categoryComboStore.addDataElementCategoryCombo( categoryComboA );
-        int idB = categoryComboStore.addDataElementCategoryCombo( categoryComboB );
-        int idC = categoryComboStore.addDataElementCategoryCombo( categoryComboC );
+        int idA = categoryComboStore.save( categoryComboA );
+        int idB = categoryComboStore.save( categoryComboB );
+        int idC = categoryComboStore.save( categoryComboC );
         
-        assertEquals( categoryComboA, categoryComboStore.getDataElementCategoryCombo( idA ) );
-        assertEquals( categoryComboB, categoryComboStore.getDataElementCategoryCombo( idB ) );
-        assertEquals( categoryComboC, categoryComboStore.getDataElementCategoryCombo( idC ) );
+        assertEquals( categoryComboA, categoryComboStore.get( idA ) );
+        assertEquals( categoryComboB, categoryComboStore.get( idB ) );
+        assertEquals( categoryComboC, categoryComboStore.get( idC ) );
         
-        assertEquals( categories, categoryComboStore.getDataElementCategoryCombo( idA ).getCategories() );
-        assertEquals( categories, categoryComboStore.getDataElementCategoryCombo( idB ).getCategories() );
-        assertEquals( categories, categoryComboStore.getDataElementCategoryCombo( idC ).getCategories() );        
+        assertEquals( categories, categoryComboStore.get( idA ).getCategories() );
+        assertEquals( categories, categoryComboStore.get( idB ).getCategories() );
+        assertEquals( categories, categoryComboStore.get( idC ).getCategories() );        
     }
 
     @Test
@@ -112,25 +114,25 @@ public class DataElementCategoryComboStoreTest
         categoryComboB = new DataElementCategoryCombo( "CategoryComboB", categories );
         categoryComboC = new DataElementCategoryCombo( "CategoryComboC", categories );
         
-        int idA = categoryComboStore.addDataElementCategoryCombo( categoryComboA );
-        int idB = categoryComboStore.addDataElementCategoryCombo( categoryComboB );
-        int idC = categoryComboStore.addDataElementCategoryCombo( categoryComboC );
+        int idA = categoryComboStore.save( categoryComboA );
+        int idB = categoryComboStore.save( categoryComboB );
+        int idC = categoryComboStore.save( categoryComboC );
         
-        assertNotNull( categoryComboStore.getDataElementCategoryCombo( idA ) );
-        assertNotNull( categoryComboStore.getDataElementCategoryCombo( idB ) );
-        assertNotNull( categoryComboStore.getDataElementCategoryCombo( idC ) );
+        assertNotNull( categoryComboStore.get( idA ) );
+        assertNotNull( categoryComboStore.get( idB ) );
+        assertNotNull( categoryComboStore.get( idC ) );
         
-        categoryComboStore.deleteDataElementCategoryCombo( categoryComboA );
+        categoryComboStore.delete( categoryComboA );
 
-        assertNull( categoryComboStore.getDataElementCategoryCombo( idA ) );
-        assertNotNull( categoryComboStore.getDataElementCategoryCombo( idB ) );
-        assertNotNull( categoryComboStore.getDataElementCategoryCombo( idC ) );
+        assertNull( categoryComboStore.get( idA ) );
+        assertNotNull( categoryComboStore.get( idB ) );
+        assertNotNull( categoryComboStore.get( idC ) );
         
-        categoryComboStore.deleteDataElementCategoryCombo( categoryComboB );
+        categoryComboStore.delete( categoryComboB );
 
-        assertNull( categoryComboStore.getDataElementCategoryCombo( idA ) );
-        assertNull( categoryComboStore.getDataElementCategoryCombo( idB ) );
-        assertNotNull( categoryComboStore.getDataElementCategoryCombo( idC ) );        
+        assertNull( categoryComboStore.get( idA ) );
+        assertNull( categoryComboStore.get( idB ) );
+        assertNotNull( categoryComboStore.get( idC ) );        
     }
 
     @Test
@@ -140,11 +142,11 @@ public class DataElementCategoryComboStoreTest
         categoryComboB = new DataElementCategoryCombo( "CategoryComboB", categories );
         categoryComboC = new DataElementCategoryCombo( "CategoryComboC", categories );
         
-        categoryComboStore.addDataElementCategoryCombo( categoryComboA );
-        categoryComboStore.addDataElementCategoryCombo( categoryComboB );
-        categoryComboStore.addDataElementCategoryCombo( categoryComboC );
+        categoryComboStore.save( categoryComboA );
+        categoryComboStore.save( categoryComboB );
+        categoryComboStore.save( categoryComboC );
         
-        Collection<DataElementCategoryCombo> categoryCombos = categoryComboStore.getAllDataElementCategoryCombos();
+        Collection<DataElementCategoryCombo> categoryCombos = categoryComboStore.getAll();
         
         assertEquals( 4, categoryCombos.size() ); // Including default
         assertTrue( categoryCombos.contains( categoryComboA ) );

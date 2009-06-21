@@ -30,6 +30,7 @@ package org.hisp.dhis.datadictionary;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericNameStore;
 import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,9 +46,9 @@ public class DefaultDataDictionaryService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataDictionaryStore dataDictionaryStore;
+    private GenericNameStore<DataDictionary> dataDictionaryStore;
     
-    public void setDataDictionaryStore( DataDictionaryStore dataDictionaryStore )
+    public void setDataDictionaryStore( GenericNameStore<DataDictionary> dataDictionaryStore )
     {
         this.dataDictionaryStore = dataDictionaryStore;
     }
@@ -67,7 +68,7 @@ public class DefaultDataDictionaryService
     {
         int dataDictionaryId = dataDictionary.getId();
         
-        int id = dataDictionaryStore.saveDataDictionary( dataDictionary );
+        int id = dataDictionaryStore.save( dataDictionary );
         
         if ( dataDictionaryId == 0 )
         {
@@ -83,7 +84,7 @@ public class DefaultDataDictionaryService
     
     public DataDictionary getDataDictionary( int id )
     {
-        return dataDictionaryStore.getDataDictionary( id );
+        return dataDictionaryStore.get( id );
     }
     
     public Collection<DataDictionary> getDataDictionaries( Collection<Integer> identifiers )
@@ -107,16 +108,16 @@ public class DefaultDataDictionaryService
     {
         i18nService.removeObject( dataDictionary );
         
-        dataDictionaryStore.deleteDataDictionary( dataDictionary );
+        dataDictionaryStore.delete( dataDictionary );
     }
     
     public DataDictionary getDataDictionaryByName( String name )
     {
-        return dataDictionaryStore.getDataDictionaryByName( name );
+        return dataDictionaryStore.getByName( name );
     }
     
     public Collection<DataDictionary> getAllDataDictionaries()
     {
-        return dataDictionaryStore.getAllDataDictionaries();
+        return dataDictionaryStore.getAll();
     }
 }

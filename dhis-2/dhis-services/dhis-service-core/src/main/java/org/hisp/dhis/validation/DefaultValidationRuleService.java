@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.common.GenericNameStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -57,11 +58,18 @@ public class DefaultValidationRuleService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ValidationRuleStore validationRuleStore;
-    
-    public void setValidationRuleStore( ValidationRuleStore validationRuleStore )
+    private GenericNameStore<ValidationRule> validationRuleStore;
+
+    public void setValidationRuleStore( GenericNameStore<ValidationRule> validationRuleStore )
     {
         this.validationRuleStore = validationRuleStore;
+    }
+    
+    private GenericNameStore<ValidationRuleGroup> validationRuleGroupStore;
+
+    public void setValidationRuleGroupStore( GenericNameStore<ValidationRuleGroup> validationRuleGroupStore )
+    {
+        this.validationRuleGroupStore = validationRuleGroupStore;
     }
     
     private ExpressionService expressionService;
@@ -211,7 +219,7 @@ public class DefaultValidationRuleService
      */
     private Collection<ValidationRule> getRelevantValidationRules( final DataSet dataSet )
     {
-        final Collection<ValidationRule> rules = validationRuleStore.getAllValidationRules();
+        final Collection<ValidationRule> rules = validationRuleStore.getAll();
         
         return getRelevantValidationRules( dataSet, rules );
     }
@@ -271,22 +279,22 @@ public class DefaultValidationRuleService
    
     public int addValidationRule( ValidationRule validationRule )
     {
-        return validationRuleStore.addValidationRule( validationRule );
+        return validationRuleStore.save( validationRule );
     }
 
     public void deleteValidationRule( ValidationRule validationRule )
     {
-        validationRuleStore.deleteValidationRule( validationRule );        
+        validationRuleStore.delete( validationRule );        
     }
 
     public Collection<ValidationRule> getAllValidationRules()
     {
-        return validationRuleStore.getAllValidationRules();
+        return validationRuleStore.getAll();
     }
 
     public ValidationRule getValidationRule( int id )
     {
-        return validationRuleStore.getValidationRule( id );
+        return validationRuleStore.get( id );
     }
     
     public Collection<ValidationRule> getValidationRules( Collection<Integer> identifiers )
@@ -308,12 +316,12 @@ public class DefaultValidationRuleService
 
     public ValidationRule getValidationRuleByName( String name )
     {
-        return validationRuleStore.getValidationRuleByName( name );
+        return validationRuleStore.getByName( name );
     }
 
     public void updateValidationRule( ValidationRule validationRule )
     {
-        validationRuleStore.updateValidationRule( validationRule );
+        validationRuleStore.update( validationRule );
     }
 
     // -------------------------------------------------------------------------
@@ -322,31 +330,31 @@ public class DefaultValidationRuleService
 
     public int addValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
     {
-        return validationRuleStore.addValidationRuleGroup( validationRuleGroup );
+        return validationRuleGroupStore.save( validationRuleGroup );
     }
 
     public void deleteValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
     {
-        validationRuleStore.deleteValidationRuleGroup( validationRuleGroup );
+        validationRuleGroupStore.delete( validationRuleGroup );
     }
 
     public void updateValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
     {
-        validationRuleStore.updateValidationRuleGroup( validationRuleGroup );
+        validationRuleGroupStore.update( validationRuleGroup );
     }
 
     public ValidationRuleGroup getValidationRuleGroup( int id )
     {
-        return validationRuleStore.getValidationRuleGroup( id );
+        return validationRuleGroupStore.get( id );
     }
 
     public Collection<ValidationRuleGroup> getAllValidationRuleGroups()
     {
-        return validationRuleStore.getAllValidationRuleGroups();
+        return validationRuleGroupStore.getAll();
     }
     
     public ValidationRuleGroup getValidationRuleGroupByName( String name )
     {
-        return validationRuleStore.getValidationRuleGroupByName( name );
-    }  
+        return validationRuleGroupStore.getByName( name );
+    }
 }

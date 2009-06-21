@@ -40,6 +40,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -70,9 +71,9 @@ public class DefaultExpressionService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ExpressionStore expressionStore;
+    private GenericStore<Expression> expressionStore;
 
-    public void setExpressionStore( ExpressionStore expressionStore )
+    public void setExpressionStore( GenericStore<Expression> expressionStore )
     {
         this.expressionStore = expressionStore;
     }
@@ -104,27 +105,27 @@ public class DefaultExpressionService
 
     public int addExpression( Expression expression )
     {
-        return expressionStore.addExpression( expression );
+        return expressionStore.save( expression );
     }
 
     public void deleteExpression( Expression expression )
     {
-        expressionStore.deleteExpression( expression );
+        expressionStore.delete( expression );
     }
 
     public Expression getExpression( int id )
     {
-        return expressionStore.getExpression( id );
+        return expressionStore.get( id );
     }
 
     public void updateExpression( Expression expression )
     {
-        expressionStore.updateExpression( expression );
+        expressionStore.update( expression );
     }
 
     public Collection<Expression> getAllExpressions()
     {
-        return expressionStore.getAllExpressions();
+        return expressionStore.getAll();
     }
 
     // -------------------------------------------------------------------------

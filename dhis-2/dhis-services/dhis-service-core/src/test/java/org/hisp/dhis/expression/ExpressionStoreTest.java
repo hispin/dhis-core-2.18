@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.junit.Test;
@@ -45,10 +46,11 @@ import org.junit.Test;
  * @author Lars Helge Overland
  * @version $Id$
  */
+@SuppressWarnings( "unchecked" )
 public class ExpressionStoreTest
     extends DhisSpringTest
 {
-    private ExpressionStore expressionStore;
+    private GenericStore<Expression> expressionStore;
     
     private int dataElementIdA;    
     private int dataElementIdB;    
@@ -71,7 +73,7 @@ public class ExpressionStoreTest
     public void setUpTest()
         throws Exception
     {
-        expressionStore = (ExpressionStore) getBean( ExpressionStore.ID );
+        expressionStore = (GenericStore<Expression>) getBean( "org.hisp.dhis.expression.ExpressionStore" );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
@@ -106,9 +108,9 @@ public class ExpressionStoreTest
     {
         Expression expr = new Expression( expressionA, descriptionA, dataElements );
         
-        int id = expressionStore.addExpression( expr );
+        int id = expressionStore.save( expr );
         
-        expr = expressionStore.getExpression( id );
+        expr = expressionStore.get( id );
         
         assertEquals( expr.getExpression(), expressionA );
         assertEquals( expr.getDescription(), descriptionA );
@@ -120,9 +122,9 @@ public class ExpressionStoreTest
     {
         Expression expr = new Expression( expressionA, descriptionA, dataElements );
         
-        int id = expressionStore.addExpression( expr );
+        int id = expressionStore.save( expr );
         
-        expr = expressionStore.getExpression( id );
+        expr = expressionStore.get( id );
         
         assertEquals( expr.getExpression(), expressionA );
         assertEquals( expr.getDescription(), descriptionA );
@@ -130,9 +132,9 @@ public class ExpressionStoreTest
         expr.setExpression( expressionB );
         expr.setDescription( descriptionB );
 
-        expressionStore.updateExpression( expr );
+        expressionStore.update( expr );
 
-        expr = expressionStore.getExpression( id );
+        expr = expressionStore.get( id );
         
         assertEquals( expr.getExpression(), expressionB );
         assertEquals( expr.getDescription(), descriptionB );
@@ -144,21 +146,21 @@ public class ExpressionStoreTest
         Expression exprA = new Expression( expressionA, descriptionA, dataElements );
         Expression exprB = new Expression( expressionB, descriptionB, dataElements );
         
-        int idA = expressionStore.addExpression( exprA );
-        int idB = expressionStore.addExpression( exprB );
+        int idA = expressionStore.save( exprA );
+        int idB = expressionStore.save( exprB );
         
-        assertNotNull( expressionStore.getExpression( idA ) );
-        assertNotNull( expressionStore.getExpression( idB ) );
+        assertNotNull( expressionStore.get( idA ) );
+        assertNotNull( expressionStore.get( idB ) );
         
-        expressionStore.deleteExpression( exprA );
+        expressionStore.delete( exprA );
 
-        assertNull( expressionStore.getExpression( idA ) );
-        assertNotNull( expressionStore.getExpression( idB ) );
+        assertNull( expressionStore.get( idA ) );
+        assertNotNull( expressionStore.get( idB ) );
 
-        expressionStore.deleteExpression( exprB );
+        expressionStore.delete( exprB );
 
-        assertNull( expressionStore.getExpression( idA ) );
-        assertNull( expressionStore.getExpression( idB ) );
+        assertNull( expressionStore.get( idA ) );
+        assertNull( expressionStore.get( idB ) );
     }
 
     @Test
@@ -167,10 +169,10 @@ public class ExpressionStoreTest
         Expression exprA = new Expression( expressionA, descriptionA, dataElements );
         Expression exprB = new Expression( expressionB, descriptionB, dataElements );
         
-        expressionStore.addExpression( exprA );
-        expressionStore.addExpression( exprB );
+        expressionStore.save( exprA );
+        expressionStore.save( exprB );
         
-        Collection<Expression> expressions = expressionStore.getAllExpressions();
+        Collection<Expression> expressions = expressionStore.getAll();
                 
         assertTrue( expressions.size() == 2 );
         assertTrue( expressions.contains( exprA ) );

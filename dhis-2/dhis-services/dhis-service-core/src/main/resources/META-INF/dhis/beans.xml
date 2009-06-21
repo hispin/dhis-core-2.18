@@ -17,7 +17,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="org.hisp.dhis.datadictionary.DataDictionaryStore"
-    class="org.hisp.dhis.datadictionary.hibernate.HibernateDataDictionaryStore">
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.datadictionary.DataDictionary"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
@@ -68,17 +69,26 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="org.hisp.dhis.expression.ExpressionStore"
-     class="org.hisp.dhis.expression.hibernate.HibernateExpressionStore">
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.expression.Expression"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
   <bean id="org.hisp.dhis.validation.ValidationRuleStore"
-    class="org.hisp.dhis.validation.hibernate.HibernateValidationRuleStore">
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.validation.ValidationRule"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.validation.ValidationRuleGroupStore"
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.validation.ValidationRuleGroup"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 	
-	<bean id="org.hisp.dhis.dataelement.DataElementCategoryStore"
-    class="org.hisp.dhis.dataelement.hibernate.HibernateDataElementCategoryStore">
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryStore"
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategory"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>  
   
@@ -88,12 +98,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 	
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryComboStore"
-    class="org.hisp.dhis.dataelement.hibernate.HibernateDataElementCategoryComboStore">
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategoryCombo"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 	
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionComboStore"
-    class="org.hisp.dhis.dataelement.hibernate.HibernateDataElementCategoryOptionComboStore">
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 
@@ -205,7 +217,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.validation.ValidationRuleService"
     class="org.hisp.dhis.validation.DefaultValidationRuleService">
     <property name="validationRuleStore"
-      ref="org.hisp.dhis.validation.ValidationRuleStore"/> 
+      ref="org.hisp.dhis.validation.ValidationRuleStore"/>
+    <property name="validationRuleGroupStore"
+      ref="org.hisp.dhis.validation.ValidationRuleGroupStore"/>
     <property name="expressionService"
       ref="org.hisp.dhis.expression.ExpressionService"/>
     <property name="dataSetService"
