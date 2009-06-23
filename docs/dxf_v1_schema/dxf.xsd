@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
   <!-- TODO: -->
-  <!-- ns="http://www.dhis.org/schema/dxf" > -->
+  <!-- ns="http://www.dhis2.org/schema/dxf" > -->
   <!-- Toplevel elements of dxf format -->
   <xs:element name="dxf">
     <xs:complexType>
@@ -13,10 +13,24 @@
         <xs:element ref="categoryCategoryOptionAssociations"/>
         <xs:element ref="categoryComboCategoryAssociations"/>
         <xs:element ref="dataElements"/>
+        <xs:element ref="dataElementGroups"/>
+        <xs:element ref="dataElementGroupMembers"/>
+        <xs:element ref="indicatorTypes"/>
+        <xs:element ref="indicators"/>
+        <xs:element ref="indicatorGroups"/>
+        <xs:element ref="indicatorGroupMembers"/>
+        <xs:element ref="dataDictionaries"/>
+        <xs:element ref="dataDictionaryDataElements"/>
+        <xs:element ref="dataDictionaryIndicators"/>
         <xs:element ref="dataSets"/>
         <xs:element ref="dataSetMembers"/>
         <xs:element ref="organisationUnits"/>
         <xs:element ref="organisationUnitRelationships"/>
+        <xs:element ref="organisationUnitGroups"/>
+        <xs:element ref="organisationUnitGroupMembers"/>
+        <xs:element ref="groupSets"/>
+        <xs:element ref="groupSetMembers"/>
+        <xs:element ref="organisationUnitLevels"/>
         <xs:element ref="dataSetSourceAssociations"/>
         <xs:element ref="periods"/>
         <xs:element ref="completeDataSetRegistrations"/>
@@ -149,6 +163,164 @@
   <xs:element name="active" type="xs:string"/>
   <xs:element name="type" type="xs:string"/>
   <xs:element name="aggregationOperator" type="xs:string"/>
+  <xs:element name="dataElementGroups">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="dataElementGroup"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dataElementGroup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="id"/>
+        <xs:element ref="uuid"/>
+        <xs:element ref="name"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dataElementGroupMembers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="dataElementGroupMember"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dataElementGroupMember">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="dataElementGroup" type="xs:integer"/>
+        <xs:element name="dataElement" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="indicatorTypes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="indicatorType">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="id"/>
+              <xs:element ref="name"/>
+              <xs:element ref="factor"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="factor" type="xs:integer"/>
+  <xs:element name="indicators">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="indicator">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="id"/>
+              <xs:element ref="uuid"/>
+              <xs:element ref="name"/>
+              <xs:element ref="alternativeName"/>
+              <xs:element ref="shortName"/>
+              <xs:element ref="code"/>
+              <xs:element ref="description"/>
+              <xs:element ref="annualized"/>
+              <xs:element name="indicatorType" type="xs:integer"/>
+              <xs:element ref="numerator"/>
+              <xs:element ref="numeratorDescription"/>
+              <xs:element ref="numeratorAggregationOperator"/>
+              <xs:element ref="denominator"/>
+              <xs:element ref="denominatorDescription"/>
+              <xs:element ref="denominatorAggregationOperator"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="annualized" type="xs:string"/>
+  <xs:element name="numerator" type="xs:string"/>
+  <xs:element name="numeratorDescription" type="xs:string"/>
+  <xs:element name="numeratorAggregationOperator" type="xs:string"/>
+  <xs:element name="denominator" type="xs:string"/>
+  <xs:element name="denominatorDescription" type="xs:string"/>
+  <xs:element name="denominatorAggregationOperator" type="xs:string"/>
+  <xs:element name="indicatorGroups">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="indicatorGroup">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="id"/>
+              <xs:element ref="uuid"/>
+              <xs:element ref="name"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="indicatorGroupMembers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="indicatorGroupMember"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="indicatorGroupMember">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="indicatorGroup" type="xs:integer"/>
+        <xs:element name="indicator" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dataDictionaries">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="dataDictionary">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="id"/>
+              <xs:element ref="name"/>
+              <xs:element ref="description"/>
+              <xs:element ref="region"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="region" type="xs:string"/>
+  <xs:element name="dataDictionaryDataElements">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="dataDictionaryDataElement"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dataDictionaryDataElement">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="dataDictionary" type="xs:integer"/>
+        <xs:element name="dataElement" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dataDictionaryIndicators">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="dataDictionaryIndicator"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dataDictionaryIndicator">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="dataDictionary" type="xs:integer"/>
+        <xs:element name="indicator" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="dataSets">
     <xs:complexType>
       <xs:sequence>
@@ -196,7 +368,7 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="openingDate" type="xs:date"/>
+  <xs:element name="openingDate" type="xs:string"/>
   <xs:element name="closedDate" type="xs:string"/>
   <xs:element name="comment" type="xs:string"/>
   <xs:element name="geoCode" type="xs:string"/>
@@ -217,6 +389,101 @@
   </xs:element>
   <xs:element name="parent" type="xs:integer"/>
   <xs:element name="child" type="xs:integer"/>
+  <xs:element name="organisationUnitGroups">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="organisationUnitGroup">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="id"/>
+              <xs:element ref="uuid"/>
+              <xs:element ref="name"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="organisationUnitGroupMembers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="organisationUnitGroupMember"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="organisationUnitGroupMember">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="organisationUnitGroup" type="xs:integer"/>
+        <xs:element name="organisationUnit" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="groupSets">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="groupSet">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="id"/>
+              <xs:element ref="name"/>
+              <xs:element ref="description"/>
+              <xs:element ref="compulsory"/>
+              <xs:element ref="exclusive"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="compulsory">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="true"/>
+        <xs:enumeration value="false"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="exclusive">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="true"/>
+        <xs:enumeration value="false"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="groupSetMembers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="groupSetMember"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="groupSetMember">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="groupSet" type="xs:integer"/>
+        <xs:element name="organisationUnitGroup" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="organisationUnitLevels">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="organisationUnitLevel"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="organisationUnitLevel">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="id"/>
+        <xs:element ref="level"/>
+        <xs:element ref="name"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="level" type="xs:integer"/>
   <xs:element name="dataSetSourceAssociations">
     <xs:complexType>
       <xs:sequence>

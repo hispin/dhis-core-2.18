@@ -1,6 +1,6 @@
 # TODO:
 
-# ns="http://www.dhis.org/schema/dxf" >
+# ns="http://www.dhis2.org/schema/dxf" >
 
 # Toplevel elements of dxf format
 start =
@@ -13,10 +13,24 @@ start =
     categoryCategoryOptionAssociations,
     categoryComboCategoryAssociations,
     dataElements,
+    dataElementGroups,
+    dataElementGroupMembers,
+    indicatorTypes,
+    indicators,
+    indicatorGroups,
+    indicatorGroupMembers,
+    dataDictionaries,
+    dataDictionaryDataElements,
+    dataDictionaryIndicators,
     dataSets,
     dataSetMembers,
     organisationUnits,
     organisationUnitRelationships,
+    organisationUnitGroups,
+    organisationUnitGroupMembers,
+    groupSets,
+    groupSetMembers,
+    organisationUnitLevels,
     dataSetSourceAssociations,
     periods,
     completeDataSetRegistrations,
@@ -88,6 +102,86 @@ dataElement =
     element aggregationOperator { text },
     element categoryCombo { xsd:integer }
   }
+dataElementGroups = element dataElementGroups { dataElementGroup* }
+dataElementGroup =
+  element dataElementGroup {
+    element id { xsd:integer },
+    element uuid { text },
+    element name { text }
+  }
+dataElementGroupMembers =
+  element dataElementGroupMembers { dataElementGroupMember* }
+dataElementGroupMember =
+  element dataElementGroupMember {
+    element dataElementGroup { xsd:integer },
+    element dataElement { xsd:integer }
+  }
+indicatorTypes =
+  element indicatorTypes {
+    element indicatorType {
+      element id { xsd:integer },
+      element name { text },
+      element factor { xsd:integer }
+    }*
+  }
+indicators =
+  element indicators {
+    element indicator {
+      element id { xsd:integer },
+      element uuid { text },
+      element name { text },
+      element alternativeName { text },
+      element shortName { text },
+      element code { text },
+      element description { text },
+      element annualized { text },
+      element indicatorType { xsd:integer },
+      element numerator { text },
+      element numeratorDescription { text },
+      element numeratorAggregationOperator { text },
+      element denominator { text },
+      element denominatorDescription { text },
+      element denominatorAggregationOperator { text }
+    }*
+  }
+indicatorGroups =
+  element indicatorGroups {
+    element indicatorGroup {
+      element id { xsd:integer },
+      element uuid { text },
+      element name { text }
+    }*
+  }
+indicatorGroupMembers =
+  element indicatorGroupMembers { indicatorGroupMember* }
+indicatorGroupMember =
+  element indicatorGroupMember {
+    element indicatorGroup { xsd:integer },
+    element indicator { xsd:integer }
+  }
+dataDictionaries =
+  element dataDictionaries {
+    element dataDictionary {
+      element id { xsd:integer },
+      element name { text },
+      element description { text },
+      element region { text }
+    }*
+  }
+dataDictionaryDataElements =
+  element dataDictionaryDataElements {
+    element dataDictionaryDataElement {
+      element dataDictionary { xsd:integer },
+      element dataElement { xsd:integer }
+    }*
+  }
+dataDictionaryIndicators =
+  element dataDictionaryIndicators {
+    element dataDictionaryIndicator {
+      element dataDictionary { xsd:integer },
+      element indicator { xsd:integer }
+    }*
+  }
 dataSets = element dataSets { dataSet* }
 dataSet =
   element dataSet {
@@ -110,7 +204,8 @@ organisationUnit =
     element name { text },
     element shortName { text },
     element code { text },
-    element openingDate { xsd:date },
+    # <element name="openingDate"><data type="date"/></element>
+    element openingDate { text },
     # TODO: accept Date or nothing
     element closedDate { text },
     element active { text },
@@ -124,6 +219,46 @@ organisationUnitRelationships =
     element organisationUnitRelationship {
       element parent { xsd:integer },
       element child { xsd:integer }
+    }*
+  }
+organisationUnitGroups =
+  element organisationUnitGroups {
+    element organisationUnitGroup {
+      element id { xsd:integer },
+      element uuid { text },
+      element name { text }
+    }*
+  }
+organisationUnitGroupMembers =
+  element organisationUnitGroupMembers {
+    element organisationUnitGroupMember {
+      element organisationUnitGroup { xsd:integer },
+      element organisationUnit { xsd:integer }
+    }*
+  }
+groupSets =
+  element groupSets {
+    element groupSet {
+      element id { xsd:integer },
+      element name { text },
+      element description { text },
+      element compulsory { "true" | "false" },
+      element exclusive { "true" | "false" }
+    }*
+  }
+groupSetMembers =
+  element groupSetMembers {
+    element groupSetMember {
+      element groupSet { xsd:integer },
+      element organisationUnitGroup { xsd:integer }
+    }*
+  }
+organisationUnitLevels =
+  element organisationUnitLevels {
+    element organisationUnitLevel {
+      element id { xsd:integer },
+      element level { xsd:integer },
+      element name { text }
     }*
   }
 dataSetSourceAssociations =

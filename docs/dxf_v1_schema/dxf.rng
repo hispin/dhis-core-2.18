@@ -2,7 +2,7 @@
 	 xmlns="http://relaxng.org/ns/structure/1.0" >
 
   <!--   TODO: -->
-  <!-- 	 ns="http://www.dhis.org/schema/dxf" > -->
+  <!-- 	 ns="http://www.dhis2.org/schema/dxf" > -->
 
 
   <!-- Toplevel elements of dxf format -->
@@ -17,11 +17,29 @@
       <ref name="categoryComboCategoryAssociations" />
 
       <ref name="dataElements" />
+      <ref name="dataElementGroups" />
+      <ref name="dataElementGroupMembers" />
+
+      <ref name="indicatorTypes" />
+      <ref name="indicators" />
+      <ref name="indicatorGroups" />
+      <ref name="indicatorGroupMembers" />
+
+      <ref name="dataDictionaries" />
+      <ref name="dataDictionaryDataElements" />
+      <ref name="dataDictionaryIndicators" />
+
       <ref name="dataSets" />
       <ref name="dataSetMembers" />
 
       <ref name="organisationUnits" />
       <ref name="organisationUnitRelationships" />
+      <ref name="organisationUnitGroups" />
+      <ref name="organisationUnitGroupMembers" />
+      <ref name="groupSets" />
+      <ref name="groupSetMembers" />
+      <ref name="organisationUnitLevels" />
+
       <ref name="dataSetSourceAssociations" />
 
       <ref name="periods" />
@@ -172,7 +190,135 @@
     </element>
   </define>
 
+  <define name="dataElementGroups">
+    <element name="dataElementGroups" >
+      <zeroOrMore>
+	<ref name="dataElementGroup" />
+      </zeroOrMore>
+    </element>
+  </define>
 
+  <define name="dataElementGroup">
+    <element name="dataElementGroup">
+      <element name="id"><data type="integer" /></element>
+      <element name="uuid"><text /></element>
+      <element name="name"><text /></element>
+    </element>
+  </define>
+
+  <define name="dataElementGroupMembers">
+    <element name="dataElementGroupMembers" >
+      <zeroOrMore>
+	<ref name="dataElementGroupMember" />
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="dataElementGroupMember">
+    <element name="dataElementGroupMember">
+      <element name="dataElementGroup"><data type="integer" /></element>
+      <element name="dataElement"><data type="integer" /></element>
+    </element>
+  </define>
+
+  <define name="indicatorTypes">
+    <element name="indicatorTypes">
+      <zeroOrMore>
+	<element name="indicatorType" >
+	  <element name="id"><data type="integer" /></element>
+	  <element name="name"><text /></element>
+	  <element name="factor"><data type="integer" /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="indicators">
+    <element name="indicators">
+      <zeroOrMore>
+	<element name="indicator" >
+	  <element name="id"><data type="integer" /></element>
+	  <element name="uuid"><text /></element>
+	  <element name="name"><text /></element>
+	  <element name="alternativeName"><text /></element>
+	  <element name="shortName"><text /></element>
+	  <element name="code"><text /></element>
+	  <element name="description"><text /></element>
+	  <element name="annualized"><text /></element>
+	  <element name="indicatorType"><data type="integer" /></element>
+	  <element name="numerator"><text /></element>
+	  <element name="numeratorDescription"><text /></element>
+	  <element name="numeratorAggregationOperator"><text /></element>
+	  <element name="denominator"><text /></element>
+	  <element name="denominatorDescription"><text /></element>
+	  <element name="denominatorAggregationOperator"><text /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="indicatorGroups">
+    <element name="indicatorGroups">
+      <zeroOrMore>
+	<element name="indicatorGroup" >
+	  <element name="id"><data type="integer" /></element>
+	  <element name="uuid"><text /></element>
+	  <element name="name"><text /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="indicatorGroupMembers">
+    <element name="indicatorGroupMembers" >
+      <zeroOrMore>
+	<ref name="indicatorGroupMember" />
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="indicatorGroupMember">
+    <element name="indicatorGroupMember">
+      <element name="indicatorGroup"><data type="integer" /></element>
+      <element name="indicator"><data type="integer" /></element>
+    </element>
+  </define>
+
+  <define name="dataDictionaries">
+    <element name="dataDictionaries">
+      <zeroOrMore>
+	<element name="dataDictionary" >
+	  <element name="id"><data type="integer" /></element>
+	  <element name="name"><text /></element>
+	  <element name="description"><text /></element>
+	  <element name="region"><text /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="dataDictionaryDataElements">
+    <element name="dataDictionaryDataElements">
+      <zeroOrMore>
+	<element name="dataDictionaryDataElement">
+	  <element name="dataDictionary"><data type="integer" /></element>
+	  <element name="dataElement"><data type="integer" /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="dataDictionaryIndicators">
+    <element name="dataDictionaryIndicators">
+      <zeroOrMore>
+	<element name="dataDictionaryIndicator">
+	  <element name="dataDictionary"><data type="integer" /></element>
+	  <element name="indicator"><data type="integer" /></element>
+	</element>
+	</zeroOrMore>
+    </element>
+  </define>
+  
   <define name="dataSets">
     <element name="dataSets">
       <zeroOrMore>
@@ -213,7 +359,8 @@
       <element name="name"><text /></element>
       <element name="shortName"><text /></element>
       <element name="code"><text /></element>
-      <element name="openingDate"><data type="date"/></element>
+      <!-- <element name="openingDate"><data type="date"/></element> -->
+      <element name="openingDate"><text /></element>
       <!-- TODO: accept Date or nothing -->
       <element name="closedDate"><text /></element>
       <element name="active"><text /></element>
@@ -229,6 +376,76 @@
 	<element name="organisationUnitRelationship">
 	  <element name="parent"><data type="integer" /></element>
 	  <element name="child"><data type="integer" /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="organisationUnitGroups">
+    <element name="organisationUnitGroups">
+      <zeroOrMore>
+	<element name="organisationUnitGroup">
+	  <element name="id"><data type="integer" /></element>
+	  <element name="uuid"><text /></element>
+	  <element name="name"><text /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="organisationUnitGroupMembers">
+    <element name="organisationUnitGroupMembers">
+      <zeroOrMore>
+	<element name="organisationUnitGroupMember">
+	  <element name="organisationUnitGroup"><data type="integer" /></element>
+	  <element name="organisationUnit"><data type="integer" /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="groupSets">
+    <element name="groupSets">
+      <zeroOrMore>
+	<element name="groupSet">
+	  <element name="id"><data type="integer" /></element>
+	  <element name="name"><text /></element>
+	  <element name="description"><text /></element>
+	  <element name="compulsory">
+	    <choice>
+	      <value>true</value>
+	      <value>false</value>
+	    </choice>
+	  </element>
+	  <element name="exclusive">
+	    <choice>
+	      <value>true</value>
+	      <value>false</value>
+	    </choice>
+	  </element>
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="groupSetMembers">
+    <element name="groupSetMembers">
+      <zeroOrMore>
+	<element name="groupSetMember">
+	  <element name="groupSet"><data type="integer" /></element>
+	  <element name="organisationUnitGroup"><data type="integer" /></element>
+	</element>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <define name="organisationUnitLevels">
+    <element name="organisationUnitLevels">
+      <zeroOrMore>
+	<element name="organisationUnitLevel">
+	  <element name="id"><data type="integer" /></element>
+	  <element name="level"><data type="integer" /></element>
+	  <element name="name"><text /></element>
 	</element>
       </zeroOrMore>
     </element>
