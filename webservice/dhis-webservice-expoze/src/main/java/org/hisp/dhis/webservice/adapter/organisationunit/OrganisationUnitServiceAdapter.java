@@ -31,7 +31,6 @@ package org.hisp.dhis.webservice.adapter.organisationunit;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-
 public interface OrganisationUnitServiceAdapter
 {
     void updateOrganisationUnitGeoCode( int id, String geoCode );
