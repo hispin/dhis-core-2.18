@@ -145,13 +145,12 @@ public class CategoryComboCategoryAssociationConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final GroupMemberAssociation association = new GroupMemberAssociation( AssociationType.SET );
             
-            reader.moveToStartElement( FIELD_CATEGORY_COMBO );
-            association.setGroupId( categoryComboMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-            
-            reader.moveToStartElement( FIELD_CATEGORY );
-            association.setMemberId( categoryMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
+            association.setGroupId( categoryComboMapping.get( Integer.parseInt( values.get( FIELD_CATEGORY_COMBO ) ) ) );            
+            association.setMemberId( categoryMapping.get( Integer.parseInt( values.get( FIELD_CATEGORY ) ) ) );
             
             read( association, GroupMemberType.CATEGORYCOMBO_CATEGORY, params );
         }

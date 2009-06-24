@@ -141,9 +141,9 @@ public class DataSetSourceAssociationConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
-            final GroupMemberAssociation association = new GroupMemberAssociation( AssociationType.SET );
-            
             final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
+            final GroupMemberAssociation association = new GroupMemberAssociation( AssociationType.SET );
             
             association.setGroupId( dataSetMapping.get( Integer.parseInt( values.get( FIELD_DATASET ) ) ) );            
             association.setMemberId( sourceMapping.get( Integer.parseInt( values.get( FIELD_SOURCE ) ) ) );

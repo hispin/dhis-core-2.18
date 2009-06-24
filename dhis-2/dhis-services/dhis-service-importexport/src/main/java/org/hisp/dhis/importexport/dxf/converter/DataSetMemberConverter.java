@@ -140,13 +140,12 @@ public class DataSetMemberConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final GroupMemberAssociation association = new GroupMemberAssociation( AssociationType.SET );
             
-            reader.moveToStartElement( FIELD_DATASET );
-            association.setGroupId( dataSetMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-            
-            reader.moveToStartElement( FIELD_DATAELEMENT );
-            association.setMemberId( dataElementMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
+            association.setGroupId( dataSetMapping.get( Integer.parseInt( values.get( FIELD_DATASET ) ) ) );            
+            association.setMemberId( dataElementMapping.get( Integer.parseInt( values.get( FIELD_DATAELEMENT ) ) ) );
             
             read( association, GroupMemberType.DATASET, params );
         }

@@ -140,13 +140,12 @@ public class OrganisationUnitGroupMemberConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final GroupMemberAssociation association = new GroupMemberAssociation( AssociationType.SET );
             
-            reader.moveToStartElement( FIELD_ORGANISATION_UNIT_GROUP );
-            association.setGroupId( organisationUnitGroupMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-            
-            reader.moveToStartElement( FIELD_ORGANISATION_UNIT );
-            association.setMemberId( organisationUnitMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
+            association.setGroupId( organisationUnitGroupMapping.get( Integer.parseInt( values.get( FIELD_ORGANISATION_UNIT_GROUP ) ) ) );            
+            association.setMemberId( organisationUnitMapping.get( Integer.parseInt( values.get( FIELD_ORGANISATION_UNIT ) ) ) );
             
             read( association, GroupMemberType.ORGANISATIONUNITGROUP, params );
         }

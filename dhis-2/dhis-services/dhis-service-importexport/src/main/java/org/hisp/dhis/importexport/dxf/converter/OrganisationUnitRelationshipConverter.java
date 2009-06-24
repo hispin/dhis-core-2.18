@@ -122,13 +122,12 @@ public class OrganisationUnitRelationshipConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final GroupMemberAssociation association = new GroupMemberAssociation( AssociationType.SET );
             
-            reader.moveToStartElement( FIELD_PARENT );
-            association.setGroupId( organisationUnitMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-
-            reader.moveToStartElement( FIELD_CHILD );                        
-            association.setMemberId( organisationUnitMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
+            association.setGroupId( organisationUnitMapping.get( Integer.parseInt( values.get( FIELD_PARENT ) ) ) );
+            association.setMemberId( organisationUnitMapping.get( Integer.parseInt( values.get( FIELD_CHILD ) ) ) );
             
             read( association, GroupMemberType.ORGANISATIONUNITRELATIONSHIP, params );
         }

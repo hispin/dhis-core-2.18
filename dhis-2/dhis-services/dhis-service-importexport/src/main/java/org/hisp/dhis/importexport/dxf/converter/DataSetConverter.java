@@ -130,9 +130,9 @@ public class DataSetConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
-            final DataSet dataSet = new DataSet();
-            
             final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
+            final DataSet dataSet = new DataSet();
             
             PeriodType periodType = new MonthlyPeriodType();
             dataSet.setPeriodType( periodType );

@@ -142,43 +142,24 @@ public class DataElementConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final DataElement element = new DataElement();
             
             final DataElementCategoryCombo categoryCombo = new DataElementCategoryCombo();
             element.setCategoryCombo( categoryCombo );
             
-            reader.moveToStartElement( FIELD_ID );
-            element.setId( Integer.parseInt( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_UUID );            
-            element.setUuid( reader.getElementValue() );
-            
-            reader.moveToStartElement( FIELD_NAME );
-            element.setName( reader.getElementValue() );
-            
-            reader.moveToStartElement( FIELD_ALTERNATIVE_NAME );
-            element.setAlternativeName( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_SHORT_NAME );
-            element.setShortName( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_CODE );
-            element.setCode( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_DESCRIPTION );
-            element.setDescription( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_ACTIVE );
-            element.setActive( Boolean.parseBoolean( reader.getElementValue() ) );
-
-            reader.moveToStartElement( FIELD_TYPE );
-            element.setType( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_AGGREGATION_OPERATOR );
-            element.setAggregationOperator( reader.getElementValue() );
-            
-            reader.moveToStartElement( FIELD_CATEGORY_COMBO );
-            element.getCategoryCombo().setId( categoryComboMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
+            element.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            element.setUuid( values.get( FIELD_UUID ) );
+            element.setName( values.get( FIELD_NAME ) );
+            element.setAlternativeName( values.get( FIELD_ALTERNATIVE_NAME ) );
+            element.setShortName( values.get( FIELD_SHORT_NAME ) );
+            element.setCode( values.get( FIELD_CODE ) );
+            element.setDescription( values.get( FIELD_DESCRIPTION ) );
+            element.setActive( Boolean.parseBoolean( values.get( FIELD_ACTIVE ) ) );
+            element.setType( values.get( FIELD_TYPE ) );
+            element.setAggregationOperator( values.get( FIELD_AGGREGATION_OPERATOR ) );
+            element.getCategoryCombo().setId( categoryComboMapping.get( Integer.parseInt( values.get( FIELD_CATEGORY_COMBO ) ) ) );
             
             NameMappingUtil.addDataElementMapping( element.getId(), element.getName() );
             

@@ -28,6 +28,7 @@ package org.hisp.dhis.importexport.dxf.converter;
  */
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
@@ -120,22 +121,15 @@ public class GroupSetConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final OrganisationUnitGroupSet groupSet = new OrganisationUnitGroupSet();
 
-            reader.moveToStartElement( FIELD_ID );
-            groupSet.setId( Integer.parseInt( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_NAME );
-            groupSet.setName( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_DESCRIPTION );
-            groupSet.setDescription( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_COMPULSORY );
-            groupSet.setCompulsory( Boolean.parseBoolean( reader.getElementValue() ) );
-
-            reader.moveToStartElement( FIELD_EXCLUSIVE );
-            groupSet.setExclusive( Boolean.parseBoolean( reader.getElementValue() ) );
+            groupSet.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            groupSet.setName( values.get( FIELD_NAME ) );
+            groupSet.setDescription( values.get( FIELD_DESCRIPTION ) );
+            groupSet.setCompulsory( Boolean.parseBoolean( values.get( FIELD_COMPULSORY ) ) );
+            groupSet.setExclusive( Boolean.parseBoolean( values.get( FIELD_EXCLUSIVE ) ) );
             
             NameMappingUtil.addGroupSetMapping( groupSet.getId(), groupSet.getName() );
             

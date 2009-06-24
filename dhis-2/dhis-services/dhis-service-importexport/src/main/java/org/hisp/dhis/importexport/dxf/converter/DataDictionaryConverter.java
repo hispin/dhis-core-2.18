@@ -28,6 +28,7 @@ package org.hisp.dhis.importexport.dxf.converter;
  */
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
@@ -117,19 +118,14 @@ public class DataDictionaryConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final DataDictionary dictionary = new DataDictionary();
             
-            reader.moveToStartElement( FIELD_ID );
-            dictionary.setId( Integer.parseInt( reader.getElementValue() ) );
-
-            reader.moveToStartElement( FIELD_NAME );
-            dictionary.setName( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_DESCRIPTION );
-            dictionary.setDescription( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_REGION );
-            dictionary.setRegion( reader.getElementValue() );
+            dictionary.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            dictionary.setName( values.get( FIELD_NAME ) );
+            dictionary.setDescription( values.get( FIELD_DESCRIPTION ) );
+            dictionary.setRegion( values.get( FIELD_REGION ) );
             
             NameMappingUtil.addDataDictionaryMapping( dictionary.getId(), dictionary.getName() );
             

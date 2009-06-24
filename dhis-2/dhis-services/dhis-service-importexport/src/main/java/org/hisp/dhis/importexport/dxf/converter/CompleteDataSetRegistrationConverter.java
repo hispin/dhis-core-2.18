@@ -163,6 +163,8 @@ public class CompleteDataSetRegistrationConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final CompleteDataSetRegistration registration = new CompleteDataSetRegistration();
             
             DataSet dataSet = new DataSet();
@@ -174,17 +176,10 @@ public class CompleteDataSetRegistrationConverter
             Source source = new OrganisationUnit();
             registration.setSource( source );
             
-            reader.moveToStartElement( FIELD_DATASET );
-            registration.getDataSet().setId( dataSetMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-            
-            reader.moveToStartElement( FIELD_PERIOD );
-            registration.getPeriod().setId( periodMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-            
-            reader.moveToStartElement( FIELD_SOURCE );
-            registration.getSource().setId( sourceMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-            
-            reader.moveToStartElement( FIELD_DATE );
-            registration.setDate( DateUtils.getMediumDate( reader.getElementValue() ) );
+            registration.getDataSet().setId( dataSetMapping.get( Integer.parseInt( values.get( FIELD_DATASET ) ) ) );
+            registration.getPeriod().setId( periodMapping.get( Integer.parseInt( values.get( FIELD_PERIOD ) ) ) );
+            registration.getSource().setId( sourceMapping.get( Integer.parseInt( values.get( FIELD_SOURCE ) ) ) );
+            registration.setDate( DateUtils.getMediumDate( values.get( FIELD_DATE ) ) );
             
             read( registration, GroupMemberType.NONE, params );
         }

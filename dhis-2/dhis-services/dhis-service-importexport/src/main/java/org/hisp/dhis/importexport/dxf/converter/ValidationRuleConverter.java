@@ -138,6 +138,8 @@ public class ValidationRuleConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final ValidationRule validationRule = new ValidationRule();
             
             final Expression leftSide = new Expression();
@@ -146,35 +148,20 @@ public class ValidationRuleConverter
             validationRule.setLeftSide( leftSide );
             validationRule.setRightSide( rightSide );
             
-            reader.moveToStartElement( FIELD_NAME );
-            validationRule.setName( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_DESCRIPTION );
-            validationRule.setDescription( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_TYPE );
-            validationRule.setType( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_OPERATOR );
-            validationRule.setOperator( reader.getElementValue() );
+            validationRule.setName( values.get( FIELD_NAME ) );
+            validationRule.setDescription( values.get( FIELD_DESCRIPTION ) );
+            validationRule.setType( values.get( FIELD_TYPE ) );
+            validationRule.setOperator( values.get( FIELD_OPERATOR ) );
             
-            reader.moveToStartElement( FIELD_LEFTSIDE_EXPRESSION );
             validationRule.getLeftSide().setExpression( expressionService.convertExpression( 
-                reader.getElementValue(), dataElementMapping, categoryOptionComboMapping ) );
-            
-            reader.moveToStartElement( FIELD_LEFTSIDE_DESCRIPTION );
-            validationRule.getLeftSide().setDescription( reader.getElementValue() );
-
+                values.get( FIELD_LEFTSIDE_EXPRESSION ), dataElementMapping, categoryOptionComboMapping ) );
+            validationRule.getLeftSide().setDescription( values.get( FIELD_LEFTSIDE_DESCRIPTION ) );
             validationRule.getLeftSide().setDataElementsInExpression( 
                 expressionService.getDataElementsInExpression( validationRule.getLeftSide().getExpression() ) );
             
-            reader.moveToStartElement( FIELD_RIGHTSIDE_EXPRESSION );
             validationRule.getRightSide().setExpression( expressionService.convertExpression( 
-                reader.getElementValue(), dataElementMapping, categoryOptionComboMapping ) );
-            
-            reader.moveToStartElement( FIELD_RIGHTSIDE_DESCRIPTION );
-            validationRule.getRightSide().setDescription( reader.getElementValue() );
-            
+                values.get( FIELD_RIGHTSIDE_EXPRESSION ), dataElementMapping, categoryOptionComboMapping ) );  
+            validationRule.getRightSide().setDescription( values.get( FIELD_RIGHTSIDE_DESCRIPTION ) );            
             validationRule.getRightSide().setDataElementsInExpression(
                 expressionService.getDataElementsInExpression( validationRule.getRightSide().getExpression() ) );
             

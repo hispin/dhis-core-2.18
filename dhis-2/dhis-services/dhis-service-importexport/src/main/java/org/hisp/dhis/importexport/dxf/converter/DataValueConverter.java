@@ -179,6 +179,8 @@ public class DataValueConverter
     {      
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final DataValue value = new DataValue();
             
             final DataElement element = new DataElement();
@@ -193,29 +195,14 @@ public class DataValueConverter
             final DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();
             value.setOptionCombo( categoryOptionCombo );
             
-            reader.moveToStartElement( FIELD_DATAELEMENT );
-            value.getDataElement().setId( dataElementMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-
-            reader.moveToStartElement( FIELD_PERIOD );
-            value.getPeriod().setId( periodMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-            
-            reader.moveToStartElement( FIELD_SOURCE );
-            value.getSource().setId( sourceMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-            
-            reader.moveToStartElement( FIELD_VALUE );
-            value.setValue( reader.getElementValue() );
-            
-            reader.moveToStartElement( FIELD_STOREDBY );
-            value.setStoredBy( reader.getElementValue() );
-            
-            reader.moveToStartElement( FIELD_TIMESTAMP );
-            value.setTimestamp( DateUtils.getMediumDate( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_COMMENT );
-            value.setComment( reader.getElementValue() );
-                        
-            reader.moveToStartElement( FIELD_CATEGORY_OPTION_COMBO );
-            value.getOptionCombo().setId( categoryOptionComboMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
+            value.getDataElement().setId( dataElementMapping.get( Integer.parseInt( values.get( FIELD_DATAELEMENT ) ) ) );
+            value.getPeriod().setId( periodMapping.get( Integer.parseInt( values.get( FIELD_PERIOD ) ) ) );
+            value.getSource().setId( sourceMapping.get( Integer.parseInt( values.get( FIELD_SOURCE ) ) ) );
+            value.setValue( values.get( FIELD_VALUE ) );
+            value.setStoredBy( values.get( FIELD_STOREDBY ) );
+            value.setTimestamp( DateUtils.getMediumDate( values.get( FIELD_TIMESTAMP ) ) );
+            value.setComment( values.get( FIELD_COMMENT ) );
+            value.getOptionCombo().setId( categoryOptionComboMapping.get( Integer.parseInt( values.get( FIELD_CATEGORY_OPTION_COMBO ) ) ) );
             
             read( value, GroupMemberType.NONE, params );
         }

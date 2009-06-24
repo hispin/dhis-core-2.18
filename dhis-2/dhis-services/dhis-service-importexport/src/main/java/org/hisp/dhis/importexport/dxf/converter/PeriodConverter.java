@@ -129,22 +129,17 @@ public class PeriodConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final Period period = new Period();
             
             PeriodType periodType = new MonthlyPeriodType();
             period.setPeriodType( periodType );
             
-            reader.moveToStartElement( FIELD_ID );
-            period.setId( Integer.parseInt( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_PERIOD_TYPE );            
-            period.getPeriodType().setId( periodTypeMapping.get( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_START_DATE );
-            period.setStartDate( DateUtils.getMediumDate( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_END_DATE );
-            period.setEndDate( DateUtils.getMediumDate( reader.getElementValue() ) );
+            period.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            period.getPeriodType().setId( periodTypeMapping.get( values.get( FIELD_PERIOD_TYPE ) ) );
+            period.setStartDate( DateUtils.getMediumDate( values.get( FIELD_START_DATE ) ) );
+            period.setEndDate( DateUtils.getMediumDate( values.get( FIELD_END_DATE ) ) );
             
             NameMappingUtil.addPeriodMapping( period.getId(), period );
             

@@ -111,9 +111,9 @@ public class OlapUrlConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
-            final OlapURL olapUrl = new OlapURL();
-            
             final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
+            final OlapURL olapUrl = new OlapURL();
             
             olapUrl.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
             olapUrl.setName( values.get( FIELD_NAME ) );

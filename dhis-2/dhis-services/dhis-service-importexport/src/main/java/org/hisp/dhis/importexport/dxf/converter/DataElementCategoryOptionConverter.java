@@ -28,6 +28,7 @@ package org.hisp.dhis.importexport.dxf.converter;
  */
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
@@ -115,13 +116,12 @@ public class DataElementCategoryOptionConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final DataElementCategoryOption categoryOption = new DataElementCategoryOption();
             
-            reader.moveToStartElement( FIELD_ID );
-            categoryOption.setId( Integer.parseInt( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_NAME );
-            categoryOption.setName( reader.getElementValue() );
+            categoryOption.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            categoryOption.setName( values.get( FIELD_NAME ) );
             
             NameMappingUtil.addCategoryOptionMapping( categoryOption.getId(), categoryOption.getName() );
             
