@@ -222,6 +222,8 @@ public class ExtendedDataElementConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final DataElement element = new DataElement();
 
             final DataElementCategoryCombo categoryCombo = new DataElementCategoryCombo();
@@ -231,148 +233,66 @@ public class ExtendedDataElementConverter
             // Regular attributes
             // -----------------------------------------------------------------
 
-            reader.moveToStartElement( FIELD_ID );
-            element.setId( Integer.parseInt( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_UUID );            
-            element.setUuid( reader.getElementValue() );
-            
-            reader.moveToStartElement( FIELD_NAME );
-            element.setName( reader.getElementValue() );
-            
-            reader.moveToStartElement( FIELD_ALTERNATIVE_NAME );
-            element.setAlternativeName( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_SHORT_NAME );
-            element.setShortName( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_CODE );
-            element.setCode( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_DESCRIPTION );
-            element.setDescription( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_ACTIVE );
-            element.setActive( Boolean.parseBoolean( reader.getElementValue() ) );
-
-            reader.moveToStartElement( FIELD_TYPE );
-            element.setType( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_AGGREGATION_OPERATOR );
-            element.setAggregationOperator( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_CATEGORY_COMBO );
-            element.getCategoryCombo().setId( categoryComboMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
+            element.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            element.setUuid( values.get( FIELD_UUID ) );
+            element.setName( values.get( FIELD_NAME ) );
+            element.setAlternativeName( values.get( FIELD_ALTERNATIVE_NAME ) );
+            element.setShortName( values.get( FIELD_SHORT_NAME ) );
+            element.setCode( values.get( FIELD_CODE ) );
+            element.setDescription( values.get( FIELD_DESCRIPTION ) );
+            element.setActive( Boolean.parseBoolean( values.get( FIELD_ACTIVE ) ) );
+            element.setType( values.get( FIELD_TYPE ) );
+            element.setAggregationOperator( values.get( FIELD_AGGREGATION_OPERATOR ) );
+            element.getCategoryCombo().setId( categoryComboMapping.get( Integer.parseInt( values.get( FIELD_CATEGORY_COMBO ) ) ) );
             
             // -----------------------------------------------------------------
             // Identifying and Definitional attributes 
             // -----------------------------------------------------------------
 
             ExtendedDataElement extended = new ExtendedDataElement();            
-            
-            reader.moveToStartElement( FIELD_MNEMONIC );            
-            extended.setMnemonic( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_VERSION );            
-            extended.setVersion( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_CONTEXT );            
-            extended.setContext( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_SYNONYMS );            
-            extended.setSynonyms( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_HONONYMS );            
-            extended.setHononyms( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_KEYWORDS );            
-            extended.setKeywords( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_STATUS );            
-            extended.setStatus( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_STATUS_DATE );            
-            extended.setStatusDate( DateUtils.getMediumDate( reader.getElementValue() ) );
-
-            reader.moveToStartElement( FIELD_DATAELEMENT_TYPE );            
-            extended.setDataElementType( reader.getElementValue() );
+                 
+            extended.setMnemonic( values.get( FIELD_MNEMONIC ) ); 
+            extended.setVersion( values.get( FIELD_VERSION ) ); 
+            extended.setContext( values.get( FIELD_CONTEXT ) );  
+            extended.setSynonyms( values.get( FIELD_SYNONYMS ) );  
+            extended.setHononyms( values.get( FIELD_HONONYMS ) );  
+            extended.setKeywords( values.get( FIELD_KEYWORDS ) );
+            extended.setStatus( values.get( FIELD_STATUS ) );    
+            extended.setStatusDate( DateUtils.getMediumDate( values.get( FIELD_STATUS_DATE ) ) );
+            extended.setDataElementType( values.get( FIELD_DATAELEMENT_TYPE) );
 
             // -----------------------------------------------------------------
             // Relational and Representational attributes
             // -----------------------------------------------------------------
-
-            reader.moveToStartElement( FIELD_DATA_TYPE );            
-            extended.setDataType( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_REPRESENTATIONAL_FORM );            
-            extended.setRepresentationalForm( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_REPRESENTATIONAL_LAYOUT );            
-            extended.setRepresentationalLayout( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_MINIMUM_SIZE );            
-            extended.setMinimumSize( parseInteger( reader.getElementValue() ) );
-
-            reader.moveToStartElement( FIELD_MAXIMUM_SIZE );            
-            extended.setMaximumSize( parseInteger( reader.getElementValue() ) );
-
-            reader.moveToStartElement( FIELD_DATA_DOMAIN );            
-            extended.setDataDomain( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_VALIDATION_RULES );            
-            extended.setValidationRules( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_RELATED_DATA_REFERENCES );            
-            extended.setRelatedDataReferences( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_GUIDE_FOR_USE );            
-            extended.setGuideForUse( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_COLLECTION_METHODS );            
-            extended.setCollectionMethods( reader.getElementValue() );
+      
+            extended.setDataType( values.get( FIELD_DATA_TYPE ) );
+            extended.setRepresentationalForm( values.get( FIELD_REPRESENTATIONAL_FORM ) );
+            extended.setRepresentationalLayout( values.get( FIELD_REPRESENTATIONAL_LAYOUT ) );
+            extended.setMinimumSize( parseInteger( values.get( FIELD_MINIMUM_SIZE ) ) );
+            extended.setMaximumSize( parseInteger( values.get( FIELD_MAXIMUM_SIZE ) ) );
+            extended.setDataDomain( values.get( FIELD_DATA_DOMAIN ) );
+            extended.setValidationRules( values.get( FIELD_VALIDATION_RULES ) );
+            extended.setRelatedDataReferences( values.get( FIELD_RELATED_DATA_REFERENCES ) );
+            extended.setGuideForUse( values.get( FIELD_GUIDE_FOR_USE ) );
+            extended.setCollectionMethods( values.get( FIELD_COLLECTION_METHODS ) );
 
             // -----------------------------------------------------------------
             // Administrative attributes 
             // -----------------------------------------------------------------
-
-            reader.moveToStartElement( FIELD_RESPONSIBLE_AUTHORITY );            
-            extended.setResponsibleAuthority( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_UPDATE_RULES );            
-            extended.setUpdateRules( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_ACCESS_AUTHORITY );            
-            extended.setAccessAuthority( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_UPDATE_FREQUENCY );            
-            extended.setUpdateFrequency( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_LOCATION );            
-            extended.setLocation( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_REPORTING_METHODS );            
-            extended.setReportingMethods( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_VERSION_STATUS );            
-            extended.setVersionStatus( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_PREVIOUS_VERSION_REFERENCES );            
-            extended.setPreviousVersionReferences( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_SOURCE_DOCUMENT );            
-            extended.setSourceDocument( reader.getElementValue() );            
-
-            reader.moveToStartElement( FIELD_SOURCE_ORGANISATION );            
-            extended.setSourceOrganisation( reader.getElementValue() );        
-
-            reader.moveToStartElement( FIELD_COMMENT );            
-            extended.setComment( reader.getElementValue() );            
-
-            reader.moveToStartElement( FIELD_SAVED );            
-            extended.setSaved( DateUtils.getMediumDate( reader.getElementValue() ) );            
-
-            reader.moveToStartElement( FIELD_LAST_UPDATED );            
-            extended.setLastUpdated( DateUtils.getMediumDate( reader.getElementValue() ) );            
+         
+            extended.setResponsibleAuthority( values.get( FIELD_RESPONSIBLE_AUTHORITY ) );
+            extended.setUpdateRules( values.get( FIELD_UPDATE_RULES ) ); 
+            extended.setAccessAuthority( values.get( FIELD_ACCESS_AUTHORITY ) );
+            extended.setUpdateFrequency( values.get( FIELD_UPDATE_FREQUENCY ) );
+            extended.setLocation( values.get( FIELD_LOCATION ) ); 
+            extended.setReportingMethods( values.get( FIELD_REPORTING_METHODS ) );
+            extended.setVersionStatus( values.get( FIELD_VERSION_STATUS ) );       
+            extended.setPreviousVersionReferences( values.get( FIELD_PREVIOUS_VERSION_REFERENCES ) );
+            extended.setSourceDocument( values.get( FIELD_SOURCE_DOCUMENT ) );  
+            extended.setSourceOrganisation( values.get( FIELD_SOURCE_ORGANISATION ) );
+            extended.setComment( values.get( FIELD_COMMENT ) );
+            extended.setSaved( DateUtils.getMediumDate( values.get( FIELD_SAVED ) ) );
+            extended.setLastUpdated( DateUtils.getMediumDate( values.get( FIELD_LAST_UPDATED ) ) );
 
             // -----------------------------------------------------------------
             // Only set ExtendedDataElement if it contains values

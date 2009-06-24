@@ -134,18 +134,15 @@ public class ReportTableDataSetConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final GroupMemberAssociation association = new GroupMemberAssociation( AssociationType.LIST );
             
-            reader.moveToStartElement( FIELD_REPORTTABLE );
-            association.setGroupId( reportTableMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-
-            reader.moveToStartElement( FIELD_DATASET );
-            association.setMemberId( dataSetMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-
-            reader.moveToStartElement( FIELD_SORT_ORDER );
-            association.setSortOrder( Integer.parseInt( reader.getElementValue() ) );
+            association.setGroupId( reportTableMapping.get( Integer.parseInt( values.get( FIELD_REPORTTABLE ) ) ) );
+            association.setMemberId( dataSetMapping.get( Integer.parseInt( values.get( FIELD_DATASET ) ) ) );
+            association.setSortOrder( Integer.parseInt( values.get( FIELD_SORT_ORDER ) ) );
             
             read( association, GroupMemberType.REPORTTABLE_DATASET, params );
         }
-    }            
+    }
 }

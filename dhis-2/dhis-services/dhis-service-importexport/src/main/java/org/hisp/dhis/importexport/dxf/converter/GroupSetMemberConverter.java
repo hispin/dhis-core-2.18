@@ -137,13 +137,12 @@ public class GroupSetMemberConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final GroupMemberAssociation association = new GroupMemberAssociation( AssociationType.SET );
             
-            reader.moveToStartElement( FIELD_ORGANISATIONUNIT_GROUP_SET );
-            association.setGroupId( organisationUnitGroupSetMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-            
-            reader.moveToStartElement( FIELD_ORGANISATIONUNIT_GROUP );
-            association.setMemberId( organisationUnitGroupMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
+            association.setGroupId( organisationUnitGroupSetMapping.get( Integer.parseInt( values.get( FIELD_ORGANISATIONUNIT_GROUP_SET ) ) ) );
+            association.setMemberId( organisationUnitGroupMapping.get( Integer.parseInt( values.get( FIELD_ORGANISATIONUNIT_GROUP ) ) ) );
             
             read( association, GroupMemberType.ORGANISATIONUNITGROUPSET, params );
         }

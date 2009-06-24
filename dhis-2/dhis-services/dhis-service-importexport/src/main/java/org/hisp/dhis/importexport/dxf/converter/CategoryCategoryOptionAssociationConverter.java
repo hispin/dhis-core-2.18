@@ -144,13 +144,12 @@ public class CategoryCategoryOptionAssociationConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final GroupMemberAssociation association = new GroupMemberAssociation( AssociationType.SET );
             
-            reader.moveToStartElement( FIELD_CATEGORY );
-            association.setGroupId( categoryMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-
-            reader.moveToStartElement( FIELD_CATEGORY_OPTION );                        
-            association.setMemberId( categoryOptionMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
+            association.setGroupId( categoryMapping.get( Integer.parseInt( values.get( FIELD_CATEGORY ) ) ) );
+            association.setMemberId( categoryOptionMapping.get( Integer.parseInt( values.get( FIELD_CATEGORY_OPTION ) ) ) );
             
             read( association, GroupMemberType.CATEGORY_CATEGORYOPTION, params );
         }

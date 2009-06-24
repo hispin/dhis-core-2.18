@@ -28,6 +28,7 @@ package org.hisp.dhis.importexport.dxf.converter;
  */
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
@@ -115,16 +116,13 @@ public class DataElementGroupConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final DataElementGroup group = new DataElementGroup();
 
-            reader.moveToStartElement( FIELD_ID );
-            group.setId( Integer.parseInt( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_UUID );            
-            group.setUuid( reader.getElementValue() );
-            
-            reader.moveToStartElement( FIELD_NAME );
-            group.setName( reader.getElementValue() );
+            group.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            group.setUuid( values.get( FIELD_UUID ) );
+            group.setName( values.get( FIELD_NAME ) );
             
             NameMappingUtil.addDataElementGroupMapping( group.getId(), group.getName() );
             

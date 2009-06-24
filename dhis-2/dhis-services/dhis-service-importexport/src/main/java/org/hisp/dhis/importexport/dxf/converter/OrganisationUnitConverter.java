@@ -28,6 +28,7 @@ package org.hisp.dhis.importexport.dxf.converter;
  */
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
@@ -132,37 +133,20 @@ public class OrganisationUnitConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final OrganisationUnit unit = new OrganisationUnit();
 
-            reader.moveToStartElement( FIELD_ID );
-            unit.setId( Integer.parseInt( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_UUID );            
-            unit.setUuid( reader.getElementValue() );
-            
-            reader.moveToStartElement( FIELD_NAME );
-            unit.setName( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_SHORT_NAME );
-            unit.setShortName( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_CODE );
-            unit.setCode( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_OPENING_DATE );
-            unit.setOpeningDate( DateUtils.getMediumDate( reader.getElementValue() ) );
-
-            reader.moveToStartElement( FIELD_CLOSED_DATE );
-            unit.setClosedDate( DateUtils.getMediumDate( reader.getElementValue() ) );
-
-            reader.moveToStartElement( FIELD_ACTIVE );
-            unit.setActive( Boolean.parseBoolean( reader.getElementValue() ) );
-
-            reader.moveToStartElement( FIELD_COMMENT );
-            unit.setComment( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_GEO_CODE );
-            unit.setGeoCode( reader.getElementValue() );
+            unit.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            unit.setUuid( values.get( FIELD_UUID ) );
+            unit.setName( values.get( FIELD_NAME ) );
+            unit.setShortName( values.get( FIELD_SHORT_NAME ) );
+            unit.setCode( values.get( FIELD_CODE ) );
+            unit.setOpeningDate( DateUtils.getMediumDate( values.get( FIELD_OPENING_DATE ) ) );
+            unit.setClosedDate( DateUtils.getMediumDate( values.get( FIELD_CLOSED_DATE ) ) );
+            unit.setActive( Boolean.parseBoolean( values.get( FIELD_ACTIVE ) ) );
+            unit.setComment( values.get( FIELD_COMMENT ) );
+            unit.setGeoCode( values.get( FIELD_GEO_CODE ) );
             
             NameMappingUtil.addOrganisationUnitMapping( unit.getId(), unit.getName() );
             

@@ -132,13 +132,12 @@ public class IndicatorGroupMemberConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final GroupMemberAssociation association = new GroupMemberAssociation( AssociationType.SET );
             
-            reader.moveToStartElement( FIELD_INDICATOR_GROUP );
-            association.setGroupId( indicatorGroupMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-            
-            reader.moveToStartElement( FIELD_INDICATOR );
-            association.setMemberId( indicatorMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
+            association.setGroupId( indicatorGroupMapping.get( Integer.parseInt( values.get( FIELD_INDICATOR_GROUP ) ) ) );
+            association.setMemberId( indicatorMapping.get( Integer.parseInt( values.get( FIELD_INDICATOR ) ) ) );
             
             read( association, GroupMemberType.INDICATORGROUP, params );
         }

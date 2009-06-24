@@ -28,6 +28,7 @@ package org.hisp.dhis.importexport.dxf.converter;
  */
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
@@ -115,16 +116,13 @@ public class IndicatorTypeConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final IndicatorType type = new IndicatorType();
 
-            reader.moveToStartElement( FIELD_ID );
-            type.setId( Integer.parseInt( reader.getElementValue() ) );
-                     
-            reader.moveToStartElement( FIELD_NAME );
-            type.setName( reader.getElementValue() );
-            
-            reader.moveToStartElement( FIELD_FACTOR );
-            type.setFactor( Integer.parseInt( reader.getElementValue() ) );
+            type.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            type.setName( values.get( FIELD_NAME ) );
+            type.setFactor( Integer.parseInt( values.get( FIELD_FACTOR ) ) );
             
             NameMappingUtil.addIndicatorTypeMapping( type.getId(), type.getName() );
             

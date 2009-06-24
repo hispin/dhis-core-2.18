@@ -111,9 +111,9 @@ public class OrganisationUnitLevelConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
-            final OrganisationUnitLevel level = new OrganisationUnitLevel();
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
             
-            Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            final OrganisationUnitLevel level = new OrganisationUnitLevel();
             
             level.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
             level.setLevel( Integer.parseInt( values.get( FIELD_LEVEL ) ) );

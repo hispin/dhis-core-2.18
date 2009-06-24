@@ -130,13 +130,12 @@ public class DataDictionaryDataElementConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final GroupMemberAssociation association = new GroupMemberAssociation( AssociationType.SET );
             
-            reader.moveToStartElement( FIELD_DATADICTIONARY );
-            association.setGroupId( dataDictionaryMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-
-            reader.moveToStartElement( FIELD_DATAELEMENT );
-            association.setMemberId( dataElementMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
+            association.setGroupId( dataDictionaryMapping.get( Integer.parseInt( values.get( FIELD_DATADICTIONARY ) ) ) );
+            association.setMemberId( dataElementMapping.get( Integer.parseInt( values.get( FIELD_DATAELEMENT ) ) ) );
             
             read( association, GroupMemberType.DATADICTIONARY_DATAELEMENT, params );
         }

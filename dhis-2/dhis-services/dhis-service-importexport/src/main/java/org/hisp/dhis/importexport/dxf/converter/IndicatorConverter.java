@@ -166,55 +166,28 @@ public class IndicatorConverter
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
             final Indicator indicator = new Indicator();
             
             final IndicatorType type = new IndicatorType();
             indicator.setIndicatorType( type );
             
-            reader.moveToStartElement( FIELD_ID );
-            indicator.setId( Integer.parseInt( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_UUID );            
-            indicator.setUuid( reader.getElementValue() );
-            
-            reader.moveToStartElement( FIELD_NAME );
-            indicator.setName( reader.getElementValue() );
-            
-            reader.moveToStartElement( FIELD_ALTERNATIVE_NAME );
-            indicator.setAlternativeName( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_SHORT_NAME );
-            indicator.setShortName( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_CODE );
-            indicator.setCode( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_DESCRIPTION );
-            indicator.setDescription( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_ANNUALIZED );
-            indicator.setAnnualized( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_INDICATOR_TYPE );
-            indicator.getIndicatorType().setId( indicatorTypeMapping.get( Integer.parseInt( reader.getElementValue() ) ) );
-            
-            reader.moveToStartElement( FIELD_NUMERATOR );
-            indicator.setNumerator( expressionService.convertExpression( reader.getElementValue(), dataElementMapping, categoryOptionComboMapping ) );
-            
-            reader.moveToStartElement( FIELD_NUMERATOR_DESCRIPTION );
-            indicator.setNumeratorDescription( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_NUMERATOR_AGGREGATION_OPERATOR );
-            indicator.setNumeratorAggregationOperator( reader.getElementValue() );
-            
-            reader.moveToStartElement( FIELD_DENOMINATOR );
-            indicator.setDenominator( expressionService.convertExpression( reader.getElementValue(), dataElementMapping, categoryOptionComboMapping ) );
-            
-            reader.moveToStartElement( FIELD_DENOMINATOR_DESCRIPTION );
-            indicator.setDenominatorDescription( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_DENOMINATOR_AGGREGATION_OPERATOR );
-            indicator.setDenominatorAggregationOperator( reader.getElementValue() );
+            indicator.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            indicator.setUuid( values.get( FIELD_UUID ) );
+            indicator.setName( values.get( FIELD_NAME ) );
+            indicator.setAlternativeName( values.get( FIELD_ALTERNATIVE_NAME ) );
+            indicator.setShortName( values.get( FIELD_SHORT_NAME ) );
+            indicator.setCode( values.get( FIELD_CODE ) );
+            indicator.setDescription( values.get( FIELD_DESCRIPTION ) );
+            indicator.setAnnualized( Boolean.parseBoolean( values.get( FIELD_ANNUALIZED ) ) );
+            indicator.getIndicatorType().setId( indicatorTypeMapping.get( Integer.parseInt( values.get( FIELD_INDICATOR_TYPE ) ) ) );
+            indicator.setNumerator( expressionService.convertExpression( values.get( FIELD_NUMERATOR ), dataElementMapping, categoryOptionComboMapping ) );
+            indicator.setNumeratorDescription( values.get( FIELD_NUMERATOR_DESCRIPTION ) );
+            indicator.setNumeratorAggregationOperator( values.get( FIELD_NUMERATOR_AGGREGATION_OPERATOR ) );
+            indicator.setDenominator( expressionService.convertExpression( values.get( FIELD_DENOMINATOR ), dataElementMapping, categoryOptionComboMapping ) );
+            indicator.setDenominatorDescription( values.get( FIELD_DENOMINATOR_DESCRIPTION ) );
+            indicator.setDenominatorAggregationOperator( values.get( FIELD_DENOMINATOR_AGGREGATION_OPERATOR ) );
             
             NameMappingUtil.addIndicatorMapping( indicator.getId(), indicator.getName() );
             
