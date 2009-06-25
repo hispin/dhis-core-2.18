@@ -1,6 +1,6 @@
 { "mapView": 
   [{
-    "id": $!{object.id},
+    "id": "$!{object.id}",
     "name": "$!encoder.jsEncode( ${object.name} )",
     "indicatorGroupId": $!{object.indicatorGroup.id},
     "indicatorId": $!{object.indicator.id},

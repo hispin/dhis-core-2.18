@@ -127,13 +127,13 @@ public class UpdateOrganisationUnitAction
         this.comment = comment;
     }
 
-    private String geoCode;
+    private String polygonCoordinates;
 
-    public void setGeoCode( String geoCode )
+    public void setPolygonCoordinates( String polygonCoordinates )
     {
-        this.geoCode = geoCode;
+        this.polygonCoordinates = polygonCoordinates;
     }
-    
+
     private String latitude;
 
     public void setLatitude( String latitude )
@@ -195,7 +195,7 @@ public class UpdateOrganisationUnitAction
         organisationUnit.setClosedDate( cDate );
         organisationUnit.setType( type );
         organisationUnit.setComment( comment );
-        organisationUnit.setGeoCode( geoCode );
+        organisationUnit.setPolygonCoordinates( polygonCoordinates );
         organisationUnit.setLatitude( latitude );
         organisationUnit.setLongitude( longitude );
         organisationUnit.setUrl( url );

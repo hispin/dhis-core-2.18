@@ -2,10 +2,10 @@
 { "maps": [
 #foreach( $map in $object )
   {
-    "id": $!{map.id},
+    "id": "$!{map.id}",
     "name": "$!encoder.jsEncode( ${map.name} )",
     "mapLayerPath": "$!encoder.jsEncode( ${map.mapLayerPath} )",
-    "organisationUnitLevel": $!{map.organisationUnitLevel.level}
+    "organisationUnitLevel": "$!{map.organisationUnitLevel.level}"
   }#if( $velocityCount < $size ),#end
 #end
 ] }

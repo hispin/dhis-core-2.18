@@ -2,7 +2,7 @@
 { "mapViews": [
 #foreach( $mapView in $object )
   {
-    "id": $!{mapView.id},
+    "id": "$!{mapView.id}",
     "name": "$!encoder.jsEncode( ${mapView.name} )",
     "indicatorGroupId": $!{mapView.indicatorGroup.id},
     "indicatorId": $!{mapView.indicator.id},

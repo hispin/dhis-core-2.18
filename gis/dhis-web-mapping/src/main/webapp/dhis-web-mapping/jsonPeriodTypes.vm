@@ -2,7 +2,7 @@
 { "periodTypes": [
 #foreach( $periodType in $object )
   {
-    "id": $!{periodType.id},
+    "id": "$!{periodType.id}",
     "name": "$!encoder.jsEncode( ${periodType.name} )"
   }#if( $velocityCount < $size ),#end
 #end

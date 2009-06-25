@@ -2,7 +2,7 @@
 { "mapOrganisationUnitRelations": [
 #foreach( $mapOrganisationUnitRelation in $object )
   {
-    "id": $!{mapOrganisationUnitRelation.id},
+    "id": "$!{mapOrganisationUnitRelation.id}",
     "map": "$!encoder.jsEncode( ${mapOrganisationUnitRelation.map.mapLayerPath} )",
     "organisationUnit": "$!encoder.jsEncode( ${mapOrganisationUnitRelation.organisationUnit.name} )",
     "organisationUnitId": $!{mapOrganisationUnitRelation.organisationUnit.id},

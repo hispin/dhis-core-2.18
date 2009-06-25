@@ -141,5 +141,9 @@
       <result name="success" type="velocity-json">/dhis-web-mapping/pointShapefile.vm</result>
     </action>
       
+    <action name="getPolygonShapefile" class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/pointShapefile.vm</result>
+    </action>
+      
   </package>
 </xwork>

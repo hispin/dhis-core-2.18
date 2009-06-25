@@ -58,8 +58,8 @@
 		<td><textarea id="comment" name="comment" style="width:20em; height:5em">$!encoder.htmlEncode( $organisationUnit.comment )</textarea></td>
 	</tr>
     <tr>
-        <td><label for="geoCode">$i18n.getString( "geo_code" )</label></td>
-        <td><input type="text" id="geoCode" name="geoCode" value="$!encoder.htmlEncode( $organisationUnit.geoCode )" style="width:20em"></td>
+        <td><label for="polygonCoordinates">$i18n.getString( "polygon_coordinates" )</label></td>
+        <td><textarea id="polygonCoordinates" name="polygonCoordinates" value="$!encoder.htmlEncode( $organisationUnit.polygonCoordinates )" style="width:20em; height:5em"></td>
     </tr>
     <tr>
         <td><label for="latitude">$i18n.getString( "latitude" )</label></td>

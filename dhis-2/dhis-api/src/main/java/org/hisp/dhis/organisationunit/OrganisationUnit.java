@@ -65,7 +65,7 @@ public class OrganisationUnit
 
     private String comment;
     
-    private String geoCode;
+    private String polygonCoordinates;
     
     private String latitude;
     
@@ -134,6 +134,11 @@ public class OrganisationUnit
     public boolean hasCoordinates()
     {
         return latitude != null && latitude.trim().length() > 0 && longitude != null && longitude.trim().length() > 0;
+    }
+    
+    public boolean hasPolygonCoordinates()
+    {
+        return polygonCoordinates != null && polygonCoordinates.trim().length() > 0;
     }
     
     // -------------------------------------------------------------------------
@@ -299,14 +304,14 @@ public class OrganisationUnit
         this.comment = comment;
     }
 
-    public String getGeoCode()
+    public String getPolygonCoordinates()
     {
-        return geoCode;
+        return polygonCoordinates;
     }
 
-    public void setGeoCode( String geoCode )
+    public void setPolygonCoordinates( String polygonCoordinates )
     {
-        this.geoCode = geoCode;
+        this.polygonCoordinates = polygonCoordinates;
     }
 
     public String getLatitude()

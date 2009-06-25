@@ -2,9 +2,9 @@
 { "indicators": [
 #foreach( $indicator in $object )
   {
-    "id": $!{indicator.id},
+    "id": "$!{indicator.id}",
     "name": "$!encoder.jsEncode( ${indicator.name} )",
-    "shortName": "$!encoder.jsEncode( ${indicator.shortName} )",
+    "shortName": "$!encoder.jsEncode( ${indicator.shortName} )"
   }#if( $velocityCount < $size ),#end
 #end
 ] }
