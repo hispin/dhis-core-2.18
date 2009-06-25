@@ -43,7 +43,7 @@
 		
     <property name="comment" length="360"/>
     
-    <property name="geoCode"/>
+    <property name="polygonCoordinates" type="text"/>
     
     <property name="latitude"/>
       

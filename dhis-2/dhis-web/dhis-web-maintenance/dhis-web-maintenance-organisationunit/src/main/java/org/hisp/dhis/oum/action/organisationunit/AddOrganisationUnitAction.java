@@ -115,13 +115,13 @@ public class AddOrganisationUnitAction
         this.comment = comment;
     }
     
-    private String geoCode;
+    private String polygonCoordinates;
 
-    public void setGeoCode( String geoCode )
+    public void setPolygonCoordinates( String polygonCoordinates )
     {
-        this.geoCode = geoCode;
+        this.polygonCoordinates = polygonCoordinates;
     }
-    
+
     private String latitude;
 
     public void setLatitude( String latitude )
@@ -186,7 +186,7 @@ public class AddOrganisationUnitAction
             code, date, null, true, comment );
         
         organisationUnit.setType( type );
-        organisationUnit.setGeoCode( geoCode );
+        organisationUnit.setPolygonCoordinates( polygonCoordinates );
         organisationUnit.setLatitude( latitude );
         organisationUnit.setLongitude( longitude );
         organisationUnit.setUrl( url );

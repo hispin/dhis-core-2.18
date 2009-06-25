@@ -2,8 +2,8 @@
 { "organisationUnitLevels": [
 #foreach ( $level in $object )
   {
-    "id": $!{level.id},
-    "level": $!{level.level},
+    "id": "$!{level.id}",
+    "level": "$!{level.level}",
     "name": "$!encoder.jsEncode( ${level.name} )"
   }#if( $velocityCount < $size ),#end
 #end
