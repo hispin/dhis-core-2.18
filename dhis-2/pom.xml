@@ -23,18 +23,16 @@
     <module>dhis-support</module>
     <module>dhis-useradminandsecurity</module>
   </modules>
-  <!--
+  
   <repositories>
     <repository>
-      <id>dhis_maven2_repo</id>
-      <name>DHIS Maven 2 repository</name>
-      <url>http://www.hisp.info/maven2</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
+      <id>amplecode_maven2_repo</id>
+      <name>AmpleCode Maven 2 repository</name>
+      <url>http://www.amplecode.org/maven2</url>
     </repository>
   </repositories>
 
+  <!--
   <pluginRepositories>
     <pluginRepository>
       <id>dhis_maven2_repo</id>
