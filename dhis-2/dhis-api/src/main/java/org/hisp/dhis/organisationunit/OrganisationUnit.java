@@ -65,6 +65,8 @@ public class OrganisationUnit
 
     private String comment;
     
+    private String geoCode;
+    
     private String polygonCoordinates;
     
     private String latitude;
@@ -302,6 +304,16 @@ public class OrganisationUnit
     public void setComment( String comment )
     {
         this.comment = comment;
+    }
+
+    public String getGeoCode()
+    {
+        return geoCode;
+    }
+
+    public void setGeoCode( String geoCode )
+    {
+        this.geoCode = geoCode;
     }
 
     public String getPolygonCoordinates()
