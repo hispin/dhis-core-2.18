@@ -56,7 +56,7 @@ public class ReportTableOrganisationUnitConverter
     public static final String ELEMENT_NAME = "reportTableOrganisationUnit";
     
     private static final String FIELD_REPORTTABLE = "reportTable";
-    private static final String FIELD_ORGANISTIONUNIT = "organisationUnit";
+    private static final String FIELD_ORGANISATIONUNIT = "organisationUnit";
     private static final String FIELD_SORT_ORDER = "sortOrder";
     
     // -------------------------------------------------------------------------
@@ -118,7 +118,7 @@ public class ReportTableOrganisationUnitConverter
                         writer.openElement( ELEMENT_NAME );
                     
                         writer.writeElement( FIELD_REPORTTABLE, String.valueOf( reportTable.getId() ) );
-                        writer.writeElement( FIELD_ORGANISTIONUNIT, String.valueOf( unit.getId() ) );
+                        writer.writeElement( FIELD_ORGANISATIONUNIT, String.valueOf( unit.getId() ) );
                         writer.writeElement( FIELD_SORT_ORDER, String.valueOf( sortOrder++ ) );
                         
                         writer.closeElement();
@@ -139,10 +139,10 @@ public class ReportTableOrganisationUnitConverter
             final GroupMemberAssociation association = new GroupMemberAssociation( AssociationType.LIST );
             
             association.setGroupId( reportTableMapping.get( Integer.parseInt( values.get( FIELD_REPORTTABLE ) ) ) );
-            association.setMemberId( organisationUnitMapping.get( values.get( FIELD_ORGANISTIONUNIT ) ) );
-            association.setSortOrder( Integer.parseInt( values.get( FIELD_ORGANISTIONUNIT ) ) );
+            association.setMemberId( organisationUnitMapping.get( Integer.parseInt( values.get( FIELD_ORGANISATIONUNIT ) ) ) );
+            association.setSortOrder( Integer.parseInt( values.get( FIELD_SORT_ORDER ) ) );
             
             read( association, GroupMemberType.REPORTTABLE_ORGANISATIONUNIT, params );
         }
-    }            
+    }
 }

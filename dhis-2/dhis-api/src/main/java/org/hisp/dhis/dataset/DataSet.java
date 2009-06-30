@@ -105,7 +105,12 @@ public class DataSet
     public DataSet()
     {
     }
-
+    
+    public DataSet( String name )
+    {
+        this.name = name;
+    }
+    
     public DataSet( String name, PeriodType periodType )
     {
         this.name = name;

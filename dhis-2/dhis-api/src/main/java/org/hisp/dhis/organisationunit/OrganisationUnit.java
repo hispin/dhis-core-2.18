@@ -85,6 +85,11 @@ public class OrganisationUnit
     {
     }
 
+    public OrganisationUnit( String name )
+    {
+        this.name = name;
+    }
+    
     /**
      * @param name
      * @param shortName
