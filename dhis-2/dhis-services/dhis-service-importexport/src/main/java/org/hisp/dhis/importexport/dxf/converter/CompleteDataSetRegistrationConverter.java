@@ -45,8 +45,10 @@ import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractCompleteDataSetRegistrationConverter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.DateUtils;
 
@@ -64,7 +66,7 @@ public class CompleteDataSetRegistrationConverter
     private static final String FIELD_PERIOD = "period";
     private static final String FIELD_SOURCE = "source";
     private static final String FIELD_DATE = "date";
-
+        
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
@@ -79,6 +81,8 @@ public class CompleteDataSetRegistrationConverter
     private Map<Object, Integer> periodMapping;    
     private Map<Object, Integer> sourceMapping;
 
+    private PeriodType periodType;
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -120,6 +124,7 @@ public class CompleteDataSetRegistrationConverter
         this.dataSetMapping = dataSetMapping;
         this.periodMapping = periodMapping;
         this.sourceMapping = sourceMapping;
+        this.periodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
     }
 
     // -------------------------------------------------------------------------
@@ -167,21 +172,22 @@ public class CompleteDataSetRegistrationConverter
             
             final CompleteDataSetRegistration registration = new CompleteDataSetRegistration();
             
-            DataSet dataSet = new DataSet();
+            DataSet dataSet = new DataSet( "" );
             registration.setDataSet( dataSet );
             
-            Period period = new Period();
+            Period period = periodType.createPeriod();
             registration.setPeriod( period );
             
-            Source source = new OrganisationUnit();
+            Source source = new OrganisationUnit( "" );
             registration.setSource( source );
             
             registration.getDataSet().setId( dataSetMapping.get( Integer.parseInt( values.get( FIELD_DATASET ) ) ) );
             registration.getPeriod().setId( periodMapping.get( Integer.parseInt( values.get( FIELD_PERIOD ) ) ) );
             registration.getSource().setId( sourceMapping.get( Integer.parseInt( values.get( FIELD_SOURCE ) ) ) );
+                        
             registration.setDate( DateUtils.getMediumDate( values.get( FIELD_DATE ) ) );
             
             read( registration, GroupMemberType.NONE, params );
         }
-    }    
+    }
 }
