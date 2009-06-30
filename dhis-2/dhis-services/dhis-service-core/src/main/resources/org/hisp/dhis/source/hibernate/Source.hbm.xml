@@ -9,6 +9,12 @@
     <id name="id" column="sourceid">
       <generator class="native"/>
     </id>
+  
+    <set name="dataSets" table="datasetsource" inverse="true">
+      <key column="sourceid"/>
+      <many-to-many class="org.hisp.dhis.dataset.DataSet" column="datasetid"/>
+    </set>
+	  
   </class>
   
 </hibernate-mapping>
