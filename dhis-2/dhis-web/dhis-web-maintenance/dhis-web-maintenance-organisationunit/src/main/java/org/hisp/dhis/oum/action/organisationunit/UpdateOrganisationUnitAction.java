@@ -27,6 +27,8 @@ package org.hisp.dhis.oum.action.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
+
 import java.util.Date;
 
 import org.hisp.dhis.i18n.I18nFormat;
@@ -162,10 +164,13 @@ public class UpdateOrganisationUnitAction
     public String execute()
         throws Exception
     {
-        if ( code != null && code.trim().length() == 0 )
-        {
-            code = null;
-        }
+        code = nullIfEmpty( code );
+        comment = nullIfEmpty( comment );
+        type = nullIfEmpty( type );
+        polygonCoordinates = nullIfEmpty( polygonCoordinates );
+        latitude = nullIfEmpty( latitude );
+        longitude = nullIfEmpty( longitude );
+        url = nullIfEmpty( url );
 
         Date oDate = format.parseDate( openingDate );
 
@@ -174,11 +179,6 @@ public class UpdateOrganisationUnitAction
         if ( closedDate != null || closedDate.trim().length() != 0 )
         {
             cDate = format.parseDate( closedDate );
-        }
-
-        if ( comment != null && comment.trim().length() == 0 )
-        {
-            comment = null;
         }
 
         // ---------------------------------------------------------------------

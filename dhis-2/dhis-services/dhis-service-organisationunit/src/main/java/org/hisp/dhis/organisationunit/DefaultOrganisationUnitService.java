@@ -96,6 +96,8 @@ public class DefaultOrganisationUnitService
 
         i18nService.addObject( organisationUnit );
         
+        addOrganisationUnitHierarchy( organisationUnit.getOpeningDate() );
+        
         return id;
     }
 
@@ -104,6 +106,16 @@ public class DefaultOrganisationUnitService
         sourceStore.updateSource( organisationUnit );
         
         i18nService.verify( organisationUnit );
+    }
+    
+    public void updateOrganisationUnit( OrganisationUnit organisationUnit, boolean updateHierarchy )
+    {
+        updateOrganisationUnit( organisationUnit );
+        
+        if ( updateHierarchy )
+        {
+            addOrganisationUnitHierarchy( new Date() );
+        }
     }
 
     public void deleteOrganisationUnit( OrganisationUnit organisationUnit )
@@ -126,6 +138,8 @@ public class DefaultOrganisationUnitService
         i18nService.removeObject( organisationUnit );
         
         sourceStore.deleteSource( organisationUnit );
+        
+        addOrganisationUnitHierarchy( organisationUnit.getClosedDate() != null ? organisationUnit.getClosedDate() : new Date() );
     }
 
     public OrganisationUnit getOrganisationUnit( int id )

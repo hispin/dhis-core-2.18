@@ -27,8 +27,6 @@ package org.hisp.dhis.oum.action.hierarchy;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -108,9 +106,7 @@ public class MoveOrganisationUnitAction
 
         unitToMove.setParent( newParent );
 
-        organisationUnitService.updateOrganisationUnit( unitToMove );
-
-        organisationUnitService.addOrganisationUnitHierarchy( new Date() );
+        organisationUnitService.updateOrganisationUnit( unitToMove, true );
 
         return SUCCESS;
     }
