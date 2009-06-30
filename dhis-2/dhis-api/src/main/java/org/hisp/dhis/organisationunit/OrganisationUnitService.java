@@ -63,6 +63,15 @@ public interface OrganisationUnitService
     void updateOrganisationUnit( OrganisationUnit organisationUnit );
 
     /**
+     * Updates an OrganisationUnit.
+     * 
+     * @param organisationUnit the organisationUnit to update.
+     * @param updateHierarchy indicate whether the OrganisationUnit hierarchy
+     *        has been updated.
+     */
+    void updateOrganisationUnit( OrganisationUnit organisationUnit, boolean updateHierarchy );
+    
+    /**
      * Deletes an OrganisationUnit. OrganisationUnits with children cannot be
      * deleted.
      * 

@@ -27,8 +27,6 @@ package org.hisp.dhis.oum.action.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -92,13 +90,9 @@ public class RemoveOrganisationUnitAction
     {
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
         
-        Date closedDate = unit.getClosedDate() != null ? unit.getClosedDate() : new Date();
-        
         try
         {
             organisationUnitService.deleteOrganisationUnit( unit );
-
-            organisationUnitService.addOrganisationUnitHierarchy( closedDate );
         }
         catch ( DeleteNotAllowedException ex )
         {

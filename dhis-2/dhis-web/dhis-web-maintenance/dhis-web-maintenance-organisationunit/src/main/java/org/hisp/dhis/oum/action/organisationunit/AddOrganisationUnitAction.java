@@ -36,6 +36,8 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
 import com.opensymphony.xwork.ActionSupport;
 
+import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
+
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: AddOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z torgeilo $
@@ -150,15 +152,13 @@ public class AddOrganisationUnitAction
     public String execute()
         throws Exception
     {
-        if ( code != null && code.trim().length() == 0 )
-        {
-            code = null;
-        }
-
-        if ( comment != null && comment.trim().length() == 0 )
-        {
-            comment = null;
-        }
+        code = nullIfEmpty( code );
+        comment = nullIfEmpty( comment );
+        type = nullIfEmpty( type );
+        polygonCoordinates = nullIfEmpty( polygonCoordinates );
+        latitude = nullIfEmpty( latitude );
+        longitude = nullIfEmpty( longitude );
+        url = nullIfEmpty( url );
 
         Date date = format.parseDate( openingDate );
 
@@ -193,8 +193,6 @@ public class AddOrganisationUnitAction
         organisationUnit.setParent( parent );
 
         organisationUnitService.addOrganisationUnit( organisationUnit );
-
-        organisationUnitService.addOrganisationUnitHierarchy( date );
 
         return SUCCESS;
     }

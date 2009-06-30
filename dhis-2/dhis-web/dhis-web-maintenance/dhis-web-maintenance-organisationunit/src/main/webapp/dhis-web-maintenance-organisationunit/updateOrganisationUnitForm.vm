@@ -59,7 +59,7 @@
 	</tr>
     <tr>
         <td><label for="polygonCoordinates">$i18n.getString( "polygon_coordinates" )</label></td>
-        <td><textarea id="polygonCoordinates" name="polygonCoordinates" value="$!encoder.htmlEncode( $organisationUnit.polygonCoordinates )" style="width:20em; height:5em"></td>
+        <td><textarea id="polygonCoordinates" name="polygonCoordinates" style="width:20em; height:5em">$!encoder.htmlEncode( $organisationUnit.polygonCoordinates )</textarea></td>
     </tr>
     <tr>
         <td><label for="latitude">$i18n.getString( "latitude" )</label></td>
