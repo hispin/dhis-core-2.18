@@ -222,8 +222,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.validation.ValidationRuleGroupStore"/>
     <property name="expressionService"
       ref="org.hisp.dhis.expression.ExpressionService"/>
-    <property name="dataSetService"
-      ref="org.hisp.dhis.dataset.DataSetService"/>
     <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/>
   </bean>

@@ -38,7 +38,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.common.GenericNameStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -79,13 +78,6 @@ public class DefaultValidationRuleService
         this.expressionService = expressionService;
     }
     
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-    
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -111,7 +103,7 @@ public class DefaultValidationRuleService
             {
                 if ( ( relevantRules = getRelevantValidationRules( dataSet ) ).size() > 0 )
                 {
-                    for ( Period period : relevantPeriods )
+                    for ( Period period : relevantPeriods ) //TODO use only period with validation rule period type
                     {
                         validationViolations.addAll( validate( period, source, relevantRules ) );
                     }
@@ -254,27 +246,6 @@ public class DefaultValidationRuleService
         }
         
         return relevantValidationRules;
-    }
-    
-    /**
-     * Returns all data sets which the given source is assigned to.
-     * 
-     * @param source the source.
-     * @return all data sets which the given source is assigned to.
-     */
-    private Collection<DataSet> getRelevantDataSets2( final Source source )
-    {
-        final Collection<DataSet> relevantDataSets = new HashSet<DataSet>();
-        
-        for ( final DataSet dataSet : dataSetService.getAllDataSets() )
-        {
-            if ( dataSet.getSources().contains( source ) )
-            {
-                relevantDataSets.add( dataSet );
-            }
-        }
-        
-        return relevantDataSets;
     }
     
     // -------------------------------------------------------------------------
