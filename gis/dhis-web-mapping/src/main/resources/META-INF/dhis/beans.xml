@@ -230,4 +230,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   </bean>
   
+  <bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithPolygonsAction"
+    class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithPolygonsAction"
+    scope="prototype">
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+  </bean>
+  
 </beans>
