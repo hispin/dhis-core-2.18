@@ -58,7 +58,7 @@
         <td><label for="organisationUnitLevels">$i18n.getString( 'organisation_unit_levels' )</label></td>
     </tr>
     <tr>
-        <td><input id="validationRules" name="organisationUnitGroupSets" type="checkbox" value="true"></td>
+        <td><input id="validationRules" name="validationRules" type="checkbox" value="true"></td>
         <td><label for="validationRules">$i18n.getString( 'validation_rules' )</label></td>	
     </tr>
     <tr>
