@@ -142,7 +142,7 @@
     </action>
       
     <action name="getPolygonShapefile" class="org.hisp.dhis.mapping.action.GetOrganisationUnitsWithCoordinatesAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/pointShapefile.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-mapping/polygonShapefile.vm</result>
     </action>
       
   </package>
