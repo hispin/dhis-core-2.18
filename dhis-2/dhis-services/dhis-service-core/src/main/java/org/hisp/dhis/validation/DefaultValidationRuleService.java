@@ -103,13 +103,15 @@ public class DefaultValidationRuleService
         
         Collection<ValidationRule> relevantRules = null;
         
-        for ( Period period : periodService.getIntersectingPeriods( startDate, endDate ) )
-        {        	
-            for ( Source source : sources )
+        Collection<Period> relevantPeriods = periodService.getIntersectingPeriods( startDate, endDate );
+                        	
+        for ( Source source : sources )
+        {
+            for ( DataSet dataSet : source.getDataSets() )
             {
-                for ( DataSet dataSet : getRelevantDataSets( source ) )
+                if ( ( relevantRules = getRelevantValidationRules( dataSet ) ).size() > 0 )
                 {
-                    if ( ( relevantRules = getRelevantValidationRules( dataSet ) ).size() > 0 )
+                    for ( Period period : relevantPeriods )
                     {
                         validationViolations.addAll( validate( period, source, relevantRules ) );
                     }
@@ -127,13 +129,15 @@ public class DefaultValidationRuleService
 
         Collection<ValidationRule> relevantRules = null;
         
-        for ( Period period : periodService.getIntersectingPeriods( startDate, endDate ) )
-        {               
-            for ( Source source : sources )
+        Collection<Period> relevantPeriods = periodService.getIntersectingPeriods( startDate, endDate );
+                          
+        for ( Source source : sources )
+        {
+            for ( DataSet dataSet : source.getDataSets() )
             {
-                for ( DataSet dataSet : getRelevantDataSets( source ) )
+                if ( ( relevantRules = CollectionUtils.intersection( getRelevantValidationRules( dataSet ), group.getMembers() ) ).size() > 0 )
                 {
-                    if ( ( relevantRules = CollectionUtils.intersection( getRelevantValidationRules( dataSet ), group.getMembers() ) ).size() > 0 )
+                    for ( Period period : relevantPeriods )
                     {
                         validationViolations.addAll( validate( period, source, relevantRules ) );
                     }
@@ -150,12 +154,14 @@ public class DefaultValidationRuleService
 
         Collection<ValidationRule> relevantRules = null;
         
-        for ( Period period : periodService.getIntersectingPeriods( startDate, endDate ) )
+        Collection<Period> relevantPeriods = periodService.getIntersectingPeriods( startDate, endDate );
+                
+        for ( DataSet dataSet : source.getDataSets() )
         {
-            for ( DataSet dataSet : getRelevantDataSets( source ) )
+            if ( ( relevantRules = getRelevantValidationRules( dataSet ) ).size() > 0 )
             {
-                if ( ( relevantRules = getRelevantValidationRules( dataSet ) ).size() > 0 )
-                {
+                for ( Period period : relevantPeriods )
+                {                    
                     validationViolations.addAll( validate( period, source, relevantRules ) );
                 }
             }
@@ -219,9 +225,7 @@ public class DefaultValidationRuleService
      */
     private Collection<ValidationRule> getRelevantValidationRules( final DataSet dataSet )
     {
-        final Collection<ValidationRule> rules = validationRuleStore.getAll();
-        
-        return getRelevantValidationRules( dataSet, rules );
+        return getRelevantValidationRules( dataSet, getAllValidationRules() );
     }
     
     /**
@@ -258,7 +262,7 @@ public class DefaultValidationRuleService
      * @param source the source.
      * @return all data sets which the given source is assigned to.
      */
-    private Collection<DataSet> getRelevantDataSets( final Source source )
+    private Collection<DataSet> getRelevantDataSets2( final Source source )
     {
         final Collection<DataSet> relevantDataSets = new HashSet<DataSet>();
         

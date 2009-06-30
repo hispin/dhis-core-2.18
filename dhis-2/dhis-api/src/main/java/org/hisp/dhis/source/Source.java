@@ -28,6 +28,10 @@ package org.hisp.dhis.source;
  */
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.hisp.dhis.dataset.DataSet;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -36,8 +40,10 @@ import java.io.Serializable;
 public abstract class Source
     implements Serializable
 {
-    private int id;
+    protected int id;
 
+    protected Set<DataSet> dataSets = new HashSet<DataSet>();
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
@@ -60,5 +66,15 @@ public abstract class Source
     public void setId( int id )
     {
         this.id = id;
+    }
+
+    public Set<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
+
+    public void setDataSets( Set<DataSet> dataSets )
+    {
+        this.dataSets = dataSets;
     }
 }

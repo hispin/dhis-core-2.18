@@ -169,17 +169,20 @@ public class ValidationRuleServiceTest
         
         periodA = createPeriod( new MonthlyPeriodType(), getDate( 2000, 3, 1 ), getDate( 2000, 3, 31 ) );
         periodB = createPeriod( new MonthlyPeriodType(), getDate( 2000, 4, 1 ), getDate( 2000, 4, 30 ) );
+
+        dataSet = createDataSet( 'A', periodType );
         
         sourceA = new DummySource( "SourceA" );
         sourceB = new DummySource( "SourceB" );
+        
+        sourceA.getDataSets().add( dataSet );
+        sourceB.getDataSets().add( dataSet );
         
         sourceStore.addSource( sourceA );
         sourceStore.addSource( sourceB );
         
         sourcesA.add( sourceA );
         sourcesA.add( sourceB );
-        
-        dataSet = createDataSet( 'A', periodType );
         
         dataSet.getDataElements().add( dataElementA );
         dataSet.getDataElements().add( dataElementB );
