@@ -37,6 +37,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.StreamUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -90,44 +91,38 @@ public class PdfServiceTest
     // -------------------------------------------------------------------------
 
     @Test
+    @Ignore
     public void testWriteAllDataElements()
         throws Exception
     {        
-        if ( false )
-        {
-            OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "dataElementsTest.pdf" ) );
+        OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "dataElementsTest.pdf" ) );
             
-            pdfService.writeAllDataElements( outputStream );
-            
-            StreamUtils.closeOutputStream( outputStream );
-        }
+        pdfService.writeAllDataElements( outputStream );
+        
+        StreamUtils.closeOutputStream( outputStream );
     }
 
     @Test
+    @Ignore
     public void testWriteAllIndicators()
         throws Exception
     {
-        if ( false )
-        {    
-            OutputStream outputStreamB = new BufferedOutputStream( new FileOutputStream( "indicatorsTest.pdf" ) );
+        OutputStream outputStreamB = new BufferedOutputStream( new FileOutputStream( "indicatorsTest.pdf" ) );
             
-            pdfService.writeAllIndicators( outputStreamB );
-            
-            StreamUtils.closeOutputStream( outputStreamB );
-        }
+        pdfService.writeAllIndicators( outputStreamB );
+        
+        StreamUtils.closeOutputStream( outputStreamB );
     }
 
     @Test
+    @Ignore
     public void testWriteAllOrganisationUnits()
         throws Exception
     {
-        if ( false )
-        {            
-            OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "organisationUnitsTest.pdf" ) );
+        OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "organisationUnitsTest.pdf" ) );
             
-            pdfService.writeAllOrganisationUnits( outputStream );
-            
-            StreamUtils.closeOutputStream( outputStream );
-        }   
+        pdfService.writeAllOrganisationUnits( outputStream );
+        
+        StreamUtils.closeOutputStream( outputStream );
     }
 }
