@@ -134,20 +134,18 @@ public class DefaultExpressionService
 
     public Double getExpressionValue( Expression expression, Period period, Source source )
     {
-        String expressionString = generateExpression( expression.getExpression(), period, source );
+        final String expressionString = generateExpression( expression.getExpression(), period, source );
 
         return expressionString != null ? calculateExpression( expressionString ) : null;
     }
     
     public Set<DataElement> getDataElementsInCalculatedDataElement( int id )
     {
-        DataElement dataElement = dataElementService.getDataElement( id );
+        final DataElement dataElement = dataElementService.getDataElement( id );
         
         if ( dataElement != null && dataElement instanceof CalculatedDataElement )
         {
-            CalculatedDataElement calculatedDataElement = (CalculatedDataElement) dataElement;
-            
-            return getDataElementsInExpression( calculatedDataElement.getExpression().getExpression() );
+            return getDataElementsInExpression( ((CalculatedDataElement) dataElement).getExpression().getExpression() );
         }
         
         return null;
@@ -161,19 +159,16 @@ public class DefaultExpressionService
         {
             dataElementsInExpression = new HashSet<DataElement>();
 
-            Matcher matcher = getMatcher( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])", expression );
+            final Matcher matcher = getMatcher( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])", expression );
 
             while ( matcher.find() )
             {
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-
                 replaceString = replaceString.substring( 0, replaceString.indexOf( SEPARATOR ) );
 
-                int dataElementId = Integer.parseInt( replaceString );
-
-                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                final DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( replaceString ) );
 
                 if ( dataElement != null )
                 {
@@ -191,7 +186,7 @@ public class DefaultExpressionService
         
         if ( expression != null )
         {
-            Matcher matcher = getMatcher( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])", expression );
+            final Matcher matcher = getMatcher( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])", expression );
 
             while ( matcher.find() )
             {
@@ -239,13 +234,13 @@ public class DefaultExpressionService
         {
             operandsInExpression = new HashSet<Operand>();
 
-            Matcher matcher = getMatcher( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])", expression );
+            final Matcher matcher = getMatcher( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])", expression );
 
             while ( matcher.find() )
             {
                 final Operand operand = new Operand();
                 
-                String match = matcher.group().replaceAll( "[\\[\\]]", "" );
+                final String match = matcher.group().replaceAll( "[\\[\\]]", "" );
 
                 operand.setDataElementId( Integer.parseInt( match.substring( 0, match.indexOf( SEPARATOR ) ) ) );
                 operand.setOptionComboId( Integer.parseInt( match.substring( match.indexOf( SEPARATOR ) + 1, match.length() ) ) );
@@ -261,7 +256,7 @@ public class DefaultExpressionService
     {
         StringBuffer buffer = new StringBuffer();
         
-        Matcher matcher = getMatcher( "\\[.+?\\" + SEPARATOR + ".+?\\]", formula );
+        final Matcher matcher = getMatcher( "\\[.+?\\" + SEPARATOR + ".+?\\]", formula );
 
         int dataElementId = -1;
         int categoryOptionComboId = -1;
@@ -272,8 +267,8 @@ public class DefaultExpressionService
 
             match = match.replaceAll( "[\\[\\]]", "" );
 
-            String dataElementIdString = match.substring( 0, match.indexOf( SEPARATOR ) );
-            String categoryOptionComboIdString = match.substring( match.indexOf( SEPARATOR ) + 1, match.length() );
+            final String dataElementIdString = match.substring( 0, match.indexOf( SEPARATOR ) );
+            final String categoryOptionComboIdString = match.substring( match.indexOf( SEPARATOR ) + 1, match.length() );
 
             try
             {
@@ -329,7 +324,7 @@ public class DefaultExpressionService
         {
             buffer = new StringBuffer();
 
-            Matcher matcher = getMatcher( "\\[.+?\\" + SEPARATOR + ".+?\\]", formula );
+            final Matcher matcher = getMatcher( "\\[.+?\\" + SEPARATOR + ".+?\\]", formula );
 
             int dataElementId = -1;
             int categoryOptionComboId = -1;
@@ -343,8 +338,8 @@ public class DefaultExpressionService
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
 
-                String dataElementIdString = replaceString.substring( 0, replaceString.indexOf( SEPARATOR ) );
-                String optionComboIdString = replaceString.substring( replaceString.indexOf( SEPARATOR ) + 1, replaceString.length() );
+                final String dataElementIdString = replaceString.substring( 0, replaceString.indexOf( SEPARATOR ) );
+                final String optionComboIdString = replaceString.substring( replaceString.indexOf( SEPARATOR ) + 1, replaceString.length() );
 
                 try
                 {
@@ -404,21 +399,19 @@ public class DefaultExpressionService
         {
             buffer = new StringBuffer();
 
-            Set<DataElement> caclulatedDataElementsInExpression = getDataElementsInExpression( expression );
+            final Set<DataElement> caclulatedDataElementsInExpression = getDataElementsInExpression( expression );
 
-            Iterator<DataElement> iterator = caclulatedDataElementsInExpression.iterator();
+            final Iterator<DataElement> iterator = caclulatedDataElementsInExpression.iterator();
 
             while ( iterator.hasNext() )
             {
-                DataElement dataElement = iterator.next();
-
-                if ( !(dataElement instanceof CalculatedDataElement) )
+                if ( !(iterator.next() instanceof CalculatedDataElement) )
                 {
                     iterator.remove();
                 }
             }
 
-            Matcher matcher = getMatcher( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])", expression );
+            final Matcher matcher = getMatcher( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])", expression );
 
             while ( matcher.find() )
             {
@@ -428,9 +421,7 @@ public class DefaultExpressionService
                 {
                     if ( replaceString.startsWith( "[" + dataElement.getId() + SEPARATOR ) )
                     {
-                        CalculatedDataElement calculatedDataElement = (CalculatedDataElement) dataElement;
-
-                        replaceString = calculatedDataElement.getExpression().getExpression();
+                        replaceString = ((CalculatedDataElement) dataElement).getExpression().getExpression();
 
                         break;
                     }
@@ -451,7 +442,7 @@ public class DefaultExpressionService
 
         if ( expression != null )
         {
-            Matcher matcher = getMatcher( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])", expression );
+            final Matcher matcher = getMatcher( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])", expression );
 
             buffer = new StringBuffer();
 
@@ -461,17 +452,16 @@ public class DefaultExpressionService
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
 
-                String dataElementIdString = replaceString.substring( 0, replaceString.indexOf( SEPARATOR ) );
-                String categoryOptionComboIdString = replaceString.substring( replaceString.indexOf( SEPARATOR ) + 1, replaceString.length() );
+                final String dataElementIdString = replaceString.substring( 0, replaceString.indexOf( SEPARATOR ) );
+                final String categoryOptionComboIdString = replaceString.substring( replaceString.indexOf( SEPARATOR ) + 1, replaceString.length() );
 
-                int dataElementId = Integer.parseInt( dataElementIdString );
-                int optionComboId = Integer.parseInt( categoryOptionComboIdString );
+                final int dataElementId = Integer.parseInt( dataElementIdString );
+                final int optionComboId = Integer.parseInt( categoryOptionComboIdString );
 
-                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                final DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                final DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
 
-                DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
-
-                DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, categoryOptionCombo );
+                final DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, categoryOptionCombo );
 
                 if ( dataValue == null )
                 {
@@ -497,7 +487,7 @@ public class DefaultExpressionService
 
     private Matcher getMatcher( String regex, String expression )
     {
-        Pattern pattern = Pattern.compile( regex );
+        final Pattern pattern = Pattern.compile( regex );
 
         return pattern.matcher( expression );
     }
