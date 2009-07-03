@@ -96,11 +96,13 @@ public interface ExpressionService
      * @param expression The Expression.
      * @param source The Source.
      * @param period The Period.
+     * @param nullIfNoValues indicates whether null should be returned if no
+     *        DataValues are registered for a DataElement in the expression.
      * @return The value of the given Expression, or null
      *         if no values are registered for a given combination of 
      *         DataElement, Source, and Period.
      */
-    Double getExpressionValue( Expression expression, Period period, Source source );
+    Double getExpressionValue( Expression expression, Period period, Source source, boolean nullIfNoValues );
     
     /**
      * 
@@ -184,7 +186,9 @@ public interface ExpressionService
      * @param expression The expression string.
      * @param period The Period.
      * @param source The Source.
+     * @param nullIfNoValues indicates whether null should be returned if no
+     *        DataValues are registered for a DataElement in the expression.
      * @return A numerical expression.
      */    
-    String generateExpression( String expression, Period period, Source source );
+    String generateExpression( String expression, Period period, Source source, boolean nullIfNoValues );
 }

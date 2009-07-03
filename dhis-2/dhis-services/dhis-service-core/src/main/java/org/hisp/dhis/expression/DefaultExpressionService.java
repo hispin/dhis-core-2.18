@@ -134,12 +134,12 @@ public class DefaultExpressionService
     // Business logic
     // -------------------------------------------------------------------------
 
-    public Double getExpressionValue( Expression expression, Period period, Source source )
+    public Double getExpressionValue( Expression expression, Period period, Source source, boolean nullIfNoValues )
     {
-        final String expressionString = generateExpression( expression.getExpression(), period, source );
+        final String expressionString = generateExpression( expression.getExpression(), period, source, nullIfNoValues );
 
         return expressionString != null ? calculateExpression( expressionString ) : null;
-    }
+    }    
     
     public Set<DataElement> getDataElementsInCalculatedDataElement( int id )
     {
@@ -396,7 +396,7 @@ public class DefaultExpressionService
         return buffer != null ? buffer.toString() : null;
     }
 
-    public String generateExpression( String expression, Period period, Source source )
+    public String generateExpression( String expression, Period period, Source source, boolean nullIfNoValues )
     {
         StringBuffer buffer = null;
 
@@ -418,6 +418,11 @@ public class DefaultExpressionService
 
                 final DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, categoryOptionCombo );
 
+                if ( dataValue == null && nullIfNoValues )
+                {
+                    return null;
+                }
+                
                 replaceString = ( dataValue == null ) ? NULL_REPLACEMENT : dataValue.getValue();
                 
                 matcher.appendReplacement( buffer, replaceString );

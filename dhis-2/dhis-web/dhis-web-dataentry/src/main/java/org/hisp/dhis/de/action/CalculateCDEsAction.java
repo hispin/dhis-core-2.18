@@ -140,7 +140,7 @@ public class CalculateCDEsAction
 
             for ( CalculatedDataElement cde : cdes )
             {        		
-    		value = expressionService.getExpressionValue( cde.getExpression(), period, organisationUnit ).toString();        			
+    		value = expressionService.getExpressionValue( cde.getExpression(), period, organisationUnit, false ).toString();        			
     		
     		if ( value == null )
     		{
