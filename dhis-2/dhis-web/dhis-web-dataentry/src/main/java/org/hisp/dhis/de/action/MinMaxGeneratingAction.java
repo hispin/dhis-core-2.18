@@ -35,10 +35,10 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.de.history.DataElementHistory;
 import org.hisp.dhis.de.history.HistoryRetriever;
-import org.hisp.dhis.order.manager.DataElementOrderManager;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.minmax.MinMaxDataElement;
-import org.hisp.dhis.minmax.MinMaxDataElementStore;
+import org.hisp.dhis.minmax.MinMaxDataElementService;
+import org.hisp.dhis.order.manager.DataElementOrderManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -64,11 +64,11 @@ public class MinMaxGeneratingAction
         this.historyRetriever = historyRetriever;
     }
 
-    private MinMaxDataElementStore minMaxDataElementStore;
+    private MinMaxDataElementService minMaxDataElementService;
 
-    public void setMinMaxDataElementStore( MinMaxDataElementStore minMaxDataElementStore )
+    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
     {
-        this.minMaxDataElementStore = minMaxDataElementStore;
+        this.minMaxDataElementService = minMaxDataElementService;
     }
 
     private DataElementOrderManager dataElementOrderManager;
@@ -145,7 +145,7 @@ public class MinMaxGeneratingAction
         DataElement dataelement, DataElementCategoryOptionCombo optionCombo )
         throws Exception
     {
-        MinMaxDataElement minMaxDataElement = minMaxDataElementStore.getMinMaxDataElement( organisationUnit,
+        MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit,
             dataelement, optionCombo );
 
         if ( minMaxDataElement != null )
@@ -184,14 +184,14 @@ public class MinMaxGeneratingAction
                 minMaxDataElement = new MinMaxDataElement( organisationUnit, dataelement, optionCombo, (int) minLimit,
                     (int) maxLimit, true );
                 
-                minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement );
+                minMaxDataElementService.addMinMaxDataElement( minMaxDataElement );
             }
             else
             {
                 minMaxDataElement.setMax( (int) maxLimit );
                 minMaxDataElement.setMin( (int) minLimit );
                 
-                minMaxDataElementStore.updateMinMaxDataElement( minMaxDataElement );
+                minMaxDataElementService.updateMinMaxDataElement( minMaxDataElement );
             }
 
             minMaxDataElements.add( minMaxDataElement );

@@ -76,7 +76,7 @@ public class MinMaxDataElementDeletionHandler
             {
                 deletionManager.execute( element );
                 
-                minMaxDataElementService.deleteMinMaxDataElement( element.getId() );
+                minMaxDataElementService.deleteMinMaxDataElement( element );
             }
         }
     }
@@ -90,7 +90,7 @@ public class MinMaxDataElementDeletionHandler
             {
                 deletionManager.execute( element );
                 
-                minMaxDataElementService.deleteMinMaxDataElement( element.getId() );
+                minMaxDataElementService.deleteMinMaxDataElement( element );
             }
         }
     }

@@ -59,41 +59,41 @@ public class DefaultMinMaxDataElementService
 
     public int addMinMaxDataElement( MinMaxDataElement minMaxDataElement )
     {
-        return minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement );
+        return minMaxDataElementStore.save( minMaxDataElement );
     }
 
-    public void deleteMinMaxDataElement( int id )
+    public void deleteMinMaxDataElement( MinMaxDataElement minMaxDataElement )
     {
-        minMaxDataElementStore.delMinMaxDataElement( id );
+        minMaxDataElementStore.delete( minMaxDataElement );
     }
 
     public void updateMinMaxDataElement( MinMaxDataElement minMaxDataElement )
     {
-        minMaxDataElementStore.updateMinMaxDataElement( minMaxDataElement );
+        minMaxDataElementStore.update( minMaxDataElement );
     }
 
     public MinMaxDataElement getMinMaxDataElement( int id )
     {
-        return minMaxDataElementStore.getMinMaxDataElement( id );
+        return minMaxDataElementStore.get( id );
     }
 
     public MinMaxDataElement getMinMaxDataElement( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
     {
-        return minMaxDataElementStore.getMinMaxDataElement( source, dataElement, optionCombo );
+        return minMaxDataElementStore.get( source, dataElement, optionCombo );
     }
     
     public Collection<MinMaxDataElement> getMinMaxDataElements( Source source, DataElement dataElement )
     {
-        return minMaxDataElementStore.getMinMaxDataElements( source, dataElement );
+        return minMaxDataElementStore.get( source, dataElement );
     }   
 
     public Collection<MinMaxDataElement> getMinMaxDataElements( Source source, Collection<DataElement> dataElements )
     {
-        return minMaxDataElementStore.getMinMaxDataElements( source, dataElements );
+        return minMaxDataElementStore.get( source, dataElements );
     }
     
     public Collection<MinMaxDataElement> getAllMinMaxDataElements()
     {
-        return minMaxDataElementStore.getAllMinMaxDataElements();
+        return minMaxDataElementStore.getAll();
     }
 }

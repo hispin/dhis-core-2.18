@@ -125,23 +125,23 @@ public class MinMaxDataElementStoreTest
         
         MinMaxDataElement minMaxDataElement5 = new MinMaxDataElement( source1, dataElement1, optionCombo2, 0, 100, false );
 
-        int mmdeid1 = minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement1 );
-        minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement2 );
-        minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement3 );
-        minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement4 );
-        minMaxDataElementStore.addMinMaxDataElement( minMaxDataElement5 );
+        int mmdeid1 = minMaxDataElementStore.save( minMaxDataElement1 );
+        minMaxDataElementStore.save( minMaxDataElement2 );
+        minMaxDataElementStore.save( minMaxDataElement3 );
+        minMaxDataElementStore.save( minMaxDataElement4 );
+        minMaxDataElementStore.save( minMaxDataElement5 );
 
         // ----------------------------------------------------------------------
         // Assertions
         // ----------------------------------------------------------------------
 
-        assertNotNull( minMaxDataElementStore.getMinMaxDataElement( mmdeid1 ) );
+        assertNotNull( minMaxDataElementStore.get( mmdeid1 ) );
 
-        assertTrue( minMaxDataElementStore.getMinMaxDataElement( mmdeid1 ).getMax() == 100 );
+        assertTrue( minMaxDataElementStore.get( mmdeid1 ).getMax() == 100 );
 
         minMaxDataElement1.setMax( 200 );
-        minMaxDataElementStore.updateMinMaxDataElement( minMaxDataElement1 );
-        assertTrue( minMaxDataElementStore.getMinMaxDataElement( mmdeid1 ).getMax() == 200 );
+        minMaxDataElementStore.update( minMaxDataElement1 );
+        assertTrue( minMaxDataElementStore.get( mmdeid1 ).getMax() == 200 );
 
         Collection<DataElement> dataElements1 = new HashSet<DataElement>();
         dataElements1.add( dataElement1 );
@@ -151,14 +151,14 @@ public class MinMaxDataElementStoreTest
         dataElements2.add( dataElement3 );
         dataElements2.add( dataElement4 );
 
-        assertNotNull( minMaxDataElementStore.getMinMaxDataElement( source1, dataElement1, optionCombo1 ) );
-        assertNull( minMaxDataElementStore.getMinMaxDataElement( source2, dataElement1, optionCombo1 ) );
+        assertNotNull( minMaxDataElementStore.get( source1, dataElement1, optionCombo1 ) );
+        assertNull( minMaxDataElementStore.get( source2, dataElement1, optionCombo1 ) );
 
-        assertTrue( minMaxDataElementStore.getMinMaxDataElements( source1, dataElements1 ).size() == 2 );
-        assertTrue( minMaxDataElementStore.getMinMaxDataElements( source2, dataElements2 ).size() == 3 );       
+        assertTrue( minMaxDataElementStore.get( source1, dataElements1 ).size() == 2 );
+        assertTrue( minMaxDataElementStore.get( source2, dataElements2 ).size() == 3 );       
 
-        minMaxDataElementStore.delMinMaxDataElement( mmdeid1 );
+        minMaxDataElementStore.delete( minMaxDataElement1 );
 
-        assertNull( minMaxDataElementStore.getMinMaxDataElement( mmdeid1 ) );
+        assertNull( minMaxDataElementStore.get( mmdeid1 ) );
     }
 }

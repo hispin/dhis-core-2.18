@@ -50,7 +50,7 @@ import org.hisp.dhis.de.screen.DataEntryScreenManager;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
-import org.hisp.dhis.minmax.MinMaxDataElementStore;
+import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.order.manager.DataElementOrderManager;
@@ -69,17 +69,19 @@ public class FormAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-	
-	private CustomValueService customValueService;
-	
-    public CustomValueService getCustomValueService() {
-		return customValueService;
-	}
 
-	public void setCustomValueService(CustomValueService customValueService) {
-		this.customValueService = customValueService;
-	}
-	
+    private CustomValueService customValueService;
+
+    public CustomValueService getCustomValueService()
+    {
+        return customValueService;
+    }
+
+    public void setCustomValueService( CustomValueService customValueService )
+    {
+        this.customValueService = customValueService;
+    }
+
     private SystemSettingManager systemSettingManager;
 
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
@@ -99,15 +101,15 @@ public class FormAction
     public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
-    }      
-    
+    }
+
     private DataEntryFormService dataEntryFormService;
 
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
     }
-    
+
     private StandardCommentsManager standardCommentsManager;
 
     public void setStandardCommentsManager( StandardCommentsManager standardCommentsManager )
@@ -115,11 +117,11 @@ public class FormAction
         this.standardCommentsManager = standardCommentsManager;
     }
 
-    private MinMaxDataElementStore minMaxDataElementStore;
+    private MinMaxDataElementService minMaxDataElementService;
 
-    public void setMinMaxDataElementStore( MinMaxDataElementStore minMaxDataElementStore )
+    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
     {
-        this.minMaxDataElementStore = minMaxDataElementStore;
+        this.minMaxDataElementService = minMaxDataElementService;
     }
 
     private SelectedStateManager selectedStateManager;
@@ -128,7 +130,7 @@ public class FormAction
     {
         this.selectedStateManager = selectedStateManager;
     }
-    
+
     private DataEntryScreenManager dataEntryScreenManager;
 
     public void setDataEntryScreenManager( DataEntryScreenManager dataEntryScreenManager )
@@ -141,8 +143,8 @@ public class FormAction
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
-    } 
-    
+    }
+
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
@@ -157,7 +159,7 @@ public class FormAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private List<DataElement> orderedDataElements = new ArrayList<DataElement>();
 
     public List<DataElement> getOrderedDataElements()
@@ -172,13 +174,13 @@ public class FormAction
         return dataValueMap;
     }
 
-    private Map<CalculatedDataElement,Integer> calculatedValueMap;
-    
-    public Map<CalculatedDataElement,Integer> getCalculatedValueMap()
+    private Map<CalculatedDataElement, Integer> calculatedValueMap;
+
+    public Map<CalculatedDataElement, Integer> getCalculatedValueMap()
     {
         return calculatedValueMap;
     }
-    
+
     private List<String> standardComments;
 
     public List<String> getStandardComments()
@@ -206,9 +208,9 @@ public class FormAction
     {
         return integer;
     }
-    
+
     private Boolean cdeFormExists;
-    
+
     private DataEntryForm dataEntryForm;
 
     public DataEntryForm getDataEntryForm()
@@ -222,18 +224,17 @@ public class FormAction
     {
         return this.customDataEntryFormCode;
     }
-    
+
     private Boolean zeroValueSaveMode;
 
     public Boolean getZeroValueSaveMode()
     {
         return zeroValueSaveMode;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
-
 
     private List<CustomValue> customValues = new ArrayList<CustomValue>();
 
@@ -241,7 +242,7 @@ public class FormAction
     {
         return customValues;
     }
-    
+
     private Integer selectedDataSetId;
 
     public void setSelectedDataSetId( Integer selectedDataSetId )
@@ -265,74 +266,76 @@ public class FormAction
     {
         return selectedPeriodIndex;
     }
-    
+
     private String disabled = " ";
-    
+
     private Integer optionComboId;
 
     public Integer getOptionComboId()
     {
         return optionComboId;
-    } 
-    
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
-    {    	
-    	zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );
-    	
-    	if ( zeroValueSaveMode == null )
-    	{
-    	    zeroValueSaveMode = false;
-    	}
-    	
-    	OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+    {
+        zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );
+
+        if ( zeroValueSaveMode == null )
+        {
+            zeroValueSaveMode = false;
+        }
+
+        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         DataSet dataSet = selectedStateManager.getSelectedDataSet();
 
-        customValues = (List<CustomValue>) customValueService.getCustomValuesByDataSet(dataSet);
-        
-        Period period = selectedStateManager.getSelectedPeriod();   
+        customValues = (List<CustomValue>) customValueService.getCustomValuesByDataSet( dataSet );
+
+        Period period = selectedStateManager.getSelectedPeriod();
 
         if ( dataSet.getLockedPeriods().contains( period ) )
         {
-            disabled = "disabled";                        
+            disabled = "disabled";
         }
 
-        Collection<DataElement> dataElements = dataSet.getDataElements();        
+        Collection<DataElement> dataElements = dataSet.getDataElements();
 
         if ( dataElements.size() == 0 )
         {
             return SUCCESS;
-        }  
-        
-        Collection<DataElementCategoryOptionCombo> defaultOptionCombo = dataElements.iterator().next().getCategoryCombo().getOptionCombos();
-        
+        }
+
+        Collection<DataElementCategoryOptionCombo> defaultOptionCombo = dataElements.iterator().next()
+            .getCategoryCombo().getOptionCombos();
+
         optionComboId = defaultOptionCombo.iterator().next().getId();
-        
+
         // ---------------------------------------------------------------------
         // Get the min/max values
         // ---------------------------------------------------------------------
 
-        Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementStore.getMinMaxDataElements(
+        Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementService.getMinMaxDataElements(
             organisationUnit, dataElements );
-        
+
         minMaxMap = new HashMap<Integer, MinMaxDataElement>( minMaxDataElements.size() );
 
         for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )
         {
             minMaxMap.put( minMaxDataElement.getDataElement().getId(), minMaxDataElement );
-        }      
+        }
 
         // ---------------------------------------------------------------------
         // Get the DataValues and create a map
         // ---------------------------------------------------------------------
 
-        Collection<DataValue> dataValues = dataValueService.getDataValues( organisationUnit, period, dataElements, defaultOptionCombo );
-        
+        Collection<DataValue> dataValues = dataValueService.getDataValues( organisationUnit, period, dataElements,
+            defaultOptionCombo );
+
         dataValueMap = new HashMap<Integer, DataValue>( dataValues.size() );
 
         for ( DataValue dataValue : dataValues )
@@ -343,9 +346,10 @@ public class FormAction
         // ---------------------------------------------------------------------
         // Prepare values for unsaved CalculatedDataElements
         // ---------------------------------------------------------------------
-        
-        calculatedValueMap = dataEntryScreenManager.populateValuesForCalculatedDataElements( organisationUnit, dataSet, period );
-        
+
+        calculatedValueMap = dataEntryScreenManager.populateValuesForCalculatedDataElements( organisationUnit, dataSet,
+            period );
+
         // ---------------------------------------------------------------------
         // Make the standard comments available
         // ---------------------------------------------------------------------
@@ -364,14 +368,16 @@ public class FormAction
         // ---------------------------------------------------------------------
         // Get the custom data entry form (if any)
         // ---------------------------------------------------------------------
-        
+
         dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
-        cdeFormExists = ( dataEntryForm != null );
-        
+        cdeFormExists = (dataEntryForm != null);
+
         if ( cdeFormExists )
-        {        	
-            customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreen( dataEntryForm.getHtmlCode(), dataValues, calculatedValueMap, minMaxMap, disabled, zeroValueSaveMode, i18n, dataSet );
-        }            
+        {
+            customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreen(
+                dataEntryForm.getHtmlCode(), dataValues, calculatedValueMap, minMaxMap, disabled, zeroValueSaveMode,
+                i18n, dataSet );
+        }
 
         // ---------------------------------------------------------------------
         // Working on the display of dataelements
@@ -380,7 +386,7 @@ public class FormAction
         orderedDataElements = dataElementOrderManager.getOrderedDataElements( dataSet );
 
         displayPropertyHandler.handle( orderedDataElements );
-        
+
         return SUCCESS;
     }
 }

@@ -30,12 +30,10 @@ package org.hisp.dhis.minmax.hibernate;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Expression;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementStore;
 import org.hisp.dhis.source.Source;
@@ -45,100 +43,38 @@ import org.hisp.dhis.source.Source;
  * @version $Id: HibernateMinMaxDataElementStore.java 6216 2008-11-06 18:06:42Z eivindwa $
  */
 public class HibernateMinMaxDataElementStore
-    implements MinMaxDataElementStore
+    extends HibernateGenericStore<MinMaxDataElement> implements MinMaxDataElementStore
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // MinMaxDataElementStore Implementation
     // -------------------------------------------------------------------------
 
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
+    public MinMaxDataElement get( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
     {
-        this.sessionFactory = sessionFactory;
-    }
-
-    // -------------------------------------------------------------------------
-    // Implementation
-    // -------------------------------------------------------------------------
-
-    public int addMinMaxDataElement( MinMaxDataElement minMaxDataElement )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( minMaxDataElement );
-    }
-
-    public void delMinMaxDataElement( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        MinMaxDataElement minMaxDataElement = (MinMaxDataElement) session.get( MinMaxDataElement.class, id );
-
-        session.delete( minMaxDataElement );
-    }
-
-    public void updateMinMaxDataElement( MinMaxDataElement minMaxDataElement )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.update( minMaxDataElement );
-    }
-
-    public MinMaxDataElement getMinMaxDataElement( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (MinMaxDataElement) session.get( MinMaxDataElement.class, id );
-    }
-
-    public MinMaxDataElement getMinMaxDataElement( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( MinMaxDataElement.class );
-        criteria.add( Expression.eq( "source", source ) );
-        criteria.add( Expression.eq( "dataElement", dataElement ) );
-        criteria.add( Expression.eq( "optionCombo", optionCombo ) );
-
-        return (MinMaxDataElement) criteria.uniqueResult();
+        return (MinMaxDataElement) getCriteria(
+            Expression.eq( "source", source ),
+            Expression.eq( "dataElement", dataElement ),
+            Expression.eq( "optionCombo", optionCombo ) ).uniqueResult();
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<MinMaxDataElement> getMinMaxDataElements( Source source, DataElement dataElement )
+    public Collection<MinMaxDataElement> get( Source source, DataElement dataElement )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( MinMaxDataElement.class );
-        criteria.add( Expression.eq( "source", source ) );
-        criteria.add( Expression.eq( "dataElement", dataElement ) );       
-
-        return criteria.list();
+        return getCriteria(
+            Expression.eq( "source", source ),
+            Expression.eq( "dataElement", dataElement ) ).list();
     }    
 
     @SuppressWarnings( "unchecked" )
-    public Collection<MinMaxDataElement> getMinMaxDataElements( Source source,
-        Collection<DataElement> dataElements )
+    public Collection<MinMaxDataElement> get( Source source, Collection<DataElement> dataElements )
     {
         if ( dataElements.size() == 0 )
         {
             return Collections.emptySet();
         }
 
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( MinMaxDataElement.class );
-        criteria.add( Expression.eq( "source", source ) );
-        criteria.add( Expression.in( "dataElement", dataElements ) );
-
-        return criteria.list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<MinMaxDataElement> getAllMinMaxDataElements()
-    {
-        Session session = sessionFactory.getCurrentSession();
-        
-        return session.createCriteria( MinMaxDataElement.class ).list();
+        return getCriteria(
+            Expression.eq( "source", source ), 
+            Expression.in( "dataElement", dataElements ) ).list();
     }
 }

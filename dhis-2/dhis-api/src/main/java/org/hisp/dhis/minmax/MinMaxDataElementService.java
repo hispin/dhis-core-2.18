@@ -43,7 +43,7 @@ public interface MinMaxDataElementService
 
     int addMinMaxDataElement( MinMaxDataElement minMaxDataElement );
 
-    void deleteMinMaxDataElement( int id );
+    void deleteMinMaxDataElement( MinMaxDataElement minMaxDataElement );
 
     void updateMinMaxDataElement( MinMaxDataElement minMaxDataElement );
 
