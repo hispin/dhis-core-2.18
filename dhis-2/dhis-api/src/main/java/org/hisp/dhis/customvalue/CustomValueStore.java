@@ -29,6 +29,7 @@ package org.hisp.dhis.customvalue;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -40,64 +41,44 @@ import org.hisp.dhis.dataset.DataSet;
  * @version $Id$
  */
 public interface CustomValueStore
+    extends GenericStore<CustomValue>
 {
     String ID = CustomValue.class.getName();
-
-    /**
-     * 
-     * @param customValue
-     * @return The generated unique identifier for this CustomValue.
-     */
-    int addCustomValue( CustomValue customValue );
-
-    /**
-     * Deletes a CustomValue.
-     * 
-     * @param customValue. The CustomValue to delete.
-     */
-    void deleteCustomValue( CustomValue customValue );
 
     /**
      * Get all CustomValues by DataSet.
      * 
      * @return A collection containing all CustomValues.
      */
-    Collection<CustomValue> getCustomValuesByDataSet( DataSet dataSet );
+    Collection<CustomValue> getByDataSet( DataSet dataSet );
 
     /**
      * Get all CustomValues by DataElement.
      * 
      * @return A collection containing all CustomValues.
      */
-    Collection<CustomValue> getCustomValuesByDataElement( DataElement dataElement );
+    Collection<CustomValue> getByDataElement( DataElement dataElement );
 
     /**
      * Get all CustomValues by DataElementCategoryCombo.
      * 
      * @return A collection containing all CustomValues.
      */
-    Collection<CustomValue> getCustomValuesByCategoryCombo( DataElementCategoryCombo categoryCombo );
+    Collection<CustomValue> getByCategoryCombo( DataElementCategoryCombo categoryCombo );
 
     /**
      * Get all CustomValues by DataSet, DataElement, DataElementCategoryCombo.
      * 
      * @return A collection containing all CustomValues.
      */
-    Collection<CustomValue> getCustomValues( DataSet dataSet, DataElement dataElement,
+    Collection<CustomValue> get( DataSet dataSet, DataElement dataElement,
         DataElementCategoryOptionCombo dataElementCategoryOptionCombo );
 
-    /**
-     * Get CustomValue by Id.
-     * 
-     * @return CustomValue object.
-     */
-    CustomValue getCustomValue( int id );
-    
     /**
      * Get CustomValue by value.
      * 
      * @return A collection containing found CustomValues.
      */
-    Collection<CustomValue> findCustomValues( String searchValue );
+    Collection<CustomValue> find( String searchValue );
 
 }

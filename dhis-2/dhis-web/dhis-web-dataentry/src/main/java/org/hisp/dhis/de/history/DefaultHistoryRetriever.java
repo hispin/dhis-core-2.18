@@ -36,7 +36,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.minmax.MinMaxDataElement;
-import org.hisp.dhis.minmax.MinMaxDataElementStore;
+import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
@@ -44,7 +44,8 @@ import org.hisp.dhis.period.PeriodService;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: DefaultHistoryRetriever.java 5131 2008-05-11 21:06:23Z larshelg $
+ * @version $Id: DefaultHistoryRetriever.java 5131 2008-05-11 21:06:23Z larshelg
+ *          $
  */
 public class DefaultHistoryRetriever
     implements HistoryRetriever
@@ -53,11 +54,11 @@ public class DefaultHistoryRetriever
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private MinMaxDataElementStore minMaxDataElementStore;
+    private MinMaxDataElementService minMaxDataElementService;
 
-    public void setMinMaxDataElementStore( MinMaxDataElementStore minMaxDataElementStore )
+    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
     {
-        this.minMaxDataElementStore = minMaxDataElementStore;
+        this.minMaxDataElementService = minMaxDataElementService;
     }
 
     private DataValueService dataValueService;
@@ -69,26 +70,28 @@ public class DefaultHistoryRetriever
 
     private PeriodService periodService;
 
-	public void setPeriodService(PeriodService periodService) {
-		this.periodService = periodService;
-	} 
-	
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
     // -------------------------------------------------------------------------
     // HistoryRetriever implementation
     // -------------------------------------------------------------------------
 
-    public DataElementHistory getHistory( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit,
-        Period lastPeriod, int historyLength )
+    public DataElementHistory getHistory( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
+        OrganisationUnit organisationUnit, Period lastPeriod, int historyLength )
         throws HistoryRetrieverException
     {
         if ( !dataElement.getType().equals( DataElement.TYPE_INT ) )
-        {	
+        {
             return null;
-        	
+
             /*
-            throw new HistoryRetrieverException( "DataElement is not of type " + DataElement.TYPE_INT + ": "
-                + dataElement.getShortName() ) ;
-            */
+             * throw new HistoryRetrieverException(
+             * "DataElement is not of type " + DataElement.TYPE_INT + ": " +
+             * dataElement.getShortName() ) ;
+             */
         }
 
         // ---------------------------------------------------------------------
@@ -157,16 +160,17 @@ public class DefaultHistoryRetriever
         }
 
         return history;
-    }   
+    }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private void addMinMaxLimits( OrganisationUnit organisationUnit, DataElement dataElement, DataElementCategoryOptionCombo optionCombo, DataElementHistory history )
+    private void addMinMaxLimits( OrganisationUnit organisationUnit, DataElement dataElement,
+        DataElementCategoryOptionCombo optionCombo, DataElementHistory history )
     {
-        MinMaxDataElement minMaxDataElement = minMaxDataElementStore.getMinMaxDataElement( organisationUnit,
-            dataElement, optionCombo);
+        MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit,
+            dataElement, optionCombo );
 
         if ( minMaxDataElement != null )
         {
@@ -237,17 +241,20 @@ public class DefaultHistoryRetriever
 
         Period period = lastPeriod;
         Period p = new Period();
-        
+
         for ( int i = 0; i < historyLength; ++i )
         {
 
-       	 p = periodService.getPeriodFromDates(period.getStartDate(), period.getEndDate(), periodType);
-       		if(p!=null){
-           		periods.add( p );
-       		}else{
-           		periods.add( period );	
-       		}
-        	period = periodType.getPreviousPeriod( period );
+            p = periodService.getPeriodFromDates( period.getStartDate(), period.getEndDate(), periodType );
+            if ( p != null )
+            {
+                periods.add( p );
+            }
+            else
+            {
+                periods.add( period );
+            }
+            period = periodType.getPreviousPeriod( period );
         }
 
         Collections.reverse( periods );
@@ -255,7 +262,8 @@ public class DefaultHistoryRetriever
         return periods;
     }
 
-    private Double getValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit, Period period )
+    private Double getValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
+        OrganisationUnit organisationUnit, Period period )
         throws HistoryRetrieverException
     {
         DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo );
@@ -270,8 +278,8 @@ public class DefaultHistoryRetriever
         }
 
         return null;
-    }    
- 
+    }
+
     private Double parseValue( String value )
         throws HistoryRetrieverException
     {

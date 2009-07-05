@@ -61,49 +61,49 @@ public class DefaultCustomValueService
 
     public int addCustomValue( CustomValue customValue )
     {
-        int id = customValueStore.addCustomValue( customValue );
+        int id = customValueStore.save( customValue );
 
         return id;
     }
 
     public void deleteCustomValue( CustomValue customValue )
     {
-        customValueStore.deleteCustomValue( customValue );
+        customValueStore.delete( customValue );
     }
 
     public Collection<CustomValue> getCustomValues( DataSet dataSet )
     {
-        return customValueStore.getCustomValuesByDataSet( dataSet );
+        return customValueStore.getByDataSet( dataSet );
     }
 
     public Collection<CustomValue> getCustomValuesByCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
-        return customValueStore.getCustomValuesByCategoryCombo( categoryCombo );
+        return customValueStore.getByCategoryCombo( categoryCombo );
     }
 
     public Collection<CustomValue> getCustomValuesByDataElement( DataElement dataElement )
     {
-        return customValueStore.getCustomValuesByDataElement( dataElement );
+        return customValueStore.getByDataElement( dataElement );
     }
 
     public Collection<CustomValue> getCustomValuesByDataSet( DataSet dataSet )
     {
-        return customValueStore.getCustomValuesByDataSet( dataSet );
+        return customValueStore.getByDataSet( dataSet );
     }
 
     public CustomValue getCustomValue( int id )
     {
-        return customValueStore.getCustomValue( id );
+        return customValueStore.get( id );
     }
 
     public Collection<CustomValue> getCustomValues( DataSet dataSet, DataElement dataElement,
         DataElementCategoryOptionCombo dataElementCategoryOptionCombo )
     {
-        return customValueStore.getCustomValues( dataSet, dataElement, dataElementCategoryOptionCombo );
+        return customValueStore.get( dataSet, dataElement, dataElementCategoryOptionCombo );
     }
 
     public Collection<CustomValue> findCustomValues( String searchValue )
     {
-        return customValueStore.findCustomValues( searchValue );
+        return customValueStore.find( searchValue );
     }
 }

@@ -29,6 +29,7 @@ package org.hisp.dhis.minmax;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.source.Source;
@@ -38,22 +39,13 @@ import org.hisp.dhis.source.Source;
  * @version $Id: MinMaxDataElementStore.java 5012 2008-04-24 21:14:40Z larshelg $
  */
 public interface MinMaxDataElementStore
+    extends GenericStore<MinMaxDataElement>
 {
     String ID = MinMaxDataElementStore.class.getName();
 
-    int addMinMaxDataElement( MinMaxDataElement minMaxDataElement );
-
-    void delMinMaxDataElement( int id );
-
-    void updateMinMaxDataElement( MinMaxDataElement minMaxDataElement );
-
-    MinMaxDataElement getMinMaxDataElement( int id );
+    MinMaxDataElement get( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
     
-    MinMaxDataElement getMinMaxDataElement( Source source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
-    
-    Collection<MinMaxDataElement> getMinMaxDataElements( Source source, DataElement dataElement );  
+    Collection<MinMaxDataElement> get( Source source, DataElement dataElement );  
 
-    Collection<MinMaxDataElement> getMinMaxDataElements( Source source, Collection<DataElement> dataElements );
-    
-    Collection<MinMaxDataElement> getAllMinMaxDataElements();
+    Collection<MinMaxDataElement> get( Source source, Collection<DataElement> dataElements );
 }

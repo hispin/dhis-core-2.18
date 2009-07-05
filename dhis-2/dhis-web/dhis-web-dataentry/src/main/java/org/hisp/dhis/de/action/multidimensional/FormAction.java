@@ -27,6 +27,8 @@ package org.hisp.dhis.de.action.multidimensional;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MODE;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -53,18 +55,16 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.comments.StandardCommentsManager;
-import org.hisp.dhis.options.SystemSettingManager;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-import org.hisp.dhis.order.manager.DataElementOrderManager;
 import org.hisp.dhis.de.screen.DataEntryScreenManager;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
-import org.hisp.dhis.minmax.MinMaxDataElementStore;
+import org.hisp.dhis.minmax.MinMaxDataElementService;
+import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+import org.hisp.dhis.order.manager.DataElementOrderManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-
-import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MODE;
 
 import com.opensymphony.xwork.Action;
 
@@ -121,8 +121,7 @@ public class FormAction
 
     private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    public void setDataElementCategoryOptionComboService(
-        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
     {
         this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
@@ -134,11 +133,11 @@ public class FormAction
         this.standardCommentsManager = standardCommentsManager;
     }
 
-    private MinMaxDataElementStore minMaxDataElementStore;
+    private MinMaxDataElementService minMaxDataElementService;
 
-    public void setMinMaxDataElementStore( MinMaxDataElementStore minMaxDataElementStore )
+    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
     {
-        this.minMaxDataElementStore = minMaxDataElementStore;
+        this.minMaxDataElementService = minMaxDataElementService;
     }
 
     private SelectedStateManager selectedStateManager;
@@ -505,7 +504,7 @@ public class FormAction
         // Get the min/max values
         // ---------------------------------------------------------------------
 
-        Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementStore.getMinMaxDataElements(
+        Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementService.getMinMaxDataElements(
             organisationUnit, dataElements );
 
         minMaxMap = new HashMap<String, MinMaxDataElement>( minMaxDataElements.size() );

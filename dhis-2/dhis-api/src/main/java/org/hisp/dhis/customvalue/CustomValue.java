@@ -154,52 +154,85 @@ public class CustomValue
     public int hashCode()
     {
         final int prime = 31;
+        
         int result = 1;
-        result = prime * result + ((customValue == null) ? 0 : customValue.hashCode());
-        result = prime * result + ((dataElement == null) ? 0 : dataElement.hashCode());
-        result = prime * result + ((dataSet == null) ? 0 : dataSet.hashCode());
-        result = prime * result + ((optionCombo == null) ? 0 : optionCombo.hashCode());
+        
+        result = prime * result + ( ( customValue == null) ? 0 : customValue.hashCode() );
+        result = prime * result + ( ( dataElement == null) ? 0 : dataElement.hashCode() );
+        result = prime * result + ( ( dataSet == null) ? 0 : dataSet.hashCode() );
+        result = prime * result + ( ( optionCombo == null) ? 0 : optionCombo.hashCode() );
+        
         return result;
     }
 
     @Override
-    public boolean equals( Object obj )
+    public boolean equals( Object object )
     {
-        if ( this == obj )
+        if ( this == object )
+        {
             return true;
-        if ( obj == null )
+        }
+        
+        if ( object == null )
+        {
             return false;
-        if ( getClass() != obj.getClass() )
+        }
+        
+        if ( getClass() != object.getClass() )
+        {
             return false;
-        CustomValue other = (CustomValue) obj;
+        }
+        
+        final CustomValue other = (CustomValue) object;
+        
         if ( customValue == null )
         {
             if ( other.customValue != null )
+            {
                 return false;
-        }
+            }
+        }        
         else if ( !customValue.equals( other.customValue ) )
+        {
             return false;
+        }
+        
         if ( dataElement == null )
         {
             if ( other.dataElement != null )
+            {
                 return false;
+            }
         }
         else if ( !dataElement.equals( other.dataElement ) )
+        {
             return false;
+        }
+        
         if ( dataSet == null )
         {
             if ( other.dataSet != null )
+            {
                 return false;
+            }
         }
         else if ( !dataSet.equals( other.dataSet ) )
+        {
             return false;
+        }
+        
         if ( optionCombo == null )
         {
             if ( other.optionCombo != null )
+            {
                 return false;
+            }
         }
         else if ( !optionCombo.equals( other.optionCombo ) )
+        {
             return false;
+        }
+        
         return true;
     }
 }
