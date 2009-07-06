@@ -291,14 +291,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
   
-  <bean id="org.hisp.dhis.dataset.action.GetNumberOfLevelsAction"
-    class="org.hisp.dhis.dataset.action.GetNumberOfLevelsAction"
-    scope="prototype">
-    <property name="organisationUnitService">
-      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    </property>
-  </bean>
-  
   <!-- DataEntryForm -->
   
   <bean id="org.hisp.dhis.dataset.action.dataentryform.ViewDataEntryFormAction"
