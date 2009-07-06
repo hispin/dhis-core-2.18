@@ -270,9 +270,9 @@ public class DefaultDataSetService
         dataSetStore.updateFrequencyOverrideAssociation( frequencyOverrideAssociation );
     }
 
-    public void removeFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation )
+    public void deleteFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation )
     {
-        dataSetStore.removeFrequencyOverrideAssociation( frequencyOverrideAssociation );
+        dataSetStore.deleteFrequencyOverrideAssociation( frequencyOverrideAssociation );
     }
 
     public FrequencyOverrideAssociation getFrequencyOverrideAssociation( DataSet dataSet, Source source )

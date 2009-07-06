@@ -241,7 +241,7 @@ public class DataSetStoreTest
         assertEquals( dataSetStore.getFrequencyOverrideAssociationsByDataSet( dataSet2 ).size(), 1 );
         assertEquals( dataSetStore.getFrequencyOverrideAssociationsBySource( source2 ).size(), 1 );
 
-        dataSetStore.removeFrequencyOverrideAssociation( association );
+        dataSetStore.deleteFrequencyOverrideAssociation( association );
         assertEquals( dataSetStore.getFrequencyOverrideAssociationsByDataSet( dataSet1 ).size(), 1 );
         assertEquals( dataSetStore.getFrequencyOverrideAssociationsBySource( source1 ).size(), 1 );
         assertEquals( dataSetStore.getFrequencyOverrideAssociationsByDataSet( dataSet2 ).size(), 1 );
