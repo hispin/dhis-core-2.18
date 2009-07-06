@@ -32,11 +32,13 @@ import java.util.Collection;
 import org.hisp.dhis.common.GenericNameStore;
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.DataMartExportService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional
 public class DefaultDataMartExportService
     implements DataMartExportService
 {
