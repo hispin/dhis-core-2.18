@@ -110,7 +110,7 @@ public class Map
             return false;
         }
         
-        Map other = (Map) object;
+        final Map other = (Map) object;
         
         return mapLayerPath.equals( other.mapLayerPath );
     }
