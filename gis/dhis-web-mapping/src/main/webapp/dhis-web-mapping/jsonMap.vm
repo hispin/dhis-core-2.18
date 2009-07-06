@@ -4,7 +4,7 @@
     "name": "$!encoder.jsEncode( ${object.name} )",
     "mapLayerPath": "$!encoder.jsEncode( ${object.mapLayerPath} )",
     "organisationUnit": "$!encoder.jsEncode( ${object.organisationUnit.name} )",
-    "organisationUnitLevel": $!{object.organisationUnitLevel.level},
+    "organisationUnitLevel": "$!{object.organisationUnitLevel.level}",
     "uniqueColumn": "$!encoder.jsEncode( ${object.uniqueColumn} )",
     "nameColumn": "$!encoder.jsEncode( ${object.nameColumn} )",
     "longitude": "$!encoder.jsEncode( ${object.longitude} )",
