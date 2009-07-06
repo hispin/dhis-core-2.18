@@ -131,6 +131,9 @@ public class MappingServiceTest
     {
         int idA = mappingService.addMap( mapA );
         int idB = mappingService.addMap( mapB );
+
+        mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelationA );
+        mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelationB );
         
         assertNotNull( mappingService.getMap( idA ) );
         assertNotNull( mappingService.getMap( idB ) );
