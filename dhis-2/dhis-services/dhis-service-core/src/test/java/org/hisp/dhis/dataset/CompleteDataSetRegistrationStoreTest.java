@@ -38,10 +38,10 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.mock.MockSource;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
@@ -100,8 +100,8 @@ public class CompleteDataSetRegistrationStoreTest
         periodA = createPeriod( new MonthlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 1, 31 ) );
         periodB = createPeriod( new MonthlyPeriodType(), getDate( 2000, 2, 1 ), getDate( 2000, 2, 28 ) );
         
-        sourceA = new DummySource( "SourceA" );
-        sourceB = new DummySource( "SourceB" );
+        sourceA = new MockSource( "SourceA" );
+        sourceB = new MockSource( "SourceB" );
         
         dataSetService.addDataSet( dataSetA );
         dataSetService.addDataSet( dataSetB );

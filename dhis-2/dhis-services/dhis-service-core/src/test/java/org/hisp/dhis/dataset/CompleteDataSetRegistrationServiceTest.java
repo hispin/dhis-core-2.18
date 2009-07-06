@@ -38,10 +38,10 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.mock.MockSource;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
@@ -99,9 +99,9 @@ public class CompleteDataSetRegistrationServiceTest
 
         sourceStore = (SourceStore) getBean( SourceStore.ID );
 
-        sourceA = new DummySource( "SourceA" );
-        sourceB = new DummySource( "SourceB" );
-        sourceC = new DummySource( "SourceC" );
+        sourceA = new MockSource( "SourceA" );
+        sourceB = new MockSource( "SourceB" );
+        sourceC = new MockSource( "SourceC" );
         
         sourceStore.addSource( sourceA );
         sourceStore.addSource( sourceB ); 

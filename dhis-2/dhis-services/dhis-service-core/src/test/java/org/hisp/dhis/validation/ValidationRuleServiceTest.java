@@ -49,11 +49,11 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.mock.MockSource;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
 import org.hisp.dhis.system.util.MathUtils;
@@ -172,8 +172,8 @@ public class ValidationRuleServiceTest
 
         dataSet = createDataSet( 'A', periodType );
         
-        sourceA = new DummySource( "SourceA" );
-        sourceB = new DummySource( "SourceB" );
+        sourceA = new MockSource( "SourceA" );
+        sourceB = new MockSource( "SourceB" );
         
         sourceA.getDataSets().add( dataSet );
         sourceB.getDataSets().add( dataSet );

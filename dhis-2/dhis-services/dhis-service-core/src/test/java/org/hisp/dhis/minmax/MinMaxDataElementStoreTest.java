@@ -39,7 +39,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.source.DummySource;
+import org.hisp.dhis.mock.MockSource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
@@ -76,8 +76,8 @@ public class MinMaxDataElementStoreTest
     public void testBasic()
         throws Exception
     {
-        Source source1 = new DummySource("Source1name");
-        Source source2 = new DummySource("Source2name");
+        Source source1 = new MockSource("Source1name");
+        Source source2 = new MockSource("Source2name");
 
         sourceStore.addSource( source1 );
         sourceStore.addSource( source2 );

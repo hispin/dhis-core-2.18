@@ -47,8 +47,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.mock.MockSource;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
@@ -130,7 +130,7 @@ public class ExpressionServiceTest
         
         period = createPeriod( getDate( 2000, 1, 1 ), getDate( 2000, 2, 1 ) );
         
-        source = new DummySource( "SourceA" );
+        source = new MockSource( "SourceA" );
         
         sourceStore.addSource( source );
         

@@ -1,4 +1,6 @@
-package org.hisp.dhis.source;
+package org.hisp.dhis.mock;
+
+import org.hisp.dhis.source.Source;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -31,7 +33,7 @@ package org.hisp.dhis.source;
  * @author Torgeir Lorange Ostby
  * @version $Id: DummySource.java 5424 2008-06-16 01:11:56Z larshelg $
  */
-public class DummySource
+public class MockSource
     extends Source
 {
     private String name;
@@ -40,11 +42,11 @@ public class DummySource
     // Constructors
     // -------------------------------------------------------------------------
 
-    public DummySource()
+    public MockSource()
     {
     }
 
-    public DummySource( String name )
+    public MockSource( String name )
     {
         this.name = name;
     }
@@ -72,12 +74,12 @@ public class DummySource
             return false;
         }
 
-        if ( !(o instanceof DummySource) )
+        if ( !(o instanceof MockSource) )
         {
             return false;
         }
 
-        final DummySource other = (DummySource) o;
+        final MockSource other = (MockSource) o;
 
         return name.equals( other.getName() );
     }

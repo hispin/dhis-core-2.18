@@ -32,6 +32,7 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.mock.MockSource;
 import org.junit.Test;
 
 /**
@@ -61,8 +62,8 @@ public class SourceStoreTest
     @Test
     public void addGetSource()
     {
-        Source sourceA = new DummySource( "SourceA" );
-        Source sourceB = new DummySource( "SourceB" );
+        Source sourceA = new MockSource( "SourceA" );
+        Source sourceB = new MockSource( "SourceB" );
         
         int idA = sourceStore.addSource( sourceA );
         int idB = sourceStore.addSource( sourceB );
@@ -74,7 +75,7 @@ public class SourceStoreTest
     @Test
     public void updateSource()
     {
-        DummySource source = new DummySource( "SourceA" );
+        MockSource source = new MockSource( "SourceA" );
         
         int id = sourceStore.addSource( source );
         
@@ -90,8 +91,8 @@ public class SourceStoreTest
     @Test
     public void delete()
     {
-        Source sourceA = new DummySource( "SourceA" );
-        Source sourceB = new DummySource( "SourceB" );
+        Source sourceA = new MockSource( "SourceA" );
+        Source sourceB = new MockSource( "SourceB" );
         
         int idA = sourceStore.addSource( sourceA );
         int idB = sourceStore.addSource( sourceB );
@@ -113,8 +114,8 @@ public class SourceStoreTest
     @Test
     public void getAll()
     {
-        Source sourceA = new DummySource( "SourceA" );
-        Source sourceB = new DummySource( "SourceB" );
+        Source sourceA = new MockSource( "SourceA" );
+        Source sourceB = new MockSource( "SourceB" );
         
         sourceStore.addSource( sourceA );
         sourceStore.addSource( sourceB );
