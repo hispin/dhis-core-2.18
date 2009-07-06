@@ -173,7 +173,7 @@ public class HibernateDataSetStore
         session.update( frequencyOverrideAssociation );
     }
 
-    public void removeFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation )
+    public void deleteFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation )
     {
         Session session = sessionFactory.getCurrentSession();
 

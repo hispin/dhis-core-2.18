@@ -130,7 +130,7 @@ public interface DataSetStore
      * @param frequencyOverrideAssociation The FrequencyOverrideAssociation to
      *        remove.
      */
-    void removeFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation );
+    void deleteFrequencyOverrideAssociation( FrequencyOverrideAssociation frequencyOverrideAssociation );
 
     /**
      * Retrieves a FrequencyOverrideAssociation.

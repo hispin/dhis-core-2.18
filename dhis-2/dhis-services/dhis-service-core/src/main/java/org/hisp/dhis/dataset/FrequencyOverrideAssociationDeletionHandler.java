@@ -73,7 +73,7 @@ public class FrequencyOverrideAssociationDeletionHandler
         {
             deletionManager.execute( association );
             
-            dataSetService.removeFrequencyOverrideAssociation( association );
+            dataSetService.deleteFrequencyOverrideAssociation( association );
         }
     }
     
@@ -84,7 +84,7 @@ public class FrequencyOverrideAssociationDeletionHandler
         {
             deletionManager.execute( association );
             
-            dataSetService.removeFrequencyOverrideAssociation( association );
+            dataSetService.deleteFrequencyOverrideAssociation( association );
         }
     }
 }

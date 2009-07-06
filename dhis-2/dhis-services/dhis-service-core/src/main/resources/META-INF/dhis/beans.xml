@@ -526,7 +526,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <value>.*\.DataElementCategoryComboService\.delete.*</value>
         <value>.*\.DataElementCategoryOptionService\.delete.*</value>
         <value>.*\.DataSetService\.delete.*</value>
-        <value>.*\.DataSetService\.remove.*</value>
         <value>.*\.IndicatorService\.delete.*</value>
         <value>.*\.ExpressionService\.delete.*</value>
         <value>.*\.MinMaxDataElementService\.delete.*</value>

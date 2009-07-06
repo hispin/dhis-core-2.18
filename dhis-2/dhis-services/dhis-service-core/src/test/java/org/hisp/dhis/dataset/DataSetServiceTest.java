@@ -386,7 +386,7 @@ public class DataSetServiceTest
         assertEquals( dataSetService.getFrequencyOverrideAssociationsByDataSet( dataSet2 ).size(), 1 );
         assertEquals( dataSetService.getFrequencyOverrideAssociationsBySource( source2 ).size(), 1 );
         
-        dataSetService.removeFrequencyOverrideAssociation( association );
+        dataSetService.deleteFrequencyOverrideAssociation( association );
         assertEquals( dataSetService.getFrequencyOverrideAssociationsByDataSet( dataSet1 ).size(), 1 );
         assertEquals( dataSetService.getFrequencyOverrideAssociationsBySource( source1 ).size(), 1 );
         assertEquals( dataSetService.getFrequencyOverrideAssociationsByDataSet( dataSet2 ).size(), 1 );
