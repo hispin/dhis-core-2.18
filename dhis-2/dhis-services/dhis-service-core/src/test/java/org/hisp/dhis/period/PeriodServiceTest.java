@@ -46,7 +46,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.source.DummySource;
+import org.hisp.dhis.mock.MockSource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
@@ -498,9 +498,9 @@ public class PeriodServiceTest
         Period w04 = new Period( weekly, getDate( 2008, 1, 21 ), getDate( 2008, 1, 27 ) );
         Period w05 = new Period( weekly, getDate( 2008, 1, 28 ), getDate( 2008, 2, 3 ) );
                 
-        Source sourceA = new DummySource( "SourceA" );
-        Source sourceB = new DummySource( "SourceB" );
-        Source sourceC = new DummySource( "SourceC" );
+        Source sourceA = new MockSource( "SourceA" );
+        Source sourceB = new MockSource( "SourceB" );
+        Source sourceC = new MockSource( "SourceC" );
         
         DataValue dataValueA = new DataValue( dataElementA, jan, sourceA, optionCombo );
         dataValueA.setValue( "1" );

@@ -41,9 +41,9 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementStore;
+import org.hisp.dhis.mock.MockSource;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
@@ -126,10 +126,10 @@ public class DataValueServiceTest
         periodC = createPeriod( getDay( 7 ), getDay( 8 ) );
         periodD = createPeriod( getDay( 8 ), getDay( 9 ) );
         
-        sourceA = new DummySource( "SourceA" );
-        sourceB = new DummySource( "SourceB" );
-        sourceC = new DummySource( "SourceC" );
-        sourceD = new DummySource( "SourceD" );
+        sourceA = new MockSource( "SourceA" );
+        sourceB = new MockSource( "SourceB" );
+        sourceC = new MockSource( "SourceC" );
+        sourceD = new MockSource( "SourceD" );
 
         sourceStore.addSource( sourceA );
         sourceStore.addSource( sourceB );

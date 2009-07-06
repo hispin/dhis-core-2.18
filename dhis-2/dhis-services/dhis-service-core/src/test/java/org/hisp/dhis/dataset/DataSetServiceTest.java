@@ -36,12 +36,12 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.mock.MockSource;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.WeeklyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
-import org.hisp.dhis.source.DummySource;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
 import org.junit.Test;
@@ -200,9 +200,9 @@ public class DataSetServiceTest
     @Test
     public void testGetDataSetsBySource()
     {
-        Source sourceA = new DummySource( "A" );
-        Source sourceB = new DummySource( "B" );
-        Source sourceC = new DummySource( "C" );
+        Source sourceA = new MockSource( "A" );
+        Source sourceB = new MockSource( "B" );
+        Source sourceC = new MockSource( "C" );
         
         sourceStore.addSource( sourceA );
         sourceStore.addSource( sourceB );
@@ -247,10 +247,10 @@ public class DataSetServiceTest
     @Test
     public void testGetDataSetsBySources()
     {
-        Source sourceA = new DummySource( "A" );
-        Source sourceB = new DummySource( "B" );
-        Source sourceC = new DummySource( "C" );
-        Source sourceD = new DummySource( "D" );
+        Source sourceA = new MockSource( "A" );
+        Source sourceB = new MockSource( "B" );
+        Source sourceC = new MockSource( "C" );
+        Source sourceD = new MockSource( "D" );
         
         sourceStore.addSource( sourceA );
         sourceStore.addSource( sourceB );
@@ -304,12 +304,12 @@ public class DataSetServiceTest
     @Test
     public void testGetSourcesAssociatedWithDataSet()
     {
-        Source sourceA = new DummySource( "A" );
-        Source sourceB = new DummySource( "B" );
-        Source sourceC = new DummySource( "C" );
-        Source sourceD = new DummySource( "D" );
-        Source sourceE = new DummySource( "E" );
-        Source sourceF = new DummySource( "F" );
+        Source sourceA = new MockSource( "A" );
+        Source sourceB = new MockSource( "B" );
+        Source sourceC = new MockSource( "C" );
+        Source sourceD = new MockSource( "D" );
+        Source sourceE = new MockSource( "E" );
+        Source sourceF = new MockSource( "F" );
         
         sourceStore.addSource( sourceA );
         sourceStore.addSource( sourceB );
@@ -361,8 +361,8 @@ public class DataSetServiceTest
         dataSetService.addDataSet( dataSet1 );
         dataSetService.addDataSet( dataSet2 );
 
-        Source source1 = new DummySource( "Source1" );
-        Source source2 = new DummySource( "Source2" );
+        Source source1 = new MockSource( "Source1" );
+        Source source2 = new MockSource( "Source2" );
         sourceStore.addSource( source1 );
         sourceStore.addSource( source2 );
 

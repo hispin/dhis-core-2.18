@@ -41,11 +41,13 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Jan Henrik Overland
  * @version $Id$
  */
+@Transactional
 public class DefaultMappingService
     implements MappingService
 {
