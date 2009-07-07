@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
   
   <!-- DataMartExportStore -->
   
@@ -220,15 +222,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <!-- Deletion AOP definitions -->
   
-  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-    <property name="advice" ref="deletionInterceptor"/>
-    <property name="patterns">
-      <list>
-        <value>.*\.DataMartExportService\.delete.*</value>
-      </list>
-    </property>
-  </bean>
+  <aop:config>
   
+    <aop:aspect ref="deletionInterceptor">      
+      <aop:before pointcut="execution( * org.hisp.dhis.datamart.DataMartExportService.delete*(..) )" method="intercept"/>
+    </aop:aspect>
+      
+  </aop:config>
+    
   <!-- Startup -->
   
   <bean id="org.hisp.dhis.datamart.startup.AggregationTableCreator"

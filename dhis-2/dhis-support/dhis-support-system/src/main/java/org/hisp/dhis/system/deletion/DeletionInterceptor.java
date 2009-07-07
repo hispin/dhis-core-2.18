@@ -27,14 +27,13 @@ package org.hisp.dhis.system.deletion;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
+import org.aspectj.lang.JoinPoint;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DeletionInterceptor
-    implements MethodInterceptor
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -51,16 +50,11 @@ public class DeletionInterceptor
     // MethodInterceptor Implementation
     // ----------------------------------------------------------------------
 
-    public Object invoke( MethodInvocation methodInvocation )
-        throws Throwable
+    public void intercept( JoinPoint joinPoint )
     {
-        if ( methodInvocation.getArguments().length == 1 )
+        if ( joinPoint.getArgs() != null && joinPoint.getArgs().length > 0 )
         {
-            Object object = methodInvocation.getArguments()[0];
-            
-            deletionManager.execute( object );
+            deletionManager.execute( joinPoint.getArgs()[0] );
         }
-        
-        return methodInvocation.proceed();
     }
 }

@@ -28,17 +28,15 @@ package org.hisp.dhis.i18n.interceptor;
  */
 
 import java.lang.reflect.Method;
-
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
 import org.hisp.dhis.i18n.I18nService;
+import org.aspectj.lang.ProceedingJoinPoint;
 
 /**
  * @author Torgeir Lorange Ostby
+ * @author Lars Helge Overland
  * @version $Id: I18nObjectInterceptor.java 5992 2008-10-19 11:52:20Z larshelg $
  */
 public class I18nObjectInterceptor
-    implements MethodInterceptor
 {
     private static final String ADD = "add";
 
@@ -65,41 +63,32 @@ public class I18nObjectInterceptor
     // MethodInterceptor implementation
     // -------------------------------------------------------------------------
 
-    public Object invoke( MethodInvocation methodInvocation )
+    public void intercept( ProceedingJoinPoint joinPoint )
         throws Throwable
     {
-        String methodName = methodInvocation.getMethod().getName();
+        String methodName = joinPoint.getSignature().toShortString();
 
-        Object object = null;
-
-        if ( methodInvocation.getArguments().length == 1 )
+        if ( joinPoint.getArgs() != null && joinPoint.getArgs().length > 0 )
         {
-            object = methodInvocation.getArguments()[0];
-        }
-
-        if ( object != null )
-        {
+            Object object = joinPoint.getArgs()[0];
+        
             if ( methodName.startsWith( ADD ) )
             {
-                Object returnValue = methodInvocation.proceed();
+                joinPoint.proceed();
 
                 i18nService.addObject( object );
-
-                return returnValue;
             }
             else if ( methodName.startsWith( UPDATE ) )
             {
                 i18nService.verify( object );
 
-                return methodInvocation.proceed();
+                joinPoint.proceed();
             }
             else if ( methodName.startsWith( DELETE ) )
             {
-                Object returnValue = methodInvocation.proceed();
+                joinPoint.proceed();
 
                 i18nService.removeObject( object );
-
-                return returnValue;
             }
             else if ( methodName.startsWith( SAVE ) )
             {
@@ -109,21 +98,21 @@ public class I18nObjectInterceptor
 
                 if ( id == 0 )
                 {
-                    Object returnValue = methodInvocation.proceed();
+                    joinPoint.proceed();
 
                     i18nService.addObject( object );
-
-                    return returnValue;
                 }
                 else
                 {
                     i18nService.verify( object );
 
-                    return methodInvocation.proceed();
+                    joinPoint.proceed();
                 }
             }
         }
-
-        return methodInvocation.proceed();
+        else
+        {
+            joinPoint.proceed();
+        }
     }
 }
