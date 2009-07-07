@@ -37,8 +37,8 @@ div#header
   height: 83px;
   position: absolute;
   top: 0px;
-  left: 20px;
-  right: 0px;
+  left: 10px;
+  right: 10px;
 }
 
 img#header1
@@ -136,7 +136,7 @@ span#headerText
 {
   position: absolute;
   top: 26px;
-  left: 230px;
+  left: 218px;
   color: white;
   font-size: 17px;
 }
@@ -225,7 +225,7 @@ div#menuDropDown3
   float: left;
   position: absolute;
   top: 85px;
-  left: 20px;
+  left: 10px;
   border-style: solid;
   border-width: 1px;
   border-color: #343a47;
@@ -250,7 +250,7 @@ div#menuDropDown3
   padding-bottom: 5px;
   padding-left: 10px;
   color: white;
-  border-style: solid;
+  border-style: solid;  
   border-width: 1px;
   border-color: #ffffff;
 }

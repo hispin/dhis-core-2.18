@@ -101,42 +101,42 @@ img#menuSeparator5
   color: #ffffff;
   font-weight: bold;
   text-align: center;
-  line-height: 67px;
+  line-height: 59px;
   cursor: pointer;
 }
 
 div#menuLink1
 {
   position: absolute;
-  top: 3px;
+  top: 7px;
   left: 572px;
 }
 
 div#menuLink2
 {
   position: absolute;
-  top: 3px;
+  top: 7px;
   left: 672px;
 }
 
 div#menuLink3
 {
   position: absolute;
-  top: 3px;
+  top: 7px;
   left: 772px;
 }
 
 div#menuLink4
 {
   position: absolute;
-  top: 3px;
+  top: 7px;
   left: 872px;
 }
 
 span#headerText
 {
   position: absolute;
-  top: 27px;
+  top: 26px;
   left: 218px;
   color: white;
   font-size: 17px;
