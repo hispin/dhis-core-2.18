@@ -171,13 +171,15 @@ public class DefaultReportTableService
                 
                 date = getDateFromPreviousMonth( reportingPeriod );
                 
-                log.info( "Reporting period: " + reportingPeriod );
+                log.info( "Reporting period date from report param: " + date );
             }
             else
             {
-                reportTable.setRelativePeriods( getRelativePeriods( reportTable.getRelatives(), -1 ) );
+                reportTable.setRelativePeriods( getRelativePeriods( reportTable.getRelatives(), 1 ) );
                 
-                date = getDateFromPreviousMonth( -1 );
+                date = getDateFromPreviousMonth( 1 );
+                
+                log.info( "Reporting period date default: " + date );
             }
 
             String reportingMonthName = format.formatPeriod( new MonthlyPeriodType().createPeriod( date ) );
