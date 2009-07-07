@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:aop="http://www.springframework.org/schema/aop"
   xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">  
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">  
 
   <!-- Service definitions -->
 
@@ -51,17 +53,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.mapping.MappingService"/>
   </bean>
     
-  <!-- Deletion AOP definitions -->
+  <!-- DeletionManager -->
   
-  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-    <property name="advice" ref="deletionInterceptor"/>
-    <property name="patterns">
-      <list>
-        <value>.*\.MappingService\.delete.*</value>
-      </list>
-    </property>
-  </bean>
-
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetObject" ref="org.hisp.dhis.system.deletion.DeletionManager"/>
     <property name="targetMethod" value="addDeletionHandlers"/>
@@ -71,10 +64,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
           <ref local="org.hisp.dhis.mapping.MapDeletionHandler"/>
           <ref local="org.hisp.dhis.mapping.MapLegendSetDeletionHandler"/>
           <ref local="org.hisp.dhis.mapping.MapOrganisationUnitRelationDeletionHandler"/>
-		  <ref local="org.hisp.dhis.mapping.MapViewDeletionHandler"/>
+          <ref local="org.hisp.dhis.mapping.MapViewDeletionHandler"/>
         </list>
       </list>
     </property>
   </bean>
+  
+  <!-- Deletion AOP definitions -->
+  
+  <aop:config>
+  
+    <aop:aspect ref="deletionInterceptor">      
+      <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.delete*(..) )" method="intercept"/>
+    </aop:aspect>
+      
+  </aop:config>
   
 </beans>

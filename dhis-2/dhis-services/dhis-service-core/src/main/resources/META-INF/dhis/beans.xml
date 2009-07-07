@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:aop="http://www.springframework.org/schema/aop"
   xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
   
   <!-- Store definitions -->
 
@@ -516,23 +518,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <!-- Deletion AOP definitions -->
   
-  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-    <property name="advice" ref="deletionInterceptor"/>
-    <property name="patterns">
-      <list>
-        <value>.*\.DataDictionaryService\.delete.*</value>
-        <value>.*\.DataElementService\.delete.*</value>
-        <value>.*\.DataElementCategoryService\.delete.*</value>
-        <value>.*\.DataElementCategoryComboService\.delete.*</value>
-        <value>.*\.DataElementCategoryOptionService\.delete.*</value>
-        <value>.*\.DataSetService\.delete.*</value>
-        <value>.*\.IndicatorService\.delete.*</value>
-        <value>.*\.ExpressionService\.delete.*</value>
-        <value>.*\.MinMaxDataElementService\.delete.*</value>
-        <value>.*\.ValidationRuleService\.delete.*</value>
-        <value>.*\.PeriodService\.delete.*</value>
-      </list>
-    </property>
-  </bean>
+  <aop:config>
+  
+    <aop:aspect ref="deletionInterceptor">      
+      <aop:before pointcut="execution( * org.hisp.dhis.datadictionary.DataDictionaryService.delete*(..) )" method="intercept"/>
+      <aop:before pointcut="execution( * org.hisp.dhis.dataelement.DataElementService.delete*(..) )" method="intercept"/>
+      <aop:before pointcut="execution( * org.hisp.dhis.dataelement.DataElementCategoryService.delete*(..) )" method="intercept"/>
+      <aop:before pointcut="execution( * org.hisp.dhis.dataelement.DataElementCategoryComboService.delete*(..) )" method="intercept"/>
+      <aop:before pointcut="execution( * org.hisp.dhis.dataelement.DataElementCategoryOptionService.delete*(..) )" method="intercept"/>
+      <aop:before pointcut="execution( * org.hisp.dhis.dataset.DataSetService.delete*(..) )" method="intercept"/>
+      <aop:before pointcut="execution( * org.hisp.dhis.indicator.IndicatorService.delete*(..) )" method="intercept"/>
+      <aop:before pointcut="execution( * org.hisp.dhis.expression.ExpressionService.delete*(..) )" method="intercept"/>
+      <aop:before pointcut="execution( * org.hisp.dhis.minmax.MinMaxDataElementService.delete*(..) )" method="intercept"/>
+      <aop:before pointcut="execution( * org.hisp.dhis.validation.ValidationRuleService.delete*(..) )" method="intercept"/>
+      <aop:before pointcut="execution( * org.hisp.dhis.period.PeriodService.delete*(..) )" method="intercept"/>
+    </aop:aspect>
+      
+  </aop:config>
   
 </beans>
