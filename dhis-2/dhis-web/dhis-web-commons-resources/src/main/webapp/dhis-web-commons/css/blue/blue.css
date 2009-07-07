@@ -37,8 +37,8 @@ div#header
   height: 83px;
   position: absolute;
   top: 0px;
-  left: 0px;
-  right: 0px;
+  left: 10px;
+  right: 10px;
 }
 
 img#header1
