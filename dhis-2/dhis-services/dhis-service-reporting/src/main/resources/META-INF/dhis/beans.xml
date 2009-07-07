@@ -63,20 +63,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.completeness.DataSetCompletenessService"/>
   </bean>
   
-  <!-- Design -->
-
-  <bean id="org.hisp.dhis.design.DesignStore"
-    class="org.hisp.dhis.hibernate.HibernateGenericStore">
-    <property name="clazz" value="org.hisp.dhis.design.Design"/>
-    <property name="sessionFactory" ref="sessionFactory"/>
-  </bean>
-
-  <bean id="org.hisp.dhis.design.DesignService"
-    class="org.hisp.dhis.design.impl.DefaultDesignService">
-    <property name="designStore"
-      ref="org.hisp.dhis.design.DesignStore"/>
-  </bean>
-
   <!-- Report -->
   
   <bean id="org.hisp.dhis.report.ReportStore"
