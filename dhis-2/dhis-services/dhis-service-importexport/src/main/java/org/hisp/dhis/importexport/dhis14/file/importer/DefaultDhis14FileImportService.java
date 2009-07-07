@@ -728,9 +728,7 @@ public class DefaultDhis14FileImportService
     {
         //setMessage( "importing_routine_data_values" );
 
-        DataElementCategoryCombo categoryCombo = categoryComboService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
-        
-        DataElementCategoryOptionCombo categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
         
@@ -798,9 +796,7 @@ public class DefaultDhis14FileImportService
     {
         //setMessage( "importing_semi_permanent_data_values" );
 
-        DataElementCategoryCombo categoryCombo = categoryComboService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
-        
-        DataElementCategoryOptionCombo categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
         
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
 
