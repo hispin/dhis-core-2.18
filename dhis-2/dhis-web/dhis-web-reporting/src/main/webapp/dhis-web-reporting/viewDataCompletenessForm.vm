@@ -16,6 +16,7 @@
         </td>
         <td></td>
         <td valign="bottom">
+        	<a href="javascript:openHelpForm('dhis-web-reporting.datacompleteness.general')" title="$i18n.getString( 'help' )"><img src="../images/help.png" alt="$i18n.getString( 'help' )"></a><br>
         	<input type="button" value="$i18n.getString( 'generate_pdf' )" style="width:150px"
                 onclick="window.location.href='getDataCompletenessPDF.action'"><input 
                 type="button" value="$i18n.getString( 'generate_workbook' )" style="width:150px"
