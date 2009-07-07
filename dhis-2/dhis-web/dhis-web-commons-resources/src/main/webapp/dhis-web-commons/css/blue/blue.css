@@ -37,7 +37,7 @@ div#header
   height: 83px;
   position: absolute;
   top: 0px;
-  left: 10px;
+  left: 0px;
   right: 0px;
 }
 
@@ -49,8 +49,8 @@ img#header1
 img#header2
 {
   position: absolute;
-  top: 15px;
-  left: 15px;
+  top: 13px;
+  left: 25px;
 }
 
 img#header3
@@ -137,7 +137,7 @@ span#headerText
 {
   position: absolute;
   top: 30px;
-  left: 150px;
+  left: 218px;
   color: white;
   font-size: 17px;
 }
