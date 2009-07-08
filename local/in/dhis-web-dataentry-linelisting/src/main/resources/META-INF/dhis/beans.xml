@@ -9,8 +9,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.den.api.LLDataValueStore"
     class="org.hisp.dhis.den.impl.HibernateLLDataValueStore">
-    <property name="sessionManager"
-      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="sessionFactory"
+      ref="sessionFactory"/>
     <property name="periodStore" 
       ref="org.hisp.dhis.period.PeriodStore"/>
     <property name="dataElementService" 
@@ -36,8 +36,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.den.history.HistoryRetriever"
     class="org.hisp.dhis.den.history.DefaultHistoryRetriever">
-    <property name="minMaxDataElementStore"
-      ref="org.hisp.dhis.minmax.MinMaxDataElementStore"/>
+    <property name="minMaxDataElementService"
+      ref="org.hisp.dhis.minmax.MinMaxDataElementService"/>
     <property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>
   </bean>
@@ -104,12 +104,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataset.DataEntryFormService"/>    
     <property name="standardCommentsManager"
       ref="org.hisp.dhis.den.comments.StandardCommentsManager"/>
-    <property name="minMaxDataElementStore"
-      ref="org.hisp.dhis.minmax.MinMaxDataElementStore"/>
+    <property name="minMaxDataElementService"
+      ref="org.hisp.dhis.minmax.MinMaxDataElementService"/>
     <property name="selectedStateManager"
-      ref="org.hisp.dhis.den.state.SelectedStateManager"/>    
-	<property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>  
+      ref="org.hisp.dhis.den.state.SelectedStateManager"/>
   </bean>
 	
   <bean id="org.hisp.dhis.den.action.multidimensional.FormAction"
@@ -122,8 +120,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataelement.DataElementService"/>        
     <property name="standardCommentsManager"
       ref="org.hisp.dhis.den.comments.StandardCommentsManager"/>
-    <property name="minMaxDataElementStore"
-      ref="org.hisp.dhis.minmax.MinMaxDataElementStore"/>
+    <property name="minMaxDataElementService"
+      ref="org.hisp.dhis.minmax.MinMaxDataElementService"/>
     <property name="selectedStateManager"
       ref="org.hisp.dhis.den.state.SelectedStateManager"/>
     <property name="dataElementCategoryOptionComboService"
@@ -138,7 +136,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>        
   </bean>
   
-   <bean id="org.hisp.dhis.den.action.SectionFormAction"
+  <bean id="org.hisp.dhis.den.action.SectionFormAction"
     class="org.hisp.dhis.den.action.SectionFormAction" scope="prototype">    
     <property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>
@@ -146,14 +144,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="standardCommentsManager"
       ref="org.hisp.dhis.den.comments.StandardCommentsManager"/>
-    <property name="minMaxDataElementStore"
-      ref="org.hisp.dhis.minmax.MinMaxDataElementStore"/>
+    <property name="minMaxDataElementService"
+      ref="org.hisp.dhis.minmax.MinMaxDataElementService"/>
     <property name="selectedStateManager"
       ref="org.hisp.dhis.den.state.SelectedStateManager"/>
      <property name="sectionService"
       ref="org.hisp.dhis.dataset.SectionService"/>    
-  </bean>
-	
+  </bean>	
   
   <bean id="org.hisp.dhis.den.action.SaveValueAction"
     class="org.hisp.dhis.den.action.SaveValueAction" scope="prototype">
@@ -219,8 +216,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.den.action.SaveMinMaxLimitsAction"
     class="org.hisp.dhis.den.action.SaveMinMaxLimitsAction" scope="prototype">
-    <property name="minMaxDataElementStore">
-      <ref bean="org.hisp.dhis.minmax.MinMaxDataElementStore"/>
+    <property name="minMaxDataElementService">
+      <ref bean="org.hisp.dhis.minmax.MinMaxDataElementService"/>
     </property>
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
@@ -232,8 +229,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.den.action.RemoveMinMaxLimitsAction"
     class="org.hisp.dhis.den.action.RemoveMinMaxLimitsAction" scope="prototype">
-    <property name="minMaxDataElementStore"
-      ref="org.hisp.dhis.minmax.MinMaxDataElementStore"/>
+    <property name="minMaxDataElementService"
+      ref="org.hisp.dhis.minmax.MinMaxDataElementService"/>
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="dataElementService"
@@ -349,8 +346,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementOrderManager">
       <ref bean="org.hisp.dhis.order.manager.DataElementOrderManager"/>
     </property>
-    <property name="minMaxDataElementStore">
-      <ref bean="org.hisp.dhis.minmax.MinMaxDataElementStore"/>
+    <property name="minMaxDataElementService">
+      <ref bean="org.hisp.dhis.minmax.MinMaxDataElementService"/>
     </property>
     <property name="selectedStateManager"
       ref="org.hisp.dhis.den.state.SelectedStateManager"/>

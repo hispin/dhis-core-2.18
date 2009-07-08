@@ -16,10 +16,10 @@ import org.hisp.dhis.den.api.LLDataValue;
 import org.hisp.dhis.den.api.LLDataValueService;
 import org.hisp.dhis.den.api.LLDataValueStore;
 import org.hisp.dhis.den.api.LLImportParameters;
-import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
+import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -27,6 +27,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+@Transactional
 public class DefaultLLDataValueService
     implements LLDataValueService
 {

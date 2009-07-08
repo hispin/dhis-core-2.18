@@ -46,7 +46,7 @@ import org.hisp.dhis.den.comments.StandardCommentsManager;
 import org.hisp.dhis.den.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
-import org.hisp.dhis.minmax.MinMaxDataElementStore;
+import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -62,28 +62,28 @@ public class SectionFormAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-	
-	private SectionService sectionService;    
 
-    private DataValueService dataValueService;  
-    
-   
-	public void setSectionService(SectionService sectionService) {
-		this.sectionService = sectionService;
-	}
+    private SectionService sectionService;
 
-	public void setDataValueService( DataValueService dataValueService )
+    private DataValueService dataValueService;
+
+    public void setSectionService( SectionService sectionService )
+    {
+        this.sectionService = sectionService;
+    }
+
+    public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
     }
 
     private DataElementService dataElementService;
-    
+
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
-    
+
     private StandardCommentsManager standardCommentsManager;
 
     public void setStandardCommentsManager( StandardCommentsManager standardCommentsManager )
@@ -91,11 +91,11 @@ public class SectionFormAction
         this.standardCommentsManager = standardCommentsManager;
     }
 
-    private MinMaxDataElementStore minMaxDataElementStore;
+    private MinMaxDataElementService minMaxDataElementService;
 
-    public void setMinMaxDataElementStore( MinMaxDataElementStore minMaxDataElementStore )
+    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
     {
-        this.minMaxDataElementStore = minMaxDataElementStore;
+        this.minMaxDataElementService = minMaxDataElementService;
     }
 
     private SelectedStateManager selectedStateManager;
@@ -104,7 +104,6 @@ public class SectionFormAction
     {
         this.selectedStateManager = selectedStateManager;
     }
-    
 
     private I18n i18n;
 
@@ -116,13 +115,13 @@ public class SectionFormAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
-    private List<Section> sections; 
-    
-    public List<Section> getSections() {
-		return sections;
-	}
 
+    private List<Section> sections;
+
+    public List<Section> getSections()
+    {
+        return sections;
+    }
 
     private Map<Integer, DataValue> dataValueMap;
 
@@ -131,13 +130,13 @@ public class SectionFormAction
         return dataValueMap;
     }
 
-    private Map<CalculatedDataElement,Integer> calculatedValueMap;
-    
-    public Map<CalculatedDataElement,Integer> getCalculatedValueMap()
+    private Map<CalculatedDataElement, Integer> calculatedValueMap;
+
+    public Map<CalculatedDataElement, Integer> getCalculatedValueMap()
     {
         return calculatedValueMap;
     }
-    
+
     private List<String> standardComments;
 
     public List<String> getStandardComments()
@@ -213,12 +212,12 @@ public class SectionFormAction
         {
             return SUCCESS;
         }
-        
+
         // ---------------------------------------------------------------------
         // Get the min/max values
         // ---------------------------------------------------------------------
 
-        Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementStore.getMinMaxDataElements(
+        Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementService.getMinMaxDataElements(
             organisationUnit, dataElements );
 
         minMaxMap = new HashMap<Integer, MinMaxDataElement>( minMaxDataElements.size() );
@@ -232,9 +231,9 @@ public class SectionFormAction
         // Order the DataElements
         // ---------------------------------------------------------------------
 
-        sections = (List<Section>) sectionService.getSectionByDataSet(dataSet);
-        
-        Collections.sort(sections, new SectionOrderComparator());
+        sections = (List<Section>) sectionService.getSectionByDataSet( dataSet );
+
+        Collections.sort( sections, new SectionOrderComparator() );
 
         // ---------------------------------------------------------------------
         // Get the DataValues and create a map
@@ -254,36 +253,36 @@ public class SectionFormAction
         // ---------------------------------------------------------------------
 
         CalculatedDataElement cde;
-        
-        calculatedValueMap = new HashMap<CalculatedDataElement,Integer> ();
-        
-        Map<DataElement,Integer> factorMap;
-        
+
+        calculatedValueMap = new HashMap<CalculatedDataElement, Integer>();
+
+        Map<DataElement, Integer> factorMap;
+
         DataValue dataValue;
         int factor;
         int value = 0;
-        
+
         for ( DataElement dataElement : dataElements )
         {
-            if (  !( dataElement instanceof CalculatedDataElement ) )
+            if ( !(dataElement instanceof CalculatedDataElement) )
             {
                 continue;
             }
 
             cde = (CalculatedDataElement) dataElement;
-            
+
             if ( cde.isSaved() )
             {
                 continue;
             }
-            
-            factorMap = dataElementService.getDataElementFactors(cde);
-            
+
+            factorMap = dataElementService.getDataElementFactors( cde );
+
             for ( DataElement cdeElement : cde.getExpression().getDataElementsInExpression() )
             {
-                factor = factorMap.get(cdeElement);
-                dataValue = dataValueMap.get(cdeElement.getId());
-                
+                factor = factorMap.get( cdeElement );
+                dataValue = dataValueMap.get( cdeElement.getId() );
+
                 if ( dataValue != null )
                 {
                     value += Integer.parseInt( dataValue.getValue() ) * factor;
@@ -292,10 +291,10 @@ public class SectionFormAction
             }
 
             calculatedValueMap.put( cde, value );
-            
+
             value = 0;
         }
-        
+
         // ---------------------------------------------------------------------
         // Make the standard comments available
         // ---------------------------------------------------------------------

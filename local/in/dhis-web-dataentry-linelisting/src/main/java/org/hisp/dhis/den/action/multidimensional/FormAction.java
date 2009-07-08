@@ -60,7 +60,7 @@ import org.hisp.dhis.den.comments.StandardCommentsManager;
 import org.hisp.dhis.den.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
-import org.hisp.dhis.minmax.MinMaxDataElementStore;
+import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.order.manager.DataElementOrderManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -120,11 +120,11 @@ public class FormAction
         this.standardCommentsManager = standardCommentsManager;
     }
 
-    private MinMaxDataElementStore minMaxDataElementStore;
+    private MinMaxDataElementService minMaxDataElementService;
 
-    public void setMinMaxDataElementStore( MinMaxDataElementStore minMaxDataElementStore )
+    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
     {
-        this.minMaxDataElementStore = minMaxDataElementStore;
+        this.minMaxDataElementService = minMaxDataElementService;
     }
 
     private SelectedStateManager selectedStateManager;
@@ -484,7 +484,7 @@ public class FormAction
         // ---------------------------------------------------------------------
         // Get the min/max values
         // ---------------------------------------------------------------------
-        Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementStore.getMinMaxDataElements(
+        Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementService.getMinMaxDataElements(
             organisationUnit, dataElements );
 
         minMaxMap = new HashMap<Integer, MinMaxDataElement>( minMaxDataElements.size() );
@@ -627,13 +627,13 @@ public class FormAction
         Iterator<String> it1 = llDataValueMapKeys.iterator();
         while(it1.hasNext())
         {
-            String tempRecordNo = (String) it1.next();
+            String tempRecordNo = it1.next();
             List<LLDataValue> tempLLDVList1 = new ArrayList<LLDataValue>(lldataValueMap.get(tempRecordNo));
             List<LLDataValue> tempLLDVList2 = new ArrayList<LLDataValue>();
             Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
             while(it2.hasNext())
             {
-                LLDataValue tempLLDV = (LLDataValue) it2.next();
+                LLDataValue tempLLDV = it2.next();
                 
                 if(tempLLDV.getDataElement().getName().equalsIgnoreCase( "Name of Child - LiveBirth" ))
                     tempLLDVList2.add( 0, tempLLDV );
