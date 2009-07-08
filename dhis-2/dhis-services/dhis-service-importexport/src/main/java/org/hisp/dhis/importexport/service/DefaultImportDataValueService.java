@@ -82,4 +82,9 @@ public class DefaultImportDataValueService
     {
         importDataValueStore.deleteImportDataValuesBySource( sourceId );
     }
+    
+    public int getNumberOfImportDataValues( ImportObjectStatus status )
+    {
+        return importDataValueStore.getNumberOfImportDataValues( status );
+    }
 }

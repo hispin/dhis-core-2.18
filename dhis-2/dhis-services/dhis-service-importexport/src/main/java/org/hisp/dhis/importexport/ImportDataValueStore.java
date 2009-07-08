@@ -46,4 +46,6 @@ public interface ImportDataValueStore
     void deleteImportDataValuesByDataElement( int dataElementId );
     
     void deleteImportDataValuesBySource( int sourceId );
+    
+    int getNumberOfImportDataValues( ImportObjectStatus status );
 }
