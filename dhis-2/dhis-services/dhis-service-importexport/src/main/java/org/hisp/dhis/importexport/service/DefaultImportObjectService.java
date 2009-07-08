@@ -325,7 +325,8 @@ public class DefaultImportObjectService<T>
             {
                 DataSet dataSet = (DataSet) importObject.getObject();
                 
-                deleteGroupAssociations( GroupMemberType.DATASET, dataSet.getId() );             
+                deleteGroupAssociations( GroupMemberType.DATASET, dataSet.getId() );
+                deleteMemberAssociations( GroupMemberType.DATASET_SOURCE, dataSet.getId() );
                 deleteMemberAssociations( GroupMemberType.REPORTTABLE_DATASET, dataSet.getId() );
                 
                 deleteCompleteDataSetRegistrationsByDataSet( dataSet.getId() );
@@ -334,8 +335,9 @@ public class DefaultImportObjectService<T>
             {
                 OrganisationUnit unit = (OrganisationUnit) importObject.getObject();
                 
-                deleteMemberAssociations( GroupMemberType.ORGANISATIONUNITGROUP, unit.getId() );                
-                deleteGroupAssociations( GroupMemberType.ORGANISATIONUNITRELATIONSHIP, unit.getId() );                
+                deleteMemberAssociations( GroupMemberType.ORGANISATIONUNITGROUP, unit.getId() );               
+                deleteGroupAssociations( GroupMemberType.ORGANISATIONUNITRELATIONSHIP, unit.getId() );
+                deleteMemberAssociations( GroupMemberType.DATASET_SOURCE, unit.getId() );
                 deleteMemberAssociations( GroupMemberType.ORGANISATIONUNITRELATIONSHIP, unit.getId() );                
                 deleteMemberAssociations( GroupMemberType.REPORTTABLE_ORGANISATIONUNIT, unit.getId() );
                 
@@ -709,7 +711,7 @@ public class DefaultImportObjectService<T>
 
     private void deleteGroupAssociations( GroupMemberType groupMemberType, int groupId )
     {
-        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( groupMemberType);
+        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( groupMemberType );
         
         for ( ImportObject importObject : importObjects )
         {
