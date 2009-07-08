@@ -96,7 +96,7 @@ public class ValidationResultWorkbookGenerator
                 sheet.addCell( new Label( MARGIN_LEFT + 1, row, format.formatPeriod( period ), text ) );
                 sheet.addCell( new Label( MARGIN_LEFT + 2, row, result.getValidationRule().getLeftSide().getDescription(), text ) );
                 sheet.addCell( new Number( MARGIN_LEFT + 3, row, result.getLeftsideValue(), text ) );
-                sheet.addCell( new Label( MARGIN_LEFT + 4, row, i18n.getString( result.getValidationRule().getOperator(), text ) ) );
+                sheet.addCell( new Label( MARGIN_LEFT + 4, row, i18n.getString( result.getValidationRule().getOperator() ), text ) );
                 sheet.addCell( new Number( MARGIN_LEFT + 5, row, result.getRightsideValue(), text ) );
                 sheet.addCell( new Label( MARGIN_LEFT + 6, row, result.getValidationRule().getRightSide().getDescription(), text ) );
                 

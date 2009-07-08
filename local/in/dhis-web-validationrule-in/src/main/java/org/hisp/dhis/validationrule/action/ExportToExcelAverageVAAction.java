@@ -82,6 +82,7 @@ public class ExportToExcelAverageVAAction  extends ActionSupport
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @SuppressWarnings( "unchecked" )
     public String execute()
         throws Exception
     {   
@@ -177,7 +178,7 @@ public class ExportToExcelAverageVAAction  extends ActionSupport
         Iterator<Period> it4 = selPeriodList.iterator();
         while(it4.hasNext())
         {
-            Period p = (Period) it4.next();
+            Period p = it4.next();
             tempStr = p.getStartDate()+ " To " + p.getEndDate();
             sheet0.addCell( new Label( tempCol1, tempRow1, tempStr, wCellformat2) );
             sheet0.mergeCells( tempCol1, tempRow1, tempCol1+1, tempRow1 );
@@ -189,7 +190,7 @@ public class ExportToExcelAverageVAAction  extends ActionSupport
         Iterator<OrganisationUnit> it1 = selOrgUnitList.iterator();
         while(it1.hasNext())
         {            
-            OrganisationUnit ou = (OrganisationUnit) it1.next();
+            OrganisationUnit ou = it1.next();
             tempCol1 = organisationUnitService.getLevelOfOrganisationUnit( ou )-1;
             
             sheet0.addCell( new Label( tempCol1, tempRow1, ou.getShortName(), wCellformat4) );            
@@ -200,7 +201,7 @@ public class ExportToExcelAverageVAAction  extends ActionSupport
             Iterator<Integer> it2 = resultList.iterator();            
             while(it2.hasNext())
             {                
-                Integer result = (Integer) it2.next();
+                Integer result = it2.next();
                 tempStr = String.valueOf( result );
                 if(result.intValue() < 0)
                     sheet0.addCell( new Label( tempCol1, tempRow1, tempStr, wCellformat4) );

@@ -227,7 +227,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.validationrule.action.ValidationByAverageActionIN"
     class="org.hisp.dhis.validationrule.action.ValidationByAverageActionIN" scope="prototype">
     <property name="statementManager">
-      <ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+      <ref bean="statementManager"/>
     </property>    
     <property name="validationRuleService">
       <ref bean="org.hisp.dhis.validation.ValidationRuleService"/>
@@ -257,7 +257,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       scope="prototype">
     
     <property name="statementManager">
-      <ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+      <ref bean="statementManager"/>
     </property>    
     <property name="validationRuleService">
       <ref bean="org.hisp.dhis.validation.ValidationRuleService"/>

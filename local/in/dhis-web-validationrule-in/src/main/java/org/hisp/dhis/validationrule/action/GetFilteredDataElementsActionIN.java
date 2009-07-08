@@ -159,11 +159,11 @@ public class GetFilteredDataElementsActionIN
         // String filter
         // ---------------------------------------------------------------------
 
-        Iterator iterator = dataElements.iterator();
+        Iterator<DataElement> iterator = dataElements.iterator();
 
         while ( iterator.hasNext() )
         {
-            DataElement element = (DataElement) iterator.next();
+            DataElement element = iterator.next();
 
             String name = element.getName();
 

@@ -141,7 +141,6 @@ public class RunValidationAction
     // Execute
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     public String execute()
     {
         Collection<? extends Source> sources = selectionTreeManager.getSelectedOrganisationUnits();
