@@ -15,22 +15,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.hisp.dhis.dashboard.util.DBConnection;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.dashboard.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetStore;
-import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 
@@ -42,11 +37,12 @@ public class GenerateDataStatusResultAction
     // ---------------------------------------------------------------
     // Dependencies
     // ---------------------------------------------------------------
-    private HibernateSessionManager sessionManager;
-
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    
+    private SessionFactory sessionFactory;
+    
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -56,35 +52,18 @@ public class GenerateDataStatusResultAction
         this.organisationUnitService = organisationUnitService;
     }
 
-    public OrganisationUnitService getOrganisationUnitService()
-    {
-        return organisationUnitService;
-    }
-    
-    private OrganisationUnitGroupService organisationUnitGroupService;
+    private PeriodService periodService;
 
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.organisationUnitGroupService = organisationUnitGroupService;
+        this.periodService = periodService;
     }
 
-    private PeriodStore periodStore;
+    private DataSetService dataSetService;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.periodStore = periodStore;
-    }
-
-    private DataSetStore dataSetStore;
-
-    public void setDataSetStore( DataSetStore dataSetStore )
-    {
-        this.dataSetStore = dataSetStore;
-    }
-
-    public DataSetStore getDataSetStore()
-    {
-        return dataSetStore;
+        this.dataSetService = dataSetService;
     }
 
     private DashBoardService dashBoardService;
@@ -92,20 +71,6 @@ public class GenerateDataStatusResultAction
     public void setDashBoardService( DashBoardService dashBoardService )
     {
         this.dashBoardService = dashBoardService;
-    }
-
-    private DBConnection dbConnection;
-    
-    public void setDbConnection( DBConnection dbConnection )
-    {
-        this.dbConnection = dbConnection;
-    }
-    
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
     }
 
     // ---------------------------------------------------------------
@@ -297,8 +262,8 @@ public class GenerateDataStatusResultAction
         throws Exception
     {
         //con = (new DBConnection()).openConnection();
-        //con = dbConnection.openConnection();
-        con = sessionManager.getCurrentSession().connection();
+        //con = dbConnection.openConnection();        
+        con = sessionFactory.getCurrentSession().connection();
         con.setAutoCommit(false);
         
         //CallableStatement callStat = null;
@@ -332,7 +297,7 @@ public class GenerateDataStatusResultAction
         deInfo = "-1";
         for(String ds : selectedDataSets)
         {
-            DataSet dSet = dataSetStore.getDataSet( Integer.parseInt( ds ) );
+            DataSet dSet = dataSetService.getDataSet( Integer.parseInt( ds ) );
             selDataSet = dSet;
             for(DataElement de : dSet.getDataElements())
                 deInfo += "," + de.getId();
@@ -361,7 +326,7 @@ public class GenerateDataStatusResultAction
                 Iterator<String> orgUnitIterator = orgUnitListCB.iterator();                
                 while ( orgUnitIterator.hasNext() )
                 {
-                    OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer.parseInt( (String) orgUnitIterator.next() ) );
+                    OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitIterator.next() ) );
                     orgUnitList.add( o );
                     List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
                     Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
@@ -423,12 +388,12 @@ public class GenerateDataStatusResultAction
         System.out.println("After :"+orgUnitList.size());
         
         // Period Related Info
-        Period startPeriod = periodStore.getPeriod( sDateLB );
-        Period endPeriod = periodStore.getPeriod( eDateLB );
+        Period startPeriod = periodService.getPeriod( sDateLB );
+        Period endPeriod = periodService.getPeriod( eDateLB );
                         
         PeriodType dataSetPeriodType = selDataSet.getPeriodType();
         //selectedPeriodList = new ArrayList<Period>(periodStore.getIntersectingPeriods( startPeriod.getStartDate(), endPeriod.getEndDate() ));
-        periodList = new ArrayList<Period>( periodStore.getIntersectingPeriodsByPeriodType( dataSetPeriodType, startPeriod.getStartDate(), endPeriod.getEndDate() ));
+        periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dataSetPeriodType, startPeriod.getStartDate(), endPeriod.getEndDate() ));
         
         periodInfo = "-1";
         for(Period p : periodList)            
@@ -457,13 +422,13 @@ public class GenerateDataStatusResultAction
             Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
             OrganisationUnit o;
             Set<Source> dso = new HashSet<Source>();
-            Iterator periodIterator;
+            Iterator<Period> periodIterator;
             dso = selDataSet.getSources();
             
             while ( orgUnitListIterator.hasNext() )
             {
                 
-                o = (OrganisationUnit) orgUnitListIterator.next();
+                o = orgUnitListIterator.next();
                 orgUnitInfo = ""+o.getId();
                 
                 if(maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( o ))
@@ -481,7 +446,7 @@ public class GenerateDataStatusResultAction
                 List<Integer> dsResults = new ArrayList<Integer>();
                 while ( periodIterator.hasNext() )
                 {                    
-                    p = (Period) periodIterator.next();
+                    p = periodIterator.next();
                     periodInfo = ""+p.getId();
                                                                                
                     if ( dso == null )
@@ -717,11 +682,11 @@ public class GenerateDataStatusResultAction
 
         Collection<OrganisationUnit> children = orgUnit.getChildren();
 
-        Iterator childIterator = children.iterator();
+        Iterator<OrganisationUnit> childIterator = children.iterator();
         OrganisationUnit child;
         while ( childIterator.hasNext() )
         {
-            child = (OrganisationUnit) childIterator.next();
+            child = childIterator.next();
             orgUnitTree.addAll( getChildOrgUnitTree( child ) );
         }
         return orgUnitTree;
