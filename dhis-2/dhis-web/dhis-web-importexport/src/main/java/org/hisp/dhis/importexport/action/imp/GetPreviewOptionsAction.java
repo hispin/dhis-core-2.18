@@ -386,7 +386,7 @@ public class GetPreviewOptionsAction
         newValidationRules = importObjectService.getImportObjects( ImportObjectStatus.NEW, ValidationRule.class ).size();
         newReportTables = importObjectService.getImportObjects( ImportObjectStatus.NEW, ReportTable.class ).size();
         newOlapUrls = importObjectService.getImportObjects( ImportObjectStatus.NEW, OlapURL.class ).size();
-        newDataValues = importDataValueService.getImportDataValues( ImportObjectStatus.NEW ).size();
+        newDataValues = importDataValueService.getNumberOfImportDataValues( ImportObjectStatus.NEW );
         
         updateDataElements = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, DataElement.class ).size();
         updateCalculatedDataElements = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, CalculatedDataElement.class ).size();
@@ -404,7 +404,7 @@ public class GetPreviewOptionsAction
         updateValidationRules = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, ValidationRule.class ).size();
         updateReportTables = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, ReportTable.class ).size();
         updateOlapUrls = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, OlapURL.class ).size();
-        updateDataValues = importDataValueService.getImportDataValues( ImportObjectStatus.UPDATE ).size();
+        updateDataValues = importDataValueService.getNumberOfImportDataValues( ImportObjectStatus.UPDATE );
 
         // -------------------------------------------------------------------------
         // Remember last type and status value

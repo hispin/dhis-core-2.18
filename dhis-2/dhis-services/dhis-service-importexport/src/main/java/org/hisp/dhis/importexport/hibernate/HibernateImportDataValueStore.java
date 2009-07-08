@@ -37,6 +37,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportDataValueStore;
 import org.hisp.dhis.importexport.ImportObjectStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
@@ -54,6 +55,13 @@ public class HibernateImportDataValueStore
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
+    }
+    
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     // ----------------------------------------------------------------------
@@ -112,5 +120,12 @@ public class HibernateImportDataValueStore
         query.setInteger( "sourceId", sourceId );
         
         query.executeUpdate();
+    }
+    
+    public int getNumberOfImportDataValues( ImportObjectStatus status )
+    {
+        String sql = "SELECT COUNT(*) FROM importdatavalue WHERE status = '" + status.name() + "'";
+        
+        return jdbcTemplate.queryForInt( sql );
     }
 }

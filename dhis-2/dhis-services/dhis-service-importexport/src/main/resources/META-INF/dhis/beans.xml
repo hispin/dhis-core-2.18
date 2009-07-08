@@ -62,6 +62,7 @@
   <bean id="org.hisp.dhis.importexport.ImportDataValueStore"
     class="org.hisp.dhis.importexport.hibernate.HibernateImportDataValueStore">
     <property name="sessionFactory" ref="sessionFactory"/>
+    <property name="jdbcTemplate" ref="jdbcTemplate"/>
   </bean>	
 	
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
