@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.hisp.dhis</groupId>
     <artifactId>dhis-web</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.0.2-SNAPSHOT</version>
   </parent>
   
   <artifactId>dhis-web-dataentry-national</artifactId>
@@ -21,7 +21,17 @@
     
     <!-- DHIS -->
 	
-	<dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-commons</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-commons-resources</artifactId>
+      <type>war</type>
+    </dependency>
+    
+	  <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-api</artifactId>
     </dependency>
@@ -41,16 +51,6 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-organisationunit</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-commons</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-commons-resources</artifactId>
-      <type>war</type>
-    </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-core</artifactId>
@@ -64,6 +64,7 @@
     </dependency>
     
     <!-- Other -->
+    
     <dependency>
       <groupId>net.sourceforge.jexcelapi</groupId>
       <artifactId>jxl</artifactId>
