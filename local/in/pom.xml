@@ -9,19 +9,13 @@
   <packaging>pom</packaging>
   <name>Local India Modules</name>
   
-  <!-- api -->
-
   <modules>
-	<!--<module>dhis-in-api</module>
-    <module>dhis-in-services</module>-->
-   
-  <!-- Web Modules -->
-	
-	<!--<module>dhis-web-mobile</module>-->
-	<!--<module>dhis-web-reports-in</module>-->
+    <module>dhis-web-dashboard</module>
     <module>dhis-web-dataentry-linelisting</module>
+    <module>dhis-web-excelimport</module>
+    <module>dhis-web-leprosy</module>
+	  <module>dhis-web-mobile</module>
     <module>dhis-web-reports-national</module>
     <module>dhis-web-validationrule-in</module>
-    <module>dhis-web-dashboard</module>
   </modules>
 </project>
