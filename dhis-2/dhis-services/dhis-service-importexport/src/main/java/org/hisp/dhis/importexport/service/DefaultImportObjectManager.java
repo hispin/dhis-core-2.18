@@ -1013,7 +1013,7 @@ public class DefaultImportObjectManager
     {
         BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataSetSourceAssociationBatchHandler.class );
 
-        importGroupMemberAssociation( batchHandler, GroupMemberType.DATASET,
+        importGroupMemberAssociation( batchHandler, GroupMemberType.DATASET_SOURCE,
             objectMappingGenerator.getDataSetMapping( false ), 
             objectMappingGenerator.getOrganisationUnitMapping( false ) );
         
