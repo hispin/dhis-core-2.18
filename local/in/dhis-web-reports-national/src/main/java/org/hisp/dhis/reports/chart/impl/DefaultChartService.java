@@ -45,8 +45,6 @@ import org.apache.commons.math.stat.regression.SimpleRegression;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.chart.ChartStore;
-import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
@@ -75,40 +73,42 @@ public class DefaultChartService
     implements ChartService
 {
     private static final Font titleFont = new Font( "Tahoma", Font.BOLD, 14 );
+
     private static final Font subTitleFont = new Font( "Tahoma", Font.PLAIN, 12 );
+
     private static final String TREND_PREFIX = "Trend - ";
+
     private static final String TITLE_SEPARATOR = " - ";
+
     private static final String DEFAULT_TITLE_PIVOT_CHART = "Pivot Chart";
-    
-    private static final Color[] colors = {
-        Color.decode( "#d54a4a" ), Color.decode( "#2e4e83" ), Color.decode( "#75e077" ),
-        Color.decode( "#e3e274" ), Color.decode( "#e58c6d" ), Color.decode( "#df6ff3" ),
-        Color.decode( "#88878e" ), Color.decode( "#6ff3e8" ), Color.decode( "#6fc3f3" ),
-        Color.decode( "#aaf36f" ), Color.decode( "#9d6ff3" ), Color.decode( "#474747" ) };        
-    
+
+    private static final Color[] colors = { Color.decode( "#d54a4a" ), Color.decode( "#2e4e83" ),
+        Color.decode( "#75e077" ), Color.decode( "#e3e274" ), Color.decode( "#e58c6d" ), Color.decode( "#df6ff3" ),
+        Color.decode( "#88878e" ), Color.decode( "#6ff3e8" ), Color.decode( "#6fc3f3" ), Color.decode( "#aaf36f" ),
+        Color.decode( "#9d6ff3" ), Color.decode( "#474747" ) };
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    /*private DataMartStore dataMartStore;
+    /*
+     * private DataMartStore dataMartStore;
+     * 
+     * public void setDataMartStore( DataMartStore dataMartStore ) {
+     * this.dataMartStore = dataMartStore; }
+     */
+    private ChartService chartService;
 
-    public void setDataMartStore( DataMartStore dataMartStore )
+    public void setChartService( ChartService chartService )
     {
-        this.dataMartStore = dataMartStore;
-    }
-*/
-    private ChartStore chartStore;
-
-    public void setChartStore( ChartStore chartStore )
-    {
-        this.chartStore = chartStore;
+        this.chartService = chartService;
     }
 
     private AggregationService aggregationService;
 
-    public void setAggregationService(AggregationService aggregationService)
+    public void setAggregationService( AggregationService aggregationService )
     {
-		this.aggregationService = aggregationService;
+        this.aggregationService = aggregationService;
     }
 
     // -------------------------------------------------------------------------
@@ -122,17 +122,17 @@ public class DefaultChartService
     public JFreeChart getJFreeChart( int id, I18nFormat format )
     {
         Chart chart = getChart( id );
-        
+
         chart.setFormat( format );
-        
+
         return getJFreeChart( chart, true );
     }
 
-    public JFreeChart getJFreeChart( List<Indicator> indicators, List<Period> periods, 
+    public JFreeChart getJFreeChart( List<Indicator> indicators, List<Period> periods,
         List<OrganisationUnit> organisationUnits, String dimension, boolean regression, I18nFormat format )
     {
         Chart chart = new Chart();
-        
+
         chart.setTitle( getTitle( indicators, periods, organisationUnits, format ) );
         chart.setType( TYPE_BAR );
         chart.setSize( SIZE_NORMAL );
@@ -145,22 +145,22 @@ public class DefaultChartService
         chart.setPeriods( periods );
         chart.setOrganisationUnits( organisationUnits );
         chart.setFormat( format );
-        
+
         return getJFreeChart( chart, false );
     }
-    
-    public JFreeChart getJFreeChart( String title, PlotOrientation orientation, 
-        CategoryLabelPositions labelPositions, Map<String, Double> categoryValues )
+
+    public JFreeChart getJFreeChart( String title, PlotOrientation orientation, CategoryLabelPositions labelPositions,
+        Map<String, Double> categoryValues )
     {
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
-        
+
         for ( Entry<String, Double> entry : categoryValues.entrySet() )
         {
             dataSet.addValue( entry.getValue(), title, entry.getKey() );
         }
-        
+
         CategoryPlot plot = new CategoryPlot( dataSet, new CategoryAxis(), new NumberAxis(), getBarRenderer() );
-        
+
         plot.setDatasetRenderingOrder( DatasetRenderingOrder.FORWARD );
         plot.setOrientation( orientation );
 
@@ -168,13 +168,13 @@ public class DefaultChartService
         xAxis.setCategoryLabelPositions( labelPositions );
 
         JFreeChart jFreeChart = new JFreeChart( title, titleFont, plot, false );
-        
+
         jFreeChart.setBackgroundPaint( Color.WHITE );
         jFreeChart.setAntiAlias( true );
 
         return jFreeChart;
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -193,10 +193,10 @@ public class DefaultChartService
             renderer.setSeriesPaint( i, colors[i] );
             renderer.setShadowVisible( false );
         }
-        
+
         return renderer;
     }
-    
+
     /**
      * Returns a line and shape renderer.
      */
@@ -208,10 +208,10 @@ public class DefaultChartService
         {
             renderer.setSeriesPaint( i, colors[i] );
         }
-        
+
         return renderer;
     }
-    
+
     /**
      * Returns a JFreeChart of type defined in the chart argument.
      */
@@ -219,13 +219,13 @@ public class DefaultChartService
     {
         final BarRenderer barRenderer = getBarRenderer();
         final LineAndShapeRenderer lineRenderer = getLineRenderer();
-        
+
         // ---------------------------------------------------------------------
         // Plot
         // ---------------------------------------------------------------------
 
         CategoryPlot plot = null;
-        
+
         CategoryDataset[] dataSets = getCategoryDataSet( chart );
 
         if ( chart.isType( TYPE_LINE ) )
@@ -233,36 +233,38 @@ public class DefaultChartService
             plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), lineRenderer );
         }
         else
-        {            
-            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), barRenderer );    
+        {
+            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), barRenderer );
         }
-        
+
         if ( chart.isRegression() )
         {
             plot.setDataset( 1, dataSets[1] );
             plot.setRenderer( 1, lineRenderer );
         }
-        
+
         JFreeChart jFreeChart = new JFreeChart( chart.getTitle(), titleFont, plot, !chart.isHideLegend() );
-        
+
         if ( subTitle )
         {
             jFreeChart.addSubtitle( getSubTitle( chart, chart.getFormat() ) );
         }
-        
+
         // ---------------------------------------------------------------------
         // Plot orientation
         // ---------------------------------------------------------------------
 
-        plot.setOrientation( chart.isHorizontalPlotOrientation() ? PlotOrientation.HORIZONTAL : PlotOrientation.VERTICAL );
+        plot.setOrientation( chart.isHorizontalPlotOrientation() ? PlotOrientation.HORIZONTAL
+            : PlotOrientation.VERTICAL );
         plot.setDatasetRenderingOrder( DatasetRenderingOrder.FORWARD );
-        
+
         // ---------------------------------------------------------------------
         // Category label positions
         // ---------------------------------------------------------------------
 
         CategoryAxis xAxis = plot.getDomainAxis();
-        xAxis.setCategoryLabelPositions( chart.isVerticalLabels() ? CategoryLabelPositions.UP_45 : CategoryLabelPositions.STANDARD );
+        xAxis.setCategoryLabelPositions( chart.isVerticalLabels() ? CategoryLabelPositions.UP_45
+            : CategoryLabelPositions.STANDARD );
 
         // ---------------------------------------------------------------------
         // Color & antialias
@@ -273,7 +275,7 @@ public class DefaultChartService
 
         return jFreeChart;
     }
-    
+
     /**
      * Returns a DefaultCategoryDataSet based on aggregated data for the chart.
      */
@@ -282,21 +284,21 @@ public class DefaultChartService
         Collections.sort( chart.getIndicators(), new IndicatorNameComparator() );
         Collections.sort( chart.getPeriods(), new AscendingPeriodComparator() );
         Collections.sort( chart.getOrganisationUnits(), new OrganisationUnitNameComparator() );
-        
+
         final DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         final DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();
-        
+
         if ( chart != null )
         {
             Period selectedPeriod = chart.getPeriods().get( 0 );
             OrganisationUnit selectedOrganisationUnit = chart.getOrganisationUnits().get( 0 );
-            
+
             for ( Indicator indicator : chart.getIndicators() )
             {
                 final SimpleRegression regression = new SimpleRegression();
-                
+
                 int columnIndex = 0;
-                
+
                 if ( chart.isDimension( DIMENSION_PERIOD ) )
                 {
                     // ---------------------------------------------------------
@@ -305,33 +307,40 @@ public class DefaultChartService
 
                     for ( Period period : chart.getPeriods() )
                     {
-                        final double value = aggregationService.getAggregatedIndicatorValue(indicator, period.getStartDate(), period.getEndDate(), selectedOrganisationUnit);
+                        final double value = aggregationService.getAggregatedIndicatorValue( indicator, period
+                            .getStartDate(), period.getEndDate(), selectedOrganisationUnit );
 
-                        regularDataSet.addValue( value != -1 ? value : 0, indicator.getShortName(), chart.getFormat().formatPeriod( period ) );
-                        
+                        regularDataSet.addValue( value != -1 ? value : 0, indicator.getShortName(), chart.getFormat()
+                            .formatPeriod( period ) );
+
                         columnIndex++;
-                        
-                        if ( value != -1.0 && value != 0.0 ) // Omit missing values and 0 from regression
+
+                        if ( value != -1.0 && value != 0.0 ) // Omit missing
+                                                             // values and 0
+                                                             // from regression
                         {
                             regression.addData( columnIndex, value );
                         }
                     }
-                    
+
                     // ---------------------------------------------------------
                     // Regression dataset
                     // ---------------------------------------------------------
 
                     columnIndex = 0;
-                    
+
                     if ( chart.isRegression() )
                     {
                         for ( Period period : chart.getPeriods() )
                         {
                             final double value = regression.predict( columnIndex++ );
-                            
-                            if ( !Double.isNaN( value ) ) // Enough values must exist for regression
+
+                            if ( !Double.isNaN( value ) ) // Enough values must
+                                                          // exist for
+                                                          // regression
                             {
-                                regressionDataSet.addValue( value, TREND_PREFIX + indicator.getShortName(), chart.getFormat().formatPeriod( period ) );
+                                regressionDataSet.addValue( value, TREND_PREFIX + indicator.getShortName(), chart
+                                    .getFormat().formatPeriod( period ) );
                             }
                         }
                     }
@@ -344,65 +353,67 @@ public class DefaultChartService
 
                     for ( OrganisationUnit unit : chart.getOrganisationUnits() )
                     {
-                        final double value = aggregationService.getAggregatedIndicatorValue( indicator, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), unit );
-                        
-                        regularDataSet.addValue( value != -1 ? value : 0, indicator.getShortName(), unit.getShortName() );
-                        
+                        final double value = aggregationService.getAggregatedIndicatorValue( indicator, selectedPeriod
+                            .getStartDate(), selectedPeriod.getEndDate(), unit );
+
+                        regularDataSet
+                            .addValue( value != -1 ? value : 0, indicator.getShortName(), unit.getShortName() );
+
                         columnIndex++;
                     }
-                    
+
                     // Regression not relevant for organisation unit category
                 }
             }
         }
-        
+
         return new CategoryDataset[] { regularDataSet, regressionDataSet };
     }
 
     /**
      * Returns a title based on the chart meta data.
      */
-    private String getTitle( List<Indicator> indicators, List<Period> periods, 
+    private String getTitle( List<Indicator> indicators, List<Period> periods,
         List<OrganisationUnit> organisationUnits, I18nFormat format )
     {
         String title = "";
-        
+
         if ( indicators != null && indicators.size() == 1 )
         {
             title += indicators.get( 0 ).getShortName() + TITLE_SEPARATOR;
         }
-        
+
         if ( periods != null && periods.size() == 1 )
         {
             title += format.formatPeriod( periods.get( 0 ) ) + TITLE_SEPARATOR;
         }
-        
+
         if ( organisationUnits != null && organisationUnits.size() == 1 )
         {
             title += organisationUnits.get( 0 ).getShortName() + TITLE_SEPARATOR;
         }
-        
+
         if ( title.length() == 0 )
         {
             title = DEFAULT_TITLE_PIVOT_CHART;
         }
         else
         {
-            title = title.substring( 0, ( title.length() - TITLE_SEPARATOR.length() ) );
+            title = title.substring( 0, (title.length() - TITLE_SEPARATOR.length()) );
         }
-        
+
         return title;
     }
-    
+
     /**
      * Returns a subtitle based on the chart dimension.
      */
     private TextTitle getSubTitle( Chart chart, I18nFormat format )
     {
         TextTitle subTitle = new TextTitle();
-        
+
         subTitle.setFont( subTitleFont );
-        
+
         if ( chart.isDimension( DIMENSION_PERIOD ) && chart.getOrganisationUnits().size() > 0 )
         {
             subTitle.setText( chart.getOrganisationUnits().get( 0 ).getName() );
@@ -411,41 +422,41 @@ public class DefaultChartService
         {
             subTitle.setText( format.formatPeriod( chart.getPeriods().get( 0 ) ) );
         }
-        
+
         return subTitle;
     }
-    
+
     // -------------------------------------------------------------------------
     // CRUD operations
     // -------------------------------------------------------------------------
 
     public int saveChart( Chart chart )
     {
-        return chartStore.saveChart( chart );
+        return chartService.saveChart( chart );
     }
-    
+
     public void saveOrUpdate( Chart chart )
     {
-        chartStore.saveOrUpdate( chart );
+        chartService.saveOrUpdate( chart );
     }
-    
+
     public Chart getChart( int id )
     {
-        return chartStore.getChart( id );
+        return chartService.getChart( id );
     }
-    
+
     public void deleteChart( Chart chart )
     {
-        chartStore.deleteChart( chart );
+        chartService.deleteChart( chart );
     }
-    
+
     public Collection<Chart> getAllCharts()
     {
-        return chartStore.getAllCharts();
+        return chartService.getAllCharts();
     }
-    
+
     public Chart getChartByTitle( String name )
     {
-        return chartStore.getChartByTitle( name );
+        return chartService.getChartByTitle( name );
     }
 }

@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import jxl.CellType;
 import jxl.Workbook;
 import jxl.format.Alignment;
@@ -32,8 +33,9 @@ import jxl.write.WritableCell;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
+
+import org.amplecode.quick.StatementManager;
 import org.apache.velocity.tools.generic.MathTool;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -54,8 +56,8 @@ import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameCompar
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.reports.util.ReportService;
 import org.hisp.dhis.reports.util.OrganisationUnitCommentComparator;
+import org.hisp.dhis.reports.util.ReportService;
 import org.hisp.dhis.system.util.MathUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -63,6 +65,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
 import com.opensymphony.xwork.ActionSupport;
 
 /**
@@ -71,15 +74,13 @@ import com.opensymphony.xwork.ActionSupport;
  */
 public class GenerateTwentyPointReportsResultAction extends ActionSupport
 {
-    //private static final long serialVersionUID = 1L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-	private static final String NULL_REPLACEMENT = "0";
+    private static final String NULL_REPLACEMENT = "0";
 	
-	private StatementManager statementManager;
+    private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
     {

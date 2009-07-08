@@ -48,7 +48,8 @@ import com.opensymphony.xwork.ActionSupport;
  * @author Brajesh Murari
  * @version $Id$
  */
-public class GenerateMalaryaReportFormAction extends ActionSupport
+public class GenerateMalaryaReportFormAction
+    extends ActionSupport
 {
 
     // -------------------------------------------------------------------------
@@ -72,7 +73,7 @@ public class GenerateMalaryaReportFormAction extends ActionSupport
     {
         return reportList;
     }
-    
+
     private String raFolderName;
 
     // -------------------------------------------------------------------------
@@ -115,7 +116,7 @@ public class GenerateMalaryaReportFormAction extends ActionSupport
         String reportType = "";
         String reportLevel = "";
         String reportModel = "";
-        String reportFileName = "";        
+        String reportFileName = "";
 
         try
         {
@@ -162,9 +163,10 @@ public class GenerateMalaryaReportFormAction extends ActionSupport
                     Element reportLevelElement = (Element) reportLevelList.item( 0 );
                     NodeList textreportLevelList = reportLevelElement.getChildNodes();
                     reportLevel = ((Node) textreportLevelList.item( 0 )).getNodeValue().trim();
- 
-                    Report reportObj = new Report(reportId, reportName, reportType, reportModel, reportFileName, reportLevel);
-                    reportList.add( reportObj );                   
+
+                    Report reportObj = new Report( reportId, reportName, reportType, reportModel, reportFileName,
+                        reportLevel );
+                    reportList.add( reportObj );
                 }
             }// end of for loop with s var
         }// try block end
@@ -186,4 +188,3 @@ public class GenerateMalaryaReportFormAction extends ActionSupport
     }// getReportList end
 
 }
-

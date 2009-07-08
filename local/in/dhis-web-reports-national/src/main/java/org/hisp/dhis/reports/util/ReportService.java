@@ -24,33 +24,31 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.MathUtils;
 
-public class ReportService 
+public class ReportService
 {
+    public static final String KEY_RAFOLDER = "reportfolder";
 
-	public static final String KEY_RAFOLDER = "reportfolder";
-	
-	public static final String NULL_REPLACEMENT = "0";
-	
+    public static final String NULL_REPLACEMENT = "0";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private PeriodStore periodStore;
-    
+
     public void setPeriodStore( PeriodStore periodStore )
     {
         this.periodStore = periodStore;
     }
-    
+
     private DBConnection dbConnection;
-    
+
     public void setDbConnection( DBConnection dbConnection )
     {
         this.dbConnection = dbConnection;
@@ -102,30 +100,29 @@ public class ReportService
     // -------------------------------------------------------------------------
     // Services
     // -------------------------------------------------------------------------
-    
-    public List<Period> getMonthlyPeriods(Date start, Date end)
+
+    public List<Period> getMonthlyPeriods( Date start, Date end )
     {
-        List<Period> periodList = new ArrayList<Period>(periodStore.getPeriodsBetweenDates( start, end ));
-        PeriodType monthlyPeriodType = getPeriodTypeObject("monthly");
-        
+        List<Period> periodList = new ArrayList<Period>( periodStore.getPeriodsBetweenDates( start, end ) );
+        PeriodType monthlyPeriodType = getPeriodTypeObject( "monthly" );
+
         List<Period> monthlyPeriodList = new ArrayList<Period>();
         Iterator it = periodList.iterator();
-        while(it.hasNext())
+        while ( it.hasNext() )
         {
             Period period = (Period) it.next();
-            if(period.getPeriodType().getId() == monthlyPeriodType.getId())
+            if ( period.getPeriodType().getId() == monthlyPeriodType.getId() )
             {
                 monthlyPeriodList.add( period );
             }
         }
         return monthlyPeriodList;
     }
-    
-    
+
     /*
-     * Returns the Period Object of the given date
-     * For ex:- if the month is 3, year is 2006 and periodType Object of type Monthly then
-     * it returns the corresponding Period Object
+     * Returns the Period Object of the given date For ex:- if the month is 3,
+     * year is 2006 and periodType Object of type Monthly then it returns the
+     * corresponding Period Object
      */
     public Period getPeriodByMonth( int month, int year, PeriodType periodType )
     {
@@ -150,23 +147,21 @@ public class ReportService
         else if ( periodType.getName().equals( "Yearly" ) )
         {
             cal.set( year, Calendar.DECEMBER, 31 );
-        }        
+        }
         Date lastDay = new Date( cal.getTimeInMillis() );
-        System.out.println( lastDay.toString() );        
+        System.out.println( lastDay.toString() );
         Period newPeriod = new Period();
-        newPeriod = periodStore.getPeriod( firstDay, lastDay, periodType );      
+        newPeriod = periodStore.getPeriod( firstDay, lastDay, periodType );
         return newPeriod;
     }
-    
-    
+
     /*
-     * Returns the PeriodType Object based on the Period Type Name
-     * For ex:- if we pass name as Monthly then it returns the PeriodType Object 
-     * for Monthly PeriodType
-     * If there is no such PeriodType returns null
+     * Returns the PeriodType Object based on the Period Type Name For ex:- if
+     * we pass name as Monthly then it returns the PeriodType Object for Monthly
+     * PeriodType If there is no such PeriodType returns null
      */
-    public PeriodType getPeriodTypeObject(String periodTypeName)
-    {        
+    public PeriodType getPeriodTypeObject( String periodTypeName )
+    {
         Collection periodTypes = periodStore.getAllPeriodTypes();
         PeriodType periodType = null;
         Iterator iter = periodTypes.iterator();
@@ -183,132 +178,141 @@ public class ReportService
         {
             System.out.println( "No Such PeriodType" );
             return null;
-        }        
+        }
         return periodType;
     }
 
     /*
      * Returns the child tree of the selected Orgunit
      */
-    public List<OrganisationUnit> getAllChildren(OrganisationUnit selecteOU) {
+    public List<OrganisationUnit> getAllChildren( OrganisationUnit selecteOU )
+    {
         List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>();
         Iterator it = selecteOU.getChildren().iterator();
-        while (it.hasNext()) {
-                OrganisationUnit orgU = (OrganisationUnit) it.next();
-                ouList.add(orgU);
+        while ( it.hasNext() )
+        {
+            OrganisationUnit orgU = (OrganisationUnit) it.next();
+            ouList.add( orgU );
         }
         return ouList;
     }
-    
-    public List<Integer> getLinelistingRecordNos(OrganisationUnit organisationUnit, Period period, String lltype )
+
+    public List<Integer> getLinelistingRecordNos( OrganisationUnit organisationUnit, Period period, String lltype )
     {
         List<Integer> recordNosList = new ArrayList<Integer>();
-        
+
         Connection con = dbConnection.openConnection();
 
         Statement st = null;
-        
+
         ResultSet rs1 = null;
 
         String query = "";
-        
-        int dataElementid = 1020;
-        
-        /*
-        if( lltype.equalsIgnoreCase( "lllivebirth" ) )
-            dataElementid = LLDataSets.LLB_CHILD_NAME;
-        else if( lltype.equalsIgnoreCase( "lllivebirth" ) )
-            dataElementid = LLDataSets.LLD_CHILD_NAME;
-        else if( lltype.equalsIgnoreCase( "lllivebirth" ) )
-            dataElementid = LLDataSets.LLMD_MOTHER_NAME;
-        */
 
-        if( lltype.equalsIgnoreCase( "lllivebirth-l4" ) || lltype.equalsIgnoreCase( "lllivebirth-l5" ) || lltype.equalsIgnoreCase( "lllivebirth-l6" ))
+        int dataElementid = 1020;
+
+        /*
+         * if( lltype.equalsIgnoreCase( "lllivebirth" ) ) dataElementid =
+         * LLDataSets.LLB_CHILD_NAME; else if( lltype.equalsIgnoreCase(
+         * "lllivebirth" ) ) dataElementid = LLDataSets.LLD_CHILD_NAME; else if(
+         * lltype.equalsIgnoreCase( "lllivebirth" ) ) dataElementid =
+         * LLDataSets.LLMD_MOTHER_NAME;
+         */
+
+        if ( lltype.equalsIgnoreCase( "lllivebirth-l4" ) || lltype.equalsIgnoreCase( "lllivebirth-l5" )
+            || lltype.equalsIgnoreCase( "lllivebirth-l6" ) )
             dataElementid = 1020;
-        else if( lltype.equalsIgnoreCase( "lldeath-l4" ) || lltype.equalsIgnoreCase( "lldeath-l5" ) || lltype.equalsIgnoreCase( "lldeath-l6" ) )
+        else if ( lltype.equalsIgnoreCase( "lldeath-l4" ) || lltype.equalsIgnoreCase( "lldeath-l5" )
+            || lltype.equalsIgnoreCase( "lldeath-l6" ) )
             dataElementid = 1027;
-        else if( lltype.equalsIgnoreCase( "llmaternaldeath-l4" ) || lltype.equalsIgnoreCase( "llmaternaldeath-l5" ) || lltype.equalsIgnoreCase( "llmaternaldeath-l6" ))
+        else if ( lltype.equalsIgnoreCase( "llmaternaldeath-l4" ) || lltype.equalsIgnoreCase( "llmaternaldeath-l5" )
+            || lltype.equalsIgnoreCase( "llmaternaldeath-l6" ) )
             dataElementid = 1032;
 
         try
         {
-            st = con.createStatement();            
-            
-            query = "SELECT recordno FROM lldatavalue WHERE dataelementid = "+ dataElementid +" AND periodid = "+ period.getId() +" AND sourceid = "+organisationUnit.getId();
+            st = con.createStatement();
+
+            query = "SELECT recordno FROM lldatavalue WHERE dataelementid = " + dataElementid + " AND periodid = "
+                + period.getId() + " AND sourceid = " + organisationUnit.getId();
             rs1 = st.executeQuery( query );
-            
-            while(rs1.next())
+
+            while ( rs1.next() )
             {
                 recordNosList.add( rs1.getInt( 1 ) );
             }
-            
+
             Collections.sort( recordNosList );
         }
         catch ( Exception e )
         {
-            System.out.println("SQL Exception : "+e.getMessage());     
+            System.out.println( "SQL Exception : " + e.getMessage() );
             return null;
         }
         finally
         {
             try
             {
-                if(st != null) st.close();
-                if(rs1 != null) rs1.close();
-                
-                if(con != null) con.close();
+                if ( st != null )
+                    st.close();
+                if ( rs1 != null )
+                    rs1.close();
+
+                if ( con != null )
+                    con.close();
             }
-            catch( Exception e )
+            catch ( Exception e )
             {
-                System.out.println("SQL Exception : "+e.getMessage());
+                System.out.println( "SQL Exception : " + e.getMessage() );
                 return null;
             }
         }// finally block end
 
         return recordNosList;
     }
-    
 
     public String getRAFolderName()
     {
         Connection con = dbConnection.openConnection();
-        
+
         Statement st = null;
-        
+
         ResultSet rs1 = null;
-                
+
         String raFolderName = "ra_national";
-        
+
         String query = "";
-        
+
         try
         {
             st = con.createStatement();
-                        
+
             query = "SELECT mvalue FROM maintenancein WHERE mkey LIKE '" + KEY_RAFOLDER + "'";
             rs1 = st.executeQuery( query );
-            
-            if(rs1.next())
+
+            if ( rs1.next() )
             {
-            	raFolderName = rs1.getString( 1 );
-            }   
-                        
+                raFolderName = rs1.getString( 1 );
+            }
+
         }
         catch ( Exception e )
         {
-            System.out.println("SQL Exception : "+e.getMessage());     
+            System.out.println( "SQL Exception : " + e.getMessage() );
             return null;
         }
         finally
         {
             try
             {
-                if(st != null) st.close();
-                if(con != null) con.close();
+                if ( st != null )
+                    st.close();
+                if ( con != null )
+                    con.close();
             }
-            catch( Exception e )
+            catch ( Exception e )
             {
-                System.out.println("SQL Exception : "+e.getMessage());
+                System.out.println( "SQL Exception : " + e.getMessage() );
                 return null;
             }
         }// finally block end
@@ -317,9 +321,6 @@ public class ReportService
 
     }
 
-    
-   
-    
     /*
      * Returns the PeriodType Object for selected DataElement, If no PeriodType
      * is found then by default returns Monthly Period type
@@ -343,7 +344,7 @@ public class ReportService
     } // getDataElementPeriodType end
 
     private String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit )
-    {    	
+    {
         try
         {
             // System.out.println( "expression : " + formula + " ***** " +
@@ -476,8 +477,9 @@ public class ReportService
 
                     // These line are to display non financial data that do not
                     // require decimals
-                    //if ( !(reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" )) )
-                        resultValue = "" + (int) d;
+                    // if ( !(reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL"
+                    // )) )
+                    resultValue = "" + (int) d;
 
                     // if ( resultValue.equalsIgnoreCase( "0" ) )
                     // {
@@ -516,10 +518,9 @@ public class ReportService
 
             String resultValue = "";
             boolean valueDoesNotExist = true;
-            
+
             while ( matcher.find() )
             {
-                
 
                 String replaceString = matcher.group();
 
@@ -657,8 +658,9 @@ public class ReportService
 
                     // These line are to display non financial data that do not
                     // require decimals
-                    //if ( !(reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" )) )
-                        resultValue = "" + (int) d;
+                    // if ( !(reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL"
+                    // )) )
+                    resultValue = "" + (int) d;
 
                     // if ( resultValue.equalsIgnoreCase( "0" ) )
                     // {
@@ -670,10 +672,10 @@ public class ReportService
             {
                 resultValue = buffer.toString();
             }
-            
-            if(valueDoesNotExist)
+
+            if ( valueDoesNotExist )
                 resultValue = " ";
-            
+
             if ( resultValue.equalsIgnoreCase( "" ) )
                 resultValue = " ";
 
@@ -824,7 +826,8 @@ public class ReportService
         }
     }
 
-    private String getResultIndicatorValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit )
+    private String getResultIndicatorValue( String formula, Date startDate, Date endDate,
+        OrganisationUnit organisationUnit )
     {
         try
         {
@@ -910,7 +913,8 @@ public class ReportService
         }
     }
 
-    private String getIndividualResultIndicatorValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit )
+    private String getIndividualResultIndicatorValue( String formula, Date startDate, Date endDate,
+        OrganisationUnit organisationUnit )
     {
         try
         {
@@ -1029,6 +1033,5 @@ public class ReportService
             throw new RuntimeException( "Illegal DataElement id", ex );
         }
     }
-    
-    
+
 }
