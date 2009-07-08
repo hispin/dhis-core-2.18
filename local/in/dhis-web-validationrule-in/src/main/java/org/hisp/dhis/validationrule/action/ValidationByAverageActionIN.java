@@ -1,7 +1,6 @@
 package org.hisp.dhis.validationrule.action;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Hashtable;
@@ -13,6 +12,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -20,7 +20,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -299,7 +298,7 @@ extends ActionSupport
             {
                 System.out.println("validationRuleGroupId == "+validationRuleGroupId);
                 vrg = validationRuleService.getValidationRuleGroup( validationRuleGroupId );
-                validationRuleList.addAll( (Collection<? extends ValidationRule>) vrg.getMembers() );
+                validationRuleList.addAll( vrg.getMembers() );
             }       
         }           
         else
@@ -318,7 +317,7 @@ extends ActionSupport
         Iterator<Period> it1 = periodList.iterator();
         while(it1.hasNext())
         {
-            Period p1 = (Period) it1.next();
+            Period p1 = it1.next();
             if(p1.getPeriodType().getName().equalsIgnoreCase( "monthly" ))
             {
                 selPeriodList.add( p1 );
@@ -616,7 +615,7 @@ extends ActionSupport
         OrganisationUnit child;
         while ( childIterator.hasNext() )
         {
-            child = (OrganisationUnit) childIterator.next();
+            child = childIterator.next();
             orgUnitTree.addAll( getChildOrgUnitTree( child ) );
         }
         return orgUnitTree;

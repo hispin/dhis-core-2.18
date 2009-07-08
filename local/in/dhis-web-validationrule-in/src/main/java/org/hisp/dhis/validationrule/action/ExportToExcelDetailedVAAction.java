@@ -75,6 +75,7 @@ public class ExportToExcelDetailedVAAction extends ActionSupport
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @SuppressWarnings( "unchecked" )
     public String execute()
         throws Exception
     {   
@@ -139,7 +140,7 @@ public class ExportToExcelDetailedVAAction extends ActionSupport
         while(it1.hasNext())
         {
             tempCol1 = 0;
-            OrganisationUnit ou = (OrganisationUnit) it1.next();
+            OrganisationUnit ou = it1.next();
             
             sheet0.addCell( new Label( tempCol1, tempRow1, ou.getShortName(), wCellformat2) );
             sheet0.mergeCells( tempCol1, tempRow1, tempCol1+5, tempRow1 );
@@ -148,7 +149,7 @@ public class ExportToExcelDetailedVAAction extends ActionSupport
             Iterator<Period> it4 = selPeriodList.iterator();
             while(it4.hasNext())
             {
-                Period p = (Period) it4.next();
+                Period p = it4.next();
                 tempStr = p.getStartDate()+ " To " + p.getEndDate();
                 sheet0.addCell( new Label( tempCol1, tempRow1, tempStr, wCellformat2) );
                 sheet0.mergeCells( tempCol1, tempRow1, tempCol1+1, tempRow1 );
@@ -163,7 +164,7 @@ public class ExportToExcelDetailedVAAction extends ActionSupport
             while(it2.hasNext())
             {
                 tempCol1 = 0;
-                ValidationRule vr = (ValidationRule) it2.next();
+                ValidationRule vr = it2.next();
                 List<String> vrResultList = vrResultMap.get( vr );
                 List<String> vrColorList = vrColorMap.get( vr );
 
@@ -177,7 +178,7 @@ public class ExportToExcelDetailedVAAction extends ActionSupport
                     Iterator<String> it3 = vrResultList.iterator();                
                     while(it3.hasNext())
                     {
-                        tempStr = (String) it3.next();
+                        tempStr = it3.next();
                         String tempColor = vrColorList.get( count1 );                        
                         if(tempColor.equalsIgnoreCase( "red" ))
                         {
