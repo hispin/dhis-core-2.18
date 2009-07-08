@@ -24,7 +24,7 @@
 <select name="startModule" style="width:30em">
     <option value="NO_START_PAGE">$i18n.getString( "no_start_page" )</option>
 	#foreach ( $module in $modules )
-		<option value="$module.name" #if ( $currentStartModule == $module.name )selected#end>$i18n.getString( "$module.name" )</option>
+		<option value="$module.name" #if ( $module.name == $startModule )selected#end>$i18n.getString( "$module.name" )</option>
 	#end
 </select>
 </p>
