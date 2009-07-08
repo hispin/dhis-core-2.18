@@ -1,0 +1,28 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+ "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+  <!-- use the DHIS web portal default -->
+  <include file="dhis-web-commons.xml"/>
+
+  <package name="dhis-web-mobile" extends="dhis-web-commons" namespace="/dhis-web-mobile">
+
+    <action name="index" class="org.hisp.dhis.sandbox.mobileimport.action.MobileHomePageAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-mobile/welcome.vm</param>
+		<param name="menu">/dhis-web-mobile/menu.vm</param>
+	</action>
+	
+	  
+	<!-- Process Mobile Importing -->
+	<action name="processMobileImport"
+			class="org.hisp.dhis.sandbox.mobileimport.action.MobileImportProcessAction">
+		<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-mobile/mobileImportingResult.vm</param>			
+			<param name="menu">/dhis-web-mobile/menu.vm</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+	</action>
+
+	  	   	    			  
+	  	  	            
+  </package>
+</xwork>
