@@ -507,7 +507,7 @@ public class FormAction
             Iterator<String> it1 = llDataValueMapKeys.iterator();
             while(it1.hasNext())
             {
-                String tempRecordNo = (String) it1.next();
+                String tempRecordNo = it1.next();
                 List<LLDataValue> tempLLDVList1 = new ArrayList<LLDataValue>(lldataValueMap.get(tempRecordNo));
                 List<LLDataValue> tempLLDVList2 = new ArrayList<LLDataValue>();
                 LLDataValue existingLLDV = new LLDataValue();
@@ -521,7 +521,7 @@ public class FormAction
                 Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
                 while(it2.hasNext())
                 {
-                    LLDataValue tempLLDV = (LLDataValue) it2.next();
+                    LLDataValue tempLLDV = it2.next();
                     
                     if(tempLLDV.getDataElement().getId() == LLDataSets.LLIDSPL_PATIENT_NAME)
                     {
@@ -613,7 +613,7 @@ public class FormAction
         Iterator<String> it1 = llDataValueMapKeys.iterator();
         while(it1.hasNext())
         {
-            String tempRecordNo = (String) it1.next();
+            String tempRecordNo = it1.next();
             List<LLDataValue> tempLLDVList1 = new ArrayList<LLDataValue>(lldataValueMap.get(tempRecordNo));
             List<LLDataValue> tempLLDVList2 = new ArrayList<LLDataValue>();
             LLDataValue existingLLDV = new LLDataValue();
@@ -627,7 +627,7 @@ public class FormAction
             Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
             while(it2.hasNext())
             {
-                LLDataValue tempLLDV = (LLDataValue) it2.next();
+                LLDataValue tempLLDV = it2.next();
                 
                 if(tempLLDV.getDataElement().getId() == LLDataSets.LLMD_MOTHER_NAME)
                 {
@@ -733,7 +733,7 @@ public class FormAction
             Iterator<String> it1 = llDataValueMapKeys.iterator();
             while(it1.hasNext())
             {
-                String tempRecordNo = (String) it1.next();
+                String tempRecordNo = it1.next();
                 List<LLDataValue> tempLLDVList1 = new ArrayList<LLDataValue>(lldataValueMap.get(tempRecordNo));
                 List<LLDataValue> tempLLDVList2 = new ArrayList<LLDataValue>();
                 LLDataValue existingLLDV = new LLDataValue();
@@ -747,7 +747,7 @@ public class FormAction
                 Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
                 while(it2.hasNext())
                 {
-                    LLDataValue tempLLDV = (LLDataValue) it2.next();
+                    LLDataValue tempLLDV = it2.next();
                     
                     if(tempLLDV.getDataElement().getId() == LLDataSets.LLB_CHILD_NAME)
                     {
@@ -835,7 +835,7 @@ public class FormAction
             Iterator<String> it1 = llDataValueMapKeys.iterator();
             while(it1.hasNext())
             {
-                String tempRecordNo = (String) it1.next();
+                String tempRecordNo = it1.next();
                 List<LLDataValue> tempLLDVList1 = new ArrayList<LLDataValue>(lldataValueMap.get(tempRecordNo));
                 List<LLDataValue> tempLLDVList2 = new ArrayList<LLDataValue>();
                 LLDataValue existingLLDV = new LLDataValue();
@@ -849,7 +849,7 @@ public class FormAction
                 Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
                 while(it2.hasNext())
                 {
-                    LLDataValue tempLLDV = (LLDataValue) it2.next();
+                    LLDataValue tempLLDV = it2.next();
                     
                     if(tempLLDV.getDataElement().getId() == LLDataSets.LLD_CHILD_NAME)
                     {
@@ -932,7 +932,7 @@ public class FormAction
             Iterator<String> it1 = llDataValueMapKeys.iterator();
             while(it1.hasNext())
             {
-                String tempRecordNo = (String) it1.next();
+                String tempRecordNo = it1.next();
                 List<LLDataValue> tempLLDVList1 = new ArrayList<LLDataValue>(lldataValueMap.get(tempRecordNo));
                 List<LLDataValue> tempLLDVList2 = new ArrayList<LLDataValue>();
                 LLDataValue existingLLDV = new LLDataValue();
@@ -946,7 +946,7 @@ public class FormAction
                 Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
                 while(it2.hasNext())
                 {
-                    LLDataValue tempLLDV = (LLDataValue) it2.next();
+                    LLDataValue tempLLDV = it2.next();
                     
                     if(tempLLDV.getDataElement().getId() == LLDataSets.LLUUIDSPE_SC_NAME)
                     {
@@ -1024,7 +1024,7 @@ public class FormAction
             Iterator<String> it1 = llDataValueMapKeys.iterator();
             while(it1.hasNext())
             {
-                String tempRecordNo = (String) it1.next();
+                String tempRecordNo = it1.next();
                 List<LLDataValue> tempLLDVList1 = new ArrayList<LLDataValue>(lldataValueMap.get(tempRecordNo));
                 List<LLDataValue> tempLLDVList2 = new ArrayList<LLDataValue>();
                 LLDataValue existingLLDV = new LLDataValue();
@@ -1038,7 +1038,7 @@ public class FormAction
                 Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
                 while(it2.hasNext())
                 {
-                    LLDataValue tempLLDV = (LLDataValue) it2.next();
+                    LLDataValue tempLLDV = it2.next();
                     
                     if(tempLLDV.getDataElement().getId() == LLDataSets.LLUUIDSPEP_EVENT_REPORTED)
                     {
@@ -1117,7 +1117,7 @@ public class FormAction
             Iterator<String> it1 = llDataValueMapKeys.iterator();
             while(it1.hasNext())
             {
-                String tempRecordNo = (String) it1.next();
+                String tempRecordNo = it1.next();
                 List<LLDataValue> tempLLDVList1 = new ArrayList<LLDataValue>(lldataValueMap.get(tempRecordNo));
                 List<LLDataValue> tempLLDVList2 = new ArrayList<LLDataValue>();
                 LLDataValue existingLLDV = new LLDataValue();
@@ -1131,7 +1131,7 @@ public class FormAction
                 Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
                 while(it2.hasNext())
                 {
-                    LLDataValue tempLLDV = (LLDataValue) it2.next();
+                    LLDataValue tempLLDV = it2.next();
                     
                     if(tempLLDV.getDataElement().getId() == LLDataSets.LLDIDSP_CHILD_NAME)
                     {
@@ -1212,412 +1212,4 @@ public class FormAction
         return preparedCode;
 
     }
-
-	
-	
-
-	
-	
-
-
-
-	
-
-
-    /*
-    private String prepareDataEntryFormInputs( String dataEntryFormCode, Collection<DataElement> dataElements,
-        Collection<DataValue> dataValues )
-    {
-
-        // ---------------------------------------------------------------------
-        // Inline Javascript to add to HTML before outputting.
-        // ---------------------------------------------------------------------
-        final String jsCodeForInputs = " onchange=\"saveValue( $DATAELEMENTID, '$DATAELEMENTNAME' )\" onkeypress=\"return keyPress(event, this)\" style=\"text-align:center\" ";
-        final String jsCodeForCombos = " onchange=\"saveBoolean( $DATAELEMENTID )\">";
-        final String historyCode = " ondblclick='javascript:viewHistory( $DATAELEMENTID  )' ";
-        final String calDataElementCode = " class=\"calculated\" disabled ";
-
-        // ---------------------------------------------------------------------
-        // Metadata code to add to HTML before outputting.
-        // ---------------------------------------------------------------------
-        final String metaDataCode = "<span id=\"value[$DATAELEMENTID].name\" style=\"display:none\">$DATAELEMENTNAME</span>"
-            + "<span id=\"value[$DATAELEMENTID].type\" style=\"display:none\">$DATAELEMENTTYPE</span>"
-            + "<div id=\"value[$DATAELEMENTID].min\" style=\"display:none\">$MIN</div>"
-            + "<div id=\"value[$DATAELEMENTID].max\" style=\"display:none\">$MAX</div>";
-
-        // Buffer to contain the final result.
-        StringBuffer sb = new StringBuffer();
-
-        // Pattern to match data elements in the HTML code.
-        Pattern patDataElement = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
-        Matcher matDataElement = patDataElement.matcher( dataEntryFormCode );
-
-        // ---------------------------------------------------------------------
-        // Iterate through all matching data element fields.
-        // ---------------------------------------------------------------------
-        boolean result = matDataElement.find();
-        while ( result )
-        {
-            // Get input HTML code (HTML input field code).
-            String dataElementCode = matDataElement.group( 1 );
-
-            // Pattern to extract data element ID from data element field
-            Pattern patDataElementId = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
-            Matcher matDataElementId = patDataElementId.matcher( dataElementCode );
-            if ( matDataElementId.find() && matDataElementId.groupCount() > 0 )
-            {
-                // ---------------------------------------------------------------------
-                // Get data element ID of data element.
-                // ---------------------------------------------------------------------
-                int dataElementId = Integer.parseInt( matDataElementId.group( 1 ) );
-                DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                
-                int optionComboId = Integer.parseInt( matDataElementId.group( 2 ) );
-                // ---------------------------------------------------------------------
-                // Find type of data element
-                // ---------------------------------------------------------------------
-                String dataElementType = dataElement.getType();
-
-                // ---------------------------------------------------------------------
-                // Find existing value of data element in data set.
-                // ---------------------------------------------------------------------
-                String dataElementValue = "";
-                if ( (dataElement instanceof CalculatedDataElement) )
-                {
-                    CalculatedDataElement cde = (CalculatedDataElement) dataElement;
-                    if ( cde.isSaved() )
-                    {
-                        for ( DataValue dv : dataValues )
-                        {
-                            if ( dv.getDataElement().getId() == dataElementId )
-                            {
-                                dataElementValue = dv.getValue();
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        dataElementValue = String.valueOf( calculatedValueMap.get( cde ) );
-                    }
-                }
-                else
-                {
-                    for ( DataValue dv : dataValues )
-                    {
-                        if ( dv.getDataElement().getId() == dataElementId )
-                        {
-                            dataElementValue = dv.getValue();
-                            break;
-                        }
-                    }
-                }
-
-                // ---------------------------------------------------------------------
-                // Insert value of data element in output code.
-                // ---------------------------------------------------------------------
-                if(dataElement.getType().equals("bool"))
-                {
-                    dataElementCode = dataElementCode.replace("input", "select");
-                    dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
-                    dataElementCode = dataElementCode.replace( "value\\["+dataElementId+"\\].value:value\\["+optionComboId+"\\].value", "value\\["+dataElementId+"]" );
-                    //dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
-                }
-                else
-                {
-                    if ( dataElementCode.contains( "value=\"\"" ) )
-                            dataElementCode = dataElementCode.replace( "value=\"\"", "value=\"" + dataElementValue + "\"" );
-                    else
-                            dataElementCode += "value=\"" + dataElementValue + "\"";
-                    dataElementCode = dataElementCode.replace( "value["+dataElementId+"].value:value["+optionComboId+"].value", "value["+dataElementId+"].value" );
-                    //System.out.println("value["+dataElementId+"].value:value["+optionComboId+"].value  --------  value["+dataElementId+"].value");
-                }   
-
-                // ---------------------------------------------------------------------
-                // MIN-MAX Values
-                // ---------------------------------------------------------------------
-                MinMaxDataElement minMaxDataElement = minMaxMap.get( new Integer( dataElement.getId() ) );
-                String minValue = "No Min";
-                String maxValue = "No Max";                    
-                if ( minMaxDataElement != null )
-                {
-                    minValue = String.valueOf( minMaxDataElement.getMin() );
-                    maxValue = String.valueOf( minMaxDataElement.getMax() );
-                }
-                
-                // ---------------------------------------------------------------------
-                // Remove placeholder view attribute from input field.
-                // ---------------------------------------------------------------------
-                dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
-
-                // ---------------------------------------------------------------------
-                // Insert Title Information - DataElement id,name,type,min,max
-                // ---------------------------------------------------------------------                    
-                if ( dataElementCode.contains( "title=\"\"" ) )
-                            dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"-- ID:"+dataElement.getId()+" Name:"+dataElement.getShortName()+" Type:"+dataElement.getType()+" Min:"+minValue+" Max:"+maxValue+" --\"" );
-                    else
-                            dataElementCode += "title=\"-- ID:"+dataElement.getId()+" Name:"+dataElement.getShortName()+" Type:"+dataElement.getType()+" Min:"+minValue+" Max:"+maxValue+" --\"";
-
-                // ---------------------------------------------------------------------
-                // Append Javascript code and meta data (type/min/max) for
-                // persisting to output code, and insert value and type for
-                // fields.
-                // ---------------------------------------------------------------------
-                String appendCode = dataElementCode;
-                
-                if(dataElement.getType().equalsIgnoreCase( "bool" ))
-                {
-                    appendCode += jsCodeForCombos;
-                    //System.out.println("DataElementValue for Boolean Data : "+dataElementValue);
-                    appendCode += "<option value=\"\">" + i18n.getString( "no_value" ) + "</option>";
-                    if ( dataElementValue.equalsIgnoreCase("true") )
-                        appendCode += "<option value=\"true\" selected>" + i18n.getString( "yes" )
-                            + "</option>";
-                    else
-                        appendCode += "<option value=\"true\">" + i18n.getString( "yes" ) + "</option>";
-
-                    if ( dataElementValue.equalsIgnoreCase("false") )
-                        appendCode += "<option value=\"false\" selected>" + i18n.getString( "no" )
-                            + "</option>";
-                    else
-                        appendCode += "<option value=\"false\">" + i18n.getString( "no" ) + "</option>";
-
-                    appendCode += "</select>";
-                }
-                else
-                {
-                    appendCode += jsCodeForInputs;                   
-                    if ( dataElement.getType().equalsIgnoreCase( "int" ) )
-                            appendCode += historyCode;
-                
-                    if ( (dataElement instanceof CalculatedDataElement) )
-                            appendCode += calDataElementCode;
-                
-                    appendCode += " />";
-                }
-                
-                appendCode += metaDataCode;
-                appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
-                appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
-                appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementType );
-                if ( minMaxDataElement == null )
-                {
-                    appendCode = appendCode.replace( "$MIN", minValue );
-                    appendCode = appendCode.replace( "$MAX", maxValue );
-                }
-                else
-                {
-                    appendCode = appendCode.replace( "$MIN", String.valueOf( minMaxDataElement.getMin() ) );
-                    appendCode = appendCode.replace( "$MAX", String.valueOf( minMaxDataElement.getMax() ) );
-                }
-                matDataElement.appendReplacement( sb, appendCode );
-            }
-
-            // Go to next data entry field
-            result = matDataElement.find();
-        }
-
-        // Add remaining code (after the last match), and return formatted code.
-        matDataElement.appendTail( sb );
-        return sb.toString();
-    }
-
-
-    private String prepareDataEntryFormCombos( String dataEntryFormCode, Collection<DataElement> dataElements,
-        Collection<DataValue> dataValues )
-    {
-
-        // ---------------------------------------------------------------------
-        // Inline Javascript to add to HTML before outputting.
-        // ---------------------------------------------------------------------
-        final String jsCodeForInputs = " onchange=\"saveValue( $DATAELEMENTID, '$DATAELEMENTNAME' )\" onkeypress=\"return keyPress(event, this)\" style=\"text-align:center\" ";
-        final String jsCodeForCombos = " onchange=\"saveBoolean( $DATAELEMENTID )\">";
-        final String historyCode = " ondblclick='javascript:viewHistory( $DATAELEMENTID  )' ";
-        final String calDataElementCode = " class=\"calculated\" disabled ";
-
-        // ---------------------------------------------------------------------
-        // Metadata code to add to HTML before outputting.
-        // ---------------------------------------------------------------------
-        final String metaDataCode = "<span id=\"value[$DATAELEMENTID].name\" style=\"display:none\">$DATAELEMENTNAME</span>"
-            + "<span id=\"value[$DATAELEMENTID].type\" style=\"display:none\">$DATAELEMENTTYPE</span>"
-            + "<div id=\"value[$DATAELEMENTID].min\" style=\"display:none\">$MIN</div>"
-            + "<div id=\"value[$DATAELEMENTID].max\" style=\"display:none\">$MAX</div>";
-
-        // Buffer to contain the final result.
-        StringBuffer sb = new StringBuffer();
-
-        // Pattern to match data elements in the HTML code.
-        Pattern patDataElement = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
-        Matcher matDataElement = patDataElement.matcher( dataEntryFormCode );
-
-        // ---------------------------------------------------------------------
-        // Iterate through all matching data element fields.
-        // ---------------------------------------------------------------------
-        boolean result = matDataElement.find();
-        while ( result )
-        {
-            // Get input HTML code (HTML input field code).
-            String dataElementCode = matDataElement.group( 1 );
-
-            // Pattern to extract data element ID from data element field
-            Pattern patDataElementId = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].boolean" );
-            Matcher matDataElementId = patDataElementId.matcher( dataElementCode );
-            if ( matDataElementId.find() && matDataElementId.groupCount() > 0 )
-            {
-                // ---------------------------------------------------------------------
-                // Get data element ID of data element.
-                // ---------------------------------------------------------------------
-                int dataElementId = Integer.parseInt( matDataElementId.group( 1 ) );
-                DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                
-                int optionComboId = Integer.parseInt( matDataElementId.group( 2 ) );
-                // ---------------------------------------------------------------------
-                // Find type of data element
-                // ---------------------------------------------------------------------
-                String dataElementType = dataElement.getType();
-
-                // ---------------------------------------------------------------------
-                // Find existing value of data element in data set.
-                // ---------------------------------------------------------------------
-                String dataElementValue = "";
-                if ( (dataElement instanceof CalculatedDataElement) )
-                {
-                    CalculatedDataElement cde = (CalculatedDataElement) dataElement;
-                    if ( cde.isSaved() )
-                    {
-                        for ( DataValue dv : dataValues )
-                        {
-                            if ( dv.getDataElement().getId() == dataElementId )
-                            {
-                                dataElementValue = dv.getValue();
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        dataElementValue = String.valueOf( calculatedValueMap.get( cde ) );
-                    }
-                }
-                else
-                {
-                    for ( DataValue dv : dataValues )
-                    {
-                        if ( dv.getDataElement().getId() == dataElementId )
-                        {
-                            dataElementValue = dv.getValue();
-                            break;
-                        }
-                    }
-                }
-
-                // ---------------------------------------------------------------------
-                // Insert value of data element in output code.
-                // ---------------------------------------------------------------------
-                if(dataElement.getType().equals("bool"))
-                {
-                    dataElementCode = dataElementCode.replace("input", "select");
-                    dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
-                    dataElementCode = dataElementCode.replace( "value\\["+dataElementId+"\\].value:value\\["+optionComboId+"\\].value", "value\\["+dataElementId+"]" );
-                    //dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
-                }
-                else
-                {
-                    if ( dataElementCode.contains( "value=\"\"" ) )
-                            dataElementCode = dataElementCode.replace( "value=\"\"", "value=\"" + dataElementValue + "\"" );
-                    else
-                            dataElementCode += "value=\"" + dataElementValue + "\"";
-                    dataElementCode = dataElementCode.replace( "value["+dataElementId+"].value:value["+optionComboId+"].value", "value["+dataElementId+"].value" );
-                    //System.out.println("value["+dataElementId+"].value:value["+optionComboId+"].value  --------  value["+dataElementId+"].value");
-                }   
-
-                // ---------------------------------------------------------------------
-                // MIN-MAX Values
-                // ---------------------------------------------------------------------
-                MinMaxDataElement minMaxDataElement = minMaxMap.get( new Integer( dataElement.getId() ) );
-                String minValue = "No Min";
-                String maxValue = "No Max";                    
-                if ( minMaxDataElement != null )
-                {
-                    minValue = String.valueOf( minMaxDataElement.getMin() );
-                    maxValue = String.valueOf( minMaxDataElement.getMax() );
-                }
-                
-                // ---------------------------------------------------------------------
-                // Remove placeholder view attribute from input field.
-                // ---------------------------------------------------------------------
-                dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
-
-                // ---------------------------------------------------------------------
-                // Insert Title Information - DataElement id,name,type,min,max
-                // ---------------------------------------------------------------------                    
-                if ( dataElementCode.contains( "title=\"\"" ) )
-                            dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"-- ID:"+dataElement.getId()+" Name:"+dataElement.getShortName()+" Type:"+dataElement.getType()+" Min:"+minValue+" Max:"+maxValue+" --\"" );
-                    else
-                            dataElementCode += "title=\"-- ID:"+dataElement.getId()+" Name:"+dataElement.getShortName()+" Type:"+dataElement.getType()+" Min:"+minValue+" Max:"+maxValue+" --\"";
-
-                // ---------------------------------------------------------------------
-                // Append Javascript code and meta data (type/min/max) for
-                // persisting to output code, and insert value and type for
-                // fields.
-                // ---------------------------------------------------------------------
-                String appendCode = dataElementCode;
-                
-                if(dataElement.getType().equalsIgnoreCase( "bool" ))
-                {
-                    appendCode += jsCodeForCombos;
-                    //System.out.println("DataElementValue for Boolean Data : "+dataElementValue);
-                    appendCode += "<option value=\"\">" + i18n.getString( "no_value" ) + "</option>";
-                    if ( dataElementValue.equalsIgnoreCase("true") )
-                        appendCode += "<option value=\"true\" selected>" + i18n.getString( "yes" )
-                            + "</option>";
-                    else
-                        appendCode += "<option value=\"true\">" + i18n.getString( "yes" ) + "</option>";
-
-                    if ( dataElementValue.equalsIgnoreCase("false") )
-                        appendCode += "<option value=\"false\" selected>" + i18n.getString( "no" )
-                            + "</option>";
-                    else
-                        appendCode += "<option value=\"false\">" + i18n.getString( "no" ) + "</option>";
-
-                    appendCode += "</select>";
-                }
-                else
-                {
-                    appendCode += jsCodeForInputs;                   
-                    if ( dataElement.getType().equalsIgnoreCase( "int" ) )
-                            appendCode += historyCode;
-                
-                    if ( (dataElement instanceof CalculatedDataElement) )
-                            appendCode += calDataElementCode;
-                
-                    appendCode += " />";
-                }
-                
-                appendCode += metaDataCode;
-                appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
-                appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
-                appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementType );
-                if ( minMaxDataElement == null )
-                {
-                    appendCode = appendCode.replace( "$MIN", minValue );
-                    appendCode = appendCode.replace( "$MAX", maxValue );
-                }
-                else
-                {
-                    appendCode = appendCode.replace( "$MIN", String.valueOf( minMaxDataElement.getMin() ) );
-                    appendCode = appendCode.replace( "$MAX", String.valueOf( minMaxDataElement.getMax() ) );
-                }
-                matDataElement.appendReplacement( sb, appendCode );
-            }
-
-            // Go to next data entry field
-            result = matDataElement.find();
-        }
-
-        // Add remaining code (after the last match), and return formatted code.
-        matDataElement.appendTail( sb );
-        return sb.toString();
-    }
-*/
 }

@@ -22,7 +22,6 @@ import org.hisp.dhis.source.Source;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -245,7 +244,7 @@ public class DefaultLLDataValueService
             {
                 Element deCodeElement = (Element) listOfDECodes.item( s );
                 NodeList textDECodeList = deCodeElement.getChildNodes();                
-                String expression = ((Node) textDECodeList.item( 0 )).getNodeValue().trim();
+                String expression = textDECodeList.item( 0 ).getNodeValue().trim();
                 
                 int sheetNo = new Integer( deCodeElement.getAttribute( "sheetno" ));
                 int rowNo =  new Integer( deCodeElement.getAttribute( "rowno" ) ) ;

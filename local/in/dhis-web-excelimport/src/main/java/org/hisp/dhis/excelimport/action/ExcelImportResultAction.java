@@ -28,8 +28,8 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 
+import org.amplecode.quick.StatementManager;
 import org.apache.velocity.tools.generic.MathTool;
-import org.hibernate.Session;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
@@ -39,9 +39,7 @@ import org.hisp.dhis.dataset.DataSetStore;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.excelimport.util.ReportService;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -60,13 +58,12 @@ import com.opensymphony.xwork.ActionSupport;
 public class ExcelImportResultAction
     extends ActionSupport
 {
-    private static final String NULL_REPLACEMENT = "0";
-
     private static final String NOT_VALID = "notvalid";
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
@@ -129,13 +126,6 @@ public class ExcelImportResultAction
         this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
 
-    private HibernateSessionManager sessionManager;
-
-    public void setSessionManager( HibernateSessionManager sessionManager )
-    {
-        this.sessionManager = sessionManager;
-    }
-
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -146,13 +136,7 @@ public class ExcelImportResultAction
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
-    private PeriodStore periodStore;
-
-    public void setPeriodStore( PeriodStore periodStore )
-    {
-        this.periodStore = periodStore;
-    }
-
+    
     private InputStream inputStream;
 
     public InputStream getInputStream()
@@ -1009,32 +993,6 @@ public class ExcelImportResultAction
         }
 
         return deAndOptionMap;
-    }
-
-    private final Period reloadPeriod( Period period )
-    {
-        Session session = sessionManager.getCurrentSession();
-
-        if ( session.contains( period ) )
-        {
-            return period; // Already in session, no reload needed
-        }
-
-        return periodStore.getPeriod( period.getStartDate(), period.getEndDate(), period.getPeriodType() );
-    }
-
-    private final Period reloadPeriodForceAdd( Period period )
-    {
-        Period storedPeriod = reloadPeriod( period );
-
-        if ( storedPeriod == null )
-        {
-            periodStore.addPeriod( period );
-
-            return period;
-        }
-
-        return storedPeriod;
     }
 
     public int moveFile( File source, File dest )
