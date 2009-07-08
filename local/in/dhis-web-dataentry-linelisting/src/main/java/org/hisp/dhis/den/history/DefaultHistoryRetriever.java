@@ -36,7 +36,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.minmax.MinMaxDataElement;
-import org.hisp.dhis.minmax.MinMaxDataElementStore;
+import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
@@ -52,11 +52,11 @@ public class DefaultHistoryRetriever
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private MinMaxDataElementStore minMaxDataElementStore;
+    private MinMaxDataElementService minMaxDataElementService;
 
-    public void setMinMaxDataElementStore( MinMaxDataElementStore minMaxDataElementStore )
+    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
     {
-        this.minMaxDataElementStore = minMaxDataElementStore;
+        this.minMaxDataElementService = minMaxDataElementService;
     }
 
     private DataValueService dataValueService;
@@ -228,7 +228,7 @@ public class DefaultHistoryRetriever
 
     private void addMinMaxLimits( OrganisationUnit organisationUnit, DataElement dataElement, DataElementHistory history )
     {
-        MinMaxDataElement minMaxDataElement = minMaxDataElementStore.getMinMaxDataElement( organisationUnit,
+        MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit,
             dataElement, null );
 
         if ( minMaxDataElement != null )

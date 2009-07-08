@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
@@ -23,7 +23,6 @@ import org.hisp.dhis.den.api.LLDataSets;
 import org.hisp.dhis.den.api.LLDataValue;
 import org.hisp.dhis.den.api.LLDataValueStore;
 import org.hisp.dhis.den.util.DBConnection;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
@@ -36,11 +35,11 @@ public class HibernateLLDataValueStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private HibernateSessionManager sessionManager;
-
-    public void setSessionManager( HibernateSessionManager sessionManager )
+    private SessionFactory sessionFactory;
+    
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.sessionManager = sessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     private PeriodStore periodStore;
@@ -77,7 +76,7 @@ public class HibernateLLDataValueStore
 
     private final Period reloadPeriod( Period period )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         if ( session.contains( period ) )
         {
@@ -115,7 +114,7 @@ public class HibernateLLDataValueStore
 
         //Connection con = (new DBConnection()).openConnection();
         //Connection con = dbConnection.openConnection();
-        Connection con = sessionManager.getCurrentSession().connection();
+        Connection con = sessionFactory.getCurrentSession().connection();
         
         PreparedStatement pst = null;
 
@@ -170,7 +169,7 @@ public class HibernateLLDataValueStore
 
         //Connection con = (new DBConnection()).openConnection();
         //Connection con = dbConnection.openConnection();
-        Connection con = sessionManager.getCurrentSession().connection();
+        Connection con = sessionFactory.getCurrentSession().connection();
         
         PreparedStatement pst = null;
 
@@ -215,14 +214,14 @@ public class HibernateLLDataValueStore
 
     public void deleteDataValue( LLDataValue dataValue )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( dataValue );
     }
 
     public int deleteDataValuesBySource( Source source )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "delete LLDataValue where source = :source" );
         query.setEntity( "source", source );
@@ -232,7 +231,7 @@ public class HibernateLLDataValueStore
 
     public int deleteDataValuesByDataElement( DataElement dataElement )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "delete LLDataValue where dataElement = :dataElement" );
         query.setEntity( "dataElement", dataElement );
@@ -243,7 +242,7 @@ public class HibernateLLDataValueStore
     public LLDataValue getDataValue( Source source, DataElement dataElement, Period period,
         DataElementCategoryOptionCombo optionCombo, int recordNo )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Period storedPeriod = reloadPeriod( period );
 
@@ -266,7 +265,7 @@ public class HibernateLLDataValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<LLDataValue> getDataValues( Source source, DataElement dataElement, Period period )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Period storedPeriod = reloadPeriod( period );
 
@@ -287,7 +286,7 @@ public class HibernateLLDataValueStore
     public Collection<LLDataValue> getDataValues( Source source, DataElement dataElement, Period period,
         DataElementCategoryOptionCombo optionCombo )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Period storedPeriod = reloadPeriod( period );
 
@@ -312,7 +311,7 @@ public class HibernateLLDataValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<LLDataValue> getAllDataValues()
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( LLDataValue.class );
 
@@ -329,7 +328,7 @@ public class HibernateLLDataValueStore
             return Collections.emptySet();
         }
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( LLDataValue.class );
         criteria.add( Restrictions.eq( "source", source ) );
@@ -341,7 +340,7 @@ public class HibernateLLDataValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<LLDataValue> getDataValues( Source source, DataElement dataElement )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( LLDataValue.class );
         criteria.add( Restrictions.eq( "source", source ) );
@@ -353,7 +352,7 @@ public class HibernateLLDataValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<LLDataValue> getDataValues( Collection<? extends Source> sources, DataElement dataElement )
     {
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( LLDataValue.class );
         criteria.add( Restrictions.in( "source", sources ) );
@@ -372,7 +371,7 @@ public class HibernateLLDataValueStore
             return Collections.emptySet();
         }
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( LLDataValue.class );
         criteria.add( Restrictions.eq( "source", source ) );
@@ -393,7 +392,7 @@ public class HibernateLLDataValueStore
             return Collections.emptySet();
         }
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( LLDataValue.class );
         criteria.add( Restrictions.eq( "source", source ) );
@@ -420,7 +419,7 @@ public class HibernateLLDataValueStore
             }
         }
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( LLDataValue.class );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
@@ -446,7 +445,7 @@ public class HibernateLLDataValueStore
             }
         }
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( LLDataValue.class );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
@@ -478,7 +477,7 @@ public class HibernateLLDataValueStore
             return Collections.emptySet();
         }
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( LLDataValue.class );
 
@@ -503,7 +502,7 @@ public class HibernateLLDataValueStore
     public Collection<LLDataValue> getDataValues( Collection<DataElementCategoryOptionCombo> optionCombos )
     {
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( LLDataValue.class );
         criteria.add( Restrictions.in( "optionCombo", optionCombos ) );
@@ -515,7 +514,7 @@ public class HibernateLLDataValueStore
     public Collection<LLDataValue> getDataValues( DataElement dataElement )
     {
 
-        Session session = sessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( LLDataValue.class );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
@@ -525,7 +524,7 @@ public class HibernateLLDataValueStore
 
     public void saveLLdataValue( String query )
     {
-        Connection con = sessionManager.getCurrentSession().connection();
+        Connection con = sessionFactory.getCurrentSession().connection();
         
         PreparedStatement pst = null;
         
@@ -556,26 +555,7 @@ public class HibernateLLDataValueStore
     
     public int getMaxRecordNo()
     {
-       /*
-        Session session = sessionManager.getCurrentSession();        
-
-        // Criteria criteria = session.createCriteria( LLDataValue.class );
-
-        String sql_query = "from LLDataValue order by recordNo";
-
-        Query query = session.createQuery( sql_query );
-
-        List<LLDataValue> list = new ArrayList<LLDataValue>( query.list() );
-
-        if ( list == null || query.list().isEmpty() )
-            return 0;
-
-        Integer maxCount = (Integer) list.get( list.size() - 1 ).getRecordNo();        
-
-        return maxCount.intValue();
-        */
-        
-        Connection con = sessionManager.getCurrentSession().connection();
+        Connection con = sessionFactory.getCurrentSession().connection();
         
         PreparedStatement pst = null;
         
@@ -631,7 +611,7 @@ public class HibernateLLDataValueStore
 
         //Connection con = (new DBConnection()).openConnection();
         //Connection con = dbConnection.openConnection();
-        Connection con = sessionManager.getCurrentSession().connection();
+        Connection con = sessionFactory.getCurrentSession().connection();
 
         int[] aggDeIds = { LLDataSets.LLB_BIRTHS, LLDataSets.LLB_BIRTHS_MALE, LLDataSets.LLB_BIRTHS_FEMALE,
             LLDataSets.LLB_WEIGHED_MALE, LLDataSets.LLB_WEIGHED_FEMALE, LLDataSets.LLB_WEIGHED_LESS1800_MALE,
@@ -769,7 +749,7 @@ public class HibernateLLDataValueStore
 
         //Connection con = (new DBConnection()).openConnection();
         //Connection con = dbConnection.openConnection();
-        Connection con = sessionManager.getCurrentSession().connection();
+        Connection con = sessionFactory.getCurrentSession().connection();
 
         int[] aggDeIds = {
                             LLDataSets.LLD_DEATH_OVER05Y, LLDataSets.LLD_DEATH_OVER55Y_MALE, LLDataSets.LLD_DEATH_OVER55Y_FEMALE,
@@ -1355,7 +1335,7 @@ public class HibernateLLDataValueStore
 
         //Connection con = (new DBConnection()).openConnection();
         //Connection con = dbConnection.openConnection();
-        Connection con = sessionManager.getCurrentSession().connection();
+        Connection con = sessionFactory.getCurrentSession().connection();
         
         int[] aggDeIds = { LLDataSets.LLMD_DURING_PREGNANCY, LLDataSets.LLMD_DURING_FIRST_TRIM,
             LLDataSets.LLMD_DURING_SECOND_TRIM, LLDataSets.LLMD_DURING_THIRD_TRIM, LLDataSets.LLMD_DURING_DELIVERY,
@@ -1522,7 +1502,7 @@ public class HibernateLLDataValueStore
 
     public void removeLLRecord( int recordNo )
     {
-        Connection con = sessionManager.getCurrentSession().connection();
+        Connection con = sessionFactory.getCurrentSession().connection();
         
         PreparedStatement pst = null;
 
