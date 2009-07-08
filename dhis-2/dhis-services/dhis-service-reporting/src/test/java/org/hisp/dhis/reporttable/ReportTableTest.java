@@ -34,6 +34,7 @@ import static org.hisp.dhis.reporttable.ReportTable.SEPARATOR;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
@@ -245,6 +246,16 @@ public class ReportTableTest
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().contains( null ) );
         assertTrue( reportTable.getReportUnits().size() == 2 );
+        
+        Map<String, String> prettyCrossTabColumns = reportTable.getPrettyCrossTabColumns();
+        
+        assertNotNull( prettyCrossTabColumns );
+        assertEquals( 8, prettyCrossTabColumns.size() );
+        
+        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
+        
+        assertNotNull( filledDisplayColumns );
+        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -294,6 +305,16 @@ public class ReportTableTest
         assertTrue( reportTable.getReportIndicators().size() == 2 );
         assertTrue( reportTable.getReportPeriods().size() == 4 );
         assertTrue( reportTable.getReportUnits().contains( null ) );
+        
+        Map<String, String> prettyCrossTabColumns = reportTable.getPrettyCrossTabColumns();
+        
+        assertNotNull( prettyCrossTabColumns );
+        assertEquals( 2, prettyCrossTabColumns.size() );
+        
+        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
+        
+        assertNotNull( filledDisplayColumns );
+        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -347,6 +368,16 @@ public class ReportTableTest
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().size() == 4 );
         assertTrue( reportTable.getReportUnits().contains( null ) );
+        
+        Map<String, String> prettyCrossTabColumns = reportTable.getPrettyCrossTabColumns();
+        
+        assertNotNull( prettyCrossTabColumns );
+        assertEquals( 4, prettyCrossTabColumns.size() );
+        
+        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
+        
+        assertNotNull( filledDisplayColumns );
+        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -404,6 +435,16 @@ public class ReportTableTest
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().contains( null ) );
         assertTrue( reportTable.getReportUnits().size() == 2 );
+        
+        Map<String, String> prettyCrossTabColumns = reportTable.getPrettyCrossTabColumns();
+        
+        assertNotNull( prettyCrossTabColumns );
+        assertEquals( 8, prettyCrossTabColumns.size() );
+        
+        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
+        
+        assertNotNull( filledDisplayColumns );
+        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -454,6 +495,16 @@ public class ReportTableTest
         assertTrue( reportTable.getReportIndicators().size() == 2 );
         assertTrue( reportTable.getReportPeriods().size() == 4 );
         assertTrue( reportTable.getReportUnits().contains( null ) );
+        
+        Map<String, String> prettyCrossTabColumns = reportTable.getPrettyCrossTabColumns();
+        
+        assertNotNull( prettyCrossTabColumns );
+        assertEquals( 2, prettyCrossTabColumns.size() );
+        
+        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
+        
+        assertNotNull( filledDisplayColumns );
+        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -507,6 +558,16 @@ public class ReportTableTest
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().size() == 4 );
         assertTrue( reportTable.getReportUnits().contains( null ) );
+        
+        Map<String, String> prettyCrossTabColumns = reportTable.getPrettyCrossTabColumns();
+        
+        assertNotNull( prettyCrossTabColumns );
+        assertEquals( 4, prettyCrossTabColumns.size() );
+        
+        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
+        
+        assertNotNull( filledDisplayColumns );
+        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -578,6 +639,16 @@ public class ReportTableTest
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().contains( null ) );
         assertTrue( reportTable.getReportUnits().size() == 2 );
+        
+        Map<String, String> prettyCrossTabColumns = reportTable.getPrettyCrossTabColumns();
+        
+        assertNotNull( prettyCrossTabColumns );
+        assertEquals( 16, prettyCrossTabColumns.size() );
+        
+        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
+        
+        assertNotNull( filledDisplayColumns );
+        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -633,6 +704,16 @@ public class ReportTableTest
         assertTrue( reportTable.getReportIndicators().size() == 2 );
         assertTrue( reportTable.getReportPeriods().size() == 4 );
         assertTrue( reportTable.getReportUnits().contains( null ) );
+        
+        Map<String, String> prettyCrossTabColumns = reportTable.getPrettyCrossTabColumns();
+        
+        assertNotNull( prettyCrossTabColumns );
+        assertEquals( 4, prettyCrossTabColumns.size() );
+        
+        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
+        
+        assertNotNull( filledDisplayColumns );
+        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -688,6 +769,16 @@ public class ReportTableTest
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().size() == 4 );
         assertTrue( reportTable.getReportUnits().contains( null ) );
+        
+        Map<String, String> prettyCrossTabColumns = reportTable.getPrettyCrossTabColumns();
+        
+        assertNotNull( prettyCrossTabColumns );
+        assertEquals( 4, prettyCrossTabColumns.size() );
+        
+        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
+        
+        assertNotNull( filledDisplayColumns );
+        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -744,6 +835,16 @@ public class ReportTableTest
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().contains( null ) );
         assertTrue( reportTable.getReportUnits().size() == 2 );
+        
+        Map<String, String> prettyCrossTabColumns = reportTable.getPrettyCrossTabColumns();
+        
+        assertNotNull( prettyCrossTabColumns );
+        assertEquals( 8, prettyCrossTabColumns.size() );
+        
+        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
+        
+        assertNotNull( filledDisplayColumns );
+        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -793,6 +894,16 @@ public class ReportTableTest
         assertTrue( reportTable.getReportIndicators().size() == 2 );
         assertTrue( reportTable.getReportPeriods().size() == 4 );
         assertTrue( reportTable.getReportUnits().contains( null ) );
+        
+        Map<String, String> prettyCrossTabColumns = reportTable.getPrettyCrossTabColumns();
+        
+        assertNotNull( prettyCrossTabColumns );
+        assertEquals( 2, prettyCrossTabColumns.size() );
+        
+        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
+        
+        assertNotNull( filledDisplayColumns );
+        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -846,5 +957,15 @@ public class ReportTableTest
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().size() == 4 );
         assertTrue( reportTable.getReportUnits().contains( null ) );
+        
+        Map<String, String> prettyCrossTabColumns = reportTable.getPrettyCrossTabColumns();
+        
+        assertNotNull( prettyCrossTabColumns );
+        assertEquals( 4, prettyCrossTabColumns.size() );
+        
+        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
+        
+        assertNotNull( filledDisplayColumns );
+        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 }

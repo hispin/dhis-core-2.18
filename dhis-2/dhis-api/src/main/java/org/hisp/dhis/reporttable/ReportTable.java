@@ -645,7 +645,7 @@ public class ReportTable
 
         return buffer.length() > 0 ? buffer.substring( 0, buffer.lastIndexOf( SPACE ) ) : buffer.toString();
     }
-        
+    
     private String getColumnName( MetaObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
     {
         StringBuffer buffer = new StringBuffer();
@@ -676,7 +676,7 @@ public class ReportTable
         if ( buffer.length() > 0 && buffer.substring( 0, 1 ).matches( REGEX_NUMERIC ) )
         {
             buffer.insert( 0, SEPARATOR );
-        }        
+        }
         
         return buffer.length() > 0 ? buffer.substring( 0, buffer.lastIndexOf( SEPARATOR ) ) : buffer.toString();
     }
@@ -1054,6 +1054,11 @@ public class ReportTable
     public List<String> getCrossTabColumns()
     {
         return crossTabColumns;
+    }
+
+    public Map<String, String> getPrettyCrossTabColumns()
+    {
+        return prettyCrossTabColumns;
     }
 
     public List<String> getCrossTabIdentifiers()

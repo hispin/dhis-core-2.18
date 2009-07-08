@@ -4,7 +4,8 @@ import java.io.File;
 
 import com.opensymphony.xwork.Action;
 
-public class MobileHomePageAction implements Action
+public class MobileHomePageAction
+    implements Action
 {
 
     public String execute()
@@ -12,6 +13,5 @@ public class MobileHomePageAction implements Action
     {
         return SUCCESS;
     }
-    
 
 }
