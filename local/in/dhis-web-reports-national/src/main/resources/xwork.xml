@@ -391,41 +391,35 @@
 	<action name="getDataElements"
       class="org.hisp.dhis.reports.action.GetDataElementsAction">
       <result name="success" type="velocity">/dhis-web-reports/responseDataElement.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 	  	  
 	<action name="getPeriods" class="org.hisp.dhis.reports.action.GetPeriodsAction">
 	    <result name="success" type="velocity">/dhis-web-reports/responsePeriod.vm</result>
-        <interceptor-ref name="transactionStack"/>
         <param name="onExceptionReturn">plainTextError</param>
 	</action>
 	  
 	<action name="getReports" class="org.hisp.dhis.reports.action.GetReportsAction">
 	    <result name="success" type="velocity">/dhis-web-reports/responseReport.vm</result>
 		<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
-        <interceptor-ref name="transactionStack"/>
         <param name="onExceptionReturn">plainTextError</param>
 	</action>
 
 	<action name="getProgressReports" class="org.hisp.dhis.reports.action.GetProgressReportsAction">
 	    <result name="success" type="velocity">/dhis-web-reports/responseReport.vm</result>
 		<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
-        <interceptor-ref name="transactionStack"/>
         <param name="onExceptionReturn">plainTextError</param>
 	</action>
 
     <action name="getOrgUnitGroups"
       class="org.hisp.dhis.reports.action.GetOrgUnitGroupsAction">
       <result name="success" type="velocity">/dhis-web-reports/responseOrgUnitGroup.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 	  	  
     <action name="getOrgUnitDetails"
       class="org.hisp.dhis.reports.action.GetOrgUnitsAction">
       <result name="success" type="velocity">/dhis-web-reports/responseOrgUnit.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -472,7 +466,6 @@
     
     <action name="getTable" class="org.hisp.dhis.reports.tablecreator.action.GetTableAction">
       <result name="success" type="velocity-xml">/dhis-web-reports/responseTable.vm</result>
-      <interceptor-ref name="transactionStack"/>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     

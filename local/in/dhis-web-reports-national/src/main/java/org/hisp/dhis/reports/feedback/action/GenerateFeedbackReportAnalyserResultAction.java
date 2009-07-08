@@ -29,6 +29,7 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
+import org.amplecode.quick.StatementManager;
 import org.apache.velocity.tools.generic.MathTool;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -41,7 +42,6 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -278,6 +278,7 @@ public class GenerateFeedbackReportAnalyserResultAction
     private List<Integer> colList;
 
     private String raFolderName;
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -289,7 +290,7 @@ public class GenerateFeedbackReportAnalyserResultAction
 
         // Initialization
         raFolderName = reportService.getRAFolderName();
-        
+
         mathTool = new MathTool();
         services = new ArrayList<String>();
         slNos = new ArrayList<String>();
@@ -303,10 +304,10 @@ public class GenerateFeedbackReportAnalyserResultAction
         rowList = new ArrayList<Integer>();
         colList = new ArrayList<Integer>();
 
-        String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName
-            + File.separator + "template" + File.separator + reportFileNameTB;
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName
-            + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+            + "template" + File.separator + reportFileNameTB;
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+            + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
 
         WritableWorkbook outputReportWorkbook = Workbook
@@ -332,7 +333,7 @@ public class GenerateFeedbackReportAnalyserResultAction
         {
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnitByName( reportList );
             OrganisationUnit parent = orgUnit.getParent();
-            orgUnitList = new ArrayList<OrganisationUnit>(orgUnit.getChildren());
+            orgUnitList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
             orgUnitList.remove( orgUnit );
             orgUnitList.add( 0, orgUnit );
             orgUnitList.add( 1, parent );

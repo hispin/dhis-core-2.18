@@ -14,7 +14,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.SimpleFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,13 +27,14 @@ import jxl.format.Border;
 import jxl.format.BorderLineStyle;
 import jxl.format.CellFormat;
 import jxl.format.VerticalAlignment;
-import jxl.write.Label;
 import jxl.write.Blank;
+import jxl.write.Label;
 import jxl.write.WritableCell;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
+import org.amplecode.quick.StatementManager;
 import org.apache.velocity.tools.generic.MathTool;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -48,7 +48,6 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -76,6 +75,7 @@ public class GenerateUpwardReportAnalyserResultAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
@@ -88,13 +88,6 @@ public class GenerateUpwardReportAnalyserResultAction
     public void setDataSetStore( DataSetStore dataSetStore )
     {
         this.dataSetStore = dataSetStore;
-    }
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     private ReportService reportService;
@@ -123,11 +116,6 @@ public class GenerateUpwardReportAnalyserResultAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    public OrganisationUnitService getOrganisationUnitService()
-    {
-        return organisationUnitService;
     }
 
     private AggregationService aggregationService;

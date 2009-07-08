@@ -35,7 +35,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 
 	  <property name="statementManager">
-			<ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+			<ref bean="statementManager"/>
 		</property>
 		<property name="dataElementCategoryOptionComboService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
@@ -91,7 +91,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
 
     <property name="statementManager">
-      <ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+      <ref bean="statementManager"/>
     </property>
     <property name="dataElementCategoryOptionComboService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
@@ -147,7 +147,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
 
     <property name="statementManager">
-      <ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+      <ref bean="statementManager"/>
     </property>
     <property name="dataElementCategoryOptionComboService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
@@ -204,9 +204,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reports.feedback.action.GenerateFeedbackReportAnalyserResultAction"
 		class="org.hisp.dhis.reports.feedback.action.GenerateFeedbackReportAnalyserResultAction"
 		scope="prototype">
-
 	  <property name="statementManager">
-			<ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+			<ref bean="statementManager"/>
 		</property>
 		<property name="dataElementCategoryOptionComboService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
@@ -242,22 +241,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 		<!-- Upward Reports -->
+		
 	<bean
 		id="org.hisp.dhis.reports.upward.action.GenerateUpwardReportAnalyserFormAction"
 		class="org.hisp.dhis.reports.upward.action.GenerateUpwardReportAnalyserFormAction"
-		scope="prototype">
-		
+		scope="prototype">		
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
 		</property>
 		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		    <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		</property>
-    <property name="reportService">
-      <ref bean="org.hisp.dhis.reports.util.ReportService"/>
-    </property>
-
-		
+        <property name="reportService">
+          <ref bean="org.hisp.dhis.reports.util.ReportService"/>
+        </property>		
 	</bean>
 	
 	<bean
@@ -266,7 +263,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 
 	  <property name="statementManager">
-			<ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+			<ref bean="statementManager"/>
 		</property>
 		<property name="dataElementCategoryOptionComboService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
@@ -294,11 +291,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="reportService">
 			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
-		
+		</property>		
 	</bean>
 
 	<!-- Linelisting Reports -->
@@ -318,7 +311,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 
 	  <property name="statementManager">
-			<ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+			<ref bean="statementManager"/>
 		</property>
 		<property name="dataElementCategoryOptionComboService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
@@ -433,7 +426,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 
 	  <property name="statementManager">
-			<ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+			<ref bean="statementManager"/>
 		</property>
 		<property name="dataElementCategoryOptionComboService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
@@ -487,7 +480,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
   
     <property name="statementManager">
-      <ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+      <ref bean="statementManager"/>
     </property>    
     <property name="reportService">
 			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
@@ -538,7 +531,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         scope="prototype">
   
 		<property name="statementManager">
-			<ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+			<ref bean="statementManager"/>
 		</property>    
 		<property name="reportService">
 			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
@@ -589,7 +582,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         scope="prototype">
   
         <property name="statementManager">
-            <ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+            <ref bean="statementManager"/>
         </property>    
         <property name="reportService">
             <ref bean="org.hisp.dhis.reports.util.ReportService"/>
@@ -644,7 +637,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
 		</property>
     <property name="statementManager">
-      <ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+      <ref bean="statementManager"/>
     </property>    
 		<property name="dataElementCategoryOptionComboService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
@@ -685,7 +678,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
 		</property>
     <property name="statementManager">
-      <ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+      <ref bean="statementManager"/>
     </property>    
 		<property name="dataElementCategoryOptionComboService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
@@ -726,7 +719,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
 		</property>
     <property name="statementManager">
-      <ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+      <ref bean="statementManager"/>
     </property>    
 		<property name="dataElementCategoryOptionComboService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
@@ -780,7 +773,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
 		</property>
     <property name="statementManager">
-      <ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+      <ref bean="statementManager"/>
     </property>    
 		<property name="dataElementCategoryOptionComboService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
@@ -859,7 +852,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.reports.util.ReportService"/>
 		</property>
 		<property name="statementManager">
-		  <ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+		  <ref bean="statementManager"/>
 		</property>    
         
 	</bean>
@@ -882,7 +875,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         scope="prototype">
   
         <property name="statementManager">
-          <ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+          <ref bean="statementManager"/>
         </property>    
         <property name="reportService">
           <ref bean="org.hisp.dhis.reports.util.ReportService"/>
@@ -962,7 +955,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.reports.util.ReportService"/>
     </property>
     <property name="statementManager">
-      <ref bean="org.hisp.dhis.jdbc.StatementManager"/>
+      <ref bean="statementManager"/>
     </property>
     <property name="organisationUnitGroupService">
           <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
@@ -1326,8 +1319,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		-->
 	<bean id="org.hisp.dhis.chart.ChartService"
     class="org.hisp.dhis.reports.chart.impl.DefaultChartService"> 
-    <property name="chartStore"
-      ref="org.hisp.dhis.chart.ChartStore"/>
+    <property name="chartService"
+      ref="org.hisp.dhis.chart.ChartService"/>
 	<property name="aggregationService" 
         ref="org.hisp.dhis.aggregation.AggregationService"/>
   </bean> 
