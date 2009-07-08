@@ -35,6 +35,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork.Action;
 
@@ -125,7 +126,7 @@ public class UpdateDataSetAction
 
         if ( shortName != null && shortName.trim().length() == 0 )
         {
-        	shortName = null;
+            shortName = null;
         }
 
         if ( code != null && code.trim().length() == 0 )
@@ -133,25 +134,22 @@ public class UpdateDataSetAction
             code = null;
         }
     	
+        Collection<DataElement> dataElements = new HashSet<DataElement>();
+
+        for ( String id : selectedList )
+        {
+            dataElements.add( dataElementService.getDataElement( Integer.parseInt( id ) ) );
+        }
+
+        PeriodType periodType = periodService.getPeriodTypeByName( frequencySelect );
+        
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
         dataSet.setName( name );
         dataSet.setShortName( shortName );
         dataSet.setCode( code );
-        dataSet.setPeriodType( periodService.getPeriodTypeByName( frequencySelect ) );
-
-        Collection<DataElement> updatedDataElementList = new HashSet<DataElement>();
-
-        for ( String id : selectedList )
-        {
-            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );
-
-            updatedDataElementList.add( dataElement );
-        }
-
-        dataSet.getDataElements().retainAll( updatedDataElementList );
-
-        dataSet.getDataElements().addAll( updatedDataElementList );
+        dataSet.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
+        dataSet.setDataElements( dataElements );
 
         dataSetService.updateDataSet( dataSet );
 
