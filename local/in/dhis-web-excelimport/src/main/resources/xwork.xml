@@ -59,7 +59,6 @@
 			class="org.hisp.dhis.excelimport.action.GetDataElementsAction">
 			<result name="success" type="velocity">
 				/dhis-web-excelimport/responseDataElement.vm</result>
-			<interceptor-ref name="transactionStack"/>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
@@ -67,7 +66,6 @@
 			class="org.hisp.dhis.excelimport.action.GetPeriodsAction">
 			<result name="success" type="velocity">
 				/dhis-web-excelimport/responsePeriod.vm</result>
-			<interceptor-ref name="transactionStack"/>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
@@ -77,7 +75,6 @@
 				/dhis-web-excelimport/responseImportReport.vm</result>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,javascript/reports.js,../dhis-web-commons/lists/lists.js,javascript/hashtable.js</param>
-			<interceptor-ref name="transactionStack"/>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
@@ -85,7 +82,6 @@
 			class="org.hisp.dhis.excelimport.action.GetOrgUnitsAction">
 			<result name="success" type="velocity">
 				/dhis-web-excelimport/responseOrgUnit.vm</result>
-			<interceptor-ref name="transactionStack"/>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
