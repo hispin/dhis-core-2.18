@@ -13,19 +13,20 @@ import org.hisp.dhis.dataset.DataSetService;
 
 import com.opensymphony.xwork.Action;
 
-public class GetOptionCombosAction implements Action
+public class GetOptionCombosAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
@@ -35,7 +36,7 @@ public class GetOptionCombosAction implements Action
     public void setDataSetId( int dataSetId )
     {
         this.dataSetId = dataSetId;
-    }    
+    }
 
     private List<String> optionComboIds;
 
@@ -61,9 +62,9 @@ public class GetOptionCombosAction implements Action
         optionComboNames = new ArrayList<String>();
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
-        List<DataElement> dataElementList = new ArrayList<DataElement>(dataSet.getDataElements());
-        
-        if(dataElementList!=null)
+        List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
+
+        if ( dataElementList != null )
         {
             DataElement dataElement = (DataElement) dataElementList.iterator().next();
             DataElementCategoryCombo dataElementCategoryCombo = dataElement.getCategoryCombo();
@@ -84,7 +85,7 @@ public class GetOptionCombosAction implements Action
                     DataElementCategoryOption categoryOption = categoryOptionsIterator.next();
                     optionComboName.append( categoryOption.getName() ).append( " " );
                 }
-                //System.out.println( optionComboName );
+                // System.out.println( optionComboName );
                 optionComboNames.add( optionComboName.toString() );
                 optionComboIds.add( "" + decoc.getId() );
             }
@@ -94,5 +95,3 @@ public class GetOptionCombosAction implements Action
     }
 
 }
-
-  

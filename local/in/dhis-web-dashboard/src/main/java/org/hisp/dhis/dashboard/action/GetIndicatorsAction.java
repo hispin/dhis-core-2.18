@@ -37,14 +37,14 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: GetIndicatorsAction.java 3305 2007-05-14 18:55:52Z larshelg $
  */
 public class GetIndicatorsAction
-    extends ActionSupport
+    implements Action
 {
     private final static int ALL = 0;
 

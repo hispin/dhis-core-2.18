@@ -3,9 +3,10 @@ package org.hisp.dhis.dashboard.action;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork.Action;
 
-public class GetOrgUnitsAction extends ActionSupport
+public class GetOrgUnitsAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -28,40 +29,38 @@ public class GetOrgUnitsAction extends ActionSupport
     {
         this.orgUnitId = orgUnitId;
     }
-        
+
     private OrganisationUnit orgUnit;
-    
+
     public OrganisationUnit getOrgUnit()
     {
         return orgUnit;
     }
 
     private Integer orgUnitLevel;
-    
-    public Integer getOrgUnitLevel() 
+
+    public Integer getOrgUnitLevel()
     {
-		return orgUnitLevel;
-	}
-    
+        return orgUnitLevel;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-
-
-
-	public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
         /* OrganisationUnit */
-        if(orgUnitId != null)
+        if ( orgUnitId != null )
         {
-            orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );            
-        }   
+            orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+        }
 
-        orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit(orgUnit );
-        
-        System.out.println("OrgUnitLevel : "+orgUnitLevel+ " Name : "+orgUnit.getShortName());
-        
+        orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
+
+        System.out.println( "OrgUnitLevel : " + orgUnitLevel + " Name : " + orgUnit.getShortName() );
+
         return SUCCESS;
     }
 

@@ -38,30 +38,33 @@ public class DashBoardHomePageAction
         throws Exception
     {
         clearCache();
-        
+
         return SUCCESS;
     }
-    
+
     private void clearCache()
     {
         try
         {
-            String cacheFolderPath = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + "db"+ File.separator + "output";
-   
+            String cacheFolderPath = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator
+                + "db" + File.separator + "output";
+
             File dir = new File( cacheFolderPath );
-            String[] files = dir.list();        
+            String[] files = dir.list();
+            
             for ( String file : files )
             {
                 file = cacheFolderPath + File.separator + file;
-                File tempFile = new File(file);
+                File tempFile = new File( file );
                 tempFile.delete();
             }
-            System.out.println("Cache cleared successfully");
+            
+            System.out.println( "Cache cleared successfully" );
         }
-        catch(Exception e)
+        catch ( Exception e )
         {
-            System.out.println(e.getMessage());
-        }        
+            System.out.println( e.getMessage() );
+        }
     }
 
 }

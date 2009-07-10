@@ -18,21 +18,21 @@ import org.hisp.dhis.dashboard.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetStore;
-import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 
 import com.opensymphony.xwork.Action;
 
-public class GenerateCommentsResultAction implements Action
+public class GenerateCommentsResultAction
+    implements Action
 {
 
     // ---------------------------------------------------------------
@@ -49,7 +49,7 @@ public class GenerateCommentsResultAction implements Action
     {
         return organisationUnitService;
     }
-    
+
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
@@ -57,23 +57,23 @@ public class GenerateCommentsResultAction implements Action
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
-    private PeriodStore periodStore;
+    private PeriodService periodService;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.periodStore = periodStore;
+        this.periodService = periodService;
     }
 
-    private DataSetStore dataSetStore;
+    private DataSetService dataSetService;
 
-    public void setDataSetStore( DataSetStore dataSetStore )
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.dataSetStore = dataSetStore;
+        this.dataSetService = dataSetService;
     }
 
-    public DataSetStore getDataSetStore()
+    public DataSetService getDataSetService()
     {
-        return dataSetStore;
+        return dataSetService;
     }
 
     private DashBoardService dashBoardService;
@@ -83,15 +83,8 @@ public class GenerateCommentsResultAction implements Action
         this.dashBoardService = dashBoardService;
     }
 
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-
     private DataElementService dataElementService;
-    
+
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
@@ -151,13 +144,12 @@ public class GenerateCommentsResultAction implements Action
     }
 
     private int maxOULevel;
-    
+
     public int getMaxOULevel()
     {
         return maxOULevel;
     }
 
-    
     // ---------------------------------------------------------------
     // Input Parameters
     // ---------------------------------------------------------------
@@ -170,6 +162,7 @@ public class GenerateCommentsResultAction implements Action
     }
 
     private String ouId;
+
     public void setOuId( String ouId )
     {
         this.ouId = ouId;
@@ -193,7 +186,7 @@ public class GenerateCommentsResultAction implements Action
     {
         return sDateLB;
     }
-    
+
     private int eDateLB;
 
     public void setEDateLB( int dateLB )
@@ -233,18 +226,24 @@ public class GenerateCommentsResultAction implements Action
     }
 
     private int minOULevel;
-            
+
     public int getMinOULevel()
     {
         return minOULevel;
     }
 
     private Connection con = null;
+
     String orgUnitInfo;
+
     String periodInfo;
+
     String deInfo;
+
     int orgUnitCount;
+
     private String dataTableName;
+
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
@@ -254,30 +253,29 @@ public class GenerateCommentsResultAction implements Action
         con = (new DBConnection()).openConnection();
         orgUnitCount = 0;
         dataTableName = "";
-        
+
         // Intialization
         results = new ArrayList<Integer>();
         maxOULevel = 1;
         minOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
-        
-        
-        if(immChildOption!= null && immChildOption.equalsIgnoreCase( "yes" ))
+
+        if ( immChildOption != null && immChildOption.equalsIgnoreCase( "yes" ) )
         {
             orgUnitListCB = new ArrayList<String>();
             orgUnitListCB.add( ouId );
-            
+
             facilityLB = "immChildren";
-            
+
             selectedDataSets = new ArrayList<String>();
             selectedDataSets.add( dsId );
         }
-        
+
         // OrgUnit Related Info
         OrganisationUnit selectedOrgUnit = new OrganisationUnit();
         orgUnitList = new ArrayList<OrganisationUnit>();
         if ( facilityLB.equals( "children" ) )
         {
-            selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );            
+            selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
             orgUnitList = getChildOrgUnitTree( selectedOrgUnit );
         }
         else if ( facilityLB.equals( "immChildren" ) )
@@ -285,40 +283,41 @@ public class GenerateCommentsResultAction implements Action
             selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
 
             // This is hard coded to get District and Corporation List
-            if(organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit ) == 1)
-            {                
-                orgUnitList = new ArrayList<OrganisationUnit>();            
+            if ( organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit ) == 1 )
+            {
+                orgUnitList = new ArrayList<OrganisationUnit>();
                 orgUnitList.add( selectedOrgUnit );
-                
-                OrganisationUnitGroup oug = organisationUnitGroupService.getOrganisationUnitGroupByName( "Districts" );                
-                if(oug != null)
+
+                OrganisationUnitGroup oug = organisationUnitGroupService.getOrganisationUnitGroupByName( "Districts" );
+                if ( oug != null )
                 {
-                    List<OrganisationUnit> tempOUList = new ArrayList<OrganisationUnit>(oug.getMembers());
+                    List<OrganisationUnit> tempOUList = new ArrayList<OrganisationUnit>( oug.getMembers() );
                     Collections.sort( tempOUList, new OrganisationUnitShortNameComparator() );
                     orgUnitList.addAll( tempOUList );
-                }   
-                
+                }
+
                 oug = organisationUnitGroupService.getOrganisationUnitGroupByName( "Corporations" );
-                if(oug != null)
+                if ( oug != null )
                 {
-                    List<OrganisationUnit> tempOUList = new ArrayList<OrganisationUnit>(oug.getMembers());
+                    List<OrganisationUnit> tempOUList = new ArrayList<OrganisationUnit>( oug.getMembers() );
                     Collections.sort( tempOUList, new OrganisationUnitShortNameComparator() );
                     orgUnitList.addAll( tempOUList );
-                }   
+                }
             }
             else
             {
                 orgUnitList = new ArrayList<OrganisationUnit>();
-                
-                Iterator<String> orgUnitIterator = orgUnitListCB.iterator();                
+
+                Iterator<String> orgUnitIterator = orgUnitListCB.iterator();
                 while ( orgUnitIterator.hasNext() )
                 {
-                    OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer.parseInt( (String) orgUnitIterator.next() ) );
+                    OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer
+                        .parseInt( (String) orgUnitIterator.next() ) );
                     orgUnitList.add( o );
                     List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
                     Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
                     orgUnitList.addAll( organisationUnits );
-                }                
+                }
             }
         }
         else
@@ -327,185 +326,190 @@ public class GenerateCommentsResultAction implements Action
             OrganisationUnit o;
             while ( orgUnitIterator.hasNext() )
             {
-                o = organisationUnitService.getOrganisationUnit( Integer
-                    .parseInt( orgUnitIterator.next() ) );
+                o = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitIterator.next() ) );
                 orgUnitList.add( o );
             }
         }
 
         orgUnitInfo = "-1";
-        for(OrganisationUnit ou : orgUnitList)
+        for ( OrganisationUnit ou : orgUnitList )
         {
             orgUnitInfo += "," + ou.getId();
-            getOrgUnitInfo(ou);
-        }    
-            
+            getOrgUnitInfo( ou );
+        }
+
         // Period Related Info
-        Period startPeriod = periodStore.getPeriod( sDateLB );
-        Period endPeriod = periodStore.getPeriod( eDateLB );
+        Period startPeriod = periodService.getPeriod( sDateLB );
+        Period endPeriod = periodService.getPeriod( eDateLB );
 
         selectedPeriodList = dashBoardService.getMonthlyPeriods( startPeriod.getStartDate(), endPeriod.getEndDate() );
-        
+
         periodInfo = "-1";
-        for(Period p : selectedPeriodList)            
-            periodInfo +=  "," + p.getId();
-        
+        for ( Period p : selectedPeriodList )
+            periodInfo += "," + p.getId();
+
         // DataSet Related Info
         dataSetList = new ArrayList<DataSet>();
 
         deInfo = "-1";
-        for(String ds : selectedDataSets)
+        for ( String ds : selectedDataSets )
         {
-            DataSet dSet = dataSetStore.getDataSet( Integer.parseInt( ds ) );
-            for(DataElement de : dSet.getDataElements())
+            DataSet dSet = dataSetService.getDataSet( Integer.parseInt( ds ) );
+            for ( DataElement de : dSet.getDataElements() )
                 deInfo += "," + de.getId();
         }
 
-        System.out.println(orgUnitInfo);
-        System.out.println(deInfo);
-        System.out.println(periodInfo);
-        
-        dataTableName = dashBoardService.createDataTableForComments(orgUnitInfo, deInfo, periodInfo);
-        
+        System.out.println( orgUnitInfo );
+        System.out.println( deInfo );
+        System.out.println( periodInfo );
+
+        dataTableName = dashBoardService.createDataTableForComments( orgUnitInfo, deInfo, periodInfo );
+
         dataSetPeriods = new HashMap<DataSet, Collection<Period>>();
-        Iterator dataSetIterator = selectedDataSets.iterator();
-        
+        Iterator<String> dataSetIterator = selectedDataSets.iterator();
+
         DataSet ds;
         Collection<DataElement> dataElements = new ArrayList<DataElement>();
         PeriodType dataSetPeriodType;
         Collection<Period> periodList = new ArrayList<Period>();
-        
+
         while ( dataSetIterator.hasNext() )
-        {            
-            ds = dataSetStore.getDataSet( Integer.parseInt( (String) dataSetIterator.next() ) );
+        {
+            ds = dataSetService.getDataSet( Integer.parseInt( (String) dataSetIterator.next() ) );
             dataSetList.add( ds );
             dataElements = ds.getDataElements();
-            deInfo = getDEInfo(dataElements);
-                        
+            deInfo = getDEInfo( dataElements );
+
             dataSetPeriodType = ds.getPeriodType();
-            
-            periodList = periodStore.getIntersectingPeriodsByPeriodType( dataSetPeriodType,
-                startPeriod.getStartDate(), endPeriod.getEndDate() );
+
+            periodList = periodService.getIntersectingPeriodsByPeriodType( dataSetPeriodType, startPeriod
+                .getStartDate(), endPeriod.getEndDate() );
             dataSetPeriods.put( ds, periodList );
 
-            Iterator orgUnitListIterator = orgUnitList.iterator();
+            Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
             OrganisationUnit o;
             Set<Source> dso = new HashSet<Source>();
             Iterator periodIterator;
-            
+
             while ( orgUnitListIterator.hasNext() )
             {
-                
+
                 o = (OrganisationUnit) orgUnitListIterator.next();
-                orgUnitInfo = ""+o.getId();
-                
-                if(maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( o ))
+                orgUnitInfo = "" + o.getId();
+
+                if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( o ) )
                     maxOULevel = organisationUnitService.getLevelOfOrganisationUnit( o );
-                
-                if(minOULevel > organisationUnitService.getLevelOfOrganisationUnit( o ))
+
+                if ( minOULevel > organisationUnitService.getLevelOfOrganisationUnit( o ) )
                     minOULevel = organisationUnitService.getLevelOfOrganisationUnit( o );
-                    
+
                 dso = ds.getSources();
                 periodIterator = periodList.iterator();
-                
+
                 Period p;
                 Collection dataValueResult;
                 double dataStatusPercentatge;
-                
+
                 while ( periodIterator.hasNext() )
-                {                    
+                {
                     p = (Period) periodIterator.next();
-                    periodInfo = ""+p.getId();
-                    
+                    periodInfo = "" + p.getId();
+
                     PreparedStatement ps1 = null;
                     ResultSet rs1 = null;
                     String query = "";
-                                                                               
+
                     if ( dso == null )
                     {
                         results.add( -1 );
                         continue;
                     }
-                    else if(!dso.contains( o ))
-                    {                        
+                    else if ( !dso.contains( o ) )
+                    {
                         orgUnitInfo = "-1";
                         orgUnitCount = 0;
-                        getOrgUnitInfo(o, dso);
-                        
-                        query = "SELECT sourceid, dataelementid, periodid, comment FROM "+ dataTableName +" WHERE dataelementid IN ("+deInfo+") AND sourceid IN ("+orgUnitInfo+") AND periodid IN ("+periodInfo+")";
-                        ps1 = con.prepareStatement(query);
-                        rs1 = ps1.executeQuery(query);
-                        
-                        while(rs1.next())
+                        getOrgUnitInfo( o, dso );
+
+                        query = "SELECT sourceid, dataelementid, periodid, comment FROM " + dataTableName
+                            + " WHERE dataelementid IN (" + deInfo + ") AND sourceid IN (" + orgUnitInfo
+                            + ") AND periodid IN (" + periodInfo + ")";
+                        ps1 = con.prepareStatement( query );
+                        rs1 = ps1.executeQuery( query );
+
+                        while ( rs1.next() )
                         {
                             OrganisationUnit ou = organisationUnitService.getOrganisationUnit( rs1.getInt( 1 ) );
-                            DataElement de = dataElementService.getDataElement( rs1.getInt( 2 ));
-                            Period per = periodStore.getPeriod( rs1.getInt(3) );
-                            
-                            String tempStr = ou.getShortName() + " --- " + de.getName(); 
-                        }                            
-                        
-                        
-                        //results.add( new Integer( (int) dataStatusPercentatge ) );
+                            DataElement de = dataElementService.getDataElement( rs1.getInt( 2 ) );
+                            Period per = periodService.getPeriod( rs1.getInt( 3 ) );
+
+                            String tempStr = ou.getShortName() + " --- " + de.getName();
+                        }
+
+                        // results.add( new Integer( (int) dataStatusPercentatge
+                        // ) );
                         continue;
                     }
-                    
-                    /*
-                    dataValueResult = dataValueService.getDataValues( o, p, dataElements );
-                    dataStatusPercentatge = ((double) dataValueResult.size() / (double) dataElements.size()) * 100.0;
-                 
-                    */
-                    
-                    orgUnitInfo = ""+ o.getId();
-                    query = "SELECT COUNT(*) FROM "+ dataTableName +" WHERE dataelementid IN ("+deInfo+") AND sourceid IN ("+orgUnitInfo+") AND periodid IN ("+periodInfo+")";
-                    ps1 = con.prepareStatement(query);
-                    rs1 = ps1.executeQuery(query);
 
-                    if(rs1.next())
+                    /*
+                     * dataValueResult = dataValueService.getDataValues( o, p,
+                     * dataElements ); dataStatusPercentatge = ((double)
+                     * dataValueResult.size() / (double) dataElements.size())
+                     * 100.0;
+                     */
+
+                    orgUnitInfo = "" + o.getId();
+                    query = "SELECT COUNT(*) FROM " + dataTableName + " WHERE dataelementid IN (" + deInfo
+                        + ") AND sourceid IN (" + orgUnitInfo + ") AND periodid IN (" + periodInfo + ")";
+                    ps1 = con.prepareStatement( query );
+                    rs1 = ps1.executeQuery( query );
+
+                    if ( rs1.next() )
                     {
                         try
                         {
-                            dataStatusPercentatge = ((double) rs1.getInt( 1 ) / (double) dataElements.size())*100.0;    
+                            dataStatusPercentatge = ((double) rs1.getInt( 1 ) / (double) dataElements.size()) * 100.0;
                         }
-                        catch(Exception e)
+                        catch ( Exception e )
                         {
                             dataStatusPercentatge = 0.0;
                         }
-                    }                            
+                    }
                     else
                         dataStatusPercentatge = 0.0;
-                   
-                    if(dataStatusPercentatge > 100.0) dataStatusPercentatge = 100;
-                    
-                    dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );                    
 
-                    results.add( ( int ) dataStatusPercentatge );
-                    
+                    if ( dataStatusPercentatge > 100.0 )
+                        dataStatusPercentatge = 100;
+
+                    dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
+
+                    results.add( (int) dataStatusPercentatge );
+
                     try
                     {
-                        
+
                     }
                     finally
                     {
                         try
                         {
-                            if(rs1 != null) rs1.close();
-                            if(ps1 != null) ps1.close();
+                            if ( rs1 != null )
+                                rs1.close();
+                            if ( ps1 != null )
+                                ps1.close();
                         }
-                        catch( Exception e )
+                        catch ( Exception e )
                         {
-                            System.out.println("Exception while closing Prepared Statement, ResultSet");
+                            System.out.println( "Exception while closing Prepared Statement, ResultSet" );
                         }
-                    }              
+                    }
 
-                    
                 }
                 // System.out.println( o.getShortName() );
             }
         }
 
         // For Level Names
-        String ouLevelNames[] = { " ", "State", "District", "Block", "PHC", "Subcentre"};
+        String ouLevelNames[] = { " ", "State", "District", "Block", "PHC", "Subcentre" };
         levelNames = new ArrayList<String>();
         int count1 = minOULevel;
         while ( count1 <= maxOULevel )
@@ -516,22 +520,23 @@ public class GenerateCommentsResultAction implements Action
 
         try
         {
-            
+
         }
         finally
         {
             try
             {
-                if(con != null) con.close();
+                if ( con != null )
+                    con.close();
             }
-            catch( Exception e )
+            catch ( Exception e )
             {
-                System.out.println("Exception while closing DB Connections : "+e.getMessage());
+                System.out.println( "Exception while closing DB Connections : " + e.getMessage() );
             }
         }// finally block end
 
         dashBoardService.deleteDataTable( dataTableName );
-        
+
         return SUCCESS;
     }
 
@@ -543,7 +548,7 @@ public class GenerateCommentsResultAction implements Action
 
         Collection<OrganisationUnit> children = orgUnit.getChildren();
 
-        Iterator childIterator = children.iterator();
+        Iterator<OrganisationUnit> childIterator = children.iterator();
         OrganisationUnit child;
         while ( childIterator.hasNext() )
         {
@@ -553,9 +558,8 @@ public class GenerateCommentsResultAction implements Action
         return orgUnitTree;
     }// getChildOrgUnitTree end
 
-
-    private void getOrgUnitInfo(OrganisationUnit organisationUnit)
-    {                
+    private void getOrgUnitInfo( OrganisationUnit organisationUnit )
+    {
         Collection<OrganisationUnit> children = organisationUnit.getChildren();
 
         Iterator<OrganisationUnit> childIterator = children.iterator();
@@ -564,12 +568,12 @@ public class GenerateCommentsResultAction implements Action
         {
             child = childIterator.next();
             orgUnitInfo += "," + child.getId();
-            getOrgUnitInfo( child);
-        }               
+            getOrgUnitInfo( child );
+        }
     }
 
-    private void getOrgUnitInfo(OrganisationUnit organisationUnit, Set<Source> dso)
-    {                
+    private void getOrgUnitInfo( OrganisationUnit organisationUnit, Set<Source> dso )
+    {
         Collection<OrganisationUnit> children = organisationUnit.getChildren();
 
         Iterator<OrganisationUnit> childIterator = children.iterator();
@@ -577,27 +581,24 @@ public class GenerateCommentsResultAction implements Action
         while ( childIterator.hasNext() )
         {
             child = childIterator.next();
-            if(dso.contains( child ))
+            if ( dso.contains( child ) )
             {
                 orgUnitInfo += "," + child.getId();
                 orgUnitCount++;
-            }            
+            }
             getOrgUnitInfo( child, dso );
-        }               
+        }
     }
 
-    
-    private String getDEInfo(Collection<DataElement> dataElements)
+    private String getDEInfo( Collection<DataElement> dataElements )
     {
         StringBuffer deInfo = new StringBuffer( "-1" );
-                        
-        for(DataElement de : dataElements)
+
+        for ( DataElement de : dataElements )
         {
             deInfo.append( "," ).append( de.getId() );
         }
         return deInfo.toString();
     }
 
-
-    
 }// class end

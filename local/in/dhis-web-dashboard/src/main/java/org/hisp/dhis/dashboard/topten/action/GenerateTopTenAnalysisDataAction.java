@@ -19,7 +19,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
@@ -45,11 +45,11 @@ public class GenerateTopTenAnalysisDataAction
         this.dataSetService = dataSetService;
     }
 
-    private PeriodStore periodStore;
+    private PeriodService periodService;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.periodStore = periodStore;
+        this.periodService = periodService;
     }
 
     private AggregationService aggregationService;
@@ -60,45 +60,45 @@ public class GenerateTopTenAnalysisDataAction
     }
 
     private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
-    
+
     public void setDataElementCategoryOptionComboService(
         DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
     {
         this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and Setters
     // -------------------------------------------------------------------------
     private Period startPeriod;
 
     private Period endPeriod;
-    
+
     private OrganisationUnit selectedOrgUnit;
-    
+
     private Map<String, String> optionComboNames;
 
     private String reportTitle;
-    
+
     public String getReportTitle()
     {
         return reportTitle;
     }
-    
+
     private List<String> dataList;
-    
+
     public List<String> getDataList()
     {
         return dataList;
     }
 
     private List<String> diseaseList;
-    
+
     public List<String> getDiseaseList()
     {
         return diseaseList;
     }
-    
+
     String chartTitle;
 
     public String getChartTitle()
@@ -147,7 +147,7 @@ public class GenerateTopTenAnalysisDataAction
     {
         return categories2;
     }
-    
+
     Double data1[][];
 
     public Double[][] getData1()
@@ -161,7 +161,6 @@ public class GenerateTopTenAnalysisDataAction
     {
         return data2;
     }
-
 
     /* Input Parameters */
 
@@ -204,42 +203,42 @@ public class GenerateTopTenAnalysisDataAction
         throws Exception
     {
         // Intialization
-        optionComboNames = new HashMap<String,String>();
-        dataList =  new ArrayList<String>();
+        optionComboNames = new HashMap<String, String>();
+        dataList = new ArrayList<String>();
         diseaseList = new ArrayList<String>();
         List<Double> completeValues = new ArrayList<Double>();
-        
-        
+
         // OrgUnit Related Info
         selectedOrgUnit = new OrganisationUnit();
         selectedOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
         chartTitle = "Facility : " + selectedOrgUnit.getShortName();
-        reportTitle = "TOP TEN DISEASE REPORT <br> Facililty : "+selectedOrgUnit.getShortName();
-        
+        reportTitle = "TOP TEN DISEASE REPORT <br> Facililty : " + selectedOrgUnit.getShortName();
+
         // Period Related Info
-        startPeriod = periodStore.getPeriod( sDateLB );
-        endPeriod = periodStore.getPeriod( eDateLB );
-        chartTitle += "\nPeriod : "+startPeriod.getStartDate()+ " To "+endPeriod.getEndDate();
-        reportTitle += "<br>Period : "+startPeriod.getStartDate()+ " To "+endPeriod.getEndDate()+"<br>";
-        
+        startPeriod = periodService.getPeriod( sDateLB );
+        endPeriod = periodService.getPeriod( eDateLB );
+        chartTitle += "\nPeriod : " + startPeriod.getStartDate() + " To " + endPeriod.getEndDate();
+        reportTitle += "<br>Period : " + startPeriod.getStartDate() + " To " + endPeriod.getEndDate() + "<br>";
+
         // DataSet Related Info
-        int dataSetId = Integer.parseInt( (String) availableDataSets.iterator().next());
+        int dataSetId = Integer.parseInt( (String) availableDataSets.iterator().next() );
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
-        List<DataElement> dataElementList = new ArrayList<DataElement>(dataSet.getDataElements());
+        List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
         List<DataElementCategoryOptionCombo> optionComboList = new ArrayList<DataElementCategoryOptionCombo>();
-        reportTitle += "DataSet : "+dataSet.getName()+"<br>OptionCombo : ";
-        
+        reportTitle += "DataSet : " + dataSet.getName() + "<br>OptionCombo : ";
+
         double[] sortedValues = new double[dataElementList.size()];
         DataElement[] dataElementNames = new DataElement[dataElementList.size()];
-                                           
+
         Iterator<String> optionComboIterator = availableOptionCombos.iterator();
-        while(optionComboIterator.hasNext())
+        while ( optionComboIterator.hasNext() )
         {
-            int optionComboId = Integer.parseInt( (String ) optionComboIterator.next());
-            DataElementCategoryOptionCombo dcoc = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
-            
+            int optionComboId = Integer.parseInt( (String) optionComboIterator.next() );
+            DataElementCategoryOptionCombo dcoc = dataElementCategoryOptionComboService
+                .getDataElementCategoryOptionCombo( optionComboId );
+
             StringBuffer optionComboName = new StringBuffer();
-            
+
             List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>( dcoc
                 .getCategoryOptions() );
             Iterator<DataElementCategoryOption> categoryOptionsIterator = categoryOptions.iterator();
@@ -247,61 +246,62 @@ public class GenerateTopTenAnalysisDataAction
             {
                 DataElementCategoryOption categoryOption = categoryOptionsIterator.next();
                 optionComboName.append( categoryOption.getName() ).append( " " );
-            }            
-            
-            reportTitle += optionComboName+", ";
-            optionComboNames.put( ""+dcoc.getId(), optionComboName.toString() );                        
+            }
+
+            reportTitle += optionComboName + ", ";
+            optionComboNames.put( "" + dcoc.getId(), optionComboName.toString() );
             optionComboList.add( dcoc );
         }
 
         int count = 0;
-        
-        
-        Iterator<DataElement> dataElementListIterator =  dataElementList.iterator();
-        while(dataElementListIterator.hasNext())
+
+        Iterator<DataElement> dataElementListIterator = dataElementList.iterator();
+        while ( dataElementListIterator.hasNext() )
         {
             DataElement dataElement = (DataElement) dataElementListIterator.next();
-            
+
             double aggDataValue = 0.0;
-            
+
             Iterator<DataElementCategoryOptionCombo> optionComboListIterator = optionComboList.iterator();
             while ( optionComboListIterator.hasNext() )
             {
                 DataElementCategoryOptionCombo decoc = (DataElementCategoryOptionCombo) optionComboListIterator.next();
-                double tempValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startPeriod.getStartDate(), endPeriod.getEndDate(), selectedOrgUnit );
-                if ( tempValue != -1 ) aggDataValue += tempValue;
+                double tempValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startPeriod
+                    .getStartDate(), endPeriod.getEndDate(), selectedOrgUnit );
+                if ( tempValue != -1 )
+                    aggDataValue += tempValue;
             }
-            //System.out.println("DataElementid : "+dataElement.getId()+"AggValue : "+aggDataValue);
-            for(int i=0; i < count ; i++)
+            // System.out.println("DataElementid : "+dataElement.getId()+"AggValue : "+aggDataValue);
+            for ( int i = 0; i < count; i++ )
             {
-                if(aggDataValue > sortedValues[i])
+                if ( aggDataValue > sortedValues[i] )
                 {
                     double temp = aggDataValue;
                     aggDataValue = sortedValues[i];
                     sortedValues[i] = temp;
-                    
+
                     DataElement tempDE = dataElement;
                     dataElement = dataElementNames[i];
-                    dataElementNames[i] = tempDE;                    
+                    dataElementNames[i] = tempDE;
                 }
             }
-            
+
             sortedValues[count] = aggDataValue;
-            dataElementNames[count] = dataElement;            
+            dataElementNames[count] = dataElement;
             count++;
-            //completeValues.add( aggDataValue );            
-        }        
-        
+            // completeValues.add( aggDataValue );
+        }
+
         xAxis_Title = "Diseases";
         yAxis_Title = "Values";
-        
+
         series1 = new String[1];
         series2 = new String[1];
-        
-        series1[0] = startPeriod.getStartDate()+" TO "+endPeriod.getEndDate();
-        series2[0] = selectedOrgUnit.getName();                        
-        
-        if(sortedValues.length < 10)
+
+        series1[0] = startPeriod.getStartDate() + " TO " + endPeriod.getEndDate();
+        series2[0] = selectedOrgUnit.getName();
+
+        if ( sortedValues.length < 10 )
         {
             data1 = new Double[1][sortedValues.length];
             data2 = new Double[1][sortedValues.length];
@@ -315,21 +315,21 @@ public class GenerateTopTenAnalysisDataAction
             categories1 = new String[10];
             categories2 = new String[10];
         }
-        
-        int j=0;
-        while( j<categories1.length)
+
+        int j = 0;
+        while ( j < categories1.length )
         {
             data1[0][j] = sortedValues[j];
             data2[0][j] = 0.0;
-            dataList.add( String.valueOf( sortedValues[j]) );
-            
+            dataList.add( String.valueOf( sortedValues[j] ) );
+
             categories1[j] = dataElementNames[j].getName();
             categories2[j] = dataElementNames[j].getName();
-            
+
             diseaseList.add( dataElementNames[j].getName() );
             j++;
         }
-        
+
         ActionContext ctx = ActionContext.getContext();
         HttpServletRequest req = (HttpServletRequest) ctx.get( ServletActionContext.HTTP_REQUEST );
 
@@ -344,14 +344,7 @@ public class GenerateTopTenAnalysisDataAction
         session.setAttribute( "xAxisTitle", xAxis_Title );
         session.setAttribute( "yAxisTitle", yAxis_Title );
 
-        
         return SUCCESS;
     }
-
-    
-
-   
-
-  
 
 }

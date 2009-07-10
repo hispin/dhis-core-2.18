@@ -5,15 +5,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetStore;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
-import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
-import org.hisp.dhis.util.comparator.PeriodStartDateComparator;
 
 import com.opensymphony.xwork.Action;
 
@@ -22,18 +17,12 @@ public class GenerateGroupWiseDataStatusFormAction
 {
 
     /* Dependencies */
-    private PeriodStore periodStore;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.periodStore = periodStore;
-    }
-
-    private DataSetStore dataSetStore;
-
-    public void setDataSetStore( DataSetStore dataSetStore )
-    {
-        this.dataSetStore = dataSetStore;
+        this.dataSetService = dataSetService;
     }
 
     /* Output Parameters */
@@ -62,18 +51,12 @@ public class GenerateGroupWiseDataStatusFormAction
         throws Exception
     {
         /* DataSet List */
-        
-        dataSetList = new ArrayList<DataSet>( dataSetStore.getAllDataSets() );
-        
-        Collections.sort( dataSetList, new DataSetNameComparator() );
 
-        /* Monthly Periods */
-        //monthlyPeriods = new ArrayList<Period>( periodStore.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
-        //Collections.sort( monthlyPeriods, new PeriodStartDateComparator() );
-        //simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+        dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+
+        Collections.sort( dataSetList, new DataSetNameComparator() );
 
         return SUCCESS;
     }
- 
 
 }// class end

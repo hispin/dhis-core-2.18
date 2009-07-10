@@ -7,24 +7,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JOptionPane;
-
-import org.apache.velocity.VelocityContext;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetStore;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.comparator.PeriodComparator;
 
 import com.opensymphony.xwork.Action;
 
@@ -36,21 +32,21 @@ public class GenerateNullReporterResultAction
     // ---------------------------------------------------------------
     // Dependencies
     // ---------------------------------------------------------------
-	
-	private AggregationService aggregationService;
-	
-	public void setAggregationService(AggregationService aggregationService) 
-	{
-		this.aggregationService = aggregationService;
-	}
 
-	private DataElementService dataElementService;
+    private AggregationService aggregationService;
 
-	public void setDataElementService( DataElementService dataElementService )
-	{
-		this.dataElementService = dataElementService;
-	}
-	    
+    public void setAggregationService( AggregationService aggregationService )
+    {
+        this.aggregationService = aggregationService;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -63,23 +59,23 @@ public class GenerateNullReporterResultAction
         return organisationUnitService;
     }
 
-    private PeriodStore periodStore;
+    private PeriodService periodService;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.periodStore = periodStore;
+        this.periodService = periodService;
     }
 
-    private DataSetStore dataSetStore;
+    private DataSetService dataSetService;
 
-    public void setDataSetStore( DataSetStore dataSetStore )
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.dataSetStore = dataSetStore;
+        this.dataSetService = dataSetService;
     }
 
-    public DataSetStore getDataSetStore()
+    public DataSetService getDataSetService()
     {
-        return dataSetStore;
+        return dataSetService;
     }
 
     private DataValueService dataValueService;
@@ -136,23 +132,22 @@ public class GenerateNullReporterResultAction
     }
 
     private int maxOULevel;
-    
+
     public int getMaxOULevel()
     {
         return maxOULevel;
     }
 
-    
     // ---------------------------------------------------------------
     // Input Parameters
     // ---------------------------------------------------------------
 
-    private String ouIDTB;    
+    private String ouIDTB;
 
-    public void setOuIDTB(String ouIDTB) 
+    public void setOuIDTB( String ouIDTB )
     {
-		this.ouIDTB = ouIDTB;
-	}
+        this.ouIDTB = ouIDTB;
+    }
 
     private int sDateLB;
 
@@ -165,7 +160,7 @@ public class GenerateNullReporterResultAction
     {
         return sDateLB;
     }
-    
+
     private int eDateLB;
 
     public void setEDateLB( int dateLB )
@@ -187,177 +182,184 @@ public class GenerateNullReporterResultAction
 
     private List<String> selectedDataElements;
 
-    public void setSelectedDataElements(List<String> selectedDataElements) {
-		this.selectedDataElements = selectedDataElements;
-	}
+    public void setSelectedDataElements( List<String> selectedDataElements )
+    {
+        this.selectedDataElements = selectedDataElements;
+    }
 
-	public List<String> getSelectedDataElements() {
-		return selectedDataElements;
-	}
-    
+    public List<String> getSelectedDataElements()
+    {
+        return selectedDataElements;
+    }
+
     private int minOULevel;
-            
+
     public int getMinOULevel()
     {
         return minOULevel;
     }
-    
+
     private Map<DataElement, PeriodType> dePeriodTypeMap;
 
-	public Map<DataElement, PeriodType> getDePeriodTypeMap() {
-		return dePeriodTypeMap;
-	}
+    public Map<DataElement, PeriodType> getDePeriodTypeMap()
+    {
+        return dePeriodTypeMap;
+    }
 
-	private Map<OrganisationUnit , Map<Period, List<DataElement>>> nullReportResult;
-	
-	public Map<OrganisationUnit , Map<Period, List<DataElement>>> getNullReportResult() 
-	{
-		return nullReportResult;
-	}
-	
-	private Map<Period, List<DataElement>> periodDeListMap;
+    private Map<OrganisationUnit, Map<Period, List<DataElement>>> nullReportResult;
 
-	public Map<Period, List<DataElement>> getPeriodDeListMap() {
-		return periodDeListMap;
-	}
-	
-	private int size; 
-	
-	public int getSize()
-	{
-		return size;
-	}
-	
-	List<DataSet> dataSetList;
-	
-	public List<DataSet> getDataSetList()
+    public Map<OrganisationUnit, Map<Period, List<DataElement>>> getNullReportResult()
+    {
+        return nullReportResult;
+    }
+
+    private Map<Period, List<DataElement>> periodDeListMap;
+
+    public Map<Period, List<DataElement>> getPeriodDeListMap()
+    {
+        return periodDeListMap;
+    }
+
+    private int size;
+
+    public int getSize()
+    {
+        return size;
+    }
+
+    List<DataSet> dataSetList;
+
+    public List<DataSet> getDataSetList()
     {
         return dataSetList;
     }
-    
-	private List<Period> periodsColl;
-	
-	public List<Period> getPeriodsColl()
+
+    private List<Period> periodsColl;
+
+    public List<Period> getPeriodsColl()
     {
         return periodsColl;
     }
-	
-	private SimpleDateFormat simpleDateFormat;
+
+    private SimpleDateFormat simpleDateFormat;
 
     public SimpleDateFormat getSimpleDateFormat()
     {
         return simpleDateFormat;
     }
-    
+
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
-	public String execute()
+    public String execute()
         throws Exception
     {
-		//VelocityContext context = new VelocityContext();
-		simpleDateFormat = new SimpleDateFormat( "MMM y" );
-		
-    	nullReportResult = new HashMap<OrganisationUnit , Map<Period, List<DataElement>>>();
+        // VelocityContext context = new VelocityContext();
+        simpleDateFormat = new SimpleDateFormat( "MMM y" );
+
+        nullReportResult = new HashMap<OrganisationUnit, Map<Period, List<DataElement>>>();
 
         // OrgUnit Related Info
-        
-        OrganisationUnit selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt(ouIDTB));
-        System.out.println("OUIDTB : "+ouIDTB);
+
+        OrganisationUnit selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( ouIDTB ) );
+        System.out.println( "OUIDTB : " + ouIDTB );
         orgUnitList = new ArrayList<OrganisationUnit>();
-        
-        if ( facilityLB.equalsIgnoreCase("selected") )
+
+        if ( facilityLB.equalsIgnoreCase( "selected" ) )
         {
-        	orgUnitList.add( selectedOrgUnit );
+            orgUnitList.add( selectedOrgUnit );
         }
         else
-        {        	
-        	orgUnitList = new ArrayList<OrganisationUnit>( selectedOrgUnit.getChildren() );
+        {
+            orgUnitList = new ArrayList<OrganisationUnit>( selectedOrgUnit.getChildren() );
         }
-        
-        Period startDate = periodStore.getPeriod(sDateLB);
-        Period endDate = periodStore.getPeriod(eDateLB);
-       
-        //orgUnitList = new ArrayList<OrganisationUnit>();
+
+        Period startDate = periodService.getPeriod( sDateLB );
+        Period endDate = periodService.getPeriod( eDateLB );
+
+        // orgUnitList = new ArrayList<OrganisationUnit>();
         List<DataElement> deList = new ArrayList<DataElement>();
-        
-       dePeriodTypeMap = new HashMap<DataElement,PeriodType>();
-       periodDeListMap = new HashMap<Period, List<DataElement>>();     
-       
-       for( String deid : selectedDataElements )
-       {
-    	   DataElement de1 = dataElementService.getDataElement( Integer.parseInt( deid ) );
-    	  
-       	
-    	   dataSetList = new ArrayList<DataSet>( dataSetStore.getAllDataSets() );
-       	
-    	   int flag = 0;
-    	   for( DataSet ds : dataSetList )
-    	   {
-    		   if( ds.getDataElements().contains( de1 ) )
-    		   {
-    			   dePeriodTypeMap.put( de1, ds.getPeriodType() );  
-    			   flag = 1;
-    			   break;
-    		   }
-    	   }
-       		if(flag ==0 )
-       		{
-       			dePeriodTypeMap.put( de1, new MonthlyPeriodType() );      			
-       		}
-       		
-       		deList.add( de1 );
-       }       
-       
-       periodsColl = new ArrayList<Period>(periodStore.getIntersectingPeriods( startDate.getStartDate(), endDate.getEndDate() ) );
-       size = periodsColl.size();
-       Collections.sort(periodsColl, new PeriodTypeComparator());
-       
-       
-       for( OrganisationUnit curOu : orgUnitList )
-		{
-			for( Period p : periodsColl )
-			{	
-				List<DataElement> resultDeList = new ArrayList<DataElement>();
-				
-				for( DataElement de : deList )
-		        {	
-					
-					if((dePeriodTypeMap.get(de).equals( p.getPeriodType() )))
-					{
-						double aggValue = 0.0;
-						if ( facilityLB.equalsIgnoreCase("selected") )
-				        {
-							List<DataElementCategoryOptionCombo> decocList = new ArrayList<DataElementCategoryOptionCombo>(de.getCategoryCombo().getOptionCombos());
-							for( DataElementCategoryOptionCombo decoc : decocList )
-							{
-								double tempVal = aggregationService.getAggregatedDataValue(de, decoc, p.getStartDate(), p.getEndDate(), selectedOrgUnit);
-								if(tempVal > 0 ) 
-									aggValue += tempVal;
-							}
-							
-							if( aggValue <= 0.0) resultDeList.add( de );
-				        }
-						else
-						{					
-							DataValue dataValue = dataValueService.getDataValue(curOu, de, p);
-							
-							if(dataValue == null)
-							{
-								resultDeList.add( de );
-							}
-						 	
-						}
-					}
-		        }
-				if(resultDeList.size()!=0){
-					periodDeListMap.put(p, resultDeList);
-					nullReportResult.put(curOu,periodDeListMap);
-				}
-			}
-		}
-    
+
+        dePeriodTypeMap = new HashMap<DataElement, PeriodType>();
+        periodDeListMap = new HashMap<Period, List<DataElement>>();
+
+        for ( String deid : selectedDataElements )
+        {
+            DataElement de1 = dataElementService.getDataElement( Integer.parseInt( deid ) );
+
+            dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+
+            int flag = 0;
+            for ( DataSet ds : dataSetList )
+            {
+                if ( ds.getDataElements().contains( de1 ) )
+                {
+                    dePeriodTypeMap.put( de1, ds.getPeriodType() );
+                    flag = 1;
+                    break;
+                }
+            }
+            if ( flag == 0 )
+            {
+                dePeriodTypeMap.put( de1, new MonthlyPeriodType() );
+            }
+
+            deList.add( de1 );
+        }
+
+        periodsColl = new ArrayList<Period>( periodService.getIntersectingPeriods( startDate.getStartDate(), endDate
+            .getEndDate() ) );
+        size = periodsColl.size();
+        Collections.sort( periodsColl, new PeriodTypeComparator() );
+
+        for ( OrganisationUnit curOu : orgUnitList )
+        {
+            for ( Period p : periodsColl )
+            {
+                List<DataElement> resultDeList = new ArrayList<DataElement>();
+
+                for ( DataElement de : deList )
+                {
+
+                    if ( (dePeriodTypeMap.get( de ).equals( p.getPeriodType() )) )
+                    {
+                        double aggValue = 0.0;
+                        if ( facilityLB.equalsIgnoreCase( "selected" ) )
+                        {
+                            List<DataElementCategoryOptionCombo> decocList = new ArrayList<DataElementCategoryOptionCombo>(
+                                de.getCategoryCombo().getOptionCombos() );
+                            for ( DataElementCategoryOptionCombo decoc : decocList )
+                            {
+                                double tempVal = aggregationService.getAggregatedDataValue( de, decoc,
+                                    p.getStartDate(), p.getEndDate(), selectedOrgUnit );
+                                if ( tempVal > 0 )
+                                    aggValue += tempVal;
+                            }
+
+                            if ( aggValue <= 0.0 )
+                                resultDeList.add( de );
+                        }
+                        else
+                        {
+                            DataValue dataValue = dataValueService.getDataValue( curOu, de, p );
+
+                            if ( dataValue == null )
+                            {
+                                resultDeList.add( de );
+                            }
+
+                        }
+                    }
+                }
+                if ( resultDeList.size() != 0 )
+                {
+                    periodDeListMap.put( p, resultDeList );
+                    nullReportResult.put( curOu, periodDeListMap );
+                }
+            }
+        }
+
         return SUCCESS;
     }
-	
+
 }

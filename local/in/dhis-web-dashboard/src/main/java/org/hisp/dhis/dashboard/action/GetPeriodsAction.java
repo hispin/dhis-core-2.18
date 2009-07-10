@@ -38,14 +38,14 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: GetPeriodsAction.java 3272 2007-04-26 22:22:50Z larshelg $
  */
 public class GetPeriodsAction
-    extends ActionSupport
+    implements Action
 {
     private final String ALL = "null";
 
@@ -79,16 +79,16 @@ public class GetPeriodsAction
     }
 
     private List<String> periodNameList;
-    
-	public List<String> getPeriodNameList() 
-	{
-		return periodNameList;
-	}
-    
+
+    public List<String> getPeriodNameList()
+    {
+        return periodNameList;
+    }
+
     private SimpleDateFormat simpleDateFormat1;
 
     private SimpleDateFormat simpleDateFormat2;
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -96,8 +96,8 @@ public class GetPeriodsAction
     public String execute()
         throws Exception
     {
-    	periodNameList = new ArrayList<String>();
-    	
+        periodNameList = new ArrayList<String>();
+
         if ( id.equals( ALL ) )
         {
             Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
@@ -108,56 +108,56 @@ public class GetPeriodsAction
             {
                 periods.addAll( periodService.getPeriodsByPeriodType( type ) );
             }
-            Collections.sort(periods, new PeriodComparator() );
+            Collections.sort( periods, new PeriodComparator() );
         }
         else
-        {        	        	
+        {
             PeriodType periodType = periodService.getPeriodType( Integer.parseInt( id ) );
 
-            periods = new ArrayList<Period>(periodService.getPeriodsByPeriodType( periodType ));
-            
-            Collections.sort(periods, new PeriodComparator() );
-            
-            if(periodType.getName().equalsIgnoreCase("monthly"))
+            periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( periodType ) );
+
+            Collections.sort( periods, new PeriodComparator() );
+
+            if ( periodType.getName().equalsIgnoreCase( "monthly" ) )
             {
-            	simpleDateFormat1 = new SimpleDateFormat( "MMM-yyyy" );
-            	for(Period p1 : periods)
-            	{
-            		periodNameList.add( simpleDateFormat1.format(p1.getStartDate() ) ); 
-            	}
+                simpleDateFormat1 = new SimpleDateFormat( "MMM-yyyy" );
+                for ( Period p1 : periods )
+                {
+                    periodNameList.add( simpleDateFormat1.format( p1.getStartDate() ) );
+                }
             }
-            else if(periodType.getName().equalsIgnoreCase("quarterly"))
+            else if ( periodType.getName().equalsIgnoreCase( "quarterly" ) )
             {
-            	simpleDateFormat1 = new SimpleDateFormat( "MMM" );
-            	simpleDateFormat2 = new SimpleDateFormat( "MMM yyyy" );
-            	
-            	for(Period p1 : periods)
-            	{
-            		String tempPeriodName = simpleDateFormat1.format( p1.getStartDate() ) + " - " + simpleDateFormat2.format( p1.getEndDate() ); 
-            		periodNameList.add( tempPeriodName ); 
-            	}
+                simpleDateFormat1 = new SimpleDateFormat( "MMM" );
+                simpleDateFormat2 = new SimpleDateFormat( "MMM yyyy" );
+
+                for ( Period p1 : periods )
+                {
+                    String tempPeriodName = simpleDateFormat1.format( p1.getStartDate() ) + " - "
+                        + simpleDateFormat2.format( p1.getEndDate() );
+                    periodNameList.add( tempPeriodName );
+                }
             }
-            else if(periodType.getName().equalsIgnoreCase("yearly"))
+            else if ( periodType.getName().equalsIgnoreCase( "yearly" ) )
             {
-            	simpleDateFormat1 = new SimpleDateFormat( "yyyy" );
-            	for(Period p1 : periods)
-            	{
-            		periodNameList.add( simpleDateFormat1.format(p1.getStartDate() ) ); 
-            	}
+                simpleDateFormat1 = new SimpleDateFormat( "yyyy" );
+                for ( Period p1 : periods )
+                {
+                    periodNameList.add( simpleDateFormat1.format( p1.getStartDate() ) );
+                }
             }
             else
             {
-            	simpleDateFormat1 = new SimpleDateFormat( "yyyy-mm-dd" );
-            	for(Period p1 : periods)
-            	{
-            		String tempPeriodName = simpleDateFormat1.format( p1.getStartDate() ) + " - " + simpleDateFormat1.format( p1.getEndDate() ); 
-            		periodNameList.add( tempPeriodName ); 
-            	}
+                simpleDateFormat1 = new SimpleDateFormat( "yyyy-mm-dd" );
+                for ( Period p1 : periods )
+                {
+                    String tempPeriodName = simpleDateFormat1.format( p1.getStartDate() ) + " - "
+                        + simpleDateFormat1.format( p1.getEndDate() );
+                    periodNameList.add( tempPeriodName );
+                }
             }
         }
 
-        
-        
         return SUCCESS;
     }
 

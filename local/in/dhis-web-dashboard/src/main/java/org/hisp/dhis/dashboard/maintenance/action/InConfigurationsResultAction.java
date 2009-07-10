@@ -4,7 +4,8 @@ import org.hisp.dhis.dashboard.util.DashBoardService;
 
 import com.opensymphony.xwork.Action;
 
-public class InConfigurationsResultAction implements Action
+public class InConfigurationsResultAction
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -23,28 +24,29 @@ public class InConfigurationsResultAction implements Action
     // -------------------------------------------------------------------------
 
     private String mysqlPath;
-    
+
     public void setMysqlPath( String mysqlPath )
     {
         this.mysqlPath = mysqlPath;
     }
-    
+
     private String rootDataPath;
-    
+
     public void setRootDataPath( String rootDataPath )
     {
         this.rootDataPath = rootDataPath;
     }
-        
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
 
         dashBoardService.setUserdefinedConfigurations( mysqlPath, rootDataPath );
-        
+
         return SUCCESS;
     }
 

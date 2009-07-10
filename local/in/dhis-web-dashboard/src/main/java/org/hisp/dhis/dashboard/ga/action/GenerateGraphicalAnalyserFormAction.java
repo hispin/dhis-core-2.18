@@ -31,7 +31,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.dashboard.util.PeriodStartDateComparator;
@@ -39,24 +38,21 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
-import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
-import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork.Action;
 
 public class GenerateGraphicalAnalyserFormAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -76,39 +72,20 @@ public class GenerateGraphicalAnalyserFormAction
         this.dataElementService = dataElementService;
     }
 
-    private PeriodStore periodStore;
+    private PeriodService periodService;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.periodStore = periodStore;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
+        this.periodService = periodService;
     }
 
     private OrganisationUnitGroupService organisationUnitGroupService;
-    
+
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-    
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
 
-    private Comparator<DataElementGroup> dataElementGroupComparator;
-
-    public void setDataElementGroupComparator( Comparator<DataElementGroup> dataElementGroupComparator )
-    {
-        this.dataElementGroupComparator = dataElementGroupComparator;
-    }
-
-    
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
@@ -177,7 +154,6 @@ public class GenerateGraphicalAnalyserFormAction
         return organisationUnitGroupSets;
     }
 
-    
     private List<Period> monthlyPeriods;
 
     public List<Period> getMonthlyPeriods()
@@ -196,25 +172,28 @@ public class GenerateGraphicalAnalyserFormAction
         throws Exception
     {
         /* OrganisationUnit */
-        //organisationUnits = organisationUnitService.getAllOrganisationUnits();
+        // organisationUnits =
+        // organisationUnitService.getAllOrganisationUnits();
         organisationUnitGroupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
-        
-        /* DataElements and Groups */
-        //dataElements = new ArrayList<DataElement>(dataElementService.getAllDataElements());
-        dataElementGroups = new ArrayList<DataElementGroup>(dataElementService.getAllDataElementGroups());
 
-        //Collections.sort(dataElements, new DataElementNameComparator());
+        /* DataElements and Groups */
+        // dataElements = new
+        // ArrayList<DataElement>(dataElementService.getAllDataElements());
+        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+
+        // Collections.sort(dataElements, new DataElementNameComparator());
         Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
-        
+
         /* Indicators and Groups */
-        //indicators = new ArrayList<Indicator>(indicatorService.getAllIndicators());
-        indicatorGroups = new ArrayList<IndicatorGroup>(indicatorService.getAllIndicatorGroups());
-        
-        //Collections.sort(indicators, new IndicatorNameComparator());
-        Collections.sort(indicatorGroups, new IndicatorGroupNameComparator());
-        
+        // indicators = new
+        // ArrayList<Indicator>(indicatorService.getAllIndicators());
+        indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
+
+        // Collections.sort(indicators, new IndicatorNameComparator());
+        Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
+
         /* Monthly Periods */
-        monthlyPeriods = new ArrayList<Period>( periodStore.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
+        monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
         Collections.sort( monthlyPeriods, new PeriodStartDateComparator() );
         simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
 
