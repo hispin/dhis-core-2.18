@@ -44,13 +44,14 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork.Action;
 
-public class GenerateSurveyAnalysisFormAction extends ActionSupport
+public class GenerateSurveyAnalysisFormAction
+    implements Action
 {
-    //  -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
@@ -68,11 +69,11 @@ public class GenerateSurveyAnalysisFormAction extends ActionSupport
         this.dataElementService = dataElementService;
     }
 
-    private PeriodStore periodStore;
+    private PeriodService periodService;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.periodStore = periodStore;
+        this.periodService = periodService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -172,7 +173,7 @@ public class GenerateSurveyAnalysisFormAction extends ActionSupport
         indicatorGroups = indicatorService.getAllIndicatorGroups();
 
         /* Monthly Periods */
-        monthlyPeriods = new ArrayList<Period>( periodStore.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
+        monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
         Collections.sort( monthlyPeriods, new PeriodStartDateComparator() );
         simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
 

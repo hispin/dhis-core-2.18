@@ -41,7 +41,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 
 import com.opensymphony.xwork.Action;
 
@@ -57,11 +57,11 @@ public class GenerateTabularAnalysisResultAction
         this.organisationUnitService = organisationUnitService;
     }
 
-    private PeriodStore periodStore;
+    private PeriodService periodService;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.periodStore = periodStore;
+        this.periodService = periodService;
     }
 
     private DataElementService dataElementService;
@@ -163,8 +163,8 @@ public class GenerateTabularAnalysisResultAction
         }
 
         /* Period Info */
-        startPeriod = periodStore.getPeriod( sDateLB );
-        endPeriod = periodStore.getPeriod( eDateLB );
+        startPeriod = periodService.getPeriod( sDateLB );
+        endPeriod = periodService.getPeriod( eDateLB );
 
         /* Result Calculation Part */
         double rowTotal = 0.0;

@@ -43,7 +43,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork.Action;
@@ -56,11 +56,11 @@ public class GenerateTabularAnalysisFormAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PeriodStore periodStore;
+    private PeriodService periodService;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.periodStore = periodStore;
+        this.periodService = periodService;
     }
 
     private DataElementService dataElementService;
@@ -69,7 +69,7 @@ public class GenerateTabularAnalysisFormAction
     {
         this.dataElementService = dataElementService;
     }
-    
+
     private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
@@ -84,7 +84,6 @@ public class GenerateTabularAnalysisFormAction
         this.organisationUnitService = organisationUnitService;
     }
 
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -95,7 +94,7 @@ public class GenerateTabularAnalysisFormAction
     {
         return dataElements;
     }
-    
+
     private Collection<DataElementGroup> dataElementGroups;
 
     public Collection<DataElementGroup> getDataElementGroups()
@@ -104,27 +103,27 @@ public class GenerateTabularAnalysisFormAction
     }
 
     private Collection<Indicator> indicators;
-            
-    public Collection<Indicator> getIndicators() 
+
+    public Collection<Indicator> getIndicators()
     {
-		return indicators;
-	}
+        return indicators;
+    }
 
-	private Collection<IndicatorGroup> indicatorGroups;
-    
-	public Collection<IndicatorGroup> getIndicatorGroups() 
-	{
-		return indicatorGroups;
-	}
+    private Collection<IndicatorGroup> indicatorGroups;
 
-	private List<PeriodType> periodTypes;
-	
-	public List<PeriodType> getPeriodTypes() 
-	{
-		return periodTypes;
-	}
+    public Collection<IndicatorGroup> getIndicatorGroups()
+    {
+        return indicatorGroups;
+    }
 
-	private List<Period> monthlyPeriods;
+    private List<PeriodType> periodTypes;
+
+    public List<PeriodType> getPeriodTypes()
+    {
+        return periodTypes;
+    }
+
+    private List<Period> monthlyPeriods;
 
     public List<Period> getMonthlyPeriods()
     {
@@ -137,22 +136,22 @@ public class GenerateTabularAnalysisFormAction
     {
         return simpleDateFormat;
     }
-    
+
     private String monthlyPeriodTypeName;
-    
-    public String getMonthlyPeriodTypeName() 
+
+    public String getMonthlyPeriodTypeName()
     {
-		return monthlyPeriodTypeName;
-	}
+        return monthlyPeriodTypeName;
+    }
 
     private Integer maxOrgUnitLevels;
-    
-	public Integer getMaxOrgUnitLevels() 
-	{
-		return maxOrgUnitLevels;
-	}
 
-	public String execute()
+    public Integer getMaxOrgUnitLevels()
+    {
+        return maxOrgUnitLevels;
+    }
+
+    public String execute()
         throws Exception
     {
         /* DataElements and Groups */
@@ -162,19 +161,19 @@ public class GenerateTabularAnalysisFormAction
         /* Indicators and Groups */
         indicators = indicatorService.getAllIndicators();
         indicatorGroups = indicatorService.getAllIndicatorGroups();
-        
+
         /* Monthly Periods */
-        periodTypes = new ArrayList<PeriodType>( periodStore.getAllPeriodTypes() );
-        monthlyPeriods = new ArrayList<Period>( periodStore.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
+        periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
+        monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
         Collections.sort( monthlyPeriods, new PeriodStartDateComparator() );
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
         monthlyPeriodTypeName = MonthlyPeriodType.NAME;
-        
-        System.out.println(monthlyPeriodTypeName);
-        
+
+        System.out.println( monthlyPeriodTypeName );
+
         /* Organisationunit Levels */
         maxOrgUnitLevels = organisationUnitService.getNumberOfOrganisationalLevels();
-        
+
         return SUCCESS;
     }
 }

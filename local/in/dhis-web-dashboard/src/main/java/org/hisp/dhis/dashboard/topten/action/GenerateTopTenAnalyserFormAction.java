@@ -13,27 +13,28 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork.Action;
 
-public class GenerateTopTenAnalyserFormAction extends ActionSupport
+public class GenerateTopTenAnalyserFormAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
 
-    private PeriodStore periodStore;
+    private PeriodService periodService;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.periodStore = periodStore;
+        this.periodService = periodService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -42,7 +43,7 @@ public class GenerateTopTenAnalyserFormAction extends ActionSupport
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and Setters
     // -------------------------------------------------------------------------
@@ -74,7 +75,8 @@ public class GenerateTopTenAnalyserFormAction extends ActionSupport
         return simpleDateFormat;
     }
 
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
         /* OrganisationUnit */
         organisationUnits = organisationUnitService.getAllOrganisationUnits();
@@ -83,11 +85,11 @@ public class GenerateTopTenAnalyserFormAction extends ActionSupport
         dataSetList = dataSetService.getAllDataSets();
 
         /* Monthly Periods */
-        monthlyPeriods = new ArrayList<Period>( periodStore.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
+        monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
         Collections.sort( monthlyPeriods, new PeriodStartDateComparator() );
         simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
 
         return SUCCESS;
     }
-       
+
 }

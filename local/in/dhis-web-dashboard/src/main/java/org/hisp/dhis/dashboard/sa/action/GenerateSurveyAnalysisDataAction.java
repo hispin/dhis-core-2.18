@@ -45,7 +45,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
@@ -63,11 +63,11 @@ public class GenerateSurveyAnalysisDataAction
         this.organisationUnitService = organisationUnitService;
     }
 
-    private PeriodStore periodStore;
+    private PeriodService periodService;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.periodStore = periodStore;
+        this.periodService = periodService;
     }
 
     private IndicatorService indicatorService;
@@ -85,7 +85,7 @@ public class GenerateSurveyAnalysisDataAction
     }
 
     private DashBoardService dashBoardService;
-    
+
     public void setDashBoardService( DashBoardService dashBoardService )
     {
         this.dashBoardService = dashBoardService;
@@ -106,7 +106,7 @@ public class GenerateSurveyAnalysisDataAction
     private OrganisationUnit selectedOrgUnit;
 
     private List<Period> selectedPeriodList;
-    
+
     private List<Double> targetList;
 
     public List<Double> getTargetList()
@@ -115,12 +115,12 @@ public class GenerateSurveyAnalysisDataAction
     }
 
     private Integer indicatorListSize;
+
     public Integer getIndicatorListSize()
     {
         return indicatorListSize;
     }
-    
-    
+
     private List<Object> selectedServiceList;
 
     public List<Object> getSelectedServiceList()
@@ -241,8 +241,6 @@ public class GenerateSurveyAnalysisDataAction
         this.selectedIndicators = selectedIndicators;
     }
 
-    
-    
     private int sDateLB;
 
     public void setSDateLB( int dateLB )
@@ -268,7 +266,7 @@ public class GenerateSurveyAnalysisDataAction
     {
         return riRadio;
     }
-    
+
     private String selectedButton;
 
     public String getSelectedButton()
@@ -313,15 +311,14 @@ public class GenerateSurveyAnalysisDataAction
         xseriesList = new ArrayList<String>();
         yseriesList = new ArrayList<String>();
 
-        
-        if ( selectedIndicators == null || selectedIndicators.get( 0 ).equals( "EMPTY_PLACEHOLDER_VALUE" ))
+        if ( selectedIndicators == null || selectedIndicators.get( 0 ).equals( "EMPTY_PLACEHOLDER_VALUE" ) )
         {
             indicatorListSize = 0;
         }
         else
-        {            
+        {
             indicatorListSize = selectedIndicators.size();
-            System.out.println("First Indicator : "+ selectedIndicators.get( 0 ));
+            System.out.println( "First Indicator : " + selectedIndicators.get( 0 ) );
             Iterator indicatorIterator = selectedIndicators.iterator();
             while ( indicatorIterator.hasNext() )
             {
@@ -334,8 +331,8 @@ public class GenerateSurveyAnalysisDataAction
                 count1++;
             } // while loop end
         }
-        
-        if(selectedDataElements == null || selectedDataElements.get( 0 ).equals( "EMPTY_PLACEHOLDER_VALUE" ))
+
+        if ( selectedDataElements == null || selectedDataElements.get( 0 ).equals( "EMPTY_PLACEHOLDER_VALUE" ) )
         {
             ;
         }
@@ -351,35 +348,22 @@ public class GenerateSurveyAnalysisDataAction
             }
         }
 
-
         // Period Related Info
-        startPeriod = periodStore.getPeriod( sDateLB );
-        endPeriod = periodStore.getPeriod( eDateLB );
+        startPeriod = periodService.getPeriod( sDateLB );
+        endPeriod = periodService.getPeriod( eDateLB );
 
         /*
-        int monthlyPeriodTypeId = 0;
-        Collection periodTypes = periodStore.getAllPeriodTypes();
-        PeriodType monthlyPeriodType = null;
-        Iterator iter = periodTypes.iterator();
-        while ( iter.hasNext() )
-        {
-            PeriodType periodType = (PeriodType) iter.next();
-            if ( periodType.getName().toLowerCase().trim().equals( "monthly" ) )
-            {
-                monthlyPeriodType = periodType;
-                break;
-            }
-        }
-        if ( monthlyPeriodType != null )
-        {
-            System.out.println( "Monthly Period id : " + monthlyPeriodType.getId() );
-            monthlyPeriodTypeId = monthlyPeriodType.getId();
-        }
-        else
-        {
-            System.out.println( "Monthly Period Type is NULL" );
-        }
-        */
+         * int monthlyPeriodTypeId = 0; Collection periodTypes =
+         * periodStore.getAllPeriodTypes(); PeriodType monthlyPeriodType = null;
+         * Iterator iter = periodTypes.iterator(); while ( iter.hasNext() ) {
+         * PeriodType periodType = (PeriodType) iter.next(); if (
+         * periodType.getName().toLowerCase().trim().equals( "monthly" ) ) {
+         * monthlyPeriodType = periodType; break; } } if ( monthlyPeriodType !=
+         * null ) { System.out.println( "Monthly Period id : " +
+         * monthlyPeriodType.getId() ); monthlyPeriodTypeId =
+         * monthlyPeriodType.getId(); } else { System.out.println(
+         * "Monthly Period Type is NULL" ); }
+         */
         selectedPeriodList = dashBoardService.getMonthlyPeriods( startPeriod.getStartDate(), endPeriod.getEndDate() );
 
         if ( facilityLB.equals( "random" ) )
@@ -396,7 +380,7 @@ public class GenerateSurveyAnalysisDataAction
         data1 = getServiceValuesByFacility();
         xAxis_Title = "Facilities";
         yAxis_Title = "Value";
-        
+
         count1 = 0;
         while ( count1 != categories1.length )
         {
@@ -421,7 +405,6 @@ public class GenerateSurveyAnalysisDataAction
 
         return SUCCESS;
     }// execute end
-
 
     /*
      * Returns the period aggregated values for the children of selected orgunit
@@ -462,7 +445,7 @@ public class GenerateSurveyAnalysisDataAction
         series2 = new String[selectedServiceList.size()];
         categories1 = new String[childOrgUnitList.size()];
         categories2 = new String[childOrgUnitList.size()];
-        
+
         while ( serviceListIterator.hasNext() )
         {
             List<Double> dataValues = new ArrayList<Double>();
@@ -470,7 +453,7 @@ public class GenerateSurveyAnalysisDataAction
             {
                 riRadio = "indicatorsRadio";
                 ind = (Indicator) serviceListIterator.next();
-                //System.out.println( ind.getName() );
+                // System.out.println( ind.getName() );
                 series1[countForServiceList] = ind.getName();
                 series2[countForServiceList] = " ";
                 yseriesList.add( ind.getName() );
@@ -483,7 +466,7 @@ public class GenerateSurveyAnalysisDataAction
                 series2[countForServiceList] = " ";
                 yseriesList.add( dElement.getName() );
             }
-            
+
             Iterator childOrgUnitListIterator = childOrgUnitList.iterator();
             countForChildOrgUnitList = 0;
             while ( childOrgUnitListIterator.hasNext() )
@@ -506,13 +489,16 @@ public class GenerateSurveyAnalysisDataAction
 
                     Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
                     while ( optionComboIterator.hasNext() )
-                    {                        
-                        DataElementCategoryOptionCombo decoc = (DataElementCategoryOptionCombo) optionComboIterator.next();
+                    {
+                        DataElementCategoryOptionCombo decoc = (DataElementCategoryOptionCombo) optionComboIterator
+                            .next();
 
-                        aggDataValue = aggregationService.getAggregatedDataValue( dElement, decoc, startPeriod.getStartDate(), endPeriod.getEndDate(), childOrgUnit );
-                        if(aggDataValue == -1) aggDataValue = 0.0;
+                        aggDataValue = aggregationService.getAggregatedDataValue( dElement, decoc, startPeriod
+                            .getStartDate(), endPeriod.getEndDate(), childOrgUnit );
+                        if ( aggDataValue == -1 )
+                            aggDataValue = 0.0;
                         serviceValues[countForServiceList][countForChildOrgUnitList] += aggDataValue;
-                    }                    
+                    }
                 }
                 serviceValues[countForServiceList][countForChildOrgUnitList] = Math
                     .round( serviceValues[countForServiceList][countForChildOrgUnitList] * Math.pow( 10, 2 ) )
@@ -569,6 +555,4 @@ public class GenerateSurveyAnalysisDataAction
         return deNames;
     }// end function getIndicatorDataElements
 
-    
-    
 }// class end

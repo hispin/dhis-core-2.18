@@ -4,23 +4,24 @@ public class MaintenanceIN
 {
 
     public static final String KEY_MYSQLPATH = "mysqlpath";
+
     public static final String KEY_ROOTDATAPATH = "rootdatapath";
-    
+
     public static final String MYSQL_DEFAULT_PATH = "C:/DHIS2/mysql/bin";
 
     private String key;
 
     private String value;
-    
+
     public MaintenanceIN( String key, String value )
     {
         this.key = key;
         this.value = value;
     }
 
-    //---------------------------------------------------------------
+    // ---------------------------------------------------------------
     // Getters and Setters
-    //---------------------------------------------------------------
+    // ---------------------------------------------------------------
 
     public String getKey()
     {
@@ -41,5 +42,5 @@ public class MaintenanceIN
     {
         this.value = value;
     }
-          
+
 }

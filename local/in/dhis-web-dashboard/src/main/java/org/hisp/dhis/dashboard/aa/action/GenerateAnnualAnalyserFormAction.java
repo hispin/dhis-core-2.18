@@ -45,21 +45,20 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork.Action;
 
 public class GenerateAnnualAnalyserFormAction
-    extends ActionSupport
+    implements Action
 {
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
@@ -74,18 +73,11 @@ public class GenerateAnnualAnalyserFormAction
         this.dataElementService = dataElementService;
     }
 
-    private PeriodStore periodStore;
+    private PeriodService periodService;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.periodStore = periodStore;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
+        this.periodService = periodService;
     }
 
     // -------------------------------------------------------------------------
@@ -173,26 +165,23 @@ public class GenerateAnnualAnalyserFormAction
     public String execute()
         throws Exception
     {
-        /* OrganisationUnit */
-        //organisationUnits = organisationUnitService.getAllOrganisationUnits();
-
         /* DataElements and Groups */
-        dataElements = new ArrayList<DataElement>(dataElementService.getAllDataElements());
-        dataElementGroups = new ArrayList<DataElementGroup>(dataElementService.getAllDataElementGroups());
-        
+        dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+
         Collections.sort( dataElements, new DataElementNameComparator() );
         Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
 
         /* Indicators and Groups */
-        indicators = new ArrayList<Indicator>(indicatorService.getAllIndicators());
-        indicatorGroups = new ArrayList<IndicatorGroup>(indicatorService.getAllIndicatorGroups());
+        indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+        indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
 
         Collections.sort( indicators, new IndicatorNameComparator() );
         Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
-        
+
         /* Yearly Periods */
         PeriodType yearlyPeriodType = PeriodType.getPeriodTypeByName( "Yearly" );
-        yearlyPeriods = new ArrayList<Period>( periodStore.getPeriodsByPeriodType( yearlyPeriodType ) );
+        yearlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( yearlyPeriodType ) );
         Collections.sort( yearlyPeriods, new PeriodStartDateComparator() );
         simpleDateFormat = new SimpleDateFormat( "yyyy" );
 

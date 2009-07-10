@@ -136,7 +136,7 @@ public class DualAxisChart
         plot.setRenderer( 1, renderer2 );
         plot.setDatasetRenderingOrder( DatasetRenderingOrder.REVERSE );
         // OPTIONAL CUSTOMISATION COMPLETED.
-      
+
         return chart;
     }// getChartViewer end
 

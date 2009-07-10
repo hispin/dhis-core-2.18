@@ -125,7 +125,7 @@ public class AreaChart
         plot.setDataset( 1, dataset2 );
         plot.setRenderer( 1, renderer2 );
         plot.setDatasetRenderingOrder( DatasetRenderingOrder.FORWARD );
-                      
+
         return chart;
     }// getChartViewer end
 }

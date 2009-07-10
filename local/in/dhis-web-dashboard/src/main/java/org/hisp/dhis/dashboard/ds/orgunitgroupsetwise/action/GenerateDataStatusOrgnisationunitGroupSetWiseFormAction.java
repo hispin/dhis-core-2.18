@@ -26,19 +26,20 @@
  */
 package org.hisp.dhis.dashboard.ds.orgunitgroupsetwise.action;
 
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetStore;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.period.Period;
+
 import com.opensymphony.xwork.Action;
 
 /**
@@ -46,26 +47,26 @@ import com.opensymphony.xwork.Action;
  * @version $Id$
  */
 
-public class GenerateDataStatusOrgnisationunitGroupSetWiseFormAction implements Action 
+public class GenerateDataStatusOrgnisationunitGroupSetWiseFormAction
+    implements Action
 {
 
     /* Dependencies */
-     
+
     private OrganisationUnitGroupService organisationUnitGroupService;
-    
+
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-        
-    private DataSetStore dataSetStore;
 
-    public void setDataSetStore( DataSetStore dataSetStore )
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.dataSetStore = dataSetStore;
+        this.dataSetService = dataSetService;
     }
 
-    
     /* Output Parameters */
     private List<DataSet> dataSetList;
 
@@ -87,7 +88,7 @@ public class GenerateDataStatusOrgnisationunitGroupSetWiseFormAction implements 
     {
         return simpleDateFormat;
     }
-    
+
     private Collection<OrganisationUnit> organisationUnits;
 
     public Collection<OrganisationUnit> getOrganisationUnits()
@@ -105,16 +106,16 @@ public class GenerateDataStatusOrgnisationunitGroupSetWiseFormAction implements 
     public String execute()
         throws Exception
     {
-    	
-    	/* OrganisationUnit */
+
+        /* OrganisationUnit */
         organisationUnitGroupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
-        
+
         /* DataSet List */
-        dataSetList = new ArrayList<DataSet>( dataSetStore.getAllDataSets() );
+        dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
         Collections.sort( dataSetList, new DataSetNameComparator() );
 
         return SUCCESS;
     }
- 
+
 }// class end
 

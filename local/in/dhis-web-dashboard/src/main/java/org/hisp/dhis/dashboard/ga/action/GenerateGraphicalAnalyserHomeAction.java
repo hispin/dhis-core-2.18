@@ -59,6 +59,7 @@ public class GenerateGraphicalAnalyserHomeAction
     {
         return organisationUnits;
     }
+
     public String execute()
         throws Exception
     {

@@ -4,9 +4,10 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork.Action;
 
-public class ExportToExcelAction extends ActionSupport
+public class ExportToExcelAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -15,7 +16,7 @@ public class ExportToExcelAction extends ActionSupport
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
-    
+
     private InputStream inputStream;
 
     public InputStream getInputStream()
@@ -45,25 +46,25 @@ public class ExportToExcelAction extends ActionSupport
     }
 
     private String htmlCode;
-    
+
     public void setHtmlCode( String htmlCode )
     {
         this.htmlCode = htmlCode;
     }
-        
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
-    {                        
+    public String execute()
+        throws Exception
+    {
 
         fileName = "NullReporterResult.xls";
 
-        inputStream = new BufferedInputStream( new ByteArrayInputStream( htmlCode.getBytes("UTF-8") ) );
-        
+        inputStream = new BufferedInputStream( new ByteArrayInputStream( htmlCode.getBytes( "UTF-8" ) ) );
+
         return SUCCESS;
     }
-
 
 }

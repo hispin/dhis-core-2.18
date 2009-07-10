@@ -41,14 +41,14 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetDataElementsAction
-    extends ActionSupport
+    implements Action
 {
     private final static int ALL = 0;
 
@@ -62,7 +62,7 @@ public class GetDataElementsAction
     {
         this.dataElementService = dataElementService;
     }
-    
+
     private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
     public void setDataElementCategoryOptionComboService(
@@ -122,7 +122,7 @@ public class GetDataElementsAction
     {
         return dataElements;
     }
-    
+
     private List<String> optionComboNames;
 
     public List<String> getOptionComboNames()
@@ -131,12 +131,12 @@ public class GetDataElementsAction
     }
 
     private List<String> optionComboIds;
-    
+
     public List<String> getOptionComboIds()
     {
         return optionComboIds;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -146,7 +146,7 @@ public class GetDataElementsAction
     {
         optionComboIds = new ArrayList<String>();
         optionComboNames = new ArrayList<String>();
-        
+
         if ( id == null || id == ALL )
         {
             dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
@@ -168,13 +168,13 @@ public class GetDataElementsAction
         Collections.sort( dataElements, dataElementComparator );
 
         displayPropertyHandler.handle( dataElements );
-        
+
         if ( deOptionValue != null )
         {
-        	if( deOptionValue.equalsIgnoreCase( "optioncombo" ))
+            if ( deOptionValue.equalsIgnoreCase( "optioncombo" ) )
             {
                 Iterator<DataElement> deIterator = dataElements.iterator();
-                while(deIterator.hasNext())
+                while ( deIterator.hasNext() )
                 {
                     DataElement de = deIterator.next();
                     DataElementCategoryCombo dataElementCategoryCombo = de.getCategoryCombo();
@@ -185,15 +185,15 @@ public class GetDataElementsAction
                     while ( optionComboIterator.hasNext() )
                     {
                         DataElementCategoryOptionCombo decoc = optionComboIterator.next();
-                        optionComboIds.add( de.getId()+":"+decoc.getId());
-                        optionComboNames.add( de.getName()+":"+dataElementCategoryOptionComboService.getOptionNames( decoc ));
-                        
-                    }   
+                        optionComboIds.add( de.getId() + ":" + decoc.getId() );
+                        optionComboNames.add( de.getName() + ":"
+                            + dataElementCategoryOptionComboService.getOptionNames( decoc ) );
+
+                    }
                 }
-            }        	
+            }
         }
-        
-                       
+
         return SUCCESS;
     }
 }

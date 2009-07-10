@@ -46,17 +46,17 @@ public class PeriodTypeComparator
         {
             return -1;
         }
-        
+
         if ( period2.getPeriodType() == null )
         {
             return 1;
         }
-        
+
         if ( period1.getPeriodType().getName().compareTo( period2.getPeriodType().getName() ) != 0 )
         {
             return period1.getPeriodType().getName().compareTo( period2.getPeriodType().getName() ) * -1;
-        }        
-        
+        }
+
         return period1.getPeriodType().getName().compareTo( period2.getPeriodType().getName() ) * -1;
     }
 }

@@ -29,29 +29,23 @@ package org.hisp.dhis.dashboard.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetStore;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+import org.hisp.dhis.dataset.DataSetService;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork.Action;
 
 /**
  * @author Seid Hussein
  * @version $Id$
  */
 public class GetDataElementsGroupAndDataSetAction
-    extends ActionSupport
+    implements Action
 {
     private final static int ALL = 0;
 
@@ -59,11 +53,11 @@ public class GetDataElementsGroupAndDataSetAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataSetStore dataSetStore;
+    private DataSetService dataSetService;
 
-    public void setDataSetStore( DataSetStore dataSetStore )
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.dataSetStore = dataSetStore;
+        this.dataSetService = dataSetService;
     }
 
     private DataElementService dataElementService;
@@ -71,17 +65,6 @@ public class GetDataElementsGroupAndDataSetAction
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    }
-
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -128,12 +111,12 @@ public class GetDataElementsGroupAndDataSetAction
 
             List<DataElement> dataSetMembers = new ArrayList<DataElement>();
 
-            dataSetMembers.addAll( dataSetStore.getDataSet( 0 ).getDataElements() );
+            dataSetMembers.addAll( dataSetService.getDataSet( 0 ).getDataElements() );
 
             List<DataElementGroup> allDataElementGroups = new ArrayList<DataElementGroup>( dataElementService
                 .getAllDataElementGroups() );
 
-            Iterator degIterator = allDataElementGroups.iterator();
+            Iterator<DataElementGroup> degIterator = allDataElementGroups.iterator();
 
             while ( degIterator.hasNext() )
             {
@@ -146,15 +129,15 @@ public class GetDataElementsGroupAndDataSetAction
                 if ( checkDataElement != null && checkDataElement.size() > 0 )
                 {
                     applicableDataElementGroups.add( deg );
-                    
-                    System.out.println("DEG : \t" + deg.getName());
+
+                    System.out.println( "DEG : \t" + deg.getName() );
                 }
 
             }
         }
 
         Collections.sort( applicableDataElementGroups, new DataElementGroupNameComparator() );
-        
+
         return applicableDataElementGroups;
     }
 

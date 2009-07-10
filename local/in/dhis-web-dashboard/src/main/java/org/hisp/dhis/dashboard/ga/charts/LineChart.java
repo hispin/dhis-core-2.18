@@ -71,11 +71,10 @@ public class LineChart
         DefaultCategoryDataset dataset1 = getDataset( data1, series1, categories1 );
 
         // create the first plot...
-        final CategoryItemRenderer renderer = new LineAndShapeRenderer();        
+        final CategoryItemRenderer renderer = new LineAndShapeRenderer();
         renderer.setToolTipGenerator( new StandardCategoryToolTipGenerator() );
         renderer.setItemLabelGenerator( new StandardCategoryItemLabelGenerator() );
         renderer.setItemLabelsVisible( true );
-        
 
         final CategoryPlot plot = new CategoryPlot();
         plot.setDataset( dataset1 );
@@ -87,7 +86,6 @@ public class LineChart
         plot.setOrientation( PlotOrientation.VERTICAL );
         plot.setRangeGridlinesVisible( true );
         plot.setDomainGridlinesVisible( true );
-        
 
         // customise the range axis...
         final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();

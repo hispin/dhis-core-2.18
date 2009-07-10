@@ -16,21 +16,17 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.hisp.dhis.dashboard.util.DBConnection;
-import org.hisp.dhis.dashboard.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetStore;
-import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 
@@ -55,30 +51,23 @@ public class GenerateGroupWiseDataStatusResultAction
         return organisationUnitService;
     }
 
-    private OrganisationUnitGroupService organisationUnitGroupService;
+    private PeriodService periodService;
 
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.organisationUnitGroupService = organisationUnitGroupService;
+        this.periodService = periodService;
     }
 
-    private PeriodStore periodStore;
+    private DataSetService dataSetService;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.periodStore = periodStore;
+        this.dataSetService = dataSetService;
     }
 
-    private DataSetStore dataSetStore;
-
-    public void setDataSetStore( DataSetStore dataSetStore )
+    public DataSetService getDataSetService()
     {
-        this.dataSetStore = dataSetStore;
-    }
-
-    public DataSetStore getDataSetStore()
-    {
-        return dataSetStore;
+        return dataSetService;
     }
 
     private DataElementService dataElementService;
@@ -93,25 +82,11 @@ public class GenerateGroupWiseDataStatusResultAction
         this.dataElementService = dataElementService;
     }
 
-    private DashBoardService dashBoardService;
-
-    public void setDashBoardService( DashBoardService dashBoardService )
-    {
-        this.dashBoardService = dashBoardService;
-    }
-
     private DBConnection dbConnection;
 
     public void setDbConnection( DBConnection dbConnection )
     {
         this.dbConnection = dbConnection;
-    }
-
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
     }
 
     // ---------------------------------------------------------------
@@ -201,13 +176,6 @@ public class GenerateGroupWiseDataStatusResultAction
     public void setDsId( String dsId )
     {
         this.dsId = dsId;
-    }
-
-    private String selectedButton;
-
-    public void setselectedButton( String selectedButton )
-    {
-        this.selectedButton = selectedButton;
     }
 
     private String ouId;
@@ -383,7 +351,7 @@ public class GenerateGroupWiseDataStatusResultAction
 
         for ( String ds : selectedDataSets )
         {
-            DataSet dSet = dataSetStore.getDataSet( Integer.parseInt( ds ) );
+            DataSet dSet = dataSetService.getDataSet( Integer.parseInt( ds ) );
             selDataSet = dSet;
         }
 
@@ -418,10 +386,10 @@ public class GenerateGroupWiseDataStatusResultAction
         }
 
         // Period Related Info
-        Period startPeriod = periodStore.getPeriod( sDateLB );
-        Period endPeriod = periodStore.getPeriod( eDateLB );
+        Period startPeriod = periodService.getPeriod( sDateLB );
+        Period endPeriod = periodService.getPeriod( eDateLB );
 
-        selectedPeriodList = new ArrayList<Period>( periodStore.getIntersectingPeriods( startPeriod.getStartDate(),
+        selectedPeriodList = new ArrayList<Period>( periodService.getIntersectingPeriods( startPeriod.getStartDate(),
             endPeriod.getEndDate() ) );
 
         periodInfo = "-1";
@@ -434,8 +402,8 @@ public class GenerateGroupWiseDataStatusResultAction
         deInfo = "-1";
 
         selDataSet = new DataSet();
-        
-        selDataSet = dataSetStore.getDataSet( Integer.parseInt( selectedDataSets.get( 0 ) ) );
+
+        selDataSet = dataSetService.getDataSet( Integer.parseInt( selectedDataSets.get( 0 ) ) );
 
         // Data Element Group Related Info
         dataElementGroups = new ArrayList<DataElementGroup>();
@@ -465,19 +433,19 @@ public class GenerateGroupWiseDataStatusResultAction
 
         dataSetPeriodType = selDataSet.getPeriodType();
 
-        periodList = periodStore.getIntersectingPeriodsByPeriodType( dataSetPeriodType, startPeriod.getStartDate(),
+        periodList = periodService.getIntersectingPeriodsByPeriodType( dataSetPeriodType, startPeriod.getStartDate(),
             endPeriod.getEndDate() );
 
         dataSetPeriods = new HashMap<DataSet, Collection<Period>>();
         // Iterator dataSetIterator = selectedDataSets.iterator();
-        Iterator dataElementGroupIterator = dataElementGroups.iterator();
+        Iterator<DataElementGroup> dataElementGroupIterator = dataElementGroups.iterator();
 
         DataSet ds;
         DataElementGroup deg;
 
         while ( dataElementGroupIterator.hasNext() )
         {
-            ds = dataSetStore.getDataSet( Integer.valueOf( selectedDataSets.get( 0 ) ) );
+            ds = dataSetService.getDataSet( Integer.valueOf( selectedDataSets.get( 0 ) ) );
             deg = (DataElementGroup) dataElementGroupIterator.next();
 
             dataElements = deg.getMembers();
@@ -493,7 +461,7 @@ public class GenerateGroupWiseDataStatusResultAction
 
             dataSetPeriodType = ds.getPeriodType();
 
-            periodList = periodStore.getIntersectingPeriodsByPeriodType( dataSetPeriodType, startPeriod.getStartDate(),
+            periodList = periodService.getIntersectingPeriodsByPeriodType( dataSetPeriodType, startPeriod.getStartDate(),
                 endPeriod.getEndDate() );
             dataSetPeriods.put( ds, periodList );
 
@@ -543,7 +511,8 @@ public class GenerateGroupWiseDataStatusResultAction
                         /*
                          * callStat.setString( 1, dataTableName );
                          * callStat.setString( 2, deInfo ); callStat.setString(
-                         * 3, orgUnitInfo ); callStat.setString( 4, periodInfo );
+                         * 3, orgUnitInfo ); callStat.setString( 4, periodInfo
+                         * );
                          * 
                          * rs1 = callStat.executeQuery();
                          */
@@ -872,7 +841,8 @@ public class GenerateGroupWiseDataStatusResultAction
 
         }
 
-        //Collections.sort( applicableDataElementGroups, new DataElementGroupNameComparator() );
+        // Collections.sort( applicableDataElementGroups, new
+        // DataElementGroupNameComparator() );
 
         return applicableDataElementGroups;
     }

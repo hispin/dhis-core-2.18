@@ -20,11 +20,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
     </property>
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
-    </property>
-    <property name="organisationUnitService">
-      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
     <property name="organisationUnitGroupService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
@@ -49,8 +46,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
     </property>
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
@@ -82,11 +79,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
     </property>
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
-    </property>
-    <property name="organisationUnitService">
-      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
   </bean>
   
@@ -105,8 +99,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
     </property>
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
@@ -124,8 +118,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
     </property>
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
@@ -147,8 +141,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
     </property>
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
@@ -160,11 +154,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dashboard.ds.action.GenerateDataStatusFormAction"
     class="org.hisp.dhis.dashboard.ds.action.GenerateDataStatusFormAction"
     scope="prototype">
-    <property name="dataSetStore">
-      <ref bean="org.hisp.dhis.dataset.DataSetStore"/>
-    </property>
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
   </bean>
   
@@ -191,24 +182,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dashboard.ds.action.GenerateGroupWiseDataStatusResultAction"
     class="org.hisp.dhis.dashboard.ds.action.GenerateGroupWiseDataStatusResultAction"
     scope="prototype">
-    <property name="dataValueService">
-      <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
-    </property>
-    <property name="dashBoardService">
-      <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
-    </property>
-    <property name="dataSetStore">
-      <ref bean="org.hisp.dhis.dataset.DataSetStore"/>
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
-	<property name="organisationUnitGroupService">
-	   <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-	</property>    
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     </property>
@@ -227,8 +209,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dashboard.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseFormAction"
     class="org.hisp.dhis.dashboard.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseFormAction"
     scope="prototype">
-    <property name="dataSetStore">
-      <ref bean="org.hisp.dhis.dataset.DataSetStore"/>
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>    
 	<property name="organisationUnitGroupService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
@@ -238,17 +220,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dashboard.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseResultAction"
     class="org.hisp.dhis.dashboard.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseResultAction"
     scope="prototype">
-    <property name="dataValueService">
-      <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
-    <property name="dashBoardService">
-      <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
-    </property>
-    <property name="dataSetStore">
-      <ref bean="org.hisp.dhis.dataset.DataSetStore"/>
-    </property>
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
 	<property name="organisationUnitGroupService">
 	   <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
@@ -269,11 +245,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
-    </property>
-    <property name="organisationUnitService">
-      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
   </bean>
 	
@@ -286,11 +259,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<property name="dataValueService">
       <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
     </property>
-    <property name="dataSetStore">
-      <ref bean="org.hisp.dhis.dataset.DataSetStore"/>
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
@@ -337,12 +310,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dashboard.maintenance.action.StreamMySqlBackupAction"
     class="org.hisp.dhis.dashboard.maintenance.action.StreamMySqlBackupAction"
     scope="prototype">
-    <property name="dashBoardService">
-      <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
-    </property>
-    <property name="dbConnection">
-      <ref bean="org.hisp.dhis.dashboard.util.DBConnection"/>
-    </property>	  
   </bean>
 		
   <!-- Tabular Analyser -->
@@ -353,8 +320,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
@@ -373,8 +340,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
@@ -397,8 +364,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.dashboard.action.GetDataElementsGroupAndDataSetAction"
     class="org.hisp.dhis.dashboard.action.GetDataElementsGroupAndDataSetAction" scope="prototype">
-    <property name="dataSetStore">
-      <ref bean="org.hisp.dhis.dataset.DataSetStore"/>
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
@@ -447,8 +414,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.dashboard.util.DashBoardService"
     class="org.hisp.dhis.dashboard.util.DashBoardService" scope="prototype">
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
     <property name="dbConnection">
       <ref bean="org.hisp.dhis.dashboard.util.DBConnection"/>
@@ -466,8 +433,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dashboard.topten.action.GenerateTopTenAnalyserFormAction"
     class="org.hisp.dhis.dashboard.topten.action.GenerateTopTenAnalyserFormAction"
     scope="prototype">
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
@@ -480,8 +447,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dashboard.topten.action.GenerateTopTenAnalysisDataAction"
     class="org.hisp.dhis.dashboard.topten.action.GenerateTopTenAnalysisDataAction"
     scope="prototype">
-    <property name="periodStore">
-      <ref bean="org.hisp.dhis.period.PeriodStore"/>
+    <property name="periodService">
+      <ref bean="org.hisp.dhis.period.PeriodService"/>
     </property>
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>

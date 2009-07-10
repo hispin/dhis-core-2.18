@@ -48,7 +48,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.webwork.ServletActionContext;
@@ -59,7 +59,10 @@ public class GenerateAnnualAnalysisDataAction
     implements Action
 {
 
-    /* Dependencies */
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -67,11 +70,11 @@ public class GenerateAnnualAnalysisDataAction
         this.organisationUnitService = organisationUnitService;
     }
 
-    private PeriodStore periodStore;
+    private PeriodService periodService;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.periodStore = periodStore;
+        this.periodService = periodService;
     }
 
     private IndicatorService indicatorService;
@@ -339,7 +342,7 @@ public class GenerateAnnualAnalysisDataAction
         series2 = new String[annualPeriodsListCB.size()];
         categories1 = new String[monthlyPeriodsListCB.size()];
         categories2 = new String[monthlyPeriodsListCB.size()];
-        Iterator iterator1 = annualPeriodsListCB.iterator();
+        Iterator<String> iterator1 = annualPeriodsListCB.iterator();
         while ( iterator1.hasNext() )
         {
             List<Double> dataValues = new ArrayList<Double>();
@@ -348,7 +351,7 @@ public class GenerateAnnualAnalysisDataAction
             series2[count1] = " ";
             yseriesList.add( "" + tempYear );
 
-            Iterator iterator2 = monthlyPeriodsListCB.iterator();
+            Iterator<String> iterator2 = monthlyPeriodsListCB.iterator();
             count2 = 0;
             while ( iterator2.hasNext() )
             {
@@ -357,7 +360,7 @@ public class GenerateAnnualAnalysisDataAction
                 if ( p == null )
                 {
                     serviceValues[count1][count2] = 0.0;
-                    System.out.println("PERIOD IS NULL for "+tempMonth+" : "+tempYear);
+                    System.out.println( "PERIOD IS NULL for " + tempMonth + " : " + tempYear );
                 }
                 else
                 {
@@ -365,7 +368,7 @@ public class GenerateAnnualAnalysisDataAction
                     {
                         serviceValues[count1][count2] = aggregationService.getAggregatedIndicatorValue(
                             selectedIndicator, p.getStartDate(), p.getEndDate(), selectedOrgUnit );
-                        System.out.println("indicators Radio is Selected");
+                        System.out.println( "indicators Radio is Selected" );
                     }
                     else
                     {
@@ -378,14 +381,17 @@ public class GenerateAnnualAnalysisDataAction
 
                         Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
                         while ( optionComboIterator.hasNext() )
-                        {                        
-                            DataElementCategoryOptionCombo decoc = (DataElementCategoryOptionCombo) optionComboIterator.next();
+                        {
+                            DataElementCategoryOptionCombo decoc = (DataElementCategoryOptionCombo) optionComboIterator
+                                .next();
 
-                            aggDataValue = aggregationService.getAggregatedDataValue( selectedDataElement, decoc, p.getStartDate(), p.getEndDate(), selectedOrgUnit );
-                            if(aggDataValue == -1) aggDataValue = 0.0;
+                            aggDataValue = aggregationService.getAggregatedDataValue( selectedDataElement, decoc, p
+                                .getStartDate(), p.getEndDate(), selectedOrgUnit );
+                            if ( aggDataValue == -1 )
+                                aggDataValue = 0.0;
                             serviceValues[count1][count2] += aggDataValue;
-                        } 
-                        System.out.println("VALUE : "+serviceValues[count1][count2]);
+                        }
+                        System.out.println( "VALUE : " + serviceValues[count1][count2] );
                     }
                     serviceValues[count1][count2] = Math.round( serviceValues[count1][count2] * Math.pow( 10, 1 ) )
                         / Math.pow( 10, 1 );
@@ -417,7 +423,7 @@ public class GenerateAnnualAnalysisDataAction
         if ( periodType.getName().equalsIgnoreCase( "Monthly" ) )
         {
             cal.set( year, month, 1, 0, 0, 0 );
-            if ( year % 4 == 0 && month == 1)
+            if ( year % 4 == 0 && month == 1 )
             {
                 cal.set( Calendar.DAY_OF_MONTH, monthDays[month] + 1 );
             }
@@ -434,7 +440,7 @@ public class GenerateAnnualAnalysisDataAction
         Date lastDay = new Date( cal.getTimeInMillis() );
         System.out.println( lastDay.toString() );
 
-        Period newPeriod = periodStore.getPeriod( firstDay, lastDay, periodType );
+        Period newPeriod = periodService.getPeriod( firstDay, lastDay, periodType );
 
         return newPeriod;
     }
@@ -446,8 +452,9 @@ public class GenerateAnnualAnalysisDataAction
      */
     public PeriodType getPeriodTypeObject( String periodTypeName )
     {
-        Collection<PeriodType> periodTypes = periodStore.getAllPeriodTypes();
+        Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
         PeriodType periodType = null;
+
         Iterator<PeriodType> iter = periodTypes.iterator();
         while ( iter.hasNext() )
         {
@@ -458,11 +465,12 @@ public class GenerateAnnualAnalysisDataAction
                 break;
             }
         }
+
         if ( periodType == null )
-        {            
+        {
             return null;
         }
-        
+
         return periodType;
     }
 
