@@ -57,6 +57,24 @@ Ext.onReady(function()
     URLACTIVE = false;
     PARAMETER = null;
     BOUNDS = 0;
+    STATIC1LOADED = false;
+    MAP_SOURCE_DATABASE = 'database';
+    MAP_SOURCE_SHAPEFILE = 'shapefile';
+    
+    Ext.Ajax.request(
+    {
+        url: path + 'getMapSourceUserSetting' + type,
+        method: 'GET',
+        
+        success: function( responseObject )
+        {
+            MAPSOURCE = Ext.util.JSON.decode( responseObject.responseText ).mapSource;
+        },
+        failure: function()
+        {
+            alert( 'Status', 'Error while saving data' );
+        }
+    });
     
     function getUrlParam(strParamName)
     {
@@ -89,7 +107,17 @@ Ext.onReady(function()
         if (name.length > 25) { return false; }
         else { return true; }
     }
-
+    
+    function getMultiSelectHeight()
+    {
+        var h = screen.height;
+        
+        if (h <= 800) { return 120; }
+        else if (h <= 1050) { return 310; }
+        else if  (h <= 1200) { return 530; }
+        else { return 900; }
+    }
+    
 /*    var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
                                            "http://labs.metacarta.com/wms-c/Basic.py?", 
                                            {layers: 'satellite', format: 'image/png'});*/
@@ -216,14 +244,7 @@ Ext.onReady(function()
                     {
                         organisationUnitLevelComboBox.reset();
                         
-                        Ext.Msg.show({
-                        title:'Shapefile',
-                        msg: '<p style="padding-top:8px">The organisation unit selected above must be divided into a lower level than itself.</p>',
-                        buttons: Ext.Msg.OK,
-                        animEl: 'elId',
-                        maxWidth: 300,
-                        icon: Ext.MessageBox.ERROR
-                        });
+                        Ext.messageRed.msg('New map', 'The organisation unit selected above must be divided into a lower level than itself.');
                         return;
                     }
                     
@@ -381,20 +402,13 @@ Ext.onReady(function()
                      
                     if (!nn || !mlp || !oui || !ouli || !uc || !nc || !lon || !lat)
                     {
-                        Ext.MessageBox.alert('Error', 'Form is not complete');
+                        Ext.messageRed.msg('New map', 'Form is not complete.');
                         return;
                     }
                     
                     if (validateInput(nn) == false)
                     {
-                        Ext.Msg.show({
-                            title:'Shapefile',
-                            msg: '<p style="padding-top:8px"><b>Map name</b> cannot be longer than <b>25</b> characters.</b></p>',
-                            buttons: Ext.Msg.OK,
-                            animEl: 'elId',
-                            minWidth: 400,
-                            icon: Ext.MessageBox.WARNING
-                        });
+                        Ext.messageRed.msg('New map', 'Map name cannot be longer than 25 characters.');
                         return;
                     }
                     
@@ -407,14 +421,7 @@ Ext.onReady(function()
 
                         success: function( responseObject )
                         {
-                            Ext.Msg.show({
-                                title:'Shapefile',
-                                msg: '<p style="padding-top:8px">The map <b>' + nn + '</b> was successfully registered!</b></p>',
-                                buttons: Ext.Msg.OK,
-                                animEl: 'elId',
-                                minWidth: 400,
-                                icon: Ext.MessageBox.INFO
-                            });
+                            Ext.messageBlack.msg('New map', 'The map ' + msg_highlight_start + nn + msg_highlight_end + ' was registered.');
                             
                             Ext.getCmp('map_cb').getStore().reload();
                             Ext.getCmp('maps_cb').getStore().reload();
@@ -452,20 +459,13 @@ Ext.onReady(function()
             
             if (!en || !em || !uc || !nc || !lon || !lat)
             {
-                Ext.MessageBox.alert('Error', 'Form is not complete');
+                Ext.messageRed.msg('New map', 'Form is not complete.');
                 return;
             }
             
             if (validateInput(en) == false)
             {
-                Ext.Msg.show({
-                    title:'Shapefile',
-                    msg: '<p style="padding-top:8px"><b>Map name</b> cannot be longer than <b>25</b> characters.</b></p>',
-                    buttons: Ext.Msg.OK,
-                    animEl: 'elId',
-                    minWidth: 400,
-                    icon: Ext.MessageBox.WARNING
-                });
+                Ext.messageRed.msg('New map', 'Map name cannot be longer than 25 characters.');
                 return;
             }
            
@@ -477,14 +477,7 @@ Ext.onReady(function()
 
                 success: function( responseObject )
                 {
-                    Ext.Msg.show({
-                        title:'Shapefile',
-                        msg: '<p style="padding-top:8px">The map <b>' + en + '</b> was successfully updated!</b></p>',
-                        buttons: Ext.Msg.OK,
-                        animEl: 'elId',
-                        minWidth: 400,
-                        icon: Ext.MessageBox.INFO
-                    });
+                    Ext.messageBlack.msg('Edit map', 'The map ' + msg_highlight_start + en + msg_highlight_end + ' was updated.');
                     
                     Ext.getCmp('map_cb').getStore().reload();
                     Ext.getCmp('maps_cb').getStore().reload();
@@ -510,7 +503,7 @@ Ext.onReady(function()
             
             if (!mlp)
             {
-                Ext.MessageBox.alert('Error', 'Choose a map');
+                Ext.messageRed.msg('Delete map', 'Please select a map.');
                 return;
             }
             
@@ -522,14 +515,7 @@ Ext.onReady(function()
 
                 success: function( responseObject )
                 {
-                    Ext.Msg.show({
-                        title:'Shapefile',
-                        msg: '<p style="padding-top:8px">The map <b>' + mlp + '</b> was successfully deleted!</b></p>',
-                        buttons: Ext.Msg.OK,
-                        animEl: 'elId',
-                        minWidth: 400,
-                        icon: Ext.MessageBox.INFO
-                    });
+                    Ext.messageBlack.msg('Edit map', 'The map ' + msg_highlight_start + mlp + msg_highlight_end + ' was deleted.');
                     
                     Ext.getCmp('map_cb').getStore().reload();
                     Ext.getCmp('maps_cb').getStore().reload();
@@ -650,12 +636,12 @@ Ext.onReady(function()
         id: 'newmap_p',
         items:
         [   
-            { html: '<p style="padding-bottom:4px">Map type:</p>' }, typeComboBox, { html: '<br>' },
+//            { html: '<p style="padding-bottom:4px">Map type:</p>' }, typeComboBox, { html: '<br>' },
 //            { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, newMapComboBox, { html: '<br>' },
 //            { html: '<p style="padding-bottom:4px">Organisation unit:</p>' }, multi, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Map source file:</p>' }, mapLayerPathTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Map name:</p>' }, newNameTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px">Map file name:</p>' }, mapLayerPathTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Unique column:</p>' }, newUniqueColumnTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Name column:</p>' }, newNameColumnTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Longitude:</p>' }, newLongitudeTextField, { html: '<br>' },
@@ -690,7 +676,7 @@ Ext.onReady(function()
 
     shapefilePanel = new Ext.Panel({
         id: 'shapefile_p',
-        title: 'Register shapefiles',
+        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:#222222;">Register shapefiles</font>',
         items:
         [
             {
@@ -828,18 +814,18 @@ Ext.onReady(function()
     var legendSetIndicatorStore = new Ext.data.JsonStore({
         url: path + 'getAllIndicators' + type,
         root: 'indicators',
-        fields: ['id', 'name'],
+        fields: ['id', 'name', 'shortName'],
         sortInfo: { field: 'name', direction: 'ASC' },
         autoLoad: true
     });
     
     var legendSetIndicatorMultiSelect = new Ext.ux.Multiselect({
         id: 'legendsetindicator_ms',
-        dataFields: ['id', 'name'], 
+        dataFields: ['id', 'name', 'shortName'], 
         valueField: 'id',
-        displayField: 'name',
+        displayField: 'shortName',
         width: gridpanel_width - 25,
-        height: multiselect_height,
+        height: getMultiSelectHeight(),
         store: legendSetIndicatorStore
     });
     
@@ -882,20 +868,13 @@ Ext.onReady(function()
             
             if (!lc || !ln || !lims)
             {
-                Ext.MessageBox.alert('Error', 'Form is not complete');
+                Ext.messageRed.msg('New legend set', 'Form is not complete.');
                 return;
             }
             
             if (validateInput(ln) == false)
             {
-                Ext.Msg.show({
-                    title:'Legend set',
-                    msg: '<p style="padding-top:8px"><b>Legend set name</b> cannot be longer than <b>25</b> characters.</b></p>',
-                    buttons: Ext.Msg.OK,
-                    animEl: 'elId',
-                    minWidth: 400,
-                    icon: Ext.MessageBox.WARNING
-                });
+                Ext.messageRed.msg('New legend set', 'Legend set name cannot be longer than 25 characters.');
                 return;
             }
             
@@ -917,14 +896,7 @@ Ext.onReady(function()
 
                 success: function( responseObject )
                 {
-                    Ext.Msg.show({
-                        title:'Legend set',
-                        msg: '<p style="padding-top:8px">The legend set <b>' + ln + '</b> was successfully registered!</b></p>',
-                        buttons: Ext.Msg.OK,
-                        animEl: 'elId',
-                        minWidth: 400,
-                        icon: Ext.MessageBox.INFO
-                    });
+                    Ext.messageBlack.msg('New legend set', 'The legend set ' + msg_highlight_start + ln + msg_highlight_end + ' was registered.');
                     
                     Ext.getCmp('legendset_cb').getStore().reload();
                 },
@@ -942,10 +914,11 @@ Ext.onReady(function()
         handler: function()
         {
             var ls = Ext.getCmp('legendset_cb').getValue();
+            var lsrw = Ext.getCmp('legendset_cb').getRawValue();
             
             if (!ls)
             {
-                Ext.MessageBox.alert('Error', 'Choose a legend set');
+                Ext.messageRed.msg('Delete legend set', 'Please select a legend set.');
                 return;
             }
             
@@ -957,14 +930,7 @@ Ext.onReady(function()
 
                 success: function( responseObject )
                 {
-                    Ext.Msg.show({
-                        title:'Legend set',
-                        msg: '<p style="padding-top:8px">The legend set <b>' + ls + '</b> was successfully deleted!</b></p>',
-                        buttons: Ext.Msg.OK,
-                        animEl: 'elId',
-                        minWidth: 400,
-                        icon: Ext.MessageBox.INFO
-                    });
+                    Ext.messageBlack.msg('Delete legend set', 'The legend set ' + msg_highlight_start + lsrw + msg_highlight_end + ' was deleted.');
                     
                     Ext.getCmp('legendset_cb').getStore().reload();
                     Ext.getCmp('legendset_cb').reset();
@@ -1004,7 +970,7 @@ Ext.onReady(function()
 
     var legendsetPanel = new Ext.Panel({
         id: 'legendset_p',
-        title: 'Register legend sets',
+        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:#133a75;">Map legend sets</font>',
         items:
         [
             {
@@ -1127,20 +1093,13 @@ Ext.onReady(function()
             
             if (!vn || !ig || !i || !pt || !p || !m || !c )
             {
-                Ext.MessageBox.alert('Error', 'Thematic map form is not complete');
+                Ext.messageRed.msg('New map view', 'Thematic map form is not complete.');
                 return;
             }
             
             if (validateInput(vn) == false)
             {
-                Ext.Msg.show({
-                    title:'View',
-                    msg: '<p style="padding-top:8px"><b>View name</b> cannot be longer than <b>25</b> characters.</b></p>',
-                    buttons: Ext.Msg.OK,
-                    animEl: 'elId',
-                    minWidth: 400,
-                    icon: Ext.MessageBox.WARNING
-                });
+                Ext.messageRed.msg('New map view', 'Map view name cannot be longer than 25 characters.');
                 return;
             }
             
@@ -1152,14 +1111,7 @@ Ext.onReady(function()
 
                 success: function( responseObject )
                 {
-                    Ext.Msg.show({
-                        title:'View',
-                        msg: '<p style="padding-top:8px">The view <b>' + vn + '</b> was successfully registered!</b></p>',
-                        buttons: Ext.Msg.OK,
-                        animEl: 'elId',
-                        minWidth: 400,
-                        icon: Ext.MessageBox.INFO
-                    });
+                    Ext.messageRed.msg('New map view', 'The view ' + vn + ' was registered.');
                     
                     Ext.getCmp('view_cb').getStore().reload();
                     Ext.getCmp('mapview_cb').getStore().reload();
@@ -1181,7 +1133,7 @@ Ext.onReady(function()
             
             if (!v)
             {
-                Ext.MessageBox.alert('Error', 'Select a view');
+                Ext.messageRed.msg('Delete map view', 'Please select a map view.');
                 return;
             }
             
@@ -1193,14 +1145,7 @@ Ext.onReady(function()
 
                 success: function( responseObject )
                 {
-                    Ext.Msg.show({
-                        title:'View',
-                        msg: '<p style="padding-top:8px">The view <b>' + v + '</b> was successfully deleted!</b></p>',
-                        buttons: Ext.Msg.OK,
-                        animEl: 'elId',
-                        minWidth: 400,
-                        icon: Ext.MessageBox.INFO
-                    });
+                    Ext.messageBlack.msg('Delete map view', 'The map view ' + v + ' was deleted.');
                     
                     Ext.getCmp('view_cb').getStore().reload();
                     Ext.getCmp('view_cb').reset();
@@ -1216,14 +1161,14 @@ Ext.onReady(function()
     
     var dashboardViewButton = new Ext.Button({
         id: 'dashboardview_b',
-        text: 'Add view to dashboard',
+        text: 'Add view to DHIS2 dashboard',
         handler: function()
         {
             var v2 = Ext.getCmp('view2_cb').getValue();
             
             if (!v2)
             {
-                Ext.MessageBox.alert('Error', 'Select a view');
+                Ext.messageRed.msg('Dashboard map view', 'Please select a map view.');
                 return;
             }
             
@@ -1235,14 +1180,7 @@ Ext.onReady(function()
 
                 success: function( responseObject )
                 {
-                    Ext.Msg.show({
-                        title:'View',
-                        msg: '<p style="padding-top:8px">The view <b>' + v + '</b> was successfully added to dashboard.</b></p>',
-                        buttons: Ext.Msg.OK,
-                        animEl: 'elId',
-                        minWidth: 400,
-                        icon: Ext.MessageBox.INFO
-                    });
+                    Ext.messageBlack.msg('Dashboard map view', 'The view ' + v + ' was added to dashboard.');
                     
                     Ext.getCmp('view_cb').getStore().reload();
                     Ext.getCmp('view_cb').reset();
@@ -1260,7 +1198,8 @@ Ext.onReady(function()
     {   
         id: 'newview_p',
         items:
-        [   
+        [
+            { html: 'Saving current thematic map selection.' }, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Name:</p>' }, viewNameTextField
         ]
     });
@@ -1285,7 +1224,7 @@ Ext.onReady(function()
     
     var viewPanel = new Ext.Panel({
         id: 'view_p',
-        title: 'Register views',
+        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:#133a75;">Map views</font>',
         items:
         [
             {
@@ -1364,12 +1303,107 @@ Ext.onReady(function()
         ]
     });
     
+    // ADMIN PANEL
+    
+    var adminPanel = new Ext.form.FormPanel({
+        id: 'admin_p',
+        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:#111111">Admin</font>',
+        items:
+        [   
+            {
+                xtype: 'checkbox',
+                id: 'register_chb',
+                fieldLabel: 'Admin panels',
+                isFormField: true,
+                listeners: {
+                    'check': {
+                        fn: function(checkbox,checked)
+                        {
+                            if (checked)
+                            {
+                                mapping.show();
+                                shapefilePanel.show();
+                                Ext.getCmp('west').doLayout();
+                                
+                                
+                            }
+                            else
+                            {
+                                mapping.hide();
+                                shapefilePanel.hide();
+                                Ext.getCmp('west').doLayout();
+                            }
+                        },
+                        scope: this
+                    }
+                }
+            },
+            
+            {
+                xtype: 'combo',
+                fieldLabel: 'Map source',
+                id: 'mapsource_cb',
+                editable: false,
+                valueField: 'id',
+                displayField: 'text',
+                mode: 'local',
+                emptyText: 'Required',
+                triggerAction: 'all',
+                width: 133,
+                minListWidth: combo_width,
+                store: new Ext.data.SimpleStore({
+                    fields: ['id', 'text'],
+                    data: [['database', 'DHIS database'], ['shapefile', 'Shapefile']]
+                }),
+                listeners:{
+                    'select': {
+                        fn: function()
+                        {
+                            var msv = Ext.getCmp('mapsource_cb').getValue();
+                            var msrw = Ext.getCmp('mapsource_cb').getRawValue();
+                            
+                            Ext.Ajax.request(
+                            {
+                                url: path + 'setMapSourceUserSetting' + type,
+                                method: 'POST',
+                                params: { mapSource: msv },
+
+                                success: function( responseObject )
+                                {
+                                    Ext.messageBlack.msg('Map source', msg_highlight_start + msrw + msg_highlight_end + ' was saved as map source.');
+
+                                    MAPSOURCE = msv;
+                                    Ext.getCmp('map_cb').getStore().reload();
+                                    Ext.getCmp('maps_cb').getStore().reload();
+                                },
+                                failure: function()
+                                {
+                                    alert( 'Status', 'Error while saving data' );
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        ],
+        listeners: {
+            expand: {
+                fn: function()
+                {
+                    Ext.getCmp('mapsource_cb').setValue(MAPSOURCE);
+                }
+            }
+        }        
+    });
+       
+    // WIDGETS
+    
     choropleth = new mapfish.widgets.geostat.Choropleth({
         id: 'choropleth',
         map: map,
         layer: choroplethLayer,
-        title: 'Thematic map',
-        nameAttribute: "NAME",
+        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:#133a75;">Thematic map</font>',
+        nameAttribute: 'NAME',
         indicators: [['value', 'Indicator']],
         url: INIT_URL,
         featureSelection: false,
@@ -1393,7 +1427,7 @@ Ext.onReady(function()
         id: 'mapping',
         map: map,
         layer: choroplethLayer,
-        title: 'Assign organisation units',
+        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:#222222;">Assign organisation units</font>',
         nameAttribute: 'NAME',
         indicators: [['value', 'Indicator']],
         url: INIT_URL,
@@ -1420,7 +1454,7 @@ Ext.onReady(function()
         title: STATIC1_LAYERNAME,
         nameAttribute: 'NAME',
         indicators: [['value', 'Indicator']],
-        url: STATIC1_URL,
+        url: INIT_URL,
         featureSelection: false,
         loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
         legendDiv: 'choroplethLegend',
@@ -1433,10 +1467,13 @@ Ext.onReady(function()
     });
     
     static1.hide();
+    mapping.hide();
+    shapefilePanel.hide();
 
     viewport = new Ext.Viewport({
         id: 'viewport',
         layout: 'border',
+        margins: '0 0 5 0',
         items:
         [
             new Ext.BoxComponent(
@@ -1453,12 +1490,13 @@ Ext.onReady(function()
                 contentEl: 'south',
                 id: 'south-panel',
                 split: true,
-                height: south_height,
+                height: 70,
                 minSize: 50,
                 maxSize: 200,
                 collapsible: true,
+                collapsed: true,
                 title: 'Status',
-                margins: '0 0 0 0',
+                margins: '0 5 5 5',
                 bodyStyle: 'padding:5px; font-family:tahoma; font-size:12px'
             },
             
@@ -1468,7 +1506,7 @@ Ext.onReady(function()
                 title: ' ',
                 width: 200,
                 collapsible: true,
-                margins: '0 0 0 5',
+                margins: '0 5 0 5',
                 defaults: {
                     border: true,
                     frame: true
@@ -1512,7 +1550,7 @@ Ext.onReady(function()
             {
                 region: 'west',
                 id: 'west',
-                title: '',
+                //title: '',
                 split: true,
                 collapsible: true,
                 width: west_width,
@@ -1527,11 +1565,12 @@ Ext.onReady(function()
                 items:
                 [
                     choropleth,
-                    mapping,
-                    shapefilePanel,
-                    legendsetPanel,
                     viewPanel,
-                    static1
+                    legendsetPanel,
+                    shapefilePanel,
+                    mapping,
+                    adminPanel,
+                    static1                    
                 ]
             },
             
@@ -1540,9 +1579,10 @@ Ext.onReady(function()
                 id: 'center',
                 title: 'Map',
                 xtype: 'mapcomponent',
+                margins: '0 0 5 0',
                 map: map,
-                width: 1000,
-                height: 1000
+                height: 400,
+                width: 1000
             }
         ]
     });
@@ -1567,6 +1607,11 @@ Ext.onReady(function()
             {
                 if (static1Layer.visibility) {
                     selectFeatureChoropleth.deactivate();
+                    
+                    if (!STATIC1LOADED) {
+                        STATIC1LOADED = true;
+                        static1.setUrl(STATIC1_URL);
+                    }
                 }
                 else {
                     selectFeatureChoropleth.activate();
@@ -1575,51 +1620,57 @@ Ext.onReady(function()
         }
     });  
     
-    Ext.get('loading').fadeOut({remove: true});   
+    Ext.get('loading').fadeOut({remove: true});
 });
 
 // SELECT FEATURES
 
 function onHoverSelectChoropleth(feature)
 {
-    var center_panel = Ext.getCmp('center');
-    var south_panel = Ext.getCmp('south-panel');
+    if (MAPDATA != null)
+    {
+        var center_panel = Ext.getCmp('center');
+        var south_panel = Ext.getCmp('south-panel');
 
-    var height = 230;
-    var padding_x = 15;
-    var padding_y = 22;
+        var height = 230;
+        var padding_x = 15;
+        var padding_y = 22;
 
-    var x = center_panel.x + padding_x;
-    var y = south_panel.y - height - padding_y;
+        var x = center_panel.x + padding_x;
+        var y = south_panel.y - height - padding_y;
 
-    popup_feature = new Ext.Window({
-        title: 'Organisation unit',
-        width: 190,
-        height: height,
-        layout: 'fit',
-        plain: true,
-        bodyStyle: 'padding:5px',
-        x: x,
-        y: y
-    });    
+        popup_feature = new Ext.Window({
+            title: 'Organisation unit',
+            width: 190,
+            height: height,
+            layout: 'fit',
+            plain: true,
+            bodyStyle: 'padding:5px',
+            x: x,
+            y: y
+        });    
 
-    style = '<p style="margin-top: 5px; padding-left:5px;">';
-    space = '&nbsp;&nbsp;';
-    bs = '<b>';
-    be = '</b>';
-    lf = '<br>';
-    pe = '</p>';
+        style = '<p style="margin-top: 5px; padding-left:5px;">';
+        space = '&nbsp;&nbsp;';
+        bs = '<b>';
+        be = '</b>';
+        lf = '<br>';
+        pe = '</p>';
 
-    var html = style + feature.attributes[MAPDATA.nameColumn] + pe;
-    html += style + bs + 'Value:' + be + space + feature.attributes.value + pe;
-    
-    popup_feature.html = html;
-    popup_feature.show();
+        var html = style + feature.attributes[MAPDATA.nameColumn] + pe;
+        html += style + bs + 'Value:' + be + space + feature.attributes.value + pe;
+        
+        popup_feature.html = html;
+        popup_feature.show();
+    }
 }
 
 function onHoverUnselectChoropleth(feature)
 {
-    popup_feature.hide();
+    if (MAPDATA != null)
+    {
+        popup_feature.hide();
+    }
 }
 
 function onClickSelectChoropleth(feature)
@@ -1628,7 +1679,7 @@ function onClickSelectChoropleth(feature)
     {
         if (!Ext.getCmp('grid_gp').getSelectionModel().getSelected())
         {
-            alert('First, select an organisation unit from the list');
+            Ext.messageRed.msg('Assign organisation units', 'Please select an organisation unit in the list.');
             return;
         }
         
@@ -1650,8 +1701,7 @@ function onClickSelectChoropleth(feature)
 
             success: function( responseObject )
             {
-                var south_panel = Ext.getCmp('south-panel');
-                south_panel.body.dom.innerHTML = organisationUnit + '<font color="#444444"> assigned to </font>' + name + "!";
+                Ext.messageBlack.msg('Assign organisation units', msg_highlight_start + organisationUnit + msg_highlight_end + ' (database) assigned to ' + msg_highlight_start + name + msg_highlight_end + ' (shapefile).');
                 
                 Ext.getCmp('grid_gp').getStore().reload();
                 loadMapData('assignment');
@@ -1664,8 +1714,6 @@ function onClickSelectChoropleth(feature)
         
         popup_feature.hide();
     }
-    
-    
 }
 
 function onClickUnselectChoropleth(feature) {}
@@ -1678,13 +1726,32 @@ function loadMapData(redirect)
     Ext.Ajax.request( 
     {
         url: path + 'getMapByMapLayerPath' + type,
-        method: 'GET',
+        method: 'POST',
         params: { mapLayerPath: URL, format: 'json' },
 
         success: function( responseObject )
         {
             MAPDATA = Ext.util.JSON.decode(responseObject.responseText).map[0];
-
+            
+            if (MAPSOURCE == 'database')
+            {
+                MAPDATA.name = Ext.getCmp('map_cb').getRawValue();
+                MAPDATA.organisationUnit = 'Country';
+                MAPDATA.organisationUnitLevel = Ext.getCmp('map_cb').getValue();
+                MAPDATA.unqiueColumn = 'name';
+                MAPDATA.nameColumn = 'name';
+                MAPDATA.longitude = COUNTRY_LONGITUDE;
+                MAPDATA.latitude = COUNTRY_LATITUDE;
+                MAPDATA.zoom = COUNTRY_ZOOM;
+            }
+            else if (MAPSOURCE == 'shapefile')
+            {
+                MAPDATA.organisationUnitLevel = parseFloat(MAPDATA.organisationUnitLevel);
+                MAPDATA.longitude = parseFloat(MAPDATA.longitude);
+                MAPDATA.latitude = parseFloat(MAPDATA.latitude);
+                MAPDATA.zoom = parseFloat(MAPDATA.zoom);
+            }
+            
             map.setCenter(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude), MAPDATA.zoom);
 
             if (redirect == 'choropleth') {
@@ -1713,7 +1780,7 @@ function getChoroplethData()
     Ext.Ajax.request( 
     {
         url: path + 'getMapValues' + type,
-        method: 'GET',
+        method: 'POST',
         params: { indicatorId: indicatorId, periodId: periodId, level: level, format: 'json' },
 
         success: function( responseObject )
@@ -1730,70 +1797,104 @@ function getChoroplethData()
 function dataReceivedChoropleth( responseText )
 {
     var layers = this.myMap.getLayersByName(CHOROPLETH_LAYERNAME);
-    var features = layers[0]['features'];
+    var features = layers[0].features;
     
     var mapvalues = Ext.util.JSON.decode(responseText).mapvalues;
     
-    var mlp = MAPDATA.mapLayerPath;
-    var uniqueColumn = MAPDATA.uniqueColumn;
-    
-    Ext.Ajax.request(
+    if (MAPSOURCE == 'database')
     {
-        url: path + 'getAvailableMapOrganisationUnitRelations' + type,
-        method: 'GET',
-        params: { mapLayerPath: mlp, format: 'json' },
-
-        success: function( responseObject )
+        for (var i=0; i < features.length; i++)
         {
-            var relations = Ext.util.JSON.decode(responseObject.responseText).mapOrganisationUnitRelations;
-            
-            for (var i=0; i < relations.length; i++)
+            for (var j=0; j < mapvalues.length; j++)
             {
-                var orgunitid = relations[i].organisationUnitId;
-                var featureid = relations[i].featureId;
+                if (features[i].attributes.value == null) {
+                    features[i].attributes.value = 0;
+                }
+
+                if (features[i].attributes.name == mapvalues[j].orgUnit) {
+                    features[i].attributes.value = parseFloat(mapvalues[j].value);
+                }
+            }
+        }
+        
+        features_choropleth = features;
+            
+        var options = {};
+        
+        // hidden
+        choropleth.indicator = 'value';
+        choropleth.indicatorText = 'Indicator';
+        options.indicator = choropleth.indicator;
+        
+        options.method = Ext.getCmp('method').getValue();
+        options.numClasses = Ext.getCmp('numClasses').getValue();
+        options.colors = choropleth.getColors();
+
+        choropleth.coreComp.updateOptions(options);
+        choropleth.coreComp.applyClassification();
+        choropleth.classificationApplied = true;
+    }
+    else
+    {
+        var mlp = MAPDATA.mapLayerPath;
+        var uniqueColumn = MAPDATA.uniqueColumn;
+        
+        Ext.Ajax.request(
+        {
+            url: path + 'getAvailableMapOrganisationUnitRelations' + type,
+            method: 'POST',
+            params: { mapLayerPath: mlp, format: 'json' },
+
+            success: function( responseObject )
+            {
+                var relations = Ext.util.JSON.decode(responseObject.responseText).mapOrganisationUnitRelations;
                 
-                for (var j=0; j < mapvalues.length; j++)
+                for (var i=0; i < relations.length; i++)
                 {
-                    if (orgunitid == mapvalues[j].organisationUnitId)
+                    var orgunitid = relations[i].organisationUnitId;
+                    var featureid = relations[i].featureId;
+                    
+                    for (var j=0; j < mapvalues.length; j++)
                     {
-                        for (var k=0; k < features.length; k++)
+                        if (orgunitid == mapvalues[j].organisationUnitId)
                         {
-                            if (features[k].attributes['value'] == null)
+                            for (var k=0; k < features.length; k++)
                             {
-                                features[k].attributes['value'] = 0;
-                            }
-                            
-                            if (featureid == features[k].attributes[uniqueColumn])
-                            {
-                                features[k].attributes['value'] = mapvalues[j].value;
+                                if (features[k].attributes['value'] == null) {
+                                    features[k].attributes['value'] = 0;
+                                }
+                                
+                                if (featureid == features[k].attributes[uniqueColumn]) {
+                                    features[k].attributes['value'] = mapvalues[j].value;
+                                }
                             }
                         }
                     }
                 }
-            }
-            
-            features_choropleth = features;
-            
-            var options = {};
-            
-            // hidden
-            choropleth.indicator = 'value';
-            choropleth.indicatorText = 'Indicator';
-            options.indicator = choropleth.indicator;
-            
-            options.method = Ext.getCmp('method').getValue();
-            options.numClasses = Ext.getCmp('numClasses').getValue();
-            options.colors = choropleth.getColors();
-            
-            choropleth.coreComp.updateOptions(options);
-            choropleth.coreComp.applyClassification();
-            choropleth.classificationApplied = true;
-        },
-        failure: function()
-        {
-            alert( 'Error while retrieving data: dataReceivedChoropleth' );
-        } 
-    });
+                
+                features_choropleth = features;
+                
+                var options = {};
+                
+                // hidden
+                choropleth.indicator = 'value';
+                choropleth.indicatorText = 'Indicator';
+                options.indicator = choropleth.indicator;
+                
+                options.method = Ext.getCmp('method').getValue();
+                options.numClasses = Ext.getCmp('numClasses').getValue();
+                options.colors = choropleth.getColors();
+                
+                choropleth.coreComp.updateOptions(options);
+                choropleth.coreComp.applyClassification();
+                choropleth.classificationApplied = true;
+            },
+            failure: function()
+            {
+                alert( 'Error while retrieving data: dataReceivedChoropleth' );
+            } 
+        });
+    }
 }
 
 // PROPORTIONAL SYMBOL
@@ -1801,7 +1902,7 @@ function getPointData()
 {
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
     var periodId = Ext.getCmp('period_cb').getValue();
-    var level = MAPDATA.organisationUnitLevel;
+    var level = parseFloat(MAPDATA.organisationUnitLevel);
 
     Ext.Ajax.request( 
     {
@@ -1960,7 +2061,7 @@ function getAutoAssignOrganisationUnitData()
     Ext.Ajax.request( 
     {
         url: path + 'getOrganisationUnitsAtLevel' + type,
-        method: 'GET',
+        method: 'POST',
         params: { level: level, format: 'json' },
 
         success: function( responseObject )
@@ -2021,8 +2122,7 @@ function dataReceivedAutoAssignOrganisationUnit( responseText )
         }
     }
     
-    var south_panel = Ext.getCmp('south-panel');
-    south_panel.body.dom.innerHTML = count_match + '<font color="#444444"> organisation units assigned (database: </font>' + count_orgunits/count_features + '<font color="#444444">, shapefile: </font>' + count_features + '<font color="#444444">)</font>';
+    Ext.messageBlack.msg('Assign organisation units', + msg_highlight_start + count_match.valueOf() + msg_highlight_end + ' organisation units assigned.<br><br>Database: ' + msg_highlight_start + count_orgunits/count_features + msg_highlight_end + '<br>Shapefile: ' + msg_highlight_start + count_features + msg_highlight_end);
     
     Ext.getCmp('grid_gp').getStore().reload();
     loadMapData('assignment');
