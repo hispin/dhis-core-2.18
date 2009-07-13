@@ -125,20 +125,22 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      */
     labelGenerator: null,
 
-    /**
-     * Constructor: mapfish.widgets.geostat.Choropleth
-     *
-     * Parameters:
-     * config - {Object} Config object.
-     */
-
-    /**
-     * Method: initComponent
-     *    Inits the component
-     */
+    getGridPanelHeight : function()
+    {
+        var h = screen.height;
+        
+        if (h <= 800) { return 300; }
+        else if (h <= 1050) { return 540; }
+        else if  (h <= 1200) { return 530; }
+        else { return 900; }
+    },
      
     newUrl : false,
     
+    /**
+     * Method: initComponent
+     *    Inits the component
+     */    
     initComponent : function() {
     
         mapStore = new Ext.data.JsonStore({
@@ -190,7 +192,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 triggerAction: 'all',
                 emptyText: 'Required',
                 selectOnFocus: true,
-                width: 130,
+                width: 133,
                 minListWidth: combo_width,
                 store: mapStore,
                 listeners: {
@@ -217,7 +219,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 store: gridStore,
                 columns: [ { header: 'Organisation units ', id: 'organisationUnitId', dataIndex: 'organisationUnit', sortable: true } ],
                 width: gridpanel_width,
-                height: gridpanel_height,
+                height: this.getGridPanelHeight(),
                 view: gridView,
                 style: 'left:0px',
                 bbar: new Ext.StatusBar({
@@ -232,6 +234,11 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                             isVisible: false,
                             handler: function()
                             {
+                                if (!Ext.getCmp('maps_cb').getValue()) {
+                                    Ext.messageRed.msg('Auto-assign', 'Please select a map.');
+                                    return;
+                                }
+
                                 loadMapData('auto-assignment');
                             },
                             scope: this
@@ -244,14 +251,20 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                             isVisible: false,
                             handler: function()
                             {
+                                if (!Ext.getCmp('maps_cb').getValue()) {
+                                    Ext.messageRed.msg('Remove relation', 'Please select a map.');
+                                    return;
+                                }
+                                
                                 if (!Ext.getCmp('grid_gp').getSelectionModel().getSelected())
                                 {
-                                    alert('First, select an organisation unit from the list');
+                                    Ext.messageRed.msg('Remove relation', 'Please select an organisation unit from the list.');
                                     return;
                                 }
                                     
                                 var selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
                                 var oui = selected.data['organisationUnitId'];
+                                var ou = selected.data['organisationUnit'];
                                 var mlp = Ext.getCmp('maps_cb').getValue();
                                 
                                 Ext.Ajax.request( 
@@ -265,6 +278,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                         var mlp = Ext.getCmp('maps_cb').getValue();
                                         Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
                                         Ext.getCmp('grid_gp').getStore().reload();
+                                        
+                                        Ext.messageBlack.msg('Remove relation', msg_highlight_start + ou + msg_highlight_end + ' relation removed.');
                                         
                                         mapping.classify(true);
                                     },
@@ -284,6 +299,11 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                             isVisible: false,
                             handler: function()
                             {
+                                if (!Ext.getCmp('maps_cb').getValue()) {
+                                    Ext.messageRed.msg('Remove all relations', 'Please select a map.');
+                                    return;
+                                }
+                                
                                 var mlp = Ext.getCmp('maps_cb').getValue();
                                 
                                 Ext.Ajax.request( 
@@ -297,6 +317,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                         var mlp = Ext.getCmp('maps_cb').getValue();
                                         Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
                                         Ext.getCmp('grid_gp').getStore().reload();
+                                        
+                                        Ext.messageBlack.msg('Remove all relations', 'All relations for the map ' + msg_highlight_start + Ext.getCmp('maps_cb').getRawValue() + msg_highlight_end + ' removed.');
                                         
                                         mapping.classify(true);
                                     },
@@ -380,12 +402,11 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
             URL = this.newUrl;
             this.newUrl = false;
             this.setUrl('geojson/' + URL);
-            //this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=sl:districts&outputformat=json&version=1.0.0');
         }
         
         if (!Ext.getCmp('maps_cb').getValue()) {
                 if (exception) {
-                    Ext.MessageBox.alert('Error', 'You must choose a map');
+                    Ext.messageRed.msg('Assign organisation units', 'Please select a map.');
                 }
                 return;
         }

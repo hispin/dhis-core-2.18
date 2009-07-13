@@ -47,7 +47,16 @@
     
     <action name="getMapValues" class="org.hisp.dhis.mapping.action.GetMapValuesAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonAggregatedMapValues.vm</result>
+    </action>	  
+	
+	<action name="setMapSourceUserSetting" class="org.hisp.dhis.mapping.action.SetMapSourceUserSettingAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
     </action>
+	  
+	<action name="getMapSourceUserSetting" class="org.hisp.dhis.mapping.action.GetMapSourceUserSettingAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/jsonUserSetting.vm</result>
+    </action>   	  
+	  
     
     <!-- MapOrganisationUnitRelations -->
     

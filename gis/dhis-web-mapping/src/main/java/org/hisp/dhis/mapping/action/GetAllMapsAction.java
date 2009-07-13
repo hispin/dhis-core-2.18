@@ -71,7 +71,7 @@ public class GetAllMapsAction
     public String execute()
         throws Exception
     {
-        object = new ArrayList<Map>( mappingService.getAllMaps() );
+        object = new ArrayList<Map>( mappingService.getAllUserMaps() );
         
         return SUCCESS;
     }

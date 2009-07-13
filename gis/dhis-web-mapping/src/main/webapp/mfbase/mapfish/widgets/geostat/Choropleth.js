@@ -200,6 +200,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         
         indicatorStore = new Ext.data.JsonStore({
             url: path + 'getIndicatorsByIndicatorGroup' + type,
+            baseParams: { indicatorGroupId: 0 },
             root: 'indicators',
             fields: ['id', 'name', 'shortName'],
             sortInfo: { field: 'name', direction: 'ASC' },
@@ -240,6 +241,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             
         periodStore = new Ext.data.JsonStore({
             url: path + 'getPeriodsByPeriodType' + type,
+            baseParams: { name: 0 },
             root: 'periods',
             fields: ['id', 'name'],
             autoLoad: false,
@@ -265,10 +267,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             baseParams: { format: 'jsonmin' },
             root: 'maps',
             fields: ['id', 'name', 'mapLayerPath', 'organisationUnitLevel'],
-            sortInfo: { field: 'mapLayerPath', direction: 'ASC' },
+            sortInfo: { field: 'organisationUnitLevel', direction: 'ASC' },
             autoLoad: true
-        }); 
-            
+        });
+        
         legendStore = new Ext.data.JsonStore({
             url: path + 'getMapLegendSet' + type,
             baseParams: { format: 'json' },
@@ -364,7 +366,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     scope: this
                 }
             }
-        },     
+        },
         
         {
             xtype: 'combo',
@@ -388,13 +390,13 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                         if (Ext.getCmp('mapview_cb').getValue() != '') {
                             Ext.getCmp('mapview_cb').reset();
                         }
-                        
+ 
                         var iId = Ext.getCmp('indicator_cb').getValue();
                         
                         Ext.Ajax.request(
                         {
                             url: path + 'getMapLegendSet' + type,
-                            method: 'GET',
+                            method: 'POST',
                             params: { indicatorId: iId, format: 'json' },
 
                             success: function( responseObject )
@@ -528,7 +530,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             displayField: 'text',
             mode: 'local',
             emptyText: 'Required',
-            value: 2,
+            value: 1,
             triggerAction: 'all',
             width: combo_width,
             store: new Ext.data.SimpleStore({
@@ -701,7 +703,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
      */
     requestSuccess: function(request) {
         this.ready = true;
-        this.classify(false);
 
         // if widget is rendered, hide the optional mask
         if (this.loadMask && this.rendered) {
@@ -748,25 +749,34 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             return;
         }
         
-        if (this.newUrl) {
+        if (this.newUrl)
+        {
             URL = this.newUrl;
             this.newUrl = false;
-            this.setUrl('geojson/' + URL);
-            //this.setUrl(path + 'getPointShapefile.action?level=4');
-            //this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=sl:districts&outputformat=json&version=1.0.0');
             
-            //this.setUrl('../../../geoserver/wfs?request=GetFeature&typename=' + URL + 'sl:districts&outputformat=json&version=1.0.0');
+            if (MAPSOURCE == MAP_SOURCE_DATABASE)
+            {
+                if (URL == 4) {
+                    this.setUrl(path + 'getPointShapefile.action?level=' + URL);
+                }
+                else {
+                    this.setUrl(path + 'getPolygonShapefile.action?level=' + URL);
+                }
+            }
+            else {
+                this.setUrl('geojson/' + URL);
+            }
         }
                 
         if (!Ext.getCmp('indicator_cb').getValue() ||
             !Ext.getCmp('period_cb').getValue() ||
             !Ext.getCmp('map_cb').getValue()) {
                 if (exception) {
-                    Ext.MessageBox.alert('Error', 'You must choose indicator, period and level');
+                    Ext.messageRed.msg('Thematic map', 'Form is not complete.');
                 }
                 return;
         }
-        
+
         loadMapData('choropleth');
     },
 

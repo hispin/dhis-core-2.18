@@ -69,6 +69,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataMartStore"
       ref="org.hisp.dhis.datamart.DataMartStore"/>
   </bean>
+	
+  <bean id="org.hisp.dhis.mapping.action.SetMapSourceUserSettingAction"
+    class="org.hisp.dhis.mapping.action.SetMapSourceUserSettingAction"
+    scope="prototype">
+    <property name="userSettingService"
+      ref="org.hisp.dhis.user.UserSettingService"/>
+  </bean>
+
+  <bean id="org.hisp.dhis.mapping.action.GetMapSourceUserSettingAction"
+    class="org.hisp.dhis.mapping.action.GetMapSourceUserSettingAction"
+    scope="prototype">
+    <property name="userSettingService"
+      ref="org.hisp.dhis.user.UserSettingService"/>
+  </bean>	
     
   <!-- MapOrganisationUnitRelation -->
     
