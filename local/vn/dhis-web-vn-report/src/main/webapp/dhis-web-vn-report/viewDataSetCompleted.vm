@@ -1,0 +1,6 @@
+﻿<div>
+$htmlCode
+</div>
+<p><h3>Mã HTML để nhúng vào trang web</h3><input type="button" value="Chọn tất cả" onclick="document.getElementById('code').selectionEnd=document.getElementById('code').value.length;document.getElementById('code').selectionStart=0;"/>
+Ấn Ctrl+C để copy và dán vào trang web của bạn</p>
+<textarea style="width:100%;" rows=5 id="code">$htmlEmbed</textarea>

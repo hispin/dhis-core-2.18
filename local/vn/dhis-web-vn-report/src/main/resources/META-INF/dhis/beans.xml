@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- Core bean -->
+
+	<bean id="org.hisp.dhis.vn.report.state.SelectionManager" class="org.hisp.dhis.vn.report.state.SelectionManager" />
+
+	<bean id="org.hisp.dhis.vn.report.state.ReportLocationManager"
+		class="org.hisp.dhis.vn.report.state.ReportLocationManager"
+		init-method="init">
+		<property name="locationManager"
+			ref="org.hisp.dhis.external.location.LocationManager" />
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	</bean>
+
+
+
+	<!-- Configuration Bean -->
+
+	<bean
+		id="org.hisp.dhis.vn.report.configuration.action.GetReportConfigurationAction"
+		class="org.hisp.dhis.vn.report.configuration.action.GetReportConfigurationAction">
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.vn.report.configuration.action.SetReportConfigurationAction"
+		class="org.hisp.dhis.vn.report.configuration.action.SetReportConfigurationAction">
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	</bean>
+
+	<!-- Report Bean -->
+
+	<bean
+		id="org.hisp.dhis.vn.report.action.UpdateReportExcelGroupListingAction"
+		class="org.hisp.dhis.vn.report.action.UpdateReportExcelGroupListingAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+		<property name="organisationUnitGroupService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.report.action.ListReportAction" class="org.hisp.dhis.vn.report.action.ListReportAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.report.action.GetReportAction" class="org.hisp.dhis.vn.report.action.GetReportAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+	</bean>
+
+
+	<bean id="org.hisp.dhis.vn.report.action.GetOrganisationUnitGroupAction"
+		class="org.hisp.dhis.vn.report.action.GetOrganisationUnitGroupAction"
+		scope="prototype">
+		<property name="organisationUnitGroupService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+	</bean>
+
+
+	<bean id="org.hisp.dhis.vn.report.action.AddReportExcelAction"
+		class="org.hisp.dhis.vn.report.action.AddReportExcelAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+	</bean>
+
+
+	<bean id="org.hisp.dhis.vn.report.action.ValidateReportAction"
+		class="org.hisp.dhis.vn.report.action.ValidateReportAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.report.action.UpdateReportExcelAction"
+		class="org.hisp.dhis.vn.report.action.UpdateReportExcelAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.report.action.DeleteReportAction"
+		class="org.hisp.dhis.vn.report.action.DeleteReportAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.report.action.OpenReportExcelAssociationAction"
+		class="org.hisp.dhis.vn.report.action.OpenReportExcelAssociationAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.report.action.UpdateReportAssociationAction"
+		class="org.hisp.dhis.vn.report.action.UpdateReportAssociationAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.report.action.GetNumberOfLevelsAction"
+		class="org.hisp.dhis.vn.report.action.GetNumberOfLevelsAction">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.report.action.SelectLevelAction" class="org.hisp.dhis.vn.report.action.SelectLevelAction"
+		scope="prototype">
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.report.action.UnselectLevelAction"
+		class="org.hisp.dhis.vn.report.action.UnselectLevelAction" scope="prototype">
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.report.action.UnselectAllAction" class="org.hisp.dhis.vn.report.action.UnselectAllAction"
+		scope="prototype">
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+	</bean>
+
+	<!-- Report Item -->
+
+	<bean id="org.hisp.dhis.vn.reportitem.action.ListReportItemAction"
+		class="org.hisp.dhis.vn.reportitem.action.ListReportItemAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.reportitem.action.GetReportItemAction"
+		class="org.hisp.dhis.vn.reportitem.action.GetReportItemAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.reportitem.action.AddReportItemAction"
+		class="org.hisp.dhis.vn.reportitem.action.AddReportItemAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.reportitem.action.UpdateReportItemAction"
+		class="org.hisp.dhis.vn.reportitem.action.UpdateReportItemAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.reportitem.action.ValidateReportItemAction"
+		class="org.hisp.dhis.vn.reportitem.action.ValidateReportItemAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.reportitem.action.DeleteReportItemAction"
+		class="org.hisp.dhis.vn.reportitem.action.DeleteReportItemAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.vn.report.formula.action.GetFilteredDataElementsAction"
+		class="org.hisp.dhis.vn.report.formula.action.GetFilteredDataElementsAction"
+		scope="prototype">
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		</property>
+		<property name="dataElementCategoryOptionComboService">
+			<ref
+				bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.report.formula.action.GetFormulaTextAction"
+		class="org.hisp.dhis.vn.report.formula.action.GetFormulaTextAction"
+		scope="prototype">
+		<property name="expressionService">
+			<ref bean="org.hisp.dhis.expression.ExpressionService" />
+		</property>
+	</bean>
+
+
+	<bean id="org.hisp.dhis.vn.report.formula.action.ValidateDenumAction"
+		class="org.hisp.dhis.vn.report.formula.action.ValidateDenumAction">
+		<property name="expressionService">
+			<ref bean="org.hisp.dhis.expression.ExpressionService" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.reportitem.action.CopyReportItemsAction"
+		class="org.hisp.dhis.vn.reportitem.action.CopyReportItemsAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+	</bean>
+
+	<!-- Export Report -->
+
+	<bean id="org.hisp.dhis.vn.report.export.action.SelectFormAction"
+		class="org.hisp.dhis.vn.report.export.action.SelectFormAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.vn.report.state.SelectionManager" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.report.export.action.GetOrganisationUnitAction"
+		class="org.hisp.dhis.vn.report.export.action.GetOrganisationUnitAction">
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.report.export.action.GetPeriodAction"
+		class="org.hisp.dhis.vn.report.export.action.GetPeriodAction">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.vn.report.state.SelectionManager" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.vn.report.export.action.ValidateGenerateReportAction"
+		class="org.hisp.dhis.vn.report.export.action.ValidateGenerateReportAction">
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.report.export.action.GenerateReportAction"
+		class="org.hisp.dhis.vn.report.export.action.GenerateReportAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.vn.report.state.ReportLocationManager" />
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="dataElementCategoryOptionComboService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+		<property name="statementManager" ref="org.hisp.dhis.jdbc.StatementManager" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+
+	</bean>
+
+	<!-- Delete Report temp file -->
+	<bean id="org.hisp.dhis.vn.report.support.action.CleanTempDirectoryAction"
+		class="org.hisp.dhis.vn.report.support.action.CleanTempDirectoryAction">
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.vn.report.state.ReportLocationManager" />
+	</bean>
+
+	<!-- Data Set Completed -->
+
+	<bean id="org.hisp.dhis.vn.report.completed.action.SelectParamsAction"
+		class="org.hisp.dhis.vn.report.completed.action.SelectParamsAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.vn.report.completed.action.GetDataSetAndPeriodByPeriodTypeAction"
+		class="org.hisp.dhis.vn.report.completed.action.GetDataSetAndPeriodByPeriodTypeAction">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.vn.report.completed.action.ViewDataSetCompletedAction"
+		class="org.hisp.dhis.vn.report.completed.action.ViewDataSetCompletedAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="completeDataSetRegistrationService"
+			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.vn.report.completed.action.ViewCustomDataSetReportAction"
+		class="org.hisp.dhis.vn.report.completed.action.ViewCustomDataSetReportAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="dataEntryFormService" ref="org.hisp.dhis.dataset.DataEntryFormService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<!-- HIEU DONE -->
+	<!-- Dataelement -->
+
+	<bean
+		id="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupsAndCateCombosListAction"
+		class="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupsAndCateCombosListAction">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataElementCategoryComboService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryComboService" />
+	</bean>
+
+
+	<bean
+		id="org.hisp.dhis.vn.dataelement.action.GetFilteredDataElementListAction"
+		class="org.hisp.dhis.vn.dataelement.action.GetFilteredDataElementListAction">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+
+
+	<bean
+		id="org.hisp.dhis.vn.categorycombo.action.GetFilteredCategoryListAction"
+		class="org.hisp.dhis.vn.categorycombo.action.GetFilteredCategoryListAction">
+		<property name="dataElementCategoryComboService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryComboService" />
+	</bean>
+
+
+	<bean
+		id="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupMembersAction"
+		class="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupMembersAction">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+
+
+	<bean
+		id="org.hisp.dhis.vn.dataelement.action.ValidateAddDataElementAndCateComboInCategoryReportAction"
+		class="org.hisp.dhis.vn.dataelement.action.ValidateAddDataElementAndCateComboInCategoryReportAction" />
+
+
+	<bean
+		id="org.hisp.dhis.vn.report.formula.action.ValidateFormulaForReportCategoryAction"
+		class="org.hisp.dhis.vn.report.formula.action.ValidateFormulaForReportCategoryAction" />
+
+
+	<bean
+		id="org.hisp.dhis.vn.report.action.UpdateElementMembersAndCateComboReportCategoryAction"
+		class="org.hisp.dhis.vn.report.action.UpdateElementMembersAndCateComboReportCategoryAction">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataElementCategoryComboService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryComboService" />
+		<property name="dataElementCategoryOptionComboService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+	</bean>
+
+
+	<bean id="org.hisp.dhis.vn.categorycombo.action.GetOptionCombosAction"
+		class="org.hisp.dhis.vn.categorycombo.action.GetOptionCombosAction">
+		<property name="dataElementCategoryComboService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryComboService" />
+		<property name="dataElementCategoryOptionComboService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+	</bean>
+
+	<!-- Import Excel Files -->
+
+	<bean
+		id="org.hisp.dhis.vn.imports.action.GetListExcelFileByOrganisationAction"
+		class="org.hisp.dhis.vn.imports.action.GetListExcelFileByOrganisationAction">
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.vn.report.state.ReportLocationManager" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.imports.action.UploadExcelFileAction"
+		class="org.hisp.dhis.vn.imports.action.UploadExcelFileAction">
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.vn.report.state.ReportLocationManager" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.imports.action.DeleteExcelFileAction"
+		class="org.hisp.dhis.vn.imports.action.DeleteExcelFileAction">
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.vn.report.state.ReportLocationManager" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.imports.action.ViewDataFromExcelFileAction"
+		class="org.hisp.dhis.vn.imports.action.ViewDataFromExcelFileAction">
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.vn.report.state.ReportLocationManager" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="reportExcelService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+	</bean>
+
+
+
+
+
+</beans>
+
+
+
+
