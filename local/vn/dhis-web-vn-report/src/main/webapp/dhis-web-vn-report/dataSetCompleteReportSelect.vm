@@ -1,0 +1,127 @@
+<h3>$i18n.getString( "dataset_completed_report" )</h3>
+<table>
+	<tr>
+		<td><label>$i18n.getString('organisation')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td width="25em"><input type="text" id="organisation" value="$!organisationUnit.name"  style="width:20em"></td>	
+		<td>
+			<label>$i18n.getString('view_by')</label>
+			<select type="text" id="viewby" name="viewBy" style="min-width:20em" onchange="changeViewBy()">
+				<option value="period">$i18n.getString('period')</period>
+				<option value="dataset">$i18n.getString('dataset')</period>
+			</select>
+		</td>			
+	</tr>
+	<tr>
+		<td><label>$i18n.getString('period_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td>
+			<select type="text" id="periodType" name="periodType" style="min-width:20em" onchange="getDataSetAndPeriod()">
+				#foreach($periodType in $periodTypes)
+					<option value='$periodType.name'>$i18n.getString( $periodType.name )</option>				
+				#end
+			</select>
+		</td>
+		
+	</tr>
+</table>
+<hr>
+<table>	
+	<tr>
+		<th>$i18n.getString('dataset')</th>
+		<th></th>
+		<th>$i18n.getString('selectd_dataset')</th>
+	</tr>	
+	
+	<tr>		
+		<td>
+			<select type="text" size=10 id="dataSet" name="dataSets" style="min-width:20em" ondblclick="moveSelectedById('dataSet','selectedDataSets')">
+			
+			</select>
+		</td>
+		<td>
+			<input type="button" value=" > " onclick="moveSelectedById('dataSet','selectedDataSets');"/><br>
+			<input type="button" value=" < " onclick="moveSelectedById('selectedDataSets','dataSet');"/>
+		</td>
+		<td>
+			<select type="text" size=10 id="selectedDataSets" name="selectedDataSets" style="min-width:20em" ondblclick="moveSelectedById('selectedDataSets','dataSet')">
+			
+			</select>
+		</td>	
+	</tr>
+	
+	<tr>
+		<th>$i18n.getString('period')</th>
+		<th></th>
+		<th>$i18n.getString('selected_period')</th>
+	</tr>	
+	
+	<tr>
+		
+		<td>
+			<select type="text" id="period" name="periods" style="min-width:20em" size=10 ondblclick="moveSelectedById('period','selectedPeriods');">
+			
+			</select>
+		</td>
+		<td>
+			<input type="button" value=" > " onclick="moveSelectedById('period','selectedPeriods');"/><br>
+			<input type="button" value=" < " onclick="moveSelectedById('selectedPeriods','period');"/>
+		</td>
+		<td>
+			<select type="text" id="selectedPeriods" name="selectedPeriods" style="min-width:20em" size=10 ondblclick="moveSelectedById('selectedPeriods','period');">
+			
+			</select>
+		</td>
+	</tr>
+</table>
+<hr>
+<p><input id="viewButton" type="button" value="$i18n.getString('view')" onclick="viewDataSetCompleted();"/><p>
+<script>
+	function viewDataSetCompleted(){		
+		//var request = new Request();
+		var params = "viewBy=" + byId('viewby').value;
+		
+		var selectedDataSets = document.getElementById( 'selectedDataSets' );
+
+		for ( var i = 0; i < selectedDataSets.options.length; ++i)
+		{
+			params += '&selectedDataSets=' + selectedDataSets.options[i].value;
+		} 
+		
+		var selectedPeriods = document.getElementById( 'selectedPeriods' );
+
+		for ( var i = 0; i < selectedPeriods.options.length; ++i)
+		{
+			params += '&selectedPeriods=' + selectedPeriods.options[i].value;
+		} 
+		
+		//request.sendAsPost( params );
+		//request.setResponseTypeXML( 'xmlObject' );  
+		//request.setCallbackSuccess( viewDataSetCompletedReceived );
+		//request.send( "viewDataSetCompleted.action" );  
+		var url = "viewDataSetCompleted.action?"+params;
+		window.open(  url , '_blank', 'width='+document.documentElement.clientWidth+',height='+document.documentElement.clientHeight+',scrollbars=yes' );
+		
+	}
+	function organisationUnitSelected( orgUnits )
+	{	
+		var request = new Request();
+		request.setResponseTypeXML( 'xmlObject' );
+		request.setCallbackSuccess(organisationUnitSelectedCompleted );
+		request.send( 'getOrganisationUnit.action');
+	}
+	function organisationUnitSelectedCompleted(xmlObject){
+		if(xmlObject.getAttribute('null')=='true'){	
+			disable('viewButton');
+		}else{
+			enable('viewButton');
+			setFieldValue('organisation',getElementValue(xmlObject, 'name'));
+		}
+			
+	}
+
+selection.setListenerFunction( organisationUnitSelected );
+	
+	function viewDataSetCompletedReceived( xmlObject ){
+	}
+	getDataSetAndPeriod();
+	changeViewBy();
+</script>

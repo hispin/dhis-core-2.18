@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<elementCategory>
+
+	<dataElementGroups>
+	#foreach( $dataElementGroup in $dataElementGroups )
+		<dataElementGroup>
+			<id>$dataElementGroup.id</id>
+			<name>$encoder.xmlEncode( $dataElementGroup.name )</name>
+		</dataElementGroup>
+	#end
+	</dataElementGroups>
+
+	<categoryCombos>
+	#foreach( $categoryCombo in $categoryCombos )
+		<categoryCombo>
+			<id>$categoryCombo.id</id>
+			<name>$encoder.xmlEncode( $categoryCombo.name )</name>
+		</categoryCombo>
+	#end
+	</categoryCombos>
+	
+</elementCategory>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+  
+  <bean id="org.hisp.dhis.vn.report.ReportExcelStore"
+    class="org.hisp.dhis.vn.report.hibernate.HibernateReportExcelStore">
+    <property name="hibernateSessionManager"
+   	  ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.vn.report.ReportExcelService"
+    class="org.hisp.dhis.vn.report.DefaultReportExcelService">
+    <property name="reportStore"
+   	  ref="org.hisp.dhis.vn.report.ReportExcelStore"/>
+  </bean>
+ 
+  
+  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice" ref="readWriteTransactionInterceptor"/>
+    <property name="patterns">
+      <list>       
+        <value>.*\.ReportExcelStore\.add.*</value>
+        <value>.*\.ReportExcelStore\.update.*</value>
+        <value>.*\.ReportExcelStore\.save.*</value>
+        <value>.*\.ReportExcelStore\.delete.*</value>       
+      </list>
+    </property>
+  </bean>	
+  
+</beans>
