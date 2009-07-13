@@ -38,6 +38,9 @@ import org.hisp.dhis.period.PeriodType;
  */
 public class MapView
 {
+    public static final String MAP_SOURCE_TYPE_DATABASE = "database";
+    public static final String MAP_SOURCE_TYPE_SHAPEFILE = "shapefile";
+
     private int id;
 
     private String name;
@@ -50,7 +53,9 @@ public class MapView
     
     private Period period;
     
-    private Map map;
+    private String mapSourceType;
+    
+    private String mapSource;
     
     private int method;
     
@@ -64,7 +69,7 @@ public class MapView
     {
     }
 
-    public MapView( String name, IndicatorGroup indicatorGroup, Indicator indicator, PeriodType periodType, Period period, Map map,
+    public MapView( String name, IndicatorGroup indicatorGroup, Indicator indicator, PeriodType periodType, Period period, String mapSourceType, String mapSource,
         int method, int classes, String colorLow, String colorHigh )
     {
         this.name = name;
@@ -72,7 +77,8 @@ public class MapView
         this.indicator = indicator;
         this.periodType = periodType;
         this.period = period;
-        this.map = map;
+        this.mapSourceType = mapSourceType;
+        this.mapSource = mapSource;
         this.method = method;
         this.classes = classes;
         this.colorLow = colorLow;
@@ -176,14 +182,24 @@ public class MapView
         this.period = period;
     }
 
-    public Map getMap()
+    public String getMapSourceType()
     {
-        return map;
+        return mapSourceType;
     }
 
-    public void setMap( Map map )
+    public void setMapSourceType( String mapSourceType )
     {
-        this.map = map;
+        this.mapSourceType = mapSourceType;
+    }
+    
+    public String getMapSource()
+    {
+        return mapSource;
+    }
+
+    public void setMapSource( String mapSource )
+    {
+        this.mapSource = mapSource;
     }
 
     public int getMethod()

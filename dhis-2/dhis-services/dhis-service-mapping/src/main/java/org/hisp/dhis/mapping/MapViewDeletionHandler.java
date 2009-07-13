@@ -103,7 +103,7 @@ public class MapViewDeletionHandler
     {
         for ( MapView mapView : mappingService.getAllMapViews() )
         {
-            if ( mapView.getMap().equals( map ) )
+            if ( mapView.getMapSource().equals( map.getMapLayerPath() ) )
             {
                 mappingService.deleteMapView( mapView );
             }

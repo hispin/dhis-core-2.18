@@ -70,15 +70,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.datamart.DataMartStore"/>
   </bean>
 	
-  <bean id="org.hisp.dhis.mapping.action.SetMapSourceUserSettingAction"
-    class="org.hisp.dhis.mapping.action.SetMapSourceUserSettingAction"
+  <bean id="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction"
+    class="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction"
     scope="prototype">
     <property name="userSettingService"
       ref="org.hisp.dhis.user.UserSettingService"/>
   </bean>
 
-  <bean id="org.hisp.dhis.mapping.action.GetMapSourceUserSettingAction"
-    class="org.hisp.dhis.mapping.action.GetMapSourceUserSettingAction"
+  <bean id="org.hisp.dhis.mapping.action.GetMapSourceTypeUserSettingAction"
+    class="org.hisp.dhis.mapping.action.GetMapSourceTypeUserSettingAction"
     scope="prototype">
     <property name="userSettingService"
       ref="org.hisp.dhis.user.UserSettingService"/>

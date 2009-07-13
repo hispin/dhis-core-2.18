@@ -1,13 +1,13 @@
 package org.hisp.dhis.mapping.action;
 
-import static org.hisp.dhis.mapping.MappingService.KEY_MAP_SOURCE;
-import static org.hisp.dhis.mapping.MappingService.MAP_SOURCE_DATABASE;
+import static org.hisp.dhis.mapping.MappingService.KEY_MAP_SOURCE_TYPE;
+import static org.hisp.dhis.mapping.MappingService.MAP_SOURCE_TYPE_DATABASE;
 
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork.Action;
 
-public class GetMapSourceUserSettingAction
+public class GetMapSourceTypeUserSettingAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -39,7 +39,7 @@ public class GetMapSourceUserSettingAction
     public String execute()
         throws Exception
     {
-        object = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE, MAP_SOURCE_DATABASE );
+        object = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_DATABASE );
         
         return SUCCESS;
     }

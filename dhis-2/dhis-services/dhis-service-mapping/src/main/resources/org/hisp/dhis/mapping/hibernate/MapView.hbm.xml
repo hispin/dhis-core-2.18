@@ -25,8 +25,9 @@
 		<many-to-one name="period" class="org.hisp.dhis.period.Period" 
 			column="periodid" foreign-key="fk_mapview_periodid"/>
 		
-		<many-to-one name="map" class="org.hisp.dhis.mapping.Map" 
-			column="mapid" foreign-key="fk_mapview_mapid"/>
+		<property name="mapSourceType"/>
+		
+		<property name="mapSource"/>
 		
 		<property name="method"/>
 		

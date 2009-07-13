@@ -40,11 +40,10 @@ public interface MappingService
 {
     final String ID = MappingService.class.getName();
 
-    final String KEY_MAP_SOURCE = "mapSource";
+    final String KEY_MAP_SOURCE_TYPE = "mapSource";
 
-    final String MAP_SOURCE_DATABASE = "database";
-
-    final String MAP_SOURCE_SHAPEFILE = "shapefile";
+    final String MAP_SOURCE_TYPE_DATABASE = "database";
+    final String MAP_SOURCE_TYPE_SHAPEFILE = "shapefile";
 
     // -------------------------------------------------------------------------
     // Map
@@ -324,12 +323,12 @@ public interface MappingService
     int addMapView( MapView mapView );
 
     int addMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
-        String mapLayerPath, int method, int classes, String colorLow, String colorHigh );
+        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh );
 
     void updateMapView( MapView mapView );
 
     void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
-        String mapLayerPath, int method, int classes, String colorLow, String colorHigh );
+        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh );
 
     void deleteMapView( MapView view );
 
