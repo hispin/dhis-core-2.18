@@ -151,7 +151,7 @@ public class DBConnection
             input = new BufferedReader( fr );
 
             String s = input.readLine();
-            while ( s instanceof String )
+            while ( s instanceof String ) //TODO wtf?
             {
                 if ( s.contains( "jdbc:mysql:" ) )
                 {

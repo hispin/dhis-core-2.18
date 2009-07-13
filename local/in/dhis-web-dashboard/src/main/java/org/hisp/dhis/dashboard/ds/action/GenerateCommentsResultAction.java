@@ -34,10 +34,10 @@ import com.opensymphony.xwork.Action;
 public class GenerateCommentsResultAction
     implements Action
 {
-
     // ---------------------------------------------------------------
     // Dependencies
     // ---------------------------------------------------------------
+    
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -312,7 +312,7 @@ public class GenerateCommentsResultAction
                 while ( orgUnitIterator.hasNext() )
                 {
                     OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer
-                        .parseInt( (String) orgUnitIterator.next() ) );
+                        .parseInt( orgUnitIterator.next() ) );
                     orgUnitList.add( o );
                     List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
                     Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
@@ -375,7 +375,7 @@ public class GenerateCommentsResultAction
 
         while ( dataSetIterator.hasNext() )
         {
-            ds = dataSetService.getDataSet( Integer.parseInt( (String) dataSetIterator.next() ) );
+            ds = dataSetService.getDataSet( Integer.parseInt( dataSetIterator.next() ) );
             dataSetList.add( ds );
             dataElements = ds.getDataElements();
             deInfo = getDEInfo( dataElements );
@@ -389,12 +389,11 @@ public class GenerateCommentsResultAction
             Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
             OrganisationUnit o;
             Set<Source> dso = new HashSet<Source>();
-            Iterator periodIterator;
+            Iterator<Period> periodIterator;
 
             while ( orgUnitListIterator.hasNext() )
             {
-
-                o = (OrganisationUnit) orgUnitListIterator.next();
+                o = orgUnitListIterator.next();
                 orgUnitInfo = "" + o.getId();
 
                 if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( o ) )
@@ -407,12 +406,11 @@ public class GenerateCommentsResultAction
                 periodIterator = periodList.iterator();
 
                 Period p;
-                Collection dataValueResult;
                 double dataStatusPercentatge;
 
                 while ( periodIterator.hasNext() )
                 {
-                    p = (Period) periodIterator.next();
+                    p = periodIterator.next();
                     periodInfo = "" + p.getId();
 
                     PreparedStatement ps1 = null;
@@ -441,8 +439,6 @@ public class GenerateCommentsResultAction
                             OrganisationUnit ou = organisationUnitService.getOrganisationUnit( rs1.getInt( 1 ) );
                             DataElement de = dataElementService.getDataElement( rs1.getInt( 2 ) );
                             Period per = periodService.getPeriod( rs1.getInt( 3 ) );
-
-                            String tempStr = ou.getShortName() + " --- " + de.getName();
                         }
 
                         // results.add( new Integer( (int) dataStatusPercentatge
@@ -552,7 +548,7 @@ public class GenerateCommentsResultAction
         OrganisationUnit child;
         while ( childIterator.hasNext() )
         {
-            child = (OrganisationUnit) childIterator.next();
+            child = childIterator.next();
             orgUnitTree.addAll( getChildOrgUnitTree( child ) );
         }
         return orgUnitTree;

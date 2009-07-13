@@ -144,21 +144,21 @@ public class GenerateTabularAnalysisResultAction
         selectedOrgUnitList = new ArrayList<OrganisationUnit>();
         if ( orgUnitListCB == null )
             System.out.println( "orgunit list is null" );
-        Iterator orgUnitIterator = orgUnitListCB.iterator();
+        Iterator<String> orgUnitIterator = orgUnitListCB.iterator();
         while ( orgUnitIterator.hasNext() )
         {
             OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer
-                .parseInt( (String) orgUnitIterator.next() ) );
+                .parseInt( orgUnitIterator.next() ) );
             selectedOrgUnitList.add( o );
         }
 
         /* DataElement Info */
         selectedDataElementList = new ArrayList<DataElement>();
-        Iterator dataElementIterator = selectedDataElements.iterator();
+        Iterator<String> dataElementIterator = selectedDataElements.iterator();
         while ( dataElementIterator.hasNext() )
         {
             DataElement de = dataElementService
-                .getDataElement( Integer.parseInt( (String) dataElementIterator.next() ) );
+                .getDataElement( Integer.parseInt( dataElementIterator.next() ) );
             selectedDataElementList.add( de );
         }
 
@@ -169,17 +169,18 @@ public class GenerateTabularAnalysisResultAction
         /* Result Calculation Part */
         double rowTotal = 0.0;
         dataValueResult = new HashMap<DataElement, List<Double>>();
-        dataElementIterator = selectedDataElementList.iterator();
-        while ( dataElementIterator.hasNext() )
+        Iterator<DataElement> selectedDataElementIterator = selectedDataElementList.iterator();
+        
+        while ( selectedDataElementIterator.hasNext() )
         {
-            DataElement de = (DataElement) dataElementIterator.next();
+            DataElement de = selectedDataElementIterator.next();
 
             List<Double> dataValue = new ArrayList<Double>();
-            orgUnitIterator = selectedOrgUnitList.iterator();
+            Iterator<OrganisationUnit> selectedOrgUnitIterator = selectedOrgUnitList.iterator();
             rowTotal = 0.0;
-            while ( orgUnitIterator.hasNext() )
+            while ( selectedOrgUnitIterator.hasNext() )
             {
-                OrganisationUnit ou = (OrganisationUnit) orgUnitIterator.next();
+                OrganisationUnit ou = selectedOrgUnitIterator.next();
                 //System.out.println( de.getAlternativeName() + " : " + startPeriod.getStartDate() + " : "
                     //+ endPeriod.getEndDate() + " : " + ou.getShortName() );
                 double aggDataValue = 0.0;
@@ -192,7 +193,7 @@ public class GenerateTabularAnalysisResultAction
                 Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
                 while ( optionComboIterator.hasNext() )
                 {
-                    DataElementCategoryOptionCombo decoc = (DataElementCategoryOptionCombo) optionComboIterator.next();
+                    DataElementCategoryOptionCombo decoc = optionComboIterator.next();
 
                     aggDataValue = aggregationService.getAggregatedDataValue( de, decoc, startPeriod.getStartDate(),
                         endPeriod.getEndDate(), ou );

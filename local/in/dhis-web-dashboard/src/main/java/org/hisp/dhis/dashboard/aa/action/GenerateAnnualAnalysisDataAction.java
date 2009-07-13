@@ -346,7 +346,7 @@ public class GenerateAnnualAnalysisDataAction
         while ( iterator1.hasNext() )
         {
             List<Double> dataValues = new ArrayList<Double>();
-            int tempYear = Integer.parseInt( (String) iterator1.next() );
+            int tempYear = Integer.parseInt( iterator1.next() );
             series1[count1] = "" + tempYear;
             series2[count1] = " ";
             yseriesList.add( "" + tempYear );
@@ -355,7 +355,7 @@ public class GenerateAnnualAnalysisDataAction
             count2 = 0;
             while ( iterator2.hasNext() )
             {
-                int tempMonth = Integer.parseInt( (String) iterator2.next() );
+                int tempMonth = Integer.parseInt( iterator2.next() );
                 p = dashBoardService.getPeriodByMonth( tempMonth, tempYear, monthlyPeriodType );
                 if ( p == null )
                 {
@@ -382,8 +382,7 @@ public class GenerateAnnualAnalysisDataAction
                         Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
                         while ( optionComboIterator.hasNext() )
                         {
-                            DataElementCategoryOptionCombo decoc = (DataElementCategoryOptionCombo) optionComboIterator
-                                .next();
+                            DataElementCategoryOptionCombo decoc = optionComboIterator.next();
 
                             aggDataValue = aggregationService.getAggregatedDataValue( selectedDataElement, decoc, p
                                 .getStartDate(), p.getEndDate(), selectedOrgUnit );
@@ -458,7 +457,7 @@ public class GenerateAnnualAnalysisDataAction
         Iterator<PeriodType> iter = periodTypes.iterator();
         while ( iter.hasNext() )
         {
-            PeriodType tempPeriodType = (PeriodType) iter.next();
+            PeriodType tempPeriodType = iter.next();
             if ( tempPeriodType.getName().trim().equalsIgnoreCase( periodTypeName ) )
             {
                 periodType = tempPeriodType;
