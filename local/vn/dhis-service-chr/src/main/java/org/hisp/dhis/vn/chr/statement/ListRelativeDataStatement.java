@@ -5,67 +5,72 @@ package org.hisp.dhis.vn.chr.statement;
  * 
  */
 
-import org.hisp.dhis.jdbc.StatementDialect;
+import org.amplecode.quick.StatementBuilder;
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.Form;
 
-public class ListRelativeDataStatement extends FormStatement {
+public class ListRelativeDataStatement
+    extends FormStatement
+{
+    // -------------------------------------------------------------------------
+    // Constructor
+    // -------------------------------------------------------------------------
 
-	// -------------------------------------------------------------------------
-	// Constructor
-	// -------------------------------------------------------------------------
-	
-	public ListRelativeDataStatement( Form form, StatementDialect dialect, String status, String column ){
-		super(form, dialect, status, column);
-	}
+    public ListRelativeDataStatement( Form form, StatementBuilder statementBuilder, String status, String column )
+    {
+        super( form, statementBuilder, status, column );
+    }
 
-	// -------------------------------------------------------------------------
-	// Override
-	// -------------------------------------------------------------------------
-	
-	@Override
-	protected void init(Form form) {
-		
-		StringBuffer buffer = new StringBuffer();
+    // -------------------------------------------------------------------------
+    // Override
+    // -------------------------------------------------------------------------
 
-		// SELECT id,
-		buffer.append("SELECT" + SPACE + "id" + SEPARATOR);
+    @Override
+    protected void init( Form form )
+    {
+        StringBuffer buffer = new StringBuffer();
 
-		// Number of columns selected
-		int noColumn = form.getNoColumn();
-		int index = 0;
-		// Break loop for
-		boolean flag = false;
+        // SELECT id,
+        buffer.append( "SELECT" + SPACE + "id" + SEPARATOR );
 
-		for (Egroup egroup : form.getEgroups()) {
+        // Number of columns selected
+        int noColumn = form.getNoColumn();
+        int index = 0;
+        // Break loop for
+        boolean flag = false;
 
-			if (flag)
-				break;
+        for ( Egroup egroup : form.getEgroups() )
+        {
 
-			for (Element element : egroup.getElements()) {
+            if ( flag )
+                break;
 
-				if (index < noColumn - 1) {
-					// <column_name>,
-					buffer.append(element.getName() + SEPARATOR);
-				} else {
-					// <column_name>
-					buffer.append(element.getName() + SPACE);
-					flag = true;
-					break;
-				}
-				index++;
-			}// end for element
+            for ( Element element : egroup.getElements() )
+            {
 
-		}// end for egroup
+                if ( index < noColumn - 1 )
+                {
+                    // <column_name>,
+                    buffer.append( element.getName() + SEPARATOR );
+                }
+                else
+                {
+                    // <column_name>
+                    buffer.append( element.getName() + SPACE );
+                    flag = true;
+                    break;
+                }
+                index++;
+            }// end for element
 
-		// FORM <table_name> WHERE column=value
-		buffer.append("FROM" + SPACE + form.getName() + SPACE + "WHERE" + SPACE);
+        }// end for egroup
 
-		buffer.append(column + "=" + status );
-		
-		statement = buffer.toString();
-		
-	}
+        // FORM <table_name> WHERE column=value
+        buffer.append( "FROM" + SPACE + form.getName() + SPACE + "WHERE" + SPACE );
 
+        buffer.append( column + "=" + status );
+
+        statement = buffer.toString();
+    }
 }

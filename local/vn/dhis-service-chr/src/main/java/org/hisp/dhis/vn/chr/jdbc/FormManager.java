@@ -7,7 +7,6 @@ package org.hisp.dhis.vn.chr.jdbc;
 
 import java.util.ArrayList;
 
-import org.hisp.dhis.jdbc.StatementDialect;
 import org.hisp.dhis.vn.chr.Form;
 
 public interface FormManager {

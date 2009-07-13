@@ -3,15 +3,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-  
-	<!-- AggregationStore -->
+
+  <!-- AggregationStore -->
 	
-	<bean id="org.hisp.dhis.aggregation.AggregationStore"
-		class="org.hisp.dhis.aggregation.jdbc.JdbcAggregationStore">
-		<property name="statementManager" ref="statementManager"/>
-	</bean>
+  <bean id="org.hisp.dhis.aggregation.AggregationStore"
+	class="org.hisp.dhis.aggregation.jdbc.JdbcAggregationStore">
+	<property name="statementManager" ref="statementManager"/>
+  </bean>
 	
-	<!-- AggregationService -->
+  <!-- AggregationService -->
 	
   <bean id="org.hisp.dhis.aggregation.AggregationService"
     class="org.hisp.dhis.aggregation.impl.DefaultAggregationService">
@@ -24,17 +24,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="averageBoolDataElementAggregation"
       ref="org.hisp.dhis.aggregation.impl.dataelement.AverageBoolDataElementAggregation"/>
 	<property name="indicatorAggregation"
-			ref="org.hisp.dhis.aggregation.impl.indicator.IndicatorAggregation"/>
+	  ref="org.hisp.dhis.aggregation.impl.indicator.IndicatorAggregation"/>
   </bean>
   
   <bean id="org.hisp.dhis.aggregation.impl.cache.AggregationCache"
     class="org.hisp.dhis.aggregation.impl.cache.MemoryAggregationCache">
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		<property name="periodService"
-			ref="org.hisp.dhis.period.PeriodService"/>
-		<property name="aggregationService"
-			ref="org.hisp.dhis.aggregation.AggregationService"/>
+	<property name="periodService"
+		ref="org.hisp.dhis.period.PeriodService"/>
+	<property name="aggregationService"
+		ref="org.hisp.dhis.aggregation.AggregationService"/>
   </bean>
 	
   <bean id="org.hisp.dhis.aggregation.impl.dataelement.SumIntDataElementAggregation"
@@ -71,14 +71,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.aggregation.impl.cache.AggregationCache"/>
   </bean>
 	
-	<bean id="org.hisp.dhis.aggregation.impl.indicator.IndicatorAggregation"
-		class="org.hisp.dhis.aggregation.impl.indicator.IndicatorAggregation">
-		<property name="dataElementService"
-			ref="org.hisp.dhis.dataelement.DataElementService"/>
-		<property name="dataElementCategoryOptionComboService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-		<property name="aggregationCache"
-      ref="org.hisp.dhis.aggregation.impl.cache.AggregationCache"/>    
-	</bean>
+  <bean id="org.hisp.dhis.aggregation.impl.indicator.IndicatorAggregation"
+	class="org.hisp.dhis.aggregation.impl.indicator.IndicatorAggregation">
+	<property name="dataElementService"
+		ref="org.hisp.dhis.dataelement.DataElementService"/>
+	<property name="dataElementCategoryOptionComboService"
+		ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+	<property name="aggregationCache"
+     ref="org.hisp.dhis.aggregation.impl.cache.AggregationCache"/>    
+  </bean>
   
 </beans>
