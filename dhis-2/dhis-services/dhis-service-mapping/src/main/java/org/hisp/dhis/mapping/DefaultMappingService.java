@@ -36,6 +36,7 @@ import java.util.Set;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -213,9 +214,9 @@ public class DefaultMappingService
 
     public Collection<Map> getAllUserMaps()
     {
-        String type = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE, MAP_SOURCE_DATABASE );
+        String type = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_DATABASE );
         
-        return type.equals( MAP_SOURCE_DATABASE ) ? getAllGeneratedMaps() : getAllMaps();
+        return type != null && type.equals( MAP_SOURCE_TYPE_DATABASE ) ? getAllGeneratedMaps() : getAllMaps();
     }
     
     // -------------------------------------------------------------------------
@@ -433,7 +434,7 @@ public class DefaultMappingService
     }
 
     public int addMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
-        String mapLayerPath, int method, int classes, String colorLow, String colorHigh )
+        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh )
     {
         MapView mapView = new MapView();
 
@@ -445,14 +446,14 @@ public class DefaultMappingService
             .getClass() );
 
         Period period = periodService.getPeriod( periodId );
-
-        Map map = mappingStore.getMapByMapLayerPath( mapLayerPath );
-
+        
+        mapView.setName( name );
         mapView.setIndicatorGroup( indicatorGroup );
         mapView.setIndicator( indicator );
         mapView.setPeriodType( periodType );
         mapView.setPeriod( period );
-        mapView.setMap( map );
+        mapView.setMapSourceType( mapSourceType );
+        mapView.setMapSource( mapSource );
         mapView.setMethod( method );
         mapView.setClasses( classes );
         mapView.setColorLow( colorLow );
@@ -466,8 +467,8 @@ public class DefaultMappingService
         mappingStore.updateMapView( mapView );
     }
 
-    public void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName,
-        int periodId, String mapLayerPath, int method, int classes, String colorLow, String colorHigh )
+    public void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
+        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh )
     {
         IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( indicatorGroupId );
 
@@ -478,17 +479,17 @@ public class DefaultMappingService
 
         Period period = periodService.getPeriod( periodId );
 
-        Map map = mappingStore.getMapByMapLayerPath( mapLayerPath );
-
         MapView mapView = mappingStore.getMapViewByName( name );
 
         if ( mapView != null )
         {
+            mapView.setName( name );
             mapView.setIndicatorGroup( indicatorGroup );
             mapView.setIndicator( indicator );
             mapView.setPeriodType( periodType );
             mapView.setPeriod( period );
-            mapView.setMap( map );
+            mapView.setMapSourceType( mapSourceType );
+            mapView.setMapSource( mapSource );
             mapView.setMethod( method );
             mapView.setClasses( classes );
             mapView.setColorLow( colorLow );
@@ -498,8 +499,7 @@ public class DefaultMappingService
         }
         else
         {
-            mapView = new MapView( name, indicatorGroup, indicator, periodType, period, map, method, classes, colorLow,
-                colorHigh );
+            mapView = new MapView( name, indicatorGroup, indicator, periodType, period, mapSourceType, mapSource, method, classes, colorLow, colorHigh );
 
             addMapView( mapView );
         }

@@ -49,11 +49,11 @@
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonAggregatedMapValues.vm</result>
     </action>	  
 	
-	<action name="setMapSourceUserSetting" class="org.hisp.dhis.mapping.action.SetMapSourceUserSettingAction">
+	<action name="setMapSourceTypeUserSetting" class="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
     </action>
 	  
-	<action name="getMapSourceUserSetting" class="org.hisp.dhis.mapping.action.GetMapSourceUserSettingAction">
+	<action name="getMapSourceTypeUserSetting" class="org.hisp.dhis.mapping.action.GetMapSourceTypeUserSettingAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonUserSetting.vm</result>
     </action>   	  
 	  

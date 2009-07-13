@@ -69,7 +69,7 @@ public class MappingServiceTest
     private Map mapB;
     
     private MapOrganisationUnitRelation mapOrganisationUnitRelationA;
-    private MapOrganisationUnitRelation mapOrganisationUnitRelationB;       
+    private MapOrganisationUnitRelation mapOrganisationUnitRelationB;
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -198,7 +198,7 @@ public class MappingServiceTest
     {
         mappingService.addMap( mapA );
         
-        MapView mapView = new MapView( "MapViewA", indicatorGroup, indicator, periodType, period, mapA, 1, 1, "A", "B" );
+        MapView mapView = new MapView( "MapViewA", indicatorGroup, indicator, periodType, period, MapView.MAP_SOURCE_TYPE_SHAPEFILE, "sl_districts", 1, 1, "A", "B" );
         
         int idA = mappingService.addMapView( mapView );
         
@@ -207,6 +207,5 @@ public class MappingServiceTest
         assertEquals( indicator, mappingService.getMapView( idA ).getIndicator() );
         assertEquals( periodType, mappingService.getMapView( idA ).getPeriodType() );
         assertEquals( period, mappingService.getMapView( idA ).getPeriod() );
-        assertEquals( mapA, mappingService.getMapView( idA ).getMap() );
     }
 }

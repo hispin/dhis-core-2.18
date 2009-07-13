@@ -58,12 +58,12 @@ Ext.onReady(function()
     PARAMETER = null;
     BOUNDS = 0;
     STATIC1LOADED = false;
-    MAP_SOURCE_DATABASE = 'database';
-    MAP_SOURCE_SHAPEFILE = 'shapefile';
+    MAP_SOURCE_TYPE_DATABASE = 'database';
+    MAP_SOURCE_TYPE_SHAPEFILE = 'shapefile';
     
     Ext.Ajax.request(
     {
-        url: path + 'getMapSourceUserSetting' + type,
+        url: path + 'getMapSourceTypeUserSetting' + type,
         method: 'GET',
         
         success: function( responseObject )
@@ -1081,17 +1081,19 @@ Ext.onReady(function()
         text: 'Register new view',
         handler: function()
         {
+alert(1);        
             var vn = Ext.getCmp('viewname_tf').getValue();
             var ig = Ext.getCmp('indicatorgroup_cb').getValue();
             var i = Ext.getCmp('indicator_cb').getValue();
             var pt = Ext.getCmp('periodtype_cb').getValue();
             var p = Ext.getCmp('period_cb').getValue();
-            var m = Ext.getCmp('map_cb').getValue();
+            var mst = MAPSOURCE;
+            var ms = Ext.getCmp('map_cb').getValue();
             var c = Ext.getCmp('numClasses').getValue();
             var ca = Ext.getCmp('colorA_cf').getValue();
             var cb = Ext.getCmp('colorB_cf').getValue();
             
-            if (!vn || !ig || !i || !pt || !p || !m || !c )
+            if (!vn || !ig || !i || !pt || !p || !mst || !ms || !c )
             {
                 Ext.messageRed.msg('New map view', 'Thematic map form is not complete.');
                 return;
@@ -1107,11 +1109,11 @@ Ext.onReady(function()
             {
                 url: path + 'addOrUpdateMapView' + type,
                 method: 'POST',
-                params: { name: vn, indicatorGroupId: ig, indicatorId: i, periodTypeId: pt, periodId: p, mapLayerPath: m, method: 2, classes: c, colorLow: ca, colorHigh: cb },
+                params: { name: vn, indicatorGroupId: ig, indicatorId: i, periodTypeId: pt, periodId: p, mapSourceType: mst, mapSource: ms, method: 2, classes: c, colorLow: ca, colorHigh: cb },
 
                 success: function( responseObject )
                 {
-                    Ext.messageRed.msg('New map view', 'The view ' + vn + ' was registered.');
+                    Ext.messageBlack.msg('New map view', 'The view ' + vn + ' was registered.');
                     
                     Ext.getCmp('view_cb').getStore().reload();
                     Ext.getCmp('mapview_cb').getStore().reload();
@@ -1364,9 +1366,9 @@ Ext.onReady(function()
                             
                             Ext.Ajax.request(
                             {
-                                url: path + 'setMapSourceUserSetting' + type,
+                                url: path + 'setMapSourceTypeUserSetting' + type,
                                 method: 'POST',
-                                params: { mapSource: msv },
+                                params: { mapSourceType: msv },
 
                                 success: function( responseObject )
                                 {
@@ -1633,11 +1635,12 @@ function onHoverSelectChoropleth(feature)
         var south_panel = Ext.getCmp('south-panel');
 
         var height = 230;
+        var collapsed = 48;
         var padding_x = 15;
         var padding_y = 22;
 
         var x = center_panel.x + padding_x;
-        var y = south_panel.y - height - padding_y;
+        var y = south_panel.y + collapsed - height  - padding_y;
 
         popup_feature = new Ext.Window({
             title: 'Organisation unit',

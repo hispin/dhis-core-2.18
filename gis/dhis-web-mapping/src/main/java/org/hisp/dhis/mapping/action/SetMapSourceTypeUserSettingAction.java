@@ -1,12 +1,12 @@
 package org.hisp.dhis.mapping.action;
 
-import static org.hisp.dhis.mapping.MappingService.KEY_MAP_SOURCE;
+import static org.hisp.dhis.mapping.MappingService.KEY_MAP_SOURCE_TYPE;
 
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork.Action;
 
-public class SetMapSourceUserSettingAction
+public class SetMapSourceTypeUserSettingAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -24,11 +24,11 @@ public class SetMapSourceUserSettingAction
     // Input
     // -------------------------------------------------------------------------
 
-    private String mapSource;
+    private String mapSourceType;
 
-    public void setMapSource( String mapSource )
+    public void setMapSourceType( String mapSourceType )
     {
-        this.mapSource = mapSource;
+        this.mapSourceType = mapSourceType;
     }
 
     // -------------------------------------------------------------------------
@@ -38,7 +38,7 @@ public class SetMapSourceUserSettingAction
     public String execute()
         throws Exception
     {
-        userSettingService.saveUserSetting( KEY_MAP_SOURCE, mapSource );
+        userSettingService.saveUserSetting( KEY_MAP_SOURCE_TYPE, mapSourceType );
         
         return SUCCESS;
     }
