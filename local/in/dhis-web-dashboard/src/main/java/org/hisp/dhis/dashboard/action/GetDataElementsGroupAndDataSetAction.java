@@ -98,7 +98,6 @@ public class GetDataElementsGroupAndDataSetAction
 
     public List<DataElementGroup> getApplicableDataElementGroups( Integer dataSetId )
     {
-
         List<DataElementGroup> applicableDataElementGroups = new ArrayList<DataElementGroup>();
 
         if ( id == null || id == ALL )
@@ -120,7 +119,7 @@ public class GetDataElementsGroupAndDataSetAction
 
             while ( degIterator.hasNext() )
             {
-                DataElementGroup deg = (DataElementGroup) degIterator.next();
+                DataElementGroup deg = degIterator.next();
 
                 List<DataElement> checkDataElement = new ArrayList<DataElement>( deg.getMembers() );
 

@@ -474,10 +474,10 @@ public class GenerateChartDataAction
 
         if ( riRadio.equals( "indicatorsRadio" ) )
         {
-            Iterator indicatorIterator = selectedIndicators.iterator();
+            Iterator<String> indicatorIterator = selectedIndicators.iterator();
             while ( indicatorIterator.hasNext() )
             {
-                int serviceID = Integer.parseInt( (String) indicatorIterator.next() );
+                int serviceID = Integer.parseInt( indicatorIterator.next() );
                 Indicator indicator = indicatorService.getIndicator( serviceID );
                 // selectedServiceList.add( indicator );
                 li1.add( indicator );
@@ -508,10 +508,10 @@ public class GenerateChartDataAction
             }
             if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
             {
-                Iterator deIterator = selectedDataElements.iterator();
+                Iterator<String> deIterator = selectedDataElements.iterator();
                 while ( deIterator.hasNext() )
                 {
-                    String serviceId = (String) deIterator.next();
+                    String serviceId = deIterator.next();
                     String partsOfServiceId[] = serviceId.split( ":" );
                     int dataElementId = Integer.parseInt( partsOfServiceId[0] );
                     DataElement dataElement = dataElementService.getDataElement( dataElementId );
@@ -527,10 +527,10 @@ public class GenerateChartDataAction
             }
             else
             {
-                Iterator deIterator = selectedDataElements.iterator();
+                Iterator<String> deIterator = selectedDataElements.iterator();
                 while ( deIterator.hasNext() )
                 {
-                    int serviceID = Integer.parseInt( (String) deIterator.next() );
+                    int serviceID = Integer.parseInt( deIterator.next() );
                     DataElement dataElement = dataElementService.getDataElement( serviceID );
                     // selectedServiceList.add( dataElement );
                     li2.add( dataElement );
@@ -550,7 +550,7 @@ public class GenerateChartDataAction
         /* Hack to Intialize Indicator Targets to Zeros */
         if ( riRadio.equals( "indicatorsRadio" ) )
         {
-            Iterator serviceIterator = selectedServiceList.iterator();
+            Iterator<Object> serviceIterator = selectedServiceList.iterator();
             while ( serviceIterator.hasNext() )
             {
                 Indicator indicator = (Indicator) serviceIterator.next();
@@ -564,12 +564,12 @@ public class GenerateChartDataAction
         endPeriod = periodService.getPeriod( eDateLB );
 
         int monthlyPeriodTypeId = 0;
-        Collection periodTypes = periodService.getAllPeriodTypes();
+        Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
         PeriodType monthlyPeriodType = null;
-        Iterator iter = periodTypes.iterator();
+        Iterator<PeriodType> iter = periodTypes.iterator();
         while ( iter.hasNext() )
         {
-            PeriodType periodType = (PeriodType) iter.next();
+            PeriodType periodType = iter.next();
             if ( periodType.getName().toLowerCase().trim().equals( "monthly" ) )
             {
                 monthlyPeriodType = periodType;
@@ -684,7 +684,7 @@ public class GenerateChartDataAction
         series2 = new String[selectedServiceList.size()];
         categories1 = new String[selectedPeriodList.size()];
         categories2 = new String[selectedPeriodList.size()];
-        Iterator serviceListIterator = selectedServiceList.iterator();
+        Iterator<Object> serviceListIterator = selectedServiceList.iterator();
         while ( serviceListIterator.hasNext() )
         {
             List<String> numValues = new ArrayList<String>();
@@ -703,10 +703,10 @@ public class GenerateChartDataAction
 
                 List<Period> tempPeriodList = new ArrayList<Period>( periodService.getIntersectingPeriods( startPeriod
                     .getStartDate(), endPeriod.getEndDate() ) );
-                Iterator tempPeriodListIterator = tempPeriodList.iterator();
+                Iterator<Period> tempPeriodListIterator = tempPeriodList.iterator();
                 while ( tempPeriodListIterator.hasNext() )
                 {
-                    Period tempPeriod = (Period) tempPeriodListIterator.next();
+                    Period tempPeriod = tempPeriodListIterator.next();
                     if ( ougSetCB == null )
                     {
                         // List<Target> tempTarget = new ArrayList<Target>(
@@ -779,7 +779,7 @@ public class GenerateChartDataAction
                     yseriesList.add( dElement.getName() );
                 }
             }
-            Iterator periodListIterator = selectedPeriodList.iterator();
+            Iterator<Period> periodListIterator = selectedPeriodList.iterator();
             countForPeriodList = 0;
             while ( periodListIterator.hasNext() )
             {
@@ -812,7 +812,7 @@ public class GenerateChartDataAction
                         Iterator<OrganisationUnit> orgUnitsIterator = orgUnits.iterator();
                         while ( orgUnitsIterator.hasNext() )
                         {
-                            OrganisationUnit ou = (OrganisationUnit) orgUnitsIterator.next();
+                            OrganisationUnit ou = orgUnitsIterator.next();
                             double tempd = aggregationService.getAggregatedIndicatorValue( ind, p.getStartDate(), p
                                 .getEndDate(), ou );
                             double tempnum = aggregationService.getAggregatedNumeratorValue( ind, p.getStartDate(), p
@@ -867,7 +867,7 @@ public class GenerateChartDataAction
                                 Iterator<OrganisationUnit> orgUnitsIterator = orgUnits.iterator();
                                 while ( orgUnitsIterator.hasNext() )
                                 {
-                                    OrganisationUnit ou = (OrganisationUnit) orgUnitsIterator.next();
+                                    OrganisationUnit ou = orgUnitsIterator.next();
 
                                     double tempd = -1.0;
                                     DataValue dv1 = dataValueService.getDataValue( ou, dElement, p, decoc );
@@ -887,7 +887,7 @@ public class GenerateChartDataAction
                                 Iterator<OrganisationUnit> orgUnitsIterator = orgUnits.iterator();
                                 while ( orgUnitsIterator.hasNext() )
                                 {
-                                    OrganisationUnit ou = (OrganisationUnit) orgUnitsIterator.next();
+                                    OrganisationUnit ou = orgUnitsIterator.next();
                                     double tempd = aggregationService.getAggregatedDataValue( dElement, decoc, p
                                         .getStartDate(), p.getEndDate(), ou );
                                     if ( tempd == -1 )
@@ -910,8 +910,7 @@ public class GenerateChartDataAction
                         Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
                         while ( optionComboIterator.hasNext() )
                         {
-                            DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator
-                                .next();
+                            DataElementCategoryOptionCombo decoc1 = optionComboIterator.next();
 
                             if ( ougSetCB == null )
                             {
@@ -939,7 +938,7 @@ public class GenerateChartDataAction
                                 Iterator<OrganisationUnit> orgUnitsIterator = orgUnits.iterator();
                                 while ( orgUnitsIterator.hasNext() )
                                 {
-                                    OrganisationUnit ou = (OrganisationUnit) orgUnitsIterator.next();
+                                    OrganisationUnit ou = orgUnitsIterator.next();
                                     double tempd = 0.0;
                                     if ( aggDataCB == null )
                                     {
@@ -1035,7 +1034,7 @@ public class GenerateChartDataAction
                 // childOrgUnitList = new ArrayList<Object>(
                 // selectedOrgUnitGroup.getMembers() );
                 childOrgUnitList = new ArrayList<Object>();
-                Iterator orgUnitGroupIte = orgUnitListCB.iterator();
+                Iterator<String> orgUnitGroupIte = orgUnitListCB.iterator();
                 while ( orgUnitGroupIte.hasNext() )
                 {
                     OrganisationUnitGroup oug = organisationUnitGroupService.getOrganisationUnitGroup( Integer
@@ -1050,26 +1049,27 @@ public class GenerateChartDataAction
         {
             if ( ougSetCB == null )
             {
-                Iterator orgUnitIterator = orgUnitListCB.iterator();
+                Iterator<String> orgUnitIterator = orgUnitListCB.iterator();
                 while ( orgUnitIterator.hasNext() )
                 {
                     OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer
-                        .parseInt( (String) orgUnitIterator.next() ) );
+                        .parseInt( orgUnitIterator.next() ) );
                     childOrgUnitList.add( o );
                 }
             }
             else
             {
-                Iterator orgUnitGroupIte = orgUnitListCB.iterator();
+                Iterator<String> orgUnitGroupIte = orgUnitListCB.iterator();
                 while ( orgUnitGroupIte.hasNext() )
                 {
                     OrganisationUnitGroup oug = organisationUnitGroupService.getOrganisationUnitGroup( Integer
-                        .parseInt( (String) orgUnitGroupIte.next() ) );
+                        .parseInt( orgUnitGroupIte.next() ) );
                     childOrgUnitList.add( oug );
                 }
             }
         }
-        Iterator serviceListIterator = selectedServiceList.iterator();
+        
+        Iterator<Object> serviceListIterator = selectedServiceList.iterator();
         Double[][] serviceValues = new Double[selectedServiceList.size()][childOrgUnitList.size()];
 
         data2 = new Double[selectedServiceList.size()][childOrgUnitList.size()];
@@ -1096,10 +1096,10 @@ public class GenerateChartDataAction
 
                 List<Period> tempPeriodList = new ArrayList<Period>( periodService.getIntersectingPeriods( startPeriod
                     .getStartDate(), endPeriod.getEndDate() ) );
-                Iterator tempPeriodListIterator = tempPeriodList.iterator();
+                Iterator<Period> tempPeriodListIterator = tempPeriodList.iterator();
                 while ( tempPeriodListIterator.hasNext() )
                 {
-                    Period tempPeriod = (Period) tempPeriodListIterator.next();
+                    Period tempPeriod = tempPeriodListIterator.next();
                     if ( ougSetCB == null )
                     {
                         if ( facilityLB.equals( "children" ) )
@@ -1217,7 +1217,7 @@ public class GenerateChartDataAction
 
             double numVal = 0.0;
             double denVal = 0.0;
-            Iterator childOrgUnitListIterator = childOrgUnitList.iterator();
+            Iterator<Object> childOrgUnitListIterator = childOrgUnitList.iterator();
             countForChildOrgUnitList = 0;
             while ( childOrgUnitListIterator.hasNext() )
             {
@@ -1261,7 +1261,7 @@ public class GenerateChartDataAction
                         Iterator<OrganisationUnit> orgUnitsIterator = orgUnits.iterator();
                         while ( orgUnitsIterator.hasNext() )
                         {
-                            OrganisationUnit ou = (OrganisationUnit) orgUnitsIterator.next();
+                            OrganisationUnit ou = orgUnitsIterator.next();
                             double tempd = aggregationService.getAggregatedIndicatorValue( ind, startPeriod
                                 .getStartDate(), endPeriod.getEndDate(), ou );
                             double tempnum = aggregationService.getAggregatedNumeratorValue( ind, startPeriod
@@ -1301,7 +1301,7 @@ public class GenerateChartDataAction
                         {
                             if ( ougSetCB == null )
                             {
-                                noOfChildren = dashBoardService.getAllChildren( (OrganisationUnit) childOrgUnit )
+                                noOfChildren = dashBoardService.getAllChildren( childOrgUnit )
                                     .size();
                             }
                             else
@@ -1343,7 +1343,7 @@ public class GenerateChartDataAction
                             Iterator<OrganisationUnit> orgUnitsIterator = orgUnits.iterator();
                             while ( orgUnitsIterator.hasNext() )
                             {
-                                OrganisationUnit ou = (OrganisationUnit) orgUnitsIterator.next();
+                                OrganisationUnit ou = orgUnitsIterator.next();
                                 double tempd = 0.0;
                                 if ( aggDataCB == null )
                                 {
@@ -1384,8 +1384,7 @@ public class GenerateChartDataAction
                         Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
                         while ( optionComboIterator.hasNext() )
                         {
-                            DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator
-                                .next();
+                            DataElementCategoryOptionCombo decoc1 = optionComboIterator.next();
                             if ( ougSetCB == null || facilityLB.equals( "children" ) )
                             {
                                 if ( aggDataCB == null )
@@ -1415,7 +1414,7 @@ public class GenerateChartDataAction
                                 Iterator<OrganisationUnit> orgUnitsIterator = orgUnits.iterator();
                                 while ( orgUnitsIterator.hasNext() )
                                 {
-                                    OrganisationUnit ou = (OrganisationUnit) orgUnitsIterator.next();
+                                    OrganisationUnit ou = orgUnitsIterator.next();
                                     double tempd = 0.0;
 
                                     if ( aggDataCB == null )
@@ -1558,7 +1557,7 @@ public class GenerateChartDataAction
 
             String query = "SELECT target FROM indicator WHERE indicatorid = ?";
             pst = con.prepareStatement( query );
-            Iterator serviceIterator = selectedServiceList.iterator();
+            Iterator<Object> serviceIterator = selectedServiceList.iterator();
             while ( serviceIterator.hasNext() )
             {
                 Indicator indicator = (Indicator) serviceIterator.next();

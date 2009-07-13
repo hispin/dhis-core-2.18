@@ -318,8 +318,6 @@ public class GenerateGroupWiseDataStatusResultAction
         }
         else if ( facilityLB.equals( "immChildren" ) )
         {
-            int number;
-
             selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
 
             number = selectedOrgUnit.getChildren().size();
@@ -330,7 +328,7 @@ public class GenerateGroupWiseDataStatusResultAction
             while ( orgUnitIterator.hasNext() )
             {
                 OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer
-                    .parseInt( (String) orgUnitIterator.next() ) );
+                    .parseInt( orgUnitIterator.next() ) );
                 orgUnitList.add( o );
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
                 Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
@@ -446,7 +444,7 @@ public class GenerateGroupWiseDataStatusResultAction
         while ( dataElementGroupIterator.hasNext() )
         {
             ds = dataSetService.getDataSet( Integer.valueOf( selectedDataSets.get( 0 ) ) );
-            deg = (DataElementGroup) dataElementGroupIterator.next();
+            deg = dataElementGroupIterator.next();
 
             dataElements = deg.getMembers();
             dataElements.retainAll( ds.getDataElements() );
@@ -465,15 +463,15 @@ public class GenerateGroupWiseDataStatusResultAction
                 endPeriod.getEndDate() );
             dataSetPeriods.put( ds, periodList );
 
-            Iterator orgUnitListIterator = orgUnitList.iterator();
+            Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
             OrganisationUnit o;
             Set<Source> dso = new HashSet<Source>();
-            Iterator periodIterator;
+            Iterator<Period> periodIterator;
 
             while ( orgUnitListIterator.hasNext() )
             {
 
-                o = (OrganisationUnit) orgUnitListIterator.next();
+                o = orgUnitListIterator.next();
                 orgUnitInfo = "" + o.getId();
 
                 if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( o ) )
@@ -486,12 +484,12 @@ public class GenerateGroupWiseDataStatusResultAction
                 periodIterator = periodList.iterator();
 
                 Period p;
-                Collection dataValueResult;
+                
                 double dataStatusPercentatge;
 
                 while ( periodIterator.hasNext() )
                 {
-                    p = (Period) periodIterator.next();
+                    p = periodIterator.next();
                     periodInfo = "" + p.getId();
 
                     if ( dso == null )
@@ -749,11 +747,11 @@ public class GenerateGroupWiseDataStatusResultAction
 
         Collection<OrganisationUnit> children = orgUnit.getChildren();
 
-        Iterator childIterator = children.iterator();
+        Iterator<OrganisationUnit> childIterator = children.iterator();
         OrganisationUnit child;
         while ( childIterator.hasNext() )
         {
-            child = (OrganisationUnit) childIterator.next();
+            child = childIterator.next();
             orgUnitTree.addAll( getChildOrgUnitTree( child ) );
         }
         return orgUnitTree;
@@ -824,11 +822,11 @@ public class GenerateGroupWiseDataStatusResultAction
 
         List<DataElementGroup> applicableDataElementGroups = new ArrayList<DataElementGroup>();
 
-        Iterator degIterator = allDataElementGroups.iterator();
+        Iterator<DataElementGroup> degIterator = allDataElementGroups.iterator();
 
         while ( degIterator.hasNext() )
         {
-            DataElementGroup deg = (DataElementGroup) degIterator.next();
+            DataElementGroup deg = degIterator.next();
 
             List<DataElement> checkDataElement = new ArrayList<DataElement>( deg.getMembers() );
 

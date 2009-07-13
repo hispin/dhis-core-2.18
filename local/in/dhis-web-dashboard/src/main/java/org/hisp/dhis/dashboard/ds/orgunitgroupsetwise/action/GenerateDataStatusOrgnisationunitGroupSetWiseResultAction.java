@@ -61,10 +61,10 @@ import com.opensymphony.xwork.Action;
 public class GenerateDataStatusOrgnisationunitGroupSetWiseResultAction
     implements Action
 {
-
     // ---------------------------------------------------------------
     // Dependencies
     // ---------------------------------------------------------------
+    
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -349,7 +349,7 @@ public class GenerateDataStatusOrgnisationunitGroupSetWiseResultAction
         while ( orgUnitListCBIterator.hasNext() )
         {
             OrganisationUnitGroup og = organisationUnitGroupService.getOrganisationUnitGroup( Integer
-                .parseInt( (String) orgUnitListCBIterator.next() ) );
+                .parseInt( orgUnitListCBIterator.next() ) );
             orgUnitGroupList.add( og );
 
         }
@@ -373,7 +373,7 @@ public class GenerateDataStatusOrgnisationunitGroupSetWiseResultAction
             Iterator<OrganisationUnit> orgUnitsIterator = orgUnits.iterator();
             while ( orgUnitsIterator.hasNext() )
             {
-                OrganisationUnit o = (OrganisationUnit) orgUnitsIterator.next();
+                OrganisationUnit o = orgUnitsIterator.next();
                 orgUnitList.add( o );
             }
 
@@ -607,7 +607,7 @@ public class GenerateDataStatusOrgnisationunitGroupSetWiseResultAction
         OrganisationUnit child;
         while ( childIterator.hasNext() )
         {
-            child = (OrganisationUnit) childIterator.next();
+            child = childIterator.next();
             orgUnitTree.addAll( getChildOrgUnitTree( child ) );
         }
         return orgUnitTree;

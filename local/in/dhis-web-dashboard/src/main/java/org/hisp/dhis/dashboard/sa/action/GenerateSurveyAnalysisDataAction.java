@@ -319,10 +319,10 @@ public class GenerateSurveyAnalysisDataAction
         {
             indicatorListSize = selectedIndicators.size();
             System.out.println( "First Indicator : " + selectedIndicators.get( 0 ) );
-            Iterator indicatorIterator = selectedIndicators.iterator();
+            Iterator<String> indicatorIterator = selectedIndicators.iterator();
             while ( indicatorIterator.hasNext() )
             {
-                int serviceID = Integer.parseInt( (String) indicatorIterator.next() );
+                int serviceID = Integer.parseInt( indicatorIterator.next() );
                 Indicator indicator = indicatorService.getIndicator( serviceID );
                 selectedServiceList.add( indicator );
                 chartTitle += indicator.getName() + ", ";
@@ -338,10 +338,10 @@ public class GenerateSurveyAnalysisDataAction
         }
         else
         {
-            Iterator deIterator = selectedDataElements.iterator();
+            Iterator<String> deIterator = selectedDataElements.iterator();
             while ( deIterator.hasNext() )
             {
-                int serviceID = Integer.parseInt( (String) deIterator.next() );
+                int serviceID = Integer.parseInt( deIterator.next() );
                 DataElement dataElement = dataElementService.getDataElement( serviceID );
                 selectedServiceList.add( dataElement );
                 chartTitle += dataElement.getShortName() + ", ";
@@ -429,15 +429,15 @@ public class GenerateSurveyAnalysisDataAction
         }
         else
         {
-            Iterator orgUnitIterator = orgUnitListCB.iterator();
+            Iterator<String> orgUnitIterator = orgUnitListCB.iterator();
             while ( orgUnitIterator.hasNext() )
             {
                 OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer
-                    .parseInt( (String) orgUnitIterator.next() ) );
+                    .parseInt( orgUnitIterator.next() ) );
                 childOrgUnitList.add( o );
             }
         }
-        Iterator serviceListIterator = selectedServiceList.iterator();
+        Iterator<Object> serviceListIterator = selectedServiceList.iterator();
         Double[][] serviceValues = new Double[selectedServiceList.size()][childOrgUnitList.size()];
 
         data2 = new Double[selectedServiceList.size()][childOrgUnitList.size()];
@@ -467,11 +467,11 @@ public class GenerateSurveyAnalysisDataAction
                 yseriesList.add( dElement.getName() );
             }
 
-            Iterator childOrgUnitListIterator = childOrgUnitList.iterator();
+            Iterator<OrganisationUnit> childOrgUnitListIterator = childOrgUnitList.iterator();
             countForChildOrgUnitList = 0;
             while ( childOrgUnitListIterator.hasNext() )
             {
-                OrganisationUnit childOrgUnit = (OrganisationUnit) childOrgUnitListIterator.next();
+                OrganisationUnit childOrgUnit = childOrgUnitListIterator.next();
                 if ( riRadio.equals( "indicatorsRadio" ) )
                 {
                     serviceValues[countForServiceList][countForChildOrgUnitList] = aggregationService
@@ -490,8 +490,7 @@ public class GenerateSurveyAnalysisDataAction
                     Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
                     while ( optionComboIterator.hasNext() )
                     {
-                        DataElementCategoryOptionCombo decoc = (DataElementCategoryOptionCombo) optionComboIterator
-                            .next();
+                        DataElementCategoryOptionCombo decoc = optionComboIterator.next();
 
                         aggDataValue = aggregationService.getAggregatedDataValue( dElement, decoc, startPeriod
                             .getStartDate(), endPeriod.getEndDate(), childOrgUnit );

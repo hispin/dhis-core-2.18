@@ -67,10 +67,10 @@ public class DashBoardService
         PeriodType monthlyPeriodType = getPeriodTypeObject( "monthly" );
 
         List<Period> monthlyPeriodList = new ArrayList<Period>();
-        Iterator it = periodList.iterator();
+        Iterator<Period> it = periodList.iterator();
         while ( it.hasNext() )
         {
-            Period period = (Period) it.next();
+            Period period = it.next();
             if ( period.getPeriodType().getId() == monthlyPeriodType.getId() )
             {
                 monthlyPeriodList.add( period );
@@ -139,12 +139,12 @@ public class DashBoardService
      */
     public PeriodType getPeriodTypeObject( String periodTypeName )
     {
-        Collection periodTypes = periodService.getAllPeriodTypes();
+        Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
         PeriodType periodType = null;
-        Iterator iter = periodTypes.iterator();
+        Iterator<PeriodType> iter = periodTypes.iterator();
         while ( iter.hasNext() )
         {
-            PeriodType tempPeriodType = (PeriodType) iter.next();
+            PeriodType tempPeriodType = iter.next();
             if ( tempPeriodType.getName().toLowerCase().trim().equals( periodTypeName ) )
             {
                 periodType = tempPeriodType;
@@ -166,10 +166,10 @@ public class DashBoardService
     {
         List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>();
 
-        Iterator it = selecteOU.getChildren().iterator();
+        Iterator<OrganisationUnit> it = selecteOU.getChildren().iterator();
         while ( it.hasNext() )
         {
-            OrganisationUnit orgU = (OrganisationUnit) it.next();
+            OrganisationUnit orgU = it.next();
             ouList.add( orgU );
         }
         return ouList;
