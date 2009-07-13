@@ -6,107 +6,99 @@ package org.hisp.dhis.vn.chr.hibernate;
  */
 
 import java.util.Collection;
-import org.hibernate.Query;
+
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormStore;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
+import org.springframework.transaction.annotation.Transactional;
 
-public class HibernateFormStore implements FormStore {
+@Transactional
+public class HibernateFormStore
+    implements FormStore
+{
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    private SessionFactory sessionFactory;
 
-	private HibernateSessionManager hibernateSessionManager;
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
-	public void setHibernateSessionManager(
-			HibernateSessionManager hibernateSessionManager) {
-		this.hibernateSessionManager = hibernateSessionManager;
-	}
+    // -----------------------------------------------------------------------------------------------
+    // Implements
+    // -----------------------------------------------------------------------------------------------
 
-	// -----------------------------------------------------------------------------------------------
-	// Implements
-	// -----------------------------------------------------------------------------------------------
+    public int addForm( Form form )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-	public int addForm(Form form) {
+        String name = form.getName().toLowerCase();
 
-		Session session = hibernateSessionManager.getCurrentSession();
-		
-		String name = form.getName().toLowerCase();
-		
-		form.setName(name);
-		
-		return (Integer) session.save(form);
-	}
+        form.setName( name );
 
-	public void deleteForm(int id) {
+        return (Integer) session.save( form );
+    }
 
-		Session session = hibernateSessionManager.getCurrentSession();
+    public void deleteForm( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		session.delete(id);
+        session.delete( id );
 
-	}
+    }
 
-	@SuppressWarnings("unchecked")
-	public Collection<Form> getAllForms() {
+    @SuppressWarnings( "unchecked" )
+    public Collection<Form> getAllForms()
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		Session session = hibernateSessionManager.getCurrentSession();
+        Criteria criteria = session.createCriteria( Form.class );
 
-		Criteria criteria = session.createCriteria(Form.class);
+        return criteria.list();
+    }
 
-		return criteria.list();
-	}
-	
-	public Form getForm(int id) {
+    public Form getForm( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		Session session = hibernateSessionManager.getCurrentSession();
-		
-		return (Form) session.get(Form.class, id);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Collection<Form> getVisibleForms(String visible) {
+        return (Form) session.get( Form.class, id );
+    }
 
-		Session session = hibernateSessionManager.getCurrentSession();
+    @SuppressWarnings( "unchecked" )
+    public Collection<Form> getVisibleForms( String visible )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		Query query = session.createQuery("from Form c where c.visible = :visible");
+        Query query = session.createQuery( "from Form c where c.visible = :visible" );
 
-		query.setString("visible", visible);
-		
-//		Collection<Form> result = query.list();
-//		
-//		Iterator<Form> iter = result.iterator();
-//		
-//		while(iter.hasNext()){
-//			if()
-//		}
-		
-		return query.list();
-	}
+        query.setString( "visible", visible );
 
-	public void updateForm(Form form) {
+        return query.list();
+    }
 
-		Session session = hibernateSessionManager.getCurrentSession();
+    public void updateForm( Form form )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		session.update(form);
+        session.update( form );
 
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Collection<Form> getFormsByName(String name){
-		
-		Session session = hibernateSessionManager.getCurrentSession();
+    }
 
-		Query query = session.createQuery("from Form c where c.name = :name");
+    @SuppressWarnings( "unchecked" )
+    public Collection<Form> getFormsByName( String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		query.setString("name", name);
+        Query query = session.createQuery( "from Form c where c.name = :name" );
 
-		return query.list();
-	}
+        query.setString( "name", name );
 
+        return query.list();
+    }
 }
