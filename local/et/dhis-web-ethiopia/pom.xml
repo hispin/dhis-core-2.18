@@ -31,6 +31,10 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-support-webwork</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-organisationunit</artifactId>
     </dependency>
     <dependency>
@@ -43,22 +47,6 @@
       <type>war</type>
     </dependency>
     
-    <!-- Web -->
     
-    <dependency>
-      <groupId>opensymphony</groupId>
-      <artifactId>webwork</artifactId>
-    </dependency>
-    
-    <!-- Other -->
-    
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>hsqldb</groupId>
-      <artifactId>hsqldb</artifactId>
-    </dependency>
   </dependencies>
 </project>
