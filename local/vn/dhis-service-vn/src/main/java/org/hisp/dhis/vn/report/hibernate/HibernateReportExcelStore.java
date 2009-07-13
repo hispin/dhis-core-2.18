@@ -31,179 +31,175 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.Projections;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.vn.report.ReportExcel;
 import org.hisp.dhis.vn.report.ReportExcelInterface;
 import org.hisp.dhis.vn.report.ReportExcelNormal;
 import org.hisp.dhis.vn.report.ReportExcelStore;
 import org.hisp.dhis.vn.report.ReportItem;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class HibernateReportExcelStore implements ReportExcelStore {
+@Transactional
+public class HibernateReportExcelStore
+    implements ReportExcelStore
+{
+    // -------------------------------------------------
+    // Dependency
+    // -------------------------------------------------
 
-	// -------------------------------------------------
-	// Dependency
-	// -------------------------------------------------
+    private SessionFactory sessionFactory; 
 
-	private HibernateSessionManager hibernateSessionManager;
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
 
-	public void setHibernateSessionManager(
-			HibernateSessionManager hibernateSessionManager) {
-		this.hibernateSessionManager = hibernateSessionManager;
-	}
+    // --------------------------------------
+    // Service of Report
+    // --------------------------------------
 
-	// --------------------------------------
-	// Service of Report
-	// --------------------------------------
+    public void addReport( ReportExcelInterface report )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-	public void addReport(ReportExcelInterface report) {
+        session.save( report );
+    }
 
-		Session session = hibernateSessionManager.getCurrentSession();
+    public void updateReport( ReportExcelInterface report )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		session.save(report);
+        session.update( report );
+    }
 
-	}
+    public void deleteReport( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-	public void updateReport(ReportExcelInterface report) {
+        session.delete( getReport( id ) );
+    }
 
-		Session session = hibernateSessionManager.getCurrentSession();
+    public ReportExcelInterface getReport( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		session.update(report);
+        return (ReportExcelInterface) session.get( ReportExcel.class, id );
+    }
 
-	}
+    public ReportExcelInterface getReport( String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-	public void deleteReport(int id) {
+        Criteria criteria = session.createCriteria( ReportExcel.class );
 
-		Session session = hibernateSessionManager.getCurrentSession();
+        criteria.add( Restrictions.eq( "name", name ) );
 
-		session.delete(getReport(id));
+        return (ReportExcelInterface) criteria.uniqueResult();
+    }
 
-	}
+    public Collection<ReportExcelInterface> getReportsByOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-	public ReportExcelInterface getReport(int id) {
+        Criteria criteria = session.createCriteria( ReportExcel.class );
 
-		Session session = hibernateSessionManager.getCurrentSession();
+        criteria.createAlias( "organisationAssocitions", "o" );
 
-		return (ReportExcelInterface) session.get(ReportExcel.class, id);
+        criteria.add( Restrictions.eq( "o.id", organisationUnit.getId() ) );
 
-	}
+        return criteria.list();
+    }
 
-	public ReportExcelInterface getReport(String name) {
-		Session session = hibernateSessionManager.getCurrentSession();
+    public Collection<ReportExcelInterface> getALLReport()
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		Criteria criteria = session.createCriteria(ReportExcel.class);
+        Criteria criteria = session.createCriteria( ReportExcel.class );
 
-		criteria.add(Restrictions.eq("name", name));
+        return criteria.list();
+    }
 
-		return (ReportExcelInterface) criteria.uniqueResult();
-	}
+    // --------------------------------------
+    // Service of Report Item
+    // --------------------------------------
 
-	public Collection<ReportExcelInterface> getReportsByOrganisationUnit(
-			OrganisationUnit organisationUnit) {
+    public void addReportItem( ReportItem reportItem )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		Session session = hibernateSessionManager.getCurrentSession();
+        session.save( reportItem );
+    }
 
-		Criteria criteria = session.createCriteria(ReportExcel.class);
+    public void updateReportItem( ReportItem reportItem )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		criteria.createAlias("organisationAssocitions", "o");
+        session.update( reportItem );
+    }
 
-		criteria.add(Restrictions.eq("o.id", organisationUnit.getId()));
+    public void deleteReportItem( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		return criteria.list();
-	}
+        session.delete( getReportItem( id ) );
+    }
 
-	public Collection<ReportExcelInterface> getALLReport() {
+    public ReportItem getReportItem( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		Session session = hibernateSessionManager.getCurrentSession();
+        return (ReportItem) session.get( ReportItem.class, id );
+    }
 
-		Criteria criteria = session.createCriteria(ReportExcel.class);
+    public Collection<ReportItem> getALLReportItem()
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-		return criteria.list();
+        Criteria criteria = session.createCriteria( ReportItem.class );
 
-	}
+        return criteria.list();
+    }
 
-	// --------------------------------------
-	// Service of Report Item
-	// --------------------------------------
+    public ReportItem getReportItem( String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
-	public void addReportItem(ReportItem reportItem) {
-		Session session = hibernateSessionManager.getCurrentSession();
+        Criteria criteria = session.createCriteria( ReportItem.class );
 
-		session.save(reportItem);
+        criteria.add( Restrictions.eq( "name", name ) );
 
-	}
+        return (ReportItem) criteria.uniqueResult();
+    }
 
-	public void updateReportItem(ReportItem reportItem) {
-		Session session = hibernateSessionManager.getCurrentSession();
+    public Collection<ReportItem> getReportItem( String arg0, ReportExcelNormal arg1 )
+    {
 
-		session.update(reportItem);
+        return null;
+    }
 
-	}
+    public Collection<ReportItem> getReportItem( int sheetNo, Integer reportId )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        SQLQuery sqlQuery = session.createSQLQuery( "SELECT * from reportitem where reportitem.sheetno=" + sheetNo
+            + " and reportitem.reportid=" + reportId.intValue() );
+        sqlQuery.addEntity( ReportItem.class );
+        return sqlQuery.list();
+    }
 
-	public void deleteReportItem(int id) {
-		Session session = hibernateSessionManager.getCurrentSession();
+    @SuppressWarnings( "unchecked" )
+    public Collection<Integer> getSheets( Integer reportId )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        SQLQuery sqlQuery = session
+            .createSQLQuery( "select DISTINCT(sheetno) from reportitem where reportitem.reportid="
+                + reportId.intValue() );
 
-		session.delete(getReportItem(id));
-
-	}
-
-	public ReportItem getReportItem(int id) {
-		Session session = hibernateSessionManager.getCurrentSession();
-
-		return (ReportItem) session.get(ReportItem.class, id);
-	}
-
-	public Collection<ReportItem> getALLReportItem() {
-		Session session = hibernateSessionManager.getCurrentSession();
-
-		Criteria criteria = session.createCriteria(ReportItem.class);
-
-		return criteria.list();
-
-	}
-
-	public ReportItem getReportItem(String name) {
-		Session session = hibernateSessionManager.getCurrentSession();
-
-		Criteria criteria = session.createCriteria(ReportItem.class);
-
-		criteria.add(Restrictions.eq("name", name));
-
-		return (ReportItem) criteria.uniqueResult();
-	}
-
-	public Collection<ReportItem> getReportItem(String arg0,
-			ReportExcelNormal arg1) {
-
-		return null;
-	}
-
-	public Collection<ReportItem> getReportItem(int sheetNo, Integer reportId) {
-
-		Session session = hibernateSessionManager.getCurrentSession();
-		SQLQuery sqlQuery = session
-				.createSQLQuery("SELECT * from reportitem where reportitem.sheetno="
-						+ sheetNo
-						+ " and reportitem.reportid="
-						+ reportId.intValue());
-		sqlQuery.addEntity(ReportItem.class);
-		return sqlQuery.list();
-	}
-
-	@SuppressWarnings("unchecked")
-	public Collection<Integer> getSheets(Integer reportId) {
-		Session session = hibernateSessionManager.getCurrentSession();
-		SQLQuery sqlQuery = session
-		.createSQLQuery("select DISTINCT(sheetno) from reportitem where reportitem.reportid=" + reportId.intValue());
-		
-		return sqlQuery.list();		
-	}
-
+        return sqlQuery.list();
+    }
 }
