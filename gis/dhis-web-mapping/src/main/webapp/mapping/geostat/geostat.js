@@ -1082,7 +1082,6 @@ Ext.onReady(function()
         text: 'Register new view',
         handler: function()
         {
-alert(1);        
             var vn = Ext.getCmp('viewname_tf').getValue();
             var ig = Ext.getCmp('indicatorgroup_cb').getValue();
             var i = Ext.getCmp('indicator_cb').getValue();
@@ -1634,7 +1633,6 @@ function onHoverSelectChoropleth(feature)
     {
         var center_panel = Ext.getCmp('center');
         var south_panel = Ext.getCmp('south-panel');
-alert("south_panel x = " + south_panel.x + "\n\n" + "south_panel y = " + south_panel.y);
 
         var height = 230;
         var collapsed = 48;
