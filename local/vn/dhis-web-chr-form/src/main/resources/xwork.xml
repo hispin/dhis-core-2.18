@@ -7,6 +7,19 @@
 	<package name="dhis-web-chr-form" extends="dhis-web-commons"
 		namespace="/dhis-web-chr-form">
 
+		<!--  Start action  -->
+		<action name="index" class="org.hisp.dhis.vn.chr.form.action.GetVisibleFormsAction">
+	        <result name="success" type="chain">indexChain</result>
+	        <param name="page">/dhis-web-chr-form/intro.vm</param>
+      		<param name="menu">/dhis-web-chr-form/menu.vm</param>
+      		<param name="stylesheets">styles/intro.css</param>
+      		<param name="javascripts">javascripts/intro.js</param>
+	    </action>
+	    
+	    <action name="indexChain" class="org.hisp.dhis.vn.chr.form.action.GetInformationForSystemAction">
+	        <result name="success" type="velocity">/main.vm</result>
+	    </action>    
+	
 		<!--  --><!--  --><!--  -->
 			<!-- Form Action -->
 		<!--  --><!--  --><!--  -->
@@ -43,7 +56,7 @@
 		<action name="getVisibleForms" class="org.hisp.dhis.vn.chr.form.action.GetVisibleFormsAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="menu">/dhis-web-chr-form/menu.vm</param>
-			<param name="javascripts">javascripts/forms.js,javascripts/dhtmlgoodies_calendar.js</param>
+			<param name="javascripts">javascripts/forms.js,javascripts/dhtmlgoodies_calendar.js, javascripts/intro.js</param>
 		</action>
 		
 		<!--  Varidate Form  -->
@@ -150,6 +163,27 @@
 		</action>
 		
 		<!--  --><!--  --><!--  -->
+		 <!--  configuration  -->
+		<!--  --><!--  --><!--  -->
+		<action name="getFormConfiguration" class="org.hisp.dhis.vn.chr.configuration.action.GetFormConfigurationAction">
+			<result name="success" type="chain">getVisibleForms</result>
+			<param name="page">/dhis-web-chr-form/configuration.vm</param>
+			<param name="menu">/dhis-web-chr-form/menu.vm</param>
+			<param name="javascripts">javascripts/forms.js</param>
+	      	<interceptor-ref name="transactionStack"/>
+		</action>
+		
+		<action name="setImageDirectoryOnServer" class="org.hisp.dhis.vn.chr.configuration.action.SetImageDirectoryOnServerAction">
+			<result name="success" type="velocity-xml">/dhis-web-chr-form/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
+		</action>
+		
+		<action name="setNumberOfRecords" class="org.hisp.dhis.vn.chr.configuration.action.SetNumberOfRecordsAction">
+			<result name="success" type="velocity-xml">/dhis-web-chr-form/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
+		</action>
+		
+		<!--  --><!--  --><!--  -->
 			<!--  load  -->
 		<!--  --><!--  --><!--  -->
 		
@@ -164,7 +198,11 @@
 		</action>
 		
 		<!--  Show List Object  -->	
-		<action name="listObject" class="org.hisp.dhis.vn.chr.object.action.ListObjectAction">
+		<action name="listObject" class="org.hisp.dhis.vn.chr.configuration.action.GetFormConfigurationAction">
+			<result name="success" type="chain">listObjectData</result>
+		</action>
+		
+		<action name="listObjectData" class="org.hisp.dhis.vn.chr.object.action.ListObjectAction">
 			<result name="success" type="chain">getVisibleForms</result>
 			<param name="page">/dhis-web-chr-form/listForm.vm</param>
 			<!-- <param name="stylesheets">styles/black-style.css</param>  -->
@@ -185,8 +223,7 @@
 		
 		<!-- Update Object Form  -->	
 		<action name="updateObjectForm" class="org.hisp.dhis.vn.chr.object.action.GetObjectAction">
-			<result name="success" type="chain">getVisibleForms</result>
-			<!-- <result name="success" type="chain"></result>  -->
+			<result name="success" type="chain">addObjectForm</result>
 			<param name="page">/dhis-web-chr-form/addForm.vm</param>
 		</action>
 		
@@ -215,6 +252,7 @@
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataElementsList.js,javascript/associations.js,javascripts/forms.js</param>
 			<param name="menu">/dhis-web-chr-form/menu.vm</param>
 	      	<interceptor-ref name="transactionStack"/>
+	      	<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
 		</action>
 		
 		<!--  List Form  -->
@@ -230,11 +268,47 @@
 		</action>
 		
 		<!--  Upload function -->
-		 <action name='upload'  class='org.hisp.dhis.vn.chr.object.action.UploadFileAction'>
-     		<result name='success' type='velocity'>/dhis-web-chr-form/upload.vm</result>
-     		<result name='error' type='velocity'>/dhis-web-chr-form/responseError.vm</result>
-  		</action> 
-  	
+		
+			<!--  <param name="allowedTypes">
+					image/pjpeg, image/jpeg
+				</param> -->
+		
+		<action name="upload" class='org.hisp.dhis.vn.chr.object.action.UploadFileAction'>
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">5000000</param>
+				<param name="allowedTypes">
+					image/jpeg, image/jpg, image/png, image/gif
+				</param>
+			</interceptor-ref>
+			
+    		<interceptor-ref name="basicStack"/>
+    		
+    		<!-- <param name="menu">/dhis-web-chr-form/menu.vm</param>  -->
+			<param name="javascripts">javascripts/forms.js</param>
+     		<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
+     		<result name="success" type="velocity">/dhis-web-chr-form/upload.vm</result>
+  		</action>
+		
+		<!-- Validate data of an object -->
+		<action name="validateObject" class="org.hisp.dhis.vn.chr.object.action.ValidateObjectAction">
+			<result name="success" type="velocity">/dhis-web-chr-form/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
+		</action>
+		
+		
+	<!--  --><!--  --><!--  -->
+	  <!--  ElementValue -->
+	<!--  --><!--  --><!--  -->
+		
+		<action name="getDataSet" class="org.hisp.dhis.vn.chr.elementvalue.action.GetDataSetOfUser">
+			<result name="success" type="velocity-xml">/dhis-web-chr-form/responseDataSet.vm</result>
+			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
+		</action>
+		
+		<action name="getDataElementsOfDataSet" class="org.hisp.dhis.vn.chr.elementvalue.action.GetDataelementsOfDataSet">
+			<result name="success" type="velocity-xml">/dhis-web-chr-form/responseDataElementsOfDataSet.vm</result>
+			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
+		</action>
 		
 	</package>
 </xwork>

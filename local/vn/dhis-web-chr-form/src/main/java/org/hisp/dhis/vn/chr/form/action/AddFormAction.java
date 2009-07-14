@@ -8,9 +8,8 @@ package org.hisp.dhis.vn.chr.form.action;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
-import com.opensymphony.xwork.Action;
 
-public class AddFormAction implements Action{
+public class AddFormAction extends ActionSupport{
 
 	// -----------------------------------------------------------------------------------------------
     // Dependencies
@@ -23,13 +22,16 @@ public class AddFormAction implements Action{
     // -----------------------------------------------------------------------------------------------
 
 	private String name;
+	
 	private String label;
-	private int noRow;
+	
 	private int noColumn;
+	
 	private int noColumnLink;
+	
 	private String icon;
-	private String visible;
-	private String attached;
+	
+	private boolean visible;
 	
 	// -----------------------------------------------------------------------------------------------
     // Getter && Setter
@@ -53,14 +55,6 @@ public class AddFormAction implements Action{
 
 	public void setLabel(String label) {
 		this.label = label;
-	}
-
-	public int getNoRow() {
-		return noRow;
-	}
-
-	public void setNoRow(int noRow) {
-		this.noRow = noRow;
 	}
 
 	public int getNoColumn() {
@@ -87,40 +81,39 @@ public class AddFormAction implements Action{
 		this.icon = icon;
 	}
 
-	public String getVisible() {
+	public boolean getVisible() {
 		return visible;
 	}
 
-	public void setVisible(String visible) {
+	public void setVisible(boolean visible) {
 		this.visible = visible;
-	}
-
-	public String getAttached() {
-		return attached;
-	}
-
-	public void setAttached(String attached) {
-		this.attached = attached;
 	}
 	
 	// -----------------------------------------------------------------------------------------------
-    // Implement
+    // Implements
     // -----------------------------------------------------------------------------------------------
 
 	public String execute() throws Exception{
 		
 		Form form = new Form();
+		
 		form.setName(CodecUtils.unescape(name));
+		
 		form.setLabel(CodecUtils.unescape(label));
-		form.setNoRow(noRow);
+		
 		form.setNoColumn(noColumn);
+		
 		form.setNoColumnLink(noColumnLink);
+		
 		form.setIcon(icon);
+		
 		form.setVisible(visible);
-		form.setAttached(attached);
-		form.setDesc1("");
+		
+		form.setCreated(false);
 		
 		formService.addForm(form);
+		
+		message = i18n.getString("success");
 		
 		return SUCCESS;
 	}

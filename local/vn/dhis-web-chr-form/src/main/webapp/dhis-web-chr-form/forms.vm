@@ -1,3 +1,4 @@
+<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10004" onclick="hideById(this.id);"></span>
 <input type="hidden" id="formid" name="formid"/>
 <script language="javascript">
 // ----------------------------
@@ -8,12 +9,10 @@ function openAddForm(){
 		document.getElementById('id').value = "";
 		document.getElementById('name').value = "";
 		document.getElementById('label').value = "";
-		document.getElementById('noRow').value = "50";
 		document.getElementById('noColumn').value = "7";
 		document.getElementById('noColumnLink').value =  "2";
 		document.getElementById('icon').value = "";
-		document.getElementById('visible').value = "";
-		document.getElementById('attached').value = "";
+		document.getElementById("visible").checked = false;
 		
 		setPositionCenter( 'form' );
 		showDivEffect();
@@ -37,13 +36,16 @@ function openUpdateFormReceived( form ){
 		document.getElementById('id').value = getElementValue(form, 'id');
 		document.getElementById('name').value = getElementValue(form, 'name');
 		document.getElementById('label').value = getElementValue(form, 'label');
-		document.getElementById('noRow').value = getElementValue(form, 'noRow');
 		document.getElementById('noColumn').value = getElementValue(form, 'noColumn');
 		document.getElementById('noColumnLink').value =  getElementValue(form, 'noColumnLink');
 		document.getElementById('icon').value = getElementValue(form, 'icon');
-		document.getElementById('visible').value = getElementValue(form, 'visible');
-		document.getElementById('attached').value = getElementValue(form, 'attached');
-
+		
+		if(getElementValue(form, 'visible')=='true'){
+ 			document.getElementById("visible").checked = true;
+		}
+		else{
+			document.getElementById("visible").checked = false;
+		}
 		
 		setPositionCenter( 'form' );
 		showDivEffect();
@@ -82,7 +84,7 @@ function openUpdateFormReceived( form ){
   #end
 </table>
 
-<div id="form" style="position:fixed;display:none;width:500px;z-index:10001;background-color: white;border: medium solid silver;height:220px;padding:20px;">
+<div id="form" style="position:fixed;display:none;width:500px;z-index:10001;background-color: white;border: medium solid silver;height:180px;padding:20px;">
   <div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onClick="hideById('form');deleteDivEffect();">[x]</div>
 	<input type="hidden" value="" id="id"/>
 <form name="addForm" id="addForm" method="post" action="">
@@ -96,50 +98,32 @@ function openUpdateFormReceived( form ){
         <td> <input name="name" id="name" type="text"> 
             <font size="-2">($i18n.getString("noSpace"))</font></td>
       </tr>
-          <tr >
+          <tr>
             <td><label>$i18n.getString("label")<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
             <td><input name="label" id="label" type="text"></td>
           </tr>
-          <tr >
-
-            <td><label>$i18n.getString("noRow")<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-            <td valign="top"><input name="noRow" id="noRow" value="50" type="text"></td>
-          </tr>
-          <tr >
+         
+          <tr>
             <td><label>$i18n.getString("noColumn")<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
             <td><input name"noColumn" id="noColumn" value="7" type="text"></td>
           </tr>
-          <tr >
-
+		  
+          <tr>
             <td><label>$i18n.getString("noColumnLink")</label></td>
             <td><input name="noColumnLink" id="noColumnLink" value="2" type="text"></td>
           </tr>
+		  
           <tr>
             <td><label>$i18n.getString("icon")</label></td>
-            <!-- <td><input name="MAX_FILE_SIZE" value="100000" type="hidden">
-              <input name="icon" id="icon" type="text"></td> -->
 			  <td> <input name="icon" id="icon" type="text">
-			  <input type='button' onclick="window.open('upload.action','Upload files', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=500,height=300');");" value='$i18n.getString("upload_file")'></td>
+			  <input type='button' onclick="window.open('upload.action','Upload files', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=500,height=300');" value='$i18n.getString("upload_file")'></td>
           </tr>
 
-          <tr >
+          <tr>
             <td><label>$i18n.getString("visible")</label></td>
-            <td>
-              <select name="visible" id="visible">
-                <option value="yes" selected="selected">$i18n.getString("yes")</option>
-                <option value="no">$i18n.getString("no")</option>
-              </select></td>
-
+            <td> <input type="checkbox" name="visible" id="visible"></td>
           </tr>
-		  <input type="hidden" name="attached" id="attached"/>
-         <!-- <tr >
-            <td><label>$i18n.getString("attached")</label></td>
-            <td>
-          	  <select name="attached" id="attached">
-                <option value="yes">$i18n.getString("yes")</option>
-                <option value="no" selected="selected">$i18n.getString("no")</option>
-              </select></td>
-          </tr> -->
+		
           <tr><td colspan="2"></td>
           <tr>  
           	<td></td>         
@@ -154,7 +138,7 @@ function openUpdateFormReceived( form ){
 
 
 
-<div id="association" style="position:fixed;display:none;width:450px;z-index:10001;background-color: white;border: medium solid silver;height:250px;padding:20px;">
+<div id="association" style="position:fixed;display:none;width:450px;z-index:10001;background-color: white;border: medium solid silver;height:180px;padding:20px;">
   <div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onClick="hideById('association');deleteDivEffect();">[x]</div>
   <input type="hidden" id="egroupID" name="egroupID">
   <table>
@@ -200,3 +184,4 @@ function openUpdateFormReceived( form ){
 </p>
   
 </div>
+<span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)"></span>

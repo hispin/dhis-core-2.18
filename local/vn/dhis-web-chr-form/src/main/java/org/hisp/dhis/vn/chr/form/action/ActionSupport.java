@@ -28,6 +28,7 @@ package org.hisp.dhis.vn.chr.form.action;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork.Action;
 /**
@@ -41,7 +42,7 @@ public abstract class ActionSupport implements Action
     public I18n i18n;
     
     public I18nFormat format;
-
+    
     public String getMessage()
     {
         return message;

@@ -8,10 +8,12 @@ package org.hisp.dhis.vn.chr.element.action;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.ElementService;
+import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
-import com.opensymphony.xwork.Action;
+import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class UpdateElementAction implements Action
+
+public class UpdateElementAction extends ActionSupport
 {
 	// -----------------------------------------------------------------------------------------------
     // Dependency
@@ -41,7 +43,7 @@ public class UpdateElementAction implements Action
 
 	private int formLink;
 
-	private String required;
+	private boolean required;
 
 	private int sortOrder;
 	
@@ -121,11 +123,11 @@ public class UpdateElementAction implements Action
 		this.formLink = formLink;
 	}
 
-	public String getRequired() {
+	public boolean isRequired() {
 		return required;
 	}
 
-	public void setRequired(String required) {
+	public void setRequired(boolean required) {
 		this.required = required;
 	}
 
@@ -153,7 +155,7 @@ public class UpdateElementAction implements Action
 		
 		Element element = elementService.getElement(id.intValue());
 		
-		element.setName(CodecUtils.unescape(name));
+		element.setName(CodecUtils.unescape(name).toLowerCase());
 		
 		element.setLabel(CodecUtils.unescape(label));
 		
@@ -163,8 +165,18 @@ public class UpdateElementAction implements Action
 
 		element.setInitialValue(initialValue);
 		
-		element.setFormLink(formLink);
+		System.out.print("\n\n\n Formlink : " + formLink);
+		
+		if(formLink != 0){
+			
+			element.setFormLink(formService.getForm(formLink));
+			
+		}else{
 
+			element.setFormLink(null);
+			
+		}
+		
 		element.setRequired(required);
 		
 		element.setSortOrder(sortOrder);
@@ -172,6 +184,8 @@ public class UpdateElementAction implements Action
 		elementService.updateElement(element);
 
 		element.setForm(formService.getForm(formID));
+		
+		message = i18n.getString("success");
 		
 		return SUCCESS;
 	}

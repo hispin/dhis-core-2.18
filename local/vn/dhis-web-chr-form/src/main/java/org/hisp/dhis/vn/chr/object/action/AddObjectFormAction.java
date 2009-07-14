@@ -8,7 +8,6 @@ package org.hisp.dhis.vn.chr.object.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.Form;
@@ -17,7 +16,9 @@ import org.hisp.dhis.vn.chr.jdbc.FormManager;
 
 import com.opensymphony.xwork.Action;
 
-public class AddObjectFormAction implements Action{
+
+public class AddObjectFormAction implements Action
+{
 	
 	// -----------------------------------------------------------------------------------------------
     // Dependencies
@@ -108,8 +109,8 @@ public class AddObjectFormAction implements Action{
 			Iterator<Egroup> iter = egroups.iterator();
 			if(iter.hasNext()){
 				for(Element element : iter.next().getElements()){
-					if(element.getFormLink()!= 0){
-						Form fparent = formService.getForm(element.getFormLink());
+					if(element.getFormLink()!= null){
+						Form fparent = element.getFormLink();
 						ArrayList<String> data =  formManager.getObject(fparent, Integer.parseInt(objectId));
 						parentObject = new ArrayList<String>();
 						int k = 0;

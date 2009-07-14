@@ -80,5 +80,5 @@ public interface ElementStore {
      * @param formId Form ID
      * @return Elements' list.
      */
-	public Collection<Element> getElementsByFormLink(int formId);
+	public Collection<Element> getElementsByFormLink(Form form);
 }

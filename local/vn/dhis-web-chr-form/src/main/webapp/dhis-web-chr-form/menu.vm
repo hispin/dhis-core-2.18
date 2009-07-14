@@ -2,6 +2,7 @@
 <ul>
 	<li><a href="listForm.action">$i18n.getString( "form_management" )</a></li>
 	<li><a href="createForm.action">$i18n.getString( "create_form" )</a></li>	
+	<li><a href="getFormConfiguration.action">$i18n.getString( "form_configuration" )</a></li>	
 </ul>
 #if($visibleforms)
 <h2>$i18n.getString( "datamanagement" )</h2>

@@ -8,14 +8,11 @@
             <column name="id" />
             <generator class="native" />
         </id>
-        <property name="name" type="string">
+        <property name="name" type="string" unique="false">
             <column name="name" not-null="true" />
         </property>
-        <property name="label" type="string">
+        <property name="label" type="string" unique="false">
             <column name="label" not-null="true" />
-        </property>
-        <property name="noRow" type="int">
-            <column name="norow" not-null="true" />
         </property>
         <property name="noColumn" type="int">
             <column name="noColumn" not-null="true" />
@@ -26,14 +23,11 @@
         <property name="icon" type="string">
             <column name="icon" />
         </property>
-        <property name="visible" type="string">
+        <property name="visible" type="boolean">
             <column name="visible" not-null="true" />
         </property>
-        <property name="attached" type="string">
-            <column name="attached" not-null="true" />
-        </property>
-        <property name="desc1" type="string">
-            <column name="desc1" not-null="true" />
+        <property name="created" type="boolean">
+            <column name="created" not-null="true" />
         </property>
         <set name="elements" inverse="true" order-by="sortOrder asc">
             <key>

@@ -4,6 +4,20 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
+	<bean id="org.hisp.dhis.wp.action.NoAction"
+    	class="org.hisp.dhis.wp.action.NoAction"
+    	scope="prototype"/>
+    	
+    <bean id="org.hisp.dhis.vn.chr.form.action.GetInformationForSystemAction"
+    	class="org.hisp.dhis.vn.chr.form.action.GetInformationForSystemAction"
+    	scope="prototype">
+    	
+    	<!-- <property name="formService" ref="org.hisp.dhis.vn.chr.FormService"/>		
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>  -->
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+		
+	</bean>	
+    
 	<!--  --><!--  --><!--  -->
 		<!-- Form -->
 	<!--  --><!--  --><!--  -->
@@ -36,6 +50,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!--  Get Visible Form  -->
 	<bean id="org.hisp.dhis.vn.chr.form.action.GetVisibleFormsAction" class="org.hisp.dhis.vn.chr.form.action.GetVisibleFormsAction" scope="prototype">
 		<property name="formService" ref="org.hisp.dhis.vn.chr.FormService"/>		
+    	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+		<!--  <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>	
+		<property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager"/>  -->
 	</bean>
 	
 	<!--  Varidate Form  -->
@@ -120,6 +137,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<!--  --><!--  --><!--  -->
+	 <!--  Configuration  -->
+	<!--  --><!--  --><!--  -->
+	
+	<bean id="org.hisp.dhis.vn.chr.configuration.action.GetFormConfigurationAction" class="org.hisp.dhis.vn.chr.configuration.action.GetFormConfigurationAction" scope="prototype">
+		<property name="formConfigurationManager" ref="org.hisp.dhis.options.formconfiguration.FormConfigurationManager"/>		
+	</bean>
+	
+	<bean id="org.hisp.dhis.vn.chr.configuration.action.SetImageDirectoryOnServerAction" class="org.hisp.dhis.vn.chr.configuration.action.SetImageDirectoryOnServerAction" scope="prototype">
+		<property name="formConfigurationManager" ref="org.hisp.dhis.options.formconfiguration.FormConfigurationManager"/>		
+	</bean>
+	
+	<bean id="org.hisp.dhis.vn.chr.configuration.action.SetNumberOfRecordsAction" class="org.hisp.dhis.vn.chr.configuration.action.SetNumberOfRecordsAction" scope="prototype">
+		<property name="formConfigurationManager" ref="org.hisp.dhis.options.formconfiguration.FormConfigurationManager"/>		
+	</bean>
+	
+	<!--  --><!--  --><!--  -->
 		<!--  Object -->
 	<!--  --><!--  --><!--  -->
 	
@@ -133,20 +166,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.vn.chr.object.action.ListObjectAction" class="org.hisp.dhis.vn.chr.object.action.ListObjectAction" scope="prototype">
 		<property name="formService" ref="org.hisp.dhis.vn.chr.FormService"/>
 		<property name="formManager" ref="org.hisp.dhis.vn.chr.jdbc.FormManager"/>
-		<property name="elementService" ref="org.hisp.dhis.vn.chr.ElementService"/>			
+		<property name="elementService" ref="org.hisp.dhis.vn.chr.ElementService"/>	
+		<property name="formConfigurationManager" ref="org.hisp.dhis.options.formconfiguration.FormConfigurationManager"/>
 	</bean>
 	
 	<!--  Show List Relative Object  -->
 	<bean id="org.hisp.dhis.vn.chr.object.action.ListRelativeObjectAction" class="org.hisp.dhis.vn.chr.object.action.ListRelativeObjectAction" scope="prototype">
 		<property name="formService" ref="org.hisp.dhis.vn.chr.FormService"/>
 		<property name="formManager" ref="org.hisp.dhis.vn.chr.jdbc.FormManager"/>
-		<property name="elementService" ref="org.hisp.dhis.vn.chr.ElementService"/>			
+		<property name="elementService" ref="org.hisp.dhis.vn.chr.ElementService"/>		
+		<property name="formConfigurationManager" ref="org.hisp.dhis.options.formconfiguration.FormConfigurationManager"/>	
 	</bean>
 	
 	<!--  Add Object  -->
 	<bean id="org.hisp.dhis.vn.chr.object.action.AddObjectAction" class="org.hisp.dhis.vn.chr.object.action.AddObjectAction" scope="prototype">
 		<property name="formService" ref="org.hisp.dhis.vn.chr.FormService"/>
-		<property name="formManager" ref="org.hisp.dhis.vn.chr.jdbc.FormManager"/>	
+		<property name="formManager" ref="org.hisp.dhis.vn.chr.jdbc.FormManager"/>
 	</bean>
 	
 	<!--  Update Object  -->
@@ -170,7 +205,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!--  Search Object  -->
 	<bean id="org.hisp.dhis.vn.chr.object.action.SearchObjectAction" class="org.hisp.dhis.vn.chr.object.action.SearchObjectAction" scope="prototype">
 		<property name="formService" ref="org.hisp.dhis.vn.chr.FormService"/>
-		<property name="formManager" ref="org.hisp.dhis.vn.chr.jdbc.FormManager"/>			
+		<property name="formManager" ref="org.hisp.dhis.vn.chr.jdbc.FormManager"/>
+		<property name="formConfigurationManager" ref="org.hisp.dhis.options.formconfiguration.FormConfigurationManager"/>
+		<property name="elementService" ref="org.hisp.dhis.vn.chr.ElementService"/>			
 	</bean>
 	
 	<!--  Create table by Form  -->
@@ -180,7 +217,29 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<!-- - Upload file -->
-	<bean id='org.hisp.dhis.vn.chr.object.action.UploadFileAction' class='org.hisp.dhis.vn.chr.object.action.UploadFileAction' scope="prototype"/>
+	<bean id='org.hisp.dhis.vn.chr.object.action.UploadFileAction' class='org.hisp.dhis.vn.chr.object.action.UploadFileAction' scope="prototype">
+		<property name="formConfigurationManager" ref="org.hisp.dhis.options.formconfiguration.FormConfigurationManager"/>
+		<!--  <property name="locationManager" ref="org.hisp.dhis.external.location.LocationManager"/>  -->
+	</bean>
+	
+	<bean id="org.hisp.dhis.vn.chr.object.action.ValidateObjectAction" class="org.hisp.dhis.vn.chr.object.action.ValidateObjectAction" scope="prototype" >
+		<property name="formService" ref="org.hisp.dhis.vn.chr.FormService"/>
+	</bean>
+	
+	<!--  --><!--  --><!--  -->
+	   <!--  ElementValue -->
+	<!--  --><!--  --><!--  -->
+	
+	<bean id="org.hisp.dhis.vn.chr.elementvalue.action.GetDataSetOfUser" class="org.hisp.dhis.vn.chr.elementvalue.action.GetDataSetOfUser" scope="prototype" >
+		<!-- <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/> -->
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.vn.chr.elementvalue.action.GetDataelementsOfDataSet" class="org.hisp.dhis.vn.chr.elementvalue.action.GetDataelementsOfDataSet" scope="prototype" >
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
+	</bean>
+	
 </beans>
 
 

@@ -8,7 +8,7 @@
 		<type>$encoder.xmlEncode($element.type)</type>
 		<controlType>$encoder.xmlEncode($element.controlType)</controlType>	
 		<initialValue>$encoder.xmlEncode($element.initialValue)</initialValue>
-		<formLink>$element.formLink</formLink>
+		<formLink>$element.formLink.id</formLink>
 		<required>$encoder.xmlEncode($element.required)</required>
 		<sortOrder>$element.sortOrder </sortOrder>
 		<egroupid>$!element.egroup.id</egroupid>	

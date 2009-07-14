@@ -30,12 +30,21 @@
             <column name="controltype" not-null="true" />
         </property>
         <property name="initialValue" type="string">
-            <column name="initialvalue" not-null="true" />
+            <column name="initialvalue" not-null="true" length="3000"/>
         </property>
-        <property name="formLink" type="int">
+        
+       <!--  <one-to-one name="formLink" class="org.hisp.dhis.vn.chr.Form" fetch="select" formula="any SQL expression">
+        	
+        </one-to-one> -->
+        
+        <many-to-one name="formLink" class="org.hisp.dhis.vn.chr.Form" fetch="select">
+            <column name="formLink" />
+        </many-to-one>
+        
+       <!--  <property name="formLink" type="int">
             <column name="formlink" not-null="true" />
-        </property>
-        <property name="required" type="string">
+        </property>  -->
+        <property name="required" type="boolean">
             <column name="required" not-null="true" />
         </property>
         <property name="sortOrder" type="int">

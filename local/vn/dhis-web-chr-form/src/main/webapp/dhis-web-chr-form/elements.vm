@@ -23,6 +23,8 @@
 			<td>$encoder.htmlEncode( $!element.controlType )</td>
 			<td>$encoder.htmlEncode( $!element.required )</td>
 			<td>
+				<a href="javascript: openAssociateDataElementsForElementForm(); " title="$i18n.getString('associate_elements_for_egroup')">
+    				<img src="../images/assign.png" alt="$i18n.getString('associate_dataelement_for_element')"></a>
             	<a href="javascript: openUpdateElementForm($element.id);" title="$i18n.getString('edit')">
                 	<img src="../images/edit.png" alt="$i18n.getString('edit')"></a>
     			<a href="javascript: deleteElement($element.id);" title="$i18n.getString('delete')">
@@ -88,7 +90,11 @@
 		
 		document.getElementById('formLink').value = getElementValue(element, 'formLink');
 		
-		document.getElementById('required').value = getElementValue(element, 'required');
+		if(getElementValue(element, 'required') == 'true'){
+			document.getElementById('required').checked = true;
+		}else{
+			document.getElementById('required').checked = false;
+		}
 		
 		document.getElementById('sortOrder').value = getElementValue(element, 'sortOrder');
 		
@@ -103,8 +109,9 @@
 		disable('name');
 	}	
 </script>
+
 <form name="elementForm" method="post">
-<div id="element" style="position:fixed;display:none;width:320px;z-index:10001;background-color: white;border: medium solid silver;height:300px;padding:20px;">
+  <div id="element" style="position:fixed;display:none;width:320px;z-index:10001;background-color: white;border: medium solid silver;height:300px;padding:20px;">
 	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onClick="hideById('element');deleteDivEffect();">[x]</div>
 	<input type="hidden" id="id" name="id" value=""/>
 	<table>
@@ -122,8 +129,8 @@
 	  </tr>
 	<tr>
 		<td><label> $i18n.getString('controlType')</lable></td>
-		<td>
-			<select id="controlType" name="controlType" style="width:5em">
+		<td> 
+			<select id="controlType" name="controlType" style="width:8em; overflow:scroll" onChange="javascript: checkControlType(this);">
 				<option value="textfield" selected>$i18n.getString('textfield')</option>
                 <option value="checkbox">$i18n.getString('checkbox')</option>
                 <option value="combobox">$i18n.getString('combobox')</option>
@@ -134,25 +141,24 @@
 		    	<option value="break">$i18n.getString('break')</option>
 		</select>
 			<label> $i18n.getString('required') ?</lable>
-            <select id="required" name="required" style="width:5em">
-              <option value="yes">$i18n.getString('yes')</option>
-              <option value="no">$i18n.getString('no')</option>
-            </select></td>
+			<input type="checkbox"  id="required" name="required"/>
+            </td>
 	  </tr>		
 	<tr>
 		<td><lable>$i18n.getString('type')</lable></td>
-		<td width="359"><select id="type" name="type" style="width:5em">
-          <option value="String">$i18n.getString('string')</option>
-		  <option value="Date">$i18n.getString('date')</option>
-          <option value="Number">$i18n.getString('number')</option>
-		  <option value="Double">$i18n.getString('double')</option>
+		<td width="359"><select id="type" name="type" style="width:15em ; overflow:scroll">
+		  <option value="varchar" checked>$i18n.getString('varchar')</option>
+          <option value="integer">$i18n.getString('integer')</option>		 
+          <option value="date">$i18n.getString('date')</option>
+		  <option value="numeric">$i18n.getString('numeric')</option>
+		  <option value="boolean">$i18n.getString('boolean')</option>
         </select><br>
 <font size="-2"> $i18n.getString('guide_type') </font></td>
 	  </tr>
 	<tr>
 		<td><label> $i18n.getString('formLink')  </lable></td>
 		<td>
-			<select id="formLink" name="formLink" style="width:15em">
+			<select id="formLink" name="formLink" style="width:15em; overflow:scroll">
 				<option value="" selected></option>
 				#foreach($form in $forms)				
   					<option value="$form.id">$form.label</option>
@@ -177,6 +183,67 @@
 	<input type="button" value="$i18n.getString('cancel')" onClick="hideById('element');deleteDivEffect();"/>
 	</p>
 </div>
+
+<div id="associationDataelement" style="position:fixed;display:none;width:450px;z-index:10001;background-color: white;border: medium solid silver;height:180px;padding:20px;">
+  <div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onClick="hideById('associationDataelement');deleteDivEffect();">[x]</div>
+  <input type="hidden" id="egroupID" name="egroupID">
+  <table>
+	<colgroup>
+  		<col width="325px">
+  		<col width="80px">
+ 		<col width="325px">
+  	</colgroup>
+	<tr>
+    <th>$i18n.getString( 'available_dataelements' )</th>
+    <td colspan="2">
+    	<select id="availableDataSet" name="availableDataSet" style="width:100%" onChange="javascript:getDataElements(this.value ); ">
+		</select>
+    </td></tr>
+  	<tr>
+  		<td>$i18n.getString( 'available_dataelements' )</td>
+  		<td></td>
+  		<td>$i18n.getString( 'selected_dataelements' )</td>
+	</tr>
+	
+	<tr>
+		<td><select multiple size="6" id="availabelDataelements" name="availabelDataelements" style="width:100%" ondblclick="moveSelectedById( 'availabelDataelements', 'selectedDataelements' )">
+        </select>		</td>
+		<td style="text-align:center">	
+		  <input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availabelDataelements', 'selectedDataelements' )"/><br>
+		  <input type="button" value="&lt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveSelectedById( 'selectedDataelements', 'availabelDataelements' )"/><br>		
+		  <input type="button" value="&gt;&gt;" title="$i18n.getString('remove_selected')" style="width:50px" onclick="moveAllById( 'availabelDataelements', 'selectedDataelements' )"/><br>
+
+
+		  <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedDataelements', 'availabelDataelements' )"/>
+		</td>
+		<td>
+		  <select multiple size="6" id="selectedDataelements" name="selectedDataelements" style="width:100%" ondblclick="moveSelectedById( 'selectedDataelements', 'availabelDataelements' )">
+				
+		  </select>
+		</td>
+	</tr>
+
+</table>
+<p>
+<input type="button" value="$i18n.getString( 'save' )" onClick="javascript: updateElementsForEgroup();deleteDivEffect();hideById('associationDataelement');"/>
+<input name="button" type="button" onClick="javascript:deleteDivEffect();hideById('associationDataelement');" value="$i18n.getString( 'cancel' )"/>		
+</p>
+  
+</div>
+
+
 </form>
 <span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10004" onclick="hideById(this.id);"></span>
 <span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)"></span>
+
+<script language="javascript">
+	function checkControlType(object){
+		var typeObject = document.getElementById('type')
+		if(object.value=='checkbox' || object.value=='date'){
+			typeObject.value=(object.value=='checkbox')?'boolean':'date';
+			typeObject.disabled = true;
+		}else{
+			typeObject.disabled = false;
+		}
+	}
+</script>

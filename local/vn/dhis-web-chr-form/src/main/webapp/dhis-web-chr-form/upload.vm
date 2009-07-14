@@ -1,28 +1,27 @@
 <html>
-<link rel='stylesheet' type='text/css' href='style-table.css' />
-<body id='wrap'>
   <h2>Upload files here</h2>
-  <div id='selectfile'>
-
-	<form action="upload.action" method="post" enctype="multipart/form-data">
-      <input type="file" name="upload">
+ 	<form action="upload.action" method="post" enctype="multipart/form-data">
+      <input type="file" name="uploadFile" id="uploadFile" onChange="document.getElementById('uploadFilename').value = this.value">
+	  <input type="hidden" id="uploadFilename" name="uploadFilename">
       <input type="submit" value="Upload">
   	</form>
   	
-   </div>
+
    <div id='listfile'>
    <table>
 	#foreach($file in $files)
 	<tr>
-	<td class='tableitemleft' align='left'>
+	<td align='left'>
 		#set($size = $file.length())
-		<a href="#" onclick="window.opener.document.getElementById('note').value='$file.name'; self.close();">$file.name - $size Byte</a>
+		<a href="#" onclick=" window.opener.document.getElementById('icon').value='$file.name'; self.close();">
+			<img src="../images/$file.name" style="width:16; height:16;" border="0"/>
+			$file.name - $size Byte
+		</a>
 	</td>
 	</tr>
 	#end 
 	</table> 	
    </div>
-   
-</form>
+
 </body>
 </html>

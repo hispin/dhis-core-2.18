@@ -9,10 +9,9 @@ import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.EgroupService;
 import org.hisp.dhis.vn.chr.FormService;
+import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-import com.opensymphony.xwork.Action;
-
-public class AddEgroupAction implements Action
+public class AddEgroupAction extends ActionSupport
 {
 	// -----------------------------------------------------------------------------------------------
     // Dependency
@@ -62,10 +61,6 @@ public class AddEgroupAction implements Action
 
 	public String execute() throws Exception{
 		
-//		System.out.print("\n\n\n name : " + name);
-//		
-//		System.out.print("\n\n\n sortOrder : " + sortOrder);
-		
 		Egroup egroup = new Egroup();
 		
 		egroup.setName(CodecUtils.unescape(name));
@@ -75,6 +70,8 @@ public class AddEgroupAction implements Action
 		egroup.setForm(formService.getForm(formID.intValue()));
 		
 		egroupService.addEgroup(egroup);
+		
+		message = i18n.getString("success");
 		
 		return SUCCESS;
 	}

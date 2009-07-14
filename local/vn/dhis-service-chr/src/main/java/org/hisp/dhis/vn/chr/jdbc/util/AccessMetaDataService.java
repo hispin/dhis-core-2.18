@@ -22,6 +22,4 @@ public interface AccessMetaDataService {
 	 * @return List of column names 
 	 */
 	public Set<String> getAllColumnsOfTable(  String tableName );
-	
-//	public Set<String> getValuesInTable( String table, String[] columns , int pageIndex, int pageSize );
 }

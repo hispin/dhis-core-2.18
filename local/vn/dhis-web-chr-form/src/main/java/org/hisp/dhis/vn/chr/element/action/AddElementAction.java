@@ -9,10 +9,9 @@ import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.ElementService;
 import org.hisp.dhis.vn.chr.FormService;
+import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-import com.opensymphony.xwork.Action;
-
-public class AddElementAction  implements Action
+public class AddElementAction extends ActionSupport
 {
 	// -----------------------------------------------------------------------------------------------
     // Dependency
@@ -40,7 +39,7 @@ public class AddElementAction  implements Action
 
 	private int formLink;
 
-	private String required;
+	private boolean required;
 
 	private int sortOrder;
 
@@ -110,11 +109,11 @@ public class AddElementAction  implements Action
 		this.formLink = formLink;
 	}
 
-	public String getRequired() {
+	public boolean isRequired() {
 		return required;
 	}
 
-	public void setRequired(String required) {
+	public void setRequired(boolean required) {
 		this.required = required;
 	}
 
@@ -138,7 +137,7 @@ public class AddElementAction  implements Action
 		
 		Element element = new Element();
 		
-		element.setName(CodecUtils.unescape(name));
+		element.setName(CodecUtils.unescape(name).toLowerCase());
 		
 		element.setLabel(CodecUtils.unescape(label));
 		
@@ -148,7 +147,7 @@ public class AddElementAction  implements Action
 
 		element.setInitialValue(initialValue);
 		
-		element.setFormLink(formLink);
+		element.setFormLink(formService.getForm(formLink));
 
 		element.setRequired(required);
 		
@@ -157,6 +156,8 @@ public class AddElementAction  implements Action
 		element.setForm(formService.getForm(formID));
 		
 		elementService.addElement(element);
+		
+		message = i18n.getString("success");
 		
 		return SUCCESS;
 	}

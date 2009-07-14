@@ -6,8 +6,12 @@ package org.hisp.dhis.vn.chr.object.action;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 
+import org.hisp.dhis.options.formconfiguration.FormConfigurationManager;
 import org.hisp.dhis.system.util.CodecUtils;
+import org.hisp.dhis.vn.chr.Element;
+import org.hisp.dhis.vn.chr.ElementService;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.jdbc.FormManager;
@@ -23,6 +27,17 @@ public class SearchObjectAction extends ActionSupport{
 	
 	private FormService formService;
 	
+	private FormConfigurationManager formConfigurationManager;
+	
+	private ElementService elementService;
+	
+	public void setFormConfigurationManager(
+			FormConfigurationManager formConfigurationManager) {
+		this.formConfigurationManager = formConfigurationManager;
+	}
+	
+	
+	
 	// -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
@@ -37,6 +52,9 @@ public class SearchObjectAction extends ActionSupport{
 	
 	// Object data
 	private ArrayList data;
+	
+	// formLinks
+	private Collection<Element> formLinks;
 	
 	// -----------------------------------------------------------------------------------------------
     // Getter && Setter
@@ -82,6 +100,18 @@ public class SearchObjectAction extends ActionSupport{
 		this.form = form;
 	}
 	
+	public void setElementService(ElementService elementService) {
+		this.elementService = elementService;
+	}
+	
+	public Collection<Element> getFormLinks() {
+		return formLinks;
+	}
+
+	public void setFormLinks(Collection<Element> formLinks) {
+		this.formLinks = formLinks;
+	}
+	
 	// -----------------------------------------------------------------------------------------------
     // Implement : process Select SQL 
     // -----------------------------------------------------------------------------------------------
@@ -92,7 +122,9 @@ public class SearchObjectAction extends ActionSupport{
 
 			form = formService.getForm(formId.intValue());
 			
-			data = formManager.searchObject(form, CodecUtils.unescape(keyword));
+			formLinks =  elementService.getElementsByFormLink(form);
+			
+			data = formManager.searchObject(form, CodecUtils.unescape(keyword), Integer.parseInt(formConfigurationManager.getNumberOfRecords()));
 			
 			return SUCCESS;
 

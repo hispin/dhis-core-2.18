@@ -18,11 +18,7 @@ public class ValidateFormAction extends ActionSupport {
 
 	private String label;
 
-	private int noRow;
-
 	private int noColumn;
-
-	private String message;
 
 	// -------------------------------------------
 	// Getter & Setter
@@ -52,28 +48,12 @@ public class ValidateFormAction extends ActionSupport {
 		this.label = label;
 	}
 
-	public int getNoRow() {
-		return noRow;
-	}
-
-	public void setNoRow(int noRow) {
-		this.noRow = noRow;
-	}
-
 	public int getNoColumn() {
 		return noColumn;
 	}
 
 	public void setNoColumn(int noColumn) {
 		this.noColumn = noColumn;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 	// -------------------------------------------
@@ -83,20 +63,17 @@ public class ValidateFormAction extends ActionSupport {
 	public String execute() throws Exception {
 
 		if (name == null || name.trim().length() == 0) {
-			message = i18n.getString("name_is_null");
+			message = i18n.getString("name") + " " + i18n.getString("not_null");
 			return ERROR;
 		}
 
 		if (label == null || label.trim().length() == 0) {
-			message = i18n.getString("label_is_null");
+			message = i18n.getString("label") + " " + i18n.getString("not_null");
 			return ERROR;
 		}
-		if (noRow == 0) {
-			message = i18n.getString("noRow_is_null");
-			return ERROR;
-		}
+		
 		if (noColumn == 0) {
-			message = i18n.getString("noColumn_is_null");
+			message = i18n.getString("noColumn") + " " + i18n.getString("not_null");
 			return ERROR;
 		}
 

@@ -5,8 +5,6 @@ package org.hisp.dhis.vn.chr.object.action;
  * 
  */
 
-import java.util.ArrayList;
-
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
@@ -31,20 +29,31 @@ public class UpdateObjectAction extends ActionSupport{
 	private Integer formId;
 	
 	// Object data
-	private ArrayList data;
+	private String[] data;
 	
 	// ID of Object
 	private Integer id;
+	
+	// message 
+	private String message;
 	
 	// -----------------------------------------------------------------------------------------------
     // Getter && Setter
     // -----------------------------------------------------------------------------------------------
 	
-	public ArrayList getData() {
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String[] getData() {
 		return data;
 	}
 
-	public void setData(ArrayList data) {
+	public void setData(String[] data) {
 		this.data = data;
 	}
 	
@@ -75,16 +84,21 @@ public class UpdateObjectAction extends ActionSupport{
 
 			Form form = formService.getForm(formId.intValue());
 			
-//			// convert data to Unicode
-//			for(int i=0 ;i<data.length ;i++){
-//				data[i] = CodecUtils.unescape(data[i]);
-//			}
+			// convert data to Unicode
+			for(int i=0 ;i<data.length ;i++){
+				if(data[i].length()!=0){
+					data[i] = CodecUtils.unescape(data[i]);
+				}
+			}
+			
+			message = i18n.getString("update") + " " + i18n.getString("success");
 			
 			formManager.updateObject(form, data);
 			
 			return SUCCESS;
 
 		} catch (Exception ex) {
+			message = i18n.getString("update") + " " + i18n.getString("error");
 			ex.printStackTrace();
 		}
 

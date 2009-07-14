@@ -5,12 +5,13 @@ package org.hisp.dhis.vn.chr.object.action;
  * 
  */
 
+import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
+import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 import org.hisp.dhis.vn.chr.jdbc.FormManager;
-import com.opensymphony.xwork.Action;
 
 
-public class CreateTableByFormAction implements Action{
+public class CreateTableByFormAction extends ActionSupport{
 	
 	// -----------------------------------------------------------------------------------------------
     // Dependencies
@@ -26,10 +27,21 @@ public class CreateTableByFormAction implements Action{
 	
 	private Integer id;
 	
+	// message
+	private String message;
+	
 	// -----------------------------------------------------------------------------------------------
     // Getters & Setters
     // -----------------------------------------------------------------------------------------------
 
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -52,7 +64,15 @@ public class CreateTableByFormAction implements Action{
 
 	public String execute() throws Exception {
 		
-		formManager.createTable(formService.getForm(id.intValue()));
+		Form form = formService.getForm(id.intValue());
+		
+		formManager.createTable(form);
+		
+		form.setCreated(true);
+		
+		formService.updateForm(form);
+		
+		message = i18n.getString("create") + " " + i18n.getString("success");
 		
 		return SUCCESS;
 	}

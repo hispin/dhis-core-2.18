@@ -7,7 +7,7 @@ package org.hisp.dhis.vn.chr.object.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+import org.hisp.dhis.options.formconfiguration.FormConfigurationManager;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.ElementService;
 import org.hisp.dhis.vn.chr.Form;
@@ -27,6 +27,8 @@ public class ListObjectAction implements Action{
 	
 	private ElementService elementService;
 	
+	private FormConfigurationManager formConfigurationManager;
+	
 	// -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
@@ -39,10 +41,27 @@ public class ListObjectAction implements Action{
 	
 	private Collection<Element> formLinks;
 	
+	private String cur_dir;
+	
+	private String imageDirectoryOnServer;
+	
 	// -----------------------------------------------------------------------------------------------
     // Getter && Setter
     // -----------------------------------------------------------------------------------------------
 	
+	public void setFormConfigurationManager(
+			FormConfigurationManager formConfigurationManager) {
+		this.formConfigurationManager = formConfigurationManager;
+	}
+
+	public String getCur_dir() {
+		return cur_dir;
+	}
+
+	public void setCur_dir(String cur_dir) {
+		this.cur_dir = cur_dir;
+	}
+    
 	public Integer getFormId() {
 		return formId;
 	}
@@ -87,18 +106,26 @@ public class ListObjectAction implements Action{
 		this.formLinks = formLinks;
 	}
 
+	public String getImageDirectoryOnServer() {
+		return imageDirectoryOnServer;
+	}
+
+	public void setImageDirectoryOnServer(String imageDirectoryOnServer) {
+		this.imageDirectoryOnServer = imageDirectoryOnServer;
+	}
+
 	// -----------------------------------------------------------------------------------------------
     // Implement : process Select SQL 
     // -----------------------------------------------------------------------------------------------
 
 	public String execute() throws Exception {
-		
+
 		form = formService.getForm(formId.intValue());
 		
-		formLinks =  elementService.getElementsByFormLink(formId.intValue());
-				
-		data = formManager.listObject(form, 1);
-
+		formLinks =  elementService.getElementsByFormLink(form);//formId.intValue());
+		
+		data = formManager.listObject(form, Integer.parseInt(formConfigurationManager.getNumberOfRecords()));
+		
 		return SUCCESS;
 	}
 }

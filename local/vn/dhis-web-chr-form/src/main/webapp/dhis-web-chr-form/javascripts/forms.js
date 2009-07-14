@@ -4,7 +4,6 @@
 function validateForm(){
 	var name = getFieldValue("name");
 	var label = getFieldValue("label");
-	var noRow = getFieldValue("noRow");
 	var noColumn = getFieldValue("noColumn");
 	
 	var request = new Request();
@@ -12,7 +11,6 @@ function validateForm(){
     request.setCallbackSuccess( validateAddFormCompleted );
 	var url = 'validateForm.action?name=' + name;
 	url += "&label=" + label;
-	url += "&noRow=" + noRow;
 	url += "&noColumn=" + noColumn;
  	request.send( url );    
 
@@ -32,12 +30,11 @@ function validateAddFormCompleted( xmlObject ){
 function addForm(){
 	var name = getFieldValue("name");
 	var label = getFieldValue("label");
-	var noRow = getFieldValue("noRow");
 	var noColumn = getFieldValue("noColumn");
 	var noColumnLink = getFieldValue("noColumnLink");
 	var icon = getFieldValue("icon");
 	var visible = document.getElementById('visible').value;
-	var attached =  document.getElementById('attached').value;
+	var visible = document.getElementById("visible").checked;
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
@@ -45,18 +42,23 @@ function addForm(){
     request.setCallbackSuccess( Completed );
 	var url = 'addForm.action?name=' + name;
 	url += "&label=" + label;
-	url += "&noRow=" + noRow;
 	url += "&noColumn=" + noColumn;
 	url += "&noColumnLink=" + noColumnLink;
 	url += "&icon=" + icon;
 	url += "&visible=" + visible;
-	url += "&attached=" + attached;
 	
  	request.send( url );    
 }
 
-function Completed( xmlObject ){	
+function Completed( xmlObject ){
+	
+	if(document.getElementById('message') != null){
+		document.getElementById('message').style.display = 'block';
+		document.getElementById('message').innerHTML = xmlObject.firstChild.nodeValue;
+	}
+	
 	window.location.reload();
+	
 }
 
 // ------------------------------------------------------------
@@ -67,12 +69,10 @@ function updateForm(){
 	
 	var id = getFieldValue("id");
 	var label = getFieldValue("label");
-	var noRow = getFieldValue("noRow");
 	var noColumn = getFieldValue("noColumn");
 	var noColumnLink = getFieldValue("noColumnLink");
 	var icon = getFieldValue("icon");
-	var visible = document.getElementById('visible').value;
-	var attached =  document.getElementById('attached').value;
+	var visible = document.getElementById("visible").checked;
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
@@ -81,12 +81,10 @@ function updateForm(){
 	var url = 'updateForm.action?name=' + name;
 	url += "&id=" + id;
 	url += "&label=" + label;
-	url += "&noRow=" + noRow;
 	url += "&noColumn=" + noColumn;
 	url += "&noColumnLink=" + noColumnLink;
 	url += "&icon=" + icon;
 	url += "&visible=" + visible;
-	url += "&attached=" + attached;
 	
  	request.send( url );    
 }
@@ -212,7 +210,7 @@ function validateElement(){
 	var controlType = getFieldValue("controlType");
 	var initialValue = getFieldValue("initialValue");
 	var formLink = getFieldValue("formLink");
-	var required = getFieldValue("required");
+	var required = document.getElementById("required").checked;
 	var sortOrder = getFieldValue("sortOrder");
 	
 	var request = new Request();
@@ -252,7 +250,7 @@ function addElement(){
 	var controlType = getFieldValue("controlType");
 	var initialValue = getFieldValue("initialValue");
 	var formLink = getFieldValue("formLink");
-	var required = getFieldValue("required");
+	var required = document.getElementById("required").checked;
 	var sortOrder = getFieldValue("sortOrder");
 	var formid = getFieldValue("formid");
 	
@@ -286,7 +284,7 @@ function updateElement(){
 	var controlType = getFieldValue("controlType");
 	var initialValue = getFieldValue("initialValue");
 	var formLink = getFieldValue("formLink");
-	var required = getFieldValue("required");
+	var required = document.getElementById("required").checked;
 	var sortOrder = getFieldValue("sortOrder");
 	var formid = getFieldValue("formid");
 	
@@ -421,7 +419,7 @@ function createTableByForm(){
 
 function getParamByURL(param){
 	var name = param.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  	var regexS = "[\\?&]"+name+"=([^&#]*)";
+	var regexS = "[\\?&]"+name+"=([^&#]*)";
 	var regex = new RegExp( regexS );
 	var results = regex.exec( window.location.href );
 
@@ -429,6 +427,7 @@ function getParamByURL(param){
 }
 
 function addObjectForm(){
+	
 	var url = 'addObjectForm.action?formId=' + getParamByURL('formId');
 	var objectId = getParamByURL('objectId');
 	if(objectId != '')
@@ -451,44 +450,52 @@ function deleteObject( id ){
 	}		
 }
 
-// ------------------------------------------------------------
-//  Update Object
-// ------------------------------------------------------------
-
-function updateForm(){
-	
-	var id = getFieldValue("id");
-	var label = getFieldValue("label");
-	var noRow = getFieldValue("noRow");
-	var noColumn = getFieldValue("noColumn");
-	var noColumnLink = getFieldValue("noColumnLink");
-	var icon = getFieldValue("icon");
-	var visible = document.getElementById('visible').value;
-	var attached =  document.getElementById('attached').value;
-	
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-	
-    request.setCallbackSuccess( Completed );
-	var url = 'updateForm.action?name=' + name;
-	url += "&id=" + id;
-	url += "&label=" + label;
-	url += "&noRow=" + noRow;
-	url += "&noColumn=" + noColumn;
-	url += "&noColumnLink=" + noColumnLink;
-	url += "&icon=" + icon;
-	url += "&visible=" + visible;
-	url += "&attached=" + attached;
-	
- 	request.send( url );    
-}
-
 // --------------------------------------------------------------------------------------
 //  Add Object
 // --------------------------------------------------------------------------------------
+
+function validateDataObject(){
+
+	// get formId
+	var formid = getParamByURL('formId');
+	var dataParam = '?formId='+ formid;
+	
+	var arrayOfElements = document.getElementsByName('data');
+	for(var i=0;i<arrayOfElements.length;i++){
+		dataParam += '&data='+ arrayOfElements[i].value;
+	}
+	
+	var request = new Request();
+    request.setResponseTypeXML( 'xmlObject' );
+    request.setCallbackSuccess( validateObjectCompleted );
+	
+	var url = 'validateObject.action' + dataParam;
+	
+	request.send( url );    
+
+}
+
+function validateObjectCompleted( xmlObject ){
+	
+	// get type into XML file ( The type is error or success)
+	var type = xmlObject.getAttribute( 'type' );
+	// type == error
+    if(type =='error') {
+		setMessage(xmlObject.firstChild.nodeValue);
+	}
+  	// type == success
+    if(type == 'success') {
+		if(mode == "ADD") 
+			addObject();
+		else 
+			updateObject();
+	}
+}
+
+// Validate data inputted into a control
 function validateObject( required, element, strerror ){
 	
-	if (required == 'Yes' && element.value =='') {
+	if (required == 'true' && element.value =='') {
 		document.getElementById('info').style.display = 'block';
 		document.getElementById('info').innerHTML = strerror;
 		element.focus();
@@ -498,7 +505,6 @@ function validateObject( required, element, strerror ){
 
 function addObject () {	
 	
-
 	var formid = getParamByURL('formId');
 	var dataParam = '?formId='+ formid;
 	
@@ -506,12 +512,21 @@ function addObject () {
 	var objectId = getParamByURL('objectId');
 	if(objectId != ''){
 		dataParam += '&data='+ objectId;
-		start=1;
+		//start=1;
 	}
 	
 	var arrayOfElements = document.getElementsByName('data');
 	for(var i=start;i<arrayOfElements.length;i++){
-		dataParam += '&data='+ arrayOfElements[i].value;
+		
+		var data = arrayOfElements[i].value;
+		
+		if(data=='on'){
+			
+			dataParam += '&data='+ arrayOfElements[i].checked;
+		}else{
+		
+		dataParam += '&data='+ data;
+		}
 	}
 	
 	var request = new Request();
@@ -542,55 +557,43 @@ function fillup (strSelect, str, div_name){
 // ------------------------------------------------------------
 // Open Update Object Form - Load data of Object into control
 // ------------------------------------------------------------
-/*function openUpdateObjectForm( id ){
-		var request = new Request();
-		request.setResponseTypeXML( 'object' );
-		request.setCallbackSuccess( openUpdateObjectFormReceived );
-		
+function openUpdateObjectForm( id ){
+	
 		var formid = getParamByURL('formId');
-		var url = 'getObject.action?data=' + data;
-		url += "&id=" + id;
+		var url = 'updateObjectForm.action?id=' + id;
 		url += "&formId=" + formid;
-	
-		request.send( url );		
-}
-
-function openUpdateObjectFormReceived( object ){		
-		
-		var data = getElementValue(object, 'id').split(";");
-		
-		var arrayOfElements = document.getElementsByName('data');
-		for(var i=start;i<arrayOfElements.length;i++){
-			arrayOfElements[i].value = data[i];
-		}
-	
-		var request = new Request();
-    	request.setResponseTypeXML( 'xmlObject' );
- 
- 		request.setCallbackSuccess( Completed );
-	
-		var url  = 'addObjectForm.action' + dataParam;
-	
-		request.send( url ); 
+		window.location = url;
 }
 
 // ------------------------------------------------------------
 // Update Object
 // ------------------------------------------------------------
-function updateObject(data){
+function updateObject(){
+	
+	// Get Form's Id
+	var formid = getParamByURL('formId');
+	var dataParam = '?formId='+ formid;
+	
+	dataParam += '&data='+ getParamByURL('id')
+	var start = 0;
+	
+	// Get Object's data, not have id of the Object
+	var arrayOfElements = document.getElementsByName('data');
+	for(var i=0;i<arrayOfElements.length;i++){
+		dataParam += '&data='+ arrayOfElements[i].value;
+	}
+	
+	//// Get Object's Id
+	//var id = getParamByURL('id');
+	//dataParam += '&data='+ id;
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( Completed );
+ 	request.setCallbackSuccess( Completed );
+	var url  = 'updateObject.action' + dataParam;
 	
-	var formid = getParamByURL('formId');
-	
-	var url = 'updateObjectForm.action?data=' + data;
-	url += "&id=" + id;
-	url += "&formId=" + formid;
-	
- 	request.send( url );    
-}*/
+	request.send( url ); 
+}
 
 // ------------------------------------------------------------
 // Search Objects
@@ -637,7 +640,7 @@ function getKeyCode(e)
 
 // Input Number
 function isNumber(type){
-	return (type.toLowerCase()=='number' || type.toLowerCase()=='double') ? true : false;
+	return (type.toLowerCase()=='integer' || type.toLowerCase()=='numeric') ? true : false;
 }
 
 // Input datetime
@@ -651,12 +654,106 @@ function isDate(element, strError) {
 	}
 }
 
-// Input Tree
+// Configuration - Set Image directory on server
+function saveImageDirectoryOnServer(value){
+	var request = new Request();
+    request.setResponseTypeXML( 'xmlObject' );
+    request.setCallbackSuccess( Completed );
+	var url = 'setImageDirectoryOnServer.action?imageDirectoryOnServer=' + value;
+ 	request.send( url );    
+}
+
+// Configuration - Set number of records showed
+function saveNumberOfRecords(value){
+	var request = new Request();
+    request.setResponseTypeXML( 'xmlObject' );
+    request.setCallbackSuccess( Completed );
+	var url = 'setNumberOfRecords.action?numberOfRecords=' + value;
+ 	request.send( url );    
+}
 
 
+// --------------------------------------------------------------------------------------
+//  Associate DataElements For an Element
+// --------------------------------------------------------------------------------------
 
+function openAssociateDataElementsForElementForm( id ){  	 	 	
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( openAssociateDataElementsForElementFormReceived );
+	request.send( "getDataSet.action");
+}
 
+function openAssociateDataElementsForElementFormReceived( xmlObject ){
+	
+	// process when the function is called first
+	//if(!flag){
+		// Available Dataset
+		var availableList = byId('availableDataSet');
+		availableList.options.length = 0;
 
+		// Input name of datasets into combo box
+		if( xmlObject.getElementsByTagName('dataSet').length > 0){
+				
+			var availableDataSet = xmlObject.getElementsByTagName('dataSet');
+			availableList.add(new Option("", 0),null);
+
+			for(var i=0;i<availableDataSet.length;i++){
+				var dataset = availableDataSet.item(i);
+				var id = dataset.getElementsByTagName('id')[0].firstChild.nodeValue;
+				var name = dataset.getElementsByTagName('name')[0].firstChild.nodeValue;
+				availableList.add(new Option(name, id),null);
+			}//end for
+		}
+
+		// Selected Dataelements 
+		var selectedElementslist = document.getElementById('selectedDataelements');
+		selectedElementslist.options.length = 0;
+	
+		// show form
+		setPositionCenter( 'associationDataelement' );
+		showDivEffect();
+		showById( 'associationDataelement' );
+		//flag = true;
+	//}
+	
+	}
+	
+// --------------------------------------------------------------------------------------
+//  Get DataElements Of the Chosen Dataset
+// --------------------------------------------------------------------------------------
+
+	function getDataElements( dataSetId ){  	 	 	
+	
+	//document.getElementById('association').value = id;
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( getDataElementsReceived );
+	request.send( "getDataElementsOfDataSet.action?dataSetId=" + dataSetId);
+}
+
+function getDataElementsReceived( xmlObject ){
+	
+	
+	// available dataelements of the choosen dataset
+	var availableElementsList = byId('availabelDataelements');
+	availableElementsList.options.length = 0;
+			
+	if( xmlObject.getElementsByTagName('dataelement').length > 0){
+			
+		var availableElements = xmlObject.getElementsByTagName('dataelement');
+			
+		for(var i=0;i<availableElements.length;i++){
+			var element = availableElements.item(i);
+			var id = element.getElementsByTagName('id')[0].firstChild.nodeValue;
+			var label = element.getElementsByTagName('name')[0].firstChild.nodeValue;
+			availableElementsList.add(new Option(label, id),null);
+				
+		}//end for
+	
+	}
+}
 
 
 

@@ -6,7 +6,6 @@ package org.hisp.dhis.vn.chr.jdbc;
  */
 
 import java.util.ArrayList;
-
 import org.hisp.dhis.vn.chr.Form;
 
 public interface FormManager {
@@ -50,7 +49,7 @@ public interface FormManager {
      * @param form needs to create the table
      * @param data Data of Object
      */
-	public void updateObject(Form form, ArrayList<String> data);
+	public void updateObject(Form form, String[] data);
 	
 	/**
      * Delete Object by ID
@@ -66,7 +65,7 @@ public interface FormManager {
      * @param form needs to create the table
      * @param keyword Keyword
      */
-	public ArrayList searchObject(Form form, String keyword);
+	public ArrayList searchObject(Form form, String keyword, int pageSize);
 
-	public ArrayList ListRelativeObject(Form form, String column ,String objectId);
+	public ArrayList ListRelativeObject(Form form, String column , String objectId, int pageSize);
 }

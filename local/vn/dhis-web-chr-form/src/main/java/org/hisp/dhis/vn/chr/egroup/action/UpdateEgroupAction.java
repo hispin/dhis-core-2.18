@@ -8,9 +8,9 @@ package org.hisp.dhis.vn.chr.egroup.action;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.EgroupService;
-import com.opensymphony.xwork.Action;
+import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class UpdateEgroupAction implements Action
+public class UpdateEgroupAction extends ActionSupport
 {
 	// -----------------------------------------------------------------------------------------------
     // Dependency
@@ -31,6 +31,7 @@ public class UpdateEgroupAction implements Action
 	// -----------------------------------------------------------------------------------------------
     // Getters && Setters
     // -----------------------------------------------------------------------------------------------
+	
 	
 	public void setId(Integer id) {
 		this.id = id;
@@ -61,6 +62,8 @@ public class UpdateEgroupAction implements Action
 		egroup.setSortOrder(sortOrder);
 		
 		egroupService.updateEgroup(egroup);
+		
+		message = i18n.getString("success");
 		
 		return SUCCESS;
 	}
