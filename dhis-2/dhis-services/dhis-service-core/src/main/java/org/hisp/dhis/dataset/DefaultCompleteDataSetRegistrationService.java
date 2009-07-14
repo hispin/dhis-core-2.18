@@ -29,11 +29,13 @@ import java.util.Date;
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional
 public class DefaultCompleteDataSetRegistrationService
     implements CompleteDataSetRegistrationService
 {
