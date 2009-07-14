@@ -1,42 +1,65 @@
 package org.hisp.dhis.vn.chr.object.action;
 
+/**
+ * @author Chau Thu Tran
+ * 
+ */
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import org.hisp.dhis.options.formconfiguration.FormConfigurationManager;
 import com.opensymphony.xwork.Action;
+
 
 public class UploadFileAction implements Action {
 	
-	private final String dir = "C:/";
+	// -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 	
-	private List files = new ArrayList();	
+	private FormConfigurationManager formConfigurationManager;
+	
+	// -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
+	
+	private List files = new ArrayList();
+	
+	private File uploadFile;
+	
+	private String uploadFilename;
+	
+    private String contentType;
+    
+    private String imageDirectoryOnServer;
+    
+	// -----------------------------------------------------------------------------------------------
+    // Getters && Setters
+    // -----------------------------------------------------------------------------------------------
+    
+    public void setFormConfigurationManager(
+			FormConfigurationManager formConfigurationManager) {
+		this.formConfigurationManager = formConfigurationManager;
+	}
+
+   	public void setFiles(List files) {
+		this.files = files;
+	}
 	
 	public List getFiles() {
 		return files;
 	}
 
-	public void setFiles(List files) {
-		this.files = files;
+	public File getUploadFile() {
+		return uploadFile;
 	}
-	
-	
-	private File file;
-    private String contentType;
-    private String filename;
 
-    public void setUpload(File file) {
-       this.file = file;
-    }
-
-    public void setUploadContentType(String contentType) {
-       this.contentType = contentType;
-    }
-
-    public void setUploadFileName(String filename) {
-       this.filename = filename;
-    }
+	public void setUploadFile(File uploadFile) {
+		this.uploadFile = uploadFile;
+	}
 
     public String getContentType() {
 		return contentType;
@@ -46,49 +69,46 @@ public class UploadFileAction implements Action {
 		this.contentType = contentType;
 	}
 
-	public File getFile() {
-		return file;
+	public String getUploadFilename() {
+		return uploadFilename;
 	}
 
-	public void setFile(File file) {
-		this.file = file;
+	public void setUploadFilename(String uploadFilename) {
+		this.uploadFilename = uploadFilename;
 	}
-
-	public String getFilename() {
-		return filename;
-	}
-
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
-
+	
+	// -----------------------------------------------------------------------------------------------
+    // Implements
+    // -----------------------------------------------------------------------------------------------
+    
 	public String execute()
 	{
-			
 			FileInputStream fin = null;
 			FileOutputStream fout = null;
-			try {
 
-				if (file != null)
+			String imageDirectoryOnServer = formConfigurationManager.getImageDirectoryOnServer();
+			
+			try {
+				
+				if (uploadFile != null)
 				{
-					System.out.println(file.getPath());//(doc.getPath());
-					fin = new FileInputStream(file.getPath());//(doc.getPath());
+					fin = new FileInputStream(uploadFile);//(doc.getPath());
 					byte[] data = new byte[8192];
 					int byteReads = fin.read(data);
-	
-					fout = new FileOutputStream(dir + filename);
+					
+					fout = new FileOutputStream(imageDirectoryOnServer + "/" + uploadFilename);
 	
 					while (byteReads != -1) {
 						fout.write(data, 0, byteReads);
 						fout.flush();
 						byteReads = fin.read(data);
 					}
-	
 					fin.close();
 					fout.close();
 				}
 				
-				File myDir = new File(dir);
+				// Load files in the directory on server
+				File myDir = new File(imageDirectoryOnServer);
 				if( myDir.exists() && myDir.isDirectory())
 				{
 					File[] listfiles = myDir.listFiles();

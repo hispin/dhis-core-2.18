@@ -5,34 +5,33 @@ package org.hisp.dhis.vn.chr.statement;
  * 
  */
 
-import org.amplecode.quick.StatementBuilder;
+import org.hisp.dhis.jdbc.StatementDialect;
 import org.hisp.dhis.vn.chr.Form;
 
-public class DeleteDataStatement
-    extends FormStatement
-{
+public class DeleteDataStatement extends FormStatement {
 
-    // -------------------------------------------------------------------------
-    // Constructor
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Constructor
+	// -------------------------------------------------------------------------
+	
+	public DeleteDataStatement(Form form, StatementDialect dialect, int id) {
+		super(form, dialect, id);
+	}
 
-    public DeleteDataStatement( Form form, StatementBuilder statementBuilder, int id )
-    {
-        super( form, statementBuilder, id );
-    }
+	// -------------------------------------------------------------------------
+	// Override
+	// -------------------------------------------------------------------------
+	
+	@Override
+	protected void init(Form form) {
+		
+		StringBuffer buffer = new StringBuffer();
 
-    // -------------------------------------------------------------------------
-    // Override
-    // -------------------------------------------------------------------------
+		// DELETE FROM <table_name> WHERE id = <id_column> and addby=userid
+		buffer.append("DELETE" + SPACE + "FROM" + SPACE + form.getName() +
+				SPACE + "WHERE" + SPACE + "id="+  value + SPACE + "AND" + SPACE + "addby=" + USERS.iterator().next().getId());
+		
+		statement = buffer.toString();
+	}
 
-    @Override
-    protected void init( Form form )
-    {
-        StringBuffer buffer = new StringBuffer();
-
-        // DELETE FROM <table_name> WHERE id = <id_column>
-        buffer.append( "DELETE" + SPACE + "FROM" + SPACE + form.getName() + SPACE + "WHERE" + SPACE + "id=" + value );
-
-        statement = buffer.toString();
-    }
 }

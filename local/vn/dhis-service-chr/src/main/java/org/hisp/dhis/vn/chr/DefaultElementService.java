@@ -72,7 +72,7 @@ public class DefaultElementService implements ElementService {
 		return elementStore.getElement(name);
 	}
 
-	public Collection<Element> getElementsByFormLink(int formId){
-		return elementStore.getElementsByFormLink(formId);
+	public Collection<Element> getElementsByFormLink(Form form){
+		return elementStore.getElementsByFormLink(form);
 	}
 }

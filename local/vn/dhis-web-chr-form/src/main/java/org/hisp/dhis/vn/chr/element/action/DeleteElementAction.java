@@ -6,9 +6,9 @@ package org.hisp.dhis.vn.chr.element.action;
  */
 
 import org.hisp.dhis.vn.chr.ElementService;
-import com.opensymphony.xwork.Action;
+import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class DeleteElementAction implements Action {
+public class DeleteElementAction extends ActionSupport {
 
 	// -----------------------------------------------------------------------------------------------
 	// Dependency
@@ -46,6 +46,8 @@ public class DeleteElementAction implements Action {
 		
 		elementService.deleteElement(id.intValue());
 
+		message = i18n.getString("success");
+		
 		return SUCCESS;
 	}
 

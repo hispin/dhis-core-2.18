@@ -62,6 +62,13 @@ public interface FormService {
      * 
      * @return all visible forms.
      */
-	public Collection<Form> getVisibleForms(String visible);
+	public Collection<Form> getVisibleForms(boolean visible);
+	
+	/**
+     * Returns all created forms.
+     * 
+     * @return all created forms.
+     */
+	public Collection<Form> getCreatedForms();
 	
 }

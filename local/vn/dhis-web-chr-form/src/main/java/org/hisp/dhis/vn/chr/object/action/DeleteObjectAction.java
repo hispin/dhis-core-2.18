@@ -30,9 +30,20 @@ public class DeleteObjectAction extends ActionSupport{
 	// Object ID
 	private Integer id;
 	
+	// message
+	private String message;
+	
 	// -----------------------------------------------------------------------------------------------
     // Getter && Setter
     // -----------------------------------------------------------------------------------------------
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
 	
 	public Integer getId() {
 		return this.id;
@@ -70,10 +81,15 @@ public class DeleteObjectAction extends ActionSupport{
 			
 			formManager.deleteObject(form, id.intValue());
 			
+			message = i18n.getString("delete") + " " + i18n.getString("success");
+			
 			return SUCCESS;
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			
+			message = i18n.getString("delete") + " " + i18n.getString("error");
+			message += "<br>"+i18n.getString("delete_message_error");
 		}
 
 		return ERROR;

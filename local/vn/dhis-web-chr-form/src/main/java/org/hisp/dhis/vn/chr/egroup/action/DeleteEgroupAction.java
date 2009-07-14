@@ -6,9 +6,9 @@ package org.hisp.dhis.vn.chr.egroup.action;
  */
 
 import org.hisp.dhis.vn.chr.EgroupService;
-import com.opensymphony.xwork.Action;
+import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class DeleteEgroupAction implements Action
+public class DeleteEgroupAction extends ActionSupport
 {
 	// -----------------------------------------------------------------------------------------------
     // Dependency
@@ -33,16 +33,30 @@ public class DeleteEgroupAction implements Action
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	// -----------------------------------------------------------------------------------------------
     // Implement
     // -----------------------------------------------------------------------------------------------
 
 	public String execute() throws Exception{
 		
-		egroupService.deleteEgroup(id.intValue());
+		try{
+			
+			egroupService.deleteEgroup(id.intValue());
+			
+			message = i18n.getString("success");
+			
+			return SUCCESS;
 		
-		return SUCCESS;
+		}catch(Exception ex){
+			
+			message = i18n.getString("error_delete");
+			
+			ex.printStackTrace();
+		}
+		
+		return ERROR;
+		
 	}
 	
 }

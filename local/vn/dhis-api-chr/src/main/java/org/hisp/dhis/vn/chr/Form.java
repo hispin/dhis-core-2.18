@@ -26,11 +26,6 @@ public class Form implements java.io.Serializable {
 	private String label;
 	
 	/**
-	 * The number of rows of this Form
-	 */
-	private int noRow;
-	
-	/**
 	 * The number of columns of this Form
 	 */
 	private int noColumn;
@@ -48,17 +43,12 @@ public class Form implements java.io.Serializable {
 	/**
 	 * The visible Form
 	 */
-	private String visible;
+	private boolean visible;
 	
 	/**
-	 * The Attached form
+	 * If the form is created, created property is true
 	 */
-	private String attached;
-	
-	/**
-	 * Sort Element of the Form by desc 
-	 */
-	private String desc1;
+	private boolean created;
 	
 	/**
 	 * Element Group of the Form x
@@ -78,30 +68,26 @@ public class Form implements java.io.Serializable {
 	public Form() {
 	}
 
-	public Form(String name, String label, int noRow, int noColumn,
-			int noColumnLink, String visible, String attached, String desc1) {
+	public Form(String name, String label, int noColumn,
+			int noColumnLink, boolean visible, boolean created) {
 		this.name = name;
 		this.label = label;
-		this.noRow = noRow;
 		this.noColumn = noColumn;
 		this.noColumnLink = noColumnLink;
 		this.visible = visible;
-		this.attached = attached;
-		this.desc1 = desc1;
+		this.created = created;
 	}
 
-	public Form(String name, String label, int noRow, int noColumn,
-			int noColumnLink, String icon, String visible, String attached,
-			String desc1, Collection<Element> elements, Collection<Egroup> egroups) {
+	public Form(String name, String label, int noColumn,
+			int noColumnLink, String icon, boolean visible, 
+			boolean created, Collection<Element> elements, Collection<Egroup> egroups) {
 		this.name = name;
 		this.label = label;
-		this.noRow = noRow;
 		this.noColumn = noColumn;
 		this.noColumnLink = noColumnLink;
 		this.icon = icon;
 		this.visible = visible;
-		this.attached = attached;
-		this.desc1 = desc1;
+		this.created = created;
 		this.elements = elements;
 		this.egroups = egroups;
 	}
@@ -172,14 +158,6 @@ public class Form implements java.io.Serializable {
 		this.label = label;
 	}
 
-	public int getNoRow() {
-		return noRow;
-	}
-
-	public void setNoRow(int noRow) {
-		this.noRow = noRow;
-	}
-
 	public int getNoColumn() {
 		return noColumn;
 	}
@@ -204,28 +182,20 @@ public class Form implements java.io.Serializable {
 		this.icon = icon;
 	}
 
-	public String getVisible() {
+	public boolean getVisible() {
 		return visible;
 	}
 
-	public void setVisible(String visible) {
+	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
 
-	public String getAttached() {
-		return attached;
+	public boolean isCreated() {
+		return created;
 	}
 
-	public void setAttached(String attached) {
-		this.attached = attached;
-	}
-
-	public String getDesc1() {
-		return desc1;
-	}
-
-	public void setDesc1(String desc1) {
-		this.desc1 = desc1;
+	public void setCreated(boolean created) {
+		this.created = created;
 	}
 
 	public Collection<Element> getElements() {

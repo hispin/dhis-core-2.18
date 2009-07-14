@@ -1,6 +1,7 @@
+<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10004" onclick="hideById(this.id);"></span>
 <input type="hidden" id="formID" name="formID" value="$!form.id" style="width:20em"/>
 <h2>$!encoder.htmlEncode($!form.name)</h2>
-<p align="right"><input type="button" onClick="openAddEgroupForm()" value="$i18n.getString('add')"/></p>
+<p align="left"><input type="button" onClick="openAddEgroupForm()" value="$i18n.getString('add')"/></p>
 <table width="100%">
 	<tr>
 		<th width="65%">$i18n.getString('name')</th>
@@ -98,5 +99,4 @@
 	</p>
 </div>
 </form>
-<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10004" onclick="hideById(this.id);"></span>
 <span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)"></span>

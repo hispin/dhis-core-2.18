@@ -8,6 +8,7 @@ package org.hisp.dhis.vn.chr.object.action;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.options.formconfiguration.FormConfigurationManager;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.ElementService;
 import org.hisp.dhis.vn.chr.Form;
@@ -26,6 +27,8 @@ public class ListRelativeObjectAction implements Action{
 	private FormService formService;
 	
 	private ElementService elementService;
+	
+	private FormConfigurationManager formConfigurationManager;
 	
 	// -----------------------------------------------------------------------------------------------
     // Input && Output
@@ -46,6 +49,11 @@ public class ListRelativeObjectAction implements Action{
 	// -----------------------------------------------------------------------------------------------
     // Getter && Setter
     // -----------------------------------------------------------------------------------------------
+	
+	public void setFormConfigurationManager(
+			FormConfigurationManager formConfigurationManager) {
+		this.formConfigurationManager = formConfigurationManager;
+	}
 	
 	public Integer getFormId() {
 		return formId;
@@ -115,9 +123,9 @@ public class ListRelativeObjectAction implements Action{
 		
 		form = formService.getForm(formId.intValue());
 		
-		formLinks =  elementService.getElementsByFormLink(formId.intValue());
+		formLinks =  elementService.getElementsByFormLink(form);
 		
-		data = formManager.ListRelativeObject(form, column, objectId);
+		data = formManager.ListRelativeObject(form, column, objectId, Integer.parseInt(formConfigurationManager.getNumberOfRecords()));
 
 		return SUCCESS;
 	}

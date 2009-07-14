@@ -3,13 +3,11 @@
 	<id>$form.id</id>
 	<name>$encoder.xmlEncode( $form.name )</name>
 	<label>$encoder.xmlEncode($form.label)</label>	
-	<noRow>$form.noRow</noRow>
 	<noColumn>$form.noColumn</noColumn>
 	<noColumnLink>$form.noColumnLink</noColumnLink>
 	<icon>$encoder.xmlEncode($form.icon)</icon>
 	<visible>$encoder.xmlEncode($form.visible)</visible>
-	<attached>$encoder.xmlEncode($form.attached)</attached>
-	<!-- <desc1>$encoder.xmlEncode($form.desc1)</desc1> -->
+	<created>$encoder.xmlEncode($form.created)</created>
 	
 	<availabelEgroups>
 		#foreach($egroup in $egroups)
@@ -30,7 +28,7 @@
 				<type>$encoder.xmlEncode($element.type)</type>
 				<controlType>$encoder.xmlEncode($element.controlType)</controlType>	
 				<initialValue>$encoder.xmlEncode($element.initialValue)</initialValue>
-				<formLink>$element.formLink</formLink>
+				<formLink>$element.formLink.id</formLink>
 				<required>$encoder.xmlEncode($element.required)</required>
 				<sortOrder>$element.sortOrder </sortOrder>
 			</element>

@@ -6,88 +6,94 @@ package org.hisp.dhis.vn.chr.hibernate;
  */
 
 import java.util.Collection;
-
+import java.util.Collections;
+import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.EgroupStore;
 import org.hisp.dhis.vn.chr.Form;
-import org.springframework.transaction.annotation.Transactional;
+import org.hisp.dhis.vn.chr.comparator.EgroupNameComparator;
+import org.hisp.dhis.hibernate.HibernateSessionManager;
 
-@Transactional
-public class HibernateEgroupStore
-    implements EgroupStore
-{
+public class HibernateEgroupStore implements EgroupStore {
 
-    // -----------------------------------------------------------------------------------------------
-    // Dependencies
-    // -----------------------------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------
+	// Dependencies
+	// -----------------------------------------------------------------------------------------------
 
-    private SessionFactory sessionFactory;
+	private HibernateSessionManager hibernateSessionManager;
 
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
+	// -----------------------------------------------------------------------------------------------
+	// Getter && Setter
+	// -----------------------------------------------------------------------------------------------
+	public void setHibernateSessionManager(
+			HibernateSessionManager hibernateSessionManager) {
+		this.hibernateSessionManager = hibernateSessionManager;
+	}
 
-    // -----------------------------------------------------------------------------------------------
-    // Implements
-    // -----------------------------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------
+	// Implements
+	// -----------------------------------------------------------------------------------------------
+	
+	public int addEgroup(Egroup egroup) {
+		
+		Session session = hibernateSessionManager.getCurrentSession();
 
-    public int addEgroup( Egroup egroup )
-    {
-        Session session = sessionFactory.getCurrentSession();
+		String name = egroup.getName().toLowerCase();
+		
+		egroup.setName(name);
+		
+		return (Integer) session.save(egroup);
+	}
 
-        String name = egroup.getName().toLowerCase();
+	public void deleteEgroup(int id) {
 
-        egroup.setName( name );
+		Session session = hibernateSessionManager.getCurrentSession();
 
-        return (Integer) session.save( egroup );
-    }
+		session.delete(getEgroup(id));		
+	}
 
-    public void deleteEgroup( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
+	@SuppressWarnings("unchecked")
+	public Collection<Egroup> getAllEgroups() {
+		
+		Session session = hibernateSessionManager.getCurrentSession();
 
-        session.delete( getEgroup( id ) );
-    }
+		Criteria criteria = session.createCriteria(Egroup.class);
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<Egroup> getAllEgroups()
-    {
-        Session session = sessionFactory.getCurrentSession();
+		List<Egroup> list = criteria.list();
+		
+		Collections.sort(list , new EgroupNameComparator()) ;
+		
+		return list;
+	}
 
-        Criteria criteria = session.createCriteria( Egroup.class );
+	public Egroup getEgroup(int id) {
+		
+		Session session = hibernateSessionManager.getCurrentSession();
 
-        return criteria.list();
-    }
+		return (Egroup) session.get(Egroup.class, id);
+	}
 
-    public Egroup getEgroup( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Egroup) session.get( Egroup.class, id );
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<Egroup> getEgroupsByForm( Form form )
-    {
-        Session session = sessionFactory.getCurrentSession();
+	@SuppressWarnings("unchecked")
+	public Collection<Egroup> getEgroupsByForm(Form form) {
+		
+		Session session = hibernateSessionManager.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Egroup.class );
 
         criteria.add( Restrictions.eq( "form", form ) );
 
         return criteria.list();
+		
+	}
 
-    }
+	public void updateEgroup(Egroup egroup) {
 
-    public void updateEgroup( Egroup egroup )
-    {
-        Session session = sessionFactory.getCurrentSession();
+		Session session = hibernateSessionManager.getCurrentSession();
+		
+		session.update(egroup);
+	}
 
-        session.update( egroup );
-    }
 }

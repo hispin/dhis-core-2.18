@@ -5,7 +5,6 @@ package org.hisp.dhis.vn.chr.egroup.action;
  * 
  */
 
-import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
 
@@ -19,8 +18,6 @@ public class ValidateEgroupAction extends ActionSupport {
 
 	private Integer sortOrder;
 
-	private String message;
-
 	// -------------------------------------------
 	// Getter & Setter
 	// -------------------------------------------
@@ -33,18 +30,9 @@ public class ValidateEgroupAction extends ActionSupport {
 		this.name = name;
 	}
 
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
 	public Integer getSortOrder() {
 		return sortOrder;
 	}
-
 
 	public void setSortOrder(Integer sortOrder) {
 		this.sortOrder = sortOrder;
@@ -57,12 +45,12 @@ public class ValidateEgroupAction extends ActionSupport {
 	public String execute() throws Exception {
 
 		if (name == null || name.trim().length() == 0) {
-			message = i18n.getString("name_is_null");
+			message = i18n.getString("name") + " " + i18n.getString("not_null");
 			return ERROR;
 		}
 		
 		if (sortOrder == null || sortOrder.intValue() == 0) {
-			message = i18n.getString("sortOrder_is_null");
+			message =i18n.getString("sortOrder") + " " + i18n.getString("not_null");
 			return ERROR;
 		}
 		

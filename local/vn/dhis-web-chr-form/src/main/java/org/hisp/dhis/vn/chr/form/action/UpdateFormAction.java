@@ -8,9 +8,8 @@ package org.hisp.dhis.vn.chr.form.action;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
-import com.opensymphony.xwork.Action;
 
-public class UpdateFormAction implements Action{
+public class UpdateFormAction extends ActionSupport{
 
 	// -----------------------------------------------------------------------------------------------
     // Dependencies
@@ -28,7 +27,7 @@ public class UpdateFormAction implements Action{
 	private int noColumn;
 	private int noColumnLink;
 	private String icon;
-	private String visible;
+	private boolean visible;
 	private String attached;
 	
 	// -----------------------------------------------------------------------------------------------
@@ -87,11 +86,11 @@ public class UpdateFormAction implements Action{
 		this.icon = icon;
 	}
 
-	public String getVisible() {
+	public boolean getVisible() {
 		return visible;
 	}
 
-	public void setVisible(String visible) {
+	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
 
@@ -110,15 +109,20 @@ public class UpdateFormAction implements Action{
 	public String execute() throws Exception{
 		
 		Form form = formService.getForm(id);
+		
 		form.setLabel(CodecUtils.unescape(label));
-		form.setNoRow(noRow);
+		
 		form.setNoColumn(noColumn);
+		
 		form.setNoColumnLink(noColumnLink);
+		
 		form.setIcon(icon);
+		
 		form.setVisible(visible);
-		form.setAttached(attached);
 		
 		formService.updateForm(form);
+		
+		message = i18n.getString("success");
 		
 		return SUCCESS;
 	}

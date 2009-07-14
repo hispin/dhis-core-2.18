@@ -87,8 +87,6 @@ public class ListElementAction implements Action{
 		
 		elements =  form.getElements();
 		
-//		elements = elementService.getElementsByForm(form);
-		
 		return SUCCESS;
 	}
 }

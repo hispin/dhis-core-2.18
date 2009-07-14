@@ -5,85 +5,70 @@ package org.hisp.dhis.vn.chr.statement;
  * 
  */
 
-import org.amplecode.quick.StatementBuilder;
+import org.hisp.dhis.jdbc.StatementDialect;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.Form;
 
-public class AlterColumnStatement
-    extends FormStatement
-{
+public class AlterColumnStatement extends FormStatement{
 
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
 
-    public AlterColumnStatement( Form form, StatementBuilder statementBuilder, String status, Element element )
+    public AlterColumnStatement( Form form, StatementDialect dialect, String status, Element element )
     {
-        super( form, statementBuilder, status, element );
+    	super( form, dialect, status, element );	
     }
-
-    public AlterColumnStatement( Form form, StatementBuilder statementBuilder, String status, String column )
+    
+    public AlterColumnStatement( Form form, StatementDialect dialect, String status, String column )
     {
-        super( form, statementBuilder, status, column );
+    	super( form, dialect, status, column );	
     }
 
     // ----------------------------------------------------------------------------------------------------
     // Init method - Override
     // ----------------------------------------------------------------------------------------------------
-
+	
     @Override
-    protected void init( Form form )
-    {
-        StringBuffer buffer = new StringBuffer();
+	protected void init(Form form) {
+		
+		StringBuffer buffer = new StringBuffer();
 
-        // Alter table <table_name>
-        buffer.append( "ALTER TABLE" + SPACE + form.getName() + SPACE );
+		// Alter table <table_name> 
+		buffer.append("ALTER TABLE" + SPACE + form.getName() + SPACE);
 
-        // DROP COLUMN <column_name>
-        if ( status.equals( DROP_STATUS ) )
-        {
+		// DROP COLUMN <column_name>
+		if (status.equals(DROP_STATUS)) {
 
-            buffer.append( status + SPACE + column + SPACE );
+			buffer.append(status + SPACE + column + SPACE);
 
-        }
-        else
-        {
-            // ALTER COULMN <column_name>
-            // or ADD <column_name>
-            buffer.append( status + SPACE + element.getName() + SPACE );
+		} else {
 
-            // TYPE
-            if ( status.endsWith( ALTER_STATUS ) )
-            {
-                buffer.append( "type" + SPACE );
-            }
+			// ALTER COULMN <column_name> 
+			// or ADD <column_name>
+			buffer.append(status + SPACE + element.getName() + SPACE);
+			
+			// TYPE 
+			if (status.endsWith(ALTER_STATUS))
+				buffer.append("type" + SPACE);
 
-            // Data TYPE
-            if ( element.getType().equalsIgnoreCase( "number" ) )
-            {
-                buffer.append( NUMBER + SPACE );
+			buffer.append(element.getType() + SPACE);
+			
+			if(element.getFormLink() != null){
+				buffer.append(SPACE + ";" + SPACE + "ALTER" + SPACE + "TABLE" + SPACE + 
+							form.getName() + SPACE + "ADD" + SPACE + "FOREIGN KEY(" + element.getName() + ")"+ SPACE + 
+							"REFERENCES" + SPACE + element.getFormLink().getName() + SPACE + "(id)" );
+			}
 
-            }
-            else if ( element.getType().equalsIgnoreCase( "date" ) )
-            {
-                buffer.append( DATE + SPACE );
+		}// end else
+		
+		// ;
+		buffer.append(SEPARATOR_COMMAND);
 
-            }
-            else if ( element.getType().equalsIgnoreCase( "double" ) )
-            {
-                buffer.append( DOUBLE + SPACE );
-            }
-            else
-            {// if(column.getType().equalsIgnoreCase("string")){
+		statement = buffer.toString();
 
-                buffer.append( STRING + SPACE );
-            }
-
-        }// end else
-
-        // ;
-        buffer.append( SEPARATOR_COMMAND );
-
-        statement = buffer.toString();
-    }
+//System.out.print("\n\n\n"+statement);
+	}
+	
+	
 }

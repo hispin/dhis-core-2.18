@@ -5,8 +5,6 @@ package org.hisp.dhis.vn.chr.object.action;
  * 
  */
 
-import java.util.ArrayList;
-
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
@@ -61,6 +59,7 @@ public class AddObjectAction extends ActionSupport{
 		this.formService = formService;
 	}
 	
+
 	// -----------------------------------------------------------------------------------------------
     // Implement : process Select SQL 
     // -----------------------------------------------------------------------------------------------
@@ -78,12 +77,13 @@ public class AddObjectAction extends ActionSupport{
 			
 			formManager.addObject(form, data);
 	
+			message = i18n.getString("add") + " " + i18n.getString("success");
+			
 			return SUCCESS;
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
 		return ERROR;
 	}
 }

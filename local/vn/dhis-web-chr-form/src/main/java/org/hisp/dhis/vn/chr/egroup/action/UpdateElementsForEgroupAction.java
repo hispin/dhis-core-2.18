@@ -11,9 +11,9 @@ import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.EgroupService;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.ElementService;
-import com.opensymphony.xwork.Action;
+import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class UpdateElementsForEgroupAction implements Action
+public class UpdateElementsForEgroupAction extends ActionSupport
 {
 	// -----------------------------------------------------------------------------------------------
     // Dependency
@@ -82,6 +82,8 @@ public class UpdateElementsForEgroupAction implements Action
 
 		egroupService.updateEgroup(egroup);
 
+		message = i18n.getString("success");
+		
 		return SUCCESS;
 	}
 	

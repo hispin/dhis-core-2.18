@@ -44,8 +44,6 @@ public class ValidateElementAction extends ActionSupport {
 
 	private Integer sortOrder;
 
-	private String message;
-
 	// -------------------------------------------
 	// Getter & Setter
 	// -------------------------------------------
@@ -64,14 +62,6 @@ public class ValidateElementAction extends ActionSupport {
 
 	public void setLabel(String label) {
 		this.label = label;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 	public Integer getSortOrder() {

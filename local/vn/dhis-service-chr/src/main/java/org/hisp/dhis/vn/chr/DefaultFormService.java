@@ -45,7 +45,7 @@ public class DefaultFormService implements FormService{
 		return this.formStore.getAllForms();
 	}
 
-	public Collection<Form> getVisibleForms(String visible) {
+	public Collection<Form> getVisibleForms(boolean visible) {
 		
 		return formStore.getVisibleForms(visible);
 	}
@@ -58,6 +58,10 @@ public class DefaultFormService implements FormService{
 
 	public Collection<Form> getFormsByName(String name){
 		return formStore.getFormsByName(name);
+	}
+	
+	public Collection<Form> getCreatedForms(){
+		return formStore.getCreatedForms();
 	}
 	
 //	// --------------------------------------------------------------------------------------------

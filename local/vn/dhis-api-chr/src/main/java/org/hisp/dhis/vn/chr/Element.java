@@ -7,6 +7,13 @@ package org.hisp.dhis.vn.chr;
 
 public class Element implements java.io.Serializable {
 
+	public static final String INTEGER = "INTEGER";
+	public static final String STRING = "VARCHAR";
+	public static final String DATE = "DATE";
+	public static final String DOUBLE = "NUMERIC";
+	public static final String BOOLEAN = "BOOLEAN";
+	public static final String SERIAL = "SERIAL";
+	
 	/**
 	 * The database internal identifier for this DataElement.
 	 */
@@ -47,12 +54,12 @@ public class Element implements java.io.Serializable {
 	/**
 	 * The formLink of this DataElement.
 	 */
-	private int formLink;
+	private Form formLink;
 
 	/**
-	 * The visible DataElement.
+	 * The DataElement is null or not.
 	 */
-	private String required;
+	private boolean required;
 
 	/**
 	 * The order number of this DataElement.
@@ -72,8 +79,8 @@ public class Element implements java.io.Serializable {
 	}
 
 	public Element(Form form, String name, String label, String type,
-			String controlType, String initialValue, int formLink,
-			String required, int sortOrder, Egroup egroup) {
+			String controlType, String initialValue, Form formLink,
+			boolean required, int sortOrder, Egroup egroup) {
 		this.form = form;
 		this.name = name;
 		this.label = label;
@@ -128,6 +135,14 @@ public class Element implements java.io.Serializable {
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
+
+    public boolean isRequired() {
+		return required;
+	}
+
+	public void setRequired(boolean required) {
+		this.required = required;
+	}
 
 	public int getId() {
 		return id;
@@ -185,20 +200,12 @@ public class Element implements java.io.Serializable {
 		this.initialValue = initialValue;
 	}
 
-	public int getFormLink() {
+	public Form getFormLink() {
 		return formLink;
 	}
 
-	public void setFormLink(int formLink) {
+	public void setFormLink(Form formLink) {
 		this.formLink = formLink;
-	}
-
-	public String getRequired() {
-		return required;
-	}
-
-	public void setRequired(String required) {
-		this.required = required;
 	}
 
 	public int getSortOrder() {
