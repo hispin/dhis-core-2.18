@@ -41,13 +41,14 @@ Ext.onReady(function()
     });
 
     myMap: null;
-
     map = new OpenLayers.Map($('olmap'));
     this.myMap = map;
 
     features = null;
     features_choropleth = null;
     features_mapping = null;
+    
+    mask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait..."});
     
     MAPDATA = null;
     URL = null;
@@ -157,7 +158,7 @@ Ext.onReady(function()
         })
     });
     
-    map.addLayers([ local_wfs, vmap0, choroplethLayer, static1Layer ]);
+    map.addLayers([ vmap0, local_wfs, choroplethLayer, static1Layer ]);
 
     var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
         choroplethLayer,
@@ -1633,6 +1634,7 @@ function onHoverSelectChoropleth(feature)
     {
         var center_panel = Ext.getCmp('center');
         var south_panel = Ext.getCmp('south-panel');
+alert("south_panel x = " + south_panel.x + "\n\n" + "south_panel y = " + south_panel.y);
 
         var height = 230;
         var collapsed = 48;
@@ -1836,6 +1838,8 @@ function dataReceivedChoropleth( responseText )
         choropleth.coreComp.updateOptions(options);
         choropleth.coreComp.applyClassification();
         choropleth.classificationApplied = true;
+        
+        mask.hide();
     }
     else
     {
@@ -1891,6 +1895,8 @@ function dataReceivedChoropleth( responseText )
                 choropleth.coreComp.updateOptions(options);
                 choropleth.coreComp.applyClassification();
                 choropleth.classificationApplied = true;
+                
+                mask.hide();
             },
             failure: function()
             {
