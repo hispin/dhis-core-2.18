@@ -810,7 +810,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 return;
         }
 
-Ext.msg.wait('Doing stuff...', 'Please wait');
+        mask.show();
 
         loadMapData('choropleth');
     },
