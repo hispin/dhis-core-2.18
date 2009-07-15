@@ -38,6 +38,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.system.filter.AggregateableDataElementPredicate;
 
@@ -70,6 +72,13 @@ public class GetDataElementsAction
         this.categoryComboService = categoryComboService;
     }
     
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
     // -------------------------------------------------------------------------
     // Comparator
     // -------------------------------------------------------------------------
@@ -110,6 +119,13 @@ public class GetDataElementsAction
         this.categoryComboId = categoryComboId;
     }
     
+    private Integer dataSetId;
+    
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
     private boolean aggregate = false;
 
     public void setAggregate( boolean aggregate )
@@ -150,6 +166,19 @@ public class GetDataElementsAction
             if ( categoryCombo != null )
             {
                 dataElements = new ArrayList<DataElement>( dataElementService.getDataElementByCategoryCombo( categoryCombo ) );
+            }
+            else
+            {
+                dataElements = new ArrayList<DataElement>();
+            }
+        }
+        else if ( dataSetId != null )
+        {
+            DataSet dataset = dataSetService.getDataSet( dataSetId );
+            
+            if ( dataset != null )
+            {
+                dataElements = new ArrayList<DataElement>( dataset.getDataElements() );
             }
             else
             {

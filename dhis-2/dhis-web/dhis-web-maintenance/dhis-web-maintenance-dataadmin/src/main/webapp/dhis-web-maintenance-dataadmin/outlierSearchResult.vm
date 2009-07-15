@@ -1,0 +1,80 @@
+
+<h3>$i18n.getString( "outlier_analysis_search_result" )</h3>
+
+#if ( $outlierValues.size() == 0 )
+
+<span id="info">$i18n.getString( "no_values" ) ($searchTime ms).</span>
+	
+<p><strong>$i18n.getString( "from_date" ):</strong> $fromDate <strong>$i18n.getString( "to_date" ):</strong> $toDate</p>
+
+#else
+
+<span id="info">$i18n.getString( "found" ) $outlierValues.size() $i18n.getString( "values" ) ($searchTime ms).</span>
+
+<p><strong>$i18n.getString( "from_date" ):</strong> $fromDate <strong>$i18n.getString( "to_date" ):</strong> $toDate</p>
+
+<table class="mainPageTable" cellpadding="0">
+	<tr>
+		<th>$i18n.getString( "data_element" )</th>
+		<th>$i18n.getString( "org_unit" )</th>
+		<th>$i18n.getString( "period" )</th>
+		<th>$i18n.getString( "min" )</th>
+		<th style="width: 100px">$i18n.getString( "value" )</th>
+		<th>$i18n.getString( "max" )</th>
+	</tr>
+	
+	#set( $count = 0 )
+	#set( $mark = 0 )
+	#foreach( $outlierValue in $outlierValues )
+	
+		#if( $mark == 1 )
+			#set( $mark = 0 )
+		#else
+			#set( $mark = 1 )
+		#end
+		#set( $count = $count + 1 )
+	
+	<tr #if( $mark == 0 ) style="background-color:#dddddd" #end>
+	
+		## data element
+		<td>
+			<span id="outlier[$count].name" title="$!encoder.htmlEncode( $dataElement.description )">
+				$outlierValue.getOutlier().getDataElement().getName()
+			</span>
+		</td>
+		
+		<td>
+			$outlierValue.getOutlier().getSource().getName()
+		</td>
+		
+		## period
+		<td>
+			$format.formatPeriod( $outlierValue.getOutlier().getPeriod() )
+		</td>
+		
+		## lower bound (min)
+		<td>
+			<div style="text-align:center">$outlierValue.getLowerBoundFormatted()</div>
+		</td>
+		
+		## value
+		<td style="width:100px">
+			<input name="outliervalue" id="outlier[$count].value" value="$outlierValue.getOutlier().getValue()"
+				style="width: 95%; text-align: center;" tabindex="$count" type="text" onchange="editOutlierValue( $count )" />
+			<input type="hidden" id="outlier[$count].source" value="$outlierValue.getOutlier().getSource().getId()" />
+			<input type="hidden" id="outlier[$count].period" value="$outlierValue.getOutlier().getPeriod().getId()" />
+			<input type="hidden" id="outlier[$count].max" value="$outlierValue.getUpperBound()" />
+			<input type="hidden" id="outlier[$count].min" value="$outlierValue.getLowerBound()" />
+			<input type="hidden" id="outlier[$count].dataElement" value="$outlierValue.getOutlier().getDataElement().getId()" />
+		</td>
+		
+		## upper bound (max)
+		<td>
+			<div style="text-align:center">$outlierValue.getUpperBoundFormatted()</div>
+		</td>
+		
+	</tr>
+	#end
+</table>
+
+#end
