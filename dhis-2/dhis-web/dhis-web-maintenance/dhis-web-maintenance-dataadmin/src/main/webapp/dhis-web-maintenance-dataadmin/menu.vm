@@ -3,10 +3,11 @@
 	<ul>
 		<li><a href="displayLockingForm.action">$i18n.getString( "data_locking" )&nbsp;</a></li>
 		<li><a href="displayDataBrowserForm.action">$i18n.getString( "data_browser" )&nbsp;</a></li>
-                <li><a href="displayDataIntegrityForm.action">$i18n.getString( "data_integrity" )&nbsp;</a></li>
+        <li><a href="displayDataIntegrityForm.action">$i18n.getString( "data_integrity" )&nbsp;</a></li>
 		<li><a href="displayMaintenanceForm.action">$i18n.getString( "maintenance" )&nbsp;</a></li>
 		<li><a href="displayResourceTableForm.action">$i18n.getString( "resource_table" )&nbsp;</a></li>
 		<li><a href="viewStatistics.action">$i18n.getString( "data_statistics" )&nbsp;</a></li>
+		<li><a href="outlierAnalysisForm.action">$i18n.getString( "outlier_analysis" )&nbsp;</a></li>
 	</ul>
 
 <h2>$i18n.getString( "system_administration" )&nbsp;</h2>

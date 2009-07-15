@@ -1,0 +1,153 @@
+
+<h3>$i18n.getString( "outlier_analysis" )</h3>
+
+<form method="post" action="searchOutlierResult.action" onsubmit="return validate()">
+
+<table>
+	## Date
+	<tr>
+		<th>$i18n.getString( "from_date" )</th>
+		<th>$i18n.getString( "to_date" )</th>
+	</tr>
+	<tr>
+		<td>
+			<input type="text" id="fromDate" name="fromDate" />
+			<img src="../images/calendar_icon.gif" width="16" height="16" id="getDateFieldFrom" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
+		</td>
+		<td>
+			<input type="text" id="toDate" name="toDate" />	
+			<img src="../images/calendar_icon.gif" width="16" height="16" id="getDateFieldTo" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">			
+		</td>
+	</tr>  
+    <tr>
+        <td colspan="2" style="height:10px"></td>
+    </tr>
+    
+	## DATA SET CHOOSER
+	<tr>
+		<th colspan="2" style="min-width:325px;">$i18n.getString( "select_data_set" )</th>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<select name="dataset" id="dataset" style="min-width:325px" onChange="fetchDataElements()">
+				<option value="-1">[ $i18n.getString( "select_data_set" ) ]</option>
+				#foreach ( $dataSet in $dataSets )
+				<option value="$dataSet.id">$dataSet.name</option>
+				#end
+			</select>
+		</td>
+	</tr>
+	<tr>
+        <td colspan="2" style="height:10px">
+        </td>
+    </tr>
+ </table>
+ 
+ <table>    
+	## DATA ELEMENTS CHOOSER
+	<tr >
+		<th colspan="3" style="min-width:325px;">$i18n.getString( "select_data_elements" )</th>
+	</tr>
+	<tr>
+		<td>
+			<select id="unselectedDataElements" name="unselectedDataElements" multiple="multiple" style="min-width:325px;height:20em" ondblclick="moveSelectedById( 'unselectedDataElements', 'dataElementsById' )" disabled="true">
+			</select>
+		</td>
+		<td align="center">
+			<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:40px" onclick="moveSelectedById( 'unselectedDataElements', 'dataElementsById' )"><br>
+			<input type="button" value="&lt;" title="$i18n.getString( 'move_all' )" style="width:40px" onclick="moveSelectedById( 'dataElementsById', 'unselectedDataElements' )"><br>		
+			<input type="button" value="&gt;&gt;" title="$i18n.getString( 'remove_selected' )" style="width:40px" onclick="moveAllById( 'unselectedDataElements', 'dataElementsById' )"><br>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString( 'remove_all' )" style="width:40px" onclick="moveAllById( 'dataElementsById', 'unselectedDataElements' )">
+		</td>
+		<td>
+			<select id="dataElementsById" name="dataElementsById" multiple="multiple" style="min-width:325px;height:20em" ondblclick="moveSelectedById( 'dataElementsById', 'unselectedDataElements' )" disabled="true">
+			</select>
+		</td>
+	</tr>
+    <tr>
+        <td colspan="3" style="height:10px">
+        </td>
+    </tr>
+</table>
+
+<table>
+	## ORG. UNIT CHOOSER
+	<tr>
+		<th colspan="2" style="min-width:325px">$i18n.getString( "select_parent_organisation_unit" )</th>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<div id="selectionTree" style="width:50em;height:30em;overflow:auto;/*border:1px solid #cccccc*/"></div>
+			<script type="text/javascript">
+
+          		selectionTreeSelection.setMultipleSelectionAllowed( true );
+          		// selectionTreeSelection.setOnSelectFunction( treeClicked );
+          		// selectionTreeSelection.setListenerFunction( selectCompleted );
+          		selectionTree.buildSelectionTree();
+
+        	</script>
+		</td>
+	</tr>
+	<tr>
+        <td colspan="2" style="height:20px"></td>
+    </tr>	
+</table>
+
+<table>
+	## OUTLIER TYPE CHOOSER
+	<tr>
+		<th colspan="2">$i18n.getString( "select_outlier_type" )</th>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<select id="outlierType" name="outlierType" style="min-width:325px" onChange="chooseType()">
+				<option value ="minmax">$i18n.getString( "min_max" )</option>
+				<option value ="stddev">$i18n.getString( "std_dev" )</option>
+			</select>
+		</td>
+	</tr>
+</table>
+
+<div id="stddevform" style="display:none">
+<table>
+	## STANDARD DEVIATION INPUT FIELD
+	<tr>
+		<th style="min-width:325px">$i18n.getString( "select_std_dev" )</th>
+	</tr>
+	<tr>
+		<td colspan="1">
+			<input type="text" id="standardDeviation" name="standardDeviation" value="3.0" style="width:120px"></input>
+		</td>
+	</tr>
+</table>
+</div>
+
+<table> 
+    <tr>
+        <td colspan="2" style="height:10px"></td>
+    </tr>
+	<tr>
+		<td>
+			<input type="submit" value="Find outliers" style="width:120px" />
+		</td>
+	</tr>
+</table>
+
+<span id="message"></span>
+
+<script type="text/javascript">
+    Calendar.setup({
+        inputField     :    "fromDate",          // id of the input field
+        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+        button         :    "getDateFieldFrom"   // trigger for the calendar (button ID)
+    });
+</script>
+<script type="text/javascript">
+    Calendar.setup({
+        inputField     :    "toDate",          // id of the input field
+        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+        button         :    "getDateFieldTo"   // trigger for the calendar (button ID)
+    });
+</script>
+
+</form>
