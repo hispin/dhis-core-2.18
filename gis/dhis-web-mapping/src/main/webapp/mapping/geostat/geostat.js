@@ -162,6 +162,7 @@ Ext.onReady(function()
     STATIC1LOADED = false;
     MAP_SOURCE_TYPE_DATABASE = 'database';
     MAP_SOURCE_TYPE_SHAPEFILE = 'shapefile';
+    MAPSOURCE = null;
     
     Ext.Ajax.request(
     {
@@ -1214,7 +1215,7 @@ Ext.onReady(function()
 
                 success: function( responseObject )
                 {
-                    Ext.messageBlack.msg('New map view', 'The view ' + vn + ' was registered.');
+                    Ext.messageBlack.msg('New map view', 'The view ' + msg_highlight_start + vn + msg_highlight_end + ' was registered.');
                     
                     Ext.getCmp('view_cb').getStore().reload();
                     Ext.getCmp('mapview_cb').getStore().reload();
