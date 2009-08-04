@@ -36,7 +36,6 @@ import java.util.Set;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -522,6 +521,23 @@ public class DefaultMappingService
 
     public Collection<MapView> getAllMapViews()
     {
-        return mappingStore.getAllMapViews();
+        Collection<MapView> selectedMapViews = new ArrayList<MapView>();
+        
+        Collection<MapView> mapViews = mappingStore.getAllMapViews();
+  
+        String mapSourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_DATABASE );
+        
+        if (mapViews != null)
+        {
+            for (MapView mapView : mapViews)
+            {
+                if (mapView.getMapSourceType().equals( mapSourceType ))
+                {
+                    selectedMapViews.add( mapView );
+                }
+            }
+        }
+        
+        return selectedMapViews;
     }
 }
