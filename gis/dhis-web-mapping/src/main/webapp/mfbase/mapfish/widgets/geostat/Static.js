@@ -142,15 +142,13 @@ mapfish.widgets.geostat.Static = Ext.extend(Ext.FormPanel, {
     
     initComponent : function() {
     
-        this.items = [
-
-        ];
+        this.items = [];
 
         mapfish.widgets.geostat.Choropleth.superclass.initComponent.apply(this);
     },
     
     setUrl: function(url) {
-    
+        MASK.show();
         this.url = url;
         this.coreComp.setUrl(this.url);
     },
@@ -161,6 +159,7 @@ mapfish.widgets.geostat.Static = Ext.extend(Ext.FormPanel, {
      *      Called on Ajax request success.
      */
     requestSuccess: function(request) {
+        MASK.hide();    
         this.ready = true;
         this.classify(false);
 
@@ -202,10 +201,7 @@ mapfish.widgets.geostat.Static = Ext.extend(Ext.FormPanel, {
      *      the widget isn't ready, or no indicator is specified, or no
      *      method is specified.
      */
-     classify: function(exception)
-    {
-
-    },
+    classify: function(exception) {},
 
     /**
      * Method: onRender

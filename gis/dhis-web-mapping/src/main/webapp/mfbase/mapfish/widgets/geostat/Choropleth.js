@@ -810,7 +810,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 return;
         }
 
-        mask.show();
+        MASK.show();
 
         loadMapData('choropleth');
     },
