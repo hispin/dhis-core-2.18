@@ -6,7 +6,7 @@ Ext.onReady(function()
     Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
     
     Ext.override(Ext.layout.FormLayout, {
-    renderItem : function(c, position, target){
+    renderItem : function(c, position, target) {
         if(c && !c.rendered && c.isFormField && c.inputType != 'hidden'){
             var args = [
                    c.id, c.fieldLabel,
@@ -41,102 +41,103 @@ Ext.onReady(function()
     });
     
     Ext.override(Ext.form.Checkbox, {
-	onRender: function(ct, position){
-		Ext.form.Checkbox.superclass.onRender.call(this, ct, position);
-		if(this.inputValue !== undefined){
-			this.el.dom.value = this.inputValue;
-		}
-		//this.el.addClass('x-hidden');
-		this.innerWrap = this.el.wrap({
-			//tabIndex: this.tabIndex,
-			cls: this.baseCls+'-wrap-inner'
-		});
-		this.wrap = this.innerWrap.wrap({cls: this.baseCls+'-wrap'});
-		this.imageEl = this.innerWrap.createChild({
-			tag: 'img',
-			src: Ext.BLANK_IMAGE_URL,
-			cls: this.baseCls
-		});
-		if(this.boxLabel){
-			this.labelEl = this.innerWrap.createChild({
-				tag: 'label',
-				htmlFor: this.el.id,
-				cls: 'x-form-cb-label',
-				html: this.boxLabel
-			});
-		}
-		//this.imageEl = this.innerWrap.createChild({
-			//tag: 'img',
-			//src: Ext.BLANK_IMAGE_URL,
-			//cls: this.baseCls
-		//}, this.el);
-		if(this.checked){
-			this.setValue(true);
-		}else{
-			this.checked = this.el.dom.checked;
-		}
-		this.originalValue = this.checked;
-	},
-	afterRender: function(){
-		Ext.form.Checkbox.superclass.afterRender.call(this);
-		//this.wrap[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);
-		this.imageEl[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);
-	},
-	initCheckEvents: function(){
-		//this.innerWrap.removeAllListeners();
-		this.innerWrap.addClassOnOver(this.overCls);
-		this.innerWrap.addClassOnClick(this.mouseDownCls);
-		this.innerWrap.on('click', this.onClick, this);
-		//this.innerWrap.on('keyup', this.onKeyUp, this);
-	},
-	onFocus: function(e) {
-		Ext.form.Checkbox.superclass.onFocus.call(this, e);
-		//this.el.addClass(this.focusCls);
-		this.innerWrap.addClass(this.focusCls);
-	},
-	onBlur: function(e) {
-		Ext.form.Checkbox.superclass.onBlur.call(this, e);
-		//this.el.removeClass(this.focusCls);
-		this.innerWrap.removeClass(this.focusCls);
-	},
-	onClick: function(e){
-		if (e.getTarget().htmlFor != this.el.dom.id) {
-			if (e.getTarget() !== this.el.dom) {
-				this.el.focus();
-			}
-			if (!this.disabled && !this.readOnly) {
-				this.toggleValue();
-			}
-		}
-		//e.stopEvent();
-	},
-	onEnable: Ext.form.Checkbox.superclass.onEnable,
-	onDisable: Ext.form.Checkbox.superclass.onDisable,
-	onKeyUp: undefined,
-	setValue: function(v) {
-		var checked = this.checked;
-		this.checked = (v === true || v === 'true' || v == '1' || String(v).toLowerCase() == 'on');
-		if(this.rendered){
-			this.el.dom.checked = this.checked;
-			this.el.dom.defaultChecked = this.checked;
-			//this.wrap[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);
-			this.imageEl[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);
-		}
-		if(checked != this.checked){
-			this.fireEvent("check", this, this.checked);
-			if(this.handler){
-				this.handler.call(this.scope || this, this, this.checked);
-			}
-		}
-	},
-	getResizeEl: function() {
-		//if(!this.resizeEl){
-			//this.resizeEl = Ext.isSafari ? this.wrap : (this.wrap.up('.x-form-element', 5) || this.wrap);
-		//}
-		//return this.resizeEl;
-		return this.wrap;
-	}
+        onRender: function(ct, position) {
+            Ext.form.Checkbox.superclass.onRender.call(this, ct, position);
+            if(this.inputValue !== undefined) {
+                this.el.dom.value = this.inputValue;
+            }
+            //this.el.addClass('x-hidden');
+            this.innerWrap = this.el.wrap({
+                //tabIndex: this.tabIndex,
+                cls: this.baseCls+'-wrap-inner'
+            });
+            this.wrap = this.innerWrap.wrap({cls: this.baseCls+'-wrap'});
+            this.imageEl = this.innerWrap.createChild({
+                tag: 'img',
+                src: Ext.BLANK_IMAGE_URL,
+                cls: this.baseCls
+            });
+            if(this.boxLabel){
+                this.labelEl = this.innerWrap.createChild({
+                    tag: 'label',
+                    htmlFor: this.el.id,
+                    cls: 'x-form-cb-label',
+                    html: this.boxLabel
+                });
+            }
+            //this.imageEl = this.innerWrap.createChild({
+                //tag: 'img',
+                //src: Ext.BLANK_IMAGE_URL,
+                //cls: this.baseCls
+            //}, this.el);
+            if(this.checked){
+                this.setValue(true);
+            }else{
+                this.checked = this.el.dom.checked;
+            }
+            this.originalValue = this.checked;
+        },
+        afterRender: function() {
+            Ext.form.Checkbox.superclass.afterRender.call(this);
+            //this.wrap[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);
+            this.imageEl[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);
+        },
+        initCheckEvents: function() {
+            //this.innerWrap.removeAllListeners();
+            this.innerWrap.addClassOnOver(this.overCls);
+            this.innerWrap.addClassOnClick(this.mouseDownCls);
+            this.innerWrap.on('click', this.onClick, this);
+            //this.innerWrap.on('keyup', this.onKeyUp, this);
+        },
+        onFocus: function(e) {
+            Ext.form.Checkbox.superclass.onFocus.call(this, e);
+            //this.el.addClass(this.focusCls);
+            this.innerWrap.addClass(this.focusCls);
+        },
+        onBlur: function(e) {
+            Ext.form.Checkbox.superclass.onBlur.call(this, e);
+            //this.el.removeClass(this.focusCls);
+            this.innerWrap.removeClass(this.focusCls);
+        },
+        onClick: function(e) {
+            if (e.getTarget().htmlFor != this.el.dom.id) {
+                if (e.getTarget() !== this.el.dom) {
+                    this.el.focus();
+                }
+                if (!this.disabled && !this.readOnly) {
+                    this.toggleValue();
+                }
+            }
+            //e.stopEvent();
+        },
+        onEnable: Ext.form.Checkbox.superclass.onEnable,
+        onDisable: Ext.form.Checkbox.superclass.onDisable,
+        onKeyUp: undefined,
+        setValue: function(v) {
+            var checked = this.checked;
+            this.checked = (v === true || v === 'true' || v == '1' || String(v).toLowerCase() == 'on');
+            if(this.rendered){
+                this.el.dom.checked = this.checked;
+                this.el.dom.defaultChecked = this.checked;
+                //this.wrap[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);
+                this.imageEl[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);
+            }
+            if(checked != this.checked) {
+                this.fireEvent("check", this, this.checked);
+                if(this.handler){
+                    this.handler.call(this.scope || this, this, this.checked);
+                }
+            }
+        },
+        getResizeEl: function() {
+            //if(!this.resizeEl){
+                //this.resizeEl = Ext.isSafari ? this.wrap : (this.wrap.up('.x-form-element', 5) || this.wrap);
+            //}
+            //return this.resizeEl;
+            return this.wrap;
+        }
     });
+    
     Ext.override(Ext.form.Radio, {
         checkedCls: 'x-form-radio-checked'
     });
@@ -145,11 +146,18 @@ Ext.onReady(function()
     map = new OpenLayers.Map($('olmap'));
     this.myMap = map;
 
-    features = null;
-    features_choropleth = null;
-    features_mapping = null;
+//    features = null;
+    FEATURES_CHOROPLETH = null;
+    FEATURES_MAPPING = null;
     
-    mask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait..."});
+    MASK = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait..."});
+    
+    printConfigUrl = '../../pdf/info.json';
+    
+    layerOverrides = {
+        "OpenLayers WMS": {overview: true},
+        Countries: { format: 'image/svg+xml' }
+    };
     
     MAPDATA = null;
     URL = null;
@@ -215,15 +223,19 @@ Ext.onReady(function()
     {
         var h = screen.height;
         
-        if (h <= 800) { return 120; }
-        else if (h <= 1050) { return 310; }
-        else if  (h <= 1200) { return 530; }
-        else { return 900; }
+        if (h <= 800) {
+            return 120;
+        }
+        else if (h <= 1050) {
+            return 310;
+        }
+        else if (h <= 1200) {
+            return 530;
+        }
+        else {
+            return 900;
+        }
     }
-    
-/*    var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
-                                           "http://labs.metacarta.com/wms-c/Basic.py?", 
-                                           {layers: 'satellite', format: 'image/png'});*/
 
     var vmap0 = new OpenLayers.Layer.WMS("OpenLayers WMS",
                                            "http://labs.metacarta.com/wms/vmap0", 
@@ -232,6 +244,10 @@ Ext.onReady(function()
     var local_wfs = new OpenLayers.Layer.WMS("Africa",
                                              "../../../geoserver/wfs?", 
                                              {layers: 'world:africa'});
+                                                 
+/*    var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
+                                           "http://labs.metacarta.com/wms-c/Basic.py?", 
+                                           {layers: 'satellite', format: 'image/png'});*/
                                    
     var choroplethLayer = new OpenLayers.Layer.Vector(CHOROPLETH_LAYERNAME, {
         'visibility': true,
@@ -1428,8 +1444,6 @@ Ext.onReady(function()
                                 mapping.show();
                                 shapefilePanel.show();
                                 Ext.getCmp('west').doLayout();
-                                
-                                
                             }
                             else
                             {
@@ -1497,6 +1511,13 @@ Ext.onReady(function()
 
                                                 Ext.getCmp('map_cb').reset();
                                                 Ext.getCmp('mapview_cb').reset();
+                                                
+                                                if (MAPSOURCE == 'shapefile') {
+                                                    Ext.getCmp('register_chb').enable();
+                                                }
+                                                else if (MAPSOURCE == 'database') {
+                                                    Ext.getCmp('register_chb').disable();
+                                                }
                                             },
                                             failure: function()
                                             {
@@ -1522,11 +1543,18 @@ Ext.onReady(function()
                 fn: function()
                 {
                     Ext.getCmp('mapsource_cb').setValue(MAPSOURCE);
+                    
+                    if (MAPSOURCE == 'shapefile') {
+                        Ext.getCmp('register_chb').enable();
+                    }
+                    else if (MAPSOURCE == 'database') {
+                        Ext.getCmp('register_chb').disable();
+                    }
                 }
             }
-        }        
+        }
     });
-       
+    
     // WIDGETS
     
     choropleth = new mapfish.widgets.geostat.Choropleth({
@@ -1701,7 +1729,7 @@ Ext.onReady(function()
                     shapefilePanel,
                     mapping,
                     adminPanel,
-                    static1                    
+                    static1
                 ]
             },
             
@@ -1730,12 +1758,9 @@ Ext.onReady(function()
     
     map.addControl(new OpenLayers.Control.ZoomBox());
     
-    map.events.on(
-    {
-        changelayer: function(e)
-        {
-            if (e.property == 'visibility' && e.layer == static1Layer)
-            {
+    map.events.on({
+        changelayer: function(e) {
+            if (e.property == 'visibility' && e.layer == static1Layer) {
                 if (static1Layer.visibility) {
                     selectFeatureChoropleth.deactivate();
                     
@@ -1949,7 +1974,7 @@ function dataReceivedChoropleth( responseText )
             }
         }
         
-        features_choropleth = features;
+        FEATURES_CHOROPLETH = features;
             
         var options = {};
         
@@ -1966,7 +1991,7 @@ function dataReceivedChoropleth( responseText )
         choropleth.coreComp.applyClassification();
         choropleth.classificationApplied = true;
         
-        mask.hide();
+        MASK.hide();
     }
     else
     {
@@ -2006,7 +2031,7 @@ function dataReceivedChoropleth( responseText )
                     }
                 }
                 
-                features_choropleth = features;
+                FEATURES_CHOROPLETH = features;
                 
                 var options = {};
                 
@@ -2023,7 +2048,7 @@ function dataReceivedChoropleth( responseText )
                 choropleth.coreComp.applyClassification();
                 choropleth.classificationApplied = true;
                 
-                mask.hide();
+                MASK.hide();
             },
             failure: function()
             {
@@ -2165,7 +2190,7 @@ function dataReceivedAssignOrganisationUnit( responseText )
         }
     }
     
-    features_mapping = features;
+    FEATURES_MAPPING = features;
     
     var options = {};
         
@@ -2186,6 +2211,8 @@ function dataReceivedAssignOrganisationUnit( responseText )
     mapping.coreComp.updateOptions(options);
     mapping.coreComp.applyClassification();
     mapping.classificationApplied = true;
+    
+    MASK.hide();
 }
 
 // AUTO MAPPING
