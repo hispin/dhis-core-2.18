@@ -125,14 +125,21 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      */
     labelGenerator: null,
 
-    getGridPanelHeight : function()
-    {
+    getGridPanelHeight : function() {
         var h = screen.height;
         
-        if (h <= 800) { return 300; }
-        else if (h <= 1050) { return 540; }
-        else if  (h <= 1200) { return 530; }
-        else { return 900; }
+        if (h <= 800) {
+            return 300;
+        }
+        else if (h <= 1050) {
+            return 540;
+        }
+        else if (h <= 1200) {
+            return 530;
+        }
+        else {
+            return 900;
+        }
     },
      
     newUrl : false,
@@ -243,7 +250,6 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                             },
                             scope: this
                         },
-                        
                         {
                             xtype: 'button',
                             id: 'removerelation_b',
@@ -256,8 +262,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                     return;
                                 }
                                 
-                                if (!Ext.getCmp('grid_gp').getSelectionModel().getSelected())
-                                {
+                                if (!Ext.getCmp('grid_gp').getSelectionModel().getSelected()) {
                                     Ext.messageRed.msg('Remove relation', 'Please select an organisation unit from the list.');
                                     return;
                                 }
@@ -267,14 +272,12 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                 var ou = selected.data['organisationUnit'];
                                 var mlp = Ext.getCmp('maps_cb').getValue();
                                 
-                                Ext.Ajax.request( 
-                                {
+                                Ext.Ajax.request({
                                     url: path + 'deleteMapOrganisationUnitRelation' + type,
                                     method: 'GET',
                                     params: { mapLayerPath: mlp, organisationUnitId: oui },
 
-                                    success: function( responseObject )
-                                    {
+                                    success: function( responseObject ) {
                                         var mlp = Ext.getCmp('maps_cb').getValue();
                                         Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
                                         Ext.getCmp('grid_gp').getStore().reload();
@@ -283,22 +286,19 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                         
                                         mapping.classify(true);
                                     },
-                                    failure: function()
-                                    {
+                                    failure: function() {
                                         alert('Error while deleting MapOrganisationUnitRelation');
                                     } 
                                 });
                             },
                             scope: this
                         },
-                        
                         {
                             xtype: 'button',
                             id: 'removeallrelations_b',
                             text: 'Remove all',
                             isVisible: false,
-                            handler: function()
-                            {
+                            handler: function() {
                                 if (!Ext.getCmp('maps_cb').getValue()) {
                                     Ext.messageRed.msg('Remove all relations', 'Please select a map.');
                                     return;
@@ -306,14 +306,12 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                 
                                 var mlp = Ext.getCmp('maps_cb').getValue();
                                 
-                                Ext.Ajax.request( 
-                                {
+                                Ext.Ajax.request({
                                     url: path + 'deleteMapOrganisationUnitRelationsByMap' + type,
                                     method: 'GET',
                                     params: { mapLayerPath: mlp },
 
-                                    success: function( responseObject )
-                                    {
+                                    success: function( responseObject ) {
                                         var mlp = Ext.getCmp('maps_cb').getValue();
                                         Ext.getCmp('grid_gp').getStore().baseParams = { mapLayerPath: mlp, format: 'json' };
                                         Ext.getCmp('grid_gp').getStore().reload();
@@ -322,8 +320,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                         
                                         mapping.classify(true);
                                     },
-                                    failure: function()
-                                    {
+                                    failure: function() {
                                         alert('Error while deleting MapOrganisationUnitRelation');
                                     } 
                                 });
@@ -339,7 +336,6 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
     },
     
     setUrl: function(url) {
-    
         this.url = url;
         this.coreComp.setUrl(this.url);
     },
@@ -391,8 +387,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      *      the widget isn't ready, or no indicator is specified, or no
      *      method is specified.
      */
-    classify: function(exception)
-    {
+    classify: function(exception) {
         if (!this.ready) {
             Ext.MessageBox.alert('Error', 'Component init not complete');
             return;

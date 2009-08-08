@@ -1,22 +1,13 @@
 // COUNTRY DEPENDENT
 
+PHU_LEVEL = 4;
+
 STATIC1_LAYERNAME = 'Main roads';
 STATIC1_URL = 'geojson/sl_mainroads';
-
-PHU_P2 = new Array(2, 'SL districts'); // phu grand parent
-PHU_P1 = new Array(3, 'SL chiefdoms'); // phu parent
-PHU = new Array(4, 'SL facilities');
-
-ORGUNIT = new Array(PHU_P2, PHU_P1, PHU);
 
 COUNTRY_LONGITUDE = -11.8;
 COUNTRY_LATITUDE = 8.5;
 COUNTRY_ZOOM = 8;
-
-
-
-
-
 
 // LAYERS/WIDGETS
 INIT_URL = 'geojson/init';

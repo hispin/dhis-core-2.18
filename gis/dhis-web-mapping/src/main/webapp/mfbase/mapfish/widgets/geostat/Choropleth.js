@@ -150,18 +150,14 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             autoLoad: true,
             listeners: {
                 'load': {
-                    fn: function()
-                    {
-                        if (URLACTIVE)
-                        {
-                            Ext.Ajax.request(
-                            {
+                    fn: function() {
+                        if (URLACTIVE) {
+                            Ext.Ajax.request({
                                 url: path + 'getMapView' + type,
                                 method: 'POST',
                                 params: { id: PARAMETER },
 
-                                success: function( responseObject )
-                                {
+                                success: function( responseObject ) {
                                     MAPVIEWACTIVE = true;
                                     MAPVIEW = Ext.util.JSON.decode(responseObject.responseText).mapView[0];
                                     
@@ -179,8 +175,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                                     indicatorStore.baseParams = { indicatorGroupId: igId, format: 'json' };
                                     indicatorStore.reload();
                                 },
-                                failure: function()
-                                {
+                                failure: function() {
                                   alert( 'Status', 'Error while retrieving data' );
                                 }
                             });
@@ -255,21 +250,18 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                             
                             var mst = MAPVIEW.mapSourceType;
                             
-                            Ext.Ajax.request(
-                            {
+                            Ext.Ajax.request({
                                 url: path + 'setMapSourceTypeUserSetting' + type,
                                 method: 'POST',
                                 params: { mapSourceType: mst },
 
-                                success: function( responseObject )
-                                {
+                                success: function( responseObject ) {
                                     Ext.getCmp('map_cb').getStore().reload();
                                     Ext.getCmp('maps_cb').getStore().reload();
                                     
                                     Ext.getCmp('mapsource_cb').setValue(MAPSOURCE);
                                 },
-                                failure: function()
-                                {
+                                failure: function() {
                                     alert( 'Error: setMapSourceTypeUserSetting' );
                                 }
                             });
@@ -330,18 +322,15 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             store: mapViewStore,
             listeners: {
                 'select': {
-                    fn: function()
-                    {
+                    fn: function() {
                         var mId = Ext.getCmp('mapview_cb').getValue();
                         
-                        Ext.Ajax.request(
-                        {
+                        Ext.Ajax.request({
                             url: path + 'getMapView' + type,
                             method: 'POST',
                             params: { id: mId },
 
-                            success: function( responseObject )
-                            {
+                            success: function( responseObject ) {
                                 MAPVIEWACTIVE = true;
                                 MAPVIEW = Ext.util.JSON.decode(responseObject.responseText).mapView[0];
                                 
@@ -356,8 +345,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                                 indicatorStore.baseParams = { indicatorGroupId: igId, format: 'json' };
                                 indicatorStore.reload();
                             },
-                            failure: function()
-                            {
+                            failure: function() {
                               alert( 'Status', 'Error while retrieving data' );
                             } 
                         });
@@ -386,8 +374,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             store: indicatorGroupStore,
             listeners: {
                 'select': {
-                    fn: function()
-                    {
+                    fn: function() {
                         if (Ext.getCmp('mapview_cb').getValue() != '') {
                             Ext.getCmp('mapview_cb').reset();
                         }
@@ -419,26 +406,22 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             store: indicatorStore,
             listeners: {
                 'select': {
-                    fn: function()
-                    {
+                    fn: function() {
                         if (Ext.getCmp('mapview_cb').getValue() != '') {
                             Ext.getCmp('mapview_cb').reset();
                         }
  
                         var iId = Ext.getCmp('indicator_cb').getValue();
                         
-                        Ext.Ajax.request(
-                        {
+                        Ext.Ajax.request({
                             url: path + 'getMapLegendSet' + type,
                             method: 'POST',
                             params: { indicatorId: iId, format: 'json' },
 
-                            success: function( responseObject )
-                            {
+                            success: function( responseObject ) {
                                 var data = Ext.util.JSON.decode(responseObject.responseText);
                                 
-                                if (data.mapLegendSet[0].id != '')
-                                {
+                                if (data.mapLegendSet[0].id != '') {
 //                                    Ext.getCmp('method').setValue(data.mapLegendSet[0].method);
                                     Ext.getCmp('numClasses').setValue(data.mapLegendSet[0].classes);
 
@@ -476,8 +459,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             store: periodTypeStore,
             listeners: {
                 'select': {
-                    fn: function()
-                    {
+                    fn: function() {
                         if (Ext.getCmp('mapview_cb').getValue() != '') {
                             Ext.getCmp('mapview_cb').reset();
                         }
@@ -508,8 +490,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             store: periodStore,
             listeners: {
                 'select': {
-                    fn: function()
-                    {
+                    fn: function() {
                         if (Ext.getCmp('mapview_cb').getValue() != '') {
                             Ext.getCmp('mapview_cb').reset();
                         }
@@ -538,8 +519,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             store: mapStore,
             listeners: {
                 'select': {
-                    fn: function()
-                    {
+                    fn: function() {
                         if (Ext.getCmp('mapview_cb').getValue() != '') {
                             Ext.getCmp('mapview_cb').reset();
                         }
@@ -572,15 +552,12 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             }),
             listeners: {
                 'select': {
-                    fn: function()
-                    {
-                        if (Ext.getCmp('method').getValue() == 0)
-                        {
+                    fn: function() {
+                        if (Ext.getCmp('method').getValue() == 0) {
                             Ext.getCmp('bounds').show();
                             Ext.getCmp('numClasses').hide();
                         }
-                        else
-                        {
+                        else {
                             Ext.getCmp('bounds').hide();
                             Ext.getCmp('numClasses').show();
                             
@@ -619,8 +596,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             }),
             listeners: {
                 'select': {
-                    fn: function()
-                    {
+                    fn: function() {
                         if (Ext.getCmp('mapview_cb').getValue() != '') {
                             Ext.getCmp('mapview_cb').reset();
                         }
@@ -631,57 +607,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 }
             }
         },
-/*        
-        {
-            xtype: 'combo',
-            id: 'maplegend_cb',
-            fieldLabel: 'Legend set',
-            typeAhead: true,
-            editable: false,
-            valueField: 'id',
-            displayField: 'name',
-            mode: 'remote',
-            forceSelection: true,
-            triggerAction: 'all',
-            emptyText: 'Optional',
-            selectOnFocus: true,
-            width: combo_width,
-            store: legendStore,
-            listeners: {
-                'select': {
-                    fn: function()
-                    {
-                        var iId = Ext.getCmp('indicator_cb').getValue();
-                       
-                        Ext.Ajax.request(
-                        {
-                            url: path + 'getMapLegendSet' + type,
-                            method: 'GET',
-                            params: { indicatorId: iId, format: 'json' },
 
-                            success: function( responseObject )
-                            {
-                              var data = Ext.util.JSON.decode(responseObject.responseText);
-                              var color1 = data.mapLegendSet[0]['colorLow'];
-                              var color2 = data.mapLegendSet[0]['colorHigh'];
-
-                              Ext.getCmp('colorA_cf').setValue(color1);
-                              Ext.getCmp('colorB_cf').setValue(color2);
-                            },
-                            failure: function()
-                            {
-                              alert( 'Status', 'Error while retrieving data' );
-                            } 
-                        });
-                        
-                        this.classify(false);
-                    },
-                    scope: this
-                }
-            }
-
-        },
- */
         {
             xtype: 'colorfield',
             fieldLabel: 'Low color',
@@ -710,8 +636,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             fieldLabel: '',
             labelStyle: 'color:#dfe8f6;',
             text: 'Refresh',
-            handler: function()
-            {
+            handler: function() {
                 this.layer.setVisibility(true);
                 this.classify(true);
             },
@@ -724,7 +649,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     },
     
     setUrl: function(url) {
-    
         this.url = url;
         this.coreComp.setUrl(this.url);
     },
@@ -775,21 +699,18 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
      *      the widget isn't ready, or no indicator is specified, or no
      *      method is specified.
      */
-    classify: function(exception)
-    {
+    classify: function(exception) {
         if (!this.ready) {
             Ext.MessageBox.alert('Error', 'Component init not complete');
             return;
         }
         
-        if (this.newUrl)
-        {
+        if (this.newUrl) {
             URL = this.newUrl;
             this.newUrl = false;
             
-            if (MAPSOURCE == MAP_SOURCE_TYPE_DATABASE)
-            {
-                if (URL == 4) {
+            if (MAPSOURCE == MAP_SOURCE_TYPE_DATABASE) {
+                if (URL == PHU_LEVEL) {
                     this.setUrl(path + 'getPointShapefile.action?level=' + URL);
                 }
                 else {
