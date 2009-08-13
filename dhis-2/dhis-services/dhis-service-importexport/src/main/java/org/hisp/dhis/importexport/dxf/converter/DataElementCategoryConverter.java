@@ -75,7 +75,7 @@ public class DataElementCategoryConverter
      * @param importObjectService the importObjectService to use.
      * @param categoryService the dataElementCategoryService to use.
      */
-    public DataElementCategoryConverter( BatchHandler batchHandler, 
+    public DataElementCategoryConverter( BatchHandler<DataElementCategory> batchHandler, 
         ImportObjectService importObjectService, 
         DataElementCategoryService categoryService )
     {

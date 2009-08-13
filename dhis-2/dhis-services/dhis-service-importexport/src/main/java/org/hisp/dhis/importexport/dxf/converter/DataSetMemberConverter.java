@@ -88,7 +88,7 @@ public class DataSetMemberConverter
     /**
      * Constructor for read operations.
      */
-    public DataSetMemberConverter( BatchHandler batchHandler, 
+    public DataSetMemberConverter( BatchHandler<GroupMemberAssociation> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> dataElementMapping, 
         Map<Object, Integer> dataSetMapping )

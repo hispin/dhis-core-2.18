@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.indicator.IndicatorType;
@@ -39,7 +36,7 @@ import org.hisp.dhis.indicator.IndicatorType;
  * @version $Id: IndicatorTypeBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
  */
 public class IndicatorTypeBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<IndicatorType>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,7 +44,7 @@ public class IndicatorTypeBatchHandler
  
     public IndicatorTypeBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
+        super( configuration, false, false );
     }
 
     // -------------------------------------------------------------------------
@@ -56,60 +53,46 @@ public class IndicatorTypeBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "indicatortype";
-    }
-    
-    protected void openSqlStatement()
-    {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "indicatortypeid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
-    }
-    
-    protected String getUpdateSqlStatement( Object object )
-    {
-        IndicatorType type = (IndicatorType) object;
-
-        statementBuilder.setIdentifierColumnName( "indicatortypeid" );
-        statementBuilder.setIdentifierColumnValue( type.getId() );
-        
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
-    }
-    
-    protected String getIdentifierStatement( Object objectName )
-    {
-        return statementBuilder.getValueStatement( tableName, "indicatortypeid", "name", String.valueOf( objectName ) );
+        statementBuilder.setTableName( "indicatortype" );
     }
 
-    protected String getUniquenessStatement( Object object )
+    @Override
+    protected void setAutoIncrementColumn()
     {
-        IndicatorType type = (IndicatorType) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "name", type.getName() );
-        
-        return statementBuilder.getValueStatement( tableName, "indicatortypeid", fieldMap, false );
+        statementBuilder.setAutoIncrementColumn( "indicatortypeid" );
     }
     
-    protected void addColumns()
+    @Override
+    protected void setIdentifierColumns()
+    {
+        statementBuilder.setIdentifierColumn( "indicatortypeid" );
+    }
+
+    @Override
+    protected void setIdentifierValues( IndicatorType type )
+    {        
+        statementBuilder.setIdentifierValue( type.getId() );
+    }
+    
+    protected void setUniqueColumns()
+    {
+        statementBuilder.setUniqueColumn( "name" );
+    }
+    
+    protected void setUniqueValues( IndicatorType type )
+    {        
+        statementBuilder.setUniqueValue( type.getName() );
+    }
+    
+    protected void setColumns()
     {
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "indicatorfactor" );
     }
     
-    protected void addValues( Object object )
-    {
-        IndicatorType type = (IndicatorType) object;
-        
-        statementBuilder.setString( type.getName() );
-        statementBuilder.setInt( type.getFactor() );
+    protected void setValues( IndicatorType type )
+    {        
+        statementBuilder.setValue( type.getName() );
+        statementBuilder.setValue( type.getFactor() );
     }
 }

@@ -150,7 +150,7 @@ public class DefaultCalculatedDataElementDataMart
         
         final DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
         
-        final BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
+        final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
         
         batchHandler.init();
 

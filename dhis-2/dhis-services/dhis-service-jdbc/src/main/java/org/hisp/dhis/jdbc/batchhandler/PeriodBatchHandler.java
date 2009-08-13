@@ -27,8 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.DateUtils.getSqlDateString;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.period.Period;
@@ -38,15 +36,15 @@ import org.hisp.dhis.period.Period;
  * @version $Id: PeriodBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
  */
 public class PeriodBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<Period>
 {
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
- 
+
     public PeriodBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
+        super( configuration, false, true );
     }
 
     // -------------------------------------------------------------------------
@@ -55,66 +53,70 @@ public class PeriodBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "period";
+        statementBuilder.setTableName( "period" );
     }
     
-    protected void openSqlStatement()
+    @Override
+    protected void setAutoIncrementColumn()
     {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "periodid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setAutoIncrementColumn( "periodid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
+    @Override
+    protected void setIdentifierColumns()
+    {
+        statementBuilder.setIdentifierColumn( "periodid" );
+    }
+    
+    @Override
+    protected void setIdentifierValues( Period period )
+    {
+        statementBuilder.setIdentifierValue( period.getId() );
+    }
+    
+    @Override
+    protected void setMatchColumns()
+    {
+        statementBuilder.setMatchColumn( "periodtypeid" );
+        statementBuilder.setMatchColumn( "startdate" );
+        statementBuilder.setMatchColumn( "enddate" );
+    }
+    
+    @Override
+    protected void setMatchValues( Object object )
     {
         Period period = (Period) object;
 
-        statementBuilder.setIdentifierColumnName( "periodid" );
-        statementBuilder.setIdentifierColumnValue( period.getId() );
-        
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setMatchValue( period.getPeriodType().getId() );
+        statementBuilder.setMatchValue( period.getStartDate() );
+        statementBuilder.setMatchValue( period.getEndDate() );        
     }
     
-    protected String getIdentifierStatement( Object objectName )
+    protected void setUniqueColumns()
     {
-        Period period = (Period) objectName;
-        
-        return 
-            "SELECT periodid FROM period WHERE periodtypeid=" + period.getPeriodType().getId() + " " + 
-            "AND startdate='" + getSqlDateString( period.getStartDate() ) + "' " +
-            "AND enddate='" + getSqlDateString( period.getEndDate() ) + "'";
+        statementBuilder.setUniqueColumn( "periodtypeid" );
+        statementBuilder.setUniqueColumn( "startdate" );
+        statementBuilder.setUniqueColumn( "enddate" );
     }
     
-    protected String getUniquenessStatement( Object object )
-    {
-        Period period = (Period) object;
-        
-        return 
-            "SELECT periodid FROM period WHERE periodtypeid=" + period.getPeriodType().getId() + " " + 
-            "AND startdate='" + getSqlDateString( period.getStartDate() ) + "' " +
-            "AND enddate='" + getSqlDateString( period.getEndDate() ) + "'";
+    protected void setUniqueValues( Period period )
+    {        
+        statementBuilder.setUniqueValue( period.getPeriodType().getId() );
+        statementBuilder.setUniqueValue( period.getStartDate() );
+        statementBuilder.setUniqueValue( period.getEndDate() );
     }
     
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "periodtypeid" );
         statementBuilder.setColumn( "startdate" );
         statementBuilder.setColumn( "enddate" );
     }
     
-    protected void addValues( Object object )
-    {
-        Period period = (Period) object;
-        
-        statementBuilder.setInt( period.getPeriodType().getId() );
-        statementBuilder.setDate( period.getStartDate() );
-        statementBuilder.setDate( period.getEndDate() );
+    protected void setValues( Period period )
+    {        
+        statementBuilder.setValue( period.getPeriodType().getId() );
+        statementBuilder.setValue( period.getStartDate() );
+        statementBuilder.setValue( period.getEndDate() );
     }
 }

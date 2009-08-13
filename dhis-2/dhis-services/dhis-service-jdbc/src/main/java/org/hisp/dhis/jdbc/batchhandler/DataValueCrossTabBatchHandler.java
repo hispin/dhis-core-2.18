@@ -37,7 +37,7 @@ import org.amplecode.quick.batchhandler.AbstractBatchHandler;
  * @version $Id: DataValueCrossTabBatchHandler.java 5074 2008-05-02 11:51:09Z larshelg $
  */
 public class DataValueCrossTabBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<Object>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -45,9 +45,7 @@ public class DataValueCrossTabBatchHandler
  
     public DataValueCrossTabBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
@@ -56,42 +54,38 @@ public class DataValueCrossTabBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "datavaluecrosstab";
+        statementBuilder.setTableName( "datavaluecrosstab" );
     }
     
-    protected void openSqlStatement()
-    {        
-        sqlBuffer.append( statementBuilder.getNoColumnInsertStatementOpening( tableName ) );
-    }
-    
-    protected String getUpdateSqlStatement( Object object )
+    @Override
+    protected String getInsertStatementOpening()
     {
-        return null; // Not in use
+        return statementBuilder.getNoColumnInsertStatementOpening();
     }
     
-    protected String getIdentifierStatement( Object objectName )
+    protected void setUniqueColumns()
     {
-        throw new UnsupportedOperationException( "CrossTabDataValue has no single unique identifier" );
+        // Cannot be known
     }
     
-    protected String getUniquenessStatement( Object object )
+    protected void setUniqueValues( Object object )
     {
-        return null; // Not in use
+        throw new UnsupportedOperationException();
     }
     
-    protected void addColumns()
+    protected void setColumns()
     {
-        // Not in use
+        // Columns should not be set
     }
     
     @SuppressWarnings( "unchecked" )
-    protected void addValues( Object object )
+    protected void setValues( Object object )
     {
         List<String> values = (List<String>) object;
         
         for ( String value : values )
         {
-            statementBuilder.setString( value );
+            statementBuilder.setValue( value );
         }
     }
 }

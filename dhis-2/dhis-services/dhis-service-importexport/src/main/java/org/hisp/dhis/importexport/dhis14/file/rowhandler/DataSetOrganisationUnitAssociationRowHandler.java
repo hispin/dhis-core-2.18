@@ -57,7 +57,7 @@ public class DataSetOrganisationUnitAssociationRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public DataSetOrganisationUnitAssociationRowHandler( BatchHandler batchHandler,
+    public DataSetOrganisationUnitAssociationRowHandler( BatchHandler<GroupMemberAssociation> batchHandler,
         ImportObjectService importObjectService,
         Map<Object, Integer> dataSetMapping, 
         Map<Object, Integer> organisationUnitMapping,

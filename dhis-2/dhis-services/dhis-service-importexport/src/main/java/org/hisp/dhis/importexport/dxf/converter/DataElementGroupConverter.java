@@ -76,7 +76,7 @@ public class DataElementGroupConverter
      * @param dataElementService the dataElementService to use.
      * @param importObjectService the importObjectService to use.
      */    
-    public DataElementGroupConverter( BatchHandler batchHandler, 
+    public DataElementGroupConverter( BatchHandler<DataElementGroup> batchHandler, 
         ImportObjectService importObjectService, 
         DataElementService dataElementService )
     {

@@ -53,7 +53,7 @@ public class DataSetBatchHandlerTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
-    private BatchHandler batchHandler;
+    private BatchHandler<DataSet> batchHandler;
     
     private DataSet dataSetA;
     private DataSet dataSetB;
@@ -130,13 +130,14 @@ public class DataSetBatchHandlerTest
     @Test
     public void testUpdateObject()
     {
-        int id = dataSetService.addDataSet( dataSetA );
+        int id = batchHandler.insertObject( dataSetA, true );
         
+        dataSetA.setId( id );
         dataSetA.setName( "UpdatedName" );
         
         batchHandler.updateObject( dataSetA );
         
-        assertEquals( dataSetService.getDataSet( id ).getName(), "UpdatedName" );
+        assertEquals( "UpdatedName", dataSetService.getDataSet( id ).getName() );
     }
 
     @Test

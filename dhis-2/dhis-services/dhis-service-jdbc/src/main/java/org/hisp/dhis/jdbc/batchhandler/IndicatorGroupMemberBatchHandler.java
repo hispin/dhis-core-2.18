@@ -36,7 +36,7 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
  * @version $Id: IndicatorGroupMemberBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
  */
 public class IndicatorGroupMemberBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<GroupMemberAssociation>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -44,9 +44,7 @@ public class IndicatorGroupMemberBatchHandler
     
     public IndicatorGroupMemberBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
@@ -55,57 +53,31 @@ public class IndicatorGroupMemberBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "indicatorgroupmembers";
+        statementBuilder.setTableName( "indicatorgroupmembers" );
     }
     
-    protected void openSqlStatement()
+    protected void setUniqueColumns()
     {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setUniqueColumn( "indicatorgroupid" );
+        statementBuilder.setUniqueColumn( "indicatorid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
-    {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+    protected void setUniqueValues( GroupMemberAssociation association )
+    {        
+        statementBuilder.setUniqueValue( association.getGroupId() );
+        statementBuilder.setUniqueValue( association.getMemberId() );
     }
     
-    protected String getIdentifierStatement( Object objectName )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) objectName;
-        
-        String sql = statementBuilder.getValueStatement( tableName, "indicatorgroupid", "indicatorid", 
-            "indicatorgroupid", association.getGroupId(), "indicatorid", association.getMemberId() );
-        
-        return sql;
-    }
-
-    protected String getUniquenessStatement( Object object )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
-
-        String sql = statementBuilder.getValueStatement( tableName, "indicatorgroupid", "indicatorid", 
-            "indicatorgroupid", association.getGroupId(), "indicatorid", association.getMemberId() );
-        
-        return sql;
-    }
-    
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "indicatorgroupid" );
         statementBuilder.setColumn( "indicatorid" );
     }
     
-    protected void addValues( Object object )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
-        
-        statementBuilder.setInt( association.getGroupId() );
-        statementBuilder.setInt( association.getMemberId() );
-    }       
+    protected void setValues( GroupMemberAssociation association )
+    {        
+        statementBuilder.setValue( association.getGroupId() );
+        statementBuilder.setValue( association.getMemberId() );
+    }
 }
 

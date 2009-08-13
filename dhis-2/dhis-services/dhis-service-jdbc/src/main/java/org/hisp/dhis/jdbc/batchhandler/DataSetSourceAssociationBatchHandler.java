@@ -36,7 +36,7 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
  * @version $Id$
  */
 public class DataSetSourceAssociationBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<GroupMemberAssociation>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -44,9 +44,7 @@ public class DataSetSourceAssociationBatchHandler
     
     public DataSetSourceAssociationBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
@@ -55,56 +53,30 @@ public class DataSetSourceAssociationBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "datasetsource";
-    }
-    
-    protected void openSqlStatement()
-    {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
-    }
-    
-    protected String getUpdateSqlStatement( Object object )
-    {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
-    }
-    
-    protected String getIdentifierStatement( Object objectName )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) objectName;
-        
-        String sql = statementBuilder.getValueStatement( tableName, "datasetid", "sourceid", 
-            "datasetid", association.getGroupId(), "sourceid", association.getMemberId() );
-        
-        return sql;
+        statementBuilder.setTableName( "datasetsource" );
     }
 
-    protected String getUniquenessStatement( Object object )
+    protected void setUniqueColumns()
     {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
-
-        String sql = statementBuilder.getValueStatement( tableName, "datasetid", "sourceid", 
-            "datasetid", association.getGroupId(), "sourceid", association.getMemberId() );
-        
-        return sql;
+        statementBuilder.setUniqueColumn( "datasetid" );
+        statementBuilder.setUniqueColumn( "sourceid" );
     }
     
-    protected void addColumns()
+    protected void setUniqueValues( GroupMemberAssociation association )
+    {
+        statementBuilder.setUniqueValue( association.getGroupId() );
+        statementBuilder.setUniqueValue( association.getMemberId() );
+    }
+    
+    protected void setColumns()
     {
         statementBuilder.setColumn( "datasetid" );
         statementBuilder.setColumn( "sourceid" );
     }
     
-    protected void addValues( Object object )
+    protected void setValues( GroupMemberAssociation association )
     {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
-        
-        statementBuilder.setInt( association.getGroupId() );
-        statementBuilder.setInt( association.getMemberId() );
+        statementBuilder.setValue( association.getGroupId() );
+        statementBuilder.setValue( association.getMemberId() );
     }
 }

@@ -60,7 +60,7 @@ public class DataValueBatchHandlerTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
-    private BatchHandler batchHandler;
+    private BatchHandler<DataValue> batchHandler;
     
     private DataElement dataElementA;
     
@@ -182,7 +182,7 @@ public class DataValueBatchHandlerTest
     @Test
     public void testUpdateObject()
     {
-        dataValueService.addDataValue( dataValueA );
+        batchHandler.insertObject( dataValueA, false );
         
         dataValueA.setValue( "20" );
         

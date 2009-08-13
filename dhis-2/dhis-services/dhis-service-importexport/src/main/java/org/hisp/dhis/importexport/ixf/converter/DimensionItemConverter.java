@@ -76,7 +76,7 @@ public class DimensionItemConverter
     /**
      * Constructor for read operations.
      */
-    public DimensionItemConverter( BatchHandler batchHandler,
+    public DimensionItemConverter( BatchHandler<DataElementCategoryOption> batchHandler,
         ImportObjectService importObjectService,
         DataElementCategoryOptionService categoryOptionService )
     {   

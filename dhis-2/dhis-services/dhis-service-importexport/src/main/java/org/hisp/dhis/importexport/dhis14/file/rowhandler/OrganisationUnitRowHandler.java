@@ -36,6 +36,7 @@ import org.hisp.dhis.importexport.converter.AbstractOrganisationUnitConverter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.UUIdUtils;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
@@ -53,8 +54,8 @@ public class OrganisationUnitRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public OrganisationUnitRowHandler( BatchHandler batchHandler, 
-        BatchHandler sourceBatchHandler,
+    public OrganisationUnitRowHandler( BatchHandler<OrganisationUnit> batchHandler, 
+        BatchHandler<Source> sourceBatchHandler,
         ImportObjectService importObjectService,
         OrganisationUnitService organisationUnitService,
         ImportParams params,

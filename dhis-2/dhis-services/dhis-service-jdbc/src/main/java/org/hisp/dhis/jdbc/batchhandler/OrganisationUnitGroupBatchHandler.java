@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -39,7 +36,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
  * @version $Id: OrganisationUnitGroupBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
  */
 public class OrganisationUnitGroupBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<OrganisationUnitGroup>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,7 +44,7 @@ public class OrganisationUnitGroupBatchHandler
  
     public OrganisationUnitGroupBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
+        super( configuration, false, false );
     }
 
     // -------------------------------------------------------------------------
@@ -56,60 +53,46 @@ public class OrganisationUnitGroupBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "orgunitgroup";
+        statementBuilder.setTableName( "orgunitgroup" );
     }
     
-    protected void openSqlStatement()
+    @Override
+    protected void setAutoIncrementColumn()
     {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "orgunitgroupid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setAutoIncrementColumn( "orgunitgroupid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
+    @Override
+    protected void setIdentifierColumns()
     {
-        OrganisationUnitGroup group = (OrganisationUnitGroup) object;
-
-        statementBuilder.setIdentifierColumnName( "orgunitgroupid" );
-        statementBuilder.setIdentifierColumnValue( group.getId() );
-        
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setIdentifierColumn( "orgunitgroupid" );
     }
     
-    protected String getIdentifierStatement( Object objectName )
-    {
-        return statementBuilder.getValueStatement( tableName, "orgunitgroupid", "name", String.valueOf( objectName ) );
-    }
-
-    protected String getUniquenessStatement( Object object )
-    {
-        OrganisationUnitGroup group = (OrganisationUnitGroup) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "name", group.getName() );
-        
-        return statementBuilder.getValueStatement( tableName, "orgunitgroupid", fieldMap, false );
+    @Override
+    protected void setIdentifierValues( OrganisationUnitGroup group )
+    {        
+        statementBuilder.setIdentifierValue( group.getId() );
     }
     
-    protected void addColumns()
+    protected void setUniqueColumns()
+    {
+        statementBuilder.setUniqueColumn( "name" );
+    }
+    
+    protected void setUniqueValues( OrganisationUnitGroup group )
+    {        
+        statementBuilder.setUniqueValue( group.getName() );
+    }
+    
+    protected void setColumns()
     {
         statementBuilder.setColumn( "uuid" );
         statementBuilder.setColumn( "name" );
     }
     
-    protected void addValues( Object object )
-    {
-        OrganisationUnitGroup group = (OrganisationUnitGroup) object;
-        
-        statementBuilder.setString( group.getUuid() );
-        statementBuilder.setString( group.getName() );
+    protected void setValues( OrganisationUnitGroup group )
+    {        
+        statementBuilder.setValue( group.getUuid() );
+        statementBuilder.setValue( group.getName() );
     }
 }

@@ -84,7 +84,7 @@ public class ReportTableOrganisationUnitConverter
     /**
      * Constructor for read operations.
      */
-    public ReportTableOrganisationUnitConverter( BatchHandler batchHandler, 
+    public ReportTableOrganisationUnitConverter( BatchHandler<GroupMemberAssociation> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> reportTableMapping, 
         Map<Object, Integer> organisationUnitMapping )

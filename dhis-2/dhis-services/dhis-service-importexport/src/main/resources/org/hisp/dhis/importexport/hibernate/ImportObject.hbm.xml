@@ -11,15 +11,15 @@
       <generator class="native"/>
     </id>
 
-		<property name="status" column="status"/>
+    <property name="status" column="status"/>
 
-		<property name="className" column="classname"/>
+    <property name="className" column="classname"/>
 		
-		<property name="groupMemberType" column="groupmembertype"/>
+    <property name="groupMemberType" column="groupmembertype"/>
 
-		<property name="object" column="object" type="serializable" length="65535"/>
+    <property name="object" column="object" type="serializable" length="65535"/>
 		
-		<property name="compareObject" column="compareobject" type="serializable" length="65535"/>
+    <property name="compareObject" column="compareobject" type="serializable" length="65535"/>
 	
 	</class>
 

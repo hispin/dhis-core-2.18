@@ -84,7 +84,7 @@ public class ReportTableIndicatorConverter
     /**
      * Constructor for read operations.
      */
-    public ReportTableIndicatorConverter( BatchHandler batchHandler, 
+    public ReportTableIndicatorConverter( BatchHandler<GroupMemberAssociation> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> reportTableMapping, 
         Map<Object, Integer> indicatorMapping )

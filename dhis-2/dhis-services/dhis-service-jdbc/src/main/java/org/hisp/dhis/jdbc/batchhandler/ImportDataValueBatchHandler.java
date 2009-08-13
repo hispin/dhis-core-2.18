@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.importexport.ImportDataValue;
@@ -39,7 +36,7 @@ import org.hisp.dhis.importexport.ImportDataValue;
  * @version $Id: ImportDataValueBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
  */
 public class ImportDataValueBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<ImportDataValue>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,9 +44,7 @@ public class ImportDataValueBatchHandler
  
     public ImportDataValueBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
@@ -58,45 +53,44 @@ public class ImportDataValueBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "importdatavalue";
+        statementBuilder.setTableName( "importdatavalue" );
     }
-    
-    protected void openSqlStatement()
+
+    @Override
+    protected void setIdentifierColumns()
     {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setIdentifierColumn( "dataelementid" );
+        statementBuilder.setIdentifierColumn( "categoryoptioncomboid" );
+        statementBuilder.setIdentifierColumn( "periodid" );
+        statementBuilder.setIdentifierColumn( "sourceid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
+    @Override
+    protected void setIdentifierValues( ImportDataValue value )
+    {        
+        statementBuilder.setIdentifierValue( value.getDataElementId() );
+        statementBuilder.setIdentifierValue( value.getCategoryOptionComboId() );
+        statementBuilder.setIdentifierValue( value.getPeriodId() );
+        statementBuilder.setIdentifierValue( value.getSourceId() );
+    }
+    
+    protected void setUniqueColumns()
     {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setUniqueColumn( "dataelementid" );
+        statementBuilder.setUniqueColumn( "categoryoptioncomboid" );
+        statementBuilder.setUniqueColumn( "periodid" );
+        statementBuilder.setUniqueColumn( "sourceid" );
     }
     
-    protected String getIdentifierStatement( Object objectName )
-    {
-        throw new UnsupportedOperationException( "ImportDataValue has no single unique identifier" );
+    protected void setUniqueValues( ImportDataValue value )
+    {        
+        statementBuilder.setUniqueValue( value.getDataElementId() );
+        statementBuilder.setUniqueValue( value.getCategoryOptionComboId() );
+        statementBuilder.setUniqueValue( value.getPeriodId() );
+        statementBuilder.setUniqueValue( value.getSourceId() );
     }
     
-    protected String getUniquenessStatement( Object object )
-    {
-        ImportDataValue importDataValue = new ImportDataValue();
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "dataelementid", String.valueOf( importDataValue.getDataElementId() ) );
-        fieldMap.put( "categoryoptioncomboid", String.valueOf( importDataValue.getCategoryOptionComboId() ) );
-        fieldMap.put( "periodid", String.valueOf( importDataValue.getPeriodId() ) );
-        fieldMap.put( "sourceid", String.valueOf( importDataValue.getSourceId() ) );
-        
-        return statementBuilder.getValueStatement( tableName, "dataelementid", fieldMap, true );
-    }
-    
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "dataelementid" );
         statementBuilder.setColumn( "categoryoptioncomboid" );
@@ -109,18 +103,16 @@ public class ImportDataValueBatchHandler
         statementBuilder.setColumn( "status" );
     }
     
-    protected void addValues( Object object )
-    {
-        ImportDataValue value = (ImportDataValue) object;
-        
-        statementBuilder.setInt( value.getDataElementId() );
-        statementBuilder.setInt( value.getCategoryOptionComboId() );
-        statementBuilder.setInt( value.getPeriodId() );
-        statementBuilder.setInt( value.getSourceId() );
-        statementBuilder.setString( value.getValue() );
-        statementBuilder.setString( value.getStoredBy() );
-        statementBuilder.setDate( value.getTimestamp() );
-        statementBuilder.setString( value.getComment() );
-        statementBuilder.setString( value.getStatus() );
+    protected void setValues( ImportDataValue value )
+    {        
+        statementBuilder.setValue( value.getDataElementId() );
+        statementBuilder.setValue( value.getCategoryOptionComboId() );
+        statementBuilder.setValue( value.getPeriodId() );
+        statementBuilder.setValue( value.getSourceId() );
+        statementBuilder.setValue( value.getValue() );
+        statementBuilder.setValue( value.getStoredBy() );
+        statementBuilder.setValue( value.getTimestamp() );
+        statementBuilder.setValue( value.getComment() );
+        statementBuilder.setValue( value.getStatus() );
     }
 }

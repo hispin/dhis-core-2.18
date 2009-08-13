@@ -93,7 +93,7 @@ public class CategoryCategoryOptionAssociationConverter
      * @param categoryMapping the categoryMapping to use.
      * @param categoryOptionMapping the categoryOptionMapping to use.
      */
-    public CategoryCategoryOptionAssociationConverter( BatchHandler batchHandler, 
+    public CategoryCategoryOptionAssociationConverter( BatchHandler<GroupMemberAssociation> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> categoryMapping, 
         Map<Object, Integer> categoryOptionMapping )

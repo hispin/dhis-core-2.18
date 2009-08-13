@@ -112,7 +112,7 @@ public class DefaultResourceTableService
     {
         resourceTableStore.deleteOrganisationUnitStructures();
 
-        BatchHandler batchHandler = batchHandlerFactory
+        BatchHandler<OrganisationUnitStructure> batchHandler = batchHandlerFactory
             .createBatchHandler( OrganisationUnitStructureBatchHandler.class );
 
         batchHandler.init();
@@ -178,7 +178,7 @@ public class DefaultResourceTableService
         Collection<OrganisationUnitGroupSet> exclusiveGroupSets = organisationUnitGroupService
             .getExclusiveOrganisationUnitGroupSets();
 
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( GroupSetStructureBatchHandler.class );
+        BatchHandler<GroupSetStructure> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetStructureBatchHandler.class );
 
         batchHandler.init();
 
@@ -266,7 +266,7 @@ public class DefaultResourceTableService
         // Populate table
         // ---------------------------------------------------------------------
 
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
+        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
 
         batchHandler.setTableName( CreateExclusiveGroupSetTableStatement.TABLE_NAME );
 

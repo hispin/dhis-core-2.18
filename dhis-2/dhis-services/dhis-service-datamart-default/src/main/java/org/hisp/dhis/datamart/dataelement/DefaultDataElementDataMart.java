@@ -110,7 +110,7 @@ public class DefaultDataElementDataMart
 
         final Collection<OrganisationUnit> organisationUnits = getOrganisationUnits( organisationUnitIds );
 
-        final BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
+        final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
 
         batchHandler.init();
         

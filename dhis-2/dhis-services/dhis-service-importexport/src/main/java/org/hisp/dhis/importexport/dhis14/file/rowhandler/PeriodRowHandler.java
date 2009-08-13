@@ -59,7 +59,7 @@ public class PeriodRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public PeriodRowHandler( BatchHandler batchHandler,
+    public PeriodRowHandler( BatchHandler<Period> batchHandler,
         ImportObjectService importObjectService,
         PeriodService periodService,
         Map<String, Integer> periodTypeMapping,

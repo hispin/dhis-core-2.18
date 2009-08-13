@@ -268,7 +268,7 @@ public class ReportTableManagerTest
     @Test
     public void testGetAggregatedValueMapForIndicator()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class );
+        BatchHandler<AggregatedIndicatorValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class );
         
         batchHandler.init();
         
@@ -307,7 +307,7 @@ public class ReportTableManagerTest
     @Test
     public void testGetAggregatedValueForDataElement()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
+        BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
         
         batchHandler.init();
         
@@ -347,7 +347,7 @@ public class ReportTableManagerTest
     @Ignore //TODO fix
     public void testGetAggregatedValueForDataElementWithCategoryOptionCombo()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
+        BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
         
         batchHandler.init();
         
@@ -386,7 +386,7 @@ public class ReportTableManagerTest
     @Test
     public void testGetAggregatedValueForDataSet()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataSetCompletenessResultBatchHandler.class );
+        BatchHandler<DataSetCompletenessResult> batchHandler = batchHandlerFactory.createBatchHandler( DataSetCompletenessResultBatchHandler.class );
         
         batchHandler.init();
         

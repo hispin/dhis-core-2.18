@@ -52,7 +52,7 @@ public class DataElementCategoryOptionBatchHandlerTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
-    private BatchHandler batchHandler;
+    private BatchHandler<DataElementCategoryOption> batchHandler;
     
     private DataElementCategoryOption categoryOptionA;
     private DataElementCategoryOption categoryOptionB;
@@ -77,9 +77,9 @@ public class DataElementCategoryOptionBatchHandlerTest
 
         batchHandler.init();
         
-        categoryOptionA = new DataElementCategoryOption( "categoryOptionA", UUID );
-        categoryOptionB = new DataElementCategoryOption( "categoryOptionB", UUID );
-        categoryOptionC = new DataElementCategoryOption( "categoryOptionC" );
+        categoryOptionA = new DataElementCategoryOption( "CategoryOptionA", UUID );
+        categoryOptionB = new DataElementCategoryOption( "CategoryOptionB", UUID );
+        categoryOptionC = new DataElementCategoryOption( "CategoryOptionC" );
     }
 
     @Override
@@ -129,8 +129,9 @@ public class DataElementCategoryOptionBatchHandlerTest
     @Test
     public void testUpdateObject()
     {
-        int id = categoryOptionService.addDataElementCategoryOption( categoryOptionA );
+        int id = batchHandler.insertObject( categoryOptionA, true );
         
+        categoryOptionA.setId( id );
         categoryOptionA.setName( "UpdatedName" );
         
         batchHandler.updateObject( categoryOptionA );
@@ -143,7 +144,7 @@ public class DataElementCategoryOptionBatchHandlerTest
     {
         int referenceId = categoryOptionService.addDataElementCategoryOption( categoryOptionA );
         
-        int retrievedId = batchHandler.getObjectIdentifier( "categoryOptionA" );
+        int retrievedId = batchHandler.getObjectIdentifier( "CategoryOptionA" );
         
         assertEquals( referenceId, retrievedId );
     }

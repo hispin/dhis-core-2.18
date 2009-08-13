@@ -70,11 +70,9 @@ public class HibernateImportDataValueStore
 
     public void addImportDataValue( ImportDataValue importDataValue )
     {
-        Session session = sessionFactory.getCurrentSession();
-        
-        session.save( importDataValue );
+        sessionFactory.getCurrentSession().save( importDataValue );
     }
-    
+        
     @SuppressWarnings( "unchecked" )
     public Collection<ImportDataValue> getImportDataValues( ImportObjectStatus status )
     {

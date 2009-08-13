@@ -93,7 +93,7 @@ public class CategoryComboCategoryAssociationConverter
      * @param categoryComboMapping the categoryComboMapping to use.
      * @param categoryMapping the categoryMapping to use.
      */
-    public CategoryComboCategoryAssociationConverter( BatchHandler batchHandler, 
+    public CategoryComboCategoryAssociationConverter( BatchHandler<GroupMemberAssociation> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> categoryComboMapping,
         Map<Object, Integer> categoryMapping )

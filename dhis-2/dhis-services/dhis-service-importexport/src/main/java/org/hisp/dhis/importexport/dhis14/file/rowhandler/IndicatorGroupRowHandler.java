@@ -52,7 +52,7 @@ public class IndicatorGroupRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public IndicatorGroupRowHandler( BatchHandler batchHandler,
+    public IndicatorGroupRowHandler( BatchHandler<IndicatorGroup> batchHandler,
         ImportObjectService importObjectService,
         IndicatorService indicatorService,
         ImportParams params )

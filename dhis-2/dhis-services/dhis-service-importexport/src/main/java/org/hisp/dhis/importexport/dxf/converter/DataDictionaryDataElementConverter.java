@@ -83,7 +83,7 @@ public class DataDictionaryDataElementConverter
     /**
      * Constructor for read operations.
      */
-    public DataDictionaryDataElementConverter( BatchHandler batchHandler,
+    public DataDictionaryDataElementConverter( BatchHandler<GroupMemberAssociation> batchHandler,
         ImportObjectService importObjectService,
         Map<Object, Integer> dataDictionaryMapping,
         Map<Object, Integer> dataElementMapping )

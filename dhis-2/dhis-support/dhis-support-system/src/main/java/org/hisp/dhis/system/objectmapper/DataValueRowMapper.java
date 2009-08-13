@@ -1,4 +1,4 @@
-package org.hisp.dhis.jdbc.batchhandler;
+package org.hisp.dhis.system.objectmapper;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,58 +27,41 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.amplecode.quick.JdbcConfiguration;
-import org.amplecode.quick.batchhandler.AbstractBatchHandler;
-import org.hisp.dhis.source.Source;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: SourceBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
+ * @version $Id$
  */
-public class SourceBatchHandler
-    extends AbstractBatchHandler<Source>
+public class DataValueRowMapper
+    implements RowMapper<DataValue>
 {
-    // -------------------------------------------------------------------------
-    // Constructor
-    // -------------------------------------------------------------------------
- 
-    public SourceBatchHandler( JdbcConfiguration configuration )
+    public DataValue mapRow( ResultSet resultSet )
+        throws SQLException
     {
-        super( configuration, false, false );
-    }
-
-    // -------------------------------------------------------------------------
-    // AbstractBatchHandler implementation
-    // -------------------------------------------------------------------------
-
-    protected void setTableName()
-    {
-        statementBuilder.setTableName( "source" );
-    }
-
-    @Override
-    protected void setAutoIncrementColumn()
-    {
-        statementBuilder.setAutoIncrementColumn( "sourceid" );
-    }
-    
-    protected void setUniqueColumns()
-    {
-        statementBuilder.setUniqueColumn( "sourceid" );
-    }
-    
-    protected void setUniqueValues( Source source )
-    {
-        statementBuilder.setUniqueValue( source.getId() );
-    }
-    
-    protected void setColumns()
-    {
-        // Nothing to add
-    }
-    
-    protected void setValues( Source source )
-    {
-        // Nothing to add
+        final DataValue dataValue = new DataValue();
+        
+        dataValue.setDataElement( new DataElement() );
+        dataValue.setOptionCombo( new DataElementCategoryOptionCombo() );
+        dataValue.setSource( new OrganisationUnit() );
+        dataValue.setPeriod( new Period() );
+        
+        dataValue.getDataElement().setId( resultSet.getInt( 1 ) );
+        dataValue.getPeriod().setId( resultSet.getInt( 2 ) );
+        dataValue.getSource().setId( resultSet.getInt( 3 ) );
+        dataValue.getOptionCombo().setId( resultSet.getInt( 4 ) );
+        dataValue.setValue( resultSet.getString( 5 ) );
+        dataValue.setStoredBy( resultSet.getString( 6 ) );
+        dataValue.setTimestamp( resultSet.getDate( 7 ) );
+        dataValue.setComment( resultSet.getString( 8 ) );
+        
+        return dataValue;
     }
 }

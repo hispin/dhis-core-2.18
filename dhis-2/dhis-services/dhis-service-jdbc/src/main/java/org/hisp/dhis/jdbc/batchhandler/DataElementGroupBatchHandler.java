@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -39,7 +36,7 @@ import org.hisp.dhis.dataelement.DataElementGroup;
  * @version $Id: DataElementGroupBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
  */
 public class DataElementGroupBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<DataElementGroup>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,7 +44,7 @@ public class DataElementGroupBatchHandler
  
     public DataElementGroupBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
+        super( configuration, false, false );
     }
 
     // -------------------------------------------------------------------------
@@ -56,60 +53,46 @@ public class DataElementGroupBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "dataelementgroup";
+        statementBuilder.setTableName( "dataelementgroup" );
     }
     
-    protected void openSqlStatement()
+    @Override
+    protected void setAutoIncrementColumn()
     {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "dataelementgroupid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setAutoIncrementColumn( "dataelementgroupid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
+    @Override
+    protected void setIdentifierColumns()
     {
-        DataElementGroup group = (DataElementGroup) object;
-        
-        statementBuilder.setIdentifierColumnName( "dataelementgroupid" );
-        statementBuilder.setIdentifierColumnValue( group.getId() );
-        
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setIdentifierColumn( "dataelementgroupid" );
     }
     
-    protected String getIdentifierStatement( Object objectName )
+    @Override
+    protected void setIdentifierValues( DataElementGroup group )
+    {        
+        statementBuilder.setIdentifierValue( group.getId() );
+    }
+
+    protected void setUniqueColumns()
     {
-        return statementBuilder.getValueStatement( tableName, "dataelementgroupid", "name", String.valueOf( objectName ) );
+        statementBuilder.setUniqueColumn( "name" );
     }
     
-    protected String getUniquenessStatement( Object object )
+    protected void setUniqueValues( DataElementGroup group )
     {
-        DataElementGroup group = (DataElementGroup) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "name", group.getName() );
-        
-        return statementBuilder.getValueStatement( tableName, "dataelementgroupid", fieldMap, false );
+        statementBuilder.setUniqueValue( group.getName() );        
     }
-    
-    protected void addColumns()
+       
+    protected void setColumns()
     {   
         statementBuilder.setColumn( "uuid" );
         statementBuilder.setColumn( "name" );
     }
     
-    protected void addValues( Object object )
-    {
-        DataElementGroup group = (DataElementGroup) object;
-        
-        statementBuilder.setString( group.getUuid() );
-        statementBuilder.setString( group.getName() );        
+    protected void setValues( DataElementGroup group )
+    {        
+        statementBuilder.setValue( group.getUuid() );
+        statementBuilder.setValue( group.getName() );        
     }
 }

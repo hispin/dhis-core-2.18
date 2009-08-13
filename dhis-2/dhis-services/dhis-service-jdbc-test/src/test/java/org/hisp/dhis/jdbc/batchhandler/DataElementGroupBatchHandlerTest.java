@@ -52,7 +52,7 @@ public class DataElementGroupBatchHandlerTest
     
     private DataElementService dataElementService;
     
-    private BatchHandler batchHandler;
+    private BatchHandler<DataElementGroup> batchHandler;
     
     private DataElementGroup groupA;
     private DataElementGroup groupB;
@@ -125,13 +125,14 @@ public class DataElementGroupBatchHandlerTest
     @Test
     public void testUpdateObject()
     {
-        int id = dataElementService.addDataElementGroup( groupA );
+        int id = batchHandler.insertObject( groupA, true );
         
+        groupA.setId( id );
         groupA.setName( "UpdatedName" );
         
         batchHandler.updateObject( groupA );
         
-        assertEquals( dataElementService.getDataElementGroup( id ).getName(), "UpdatedName" );
+        assertEquals( "UpdatedName", dataElementService.getDataElementGroup( id ).getName() );
     }
 
     @Test

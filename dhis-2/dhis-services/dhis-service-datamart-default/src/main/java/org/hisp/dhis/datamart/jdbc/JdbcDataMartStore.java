@@ -55,6 +55,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.objectmapper.AggregatedDataValueRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedIndicatorValueRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedMapValueRowMapper;
+import org.hisp.dhis.system.objectmapper.DataValueRowMapper;
 import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
 import org.hisp.dhis.system.objectmapper.ObjectMapper;
 
@@ -408,6 +409,35 @@ public class JdbcDataMartStore
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
             return mapper.getCollection( resultSet, new DeflatedDataValueRowMapper() );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get deflated data values", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+    
+    public DataValue getDataValue( final int dataElementId, final int categoryOptionComboId, final int periodId, final int sourceId )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+        
+        final ObjectMapper<DataValue> mapper = new ObjectMapper<DataValue>();
+        
+        try
+        {
+            final String sql =
+                "SELECT * FROM datavalue " +
+                "WHERE dataelementid = " + dataElementId + " " +
+                "AND categoryoptioncomboid = " + categoryOptionComboId + " " +
+                "AND periodid = " + periodId + " " +
+                "AND sourceid = " + sourceId;
+            
+            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
+            
+            return mapper.getObject( resultSet, new DataValueRowMapper() );
         }
         catch ( SQLException ex )
         {

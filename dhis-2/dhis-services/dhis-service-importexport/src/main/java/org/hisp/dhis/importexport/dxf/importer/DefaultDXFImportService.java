@@ -37,15 +37,28 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
+import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
+import org.hisp.dhis.datadictionary.ExtendedDataElement;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.dataset.CompleteDataSetRegistration;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.importexport.GroupMemberAssociation;
+import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportService;
@@ -95,7 +108,10 @@ import org.hisp.dhis.importexport.invoker.ConverterInvoker;
 import org.hisp.dhis.importexport.locking.LockingManager;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.CategoryComboCategoryAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.CompleteDataSetRegistrationBatchHandler;
@@ -133,10 +149,16 @@ import org.hisp.dhis.jdbc.batchhandler.ReportTableOrganisationUnitBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTablePeriodBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.SourceBatchHandler;
 import org.hisp.dhis.olap.OlapURLService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.validation.ValidationRuleService;
 
@@ -271,6 +293,13 @@ public class DefaultDXFImportService
     {
         this.dataValueService = dataValueService;
     }
+
+    private DataMartStore dataMartStore;
+
+    public void setDataMartStore( DataMartStore dataMartStore )
+    {
+        this.dataMartStore = dataMartStore;
+    }
     
     private BatchHandlerFactory batchHandlerFactory;
 
@@ -339,7 +368,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_data_element_category_options" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryOptionBatchHandler.class );
+                BatchHandler<DataElementCategoryOption> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryOptionBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -357,7 +386,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_data_element_categories" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryBatchHandler.class );
+                BatchHandler<DataElementCategory> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -375,7 +404,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_data_element_category_combos" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryComboBatchHandler.class );
+                BatchHandler<DataElementCategoryCombo> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryComboBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -408,7 +437,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_data_element_category_members" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( CategoryCategoryOptionAssociationBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( CategoryCategoryOptionAssociationBatchHandler.class );
 
                 batchHandler.init();
                 
@@ -427,7 +456,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_data_element_category_combo_members" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( CategoryComboCategoryAssociationBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( CategoryComboCategoryAssociationBatchHandler.class );
 
                 batchHandler.init();
                 
@@ -446,7 +475,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_data_elements" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
+                BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
                 
                 batchHandler.init();
                                 
@@ -465,9 +494,9 @@ public class DefaultDXFImportService
             {                
                 //setMessage( "importing_data_elements" );
 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
+                BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
                 
-                BatchHandler extendedDataElementBatchHandler = batchHandlerFactory.createBatchHandler( ExtendedDataElementBatchHandler.class );
+                BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler = batchHandlerFactory.createBatchHandler( ExtendedDataElementBatchHandler.class );
                 
                 extendedDataElementBatchHandler.init();
                 
@@ -506,7 +535,7 @@ public class DefaultDXFImportService
             {                
                 //setMessage( "importing_data_element_groups" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupBatchHandler.class );
+                BatchHandler<DataElementGroup> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -522,7 +551,7 @@ public class DefaultDXFImportService
             {                
                 //setMessage( "importing_data_element_group_members" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupMemberBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupMemberBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -540,7 +569,7 @@ public class DefaultDXFImportService
             {                
                 //setMessage( "importing_indicator_types" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( IndicatorTypeBatchHandler.class );
+                BatchHandler<IndicatorType> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorTypeBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -556,7 +585,7 @@ public class DefaultDXFImportService
             {                
                 //setMessage( "importing_indicators" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class );
+                BatchHandler<Indicator> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -578,9 +607,9 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_indicators" );
 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class );
+                BatchHandler<Indicator> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class );
                 
-                BatchHandler extendedDataElementBatchHandler = batchHandlerFactory.createBatchHandler( ExtendedDataElementBatchHandler.class );
+                BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler = batchHandlerFactory.createBatchHandler( ExtendedDataElementBatchHandler.class );
                 
                 extendedDataElementBatchHandler.init();
                 
@@ -607,7 +636,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_indicator_groups" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupBatchHandler.class );
+                BatchHandler<IndicatorGroup> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -623,7 +652,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_indicator_group_members" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupMemberBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupMemberBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -641,7 +670,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_data_dictionaries" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryBatchHandler.class );
+                BatchHandler<DataDictionary> batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -659,7 +688,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_data_dictionary_data_elements" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryDataElementBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryDataElementBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -678,7 +707,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_data_dictionary_indicators" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryIndicatorBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryIndicatorBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -697,7 +726,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_data_sets" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class );
+                BatchHandler<DataSet> batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -714,7 +743,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_data_set_members" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataSetMemberBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataSetMemberBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -732,8 +761,8 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_organisation_units" );
                 
-                BatchHandler sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class );
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
+                BatchHandler<Source> sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class );
+                BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
                 
                 sourceBatchHandler.init();
                 batchHandler.init();
@@ -752,7 +781,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_organisation_unit_relationships" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
+                BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -771,7 +800,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_organisation_unit_groups" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupBatchHandler.class );
+                BatchHandler<OrganisationUnitGroup> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -787,7 +816,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_organisation_unit_group_members" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupMemberBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupMemberBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -805,7 +834,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_organisation_unit_group_sets" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( GroupSetBatchHandler.class );
+                BatchHandler<OrganisationUnitGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -821,7 +850,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_organisation_unit_group_set_members" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( GroupSetMemberBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetMemberBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -849,7 +878,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_data_set_source_associations" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataSetSourceAssociationBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataSetSourceAssociationBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -881,7 +910,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_periods" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
+                BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -898,7 +927,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_report_tables" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ReportTableBatchHandler.class );
+                BatchHandler<ReportTable> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -914,7 +943,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_report_table_dataelements" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ReportTableDataElementBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableDataElementBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -932,7 +961,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_report_table_category_option_combos" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ReportTableCategoryOptionComboBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableCategoryOptionComboBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -950,7 +979,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_report_table_indicators" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ReportTableIndicatorBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableIndicatorBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -968,7 +997,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_report_table_datasets" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ReportTableDataSetBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableDataSetBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -986,7 +1015,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_report_table_periods" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ReportTablePeriodBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTablePeriodBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -1004,7 +1033,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_report_table_organisation_units" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ReportTableOrganisationUnitBatchHandler.class );
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableOrganisationUnitBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -1032,7 +1061,7 @@ public class DefaultDXFImportService
             {
                 //setMessage( "importing_complete_data_set_registrations" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( CompleteDataSetRegistrationBatchHandler.class );
+                BatchHandler<CompleteDataSetRegistration> batchHandler = batchHandlerFactory.createBatchHandler( CompleteDataSetRegistrationBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -1059,9 +1088,9 @@ public class DefaultDXFImportService
                 {
                     //setMessage( "importing_data_values" );
                     
-                    BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
+                    BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
                     
-                    BatchHandler importDataValueBatchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
+                    BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
                     
                     batchHandler.init();
                     
@@ -1070,6 +1099,7 @@ public class DefaultDXFImportService
                     XMLConverter converter = new DataValueConverter( batchHandler, 
                         importDataValueBatchHandler,                    
                         dataValueService,
+                        dataMartStore,
                         importObjectService,
                         params,
                         objectMappingGenerator.getDataElementMapping( params.skipMapping() ),

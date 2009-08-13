@@ -42,6 +42,7 @@ import org.hisp.dhis.importexport.converter.AbstractOrganisationUnitConverter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.DateUtils;
 
 /**
@@ -84,8 +85,8 @@ public class OrganisationUnitConverter
      * @param organisationUnitService the organisationUnitService to use.
      * @param importObjectService the importObjectService to use.
      */
-    public OrganisationUnitConverter( BatchHandler batchHandler, 
-        BatchHandler sourceBatchHandler, 
+    public OrganisationUnitConverter( BatchHandler<OrganisationUnit> batchHandler, 
+        BatchHandler<Source> sourceBatchHandler, 
         ImportObjectService importObjectService, 
         OrganisationUnitService organisationUnitService )
     {

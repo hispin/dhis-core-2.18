@@ -83,7 +83,7 @@ public class GroupSetMemberConverter
     /**
      * Constructor for read operations.
      */
-    public GroupSetMemberConverter( BatchHandler batchHandler, 
+    public GroupSetMemberConverter( BatchHandler<GroupMemberAssociation> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> organisationUnitGroupMapping, 
         Map<Object, Integer> organisationUnitGroupSetMapping )

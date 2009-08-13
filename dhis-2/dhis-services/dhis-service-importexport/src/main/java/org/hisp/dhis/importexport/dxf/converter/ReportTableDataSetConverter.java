@@ -84,7 +84,7 @@ public class ReportTableDataSetConverter
     /**
      * Constructor for read operations.
      */
-    public ReportTableDataSetConverter( BatchHandler batchHandler, 
+    public ReportTableDataSetConverter( BatchHandler<GroupMemberAssociation> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> reportTableMapping, 
         Map<Object, Integer> dataSetMapping )

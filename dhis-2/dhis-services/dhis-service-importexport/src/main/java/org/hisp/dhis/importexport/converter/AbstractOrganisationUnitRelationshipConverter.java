@@ -27,6 +27,7 @@ package org.hisp.dhis.importexport.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -39,6 +40,8 @@ public class AbstractOrganisationUnitRelationshipConverter
     extends AbstractConverter<GroupMemberAssociation>
 {
     protected OrganisationUnitService organisationUnitService;
+    
+    protected BatchHandler<OrganisationUnit> organisationUnitBatchHandler;
 
     // -------------------------------------------------------------------------
     // Overridden methods
@@ -54,7 +57,7 @@ public class AbstractOrganisationUnitRelationshipConverter
         
         child.setParent( parent );
         
-        batchHandler.updateObject( child );
+        organisationUnitBatchHandler.updateObject( child );
     }
 
     protected void importMatching( GroupMemberAssociation object, GroupMemberAssociation match )

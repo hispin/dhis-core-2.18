@@ -57,7 +57,7 @@ public class OrganisationUnitGroupMemberRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public OrganisationUnitGroupMemberRowHandler( BatchHandler batchHandler,
+    public OrganisationUnitGroupMemberRowHandler( BatchHandler<GroupMemberAssociation> batchHandler,
         ImportObjectService importObjectService,
         Map<Object, Integer> organisationUnitMapping, 
         Map<Object, Integer> organisationUnitGroupMapping,

@@ -147,16 +147,16 @@ public class MappingStoreTest
     @Test
     public void testAddGetMapView()
     {
-        mappingService.addMap( mapA );
+        mappingStore.addMap( mapA );
         
         MapView mapView = new MapView( "MapViewA", indicatorGroup, indicator, periodType, period, MapView.MAP_SOURCE_TYPE_SHAPEFILE, "sl_districts", 1, 1, "A", "B" );
         
-        int idA = mappingService.addMapView( mapView );
+        int idA = mappingStore.addMapView( mapView );
         
-        assertEquals( mapView, mappingService.getMapView( idA ) );
-        assertEquals( indicatorGroup, mappingService.getMapView( idA ).getIndicatorGroup() );
-        assertEquals( indicator, mappingService.getMapView( idA ).getIndicator() );
-        assertEquals( periodType, mappingService.getMapView( idA ).getPeriodType() );
-        assertEquals( period, mappingService.getMapView( idA ).getPeriod() );
+        assertEquals( mapView, mappingStore.getMapView( idA ) );
+        assertEquals( indicatorGroup, mappingStore.getMapView( idA ).getIndicatorGroup() );
+        assertEquals( indicator, mappingStore.getMapView( idA ).getIndicator() );
+        assertEquals( periodType, mappingStore.getMapView( idA ).getPeriodType() );
+        assertEquals( period, mappingStore.getMapView( idA ).getPeriod() );
     }
 }

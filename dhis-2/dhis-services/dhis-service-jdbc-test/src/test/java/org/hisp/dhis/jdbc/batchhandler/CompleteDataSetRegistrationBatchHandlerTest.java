@@ -47,7 +47,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -59,7 +58,7 @@ public class CompleteDataSetRegistrationBatchHandlerTest
 {
     private BatchHandlerFactory batchHandlerFactory;
 
-    private BatchHandler batchHandler;
+    private BatchHandler<CompleteDataSetRegistration> batchHandler;
     
     private DataSet dataSetA;
     private DataSet dataSetB;
@@ -174,7 +173,7 @@ public class CompleteDataSetRegistrationBatchHandlerTest
     @Test
     public void testUpdateObject()
     {
-        completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationA );
+        batchHandler.insertObject( registrationA, false );
         
         registrationA.setDate( dateB );
         
@@ -186,7 +185,6 @@ public class CompleteDataSetRegistrationBatchHandlerTest
     }
 
     @Test
-    @Ignore //TODO
     public void testObjectExists()
     {
         completeDataSetRegistrationService.saveCompleteDataSetRegistration( registrationA );

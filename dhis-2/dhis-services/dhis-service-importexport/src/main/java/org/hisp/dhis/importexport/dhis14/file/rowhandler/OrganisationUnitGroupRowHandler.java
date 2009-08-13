@@ -52,7 +52,7 @@ public class OrganisationUnitGroupRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public OrganisationUnitGroupRowHandler( BatchHandler batchHandler,
+    public OrganisationUnitGroupRowHandler( BatchHandler<OrganisationUnitGroup> batchHandler,
         ImportObjectService importObjectService,
         OrganisationUnitGroupService organisationUnitGroupService,
         ImportParams params )

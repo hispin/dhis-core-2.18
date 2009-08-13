@@ -38,6 +38,18 @@ import java.util.HashSet;
  */
 public class ObjectMapper<T>
 {
+    public T getObject( ResultSet resultSet, RowMapper<T> rowMapper )
+    {
+        try
+        {
+            return resultSet.next() ? rowMapper.mapRow( resultSet ) : null;
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get object from resultset", ex );
+        }
+    }
+    
     public Collection<T> getCollection( ResultSet resultSet, RowMapper<T> rowMapper )
     {
         try

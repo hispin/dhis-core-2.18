@@ -36,6 +36,7 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
@@ -63,7 +64,7 @@ public class DimensionConverter
 
     private XMLConverter itemConverter;
     
-    private BatchHandler categoryOptionBatchHandler;
+    private BatchHandler<DataElementCategoryOption> categoryOptionBatchHandler;
     
     private DataElementCategoryOptionService categoryOptionService;
     
@@ -90,10 +91,10 @@ public class DimensionConverter
      * @param importObjectService
      * @param categoryService
      */
-    public DimensionConverter( BatchHandler batchHandler,
+    public DimensionConverter( BatchHandler<DataElementCategory> batchHandler,
         ImportObjectService importObjectService,
         DataElementCategoryService categoryService,
-        BatchHandler categoryOptionBatchHandler,
+        BatchHandler<DataElementCategoryOption> categoryOptionBatchHandler,
         DataElementCategoryOptionService categoryOptionService,
         DataElementCategoryComboService categoryComboService )
     {

@@ -75,7 +75,7 @@ public class DataElementCategoryComboConverter
      * @param importObjectService the importObjectService to use.
      * @param categoryComboService the dataElementCategoryComboService to use.
      */
-    public DataElementCategoryComboConverter( BatchHandler batchHandler, 
+    public DataElementCategoryComboConverter( BatchHandler<DataElementCategoryCombo> batchHandler, 
         ImportObjectService importObjectService,
         DataElementCategoryComboService categoryComboService )
     {

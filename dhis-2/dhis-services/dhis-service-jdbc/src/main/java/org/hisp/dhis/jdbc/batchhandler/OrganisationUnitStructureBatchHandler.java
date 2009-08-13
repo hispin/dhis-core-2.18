@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.resourcetable.OrganisationUnitStructure;
@@ -38,7 +35,7 @@ import org.hisp.dhis.resourcetable.OrganisationUnitStructure;
  * @version $Id: OrganisationUnitStructureBatchHandler.java 5359 2008-06-06 10:36:39Z larshelg $
  */
 public class OrganisationUnitStructureBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<OrganisationUnitStructure>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -46,7 +43,7 @@ public class OrganisationUnitStructureBatchHandler
  
     public OrganisationUnitStructureBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
+        super( configuration, false, false );
     }
 
     // -------------------------------------------------------------------------
@@ -55,45 +52,38 @@ public class OrganisationUnitStructureBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "orgunitstructure";
+        statementBuilder.setTableName( "orgunitstructure" );
     }
     
-    protected void openSqlStatement()
+    @Override
+    protected void setAutoIncrementColumn()
     {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "orgunitstructureid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setAutoIncrementColumn( "orgunitstructureid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
+    @Override
+    protected void setIdentifierColumns()
     {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setIdentifierColumn( "orgunitstructureid" );
     }
     
-    protected String getIdentifierStatement( Object objectName )
+    @Override
+    protected void setIdentifierValues( OrganisationUnitStructure structure )
+    {        
+        statementBuilder.setIdentifierValue( structure.getId() );
+    }
+
+    protected void setUniqueColumns()
     {
-        return statementBuilder.getValueStatement( tableName, "orgunitstructureid", "organisationunitid", String.valueOf( objectName ) );
+        statementBuilder.setUniqueColumn( "organisationunitid" );
     }
     
-    protected String getUniquenessStatement( Object object )
-    {
-        OrganisationUnitStructure structure = (OrganisationUnitStructure) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "organisationUnitId", String.valueOf( structure.getOrganisationUnitId() ) );
-        
-        return statementBuilder.getValueStatement( tableName, "orgunitstructureid", fieldMap, false );
-    }
+    protected void setUniqueValues( OrganisationUnitStructure structure )
+    {        
+        statementBuilder.setUniqueValue( structure.getOrganisationUnitId() );
+    }    
     
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "organisationunitid" );
         statementBuilder.setColumn( "level" );
@@ -117,29 +107,27 @@ public class OrganisationUnitStructureBatchHandler
         statementBuilder.setColumn( "geolevel8" );
     }
     
-    protected void addValues( Object object )
-    {
-        OrganisationUnitStructure structure = (OrganisationUnitStructure) object;
+    protected void setValues( OrganisationUnitStructure structure )
+    {        
+        statementBuilder.setValue( structure.getOrganisationUnitId() );
+        statementBuilder.setValue( structure.getLevel() );
         
-        statementBuilder.setInt( structure.getOrganisationUnitId() );
-        statementBuilder.setInt( structure.getLevel() );
-        
-        statementBuilder.setInt( structure.getIdLevel1() );
-        statementBuilder.setInt( structure.getIdLevel2() );
-        statementBuilder.setInt( structure.getIdLevel3() );
-        statementBuilder.setInt( structure.getIdLevel4() );
-        statementBuilder.setInt( structure.getIdLevel5() );
-        statementBuilder.setInt( structure.getIdLevel6() );
-        statementBuilder.setInt( structure.getIdLevel7() );
-        statementBuilder.setInt( structure.getIdLevel8() );
+        statementBuilder.setValue( structure.getIdLevel1() );
+        statementBuilder.setValue( structure.getIdLevel2() );
+        statementBuilder.setValue( structure.getIdLevel3() );
+        statementBuilder.setValue( structure.getIdLevel4() );
+        statementBuilder.setValue( structure.getIdLevel5() );
+        statementBuilder.setValue( structure.getIdLevel6() );
+        statementBuilder.setValue( structure.getIdLevel7() );
+        statementBuilder.setValue( structure.getIdLevel8() );
 
-        statementBuilder.setString( structure.getGeoCodeLevel1() );
-        statementBuilder.setString( structure.getGeoCodeLevel2() );
-        statementBuilder.setString( structure.getGeoCodeLevel3() );
-        statementBuilder.setString( structure.getGeoCodeLevel4() );
-        statementBuilder.setString( structure.getGeoCodeLevel5() );
-        statementBuilder.setString( structure.getGeoCodeLevel6() );
-        statementBuilder.setString( structure.getGeoCodeLevel7() );
-        statementBuilder.setString( structure.getGeoCodeLevel8() );
+        statementBuilder.setValue( structure.getGeoCodeLevel1() );
+        statementBuilder.setValue( structure.getGeoCodeLevel2() );
+        statementBuilder.setValue( structure.getGeoCodeLevel3() );
+        statementBuilder.setValue( structure.getGeoCodeLevel4() );
+        statementBuilder.setValue( structure.getGeoCodeLevel5() );
+        statementBuilder.setValue( structure.getGeoCodeLevel6() );
+        statementBuilder.setValue( structure.getGeoCodeLevel7() );
+        statementBuilder.setValue( structure.getGeoCodeLevel8() );
     }
 }

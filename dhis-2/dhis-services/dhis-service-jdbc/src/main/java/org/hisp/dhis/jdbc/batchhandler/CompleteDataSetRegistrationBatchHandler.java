@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
@@ -39,7 +36,7 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistration;
  * @version $Id$
  */
 public class CompleteDataSetRegistrationBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<CompleteDataSetRegistration>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,9 +44,7 @@ public class CompleteDataSetRegistrationBatchHandler
  
     public CompleteDataSetRegistrationBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
@@ -58,44 +53,40 @@ public class CompleteDataSetRegistrationBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "completedatasetregistration";
+        statementBuilder.setTableName( "completedatasetregistration" );
     }
-    
-    protected void openSqlStatement()
+
+    @Override
+    protected void setIdentifierColumns()
     {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setIdentifierColumn( "datasetid" );
+        statementBuilder.setIdentifierColumn( "periodid" );
+        statementBuilder.setIdentifierColumn( "sourceid" );
     }
-    
-    protected String getUpdateSqlStatement( Object object )
+
+    @Override
+    protected void setIdentifierValues( CompleteDataSetRegistration registration )
+    {        
+        statementBuilder.setIdentifierValue( registration.getDataSet().getId() );
+        statementBuilder.setIdentifierValue( registration.getPeriod().getId() );
+        statementBuilder.setIdentifierValue( registration.getSource().getId() );
+    }
+
+    protected void setUniqueColumns()
     {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setUniqueColumn( "datasetid" );
+        statementBuilder.setUniqueColumn( "periodid" );
+        statementBuilder.setUniqueColumn( "sourceid" );
+    }
+
+    protected void setUniqueValues( CompleteDataSetRegistration registration )
+    {        
+        statementBuilder.setUniqueValue( registration.getDataSet().getId() );
+        statementBuilder.setUniqueValue( registration.getPeriod().getId() );
+        statementBuilder.setUniqueValue( registration.getSource().getId() );
     }
     
-    protected String getIdentifierStatement( Object objectName )
-    {
-        throw new UnsupportedOperationException( "sourceid has no single unique identifier" );
-    }
-    
-    protected String getUniquenessStatement( Object object )
-    {
-        CompleteDataSetRegistration registration = (CompleteDataSetRegistration) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "datasetid", String.valueOf( registration.getDataSet().getId() ) );
-        fieldMap.put( "periodid", String.valueOf( registration.getPeriod().getId() ) );
-        fieldMap.put( "sourceid", String.valueOf( registration.getSource().getId() ) );
-        
-        return statementBuilder.getValueStatement( tableName, "datasetid", fieldMap, true );
-    }
-    
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "datasetid" );
         statementBuilder.setColumn( "periodid" );
@@ -103,13 +94,11 @@ public class CompleteDataSetRegistrationBatchHandler
         statementBuilder.setColumn( "date" );
     }
     
-    protected void addValues( Object object )
-    {
-        CompleteDataSetRegistration registration = (CompleteDataSetRegistration) object;
-        
-        statementBuilder.setInt( registration.getDataSet().getId() );
-        statementBuilder.setInt( registration.getPeriod().getId() );
-        statementBuilder.setInt( registration.getSource().getId() );
-        statementBuilder.setDate( registration.getDate() );
+    protected void setValues( CompleteDataSetRegistration registration )
+    {        
+        statementBuilder.setValue( registration.getDataSet().getId() );
+        statementBuilder.setValue( registration.getPeriod().getId() );
+        statementBuilder.setValue( registration.getSource().getId() );
+        statementBuilder.setValue( registration.getDate() );
     }
 }

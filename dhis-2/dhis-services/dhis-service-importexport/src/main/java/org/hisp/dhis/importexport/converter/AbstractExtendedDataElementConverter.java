@@ -39,7 +39,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 public class AbstractExtendedDataElementConverter
     extends AbstractConverter<DataElement>
 {
-    protected BatchHandler extendedDataElementBatchHandler;
+    protected BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler;
     
     protected DataElementService dataElementService;
     

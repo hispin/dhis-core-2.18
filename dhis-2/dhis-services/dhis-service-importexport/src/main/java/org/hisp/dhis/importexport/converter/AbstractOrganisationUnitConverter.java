@@ -30,6 +30,7 @@ package org.hisp.dhis.importexport.converter;
 import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.source.Source;
 
 /**
  * @author Lars Helge Overland
@@ -40,7 +41,7 @@ public class AbstractOrganisationUnitConverter
 {
     protected OrganisationUnitService organisationUnitService;
 
-    protected BatchHandler sourceBatchHandler;
+    protected BatchHandler<Source> sourceBatchHandler;
     
     // -------------------------------------------------------------------------
     // Overridden methods

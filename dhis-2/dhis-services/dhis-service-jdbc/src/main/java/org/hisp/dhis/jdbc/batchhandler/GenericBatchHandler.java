@@ -37,7 +37,7 @@ import org.amplecode.quick.batchhandler.AbstractBatchHandler;
  * @version $Id$
  */
 public class GenericBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<Object>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -45,11 +45,9 @@ public class GenericBatchHandler
  
     public GenericBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
-
+    
     // -------------------------------------------------------------------------
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
@@ -59,39 +57,35 @@ public class GenericBatchHandler
         // Must be set externally
     }
     
-    protected void openSqlStatement()
-    {        
-        sqlBuffer.append( statementBuilder.getNoColumnInsertStatementOpening( tableName ) );
-    }
-    
-    protected String getUpdateSqlStatement( Object object )
+    @Override
+    protected String getInsertStatementOpening()
     {
-        return null; // Not in use
+        return statementBuilder.getNoColumnInsertStatementOpening();
     }
     
-    protected String getIdentifierStatement( Object objectName )
+    protected void setUniqueColumns()
     {
-        throw new UnsupportedOperationException( "Object has no single unique identifier" );
+        // Cannot be known
     }
-    
-    protected String getUniquenessStatement( Object object )
+
+    protected void setUniqueValues( Object object )
     {
-        return null; // Not in use
+        throw new UnsupportedOperationException();
     }
     
-    protected void addColumns()
+    protected void setColumns()
     {
         // Not in use
     }
     
     @SuppressWarnings( "unchecked" )
-    protected void addValues( Object object )
+    protected void setValues( Object object )
     {
         List<String> values = (List<String>) object;
         
         for ( String value : values )
         {
-            statementBuilder.setString( value );
+            statementBuilder.setValue( value );
         }
     }
 }

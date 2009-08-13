@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
@@ -39,7 +36,7 @@ import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
  * @version $Id: AggregatedIndicatorValueBatchHandler.java 5360 2008-06-06 12:18:54Z larshelg $
  */
 public class AggregatedIndicatorValueBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<AggregatedIndicatorValue>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,9 +44,7 @@ public class AggregatedIndicatorValueBatchHandler
 
     public AggregatedIndicatorValueBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
@@ -58,44 +53,24 @@ public class AggregatedIndicatorValueBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "aggregatedindicatorvalue";
-    }
-    
-    protected void openSqlStatement()
-    {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
-    }
-    
-    protected String getUpdateSqlStatement( Object object )
-    {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
-    }
-    
-    protected String getIdentifierStatement( Object objectName )
-    {
-        throw new UnsupportedOperationException( "AggregatedIndicatorValue has no single unique identifier" );
+        statementBuilder.setTableName( "aggregatedindicatorvalue" );
     }
 
-    protected String getUniquenessStatement( Object object )
+    protected void setUniqueColumns()
     {
-        AggregatedIndicatorValue value = (AggregatedIndicatorValue) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "indicatorid", String.valueOf( value.getIndicatorId() ) );
-        fieldMap.put( "periodid", String.valueOf( value.getPeriodId() ) );
-        fieldMap.put( "organisationunitid", String.valueOf( value.getOrganisationUnitId() ) );
-        
-        return statementBuilder.getValueStatement( tableName, "indicatorid", fieldMap, true );
+        statementBuilder.setUniqueColumn( "indicatorid" );
+        statementBuilder.setUniqueColumn( "periodid" );
+        statementBuilder.setUniqueColumn( "organisationunitid" );
     }
     
-    protected void addColumns()
+    protected void setUniqueValues( AggregatedIndicatorValue value )
+    {        
+        statementBuilder.setUniqueValue( value.getIndicatorId() );
+        statementBuilder.setUniqueValue( value.getPeriodId() );
+        statementBuilder.setUniqueValue( value.getOrganisationUnitId() );
+    }
+    
+    protected void setColumns()
     {
         statementBuilder.setColumn( "indicatorid" );
         statementBuilder.setColumn( "periodid" );
@@ -109,19 +84,17 @@ public class AggregatedIndicatorValueBatchHandler
         statementBuilder.setColumn( "denominatorvalue" );
     }
 
-    protected void addValues( Object object )
-    {
-        AggregatedIndicatorValue value = (AggregatedIndicatorValue) object;
-        
-        statementBuilder.setInt( value.getIndicatorId() );
-        statementBuilder.setInt( value.getPeriodId() );
-        statementBuilder.setInt( value.getPeriodTypeId() );
-        statementBuilder.setInt( value.getOrganisationUnitId() );
-        statementBuilder.setInt( value.getLevel() );
-        statementBuilder.setString( value.getAnnualized() );
-        statementBuilder.setDouble( value.getFactor() );
-        statementBuilder.setDouble( value.getValue() );
-        statementBuilder.setDouble( value.getNumeratorValue() );
-        statementBuilder.setDouble( value.getDenominatorValue() );
+    protected void setValues( AggregatedIndicatorValue value )
+    {        
+        statementBuilder.setValue( value.getIndicatorId() );
+        statementBuilder.setValue( value.getPeriodId() );
+        statementBuilder.setValue( value.getPeriodTypeId() );
+        statementBuilder.setValue( value.getOrganisationUnitId() );
+        statementBuilder.setValue( value.getLevel() );
+        statementBuilder.setValue( value.getAnnualized() );
+        statementBuilder.setValue( value.getFactor() );
+        statementBuilder.setValue( value.getValue() );
+        statementBuilder.setValue( value.getNumeratorValue() );
+        statementBuilder.setValue( value.getDenominatorValue() );
     }
 }

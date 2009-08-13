@@ -36,7 +36,7 @@ import org.hisp.dhis.resourcetable.GroupSetStructure;
  * @version $Id: GroupSetStructureBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
  */
 public class GroupSetStructureBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<GroupSetStructure>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -44,9 +44,7 @@ public class GroupSetStructureBatchHandler
  
     public GroupSetStructureBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
@@ -55,51 +53,50 @@ public class GroupSetStructureBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "orgunitgroupsetstructure";
+        statementBuilder.setTableName( "orgunitgroupsetstructure" );
     }
     
-    protected void openSqlStatement()
+    @Override
+    protected void setAutoIncrementColumn()
     {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "orgunitgroupsetstructureid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setAutoIncrementColumn( "orgunitgroupsetstructureid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
+    protected void setIdentifierColumns()
     {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setIdentifierColumn( "orgunitgroupsetstructureid" );
     }
     
-    protected String getIdentifierStatement( Object objectName )
+    protected void setIdentifierValues( GroupSetStructure structure )
     {
-        return null; // Not in use
+        statementBuilder.setIdentifierValue( structure.getId() );
     }
     
-    protected String getUniquenessStatement( Object object )
+    protected void setUniqueColumns()
     {
-        return null; // Not in use
+        statementBuilder.setUniqueColumn( "organisationunitid" );
+        statementBuilder.setUniqueColumn( "orgunitgroupid" );
+        statementBuilder.setUniqueColumn( "orgunitgroupsetid" );
     }
     
-    protected void addColumns()
+    protected void setUniqueValues( GroupSetStructure structure )
+    {        
+        statementBuilder.setUniqueValue( structure.getOrganisationUnitId() );
+        statementBuilder.setUniqueValue( structure.getGroupId() );
+        statementBuilder.setUniqueValue( structure.getGroupSetId() );
+    }
+    
+    protected void setColumns()
     {
         statementBuilder.setColumn( "organisationunitid" );
         statementBuilder.setColumn( "orgunitgroupid" );
         statementBuilder.setColumn( "orgunitgroupsetid" );
     }
     
-    protected void addValues( Object object )
-    {
-        GroupSetStructure structure = (GroupSetStructure) object;
-        
-        statementBuilder.setInt( structure.getOrganisationUnitId() );
-        statementBuilder.setInt( structure.getGroupId() );
-        statementBuilder.setInt( structure.getGroupSetId() );
+    protected void setValues( GroupSetStructure structure )
+    {        
+        statementBuilder.setValue( structure.getOrganisationUnitId() );
+        statementBuilder.setValue( structure.getGroupId() );
+        statementBuilder.setValue( structure.getGroupSetId() );
     }
 }

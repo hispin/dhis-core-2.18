@@ -39,6 +39,7 @@ import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.source.Source;
 import org.junit.Test;
 
 /**
@@ -50,9 +51,9 @@ public class SourceOrganisationUnitBatchHandlerTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
-    private BatchHandler sourceBatchHandler;
+    private BatchHandler<Source> sourceBatchHandler;
     
-    private BatchHandler organisationUnitbatchHandler;
+    private BatchHandler<OrganisationUnit> organisationUnitbatchHandler;
     
     private OrganisationUnit unitA;
     private OrganisationUnit unitB;
@@ -146,13 +147,17 @@ public class SourceOrganisationUnitBatchHandlerTest
     @Test
     public void testUpdateObject()
     {
-        int id = organisationUnitService.addOrganisationUnit( unitA );
+        int id = sourceBatchHandler.insertObject( unitA, true );
+        
+        unitA.setId( id );
+        
+        organisationUnitbatchHandler.insertObject( unitA, false );
         
         unitA.setName( "UpdatedName" );
         
         organisationUnitbatchHandler.updateObject( unitA );
         
-        assertEquals( organisationUnitService.getOrganisationUnit( id ).getName(), "UpdatedName" );
+        assertEquals( "UpdatedName", organisationUnitService.getOrganisationUnit( id ).getName() );
     }
 
     @Test

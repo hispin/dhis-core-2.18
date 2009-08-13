@@ -40,6 +40,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.ExportParams;
@@ -78,9 +79,11 @@ public class IndicatorConverter
     
     private OrganisationUnitService organisationUnitService;
 
+    private DataMartStore dataMartStore;
+    
     private DataElementCategoryCombo categoryCombo;
     
-    private BatchHandler dataValueBatchHandler;
+    private BatchHandler<DataValue> dataValueBatchHandler;
     
     private DataElementCategoryOptionCombo categoryOptionCombo;
     
@@ -111,11 +114,12 @@ public class IndicatorConverter
     /**
      * Constructor for read operations.
      */
-    public IndicatorConverter( BatchHandler batchHandler,
+    public IndicatorConverter( BatchHandler<DataElement> batchHandler,
         DataElementService dataElementService, 
         ImportObjectService importObjectService,
+        DataMartStore dataMartStore,
         DataElementCategoryCombo categoryCombo,
-        BatchHandler dataValueBatchHandler,
+        BatchHandler<DataValue> dataValueBatchHandler,
         DataElementCategoryOptionCombo categoryOptionCombo,
         Map<Object, Integer> periodMapping,
         Map<Object, Integer> sourceMapping )
@@ -123,6 +127,7 @@ public class IndicatorConverter
         this.batchHandler = batchHandler;
         this.dataElementService = dataElementService;
         this.importObjectService = importObjectService;
+        this.dataMartStore = dataMartStore;
         this.categoryCombo = categoryCombo;
         this.dataValueBatchHandler = dataValueBatchHandler;
         this.categoryOptionCombo = categoryOptionCombo;
@@ -215,6 +220,7 @@ public class IndicatorConverter
             
             dataConverter = new DataConverter( dataValueBatchHandler, 
                 importObjectService,
+                dataMartStore,
                 params,
                 element,
                 categoryOptionCombo,

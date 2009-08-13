@@ -51,7 +51,7 @@ public class GroupSetRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public GroupSetRowHandler( BatchHandler batchHandler,
+    public GroupSetRowHandler( BatchHandler<OrganisationUnitGroupSet> batchHandler,
         ImportObjectService importObjectService,
         OrganisationUnitGroupService organisationUnitGroupService,
         ImportParams params )

@@ -300,7 +300,7 @@ public class DefaultReportTableService
         // Populating report table from grid
         // ---------------------------------------------------------------------
 
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
+        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
 
         batchHandler.setTableName( reportTable.getTableName() );
         

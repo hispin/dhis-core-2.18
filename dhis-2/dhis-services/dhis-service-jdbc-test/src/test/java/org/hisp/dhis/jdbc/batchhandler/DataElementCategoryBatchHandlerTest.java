@@ -50,7 +50,7 @@ public class DataElementCategoryBatchHandlerTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
-    private BatchHandler batchHandler;
+    private BatchHandler<DataElementCategory> batchHandler;
     
     private DataElementCategory categoryA;
     private DataElementCategory categoryB;
@@ -71,9 +71,9 @@ public class DataElementCategoryBatchHandlerTest
         
         batchHandler.init();
         
-        categoryA = new DataElementCategory( "categoryA" );
-        categoryB = new DataElementCategory( "categoryB" );
-        categoryC = new DataElementCategory( "categoryC" );
+        categoryA = new DataElementCategory( "CategoryA" );
+        categoryB = new DataElementCategory( "CategoryB" );
+        categoryC = new DataElementCategory( "CategoryC" );
     }
 
     @Override
@@ -123,8 +123,9 @@ public class DataElementCategoryBatchHandlerTest
     @Test
     public void testUpdateObject()
     {
-        int id = categoryService.addDataElementCategory( categoryA );
+        int id = batchHandler.insertObject( categoryA, true );
         
+        categoryA.setId( id );
         categoryA.setName( "updatedName" );
         
         batchHandler.updateObject( categoryA );
@@ -137,7 +138,7 @@ public class DataElementCategoryBatchHandlerTest
     {
         int referenceId = categoryService.addDataElementCategory( categoryA );
         
-        int retrievedId = batchHandler.getObjectIdentifier( "categoryA" );
+        int retrievedId = batchHandler.getObjectIdentifier( "CategoryA" );
         
         assertEquals( referenceId, retrievedId );
     }

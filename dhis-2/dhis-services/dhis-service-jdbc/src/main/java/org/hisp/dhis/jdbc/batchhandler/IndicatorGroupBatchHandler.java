@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.indicator.IndicatorGroup;
@@ -39,7 +36,7 @@ import org.hisp.dhis.indicator.IndicatorGroup;
  * @version $Id: IndicatorGroupBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
  */
 public class IndicatorGroupBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<IndicatorGroup>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,7 +44,7 @@ public class IndicatorGroupBatchHandler
  
     public IndicatorGroupBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
+        super( configuration, false, false );
     }
 
     // -------------------------------------------------------------------------
@@ -56,60 +53,46 @@ public class IndicatorGroupBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "indicatorgroup";
+        statementBuilder.setTableName( "indicatorgroup" );
     }
     
-    protected void openSqlStatement()
+    @Override
+    protected void setAutoIncrementColumn()
     {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "indicatorgroupid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setAutoIncrementColumn( "indicatorgroupid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
+    @Override
+    protected void setIdentifierColumns()
     {
-        IndicatorGroup group = (IndicatorGroup) object;
-
-        statementBuilder.setIdentifierColumnName( "indicatorgroupid" );
-        statementBuilder.setIdentifierColumnValue( group.getId() );
-        
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setIdentifierColumn( "indicatorgroupid" );
     }
     
-    protected String getIdentifierStatement( Object objectName )
+    @Override
+    protected void setIdentifierValues( IndicatorGroup group )
     {
-        return statementBuilder.getValueStatement( tableName, "indicatorgroupid", "name", String.valueOf( objectName ) );
-    }
-
-    protected String getUniquenessStatement( Object object )
-    {
-        IndicatorGroup group = (IndicatorGroup) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "name", group.getName() );
-        
-        return statementBuilder.getValueStatement( tableName, "indicatorgroupid", fieldMap, false );
+        statementBuilder.setIdentifierValue( group.getId() );
     }
     
-    protected void addColumns()
+    protected void setUniqueColumns()
+    {
+        statementBuilder.setUniqueColumn( "name" );
+    }
+    
+    protected void setUniqueValues( IndicatorGroup group )
+    {        
+        statementBuilder.setUniqueValue( group.getName() );
+    }
+    
+    protected void setColumns()
     {
         statementBuilder.setColumn( "uuid" );
         statementBuilder.setColumn( "name" );
     }
     
-    protected void addValues( Object object )
-    {
-        IndicatorGroup group = (IndicatorGroup) object;
-        
-        statementBuilder.setString( group.getUuid() );
-        statementBuilder.setString( group.getName() );
+    protected void setValues( IndicatorGroup group )
+    {        
+        statementBuilder.setValue( group.getUuid() );
+        statementBuilder.setValue( group.getName() );
     }
 }

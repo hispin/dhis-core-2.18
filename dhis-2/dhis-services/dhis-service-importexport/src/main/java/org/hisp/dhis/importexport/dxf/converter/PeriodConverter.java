@@ -86,7 +86,7 @@ public class PeriodConverter
      * @param periodService the periodService to use.
      * @param importObjectService the importObjectService to use.
      */
-    public PeriodConverter( BatchHandler batchHandler, 
+    public PeriodConverter( BatchHandler<Period> batchHandler, 
         ImportObjectService importObjectService, 
         PeriodService periodService,
         Map<String, Integer> periodTypeMapping )

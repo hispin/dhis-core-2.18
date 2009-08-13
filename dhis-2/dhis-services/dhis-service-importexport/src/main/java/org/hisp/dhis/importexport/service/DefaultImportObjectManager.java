@@ -112,6 +112,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.source.Source;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.transaction.annotation.Transactional;
@@ -227,7 +228,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importCategoryOptions()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryOptionBatchHandler.class );
+        BatchHandler<DataElementCategoryOption> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryOptionBatchHandler.class );
         
         batchHandler.init();
         
@@ -261,7 +262,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importCategories()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryBatchHandler.class );
+        BatchHandler<DataElementCategory> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryBatchHandler.class );
         
         batchHandler.init();
         
@@ -295,7 +296,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importCategoryCombos()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryComboBatchHandler.class );
+        BatchHandler<DataElementCategoryCombo> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryComboBatchHandler.class );
         
         batchHandler.init();
         
@@ -382,7 +383,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importCategoryCategoryOptionAssociations()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( CategoryCategoryOptionAssociationBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( CategoryCategoryOptionAssociationBatchHandler.class );
         
         importGroupMemberAssociation( batchHandler, GroupMemberType.CATEGORY_CATEGORYOPTION, 
             objectMappingGenerator.getCategoryMapping( false ), 
@@ -394,7 +395,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importCategoryComboCategoryAssociations()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( CategoryComboCategoryAssociationBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( CategoryComboCategoryAssociationBatchHandler.class );
         
         importGroupMemberAssociation( batchHandler, GroupMemberType.CATEGORYCOMBO_CATEGORY, 
             objectMappingGenerator.getCategoryComboMapping( false ),
@@ -406,8 +407,9 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataElements()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
-        BatchHandler extendedDataElementBatchHandler = batchHandlerFactory.createBatchHandler( ExtendedDataElementBatchHandler.class );
+        BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
+        BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler = 
+            batchHandlerFactory.createBatchHandler( ExtendedDataElementBatchHandler.class );
         
         Map<Object, Integer> categoryComboMapping = objectMappingGenerator.getCategoryComboMapping( false );
         
@@ -516,7 +518,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataElementGroups()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupBatchHandler.class );
+        BatchHandler<DataElementGroup> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupBatchHandler.class );
 
         batchHandler.init();
             
@@ -550,7 +552,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataElementGroupMembers()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupMemberBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupMemberBatchHandler.class );
 
         importGroupMemberAssociation( batchHandler, GroupMemberType.DATAELEMENTGROUP,
             objectMappingGenerator.getDataElementGroupMapping( false ),
@@ -562,7 +564,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importIndicatorTypes()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( IndicatorTypeBatchHandler.class );
+        BatchHandler<IndicatorType> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorTypeBatchHandler.class );
         
         batchHandler.init();
         
@@ -596,8 +598,9 @@ public class DefaultImportObjectManager
     @Transactional
     public void importIndicators()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class );
-        BatchHandler extendedDataElementBatchHandler = batchHandlerFactory.createBatchHandler( ExtendedDataElementBatchHandler.class );
+        BatchHandler<Indicator> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class );
+        BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler = 
+            batchHandlerFactory.createBatchHandler( ExtendedDataElementBatchHandler.class );
         
         Map<Object, Integer> indicatorTypeMapping = objectMappingGenerator.getIndicatorTypeMapping( false );
         Map<Object, Integer> dataElementMapping = objectMappingGenerator.getDataElementMapping( false );
@@ -667,7 +670,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importIndicatorGroups()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupBatchHandler.class );
+        BatchHandler<IndicatorGroup> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupBatchHandler.class );
         
         batchHandler.init();
         
@@ -701,7 +704,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importIndicatorGroupMembers()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupMemberBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupMemberBatchHandler.class );
 
         importGroupMemberAssociation( batchHandler, GroupMemberType.INDICATORGROUP,
             objectMappingGenerator.getIndicatorGroupMapping( false ),
@@ -713,7 +716,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataDictionaries()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryBatchHandler.class );
+        BatchHandler<DataDictionary> batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryBatchHandler.class );
         
         batchHandler.init();
         
@@ -747,7 +750,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataSets()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class );
+        BatchHandler<DataSet> batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class );
 
         batchHandler.init();
         
@@ -781,7 +784,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataDictionaryDataElements()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryDataElementBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryDataElementBatchHandler.class );
         
         importGroupMemberAssociation( batchHandler, GroupMemberType.DATADICTIONARY_DATAELEMENT, 
             objectMappingGenerator.getDataDictionaryMapping( false ),
@@ -793,7 +796,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataDictionaryIndicators()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryIndicatorBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryIndicatorBatchHandler.class );
         
         importGroupMemberAssociation( batchHandler, GroupMemberType.DATADICTIONARY_INDICATOR, 
             objectMappingGenerator.getDataDictionaryMapping( false ),
@@ -805,7 +808,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataSetMembers()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataSetMemberBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataSetMemberBatchHandler.class );
 
         importGroupMemberAssociation( batchHandler, GroupMemberType.DATASET,
             objectMappingGenerator.getDataSetMapping( false ), 
@@ -817,8 +820,8 @@ public class DefaultImportObjectManager
     @Transactional
     public void importOrganisationUnits()
     {
-        BatchHandler sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class );
-        BatchHandler organisationUnitBatchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
+        BatchHandler<Source> sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class );
+        BatchHandler<OrganisationUnit> organisationUnitBatchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
 
         sourceBatchHandler.init();
         organisationUnitBatchHandler.init();
@@ -862,7 +865,7 @@ public class DefaultImportObjectManager
     {
         Map<Object, Integer> organisationUnitMapping = objectMappingGenerator.getOrganisationUnitMapping( false );
         
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
+        BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
 
         batchHandler.init();
         
@@ -891,7 +894,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importOrganisationUnitGroups()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupBatchHandler.class );
+        BatchHandler<OrganisationUnitGroup> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupBatchHandler.class );
 
         batchHandler.init();
         
@@ -925,7 +928,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importOrganisationUnitGroupMembers()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupMemberBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupMemberBatchHandler.class );
         
         importGroupMemberAssociation( batchHandler, GroupMemberType.ORGANISATIONUNITGROUP,
             objectMappingGenerator.getOrganisationUnitGroupMapping( false ),
@@ -937,7 +940,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importOrganisationUnitGroupSets()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( GroupSetBatchHandler.class );
+        BatchHandler<OrganisationUnitGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetBatchHandler.class );
 
         batchHandler.init();
         
@@ -971,7 +974,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importOrganisationUnitGroupSetMembers()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( GroupSetMemberBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetMemberBatchHandler.class );
         
         importGroupMemberAssociation( batchHandler, GroupMemberType.ORGANISATIONUNITGROUPSET,
             objectMappingGenerator.getOrganisationUnitGroupSetMapping( false ),
@@ -1011,7 +1014,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataSetSourceAssociations()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataSetSourceAssociationBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataSetSourceAssociationBatchHandler.class );
 
         importGroupMemberAssociation( batchHandler, GroupMemberType.DATASET_SOURCE,
             objectMappingGenerator.getDataSetMapping( false ), 
@@ -1059,7 +1062,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importPeriods()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
+        BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
         
         batchHandler.init();
         
@@ -1084,7 +1087,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importReportTables()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ReportTableBatchHandler.class );
+        BatchHandler<ReportTable> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableBatchHandler.class );
         
         batchHandler.init();
         
@@ -1118,7 +1121,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importReportTableDataElements()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ReportTableDataElementBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableDataElementBatchHandler.class );
         
         importGroupMemberAssociation( batchHandler, GroupMemberType.REPORTTABLE_DATAELEMENT,
             objectMappingGenerator.getReportTableMapping( false ),
@@ -1130,7 +1133,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importReportTableCategoryOptionCombos()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ReportTableCategoryOptionComboBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableCategoryOptionComboBatchHandler.class );
         
         importGroupMemberAssociation( batchHandler, GroupMemberType.REPORTTABLE_CATEGORY_OPTION_COMBO,
             objectMappingGenerator.getReportTableMapping( false ),
@@ -1142,7 +1145,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importReportTableIndicators()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ReportTableIndicatorBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableIndicatorBatchHandler.class );
         
         importGroupMemberAssociation( batchHandler, GroupMemberType.REPORTTABLE_INDICATOR,
             objectMappingGenerator.getReportTableMapping( false ),
@@ -1154,7 +1157,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importReportTableDataSets()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ReportTableDataSetBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableDataSetBatchHandler.class );
         
         importGroupMemberAssociation( batchHandler, GroupMemberType.REPORTTABLE_DATASET,
             objectMappingGenerator.getReportTableMapping( false ),
@@ -1166,7 +1169,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importReportTablePeriods()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ReportTablePeriodBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTablePeriodBatchHandler.class );
         
         importGroupMemberAssociation( batchHandler, GroupMemberType.REPORTTABLE_PERIOD,
             objectMappingGenerator.getReportTableMapping( false ),
@@ -1178,7 +1181,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importReportTableOrganisationUnits()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ReportTableOrganisationUnitBatchHandler.class );
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableOrganisationUnitBatchHandler.class );
         
         importGroupMemberAssociation( batchHandler, GroupMemberType.REPORTTABLE_ORGANISATIONUNIT,
             objectMappingGenerator.getReportTableMapping( false ),
@@ -1218,7 +1221,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importCompleteDataSetRegistrations()
     {
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( CompleteDataSetRegistrationBatchHandler.class );
+        BatchHandler<CompleteDataSetRegistration> batchHandler = batchHandlerFactory.createBatchHandler( CompleteDataSetRegistrationBatchHandler.class );
 
         batchHandler.init();
         
@@ -1263,7 +1266,7 @@ public class DefaultImportObjectManager
         }
         else
         {
-            BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
+            BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
             
             batchHandler.init();
             
@@ -1306,6 +1309,7 @@ public class DefaultImportObjectManager
     // Supportive methods
     // -------------------------------------------------------------------------
 
+    @SuppressWarnings( "unchecked" )
     private void addOrUpdateObject( BatchHandler batchHandler, ImportObject importObject )
     {
         if ( importObject.getStatus() == ImportObjectStatus.NEW )
@@ -1322,6 +1326,7 @@ public class DefaultImportObjectManager
         // ---------------------------------------------------------------------
     }
 
+    @SuppressWarnings( "unchecked" )
     private void importGroupMemberAssociation( BatchHandler batchHandler, GroupMemberType type,
         Map<Object, Integer> groupMapping, Map<Object, Integer> memberMapping )
     {

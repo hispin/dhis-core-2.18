@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -39,7 +36,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
  * @version $Id: OrganisationUnitBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
  */
 public class OrganisationUnitBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<OrganisationUnit>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,9 +44,7 @@ public class OrganisationUnitBatchHandler
 
     public OrganisationUnitBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, false );
     }
 
     // -------------------------------------------------------------------------
@@ -58,49 +53,36 @@ public class OrganisationUnitBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "organisationunit";
+        statementBuilder.setTableName( "organisationunit" );
     }
     
-    protected void openSqlStatement()
+    @Override
+    protected void setIdentifierColumns()
     {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setIdentifierColumn( "organisationunitid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
-    {
-        OrganisationUnit unit = (OrganisationUnit) object;
-
-        statementBuilder.setIdentifierColumnName( "organisationunitid" );
-        statementBuilder.setIdentifierColumnValue( unit.getId() );
-                
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+    @Override
+    protected void setIdentifierValues( OrganisationUnit unit )
+    {        
+        statementBuilder.setIdentifierValue( unit.getId() );
     }
     
-    protected String getIdentifierStatement( Object objectName )
+    protected void setUniqueColumns()
     {
-        return statementBuilder.getValueStatement( tableName, "organisationunitid", "name", String.valueOf( objectName ) );
-    }
-
-    protected String getUniquenessStatement( Object object )
-    {
-        OrganisationUnit unit = (OrganisationUnit) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "name", unit.getName() );
-        fieldMap.put( "shortname", unit.getShortName() );
-        fieldMap.put( "code", unit.getCode() );
-        
-        return statementBuilder.getValueStatement( tableName, "organisationunitid", fieldMap, false );
+        statementBuilder.setUniqueColumn( "name" );
+        statementBuilder.setUniqueColumn( "shortname" );
+        statementBuilder.setUniqueColumn( "code" );
     }
     
-    protected void addColumns()
+    protected void setUniqueValues( OrganisationUnit unit )
+    {        
+        statementBuilder.setUniqueValue( unit.getName() );        
+        statementBuilder.setUniqueValue( unit.getShortName() );
+        statementBuilder.setUniqueValue( unit.getCode() );
+    }
+    
+    protected void setColumns()
     {
         statementBuilder.setColumn( "organisationunitid" );
         statementBuilder.setColumn( "uuid" );
@@ -117,22 +99,20 @@ public class OrganisationUnitBatchHandler
         statementBuilder.setColumn( "longitude" );
     }
     
-    protected void addValues( Object object )
-    {
-        OrganisationUnit unit = (OrganisationUnit) object;
-        
-        statementBuilder.setInt( unit.getId() );
-        statementBuilder.setString( unit.getUuid() );
-        statementBuilder.setString( unit.getName() );        
-        statementBuilder.setInt( unit.getParent() != null ? unit.getParent().getId() : null );
-        statementBuilder.setString( unit.getShortName() );
-        statementBuilder.setString( unit.getCode() );
-        statementBuilder.setDate( unit.getOpeningDate() );
-        statementBuilder.setDate( unit.getClosedDate() );
-        statementBuilder.setBoolean( unit.isActive() );
-        statementBuilder.setString( unit.getComment() );
-        statementBuilder.setString( unit.getGeoCode() );
-        statementBuilder.setString( unit.getLatitude() );
-        statementBuilder.setString( unit.getLongitude() );
+    protected void setValues( OrganisationUnit unit )
+    {        
+        statementBuilder.setValue( unit.getId() );
+        statementBuilder.setValue( unit.getUuid() );
+        statementBuilder.setValue( unit.getName() );        
+        statementBuilder.setValue( unit.getParent() != null ? unit.getParent().getId() : null );
+        statementBuilder.setValue( unit.getShortName() );
+        statementBuilder.setValue( unit.getCode() );
+        statementBuilder.setValue( unit.getOpeningDate() );
+        statementBuilder.setValue( unit.getClosedDate() );
+        statementBuilder.setValue( unit.isActive() );
+        statementBuilder.setValue( unit.getComment() );
+        statementBuilder.setValue( unit.getGeoCode() );
+        statementBuilder.setValue( unit.getLatitude() );
+        statementBuilder.setValue( unit.getLongitude() );
     }
 }

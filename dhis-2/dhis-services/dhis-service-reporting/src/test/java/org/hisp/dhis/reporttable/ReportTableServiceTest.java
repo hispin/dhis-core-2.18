@@ -289,7 +289,7 @@ public class ReportTableServiceTest
         
         i18nFormat = new MockI18nFormat();
         
-        BatchHandler indicatorValueBatchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class );
+        BatchHandler<AggregatedIndicatorValue> indicatorValueBatchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class );
         
         indicatorValueBatchHandler.init();
         
@@ -304,7 +304,7 @@ public class ReportTableServiceTest
         
         indicatorValueBatchHandler.flush();
         
-        BatchHandler dataValueBatchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
+        BatchHandler<AggregatedDataValue> dataValueBatchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
         
         dataValueBatchHandler.init();
         

@@ -44,6 +44,7 @@ import org.hisp.dhis.importexport.converter.AbstractOrganisationUnitConverter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.source.Source;
 
 /**
  * @author Lars Helge Overland
@@ -75,8 +76,8 @@ public class SourceConverter
      * 
      * @param 
      */
-    public SourceConverter( BatchHandler batchHandler,
-        BatchHandler sourceBatchHandler,
+    public SourceConverter( BatchHandler<OrganisationUnit> batchHandler,
+        BatchHandler<Source> sourceBatchHandler,
         ImportObjectService importObjectService,
         OrganisationUnitService organisationUnitService )
     {
