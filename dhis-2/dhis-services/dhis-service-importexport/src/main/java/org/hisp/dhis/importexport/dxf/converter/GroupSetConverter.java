@@ -78,7 +78,7 @@ public class GroupSetConverter
      * @param organisationUnitGroupService the organisationUnitGroupService to use.
      * @param importObjectService the importObjectService to use.
      */
-    public GroupSetConverter( BatchHandler batchHandler, 
+    public GroupSetConverter( BatchHandler<OrganisationUnitGroupSet> batchHandler, 
         ImportObjectService importObjectService, 
         OrganisationUnitGroupService organisationUnitGroupService )
     {

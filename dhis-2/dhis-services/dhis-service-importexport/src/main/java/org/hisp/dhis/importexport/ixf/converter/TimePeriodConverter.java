@@ -80,7 +80,7 @@ public class TimePeriodConverter
      * @param periodService the periodService to use.
      * @param importObjectService the importObjectService to use.
      */
-    public TimePeriodConverter( BatchHandler batchHandler, 
+    public TimePeriodConverter( BatchHandler<Period> batchHandler, 
         PeriodService periodService, 
         ImportObjectService importObjectService,
         Map<String, Integer> periodTypeMapping )

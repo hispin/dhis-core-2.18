@@ -27,34 +27,36 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 
 import java.util.Collection;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.importexport.ImportDataValue;
+import org.hisp.dhis.importexport.ImportDataValueService;
+import org.hisp.dhis.importexport.ImportObjectStatus;
 import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
+ * @version $Id: GroupSetBatchHandlerTest.java 4949 2008-04-21 07:59:54Z larshelg $
  */
-public class DataElementCategoryComboBatchHandlerTest
+public class ImportDataValueBatchHandlerTest
     extends DhisTest
 {
+    private ImportDataValueService importDataValueService;
+    
     private BatchHandlerFactory batchHandlerFactory;
     
-    private BatchHandler<DataElementCategoryCombo> batchHandler;
+    private BatchHandler<ImportDataValue> batchHandler;
     
-    private DataElementCategoryCombo categoryComboA;
-    private DataElementCategoryCombo categoryComboB;
-    private DataElementCategoryCombo categoryComboC;
+    private ImportObjectStatus status;
+    
+    private ImportDataValue valueA;
+    private ImportDataValue valueB;
+    private ImportDataValue valueC;
     
     // -------------------------------------------------------------------------
     // Fixture
@@ -63,17 +65,19 @@ public class DataElementCategoryComboBatchHandlerTest
     @Override
     public void setUpTest()
     {
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
-        
+        importDataValueService = (ImportDataValueService) getBean( ImportDataValueService.ID );
+
         batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
-        batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryComboBatchHandler.class );
+        batchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
 
         batchHandler.init();
         
-        categoryComboA = new DataElementCategoryCombo( "CategoryComboA" );
-        categoryComboB = new DataElementCategoryCombo( "CategoryComboB" );
-        categoryComboC = new DataElementCategoryCombo( "CategoryComboC" );
+        status = ImportObjectStatus.NEW;
+        
+        valueA = createImportDataValue( 1, 1, 1, 1, status );
+        valueB = createImportDataValue( 2, 2, 2, 2, status );
+        valueC = createImportDataValue( 3, 3, 3, 3, status );
     }
 
     @Override
@@ -95,61 +99,52 @@ public class DataElementCategoryComboBatchHandlerTest
     @Test
     public void testAddObject()
     {
-        batchHandler.addObject( categoryComboA );
-        batchHandler.addObject( categoryComboB );
-        batchHandler.addObject( categoryComboC );
+        batchHandler.addObject( valueA );
+        batchHandler.addObject( valueB );
+        batchHandler.addObject( valueC );
         
         batchHandler.flush();
         
-        Collection<DataElementCategoryCombo> categoryCombos = categoryComboService.getAllDataElementCategoryCombos();
+        Collection<ImportDataValue> values = importDataValueService.getImportDataValues( status );
         
-        assertTrue( categoryCombos.contains( categoryComboA  ) );
-        assertTrue( categoryCombos.contains( categoryComboB  ) );
-        assertTrue( categoryCombos.contains( categoryComboC  ) );
+        assertTrue( values.contains( valueA ) );
+        assertTrue( values.contains( valueB ) );
+        assertTrue( values.contains( valueC ) );
     }
-
+    
     @Test
     public void testInsertObject()
     {
-        int idA = batchHandler.insertObject( categoryComboA, true );
-        int idB = batchHandler.insertObject( categoryComboB, true );
-        int idC = batchHandler.insertObject( categoryComboC, true );
+        batchHandler.insertObject( valueA, false );
+        batchHandler.insertObject( valueB, false );
+        batchHandler.insertObject( valueC, false );
         
-        assertNotNull( categoryComboService.getDataElementCategoryCombo( idA ) );
-        assertNotNull( categoryComboService.getDataElementCategoryCombo( idB ) );
-        assertNotNull( categoryComboService.getDataElementCategoryCombo( idC ) );
+        Collection<ImportDataValue> values = importDataValueService.getImportDataValues( status );
+        
+        assertTrue( values.contains( valueA ) );
+        assertTrue( values.contains( valueB ) );
+        assertTrue( values.contains( valueC ) );        
     }
-
+    
     @Test
     public void testUpdateObject()
     {
-        int id = batchHandler.insertObject( categoryComboA, true );
+        batchHandler.insertObject( valueA, false );
         
-        categoryComboA.setId( id );
-        categoryComboA.setName( "UpdatedName" );
+        valueA.setValue( String.valueOf( 20 ) );
         
-        batchHandler.updateObject( categoryComboA );
+        batchHandler.updateObject( valueA );
         
-        assertEquals( "UpdatedName", categoryComboService.getDataElementCategoryCombo( id ).getName() );
-    }
-
-    @Test
-    public void testGetObjectIdentifier()
-    {
-        int referenceId = categoryComboService.addDataElementCategoryCombo( categoryComboA );
-        
-        int retrievedId = batchHandler.getObjectIdentifier( "CategoryComboA" );
-        
-        assertEquals( referenceId, retrievedId );
+        assertEquals( String.valueOf( 20 ), importDataValueService.getImportDataValues( status ).iterator().next().getValue() );
     }
 
     @Test
     public void testObjectExists()
     {
-        categoryComboService.addDataElementCategoryCombo( categoryComboA );
+        importDataValueService.addImportDataValue( valueA );
         
-        assertTrue( batchHandler.objectExists( categoryComboA ) );
+        assertTrue( batchHandler.objectExists( valueA ) );
         
-        assertFalse( batchHandler.objectExists( categoryComboB ) );
-    }
+        assertFalse( batchHandler.objectExists( valueB ) );
+    }    
 }

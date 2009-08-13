@@ -36,7 +36,7 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
  * @version $Id$
  */
 public class CategoryCategoryOptionAssociationBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<GroupMemberAssociation>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -44,9 +44,7 @@ public class CategoryCategoryOptionAssociationBatchHandler
  
     public CategoryCategoryOptionAssociationBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
@@ -55,56 +53,30 @@ public class CategoryCategoryOptionAssociationBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "categories_categoryoptions";
+        statementBuilder.setTableName( "categories_categoryoptions" );
     }
     
-    protected void openSqlStatement()
+    protected void setUniqueColumns()
     {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setUniqueColumn( "categoryid" );
+        statementBuilder.setUniqueColumn( "categoryoptionid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
+    protected void setUniqueValues( GroupMemberAssociation association )
     {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setUniqueValue( association.getGroupId() );
+        statementBuilder.setUniqueValue( association.getMemberId() );
     }
     
-    protected String getIdentifierStatement( Object objectName )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) objectName;
-        
-        String sql = statementBuilder.getValueStatement( tableName, "categoryid", "categoryoptionid", 
-            "categoryid", association.getGroupId(), "categoryoptionid", association.getMemberId() );
-        
-        return sql;
-    }
-    
-    protected String getUniquenessStatement( Object object )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
-                
-        String sql = statementBuilder.getValueStatement( tableName, "categoryid", "categoryoptionid", 
-            "categoryid", association.getGroupId(), "categoryoptionid", association.getMemberId() );
-        
-        return sql;
-    }
-    
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "categoryid" );
         statementBuilder.setColumn( "categoryoptionid" );
     }
     
-    protected void addValues( Object object )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
-        
-        statementBuilder.setInt( association.getGroupId() );
-        statementBuilder.setInt( association.getMemberId() );
+    protected void setValues( GroupMemberAssociation association )
+    {        
+        statementBuilder.setValue( association.getGroupId() );
+        statementBuilder.setValue( association.getMemberId() );
     }
 }

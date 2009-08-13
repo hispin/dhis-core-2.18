@@ -57,7 +57,7 @@ public class IndicatorGroupMemberRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public IndicatorGroupMemberRowHandler( BatchHandler batchHandler,
+    public IndicatorGroupMemberRowHandler( BatchHandler<GroupMemberAssociation> batchHandler,
         ImportObjectService importObjectService,
         Map<Object, Integer> indicatorMapping, 
         Map<Object, Integer> indicatorGroupMapping,

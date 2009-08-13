@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.datadictionary.DataDictionary;
@@ -39,7 +36,7 @@ import org.hisp.dhis.datadictionary.DataDictionary;
  * @version $Id$
  */
 public class DataDictionaryBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<DataDictionary>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,7 +44,7 @@ public class DataDictionaryBatchHandler
  
     public DataDictionaryBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
+        super( configuration, false, false );
     }
 
     // -------------------------------------------------------------------------
@@ -56,62 +53,48 @@ public class DataDictionaryBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "datadictionary";
+        statementBuilder.setTableName( "datadictionary" );
     }
     
-    protected void openSqlStatement()
+    @Override
+    protected void setAutoIncrementColumn()
     {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "datadictionaryid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setAutoIncrementColumn( "datadictionaryid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
+    @Override
+    protected void setIdentifierColumns()
     {
-        DataDictionary dataDictionary = (DataDictionary) object;
-        
-        statementBuilder.setIdentifierColumnName( "datadictionaryid" );
-        statementBuilder.setIdentifierColumnValue( dataDictionary.getId() );
-        
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setIdentifierColumn( "datadictionaryid" );
     }
     
-    protected String getIdentifierStatement( Object objectName )
+    @Override
+    protected void setIdentifierValues( DataDictionary dataDictionary )
+    {                
+        statementBuilder.setIdentifierValue( dataDictionary.getId() );
+    }
+        
+    protected void setUniqueColumns()
     {
-        return statementBuilder.getValueStatement( tableName, "datadictionaryid", "name", String.valueOf( objectName ) );
+        statementBuilder.setUniqueColumn( "name" );
     }
     
-    protected String getUniquenessStatement( Object object )
-    {
-        DataDictionary dataDictionary = (DataDictionary) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "name", dataDictionary.getName() );
-        
-        return statementBuilder.getValueStatement( tableName, "datadictionaryid", fieldMap, false );
+    protected void setUniqueValues( DataDictionary dataDictionary )
+    {        
+        statementBuilder.setUniqueValue( dataDictionary.getName() );
     }
     
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "description" );
         statementBuilder.setColumn( "region" );
     }
     
-    protected void addValues( Object object )
-    {
-        DataDictionary dataDictionary = (DataDictionary) object;
-        
-        statementBuilder.setString( dataDictionary.getName() );
-        statementBuilder.setString( dataDictionary.getDescription() );
-        statementBuilder.setString( dataDictionary.getRegion() );
+    protected void setValues( DataDictionary dataDictionary )
+    {        
+        statementBuilder.setValue( dataDictionary.getName() );
+        statementBuilder.setValue( dataDictionary.getDescription() );
+        statementBuilder.setValue( dataDictionary.getRegion() );
     }
 }

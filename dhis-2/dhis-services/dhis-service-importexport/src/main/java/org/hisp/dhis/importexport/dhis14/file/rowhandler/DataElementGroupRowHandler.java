@@ -52,7 +52,7 @@ public class DataElementGroupRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public DataElementGroupRowHandler( BatchHandler batchHandler,
+    public DataElementGroupRowHandler( BatchHandler<DataElementGroup> batchHandler,
         ImportObjectService importObjectService,
         DataElementService dataElementService,
         ImportParams params )

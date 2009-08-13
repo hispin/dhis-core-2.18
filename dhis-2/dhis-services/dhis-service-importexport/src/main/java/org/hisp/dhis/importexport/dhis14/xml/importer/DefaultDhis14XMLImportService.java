@@ -47,6 +47,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.CSVConverter;
+import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportService;
@@ -298,7 +299,7 @@ public class DefaultDhis14XMLImportService
     
                 BufferedReader streamReader = new BufferedReader( new InputStreamReader( zipIn ) );
                 
-                BatchHandler importDataValueBatchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
+                BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
                 
                 importDataValueBatchHandler.init();
                 

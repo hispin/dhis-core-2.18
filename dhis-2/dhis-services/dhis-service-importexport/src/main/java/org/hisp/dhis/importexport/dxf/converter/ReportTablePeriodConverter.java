@@ -84,7 +84,7 @@ public class ReportTablePeriodConverter
     /**
      * Constructor for read operations.
      */
-    public ReportTablePeriodConverter( BatchHandler batchHandler, 
+    public ReportTablePeriodConverter( BatchHandler<GroupMemberAssociation> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> reportTableMapping, 
         Map<Object, Integer> periodMapping )

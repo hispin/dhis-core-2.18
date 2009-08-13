@@ -88,7 +88,7 @@ public class OrganisationUnitGroupMemberConverter
     /**
      * Constructor for read operations.
      */
-    public OrganisationUnitGroupMemberConverter( BatchHandler batchHandler, 
+    public OrganisationUnitGroupMemberConverter( BatchHandler<GroupMemberAssociation> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> organisationUnitMapping, 
         Map<Object, Integer> organisationUnitGroupMapping )

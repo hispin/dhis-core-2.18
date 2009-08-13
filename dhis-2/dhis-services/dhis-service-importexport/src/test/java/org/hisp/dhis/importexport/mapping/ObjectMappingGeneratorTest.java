@@ -64,6 +64,8 @@ public class ObjectMappingGeneratorTest
     @Override
     public void setUpTest()
     {
+        NameMappingUtil.clearMapping();
+        
         objectMappingGenerator = (ObjectMappingGenerator) getBean( ObjectMappingGenerator.ID );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
@@ -78,13 +80,7 @@ public class ObjectMappingGeneratorTest
         
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
     }
-    
-    @Override
-    public void tearDownTest()
-    {
-        NameMappingUtil.clearMapping();
-    }
-    
+        
     @Override
     public boolean emptyDatabaseAfterTest()
     {

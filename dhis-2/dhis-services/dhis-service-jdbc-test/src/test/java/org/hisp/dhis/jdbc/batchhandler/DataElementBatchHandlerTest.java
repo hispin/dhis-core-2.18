@@ -55,7 +55,7 @@ public class DataElementBatchHandlerTest
 	
     private BatchHandlerFactory batchHandlerFactory;
     
-    private BatchHandler batchHandler;
+    private BatchHandler<DataElement> batchHandler;
     
     private DataElementCategoryCombo categoryCombo;
     
@@ -152,15 +152,16 @@ public class DataElementBatchHandlerTest
     @Test
     public void testUpdateObject()
     {
-        int id = dataElementService.addDataElement( dataElementA );
+        int id = batchHandler.insertObject( dataElementA, true );
         
+        dataElementA.setId( id );
         dataElementA.setName( "UpdatedName" );
         
         batchHandler.updateObject( dataElementA );
 
         cacheManager.clearCache();
         
-        assertEquals( dataElementService.getDataElement( id ).getName(), "UpdatedName" );
+        assertEquals( "UpdatedName", dataElementService.getDataElement( id ).getName() );
     }
 
     @Test

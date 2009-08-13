@@ -57,7 +57,7 @@ public class DataSetMemberRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public DataSetMemberRowHandler( BatchHandler batchHandler,
+    public DataSetMemberRowHandler( BatchHandler<GroupMemberAssociation> batchHandler,
         ImportObjectService importObjectService,
         Map<Object, Integer> dataElementMapping, 
         Map<Object, Integer> dataSetMapping,

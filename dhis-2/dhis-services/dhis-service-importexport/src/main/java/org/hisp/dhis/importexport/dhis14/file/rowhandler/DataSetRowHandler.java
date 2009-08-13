@@ -56,7 +56,7 @@ public class DataSetRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public DataSetRowHandler( BatchHandler batchHandler,
+    public DataSetRowHandler( BatchHandler<DataSet> batchHandler,
         ImportObjectService importObjectService,
         DataSetService dataSetService,
         Map<String, Integer> periodTypeMapping,

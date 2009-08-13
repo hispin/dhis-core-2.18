@@ -78,12 +78,12 @@ public class OrganisationUnitRelationshipConverter
     /**
      * Constructor for read operations.
      */
-    public OrganisationUnitRelationshipConverter( BatchHandler batchHandler, 
+    public OrganisationUnitRelationshipConverter( BatchHandler<OrganisationUnit> organisationUnitBatchHandler, 
         ImportObjectService importObjectService,
         OrganisationUnitService organisationUnitService,
         Map<Object, Integer> organisationUnitMapping )
     {
-        this.batchHandler = batchHandler;
+        this.organisationUnitBatchHandler = organisationUnitBatchHandler;
         this.importObjectService = importObjectService;
         this.organisationUnitService = organisationUnitService;
         this.organisationUnitMapping = organisationUnitMapping;

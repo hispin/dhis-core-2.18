@@ -42,7 +42,9 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.dbms.DbmsManager;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportDataValueService;
@@ -78,6 +80,8 @@ import org.junit.Test;
  * 
  * <p>dxfF.zip contains 3 DataElements with variations in properties in 2 of them, 2 Periods, and 2 OrganisationUnits and 12 DataValues registered for all combinations.
  * 
+ * <p>dxfG.zip contains 3 DataElements, 2 Periods, and 2 OrganisationUnits and 12 DataValues registered for all combinations with "20" as value instead of "10".
+ * 
  * @author Lars Helge Overland
  * @version $Id$
  */
@@ -90,17 +94,13 @@ public class DXFImportServiceTest
     
     private ImportService importService;
     
-    private InputStream inputStreamA;
-    
-    private InputStream inputStreamB;
-    
-    private InputStream inputStreamC;
-    
-    private InputStream inputStreamD;
-    
-    private InputStream inputStreamE;
-    
-    private InputStream inputStreamF;
+    private InputStream inputStreamA;    
+    private InputStream inputStreamB;    
+    private InputStream inputStreamC;    
+    private InputStream inputStreamD;    
+    private InputStream inputStreamE;    
+    private InputStream inputStreamF;    
+    private InputStream inputStreamG;
     
     private ImportObjectService importObjectService;
     
@@ -115,17 +115,13 @@ public class DXFImportServiceTest
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-        inputStreamA = classLoader.getResourceAsStream( "dxfA.zip" );
-        
+        inputStreamA = classLoader.getResourceAsStream( "dxfA.zip" );        
         inputStreamB = classLoader.getResourceAsStream( "dxfB.zip" );
-
-        inputStreamC = classLoader.getResourceAsStream( "dxfC.zip" );
-        
+        inputStreamC = classLoader.getResourceAsStream( "dxfC.zip" );        
         inputStreamD = classLoader.getResourceAsStream( "dxfD.zip" );
-
-        inputStreamE = classLoader.getResourceAsStream( "dxfE.zip" );
-        
-        inputStreamF = classLoader.getResourceAsStream( "dxfF.zip" );
+        inputStreamE = classLoader.getResourceAsStream( "dxfE.zip" );        
+        inputStreamF = classLoader.getResourceAsStream( "dxfF.zip" );      
+        inputStreamG = classLoader.getResourceAsStream( "dxfG.zip" );
         
         importService = (ImportService) getBean( "org.hisp.dhis.importexport.DXFImportService" );
         
@@ -158,22 +154,19 @@ public class DXFImportServiceTest
         importObjectService = (ImportObjectService) getBean( ImportObjectService.ID );
         
         importDataValueService = (ImportDataValueService) getBean( ImportDataValueService.ID );
+        
+        dbmsManager = (DbmsManager) getBean( DbmsManager.ID );
     }
     
     @Override
     public void tearDownTest()
         throws Exception
     {
-        inputStreamA.close();
-        
-        inputStreamB.close();
-        
-        inputStreamC.close();
-        
-        inputStreamD.close();
-        
-        inputStreamE.close();
-        
+        inputStreamA.close();        
+        inputStreamB.close();        
+        inputStreamC.close();        
+        inputStreamD.close();        
+        inputStreamE.close();        
         inputStreamF.close();
     }
     
@@ -263,6 +256,32 @@ public class DXFImportServiceTest
         assertEquals( organisationUnitService.getAllOrganisationUnits().size(), 2 );
         
         assertEquals( dataValueService.getAllDataValues().size(), 8 );
+    }
+    
+    @Test
+    public void testImportDataValuesWithUpdates()
+    {
+        ImportParams importParams = ImportExportUtils.getImportParams( ImportStrategy.NEW_AND_UPDATES, false, true, false );
+        
+        importService.importData( importParams, inputStreamE );
+        
+        assertEquals( 12, dataValueService.getAllDataValues().size() );
+        
+        for ( DataValue dataValue : dataValueService.getAllDataValues() )
+        {
+            assertEquals( "10", dataValue.getValue() );
+        }
+        
+        dbmsManager.clearSession();
+
+        importService.importData( importParams, inputStreamG );
+
+        assertEquals( 12, dataValueService.getAllDataValues().size() );
+        
+        for ( DataValue dataValue : dataValueService.getAllDataValues() )
+        {
+            assertEquals( "20", dataValue.getValue() );
+        }
     }
 
     @Test

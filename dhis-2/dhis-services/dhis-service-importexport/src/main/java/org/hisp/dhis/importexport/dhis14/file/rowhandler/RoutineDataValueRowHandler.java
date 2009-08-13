@@ -35,6 +35,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.GroupMemberType;
+import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.converter.AbstractDataValueConverter;
 import org.hisp.dhis.importexport.dhis14.object.Dhis14RoutineDataValue;
@@ -71,8 +72,8 @@ public class RoutineDataValueRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public RoutineDataValueRowHandler( BatchHandler batchHandler,
-        BatchHandler importDataValueBatchHandler,
+    public RoutineDataValueRowHandler( BatchHandler<DataValue> batchHandler,
+        BatchHandler<ImportDataValue> importDataValueBatchHandler,
         DataValueService dataValueService,
         Map<Object, Integer> dataElementMapping,
         Map<Object, Integer> periodMapping, 

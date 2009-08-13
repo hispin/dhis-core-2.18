@@ -92,7 +92,7 @@ public class DataElementConverter
      * @param categoryComboMapping the categoryComboMapping to use.
      * @param dataElementService the dataElementService to use.
      */
-    public DataElementConverter( BatchHandler batchHandler, 
+    public DataElementConverter( BatchHandler<DataElement> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> categoryComboMapping,
         DataElementService dataElementService )

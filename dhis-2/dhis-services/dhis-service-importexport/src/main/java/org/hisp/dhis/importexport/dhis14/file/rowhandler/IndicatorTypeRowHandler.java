@@ -51,7 +51,7 @@ public class IndicatorTypeRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public IndicatorTypeRowHandler( BatchHandler batchHandler, 
+    public IndicatorTypeRowHandler( BatchHandler<IndicatorType> batchHandler, 
         ImportObjectService importObjectService,
         IndicatorService indicatorService,
         ImportParams params )

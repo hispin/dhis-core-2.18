@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -39,7 +36,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
  * @version $Id: GroupSetBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
  */
 public class GroupSetBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<OrganisationUnitGroupSet>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,7 +44,7 @@ public class GroupSetBatchHandler
  
     public GroupSetBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
+        super( configuration, false, false );
     }
 
     // -------------------------------------------------------------------------
@@ -56,50 +53,38 @@ public class GroupSetBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "orgunitgroupset";
+        statementBuilder.setTableName( "orgunitgroupset" );
     }
     
-    protected void openSqlStatement()
+    @Override
+    protected void setAutoIncrementColumn()
     {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "orgunitgroupsetid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
-    }
-    
-    protected String getUpdateSqlStatement( Object object )
-    {
-        OrganisationUnitGroupSet groupSet = (OrganisationUnitGroupSet) object;
-        
-        statementBuilder.setIdentifierColumnName( "orgunitgroupsetid" );
-        statementBuilder.setIdentifierColumnValue( groupSet.getId() );
-                
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
-    }
-    
-    protected String getIdentifierStatement( Object objectName )
-    {
-        return statementBuilder.getValueStatement( tableName, "orgunitgroupsetid", "name", String.valueOf( objectName ) );
+        statementBuilder.setAutoIncrementColumn( "orgunitgroupsetid" );
     }
 
-    protected String getUniquenessStatement( Object object )
+    @Override
+    protected void setIdentifierColumns()
     {
-        OrganisationUnitGroupSet groupSet = (OrganisationUnitGroupSet) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "name", String.valueOf( groupSet.getName() ) );
-        
-        return statementBuilder.getValueStatement( tableName, "orgunitgroupsetid", fieldMap, false );
+        statementBuilder.setIdentifierColumn( "orgunitgroupsetid" );
     }
     
-    protected void addColumns()
+    @Override
+    protected void setIdentifierValues( OrganisationUnitGroupSet groupSet )
+    {        
+        statementBuilder.setIdentifierValue( groupSet.getId() );
+    }
+    
+    protected void setUniqueColumns()
+    {
+        statementBuilder.setUniqueColumn( "name" );
+    }
+    
+    protected void setUniqueValues( OrganisationUnitGroupSet groupSet )
+    {        
+        statementBuilder.setUniqueValue( groupSet.getName() );
+    }
+    
+    protected void setColumns()
     {
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "description" );
@@ -107,13 +92,11 @@ public class GroupSetBatchHandler
         statementBuilder.setColumn( "exclusive" );
     }
     
-    protected void addValues( Object object )
-    {
-        OrganisationUnitGroupSet groupSet = (OrganisationUnitGroupSet) object;
-        
-        statementBuilder.setString( groupSet.getName() );
-        statementBuilder.setString( groupSet.getDescription() );
-        statementBuilder.setBoolean( groupSet.isCompulsory() );
-        statementBuilder.setBoolean( groupSet.isExclusive() );
-    }   
+    protected void setValues( OrganisationUnitGroupSet groupSet )
+    {        
+        statementBuilder.setValue( groupSet.getName() );
+        statementBuilder.setValue( groupSet.getDescription() );
+        statementBuilder.setValue( groupSet.isCompulsory() );
+        statementBuilder.setValue( groupSet.isExclusive() );
+    }
 }

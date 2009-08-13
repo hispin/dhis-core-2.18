@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -39,7 +36,7 @@ import org.hisp.dhis.reporttable.ReportTable;
  * @version $Id$
  */
 public class ReportTableBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<ReportTable>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,7 +44,7 @@ public class ReportTableBatchHandler
  
     public ReportTableBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
+        super( configuration, false, false );
     }
 
     // -------------------------------------------------------------------------
@@ -56,50 +53,38 @@ public class ReportTableBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "reporttable";
+        statementBuilder.setTableName( "reporttable" );
     }
     
-    protected void openSqlStatement()
+    @Override
+    protected void setAutoIncrementColumn()
     {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "reporttableid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setAutoIncrementColumn( "reporttableid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
+    @Override
+    protected void setIdentifierColumns()
     {
-        ReportTable reportTable = (ReportTable) object;
-        
-        statementBuilder.setIdentifierColumnName( "reporttableid" );
-        statementBuilder.setIdentifierColumnValue( reportTable.getId() );
-        
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setIdentifierColumn( "reporttableid" );
     }
     
-    protected String getIdentifierStatement( Object objectName )
+    @Override
+    protected void setIdentifierValues( ReportTable reportTable )
+    {        
+        statementBuilder.setIdentifierValue( reportTable.getId() );
+    }
+    
+    protected void setUniqueColumns()
     {
-        return statementBuilder.getValueStatement( tableName, "reporttableid", "name", String.valueOf( objectName ) );
+        statementBuilder.setUniqueColumn( "name" );
     }
     
-    protected String getUniquenessStatement( Object object )
-    {
-        ReportTable reportTable = (ReportTable) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "name", reportTable.getName() );
-        
-        return statementBuilder.getValueStatement( tableName, "reporttableid", fieldMap, false );
+    protected void setUniqueValues( ReportTable reportTable )
+    {        
+        statementBuilder.setUniqueValue( reportTable.getName() );
     }
     
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "tablename" );
@@ -130,36 +115,34 @@ public class ReportTableBatchHandler
         statementBuilder.setColumn( "paramorganisationunit" );
     }
     
-    protected void addValues( Object object )
-    {
-        ReportTable reportTable = (ReportTable) object;
+    protected void setValues( ReportTable reportTable )
+    {        
+        statementBuilder.setValue( reportTable.getName() );
+        statementBuilder.setValue( reportTable.getTableName() );
+        statementBuilder.setValue( reportTable.getExistingTableName() );
+        statementBuilder.setValue( reportTable.getMode() );
+        statementBuilder.setValue( reportTable.isRegression() );
+        statementBuilder.setValue( reportTable.isDoIndicators() );
+        statementBuilder.setValue( reportTable.isDoCategoryOptionCombos() );
+        statementBuilder.setValue( reportTable.isDoPeriods() );
+        statementBuilder.setValue( reportTable.isDoUnits() );
         
-        statementBuilder.setString( reportTable.getName() );
-        statementBuilder.setString( reportTable.getTableName() );
-        statementBuilder.setString( reportTable.getExistingTableName() );
-        statementBuilder.setString( reportTable.getMode() );
-        statementBuilder.setBoolean( reportTable.isRegression() );
-        statementBuilder.setBoolean( reportTable.isDoIndicators() );
-        statementBuilder.setBoolean( reportTable.isDoCategoryOptionCombos() );
-        statementBuilder.setBoolean( reportTable.isDoPeriods() );
-        statementBuilder.setBoolean( reportTable.isDoUnits() );
-        
-        statementBuilder.setBoolean( reportTable.getRelatives().isReportingMonth() );
-        statementBuilder.setBoolean( reportTable.getRelatives().isLast3Months() );
-        statementBuilder.setBoolean( reportTable.getRelatives().isLast6Months() );
-        statementBuilder.setBoolean( reportTable.getRelatives().isLast9Months() );
-        statementBuilder.setBoolean( reportTable.getRelatives().isLast12Months() );
-        statementBuilder.setBoolean( reportTable.getRelatives().isSoFarThisYear() );
-        statementBuilder.setBoolean( reportTable.getRelatives().isSoFarThisFinancialYear() );
-        statementBuilder.setBoolean( reportTable.getRelatives().isLast3To6Months() );
-        statementBuilder.setBoolean( reportTable.getRelatives().isLast6To9Months() );
-        statementBuilder.setBoolean( reportTable.getRelatives().isLast9To12Months() );
-        statementBuilder.setBoolean( reportTable.getRelatives().isLast12IndividualMonths() );
-        statementBuilder.setBoolean( reportTable.getRelatives().isIndividualMonthsThisYear() );
-        statementBuilder.setBoolean( reportTable.getRelatives().isIndividualQuartersThisYear() );
+        statementBuilder.setValue( reportTable.getRelatives().isReportingMonth() );
+        statementBuilder.setValue( reportTable.getRelatives().isLast3Months() );
+        statementBuilder.setValue( reportTable.getRelatives().isLast6Months() );
+        statementBuilder.setValue( reportTable.getRelatives().isLast9Months() );
+        statementBuilder.setValue( reportTable.getRelatives().isLast12Months() );
+        statementBuilder.setValue( reportTable.getRelatives().isSoFarThisYear() );
+        statementBuilder.setValue( reportTable.getRelatives().isSoFarThisFinancialYear() );
+        statementBuilder.setValue( reportTable.getRelatives().isLast3To6Months() );
+        statementBuilder.setValue( reportTable.getRelatives().isLast6To9Months() );
+        statementBuilder.setValue( reportTable.getRelatives().isLast9To12Months() );
+        statementBuilder.setValue( reportTable.getRelatives().isLast12IndividualMonths() );
+        statementBuilder.setValue( reportTable.getRelatives().isIndividualMonthsThisYear() );
+        statementBuilder.setValue( reportTable.getRelatives().isIndividualQuartersThisYear() );
 
-        statementBuilder.setBoolean( reportTable.getReportParams().isParamReportingMonth() );
-        statementBuilder.setBoolean( reportTable.getReportParams().isParamParentOrganisationUnit() );
-        statementBuilder.setBoolean( reportTable.getReportParams().isParamOrganisationUnit() );        
+        statementBuilder.setValue( reportTable.getReportParams().isParamReportingMonth() );
+        statementBuilder.setValue( reportTable.getReportParams().isParamParentOrganisationUnit() );
+        statementBuilder.setValue( reportTable.getReportParams().isParamOrganisationUnit() );        
     }
 }

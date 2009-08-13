@@ -86,7 +86,7 @@ public class DataSetConverter
      * @param dataSetStore the dataSetStore to use.
      * @param importObjectService the importObjectService to use.
      */
-    public DataSetConverter( BatchHandler batchHandler, 
+    public DataSetConverter( BatchHandler<DataSet> batchHandler, 
         ImportObjectService importObjectService, 
         DataSetService dataSetService, 
         Map<String, Integer> periodTypeMapping )

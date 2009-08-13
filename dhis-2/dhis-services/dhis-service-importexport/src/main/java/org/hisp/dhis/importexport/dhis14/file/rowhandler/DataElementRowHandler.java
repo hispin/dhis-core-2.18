@@ -56,7 +56,7 @@ public class DataElementRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public DataElementRowHandler( BatchHandler batchHandler,
+    public DataElementRowHandler( BatchHandler<DataElement> batchHandler,
         ImportObjectService importObjectService,
         DataElementService dataElementService, 
         ImportParams params,

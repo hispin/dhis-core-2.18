@@ -89,7 +89,7 @@ public class DataSetSourceAssociationConverter
     /**
      * Constructor for read operations.
      */
-    public DataSetSourceAssociationConverter( BatchHandler batchHandler, 
+    public DataSetSourceAssociationConverter( BatchHandler<GroupMemberAssociation> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> dataSetMapping, 
         Map<Object, Integer> sourceMapping )

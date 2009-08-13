@@ -83,7 +83,7 @@ public class DataDictionaryIndicatorConverter
     /**
      * Constructor for read operations.
      */
-    public DataDictionaryIndicatorConverter( BatchHandler batchHandler,
+    public DataDictionaryIndicatorConverter( BatchHandler<GroupMemberAssociation> batchHandler,
         ImportObjectService importObjectService,
         Map<Object, Integer> dataDictionaryMapping,
         Map<Object, Integer> indicatorMapping )

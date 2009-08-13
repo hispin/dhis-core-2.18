@@ -886,7 +886,7 @@ public class ImportObjectServiceImportAllTest
         importObjectService.addImportObject( ImportObjectStatus.NEW, organisationUnitBModified, null );
         importObjectService.addImportObject( ImportObjectStatus.NEW, organisationUnitCModified, null );
         
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
+        BatchHandler<ImportDataValue> batchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
         
         batchHandler.init();
         
@@ -944,7 +944,7 @@ public class ImportObjectServiceImportAllTest
         importObjectService.addImportObject( ImportObjectStatus.UPDATE, organisationUnitBModified, organisationUnitB );
         importObjectService.addImportObject( ImportObjectStatus.UPDATE, organisationUnitCModified, organisationUnitC );
 
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
+        BatchHandler<ImportDataValue> batchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
         
         batchHandler.init();
         

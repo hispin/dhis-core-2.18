@@ -111,7 +111,7 @@ public class CompleteDataSetRegistrationConverter
      * @param periodMapping the Period mapping to use.
      * @param sourceMapping the Source mapping to use.
      */
-    public CompleteDataSetRegistrationConverter( BatchHandler batchHandler,
+    public CompleteDataSetRegistrationConverter( BatchHandler<CompleteDataSetRegistration> batchHandler,
         ImportObjectService importObjectService,
         ImportParams params,
         Map<Object, Integer> dataSetMapping,

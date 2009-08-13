@@ -42,6 +42,7 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
+import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
@@ -75,8 +76,6 @@ public class DataValueConverter
     // Properties
     // -------------------------------------------------------------------------
 
-    private DataMartStore dataMartStore;
-    
     private StatementManager statementManager;
     
     private PeriodService periodService;
@@ -105,9 +104,10 @@ public class DataValueConverter
     /**
      * Constructor for read operations.
      */
-    public DataValueConverter( BatchHandler batchHandler,
-        BatchHandler importDataValueBatchHandler,
+    public DataValueConverter( BatchHandler<DataValue> batchHandler,
+        BatchHandler<ImportDataValue> importDataValueBatchHandler,
         DataValueService dataValueService,
+        DataMartStore dataMartStore,
         ImportObjectService importObjectService,
         ImportParams params,
         Map<Object, Integer> dataElementMapping,
@@ -118,6 +118,7 @@ public class DataValueConverter
         this.batchHandler = batchHandler;
         this.importDataValueBatchHandler = importDataValueBatchHandler;
         this.dataValueService = dataValueService;
+        this.dataMartStore = dataMartStore;
         this.importObjectService = importObjectService;
         this.params = params;
         this.dataElementMapping = dataElementMapping;

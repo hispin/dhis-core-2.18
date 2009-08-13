@@ -176,7 +176,25 @@ public interface DataMartStore
     // DataValue
     // ----------------------------------------------------------------------
     
+    /**
+     * Gets a Collection of DeflatedDataValues.
+     * 
+     * @param dataElementId the DataElement identifier.
+     * @param periodId the Period identifier.
+     * @param sourceIds the Collection of Source identifiers.
+     */
     Collection<DeflatedDataValue> getDeflatedDataValues( final int dataElementId, final int periodId, final Collection<Integer> sourceIds );
+    
+    /**
+     * Gets a DataValues. Note that this is a "deflated" data value as the objects
+     * in the composite identifier only has its id property populated.
+     * 
+     * @param dataElementId the DataElement identifier.
+     * @param categoryOptionComboId the DataElementCategoryOptionCombo identifier.
+     * @param periodId the Period identifier.
+     * @param sourceId the Source identifier.
+     */
+    DataValue getDataValue( final int dataElementId, final int categoryOptionComboId, final int periodId, final int sourceId );
     
     /**
      * Gets all DataValues for the given DataElement identifer, collection of Period identifers, and collection of Sources

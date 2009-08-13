@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.indicator.Indicator;
@@ -39,7 +36,7 @@ import org.hisp.dhis.indicator.Indicator;
  * @version $Id: IndicatorBatchHandler.java 5811 2008-10-03 18:36:11Z larshelg $
  */
 public class IndicatorBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<Indicator>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,7 +44,7 @@ public class IndicatorBatchHandler
  
     public IndicatorBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
+        super( configuration, false, false );
     }
 
     // -------------------------------------------------------------------------
@@ -56,53 +53,44 @@ public class IndicatorBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "indicator";
+        statementBuilder.setTableName( "indicator" );
     }
     
-    protected void openSqlStatement()
+    @Override
+    protected void setAutoIncrementColumn()
     {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "indicatorid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
-    }
-    
-    protected String getUpdateSqlStatement( Object object )
-    {
-        Indicator indicator = (Indicator) object;
-        
-        statementBuilder.setIdentifierColumnName( "indicatorid" );
-        statementBuilder.setIdentifierColumnValue( indicator.getId() );
-        
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
-    }
-    
-    protected String getIdentifierStatement( Object objectName )
-    {
-        return statementBuilder.getValueStatement( tableName, "indicatorid", "name", String.valueOf( objectName ) );
+        statementBuilder.setAutoIncrementColumn( "indicatorid" );
     }    
 
-    protected String getUniquenessStatement( Object object )
+    @Override
+    protected void setIdentifierColumns()
     {
-        Indicator indicator = (Indicator) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "name", indicator.getName() );
-        fieldMap.put( "shortname", indicator.getShortName() );
-        fieldMap.put( "code", indicator.getCode() );
-        fieldMap.put( "alternativename", indicator.getAlternativeName() );
-        
-        return statementBuilder.getValueStatement( tableName, "indicatorid", fieldMap, false );
+        statementBuilder.setIdentifierColumn( "indicatorid" );
     }
     
-    protected void addColumns()
+    @Override
+    protected void setIdentifierValues( Indicator indicator )
+    {   
+        statementBuilder.setIdentifierValue( indicator.getId() );
+    }
+
+    protected void setUniqueColumns()
+    {
+        statementBuilder.setUniqueColumn( "name" );
+        statementBuilder.setUniqueColumn( "alternativename" );
+        statementBuilder.setUniqueColumn( "shortname" );
+        statementBuilder.setUniqueColumn( "code" );
+    }
+    
+    protected void setUniqueValues( Indicator indicator )
+    {        
+        statementBuilder.setUniqueValue( indicator.getName() );
+        statementBuilder.setUniqueValue( indicator.getAlternativeName() );
+        statementBuilder.setUniqueValue( indicator.getShortName() );
+        statementBuilder.setUniqueValue( indicator.getCode() );
+    }
+    
+    protected void setColumns()
     {
         statementBuilder.setColumn( "uuid" );
         statementBuilder.setColumn( "name" );
@@ -121,24 +109,22 @@ public class IndicatorBatchHandler
         statementBuilder.setColumn( "extendeddataelementid" );
     }
     
-    protected void addValues( Object object )
-    {
-        Indicator indicator = (Indicator) object;
-        
-        statementBuilder.setString( indicator.getUuid() );
-        statementBuilder.setString( indicator.getName() );
-        statementBuilder.setString( indicator.getAlternativeName() );
-        statementBuilder.setString( indicator.getShortName() );
-        statementBuilder.setString( indicator.getCode() );
-        statementBuilder.setString( indicator.getDescription() );
-        statementBuilder.setBoolean( indicator.getAnnualized() );
-        statementBuilder.setInt( indicator.getIndicatorType().getId() );
-        statementBuilder.setString( indicator.getNumerator() );
-        statementBuilder.setString( indicator.getNumeratorDescription() );
-        statementBuilder.setString( indicator.getNumeratorAggregationOperator() );
-        statementBuilder.setString( indicator.getDenominator() );
-        statementBuilder.setString( indicator.getDenominatorDescription() );
-        statementBuilder.setString( indicator.getDenominatorAggregationOperator() );
-        statementBuilder.setInt( indicator.getExtended() != null ? indicator.getExtended().getId() : null );
+    protected void setValues( Indicator indicator )
+    {        
+        statementBuilder.setValue( indicator.getUuid() );
+        statementBuilder.setValue( indicator.getName() );
+        statementBuilder.setValue( indicator.getAlternativeName() );
+        statementBuilder.setValue( indicator.getShortName() );
+        statementBuilder.setValue( indicator.getCode() );
+        statementBuilder.setValue( indicator.getDescription() );
+        statementBuilder.setValue( indicator.getAnnualized() );
+        statementBuilder.setValue( indicator.getIndicatorType().getId() );
+        statementBuilder.setValue( indicator.getNumerator() );
+        statementBuilder.setValue( indicator.getNumeratorDescription() );
+        statementBuilder.setValue( indicator.getNumeratorAggregationOperator() );
+        statementBuilder.setValue( indicator.getDenominator() );
+        statementBuilder.setValue( indicator.getDenominatorDescription() );
+        statementBuilder.setValue( indicator.getDenominatorAggregationOperator() );
+        statementBuilder.setValue( indicator.getExtended() != null ? indicator.getExtended().getId() : null );
     }
 }

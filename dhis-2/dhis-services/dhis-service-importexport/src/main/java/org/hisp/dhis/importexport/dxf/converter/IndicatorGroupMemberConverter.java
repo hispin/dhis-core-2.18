@@ -83,7 +83,7 @@ public class IndicatorGroupMemberConverter
     /**
      * Constructor for read operations.
      */
-    public IndicatorGroupMemberConverter( BatchHandler batchHandler, 
+    public IndicatorGroupMemberConverter( BatchHandler<GroupMemberAssociation> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> indicatorMapping, 
         Map<Object, Integer> indicatorGroupMapping )

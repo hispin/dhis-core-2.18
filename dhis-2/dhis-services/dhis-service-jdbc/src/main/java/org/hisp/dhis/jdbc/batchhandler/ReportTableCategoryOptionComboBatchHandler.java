@@ -36,7 +36,7 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
  * @version $Id$
  */
 public class ReportTableCategoryOptionComboBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<GroupMemberAssociation>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -44,9 +44,7 @@ public class ReportTableCategoryOptionComboBatchHandler
 
     public ReportTableCategoryOptionComboBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
     
     // -------------------------------------------------------------------------
@@ -55,58 +53,32 @@ public class ReportTableCategoryOptionComboBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "reporttable_categoryoptioncombos";
+        statementBuilder.setTableName( "reporttable_categoryoptioncombos" );
     }
     
-    protected void openSqlStatement()
+    protected void setUniqueColumns()
     {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setUniqueColumn( "reporttableid" );
+        statementBuilder.setUniqueColumn( "categoryoptioncomboid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
-    {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+    protected void setUniqueValues( GroupMemberAssociation association )
+    {        
+        statementBuilder.setUniqueValue( association.getGroupId() );
+        statementBuilder.setUniqueValue( association.getMemberId() );
     }
     
-    protected String getIdentifierStatement( Object objectName )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) objectName;
-        
-        String sql = statementBuilder.getValueStatement( tableName, "reporttableid", "categoryoptioncomboid", 
-            "reporttableid", association.getGroupId(), "categoryoptioncomboid", association.getMemberId() );
-        
-        return sql;
-    }
-    
-    protected String getUniquenessStatement( Object object )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
-
-        String sql = statementBuilder.getValueStatement( tableName, "reporttableid", "categoryoptioncomboid", 
-            "reporttableid", association.getGroupId(), "categoryoptioncomboid", association.getMemberId() );
-        
-        return sql;
-    }
-    
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "reporttableid" );
         statementBuilder.setColumn( "categoryoptioncomboid" );
         statementBuilder.setColumn( "sort_order" );
     }
     
-    protected void addValues( Object object )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
-        
-        statementBuilder.setInt( association.getGroupId() );
-        statementBuilder.setInt( association.getMemberId() );
-        statementBuilder.setInt( association.getSortOrder() );
-    }       
+    protected void setValues( GroupMemberAssociation association )
+    {        
+        statementBuilder.setValue( association.getGroupId() );
+        statementBuilder.setValue( association.getMemberId() );
+        statementBuilder.setValue( association.getSortOrder() );
+    }
 }

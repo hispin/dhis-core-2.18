@@ -130,8 +130,8 @@ public class ExtendedDataElementConverter
      * @param categoryComboMapping the categoryComboMapping to use.
      * @param dataElementService the dataElementService to use.
      */
-    public ExtendedDataElementConverter( BatchHandler batchHandler,
-        BatchHandler extendedDataElementBatchHandler, 
+    public ExtendedDataElementConverter( BatchHandler<DataElement> batchHandler,
+        BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> categoryComboMapping, 
         DataElementService dataElementService )

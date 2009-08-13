@@ -40,6 +40,7 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.CSVConverter;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
+import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.converter.AbstractDataValueConverter;
@@ -71,7 +72,7 @@ public class DataValueConverter
     /**
      * Constructor for read operations.
      */
-    public DataValueConverter( BatchHandler importDataValueBatchHandler,
+    public DataValueConverter( BatchHandler<ImportDataValue> importDataValueBatchHandler,
         DataValueService dataValueService,
         ImportObjectService importObjectService,
         ImportParams params )

@@ -104,7 +104,7 @@ public class DefaultCrossTabService
             
             log.info( "Created crosstab table" );
             
-            final BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataValueCrossTabBatchHandler.class );
+            final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( DataValueCrossTabBatchHandler.class );
             
             batchHandler.init();
             

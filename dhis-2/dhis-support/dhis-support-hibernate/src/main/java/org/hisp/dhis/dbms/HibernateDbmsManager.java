@@ -74,6 +74,8 @@ public class HibernateDbmsManager
 
     public void emptyDatabase()
     {   
+        emptyTable( "importdatavalue" );
+        
         emptyTable( "datavalueaudit" );
         emptyTable( "datavalue" );
         emptyTable( "completedatasetregistration" );

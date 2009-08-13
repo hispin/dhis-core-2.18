@@ -50,7 +50,7 @@ public class DataDictionaryBatchHandlerTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
-    private BatchHandler batchHandler;
+    private BatchHandler<DataDictionary> batchHandler;
     
     private DataDictionary dataDictionaryA;
     private DataDictionary dataDictionaryB;
@@ -123,13 +123,14 @@ public class DataDictionaryBatchHandlerTest
     @Test
     public void testUpdateObject()
     {
-        int id = dataDictionaryService.saveDataDictionary( dataDictionaryA );
+        int id = batchHandler.insertObject( dataDictionaryA, true );
         
+        dataDictionaryA.setId( id );
         dataDictionaryA.setName( "UpdatedName" );
         
         batchHandler.updateObject( dataDictionaryA );
         
-        assertEquals( dataDictionaryService.getDataDictionary( id ).getName(), "UpdatedName" );
+        assertEquals( "UpdatedName", dataDictionaryService.getDataDictionary( id ).getName() );
     }
 
     @Test

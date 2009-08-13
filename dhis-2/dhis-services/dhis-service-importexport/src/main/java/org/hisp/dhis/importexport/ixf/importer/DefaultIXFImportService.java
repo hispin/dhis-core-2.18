@@ -37,11 +37,14 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportService;
@@ -57,8 +60,11 @@ import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.SourceBatchHandler;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.StreamUtils;
 
 /**
@@ -114,6 +120,13 @@ public class DefaultIXFImportService
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
+    }
+    
+    private DataMartStore dataMartStore;
+
+    public void setDataMartStore( DataMartStore dataMartStore )
+    {
+        this.dataMartStore = dataMartStore;
     }
 
     private BatchHandlerFactory batchHandlerFactory;
@@ -176,7 +189,7 @@ public class DefaultIXFImportService
             {
                 //setMessage( "importing_periods" );
                 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
+                BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
                 
                 batchHandler.init();
                 
@@ -193,8 +206,8 @@ public class DefaultIXFImportService
             {
                 //setMessage( "importing_organisation_units" );
                 
-                BatchHandler sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class );
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
+                BatchHandler<Source> sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class );
+                BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
                 
                 sourceBatchHandler.init();
                 batchHandler.init();
@@ -213,8 +226,8 @@ public class DefaultIXFImportService
             {
                 //setMessage( "importing_data_elements" );
 
-                BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );                
-                BatchHandler dataValueBatchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
+                BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );                
+                BatchHandler<DataValue> dataValueBatchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
                 
                 DataElementCategoryCombo categoryCombo = categoryComboService.
                     getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
@@ -227,7 +240,8 @@ public class DefaultIXFImportService
                 
                 XMLConverter converter = new IndicatorConverter( batchHandler, 
                     dataElementService, 
-                    importObjectService, 
+                    importObjectService,
+                    dataMartStore,
                     categoryCombo, 
                     dataValueBatchHandler,
                     categoryOptionCombo,

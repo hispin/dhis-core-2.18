@@ -27,6 +27,7 @@ package org.hisp.dhis.importexport.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.ImportParams;
@@ -39,6 +40,8 @@ public class AbstractDataValueConverter
     extends AbstractConverter<DataValue>
 {
     protected DataValueService dataValueService;
+    
+    protected DataMartStore dataMartStore;
     
     protected ImportParams params;
     
@@ -63,30 +66,39 @@ public class AbstractDataValueConverter
     
     protected DataValue getMatching( DataValue object )
     {
-        if ( params.isSkipCheckMatching() )
-        {
-            return null;
-        }
-
         // ---------------------------------------------------------------------
         // Datavalue cannot be compared against existing datavalues during
         // preview since the elements in its composite id have not been mapped
         // ---------------------------------------------------------------------
 
-        if ( params.isPreview() )
+        if ( params.isSkipCheckMatching() || params.isPreview() )
         {
             return null;
         }
         
-        return batchHandler.objectExists( object ) ? object : null;
+        return dataMartStore.getDataValue( object.getDataElement().getId(), object.getOptionCombo().getId(), 
+            object.getPeriod().getId(), object.getSource().getId() );
     }
     
     protected boolean isIdentical( DataValue object, DataValue existing )
     {
-        // ---------------------------------------------------------------------
-        // Matching datavalues will not be overwritten
-        // ---------------------------------------------------------------------
-
+        if ( !isSimiliar( object.getValue(), existing.getValue() ) || ( isNotNull( object.getValue(), existing.getValue() ) && !object.getValue().equals( existing.getValue() ) ) )
+        {
+            return false;
+        }
+        if ( !isSimiliar( object.getStoredBy(), existing.getStoredBy() ) || ( isNotNull( object.getStoredBy(), existing.getStoredBy() ) && !object.getStoredBy().equals( existing.getStoredBy() ) ) )
+        {
+            return false;
+        }
+        if ( !isSimiliar( object.getTimestamp(), existing.getTimestamp() ) || ( isNotNull( object.getTimestamp(), existing.getTimestamp() ) && !object.getTimestamp().equals( existing.getTimestamp() ) ) )
+        {
+            return false;
+        }
+        if ( !isSimiliar( object.getComment(), existing.getComment() ) || ( isNotNull( object.getComment(), existing.getComment() ) && !object.getComment().equals( existing.getComment() ) ) )
+        {
+            return false;
+        }
+        
         return true;
     }
 }

@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -39,7 +36,7 @@ import org.hisp.dhis.dataelement.DataElementCategory;
  * @version $Id$
  */
 public class DataElementCategoryBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<DataElementCategory>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,7 +44,7 @@ public class DataElementCategoryBatchHandler
 
     public DataElementCategoryBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
+        super( configuration, false, false );
     }
     
     // -------------------------------------------------------------------------
@@ -56,58 +53,44 @@ public class DataElementCategoryBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "dataelementcategory";
+        statementBuilder.setTableName( "dataelementcategory" );
     }
-    
-    protected void openSqlStatement()
-    {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "categoryid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
-    }
-    
-    protected String getUpdateSqlStatement( Object object )
-    {
-        DataElementCategory category = (DataElementCategory) object;
-        
-        statementBuilder.setIdentifierColumnName( "categoryid" );
-        statementBuilder.setIdentifierColumnValue( category.getId() );
-        
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
-    }
-    
-    protected String getIdentifierStatement( Object objectName )
-    {
-        return statementBuilder.getValueStatement( tableName, "categoryid", "name", String.valueOf( objectName ) );
-    }
-    
-    protected String getUniquenessStatement( Object object )
-    {
-        DataElementCategory category = (DataElementCategory) object;
 
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "name", category.getName() );
-        
-        return statementBuilder.getValueStatement( tableName, "categoryid", fieldMap, false );
+    @Override
+    protected void setAutoIncrementColumn()
+    {   
+        statementBuilder.setAutoIncrementColumn( "categoryid" );
+    }
+
+    @Override
+    protected void setIdentifierColumns()
+    {
+        statementBuilder.setIdentifierColumn( "categoryid" );
+    }
+
+    @Override
+    protected void setIdentifierValues( DataElementCategory category )
+    {                
+        statementBuilder.setIdentifierValue( category.getId() );
+    }
+
+    protected void setUniqueColumns()
+    {
+        statementBuilder.setUniqueColumn( "name" );
+    }
+
+    protected void setUniqueValues( DataElementCategory category )
+    {                
+        statementBuilder.setUniqueValue( category.getName() );
     }
     
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "name" );
     }
     
-    protected void addValues( Object object )
-    {
-        DataElementCategory category = (DataElementCategory) object;
-        
-        statementBuilder.setString( category.getName() );
+    protected void setValues( DataElementCategory category )
+    {        
+        statementBuilder.setValue( category.getName() );
     }
 }

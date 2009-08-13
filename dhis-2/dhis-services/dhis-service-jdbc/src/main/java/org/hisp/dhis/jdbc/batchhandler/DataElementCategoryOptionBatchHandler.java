@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -39,7 +36,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
  * @version $Id$
  */
 public class DataElementCategoryOptionBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<DataElementCategoryOption>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,7 +44,7 @@ public class DataElementCategoryOptionBatchHandler
 
     public DataElementCategoryOptionBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
+        super( configuration, false, false );
     }
     
     // -------------------------------------------------------------------------
@@ -56,60 +53,46 @@ public class DataElementCategoryOptionBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "dataelementcategoryoption";
+        statementBuilder.setTableName( "dataelementcategoryoption" );
     }
-    
-    protected void openSqlStatement()
-    {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "categoryoptionid" );
 
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+    @Override
+    protected void setAutoIncrementColumn()
+    {   
+        statementBuilder.setAutoIncrementColumn( "categoryoptionid" );
     }
-    
-    protected String getUpdateSqlStatement( Object object )
-    {
-        DataElementCategoryOption categoryOption = (DataElementCategoryOption) object;
-        
-        statementBuilder.setIdentifierColumnName( "categoryoptionid" );
-        statementBuilder.setIdentifierColumnValue( categoryOption.getId() );
 
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
-    }
-    
-    protected String getIdentifierStatement( Object objectName )
+    @Override
+    protected void setIdentifierColumns()
     {
-        return statementBuilder.getValueStatement( tableName, "categoryoptionid", "name", String.valueOf( objectName ) );
+        statementBuilder.setIdentifierColumn( "categoryoptionid" );
+    }
+
+    @Override
+    protected void setIdentifierValues( DataElementCategoryOption categoryOption )
+    {        
+        statementBuilder.setIdentifierValue( categoryOption.getId() );
     }
     
-    protected String getUniquenessStatement( Object object )
+    protected void setUniqueColumns()
     {
-        DataElementCategoryOption categoryOption = (DataElementCategoryOption) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "name", categoryOption.getName() );
-        
-        return statementBuilder.getValueStatement( tableName, "categoryoptionid", fieldMap, false );
+        statementBuilder.setUniqueColumn( "name" );
     }
     
-    protected void addColumns()
+    protected void setUniqueValues( DataElementCategoryOption categoryOption )
+    {        
+        statementBuilder.setUniqueValue( categoryOption.getName() );
+    }
+    
+    protected void setColumns()
     {
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "uuid" );
     }
     
-    protected void addValues( Object object )
-    {
-        DataElementCategoryOption categoryOption = (DataElementCategoryOption) object;
-        
-        statementBuilder.setString( categoryOption.getName() );
-        statementBuilder.setString( categoryOption.getUuid() );
-    }   
+    protected void setValues( DataElementCategoryOption categoryOption )
+    {        
+        statementBuilder.setValue( categoryOption.getName() );
+        statementBuilder.setValue( categoryOption.getUuid() );
+    }
 }

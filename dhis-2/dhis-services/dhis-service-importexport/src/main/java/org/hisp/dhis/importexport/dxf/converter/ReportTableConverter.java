@@ -104,7 +104,7 @@ public class ReportTableConverter
      * @param reportTableStore ReportTableStore
      * @param importObjectService ImportObjectService
      */
-    public ReportTableConverter( BatchHandler batchHandler, 
+    public ReportTableConverter( BatchHandler<ReportTable> batchHandler, 
         ReportTableService reportTableService,
         ImportObjectService importObjectService )
     {

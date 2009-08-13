@@ -83,7 +83,7 @@ public class DataElementGroupMemberConverter
     /**
      * Constructor for read operations.
      */
-    public DataElementGroupMemberConverter( BatchHandler batchHandler, 
+    public DataElementGroupMemberConverter( BatchHandler<GroupMemberAssociation> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> dataElementMapping, 
         Map<Object, Integer> dataElementGroupMapping )

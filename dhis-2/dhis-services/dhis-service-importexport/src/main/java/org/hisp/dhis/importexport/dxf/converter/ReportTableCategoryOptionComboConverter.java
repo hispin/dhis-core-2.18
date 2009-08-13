@@ -84,7 +84,7 @@ public class ReportTableCategoryOptionComboConverter
     /**
      * Constructor for read operations.
      */
-    public ReportTableCategoryOptionComboConverter( BatchHandler batchHandler, 
+    public ReportTableCategoryOptionComboConverter( BatchHandler<GroupMemberAssociation> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> reportTableMapping, 
         Map<Object, Integer> categoryOptionComboMapping )

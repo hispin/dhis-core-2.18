@@ -50,7 +50,7 @@ public class OrganisationUnitGroupBatchHandlerTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
-    private BatchHandler batchHandler;
+    private BatchHandler<OrganisationUnitGroup> batchHandler;
     
     private OrganisationUnitGroup groupA;
     private OrganisationUnitGroup groupB;
@@ -123,13 +123,14 @@ public class OrganisationUnitGroupBatchHandlerTest
     @Test
     public void testUpdateObject()
     {
-        int id = organisationUnitGroupService.addOrganisationUnitGroup( groupA );
+        int id = batchHandler.insertObject( groupA, true );
 
+        groupA.setId( id );
         groupA.setName( "UpdatedName" );
         
         batchHandler.updateObject( groupA );
         
-        assertEquals( organisationUnitGroupService.getOrganisationUnitGroup( id ).getName(), "UpdatedName" );
+        assertEquals( "UpdatedName", organisationUnitGroupService.getOrganisationUnitGroup( id ).getName() );
     }
 
     @Test

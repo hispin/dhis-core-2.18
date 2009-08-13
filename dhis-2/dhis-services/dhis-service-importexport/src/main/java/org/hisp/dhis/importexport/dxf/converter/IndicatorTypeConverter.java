@@ -76,7 +76,7 @@ public class IndicatorTypeConverter
      * @param indicatorService the indicatorService to use.
      * @param importObjectService the importObjectService to use.
      */
-    public IndicatorTypeConverter( BatchHandler batchHandler, 
+    public IndicatorTypeConverter( BatchHandler<IndicatorType> batchHandler, 
         ImportObjectService importObjectService, 
         IndicatorService indicatorService )
     {

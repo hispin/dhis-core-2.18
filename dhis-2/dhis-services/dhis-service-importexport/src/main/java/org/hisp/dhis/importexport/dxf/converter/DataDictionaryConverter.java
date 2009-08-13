@@ -77,7 +77,7 @@ public class DataDictionaryConverter
      * @param importObjectService the importObjectService to use.
      * @param dataDictionaryService the dataDictionaryService to use.
      */
-    public DataDictionaryConverter( BatchHandler batchHandler, 
+    public DataDictionaryConverter( BatchHandler<DataDictionary> batchHandler, 
         ImportObjectService importObjectService,
         DataDictionaryService dataDictionaryService )
     {        

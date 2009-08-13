@@ -57,7 +57,7 @@ public class DataElementGroupMemberRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public DataElementGroupMemberRowHandler( BatchHandler batchHandler,
+    public DataElementGroupMemberRowHandler( BatchHandler<GroupMemberAssociation> batchHandler,
         ImportObjectService importObjectService,
         Map<Object, Integer> dataElementMapping, 
         Map<Object, Integer> dataElementGroupMapping,

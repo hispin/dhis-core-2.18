@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -39,7 +36,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
  * @version $Id$
  */
 public class DataElementCategoryComboBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<DataElementCategoryCombo>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,7 +44,7 @@ public class DataElementCategoryComboBatchHandler
 
     public DataElementCategoryComboBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
+        super( configuration, false, false );
     }
     
     // -------------------------------------------------------------------------
@@ -56,58 +53,44 @@ public class DataElementCategoryComboBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "categorycombo";
+        statementBuilder.setTableName( "categorycombo" );
     }
-    
-    protected void openSqlStatement()
+
+    @Override
+    protected void setAutoIncrementColumn()
+    {   
+        statementBuilder.setAutoIncrementColumn( "categorycomboid" );
+    }
+
+    @Override
+    protected void setIdentifierColumns()
     {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "categorycomboid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setIdentifierColumn( "categorycomboid" );
     }
-    
-    protected String getUpdateSqlStatement( Object object )
+
+    @Override
+    protected void setIdentifierValues( DataElementCategoryCombo categoryCombo )
+    {        
+        statementBuilder.setIdentifierValue( categoryCombo.getId() );
+    }
+
+    protected void setUniqueColumns()
     {
-        DataElementCategoryCombo categoryCombo = (DataElementCategoryCombo) object;
-        
-        statementBuilder.setIdentifierColumnName( "categorycomboid" );
-        statementBuilder.setIdentifierColumnValue( categoryCombo.getId() );
-        
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setUniqueColumn( "name" );
     }
     
-    protected String getIdentifierStatement( Object objectName )
-    {
-        return statementBuilder.getValueStatement( tableName, "categorycomboid", "name", String.valueOf( objectName ) );
+    protected void setUniqueValues( DataElementCategoryCombo categoryCombo )
+    {        
+        statementBuilder.setUniqueValue( categoryCombo.getName() );
     }
     
-    protected String getUniquenessStatement( Object object )
-    {
-        DataElementCategoryCombo categoryCombo = (DataElementCategoryCombo) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "name", categoryCombo.getName() );
-        
-        return statementBuilder.getValueStatement( tableName, "categorycomboid", fieldMap, false );
-    }
-    
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "name" );
     }
     
-    protected void addValues( Object object )
-    {
-        DataElementCategoryCombo categoryCombo = (DataElementCategoryCombo) object;
-        
-        statementBuilder.setString( categoryCombo.getName() );
-    }   
+    protected void setValues( DataElementCategoryCombo categoryCombo )
+    {        
+        statementBuilder.setValue( categoryCombo.getName() );
+    }
 }

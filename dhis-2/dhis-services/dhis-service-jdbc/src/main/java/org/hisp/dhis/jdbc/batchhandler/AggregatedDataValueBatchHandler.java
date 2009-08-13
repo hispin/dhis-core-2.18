@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
@@ -39,7 +36,7 @@ import org.hisp.dhis.aggregation.AggregatedDataValue;
  * @version $Id: AggregatedDataValueBatchHandler.java 5510 2008-07-30 16:30:27Z larshelg $
  */
 public class AggregatedDataValueBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<AggregatedDataValue>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,55 +44,33 @@ public class AggregatedDataValueBatchHandler
     
     public AggregatedDataValueBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
-
+    
     protected void setTableName()
     {
-        this.tableName = "aggregateddatavalue";
+        statementBuilder.setTableName( "aggregateddatavalue" );
     }
     
-    protected void openSqlStatement()
+    protected void setUniqueColumns()
     {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setUniqueColumn( "dataelementid" );
+        statementBuilder.setUniqueColumn( "periodid" );
+        statementBuilder.setUniqueColumn( "organisationunitid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
-    {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+    protected void setUniqueValues( AggregatedDataValue value )
+    {        
+        statementBuilder.setUniqueValue( value.getDataElementId() );
+        statementBuilder.setUniqueValue( value.getPeriodId() );
+        statementBuilder.setUniqueValue( value.getOrganisationUnitId() );
     }
     
-    protected String getIdentifierStatement( Object objectName )
-    {
-        throw new UnsupportedOperationException( "AggregatedDataValue has no single unique identifier" );
-    }
-    
-    protected String getUniquenessStatement( Object object )
-    {
-        AggregatedDataValue value = (AggregatedDataValue) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "dataelementid", String.valueOf( value.getDataElementId() ) );
-        fieldMap.put( "periodid", String.valueOf( value.getPeriodId() ) );
-        fieldMap.put( "organisationunitid", String.valueOf( value.getOrganisationUnitId() ) );
-        
-        return statementBuilder.getValueStatement( tableName, "dataelementid", fieldMap, true );
-    }
-    
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "dataelementid" );
         statementBuilder.setColumn( "categoryoptioncomboid" );
@@ -106,16 +81,14 @@ public class AggregatedDataValueBatchHandler
         statementBuilder.setColumn( "value" );
     }
     
-    protected void addValues( Object object )
-    {
-        AggregatedDataValue value = (AggregatedDataValue) object;
-        
-        statementBuilder.setInt( value.getDataElementId() );
-        statementBuilder.setInt( value.getCategoryOptionComboId() );
-        statementBuilder.setInt( value.getPeriodId() );
-        statementBuilder.setInt( value.getPeriodTypeId() );
-        statementBuilder.setInt( value.getOrganisationUnitId() );
-        statementBuilder.setInt( value.getLevel() );
-        statementBuilder.setDouble( value.getValue() );
-    }
+    protected void setValues( AggregatedDataValue value )
+    {        
+        statementBuilder.setValue( value.getDataElementId() );
+        statementBuilder.setValue( value.getCategoryOptionComboId() );
+        statementBuilder.setValue( value.getPeriodId() );
+        statementBuilder.setValue( value.getPeriodTypeId() );
+        statementBuilder.setValue( value.getOrganisationUnitId() );
+        statementBuilder.setValue( value.getLevel() );
+        statementBuilder.setValue( value.getValue() );
+    }    
 }

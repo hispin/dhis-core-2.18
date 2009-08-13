@@ -7,14 +7,14 @@
 	
 	<class name="org.hisp.dhis.importexport.ImportDataValue" table="importdatavalue">
 
-		<composite-id>
-			<key-property name="dataElementId" column="dataelementid"/>
-      <key-property name="categoryOptionComboId" column="categoryoptioncomboid"/>
-			<key-property name="periodId" column="periodid"/>	
-			<key-property name="sourceId" column="sourceid"/>
-		</composite-id>
+	<composite-id>
+	   <key-property name="dataElementId" column="dataelementid"/>
+        <key-property name="categoryOptionComboId" column="categoryoptioncomboid"/>
+        <key-property name="periodId" column="periodid"/>	
+        <key-property name="sourceId" column="sourceid"/>
+    </composite-id>
 		
-		<property name="value" column="value"/>
+    <property name="value" column="value"/>
 		
     <property name="storedBy" column="storedby"/>
 		
@@ -22,7 +22,7 @@
 		
     <property name="comment" column="comment" type="text"/>
 		
-		<property name="status" column="status"/>
+	<property name="status" column="status"/>
 		
 	</class>
 

@@ -106,7 +106,7 @@ public class IndicatorConverter
      * @param dataElementMapping the dataElementMapping to use.
      * @param categoryOptionComboMapping the categoryOptionComboMapping to use.
      */
-    public IndicatorConverter( BatchHandler batchHandler, 
+    public IndicatorConverter( BatchHandler<Indicator> batchHandler, 
         ImportObjectService importObjectService, 
         IndicatorService indicatorService,
         ExpressionService expressionService,

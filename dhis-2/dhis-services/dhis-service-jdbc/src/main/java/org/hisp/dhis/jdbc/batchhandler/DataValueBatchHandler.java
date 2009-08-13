@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.datavalue.DataValue;
@@ -39,7 +36,7 @@ import org.hisp.dhis.datavalue.DataValue;
  * @version $Id: DataValueBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
  */
 public class DataValueBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<DataValue>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,9 +44,7 @@ public class DataValueBatchHandler
  
     public DataValueBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
@@ -58,45 +53,44 @@ public class DataValueBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "datavalue";
-    }
-    
-    protected void openSqlStatement()
-    {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
-    }
-    
-    protected String getUpdateSqlStatement( Object object )
-    {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
-    }
-    
-    protected String getIdentifierStatement( Object objectName )
-    {
-        throw new UnsupportedOperationException( "DataValue has no single unique identifier" );
+        statementBuilder.setTableName( "datavalue" );
     }
 
-    protected String getUniquenessStatement( Object object )
+    @Override
+    protected void setIdentifierColumns()
     {
-        final DataValue value = (DataValue) object;
-        
-        final Map<String, Integer> fieldMap = new HashMap<String, Integer>();
-        
-        fieldMap.put( "dataelementid", value.getDataElement().getId() );
-        fieldMap.put( "categoryoptioncomboid", value.getOptionCombo().getId() );
-        fieldMap.put( "periodid", value.getPeriod().getId() );
-        fieldMap.put( "sourceid", value.getSource().getId() );
-        
-        return statementBuilder.getIntegerValueStatement( tableName, "dataelementid", fieldMap, true );
+        statementBuilder.setIdentifierColumn( "dataelementid" );
+        statementBuilder.setIdentifierColumn( "periodid" );
+        statementBuilder.setIdentifierColumn( "sourceid" );
+        statementBuilder.setIdentifierColumn( "categoryoptioncomboid" );
+    }
+
+    @Override
+    protected void setIdentifierValues( DataValue value )
+    {        
+        statementBuilder.setIdentifierValue( value.getDataElement().getId() );
+        statementBuilder.setIdentifierValue( value.getPeriod().getId() );
+        statementBuilder.setIdentifierValue( value.getSource().getId() );
+        statementBuilder.setIdentifierValue( value.getOptionCombo().getId() );
     }
     
-    protected void addColumns()
+    protected void setUniqueColumns()
+    {
+        statementBuilder.setUniqueColumn( "dataelementid" );
+        statementBuilder.setUniqueColumn( "periodid" );
+        statementBuilder.setUniqueColumn( "sourceid" );
+        statementBuilder.setUniqueColumn( "categoryoptioncomboid" );
+    }
+    
+    protected void setUniqueValues( DataValue value )
+    {        
+        statementBuilder.setUniqueValue( value.getDataElement().getId() );
+        statementBuilder.setUniqueValue( value.getPeriod().getId() );
+        statementBuilder.setUniqueValue( value.getSource().getId() );
+        statementBuilder.setUniqueValue( value.getOptionCombo().getId() );
+    }
+    
+    protected void setColumns()
     {
         statementBuilder.setColumn( "dataelementid" );
         statementBuilder.setColumn( "periodid" );
@@ -108,17 +102,15 @@ public class DataValueBatchHandler
         statementBuilder.setColumn( "categoryoptioncomboid" );
     }
     
-    protected void addValues( Object object )
-    {
-        DataValue value = (DataValue) object;
-        
-        statementBuilder.setInt( value.getDataElement().getId() );
-        statementBuilder.setInt( value.getPeriod().getId() );
-        statementBuilder.setInt( value.getSource().getId() );
-        statementBuilder.setString( value.getValue() );
-        statementBuilder.setString( value.getStoredBy() );
-        statementBuilder.setDate( value.getTimestamp() );
-        statementBuilder.setString( value.getComment() );
-        statementBuilder.setInt( value.getOptionCombo().getId() );
-    }   
+    protected void setValues( DataValue value )
+    {        
+        statementBuilder.setValue( value.getDataElement().getId() );
+        statementBuilder.setValue( value.getPeriod().getId() );
+        statementBuilder.setValue( value.getSource().getId() );
+        statementBuilder.setValue( value.getValue() );
+        statementBuilder.setValue( value.getStoredBy() );
+        statementBuilder.setValue( value.getTimestamp() );
+        statementBuilder.setValue( value.getComment() );
+        statementBuilder.setValue( value.getOptionCombo().getId() );
+    }
 }

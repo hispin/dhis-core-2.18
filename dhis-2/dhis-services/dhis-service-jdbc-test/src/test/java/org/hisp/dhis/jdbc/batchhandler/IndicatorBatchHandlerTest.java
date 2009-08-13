@@ -54,7 +54,7 @@ public class IndicatorBatchHandlerTest
 	
     private BatchHandlerFactory batchHandlerFactory;
     
-    private BatchHandler batchHandler;
+    private BatchHandler<Indicator> batchHandler;
     
     private Indicator indicatorA;
     private Indicator indicatorB;
@@ -137,15 +137,16 @@ public class IndicatorBatchHandlerTest
     @Test
     public void testUpdateObject()
     {
-        int id = indicatorService.addIndicator( indicatorA );
+        int id = batchHandler.insertObject( indicatorA, true );
         
+        indicatorA.setId( id );
         indicatorA.setName( "UpdatedName" );
         
         batchHandler.updateObject( indicatorA );
 
         cacheManager.clearCache();
         
-        assertEquals( indicatorService.getIndicator( id ).getName(), "UpdatedName" );
+        assertEquals( "UpdatedName", indicatorService.getIndicator( id ).getName() );
     }
 
     @Test

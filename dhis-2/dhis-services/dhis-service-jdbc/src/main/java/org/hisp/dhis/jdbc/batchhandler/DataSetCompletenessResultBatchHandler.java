@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
@@ -39,7 +36,7 @@ import org.hisp.dhis.completeness.DataSetCompletenessResult;
  * @version $Id$
  */
 public class DataSetCompletenessResultBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<DataSetCompletenessResult>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,9 +44,7 @@ public class DataSetCompletenessResultBatchHandler
  
     public DataSetCompletenessResultBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
@@ -58,45 +53,42 @@ public class DataSetCompletenessResultBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "aggregateddatasetcompleteness";
+        statementBuilder.setTableName( "aggregateddatasetcompleteness" );
     }
     
-    protected void openSqlStatement()
+    @Override
+    protected void setIdentifierColumns()
     {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setIdentifierColumn( "datasetid" );
+        statementBuilder.setIdentifierColumn( "periodid" );
+        statementBuilder.setIdentifierColumn( "organisationunitid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
+    @Override
+    protected void setIdentifierValues( DataSetCompletenessResult result )
     {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setIdentifierValue( result.getDataSetId() );
+        statementBuilder.setIdentifierValue( result.getPeriodId() );
+        statementBuilder.setIdentifierValue( result.getOrganisationUnitId() );
     }
-    
-    protected String getIdentifierStatement( Object objectName )
+
+    @Override
+    protected void setUniqueColumns()
     {
-        throw new UnsupportedOperationException( "DataSetCompleteness has no single unique identifier" );
+        statementBuilder.setUniqueColumn( "datasetid" );
+        statementBuilder.setUniqueColumn( "periodid" );
+        statementBuilder.setUniqueColumn( "organisationunitid" );
     }
     
-    protected String getUniquenessStatement( Object object )
+    @Override
+    protected void setUniqueValues( DataSetCompletenessResult result )
     {
-        DataSetCompletenessResult result = (DataSetCompletenessResult) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "datasetid", String.valueOf( result.getDataSetId() ) );
-        fieldMap.put( "periodid", String.valueOf( result.getPeriodId() ) );
-        fieldMap.put( "organisationunitid", String.valueOf( result.getOrganisationUnitId() ) );
-        fieldMap.put( "reporttableid", String.valueOf( result.getReportTableId() ) );
-        
-        return statementBuilder.getValueStatement( tableName, "datasetid", fieldMap, false );
+        statementBuilder.setUniqueValue( result.getDataSetId() );
+        statementBuilder.setUniqueValue( result.getPeriodId() );
+        statementBuilder.setUniqueValue( result.getOrganisationUnitId() );
     }
     
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "datasetid" );
         statementBuilder.setColumn( "periodid" );
@@ -110,19 +102,17 @@ public class DataSetCompletenessResultBatchHandler
         statementBuilder.setColumn( "valueOnTime" );
     }
     
-    protected void addValues( Object object )
-    {
-        DataSetCompletenessResult result = (DataSetCompletenessResult) object;
-        
-        statementBuilder.setInt( result.getDataSetId() );
-        statementBuilder.setInt( result.getPeriodId() );
-        statementBuilder.setString( result.getPeriodName() );
-        statementBuilder.setInt( result.getOrganisationUnitId() );
-        statementBuilder.setInt( result.getReportTableId() );
-        statementBuilder.setInt( result.getSources() );
-        statementBuilder.setInt( result.getRegistrations() );
-        statementBuilder.setInt( result.getRegistrationsOnTime() );
-        statementBuilder.setDouble( result.getPercentage() );
-        statementBuilder.setDouble( result.getPercentageOnTime() );
+    protected void setValues( DataSetCompletenessResult result )
+    {        
+        statementBuilder.setValue( result.getDataSetId() );
+        statementBuilder.setValue( result.getPeriodId() );
+        statementBuilder.setValue( result.getPeriodName() );
+        statementBuilder.setValue( result.getOrganisationUnitId() );
+        statementBuilder.setValue( result.getReportTableId() );
+        statementBuilder.setValue( result.getSources() );
+        statementBuilder.setValue( result.getRegistrations() );
+        statementBuilder.setValue( result.getRegistrationsOnTime() );
+        statementBuilder.setValue( result.getPercentage() );
+        statementBuilder.setValue( result.getPercentageOnTime() );
     }
 }

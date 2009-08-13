@@ -161,7 +161,7 @@ public class DefaultIndicatorDataMart
         final Collection<Period> periods = periodService.getPeriods( periodIds );
         final Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnits( organisationUnitIds );
 
-        final BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class );
+        final BatchHandler<AggregatedIndicatorValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class );
 
         batchHandler.init();
         

@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.importexport.GroupMemberAssociation;
@@ -39,7 +36,7 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
  * @version $Id$
  */
 public class DataDictionaryDataElementBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<GroupMemberAssociation>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,9 +44,7 @@ public class DataDictionaryDataElementBatchHandler
  
     public DataDictionaryDataElementBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
@@ -58,58 +53,30 @@ public class DataDictionaryDataElementBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "datadictionarydataelements";
+        statementBuilder.setTableName( "datadictionarydataelements" );
     }
-    
-    protected void openSqlStatement()
+
+    protected void setUniqueColumns()
     {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setUniqueColumn( "datadictionaryid" );
+        statementBuilder.setUniqueColumn( "dataelementid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
-    {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+    protected void setUniqueValues( GroupMemberAssociation association )
+    {        
+        statementBuilder.setUniqueValue( association.getGroupId() );
+        statementBuilder.setUniqueValue( association.getMemberId() );
     }
     
-    protected String getIdentifierStatement( Object objectName )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) objectName;
-        
-        String sql = statementBuilder.getValueStatement( tableName, "datadictionaryid", "dataelementid", 
-            "datadictionaryid", String.valueOf( association.getGroupId() ), "dataelementid", String.valueOf( association.getMemberId() ) );
-        
-        return sql;
-    }
-    
-    protected String getUniquenessStatement( Object object )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "datadictionaryid", String.valueOf( association.getGroupId() ) );
-        fieldMap.put( "dataelementid", String.valueOf( association.getMemberId() ) );
-        
-        return statementBuilder.getValueStatement( tableName, "datadictionaryid", fieldMap, true );
-    }
-    
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "datadictionaryid" );
         statementBuilder.setColumn( "dataelementid" );
     }
     
-    protected void addValues( Object object )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
-        
-        statementBuilder.setInt( association.getGroupId() );
-        statementBuilder.setInt( association.getMemberId() );
-    }       
+    protected void setValues( GroupMemberAssociation association )
+    {        
+        statementBuilder.setValue( association.getGroupId() );
+        statementBuilder.setValue( association.getMemberId() );
+    }
 }

@@ -36,7 +36,7 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
  * @version $Id$
  */
 public class ReportTableOrganisationUnitBatchHandler
-extends AbstractBatchHandler
+    extends AbstractBatchHandler<GroupMemberAssociation>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -44,9 +44,7 @@ extends AbstractBatchHandler
  
     public ReportTableOrganisationUnitBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
@@ -55,58 +53,32 @@ extends AbstractBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "reporttable_organisationunits";
+        statementBuilder.setTableName( "reporttable_organisationunits" );
     }
-    
-    protected void openSqlStatement()
-    {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
-    }
-    
-    protected String getUpdateSqlStatement( Object object )
-    {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
-    }
-    
-    protected String getIdentifierStatement( Object objectName )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) objectName;
-        
-        String sql = statementBuilder.getValueStatement( tableName, "reporttableid", "organisationunitid", 
-            "reporttableid", association.getGroupId(), "organisationunitid", association.getMemberId() );
-        
-        return sql;
-    }
-    
-    protected String getUniquenessStatement( Object object )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
 
-        String sql = statementBuilder.getValueStatement( tableName, "reporttableid", "organisationunitid", 
-            "reporttableid", association.getGroupId(), "organisationunitid", association.getMemberId() );
-        
-        return sql;
+    protected void setUniqueColumns()
+    {
+        statementBuilder.setUniqueColumn( "reporttableid" );
+        statementBuilder.setUniqueColumn( "organisationunitid" );
     }
     
-    protected void addColumns()
+    protected void setUniqueValues( GroupMemberAssociation association )
+    {        
+        statementBuilder.setUniqueValue( association.getGroupId() );
+        statementBuilder.setUniqueValue( association.getMemberId() );
+    }
+    
+    protected void setColumns()
     {
         statementBuilder.setColumn( "reporttableid" );
         statementBuilder.setColumn( "organisationunitid" );
         statementBuilder.setColumn( "sort_order" );
     }
     
-    protected void addValues( Object object )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
-        
-        statementBuilder.setInt( association.getGroupId() );
-        statementBuilder.setInt( association.getMemberId() );
-        statementBuilder.setInt( association.getSortOrder() );
-    }       
+    protected void setValues( GroupMemberAssociation association )
+    {        
+        statementBuilder.setValue( association.getGroupId() );
+        statementBuilder.setValue( association.getMemberId() );
+        statementBuilder.setValue( association.getSortOrder() );
+    }
 }

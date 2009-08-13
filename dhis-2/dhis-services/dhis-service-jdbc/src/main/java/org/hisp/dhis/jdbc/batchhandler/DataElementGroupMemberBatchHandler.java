@@ -36,7 +36,7 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
  * @version $Id: DataElementGroupMemberBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
  */
 public class DataElementGroupMemberBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<GroupMemberAssociation>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -44,9 +44,7 @@ public class DataElementGroupMemberBatchHandler
  
     public DataElementGroupMemberBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
@@ -55,56 +53,30 @@ public class DataElementGroupMemberBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "dataelementgroupmembers";
+        statementBuilder.setTableName( "dataelementgroupmembers" );
     }
-    
-    protected void openSqlStatement()
-    {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
-    }
-    
-    protected String getUpdateSqlStatement( Object object )
-    {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
-    }
-    
-    protected String getIdentifierStatement( Object objectName )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) objectName;
-        
-        String sql = statementBuilder.getValueStatement( tableName, "dataelementgroupid", "dataelementid", 
-            "dataelementgroupid", association.getGroupId(), "dataelementid", association.getMemberId() );
-        
-        return sql;
-    }
-    
-    protected String getUniquenessStatement( Object object )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
 
-        String sql = statementBuilder.getValueStatement( tableName, "dataelementgroupid", "dataelementid", 
-            "dataelementgroupid", association.getGroupId(), "dataelementid", association.getMemberId() );
-        
-        return sql;
+    protected void setUniqueColumns()
+    {
+        statementBuilder.setUniqueColumn( "dataelementgroupid" );
+        statementBuilder.setUniqueColumn( "dataelementid" );
     }
     
-    protected void addColumns()
+    protected void setUniqueValues( GroupMemberAssociation association )
+    {        
+        statementBuilder.setUniqueValue( association.getGroupId() );
+        statementBuilder.setUniqueValue( association.getMemberId() );
+    }
+    
+    protected void setColumns()
     {
         statementBuilder.setColumn( "dataelementgroupid" );
         statementBuilder.setColumn( "dataelementid" );
     }
     
-    protected void addValues( Object object )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
-        
-        statementBuilder.setInt( association.getGroupId() );
-        statementBuilder.setInt( association.getMemberId() );
-    }       
+    protected void setValues( GroupMemberAssociation association )
+    {        
+        statementBuilder.setValue( association.getGroupId() );
+        statementBuilder.setValue( association.getMemberId() );
+    }
 }

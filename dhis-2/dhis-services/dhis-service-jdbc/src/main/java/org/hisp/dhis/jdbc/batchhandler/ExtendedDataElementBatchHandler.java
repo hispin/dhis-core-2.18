@@ -27,20 +27,16 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
-import org.hisp.dhis.dataelement.DataElement;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: ExtendedDataElementBatchHandler.java 5805 2008-10-03 13:16:15Z larshelg $
  */
 public class ExtendedDataElementBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<ExtendedDataElement>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -48,9 +44,7 @@ public class ExtendedDataElementBatchHandler
 
     public ExtendedDataElementBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, false );
     }    
 
     // -------------------------------------------------------------------------
@@ -59,53 +53,32 @@ public class ExtendedDataElementBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "extendeddataelement";
+        statementBuilder.setTableName( "extendeddataelement" );
     }
     
-    protected void openSqlStatement()
+    @Override
+    protected void setIdentifierColumns()
     {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "extendeddataelementid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
-    }
-    
-    protected String getUpdateSqlStatement( Object object )
-    {
-        ExtendedDataElement dataElement = (ExtendedDataElement) object;
-        
-        statementBuilder.setIdentifierColumnName( "extendeddataelementid" );
-        statementBuilder.setIdentifierColumnValue( dataElement.getId() );
-        
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setIdentifierColumn( "extendeddataelementid" );
     }
 
-    protected String getIdentifierStatement( Object objectName )
-    {
-        return statementBuilder.getValueStatement( "dataelement", "dataelementid", "name", String.valueOf( objectName ) );
+    @Override
+    protected void setIdentifierValues( ExtendedDataElement element )
+    {        
+        statementBuilder.setIdentifierValue( element.getId() );
     }
     
-    protected String getUniquenessStatement( Object object )
+    protected void setUniqueColumns()
     {
-        DataElement dataElement = (DataElement) object;
-        
-        Map<String, String> map = new HashMap<String, String>();
-        
-        map.put( "name", dataElement.getName() );
-        map.put( "shortname", dataElement.getShortName() );
-        map.put( "code", dataElement.getCode() );
-        map.put( "alternativename", dataElement.getAlternativeName() );
-        
-        return statementBuilder.getValueStatement( "dataelement", "dataelementid", map, false );
+        statementBuilder.setUniqueColumn( "mnemonic" );
+    }
+
+    protected void setUniqueValues( ExtendedDataElement element )
+    {
+        statementBuilder.setUniqueValue( element.getMnemonic() );
     }
     
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "mnemonic" );
         statementBuilder.setColumn( "version" );
@@ -143,43 +116,41 @@ public class ExtendedDataElementBatchHandler
         statementBuilder.setColumn( "lastUpdated" );
     }
     
-    protected void addValues( Object object )
-    {
-        ExtendedDataElement element = (ExtendedDataElement) object;
+    protected void setValues( ExtendedDataElement element )
+    {        
+        statementBuilder.setValue( element.getMnemonic() );
+        statementBuilder.setValue( element.getVersion() );
+        statementBuilder.setValue( element.getContext() );
+        statementBuilder.setValue( element.getSynonyms() );
+        statementBuilder.setValue( element.getHononyms() );
+        statementBuilder.setValue( element.getKeywords() );
+        statementBuilder.setValue( element.getStatus() );
+        statementBuilder.setValue( element.getStatusDate() );
+        statementBuilder.setValue( element.getDataElementType() );
         
-        statementBuilder.setString( element.getMnemonic() );
-        statementBuilder.setString( element.getVersion() );
-        statementBuilder.setString( element.getContext() );
-        statementBuilder.setString( element.getSynonyms() );
-        statementBuilder.setString( element.getHononyms() );
-        statementBuilder.setString( element.getKeywords() );
-        statementBuilder.setString( element.getStatus() );
-        statementBuilder.setDate( element.getStatusDate() );
-        statementBuilder.setString( element.getDataElementType() );
+        statementBuilder.setValue( element.getDataType() );
+        statementBuilder.setValue( element.getRepresentationalForm() );
+        statementBuilder.setValue( element.getRepresentationalLayout() );
+        statementBuilder.setValue( element.getMinimumSize() );
+        statementBuilder.setValue( element.getMaximumSize() );
+        statementBuilder.setValue( element.getDataDomain() );
+        statementBuilder.setValue( element.getValidationRules() );
+        statementBuilder.setValue( element.getRelatedDataReferences() );
+        statementBuilder.setValue( element.getGuideForUse() );
+        statementBuilder.setValue( element.getCollectionMethods() );
         
-        statementBuilder.setString( element.getDataType() );
-        statementBuilder.setString( element.getRepresentationalForm() );
-        statementBuilder.setString( element.getRepresentationalLayout() );
-        statementBuilder.setInt( element.getMinimumSize() );
-        statementBuilder.setInt( element.getMaximumSize() );
-        statementBuilder.setString( element.getDataDomain() );
-        statementBuilder.setString( element.getValidationRules() );
-        statementBuilder.setString( element.getRelatedDataReferences() );
-        statementBuilder.setString( element.getGuideForUse() );
-        statementBuilder.setString( element.getCollectionMethods() );
-        
-        statementBuilder.setString( element.getResponsibleAuthority() );
-        statementBuilder.setString( element.getUpdateRules() );
-        statementBuilder.setString( element.getAccessAuthority() );
-        statementBuilder.setString( element.getUpdateFrequency() );
-        statementBuilder.setString( element.getLocation() );
-        statementBuilder.setString( element.getReportingMethods() );
-        statementBuilder.setString( element.getVersionStatus() );
-        statementBuilder.setString( element.getPreviousVersionReferences() );
-        statementBuilder.setString( element.getSourceDocument() );
-        statementBuilder.setString( element.getSourceOrganisation() );
-        statementBuilder.setString( element.getComment() );
-        statementBuilder.setDate( element.getSaved() );
-        statementBuilder.setDate( element.getLastUpdated() );
-    }        
+        statementBuilder.setValue( element.getResponsibleAuthority() );
+        statementBuilder.setValue( element.getUpdateRules() );
+        statementBuilder.setValue( element.getAccessAuthority() );
+        statementBuilder.setValue( element.getUpdateFrequency() );
+        statementBuilder.setValue( element.getLocation() );
+        statementBuilder.setValue( element.getReportingMethods() );
+        statementBuilder.setValue( element.getVersionStatus() );
+        statementBuilder.setValue( element.getPreviousVersionReferences() );
+        statementBuilder.setValue( element.getSourceDocument() );
+        statementBuilder.setValue( element.getSourceOrganisation() );
+        statementBuilder.setValue( element.getComment() );
+        statementBuilder.setValue( element.getSaved() );
+        statementBuilder.setValue( element.getLastUpdated() );
+    }
 }

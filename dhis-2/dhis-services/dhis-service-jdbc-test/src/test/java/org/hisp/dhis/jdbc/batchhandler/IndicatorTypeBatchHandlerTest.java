@@ -52,7 +52,7 @@ public class IndicatorTypeBatchHandlerTest
     
     private BatchHandlerFactory batchHandlerFactory;
     
-    private BatchHandler batchHandler;
+    private BatchHandler<IndicatorType> batchHandler;
     
     private IndicatorType indicatorTypeA;
     private IndicatorType indicatorTypeB;
@@ -125,13 +125,14 @@ public class IndicatorTypeBatchHandlerTest
     @Test
     public void testUpdateObject()
     {        
-        int id = indicatorService.addIndicatorType( indicatorTypeA );
+        int id = batchHandler.insertObject( indicatorTypeA, true );
         
+        indicatorTypeA.setId( id );
         indicatorTypeA.setName( "UpdatedName" );
         
         batchHandler.updateObject( indicatorTypeA );
         
-        assertEquals( indicatorService.getIndicatorType( id ).getName(), "UpdatedName" );
+        assertEquals( "UpdatedName", indicatorService.getIndicatorType( id ).getName() );
     }
 
     @Test

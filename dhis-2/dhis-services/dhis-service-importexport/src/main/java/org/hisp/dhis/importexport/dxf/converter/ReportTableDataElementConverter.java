@@ -84,7 +84,7 @@ public class ReportTableDataElementConverter
     /**
      * Constructor for read operations.
      */
-    public ReportTableDataElementConverter( BatchHandler batchHandler, 
+    public ReportTableDataElementConverter( BatchHandler<GroupMemberAssociation> batchHandler, 
         ImportObjectService importObjectService,
         Map<Object, Integer> reportTableMapping, 
         Map<Object, Integer> dataElementMapping )

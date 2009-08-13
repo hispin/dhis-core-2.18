@@ -54,7 +54,7 @@ public class PeriodBatchHandlerTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
-    private BatchHandler batchHandler;
+    private BatchHandler<Period> batchHandler;
     
     private PeriodType periodType;
     
@@ -156,13 +156,13 @@ public class PeriodBatchHandlerTest
     @Test
     public void testUpdateObject()
     {
-        int id = periodService.addPeriod( periodA );
+        int id = batchHandler.insertObject( periodA, true );
                 
         periodA.setStartDate( dateA );
         
         batchHandler.updateObject( periodA );
         
-        assertEquals( periodService.getPeriod( id ).getStartDate(), dateA );
+        assertEquals( dateA, periodService.getPeriod( id ).getStartDate() );
     }
 
     @Test

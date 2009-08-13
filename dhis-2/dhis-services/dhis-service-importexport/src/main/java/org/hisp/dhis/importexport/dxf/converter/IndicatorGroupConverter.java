@@ -76,7 +76,7 @@ public class IndicatorGroupConverter
      * @param indicatorService the indicatorService to use.
      * @param importObjectService the importObjectService to use.
      */
-    public IndicatorGroupConverter( BatchHandler batchHandler, 
+    public IndicatorGroupConverter( BatchHandler<IndicatorGroup> batchHandler, 
         ImportObjectService importObjectService, 
         IndicatorService indicatorService )
     {

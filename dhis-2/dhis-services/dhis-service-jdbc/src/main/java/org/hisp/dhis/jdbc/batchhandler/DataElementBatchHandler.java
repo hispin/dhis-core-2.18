@@ -27,9 +27,6 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.dataelement.DataElement;
@@ -39,7 +36,7 @@ import org.hisp.dhis.dataelement.DataElement;
  * @version $Id: DataElementBatchHandler.java 5242 2008-05-25 09:23:25Z larshelg $
  */
 public class DataElementBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<DataElement>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -47,7 +44,7 @@ public class DataElementBatchHandler
  
     public DataElementBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
+        super( configuration, false, false );
     }
 
     // -------------------------------------------------------------------------
@@ -56,53 +53,44 @@ public class DataElementBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "dataelement";
+        statementBuilder.setTableName( "dataelement" );
     }
-    
-    protected void openSqlStatement()
+
+    @Override
+    protected void setAutoIncrementColumn()
     {
-        statementBuilder.setAutoIncrementColumnIndex( 0 );
-        statementBuilder.setAutoIncrementColumnName( "dataelementid" );
-        
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setAutoIncrementColumn( "dataelementid" );
     }
-    
-    protected String getUpdateSqlStatement( Object object )
+
+    @Override
+    protected void setIdentifierColumns()
     {
-        DataElement dataElement = (DataElement) object;
-        
-        statementBuilder.setIdentifierColumnName( "dataelementid" );
-        statementBuilder.setIdentifierColumnValue( dataElement.getId() );
-        
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+        statementBuilder.setIdentifierColumn( "dataelementid" );
     }
-    
-    protected String getIdentifierStatement( Object objectName )
+
+    @Override
+    protected void setIdentifierValues( DataElement dataElement )
+    {        
+        statementBuilder.setIdentifierValue( dataElement.getId() );
+    }
+
+    protected void setUniqueColumns()
     {
-        return statementBuilder.getValueStatement( tableName, "dataelementid", "name", String.valueOf( objectName ) );
+        statementBuilder.setUniqueColumn( "name" );
+        statementBuilder.setUniqueColumn( "alternativename" );
+        statementBuilder.setUniqueColumn( "shortname" );
+        statementBuilder.setUniqueColumn( "code" );
     }
-    
-    protected String getUniquenessStatement( Object object )
+
+    protected void setUniqueValues( DataElement dataElement )
     {
-        DataElement dataElement = (DataElement) object;
-        
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        
-        fieldMap.put( "name", dataElement.getName() );
-        fieldMap.put( "shortname", dataElement.getShortName() );
-        fieldMap.put( "code", dataElement.getCode() );
-        fieldMap.put( "alternativename", dataElement.getAlternativeName() );
-        
-        return statementBuilder.getValueStatement( tableName, "dataelementid", fieldMap, false );
+        statementBuilder.setUniqueValue( dataElement.getName() );
+        statementBuilder.setUniqueValue( dataElement.getAlternativeName() );
+        statementBuilder.setUniqueValue( dataElement.getShortName() );
+        statementBuilder.setUniqueValue( dataElement.getCode() );
     }
     
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "uuid" );
         statementBuilder.setColumn( "name" );
@@ -117,20 +105,18 @@ public class DataElementBatchHandler
         statementBuilder.setColumn( "categorycomboid" );
     }
     
-    protected void addValues( Object object )
-    {
-        DataElement dataElement = (DataElement) object;
-        
-        statementBuilder.setString( dataElement.getUuid() );
-        statementBuilder.setString( dataElement.getName() );
-        statementBuilder.setString( dataElement.getAlternativeName() );
-        statementBuilder.setString( dataElement.getShortName() );
-        statementBuilder.setString( dataElement.getCode() );
-        statementBuilder.setString( dataElement.getDescription() );
-        statementBuilder.setBoolean( dataElement.isActive() );
-        statementBuilder.setString( dataElement.getType() );
-        statementBuilder.setString( dataElement.getAggregationOperator() );
-        statementBuilder.setInt( dataElement.getExtended() != null ? dataElement.getExtended().getId() : null );
-        statementBuilder.setInt( dataElement.getCategoryCombo().getId() );
+    protected void setValues( DataElement dataElement )
+    {        
+        statementBuilder.setValue( dataElement.getUuid() );
+        statementBuilder.setValue( dataElement.getName() );
+        statementBuilder.setValue( dataElement.getAlternativeName() );
+        statementBuilder.setValue( dataElement.getShortName() );
+        statementBuilder.setValue( dataElement.getCode() );
+        statementBuilder.setValue( dataElement.getDescription() );
+        statementBuilder.setValue( dataElement.isActive() );
+        statementBuilder.setValue( dataElement.getType() );
+        statementBuilder.setValue( dataElement.getAggregationOperator() );
+        statementBuilder.setValue( dataElement.getExtended() != null ? dataElement.getExtended().getId() : null );
+        statementBuilder.setValue( dataElement.getCategoryCombo().getId() );
     }
 }

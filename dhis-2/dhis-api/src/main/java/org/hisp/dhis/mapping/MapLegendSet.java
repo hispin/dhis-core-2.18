@@ -1,9 +1,5 @@
 package org.hisp.dhis.mapping;
 
-import java.util.Set;
-
-import org.hisp.dhis.indicator.Indicator;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -30,6 +26,10 @@ import org.hisp.dhis.indicator.Indicator;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.util.Set;
+
+import org.hisp.dhis.indicator.Indicator;
 
 /**
  * @author Jan Henrik Overland

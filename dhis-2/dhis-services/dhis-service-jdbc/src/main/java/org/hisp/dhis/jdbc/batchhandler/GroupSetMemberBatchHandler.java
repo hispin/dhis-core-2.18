@@ -36,7 +36,7 @@ import org.hisp.dhis.importexport.GroupMemberAssociation;
  * @version $Id: GroupSetMemberBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
  */
 public class GroupSetMemberBatchHandler
-    extends AbstractBatchHandler
+    extends AbstractBatchHandler<GroupMemberAssociation>
 {
     // -------------------------------------------------------------------------
     // Constructor
@@ -44,9 +44,7 @@ public class GroupSetMemberBatchHandler
  
     public GroupSetMemberBatchHandler( JdbcConfiguration configuration )
     {
-        super( configuration );
-        
-        hasSinglePrimaryKey = false;
+        super( configuration, true, true );
     }
 
     // -------------------------------------------------------------------------
@@ -55,56 +53,30 @@ public class GroupSetMemberBatchHandler
 
     protected void setTableName()
     {
-        this.tableName = "orgunitgroupsetmembers";
+        statementBuilder.setTableName( "orgunitgroupsetmembers" );
     }
     
-    protected void openSqlStatement()
+    protected void setUniqueColumns()
     {
-        addColumns();
-        
-        sqlBuffer.append( statementBuilder.getInsertStatementOpening( tableName ) );
+        statementBuilder.setUniqueColumn( "orgunitgroupsetid" );
+        statementBuilder.setUniqueColumn( "orgunitgroupid" );
     }
     
-    protected String getUpdateSqlStatement( Object object )
-    {
-        addColumns();
-        
-        addValues( object );
-        
-        return statementBuilder.getUpdateStatement( tableName );
+    protected void setUniqueValues( GroupMemberAssociation association )
+    {        
+        statementBuilder.setUniqueValue( association.getGroupId() );
+        statementBuilder.setUniqueValue( association.getMemberId() );
     }
     
-    protected String getIdentifierStatement( Object objectName )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) objectName;
-        
-        String sql = statementBuilder.getValueStatement( tableName, "orgunitgroupsetid", "orgunitgroupid", 
-            "orgunitgroupsetid", association.getGroupId(), "orgunitgroupid", association.getMemberId() );
-        
-        return sql;
-    }
-
-    protected String getUniquenessStatement( Object object )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
-
-        String sql = statementBuilder.getValueStatement( tableName, "orgunitgroupsetid", "orgunitgroupid", 
-            "orgunitgroupsetid", association.getGroupId(), "orgunitgroupid", association.getMemberId() );
-        
-        return sql;
-    }
-    
-    protected void addColumns()
+    protected void setColumns()
     {
         statementBuilder.setColumn( "orgunitgroupsetid" );
         statementBuilder.setColumn( "orgunitgroupid" );
     }
     
-    protected void addValues( Object object )
-    {
-        GroupMemberAssociation association = (GroupMemberAssociation) object;
-        
-        statementBuilder.setInt( association.getGroupId() );
-        statementBuilder.setInt( association.getMemberId() );
+    protected void setValues( GroupMemberAssociation association )
+    {        
+        statementBuilder.setValue( association.getGroupId() );
+        statementBuilder.setValue( association.getMemberId() );
     }
 }

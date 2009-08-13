@@ -167,7 +167,7 @@ public class DefaultDataSetCompletenessService
         
         completenessStore.deleteDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
         
-        BatchHandler batchHandler = batchHandlerFactory.createBatchHandler( DataSetCompletenessResultBatchHandler.class );
+        BatchHandler<DataSetCompletenessResult> batchHandler = batchHandlerFactory.createBatchHandler( DataSetCompletenessResultBatchHandler.class );
         
         batchHandler.init();
         

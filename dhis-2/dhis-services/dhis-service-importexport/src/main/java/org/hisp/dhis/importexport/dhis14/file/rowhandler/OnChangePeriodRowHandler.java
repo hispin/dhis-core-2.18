@@ -56,7 +56,7 @@ public class OnChangePeriodRowHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public OnChangePeriodRowHandler( BatchHandler batchHandler,
+    public OnChangePeriodRowHandler( BatchHandler<Period> batchHandler,
         ImportObjectService importObjectService,
         PeriodService periodService,
         Map<String, Integer> periodTypeMapping,

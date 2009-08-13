@@ -50,7 +50,7 @@ public class IndicatorGroupBatchHandlerTest
 {
     private BatchHandlerFactory batchHandlerFactory;
     
-    private BatchHandler batchHandler;
+    private BatchHandler<IndicatorGroup> batchHandler;
     
     private IndicatorGroup groupA;
     private IndicatorGroup groupB;
@@ -123,13 +123,14 @@ public class IndicatorGroupBatchHandlerTest
     @Test
     public void testUpdateObject()
     {
-        int id = indicatorService.addIndicatorGroup( groupA );
+        int id = batchHandler.insertObject( groupA, true );
         
+        groupA.setId( id );
         groupA.setName( "UpdatedName" );
         
         batchHandler.updateObject( groupA );
         
-        assertEquals( indicatorService.getIndicatorGroup( id ).getName(), "UpdatedName" );
+        assertEquals( "UpdatedName", indicatorService.getIndicatorGroup( id ).getName() );
     }
 
     @Test

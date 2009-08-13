@@ -39,7 +39,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 public class AbstractExtendedIndicatorConverter
     extends AbstractConverter<Indicator>
 {
-    protected BatchHandler extendedDataElementBatchHandler;
+    protected BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler;
     
     protected IndicatorService indicatorService;
     

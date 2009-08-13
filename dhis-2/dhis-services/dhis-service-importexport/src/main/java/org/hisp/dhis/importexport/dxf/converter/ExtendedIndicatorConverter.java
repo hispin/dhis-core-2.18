@@ -144,8 +144,8 @@ public class ExtendedIndicatorConverter
      * @param dataElementMapping the dataElementMapping to use.
      * @param categoryOptionComboMapping the categoryOptionComboMapping to use.
      */
-    public ExtendedIndicatorConverter( BatchHandler batchHandler,
-        BatchHandler extendedDataElementBatchHandler,
+    public ExtendedIndicatorConverter( BatchHandler<Indicator> batchHandler,
+        BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler,
         ImportObjectService importObjectService, 
         IndicatorService indicatorService,
         ExpressionService expressionService,
