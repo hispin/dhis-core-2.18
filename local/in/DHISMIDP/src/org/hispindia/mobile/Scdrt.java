@@ -12,7 +12,7 @@ import javax.wireless.messaging.BinaryMessage;
 import javax.wireless.messaging.MessageConnection;
 import org.netbeans.microedition.lcdui.SplashScreen;
 
-public class ANMApp extends MIDlet implements CommandListener {
+public class Scdrt extends MIDlet implements CommandListener {
 
     private boolean midletPaused = false;
     private boolean editingLastReport = false;
@@ -47,7 +47,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     private Form pregOutPage;
     private TextField liveFemaleNum;
     private TextField liveMaleNum;
-    private StringItem NewbornWeigthLabel;
+    private StringItem newbornWeighedLabel;
     private TextField weightedTotalNum;
     private TextField abortionsNum;
     private TextField stillNum;
@@ -97,8 +97,8 @@ public class ANMApp extends MIDlet implements CommandListener {
     private Form childImmPage3;
     private TextField aefiOthersNum;
     private TextField sessionPlannedNum;
-    private StringItem stringItem;
-    private TextField sessionsAshaNum;
+    private StringItem ImmSessionsLabel;
+    private TextField sessionAshaNum;
     private TextField sessionHeldNum;
     private TextField aefiDeathsNum;
     private TextField aefiAbscessNum;
@@ -165,9 +165,9 @@ public class ANMApp extends MIDlet implements CommandListener {
     //</editor-fold>//GEN-END:|fields|0|
 
     /**
-     * The ANMApp constructor.
+     * The Scdrt constructor.
      */
-    public ANMApp() {
+    public Scdrt() {
         try {
             lastMsgStore = RecordStore.openRecordStore("lastMsgStore", true);
             if (lastMsgStore.getNumRecords() == 0) {
@@ -278,7 +278,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public Form getAncPage() {
         if (ancPage == null) {//GEN-END:|14-getter|0|14-preInit
             // write pre-init user code here
-            ancPage = new Form("ANC Form", new Item[] { getPregNum(), getFirstTrimesterNum(), getJsyNum(), getThreeAncNum(), getTt1Num(), getBoosterNum(), getIfaTabletNum(), getHypertensionNum(), getAnaemicAncNum() });//GEN-BEGIN:|14-getter|1|14-postInit
+            ancPage = new Form(LocalizationSupport.getMessage("ancPageTitle"), new Item[] { getPregNum(), getFirstTrimesterNum(), getJsyNum(), getThreeAncNum(), getTt1Num(), getBoosterNum(), getIfaTabletNum(), getHypertensionNum(), getAnaemicAncNum() });//GEN-BEGIN:|14-getter|1|14-postInit
             ancPage.addCommand(getAncCmd());
             ancPage.addCommand(getAncBackCmd());
             ancPage.setCommandListener(this);//GEN-END:|14-getter|1|14-postInit
@@ -305,7 +305,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                     rsex.printStackTrace();
                 }
             }
-            pregNum = new TextField("Total No. of Pregnant Women", str, 32, TextField.NUMERIC);//GEN-BEGIN:|16-getter|1|16-postInit
+            pregNum = new TextField(LocalizationSupport.getMessage("pregNum"), str, 32, TextField.NUMERIC);//GEN-BEGIN:|16-getter|1|16-postInit
             pregNum.setLayout(ImageItem.LAYOUT_DEFAULT | ImageItem.LAYOUT_NEWLINE_BEFORE | ImageItem.LAYOUT_NEWLINE_AFTER | Item.LAYOUT_SHRINK | Item.LAYOUT_2);//GEN-END:|16-getter|1|16-postInit
             // write post-init user code here
         }//GEN-BEGIN:|16-getter|2|
@@ -330,7 +330,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                     rsex.printStackTrace();
                 }
             }
-            firstTrimesterNum = new TextField("No. Registered Within 1st Trimester", str, 32, TextField.NUMERIC);//GEN-LINE:|18-getter|1|18-postInit
+            firstTrimesterNum = new TextField(LocalizationSupport.getMessage("firstTrimesterNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|18-getter|1|18-postInit
             // write post-init user code here
         }//GEN-BEGIN:|18-getter|2|
         return firstTrimesterNum;
@@ -354,7 +354,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                     rsex.printStackTrace();
                 }
             }
-            jsyNum = new TextField("No. of New Women Registered Under JSY", str, 32, TextField.NUMERIC);//GEN-LINE:|19-getter|1|19-postInit
+            jsyNum = new TextField(LocalizationSupport.getMessage("jsyNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|19-getter|1|19-postInit
             // write post-init user code here
         }//GEN-BEGIN:|19-getter|2|
         return jsyNum;
@@ -378,7 +378,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                     rsex.printStackTrace();
                 }
             }
-            threeAncNum = new TextField("No. of Women Received 3 ANC Checkup", str, 32, TextField.NUMERIC);//GEN-LINE:|20-getter|1|20-postInit
+            threeAncNum = new TextField(LocalizationSupport.getMessage("threeAncNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|20-getter|1|20-postInit
             // write post-init user code here
         }//GEN-BEGIN:|20-getter|2|
         return threeAncNum;
@@ -402,7 +402,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                     rsex.printStackTrace();
                 }
             }
-            tt1Num = new TextField("No. of Women Given TT1", str, 32, TextField.NUMERIC);//GEN-LINE:|21-getter|1|21-postInit
+            tt1Num = new TextField(LocalizationSupport.getMessage("tt1Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|21-getter|1|21-postInit
             // write post-init user code here
         }//GEN-BEGIN:|21-getter|2|
         return tt1Num;
@@ -426,7 +426,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                     rsex.printStackTrace();
                 }
             }
-            boosterNum = new TextField("No. of Women Given TT2 / Booster", str, 32, TextField.NUMERIC);//GEN-LINE:|22-getter|1|22-postInit
+            boosterNum = new TextField(LocalizationSupport.getMessage("boosterNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|22-getter|1|22-postInit
             // write post-init user code here
         }//GEN-BEGIN:|22-getter|2|
         return boosterNum;
@@ -450,7 +450,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                     rsex.printStackTrace();
                 }
             }
-            ifaTabletNum = new TextField("No. of Women Given 100 IFA Tablets", str, 32, TextField.NUMERIC);//GEN-LINE:|23-getter|1|23-postInit
+            ifaTabletNum = new TextField(LocalizationSupport.getMessage("ifaTabletNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|23-getter|1|23-postInit
             // write post-init user code here
         }//GEN-BEGIN:|23-getter|2|
         return ifaTabletNum;
@@ -474,7 +474,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                     rsex.printStackTrace();
                 }
             }
-            hypertensionNum = new TextField("New Pregnant Women with Hypertension", str, 32, TextField.NUMERIC);//GEN-LINE:|24-getter|1|24-postInit
+            hypertensionNum = new TextField(LocalizationSupport.getMessage("hypertensionNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|24-getter|1|24-postInit
             // write post-init user code here
         }//GEN-BEGIN:|24-getter|2|
         return hypertensionNum;
@@ -498,7 +498,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                     rsex.printStackTrace();
                 }
             }
-            anaemicAncNum = new TextField("No. of Pregnant Women Having HB < 11", str, 32, TextField.NUMERIC);//GEN-LINE:|25-getter|1|25-postInit
+            anaemicAncNum = new TextField(LocalizationSupport.getMessage("anaemicAncNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|25-getter|1|25-postInit
             // write post-init user code here
         }//GEN-BEGIN:|25-getter|2|
         return anaemicAncNum;
@@ -649,7 +649,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 String familyPlanFormData = iudInsFacilityNum.getString() + "|" + iudRemFacilityNum.getString() + "|" + ocpDistNum.getString() + "|" + condomsNum.getString() + "|" + weeklyPillsNum.getString() + "|" + emerContraNum.getString() + "|" + compliMaleSterNum.getString() + "|" + compliFemSterNum.getString() + "|" + failMaleSterNum.getString() + "|" + failFemSterNum.getString() + "|" + deathMaleSterNum.getString() + "|" + deathFemSterNum.getString();
                 String childImm1FormData = bcgNum.getString() + "|" + dpt1Num.getString() + "|" + dpt2Num.getString() + "|" + dpt3Num.getString() + "|" + opv0Num.getString() + "|" + opv1Num.getString() + "|" + opv2Num.getString() + "|" + opv3Num.getString() + "|" + hepB1Num.getString() + "|" + hepB2Num.getString() + "|" + hepB3Num.getString() + "|" + measlesVacNum.getString() + "|" + fullImmMaleNum.getString() + "|" + fullImmFemNum.getString();
                 String childImm2FormData = dptBNum.getString() + "|" + opvBNum.getString() + "|" + mmrNum.getString() + "|" + fullImm2MaleNum.getString() + "|" + fullImm2FemNum.getString() + "|" + dt5Num.getString() + "|" + tt10Num.getString() + "|" + tt16Num.getString();
-                String childImm3FormData = aefiAbscessNum.getString() + "|" + aefiDeathsNum.getString() + "|" + aefiOthersNum.getString() + "|" + sessionPlannedNum.getString() + "|" + sessionHeldNum.getString() + "|" + sessionsAshaNum.getString();
+                String childImm3FormData = aefiAbscessNum.getString() + "|" + aefiDeathsNum.getString() + "|" + aefiOthersNum.getString() + "|" + sessionPlannedNum.getString() + "|" + sessionHeldNum.getString() + "|" + sessionAshaNum.getString();
                 String childImm4FormData = vitA1Num.getString() + "|" + vitA5Num.getString() + "|" + vitA9Num.getString() + "|" + caseMeaslesNum.getString() + "|" + caseDiarrhNum.getString() + "|" + caseMalariaNum.getString();
                 String healthFacilityFormData = vhndNum.getString() + "|" + opdNum.getString() + "|" + hbTestsNum.getString() + "|" + anaemicOpdNum.getString() + "|";
 
@@ -751,7 +751,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                             lastMsgStore.setRecord(74, aefiOthersNum.getString().getBytes(), 0, aefiOthersNum.getString().length());
                             lastMsgStore.setRecord(75, sessionPlannedNum.getString().getBytes(), 0, sessionPlannedNum.getString().length());
                             lastMsgStore.setRecord(76, sessionHeldNum.getString().getBytes(), 0, sessionHeldNum.getString().length());
-                            lastMsgStore.setRecord(77, sessionsAshaNum.getString().getBytes(), 0, sessionsAshaNum.getString().length());
+                            lastMsgStore.setRecord(77, sessionAshaNum.getString().getBytes(), 0, sessionAshaNum.getString().length());
                             //</editor-fold>
 
                             //<editor-fold defaultstate="collapsed" desc=" childImm4Form to update RMS ">
@@ -880,7 +880,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public Form getDeliveriesPage() {
         if (deliveriesPage == null) {//GEN-END:|26-getter|0|26-preInit
             // write pre-init user code here
-            deliveriesPage = new Form("Deliveries Form", new Item[] { getHomeLabel(), getSbaHomeNum(), getNonSbaHomeNum(), getNewbornsHomeNum(), getJsyHomeNum(), getDeliveryLabel(), getFacilityNum(), getEarlyDischargeNum(), getJsyFacilityMother(), getJsyFacilityAsha(), getJsyFacilityAnm() });//GEN-BEGIN:|26-getter|1|26-postInit
+            deliveriesPage = new Form(LocalizationSupport.getMessage("deliveriesPageTitle"), new Item[] { getHomeLabel(), getSbaHomeNum(), getNonSbaHomeNum(), getNewbornsHomeNum(), getJsyHomeNum(), getDeliveryLabel(), getFacilityNum(), getEarlyDischargeNum(), getJsyFacilityMother(), getJsyFacilityAsha(), getJsyFacilityAnm() });//GEN-BEGIN:|26-getter|1|26-postInit
             deliveriesPage.addCommand(getDeliveriesCmd());
             deliveriesPage.addCommand(getDeliveriesBackCmd());
             deliveriesPage.setCommandListener(this);//GEN-END:|26-getter|1|26-postInit
@@ -909,7 +909,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            sbaHomeNum = new TextField("Attended by SBA Trained", str, 32, TextField.NUMERIC);//GEN-LINE:|30-getter|1|30-postInit
+            sbaHomeNum = new TextField(LocalizationSupport.getMessage("sbaHomeNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|30-getter|1|30-postInit
             // write post-init user code here
         }//GEN-BEGIN:|30-getter|2|
         return sbaHomeNum;
@@ -935,7 +935,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            nonSbaHomeNum = new TextField("Attended by Non-SBA", str, 32, TextField.NUMERIC);//GEN-LINE:|31-getter|1|31-postInit
+            nonSbaHomeNum = new TextField(LocalizationSupport.getMessage("nonSbaHomeNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|31-getter|1|31-postInit
             // write post-init user code here
         }//GEN-BEGIN:|31-getter|2|
         return nonSbaHomeNum;
@@ -961,7 +961,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            newbornsHomeNum = new TextField("Newborns Visited Within 24hrs", str, 32, TextField.NUMERIC);//GEN-LINE:|33-getter|1|33-postInit
+            newbornsHomeNum = new TextField(LocalizationSupport.getMessage("newbornsHomeNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|33-getter|1|33-postInit
             // write post-init user code here
         }//GEN-BEGIN:|33-getter|2|
         return newbornsHomeNum;
@@ -976,7 +976,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public StringItem getHomeLabel() {
         if (homeLabel == null) {//GEN-END:|34-getter|0|34-preInit
             // write pre-init user code here
-            homeLabel = new StringItem("", "HOME DELIVERIES", Item.PLAIN);//GEN-BEGIN:|34-getter|1|34-postInit
+            homeLabel = new StringItem("", LocalizationSupport.getMessage("homeLabel"), Item.PLAIN);//GEN-BEGIN:|34-getter|1|34-postInit
             homeLabel.setLayout(ImageItem.LAYOUT_CENTER | Item.LAYOUT_2);
             homeLabel.setFont(getFont());//GEN-END:|34-getter|1|34-postInit
             // write post-init user code here
@@ -1004,7 +1004,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            jsyHomeNum = new TextField("No. of Mothers Paid JSY Incentive", str, 32, TextField.NUMERIC);//GEN-LINE:|35-getter|1|35-postInit
+            jsyHomeNum = new TextField(LocalizationSupport.getMessage("jsyHomeNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|35-getter|1|35-postInit
             // write post-init user code here
         }//GEN-BEGIN:|35-getter|2|
         return jsyHomeNum;
@@ -1019,7 +1019,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public StringItem getDeliveryLabel() {
         if (deliveryLabel == null) {//GEN-END:|36-getter|0|36-preInit
             // write pre-init user code here
-            deliveryLabel = new StringItem("", "DELIVERIES AT FACILITY");//GEN-BEGIN:|36-getter|1|36-postInit
+            deliveryLabel = new StringItem("", LocalizationSupport.getMessage("deliveryLabel"));//GEN-BEGIN:|36-getter|1|36-postInit
             deliveryLabel.setLayout(ImageItem.LAYOUT_CENTER | Item.LAYOUT_2);
             deliveryLabel.setFont(getFont());//GEN-END:|36-getter|1|36-postInit
             // write post-init user code here
@@ -1062,7 +1062,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            facilityNum = new TextField("No. of Deliveries at Facility", str, 32, TextField.NUMERIC);//GEN-LINE:|37-getter|1|37-postInit
+            facilityNum = new TextField(LocalizationSupport.getMessage("facilityNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|37-getter|1|37-postInit
             // write post-init user code here
         }//GEN-BEGIN:|37-getter|2|
         return facilityNum;
@@ -1088,7 +1088,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            earlyDischargeNum = new TextField("No. Discharged < 48hrs of Delivery", str, 32, TextField.NUMERIC);//GEN-LINE:|38-getter|1|38-postInit
+            earlyDischargeNum = new TextField(LocalizationSupport.getMessage("earlyDischargeNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|38-getter|1|38-postInit
             // write post-init user code here
         }//GEN-BEGIN:|38-getter|2|
         return earlyDischargeNum;
@@ -1114,7 +1114,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            jsyFacilityMother = new TextField("No.of Mothers Paid JSY Incentive", str, 32, TextField.NUMERIC);//GEN-LINE:|39-getter|1|39-postInit
+            jsyFacilityMother = new TextField(LocalizationSupport.getMessage("jsyFacilityMother"), str, 32, TextField.NUMERIC);//GEN-LINE:|39-getter|1|39-postInit
             // write post-init user code here
         }//GEN-BEGIN:|39-getter|2|
         return jsyFacilityMother;
@@ -1140,7 +1140,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            jsyFacilityAsha = new TextField("No.of ASHAs Paid JSY Incentive", str, 32, TextField.NUMERIC);//GEN-LINE:|40-getter|1|40-postInit
+            jsyFacilityAsha = new TextField(LocalizationSupport.getMessage("jsyFacilityAsha"), str, 32, TextField.NUMERIC);//GEN-LINE:|40-getter|1|40-postInit
             // write post-init user code here
         }//GEN-BEGIN:|40-getter|2|
         return jsyFacilityAsha;
@@ -1166,7 +1166,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            jsyFacilityAnm = new TextField("No.of ANM / AWW Paid JSY Incentive", str, 32, TextField.NUMERIC);//GEN-LINE:|41-getter|1|41-postInit
+            jsyFacilityAnm = new TextField(LocalizationSupport.getMessage("jsyFacilityAnm"), str, 32, TextField.NUMERIC);//GEN-LINE:|41-getter|1|41-postInit
             // write post-init user code here
         }//GEN-BEGIN:|41-getter|2|
         return jsyFacilityAnm;
@@ -1181,7 +1181,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public Form getPregOutPage() {
         if (pregOutPage == null) {//GEN-END:|44-getter|0|44-preInit
             // write pre-init user code here
-            pregOutPage = new Form("Pregnancy Outcome Form", new Item[] { getLiveMaleNum(), getLiveFemaleNum(), getStillNum(), getAbortionsNum(), getNewbornWeigthLabel(), getWeightedTotalNum(), getUnderWeightNum(), getBreastFedNum(), getPostNatalLabel(), getPnc48Num(), getPnc14daysNum() });//GEN-BEGIN:|44-getter|1|44-postInit
+            pregOutPage = new Form(LocalizationSupport.getMessage("pregOutPageTitle"), new Item[] { getLiveMaleNum(), getLiveFemaleNum(), getStillNum(), getAbortionsNum(), getNewbornWeighedLabel(), getWeightedTotalNum(), getUnderWeightNum(), getBreastFedNum(), getPostNatalLabel(), getPnc48Num(), getPnc14daysNum() });//GEN-BEGIN:|44-getter|1|44-postInit
             pregOutPage.addCommand(getPregOutCmd());
             pregOutPage.addCommand(getPregOutBackCmd());
             pregOutPage.setCommandListener(this);//GEN-END:|44-getter|1|44-postInit
@@ -1210,7 +1210,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            liveMaleNum = new TextField("Live Births: (Male)", str, 32, TextField.NUMERIC);//GEN-LINE:|49-getter|1|49-postInit
+            liveMaleNum = new TextField(LocalizationSupport.getMessage("liveMaleNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|49-getter|1|49-postInit
             // write post-init user code here
         }//GEN-BEGIN:|49-getter|2|
         return liveMaleNum;
@@ -1236,7 +1236,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            liveFemaleNum = new TextField("Live Births: (Female)", str, 32, TextField.NUMERIC);//GEN-LINE:|50-getter|1|50-postInit
+            liveFemaleNum = new TextField(LocalizationSupport.getMessage("liveFemaleNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|50-getter|1|50-postInit
             // write post-init user code here
         }//GEN-BEGIN:|50-getter|2|
         return liveFemaleNum;
@@ -1262,7 +1262,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            stillNum = new TextField("No. of Still Births", str, 32, TextField.NUMERIC);//GEN-LINE:|52-getter|1|52-postInit
+            stillNum = new TextField(LocalizationSupport.getMessage("stillNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|52-getter|1|52-postInit
             // write post-init user code here
         }//GEN-BEGIN:|52-getter|2|
         return stillNum;
@@ -1288,7 +1288,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            abortionsNum = new TextField("Abortions (spontaneous / induced)", str, 32, TextField.NUMERIC);//GEN-LINE:|53-getter|1|53-postInit
+            abortionsNum = new TextField(LocalizationSupport.getMessage("abortionsNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|53-getter|1|53-postInit
             // write post-init user code here
         }//GEN-BEGIN:|53-getter|2|
         return abortionsNum;
@@ -1314,27 +1314,28 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            weightedTotalNum = new TextField("No. of Newborns Weighted at Birth", str, 32, TextField.NUMERIC);//GEN-LINE:|54-getter|1|54-postInit
+            weightedTotalNum = new TextField(LocalizationSupport.getMessage("weighedTotalNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|54-getter|1|54-postInit
             // write post-init user code here
         }//GEN-BEGIN:|54-getter|2|
         return weightedTotalNum;
     }
     //</editor-fold>//GEN-END:|54-getter|2|
+    //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: NewbornWeigthLabel ">//GEN-BEGIN:|55-getter|0|55-preInit
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: newbornWeighedLabel ">//GEN-BEGIN:|55-getter|0|55-preInit
     /**
-     * Returns an initiliazed instance of NewbornWeigthLabel component.
+     * Returns an initiliazed instance of newbornWeighedLabel component.
      * @return the initialized component instance
      */
-    public StringItem getNewbornWeigthLabel() {
-        if (NewbornWeigthLabel == null) {//GEN-END:|55-getter|0|55-preInit
+    public StringItem getNewbornWeighedLabel() {
+        if (newbornWeighedLabel == null) {//GEN-END:|55-getter|0|55-preInit
             // write pre-init user code here
-            NewbornWeigthLabel = new StringItem("", "DETAILS OF NEWBORNS WEIGHED");//GEN-BEGIN:|55-getter|1|55-postInit
-            NewbornWeigthLabel.setLayout(ImageItem.LAYOUT_CENTER | Item.LAYOUT_2);
-            NewbornWeigthLabel.setFont(getFont());//GEN-END:|55-getter|1|55-postInit
+            newbornWeighedLabel = new StringItem("", LocalizationSupport.getMessage("newbornWeighedLabel"));//GEN-BEGIN:|55-getter|1|55-postInit
+            newbornWeighedLabel.setLayout(ImageItem.LAYOUT_CENTER | Item.LAYOUT_2);
+            newbornWeighedLabel.setFont(getFont());//GEN-END:|55-getter|1|55-postInit
             // write post-init user code here
         }//GEN-BEGIN:|55-getter|2|
-        return NewbornWeigthLabel;
+        return newbornWeighedLabel;
     }
     //</editor-fold>//GEN-END:|55-getter|2|
 
@@ -1357,7 +1358,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            underWeightNum = new TextField("No. of Newborns < 2.5 kgs", str, 32, TextField.NUMERIC);//GEN-LINE:|56-getter|1|56-postInit
+            underWeightNum = new TextField(LocalizationSupport.getMessage("underWeightNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|56-getter|1|56-postInit
             // write post-init user code here
         }//GEN-BEGIN:|56-getter|2|
         return underWeightNum;
@@ -1383,7 +1384,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            breastFedNum = new TextField("No. of Newborns Breastfed Within 1 hr", str, 32, TextField.NUMERIC);//GEN-LINE:|57-getter|1|57-postInit
+            breastFedNum = new TextField(LocalizationSupport.getMessage("breastFedNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|57-getter|1|57-postInit
             // write post-init user code here
         }//GEN-BEGIN:|57-getter|2|
         return breastFedNum;
@@ -1428,7 +1429,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public StringItem getPostNatalLabel() {
         if (postNatalLabel == null) {//GEN-END:|58-getter|0|58-preInit
             // write pre-init user code here
-            postNatalLabel = new StringItem("", "POST-NATAL CARE");//GEN-BEGIN:|58-getter|1|58-postInit
+            postNatalLabel = new StringItem("", LocalizationSupport.getMessage("postNatalLabel"));//GEN-BEGIN:|58-getter|1|58-postInit
             postNatalLabel.setLayout(ImageItem.LAYOUT_CENTER | Item.LAYOUT_2);
             postNatalLabel.setFont(getFont());//GEN-END:|58-getter|1|58-postInit
             // write post-init user code here
@@ -1456,7 +1457,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            pnc48Num = new TextField("Women Receiving PNC Within 48 hrs", str, 32, TextField.NUMERIC);//GEN-LINE:|59-getter|1|59-postInit
+            pnc48Num = new TextField(LocalizationSupport.getMessage("pnc48Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|59-getter|1|59-postInit
             // write post-init user code here
         }//GEN-BEGIN:|59-getter|2|
         return pnc48Num;
@@ -1482,7 +1483,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            pnc14daysNum = new TextField("Women Receiving PNC (48 hrs - 14 days)", str, 32, TextField.NUMERIC);//GEN-LINE:|60-getter|1|60-postInit
+            pnc14daysNum = new TextField(LocalizationSupport.getMessage("pnc14daysNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|60-getter|1|60-postInit
             // write post-init user code here
         }//GEN-BEGIN:|60-getter|2|
         return pnc14daysNum;
@@ -1497,7 +1498,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public Form getFamilyPage() {
         if (familyPage == null) {//GEN-END:|66-getter|0|66-preInit
             // write pre-init user code here
-            familyPage = new Form("Family Planning Form", new Item[] { getIudInsFacilityNum(), getIudRemFacilityNum(), getOcpDistNum(), getCondomsNum(), getWeeklyPillsNum(), getEmerContraNum(), getCompliMaleSterNum(), getCompliFemSterNum(), getFailMaleSterNum(), getFailFemSterNum(), getDeathMaleSterNum(), getDeathFemSterNum() });//GEN-BEGIN:|66-getter|1|66-postInit
+            familyPage = new Form(LocalizationSupport.getMessage("familyPageTitle"), new Item[] { getIudInsFacilityNum(), getIudRemFacilityNum(), getOcpDistNum(), getCondomsNum(), getWeeklyPillsNum(), getEmerContraNum(), getCompliMaleSterNum(), getCompliFemSterNum(), getFailMaleSterNum(), getFailFemSterNum(), getDeathMaleSterNum(), getDeathFemSterNum() });//GEN-BEGIN:|66-getter|1|66-postInit
             familyPage.addCommand(getFamilyCmd());
             familyPage.addCommand(getFamilyBackCmd());
             familyPage.setCommandListener(this);//GEN-END:|66-getter|1|66-postInit
@@ -1526,7 +1527,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            iudInsFacilityNum = new TextField("New IUD Insertions at Facility", str, 32, TextField.NUMERIC);//GEN-LINE:|68-getter|1|68-postInit
+            iudInsFacilityNum = new TextField(LocalizationSupport.getMessage("iudInsFacilityNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|68-getter|1|68-postInit
             // write post-init user code here
         }//GEN-BEGIN:|68-getter|2|
         return iudInsFacilityNum;
@@ -1552,7 +1553,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            iudRemFacilityNum = new TextField("IUD Removals at Facility", str, 32, TextField.NUMERIC);//GEN-LINE:|69-getter|1|69-postInit
+            iudRemFacilityNum = new TextField(LocalizationSupport.getMessage("iudRemFacilityNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|69-getter|1|69-postInit
             // write post-init user code here
         }//GEN-BEGIN:|69-getter|2|
         return iudRemFacilityNum;
@@ -1578,7 +1579,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            ocpDistNum = new TextField("Oral Pill Cycles Distributed", str, 32, TextField.NUMERIC);//GEN-LINE:|70-getter|1|70-postInit
+            ocpDistNum = new TextField(LocalizationSupport.getMessage("ocpDistNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|70-getter|1|70-postInit
             // write post-init user code here
         }//GEN-BEGIN:|70-getter|2|
         return ocpDistNum;
@@ -1604,7 +1605,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            condomsNum = new TextField("Condoms Distributed", str, 32, TextField.NUMERIC);//GEN-LINE:|71-getter|1|71-postInit
+            condomsNum = new TextField(LocalizationSupport.getMessage("condomsNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|71-getter|1|71-postInit
             // write post-init user code here
         }//GEN-BEGIN:|71-getter|2|
         return condomsNum;
@@ -1630,7 +1631,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            weeklyPillsNum = new TextField("Centchroman (Weekly) Pills Distributed", str, 32, TextField.NUMERIC);//GEN-LINE:|72-getter|1|72-postInit
+            weeklyPillsNum = new TextField(LocalizationSupport.getMessage("weeklyPillsNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|72-getter|1|72-postInit
             // write post-init user code here
         }//GEN-BEGIN:|72-getter|2|
         return weeklyPillsNum;
@@ -1686,7 +1687,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            emerContraNum = new TextField("Emergency Contraceptive Pills Distributed", str, 32, TextField.NUMERIC);//GEN-LINE:|73-getter|1|73-postInit
+            emerContraNum = new TextField(LocalizationSupport.getMessage("emerContraNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|73-getter|1|73-postInit
             // write post-init user code here
         }//GEN-BEGIN:|73-getter|2|
         return emerContraNum;
@@ -1712,7 +1713,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            compliMaleSterNum = new TextField("Complications After Male Sterilization", str, 32, TextField.NUMERIC);//GEN-LINE:|74-getter|1|74-postInit
+            compliMaleSterNum = new TextField(LocalizationSupport.getMessage("compliMaleSterNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|74-getter|1|74-postInit
             // write post-init user code here
         }//GEN-BEGIN:|74-getter|2|
         return compliMaleSterNum;
@@ -1738,7 +1739,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            compliFemSterNum = new TextField("Complications After Female Sterilization", str, 32, TextField.NUMERIC);//GEN-LINE:|75-getter|1|75-postInit
+            compliFemSterNum = new TextField(LocalizationSupport.getMessage("compliFemSterNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|75-getter|1|75-postInit
             // write post-init user code here
         }//GEN-BEGIN:|75-getter|2|
         return compliFemSterNum;
@@ -1764,7 +1765,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            failMaleSterNum = new TextField("Failures After Male Sterilization", str, 32, TextField.NUMERIC);//GEN-LINE:|77-getter|1|77-postInit
+            failMaleSterNum = new TextField(LocalizationSupport.getMessage("failMaleSterNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|77-getter|1|77-postInit
             // write post-init user code here
         }//GEN-BEGIN:|77-getter|2|
         return failMaleSterNum;
@@ -1790,7 +1791,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            failFemSterNum = new TextField("Failures After Female Sterilization", str, 32, TextField.NUMERIC);//GEN-LINE:|78-getter|1|78-postInit
+            failFemSterNum = new TextField(LocalizationSupport.getMessage("failFemSterNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|78-getter|1|78-postInit
             // write post-init user code here
         }//GEN-BEGIN:|78-getter|2|
         return failFemSterNum;
@@ -1816,7 +1817,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            deathMaleSterNum = new TextField("Death After Male Sterlization", str, 32, TextField.NUMERIC);//GEN-LINE:|80-getter|1|80-postInit
+            deathMaleSterNum = new TextField(LocalizationSupport.getMessage("deathMaleSterNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|80-getter|1|80-postInit
             // write post-init user code here
         }//GEN-BEGIN:|80-getter|2|
         return deathMaleSterNum;
@@ -1842,7 +1843,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            deathFemSterNum = new TextField("Death After Female Sterlization", str, 32, TextField.NUMERIC);//GEN-LINE:|81-getter|1|81-postInit
+            deathFemSterNum = new TextField(LocalizationSupport.getMessage("deathFemSterNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|81-getter|1|81-postInit
             // write post-init user code here
         }//GEN-BEGIN:|81-getter|2|
         return deathFemSterNum;
@@ -1857,7 +1858,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public Form getChildImmPage1() {
         if (childImmPage1 == null) {//GEN-END:|88-getter|0|88-preInit
             // write pre-init user code here
-            childImmPage1 = new Form("Child Immunization Form (0-11 months)", new Item[] { getChildImm1Label(), getBcgNum(), getDpt1Num(), getDpt2Num(), getDpt3Num(), getOpv0Num(), getOpv1Num(), getOpv2Num(), getOpv3Num(), getHepB1Num(), getHepB2Num(), getHepB3Num(), getMeaslesVacNum(), getFullImmMaleNum(), getFullImmFemNum() });//GEN-BEGIN:|88-getter|1|88-postInit
+            childImmPage1 = new Form(LocalizationSupport.getMessage("childImmPage1Title"), new Item[] { getChildImm1Label(), getBcgNum(), getDpt1Num(), getDpt2Num(), getDpt3Num(), getOpv0Num(), getOpv1Num(), getOpv2Num(), getOpv3Num(), getHepB1Num(), getHepB2Num(), getHepB3Num(), getMeaslesVacNum(), getFullImmMaleNum(), getFullImmFemNum() });//GEN-BEGIN:|88-getter|1|88-postInit
             childImmPage1.addCommand(getChildImm1Cmd());
             childImmPage1.addCommand(getChildImm1BackCmd());
             childImmPage1.setCommandListener(this);//GEN-END:|88-getter|1|88-postInit
@@ -1905,7 +1906,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public StringItem getChildImm1Label() {
         if (childImm1Label == null) {//GEN-END:|89-getter|0|89-preInit
             // write pre-init user code here
-            childImm1Label = new StringItem("", "NO. OF INFANTS 0-11 MONTHS WHO RECEIVED THE FOLLOWING", Item.PLAIN);//GEN-BEGIN:|89-getter|1|89-postInit
+            childImm1Label = new StringItem("", LocalizationSupport.getMessage("childImm1Label"), Item.PLAIN);//GEN-BEGIN:|89-getter|1|89-postInit
             childImm1Label.setLayout(ImageItem.LAYOUT_CENTER | Item.LAYOUT_SHRINK | Item.LAYOUT_2);
             childImm1Label.setFont(getFont());//GEN-END:|89-getter|1|89-postInit
             // write post-init user code here
@@ -1933,7 +1934,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            bcgNum = new TextField("BCG", str, 32, TextField.NUMERIC);//GEN-LINE:|91-getter|1|91-postInit
+            bcgNum = new TextField(LocalizationSupport.getMessage("bcgNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|91-getter|1|91-postInit
             // write post-init user code here
         }//GEN-BEGIN:|91-getter|2|
         return bcgNum;
@@ -1959,7 +1960,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            dpt1Num = new TextField("DPT 1", str, 32, TextField.NUMERIC);//GEN-LINE:|92-getter|1|92-postInit
+            dpt1Num = new TextField(LocalizationSupport.getMessage("dpt1Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|92-getter|1|92-postInit
             // write post-init user code here
         }//GEN-BEGIN:|92-getter|2|
         return dpt1Num;
@@ -1985,7 +1986,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            dpt2Num = new TextField("DPT 2", str, 32, TextField.NUMERIC);//GEN-LINE:|93-getter|1|93-postInit
+            dpt2Num = new TextField(LocalizationSupport.getMessage("dpt2Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|93-getter|1|93-postInit
             // write post-init user code here
         }//GEN-BEGIN:|93-getter|2|
         return dpt2Num;
@@ -2011,7 +2012,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            dpt3Num = new TextField("DPT 3", str, 32, TextField.NUMERIC);//GEN-LINE:|94-getter|1|94-postInit
+            dpt3Num = new TextField(LocalizationSupport.getMessage("dpt3Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|94-getter|1|94-postInit
             // write post-init user code here
         }//GEN-BEGIN:|94-getter|2|
         return dpt3Num;
@@ -2037,7 +2038,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            opv0Num = new TextField("OPV 0 (Birth dose)", str, 32, TextField.NUMERIC);//GEN-LINE:|95-getter|1|95-postInit
+            opv0Num = new TextField(LocalizationSupport.getMessage("opv0Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|95-getter|1|95-postInit
             // write post-init user code here
         }//GEN-BEGIN:|95-getter|2|
         return opv0Num;
@@ -2063,7 +2064,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            opv1Num = new TextField("OPV 1", str, 32, TextField.NUMERIC);//GEN-LINE:|96-getter|1|96-postInit
+            opv1Num = new TextField(LocalizationSupport.getMessage("opv1Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|96-getter|1|96-postInit
             // write post-init user code here
         }//GEN-BEGIN:|96-getter|2|
         return opv1Num;
@@ -2089,7 +2090,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            opv2Num = new TextField("OPV 2", str, 32, TextField.NUMERIC);//GEN-LINE:|97-getter|1|97-postInit
+            opv2Num = new TextField(LocalizationSupport.getMessage("opv2Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|97-getter|1|97-postInit
             // write post-init user code here
         }//GEN-BEGIN:|97-getter|2|
         return opv2Num;
@@ -2115,7 +2116,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            opv3Num = new TextField("OPV 3", str, 32, TextField.NUMERIC);//GEN-LINE:|98-getter|1|98-postInit
+            opv3Num = new TextField(LocalizationSupport.getMessage("opv3Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|98-getter|1|98-postInit
             // write post-init user code here
         }//GEN-BEGIN:|98-getter|2|
         return opv3Num;
@@ -2141,7 +2142,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            hepB1Num = new TextField("Hepatitis - B1", str, 32, TextField.NUMERIC);//GEN-LINE:|99-getter|1|99-postInit
+            hepB1Num = new TextField(LocalizationSupport.getMessage("hepB1Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|99-getter|1|99-postInit
             // write post-init user code here
         }//GEN-BEGIN:|99-getter|2|
         return hepB1Num;
@@ -2167,7 +2168,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            hepB2Num = new TextField("Hepatitis - B2", str, 32, TextField.NUMERIC);//GEN-LINE:|100-getter|1|100-postInit
+            hepB2Num = new TextField(LocalizationSupport.getMessage("hepB2Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|100-getter|1|100-postInit
             // write post-init user code here
         }//GEN-BEGIN:|100-getter|2|
         return hepB2Num;
@@ -2193,7 +2194,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            hepB3Num = new TextField("Hepatitis - B3", str, 32, TextField.NUMERIC);//GEN-LINE:|101-getter|1|101-postInit
+            hepB3Num = new TextField(LocalizationSupport.getMessage("hepB3Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|101-getter|1|101-postInit
             // write post-init user code here
         }//GEN-BEGIN:|101-getter|2|
         return hepB3Num;
@@ -2219,7 +2220,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            measlesVacNum = new TextField("Measles", str, 32, TextField.NUMERIC);//GEN-LINE:|102-getter|1|102-postInit
+            measlesVacNum = new TextField(LocalizationSupport.getMessage("measlesVacNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|102-getter|1|102-postInit
             // write post-init user code here
         }//GEN-BEGIN:|102-getter|2|
         return measlesVacNum;
@@ -2244,7 +2245,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                     rsex.printStackTrace();
                 }
             }
-            fullImmMaleNum = new TextField("Males (9-11 months) Fully Immunized (BCG+DPT123+OPV123+Measles)", str, 32, TextField.NUMERIC);//GEN-BEGIN:|103-getter|1|103-postInit
+            fullImmMaleNum = new TextField(LocalizationSupport.getMessage("fullImmMaleNum"), str, 32, TextField.NUMERIC);//GEN-BEGIN:|103-getter|1|103-postInit
             fullImmMaleNum.setLayout(ImageItem.LAYOUT_DEFAULT | Item.LAYOUT_2);//GEN-END:|103-getter|1|103-postInit
             // write post-init user code here
         }//GEN-BEGIN:|103-getter|2|
@@ -2270,7 +2271,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                     rsex.printStackTrace();
                 }
             }
-            fullImmFemNum = new TextField("Females (9-11 months) Fully Immunized (BCG+DPT123+OPV123+Measles)", str, 32, TextField.NUMERIC);//GEN-BEGIN:|104-getter|1|104-postInit
+            fullImmFemNum = new TextField(LocalizationSupport.getMessage("fullImmFemNum"), str, 32, TextField.NUMERIC);//GEN-BEGIN:|104-getter|1|104-postInit
             fullImmFemNum.setLayout(ImageItem.LAYOUT_DEFAULT | Item.LAYOUT_2);//GEN-END:|104-getter|1|104-postInit
             // write post-init user code here
         }//GEN-BEGIN:|104-getter|2|
@@ -2286,7 +2287,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public Form getChildImmPage2() {
         if (childImmPage2 == null) {//GEN-END:|110-getter|0|110-preInit
             // write pre-init user code here
-            childImmPage2 = new Form("Child Immunization (over 16 months)", new Item[] { getDptBNum(), getOpvBNum(), getMmrNum(), getFullImm2MaleNum(), getFullImm2FemNum(), getDt5Num(), getTt10Num(), getTt16Num() });//GEN-BEGIN:|110-getter|1|110-postInit
+            childImmPage2 = new Form(LocalizationSupport.getMessage("childImmPage2Title"), new Item[] { getDptBNum(), getOpvBNum(), getMmrNum(), getFullImm2MaleNum(), getFullImm2FemNum(), getDt5Num(), getTt10Num(), getTt16Num() });//GEN-BEGIN:|110-getter|1|110-postInit
             childImmPage2.addCommand(getChildImm2Cmd());
             childImmPage2.addCommand(getChildImm2BackCmd());
             childImmPage2.setCommandListener(this);//GEN-END:|110-getter|1|110-postInit
@@ -2345,7 +2346,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            dptBNum = new TextField("DPT Booster", str, 32, TextField.NUMERIC);//GEN-LINE:|112-getter|1|112-postInit
+            dptBNum = new TextField(LocalizationSupport.getMessage("dptBNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|112-getter|1|112-postInit
             // write post-init user code here
         }//GEN-BEGIN:|112-getter|2|
         return dptBNum;
@@ -2371,7 +2372,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            opvBNum = new TextField("OPV Booster", str, 32, TextField.NUMERIC);//GEN-LINE:|113-getter|1|113-postInit
+            opvBNum = new TextField(LocalizationSupport.getMessage("opvBNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|113-getter|1|113-postInit
             // write post-init user code here
         }//GEN-BEGIN:|113-getter|2|
         return opvBNum;
@@ -2397,7 +2398,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            mmrNum = new TextField("Measles, Mumps, Rubella (MMR)", str, 32, TextField.NUMERIC);//GEN-LINE:|114-getter|1|114-postInit
+            mmrNum = new TextField(LocalizationSupport.getMessage("mmrNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|114-getter|1|114-postInit
             // write post-init user code here
         }//GEN-BEGIN:|114-getter|2|
         return mmrNum;
@@ -2423,7 +2424,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            fullImm2MaleNum = new TextField("Males (12-23 months) Fully Immunized (BCG+DPT123+OPV123+Measles)", str, 32, TextField.NUMERIC);//GEN-LINE:|116-getter|1|116-postInit
+            fullImm2MaleNum = new TextField(LocalizationSupport.getMessage("fullImm2MaleNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|116-getter|1|116-postInit
             // write post-init user code here
         }//GEN-BEGIN:|116-getter|2|
         return fullImm2MaleNum;
@@ -2449,7 +2450,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            fullImm2FemNum = new TextField("Females (12-23 months) Fully Immunized (BCG+DPT123+OPV123+Measles)", str, 32, TextField.NUMERIC);//GEN-LINE:|117-getter|1|117-postInit
+            fullImm2FemNum = new TextField(LocalizationSupport.getMessage("fullImm2FemNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|117-getter|1|117-postInit
             // write post-init user code here
         }//GEN-BEGIN:|117-getter|2|
         return fullImm2FemNum;
@@ -2475,7 +2476,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            dt5Num = new TextField("Children > 5 yrs Given DT5", str, 32, TextField.NUMERIC);//GEN-LINE:|119-getter|1|119-postInit
+            dt5Num = new TextField(LocalizationSupport.getMessage("dt5Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|119-getter|1|119-postInit
             // write post-init user code here
         }//GEN-BEGIN:|119-getter|2|
         return dt5Num;
@@ -2501,7 +2502,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            tt10Num = new TextField("Children > 10 yrs Given TT10", str, 32, TextField.NUMERIC);//GEN-LINE:|120-getter|1|120-postInit
+            tt10Num = new TextField(LocalizationSupport.getMessage("tt10Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|120-getter|1|120-postInit
             // write post-init user code here
         }//GEN-BEGIN:|120-getter|2|
         return tt10Num;
@@ -2527,7 +2528,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            tt16Num = new TextField("Children > 16 yrs Given TT16", str, 32, TextField.NUMERIC);//GEN-LINE:|121-getter|1|121-postInit
+            tt16Num = new TextField(LocalizationSupport.getMessage("tt16Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|121-getter|1|121-postInit
             // write post-init user code here
         }//GEN-BEGIN:|121-getter|2|
         return tt16Num;
@@ -2542,7 +2543,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public Form getChildImmPage3() {
         if (childImmPage3 == null) {//GEN-END:|127-getter|0|127-preInit
             // write pre-init user code here
-            childImmPage3 = new Form("Adverse Event Following Immunization", new Item[] { getAefiAbscessNum(), getAefiDeathsNum(), getAefiOthersNum(), getStringItem(), getSessionPlannedNum(), getSessionHeldNum(), getSessionsAshaNum() });//GEN-BEGIN:|127-getter|1|127-postInit
+            childImmPage3 = new Form(LocalizationSupport.getMessage("childImmPage3Title"), new Item[] { getAefiAbscessNum(), getAefiDeathsNum(), getAefiOthersNum(), getImmSessionsLabel(), getSessionPlannedNum(), getSessionHeldNum(), getSessionAshaNum() });//GEN-BEGIN:|127-getter|1|127-postInit
             childImmPage3.addCommand(getChildImm3Cmd());
             childImmPage3.addCommand(getChildImm3BackCmd());
             childImmPage3.setCommandListener(this);//GEN-END:|127-getter|1|127-postInit
@@ -2571,7 +2572,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            aefiAbscessNum = new TextField("Abscess", str, 32, TextField.NUMERIC);//GEN-LINE:|134-getter|1|134-postInit
+            aefiAbscessNum = new TextField(LocalizationSupport.getMessage("aefiAbscessNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|134-getter|1|134-postInit
             // write post-init user code here
         }//GEN-BEGIN:|134-getter|2|
         return aefiAbscessNum;
@@ -2597,7 +2598,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            aefiDeathsNum = new TextField("Deaths", str, 32, TextField.NUMERIC);//GEN-LINE:|135-getter|1|135-postInit
+            aefiDeathsNum = new TextField(LocalizationSupport.getMessage("aefiDeathsNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|135-getter|1|135-postInit
             // write post-init user code here
         }//GEN-BEGIN:|135-getter|2|
         return aefiDeathsNum;
@@ -2623,27 +2624,28 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            aefiOthersNum = new TextField("Others", str, 32, TextField.NUMERIC);//GEN-LINE:|136-getter|1|136-postInit
+            aefiOthersNum = new TextField(LocalizationSupport.getMessage("aefiOthersNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|136-getter|1|136-postInit
             // write post-init user code here
         }//GEN-BEGIN:|136-getter|2|
         return aefiOthersNum;
     }
     //</editor-fold>//GEN-END:|136-getter|2|
+    //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: stringItem ">//GEN-BEGIN:|138-getter|0|138-preInit
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: ImmSessionsLabel ">//GEN-BEGIN:|138-getter|0|138-preInit
     /**
-     * Returns an initiliazed instance of stringItem component.
+     * Returns an initiliazed instance of ImmSessionsLabel component.
      * @return the initialized component instance
      */
-    public StringItem getStringItem() {
-        if (stringItem == null) {//GEN-END:|138-getter|0|138-preInit
+    public StringItem getImmSessionsLabel() {
+        if (ImmSessionsLabel == null) {//GEN-END:|138-getter|0|138-preInit
             // write pre-init user code here
-            stringItem = new StringItem("", "IMMUNIZATION SESSIONS");//GEN-BEGIN:|138-getter|1|138-postInit
-            stringItem.setLayout(ImageItem.LAYOUT_CENTER | Item.LAYOUT_2);
-            stringItem.setFont(getFont());//GEN-END:|138-getter|1|138-postInit
+            ImmSessionsLabel = new StringItem("", LocalizationSupport.getMessage("ImmSessionsLabel"));//GEN-BEGIN:|138-getter|1|138-postInit
+            ImmSessionsLabel.setLayout(ImageItem.LAYOUT_CENTER | Item.LAYOUT_2);
+            ImmSessionsLabel.setFont(getFont());//GEN-END:|138-getter|1|138-postInit
             // write post-init user code here
         }//GEN-BEGIN:|138-getter|2|
-        return stringItem;
+        return ImmSessionsLabel;
     }
     //</editor-fold>//GEN-END:|138-getter|2|
 
@@ -2666,7 +2668,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            sessionPlannedNum = new TextField("Sessions Planned", str, 32, TextField.NUMERIC);//GEN-LINE:|139-getter|1|139-postInit
+            sessionPlannedNum = new TextField(LocalizationSupport.getMessage("sessionPlannedNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|139-getter|1|139-postInit
             // write post-init user code here
         }//GEN-BEGIN:|139-getter|2|
         return sessionPlannedNum;
@@ -2692,20 +2694,21 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            sessionHeldNum = new TextField("Sessions Held", str, 32, TextField.NUMERIC);//GEN-LINE:|140-getter|1|140-postInit
+            sessionHeldNum = new TextField(LocalizationSupport.getMessage("sessionHeldNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|140-getter|1|140-postInit
             // write post-init user code here
         }//GEN-BEGIN:|140-getter|2|
         return sessionHeldNum;
     }
     //</editor-fold>//GEN-END:|140-getter|2|
+    //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: sessionsAshaNum ">//GEN-BEGIN:|141-getter|0|141-preInit
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: sessionAshaNum ">//GEN-BEGIN:|141-getter|0|141-preInit
     /**
-     * Returns an initiliazed instance of sessionsAshaNum component.
+     * Returns an initiliazed instance of sessionAshaNum component.
      * @return the initialized component instance
      */
-    public TextField getSessionsAshaNum() {
-        if (sessionsAshaNum == null) {//GEN-END:|141-getter|0|141-preInit
+    public TextField getSessionAshaNum() {
+        if (sessionAshaNum == null) {//GEN-END:|141-getter|0|141-preInit
             String str = "";
             if (editingLastReport) {
                 try {
@@ -2718,10 +2721,10 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            sessionsAshaNum = new TextField("Sessions Where ASHA Present", str, 32, TextField.NUMERIC);//GEN-LINE:|141-getter|1|141-postInit
+            sessionAshaNum = new TextField(LocalizationSupport.getMessage("sessionAshaNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|141-getter|1|141-postInit
             // write post-init user code here
         }//GEN-BEGIN:|141-getter|2|
-        return sessionsAshaNum;
+        return sessionAshaNum;
     }
     //</editor-fold>//GEN-END:|141-getter|2|
 
@@ -2793,7 +2796,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public Form getChildImmPage4() {
         if (childImmPage4 == null) {//GEN-END:|142-getter|0|142-preInit
             // write pre-init user code here
-            childImmPage4 = new Form("Vitamin A Doses (9 months - 5 yrs)", new Item[] { getVitA1Num(), getVitA5Num(), getVitA9Num(), getChildDiseaseLabel(), getCaseMeaslesNum(), getCaseDiarrhNum(), getCaseMalariaNum() });//GEN-BEGIN:|142-getter|1|142-postInit
+            childImmPage4 = new Form(LocalizationSupport.getMessage("childImmPage4Title"), new Item[] { getVitA1Num(), getVitA5Num(), getVitA9Num(), getChildDiseaseLabel(), getCaseMeaslesNum(), getCaseDiarrhNum(), getCaseMalariaNum() });//GEN-BEGIN:|142-getter|1|142-postInit
             childImmPage4.addCommand(getChildImm4Cmd());
             childImmPage4.addCommand(getChildImm4BackCmd());
             childImmPage4.setCommandListener(this);//GEN-END:|142-getter|1|142-postInit
@@ -2822,7 +2825,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            vitA1Num = new TextField("Dose 1", str, 32, TextField.NUMERIC);//GEN-LINE:|149-getter|1|149-postInit
+            vitA1Num = new TextField(LocalizationSupport.getMessage("vitA1Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|149-getter|1|149-postInit
             // write post-init user code here
         }//GEN-BEGIN:|149-getter|2|
         return vitA1Num;
@@ -2848,7 +2851,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            vitA5Num = new TextField("Dose 5", str, 32, TextField.NUMERIC);//GEN-LINE:|150-getter|1|150-postInit
+            vitA5Num = new TextField(LocalizationSupport.getMessage("vitA5Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|150-getter|1|150-postInit
             // write post-init user code here
         }//GEN-BEGIN:|150-getter|2|
         return vitA5Num;
@@ -2874,7 +2877,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            vitA9Num = new TextField("Dose 9", str, 32, TextField.NUMERIC);//GEN-LINE:|151-getter|1|151-postInit
+            vitA9Num = new TextField(LocalizationSupport.getMessage("vitA9Num"), str, 32, TextField.NUMERIC);//GEN-LINE:|151-getter|1|151-postInit
             // write post-init user code here
         }//GEN-BEGIN:|151-getter|2|
         return vitA9Num;
@@ -2889,7 +2892,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public StringItem getChildDiseaseLabel() {
         if (childDiseaseLabel == null) {//GEN-END:|152-getter|0|152-preInit
             // write pre-init user code here
-            childDiseaseLabel = new StringItem("", "CASES OF CHILDHOOD DISEASES (0-5yrs)");//GEN-BEGIN:|152-getter|1|152-postInit
+            childDiseaseLabel = new StringItem("", LocalizationSupport.getMessage("childDiseaseLabel"));//GEN-BEGIN:|152-getter|1|152-postInit
             childDiseaseLabel.setLayout(ImageItem.LAYOUT_CENTER | Item.LAYOUT_2);
             childDiseaseLabel.setFont(getFont());//GEN-END:|152-getter|1|152-postInit
             // write post-init user code here
@@ -2917,7 +2920,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            caseMeaslesNum = new TextField("Measles Cases", str, 32, TextField.NUMERIC);//GEN-LINE:|153-getter|1|153-postInit
+            caseMeaslesNum = new TextField(LocalizationSupport.getMessage("caseMeaslesNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|153-getter|1|153-postInit
             // write post-init user code here
         }//GEN-BEGIN:|153-getter|2|
         return caseMeaslesNum;
@@ -2943,7 +2946,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            caseDiarrhNum = new TextField("Diarrhoea & Dehydration", str, 32, TextField.NUMERIC);//GEN-LINE:|154-getter|1|154-postInit
+            caseDiarrhNum = new TextField(LocalizationSupport.getMessage("caseDiarrhNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|154-getter|1|154-postInit
             // write post-init user code here
         }//GEN-BEGIN:|154-getter|2|
         return caseDiarrhNum;
@@ -2969,7 +2972,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            caseMalariaNum = new TextField("Malaria", str, 32, TextField.NUMERIC);//GEN-LINE:|155-getter|1|155-postInit
+            caseMalariaNum = new TextField(LocalizationSupport.getMessage("caseMalariaNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|155-getter|1|155-postInit
             // write post-init user code here
         }//GEN-BEGIN:|155-getter|2|
         return caseMalariaNum;
@@ -3014,7 +3017,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public Form getHealthFacilityPage() {
         if (healthFacilityPage == null) {//GEN-END:|156-getter|0|156-preInit
             // write pre-init user code here
-            healthFacilityPage = new Form("Health Facility Services", new Item[] { getVhndNum(), getOpdNum(), getHbTestsNum(), getAnaemicOpdNum() });//GEN-BEGIN:|156-getter|1|156-postInit
+            healthFacilityPage = new Form(LocalizationSupport.getMessage("healthFacilityPageTitle"), new Item[] { getVhndNum(), getOpdNum(), getHbTestsNum(), getAnaemicOpdNum() });//GEN-BEGIN:|156-getter|1|156-postInit
             healthFacilityPage.addCommand(getHealthFacilityCmd());
             healthFacilityPage.addCommand(getHealthFacilityBackCmd());
             healthFacilityPage.setCommandListener(this);//GEN-END:|156-getter|1|156-postInit
@@ -3073,7 +3076,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            vhndNum = new TextField("Anganwadi Centres Reported to Have Conducted VHNDs", str, 32, TextField.NUMERIC);//GEN-LINE:|163-getter|1|163-postInit
+            vhndNum = new TextField(LocalizationSupport.getMessage("vhndNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|163-getter|1|163-postInit
             // write post-init user code here
         }//GEN-BEGIN:|163-getter|2|
         return vhndNum;
@@ -3099,7 +3102,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            opdNum = new TextField("OPD Attendence (All)", str, 32, TextField.NUMERIC);//GEN-LINE:|164-getter|1|164-postInit
+            opdNum = new TextField(LocalizationSupport.getMessage("opdNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|164-getter|1|164-postInit
             // write post-init user code here
         }//GEN-BEGIN:|164-getter|2|
         return opdNum;
@@ -3125,7 +3128,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            hbTestsNum = new TextField("No. of Hb Tests Conducted", str, 32, TextField.NUMERIC);//GEN-LINE:|165-getter|1|165-postInit
+            hbTestsNum = new TextField(LocalizationSupport.getMessage("hbTestsNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|165-getter|1|165-postInit
             // write post-init user code here
         }//GEN-BEGIN:|165-getter|2|
         return hbTestsNum;
@@ -3151,7 +3154,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 }
 
             }
-            anaemicOpdNum = new TextField("No. of Hb < 7mg", str, 32, TextField.NUMERIC);//GEN-LINE:|166-getter|1|166-postInit
+            anaemicOpdNum = new TextField(LocalizationSupport.getMessage("anaemicOpdNum"), str, 32, TextField.NUMERIC);//GEN-LINE:|166-getter|1|166-postInit
             // write post-init user code here
         }//GEN-BEGIN:|166-getter|2|
         return anaemicOpdNum;
@@ -3166,7 +3169,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public Form getSendPage() {
         if (sendPage == null) {//GEN-END:|167-getter|0|167-preInit
             // write pre-init user code here
-            sendPage = new Form("Data Collection Complete", new Item[] { getSendMsgLabel() });//GEN-BEGIN:|167-getter|1|167-postInit
+            sendPage = new Form(LocalizationSupport.getMessage("sendPageTitle"), new Item[] { getSendMsgLabel() });//GEN-BEGIN:|167-getter|1|167-postInit
             sendPage.addCommand(getSendCmd());
             sendPage.addCommand(getSendBackCmd());
             sendPage.addCommand(getSendExitCmd());
@@ -3222,7 +3225,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public Form getMonthPage() {
         if (monthPage == null) {//GEN-END:|178-getter|0|178-preInit
             // write pre-init user code here
-            monthPage = new Form("Monthly Report", new Item[] { getReportingChoice(), getMonthChoice(), getDateField() });//GEN-BEGIN:|178-getter|1|178-postInit
+            monthPage = new Form(LocalizationSupport.getMessage("monthPageTitle"), new Item[] { getReportingChoice(), getMonthChoice(), getDateField() });//GEN-BEGIN:|178-getter|1|178-postInit
             monthPage.addCommand(getMonthCmd());
             monthPage.addCommand(getMonthExitCmd());
             monthPage.addCommand(getMonthSettingsCmd());
@@ -3257,7 +3260,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public ChoiceGroup getMonthChoice() {
         if (monthChoice == null) {//GEN-END:|189-getter|0|189-preInit
             // write pre-init user code here
-            monthChoice = new ChoiceGroup("Reporting Month", Choice.POPUP);//GEN-BEGIN:|189-getter|1|189-postInit
+            monthChoice = new ChoiceGroup(LocalizationSupport.getMessage("monthChoiceLabel"), Choice.POPUP);//GEN-BEGIN:|189-getter|1|189-postInit
             monthChoice.append("January", null);
             monthChoice.append("February", null);
             monthChoice.append("March", null);
@@ -3272,19 +3275,7 @@ public class ANMApp extends MIDlet implements CommandListener {
             monthChoice.append("December", null);
             monthChoice.setLayout(ImageItem.LAYOUT_CENTER | Item.LAYOUT_TOP | Item.LAYOUT_BOTTOM | Item.LAYOUT_VCENTER | Item.LAYOUT_2);
             monthChoice.setFitPolicy(Choice.TEXT_WRAP_DEFAULT);
-            monthChoice.setSelectedFlags(new boolean[] { false, false, false, false, false, false, false, false, false, false, false, false });
-            monthChoice.setFont(0, null);
-            monthChoice.setFont(1, null);
-            monthChoice.setFont(2, null);
-            monthChoice.setFont(3, null);
-            monthChoice.setFont(4, null);
-            monthChoice.setFont(5, null);
-            monthChoice.setFont(6, null);
-            monthChoice.setFont(7, null);
-            monthChoice.setFont(8, null);
-            monthChoice.setFont(9, null);
-            monthChoice.setFont(10, null);
-            monthChoice.setFont(11, null);//GEN-END:|189-getter|1|189-postInit
+            monthChoice.setSelectedFlags(new boolean[] { false, false, false, false, false, false, false, false, false, false, false, false });//GEN-END:|189-getter|1|189-postInit
             try {
                 if (editingLastReport) {
                     if (lastMsgStore.getRecord(10) != null) {
@@ -3354,11 +3345,11 @@ public class ANMApp extends MIDlet implements CommandListener {
         if (splashScreen == null) {//GEN-END:|202-getter|0|202-preInit
             // write pre-init user code here
             splashScreen = new SplashScreen(getDisplay());//GEN-BEGIN:|202-getter|1|202-postInit
-            splashScreen.setTitle("splashScreen");
+            splashScreen.setTitle("");
             splashScreen.setCommandListener(this);
             splashScreen.setFullScreenMode(true);
             splashScreen.setImage(getNrhmlogo());
-            splashScreen.setText("Mobile SCDRT");
+            splashScreen.setText(LocalizationSupport.getMessage("brandingLabel"));
             splashScreen.setTimeout(3000);//GEN-END:|202-getter|1|202-postInit
             // write post-init user code here
         }//GEN-BEGIN:|202-getter|2|
@@ -3459,7 +3450,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public Form getLoadPage() {
         if (loadPage == null) {//GEN-END:|219-getter|0|219-preInit
             // write pre-init user code here
-            loadPage = new Form("Last Report", new Item[] { getQuestionImage(), getQuestionLabel(), getLastChoice() });//GEN-BEGIN:|219-getter|1|219-postInit
+            loadPage = new Form(LocalizationSupport.getMessage("loadPageTitle"), new Item[] { getQuestionImage(), getQuestionLabel(), getLastChoice() });//GEN-BEGIN:|219-getter|1|219-postInit
             loadPage.addCommand(getLoadCmd());
             loadPage.addCommand(getLoadExitCmd());
             loadPage.setCommandListener(this);//GEN-END:|219-getter|1|219-postInit
@@ -3477,7 +3468,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public StringItem getQuestionLabel() {
         if (questionLabel == null) {//GEN-END:|221-getter|0|221-preInit
             // write pre-init user code here
-            questionLabel = new StringItem("", "Do You Want To Edit Your Last Submitted Report?");//GEN-LINE:|221-getter|1|221-postInit
+            questionLabel = new StringItem("", LocalizationSupport.getMessage("questionLabel"));//GEN-LINE:|221-getter|1|221-postInit
             // write post-init user code here
         }//GEN-BEGIN:|221-getter|2|
         return questionLabel;
@@ -3492,12 +3483,10 @@ public class ANMApp extends MIDlet implements CommandListener {
     public ChoiceGroup getLastChoice() {
         if (lastChoice == null) {//GEN-END:|222-getter|0|222-preInit
             // write pre-init user code here
-            lastChoice = new ChoiceGroup("Select", Choice.EXCLUSIVE);//GEN-BEGIN:|222-getter|1|222-postInit
-            lastChoice.append("Yes", null);
-            lastChoice.append("No", null);
-            lastChoice.setSelectedFlags(new boolean[] { false, false });
-            lastChoice.setFont(0, null);
-            lastChoice.setFont(1, null);//GEN-END:|222-getter|1|222-postInit
+            lastChoice = new ChoiceGroup(LocalizationSupport.getMessage("lastChoiceLabel"), Choice.EXCLUSIVE);//GEN-BEGIN:|222-getter|1|222-postInit
+            lastChoice.append(LocalizationSupport.getMessage("lastChoiceYes"), null);
+            lastChoice.append(LocalizationSupport.getMessage("lastChoiceNo"), null);
+            lastChoice.setSelectedFlags(new boolean[] { false, false });//GEN-END:|222-getter|1|222-postInit
             // write post-init user code here
         }//GEN-BEGIN:|222-getter|2|
         return lastChoice;
@@ -3542,7 +3531,7 @@ public class ANMApp extends MIDlet implements CommandListener {
     public Form getSettingsPage() {
         if (settingsPage == null) {//GEN-END:|233-getter|0|233-preInit
             // write pre-init user code here
-            settingsPage = new Form("Settings", new Item[] { getPhone1Num(), getPhone2Num(), getPhone3Num() });//GEN-BEGIN:|233-getter|1|233-postInit
+            settingsPage = new Form(LocalizationSupport.getMessage("settingsPageTitle"), new Item[] { getPhone1Num(), getPhone2Num(), getPhone3Num() });//GEN-BEGIN:|233-getter|1|233-postInit
             settingsPage.addCommand(getSettingsCmd());
             settingsPage.addCommand(getSettingsBackCmd());
             settingsPage.setCommandListener(this);//GEN-END:|233-getter|1|233-postInit
@@ -3560,14 +3549,12 @@ public class ANMApp extends MIDlet implements CommandListener {
     public ChoiceGroup getReportingChoice() {
         if (reportingChoice == null) {//GEN-END:|235-getter|0|235-preInit
                 // write pre-init user code here
-            reportingChoice = new ChoiceGroup("Reporting Freq:", Choice.POPUP);//GEN-BEGIN:|235-getter|1|235-postInit
-            reportingChoice.append("Monthly", null);
-            reportingChoice.append("Weekly", null);
-            reportingChoice.append("Daily", null);
-            reportingChoice.setSelectedFlags(new boolean[] { false, false, false });
-            reportingChoice.setFont(0, null);
-            reportingChoice.setFont(1, null);
-            reportingChoice.setFont(2, null);//GEN-END:|235-getter|1|235-postInit
+            reportingChoice = new ChoiceGroup(LocalizationSupport.getMessage("reportingChoiceLabel"), Choice.POPUP);//GEN-BEGIN:|235-getter|1|235-postInit
+            reportingChoice.append(LocalizationSupport.getMessage("reportingChoiceMonthly"), null);
+            reportingChoice.append(LocalizationSupport.getMessage("reportingChoiceWeekly"), null);
+            reportingChoice.append(LocalizationSupport.getMessage("reportingChoiceDaily"), null);
+            reportingChoice.setLayout(ImageItem.LAYOUT_CENTER | Item.LAYOUT_TOP | Item.LAYOUT_BOTTOM | Item.LAYOUT_VCENTER | Item.LAYOUT_2);
+            reportingChoice.setSelectedFlags(new boolean[] { false, false, false });//GEN-END:|235-getter|1|235-postInit
 
         }//GEN-BEGIN:|235-getter|2|
         return reportingChoice;
@@ -3635,7 +3622,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 } catch (RecordStoreException rsex) {
                     rsex.printStackTrace();
                 }
-                phone1Num = new TextField("Enter Phone:", str, 32, TextField.PHONENUMBER);//GEN-LINE:|248-getter|1|248-postInit
+                phone1Num = new TextField(LocalizationSupport.getMessage("phone1Num"), str, 10, TextField.PHONENUMBER);//GEN-LINE:|248-getter|1|248-postInit
                 // write post-init user code here
         }//GEN-BEGIN:|248-getter|2|
         return phone1Num;
@@ -3658,7 +3645,7 @@ public class ANMApp extends MIDlet implements CommandListener {
                 } catch (RecordStoreException rsex) {
                     rsex.printStackTrace();
                 }
-                phone2Num = new TextField("Enter Phone #2:", str, 32, TextField.PHONENUMBER);//GEN-LINE:|249-getter|1|249-postInit
+                phone2Num = new TextField(LocalizationSupport.getMessage("phone2Num"), str, 10, TextField.PHONENUMBER);//GEN-LINE:|249-getter|1|249-postInit
                 // write post-init user code here
         }//GEN-BEGIN:|249-getter|2|
         return phone2Num;
@@ -3681,7 +3668,7 @@ public class ANMApp extends MIDlet implements CommandListener {
             } catch (RecordStoreException rsex) {
                 rsex.printStackTrace();
             }
-            phone3Num = new TextField("Enter Phone #3:", str, 32, TextField.PHONENUMBER);//GEN-LINE:|250-getter|1|250-postInit
+            phone3Num = new TextField(LocalizationSupport.getMessage("phone3Num"), str, 10, TextField.PHONENUMBER);//GEN-LINE:|250-getter|1|250-postInit
             // write post-init user code here
         }//GEN-BEGIN:|250-getter|2|
         return phone3Num;
@@ -3703,35 +3690,37 @@ public class ANMApp extends MIDlet implements CommandListener {
     }
     //</editor-fold>//GEN-END:|251-getter|2|
 
-        //<editor-fold defaultstate="collapsed" desc=" Generated Getter: sendSettingsCmd ">//GEN-BEGIN:|254-getter|0|254-preInit
-        /**
-         * Returns an initiliazed instance of sendSettingsCmd component.
-         * @return the initialized component instance
-         */
-        public Command getSendSettingsCmd() {
-            if (sendSettingsCmd == null) {//GEN-END:|254-getter|0|254-preInit
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: sendSettingsCmd ">//GEN-BEGIN:|254-getter|0|254-preInit
+    /**
+     * Returns an initiliazed instance of sendSettingsCmd component.
+     * @return the initialized component instance
+     */
+    public Command getSendSettingsCmd() {
+        if (sendSettingsCmd == null) {//GEN-END:|254-getter|0|254-preInit
             // write pre-init user code here
-                sendSettingsCmd = new Command("Settings", Command.OK, 0);//GEN-LINE:|254-getter|1|254-postInit
+            sendSettingsCmd = new Command("Settings", Command.OK, 0);//GEN-LINE:|254-getter|1|254-postInit
             // write post-init user code here
-            }//GEN-BEGIN:|254-getter|2|
-            return sendSettingsCmd;
-        }
-        //</editor-fold>//GEN-END:|254-getter|2|
+        }//GEN-BEGIN:|254-getter|2|
+        return sendSettingsCmd;
+    }
+    //</editor-fold>//GEN-END:|254-getter|2|
 
-        //<editor-fold defaultstate="collapsed" desc=" Generated Getter: dateField ">//GEN-BEGIN:|258-getter|0|258-preInit
-        /**
-         * Returns an initiliazed instance of dateField component.
-         * @return the initialized component instance
-         */
-        public TextField getDateField() {
-            if (dateField == null) {//GEN-END:|258-getter|0|258-preInit
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: dateField ">//GEN-BEGIN:|258-getter|0|258-preInit
+    /**
+     * Returns an initiliazed instance of dateField component.
+     * @return the initialized component instance
+     */
+    public TextField getDateField() {
+        if (dateField == null) {//GEN-END:|258-getter|0|258-preInit
             // write pre-init user code here
-                dateField = new TextField("Enter Date (yyyy-mm-dd):", null, 32, TextField.ANY);//GEN-LINE:|258-getter|1|258-postInit
+            dateField = new TextField(LocalizationSupport.getMessage("dateField"), null, 10, TextField.ANY);//GEN-LINE:|258-getter|1|258-postInit
             // write post-init user code here
-            }//GEN-BEGIN:|258-getter|2|
-            return dateField;
-        }
-        //</editor-fold>//GEN-END:|258-getter|2|
+        }//GEN-BEGIN:|258-getter|2|
+        return dateField;
+    }
+    //</editor-fold>//GEN-END:|258-getter|2|
+
+
 
     private void getEmptyFields() {
         String ancFormData = pregNum.getString() + "|" + firstTrimesterNum.getString() + "|" + jsyNum.getString() + "|" + threeAncNum.getString() + "|" + tt1Num.getString() + "|" + boosterNum.getString() + "|" + ifaTabletNum.getString() + "|" + hypertensionNum.getString() + "|" + anaemicAncNum.getString();
@@ -3740,7 +3729,7 @@ public class ANMApp extends MIDlet implements CommandListener {
         String familyPlanFormData = iudInsFacilityNum.getString() + "|" + iudRemFacilityNum.getString() + "|" + ocpDistNum.getString() + "|" + condomsNum.getString() + "|" + weeklyPillsNum.getString() + "|" + emerContraNum.getString() + "|" + compliMaleSterNum.getString() + "|" + compliFemSterNum.getString() + "|" + failMaleSterNum.getString() + "|" + failFemSterNum.getString() + "|" + deathMaleSterNum.getString() + "|" + deathFemSterNum.getString();
         String childImm1FormData = bcgNum.getString() + "|" + dpt1Num.getString() + "|" + dpt2Num.getString() + "|" + dpt3Num.getString() + "|" + opv0Num.getString() + "|" + opv1Num.getString() + "|" + opv2Num.getString() + "|" + opv3Num.getString() + "|" + hepB1Num.getString() + "|" + hepB2Num.getString() + "|" + hepB3Num.getString() + "|" + measlesVacNum.getString() + "|" + fullImmMaleNum.getString() + "|" + fullImmFemNum.getString();
         String childImm2FormData = dptBNum.getString() + "|" + opvBNum.getString() + "|" + mmrNum.getString() + "|" + fullImm2MaleNum.getString() + "|" + fullImm2FemNum.getString() + "|" + dt5Num.getString() + "|" + tt10Num.getString() + "|" + tt16Num.getString();
-        String childImm3FormData = aefiAbscessNum.getString() + "|" + aefiDeathsNum.getString() + "|" + aefiOthersNum.getString() + "|" + sessionPlannedNum.getString() + "|" + sessionHeldNum.getString() + "|" + sessionsAshaNum.getString();
+        String childImm3FormData = aefiAbscessNum.getString() + "|" + aefiDeathsNum.getString() + "|" + aefiOthersNum.getString() + "|" + sessionPlannedNum.getString() + "|" + sessionHeldNum.getString() + "|" + sessionAshaNum.getString();
         String childImm4FormData = vitA1Num.getString() + "|" + vitA5Num.getString() + "|" + vitA9Num.getString() + "|" + caseMeaslesNum.getString() + "|" + caseDiarrhNum.getString() + "|" + caseMalariaNum.getString();
         String healthFacilityFormData = vhndNum.getString() + "|" + opdNum.getString() + "|" + hbTestsNum.getString() + "|" + anaemicOpdNum.getString() + "|";
 
