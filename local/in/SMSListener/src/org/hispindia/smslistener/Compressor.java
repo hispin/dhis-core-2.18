@@ -1,35 +1,35 @@
+/**
+ * Implementation of Range Coding Compression/Decompression
+ * Range encoding is a lossless data compression method defined by G N N Martin in his
+ * 1979 paper on "Range encoding: an algorithm for removing redundancy from a
+ * digitized message".
+ *
+ * This code was written to provide simple data compression for J2ME.
+ *
+ * Based on reference materials and code from  http://www.bodden.de/studies/ac/
+ *
+ * The homepage for this software is http://winterwell.com/software/compressor.php
+ *
+ * (c) 2008 Joe Halliwell <joe.halliwell@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.hispindia.smslistener;
 
 import java.io.IOException;
 import java.io.ByteArrayOutputStream;
-
-/**
- * A Comment on Range Encoding:
- *
- * Range encoding is a data compression method defined by G. N. N. Martin
- * in his 1979 paper, Range encoding: an algorithm for removing redundancy
- * from a digitized message.
- *
- * Range encoding conceptually encodes all the symbols of the message into
- * one number. The central concept behind range encoding is this: given a
- * large-enough range of integers, and a probability estimation for the symbols,
- * the initial range can easily be divided into sub-ranges whose sizes are
- * proportional to the probability of the symbol they represent. Each symbol of
- * the message can then be encoded in turn, by reducing the current range down
- * to just that sub-range which corresponds to the next symbol to be encoded.
- * The decoder must have the same probability estimation the encoder used,
- * which can either be sent in advance, derived from already transferred data
- * or be part of the compressor and decompressor.
- *
- * When all symbols have been encoded, merely identifying the sub-range is
- * enough to communicate the entire message (presuming of course that the
- * decoder is somehow notified when it has extracted the entire message).
- * A single integer is actually sufficient to identify the sub-range, and it
- * may not even be necessary to transmit the entire integer; if there is a
- * sequence of digits such that every integer beginning with that prefix falls
- * within the sub-range, then the prefix alone is all that's needed to identify
- * the sub-range and thus transmit the message.
- */
 
 public class Compressor {
 
