@@ -1,9 +1,35 @@
 package org.hispindia.mobile;
 
-
-
 import java.io.IOException;
 import java.io.ByteArrayOutputStream;
+
+/**
+ * A Comment on Range Encoding:
+ *
+ * Range encoding is a data compression method defined by G. N. N. Martin
+ * in his 1979 paper, Range encoding: an algorithm for removing redundancy
+ * from a digitized message.
+ *
+ * Range encoding conceptually encodes all the symbols of the message into
+ * one number. The central concept behind range encoding is this: given a
+ * large-enough range of integers, and a probability estimation for the symbols,
+ * the initial range can easily be divided into sub-ranges whose sizes are
+ * proportional to the probability of the symbol they represent. Each symbol of
+ * the message can then be encoded in turn, by reducing the current range down
+ * to just that sub-range which corresponds to the next symbol to be encoded.
+ * The decoder must have the same probability estimation the encoder used,
+ * which can either be sent in advance, derived from already transferred data
+ * or be part of the compressor and decompressor.
+ *
+ * When all symbols have been encoded, merely identifying the sub-range is
+ * enough to communicate the entire message (presuming of course that the
+ * decoder is somehow notified when it has extracted the entire message).
+ * A single integer is actually sufficient to identify the sub-range, and it
+ * may not even be necessary to transmit the entire integer; if there is a
+ * sequence of digits such that every integer beginning with that prefix falls
+ * within the sub-range, then the prefix alone is all that's needed to identify
+ * the sub-range and thus transmit the message.
+ */
 
 public class Compressor {
 
