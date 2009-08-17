@@ -6,10 +6,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Saptarshi
- */
 public class XMLCreator {
 
     public void writeXML(String phoneNumber, String sendTime, String info) {
@@ -34,11 +30,15 @@ public class XMLCreator {
             writer.write("<source>" + phoneNumber + "</source>\n");
             if (period.length() == 1) {
                 writer.write("<period>2009-0" + period + "-01</period>\n");
-            }
-            if (period.length() == 2) {
-                writer.write("<period>2009-" + period + "-01</period>\n");
-            }
-            if (period.length() > 2) {
+            } else if (period.length() == 2) {
+                if (Integer.parseInt(period) > 12 && Integer.parseInt(period) < 22) {
+                    writer.write("<period>2008-0" + (Integer.parseInt(period) - 12) + "-01</period>\n");
+                } else if (Integer.parseInt(period) >= 22) {
+                    writer.write("<period>2008-" + (Integer.parseInt(period) - 12) + "-01</period>\n");
+                } else {
+                    writer.write("<period>2009-" + period + "-01</period>\n");
+                }
+            } else {
                 writer.write("<period>" + period + "</period>\n");
             }
             writer.write("<timeStamp>" + sendTime + "</timeStamp>\n");
