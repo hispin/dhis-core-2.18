@@ -32,6 +32,7 @@ import static junit.framework.Assert.assertEquals;
 import java.util.Properties;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.importexport.IbatisConfiguration;
 import org.hisp.dhis.importexport.IbatisConfigurationManager;
 import org.junit.Test;
@@ -57,6 +58,8 @@ public class IbatisConfigurationManagerTest
     @Override
     public void setUpTest()
     {
+        setExternalTestDir( (LocationManager) getBean( LocationManager.ID ) );
+        
         configurationManager = (IbatisConfigurationManager) getBean( IbatisConfigurationManager.ID );
         
         setDependency( configurationManager, "configDir", "test", String.class );

@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.importexport.ixf.config.IXFConfiguration;
 import org.hisp.dhis.importexport.ixf.config.IXFConfigurationManager;
 import org.hisp.dhis.importexport.ixf.config.IXFCountry;
@@ -56,6 +57,8 @@ public class IXFConfigurationManagerTest
     public void setUpTest()
         throws Exception
     {
+        setExternalTestDir( (LocationManager) getBean( LocationManager.ID ) );
+        
         configurationManager = (IXFConfigurationManager) getBean( IXFConfigurationManager.ID );
         
         setDependency( configurationManager, "configDir", "test", String.class );

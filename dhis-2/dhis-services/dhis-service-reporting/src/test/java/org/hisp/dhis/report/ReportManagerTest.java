@@ -32,6 +32,7 @@ import static junit.framework.Assert.assertNotNull;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
+import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.report.manager.ReportConfiguration;
 import org.junit.Test;
 
@@ -65,6 +66,8 @@ public class ReportManagerTest
     public void testConfiguration()
         throws NoConfigurationFoundException
     {
+        setExternalTestDir( (LocationManager) getBean( LocationManager.ID ) );
+        
         ReportConfiguration config = new ReportConfiguration( "home", "directory" );
         
         reportManager.setConfiguration( config );

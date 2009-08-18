@@ -35,6 +35,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import java.io.File;
+
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
@@ -60,6 +62,7 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.dbms.DbmsManager;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportObjectStatus;
 import org.hisp.dhis.indicator.Indicator;
@@ -95,6 +98,8 @@ import org.hisp.dhis.validation.ValidationRuleService;
 public abstract class DhisConvenienceTest
 {
     private static final String BASE_UUID = "C3C2E28D-9686-4634-93FD-BE3133935EC";
+
+    private static final String EXT_TEST_DIR = System.getProperty( "user.home" ) + File.separator + "dhis2_test_dir";
 
     private static Date date;
     
@@ -143,6 +148,8 @@ public abstract class DhisConvenienceTest
     protected MappingService mappingService;
     
     protected DbmsManager dbmsManager;
+    
+    protected LocationManager locationManager;
     
     static
     {
@@ -840,4 +847,46 @@ public abstract class DhisConvenienceTest
         
         return extended;
     }
+
+    /**
+     * Injects the externalDir property of LocationManager to user.home/dhis2_test_dir.
+     * LocationManager dependency must be retrieved from the context up front.
+     * 
+     * @param locationManager The LocationManager to be injected with the external directory.
+     */
+    public void setExternalTestDir( LocationManager locationManager )
+    {
+        this.locationManager = locationManager;
+        
+        setDependency( locationManager, "externalDir", EXT_TEST_DIR, String.class );
+    }
+    
+
+    /**
+     * Attempts to remove the external test directory.
+     */
+    public void removeExternalTestDir()
+    {
+        deleteDir( new File( EXT_TEST_DIR ) );
+    }
+    
+    private boolean deleteDir( File dir ) 
+    {
+        if ( dir.isDirectory() )
+        {
+            String[] children = dir.list();
+            
+            for ( int i = 0; i < children.length; i++ )
+            {
+                boolean success = deleteDir( new File( dir, children[ i ] ) );
+                
+                if ( !success ) 
+                {
+                    return false;
+                }
+            }
+        }
+        
+        return dir.delete();
+    }    
 }
