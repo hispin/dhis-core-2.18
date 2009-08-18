@@ -41,6 +41,7 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
+import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -97,6 +98,8 @@ public class DataSetCompletenessServiceTest
     @Override
     public void setUpTest()
     {
+        setExternalTestDir( (LocationManager) getBean( LocationManager.ID ) );
+        
         periodService = (PeriodService) getBean( PeriodService.ID );
         
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );

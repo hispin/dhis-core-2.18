@@ -46,9 +46,7 @@ import org.springframework.test.annotation.NotTransactional;
  */
 public class LocationManagerTest
     extends DhisSpringTest
-{
-    private LocationManager locationManager;
-    
+{    
     private InputStream in;
     
     private OutputStream out;
@@ -62,7 +60,7 @@ public class LocationManagerTest
     @Override
     public void setUpTest()
     {
-        locationManager = (LocationManager) getBean( LocationManager.ID );
+        setExternalTestDir( (LocationManager) getBean( LocationManager.ID ) );
     }
 
     // -------------------------------------------------------------------------

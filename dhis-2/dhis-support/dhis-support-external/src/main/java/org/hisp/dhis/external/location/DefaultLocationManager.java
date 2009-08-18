@@ -52,6 +52,11 @@ public class DefaultLocationManager
 
     private String externalDir = null;
 
+    public void setExternalDir( String externalDir )
+    {
+        this.externalDir = externalDir;
+    }
+
     private String environmentVariable;
 
     public void setEnvironmentVariable( String environmentVariable )
