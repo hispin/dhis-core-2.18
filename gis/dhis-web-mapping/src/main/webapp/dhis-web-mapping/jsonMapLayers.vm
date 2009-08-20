@@ -1,0 +1,10 @@
+#set( $size = $object.size() )
+{ "mapLayers": [
+#foreach( $mapLayer in $object )
+  {
+    "id": "$!{mapLayer.id}",
+    "name": "$!encoder.jsEncode( ${mapLayer.name} )",
+    "mapSource": "$!encoder.jsEncode( ${mapLayer.mapSource} )"
+  }#if( $velocityCount < $size ),#end
+#end
+] }
