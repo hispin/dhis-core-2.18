@@ -221,4 +221,22 @@ public interface MappingStore
     MapView getMapViewByName( String name );
     
     Collection<MapView> getAllMapViews();
+    
+    // -------------------------------------------------------------------------
+    // MapLayer
+    // -------------------------------------------------------------------------
+
+    int addMapLayer( MapLayer mapLayer );
+    
+    void updateMapLayer( MapLayer mapLayer );
+    
+    void deleteMapLayer( MapLayer mapLayer );
+    
+    MapLayer getMapLayer( int id );
+    
+    MapLayer getMapLayerByName( String name );
+    
+    MapLayer getMapLayerByMapSource( String mapSource );
+    
+    Collection<MapLayer> getAllMapLayers();
 }

@@ -196,9 +196,9 @@ public class DefaultMappingService
     public Collection<Map> getAllGeneratedMaps()
     {
         List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
-        
+
         List<Map> maps = new ArrayList<Map>();
-        
+
         for ( OrganisationUnitLevel organisationUnitLevel : organisationUnitLevels )
         {
             Map map = new Map();
@@ -207,17 +207,17 @@ public class DefaultMappingService
             map.setOrganisationUnitLevel( organisationUnitLevel );
             maps.add( map );
         }
-        
+
         return maps;
     }
 
     public Collection<Map> getAllUserMaps()
     {
         String type = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_DATABASE );
-        
+
         return type != null && type.equals( MAP_SOURCE_TYPE_DATABASE ) ? getAllGeneratedMaps() : getAllMaps();
     }
-    
+
     // -------------------------------------------------------------------------
     // MapOrganisationUnitRelation
     // -------------------------------------------------------------------------
@@ -445,7 +445,7 @@ public class DefaultMappingService
             .getClass() );
 
         Period period = periodService.getPeriod( periodId );
-        
+
         mapView.setName( name );
         mapView.setIndicatorGroup( indicatorGroup );
         mapView.setIndicator( indicator );
@@ -466,8 +466,8 @@ public class DefaultMappingService
         mappingStore.updateMapView( mapView );
     }
 
-    public void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
-        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh )
+    public void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName,
+        int periodId, String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh )
     {
         IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( indicatorGroupId );
 
@@ -498,7 +498,8 @@ public class DefaultMappingService
         }
         else
         {
-            mapView = new MapView( name, indicatorGroup, indicator, periodType, period, mapSourceType, mapSource, method, classes, colorLow, colorHigh );
+            mapView = new MapView( name, indicatorGroup, indicator, periodType, period, mapSourceType, mapSource,
+                method, classes, colorLow, colorHigh );
 
             addMapView( mapView );
         }
@@ -522,22 +523,79 @@ public class DefaultMappingService
     public Collection<MapView> getAllMapViews()
     {
         Collection<MapView> selectedMapViews = new ArrayList<MapView>();
-        
+
         Collection<MapView> mapViews = mappingStore.getAllMapViews();
-  
-        String mapSourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_DATABASE );
-        
-        if (mapViews != null)
+
+        String mapSourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE,
+            MAP_SOURCE_TYPE_DATABASE );
+
+        if ( mapViews != null )
         {
-            for (MapView mapView : mapViews)
+            for ( MapView mapView : mapViews )
             {
-                if (mapView.getMapSourceType().equals( mapSourceType ))
+                if ( mapView.getMapSourceType().equals( mapSourceType ) )
                 {
                     selectedMapViews.add( mapView );
                 }
             }
         }
-        
+
         return selectedMapViews;
+    }
+
+    // -------------------------------------------------------------------------
+    // MapLayer
+    // -------------------------------------------------------------------------
+
+    public int addMapLayer( MapLayer mapLayer )
+    {
+        return mappingStore.addMapLayer( mapLayer );
+    }
+
+    public void updateMapLayer( MapLayer mapLayer )
+    {
+        mappingStore.updateMapLayer( mapLayer );
+    }
+
+    public void addOrUpdateMapLayer( String name, String mapSource )
+    {
+        MapLayer mapLayer = mappingStore.getMapLayerByName( name );
+
+        if ( mapLayer != null )
+        {
+            mapLayer.setName( name );
+            mapLayer.setMapSource( mapSource );
+            
+            updateMapLayer( mapLayer );
+        }
+        else
+        {
+            addMapLayer( new MapLayer( name, mapSource ) );
+        }
+    }
+
+    public void deleteMapLayer( MapLayer mapLayer )
+    {
+        mappingStore.deleteMapLayer( mapLayer );
+    }
+
+    public MapLayer getMapLayer( int id )
+    {
+        return mappingStore.getMapLayer( id );
+    }
+
+    public MapLayer getMapLayerByName( String name )
+    {
+        return mappingStore.getMapLayerByName( name );
+    }
+
+    public MapLayer getMapLayerByMapSource( String mapSource )
+    {
+        return mappingStore.getMapLayerByMapSource( mapSource );
+    }
+
+    public Collection<MapLayer> getAllMapLayers()
+    {
+        return mappingStore.getAllMapLayers();
     }
 }

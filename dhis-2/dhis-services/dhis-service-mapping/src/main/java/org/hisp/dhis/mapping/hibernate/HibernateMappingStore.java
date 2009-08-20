@@ -35,6 +35,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.mapping.MapLayer;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapOrganisationUnitRelation;
 import org.hisp.dhis.mapping.MapView;
@@ -324,6 +325,70 @@ public class HibernateMappingStore
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MapView.class );
+
+        return criteria.list();
+    }
+    
+    // -------------------------------------------------------------------------
+    // MapLayer
+    // -------------------------------------------------------------------------
+    
+    public int addMapLayer( MapLayer mapLayer )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        return (Integer) session.save( mapLayer );
+    }
+    
+    public void updateMapLayer( MapLayer mapLayer )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        session.update( mapLayer );
+    }
+    
+    public void deleteMapLayer( MapLayer mapLayer )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.delete( mapLayer );
+    }
+
+    public MapLayer getMapLayer( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        return (MapLayer) session.get( MapLayer.class, id );
+    }
+    
+    public MapLayer getMapLayerByName( String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( MapLayer.class );
+
+        criteria.add( Restrictions.eq( "name", name ) );
+
+        return (MapLayer) criteria.uniqueResult();
+    }
+    
+    public MapLayer getMapLayerByMapSource( String mapSource )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( MapLayer.class );
+
+        criteria.add( Restrictions.eq( "mapSource", mapSource ) );
+
+        return (MapLayer) criteria.uniqueResult();
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<MapLayer> getAllMapLayers()
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( MapLayer.class );
 
         return criteria.list();
     }

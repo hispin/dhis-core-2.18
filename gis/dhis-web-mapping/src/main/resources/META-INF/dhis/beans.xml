@@ -195,6 +195,29 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="mappingService"
       ref="org.hisp.dhis.mapping.MappingService"/>
   </bean>
+	
+  <!-- MapLayer -->
+	
+  <bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapLayerAction"
+    class="org.hisp.dhis.mapping.action.AddOrUpdateMapLayerAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+	
+  <bean id="org.hisp.dhis.mapping.action.DeleteMapLayerAction"
+    class="org.hisp.dhis.mapping.action.DeleteMapLayerAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>	
+	
+  <bean id="org.hisp.dhis.mapping.action.GetAllMapLayersAction"
+    class="org.hisp.dhis.mapping.action.GetAllMapLayersAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
   
   <!-- Indicator -->
     
