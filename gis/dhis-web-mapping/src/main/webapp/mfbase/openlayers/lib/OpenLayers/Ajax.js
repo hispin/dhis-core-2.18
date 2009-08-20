@@ -4,10 +4,11 @@
 
 /**
  * @requires OpenLayers/Request/XMLHttpRequest.js
+ * @requires OpenLayers/Console.js
  */
 
-//OpenLayers.ProxyHost = "";
-OpenLayers.ProxyHost = "examples/proxy.cgi?url=";
+OpenLayers.ProxyHost = "";
+//OpenLayers.ProxyHost = "examples/proxy.cgi?url=";
 
 /**
  * Ajax reader for OpenLayers
