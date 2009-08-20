@@ -156,13 +156,6 @@ Ext.onReady(function()
 
     MASK = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait..."});
     
-    printConfigUrl = '../../pdf/info.json';
-    
-    layerOverrides = {
-        "OpenLayers WMS": {overview: true},
-        Countries: { format: 'image/svg+xml' }
-    };
-    
     MAPDATA = null;
     URL = null;
     ACTIVEPANEL = 'choropleth';
@@ -249,9 +242,9 @@ Ext.onReady(function()
     );
                                                  
 /*    var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
-                                           "http://labs.metacarta.com/wms-c/Basic.py?", 
-                                           {layers: 'satellite', format: 'image/png'});*/
-                                   
+                                           "http://demo.opengeo.org/geoserver/wms", 
+                                           {layers: 'bluemarble', format: 'image/png'});
+*/                                   
     var choroplethLayer = new OpenLayers.Layer.Vector(CHOROPLETH_LAYERNAME, {
         'visibility': true,
         'styleMap': new OpenLayers.StyleMap({
@@ -268,6 +261,18 @@ Ext.onReady(function()
     });
     
     var static1Layer = new OpenLayers.Layer.Vector(STATIC1_LAYERNAME, {
+        'visibility': false,
+        'styleMap': new OpenLayers.StyleMap({
+            'default': new OpenLayers.Style(
+                OpenLayers.Util.applyDefaults(
+                    {'fillOpacity': 1, 'strokeWidth': 2, 'strokeColor': '#000000', 'strokeOpacity': 1 },
+                    OpenLayers.Feature.Vector.style['default']
+                )
+            )
+        })
+    });
+    
+    var static2Layer = new OpenLayers.Layer.Vector("static 2", {
         'visibility': false,
         'styleMap': new OpenLayers.StyleMap({
             'default': new OpenLayers.Style(
@@ -1146,7 +1151,7 @@ Ext.onReady(function()
             var cb = Ext.getCmp('colorB_cf').getValue();
             
             if (!vn || !ig || !i || !pt || !p || !mst || !ms || !c ) {
-                Ext.messageRed.msg('New map view', 'Thematic map form is not complete.');
+                Ext.messageRed.msg('New map view', 'Map view form is not complete.');
                 return;
             }
             
@@ -1336,6 +1341,178 @@ Ext.onReady(function()
         ]
     });
     
+    // MAP LAYER PANEL
+    
+    var mapLayerNameTextField = new Ext.form.TextField({
+        id: 'maplayername_tf',
+        emptyText: 'Required',
+        width: combo_width
+    });
+    
+    var mapLayerMapSourceFileTextField = new Ext.form.TextField({
+        id: 'maplayermapsourcefile_tf',
+        emptyText: 'Required',
+        width: combo_width
+    });
+    
+    var mapLayerStore = new Ext.data.JsonStore({
+        url: path + 'getAllMapLayers' + type,
+        root: 'mapLayers',
+        fields: ['id', 'name'],
+        sortInfo: { field: 'name', direction: 'ASC' },
+        autoLoad: true
+    });
+    
+    var mapLayerComboBox = new Ext.form.ComboBox({
+        id: 'maplayer_cb',
+        typeAhead: true,
+        editable: false,
+        valueField: 'id',
+        displayField: 'name',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        emptyText: 'Required',
+        selectOnFocus: true,
+        width: combo_width,
+        minListWidth: combo_width + 26,
+        store: mapLayerStore
+    });
+    
+    var newMapLayerButton = new Ext.Button({
+        id: 'newmaplayer_b',
+        text: 'Register new map layer',
+        handler: function() {
+            var mln = Ext.getCmp('maplayername_tf').getRawValue();
+            var mlmsf = Ext.getCmp('maplayermapsourcefile_tf').getValue();
+            
+            if (!mln || !mlmsf ) {
+                Ext.messageRed.msg('New map layer', 'Map layer form is not complete.');
+                return;
+            }
+            
+            if (validateInput(mln) == false) {
+                Ext.messageRed.msg('New map layer', 'Map layer name cannot be longer than 25 characters.');
+                return;
+            }
+            
+            Ext.Ajax.request({
+                url: path + 'addOrUpdateMapLayer' + type,
+                method: 'POST',
+                params: { name: mln, mapSource: mlmsf },
+
+                success: function( responseObject ) {
+                    Ext.messageBlack.msg('New map layer', 'The map layer ' + msg_highlight_start + mln + msg_highlight_end + ' was registered.');
+                    Ext.getCmp('maplayer_cb').getStore().reload();
+                },
+                failure: function() {
+                    alert( 'Status', 'Error while saving data' );
+                }
+            });
+        }
+    });
+    
+    var deleteMapLayerButton = new Ext.Button({
+        id: 'deletemaplayer_b',
+        text: 'Delete map layer',
+        handler: function() {
+            var ml = Ext.getCmp('maplayer_cb').getValue();
+            
+            if (!ml) {
+                Ext.messageRed.msg('Delete map layer', 'Please select a map layer.');
+                return;
+            }
+            
+            Ext.Ajax.request({
+                url: path + 'deleteMapLayer' + type,
+                method: 'POST',
+                params: { id: ml },
+
+                success: function( responseObject ) {
+                    Ext.messageBlack.msg('Delete map layer', 'The map layer ' + ml + ' was deleted.');
+                    Ext.getCmp('maplayer_cb').getStore().reload();
+                    Ext.getCmp('maplayer_cb').reset();
+                },
+                failure: function() {
+                    alert( 'Status', 'Error while saving data' );
+                }
+            });
+        }
+    });
+    
+    var newMapLayerPanel = new Ext.Panel({   
+        id: 'newmaplayer_p',
+        items:
+        [
+            { html: '<p style="padding-bottom:4px">Name:</p>' }, mapLayerNameTextField, { html: '<br>' }, 
+            { html: '<p style="padding-bottom:4px">Map source file:</p>' }, mapLayerMapSourceFileTextField
+        ]
+    });
+    
+    var deleteMapLayerPanel = new Ext.Panel({   
+        id: 'deletemaplayer_p',
+        items:
+        [   
+            { html: '<p style="padding-bottom:4px">Map layer:</p>' }, mapLayerComboBox
+        ]
+    });
+    
+    var mapLayerPanel = new Ext.Panel({
+        id: 'maplayer_p',
+        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:black;">Map layers</font>',
+        items:
+        [
+            {
+                xtype: 'tabpanel',
+                activeTab: 0,
+                deferredRender: false,
+                plain: true,
+                defaults: {layout: 'fit', bodyStyle: 'padding:8px'},
+                listeners: {
+                    tabchange: function(panel, tab)
+                    {
+                        var nml_b = Ext.getCmp('newmaplayer_b');
+                        var dml_b = Ext.getCmp('deletemaplayer_b');
+                        
+                        if (tab.id == 'view0') { 
+                            nml_b.setVisible(true);
+                            dml_b.setVisible(false);
+                        }
+                        else if (tab.id == 'view1') {
+                            nml_b.setVisible(false);
+                            dml_b.setVisible(true);
+                        }
+                    }
+                },
+                items:
+                [
+                    {
+                        title:'New map layer',
+                        id: 'view0',
+                        items:
+                        [
+                            newMapLayerPanel
+                        ]
+                    },
+                    {
+                        title:'Delete map layer',
+                        id: 'view1',
+                        items:
+                        [
+                            deleteMapLayerPanel
+                        ]
+                    }
+                ]
+            },
+            
+            { html: '<br>' },
+            
+            newMapLayerButton,
+            
+            deleteMapLayerButton
+        ]
+    });
+    
     // ADMIN PANEL
     
     var adminPanel = new Ext.form.FormPanel({
@@ -1354,11 +1531,13 @@ Ext.onReady(function()
                             if (checked) {
                                 mapping.show();
                                 shapefilePanel.show();
+                                mapLayerPanel.show();
                                 Ext.getCmp('west').doLayout();
                             }
                             else {
                                 mapping.hide();
                                 shapefilePanel.hide();
+                                mapLayerPanel.hide();
                                 Ext.getCmp('west').doLayout();
                             }
                         },
@@ -1520,9 +1699,30 @@ Ext.onReady(function()
         }
     });
     
+    static2 = new mapfish.widgets.geostat.Static({
+        id: 'static2',
+        map: map,
+        layer: static2Layer,
+        title: 'static 2',
+        nameAttribute: 'NAME',
+        indicators: [['value', 'Indicator']],
+        url: INIT_URL,
+        featureSelection: false,
+        loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
+        legendDiv: 'choroplethLegend',
+        defaults: {width: 130},
+        listeners: {
+            expand: {
+                fn: function() {}
+            }
+        }
+    });
+    
     static1.hide();
+    static2.hide();
     mapping.hide();
     shapefilePanel.hide();
+    mapLayerPanel.hide();
     
     viewport = new Ext.Viewport({
         id: 'viewport',
@@ -1567,7 +1767,7 @@ Ext.onReady(function()
                 items:
                 [
                     {
-                        title: 'Layers',
+                        title: 'Map layers',
                         id: 'layertree',
                         autoHeight: true,
                         xtype: 'layertree',
@@ -1575,19 +1775,19 @@ Ext.onReady(function()
                         anchor: '100%'
                     },
                     {
-                        title: 'Overview Map',
+                        title: 'Overview',
                         autoHeight: true,
                         html:'<div id="overviewmap"></div>',
                         anchor: '100%'
                     },
                     {
-                        title: 'Position',
+                        title: 'Cursor position',
                         height: 65,
                         contentEl: 'position',
                         anchor: '100%'
                     },
                     {
-                        title: 'Legend',
+                        title: 'Map legend',
                         minHeight: 65,
                         autoHeight: true,
                         contentEl: 'legend',
@@ -1617,15 +1817,81 @@ Ext.onReady(function()
                     legendsetPanel,
                     shapefilePanel,
                     mapping,
+                    mapLayerPanel,
                     adminPanel,
-                    static1
+                    static1//,
+/*                    {
+                        xtype: 'print-simple',
+                        title: 'Print single page',
+                        bodyStyle: 'padding: 7px;',
+                        formConfig: {
+                            labelWidth: 65,
+                            defaults: {
+                                width: 140,
+                                listWidth: 140
+                            },
+                            items: [
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'Title',
+                                    name: 'mapTitle',
+                                    value: 'Map title'
+                                },
+                                {
+                                    xtype: 'textarea',
+                                    fieldLabel: 'Comments',
+                                    name: 'comment',
+                                    height: 100,
+                                    value: 'Some comments'
+                                }
+                            ]
+                        },
+                        border: false,
+                        map: map,
+                        configUrl: printConfigUrl
+                    },
+                    {
+                      xtype: 'print-multi',
+                      title: 'Print multi page',
+                      formConfig: {
+                        labelWidth: 65,
+                        bodyStyle: 'padding: 7px;',
+                        defaults: {
+                          width: 140,
+                          listWidth: 140
+                        //},
+                        //items: [
+                        //  {
+                        //    xtype: 'textfield',
+                        //    fieldLabel: 'Title',
+                        //    name: 'title',
+                        //    value: 'Map title'
+                        //  }
+                        //]
+                      },
+                      columns: [
+                          {
+                              header: OpenLayers.Lang.translate('mf.print.mapTitle'),
+                              dataIndex: 'mapTitle',
+                              editor: new Ext.form.TextField()
+                          },
+                          {
+                              header: OpenLayers.Lang.translate('mf.print.comment'),
+                              dataIndex: 'comment',
+                              editor: new Ext.form.TextField()
+                          }
+                      ],
+                      border: false,
+                      map: map,
+                      configUrl: printConfigUrl
+                    }*/
                 ]
             },
             {
+                xtype: 'mapcomponent',
                 region: 'center',
                 id: 'center',
                 title: 'Map',
-                xtype: 'mapcomponent',
                 margins: '0 0 5 0',
                 map: map,
                 height: 400,
@@ -1647,7 +1913,7 @@ Ext.onReady(function()
     
     map.events.on({
         changelayer: function(e) {
-            if (e.property == 'visibility' && e.layer == static1Layer) {
+            if (e.property == 'visibility' && e.layer != choroplethLayer) {
                 if (static1Layer.visibility) {
                     selectFeatureChoropleth.deactivate();
                     
