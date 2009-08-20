@@ -31,7 +31,7 @@ import org.hisp.dhis.dataset.DataEntryForm;
 import org.hisp.dhis.dataset.DataEntryFormService;
 import org.hisp.dhis.i18n.I18n;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Bharath Kumar

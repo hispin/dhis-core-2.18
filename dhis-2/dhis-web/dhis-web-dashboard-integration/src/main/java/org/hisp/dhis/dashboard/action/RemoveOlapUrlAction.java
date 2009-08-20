@@ -7,7 +7,7 @@ import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo

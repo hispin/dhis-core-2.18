@@ -1,13 +1,50 @@
-<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
-  "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
-<xwork>
-  <include file="dhis-support-webwork.xml"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+  <include file="struts-default.xml"/>
+  
+  <!-- Properties -->
+  
+  <constant name="struts.velocity.contexts" value="org.hisp.dhis.encoding.velocity.EncoderVelocityContext"/>
+  <constant name="struts.velocity.toolboxlocation" value="toolbox.xml"/> <!-- Work-around -->
+  <constant name="struts.i18n.encoding" value="UTF-8"/>
+  <constant name="struts.multipart.parser" value="jakarta"/>
+  <constant name="struts.multipart.maxSize" value="1073741824"/>
   
   <!-- DHIS Web Commons -->
   
-  <package name="dhis-web-commons" extends="dhis-support-webwork" namespace="/dhis-web-commons">
+  <package name="dhis-web-commons" extends="struts-default" namespace="/dhis-web-commons">
 
+    <result-types>
+      <result-type name="plainTextErrorResult"
+        class="org.hisp.dhis.result.PlainTextErrorResult"/>
+      <result-type name="chart"
+        class="org.hisp.dhis.result.ChartResult"/>
+      <result-type name="velocity-xml"
+        class="org.hisp.dhis.result.VelocityXMLResult"/>
+      <result-type name="velocity-json"
+        class="org.hisp.dhis.result.VelocityJsonResult"/>
+    </result-types>
+    
     <interceptors>
+      <interceptor name="exceptionInterceptor"
+        class="org.hisp.dhis.interceptor.ExceptionInterceptor"/>
+      <interceptor name="i18nInterceptor"
+        class="org.hisp.dhis.interceptor.I18nInterceptor"/>
+      <interceptor name="sortOrderInterceptor"
+        class="org.hisp.dhis.interceptor.SortOrderInterceptor"/>
+      <interceptor name="displayPropertyInterceptor"
+        class="org.hisp.dhis.interceptor.DisplayPropertyInterceptor"/>
+      <interceptor name="dataDictionaryModeInterceptor"
+        class="org.hisp.dhis.interceptor.DataDictionaryModeInterceptor"/>
+      <interceptor name="systemSettingInterceptor"
+        class="org.hisp.dhis.interceptor.SystemSettingInterceptor"/>
+      <interceptor name="styleInterceptor"
+        class="org.hisp.dhis.interceptor.StyleInterceptor"/>
+        
       <interceptor name="portalParamsInterceptor"
         class="org.hisp.dhis.webportal.interceptor.WebWorkPortalParamsInterceptor"/>
       <interceptor name="portalModuleInterceptor"
@@ -22,7 +59,7 @@
         class="org.hisp.dhis.security.intercept.WebWorkSecurityInterceptor"/>
       
       <interceptor-stack name="commonInterceptors">
-        <interceptor-ref name="static-params"/>
+        <interceptor-ref name="staticParams"/>
         <interceptor-ref name="params"/>
         <interceptor-ref name="chain"/>
         <interceptor-ref name="i18nInterceptor"/>
@@ -266,4 +303,4 @@
     
   </package>
   
-</xwork>
+</struts>

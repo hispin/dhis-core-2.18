@@ -59,7 +59,7 @@ import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.reporting.dataset.utils.CollectionMapDataSource;
 import org.hisp.dhis.reporting.dataset.utils.FileUtils;
 
-import com.opensymphony.webwork.ServletActionContext;
+import org.apache.struts2.ServletActionContext;
 
 /**
  * @author Abyot Asalefew

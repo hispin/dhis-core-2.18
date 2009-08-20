@@ -31,7 +31,7 @@ import java.util.Collection;
 
 import org.acegisecurity.intercept.ObjectDefinitionSource;
 
-import com.opensymphony.xwork.config.entities.ActionConfig;
+import com.opensymphony.xwork2.config.entities.ActionConfig;
 
 /**
  * @author Torgeir Lorange Ostby

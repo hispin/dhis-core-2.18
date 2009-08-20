@@ -46,7 +46,7 @@ import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Hans S. Toemmerholt

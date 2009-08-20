@@ -39,7 +39,7 @@ import org.hisp.dhis.dataset.SectionService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 public class SectionListAction
     implements Action

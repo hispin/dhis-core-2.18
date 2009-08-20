@@ -1,4 +1,4 @@
-package org.hisp.dhis.webwork.configuration;
+package org.hisp.dhis.result;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,33 +27,18 @@ package org.hisp.dhis.webwork.configuration;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.net.URL;
-import java.util.Enumeration;
-
-import com.opensymphony.xwork.config.ConfigurationManager;
-import com.opensymphony.xwork.config.ConfigurationProvider;
+import org.apache.struts2.dispatcher.VelocityResult;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: WebWorkConfigurationInitializer.java 2869 2007-02-20 14:26:09Z andegje $
+ * @author Hans S. Toemmerholt
+ * @version $Id$
  */
-public class WebWorkConfigurationInitializer
+public class VelocityXMLResult
+    extends VelocityResult
 {
-    private static final String CONFIG_PATH = "xwork.xml";
-
-    public void init()
-        throws Exception
-    {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        Enumeration<URL> configURLs = classLoader.getResources( CONFIG_PATH );
-
-        while ( configURLs.hasMoreElements() )
-        {
-            URL url = configURLs.nextElement();
-
-            ConfigurationProvider configurationProvider = new UrlXmlConfigurationProvider( url.toExternalForm() );
-
-            ConfigurationManager.addConfigurationProvider( configurationProvider );
-        }
+    @Override
+    protected final String getContentType( String templateLocation )
+    {       
+        return "text/xml";
     }
 }

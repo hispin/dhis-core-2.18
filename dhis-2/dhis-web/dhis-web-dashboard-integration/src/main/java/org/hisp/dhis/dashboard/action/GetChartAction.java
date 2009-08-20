@@ -31,7 +31,7 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.jfree.chart.JFreeChart;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

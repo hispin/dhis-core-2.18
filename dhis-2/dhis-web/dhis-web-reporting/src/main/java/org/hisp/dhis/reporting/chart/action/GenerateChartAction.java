@@ -40,7 +40,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.jfree.chart.JFreeChart;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * Known usage of this class is the pivot table chart functionality.

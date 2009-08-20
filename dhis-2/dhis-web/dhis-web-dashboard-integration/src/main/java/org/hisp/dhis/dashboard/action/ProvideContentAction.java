@@ -38,8 +38,8 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.comparator.ChartTitleComparator;
 import org.hisp.dhis.dashboard.manager.DashboardManager;
 
-import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionContext;
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 
 /**
  * @author Lars Helge Overland

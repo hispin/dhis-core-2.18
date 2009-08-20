@@ -39,7 +39,7 @@ import org.acegisecurity.SecurityConfig;
 import org.acegisecurity.intercept.ObjectDefinitionSource;
 import org.hisp.dhis.security.intercept.SingleObjectDefinitionSource;
 
-import com.opensymphony.xwork.config.entities.ActionConfig;
+import com.opensymphony.xwork2.config.entities.ActionConfig;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -94,7 +94,6 @@ public class DefaultRequiredAuthoritiesProvider
         return new SingleObjectDefinitionSource( object, attributes );
     }
 
-    @SuppressWarnings( "unchecked" )
     public Collection<String> getRequiredAuthorities( ActionConfig actionConfig )
     {
         final Map<String, String> staticParams = actionConfig.getParams();

@@ -33,7 +33,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
 import java.util.List;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

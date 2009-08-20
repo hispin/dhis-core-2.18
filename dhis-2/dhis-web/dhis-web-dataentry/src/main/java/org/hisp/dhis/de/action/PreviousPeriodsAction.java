@@ -29,7 +29,7 @@ package org.hisp.dhis.de.action;
 
 import org.hisp.dhis.de.state.SelectedStateManager;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby

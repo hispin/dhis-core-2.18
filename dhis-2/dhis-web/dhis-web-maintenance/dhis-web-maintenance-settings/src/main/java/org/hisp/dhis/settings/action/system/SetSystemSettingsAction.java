@@ -36,7 +36,7 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MOD
 
 import org.hisp.dhis.options.SystemSettingManager;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

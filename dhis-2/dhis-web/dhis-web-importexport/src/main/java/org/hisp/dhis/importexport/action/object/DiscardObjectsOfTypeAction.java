@@ -30,7 +30,7 @@ package org.hisp.dhis.importexport.action.object;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.action.util.ClassMapUtil;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Lars Helge Overland

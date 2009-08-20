@@ -32,9 +32,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.config.entities.ActionConfig;
-import com.opensymphony.xwork.interceptor.Interceptor;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.config.entities.ActionConfig;
+import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -77,7 +77,6 @@ public class WebWorkPortalParamsInterceptor
         
     }
 
-    @SuppressWarnings( "unchecked" )
     public String intercept( ActionInvocation actionInvocation )
         throws Exception
     {

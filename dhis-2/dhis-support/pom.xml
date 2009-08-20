@@ -16,7 +16,6 @@
   <modules>
     <module>dhis-support-test</module>
     <module>dhis-support-hibernate</module>
-    <module>dhis-support-webwork</module>
     <module>dhis-support-system</module>
     <module>dhis-support-external</module>
   </modules>

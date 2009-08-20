@@ -33,7 +33,7 @@ import org.apache.commons.mail.SimpleEmail;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

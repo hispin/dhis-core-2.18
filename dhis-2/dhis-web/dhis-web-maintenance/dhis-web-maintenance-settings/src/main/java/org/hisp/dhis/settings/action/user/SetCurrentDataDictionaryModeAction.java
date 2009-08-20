@@ -29,7 +29,7 @@ package org.hisp.dhis.settings.action.user;
 
 import org.hisp.dhis.options.datadictionary.DataDictionaryModeManager;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Lars Helge Overland

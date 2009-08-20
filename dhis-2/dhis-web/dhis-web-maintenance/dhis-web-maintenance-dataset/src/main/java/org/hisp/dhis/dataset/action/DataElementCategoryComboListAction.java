@@ -33,14 +33,14 @@ import java.util.List;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew
  * @version $Id$
  */
 public class DataElementCategoryComboListAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

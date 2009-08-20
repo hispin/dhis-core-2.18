@@ -1,4 +1,4 @@
-package org.hisp.dhis.webwork.interceptor;
+package org.hisp.dhis.interceptor;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -30,9 +30,9 @@ package org.hisp.dhis.webwork.interceptor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.Interceptor;
-import com.opensymphony.xwork.interceptor.PreResultListener;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.Interceptor;
+import com.opensymphony.xwork2.interceptor.PreResultListener;
 
 /**
  * The intention of this class is to stop execution of the pre result listener

@@ -36,9 +36,9 @@ import org.acegisecurity.intercept.ObjectDefinitionSource;
 import org.hisp.dhis.security.ActionAccessResolver;
 import org.hisp.dhis.security.authority.RequiredAuthoritiesProvider;
 
-import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.config.entities.ActionConfig;
-import com.opensymphony.xwork.interceptor.Interceptor;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.config.entities.ActionConfig;
+import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -137,7 +137,7 @@ public class WebWorkSecurityInterceptor
         // invocation. Returning an empty dummy.
         // ---------------------------------------------------------------------
 
-        return new SingleObjectDefinitionSource( new ActionConfig() );
+        return new SingleObjectDefinitionSource( new ActionConfig.Builder( "", "", "" ).build() );
     }
 
     // -------------------------------------------------------------------------

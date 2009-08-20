@@ -30,7 +30,7 @@ package org.hisp.dhis.dataadmin.action.cache;
 import org.hibernate.stat.Statistics;
 import org.hisp.dhis.cache.HibernateCacheManager;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * Action retrieving Hibernate statistics.

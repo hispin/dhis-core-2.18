@@ -31,7 +31,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
 * @author Lars Helge Overland

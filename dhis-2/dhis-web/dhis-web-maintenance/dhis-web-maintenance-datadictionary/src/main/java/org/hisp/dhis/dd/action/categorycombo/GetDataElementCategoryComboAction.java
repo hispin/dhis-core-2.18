@@ -41,7 +41,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementDimensionRowOrder;
 import org.hisp.dhis.dataelement.DataElementDimensionRowOrderService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew

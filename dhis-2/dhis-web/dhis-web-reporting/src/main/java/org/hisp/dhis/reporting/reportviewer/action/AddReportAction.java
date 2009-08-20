@@ -44,7 +44,7 @@ import org.hisp.dhis.system.util.CollectionConversionUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Lars Helge Overland

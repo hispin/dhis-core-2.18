@@ -33,12 +33,13 @@ import java.util.Map;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.util.LocaleUtils;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Oyvind Brucker
  */
-public class GetTranslationsAction extends ActionSupport
+public class GetTranslationsAction 
+    extends ActionSupport
 {
     private String className;
 

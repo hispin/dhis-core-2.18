@@ -49,7 +49,7 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
 
-import com.opensymphony.xwork.ActionContext;
+import com.opensymphony.xwork2.ActionContext;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -300,8 +300,7 @@ public class DefaultSelectedStateManager
         return basePeriod;
     }
 
-    @SuppressWarnings( "unchecked" )
-    private static final Map<Object, Object> getSession()
+    private static final Map<String, Object> getSession()
     {
         return ActionContext.getContext().getSession();
     }

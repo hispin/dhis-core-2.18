@@ -31,7 +31,7 @@ package org.hisp.dhis.importexport.action;
  * @author Lars Helge Overland
  * @version $Id: NoAction.java 3331 2007-06-01 07:29:02Z torgeilo $
  */
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionSupport;
 
 public class NoAction
     extends ActionSupport

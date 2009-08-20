@@ -1,4 +1,4 @@
-package org.hisp.dhis.webwork.encoding.velocity;
+package org.hisp.dhis.result;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,106 +27,77 @@ package org.hisp.dhis.webwork.encoding.velocity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.velocity.VelocityContext;
+import java.io.PrintWriter;
 
-import com.opensymphony.util.TextUtils;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts2.StrutsStatics;
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.Result;
+import com.opensymphony.xwork2.util.ValueStack;
+import com.opensymphony.xwork2.util.TextParseUtil;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: EncoderVelocityContext.java 5824 2008-10-07 18:00:24Z larshelg $
+ * @version $Id: PlainTextErrorResult.java 2869 2007-02-20 14:26:09Z andegje $
  */
-public class EncoderVelocityContext
-    extends VelocityContext
+public class PlainTextErrorResult
+    implements Result
 {
-    public static final String KEY = "encoder";
-
-    private static final Encoder ENCODER = new Encoder();
-
     // -------------------------------------------------------------------------
-    // Override VelocityContext methods
+    // Parameters
     // -------------------------------------------------------------------------
 
-    @Override
-    public Object internalGet( String key )
+    private boolean parse = true;
+
+    public void setParse( boolean parse )
     {
-        if ( KEY.equals( key ) )
-        {
-            return ENCODER;
-        }
-
-        return super.internalGet( key );
+        this.parse = parse;
     }
 
-    @Override
-    public boolean containsKey( Object key )
+    private String message;
+
+    public void setMessage( String message )
     {
-        return KEY.equals( key ) || super.containsKey( key );
+        this.message = message;
     }
 
     // -------------------------------------------------------------------------
-    // Encoder class
+    // Result implementation
     // -------------------------------------------------------------------------
 
-    public static class Encoder
+    public void execute( ActionInvocation invocation )
+        throws Exception
     {
-        private static final String ESCAPE_JS = "\\\\";
+        HttpServletResponse response = (HttpServletResponse) invocation.getInvocationContext().get(
+            StrutsStatics.HTTP_RESPONSE );
 
-        private static final String QUOTE_JS = "'";
+        response.setContentType( "text/plain; charset=UTF-8" );
+        response.setHeader( "Content-Disposition", "inline" );
+        response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
+
+        ValueStack stack = ActionContext.getContext().getValueStack();
+        String finalMessage = parse ? TextParseUtil.translateVariables( message, stack ) : message;
 
         // ---------------------------------------------------------------------
-        // Public encode methods
+        // Write final message
         // ---------------------------------------------------------------------
 
-        public String htmlEncode( Object object )
+        PrintWriter writer = null;
+
+        try
         {
-            return xmlEncode( object );
+            writer = response.getWriter();
+            writer.print( finalMessage );
+            writer.flush();
         }
-
-        public String xmlEncode( Object object )
+        finally
         {
-            if ( object == null )
+            if ( writer != null )
             {
-                return null;
+                writer.close();
             }
-
-            return defaultEncode( object.toString() );
-        }
-
-        public String jsEncode( Object object )
-        {
-            if ( object == null )
-            {
-                return null;
-            }
-
-            String tmp = defaultEncode( object.toString() );
-            tmp = jsEscape( tmp, QUOTE_JS );
-
-            return tmp;
-        }
-
-        public String jsEscape( Object object, String quoteChar )
-        {
-            if ( object == null )
-            {
-                return null;
-            }
-
-            String tmp = object.toString();
-
-            tmp = tmp.replaceAll( ESCAPE_JS, ESCAPE_JS + ESCAPE_JS );
-            tmp = tmp.replaceAll( quoteChar, ESCAPE_JS + quoteChar );
-
-            return tmp;
-        }
-
-        // ---------------------------------------------------------------------
-        // Default encode method
-        // ---------------------------------------------------------------------
-
-        private String defaultEncode( String string )
-        {
-            return TextUtils.htmlEncode( string );
         }
     }
 }

@@ -1,4 +1,4 @@
-package org.hisp.dhis.webwork.interceptor;
+package org.hisp.dhis.interceptor;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -30,37 +30,31 @@ package org.hisp.dhis.webwork.interceptor;
 import java.util.HashMap;
 import java.util.Map;
 
-import ognl.NoSuchPropertyException;
-import ognl.Ognl;
+import org.hisp.dhis.options.style.StyleManager;
 
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.i18n.I18nManager;
-
-import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.Interceptor;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
- * @author Nguyen Dang Quang
- * @version $Id: WebWorkI18nInterceptor.java 6335 2008-11-20 11:11:26Z larshelg $
+ * @author Lars Helge Overland
+ * @version $Id$
  */
-public class WebWorkI18nInterceptor
+public class StyleInterceptor
     implements Interceptor
 {
-    private static final String KEY_I18N = "i18n";
-
-    private static final String KEY_I18N_FORMAT = "format";
-
+    private static final String KEY_STYLE = "stylesheet";
+    private static final String KEY_STYLE_DIRECTORY = "stylesheetDirectory";
+    
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private I18nManager i18nManager;
+    private StyleManager styleManager;
 
-    public void setI18nManager( I18nManager manager )
+    public void setStyleManager( StyleManager styleManager )
     {
-        i18nManager = manager;
+        this.styleManager = styleManager;
     }
 
     // -------------------------------------------------------------------------
@@ -82,43 +76,16 @@ public class WebWorkI18nInterceptor
     public String intercept( ActionInvocation invocation )
         throws Exception
     {
-        Action action = (Action) invocation.getAction();
-
-        I18n i18n = i18nManager.getI18n( action.getClass() );
-        I18nFormat i18nFormat = i18nManager.getI18nFormat();
-
-        // ---------------------------------------------------------------------
-        // Make the objects available for web templates
-        // ---------------------------------------------------------------------
-
-        Map<String, Object> i18nMap = new HashMap<String, Object>( 2 );
-        i18nMap.put( KEY_I18N, i18n );
-        i18nMap.put( KEY_I18N_FORMAT, i18nFormat );
-
-        invocation.getStack().push( i18nMap );
-
-        // ---------------------------------------------------------------------
-        // Set the objects in the action class if the properties exist
-        // ---------------------------------------------------------------------
-
-        Map<?, ?> contextMap = invocation.getInvocationContext().getContextMap();
-
-        try
-        {
-            Ognl.setValue( KEY_I18N, contextMap, action, i18n );
-        }
-        catch ( NoSuchPropertyException e )
-        {
-        }
-
-        try
-        {
-            Ognl.setValue( KEY_I18N_FORMAT, contextMap, action, i18nFormat );
-        }
-        catch ( NoSuchPropertyException e )
-        {
-        }
+        Map<String, Object> map = new HashMap<String, Object>( 2 );
         
-        return invocation.invoke();
+        String style = styleManager.getCurrentStyle();
+        String styleDirectory = styleManager.getCurrentStyleDirectory();
+        
+        map.put( KEY_STYLE, style );
+        map.put( KEY_STYLE_DIRECTORY, styleDirectory );
+        
+        invocation.getStack().push( map );
+        
+        return invocation.invoke();        
     }
 }

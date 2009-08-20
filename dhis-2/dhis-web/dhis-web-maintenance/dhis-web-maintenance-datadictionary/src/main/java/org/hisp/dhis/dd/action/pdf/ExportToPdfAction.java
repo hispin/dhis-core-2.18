@@ -38,7 +38,7 @@ import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.ImportExportServiceManager;
 import org.hisp.dhis.options.datadictionary.DataDictionaryModeManager;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

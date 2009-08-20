@@ -33,7 +33,7 @@ import org.hisp.dhis.statistics.StatisticsProvider;
 import org.hisp.dhis.common.Objects;
 import org.hisp.dhis.system.util.EnumMapWrapper;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

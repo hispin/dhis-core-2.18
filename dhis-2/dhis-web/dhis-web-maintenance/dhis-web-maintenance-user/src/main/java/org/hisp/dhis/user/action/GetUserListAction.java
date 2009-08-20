@@ -37,7 +37,7 @@ import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
 import org.hisp.dhis.user.comparator.UsernameComparator;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby

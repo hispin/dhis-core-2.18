@@ -29,7 +29,7 @@ package org.hisp.dhis.oum.action.organisationunit;
 
 import java.util.Calendar;
 import java.util.Date;
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Nguyen Dang Quang

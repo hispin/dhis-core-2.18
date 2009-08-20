@@ -1,4 +1,4 @@
-package org.hisp.dhis.webwork.interceptor;
+package org.hisp.dhis.interceptor;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -39,15 +39,15 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.options.sortorder.SortOrderManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
-import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.Interceptor;
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: WebWorkSortOrderInterceptor.java 6335 2008-11-20 11:11:26Z larshelg $
  */
-public class WebWorkSortOrderInterceptor
+public class SortOrderInterceptor
     implements Interceptor
 {
     private static final String KEY_DATAELEMENT_COMPARATOR = "dataElementComparator";

@@ -29,7 +29,7 @@ package org.hisp.dhis.dataset.action;
 
 import org.hisp.dhis.dataset.DataSetService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Kristian

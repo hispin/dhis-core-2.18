@@ -1,4 +1,4 @@
-package org.hisp.dhis.webwork.interceptor;
+package org.hisp.dhis.interceptor;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,66 +27,65 @@ package org.hisp.dhis.webwork.interceptor;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_FORUM_INTEGRATION;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MODE;
+
+import java.util.HashMap;
 import java.util.Map;
 
-import ognl.NoSuchPropertyException;
-import ognl.Ognl;
+import org.hisp.dhis.options.SystemSettingManager;
 
-import org.hisp.dhis.options.displayproperty.DefaultDisplayPropertyHandler;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyManager;
-
-import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.Interceptor;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: WebWorkDisplayPropertyInterceptor.java 6335 2008-11-20 11:11:26Z larshelg $
+ * @version $Id$
  */
-public class WebWorkDisplayPropertyInterceptor
+public class SystemSettingInterceptor
     implements Interceptor
 {
-    private static final String KEY_DISPLAY_PROPERTY_HANDLER = "displayPropertyHandler";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DisplayPropertyManager displayPropertyManager;
+    private SystemSettingManager systemSettingManager;
 
-    public void setDisplayPropertyManager( DisplayPropertyManager displayPropertyManager )
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
-        this.displayPropertyManager = displayPropertyManager;
+        this.systemSettingManager = systemSettingManager;
     }
-
+    
     // -------------------------------------------------------------------------
-    // Interface implementation
+    // AroundInterceptor implementation
     // -------------------------------------------------------------------------
 
     public void destroy()
-    {
+    {        
     }
 
     public void init()
     {
     }
 
-    public String intercept( ActionInvocation actionInvocation )
+    public String intercept( ActionInvocation invocation )
         throws Exception
     {
-        DefaultDisplayPropertyHandler handler = displayPropertyManager.getDisplayPropertyHandler();
-
-        Action action = (Action) actionInvocation.getAction();
-        Map<?, ?> contextMap = actionInvocation.getInvocationContext().getContextMap();
-
-        try
-        {
-            Ognl.setValue( KEY_DISPLAY_PROPERTY_HANDLER, contextMap, action, handler );
-        }
-        catch ( NoSuchPropertyException e )
-        {
-        }
-
-        return actionInvocation.invoke();
+        Map<String, Object> map = new HashMap<String, Object>( 2 );
+        
+        map.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE ) );
+        map.put( KEY_FLAG, systemSettingManager.getSystemSetting( KEY_FLAG ) );
+        map.put( KEY_START_MODULE, systemSettingManager.getSystemSetting( KEY_START_MODULE ) );
+        map.put( KEY_ZERO_VALUE_SAVE_MODE, systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE ) );
+        map.put( KEY_FORUM_INTEGRATION, systemSettingManager.getSystemSetting( KEY_FORUM_INTEGRATION ) );
+        map.put( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, systemSettingManager.getSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART ) );
+        
+        invocation.getStack().push( map );
+        
+        return invocation.invoke();
     }
 }

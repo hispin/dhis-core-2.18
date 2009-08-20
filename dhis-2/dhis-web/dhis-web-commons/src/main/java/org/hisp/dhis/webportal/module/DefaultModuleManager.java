@@ -37,10 +37,10 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.dispatcher.Dispatcher;
 
-import com.opensymphony.xwork.config.Configuration;
-import com.opensymphony.xwork.config.ConfigurationManager;
-import com.opensymphony.xwork.config.entities.PackageConfig;
+import com.opensymphony.xwork2.config.Configuration;
+import com.opensymphony.xwork2.config.entities.PackageConfig;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -219,10 +219,9 @@ public class DefaultModuleManager
         modulesDetected = true;
     }
 
-    @SuppressWarnings( "unchecked" )
     private Collection<PackageConfig> getPackageConfigs()
     {
-        Configuration configuration = ConfigurationManager.getConfiguration();
+        Configuration configuration = Dispatcher.getInstance().getConfigurationManager().getConfiguration();
 
         Map<String, PackageConfig> packageConfigs = configuration.getPackageConfigs();
 

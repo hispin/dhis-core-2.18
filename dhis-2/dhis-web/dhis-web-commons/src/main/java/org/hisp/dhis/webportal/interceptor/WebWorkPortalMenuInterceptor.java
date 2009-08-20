@@ -33,8 +33,8 @@ import java.util.Map;
 import org.hisp.dhis.webportal.menu.MenuState;
 import org.hisp.dhis.webportal.menu.MenuStateManager;
 
-import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.Interceptor;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
  * @author Torgeir Lorange Ostby

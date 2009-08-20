@@ -35,7 +35,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionSupport;
 
 /** 
  * @author Margrethe Store

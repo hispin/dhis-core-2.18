@@ -30,7 +30,7 @@ package org.hisp.dhis.openhealth.action;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.olap.OlapURLService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

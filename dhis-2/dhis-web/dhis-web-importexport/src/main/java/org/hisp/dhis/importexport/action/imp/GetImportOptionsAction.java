@@ -32,7 +32,7 @@ import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcess
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.importexport.IbatisConfigurationManager;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Lars Helge Overland
