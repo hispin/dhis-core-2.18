@@ -56,7 +56,6 @@
 	<action name="getMapSourceTypeUserSetting" class="org.hisp.dhis.mapping.action.GetMapSourceTypeUserSettingAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonUserSetting.vm</result>
     </action>   	  
-	  
     
     <!-- MapOrganisationUnitRelations -->
     
@@ -118,6 +117,20 @@
     
     <action name="addMapViewToDashboard" class="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+    </action>
+	  
+	<!-- MapLayer -->
+	  
+	<action name="addOrUpdateMapLayer" class="org.hisp.dhis.mapping.action.AddOrUpdateMapLayerAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+    </action>
+	  
+	<action name="deleteMapLayer" class="org.hisp.dhis.mapping.action.DeleteMapLayerAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+    </action>
+	  
+	<action name="getAllMapLayers" class="org.hisp.dhis.mapping.action.GetAllMapLayersAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapLayers.vm</result>
     </action>
         
     <!-- Indicator -->
