@@ -30,7 +30,7 @@ package org.hisp.dhis.dataset.action.section;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 public class RemoveSectionAction
     implements Action

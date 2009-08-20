@@ -7,7 +7,7 @@ import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 public class RemoveMapViewAction
     implements Action

@@ -38,7 +38,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;;
 

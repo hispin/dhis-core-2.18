@@ -29,7 +29,7 @@ package org.hisp.dhis.dataadmin.action.resourcetable;
 
 import org.hisp.dhis.resourcetable.ResourceTableService;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Lars Helge Overland

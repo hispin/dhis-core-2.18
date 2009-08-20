@@ -29,7 +29,7 @@ package org.hisp.dhis.help.action;
 
 import org.hisp.dhis.system.help.HelpContent;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Murodillo Latifov Abdusamadovich

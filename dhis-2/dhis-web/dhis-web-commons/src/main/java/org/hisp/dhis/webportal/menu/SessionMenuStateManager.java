@@ -29,7 +29,7 @@ package org.hisp.dhis.webportal.menu;
 
 import java.util.Map;
 
-import com.opensymphony.xwork.ActionContext;
+import com.opensymphony.xwork2.ActionContext;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -58,7 +58,6 @@ public class SessionMenuStateManager
     // Support methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
     protected Map<String, Object> getSession()
     {
         return ActionContext.getContext().getSession();

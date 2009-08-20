@@ -40,8 +40,8 @@ import org.hisp.dhis.reporting.dataset.report.ReportStore;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
-import com.opensymphony.xwork.ActionContext;
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Lars Helge Overland
@@ -363,7 +363,6 @@ public abstract class AbstractAction
         return ActionContext.getContext().getSession().get( name );
     }
 
-    @SuppressWarnings( "unchecked" )
     protected final void setSessionVar( String name, Object value )
     {
         ActionContext.getContext().getSession().put( name, value );        

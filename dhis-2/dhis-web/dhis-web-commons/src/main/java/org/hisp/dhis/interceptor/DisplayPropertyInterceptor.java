@@ -1,4 +1,4 @@
-package org.hisp.dhis.webwork.interceptor;
+package org.hisp.dhis.interceptor;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,85 +27,66 @@ package org.hisp.dhis.webwork.interceptor;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
 import java.util.Map;
 
 import ognl.NoSuchPropertyException;
 import ognl.Ognl;
 
-import org.hisp.dhis.options.datadictionary.DataDictionaryModeManager;
+import org.hisp.dhis.options.displayproperty.DefaultDisplayPropertyHandler;
+import org.hisp.dhis.options.displayproperty.DisplayPropertyManager;
 
-import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.Interceptor;
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
+ * @version $Id: WebWorkDisplayPropertyInterceptor.java 6335 2008-11-20 11:11:26Z larshelg $
  */
-public class WebWorkDataDictionaryModeInterceptor
+public class DisplayPropertyInterceptor
     implements Interceptor
 {
-    private static final String KEY_DATA_DICTIONARY_MODE = "dataDictionaryMode";
-    
+    private static final String KEY_DISPLAY_PROPERTY_HANDLER = "displayPropertyHandler";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataDictionaryModeManager dataDictionaryModeManager;
+    private DisplayPropertyManager displayPropertyManager;
 
-    public void setDataDictionaryModeManager( DataDictionaryModeManager dataDictionaryModeManager )
+    public void setDisplayPropertyManager( DisplayPropertyManager displayPropertyManager )
     {
-        this.dataDictionaryModeManager = dataDictionaryModeManager;
+        this.displayPropertyManager = displayPropertyManager;
     }
-    
+
     // -------------------------------------------------------------------------
-    // AroundInterceptor implementation
+    // Interface implementation
     // -------------------------------------------------------------------------
 
     public void destroy()
     {
-        // TODO Auto-generated method stub
-        
     }
 
     public void init()
     {
-        // TODO Auto-generated method stub
-        
     }
 
-    public String intercept( ActionInvocation invocation )
+    public String intercept( ActionInvocation actionInvocation )
         throws Exception
     {
-        Action action = (Action) invocation.getAction();
-        
-        String currentMode = dataDictionaryModeManager.getCurrentDataDictionaryMode();
-        
-        // ---------------------------------------------------------------------
-        // Make the objects available for web templates
-        // ---------------------------------------------------------------------
-        
-        Map<String, Object> templateMap = new HashMap<String, Object>( 1 );
-        
-        templateMap.put( KEY_DATA_DICTIONARY_MODE, currentMode );
-        
-        invocation.getStack().push( templateMap );
-        
-        // ---------------------------------------------------------------------
-        // Set the objects in the action class if the properties exist
-        // ---------------------------------------------------------------------
+        DefaultDisplayPropertyHandler handler = displayPropertyManager.getDisplayPropertyHandler();
 
-        Map<?, ?> contextMap = invocation.getInvocationContext().getContextMap();
-        
+        Action action = (Action) actionInvocation.getAction();
+        Map<?, ?> contextMap = actionInvocation.getInvocationContext().getContextMap();
+
         try
         {
-            Ognl.setValue( KEY_DATA_DICTIONARY_MODE, contextMap, action, currentMode );
+            Ognl.setValue( KEY_DISPLAY_PROPERTY_HANDLER, contextMap, action, handler );
         }
         catch ( NoSuchPropertyException e )
         {
         }
-        
-        return invocation.invoke();
-    }   
+
+        return actionInvocation.invoke();
+    }
 }

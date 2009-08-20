@@ -29,7 +29,7 @@ package org.hisp.dhis.dataadmin.action.cache;
 
 import org.hisp.dhis.cache.HibernateCacheManager;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

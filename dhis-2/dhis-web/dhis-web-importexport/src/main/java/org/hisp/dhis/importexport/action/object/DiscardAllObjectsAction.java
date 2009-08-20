@@ -31,7 +31,7 @@ import static org.hisp.dhis.util.SessionUtils.*;
 
 import org.hisp.dhis.importexport.ImportObjectService;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Lars Helge Overland

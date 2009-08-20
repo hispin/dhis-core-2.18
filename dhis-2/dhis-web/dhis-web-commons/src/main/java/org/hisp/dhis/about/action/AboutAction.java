@@ -42,8 +42,8 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.system.database.DatabaseInfo;
 import org.hisp.dhis.system.database.DatabaseInfoProvider;
 
-import com.opensymphony.webwork.ServletActionContext;
-import com.opensymphony.xwork.Action;
+import org.apache.struts2.ServletActionContext;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Hans S. Toemmerholt

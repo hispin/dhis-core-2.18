@@ -34,8 +34,8 @@
     </init-param>
   </filter>
   <filter>
-    <filter-name>WebWork</filter-name>
-    <filter-class>com.opensymphony.webwork.dispatcher.FilterDispatcher</filter-class>
+    <filter-name>Struts</filter-name>
+    <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
   </filter>
   
   <filter-mapping>
@@ -51,7 +51,7 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
-    <filter-name>WebWork</filter-name>
+    <filter-name>Struts</filter-name>
     <url-pattern>*.action</url-pattern>
   </filter-mapping>
   

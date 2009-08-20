@@ -1,4 +1,4 @@
-package org.hisp.dhis.webwork.interceptor;
+package org.hisp.dhis.interceptor;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -35,17 +35,17 @@ import org.acegisecurity.InsufficientAuthenticationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.Interceptor;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: WebWorkExceptionInterceptor.java 6335 2008-11-20 11:11:26Z larshelg $
  */
-public class WebWorkExceptionInterceptor
+public class ExceptionInterceptor
     implements Interceptor
 {
-    private static final Log LOG = LogFactory.getLog( WebWorkExceptionInterceptor.class );
+    private static final Log LOG = LogFactory.getLog( ExceptionInterceptor.class );
 
     public static final String EXCEPTION_RESULT_KEY = "onExceptionReturn";
 

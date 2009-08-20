@@ -42,7 +42,7 @@ import org.hisp.dhis.datamart.DataMartInternalProcess;
 import org.hisp.dhis.reporting.dataset.state.SelectedStateManager;
 import org.hisp.dhis.user.CurrentUserService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * This class exports the relevant data for the dataset report to datamart.

@@ -38,7 +38,7 @@ import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Thanh Nguyen

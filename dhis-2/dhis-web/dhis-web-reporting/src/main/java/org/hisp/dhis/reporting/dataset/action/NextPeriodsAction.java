@@ -29,7 +29,7 @@ package org.hisp.dhis.reporting.dataset.action;
 
 import org.hisp.dhis.reporting.dataset.state.SelectedStateManager;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby

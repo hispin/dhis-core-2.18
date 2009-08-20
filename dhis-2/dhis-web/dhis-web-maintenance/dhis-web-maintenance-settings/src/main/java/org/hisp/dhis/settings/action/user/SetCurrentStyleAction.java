@@ -29,7 +29,7 @@ package org.hisp.dhis.settings.action.user;
 
 import org.hisp.dhis.options.style.StyleManager;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

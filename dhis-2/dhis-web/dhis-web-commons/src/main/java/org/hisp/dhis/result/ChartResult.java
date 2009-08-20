@@ -1,4 +1,4 @@
-package org.hisp.dhis.webwork.result;
+package org.hisp.dhis.result;
 
 /**
  * This file is modified and included in DHIS because the original version
@@ -14,9 +14,9 @@ package org.hisp.dhis.webwork.result;
  *
  */
 
-import com.opensymphony.webwork.ServletActionContext;
-import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.Result;
+import org.apache.struts2.ServletActionContext;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.Result;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 

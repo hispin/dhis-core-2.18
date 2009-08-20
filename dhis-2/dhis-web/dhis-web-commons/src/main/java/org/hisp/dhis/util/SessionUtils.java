@@ -27,7 +27,7 @@ package org.hisp.dhis.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork.ActionContext;
+import com.opensymphony.xwork2.ActionContext;
 
 /**
  * @author Lars Helge Overland
@@ -43,7 +43,6 @@ public class SessionUtils
         return ActionContext.getContext().getSession().get( name );
     }
 
-    @SuppressWarnings( "unchecked" )
     public static void setSessionVar( String name, Object value )
     {
         ActionContext.getContext().getSession().put( name, value );

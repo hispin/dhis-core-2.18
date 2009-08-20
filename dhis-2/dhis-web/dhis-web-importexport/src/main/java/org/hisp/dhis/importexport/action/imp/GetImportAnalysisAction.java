@@ -8,7 +8,7 @@ import org.amplecode.cave.process.ProcessExecutor;
 import org.hisp.dhis.importexport.analysis.ImportAnalysis;
 import org.hisp.dhis.system.process.OutputHolderState;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 public class GetImportAnalysisAction
     implements Action

@@ -30,7 +30,7 @@ package org.hisp.dhis.reporting.reportviewer.action;
 import org.hisp.dhis.report.ReportManager;
 import org.hisp.dhis.report.manager.ReportConfiguration;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

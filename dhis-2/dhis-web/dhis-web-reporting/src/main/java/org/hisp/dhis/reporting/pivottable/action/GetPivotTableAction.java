@@ -35,7 +35,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.pivottable.PivotTable;
 import org.hisp.dhis.pivottable.PivotTableService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 

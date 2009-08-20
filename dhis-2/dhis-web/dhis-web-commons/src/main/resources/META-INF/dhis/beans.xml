@@ -604,4 +604,47 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.commons.action.NoAction"
     class="org.hisp.dhis.commons.action.NoAction"/>
     
+  <!-- Interceptor -->
+    
+  <bean id="org.hisp.dhis.interceptor.DataDictionaryModeInterceptor"
+    class="org.hisp.dhis.interceptor.DataDictionaryModeInterceptor">
+    <property name="dataDictionaryModeManager"
+      ref="org.hisp.dhis.options.datadictionary.DataDictionaryModeManager"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.interceptor.DisplayPropertyInterceptor"
+    class="org.hisp.dhis.interceptor.DisplayPropertyInterceptor">
+    <property name="displayPropertyManager"
+      ref="org.hisp.dhis.options.displayproperty.DisplayPropertyManager"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.interceptor.ExceptionInterceptor"
+    class="org.hisp.dhis.interceptor.ExceptionInterceptor">
+    <property name="showStackTrace" value="true"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.interceptor.I18nInterceptor"
+    class="org.hisp.dhis.interceptor.I18nInterceptor">
+    <property name="i18nManager"
+      ref="org.hisp.dhis.i18n.I18nManager"/>  
+  </bean>
+  
+  <bean id="org.hisp.dhis.interceptor.SortOrderInterceptor"
+    class="org.hisp.dhis.interceptor.SortOrderInterceptor">
+    <property name="sortOrderManager"
+      ref="org.hisp.dhis.options.sortorder.SortOrderManager"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.interceptor.StyleInterceptor"
+    class="org.hisp.dhis.interceptor.StyleInterceptor">
+    <property name="styleManager"
+      ref="org.hisp.dhis.options.style.StyleManager"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.interceptor.SystemSettingInterceptor"
+    class="org.hisp.dhis.interceptor.SystemSettingInterceptor">
+    <property name="systemSettingManager"
+      ref="org.hisp.dhis.options.SystemSettingManager"/>
+  </bean>
+  
 </beans>

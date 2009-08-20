@@ -36,12 +36,12 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.intercept.ObjectDefinitionSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.dispatcher.Dispatcher;
 import org.hisp.dhis.security.authority.RequiredAuthoritiesProvider;
 
-import com.opensymphony.xwork.config.Configuration;
-import com.opensymphony.xwork.config.ConfigurationManager;
-import com.opensymphony.xwork.config.entities.ActionConfig;
-import com.opensymphony.xwork.config.entities.PackageConfig;
+import com.opensymphony.xwork2.config.Configuration;
+import com.opensymphony.xwork2.config.entities.ActionConfig;
+import com.opensymphony.xwork2.config.entities.PackageConfig;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -80,7 +80,7 @@ public class AcegiActionAccessResolver
         // Get ObjectDefinitionSource
         // ---------------------------------------------------------------------
 
-        Configuration config = ConfigurationManager.getConfiguration();
+        Configuration config = Dispatcher.getInstance().getConfigurationManager().getConfiguration();
 
         PackageConfig packageConfig = config.getPackageConfig( module );
 
@@ -89,7 +89,7 @@ public class AcegiActionAccessResolver
             throw new IllegalArgumentException( "Module doesn't exist: '" + module + "'" );
         }
 
-        ActionConfig actionConfig = (ActionConfig) packageConfig.getActionConfigs().get( name );
+        ActionConfig actionConfig = packageConfig.getActionConfigs().get( name );
 
         if ( actionConfig == null )
         {

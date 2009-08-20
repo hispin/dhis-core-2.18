@@ -48,7 +48,7 @@ import org.hisp.dhis.report.manager.ReportConfiguration;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
-import com.opensymphony.webwork.ServletActionContext;
+import org.apache.struts2.ServletActionContext;
 
 /**
  * @author Lars Helge Overland

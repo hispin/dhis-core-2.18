@@ -36,7 +36,7 @@ import org.amplecode.cave.process.ProcessExecutor;
 import org.amplecode.cave.process.state.MessageState;
 import org.hisp.dhis.i18n.I18n;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

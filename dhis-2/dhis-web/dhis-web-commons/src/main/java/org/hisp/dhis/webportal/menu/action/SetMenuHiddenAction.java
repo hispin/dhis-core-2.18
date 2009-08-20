@@ -30,7 +30,7 @@ package org.hisp.dhis.webportal.menu.action;
 import org.hisp.dhis.webportal.menu.MenuState;
 import org.hisp.dhis.webportal.menu.MenuStateManager;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby

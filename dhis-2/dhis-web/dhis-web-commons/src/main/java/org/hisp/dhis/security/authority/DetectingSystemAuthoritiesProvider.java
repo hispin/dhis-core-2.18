@@ -30,10 +30,11 @@ package org.hisp.dhis.security.authority;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.opensymphony.xwork.config.Configuration;
-import com.opensymphony.xwork.config.ConfigurationManager;
-import com.opensymphony.xwork.config.entities.ActionConfig;
-import com.opensymphony.xwork.config.entities.PackageConfig;
+import org.apache.struts2.dispatcher.Dispatcher;
+
+import com.opensymphony.xwork2.config.Configuration;
+import com.opensymphony.xwork2.config.entities.ActionConfig;
+import com.opensymphony.xwork2.config.entities.PackageConfig;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -57,16 +58,15 @@ public class DetectingSystemAuthoritiesProvider
     // SystemAuthoritiesProvider implementation
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     public Collection<String> getSystemAuthorities()
     {
         HashSet<String> authorities = new HashSet<String>();
 
-        Configuration configuration = ConfigurationManager.getConfiguration();
+        Configuration configuration = Dispatcher.getInstance().getConfigurationManager().getConfiguration();
 
-        for ( PackageConfig packageConfig : (Collection<PackageConfig>) configuration.getPackageConfigs().values() )
+        for ( PackageConfig packageConfig : configuration.getPackageConfigs().values() )
         {
-            for ( ActionConfig actionConfig : (Collection<ActionConfig>) packageConfig.getActionConfigs().values() )
+            for ( ActionConfig actionConfig : packageConfig.getActionConfigs().values() )
             {
                 authorities.addAll( requiredAuthoritiesProvider.getRequiredAuthorities( actionConfig ) );
             }

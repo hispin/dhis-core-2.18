@@ -1,4 +1,4 @@
-package org.hisp.dhis.webwork.result;
+package org.hisp.dhis.result;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,7 +27,7 @@ package org.hisp.dhis.webwork.result;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.webwork.dispatcher.VelocityResult;
+import org.apache.struts2.dispatcher.VelocityResult;
 
 /**
  * @author Lars Helge Overland

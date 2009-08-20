@@ -34,8 +34,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.util.ContextUtils;
 
-import com.opensymphony.webwork.ServletActionContext;
-import com.opensymphony.xwork.Action;
+import org.apache.struts2.ServletActionContext;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

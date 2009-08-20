@@ -41,8 +41,8 @@ import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.report.comparator.ReportComparator;
 import org.hisp.dhis.report.manager.ReportConfiguration;
 
-import com.opensymphony.webwork.ServletActionContext;
-import com.opensymphony.xwork.Action;
+import org.apache.struts2.ServletActionContext;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

@@ -30,7 +30,7 @@ package org.hisp.dhis.reporting.chart.action;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

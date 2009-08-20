@@ -32,8 +32,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
-import com.opensymphony.webwork.ServletActionContext;
-import com.opensymphony.xwork.Action;
+import org.apache.struts2.ServletActionContext;
+import com.opensymphony.xwork2.Action;
 
 import static org.hisp.dhis.util.ContextUtils.getBaseUrl;
 

@@ -32,7 +32,7 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * Adds a new validation rule to the database.

@@ -32,7 +32,7 @@ import org.hisp.dhis.order.manager.DataElementOrderManager;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.util.comparator.DataElementIdComparator;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby

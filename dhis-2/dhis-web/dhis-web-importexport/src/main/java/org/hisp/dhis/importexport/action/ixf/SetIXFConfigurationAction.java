@@ -34,7 +34,7 @@ import org.hisp.dhis.importexport.ixf.config.IXFConfiguration;
 import org.hisp.dhis.importexport.ixf.config.IXFConfigurationManager;
 import org.hisp.dhis.importexport.ixf.config.IXFCountry;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Lars Helge Overland

@@ -37,7 +37,7 @@ import org.hisp.dhis.datamart.DataMartExportService;
 import org.hisp.dhis.datamart.DataMartInternalProcess;
 import org.hisp.dhis.user.CurrentUserService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

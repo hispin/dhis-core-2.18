@@ -40,9 +40,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.ouwt.manager.TreeStateManager;
-import org.hisp.dhis.webwork.interceptor.AbstractPreResultListener;
+import org.hisp.dhis.interceptor.AbstractPreResultListener;
 
-import com.opensymphony.xwork.ActionInvocation;
+import com.opensymphony.xwork2.ActionInvocation;
 
 /**
  * @author Torgeir Lorange Ostby
