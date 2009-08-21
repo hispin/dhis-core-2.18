@@ -34,7 +34,7 @@ import org.hisp.dhis.gis.LegendService;
 import org.hisp.dhis.gis.LegendSet;
 import org.hisp.dhis.indicator.*;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 
 /**

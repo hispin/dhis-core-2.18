@@ -5,12 +5,12 @@
   
   <parent>
     <groupId>org.hisp.dhis</groupId>
-    <artifactId>dhis-web-chr</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <artifactId>dhis-web</artifactId>
+    <version>2.0.2-SNAPSHOT</version>
   </parent>
   
   <artifactId>dhis-web-chr-form</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <name>DHIS Childreport Form</name>
   
   <build>
@@ -24,7 +24,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-chr</artifactId>
-      <version>2.0.1-SNAPSHOT</version>
+      <version>2.0.2-SNAPSHOT</version>
     </dependency>
     
     <dependency>
@@ -54,20 +54,9 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-support-hibernate</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-useradminandsecurity</artifactId>
     </dependency>
-    
-    <!-- Web -->
-    
-    <dependency>
-      <groupId>com.opensymphony</groupId>
-      <artifactId>webwork</artifactId>
-    </dependency>
-    
+        
     <!-- Other -->
     
     <dependency>
@@ -80,6 +69,7 @@
     </dependency>
 	
 	<!-- Upload file -->
+
 	<dependency>
 		<groupId>commons-fileupload</groupId>
 		<artifactId>commons-fileupload</artifactId>
@@ -91,7 +81,6 @@
 		<artifactId>commons-io</artifactId>
 		<version>1.4</version>
 	</dependency> 
-
 
   </dependencies>
 </project>

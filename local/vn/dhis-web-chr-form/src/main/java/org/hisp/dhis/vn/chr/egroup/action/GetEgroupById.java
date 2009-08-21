@@ -7,57 +7,66 @@ package org.hisp.dhis.vn.chr.egroup.action;
 
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.EgroupService;
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
-public class GetEgroupById implements Action{
+public class GetEgroupById
+    implements Action
+{
 
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
     // Dependencies
     // -----------------------------------------------------------------------------------------------
 
-	private EgroupService egroupService;
-	
-	// -----------------------------------------------------------------------------------------------
+    private EgroupService egroupService;
+
+    // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
-	
-	private Integer id;
-	
-	private Egroup egroup;
-	
-	// -----------------------------------------------------------------------------------------------
+
+    private Integer id;
+
+    private Egroup egroup;
+
+    // -----------------------------------------------------------------------------------------------
     // Getters && Setter
     // -----------------------------------------------------------------------------------------------
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId()
+    {
+        return id;
+    }
 
-	public void setEgroupService(EgroupService egroupService) {
-		this.egroupService = egroupService;
-	}
-	
-	public Egroup getEgroup() {
-		return egroup;
-	}
+    public void setEgroupService( EgroupService egroupService )
+    {
+        this.egroupService = egroupService;
+    }
 
-	public void setEgroup(Egroup egroup) {
-		this.egroup = egroup;
-	}
+    public Egroup getEgroup()
+    {
+        return egroup;
+    }
 
-	// -----------------------------------------------------------------------------------------------
+    public void setEgroup( Egroup egroup )
+    {
+        this.egroup = egroup;
+    }
+
+    // -----------------------------------------------------------------------------------------------
     // Implement
     // -----------------------------------------------------------------------------------------------
-	
-	public String execute() throws Exception{
 
-		egroup = egroupService.getEgroup(id.intValue());
-		
-		return SUCCESS;
-	}
-	
+    public String execute()
+        throws Exception
+    {
+
+        egroup = egroupService.getEgroup( id.intValue() );
+
+        return SUCCESS;
+    }
+
 }

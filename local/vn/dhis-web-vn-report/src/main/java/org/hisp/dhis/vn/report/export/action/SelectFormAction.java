@@ -48,7 +48,7 @@ import org.hisp.dhis.vn.report.comparator.ReportNameComparator;
 import org.hisp.dhis.vn.report.state.SelectionManager;
 import org.hisp.dhis.vn.report.utils.DateUtils;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
@@ -57,10 +57,10 @@ import com.opensymphony.xwork.Action;
 public class SelectFormAction
     implements Action
 {
-
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
+    
     private OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
     private ReportExcelService reportService;

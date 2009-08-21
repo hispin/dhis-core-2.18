@@ -34,7 +34,7 @@ import org.hisp.dhis.gis.action.configuration.GISConfigurationManagerService;
  * @author Tran Thanh Tri
  * @version $Id: Feature.java 28-04-2008 16:06:00 $
  */
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri

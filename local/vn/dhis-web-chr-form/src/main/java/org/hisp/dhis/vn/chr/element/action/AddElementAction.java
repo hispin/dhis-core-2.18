@@ -11,155 +11,178 @@ import org.hisp.dhis.vn.chr.ElementService;
 import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class AddElementAction extends ActionSupport
+public class AddElementAction
+    extends ActionSupport
 {
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
     // Dependency
     // -----------------------------------------------------------------------------------------------
 
-	private FormService formService;
-	
-	private ElementService elementService;
-    
-	// -----------------------------------------------------------------------------------------------
+    private FormService formService;
+
+    private ElementService elementService;
+
+    // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
-	private int formID;
+    private int formID;
 
-	private String name;
+    private String name;
 
-	private String label;
+    private String label;
 
-	private String type;
+    private String type;
 
-	private String controlType;
+    private String controlType;
 
-	private String initialValue;
+    private String initialValue;
 
-	private int formLink;
+    private int formLink;
 
-	private boolean required;
+    private boolean required;
 
-	private int sortOrder;
+    private int sortOrder;
 
-//	private int egroupID;
-	
-	// -----------------------------------------------------------------------------------------------
+    // private int egroupID;
+
+    // -----------------------------------------------------------------------------------------------
     // Getters && Setters
     // -----------------------------------------------------------------------------------------------
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
-	
-	public int getFormID() {
-		return formID;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public void setFormID(int formID) {
-		this.formID = formID;
-	}
+    public int getFormID()
+    {
+        return formID;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setFormID( int formID )
+    {
+        this.formID = formID;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName()
+    {
+        return name;
+    }
 
-	public String getLabel() {
-		return label;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public String getLabel()
+    {
+        return label;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setLabel( String label )
+    {
+        this.label = label;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getType()
+    {
+        return type;
+    }
 
-	public String getControlType() {
-		return controlType;
-	}
+    public void setType( String type )
+    {
+        this.type = type;
+    }
 
-	public void setControlType(String controlType) {
-		this.controlType = controlType;
-	}
+    public String getControlType()
+    {
+        return controlType;
+    }
 
-	public String getInitialValue() {
-		return initialValue;
-	}
+    public void setControlType( String controlType )
+    {
+        this.controlType = controlType;
+    }
 
-	public void setInitialValue(String initialValue) {
-		this.initialValue = initialValue;
-	}
+    public String getInitialValue()
+    {
+        return initialValue;
+    }
 
-	public int getFormLink() {
-		return formLink;
-	}
+    public void setInitialValue( String initialValue )
+    {
+        this.initialValue = initialValue;
+    }
 
-	public void setFormLink(int formLink) {
-		this.formLink = formLink;
-	}
+    public int getFormLink()
+    {
+        return formLink;
+    }
 
-	public boolean isRequired() {
-		return required;
-	}
+    public void setFormLink( int formLink )
+    {
+        this.formLink = formLink;
+    }
 
-	public void setRequired(boolean required) {
-		this.required = required;
-	}
+    public boolean isRequired()
+    {
+        return required;
+    }
 
-	public int getSortOrder() {
-		return sortOrder;
-	}
+    public void setRequired( boolean required )
+    {
+        this.required = required;
+    }
 
-	public void setSortOrder(int sortOrder) {
-		this.sortOrder = sortOrder;
-	}
+    public int getSortOrder()
+    {
+        return sortOrder;
+    }
 
-	public void setElementService(ElementService elementService) {
-		this.elementService = elementService;
-	}
+    public void setSortOrder( int sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
 
-	// -----------------------------------------------------------------------------------------------
+    public void setElementService( ElementService elementService )
+    {
+        this.elementService = elementService;
+    }
+
+    // -----------------------------------------------------------------------------------------------
     // Implement
     // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception{
-		
-		Element element = new Element();
-		
-		element.setName(CodecUtils.unescape(name).toLowerCase());
-		
-		element.setLabel(CodecUtils.unescape(label));
-		
-		element.setType(type);
-		
-		element.setControlType(controlType);
+    public String execute()
+        throws Exception
+    {
 
-		element.setInitialValue(initialValue);
-		
-		element.setFormLink(formService.getForm(formLink));
+        Element element = new Element();
 
-		element.setRequired(required);
-		
-		element.setSortOrder(sortOrder);
-		
-		element.setForm(formService.getForm(formID));
-		
-		elementService.addElement(element);
-		
-		message = i18n.getString("success");
-		
-		return SUCCESS;
-	}
-	
+        element.setName( CodecUtils.unescape( name ).toLowerCase() );
+
+        element.setLabel( CodecUtils.unescape( label ) );
+
+        element.setType( type );
+
+        element.setControlType( controlType );
+
+        element.setInitialValue( initialValue );
+
+        element.setFormLink( formService.getForm( formLink ) );
+
+        element.setRequired( required );
+
+        element.setSortOrder( sortOrder );
+
+        element.setForm( formService.getForm( formID ) );
+
+        elementService.addElement( element );
+
+        message = i18n.getString( "success" );
+
+        return SUCCESS;
+    }
+
 }

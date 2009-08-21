@@ -143,6 +143,17 @@ public class HibernateDataSetStore
         return session.createCriteria( DataSet.class ).list();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataSet> getDataSetsByPeriodType( PeriodType periodType )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Criteria criteria = session.createCriteria( DataSet.class );
+        criteria.add( Restrictions.eq( "periodType", periodType ) );
+        
+        return criteria.list();
+    }
+    
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation
     // -------------------------------------------------------------------------

@@ -56,7 +56,6 @@
 			<artifactId>dhis-support-system</artifactId>
 		</dependency>
 
-
 		<!-- Other -->
 
 		<dependency>
@@ -65,6 +64,7 @@
 		</dependency>
 
 		<!-- Batik -->
+
 		<dependency>
 			<groupId>org.apache.xmlgraphics</groupId>
 			<artifactId>batik-dom</artifactId>

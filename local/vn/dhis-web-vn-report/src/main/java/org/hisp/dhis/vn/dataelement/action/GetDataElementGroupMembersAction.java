@@ -38,8 +38,7 @@ import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.vn.report.ReportExcelCategory;
 import org.hisp.dhis.vn.report.ReportExcelInterface;
 
-import com.opensymphony.xwork.Action;
-
+import com.opensymphony.xwork2.Action;
 
 /**
  */
@@ -50,17 +49,15 @@ public class GetDataElementGroupMembersAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private DataElementService dataElementService;
+    private static final long serialVersionUID = 1L;
+
+    private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    } 
-    
+    }
+
     // -------------------------------------------------------------------------
     // Comparator
     // -------------------------------------------------------------------------
@@ -103,11 +100,11 @@ public class GetDataElementGroupMembersAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<DataElement> selectedDataElements  = new ArrayList<DataElement>();
+    private List<DataElement> selectedDataElements = new ArrayList<DataElement>();
 
-    public List<DataElement> getselectedDataElements ()
+    public List<DataElement> getselectedDataElements()
     {
-        return selectedDataElements ;
+        return selectedDataElements;
     }
 
     private List<DataElement> availableDataElements = new ArrayList<DataElement>();
@@ -129,15 +126,16 @@ public class GetDataElementGroupMembersAction
 
         if ( report != null )
         {
-            selectedDataElements  = new ArrayList<DataElement>( ((ReportExcelCategory)report).getDataElements() );
-            
-            //Collections.sort( selectedDataElements, dataElementComparator );
-            
+            selectedDataElements = new ArrayList<DataElement>( ((ReportExcelCategory) report).getDataElements() );
+
+            // Collections.sort( selectedDataElements, dataElementComparator );
+
             displayPropertyHandler.handle( selectedDataElements );
-            System.out.println("report.name - report.id: " + report.getName() + " - " + report.getId());
+            System.out.println( "report.name - report.id: " + report.getName() + " - " + report.getId() );
         }
-        else {
-        	return ERROR;
+        else
+        {
+            return ERROR;
         }
 
         // ---------------------------------------------------------------------
@@ -146,10 +144,10 @@ public class GetDataElementGroupMembersAction
 
         availableDataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
 
-        availableDataElements.removeAll( selectedDataElements  );
+        availableDataElements.removeAll( selectedDataElements );
 
-        //Collections.sort( availableDataElements, dataElementComparator );
-        
+        // Collections.sort( availableDataElements, dataElementComparator );
+
         displayPropertyHandler.handle( availableDataElements );
 
         return SUCCESS;

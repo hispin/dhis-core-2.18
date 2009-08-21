@@ -2,7 +2,7 @@ package org.hisp.dhis.vn.report.configuration.action;
 
 import org.hisp.dhis.options.SystemSettingManager;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 public class GetReportConfigurationAction
     implements Action

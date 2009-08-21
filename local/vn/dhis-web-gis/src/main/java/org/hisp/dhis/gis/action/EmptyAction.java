@@ -30,7 +30,7 @@ package org.hisp.dhis.gis.action;
 import org.hisp.dhis.gis.GISConfiguration;
 import org.hisp.dhis.gis.action.configuration.GISConfigurationManagerService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby

@@ -122,7 +122,15 @@ public interface DataSetService
      * @return A collection containing all DataSets.
      */
     Collection<DataSet> getAllDataSets();
-    
+
+    /**
+     * Gets all DataSets associated with the given PeriodType.
+     * 
+     * @param periodType the PeriodType.
+     * @return a collection of DataSets.
+     */
+    Collection<DataSet> getDataSetsByPeriodType( PeriodType periodType );
+
     /**
      * Get all DataSets with corresponding identifiers.
      * 

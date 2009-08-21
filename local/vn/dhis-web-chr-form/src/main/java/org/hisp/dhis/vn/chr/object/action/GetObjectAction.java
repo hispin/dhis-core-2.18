@@ -11,83 +11,94 @@ import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.jdbc.FormManager;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class GetObjectAction extends ActionSupport{
-	
-	// -----------------------------------------------------------------------------------------------
+public class GetObjectAction
+    extends ActionSupport
+{
+
+    // -----------------------------------------------------------------------------------------------
     // Dependencies
     // -----------------------------------------------------------------------------------------------
 
-	private FormManager formManager;
-	
-	private FormService formService;
-	
-	// -----------------------------------------------------------------------------------------------
+    private FormManager formManager;
+
+    private FormService formService;
+
+    // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
-	// Form ID
-	private Integer formId;
-	
-	// Object's ID
-	private Integer id;
-	
-	// Object's data
-	private ArrayList data;
-	
-	// -----------------------------------------------------------------------------------------------
+    private Integer formId;
+
+    private Integer id;
+
+    private ArrayList data;
+
+    // -----------------------------------------------------------------------------------------------
     // Getter && Setter
     // -----------------------------------------------------------------------------------------------
-		
-	public ArrayList getData() {
-		return data;
-	}
 
-	public void setData(ArrayList data) {
-		this.data = data;
-	}
+    public ArrayList getData()
+    {
+        return data;
+    }
 
-	public Integer getId() {
-		return this.id;
-	}
+    public void setData( ArrayList data )
+    {
+        this.data = data;
+    }
 
-	public void setFormId(Integer formId) {
-		this.formId = formId;
-	}
+    public Integer getId()
+    {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setFormId( Integer formId )
+    {
+        this.formId = formId;
+    }
 
-	public Integer getFormId() {
-		return this.formId;
-	}
-	
-	public void setFormManager(FormManager formManager) {
-		this.formManager = formManager;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
-	
-	// -----------------------------------------------------------------------------------------------
-    // Implement : process Select SQL 
+    public Integer getFormId()
+    {
+        return this.formId;
+    }
+
+    public void setFormManager( FormManager formManager )
+    {
+        this.formManager = formManager;
+    }
+
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
+
+    // -----------------------------------------------------------------------------------------------
+    // Implement : process Select SQL
     // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
-		
-		try {
+    public String execute()
+        throws Exception
+    {
+        try
+        {
 
-			Form form = formService.getForm(formId.intValue());
-			
-			data = formManager.getObject(form, id.intValue());
-			
-			return SUCCESS;
+            Form form = formService.getForm( formId.intValue() );
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+            data = formManager.getObject( form, id.intValue() );
 
-		return ERROR;
-	}
+            return SUCCESS;
+
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+
+        return ERROR;
+    }
 }

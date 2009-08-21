@@ -176,7 +176,7 @@ public class ViewReportAction
         
         Collections.sort( dataElements, dataElementComparator );
         
-        dataElements = displayPropertyHandler.handleDataElements( dataElements );
+        dataElements = displayPropertyHandler.handle( dataElements );
         
         if ( indicatorGroupId == ALL )
         {
@@ -189,7 +189,7 @@ public class ViewReportAction
         
         Collections.sort( indicators, indicatorComparator );
         
-        indicators = displayPropertyHandler.handleIndicators( indicators );
+        indicators = displayPropertyHandler.handle( indicators );
         
         if ( report != null )
         {

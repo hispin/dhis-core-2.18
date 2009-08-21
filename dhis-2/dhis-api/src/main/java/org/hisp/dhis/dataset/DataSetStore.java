@@ -29,6 +29,7 @@ package org.hisp.dhis.dataset;
 
 import java.util.Collection;
 
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -98,11 +99,19 @@ public interface DataSetStore
     DataSet getDataSetByCode( String code );
     
     /**
-     * Get all DataSets.
+     * Gets all DataSets.
      * 
      * @return A collection containing all DataSets.
      */
     Collection<DataSet> getAllDataSets();
+    
+    /**
+     * Gets all DataSets associated with the given PeriodType.
+     * 
+     * @param periodType the PeriodType.
+     * @return a collection of DataSets.
+     */
+    Collection<DataSet> getDataSetsByPeriodType( PeriodType periodType );
 
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation

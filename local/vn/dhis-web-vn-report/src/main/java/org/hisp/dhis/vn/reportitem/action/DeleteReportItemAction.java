@@ -28,7 +28,7 @@ package org.hisp.dhis.vn.reportitem.action;
 
 import org.hisp.dhis.vn.report.ReportExcelService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 /**
  * @author Tran Thanh Tri
  * @version $Id$

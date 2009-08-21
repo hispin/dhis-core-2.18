@@ -60,7 +60,7 @@ import org.hisp.dhis.gis.GISConfiguration;
 import org.hisp.dhis.gis.GISConfigurationService;
 import org.hisp.dhis.gis.action.configuration.GISConfigurationManagerService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri

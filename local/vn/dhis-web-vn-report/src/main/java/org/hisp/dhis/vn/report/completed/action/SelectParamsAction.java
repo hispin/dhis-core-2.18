@@ -31,13 +31,11 @@ import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.user.CurrentUserService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
@@ -53,8 +51,6 @@ public class SelectParamsAction
     private PeriodService periodService;
 
     private OrganisationUnitSelectionManager organisationUnitSelectionManager;
-    
-    
 
     // -------------------------------------------
     // Output

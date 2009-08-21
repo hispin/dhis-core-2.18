@@ -36,7 +36,7 @@ import java.util.Date;
 import org.hisp.dhis.gis.action.configuration.GISConfigurationManagerService;
 import org.hisp.dhis.gis.util.SVGUtils;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri

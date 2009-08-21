@@ -30,7 +30,7 @@ package org.hisp.dhis.gis.action.legend;
 import org.hisp.dhis.gis.Legend;
 import org.hisp.dhis.gis.LegendService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 
 /**

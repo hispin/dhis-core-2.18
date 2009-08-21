@@ -7,70 +7,79 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
 
+import com.opensymphony.xwork2.Action;
 
-import com.opensymphony.xwork.Action;
+public class GetVisibleFormsAction
+    implements Action
+{
 
-public class GetVisibleFormsAction implements Action {
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    private FormService formService;
 
-	private FormService formService;
-	
-	private CurrentUserService currentUserService;
-	
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    private CurrentUserService currentUserService;
 
-	private Collection<Form> visibleforms;
-	private User curUser;
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    private Collection<Form> visibleforms;
 
-	public void setCurrentUserService(CurrentUserService currentUserService) {
-		this.currentUserService = currentUserService;
-	}
+    private User curUser;
 
-	public Collection<Form> getVisibleforms() {
-		return visibleforms;
-	}
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public void setVisibleforms(Collection<Form> visibleforms) {
-		this.visibleforms = visibleforms;
-	}
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public Collection<Form> getVisibleforms()
+    {
+        return visibleforms;
+    }
 
-	public User getCurUser() {
-		return curUser;
-	}
+    public void setVisibleforms( Collection<Form> visibleforms )
+    {
+        this.visibleforms = visibleforms;
+    }
 
-	public void setCurUser(User curUser) {
-		this.curUser = curUser;
-	}
-	
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public String execute() throws Exception {
+    public User getCurUser()
+    {
+        return curUser;
+    }
 
-		visibleforms = formService.getVisibleForms(true);
+    public void setCurUser( User curUser )
+    {
+        this.curUser = curUser;
+    }
 
-		Collection<Form> createdForm = formService.getCreatedForms();
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-		visibleforms.retainAll(createdForm);
-		
-		curUser = currentUserService.getCurrentUser();
-		
-		return SUCCESS;
-	}
-	
-		
+    public String execute()
+        throws Exception
+    {
+
+        visibleforms = formService.getVisibleForms( true );
+
+        Collection<Form> createdForm = formService.getCreatedForms();
+
+        visibleforms.retainAll( createdForm );
+
+        curUser = currentUserService.getCurrentUser();
+
+        return SUCCESS;
+    }
+
 }

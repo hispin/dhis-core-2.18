@@ -45,6 +45,7 @@ public interface SystemSettingManager
     final String KEY_START_MODULE = "startModule";
     final String KEY_FORUM_INTEGRATION = "forumIntegration";
     final String KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART = "omitIndicatorsZeroNumeratorDataMart";
+    final String KEY_REPORT_TEMPLATE_DIRECTORY = "reportTemplateDirectory";
 
     void saveSystemSetting( String name, Serializable value );   
 

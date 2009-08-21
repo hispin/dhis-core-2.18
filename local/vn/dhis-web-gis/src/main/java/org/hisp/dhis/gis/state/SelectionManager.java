@@ -36,7 +36,7 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 
-import com.opensymphony.xwork.ActionContext;
+import com.opensymphony.xwork2.ActionContext;
 
 /**
  * @author Tran Thanh Tri
@@ -144,5 +144,4 @@ public class SelectionManager
     {
         return ActionContext.getContext().getSession();
     }
-
 }

@@ -53,7 +53,7 @@ public class HibernateReportExcelStore
     // Dependency
     // -------------------------------------------------
 
-    private SessionFactory sessionFactory; 
+    private SessionFactory sessionFactory;
 
     public void setSessionFactory( SessionFactory sessionFactory )
     {
@@ -103,6 +103,7 @@ public class HibernateReportExcelStore
         return (ReportExcelInterface) criteria.uniqueResult();
     }
 
+    @SuppressWarnings( "unchecked" )
     public Collection<ReportExcelInterface> getReportsByOrganisationUnit( OrganisationUnit organisationUnit )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -116,6 +117,7 @@ public class HibernateReportExcelStore
         return criteria.list();
     }
 
+    @SuppressWarnings( "unchecked" )
     public Collection<ReportExcelInterface> getALLReport()
     {
         Session session = sessionFactory.getCurrentSession();
@@ -157,6 +159,7 @@ public class HibernateReportExcelStore
         return (ReportItem) session.get( ReportItem.class, id );
     }
 
+    @SuppressWarnings( "unchecked" )
     public Collection<ReportItem> getALLReportItem()
     {
         Session session = sessionFactory.getCurrentSession();
@@ -183,6 +186,7 @@ public class HibernateReportExcelStore
         return null;
     }
 
+    @SuppressWarnings( "unchecked" )
     public Collection<ReportItem> getReportItem( int sheetNo, Integer reportId )
     {
         Session session = sessionFactory.getCurrentSession();

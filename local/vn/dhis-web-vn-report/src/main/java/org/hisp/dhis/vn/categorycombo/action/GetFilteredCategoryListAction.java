@@ -1,5 +1,3 @@
-
-// HIEU DONE //
 package org.hisp.dhis.vn.categorycombo.action;
 
 /*
@@ -31,7 +29,6 @@ package org.hisp.dhis.vn.categorycombo.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -39,9 +36,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryNameComparator;
 import org.hisp.dhis.vn.report.action.ActionSupport;
 
-
-public class GetFilteredCategoryListAction 
-	extends ActionSupport
+public class GetFilteredCategoryListAction
+    extends ActionSupport
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -55,24 +51,11 @@ public class GetFilteredCategoryListAction
     }
 
     // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<DataElementCategory> dataElementCategoryComparator;
-
-    public void setDataElementComparator( Comparator<DataElementCategory> dataElementCategoryComparator )
-    {
-        this.dataElementCategoryComparator = dataElementCategoryComparator;
-    }
-    
-    
-    // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
     private List<DataElementCategory> dataElementCategories;
-    
-    
+
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
@@ -88,35 +71,35 @@ public class GetFilteredCategoryListAction
     {
         return dataElementComboId;
     }
-	
-	public List<DataElementCategory> getDataElementCategories()
+
+    public List<DataElementCategory> getDataElementCategories()
     {
         return dataElementCategories;
     }
-
 
     // -------------------------------------------------------------------------
     // Action implemantation
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     public String execute()
     {
         // ---------------------------------------------------------------------
         // Criteria
         // ---------------------------------------------------------------------
 
-        if ( (dataElementComboId != null) || (dataElementComboId == -1) ) {
-        	
-        	dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryComboService.getDataElementCategoryCombo(dataElementComboId).getCategories() );
-        	Collections.sort( dataElementCategories, new DataElementCategoryNameComparator() );
+        if ( (dataElementComboId != null) || (dataElementComboId == -1) )
+        {
+
+            dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryComboService
+                .getDataElementCategoryCombo( dataElementComboId ).getCategories() );
+            Collections.sort( dataElementCategories, new DataElementCategoryNameComparator() );
         }
-        else {
-        	message = i18n.getString( "Invalid" );
-        	return ERROR;
+        else
+        {
+            message = i18n.getString( "Invalid" );
+            return ERROR;
         }
 
         return SUCCESS;
     }
 }
-// HIEU DONE //

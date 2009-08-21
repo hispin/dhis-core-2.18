@@ -33,20 +33,18 @@ package org.hisp.dhis.vn.dataelement.action;
 
 import org.hisp.dhis.vn.report.action.ActionSupport;
 
-
-public class ValidateAddDataElementAndCateComboInCategoryReportAction 
-	extends ActionSupport
+public class ValidateAddDataElementAndCateComboInCategoryReportAction
+    extends ActionSupport
 {
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer dataelement_no;
-	private Integer catecomboid;
+    private static final long serialVersionUID = 1L;
+
+    private Integer dataelement_no;
+
+    private Integer catecomboid;
 
     public void setDataelement_no( Integer dataelement_no )
     {
@@ -57,30 +55,29 @@ public class ValidateAddDataElementAndCateComboInCategoryReportAction
     {
         this.catecomboid = catecomboid;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-    	System.out.println("dataelement_no - catecomboid : " + dataelement_no + " - " + catecomboid);
-        if ( dataelement_no <= 0 || dataelement_no == null ) {
-        	
+        if ( dataelement_no <= 0 || dataelement_no == null )
+        {
+
             message = i18n.getString( "add_element_invalid" );
 
             return ERROR;
         }
-        if ( catecomboid <= 0 || catecomboid == null ) {
-        	
+        if ( catecomboid <= 0 || catecomboid == null )
+        {
+
             message = i18n.getString( "add_categorycombo_invalid" );
 
             return ERROR;
         }
         message = i18n.getString( "valid" );
-        
-        System.err.println(message);
-        
+
         return SUCCESS;
     }
 }
