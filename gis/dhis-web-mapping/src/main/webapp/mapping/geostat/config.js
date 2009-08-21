@@ -22,11 +22,11 @@
     
 //  MapFish print module
 
-    printConfigUrl = '../../pdf/info.json';
+    printConfigUrl = '../../../print-servlet-1.2-SNAPSHOT/pdf/info.json';
 
 //  Ajax requests
 
-    path = '../../dhis-web-mapping/';
+    path = '../../..dhis-web-mapping/';
     type = '.action';
 
 //  Layout
