@@ -1914,21 +1914,14 @@ Ext.onReady(function()
 
 function onHoverSelectChoropleth(feature) {
     if (MAPDATA != null) {
-        var center_panel = Ext.getCmp('center');
-        var south_panel = Ext.getCmp('south-panel');
-
-        var height = 230;
-        var collapsed = 48;
-        var padding_x = 15;
-        var padding_y = 22;
-
-        var x = center_panel.x + padding_x;
-        var y = south_panel.y + collapsed - height  - padding_y;
+        var east_panel = Ext.getCmp('east');
+        var x = east_panel.x - 210;
+        var y = east_panel.y + 15;
 
         popup_feature = new Ext.Window({
             title: 'Organisation unit',
             width: 190,
-            height: height,
+            height: 84,
             layout: 'fit',
             plain: true,
             bodyStyle: 'padding:5px',
