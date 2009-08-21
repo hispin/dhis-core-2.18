@@ -27,7 +27,7 @@ package org.hisp.dhis.jforum.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

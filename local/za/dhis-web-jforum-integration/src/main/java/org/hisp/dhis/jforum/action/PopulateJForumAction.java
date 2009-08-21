@@ -30,7 +30,7 @@ package org.hisp.dhis.jforum.action;
 import org.hisp.dhis.jforum.manager.JForumManager;
 import org.hisp.dhis.system.util.TimeUtils;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
