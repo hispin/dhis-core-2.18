@@ -26,7 +26,7 @@
 
 //  Ajax requests
 
-    path = '../../..dhis-web-mapping/';
+    path = '../../dhis-web-mapping/';
     type = '.action';
 
 //  Layout
