@@ -219,8 +219,17 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="dashboardContentStore"
       ref="org.hisp.dhis.dashboard.DashboardContentStore"/>
   </bean>
-      	
-  <!-- AOP statement definitions -->
+  
+  <bean id="org.hisp.dhis.tallysheet.TallySheetService"
+    class="org.hisp.dhis.tallysheet.DefaultTallySheetService">
+    <property name="dataValueService" 
+      ref="org.hisp.dhis.datavalue.DataValueService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.tallysheet.TallySheetPdfService"
+    class="org.hisp.dhis.tallysheet.DefaultTallySheetPdfService"/>
+        
+  <!-- AOP statement definitions --> <!-- TODO change to AOP 2.0 -->
   
   <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
     <property name="advice" ref="statementInterceptor"/>

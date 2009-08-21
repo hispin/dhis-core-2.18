@@ -434,5 +434,34 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
-	</package>
+    <!-- Tally Sheet Forms Generator -->
+
+    <action name="tallySheetGenerator" class="org.hisp.dhis.reporting.tallysheet.action.TallySheetSelectAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menuTreeHeight">420</param>
+      <param name="page">/dhis-web-reporting/tallySheetSelectForm.vm</param>
+      <param name="menu">/dhis-web-reporting/menu.vm</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/tallySheet.js</param>
+      <interceptor-ref name="organisationUnitTreeStack" />
+    </action>
+        
+    <action name="configureTallySheetGenerator" class="org.hisp.dhis.reporting.tallysheet.action.TallySheetEditAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menuTreeHeight">420</param>
+      <param name="page">/dhis-web-reporting/tallySheetEditForm.vm</param>
+      <param name="menu">/dhis-web-reporting/menu.vm</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/tallySheet.js</param>
+      <interceptor-ref name="organisationUnitTreeStack" />
+    </action>
+        
+    <action name="generateTallySheetPDF" class="org.hisp.dhis.reporting.tallysheet.action.TallySheetGenerateAction">
+      <result name="success" type="stream">
+      <param name="contentType">application/pdf</param>
+      <param name="inputName">inputStream</param>
+      <param name="contentDisposition">filename="${fileName}"</param>
+      <param name="bufferSize">1024</param>
+      </result>
+    </action>
+	
+  </package>
 </struts>
