@@ -4,33 +4,46 @@
 <head>
     <title>DHIS2 Geostat</title>
 
-    <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/ext-all.css"/>
-    <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/xtheme-gray-extend.css" />
+    <!-- CSS -->
+        
+        <!-- Ext JS -->
+        <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/ext-all.css"/>
 
-    <!-- EXT colorField Extent -->
-    <link rel="stylesheet" type="text/css" href="../../mfbase/ext-community-extensions/color-field.css" />
-    <link rel="stylesheet" type="text/css" href="../../mfbase/ext-community-extensions/multiselect.css" />
-    <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/examples.css" />
-    <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/checkbox_or.css" />    
+            <!-- User extensions -->
+            <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/xtheme-gray-extend.css" />
+            <link rel="stylesheet" type="text/css" href="../../mfbase/ext-community-extensions/color-field.css" />
+            <link rel="stylesheet" type="text/css" href="../../mfbase/ext-community-extensions/multiselect.css" />
+            <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/examples.css" />
+            <link rel="stylesheet" type="text/css" href="../../mfbase/ext/resources/css/checkbox_or.css" />
+        
+    <!-- JavaScript -->
+        
+        <!-- OpenLayers -->
+        <script type="text/javascript" src="../../mfbase/openlayers/OpenLayers.js"></script>
+            
+            <!-- User extensions -->
+            <script type="text/javascript" src="../../mfbase/openlayers/lib/OpenLayers/Control/newSelectFeature.js"></script>
+        
+        <!-- Ext JS -->
+        <script type="text/javascript" src="../../mfbase/ext/adapter/ext/ext-base.js"></script>
+        <script type="text/javascript" src="../../mfbase/ext/ext-all.js"></script>
+        
+            <!-- User extensions -->
+            <script type="text/javascript" src="../../mfbase/ext/source/examples/examples.js"></script>
+            <script type="text/javascript" src="../../mfbase/ext-community-extensions/color-field.js"></script>
+            <script type="text/javascript" src="../../mfbase/ext-community-extensions/DDView.js"></script>
+            <script type="text/javascript" src="../../mfbase/ext-community-extensions/MultiSelect.js"></script>
+            <script type="text/javascript" src="../../mfbase/ext-community-extensions/ItemSelector.js"></script>
+            
+        <!-- GeoExt -->
+        <script type="text/javascript" src="../../mfbase/geoext/script/GeoExt.js"></script>
+        
+        <!-- MapFish -->
+        <script type="text/javascript" src="../../mfbase/mapfish/MapFish.js"></script>
 
-    <script type="text/javascript" src="../../mfbase/ext/adapter/ext/ext-base.js"></script>
-    <script type="text/javascript" src="../../mfbase/ext/ext-all.js"></script>
-
-    <!-- debug mode -->
-    <script type="text/javascript" src="../../mfbase/openlayers/lib/OpenLayers.js"></script>
-    <script type="text/javascript" src="../../mfbase/mapfish/MapFish.js"></script>
-
-    <!-- EXT user extensions -->
-    <script type="text/javascript" src="../../mfbase/openlayers/lib/OpenLayers/Control/newSelectFeature.js"></script>
-    <script type="text/javascript" src="../../mfbase/ext/source/examples/examples.js"></script>
-    <script type="text/javascript" src="../../mfbase/ext-community-extensions/color-field.js"></script>
-    <script type="text/javascript" src="../../mfbase/ext-community-extensions/DDView.js"></script>
-    <script type="text/javascript" src="../../mfbase/ext-community-extensions/MultiSelect.js"></script>
-    <script type="text/javascript" src="../../mfbase/ext-community-extensions/ItemSelector.js"></script>
-    
-    <!-- Div script -->
-    <script type="text/javascript" src="config.js"></script>
-    <script type="text/javascript" src="geostat.js"></script>
+        <!-- DHIS2 -->
+        <script type="text/javascript" src="config.js"></script>
+        <script type="text/javascript" src="geostat.js"></script>
     
     <style>
         .assigned-row {background-color: #72FF63}

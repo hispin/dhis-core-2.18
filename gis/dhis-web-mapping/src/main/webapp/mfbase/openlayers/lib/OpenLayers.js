@@ -147,6 +147,7 @@
             "OpenLayers/Control/Navigation.js",
             "OpenLayers/Control/MouseDefaults.js",
             "OpenLayers/Control/MousePosition.js",
+            "OpenLayers/Control/newSelectFeature.js",
             "OpenLayers/Control/OverviewMap.js",
             "OpenLayers/Control/KeyboardDefaults.js",
             "OpenLayers/Control/PanZoom.js",
