@@ -5,7 +5,7 @@ import static org.hisp.dhis.mapping.MappingService.MAP_SOURCE_TYPE_DATABASE;
 
 import org.hisp.dhis.user.UserSettingService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 public class GetMapSourceTypeUserSettingAction
     implements Action

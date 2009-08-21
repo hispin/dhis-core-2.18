@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MappingService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 public class GetMapsByTypeAction
     implements Action

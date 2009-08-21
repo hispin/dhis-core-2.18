@@ -32,7 +32,7 @@ import java.util.Collection;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.datamart.DataMartStore;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
