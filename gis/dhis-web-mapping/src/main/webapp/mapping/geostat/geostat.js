@@ -272,18 +272,6 @@ Ext.onReady(function()
         })
     });
     
-    var static2Layer = new OpenLayers.Layer.Vector("static 2", {
-        'visibility': false,
-        'styleMap': new OpenLayers.StyleMap({
-            'default': new OpenLayers.Style(
-                OpenLayers.Util.applyDefaults(
-                    {'fillOpacity': 1, 'strokeWidth': 2, 'strokeColor': '#000000', 'strokeOpacity': 1 },
-                    OpenLayers.Feature.Vector.style['default']
-                )
-            )
-        })
-    });
-    
     map.addLayers([ vmap0, local_wfs, choroplethLayer, static1Layer ]);
 
     var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
@@ -1474,11 +1462,11 @@ Ext.onReady(function()
                         var nml_b = Ext.getCmp('newmaplayer_b');
                         var dml_b = Ext.getCmp('deletemaplayer_b');
                         
-                        if (tab.id == 'view0') { 
+                        if (tab.id == 'maplayer0') { 
                             nml_b.setVisible(true);
                             dml_b.setVisible(false);
                         }
-                        else if (tab.id == 'view1') {
+                        else if (tab.id == 'maplayer1') {
                             nml_b.setVisible(false);
                             dml_b.setVisible(true);
                         }
@@ -1488,7 +1476,7 @@ Ext.onReady(function()
                 [
                     {
                         title:'New map layer',
-                        id: 'view0',
+                        id: 'maplayer0',
                         items:
                         [
                             newMapLayerPanel
@@ -1496,7 +1484,7 @@ Ext.onReady(function()
                     },
                     {
                         title:'Delete map layer',
-                        id: 'view1',
+                        id: 'maplayer1',
                         items:
                         [
                             deleteMapLayerPanel
@@ -1699,30 +1687,20 @@ Ext.onReady(function()
         }
     });
     
-    static2 = new mapfish.widgets.geostat.Static({
-        id: 'static2',
-        map: map,
-        layer: static2Layer,
-        title: 'static 2',
-        nameAttribute: 'NAME',
-        indicators: [['value', 'Indicator']],
-        url: INIT_URL,
-        featureSelection: false,
-        loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
-        legendDiv: 'choroplethLegend',
-        defaults: {width: 130},
-        listeners: {
-            expand: {
-                fn: function() {}
-            }
-        }
-    });
-    
     static1.hide();
-    static2.hide();
     mapping.hide();
     shapefilePanel.hide();
     mapLayerPanel.hide();
+    
+    var mapPanel = new GeoExt.MapPanel({
+        region: 'center',
+        id: 'center',
+        height: 1000,
+        width: 1000,
+        map: map,
+        title: '',
+        zoom: 3
+    });
     
     viewport = new Ext.Viewport({
         id: 'viewport',
@@ -1738,24 +1716,24 @@ Ext.onReady(function()
                 el: 'north',
                 height: north_height
             }),
-            {
-                region: 'south',
-                contentEl: 'south',
-                id: 'south-panel',
-                split: true,
-                height: 70,
-                minSize: 50,
-                maxSize: 200,
-                collapsible: true,
-                collapsed: true,
-                title: 'Status',
-                margins: '0 5 5 5',
-                bodyStyle: 'padding:5px; font-family:tahoma; font-size:12px'
-            },
+            //{
+            //    region: 'south',
+            //    contentEl: 'south',
+            //    id: 'south-panel',
+            //    split: true,
+            //    height: 70,
+            //    minSize: 50,
+            //    maxSize: 200,
+            //    collapsible: true,
+            //    collapsed: true,
+            //    title: 'Status',
+            //    margins: '0 5 5 5',
+            //    bodyStyle: 'padding:5px; font-family:tahoma; font-size:12px',
+            //},
             {
                 region: 'east',
                 id: 'east',
-                title: ' ',
+                title: '',
                 width: 200,
                 collapsible: true,
                 margins: '0 5 0 5',
@@ -1888,18 +1866,18 @@ Ext.onReady(function()
                 ]
             },
             {
-                xtype: 'mapcomponent',
+                xtype: 'gx_mappanel',
                 region: 'center',
                 id: 'center',
-                title: 'Map',
-                margins: '0 0 5 0',
+                height: 1000,
+                width: 1000,
                 map: map,
-                height: 400,
-                width: 1000
+                title: '',
+                zoom: 3
             }
         ]
     });
-
+    
     map.addControl(new OpenLayers.Control.MousePosition({
         displayClass: "void", 
         div: $('mouseposition'), 
