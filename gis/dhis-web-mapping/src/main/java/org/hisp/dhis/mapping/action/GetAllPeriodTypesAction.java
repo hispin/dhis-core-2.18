@@ -33,7 +33,7 @@ import java.util.List;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland

@@ -29,7 +29,7 @@ package org.hisp.dhis.mapping.action;
 
 import org.hisp.dhis.mapping.MappingService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Jan Henrik Overland
