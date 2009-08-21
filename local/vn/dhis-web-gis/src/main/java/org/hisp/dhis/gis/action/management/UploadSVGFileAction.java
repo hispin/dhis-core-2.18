@@ -34,7 +34,7 @@ import java.io.IOException;
 
 import org.hisp.dhis.gis.action.configuration.GISConfigurationManagerService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri

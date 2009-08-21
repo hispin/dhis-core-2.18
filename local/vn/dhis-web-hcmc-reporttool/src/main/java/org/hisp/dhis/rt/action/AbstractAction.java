@@ -37,8 +37,8 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.rt.dataaccess.ReportDataAccess;
 import org.hisp.dhis.rt.report.ReportStore;
 
-import com.opensymphony.xwork.ActionContext;
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Lars Helge Overland

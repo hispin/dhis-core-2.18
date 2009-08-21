@@ -8,47 +8,53 @@ package org.hisp.dhis.vn.chr.form.action;
 import java.util.Collection;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
-public class ListFormAction implements Action{
+public class ListFormAction
+    implements Action
+{
 
-
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
     // Dependencies
     // -----------------------------------------------------------------------------------------------
 
-	private FormService formService;
-	
-	// -----------------------------------------------------------------------------------------------
+    private FormService formService;
+
+    // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
-	private Collection<Form> forms;
-	
-	// -----------------------------------------------------------------------------------------------
+    private Collection<Form> forms;
+
+    // -----------------------------------------------------------------------------------------------
     // Getter && Setter
     // -----------------------------------------------------------------------------------------------
 
-	public Collection<Form> getForms() {
-		return forms;
-	}
+    public Collection<Form> getForms()
+    {
+        return forms;
+    }
 
-	public void setForms(Collection<Form> forms) {
-		this.forms = forms;
-	}
+    public void setForms( Collection<Form> forms )
+    {
+        this.forms = forms;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
-	
-	// -----------------------------------------------------------------------------------------------
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
+
+    // -----------------------------------------------------------------------------------------------
     // Implement
     // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception{
-		
-		forms = formService.getAllForms();
-		
-		return SUCCESS;
-	}
+    public String execute()
+        throws Exception
+    {
+
+        forms = formService.getAllForms();
+
+        return SUCCESS;
+    }
 }

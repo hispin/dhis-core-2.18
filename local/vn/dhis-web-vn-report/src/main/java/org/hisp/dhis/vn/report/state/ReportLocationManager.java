@@ -92,7 +92,6 @@ public class ReportLocationManager
     }
 
     public File getDirectory( OrganisationUnit organisationUnit )
-        throws LocationManagerException
     {        
 
         File dir = new File( REPORT, String.valueOf( organisationUnit.getId() ) );
@@ -104,7 +103,6 @@ public class ReportLocationManager
     }
 
     public List<File> getListFile( OrganisationUnit organisationUnit )
-        throws LocationManagerException
     {
         return FileUtils.getListFile( getDirectory( organisationUnit ) );
     }

@@ -26,74 +26,87 @@
  */
 
 package org.hisp.dhis.vn.chr.element.action;
+
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
 /**
  * @author Chau Thu Tran
  * 
  */
-public class ValidateElementAction extends ActionSupport {
-	
-	// -------------------------------------------
-	// Input & Output
-	// -------------------------------------------
+public class ValidateElementAction
+    extends ActionSupport
+{
 
-	private String name;
-	
-	private String label;
+    // -------------------------------------------
+    // Input & Output
+    // -------------------------------------------
 
-	private Integer sortOrder;
+    private String name;
 
-	// -------------------------------------------
-	// Getter & Setter
-	// -------------------------------------------
+    private String label;
 
-	public String getName() {
-		return name;
-	}
+    private Integer sortOrder;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    // -------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------
 
-	public String getLabel() {
-		return label;
-	}
+    public String getName()
+    {
+        return name;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public Integer getSortOrder() {
-		return sortOrder;
-	}
+    public String getLabel()
+    {
+        return label;
+    }
 
+    public void setLabel( String label )
+    {
+        this.label = label;
+    }
 
-	public void setSortOrder(Integer sortOrder) {
-		this.sortOrder = sortOrder;
-	}
+    public Integer getSortOrder()
+    {
+        return sortOrder;
+    }
 
-	// -------------------------------------------
-	// Implement
-	// -------------------------------------------
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
 
-	public String execute() throws Exception {
+    // -------------------------------------------
+    // Implement
+    // -------------------------------------------
 
-		if (name == null || name.trim().length() == 0) {
-			message = i18n.getString("name_is_null");
-			return ERROR;
-		}
-		
-		if (label == null || label.trim().length() == 0) {
-			message = i18n.getString("label_is_null");
-			return ERROR;
-		}
-		
-		if (sortOrder == 0) {
-			message = i18n.getString("sortOrder_is_null");
-			return ERROR;
-		}
-		
-		return SUCCESS;
-	}
+    public String execute()
+        throws Exception
+    {
+
+        if ( name == null || name.trim().length() == 0 )
+        {
+            message = i18n.getString( "name_is_null" );
+            return ERROR;
+        }
+
+        if ( label == null || label.trim().length() == 0 )
+        {
+            message = i18n.getString( "label_is_null" );
+            return ERROR;
+        }
+
+        if ( sortOrder == 0 )
+        {
+            message = i18n.getString( "sortOrder_is_null" );
+            return ERROR;
+        }
+
+        return SUCCESS;
+    }
 }

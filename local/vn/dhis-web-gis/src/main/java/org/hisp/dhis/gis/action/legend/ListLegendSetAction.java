@@ -33,7 +33,7 @@ import java.util.Set;
 import org.hisp.dhis.gis.LegendService;
 import org.hisp.dhis.gis.LegendSet;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri

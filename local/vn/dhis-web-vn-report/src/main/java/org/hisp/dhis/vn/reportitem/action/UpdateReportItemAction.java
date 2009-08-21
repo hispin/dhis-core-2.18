@@ -30,7 +30,7 @@ import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.report.ReportExcelService;
 import org.hisp.dhis.vn.report.ReportItem;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 /**
  * @author Tran Thanh Tri
  * @version $Id$

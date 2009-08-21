@@ -174,6 +174,11 @@ public class DefaultDataSetService
         return dataSetStore.getAllDataSets();
     }
     
+    public Collection<DataSet> getDataSetsByPeriodType( PeriodType periodType )
+    {
+        return dataSetStore.getDataSetsByPeriodType( periodType );
+    }
+    
     public Collection<DataSet> getDataSets( Collection<Integer> identifiers )
     {
         if ( identifiers == null )

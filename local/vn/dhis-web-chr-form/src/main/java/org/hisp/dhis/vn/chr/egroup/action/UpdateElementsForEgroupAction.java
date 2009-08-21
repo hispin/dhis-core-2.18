@@ -13,78 +13,88 @@ import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.ElementService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class UpdateElementsForEgroupAction extends ActionSupport
+public class UpdateElementsForEgroupAction
+    extends ActionSupport
 {
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
     // Dependency
     // -----------------------------------------------------------------------------------------------
 
-	private EgroupService egroupService;
-	
-	private ElementService elementService;
-    
-	// -----------------------------------------------------------------------------------------------
+    private EgroupService egroupService;
+
+    private ElementService elementService;
+
+    // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
-	private Integer id;
-	
-	private Integer[] selectedElements;
-	
-	// -----------------------------------------------------------------------------------------------
+    private Integer id;
+
+    private Integer[] selectedElements;
+
+    // -----------------------------------------------------------------------------------------------
     // Getters && Setters
     // -----------------------------------------------------------------------------------------------
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId()
+    {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public Integer[] getSelectedElements() {
-		return selectedElements;
-	}
+    public Integer[] getSelectedElements()
+    {
+        return selectedElements;
+    }
 
-	public void setSelectedElements(Integer[] selectedElements) {
-		this.selectedElements = selectedElements;
-	}
+    public void setSelectedElements( Integer[] selectedElements )
+    {
+        this.selectedElements = selectedElements;
+    }
 
-	public void setEgroupService(EgroupService egroupService) {
-		this.egroupService = egroupService;
-	}
+    public void setEgroupService( EgroupService egroupService )
+    {
+        this.egroupService = egroupService;
+    }
 
-	public void setElementService(ElementService elementService) {
-		this.elementService = elementService;
-	}
+    public void setElementService( ElementService elementService )
+    {
+        this.elementService = elementService;
+    }
 
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
     // Implement
     // -----------------------------------------------------------------------------------------------
-	
-	public String execute() throws Exception {
 
-		Egroup egroup = egroupService.getEgroup(id.intValue());
+    public String execute()
+        throws Exception
+    {
 
-		Set<Element> elements = new HashSet<Element>();
+        Egroup egroup = egroupService.getEgroup( id.intValue() );
 
-		for (int i = 0; i < selectedElements.length; i++) {
+        Set<Element> elements = new HashSet<Element>();
 
-			Element e = elementService.getElement(selectedElements[i].intValue());
+        for ( int i = 0; i < selectedElements.length; i++ )
+        {
 
-			e.setEgroup(egroup);
+            Element e = elementService.getElement( selectedElements[i].intValue() );
 
-			elements.add(e);
-		}
+            e.setEgroup( egroup );
 
-		egroup.setElements(elements);
+            elements.add( e );
+        }
 
-		egroupService.updateEgroup(egroup);
+        egroup.setElements( elements );
 
-		message = i18n.getString("success");
-		
-		return SUCCESS;
-	}
-	
+        egroupService.updateEgroup( egroup );
+
+        message = i18n.getString( "success" );
+
+        return SUCCESS;
+    }
+
 }

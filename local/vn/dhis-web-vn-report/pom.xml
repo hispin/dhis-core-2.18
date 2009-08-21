@@ -10,7 +10,7 @@
   </parent>
   
   <artifactId>dhis-web-vn-report</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <name>DHIS Vietnam Report</name>
   
   <build>

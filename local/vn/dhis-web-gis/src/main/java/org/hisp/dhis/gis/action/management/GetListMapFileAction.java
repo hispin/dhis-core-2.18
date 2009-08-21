@@ -34,7 +34,7 @@ import org.hisp.dhis.gis.GISConfiguration;
 import org.hisp.dhis.gis.action.configuration.GISConfigurationManagerService;
 import org.hisp.dhis.gis.util.FileUtils;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri

@@ -1,5 +1,3 @@
-// HIEU DONE //
-
 package org.hisp.dhis.vn.dataelement.action;
 
 /*
@@ -40,59 +38,49 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
-
-
-/**
- */
 public class GetDataElementGroupsAndCateCombosListAction
     implements Action
 {
-	private static final long serialVersionUID = 1L;
-	
+    private static final long serialVersionUID = 1L;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-	
-	private DataElementService dataElementService;
-	
-	private DataElementCategoryComboService dataElementCategoryComboService;
-	
-    /**
-	 * 
-	 */
-	
+
+    private DataElementService dataElementService;
+
+    private DataElementCategoryComboService dataElementCategoryComboService;
+
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
 
-    public void setDataElementCategoryComboService ( DataElementCategoryComboService dataElementCategoryComboService )
+    public void setDataElementCategoryComboService( DataElementCategoryComboService dataElementCategoryComboService )
     {
         this.dataElementCategoryComboService = dataElementCategoryComboService;
-    }    
+    }
 
-    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-	
-	private List<DataElementGroup> dataElementGroups;
-	
+
+    private List<DataElementGroup> dataElementGroups;
+
     public List<DataElementGroup> getDataElementGroups()
     {
         return dataElementGroups;
     }
 
     private List<DataElementCategoryCombo> categoryCombos;
-    
+
     public List<DataElementCategoryCombo> getcategoryCombos()
     {
         return categoryCombos;
     }
-   
-	
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -100,26 +88,27 @@ public class GetDataElementGroupsAndCateCombosListAction
     public String execute()
     {
         // ---------------------------------------------------------------------
-        // get list of DataElementGroups and list of CategoryCombos
+        // Gget list of DataElementGroups and list of CategoryCombos
         // ---------------------------------------------------------------------
-        
-		if ( dataElementGroups == null ) {
-			
-			dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-			System.err.println("dataElementGroups.size = " + dataElementGroups.size());
-		}
 
-		Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
-		
-		if ( categoryCombos == null ) {
-		
-			categoryCombos = new ArrayList<DataElementCategoryCombo> ( dataElementCategoryComboService.getAllDataElementCategoryCombos() );
-		}
-		
-		Collections.sort( categoryCombos, new DataElementCategoryComboNameComparator() );
-        
-		return SUCCESS;
+        if ( dataElementGroups == null )
+        {
+
+            dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+            System.err.println( "dataElementGroups.size = " + dataElementGroups.size() );
+        }
+
+        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+
+        if ( categoryCombos == null )
+        {
+
+            categoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryComboService
+                .getAllDataElementCategoryCombos() );
+        }
+
+        Collections.sort( categoryCombos, new DataElementCategoryComboNameComparator() );
+
+        return SUCCESS;
     }
 }
-
-// HIEU DONE //

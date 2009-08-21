@@ -1,4 +1,3 @@
-
 package org.hisp.dhis.vn.chr.form.action;
 
 /**
@@ -6,77 +5,92 @@ package org.hisp.dhis.vn.chr.form.action;
  * 
  */
 
-public class ValidateFormAction extends ActionSupport {
-	
-	// -------------------------------------------
-	// Input & Output
-	// -------------------------------------------
+public class ValidateFormAction
+    extends ActionSupport
+{
 
-	private Integer id;
+    // -------------------------------------------
+    // Input & Output
+    // -------------------------------------------
 
-	private String name;
+    private Integer id;
 
-	private String label;
+    private String name;
 
-	private int noColumn;
+    private String label;
 
-	// -------------------------------------------
-	// Getter & Setter
-	// -------------------------------------------
+    private int noColumn;
 
-	public Integer getId() {
-		return id;
-	}
+    // -------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId()
+    {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName()
+    {
+        return name;
+    }
 
-	public String getLabel() {
-		return label;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public String getLabel()
+    {
+        return label;
+    }
 
-	public int getNoColumn() {
-		return noColumn;
-	}
+    public void setLabel( String label )
+    {
+        this.label = label;
+    }
 
-	public void setNoColumn(int noColumn) {
-		this.noColumn = noColumn;
-	}
+    public int getNoColumn()
+    {
+        return noColumn;
+    }
 
-	// -------------------------------------------
-	// Implement
-	// -------------------------------------------
+    public void setNoColumn( int noColumn )
+    {
+        this.noColumn = noColumn;
+    }
 
-	public String execute() throws Exception {
+    // -------------------------------------------
+    // Implement
+    // -------------------------------------------
 
-		if (name == null || name.trim().length() == 0) {
-			message = i18n.getString("name") + " " + i18n.getString("not_null");
-			return ERROR;
-		}
+    public String execute()
+        throws Exception
+    {
 
-		if (label == null || label.trim().length() == 0) {
-			message = i18n.getString("label") + " " + i18n.getString("not_null");
-			return ERROR;
-		}
-		
-		if (noColumn == 0) {
-			message = i18n.getString("noColumn") + " " + i18n.getString("not_null");
-			return ERROR;
-		}
+        if ( name == null || name.trim().length() == 0 )
+        {
+            message = i18n.getString( "name" ) + " " + i18n.getString( "not_null" );
+            return ERROR;
+        }
 
-		return SUCCESS;
-	}
+        if ( label == null || label.trim().length() == 0 )
+        {
+            message = i18n.getString( "label" ) + " " + i18n.getString( "not_null" );
+            return ERROR;
+        }
+
+        if ( noColumn == 0 )
+        {
+            message = i18n.getString( "noColumn" ) + " " + i18n.getString( "not_null" );
+            return ERROR;
+        }
+
+        return SUCCESS;
+    }
 }

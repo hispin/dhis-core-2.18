@@ -17,121 +17,140 @@ import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.jdbc.FormManager;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class SearchObjectAction extends ActionSupport{
-	
-	// -----------------------------------------------------------------------------------------------
+public class SearchObjectAction
+    extends ActionSupport
+{
+
+    // -----------------------------------------------------------------------------------------------
     // Dependencies
     // -----------------------------------------------------------------------------------------------
 
-	private FormManager formManager;
-	
-	private FormService formService;
-	
-	private FormConfigurationManager formConfigurationManager;
-	
-	private ElementService elementService;
-	
-	public void setFormConfigurationManager(
-			FormConfigurationManager formConfigurationManager) {
-		this.formConfigurationManager = formConfigurationManager;
-	}
-	
-	
-	
-	// -----------------------------------------------------------------------------------------------
+    private FormManager formManager;
+
+    private FormService formService;
+
+    private FormConfigurationManager formConfigurationManager;
+
+    private ElementService elementService;
+
+    public void setFormConfigurationManager( FormConfigurationManager formConfigurationManager )
+    {
+        this.formConfigurationManager = formConfigurationManager;
+    }
+
+    // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
-	// Form ID
-	private Integer formId;
-	
-	// keyword to search
-	private String keyword;
-	
-	private Form form;
-	
-	// Object data
-	private ArrayList data;
-	
-	// formLinks
-	private Collection<Element> formLinks;
-	
-	// -----------------------------------------------------------------------------------------------
+    // Form ID
+    private Integer formId;
+
+    // keyword to search
+    private String keyword;
+
+    private Form form;
+
+    // Object data
+    private ArrayList data;
+
+    // formLinks
+    private Collection<Element> formLinks;
+
+    // -----------------------------------------------------------------------------------------------
     // Getter && Setter
     // -----------------------------------------------------------------------------------------------
-	
-	public String getKeyword() {
-		return keyword;
-	}
 
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
-	}
-	
-	public ArrayList getData() {
-		return data;
-	}
+    public String getKeyword()
+    {
+        return keyword;
+    }
 
-	public void setData(ArrayList data) {
-		this.data = data;
-	}
-	
-	public void setFormId(Integer formId) {
-		this.formId = formId;
-	}
+    public void setKeyword( String keyword )
+    {
+        this.keyword = keyword;
+    }
 
-	public Integer getFormId() {
-		return this.formId;
-	}
-	
-	public void setFormManager(FormManager formManager) {
-		this.formManager = formManager;
-	}
+    public ArrayList getData()
+    {
+        return data;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
-	
-	public Form getForm() {
-		return form;
-	}
+    public void setData( ArrayList data )
+    {
+        this.data = data;
+    }
 
-	public void setForm(Form form) {
-		this.form = form;
-	}
-	
-	public void setElementService(ElementService elementService) {
-		this.elementService = elementService;
-	}
-	
-	public Collection<Element> getFormLinks() {
-		return formLinks;
-	}
+    public void setFormId( Integer formId )
+    {
+        this.formId = formId;
+    }
 
-	public void setFormLinks(Collection<Element> formLinks) {
-		this.formLinks = formLinks;
-	}
-	
-	// -----------------------------------------------------------------------------------------------
-    // Implement : process Select SQL 
+    public Integer getFormId()
+    {
+        return this.formId;
+    }
+
+    public void setFormManager( FormManager formManager )
+    {
+        this.formManager = formManager;
+    }
+
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
+
+    public Form getForm()
+    {
+        return form;
+    }
+
+    public void setForm( Form form )
+    {
+        this.form = form;
+    }
+
+    public void setElementService( ElementService elementService )
+    {
+        this.elementService = elementService;
+    }
+
+    public Collection<Element> getFormLinks()
+    {
+        return formLinks;
+    }
+
+    public void setFormLinks( Collection<Element> formLinks )
+    {
+        this.formLinks = formLinks;
+    }
+
+    // -----------------------------------------------------------------------------------------------
+    // Implement : process Select SQL
     // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
-		
-		try {
+    public String execute()
+        throws Exception
+    {
 
-			form = formService.getForm(formId.intValue());
-			
-			formLinks =  elementService.getElementsByFormLink(form);
-			
-			data = formManager.searchObject(form, CodecUtils.unescape(keyword), Integer.parseInt(formConfigurationManager.getNumberOfRecords()));
-			
-			return SUCCESS;
+        try
+        {
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+            form = formService.getForm( formId.intValue() );
 
-		return ERROR;
-	}
+            formLinks = elementService.getElementsByFormLink( form );
+
+            data = formManager.searchObject( form, CodecUtils.unescape( keyword ), Integer
+                .parseInt( formConfigurationManager.getNumberOfRecords() ) );
+
+            return SUCCESS;
+
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+
+        return ERROR;
+    }
 }

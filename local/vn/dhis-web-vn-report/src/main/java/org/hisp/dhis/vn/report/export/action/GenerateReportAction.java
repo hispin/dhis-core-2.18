@@ -64,7 +64,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
@@ -86,7 +85,7 @@ import org.hisp.dhis.vn.report.state.ReportLocationManager;
 import org.hisp.dhis.vn.report.utils.DateUtils;
 import org.hisp.dhis.vn.report.utils.ExcelUtils;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
@@ -113,8 +112,6 @@ public class GenerateReportAction
 
     private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    private StatementManager statementManager;
-
     private DataElementService dataElementService;
 
     private ReportLocationManager reportLocationManager;
@@ -124,8 +121,6 @@ public class GenerateReportAction
     private PeriodService periodService;
 
     private I18nFormat format;
-   
-   
 
     // -------------------------------------------
     // Input
@@ -166,11 +161,6 @@ public class GenerateReportAction
         DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
     {
         this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
-    }
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
     }
 
     public void setDataElementService( DataElementService dataElementService )
@@ -230,11 +220,11 @@ public class GenerateReportAction
     Date startDate, endDate, firstDayOfYear, last3MonthStartDate, last3MonthEndDate, last6MonthStartDate,
         last6MonthEndDate, endDateOfYear, startQuaterly, endQuaterly, startSixMonthly, endSixMonthly;
 
+    // TODO apply StatementManager init
+
     public String execute()
         throws Exception
     {
-        statementManager.initialise();        
-
         SimpleDateFormat dateformatter = new SimpleDateFormat( "dd.MM.yyyy.h.mm.ss.a" );
 
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
@@ -282,29 +272,30 @@ public class GenerateReportAction
 
         File reportTempDir = reportLocationManager.getReportTempDirectory();
 
-        File inputExcelTemplate = new File( reportLocationManager.getReportTemplateDirectory() + File.separator + reportExcel.getExcelTemplateFile() );
+        File inputExcelTemplate = new File( reportLocationManager.getReportTemplateDirectory() + File.separator
+            + reportExcel.getExcelTemplateFile() );
 
         Calendar calendar = Calendar.getInstance();
-        
+
         File outputReportFile = new File( reportTempDir, currentUserService.getCurrentUsername()
-            + dateformatter.format(  calendar.getTime() ) + inputExcelTemplate.getName() );
+            + dateformatter.format( calendar.getTime() ) + inputExcelTemplate.getName() );
 
         // Write value into excel file
 
         Workbook templateWorkbook = Workbook.getWorkbook( inputExcelTemplate );
 
-        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( outputReportFile, templateWorkbook ); 
-        
-        ExcelUtils.writeValue( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
-            organisationUnit.getName(), ExcelUtils.TEXT, outputReportWorkbook.getSheet(0), text );
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( outputReportFile, templateWorkbook );
 
-        ExcelUtils.writeValue( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(), format
-            .formatPeriod( period ), ExcelUtils.TEXT, outputReportWorkbook.getSheet(0), text );
+        ExcelUtils.writeValue( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(), organisationUnit
+            .getName(), ExcelUtils.TEXT, outputReportWorkbook.getSheet( 0 ), text );
+
+        ExcelUtils.writeValue( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(),
+            format.formatPeriod( period ), ExcelUtils.TEXT, outputReportWorkbook.getSheet( 0 ), text );
 
         for ( Integer sheetNo : reportService.getSheets( this.reportId ) )
         {
-            WritableSheet sheet = outputReportWorkbook.getSheet( sheetNo - 1 );           
-            
+            WritableSheet sheet = outputReportWorkbook.getSheet( sheetNo - 1 );
+
             Collection<ReportItem> reportItems = reportService.getReportItem( sheetNo, reportId );
 
             // Generate report for Report Normal
@@ -429,7 +420,7 @@ public class GenerateReportAction
 
                 for ( OrganisationUnitGroup group : groups )
                 {
-                    Map<Integer, String> formulas = new HashMap<Integer, String>();
+                    //Map<Integer, String> formulas = new HashMap<Integer, String>();
 
                     List<OrganisationUnit> memberOfOrganisationUnitGroups = new ArrayList<OrganisationUnit>( group
                         .getMembers() );
@@ -553,7 +544,7 @@ public class GenerateReportAction
             if ( reportExcel instanceof ReportExcelCategory )
             {
 
-                // Get list of item report from ReportExcelCategory                
+                // Get list of item report from ReportExcelCategory
 
                 // Get list of available DataElement from ReportExcelCategory
                 List<DataElement> dataElements = ((ReportExcelCategory) reportExcel).getDataElements();
@@ -743,8 +734,6 @@ public class GenerateReportAction
         inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
 
         outputReportFile.delete();
-
-        statementManager.destroy();
 
         return SUCCESS;
     }
