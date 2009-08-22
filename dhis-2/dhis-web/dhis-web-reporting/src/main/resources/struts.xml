@@ -436,25 +436,25 @@
     
     <!-- Tally Sheet Forms Generator -->
 
-    <action name="tallySheetGenerator" class="org.hisp.dhis.reporting.tallysheet.action.TallySheetSelectAction">
+    <action name="tallySheetGenerator" class="org.hisp.dhis.reporting.tallysheet.action.SelectTallySheetAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menuTreeHeight">420</param>
-      <param name="page">/dhis-web-reporting/tallySheetSelectForm.vm</param>
+      <param name="page">/dhis-web-reporting/selectTallySheetForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/tallySheet.js</param>
       <interceptor-ref name="organisationUnitTreeStack" />
     </action>
         
-    <action name="configureTallySheetGenerator" class="org.hisp.dhis.reporting.tallysheet.action.TallySheetEditAction">
+    <action name="configureTallySheetGenerator" class="org.hisp.dhis.reporting.tallysheet.action.ViewTallySheetAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menuTreeHeight">420</param>
-      <param name="page">/dhis-web-reporting/tallySheetEditForm.vm</param>
+      <param name="page">/dhis-web-reporting/viewTallySheetForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/tallySheet.js</param>
       <interceptor-ref name="organisationUnitTreeStack" />
     </action>
         
-    <action name="generateTallySheetPDF" class="org.hisp.dhis.reporting.tallysheet.action.TallySheetGenerateAction">
+    <action name="generateTallySheetPDF" class="org.hisp.dhis.reporting.tallysheet.action.GenerateTallySheetAction">
       <result name="success" type="stream">
       <param name="contentType">application/pdf</param>
       <param name="inputName">inputStream</param>
