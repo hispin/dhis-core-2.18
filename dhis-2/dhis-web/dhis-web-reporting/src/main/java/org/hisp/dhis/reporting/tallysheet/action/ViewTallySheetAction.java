@@ -48,7 +48,7 @@ import com.opensymphony.xwork2.ActionContext;
  * @author Haavard Tegelsrud, Oddmund Stroemme, Joergen Froeysadal, Ruben Wangberg
  * @version $Id$
  */
-public class TallySheetEditAction
+public class ViewTallySheetAction
     implements Action
 {
     // -------------------------------------------------------------------------

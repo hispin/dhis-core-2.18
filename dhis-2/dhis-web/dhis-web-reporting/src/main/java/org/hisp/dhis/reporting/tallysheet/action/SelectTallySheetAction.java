@@ -42,7 +42,7 @@ import com.opensymphony.xwork2.Action;
  * @author Haavard Tegelsrud, Oddmund Stroemme, Joergen Froeysadal, Ruben Wangberg
  * @version $Id$
  */
-public class TallySheetSelectAction
+public class SelectTallySheetAction
     implements Action
 {
     // -------------------------------------------------------------------------

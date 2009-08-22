@@ -614,15 +614,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <!-- Tallysheet -->
   
-  <bean id="org.hisp.dhis.reporting.tallysheet.action.TallySheetSelectAction"
-    class="org.hisp.dhis.reporting.tallysheet.action.TallySheetSelectAction"
+  <bean id="org.hisp.dhis.reporting.tallysheet.action.SelectTallySheetAction"
+    class="org.hisp.dhis.reporting.tallysheet.action.SelectTallySheetAction"
     scope="prototype">
     <property name="dataSetService" 
       ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
 
-  <bean id="org.hisp.dhis.reporting.tallysheet.action.TallySheetEditAction"
-    class="org.hisp.dhis.reporting.tallysheet.action.TallySheetEditAction"
+  <bean id="org.hisp.dhis.reporting.tallysheet.action.ViewTallySheetAction"
+    class="org.hisp.dhis.reporting.tallysheet.action.ViewTallySheetAction"
     scope="prototype">
     <property name="tallySheetService"
       ref="org.hisp.dhis.tallysheet.TallySheetService"/>
@@ -632,8 +632,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataset.DataSetService"/>           
   </bean>
    
-  <bean id="org.hisp.dhis.reporting.tallysheet.action.TallySheetGenerateAction"
-    class="org.hisp.dhis.reporting.tallysheet.action.TallySheetGenerateAction"
+  <bean id="org.hisp.dhis.reporting.tallysheet.action.GenerateTallySheetAction"
+    class="org.hisp.dhis.reporting.tallysheet.action.GenerateTallySheetAction"
     scope="prototype">
     <property name="tallySheetPdfService"
       ref="org.hisp.dhis.tallysheet.TallySheetPdfService"/>
