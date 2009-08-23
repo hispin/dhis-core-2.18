@@ -11,6 +11,7 @@ import javax.microedition.rms.RecordStoreException;
 import javax.wireless.messaging.BinaryMessage;
 import javax.wireless.messaging.MessageConnection;
 import org.netbeans.microedition.lcdui.SplashScreen;
+import org.netbeans.microedition.lcdui.SplashScreen;
 
 public class Scdrt extends MIDlet implements CommandListener {
 
@@ -3399,7 +3400,7 @@ public class Scdrt extends MIDlet implements CommandListener {
     public StringItem getSendMsgLabel() {
         if (sendMsgLabel == null) {//GEN-END:|210-getter|0|210-preInit
             // write pre-init user code here
-            sendMsgLabel = new StringItem("Info:", "All Data Collection Complete. Press \"Send SMS\" to send information to server", Item.PLAIN);//GEN-BEGIN:|210-getter|1|210-postInit
+            sendMsgLabel = new StringItem("Info:", "Data Collection Complete.\nPress \"Send SMS\" to send information to server", Item.PLAIN);//GEN-BEGIN:|210-getter|1|210-postInit
             sendMsgLabel.setLayout(ImageItem.LAYOUT_CENTER | Item.LAYOUT_TOP | Item.LAYOUT_BOTTOM | Item.LAYOUT_VCENTER | ImageItem.LAYOUT_NEWLINE_BEFORE | ImageItem.LAYOUT_NEWLINE_AFTER | Item.LAYOUT_SHRINK | Item.LAYOUT_VSHRINK | Item.LAYOUT_EXPAND | Item.LAYOUT_VEXPAND | Item.LAYOUT_2);
             sendMsgLabel.setFont(getFont());//GEN-END:|210-getter|1|210-postInit
             // write post-init user code here
