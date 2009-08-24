@@ -85,14 +85,7 @@ public class PDFUtils
      */
     public static void startNewPage( Document document )
     {
-        try
-        {
-            document.newPage();
-        }
-        catch ( DocumentException ex )
-        {
-            throw new RuntimeException( "Failed to start new page", ex );
-        }
+        document.newPage();
     }
     
     /**
@@ -144,14 +137,7 @@ public class PDFUtils
      */
     public static void moveToNewPage( Document document )
     {
-        try
-        {
-            document.newPage();
-        }
-        catch ( DocumentException ex )
-        {
-            throw new RuntimeException( "Failed to move to new page", ex );
-        }
+        document.newPage();
     }
 
     /**
