@@ -29,34 +29,59 @@ package org.hisp.dhis.dataadmin.action.databrowser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.databrowser.DataBrowserService;
 import org.hisp.dhis.databrowser.DataBrowserTable;
 import org.hisp.dhis.databrowser.MetaValue;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 /**
- * @author espenjac, joakibj
+ * @author espenjac, joakibj, briane, eivinhb
  * @version $Id$
  */
 public class SearchAction
     implements Action
 {
     private static final String KEY_PERIODTYPEID = "periodTypeId";
-    
+
+    // Session variables for PDF export
+    private static final String KEY_DATABROWSERTITLENAME = "dataBrowserTitleName";
+    private static final String KEY_DATABROWSERFROMDATE = "dataBrowserFromDate";
+    private static final String KEY_DATABROWSERTODATE = "dataBrowserToDate";
+    private static final String KEY_DATABROWSERPERIODTYPE = "dataBrowserPeriodType";
+    private static final String KEY_DATABROWSERTABLE = "dataBrowserTableResults";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
 
     private DataBrowserService dataBrowserService;
 
@@ -65,11 +90,25 @@ public class SearchAction
         this.dataBrowserService = dataBrowserService;
     }
 
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    private OrganisationUnitGroupService organisationUnitGroupService;
+    
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     private PeriodService periodService;
@@ -92,8 +131,6 @@ public class SearchAction
 
     private OrganisationUnit selectedUnit;
 
-    private DataBrowserTable dataBrowserTable;
-
     public long getQueryTime()
     {
         return dataBrowserTable.getQueryTime();
@@ -109,9 +146,16 @@ public class SearchAction
         return dataBrowserTable.getColumns();
     }
 
+    private DataBrowserTable dataBrowserTable;
+
     public DataBrowserTable getDataBrowserTable()
     {
         return dataBrowserTable;
+    }
+
+    public Collection<DataElementGroup> getDataElementGroups()
+    {
+        return dataElementService.getAllDataElementGroups();
     }
 
     public List<List<Integer>> getAllCounts()
@@ -122,6 +166,13 @@ public class SearchAction
     public Iterator<MetaValue> getRowNamesIterator()
     {
         return dataBrowserTable.getRows().iterator();
+    }
+
+    private String selectedUnitChanger;
+
+    public void setSelectedUnitChanger( String selectedUnitChanger )
+    {
+        this.selectedUnitChanger = selectedUnitChanger;
     }
 
     private String searchOption;
@@ -184,6 +235,18 @@ public class SearchAction
         this.parent = parent;
     }
 
+    private String orgunitid;
+
+    public String getOrgunitid()
+    {
+        return orgunitid;
+    }
+
+    public void setOrgunitid( String orgunitid )
+    {
+        this.orgunitid = orgunitid;
+    }
+
     private String tmpParent;
 
     public String getTmpParent()
@@ -196,7 +259,14 @@ public class SearchAction
     public long getRequestTime()
     {
         return requestTime;
-    }    
+    }
+
+    private String dataElementName;
+
+    public String getDataElementName()
+    {
+        return dataElementName;
+    }
 
     public String getParentName()
     {
@@ -205,17 +275,86 @@ public class SearchAction
             return selectedUnit.getName();
         }
 
-        if ( tmpParent == null )
+        if ( parent == null )
         {
             return "";
         }
 
         if ( searchOption.equals( "DataSet" ) )
         {
-            return dataSetService.getDataSet( Integer.parseInt( tmpParent ) ).getName();
+            return dataSetService.getDataSet( Integer.parseInt( parent ) ).getName();
+        }
+
+        if ( searchOption.equals( "OrganisationUnitGroup" ) )
+        {
+            return organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt ( parent )).getName();
+        }
+        
+        if ( searchOption.equals( "DataElementGroup" ) )
+        {
+            return dataElementService.getDataElementGroup( Integer.parseInt( parent ) ).getName();
         }
 
         return "";
+    }
+
+    public String getCurrentParentsParent()
+    {
+        String name = "";
+        try
+        {
+            name = selectedUnit.getParent().getName();
+        }
+        catch ( Exception e )
+        {
+            name = "";
+        }
+        return name;
+    }
+
+    public List<OrganisationUnit> getCurrentChildren()
+    {
+        Set<OrganisationUnit> tmp = selectedUnit.getChildren();
+        List<OrganisationUnit> list = new ArrayList<OrganisationUnit>();
+
+        for ( OrganisationUnit o : tmp )
+        {
+            if ( o.getChildren().size() > 0 )
+                list.add( o );
+        }
+        Collections.sort( list, new OrganisationUnitNameComparator() );
+
+        return list;
+    }
+
+    private List<MetaValue> allColumnsConverted;
+
+    public List<MetaValue> getAllColumnsConverted()
+    {
+        return allColumnsConverted;
+    }
+
+    public List<OrganisationUnit> getBreadCrumbOrgUnit()
+    {
+        List<OrganisationUnit> myList = new ArrayList<OrganisationUnit>();
+
+        boolean loop = true;
+        OrganisationUnit currentOrgUnit = selectedUnit;
+        while ( loop )
+        {
+            myList.add( currentOrgUnit );
+            if ( currentOrgUnit.getParent() == null )
+            {
+                loop = false;
+            }
+            else
+            {
+                currentOrgUnit = currentOrgUnit.getParent();
+            }
+        }
+        Collections.reverse( myList );
+
+        return myList;
     }
 
     // -------------------------------------------------------------------------
@@ -225,11 +364,25 @@ public class SearchAction
     public String execute()
     {
         long before = System.currentTimeMillis();
-        
+
         periodTypeId = (String) SessionUtils.getSessionVar( KEY_PERIODTYPEID );
 
+        // If set, change the current selected org unit
+        if ( selectedUnitChanger != null )
+        {
+            selectionManager.setSelectedOrganisationUnit( this.organisationUnitService.getOrganisationUnit( Integer
+                .parseInt( selectedUnitChanger.trim() ) ) );
+        }
+
+        // Checks if the selected unit is a leaf node. If it is, we must add
+        // parent as the same parameter value
+        if ( parent == null && selectionManager.getSelectedOrganisationUnit() != null
+            && selectionManager.getSelectedOrganisationUnit().getChildren().size() == 0 )
+        {
+            parent = selectionManager.getSelectedOrganisationUnit().getId() + "";
+        }
+
         // Check if the second selected date is later than the first selected date
-        
         if ( fromDate.length() == 0 && toDate.length() == 0 )
         {
             if ( checkDates( fromDate, toDate ) )
@@ -242,54 +395,63 @@ public class SearchAction
 
         if ( searchOption.equals( "DataSet" ) )
         {
-            // Get all dataset objects
-            
-            if ( fromDate.length() == 0 && toDate.length() == 0 )
+            if ( parent != null )
             {
-                dataBrowserTable = dataBrowserService.getAllCountDataSetsByPeriodType( periodType );
+                // Show DataElement for a given DataSet
+                Integer parentInt = Integer.parseInt( parent );
+
+                dataBrowserTable = dataBrowserService.getCountDataElementsForDataSetInPeriod( parentInt, fromDate, toDate, periodType );
+
             }
             else
             {
-                dataBrowserTable = dataBrowserService.getCountDataSetsInPeriod( fromDate, toDate, periodType );
+                // Get all DataSets
+                dataBrowserTable = dataBrowserService.getDataSetsInPeriod( fromDate, toDate, periodType );
             }
-
+        }
+        else if ( searchOption.equals( "OrganisationUnitGroup" ) )
+        {
+            if( parent != null)
+            {
+             // Show DataElementGroups
+                Integer parentInt = Integer.parseInt( parent );
+                dataBrowserTable = dataBrowserService.getCountDataElementGroupsForOrgUnitGroupInPeriod(parentInt, fromDate, toDate, periodType );
+            }
+            else
+            {
+                dataBrowserTable = dataBrowserService.getOrgUnitGroupsInPeriod( fromDate, toDate, periodType);
+            }
+        }
+        else if ( searchOption.equals( "DataElementGroup" ) )
+        {
+            // Get all DataElementGroup objects
             if ( parent != null )
             {
-                // Show dataelement
-
+                // Show DataElement
                 Integer parentInt = Integer.parseInt( parent );
 
-                if ( fromDate.length() == 0 && toDate.length() == 0 )
-                {
-                    dataBrowserTable = dataBrowserService.getAllCountDataElementsByPeriodType( parentInt, periodType );
-                }
-                else
-                {
-                    dataBrowserTable = dataBrowserService.getCountDataElementsInPeriod( parentInt, fromDate, toDate,
-                        periodType );
-                }
-
-                tmpParent = parent;
+                dataBrowserTable = dataBrowserService.getCountDataElementsForDataElementGroupInPeriod( parentInt,
+                    fromDate, toDate, periodType );
             }
+            else
+            {
 
+                dataBrowserTable = dataBrowserService.getDataElementGroupsInPeriod( fromDate, toDate, periodType );
+            }
         }
         else if ( searchOption.equals( "OrganisationUnit" ) )
         {
             selectedUnit = selectionManager.getSelectedOrganisationUnit();
-
-            if ( selectedUnit != null )
+            if ( parent != null )
             {
+                Integer parentInt = Integer.parseInt( parent );
+                // Show DataElement values only for specified organization unit
+                dataBrowserTable = dataBrowserService.getCountDataElementsForOrgUnitInPeriod( parentInt, fromDate, toDate, periodType );
+            }
+            else if ( selectedUnit != null )
+            {
+                dataBrowserTable = dataBrowserService.getOrgUnitsInPeriod( selectedUnit.getId(), fromDate, toDate, periodType );
 
-                if ( fromDate.length() == 0 && toDate.length() == 0 )
-                {
-                    dataBrowserTable = dataBrowserService.getAllCountOrgUnitsByPeriodType( selectedUnit.getId(), periodType );
-                }
-                else
-                {
-                    dataBrowserTable = dataBrowserService.getCountOrgUnitsInPeriod( selectedUnit.getId(), fromDate, toDate, periodType );
-                }
-
-                requestTime = System.currentTimeMillis() - before;
             }
             else
             {
@@ -300,9 +462,18 @@ public class SearchAction
         {
             return ERROR;
         }
-        
+
+        // Set DataBrowserTable variable for PDF export
+        SessionUtils.setSessionVar( KEY_DATABROWSERTABLE, dataBrowserTable );
+
         requestTime = System.currentTimeMillis() - before;
         
+        // Convert column date names
+        convertColumnNames( dataBrowserTable );
+        
+        // Set DataBrowserTable variable for PDF export
+        setExportPDFVariables();
+
         return SUCCESS;
     }
 
@@ -316,7 +487,7 @@ public class SearchAction
      * 
      * @param fromDate
      * @param toDate
-     * @return
+     * @return boolean
      */
     private boolean checkDates( String fromDate, String toDate )
     {
@@ -332,10 +503,10 @@ public class SearchAction
             date2 = sdf.parse( toDate );
         }
         catch ( ParseException e )
-        {            
+        {
             return false; // The user hasn't specified any dates
         }
-        
+
         if ( !date1.before( date2 ) )
         {
             return true; // Return true if date2 is earlier than date1
@@ -343,6 +514,32 @@ public class SearchAction
         else
         {
             return false;
+        }
+    }
+
+    /**
+     * This is a helper method for setting session variables for PDF export
+     */
+    private void setExportPDFVariables()
+    {
+        SessionUtils.setSessionVar( KEY_DATABROWSERTITLENAME, searchOption + " - " + getParentName() );
+        SessionUtils.setSessionVar( KEY_DATABROWSERFROMDATE, fromDate );
+        SessionUtils.setSessionVar( KEY_DATABROWSERTODATE, toDate );
+        SessionUtils.setSessionVar( KEY_DATABROWSERPERIODTYPE, periodTypeId );
+        SessionUtils.setSessionVar( KEY_DATABROWSERTABLE, dataBrowserTable );
+    }
+
+    /**
+     * This is a helper method for populating a list of converted column names
+     * 
+     * @param DataBrowserTable
+     */
+    private void convertColumnNames( DataBrowserTable dataBrowserTable )
+    {
+        allColumnsConverted = dataBrowserTable.getColumns();
+        for ( MetaValue col : allColumnsConverted )
+        {
+            col.setName( DateUtils.convertDate( col.getName() ) );
         }
     }
 }

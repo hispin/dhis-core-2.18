@@ -28,12 +28,14 @@ package org.hisp.dhis.databrowser;
  */
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 /**
- * @author Joakim Bj�rnstad
+ * @author Joakim Bj�rnstad, mod: eivinhb
  * @version $Id$
  */
 public class DataBrowserTable
@@ -100,6 +102,11 @@ public class DataBrowserTable
      * 
      * ResultSet contents: index 1: Id index 2: Name index 3: Count
      * 
+     * The ResultSet can also contain index 4: PeriodId AND index 5: ColumnName
+     * if it does, this functions will add data to rows divided in new columns
+     * for each PeriodId in the Set. IMPORTANT: index4 has to have a AS PeriodId
+     * in the query IMPORTANT: index5 has to have a AS ColumnHeader in the query
+     * 
      * Initially adds 0 to each row in the column. Looks up in RowMeta and finds
      * index based on Name. Inserts into counts based on that. If the ResultSet
      * is empty, nothing is inserted into the list. (the Period has no
@@ -111,6 +118,24 @@ public class DataBrowserTable
      */
     public Integer addColumnToAllRows( ResultSet resultSet )
     {
+        boolean hasColumnName = false;
+        boolean hasPeriodIds = false;
+        try
+        {
+            ResultSetMetaData data = resultSet.getMetaData();
+            if ( data.getColumnCount() == 5 )
+            {
+                if ( data.getColumnLabel( 5 ).toString().equalsIgnoreCase( "ColumnHeader" ) )
+                    hasColumnName = true;
+                if ( data.getColumnLabel( 4 ).toString().equalsIgnoreCase( "PeriodId" ) )
+                    hasPeriodIds = true;
+            }
+        }
+        catch ( SQLException e1 )
+        {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
         Integer countRows = 0;
         try
         {
@@ -119,13 +144,49 @@ public class DataBrowserTable
                 return countRows;
             }
             resultSet.beforeFirst();
-            for ( List<Integer> rowItem : counts )
-            {
-                rowItem.add( 0 );
-            }
 
+            Integer prid = 0;
+            boolean makeEmptyCol = false;
             while ( resultSet.next() )
             {
+                if ( resultSet.isFirst() )
+                {
+                    for ( List<Integer> rowItem : this.counts )
+                    {
+                        rowItem.add( 0 );
+                    }
+                    if ( hasPeriodIds && hasColumnName )
+                    {
+                        this.addColumnName( resultSet.getString( 5 ) );
+                    }
+                }
+
+                if ( hasPeriodIds )
+                {
+                    int tmp = resultSet.getInt( 4 );
+                    if ( prid == 0 )
+                        prid = tmp;
+                    if ( tmp != prid )
+                    {
+                        prid = tmp;
+                        makeEmptyCol = true;
+
+                    }
+
+                    if ( makeEmptyCol )
+                    {
+                        makeEmptyCol = false;
+                        for ( List<Integer> rowItem : this.counts )
+                        {
+                            rowItem.add( 0 );
+                        }
+                        if ( hasColumnName )
+                        {
+                            this.addColumnName( resultSet.getString( 5 ) );
+                        }
+                    }
+                }
+
                 String name = resultSet.getString( 2 );
                 int value = resultSet.getInt( 3 );
                 List<Integer> rowItem = getRowBasedOnRowName( name );
@@ -140,7 +201,18 @@ public class DataBrowserTable
             e.printStackTrace();
         }
 
+        if ( countRows == 0 )
+            this.addZeroColumn();
         return countRows;
+    }
+
+    public void addZeroColumn()
+    {
+        this.addColumnName( "Count" );
+        for ( List<Integer> rowItem : this.counts )
+        {
+            rowItem.add( 0 );
+        }
     }
 
     /**
@@ -224,8 +296,8 @@ public class DataBrowserTable
     {
         this.queryTime = queryTime;
     }
-    
-    public void addQueryTime(long queryTime)
+
+    public void addQueryTime( long queryTime )
     {
         this.queryTime += queryTime;
     }
@@ -272,5 +344,38 @@ public class DataBrowserTable
     {
         queryCount++;
     }
+    
+    /**
+     * This overridden toString method writes out the DataBrowserTable as a
+     * table to screen. Very handy in case of debugging and testing.
+     */
+    @Override
+    public String toString()
+    {
+        String ret = "\n\n";
+        for ( MetaValue col : this.getColumns() )
+        {
+            ret += "|" + col.getName();
+        }
+        ret += "|\n";
+        int i = ret.length();
+        for ( int o = 0; o < i; o++ )
+            ret += "-";
+        ret += "\n";
+        Iterator<MetaValue> it = this.getRows().iterator();
 
+        for ( List<Integer> col : this.getCounts() )
+        {
+            MetaValue rowMeta = it.next();
+            ret += "|" + rowMeta.getName();
+            for ( Integer rowItem : col )
+            {
+                ret += "|" + rowItem;
+            }
+            ret += "|\n";
+        }
+        ret += "\n\n";
+        return ret;
+    }
+    
 }

@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.validator.DateValidator;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
@@ -44,6 +45,8 @@ public class DateUtils
     public static final double DAYS_IN_YEAR = 365.0;
     
     private static final long MS_PER_DAY = 86400000;
+    
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     
     /**
      * Formats a Date to the IXF date format which is YYYY-MM-DD'T'HH:MM:SS.
@@ -259,5 +262,43 @@ public class DateUtils
         String dayString = day < 10 ? "0" + day : String.valueOf( day );
         
         return yearString + "-" + monthString + "-" + dayString;
+    }
+    /**
+     * This method checks whether the String inDate is a valid date following the format "yyyy-MM-dd".
+     * 
+     * @param date the string to be checked.
+     * @return true/false depending on whether the string is a date according to the format "yyyy-MM-dd".
+     */
+    public static boolean dateIsValid( String dateString )
+    {        
+        return DateValidator.getInstance().isValid( dateString, DEFAULT_DATE_FORMAT, true );
+    }
+    
+    /**
+     * This method converts a string from the date format "yyyy-MM-dd" to "dd-MMM-yyyy".
+     * 
+     * @param date is the string to be converted.
+     * @return converted string if the date is valid, else the original string is returned
+     */
+    public static String convertDate( String dateString )
+    {
+        if ( !dateIsValid( dateString ) )
+        {
+            return dateString;
+        }
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat( DEFAULT_DATE_FORMAT );
+
+        try
+        {
+            Date date = dateFormat.parse( dateString );
+            dateFormat.applyPattern( "dd MMM yyyy" );
+
+            return dateFormat.format( date );
+        }
+        catch ( ParseException pe )
+        {
+            throw new RuntimeException( "Date string could not be parsed: " + dateString );
+        }
     }
 }
