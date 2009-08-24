@@ -94,6 +94,7 @@ public class GetDisplayTableOptionsAction
     {
         reportTable = reportTableService.getReportTable( id );
         
+        reportTable.setRelativePeriods( reportTableService.getRelativePeriods( reportTable.getRelatives(), 1 ) );
         reportTable.setI18nFormat( format );
         reportTable.init();
         
