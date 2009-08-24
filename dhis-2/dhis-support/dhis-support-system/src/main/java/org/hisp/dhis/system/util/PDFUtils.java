@@ -32,7 +32,9 @@ import java.io.OutputStream;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Font;
+import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -48,12 +50,18 @@ public class PDFUtils
     public static final int ALIGN_RIGHT = PdfPCell.ALIGN_RIGHT;
     
     private static final Font TEXT = new Font( Font.HELVETICA, 9, Font.NORMAL );
+    private static final Font TEXT5 = new Font( Font.HELVETICA, 8, Font.NORMAL );
+    private static final Font TEXT6 = new Font( Font.HELVETICA, 6, Font.NORMAL );
+    private static final Font TEXT7 = new Font( Font.HELVETICA, 4, Font.NORMAL );
     private static final Font ITALIC = new Font( Font.HELVETICA, 9, Font.ITALIC );    
     private static final Font HEADER1 = new Font( Font.HELVETICA, 20, Font.BOLD );
     private static final Font HEADER2 = new Font( Font.HELVETICA, 16, Font.BOLD );
     private static final Font HEADER3 = new Font( Font.HELVETICA, 12, Font.BOLD );
     private static final Font HEADER4 = new Font( Font.HELVETICA, 9, Font.BOLD );
-        
+    private static final Font HEADER5 = new Font( Font.HELVETICA, 8, Font.BOLD );
+    private static final Font HEADER6 = new Font( Font.HELVETICA, 6, Font.BOLD );
+    private static final Font HEADER7 = new Font( Font.HELVETICA, 4, Font.BOLD );
+
     /**
      * Creates a document.
      * 
@@ -62,9 +70,21 @@ public class PDFUtils
      */
     public static Document openDocument( OutputStream outputStream )
     {
+        return openDocument( outputStream, PageSize.A4 );
+    }
+    
+    /**
+     * Creates a document.
+     * 
+     * @param outputStream The output stream to write the document content.
+     * @param pageSize the page size.
+     * @return A Document.
+     */
+    public static Document openDocument( OutputStream outputStream, Rectangle pageSize )
+    {
         try
         {        
-            Document document = new Document();
+            Document document = new Document( pageSize );
         
             PdfWriter.getInstance( document, outputStream );
             
@@ -244,6 +264,39 @@ public class PDFUtils
     }
 
     /**
+     * Creates a cell with text 5 font.
+     * 
+     * @param text The text to include in the cell.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getText5Cell( String text )
+    {
+        return getCell( text, 1, TEXT5, ALIGN_LEFT );
+    }
+
+    /**
+     * Creates a cell with text 6 font.
+     * 
+     * @param text The text to include in the cell.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getText6Cell( String text )
+    {
+        return getCell( text, 1, TEXT6, ALIGN_LEFT );
+    }
+    
+    /**
+     * Creates a cell with text 7 font.
+     * 
+     * @param text The text to include in the cell.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getText7Cell( String text )
+    {
+        return getCell( text, 1, TEXT7, ALIGN_LEFT );
+    }
+    
+    /**
      * Creates a cell with italic text font.
      * 
      * @param text The text to include in the cell.
@@ -302,5 +355,41 @@ public class PDFUtils
     public static PdfPCell getHeader4Cell( String text, int colspan )
     {
         return getCell( text, colspan, HEADER4, ALIGN_LEFT );
+    }
+    
+    /**
+     * Creates a cell with header 5 font.
+     * 
+     * @param text The text to include in the cell.
+     * @param colspan The column span of the cell.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getHeader5Cell( String text, int colspan )
+    {
+        return getCell( text, colspan, HEADER5, ALIGN_LEFT );
+    }
+
+    /**
+     * Creates a cell with header 6 font.
+     * 
+     * @param text The text to include in the cell.
+     * @param colspan The column span of the cell.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getHeader6Cell( String text, int colspan )
+    {
+        return getCell( text, colspan, HEADER6, ALIGN_LEFT );
+    }
+
+    /**
+     * Creates a cell with header 7 font.
+     * 
+     * @param text The text to include in the cell.
+     * @param colspan The column span of the cell.
+     * @return A PdfCell.
+     */
+    public static PdfPCell getHeader7Cell( String text, int colspan )
+    {
+        return getCell( text, colspan, HEADER7, ALIGN_LEFT );
     }
 }

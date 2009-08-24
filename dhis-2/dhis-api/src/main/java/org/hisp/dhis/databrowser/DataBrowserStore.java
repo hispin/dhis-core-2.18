@@ -33,12 +33,11 @@ import java.util.List;
  * Contains methods for creating aggregated count queries for the Data Browser
  * module.
  * 
- * @author joakibj, martinwa
+ * @author joakibj, martinwa, briane, eivinhb
  * 
  */
 public interface DataBrowserStore
 {
-
     String ID = DataBrowserStore.class.getName();
 
     // -------------------------------------------------------------------------
@@ -46,68 +45,163 @@ public interface DataBrowserStore
     // -------------------------------------------------------------------------
 
     /**
-     * 
-     * Always called first.
-     * 
-     * Sets the structure in DataBrowserTable for Orgunits. Find all
-     * OrganisationUnits with DataValues in betweenPeriod List and given
-     * OrganisationUnit parent id. Then call on helpers in DataBrowserTable to
-     * set it up.
-     * 
-     * @param table the DataBrowserTable to set the structure in
-     * @param orgUnitParent the OrgUnit parent
-     * @param betweenPeriods list of Period ids
-     */
-    void setStructureForOrgUnitBetweenPeriods( DataBrowserTable table, Integer orgUnitParent,
-        List<Integer> betweenPeriods );
-
-    /**
-     * 
-     * Always called first.
-     * 
-     * Sets the structure in DataBrowserTable for DataElements. Find all
-     * DataSets with DataValue in betweenPeriod List and given DataSetId parent
-     * id. Then call on helpers internally to set it up.
-     * 
-     * @param table the DataBrowserTable to set the structure in
-     * @param dataSetId the parent DataSet id
-     * @param betweenPeriods list of Period ids
-     */
-    void setDataElementStructureForDataSetBetweenPeriods( DataBrowserTable table, Integer dataSetId,
-        List<Integer> betweenPeriods );
-
-    /**
-     * 
      * Finds all DataSets connected to any period in betweenPeriodIds and does
      * an aggregated count.
      * 
      * @param betweenPeriodIds list of Period ids
      * @return the DataBrowserTable with structure for presentation
      */
-    DataBrowserTable getDataSetsInPeriod( List<Integer> betweenPeriodIds );
+    DataBrowserTable getDataSetsBetweenPeriods( List<Integer> betweenPeriodIds );
 
     /**
+     * Finds all DataElementGroups connected to any period in betweenPeriodIds
+     * and does an aggregated count.
      * 
-     * Sets DataElement count-Columns in DataBrowserTable for one Period id
+     * @param betweenPeriodIds list of Period ids
+     * @return the DataBrowserTable with structure for presentation
+     */
+    DataBrowserTable getDataElementGroupsBetweenPeriods( List<Integer> betweenPeriodIds );
+
+    /**
+     * Finds all OrganisationUnitGroups connected to any period in
+     * betweenPeriodIds and does an aggregated count.
+     * 
+     * @param betweenPeriodIds list of Period ids
+     * @return the DataBrowserTable with structure for presentation
+     */
+    DataBrowserTable getOrgUnitGroupsBetweenPeriods( List<Integer> betweenPeriodIds );
+
+    /**
+     * Always called first.
+     * 
+     * Sets the structure in DataBrowserTable for DataElements. Finds all
+     * DataSets with DataValue in betweenPeriod List and given DataSetId. Then
+     * calls on helpers internally to set it up.
+     * 
+     * @param table the DataBrowserTable to set the structure in
+     * @param dataSetId the DataSet id
+     * @param betweenPeriods list of Period ids
+     */
+    void setDataElementStructureForDataSetBetweenPeriods( DataBrowserTable table, Integer dataSetId,
+        List<Integer> betweenPeriods );
+
+    /**
+     * Always called first.
+     * 
+     * Sets the structure in DataBrowserTable for DataElements. Finds all
+     * DataElementGroups with DataValue in betweenPeriod List and given
+     * DataElementGroupId. Then calls on helpers internally to set it up.
+     * 
+     * @param table the DataBrowserTable to set the structure in
+     * @param dataElementGroupId the DataElementGroup id
+     * @param betweenPeriods list of Period ids
+     */
+    void setDataElementStructureForDataElementGroupBetweenPeriods( DataBrowserTable table, Integer dataElementGroupId,
+        List<Integer> betweenPeriods );
+
+    /**
+     * Always called first.
+     * 
+     * Sets the structure in DataBrowserTable for DataElementGroups. Finds all
+     * OrganisationUnitGroups with DataValue in betweenPeriod List and given
+     * OrganisationUnitGroup id. Then calls on helpers in DataBrowserTable to
+     * set it up.
+     * 
+     * @param table the DataBrowserTable to set the structure in
+     * @param orgUnitGroupId the OrganisationUnitGroup id
+     * @param betweenPeriods lit of Period ids
+     */
+    void setDataElementGroupStructureForOrgUnitGroupBetweenPeriods( DataBrowserTable table, Integer orgUnitGroupId,
+        List<Integer> betweenPeriods );
+
+    /**
+     * Always called first.
+     * 
+     * Sets the structure in DataBrowserTable for OrgUnits. Finds all
+     * OrganisationUnits with DataValues in betweenPeriod List and given
+     * OrganisationUnit parent id. Then calls on helpers in DataBrowserTable to
+     * set it up.
+     * 
+     * @param table the DataBrowserTable to set the structure in
+     * @param orgUnitParent the OrganisationUnit parent id
+     * @param betweenPeriods list of Period ids
+     */
+    void setStructureForOrgUnitBetweenPeriods( DataBrowserTable table, Integer orgUnitParent,
+        List<Integer> betweenPeriods );
+
+    /**
+     * Always called first.
+     * 
+     * Sets the structure in DataBrowserTable for DataElements. Finds all
+     * OrganisationUnits with DataValue in betweenPeriod List and given
+     * OrganisationUnit id. Then calls on helpers in DataBrowserTable to set it
+     * up.
+     * 
+     * @param table the DataBrowserTable to set the structure in
+     * @param orgUnitId the OrganisationUnit id
+     * @param betweenPeriodIds List of Period ids
+     */
+    void setDataElementStructureForOrgUnitBetweenPeriods( DataBrowserTable table, Integer orgUnitId,
+        List<Integer> betweenPeriodIds );
+
+    /**
+     * Sets DataElement count-Columns in DataBrowserTable for betweenPeriod List
      * connected to one DataSet.
      * 
      * @param table the DataBrowserTable to insert column into
      * @param dataSetId id of DataSet the DataElements are for
-     * @param periodId the Period id
+     * @param betweenPeriodIds list of Period ids
      * @return 0 if no results are found else number of rows inserted
      */
-    Integer setCountDataElementsInOnePeriod( DataBrowserTable table, Integer dataSetId, Integer periodId );
+    Integer setCountDataElementsForDataSetBetweenPeriods( DataBrowserTable table, Integer dataSetId,
+        List<Integer> betweenPeriodIds );
 
     /**
-     * 
-     * Sets OrgUnit count-Columns in DataBrowserTable for one Period id
-     * connected to one OrgUnit parent.
+     * Sets DataElement count-Columns in DataBrowserTable for betweenPeriod List
+     * connected to one DataElementGroup.
      * 
      * @param table the DataBrowserTable to insert column into
-     * @param orgUnitParent the OrgUnit parent
-     * @param periodId the Period id
+     * @param dataElementGroupId id of DataElementGroup the DataElements are for
+     * @param betweenPeriodIds list of Period ids
      * @return 0 if no results are found else number of rows inserted
      */
-    Integer setCountOrgUnitsInOnePeriod( DataBrowserTable table, Integer orgUnitParent, Integer periodId );
+    Integer setCountDataElementsForDataElementGroupBetweenPeriods( DataBrowserTable table, Integer dataElementGroupId,
+        List<Integer> betweenPeriodIds );
+
+    /**
+     * Sets the DataElementGroup count-Columns in DataBrowserTable for
+     * betweenPeriod List connected to one OrgUnitGroup.
+     * 
+     * @param table the DataBrowserTable to insert column into
+     * @param orgUnitGroupId id of OrgUnitGroup the DataElementGroups are for
+     * @param betweenPeriodIds list of Period ids
+     * @return 0 if no results are found else number of rows inserted
+     */
+    Integer setCountDataElementGroupsForOrgUnitGroupBetweenPeriods( DataBrowserTable table, Integer orgUnitGroupId,
+        List<Integer> betweenPeriodIds );
+
+    /**
+     * Sets OrgUnit count-Columns in DataBrowserTable for betweenPeriod List
+     * connected to one OrganisationUnit parent.
+     * 
+     * @param table the DataBrowserTable to insert column into
+     * @param orgUnitParent the OrganisationUnit parent id
+     * @param betweenPeriodIds list of Period ids
+     * @return 0 if no results are found else number of rows inserted
+     */
+    Integer setCountOrgUnitsBetweenPeriods( DataBrowserTable table, Integer orgUnitParent,
+        List<Integer> betweenPeriodIds );
+
+    /**
+     * Sets DataElement count-Columns in DataBrowserTable for betweenPeriod List
+     * connected to one OrgUnit.
+     * 
+     * @param table the DataBrowserTable to insert column into
+     * @param orgUnitId id of OrganisationUnit the DataElements are for
+     * @param betweenPeriodIds list of Period ids
+     * @return 0 if no results are found else number of rows inserted
+     */
+    Integer setCountDataElementsForOrgUnitBetweenPeriods( DataBrowserTable table, Integer orgUnitId,
+        List<Integer> betweenPeriodIds );
 
 }

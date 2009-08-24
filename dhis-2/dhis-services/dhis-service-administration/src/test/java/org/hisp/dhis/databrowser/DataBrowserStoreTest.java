@@ -27,251 +27,48 @@ package org.hisp.dhis.databrowser;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNotSame;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
-import org.hisp.dhis.DhisTest;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
-import org.junit.Ignore;
-import org.junit.Test;
+import static junit.framework.Assert.*;
 
 /**
- * @author Joakim Bjornstad
+ * @author joakibj, briane, eivinhb
  * @version $Id$
  */
 public class DataBrowserStoreTest
-    extends DhisTest
+    extends DataBrowserTest
 {
     private DataBrowserStore dataBrowserStore;
-
-    private final String T = "true";
-
-    private final String F = "false";
-
-    private DataElementCategoryCombo categoryCombo;
-
-    private DataElementCategoryOptionCombo categoryOptionCombo;
-
-    private Collection<Integer> dataElementIds;
-
-    private Collection<Integer> periodIds;
-
-    private Collection<Integer> organisationUnitIds;
-
-    private DataSet dataSetA;
-    private DataSet dataSetB;
-
-    private DataElement dataElementA;
-    private DataElement dataElementB;
-
-    private Period periodA;
-    private Period periodB;
-    private Period periodC;
-    private Period periodD;
-
-    private OrganisationUnit unitA;
-    private OrganisationUnit unitB;
-    private OrganisationUnit unitC;
-    private OrganisationUnit unitD;
-    private OrganisationUnit unitE;
-    private OrganisationUnit unitF;
-    private OrganisationUnit unitG;
-    private OrganisationUnit unitH;
-    private OrganisationUnit unitI;
 
     @Override
     public void setUpTest()
         throws Exception
     {
         dataBrowserStore = (DataBrowserStore) getBean( DataBrowserStore.ID );
-
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
-
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
-
-        dataSetService = (DataSetService) getBean( DataSetService.ID );
-
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-
-        periodService = (PeriodService) getBean( PeriodService.ID );
-
-        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
-        dataValueService = (DataValueService) getBean( DataValueService.ID );
-
-        categoryCombo = categoryComboService
-            .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
-
-        categoryOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
-
-        // ---------------------------------------------------------------------
-        // Setup identifier Collections
-        // ---------------------------------------------------------------------
-
-        dataElementIds = new HashSet<Integer>();
-        periodIds = new HashSet<Integer>();
-        organisationUnitIds = new HashSet<Integer>();
-
-        // ---------------------------------------------------------------------
-        // Setup DataElements
-        // ---------------------------------------------------------------------
-
-        dataElementA = createDataElement( 'A', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
-        dataElementB = createDataElement( 'B', DataElement.TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
-
-        dataElementIds.add( dataElementService.addDataElement( dataElementA ) );
-        dataElementIds.add( dataElementService.addDataElement( dataElementB ) );
-
-        Collection<DataElement> dataElementsA = new HashSet<DataElement>();
-        dataElementsA.add( dataElementA );
-        Collection<DataElement> dataElementsB = new HashSet<DataElement>();
-        dataElementsB.add( dataElementB );
-
-        // ---------------------------------------------------------------------
-        // Setup Periods
-        // ---------------------------------------------------------------------
-
-        Iterator<PeriodType> periodTypeIt = periodService.getAllPeriodTypes().iterator();
-        PeriodType periodTypeA = periodTypeIt.next();
-        PeriodType periodTypeB = periodTypeIt.next();
-
-        Date mar01 = getDate( 2005, 3, 1 );
-        Date mar31 = getDate( 2005, 3, 31 );
-        Date apr01 = getDate( 2005, 4, 1 );
-        Date apr30 = getDate( 2005, 4, 30 );
-        Date may01 = getDate( 2005, 5, 1 );
-        Date may31 = getDate( 2005, 5, 31 );
-
-        periodA = createPeriod( periodTypeA, mar01, mar31 );
-        periodB = createPeriod( periodTypeA, apr01, apr30 );
-        periodC = createPeriod( periodTypeB, may01, may31 );
-        periodD = createPeriod( periodTypeB, mar01, may31 );
-
-        periodIds.add( periodService.addPeriod( periodA ) );
-        periodIds.add( periodService.addPeriod( periodB ) );
-        periodIds.add( periodService.addPeriod( periodC ) );
-        periodIds.add( periodService.addPeriod( periodD ) );
-
-        // ---------------------------------------------------------------------
-        // Setup DataSets
-        // ---------------------------------------------------------------------
-
-        dataSetA = createDataSet( 'A', periodTypeA );
-        dataSetB = createDataSet( 'B', periodTypeB );
-
-        dataSetA.setDataElements( dataElementsA );
-        dataSetB.setDataElements( dataElementsB );
-
-        dataSetService.addDataSet( dataSetA );
-        dataSetService.addDataSet( dataSetB );
-
-        // ---------------------------------------------------------------------
-        // Setup OrganisationUnits
-        // ---------------------------------------------------------------------
-
-        unitA = createOrganisationUnit( 'A' );
-        unitB = createOrganisationUnit( 'B', unitA );
-        unitC = createOrganisationUnit( 'C', unitA );
-        unitD = createOrganisationUnit( 'D', unitB );
-        unitE = createOrganisationUnit( 'E', unitB );
-        unitF = createOrganisationUnit( 'F', unitB );
-        unitG = createOrganisationUnit( 'G', unitF );
-        unitH = createOrganisationUnit( 'H', unitF );
-        unitI = createOrganisationUnit( 'I' );
-
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitA ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitB ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitC ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitD ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitE ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitF ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitG ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitH ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitI ) );
-
-        organisationUnitService.addOrganisationUnitHierarchy( new Date() ); // TODO
-
-        // ---------------------------------------------------------------------
-        // Setup DataValues
-        // ---------------------------------------------------------------------
-
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitC, "90", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitD, "10", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitE, "35", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitF, "25", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitG, "20", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitH, "60", categoryOptionCombo ) );
-
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitC, "70", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitD, "40", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitE, "65", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitF, "55", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitG, "20", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitH, "15", categoryOptionCombo ) );
-
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitC, "95", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitD, "40", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitE, "45", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitF, "30", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitG, "50", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitH, "70", categoryOptionCombo ) );
-
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitC, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitD, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitE, F, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitF, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitG, F, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitH, T, categoryOptionCombo ) );
-
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitC, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitD, F, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitE, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitF, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitG, F, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitH, T, categoryOptionCombo ) );
-
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitC, F, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitD, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitE, F, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitF, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitG, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitH, T, categoryOptionCombo ) );
+        
+        super.setUpDataBrowserTest();
     }
-
-    @Ignore
-    @Test
-    public void testGetDataSetsInPeriod()
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }    
+   
+    /**
+     * DataBrowserTable getDataSetsBetweenPeriods( List<Integer>
+     * betweenPeriodIds );
+     */
+    public void testGetDataSetsBetweenPeriods()
     {
         List<Integer> betweenPeriodIds = new ArrayList<Integer>();
         betweenPeriodIds.add( periodA.getId() );
         betweenPeriodIds.add( periodB.getId() );
         betweenPeriodIds.add( periodC.getId() );
         betweenPeriodIds.add( periodD.getId() );
-        DataBrowserTable table = dataBrowserStore.getDataSetsInPeriod( betweenPeriodIds );
+
+        DataBrowserTable table = dataBrowserStore.getDataSetsBetweenPeriods( betweenPeriodIds );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 1, table.getQueryCount() );
@@ -281,27 +78,114 @@ public class DataBrowserStoreTest
         assertEquals( "DataSet", table.getColumns().get( 0 ).getName() );
         assertEquals( "Count", table.getColumns().get( 1 ).getName() );
 
-        assertEquals( "Metarows", 2, table.getRows().size() );
-        assertEquals( dataSetA.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( dataSetA.getId(), table.getRows().get( 0 ).getId().intValue() );
-        assertEquals( dataSetB.getName(), table.getRows().get( 1 ).getName() );
-        assertEquals( dataSetB.getId(), table.getRows().get( 1 ).getId().intValue() );
+        // Sorted by count
+        assertEquals( "Metarows", 3, table.getRows().size() );
+        assertEquals( dataSetB.getName(), table.getRows().get( 0 ).getName() );
+        assertEquals( dataSetB.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( dataSetA.getName(), table.getRows().get( 1 ).getName() );
+        assertEquals( dataSetA.getId(), table.getRows().get( 1 ).getId().intValue() );
+        assertEquals( dataSetC.getName(), table.getRows().get( 2 ).getName() );
+        assertEquals( dataSetC.getId(), table.getRows().get( 2 ).getId().intValue() );
 
-        assertEquals( "Row count entries", 2, table.getCounts().size() );
+        assertEquals( "Row count entries", 3, table.getCounts().size() );
+        assertEquals( "DataValues in dataSetB", 24, table.getRowBasedOnRowName( dataSetB.getName() ).get( 0 )
+            .intValue() );
         assertEquals( "DataValues in dataSetA", 18, table.getRowBasedOnRowName( dataSetA.getName() ).get( 0 )
             .intValue() );
-        assertEquals( "DataValues in dataSetB", 18, table.getRowBasedOnRowName( dataSetB.getName() ).get( 0 )
+        assertEquals( "DataValues in dataSetC", 12, table.getRowBasedOnRowName( dataSetC.getName() ).get( 0 )
             .intValue() );
     }
 
-    @Ignore
-    @Test
+    /**
+     * DataBrowserTable getDataElementGroupsBetweenPeriods( List<Integer>
+     * betweenPeriodIds );
+     */
+    public void testGetDataElementGroupsBetweenPeriods()
+    {
+        List<Integer> betweenPeriodIds = new ArrayList<Integer>();
+        betweenPeriodIds.add( periodA.getId() );
+        betweenPeriodIds.add( periodB.getId() );
+        betweenPeriodIds.add( periodC.getId() );
+        betweenPeriodIds.add( periodD.getId() );
+
+        DataBrowserTable table = dataBrowserStore.getDataElementGroupsBetweenPeriods( betweenPeriodIds );
+
+        assertNotNull( "DataBrowserTable not supposed to be null", table );
+        assertEquals( "No. of queries", 1, table.getQueryCount() );
+        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+
+        assertEquals( "Metacolumns", 2, table.getColumns().size() );
+        assertEquals( "DataElementGroup", table.getColumns().get( 0 ).getName() );
+        assertEquals( "Count", table.getColumns().get( 1 ).getName() );
+
+        // Sorted by count
+        assertEquals( "Metarows", 3, table.getRows().size() );
+        assertEquals( dataElementGroupB.getName(), table.getRows().get( 0 ).getName() );
+        assertEquals( dataElementGroupB.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( dataElementGroupA.getName(), table.getRows().get( 1 ).getName() );
+        assertEquals( dataElementGroupA.getId(), table.getRows().get( 1 ).getId().intValue() );
+        assertEquals( dataElementGroupC.getName(), table.getRows().get( 2 ).getName() );
+        assertEquals( dataElementGroupC.getId(), table.getRows().get( 2 ).getId().intValue() );
+
+        assertEquals( "Row count entries", 3, table.getCounts().size() );
+        assertEquals( "DataValues in dataElementGroupB", 24, table.getRowBasedOnRowName( dataElementGroupB.getName() )
+            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementGroupA", 18, table.getRowBasedOnRowName( dataElementGroupA.getName() )
+            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementGroupC", 12, table.getRowBasedOnRowName( dataElementGroupC.getName() )
+            .get( 0 ).intValue() );
+    }
+
+    /**
+     * DataBrowserTable getOrgUnitGroupsBetweenPeriods( List<Integer> betweenPeriodIds );
+     */
+    public void testGetOrgUnitGroupsBetweenPeriods()
+    {
+        List<Integer> betweenPeriodIds = new ArrayList<Integer>();
+        betweenPeriodIds.add( periodA.getId() );
+        betweenPeriodIds.add( periodB.getId() );
+        betweenPeriodIds.add( periodC.getId() );
+        betweenPeriodIds.add( periodD.getId() );
+        
+        DataBrowserTable table = dataBrowserStore.getOrgUnitGroupsBetweenPeriods( betweenPeriodIds );
+        
+        assertNotNull( "DataBrowserTable not supposed to be null", table );
+        assertEquals( "No. of queries", 1, table.getQueryCount() );
+        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+
+        assertEquals( "Metacolumns", 2, table.getColumns().size() );
+        assertEquals( "OrgUnitGroup", table.getColumns().get( 0 ).getName() );
+        assertEquals( "Count", table.getColumns().get( 1 ).getName() );
+
+        // Sorted by count
+        assertEquals( "Metarows", 2, table.getRows().size() );
+        assertEquals( unitGroupB.getName(), table.getRows().get( 0 ).getName() );
+        assertEquals( unitGroupB.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( unitGroupA.getName(), table.getRows().get( 1 ).getName() );
+        assertEquals( unitGroupA.getId(), table.getRows().get( 1 ).getId().intValue() );
+
+        assertEquals( "Row count entries", 2, table.getCounts().size() );
+        // unitD has 10 DataValues, unitE has 10 DataValues and unitF has 8 DataValues
+        assertEquals( "DataValues in unitGroupB", 28, table.getRowBasedOnRowName( unitGroupB.getName() )
+            .get( 0 ).intValue() );
+        // unitB has 0 DataValues and unitC has 10 DataValues 
+        assertEquals( "DataValues in unitGroupA", 10, table.getRowBasedOnRowName( unitGroupA.getName() )
+            .get( 0 ).intValue() );
+    }
+
+    /**
+     * void setDataElementStructureForDataSetBetweenPeriods( DataBrowserTable
+     * table, Integer dataSetId, List<Integer> betweenPeriods );
+     */
     public void testSetDataElementStructureForDataSetBetweenPeriods()
     {
         List<Integer> pList = new ArrayList<Integer>();
         pList.add( periodA.getId() );
         pList.add( periodB.getId() );
         pList.add( periodC.getId() );
+        pList.add( periodD.getId() );
+
+        // Retrieve dataElements of DataSetA - one dataElement
         DataBrowserTable table = new DataBrowserTable();
         dataBrowserStore.setDataElementStructureForDataSetBetweenPeriods( table, dataSetA.getId(), pList );
 
@@ -309,26 +193,249 @@ public class DataBrowserStoreTest
         assertEquals( "No. of queries", 1, table.getQueryCount() );
         assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
 
+        assertEquals( "Metacolumns", 1, table.getColumns().size() );
+        assertEquals( "DataElement", table.getColumns().get( 0 ).getName() );
+
+        // Sorted by name
         assertEquals( "Metarows", 1, table.getRows().size() );
         assertEquals( dataElementA.getName(), table.getRows().get( 0 ).getName() );
         assertEquals( dataElementA.getId(), table.getRows().get( 0 ).getId().intValue() );
+
+        // Retrieve dataElements of DataSetC - three dataElements
+        table = new DataBrowserTable();
+        dataBrowserStore.setDataElementStructureForDataSetBetweenPeriods( table, dataSetC.getId(), pList );
+
+        assertNotNull( "DataBrowserTable not supposed to be null", table );
+        assertEquals( "No. of queries", 1, table.getQueryCount() );
+        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+
+        assertEquals( "Metacolumns", 1, table.getColumns().size() );
+        assertEquals( "DataElement", table.getColumns().get( 0 ).getName() );
+
+        // Sorted by name
+        assertEquals( "Metarows", 3, table.getRows().size() );
+        assertEquals( dataElementC.getName(), table.getRows().get( 0 ).getName() );
+        assertEquals( dataElementC.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( dataElementE.getName(), table.getRows().get( 1 ).getName() );
+        assertEquals( dataElementE.getId(), table.getRows().get( 1 ).getId().intValue() );
+        assertEquals( dataElementF.getName(), table.getRows().get( 2 ).getName() );
+        assertEquals( dataElementF.getId(), table.getRows().get( 2 ).getId().intValue() );
     }
 
-    @Ignore
-    @Test
-    public void testSetCountDataElementsInOnePeriod()
+    /**
+     * void setDataElementStructureForDataElementGroupBetweenPeriods(
+     * DataBrowserTable table, Integer dataElementGroupId, List<Integer>
+     * betweenPeriods );
+     */
+    public void testSetDataElementStructureForDataElementGroupBetweenPeriods()
     {
         List<Integer> pList = new ArrayList<Integer>();
         pList.add( periodA.getId() );
+        pList.add( periodB.getId() );
+        pList.add( periodC.getId() );
+        pList.add( periodD.getId() );
+
+        // Retrieve dataElements of DataElementGroupA - one dataElement
+        DataBrowserTable table = new DataBrowserTable();
+        dataBrowserStore.setDataElementStructureForDataElementGroupBetweenPeriods( table, dataElementGroupA.getId(),
+            pList );
+
+        assertNotNull( "DataBrowserTable not supposed to be null", table );
+        assertEquals( "No. of queries", 1, table.getQueryCount() );
+        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+
+        assertEquals( "Metacolumns", 1, table.getColumns().size() );
+        assertEquals( "DataElement", table.getColumns().get( 0 ).getName() );
+
+        // Sorted by name
+        assertEquals( "Metarows", 1, table.getRows().size() );
+        assertEquals( dataElementA.getName(), table.getRows().get( 0 ).getName() );
+        assertEquals( dataElementA.getId(), table.getRows().get( 0 ).getId().intValue() );
+
+        // Retrieve dataElements of DataElementGroupC - three dataElements
+        table = new DataBrowserTable();
+        dataBrowserStore.setDataElementStructureForDataSetBetweenPeriods( table, dataElementGroupC.getId(), pList );
+
+        assertNotNull( "DataBrowserTable not supposed to be null", table );
+        assertEquals( "No. of queries", 1, table.getQueryCount() );
+        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+
+        assertEquals( "Metacolumns", 1, table.getColumns().size() );
+        assertEquals( "DataElement", table.getColumns().get( 0 ).getName() );
+
+        // Sorted by name
+        assertEquals( "Metarows", 3, table.getRows().size() );
+        assertEquals( dataElementC.getName(), table.getRows().get( 0 ).getName() );
+        assertEquals( dataElementC.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( dataElementE.getName(), table.getRows().get( 1 ).getName() );
+        assertEquals( dataElementE.getId(), table.getRows().get( 1 ).getId().intValue() );
+        assertEquals( dataElementF.getName(), table.getRows().get( 2 ).getName() );
+        assertEquals( dataElementF.getId(), table.getRows().get( 2 ).getId().intValue() );
+    }
+
+    /**
+     * void setDataElementGroupStructureForOrgUnitGroupBetweenPeriods(
+     * DataBrowserTable table, Integer orgUnitGroupId, List<Integer>
+     * betweenPeriods );
+     */
+    public void testSetDataElementGroupStructureForOrgUnitGroupBetweenPeriods()
+    {
+        List<Integer> pList = new ArrayList<Integer>();
+        pList.add( periodA.getId() );
+        pList.add( periodB.getId() );
+        pList.add( periodC.getId() );
+        pList.add( periodD.getId() );
+        
+        // Retrieve orgUnitGroupA - three dataElementGroups
+        DataBrowserTable table = new DataBrowserTable();
+        dataBrowserStore.setDataElementGroupStructureForOrgUnitGroupBetweenPeriods( table, unitGroupA.getId(), pList );
+
+        assertNotNull( "DataBrowserTable not supposed to be null", table );
+        assertEquals( "No. of queries", 1, table.getQueryCount() );
+        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+
+        assertEquals( "Metacolumns", 1, table.getColumns().size() );
+        assertEquals( "DataElementGroup", table.getColumns().get( 0 ).getName() );
+
+        // Sorted by name
+        assertEquals( "Metarows", 3, table.getRows().size() );
+        assertEquals( dataElementGroupA.getName(), table.getRows().get( 0 ).getName() );
+        assertEquals( dataElementGroupA.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( dataElementGroupB.getName(), table.getRows().get( 1 ).getName() );
+        assertEquals( dataElementGroupB.getId(), table.getRows().get( 1 ).getId().intValue() );
+        assertEquals( dataElementGroupC.getName(), table.getRows().get( 2 ).getName() );
+        assertEquals( dataElementGroupC.getId(), table.getRows().get( 2 ).getId().intValue() );
+
+        // Retrieve dataElements of orgUnitGroupB - three dataElementGroups
+        table = new DataBrowserTable();
+        dataBrowserStore.setDataElementGroupStructureForOrgUnitGroupBetweenPeriods( table, unitGroupB.getId(), pList );
+
+        assertNotNull( "DataBrowserTable not supposed to be null", table );
+        assertEquals( "No. of queries", 1, table.getQueryCount() );
+        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+
+        assertEquals( "Metacolumns", 1, table.getColumns().size() );
+        assertEquals( "DataElementGroup", table.getColumns().get( 0 ).getName() );
+
+        // Sorted by name
+        assertEquals( "Metarows", 3, table.getRows().size() );
+        assertEquals( dataElementGroupA.getName(), table.getRows().get( 0 ).getName() );
+        assertEquals( dataElementGroupA.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( dataElementGroupB.getName(), table.getRows().get( 1 ).getName() );
+        assertEquals( dataElementGroupB.getId(), table.getRows().get( 1 ).getId().intValue() );
+        assertEquals( dataElementGroupC.getName(), table.getRows().get( 2 ).getName() );
+        assertEquals( dataElementGroupC.getId(), table.getRows().get( 2 ).getId().intValue() );
+    }
+
+    /**
+     * void setStructureForOrgUnitBetweenPeriods( DataBrowserTable table,
+     * Integer orgUnitParent, List<Integer> betweenPeriods );
+     */
+    public void testSetStructureForOrgUnitBetweenPeriods()
+    {
+        List<Integer> pList = new ArrayList<Integer>();
+        pList.add( periodA.getId() );
+        pList.add( periodB.getId() );
+        pList.add( periodC.getId() );
+        pList.add( periodD.getId() );
+
+        // Retrieve children of unitB - three children
+        DataBrowserTable table = new DataBrowserTable();
+        dataBrowserStore.setStructureForOrgUnitBetweenPeriods( table, unitB.getId(), pList );
+        
+        assertNotNull( "DataBrowserTable not supposed to be null", table );
+        assertEquals( "No. of queries", 1, table.getQueryCount() );
+        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+
+        assertEquals( "Metacolumns", 1, table.getColumns().size() );
+        assertEquals( "OrganisationUnit", table.getColumns().get( 0 ).getName() );
+
+        // Sorted by name
+        assertEquals( "Metarows", 3, table.getRows().size() );
+        assertEquals( unitD.getName(), table.getRows().get( 0 ).getName() );
+        assertEquals( unitD.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( unitE.getName(), table.getRows().get( 1 ).getName() );
+        assertEquals( unitE.getId(), table.getRows().get( 1 ).getId().intValue() );
+        assertEquals( unitF.getName(), table.getRows().get( 2 ).getName() );
+        assertEquals( unitF.getId(), table.getRows().get( 2 ).getId().intValue() );
+
+        // Retrieve children of unitG - zero children
+        table = new DataBrowserTable();
+        dataBrowserStore.setStructureForOrgUnitBetweenPeriods( table, unitG.getId(), pList );
+
+        assertNotNull( "DataBrowserTable not supposed to be null", table );
+        assertEquals( "No. of queries", 1, table.getQueryCount() );
+        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+
+        assertEquals( "Metacolumns", 1, table.getColumns().size() );
+        assertEquals( "OrganisationUnit", table.getColumns().get( 0 ).getName() );
+
+        assertEquals( "Metarows", 0, table.getRows().size() );
+    }
+
+    /**
+     * void setDataElementStructureForOrgUnitBetweenPeriods(
+     * DataBrowserTable table, String orgUnitId, List<Integer> betweenPeriodIds
+     * );
+     */
+    public void testSetDataElementStructureForOrgUnitBetweenPeriods()
+    {
+        List<Integer> pList = new ArrayList<Integer>();
+        pList.add( periodA.getId() );
+
+        // Retrieve structure for dataElements in periodA for unitC - six dataElements
+        DataBrowserTable table = new DataBrowserTable();
+        dataBrowserStore.setDataElementStructureForOrgUnitBetweenPeriods( table, unitC.getId(), pList );
+
+        assertNotNull( "DataBrowserTable not supposed to be null", table );
+        assertEquals( "No. of queries", 1, table.getQueryCount() );
+        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+
+        assertEquals( "Metacolumns", 1, table.getColumns().size() );
+        assertEquals( "DataElement", table.getColumns().get( 0 ).getName() );
+
+        // Sorted by name
+        assertEquals( "Metarows", 6, table.getRows().size() );
+        assertEquals( dataElementA.getName(), table.getRows().get( 0 ).getName() );
+        assertEquals( dataElementA.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( dataElementB.getName(), table.getRows().get( 1 ).getName() );
+        assertEquals( dataElementB.getId(), table.getRows().get( 1 ).getId().intValue() );
+        assertEquals( dataElementC.getName(), table.getRows().get( 2 ).getName() );
+        assertEquals( dataElementC.getId(), table.getRows().get( 2 ).getId().intValue() );
+        assertEquals( dataElementD.getName(), table.getRows().get( 3 ).getName() );
+        assertEquals( dataElementD.getId(), table.getRows().get( 3 ).getId().intValue() );
+        assertEquals( dataElementE.getName(), table.getRows().get( 4 ).getName() );
+        assertEquals( dataElementE.getId(), table.getRows().get( 4 ).getId().intValue() );
+        assertEquals( dataElementF.getName(), table.getRows().get( 5 ).getName() );
+        assertEquals( dataElementF.getId(), table.getRows().get( 5 ).getId().intValue() );
+    }
+    
+    /**
+     * Integer setCountDataElementsForDataSetBetweenPeriods( DataBrowserTable
+     * table, Integer dataSetId, List<Integer> betweenPeriodIds );
+     */
+    public void testSetCountDataElementsForDataSetBetweenPeriods()
+    {
+        List<Integer> pList = new ArrayList<Integer>();
+        pList.add( periodA.getId() );
+
+        // Retrieve structure for dataElements in periodA for dataSetA - one dataElement
         DataBrowserTable table = new DataBrowserTable();
         dataBrowserStore.setDataElementStructureForDataSetBetweenPeriods( table, dataSetA.getId(), pList );
-        int results = dataBrowserStore.setCountDataElementsInOnePeriod( table, dataSetA.getId(), periodB.getId() );
+
+        // Retrieve actual count for dataElements in periodA for dataSetA
+        int results = dataBrowserStore.setCountDataElementsForDataSetBetweenPeriods( table, dataSetA.getId(), pList );
         assertEquals( "DataValue results", 1, results );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 1 + 1, table.getQueryCount() );
+        assertEquals( "No. of queries", 2, table.getQueryCount() );
         assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
 
+        assertEquals( "Metacolumns", 2, table.getColumns().size() );
+        assertEquals( "DataElement", table.getColumns().get( 0 ).getName() );
+        assertEquals( "Period column header", "2005-03-01", table.getColumns().get( 1 ).getName() );
+
+        // Sorted by name
         assertEquals( "Metarows", 1, table.getRows().size() );
         assertEquals( dataElementA.getName(), table.getRows().get( 0 ).getName() );
         assertEquals( dataElementA.getId(), table.getRows().get( 0 ).getId().intValue() );
@@ -338,57 +445,195 @@ public class DataBrowserStoreTest
             .get( 0 ).intValue() );
     }
 
-    @Ignore
-    @Test
-    public void testSetStructureForOrgUnitBetweenPeriods()
+    /**
+     * Integer setCountDataElementsForDataElementGroupBetweenPeriods(
+     * DataBrowserTable table, Integer dataElementGroupId, List<Integer>
+     * betweenPeriodIds );
+     */
+    public void testSetCountDataElementsForDataElementGroupBetweenPeriods()
     {
         List<Integer> pList = new ArrayList<Integer>();
         pList.add( periodA.getId() );
-        pList.add( periodB.getId() );
-        pList.add( periodC.getId() );
-        pList.add( periodD.getId() );
+
+        // Retrieve structure for dataElements in periodA for dataElementGroupA - one dataElement
         DataBrowserTable table = new DataBrowserTable();
-        dataBrowserStore.setStructureForOrgUnitBetweenPeriods( table, unitB.getId(), pList );
+        dataBrowserStore.setDataElementStructureForDataSetBetweenPeriods( table, dataElementGroupA.getId(), pList );
+
+        // Retrieve actual count for dataElements in periodA for dataElementGroupA
+        int results = dataBrowserStore.setCountDataElementsForDataSetBetweenPeriods( table, dataElementGroupA.getId(),
+            pList );
+        assertEquals( "DataValue results", 1, results );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 1, table.getQueryCount() );
+        assertEquals( "No. of queries", 2, table.getQueryCount() );
         assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
 
-        assertEquals( "Metarows", 3, table.getRows().size() );
-        assertEquals( unitD.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( unitD.getId(), table.getRows().get( 0 ).getId().intValue() );
-        assertEquals( unitE.getName(), table.getRows().get( 1 ).getName() );
-        assertEquals( unitE.getId(), table.getRows().get( 1 ).getId().intValue() );
-        assertEquals( unitF.getName(), table.getRows().get( 2 ).getName() );
-        assertEquals( unitF.getId(), table.getRows().get( 2 ).getId().intValue() );
+        assertEquals( "Metacolumns", 2, table.getColumns().size() );
+        assertEquals( "DataElement", table.getColumns().get( 0 ).getName() );
+        assertEquals( "Period column header", "2005-03-01", table.getColumns().get( 1 ).getName() );
 
+        // Sorted by name
+        assertEquals( "Metarows", 1, table.getRows().size() );
+        assertEquals( dataElementA.getName(), table.getRows().get( 0 ).getName() );
+        assertEquals( dataElementA.getId(), table.getRows().get( 0 ).getId().intValue() );
+
+        assertEquals( "Row count entries", 1, table.getCounts().size() );
+        assertEquals( "DataValues in dataElementA for periodA", 6, table.getRowBasedOnRowName( dataElementA.getName() )
+            .get( 0 ).intValue() );
     }
-
-    @Ignore
-    @Test
-    public void testSetCountOrgUnitsInOnePeriod()
+    
+    /**
+     * Integer setCountDataElementGroupsForOrgUnitGroupBetweenPeriods(
+     * DataBrowserTable table, Integer orgUnitGroupId, List<Integer>
+     * betweenPeriodIds );
+     */
+    public void testSetCountDataElementGroupsForOrgUnitGroupBetweenPeriods ()
     {
         List<Integer> pList = new ArrayList<Integer>();
         pList.add( periodA.getId() );
+
+        // Retrieve structure for dataElementGroups in periodA for unitGroupA - three dataElementGroups
         DataBrowserTable table = new DataBrowserTable();
-        dataBrowserStore.setStructureForOrgUnitBetweenPeriods( table, unitB.getId(), pList );
-        int results = dataBrowserStore.setCountOrgUnitsInOnePeriod( table, unitB.getId(), periodA.getId() );
+        dataBrowserStore.setDataElementGroupStructureForOrgUnitGroupBetweenPeriods( table, unitGroupA.getId(), pList );
+
+        // Retrieve actual count for dataElementGroups in periodA for unitGroupA
+        int results = dataBrowserStore.setCountDataElementGroupsForOrgUnitGroupBetweenPeriods( table, unitGroupA.getId(), pList );
+        assertEquals( "DataValue results", 3, results );
+        
+        assertNotNull( "DataBrowserTable not supposed to be null", table );
+        assertEquals( "No. of queries", 2, table.getQueryCount() );
+        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        
+        assertEquals( "Metacolumns", 2, table.getColumns().size() );
+        assertEquals( "DataElementGroup", table.getColumns().get( 0 ).getName() );
+        assertEquals( "Period column header", "2005-03-01", table.getColumns().get( 1 ).getName() );
+
+        // Sorted by name
+        assertEquals( "Metarows", 3, table.getRows().size() );
+        assertEquals( dataElementGroupA.getName(), table.getRows().get( 0 ).getName() );
+        assertEquals( dataElementGroupA.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( dataElementGroupB.getName(), table.getRows().get( 1 ).getName() );
+        assertEquals( dataElementGroupB.getId(), table.getRows().get( 1 ).getId().intValue() );
+        assertEquals( dataElementGroupC.getName(), table.getRows().get( 2 ).getName() );
+        assertEquals( dataElementGroupC.getId(), table.getRows().get( 2 ).getId().intValue() );
+
+        assertEquals( "Row count entries", 3, table.getCounts().size() );
+        assertEquals( "DataValues in dataElementGroupA for periodA", 1, table.getRowBasedOnRowName( dataElementGroupA.getName() )
+            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementGroupB for periodA", 2, table.getRowBasedOnRowName( dataElementGroupB.getName() )
+            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementGroupC for periodA", 1, table.getRowBasedOnRowName( dataElementGroupC.getName() )
+            .get( 0 ).intValue() );
+    }
+
+    /**
+     * Integer setCountOrgUnitsBetweenPeriods( DataBrowserTable table, Integer
+     * orgUnitParent, List<Integer> betweenPeriodIds );
+     */
+    public void testSetCountOrgUnitsBetweenPeriods()
+    {
+        List<Integer> pList = new ArrayList<Integer>();
+        pList.add( periodC.getId() );
+
+        // Retrieve structure for dataElements in periodC for unitD - six dataElements
+        DataBrowserTable table = new DataBrowserTable();
+        dataBrowserStore.setDataElementStructureForOrgUnitBetweenPeriods( table, unitD.getId(), pList );
+
+        // Retrieve actual count for dataElements in periodC for unitD
+        int results = dataBrowserStore.setCountDataElementsForOrgUnitBetweenPeriods( table, unitD.getId(), pList );
         assertEquals( "DataValue results", 3, results );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 2, table.getQueryCount() );
         assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
 
-        assertEquals( "Metarows", 3, table.getRows().size() );
-        assertEquals( unitD.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( unitD.getId(), table.getRows().get( 0 ).getId().intValue() );
-        assertEquals( unitF.getName(), table.getRows().get( 2 ).getName() );
-        assertEquals( unitF.getId(), table.getRows().get( 2 ).getId().intValue() );
+        // Sorted by name
+        assertEquals( "Metarows", 6, table.getRows().size() );
+        assertEquals( dataElementA.getName(), table.getRows().get( 0 ).getName() );
+        assertEquals( dataElementA.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( dataElementB.getName(), table.getRows().get( 1 ).getName() );
+        assertEquals( dataElementB.getId(), table.getRows().get( 1 ).getId().intValue() );
+        assertEquals( dataElementC.getName(), table.getRows().get( 2 ).getName() );
+        assertEquals( dataElementC.getId(), table.getRows().get( 2 ).getId().intValue() );
+        assertEquals( dataElementD.getName(), table.getRows().get( 3 ).getName() );
+        assertEquals( dataElementD.getId(), table.getRows().get( 3 ).getId().intValue() );
+        assertEquals( dataElementE.getName(), table.getRows().get( 4 ).getName() );
+        assertEquals( dataElementE.getId(), table.getRows().get( 4 ).getId().intValue() );
+        assertEquals( dataElementF.getName(), table.getRows().get( 5 ).getName() );
+        assertEquals( dataElementF.getId(), table.getRows().get( 5 ).getId().intValue() );
 
-        assertEquals( "Row count entries", 3, table.getCounts().size() );
-        assertEquals( "DataValues in unitD for periodA", 2, table.getRowBasedOnRowName( unitD.getName() ).get( 0 )
-            .intValue() );
-        assertEquals( "DataValues in unitF for periodA", 2, table.getRowBasedOnRowName( unitF.getName() ).get( 0 )
-            .intValue() );
+        // unitD has all six dataElements but only dataValues in periodC for
+        // three of them. The other three (C, D, F) are zero
+        assertEquals( "Row count entries", 6, table.getCounts().size() );
+        assertEquals( "DataValues in dataElementA for periodC", 1, table.getRowBasedOnRowName( dataElementA.getName() )
+            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementB for periodC", 1, table.getRowBasedOnRowName( dataElementB.getName() )
+            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementC for periodC", 0, table.getRowBasedOnRowName( dataElementC.getName() )
+            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementD for periodC", 0, table.getRowBasedOnRowName( dataElementD.getName() )
+            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementE for periodC", 1, table.getRowBasedOnRowName( dataElementE.getName() )
+            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementF for periodC", 0, table.getRowBasedOnRowName( dataElementF.getName() )
+            .get( 0 ).intValue() );
     }
+
+    /**
+     * Integer setCountDataElementsForOrgUnitBetweenPeriods( DataBrowserTable
+     * table, String orgUnitId, List<Integer> betweenPeriodIds );
+     */
+    public void testSetCountDataElementsForOrgUnitBetweenPeriods()
+    {
+        List<Integer> pList = new ArrayList<Integer>();
+        pList.add( periodA.getId() );
+
+        // Retrieve structure for dataElements in periodA for unitC - six dataElements
+        DataBrowserTable table = new DataBrowserTable();
+        dataBrowserStore.setDataElementStructureForOrgUnitBetweenPeriods( table, unitC.getId(), pList );
+
+        // Retrieve actual count for dataElements in periodA for unitC
+        int results = dataBrowserStore.setCountDataElementsForOrgUnitBetweenPeriods( table, unitC.getId(), pList );
+        assertEquals( "DataValue results", 4, results );
+
+        assertNotNull( "DataBrowserTable not supposed to be null", table );
+        assertEquals( "No. of queries", 2, table.getQueryCount() );
+        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+
+        assertEquals( "Metacolumns", 2, table.getColumns().size() );
+        assertEquals( "DataElement", table.getColumns().get( 0 ).getName() );
+        assertEquals( "Period column header", "2005-03-01", table.getColumns().get( 1 ).getName() );
+
+        // Sorted by name
+        assertEquals( "Metarows", 6, table.getRows().size() );
+        assertEquals( dataElementA.getName(), table.getRows().get( 0 ).getName() );
+        assertEquals( dataElementA.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( dataElementB.getName(), table.getRows().get( 1 ).getName() );
+        assertEquals( dataElementB.getId(), table.getRows().get( 1 ).getId().intValue() );
+        assertEquals( dataElementC.getName(), table.getRows().get( 2 ).getName() );
+        assertEquals( dataElementC.getId(), table.getRows().get( 2 ).getId().intValue() );
+        assertEquals( dataElementD.getName(), table.getRows().get( 3 ).getName() );
+        assertEquals( dataElementD.getId(), table.getRows().get( 3 ).getId().intValue() );
+        assertEquals( dataElementE.getName(), table.getRows().get( 4 ).getName() );
+        assertEquals( dataElementE.getId(), table.getRows().get( 4 ).getId().intValue() );
+        assertEquals( dataElementF.getName(), table.getRows().get( 5 ).getName() );
+        assertEquals( dataElementF.getId(), table.getRows().get( 5 ).getId().intValue() );
+
+        // unitC has all six dataElements but only dataValues in periodA for
+        // four of them. The other two (C and E) are zero
+        assertEquals( "Row count entries", 6, table.getCounts().size() );
+        assertEquals( "DataValues in dataElementA for periodA", 1, table.getRowBasedOnRowName( dataElementA.getName() )
+            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementB for periodA", 1, table.getRowBasedOnRowName( dataElementB.getName() )
+            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementC for periodA", 0, table.getRowBasedOnRowName( dataElementC.getName() )
+            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementD for periodA", 1, table.getRowBasedOnRowName( dataElementD.getName() )
+            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementE for periodA", 0, table.getRowBasedOnRowName( dataElementE.getName() )
+            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementF for periodA", 1, table.getRowBasedOnRowName( dataElementF.getName() )
+            .get( 0 ).intValue() );
+    }
+    
 }

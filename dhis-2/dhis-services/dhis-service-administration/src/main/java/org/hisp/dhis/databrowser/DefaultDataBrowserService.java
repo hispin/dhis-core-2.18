@@ -40,17 +40,18 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
 /**
- * @author Joakim Bjørnstad
+ * @author joakibj, briane, eivinhb, jetonm
  * @version $Id$
  */
-public class DefaultDataBrowserService
+public class DefaultDataBrowserService 
     implements DataBrowserService
 {
+    private static final String STARTDATE = "1900-01-01";
+    private static final String ENDDATE = "3000-01-01";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private DataBrowserStore dataBrowserStore;
 
     private PeriodService periodService;
 
@@ -58,6 +59,8 @@ public class DefaultDataBrowserService
     {
         this.periodService = periodService;
     }
+
+    private DataBrowserStore dataBrowserStore;
 
     public void setDataBrowserStore( DataBrowserStore dataBrowserStore )
     {
@@ -68,94 +71,152 @@ public class DefaultDataBrowserService
     // DataBrowserService implementation
     // -------------------------------------------------------------------------
 
-    public DataBrowserTable getAllCountDataSetsByPeriodType( PeriodType periodType )
+    public DataBrowserTable getDataSetsInPeriod( String startDate, String endDate, PeriodType periodType )
     {
-        String startDate = "1900-01-01";
-        String endDate = "3000-01-01";
+        if ( startDate == null || startDate.isEmpty() )
+            startDate = STARTDATE;
+        if ( endDate == null || endDate.isEmpty() )
+            endDate = ENDDATE;
 
-        return getCountDataSetsInPeriod( startDate, endDate, periodType );
-    }
-
-    public DataBrowserTable getAllCountDataElementsByPeriodType( Integer dataSetId, PeriodType periodType )
-    {
-        String startDate = "1900-01-01";
-        String endDate = "3000-01-01";
-
-        return getCountDataElementsInPeriod( dataSetId, startDate, endDate, periodType );
-    }
-
-    public DataBrowserTable getAllCountOrgUnitsByPeriodType( Integer orgUnitParent, PeriodType periodType )
-    {
-        String startDate = "1900-01-01";
-        String endDate = "3000-01-01";
-
-        return getCountOrgUnitsInPeriod( orgUnitParent, startDate, endDate, periodType );
-    }
-
-    public DataBrowserTable getCountDataSetsInPeriod( String startDate, String endDate, PeriodType periodType )
-    {
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
-        return dataBrowserStore.getDataSetsInPeriod( betweenPeriodIds );
+
+        return dataBrowserStore.getDataSetsBetweenPeriods( betweenPeriodIds );
     }
 
-    public DataBrowserTable getCountDataElementsInPeriod( Integer dataSetId, String startDate, String endDate,
+    public DataBrowserTable getDataElementGroupsInPeriod( String startDate, String endDate, PeriodType periodType )
+    {
+        if ( startDate == null || startDate.isEmpty() )
+            startDate = STARTDATE;
+        if ( endDate == null || endDate.isEmpty() )
+            endDate = ENDDATE;
+
+        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
+
+        return dataBrowserStore.getDataElementGroupsBetweenPeriods( betweenPeriodIds );
+    }
+
+    public DataBrowserTable getOrgUnitGroupsInPeriod( String startDate, String endDate, PeriodType periodType )
+    {
+        if ( startDate == null || startDate.isEmpty() )
+            startDate = STARTDATE;
+        if ( endDate == null || endDate.isEmpty() )
+            endDate = ENDDATE;
+
+        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
+
+        return dataBrowserStore.getOrgUnitGroupsBetweenPeriods( betweenPeriodIds );
+    }    
+    
+    public DataBrowserTable getOrgUnitsInPeriod( Integer orgUnitParent, String startDate, String endDate,
         PeriodType periodType )
     {
+        if ( startDate == null || startDate.isEmpty() )
+            startDate = STARTDATE;
+        if ( endDate == null || endDate.isEmpty() )
+            endDate = ENDDATE;
 
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
         DataBrowserTable table = new DataBrowserTable();
-        table.addColumnName( "DataElement" );
 
-        dataBrowserStore.setDataElementStructureForDataSetBetweenPeriods( table, dataSetId, betweenPeriodIds );
+        dataBrowserStore.setStructureForOrgUnitBetweenPeriods( table, orgUnitParent, betweenPeriodIds );
 
-        for ( Integer periodId : betweenPeriodIds )
-        {
-            Integer numResults = dataBrowserStore.setCountDataElementsInOnePeriod( table, dataSetId, periodId );
-
-            if ( numResults > 0 )
-            {
-                Period p = periodService.getPeriod( periodId );
-                table.addColumnName( "" + p.getStartDate(), p.getStartDate() + " -> " + p.getEndDate() );
-            }
-        }
+        Integer numResults = dataBrowserStore.setCountOrgUnitsBetweenPeriods( table, orgUnitParent, betweenPeriodIds );
+        if ( numResults == 0 )
+            table.addZeroColumn();
 
         return table;
     }
 
-    public DataBrowserTable getCountOrgUnitsInPeriod( Integer orgUnitParent, String startDate, String endDate,
-        PeriodType periodType )
+    public DataBrowserTable getCountDataElementsForDataSetInPeriod( Integer dataSetId, String startDate,
+        String endDate, PeriodType periodType )
     {
+        if ( startDate == null || startDate.isEmpty() )
+            startDate = STARTDATE;
+        if ( endDate == null || endDate.isEmpty() )
+            endDate = ENDDATE;
 
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
         DataBrowserTable table = new DataBrowserTable();
-        table.addColumnName( "OrganisationUnit" );
 
-        dataBrowserStore.setStructureForOrgUnitBetweenPeriods( table, orgUnitParent, betweenPeriodIds );
+        dataBrowserStore.setDataElementStructureForDataSetBetweenPeriods( table, dataSetId, betweenPeriodIds );
 
-        for ( Integer periodId : betweenPeriodIds )
-        {
-            Integer numResults = dataBrowserStore.setCountOrgUnitsInOnePeriod( table, orgUnitParent, periodId );
+        dataBrowserStore.setCountDataElementsForDataSetBetweenPeriods( table, dataSetId, betweenPeriodIds );
 
-            if ( numResults > 0 )
-            {
-                Period p = periodService.getPeriod( periodId );
-                table.addColumnName( "" + p.getStartDate(), p.getStartDate() + " -> " + p.getEndDate() );
-            }
-        }
+        return table;
+    }
+
+    public DataBrowserTable getCountDataElementsForDataElementGroupInPeriod( Integer dataElementGroupId,
+        String startDate, String endDate, PeriodType periodType )
+    {
+        if ( startDate == null || startDate.isEmpty() )
+            startDate = STARTDATE;
+        if ( endDate == null || endDate.isEmpty() )
+            endDate = ENDDATE;
+
+        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
+        DataBrowserTable table = new DataBrowserTable();
+
+        dataBrowserStore.setDataElementStructureForDataElementGroupBetweenPeriods( table, dataElementGroupId,
+            betweenPeriodIds );
+
+        dataBrowserStore.setCountDataElementsForDataElementGroupBetweenPeriods( table, dataElementGroupId,
+            betweenPeriodIds );
+
+        return table;
+    }
+
+    public DataBrowserTable getCountDataElementGroupsForOrgUnitGroupInPeriod( Integer orgUnitGroupId, String startDate,
+        String endDate, PeriodType periodType )
+    {
+        if ( startDate == null || startDate.isEmpty() )
+            startDate = STARTDATE;
+        if ( endDate == null || endDate.isEmpty() )
+            endDate = ENDDATE;
+
+        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
+
+        DataBrowserTable table = new DataBrowserTable();
+
+        dataBrowserStore.setDataElementGroupStructureForOrgUnitGroupBetweenPeriods( table, orgUnitGroupId,
+            betweenPeriodIds );
+
+        dataBrowserStore.setCountDataElementGroupsForOrgUnitGroupBetweenPeriods( table, orgUnitGroupId,
+            betweenPeriodIds );
+
+        return table;
+    }
+
+    public DataBrowserTable getCountDataElementsForOrgUnitInPeriod( Integer orgUnitGroupId, String startDate,
+        String endDate, PeriodType periodType )
+    {
+        if ( startDate == null || startDate.isEmpty() )
+            startDate = STARTDATE;
+        if ( endDate == null || endDate.isEmpty() )
+            endDate = ENDDATE;
+
+        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
+
+        DataBrowserTable table = new DataBrowserTable();
+
+        dataBrowserStore.setDataElementStructureForOrgUnitBetweenPeriods( table, orgUnitGroupId, betweenPeriodIds );
+
+        int numRows = dataBrowserStore.setCountDataElementsForOrgUnitBetweenPeriods( table, orgUnitGroupId,
+            betweenPeriodIds );
+        if ( numRows == 0 )
+            table.addZeroColumn();
 
         return table;
     }
 
     /**
-     * 
-     * Helper-method that finds all periodids between a given period. Uses
-     * functionality already in the DHIS. Returns a list with all ids that was
+     * Helper-method that finds all PeriodIds between a given period. Uses
+     * functionality already in the DHIS. Returns a list with all id's that was
      * found.
      * 
      * @param startDate
      * @param endDate
      * @param periodType
-     * @return
+     * @return List<Integer>
      */
     private List<Integer> getAllPeriodIdsBetweenDatesOnPeriodType( String startDate, String endDate,
         PeriodType periodType )
@@ -189,7 +250,7 @@ public class DefaultDataBrowserService
         {
             betweenPeriodIds.add( -1 );
         }
-
+        
         return betweenPeriodIds;
     }
 }

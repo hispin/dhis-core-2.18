@@ -111,18 +111,27 @@
       </param>
       <interceptor-ref name="organisationUnitTreeStack"/>   
     </action>
-            
+    
     <action name="searchResult" class="org.hisp.dhis.dataadmin.action.databrowser.SearchAction">
       <result name="success" type="velocity">/main.vm</result>
       <result name="error" type="redirect">error.action</result>
-      <param name="page">/dhis-web-maintenance-dataadmin/searchResult.vm</param>
+      <param name="page">/dhis-web-maintenance-dataadmin/dataBrowserResult.vm</param>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
     </action>
     
     <action name="error" class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-dataadmin/error.vm</param>
+      <param name="page">/dhis-web-maintenance-dataadmin/dataBrowserError.vm</param>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+    </action>
+    
+    <action name="exportPDF" class="org.hisp.dhis.dataadmin.action.databrowser.ExportPDFAction">
+      <result name="success" type="stream">
+        <param name="contentType">application/pdf</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">attachment;filename="${fileName}"</param>
+        <param name="bufferSize">10240</param>
+      </result>
     </action>
     
     <!-- Outlier analysis -->

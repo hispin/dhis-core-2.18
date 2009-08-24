@@ -30,8 +30,7 @@ package org.hisp.dhis.databrowser;
 import org.hisp.dhis.period.PeriodType;
 
 /**
- * @author jonasaar
- * 
+ * @author jonasaar, briane, eivinhb
  */
 public interface DataBrowserService
 {
@@ -42,78 +41,100 @@ public interface DataBrowserService
     // -------------------------------------------------------------------------
 
     /**
+     * Method that retrieves - all DataSets with DataElement quantity - in a
+     * given period and type (DataSet | Count)
      * 
-     * Method that uses the helper-method getAllPeriodIdsBetweenDatesOnPeriodType
-     * to retrieve all the DataSets in the given period and returns a DataBrowserTable
-     * with the data from the DAO-layer.
-     * 
-     * @param startDate
-     * @param endDate
-     * @param periodType
+     * @param startDate the start date
+     * @param endDate the end date
+     * @param periodType the period type
+     * @return DataBrowserTable the DataBrowserTable with structure for presentation
      */
-    DataBrowserTable getCountDataSetsInPeriod( String startDate, String endDate, PeriodType periodType );
+    DataBrowserTable getDataSetsInPeriod( String startDate, String endDate, PeriodType periodType );
 
     /**
+     * Method that retrieves - all DataElementGroups with DataElement quantity -
+     * in a given period and type (DataElementGroup | Count)
      * 
-     * Method that uses the helper-method getAllPeriodIdsBetweenDatesOnPeriodType
-     * to retrieve all the OrganisationUnits and then uses the DAO-layer to set 
-     * up the structure for the table as well as getting the number of results
-     * for each period. Returns a DataBrowserTable with the results.
-     * 
-     * in the given period and returns a 
-     * DataBrowserTable with the data from the DAO-layer. 
-     * 
-     * @param startDate
-     * @param endDate
-     * @param periodType
-     * @return
+     * @param startDate the start date
+     * @param endDate the end date
+     * @param periodType the period type
+     * @return DataBrowserTable the DataBrowserTable with structure for presentation
      */
-    DataBrowserTable getCountOrgUnitsInPeriod( Integer orgUnitParent, String startDate, String endDate,
+    DataBrowserTable getDataElementGroupsInPeriod( String startDate, String endDate, PeriodType periodType );
+  
+    /**
+     * Method that retrieves - all OrganisationUnitGroups with DataElement quantity - in
+     * a given period and type (OrgUnitGroup | Count)
+     * 
+     * @param startDate the start date
+     * @param endDate the end date
+     * @param periodType the period type
+     * @return DataBrowserTable the DataBrowserTable with structure for presentation
+     */
+    DataBrowserTable getOrgUnitGroupsInPeriod( String startDate, String endDate, PeriodType periodType );
+
+    /**
+     * Method that retrieves - all OrganisationUnits with DataElement quantity - in a
+     * given period - that is child of a given OrganisationUnit parent.
+     * 
+     * @param orgUnitParent the OrganisationUnit parent
+     * @param startDate the start date
+     * @param endDate the end date
+     * @param periodType the period type
+     * @return DataBrowserTable the DataBrowserTable with structure for presentation
+     */
+    DataBrowserTable getOrgUnitsInPeriod( Integer orgUnitParent, String startDate, String endDate, PeriodType periodType );
+
+    /**
+     * Method that retrieves - all the DataElements count - in a given period -
+     * for a given DataSet and returns a DataBrowserTable with the data.
+     * 
+     * @param dataSetId the DataSet id
+     * @param startDate the start date
+     * @param endDate the end date
+     * @param periodType the period type
+     * @return DataBrowserTable the DataBrowserTable with structure for presentation
+     */
+    DataBrowserTable getCountDataElementsForDataSetInPeriod( Integer dataSetId, String startDate, String endDate,
         PeriodType periodType );
 
     /**
-     * Method that uses the helper-method getAllPeriodIdsBetweenDatesOnPeriodType
-     * to retrieve all the DataElements and then uses the DAO-layer to set 
-     * up the structure for the table as well as getting the number of results
-     * for each period. Returns a DataBrowserTable with the results.
-
-     * @param startDate
-     * @param endDate
-     * @param periodType
-     * @return
-     */
-    DataBrowserTable getCountDataElementsInPeriod( Integer dataSetId, String startDate, String endDate,
-        PeriodType periodType );
-
-    /**
+     * Method that retrieves - all the DataElements count - in a given period -
+     * for a given DataElementGroup and returns a DataBrowserTable with the data.
      * 
-     * Method that calls getCountDataSetsInPeriod and adds a really old and a 
-     * very new date to be sure that all periods are retrieved. 
-     * 
-     * @param periodType
+     * @param dataElementGroupId the DataElementGroup id
+     * @param startDate the start date
+     * @param endDate the end date
+     * @param periodType the period type
+     * @return DataBrowserTable the DataBrowserTable with structure for presentation
      */
-    DataBrowserTable getAllCountDataSetsByPeriodType( PeriodType periodType );
+    DataBrowserTable getCountDataElementsForDataElementGroupInPeriod( Integer dataElementGroupId, String startDate,
+        String endDate, PeriodType periodType );
 
     /**
+     * Method retrieves - all the DataElementGroups count - in a given period -
+     * for a given OrganisationUnitGroup and returns a DataBrowserTable with the data.
      * 
-     * Method that calls getCountOrgUnitsInPeriod and adds a really old and a 
-     * very new date to be sure that all periods are retrieved. 
-     * 
-     * @param orgUnitParent
-     * @param periodType
-     * @return
-     */
-    DataBrowserTable getAllCountOrgUnitsByPeriodType( Integer orgUnitParent, PeriodType periodType );
+     * @param orgUnitGroupId the OrganisationUnitGroup id
+     * @param startDate the start date
+     * @param endDate the end date
+     * @param periodType the period type
+     * @return DataBrowserTable the DataBrowserTable with structure for presentation
+     */  
+    DataBrowserTable getCountDataElementGroupsForOrgUnitGroupInPeriod( Integer orgUnitGroupId, String startDate,
+        String endDate, PeriodType periodType );
 
     /**
+     * Method that retrieves - all the DataElements count - in a given period - 
+     * for a given OrganisationUnit and returns a DataBrowserTable with the data.
      * 
-     * Method that calls getCountDataElementsInPeriod and adds a really old and a 
-     * very new date to be sure that all periods are retrieved. 
-     *       
-     * @param dataSetId
-     * @param periodType
-     * @return
+     * @param orgUnitId the OrganisationUnit id
+     * @param startDate the start date
+     * @param endDate the end date
+     * @param periodType the period type
+     * @return DataBrowserTable the DataBrowserTable with structure for presentation
      */
-    DataBrowserTable getAllCountDataElementsByPeriodType( Integer dataSetId, PeriodType periodType );
+    DataBrowserTable getCountDataElementsForOrgUnitInPeriod( Integer orgUnitId, String startDate,
+        String endDate, PeriodType periodType );    
 
 }

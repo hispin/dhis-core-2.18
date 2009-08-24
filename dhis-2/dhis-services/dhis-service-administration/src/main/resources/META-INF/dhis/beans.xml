@@ -66,14 +66,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.databrowser.DataBrowserStore"
     class="org.hisp.dhis.databrowser.jdbc.StatementManagerDataBrowserStore">
+    <property name="statementManager" ref="statementManager"/>
   </bean>
   
   <bean id="org.hisp.dhis.databrowser.DataBrowserService"
     class="org.hisp.dhis.databrowser.DefaultDataBrowserService">
-    <property name="dataBrowserStore"
-      ref="org.hisp.dhis.databrowser.DataBrowserStore" />
     <property name="periodService" 
       ref="org.hisp.dhis.period.PeriodService"/>
+    <property name="dataBrowserStore"
+      ref="org.hisp.dhis.databrowser.DataBrowserStore" />
   </bean>
         
   <!-- OutlierAnalysis -->

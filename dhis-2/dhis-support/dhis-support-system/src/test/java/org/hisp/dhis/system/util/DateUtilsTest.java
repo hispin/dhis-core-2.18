@@ -1,7 +1,7 @@
-package org.hisp.dhis.databrowser;
+package org.hisp.dhis.system.util;
 
 /*
- * Copyright (c) 2004-${year}, University of Oslo
+ * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,93 +27,32 @@ package org.hisp.dhis.databrowser;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
+import static org.hisp.dhis.system.util.DateUtils.*;
+
 /**
- * @author joakibj
- * 
- * Class to hold Metadata for DataBrowserTable. All fields are optional but name
- * should not be null for proper behavior.
+ * @author Lars Helge Overland
+ * @version $Id$
  */
-public class MetaValue
+public class DateUtilsTest
 {
-
-    /**
-     * Id for row/column
-     */
-    private Integer id;
-
-    /**
-     * Name for row/column
-     */
-    private String name;
-
-    /**
-     * Any other metadata associated to id or name
-     */
-    private String metaValue = "";
-
-    public MetaValue()
+    @Test
+    public void testDateIsValid()
     {
-
+        assertTrue( dateIsValid( "2000-01-01" ) );
+        assertTrue( dateIsValid( "1067-04-28" ) );
+        assertFalse( dateIsValid( "07-07-2000" ) );
+        assertFalse( dateIsValid( "2000-03-40" ) );
+        assertFalse( dateIsValid( "20d20-03-01" ) );
     }
-
-    public MetaValue( String name )
+    
+    @Test
+    public void testConvertDate()
     {
-        this.name = name;
+        assertEquals( "20 Apr 2009", convertDate( "2009-04-20" ) );
+        assertEquals( "10 Mar 2010", convertDate( "2010-03-10" ) );
+        assertEquals( "Invalid", convertDate( "Invalid" ) );
     }
-
-    public MetaValue( String name, String metaValue )
-    {
-        this.name = name;
-        this.metaValue = metaValue;
-    }
-
-    public MetaValue( Integer id, String name )
-    {
-        this.id = id;
-        this.name = name;
-    }
-
-    public MetaValue( Integer id, String name, String metaValue )
-    {
-        this.id = id;
-        this.name = name;
-        this.metaValue = metaValue;
-    }
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public String getMetaValue()
-    {
-        return metaValue;
-    }
-
-    public void setMetaValue( String metaValue )
-    {
-        this.metaValue = metaValue;
-    }
-
-    @Override
-    public boolean equals( Object o )
-    {
-        return o.equals( name );
-    }
-
 }

@@ -1,8 +1,8 @@
 
 <h3>$i18n.getString( "data_browser" )</h3>
 
-<form method="post" action="searchResult.action" onsubmit="return validate()">
-	
+<form method="get" action="searchResult.action" onsubmit="return validate()">
+
 <table>
 	<tr>
 		<th colspan="2">$i18n.getString( "period_type" )</th>
@@ -27,12 +27,12 @@
 	</tr>
 	<tr>
 		<td>
-			<input type="text" id="fromDate" name="fromDate">
-			<img src="../images/calendar_icon.gif" width="16" height="16" id="getDateFieldFrom" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
+			<input type="text" id="fromDate" name="fromDate" title="Earliest date will be used if no date is selected">
+			<img src="../images/calendar_icon.gif" alt="" width="16" height="16" id="getDateFieldFrom" style="cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
 		</td>
 		<td>
-			<input type="text" id="toDate" name="toDate">	
-			<img src="../images/calendar_icon.gif" width="16" height="16" id="getDateFieldTo" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">			
+			<input type="text" id="toDate" name="toDate" title="Latest date will be used if no date is selected">
+			<img src="../images/calendar_icon.gif" alt="" width="16" height="16" id="getDateFieldTo" style="cursor:pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">			
 		</td>
 	</tr>  
     <tr>
@@ -44,16 +44,18 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<select id="searchOption" name="searchOption" style="min-width:325px" onChange="modeHandler()">
+			<select id="searchOption" name="searchOption" style="min-width:325px" onchange="modeHandler()">
 				<option value ="null">[ $i18n.getString( "select_mode" ) ]</option>
 				<option value ="DataSet">$i18n.getString( "data_sets" )</option>
+				<option value ="DataElementGroup">$i18n.getString( "data_element_groups" )</option>
+				<option value ="OrganisationUnitGroup">$i18n.getString( "Organisation unit groups" )</option>
 				<option value ="OrganisationUnit">$i18n.getString( "organisation_units" )</option>
 			</select>
 		</td>
 	</tr>	
 </table>
 
-<div id="treeSection" style="display:none">	
+<div id="organisationUnitSection" style="display:none">	
 	<table>		
 	    <tr>
 	        <td style="height:15px; min-width:325px;"></td>
@@ -63,23 +65,21 @@
 		</tr>
 		<tr>
 			<td>
-				#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+				<div style="border:1px dashed gray; max-height: 16.5em; overflow:auto; padding:0 3px 3px 0;">
+				#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )	
+				</div>
 			</td>
-		</tr>		
+		</tr>
 	</table>
 </div>
 
-<table>
-	<tr>
-		<td>
-			<input type="submit" value="$i18n.getString( 'browse' )" style="width:120px">		
-		</td>
-	</tr>
-</table>	
-
-<span id="message"></span>
+<div>
+	<input type="submit" value="$i18n.getString( 'browse' )" style="width:120px">		
+</div>
 
 <script type="text/javascript">
+	window.onload = modeHandler;
+
     Calendar.setup({
         inputField     :    "fromDate",      // id of the input field
         ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
@@ -93,5 +93,6 @@
         button         :    "getDateFieldTo"   // trigger for the calendar (button ID)
     });
 </script>
-
 </form>
+
+<span id="message"></span>
