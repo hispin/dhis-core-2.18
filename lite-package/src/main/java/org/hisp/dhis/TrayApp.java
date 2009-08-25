@@ -253,7 +253,8 @@ public class TrayApp
         }
         // find the last "/" just before the "!"
         int endIndex = resourceString.lastIndexOf("/", resourceString.lastIndexOf("!"));
-        return resourceString.substring(9, endIndex);
+        // make a URI of type file
+        return "file://" + resourceString.substring(9, endIndex);
       }
 
 }
