@@ -11,6 +11,7 @@
 
 //  Layers and widgets
 
+    GEOJSON_URL = 'geojson/';
     INIT_URL = 'geojson/init';
     CHOROPLETH_LAYERNAME = 'Thematic map';
 

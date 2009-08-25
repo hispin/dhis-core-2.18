@@ -290,7 +290,7 @@ Ext.onReady(function()
                         }),
                         'strategies': [new OpenLayers.Strategy.Fixed()],
                         'protocol': new OpenLayers.Protocol.HTTP({
-                            'url': 'geojson/' + mapLayers[i].mapSource,
+                            'url': GEOJSON_URL + mapLayers[i].mapSource,
                             'format': new OpenLayers.Format.GeoJSON()
                         })
                     })
@@ -1437,11 +1437,14 @@ Ext.onReady(function()
                     }),
                     'strategies': [new OpenLayers.Strategy.Fixed()],
                     'protocol': new OpenLayers.Protocol.HTTP({
-                        'url': 'geojson/' + mlmsf,
+                        'url': GEOJSON_URL + mlmsf,
                         'format': new OpenLayers.Format.GeoJSON()
                     })
                 })
             );
+            
+            Ext.getCmp('maplayername_tf').reset();
+            Ext.getCmp('maplayermapsourcefile_tf').reset();
         }
     });
     
@@ -1721,24 +1724,6 @@ Ext.onReady(function()
     shapefilePanel.hide();
     mapLayerPanel.hide();
     
-    widgets = [choropleth,
-                viewPanel,
-                legendsetPanel,
-                shapefilePanel,
-                mapping,
-                mapLayerPanel,
-                adminPanel];
-
-    var mapPanel = new GeoExt.MapPanel({
-        region: 'center',
-        id: 'center',
-        height: 1000,
-        width: 1000,
-        map: map,
-        title: '',
-        zoom: 3
-    });
-    
     var layerTreeConfig = [{
         nodeType: 'gx_baselayercontainer',
         text: 'Background'
@@ -1833,7 +1818,15 @@ Ext.onReady(function()
                     border: true,
                     frame: true
                 },
-                items: widgets 
+                items: [
+                    choropleth,
+                    viewPanel,
+                    legendsetPanel,
+                    shapefilePanel,
+                    mapping,
+                    mapLayerPanel,
+                    adminPanel
+                ]
             },
             {
                 xtype: 'gx_mappanel',
