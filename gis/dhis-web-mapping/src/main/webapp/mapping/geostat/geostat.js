@@ -1,4 +1,4 @@
-// reference local blank image
+/*reference local blank image*/
 Ext.BLANK_IMAGE_URL = '../../mfbase/ext/resources/images/default/s.gif';
 
 Ext.onReady(function()
@@ -50,9 +50,9 @@ Ext.onReady(function()
             if(this.inputValue !== undefined) {
                 this.el.dom.value = this.inputValue;
             }
-            //this.el.addClass('x-hidden');
+            /*this.el.addClass('x-hidden');*/
             this.innerWrap = this.el.wrap({
-                //tabIndex: this.tabIndex,
+                /*tabIndex: this.tabIndex,*/
                 cls: this.baseCls+'-wrap-inner'
             });
             
@@ -72,11 +72,11 @@ Ext.onReady(function()
                     html: this.boxLabel
                 });
             }
-            //this.imageEl = this.innerWrap.createChild({
-                //tag: 'img',
-                //src: Ext.BLANK_IMAGE_URL,
-                //cls: this.baseCls
-            //}, this.el);
+            /*this.imageEl = this.innerWrap.createChild({
+                tag: 'img',
+                src: Ext.BLANK_IMAGE_URL,
+                cls: this.baseCls
+            }, this.el);*/
             if(this.checked) {
                 this.setValue(true);
             }
@@ -87,24 +87,24 @@ Ext.onReady(function()
         },
         afterRender: function() {
             Ext.form.Checkbox.superclass.afterRender.call(this);
-            //this.wrap[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);
+            /*this.wrap[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);*/
             this.imageEl[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);
         },
         initCheckEvents: function() {
-            //this.innerWrap.removeAllListeners();
+            /*this.innerWrap.removeAllListeners();*/
             this.innerWrap.addClassOnOver(this.overCls);
             this.innerWrap.addClassOnClick(this.mouseDownCls);
             this.innerWrap.on('click', this.onClick, this);
-            //this.innerWrap.on('keyup', this.onKeyUp, this);
+            /*this.innerWrap.on('keyup', this.onKeyUp, this);*/
         },
         onFocus: function(e) {
             Ext.form.Checkbox.superclass.onFocus.call(this, e);
-            //this.el.addClass(this.focusCls);
+            /*this.el.addClass(this.focusCls);*/
             this.innerWrap.addClass(this.focusCls);
         },
         onBlur: function(e) {
             Ext.form.Checkbox.superclass.onBlur.call(this, e);
-            //this.el.removeClass(this.focusCls);
+            /*this.el.removeClass(this.focusCls);*/
             this.innerWrap.removeClass(this.focusCls);
         },
         onClick: function(e) {
@@ -116,7 +116,7 @@ Ext.onReady(function()
                     this.toggleValue();
                 }
             }
-            //e.stopEvent();
+            /*e.stopEvent();*/
         },
         onEnable: Ext.form.Checkbox.superclass.onEnable,
         onDisable: Ext.form.Checkbox.superclass.onDisable,
@@ -127,7 +127,7 @@ Ext.onReady(function()
             if (this.rendered) {
                 this.el.dom.checked = this.checked;
                 this.el.dom.defaultChecked = this.checked;
-                //this.wrap[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);
+                /*this.wrap[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);*/
                 this.imageEl[this.checked ? 'addClass' : 'removeClass'](this.checkedCls);
             }
             if (checked != this.checked) {
@@ -138,10 +138,10 @@ Ext.onReady(function()
             }
         },
         getResizeEl: function() {
-            //if(!this.resizeEl){
-                //this.resizeEl = Ext.isSafari ? this.wrap : (this.wrap.up('.x-form-element', 5) || this.wrap);
-            //}
-            //return this.resizeEl;
+            /*if(!this.resizeEl){
+                this.resizeEl = Ext.isSafari ? this.wrap : (this.wrap.up('.x-form-element', 5) || this.wrap);
+            }
+            return this.resizeEl;*/
             return this.wrap;
         }
     });
@@ -234,19 +234,14 @@ Ext.onReady(function()
         "http://labs.metacarta.com/wms/vmap0", 
         {layers: 'basic'}
     );
-                                           
-    var local_wfs = new OpenLayers.Layer.WMS(
-        "Africa",
-        "../../../geoserver/wfs?", 
-        {layers: 'world:africa'}
-    );
-                                                 
-/*    var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
+                                                         
+    /*var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
                                            "http://demo.opengeo.org/geoserver/wms", 
-                                           {layers: 'bluemarble', format: 'image/png'});
-*/                                   
+                                           {layers: 'bluemarble', format: 'image/png'});*/
+                                   
     var choroplethLayer = new OpenLayers.Layer.Vector(CHOROPLETH_LAYERNAME, {
-        'visibility': true,
+        'visibility': false,
+        'displayInLayerSwitcher': false,
         'styleMap': new OpenLayers.StyleMap({
             'default': new OpenLayers.Style(
                 OpenLayers.Util.applyDefaults(
@@ -260,19 +255,50 @@ Ext.onReady(function()
         })
     });
     
-    var static1Layer = new OpenLayers.Layer.Vector(STATIC1_LAYERNAME, {
-        'visibility': false,
-        'styleMap': new OpenLayers.StyleMap({
-            'default': new OpenLayers.Style(
-                OpenLayers.Util.applyDefaults(
-                    {'fillOpacity': 1, 'strokeWidth': 2, 'strokeColor': '#000000', 'strokeOpacity': 1 },
-                    OpenLayers.Feature.Vector.style['default']
-                )
-            )
-        })
-    });
+    map.addLayers([ vmap0, choroplethLayer ]);
     
-    map.addLayers([ vmap0, local_wfs, choroplethLayer, static1Layer ]);
+    map.events.on({
+        changelayer: function(e) {
+            if (e.property == 'visibility' && e.layer != choroplethLayer) {
+                if (e.layer.visibility) {
+                    selectFeatureChoropleth.deactivate();
+                }
+                else {
+                    selectFeatureChoropleth.activate();
+                }
+            }
+        }
+    });
+        
+    Ext.Ajax.request({
+        url: path + 'getAllMapLayers' + type,
+        method: 'GET',
+        success: function(responseObject) {
+            var mapLayers = Ext.util.JSON.decode(responseObject.responseText).mapLayers;
+            
+            for (var i = 0; i < mapLayers.length; i++) {
+                map.addLayer(
+                    new OpenLayers.Layer.Vector(mapLayers[i].name, {
+                        'visibility': false,
+                        'styleMap': new OpenLayers.StyleMap({
+                            'default': new OpenLayers.Style(
+                                OpenLayers.Util.applyDefaults(
+                                    {'fillOpacity': 0.4, 'strokeColor': '#222222', 'strokeWidth': 2},
+                                    OpenLayers.Feature.Vector.style['default']
+                                )
+                            )
+                        }),
+                        'strategies': [new OpenLayers.Strategy.Fixed()],
+                        'protocol': new OpenLayers.Protocol.HTTP({
+                            'url': 'geojson/' + mapLayers[i].mapSource,
+                            'format': new OpenLayers.Format.GeoJSON()
+                        })
+                    })
+                );
+            }
+        },
+        failure: function() {}
+    }); 
 
     var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
         choroplethLayer,
@@ -289,7 +315,7 @@ Ext.onReady(function()
 
     map.setCenter(new OpenLayers.LonLat(init_longitude, init_latitude), init_zoom);
     
-    // REGISTER SHAPEFILE PANEL
+    /*REGISTER SHAPEFILE PANEL*/
     
     var organisationUnitLevelStore = new Ext.data.JsonStore({
         url: path + 'getOrganisationUnitLevels' + type,
@@ -355,7 +381,7 @@ Ext.onReady(function()
                     var level2 = Ext.getCmp('organisationunitlevel_cb').getValue();
                     var orgunit = Ext.getCmp('organisationunit_cb').getValue();
 
-                    if (level1 >= level2) { // CURRENTLY NOT WORKING BECAUSE OF valuefield: 'id'
+                    if (level1 >= level2) { /*CURRENTLY NOT WORKING BECAUSE OF valuefield: 'id'*/
                         organisationUnitLevelComboBox.reset();
                         Ext.messageRed.msg('New map', 'The organisation unit selected above must be divided into a lower level than itself.');
                         return;
@@ -487,8 +513,8 @@ Ext.onReady(function()
         text: 'Register new map',
         handler: function()
         {
-            //var nm = Ext.getCmp('newmap_cb').getValue();
-            //var oui = Ext.getCmp('organisationunit_cb').getValue();
+            /*var nm = Ext.getCmp('newmap_cb').getValue();
+            var oui = Ext.getCmp('organisationunit_cb').getValue();*/
     
             Ext.Ajax.request({
                 url: path + 'getOrganisationUnitsAtLevel' + type,
@@ -712,9 +738,9 @@ Ext.onReady(function()
         id: 'newmap_p',
         items:
         [   
-//            { html: '<p style="padding-bottom:4px">Map type:</p>' }, typeComboBox, { html: '<br>' },
-//            { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, newMapComboBox, { html: '<br>' },
-//            { html: '<p style="padding-bottom:4px">Organisation unit:</p>' }, multi, { html: '<br>' },
+            /*{ html: '<p style="padding-bottom:4px">Map type:</p>' }, typeComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, newMapComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px">Organisation unit:</p>' }, multi, { html: '<br>' },*/
             { html: '<p style="padding-bottom:4px">Organisation unit level:</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Map source file:</p>' }, mapLayerPathTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Map name:</p>' }, newNameTextField, { html: '<br>' },
@@ -823,7 +849,7 @@ Ext.onReady(function()
         ]
     });
     
-    // LEGEND SET PANEL
+    /*LEGEND SET PANEL*/
     
     var legendSetNameTextField = new Ext.form.TextField({
         id: 'legendsetname_tf',
@@ -926,11 +952,11 @@ Ext.onReady(function()
         text: 'Register new legend set',
         handler: function() {
             var ln = Ext.getCmp('legendsetname_tf').getValue();
-//            var lm = Ext.getCmp('legendsetmethod_cb').getValue();
+/*            var lm = Ext.getCmp('legendsetmethod_cb').getValue();*/
             var lc = Ext.getCmp('legendsetclasses_cb').getValue();            
             var llc = Ext.getCmp('legendsetlowcolor_cp').getValue();
             var lhc = Ext.getCmp('legendsethighcolor_cp').getValue();
-//            var li = Ext.getCmp('legendsetindicator_cb').getValue();
+/*            var li = Ext.getCmp('legendsetindicator_cb').getValue();*/
             var lims = Ext.getCmp('legendsetindicator_ms').getValue();
             
             if (!lc || !ln || !lims) {
@@ -1003,12 +1029,12 @@ Ext.onReady(function()
         items:
         [   
             { html: '<p style="padding-bottom:4px">Legend set name:</p>' }, legendSetNameTextField, { html: '<br>' },
-//            { html: '<p style="padding-bottom:4px">Method:</p>' }, legendSetMethodComboBox, { html: '<br>' },
+/*            { html: '<p style="padding-bottom:4px">Method:</p>' }, legendSetMethodComboBox, { html: '<br>' },*/
             { html: '<p style="padding-bottom:4px">Classes:</p>' }, legendSetClassesComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Lowest value color:</p>' }, legendSetLowColorColorPalette, { html: '<br>' },
             { html: '<p style="padding-bottom:4px">Highest value color:</p>' }, legendSetHighColorColorPalette, { html: '<br>' },
-//            { html: '<p style="padding-bottom:4px">Indicator group:</p>' }, legendSetIndicatorGroupComboBox, { html: '<br>' },
-//            { html: '<p style="padding-bottom:4px">Indicator:</p>' }, legendSetIndicatorComboBox
+/*            { html: '<p style="padding-bottom:4px">Indicator group:</p>' }, legendSetIndicatorGroupComboBox, { html: '<br>' },*/
+/*            { html: '<p style="padding-bottom:4px">Indicator:</p>' }, legendSetIndicatorComboBox*/
             { html: '<p style="padding-bottom:4px">Indicators:</p>' }, legendSetIndicatorMultiSelect
         ]
     });
@@ -1075,7 +1101,7 @@ Ext.onReady(function()
         ]
     });
     
-    // VIEW PANEL
+    /*VIEW PANEL*/
     
     var viewNameTextField = new Ext.form.TextField({
         id: 'viewname_tf',
@@ -1329,7 +1355,7 @@ Ext.onReady(function()
         ]
     });
     
-    // MAP LAYER PANEL
+    /*MAP LAYER PANEL*/
     
     var mapLayerNameTextField = new Ext.form.TextField({
         id: 'maplayername_tf',
@@ -1397,6 +1423,25 @@ Ext.onReady(function()
                     alert( 'Status', 'Error while saving data' );
                 }
             });
+            
+            map.addLayer(
+                new OpenLayers.Layer.Vector(mln, {
+                    'visibility': false,
+                    'styleMap': new OpenLayers.StyleMap({
+                        'default': new OpenLayers.Style(
+                            OpenLayers.Util.applyDefaults(
+                                {'fillOpacity': 0.5, 'strokeColor': '#222222', 'strokeWidth': 2},
+                                OpenLayers.Feature.Vector.style['default']
+                            )
+                        )
+                    }),
+                    'strategies': [new OpenLayers.Strategy.Fixed()],
+                    'protocol': new OpenLayers.Protocol.HTTP({
+                        'url': 'geojson/' + mlmsf,
+                        'format': new OpenLayers.Format.GeoJSON()
+                    })
+                })
+            );
         }
     });
     
@@ -1405,6 +1450,7 @@ Ext.onReady(function()
         text: 'Delete map layer',
         handler: function() {
             var ml = Ext.getCmp('maplayer_cb').getValue();
+            var mln = Ext.getCmp('maplayer_cb').getRawValue();
             
             if (!ml) {
                 Ext.messageRed.msg('Delete map layer', 'Please select a map layer.');
@@ -1417,7 +1463,7 @@ Ext.onReady(function()
                 params: { id: ml },
 
                 success: function( responseObject ) {
-                    Ext.messageBlack.msg('Delete map layer', 'The map layer ' + ml + ' was deleted.');
+                    Ext.messageBlack.msg('Delete map layer', 'The map layer ' + msg_highlight_start + mln + msg_highlight_end + ' was deleted.');
                     Ext.getCmp('maplayer_cb').getStore().reload();
                     Ext.getCmp('maplayer_cb').reset();
                 },
@@ -1425,6 +1471,9 @@ Ext.onReady(function()
                     alert( 'Status', 'Error while saving data' );
                 }
             });
+            
+            map.getLayersByName(mln)[0].destroy();
+            //map.removeLayer('Main roads');
         }
     });
     
@@ -1501,7 +1550,7 @@ Ext.onReady(function()
         ]
     });
     
-    // ADMIN PANEL
+    /*ADMIN PANEL*/
     
     var adminPanel = new Ext.form.FormPanel({
         id: 'admin_p',
@@ -1619,7 +1668,7 @@ Ext.onReady(function()
         }
     });
     
-    // WIDGETS
+    /*WIDGETS*/
     
     choropleth = new mapfish.widgets.geostat.Choropleth({
         id: 'choropleth',
@@ -1668,30 +1717,18 @@ Ext.onReady(function()
         }
     });
     
-    static1 = new mapfish.widgets.geostat.Static({
-        id: 'static1',
-        map: map,
-        layer: static1Layer,
-        title: STATIC1_LAYERNAME,
-        nameAttribute: 'NAME',
-        indicators: [['value', 'Indicator']],
-        url: INIT_URL,
-        featureSelection: false,
-        loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
-        legendDiv: 'choroplethLegend',
-        defaults: {width: 130},
-        listeners: {
-            expand: {
-                fn: function() {}
-            }
-        }
-    });
-    
-    static1.hide();
     mapping.hide();
     shapefilePanel.hide();
     mapLayerPanel.hide();
     
+    widgets = [choropleth,
+                viewPanel,
+                legendsetPanel,
+                shapefilePanel,
+                mapping,
+                mapLayerPanel,
+                adminPanel];
+
     var mapPanel = new GeoExt.MapPanel({
         region: 'center',
         id: 'center',
@@ -1702,6 +1739,25 @@ Ext.onReady(function()
         zoom: 3
     });
     
+    var layerTreeConfig = [{
+        nodeType: 'gx_baselayercontainer',
+        text: 'Background'
+    }, {
+        nodeType: 'gx_overlaylayercontainer'
+    }, {
+        nodeType: 'gx_layer',
+        layer: 'Thematic map'
+    }];       
+    
+    var layerTree = new Ext.tree.TreePanel({
+        title: 'Map layers',
+        root: {
+            nodeType: 'async',
+            children: layerTreeConfig
+        },
+        rootVisible: false
+    });
+    
     viewport = new Ext.Viewport({
         id: 'viewport',
         layout: 'border',
@@ -1710,26 +1766,25 @@ Ext.onReady(function()
         [
             new Ext.BoxComponent(
             {
-                // raw
                 region: 'north',
                 id: 'north',
                 el: 'north',
                 height: north_height
             }),
-            //{
-            //    region: 'south',
-            //    contentEl: 'south',
-            //    id: 'south-panel',
-            //    split: true,
-            //    height: 70,
-            //    minSize: 50,
-            //    maxSize: 200,
-            //    collapsible: true,
-            //    collapsed: true,
-            //    title: 'Status',
-            //    margins: '0 5 5 5',
-            //    bodyStyle: 'padding:5px; font-family:tahoma; font-size:12px',
-            //},
+            /*{
+                region: 'south',
+                contentEl: 'south',
+                id: 'south-panel',
+                split: true,
+                height: 70,
+                minSize: 50,
+                maxSize: 200,
+                collapsible: true,
+                collapsed: true,
+                title: 'Status',
+                margins: '0 5 5 5',
+                bodyStyle: 'padding:5px; font-family:tahoma; font-size:12px',
+            },*/
             {
                 region: 'east',
                 id: 'east',
@@ -1744,19 +1799,10 @@ Ext.onReady(function()
                 layout: 'anchor',
                 items:
                 [
-                    {
-                        title: 'Map layers',
-                        id: 'layertree',
-                        autoHeight: true,
-                        xtype: 'layertree',
-                        map: map,
-                        anchor: '100%'
-                    },
+                    layerTree,
                     {
                         title: 'Overview',
-                        autoHeight: true,
-                        html:'<div id="overviewmap"></div>',
-                        anchor: '100%'
+                        html:'<div id="overviewmap" style="height:97px; padding-top:2px;"></div>'
                     },
                     {
                         title: 'Cursor position',
@@ -1776,7 +1822,6 @@ Ext.onReady(function()
             {
                 region: 'west',
                 id: 'west',
-                //title: '',
                 split: true,
                 collapsible: true,
                 width: west_width,
@@ -1788,82 +1833,7 @@ Ext.onReady(function()
                     border: true,
                     frame: true
                 },
-                items:
-                [
-                    choropleth,
-                    viewPanel,
-                    legendsetPanel,
-                    shapefilePanel,
-                    mapping,
-                    mapLayerPanel,
-                    adminPanel,
-                    static1//,
-/*                    {
-                        xtype: 'print-simple',
-                        title: 'Print single page',
-                        bodyStyle: 'padding: 7px;',
-                        formConfig: {
-                            labelWidth: 65,
-                            defaults: {
-                                width: 140,
-                                listWidth: 140
-                            },
-                            items: [
-                                {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'Title',
-                                    name: 'mapTitle',
-                                    value: 'Map title'
-                                },
-                                {
-                                    xtype: 'textarea',
-                                    fieldLabel: 'Comments',
-                                    name: 'comment',
-                                    height: 100,
-                                    value: 'Some comments'
-                                }
-                            ]
-                        },
-                        border: false,
-                        map: map,
-                        configUrl: printConfigUrl
-                    },
-                    {
-                      xtype: 'print-multi',
-                      title: 'Print multi page',
-                      formConfig: {
-                        labelWidth: 65,
-                        bodyStyle: 'padding: 7px;',
-                        defaults: {
-                          width: 140,
-                          listWidth: 140
-                        //},
-                        //items: [
-                        //  {
-                        //    xtype: 'textfield',
-                        //    fieldLabel: 'Title',
-                        //    name: 'title',
-                        //    value: 'Map title'
-                        //  }
-                        //]
-                      },
-                      columns: [
-                          {
-                              header: OpenLayers.Lang.translate('mf.print.mapTitle'),
-                              dataIndex: 'mapTitle',
-                              editor: new Ext.form.TextField()
-                          },
-                          {
-                              header: OpenLayers.Lang.translate('mf.print.comment'),
-                              dataIndex: 'comment',
-                              editor: new Ext.form.TextField()
-                          }
-                      ],
-                      border: false,
-                      map: map,
-                      configUrl: printConfigUrl
-                    }*/
-                ]
+                items: widgets 
             },
             {
                 xtype: 'gx_mappanel',
@@ -1885,62 +1855,66 @@ Ext.onReady(function()
         separator: '<br/>y: '
     }));
 
-    map.addControl(new OpenLayers.Control.OverviewMap({div: $('overviewmap')}));
+    map.addControl(new OpenLayers.Control.OverviewMap({
+        div: $('overviewmap'),
+        size: new OpenLayers.Size(180, 95),
+        minRectSize: 0
+    }));
     
     map.addControl(new OpenLayers.Control.ZoomBox());
-    
-    map.events.on({
-        changelayer: function(e) {
-            if (e.property == 'visibility' && e.layer != choroplethLayer) {
-                if (static1Layer.visibility) {
-                    selectFeatureChoropleth.deactivate();
-                    
-                    if (!STATIC1LOADED) {
-                        STATIC1LOADED = true;
-                        static1.setUrl(STATIC1_URL);
-                    }
-                }
-                else {
-                    selectFeatureChoropleth.activate();
-                }
-            }
-        }
-    });  
     
     Ext.get('loading').fadeOut({remove: true});
 });
 
-// SELECT FEATURES
+/*SELECT FEATURES*/
 
 function onHoverSelectChoropleth(feature) {
+    var east_panel = Ext.getCmp('east');
+    var x = east_panel.x - 210;
+    var y = east_panel.y + 15;
+    style = '<p style="margin-top: 5px; padding-left:5px;">';
+    space = '&nbsp;&nbsp;';
+    bs = '<b>';
+    be = '</b>';
+    lf = '<br>';
+    pe = '</p>';
+    
     if (MAPDATA != null) {
-        var east_panel = Ext.getCmp('east');
-        var x = east_panel.x - 210;
-        var y = east_panel.y + 15;
+        if (ACTIVEPANEL == 'choropleth') {
+            popup_feature = new Ext.Window({
+                title: 'Organisation unit',
+                width: 190,
+                height: 84,
+                layout: 'fit',
+                plain: true,
+                bodyStyle: 'padding:5px',
+                x: x,
+                y: y
+            });    
 
-        popup_feature = new Ext.Window({
-            title: 'Organisation unit',
-            width: 190,
-            height: 84,
-            layout: 'fit',
-            plain: true,
-            bodyStyle: 'padding:5px',
-            x: x,
-            y: y
-        });    
+            var html = style + feature.attributes[MAPDATA.nameColumn] + pe;
+            html += style + bs + 'Value:' + be + space + feature.attributes.value + pe;
+            
+            popup_feature.html = html;
+            popup_feature.show();
+        }
+        else if (ACTIVEPANEL == 'mapping') {
+            popup_feature = new Ext.Window({
+                title: 'Organisation unit',
+                width: 190,
+                height: 84,
+                layout: 'fit',
+                plain: true,
+                bodyStyle: 'padding:5px',
+                x: x,
+                y: y
+            });    
 
-        style = '<p style="margin-top: 5px; padding-left:5px;">';
-        space = '&nbsp;&nbsp;';
-        bs = '<b>';
-        be = '</b>';
-        lf = '<br>';
-        pe = '</p>';
-
-        var html = style + feature.attributes[MAPDATA.nameColumn] + pe;
-        html += style + bs + 'Value:' + be + space + feature.attributes.value + pe;
-        
-        popup_feature.html = html;
-        popup_feature.show();
+            var html = style + feature.attributes[MAPDATA.nameColumn] + pe;
+            
+            popup_feature.html = html;
+            popup_feature.show();
+        }
     }
 }
 
@@ -1990,7 +1964,7 @@ function onClickSelectChoropleth(feature) {
 function onClickUnselectChoropleth(feature) {}
 
 
-// MAP DATA
+/*MAP DATA*/
 
 function loadMapData(redirect) {
     Ext.Ajax.request({
@@ -2035,7 +2009,7 @@ function loadMapData(redirect) {
     });
 }
 
-// CHOROPLETH
+/*CHOROPLETH*/
 function getChoroplethData() {
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
     var periodId = Ext.getCmp('period_cb').getValue();
@@ -2076,7 +2050,7 @@ function dataReceivedChoropleth( responseText ) {
         
         var options = {};
         
-        // hidden
+        /*hidden*/
         choropleth.indicator = 'value';
         choropleth.indicatorText = 'Indicator';
         options.indicator = choropleth.indicator;
@@ -2124,7 +2098,7 @@ function dataReceivedChoropleth( responseText ) {
                 
                 var options = {};
                 
-                // hidden
+                /*hidden*/
                 choropleth.indicator = 'value';
                 choropleth.indicatorText = 'Indicator';
                 options.indicator = choropleth.indicator;
@@ -2146,7 +2120,7 @@ function dataReceivedChoropleth( responseText ) {
     }
 }
 
-// PROPORTIONAL SYMBOL
+/*PROPORTIONAL SYMBOL*/
 function getPointData() {
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
     var periodId = Ext.getCmp('period_cb').getValue();
@@ -2219,7 +2193,7 @@ function dataReceivedPoint( responseText ) {
     });
 }
 
-// MAPPING
+/*MAPPING*/
 function getAssignOrganisationUnitData() {
     var mlp = MAPDATA.mapLayerPath;
     
@@ -2258,7 +2232,7 @@ function dataReceivedAssignOrganisationUnit( responseText ) {
     
     var options = {};
         
-    // hidden
+    /*hidden*/
     mapping.indicator = 'value';
     mapping.indicatorText = 'Indicator';
     options.indicator = mapping.indicator;
@@ -2279,7 +2253,7 @@ function dataReceivedAssignOrganisationUnit( responseText ) {
     MASK.hide();
 }
 
-// AUTO MAPPING
+/*AUTO MAPPING*/
 
 function getAutoAssignOrganisationUnitData() {
     var level = MAPDATA.organisationUnitLevel;
