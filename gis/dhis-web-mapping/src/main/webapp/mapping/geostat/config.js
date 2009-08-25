@@ -39,6 +39,10 @@
     gridpanel_width = west_width - 15;
     gridpanel_height = 700;
     combo_width = 150;
+    
+    MENU_TEXTCOLOR = '#686b72';
+    MENU_TITLECOLOR = '#222';
+    MENU_TITLECOLOR_ADMIN = '#666';
 
 //  Ext.message
 
