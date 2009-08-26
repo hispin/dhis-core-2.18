@@ -164,7 +164,6 @@ Ext.onReady(function()
     URLACTIVE = false;
     PARAMETER = null;
     BOUNDS = 0;
-    STATIC1LOADED = false;
     MAP_SOURCE_TYPE_DATABASE = 'database';
     MAP_SOURCE_TYPE_SHAPEFILE = 'shapefile';
     MAPSOURCE = null;
@@ -264,12 +263,17 @@ Ext.onReady(function()
             var mapLayers = Ext.util.JSON.decode(responseObject.responseText).mapLayers;
             
             for (var i = 0; i < mapLayers.length; i++) {
+                var fillColor = mapLayers[i].fillColor;
+                var fillOpacity = parseFloat(mapLayers[i].fillOpacity);
+                var strokeColor = mapLayers[i].strokeColor;
+                var strokeWidth = parseFloat(mapLayers[i].strokeWidth);
+                
                 var treeLayer = new OpenLayers.Layer.Vector(mapLayers[i].name, {
                     'visibility': false,
                     'styleMap': new OpenLayers.StyleMap({
                         'default': new OpenLayers.Style(
                             OpenLayers.Util.applyDefaults(
-                                {'fillOpacity': 0.4, 'strokeColor': '#222222', 'strokeWidth': 2},
+                                {'fillColor': fillColor, 'fillOpacity': fillOpacity, 'strokeColor': strokeColor, 'strokeWidth': strokeWidth},
                                 OpenLayers.Feature.Vector.style['default']
                             )
                         )
@@ -754,8 +758,8 @@ Ext.onReady(function()
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Map name:</p>' }, newNameTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Unique column:</p>' }, newUniqueColumnTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Name column:</p>' }, newNameColumnTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Longitude:</p>' }, newLongitudeTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Latitude:</p>' }, newLatitudeTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Longitude (x):</p>' }, newLongitudeTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Latitude (y):</p>' }, newLatitudeTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Zoom:</p>' }, newZoomComboBox
         ]
     });
@@ -1377,6 +1381,54 @@ Ext.onReady(function()
         width: combo_width
     });
     
+    var mapLayerFillColorColorField = new Ext.ux.ColorField({
+        id: 'maplayerfillcolor_cf',
+        allowBlank: false,
+        width: combo_width,
+        value: '#FF0000'
+    });
+    
+    var mapLayerFillOpacityComboBox = new Ext.form.ComboBox({
+        id: 'maplayerfillopacity_cb',
+        editable: true,
+        valueField: 'value',
+        displayField: 'value',
+        mode: 'local',
+        emptyText: 'Required',
+        triggerAction: 'all',
+        width: combo_width,
+        minListWidth: combo_width + 26,
+        value: 0.5,
+        store: new Ext.data.SimpleStore({
+            fields: ['value'],
+            data: [[0.0], [0.1], [0.2], [0.3], [0.4], [0.5], [0.6], [0.7], [0.8], [0.9], [1.0]]
+        })
+    });
+    
+    var mapLayerStrokeColorColorField = new Ext.ux.ColorField({
+        id: 'maplayerstrokecolor_cf',
+        allowBlank: false,
+        width: combo_width,
+        value: '#222222'
+    });
+    
+    var mapLayerStrokeWidthComboBox = new Ext.form.ComboBox({
+        id: 'maplayerstrokewidth_cb',
+        editable: true,
+        valueField: 'value',
+        displayField: 'value',
+        mode: 'local',
+        emptyText: 'Required',
+        triggerAction: 'all',
+        width: combo_width,
+        minListWidth: combo_width + 26,
+        value: 2,
+        store: new Ext.data.SimpleStore({
+            fields: ['value'],
+            data: [[0], [1], [2], [3], [4]]
+        })
+    });
+    
     var mapLayerStore = new Ext.data.JsonStore({
         url: path + 'getAllMapLayers' + type,
         root: 'mapLayers',
@@ -1407,6 +1459,10 @@ Ext.onReady(function()
         handler: function() {
             var mln = Ext.getCmp('maplayername_tf').getRawValue();
             var mlmsf = Ext.getCmp('maplayermapsourcefile_tf').getValue();
+            var mlfc = Ext.getCmp('maplayerfillcolor_cf').getValue();
+            var mlfo = Ext.getCmp('maplayerfillopacity_cb').getValue();
+            var mlsc = Ext.getCmp('maplayerstrokecolor_cf').getValue();
+            var mlsw = Ext.getCmp('maplayerstrokewidth_cb').getValue();
             
             if (!mln || !mlmsf ) {
                 Ext.messageRed.msg('New map layer', 'Map layer form is not complete.');
@@ -1421,7 +1477,7 @@ Ext.onReady(function()
             Ext.Ajax.request({
                 url: path + 'addOrUpdateMapLayer' + type,
                 method: 'POST',
-                params: { name: mln, type: '', mapSource: mlmsf, fillColor: '', fillOpacity: 0, strokeColor: '', strokeWidth: 0 },
+                params: { name: mln, type: 'overlay', mapSource: mlmsf, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw },
 
                 success: function( responseObject ) {
                     Ext.messageBlack.msg('New map layer', 'The map layer ' + msg_highlight_start + mln + msg_highlight_end + ' was registered.');
@@ -1493,7 +1549,11 @@ Ext.onReady(function()
         items:
         [
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Name:</p>' }, mapLayerNameTextField, { html: '<br>' }, 
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Map source file:</p>' }, mapLayerMapSourceFileTextField
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Map source file:</p>' }, mapLayerMapSourceFileTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Fill color:</p>' }, mapLayerFillColorColorField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Fill opacity:</p>' }, mapLayerFillOpacityComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Stroke color:</p>' }, mapLayerStrokeColorColorField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Stroke width:</p>' }, mapLayerStrokeWidthComboBox, { html: '<br>' }
         ]
     });
     
@@ -1734,9 +1794,11 @@ Ext.onReady(function()
     
     var layerTreeConfig = [{
         nodeType: 'gx_baselayercontainer',
+        singleClickExpand: true,
         text: 'Backgrounds'
     }, {
-        nodeType: 'gx_overlaylayercontainer'
+        nodeType: 'gx_overlaylayercontainer',
+        singleClickExpand: true
     }, {
         nodeType: 'gx_layer',
         layer: 'Thematic map'
