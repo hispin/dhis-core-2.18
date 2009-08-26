@@ -37,16 +37,31 @@ public class MapLayer
 
     private String name;
     
+    private String type;
+    
     private String mapSource;
+    
+    private String fillColor;
+    
+    private int fillOpacity;
+    
+    private String strokeColor;
+    
+    private int strokeWidth;
     
     public MapLayer()
     {
     }
 
-    public MapLayer( String name, String mapSource )
+    public MapLayer( String name, String type, String mapSource, String fillColor, int fillOpacity, String strokeColor, int strokeWidth )
     {
         this.name = name;
+        this.type = type;
         this.mapSource = mapSource;
+        this.fillColor = fillColor;
+        this.fillOpacity = fillOpacity;
+        this.strokeColor = strokeColor;
+        this.strokeWidth = strokeWidth;
     }
     
     // -------------------------------------------------------------------------
@@ -106,6 +121,16 @@ public class MapLayer
         this.name = name;
     }
 
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
     public String getMapSource()
     {
         return mapSource;
@@ -114,5 +139,45 @@ public class MapLayer
     public void setMapSource( String mapSource )
     {
         this.mapSource = mapSource;
+    }
+
+    public String getFillColor()
+    {
+        return fillColor;
+    }
+
+    public void setFillColor( String fillColor )
+    {
+        this.fillColor = fillColor;
+    }
+
+    public int getFillOpacity()
+    {
+        return fillOpacity;
+    }
+
+    public void setFillOpacity( int fillOpacity )
+    {
+        this.fillOpacity = fillOpacity;
+    }
+
+    public String getStrokeColor()
+    {
+        return strokeColor;
+    }
+
+    public void setStrokeColor( String strokeColor )
+    {
+        this.strokeColor = strokeColor;
+    }
+
+    public int getStrokeWidth()
+    {
+        return strokeWidth;
+    }
+
+    public void setStrokeWidth( int strokeWidth )
+    {
+        this.strokeWidth = strokeWidth;
     }
 }
