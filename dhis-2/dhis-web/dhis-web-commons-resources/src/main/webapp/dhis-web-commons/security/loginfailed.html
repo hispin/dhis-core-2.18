@@ -3,25 +3,7 @@
 <head>
 <title>DHIS 2</title>
 <script language="javascript" src="../util/jquery.js"></script>
-<script language="javascript" src="../util/jquery-ui.js"> </script>
-<script language="javascript">
-		$(document).ready(function() {
-			$('#j_username').focus();
- 		});
-		function showProgress() {
-			$('#loginmsg').show();
-			$('.loginMessage').hide();
-			i=0;
-			$("#progressbar").progressbar();
-			setInterval(updateProgress,1000);   			
- 		}
-		function updateProgress(){
-			i++;
-			$("#progressbar").progressbar('value',i);
-		}
-    </script>
 <link type="text/css" rel="stylesheet" media="screen" href="../css/login.css">
-<link type="text/css" rel="stylesheet" media="screen" href="../util/css/redmond/jquery-ui.css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
@@ -51,10 +33,6 @@
       <tr>
     </table>
   </form>
-  <p></p>
-  <p></p>
-  <p id="loginmsg" style="display:none">Please wait... Loading</p>
-  <div style="width:200px; height:10px; margin-right:-40px;" id="progressbar"></div>
   <span class="loginMessage">Wrong username or password. Please try again.</span> </div>
 </body>
 </html>
