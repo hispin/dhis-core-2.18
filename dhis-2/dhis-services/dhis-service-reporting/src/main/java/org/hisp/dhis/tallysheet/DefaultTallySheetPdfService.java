@@ -132,7 +132,7 @@ public class DefaultTallySheetPdfService
         throws DocumentException
     {
         Font tableFont = new Font( Font.HELVETICA, 8 );
-        double a4Multiplier = (PageSize.A3.width() / PageSize.A4.width()) * 1.1;
+        double a4Multiplier = ( PageSize.A3.getWidth() / PageSize.A4.getWidth() ) * 1.1;
 
         float[] widths = { 0.2f, 0.55f, 0.05f };
         if ( !a3Format )
