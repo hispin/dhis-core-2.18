@@ -43,7 +43,7 @@ public class MapLayer
     
     private String fillColor;
     
-    private int fillOpacity;
+    private double fillOpacity;
     
     private String strokeColor;
     
@@ -53,7 +53,7 @@ public class MapLayer
     {
     }
 
-    public MapLayer( String name, String type, String mapSource, String fillColor, int fillOpacity, String strokeColor, int strokeWidth )
+    public MapLayer( String name, String type, String mapSource, String fillColor, double fillOpacity, String strokeColor, int strokeWidth )
     {
         this.name = name;
         this.type = type;
@@ -151,12 +151,12 @@ public class MapLayer
         this.fillColor = fillColor;
     }
 
-    public int getFillOpacity()
+    public double getFillOpacity()
     {
         return fillOpacity;
     }
 
-    public void setFillOpacity( int fillOpacity )
+    public void setFillOpacity( double fillOpacity )
     {
         this.fillOpacity = fillOpacity;
     }

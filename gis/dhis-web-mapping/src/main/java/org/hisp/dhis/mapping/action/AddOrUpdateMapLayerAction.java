@@ -81,9 +81,9 @@ public class AddOrUpdateMapLayerAction
         this.fillColor = fillColor;
     }
 
-    private int fillOpacity;
+    private double fillOpacity;
 
-    public void setFillOpacity( int fillOpacity )
+    public void setFillOpacity( double fillOpacity )
     {
         this.fillOpacity = fillOpacity;
     }
