@@ -557,7 +557,7 @@ public class DefaultMappingService
         mappingStore.updateMapLayer( mapLayer );
     }
 
-    public void addOrUpdateMapLayer( String name, String type, String mapSource, String fillColor, int fillOpacity, String strokeColor, int strokeWidth )
+    public void addOrUpdateMapLayer( String name, String type, String mapSource, String fillColor, double fillOpacity, String strokeColor, int strokeWidth )
     {
         MapLayer mapLayer = mappingStore.getMapLayerByName( name );
 
