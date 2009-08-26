@@ -230,7 +230,7 @@ Ext.onReady(function()
     }
 
     var vmap0 = new OpenLayers.Layer.WMS(
-        "OpenLayers WMS",
+        "World WMS",
         "http://labs.metacarta.com/wms/vmap0", 
         {layers: 'basic'}
     );
@@ -256,6 +256,44 @@ Ext.onReady(function()
     });
     
     map.addLayers([ vmap0, choroplethLayer ]);
+        
+    Ext.Ajax.request({
+        url: path + 'getAllMapLayers' + type,
+        method: 'GET',
+        success: function(responseObject) {
+            var mapLayers = Ext.util.JSON.decode(responseObject.responseText).mapLayers;
+            
+            for (var i = 0; i < mapLayers.length; i++) {
+                var treeLayer = new OpenLayers.Layer.Vector(mapLayers[i].name, {
+                    'visibility': false,
+                    'styleMap': new OpenLayers.StyleMap({
+                        'default': new OpenLayers.Style(
+                            OpenLayers.Util.applyDefaults(
+                                {'fillOpacity': 0.4, 'strokeColor': '#222222', 'strokeWidth': 2},
+                                OpenLayers.Feature.Vector.style['default']
+                            )
+                        )
+                    }),
+                    'strategies': [new OpenLayers.Strategy.Fixed()],
+                    'protocol': new OpenLayers.Protocol.HTTP({
+                        'url': GEOJSON_URL + mapLayers[i].mapSource,
+                        'format': new OpenLayers.Format.GeoJSON()
+                    })
+                });
+                
+                treeLayer.events.register('loadstart', null, function() {
+                    MASK.show();
+                });
+                
+                treeLayer.events.register('loadend', null, function() {
+                    MASK.hide();
+                });
+                    
+                map.addLayer(treeLayer);
+            }
+        },
+        failure: function() {}
+    });
     
     map.events.on({
         changelayer: function(e) {
@@ -269,36 +307,6 @@ Ext.onReady(function()
             }
         }
     });
-        
-    Ext.Ajax.request({
-        url: path + 'getAllMapLayers' + type,
-        method: 'GET',
-        success: function(responseObject) {
-            var mapLayers = Ext.util.JSON.decode(responseObject.responseText).mapLayers;
-            
-            for (var i = 0; i < mapLayers.length; i++) {
-                map.addLayer(
-                    new OpenLayers.Layer.Vector(mapLayers[i].name, {
-                        'visibility': false,
-                        'styleMap': new OpenLayers.StyleMap({
-                            'default': new OpenLayers.Style(
-                                OpenLayers.Util.applyDefaults(
-                                    {'fillOpacity': 0.4, 'strokeColor': '#222222', 'strokeWidth': 2},
-                                    OpenLayers.Feature.Vector.style['default']
-                                )
-                            )
-                        }),
-                        'strategies': [new OpenLayers.Strategy.Fixed()],
-                        'protocol': new OpenLayers.Protocol.HTTP({
-                            'url': GEOJSON_URL + mapLayers[i].mapSource,
-                            'format': new OpenLayers.Format.GeoJSON()
-                        })
-                    })
-                );
-            }
-        },
-        failure: function() {}
-    }); 
 
     var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
         choroplethLayer,
@@ -1413,7 +1421,7 @@ Ext.onReady(function()
             Ext.Ajax.request({
                 url: path + 'addOrUpdateMapLayer' + type,
                 method: 'POST',
-                params: { name: mln, mapSource: mlmsf },
+                params: { name: mln, type: '', mapSource: mlmsf, fillColor: '', fillOpacity: 0, strokeColor: '', strokeWidth: 0 },
 
                 success: function( responseObject ) {
                     Ext.messageBlack.msg('New map layer', 'The map layer ' + msg_highlight_start + mln + msg_highlight_end + ' was registered.');
@@ -1726,8 +1734,7 @@ Ext.onReady(function()
     
     var layerTreeConfig = [{
         nodeType: 'gx_baselayercontainer',
-        text: 'Background',
-        cls: 'testklasse'
+        text: 'Backgrounds'
     }, {
         nodeType: 'gx_overlaylayercontainer'
     }, {
@@ -1737,13 +1744,34 @@ Ext.onReady(function()
     
     var layerTree = new Ext.tree.TreePanel({
         title: 'Map layers',
+        enableDD: true,
+        bodyStyle: 'padding-bottom:5px;',
+        rootVisible: false,
         root: {
             nodeType: 'async',
             children: layerTreeConfig
-        },
-        rootVisible: false,
-        enableDD: true,
-        cls: 'testklasse'
+        }
+    });
+    
+    //layerTree.on({
+    //    'checkchange': function(node,checked) {
+    //        if (checked) {
+    //            MASK.show();
+    //        }   
+    //    }
+    //});
+    
+    map.events.on({
+        changelayer: function(e) {
+            if (e.property == 'visibility' && e.layer != choroplethLayer) {
+                if (e.layer.visibility) {
+                    selectFeatureChoropleth.deactivate();
+                }
+                else {
+                    selectFeatureChoropleth.activate();
+                }
+            }
+        }
     });
     
     viewport = new Ext.Viewport({
@@ -1759,20 +1787,6 @@ Ext.onReady(function()
                 el: 'north',
                 height: north_height
             }),
-            /*{
-                region: 'south',
-                contentEl: 'south',
-                id: 'south-panel',
-                split: true,
-                height: 70,
-                minSize: 50,
-                maxSize: 200,
-                collapsible: true,
-                collapsed: true,
-                title: 'Status',
-                margins: '0 5 5 5',
-                bodyStyle: 'padding:5px; font-family:tahoma; font-size:12px',
-            },*/
             {
                 region: 'east',
                 id: 'east',
@@ -1796,7 +1810,8 @@ Ext.onReady(function()
                         title: 'Cursor position',
                         height: 65,
                         contentEl: 'position',
-                        anchor: '100%'
+                        anchor: '100%',
+                        bodyStyle: 'padding-left: 4px;'
                     },
                     {
                         title: 'Map legend',
@@ -1845,10 +1860,10 @@ Ext.onReady(function()
     });
     
     map.addControl(new OpenLayers.Control.MousePosition({
-        displayClass: "void", 
+        displayClass: 'void', 
         div: $('mouseposition'), 
-        prefix: 'x: ',
-        separator: '<br/>y: '
+        prefix: '<font color="' + MENU_TEXTCOLOR + '">x: </font>',
+        separator: '<br/><font color="' + MENU_TEXTCOLOR + '">y: </font>'
     }));
 
     map.addControl(new OpenLayers.Control.OverviewMap({
