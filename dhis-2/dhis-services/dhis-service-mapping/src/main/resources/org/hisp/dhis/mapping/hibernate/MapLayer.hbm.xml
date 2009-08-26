@@ -12,8 +12,18 @@
 		</id>
 	
 		<property name="name" column="name" unique="true"/>
+		
+		<property name="type" column="type"/>
 	
 		<property name="mapSource" column="mapsource" unique="true"/>
+		
+		<property name="fillColor" column="fillcolor"/>
+		
+		<property name="fillOpacity" column="fillopacity"/>
+		
+		<property name="strokeColor" column="strokecolor"/>
+		
+		<property name="strokeWidth" column="strokewidth"/>
 		
 	</class>
 	

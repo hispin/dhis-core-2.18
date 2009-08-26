@@ -60,6 +60,13 @@ public class AddOrUpdateMapLayerAction
         this.name = name;
     }
     
+    private String type;
+    
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+    
     private String mapSource;
     
     public void setMapSource( String mapSource )
@@ -67,13 +74,41 @@ public class AddOrUpdateMapLayerAction
         this.mapSource = mapSource;
     }
     
+    private String fillColor;
+
+    public void setFillColor( String fillColor )
+    {
+        this.fillColor = fillColor;
+    }
+
+    private int fillOpacity;
+
+    public void setFillOpacity( int fillOpacity )
+    {
+        this.fillOpacity = fillOpacity;
+    }
+    
+    private String strokeColor;
+
+    public void setStrokeColor( String strokeColor )
+    {
+        this.strokeColor = strokeColor;
+    }
+    
+    private int strokeWidth;
+
+    public void setStrokeWidth( int strokeWidth )
+    {
+        this.strokeWidth = strokeWidth;
+    }    
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        mappingService.addOrUpdateMapLayer( name, mapSource );
+        mappingService.addOrUpdateMapLayer( name, type, mapSource, fillColor, fillOpacity, strokeColor, strokeWidth );
         
         return SUCCESS;
     }

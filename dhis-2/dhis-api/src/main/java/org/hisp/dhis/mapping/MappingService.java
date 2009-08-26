@@ -346,7 +346,7 @@ public interface MappingService
     
     void updateMapLayer( MapLayer mapLayer );
     
-    void addOrUpdateMapLayer( String name, String mapSource );
+    void addOrUpdateMapLayer( String name, String type, String mapSource, String fillColor, int fillOpacity, String strokeColor, int strokeWidth );
     
     void deleteMapLayer( MapLayer mapLayer );
     

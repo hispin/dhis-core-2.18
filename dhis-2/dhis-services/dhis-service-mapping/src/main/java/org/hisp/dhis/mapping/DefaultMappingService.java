@@ -557,20 +557,25 @@ public class DefaultMappingService
         mappingStore.updateMapLayer( mapLayer );
     }
 
-    public void addOrUpdateMapLayer( String name, String mapSource )
+    public void addOrUpdateMapLayer( String name, String type, String mapSource, String fillColor, int fillOpacity, String strokeColor, int strokeWidth )
     {
         MapLayer mapLayer = mappingStore.getMapLayerByName( name );
 
         if ( mapLayer != null )
         {
             mapLayer.setName( name );
+            mapLayer.setType( type );
             mapLayer.setMapSource( mapSource );
+            mapLayer.setFillColor( fillColor );
+            mapLayer.setFillOpacity( fillOpacity );
+            mapLayer.setStrokeColor( strokeColor );
+            mapLayer.setStrokeWidth( strokeWidth );
             
             updateMapLayer( mapLayer );
         }
         else
         {
-            addMapLayer( new MapLayer( name, mapSource ) );
+            addMapLayer( new MapLayer( name, type, mapSource, fillColor, fillOpacity, strokeColor, strokeWidth ) );
         }
     }
 
