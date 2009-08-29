@@ -27,6 +27,8 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.user.User;
 
 /**
@@ -40,4 +42,6 @@ public interface DashboardService
     void saveDashboardContent( DashboardContent dashboardContent );
         
     DashboardContent getDashboardContent( User user );
+    
+    Collection<DashboardContent> getAllDashboardContent();
 }
