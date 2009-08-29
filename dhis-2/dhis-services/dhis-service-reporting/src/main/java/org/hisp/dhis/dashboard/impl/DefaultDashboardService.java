@@ -31,11 +31,13 @@ import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardContentStore;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.user.User;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Transactional
 public class DefaultDashboardService
     implements DashboardService
 {
