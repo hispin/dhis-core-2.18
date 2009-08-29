@@ -20,8 +20,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitGroupService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
     </property>
-    <property name="dataSetStore">
-      <ref bean="org.hisp.dhis.dataset.DataSetStore"/>
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
     </property>
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
