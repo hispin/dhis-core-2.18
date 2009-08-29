@@ -755,7 +755,7 @@ Ext.onReady(function()
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Organisation unit:</p>' }, multi, { html: '<br>' },*/
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Organisation unit level:</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Map source file:</p>' }, mapLayerPathTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Map name:</p>' }, newNameTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Display name:</p>' }, newNameTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Unique column:</p>' }, newUniqueColumnTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Name column:</p>' }, newNameColumnTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Longitude (x):</p>' }, newLongitudeTextField, { html: '<br>' },
@@ -1040,7 +1040,7 @@ Ext.onReady(function()
         id: 'newlegendset_p',
         items:
         [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Legend set name:</p>' }, legendSetNameTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Name:</p>' }, legendSetNameTextField, { html: '<br>' },
 /*            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Method:</p>' }, legendSetMethodComboBox, { html: '<br>' },*/
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Classes:</p>' }, legendSetClassesComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Lowest value color:</p>' }, legendSetLowColorColorPalette, { html: '<br>' },
@@ -1494,7 +1494,7 @@ Ext.onReady(function()
                     'styleMap': new OpenLayers.StyleMap({
                         'default': new OpenLayers.Style(
                             OpenLayers.Util.applyDefaults(
-                                {'fillOpacity': 0.5, 'strokeColor': '#222222', 'strokeWidth': 2},
+                                {'fillColor': mlfc, 'fillOpacity': mlfo, 'strokeColor': mlsc, 'strokeWidth': mlsw},
                                 OpenLayers.Feature.Vector.style['default']
                             )
                         )
@@ -2000,7 +2000,7 @@ function onHoverUnselectChoropleth(feature) {
 function onClickSelectChoropleth(feature) {
     if (ACTIVEPANEL == 'mapping') {
         if (!Ext.getCmp('grid_gp').getSelectionModel().getSelected()) {
-            Ext.messageRed.msg('Assign organisation units', 'Please select an organisation unit in the list.');
+            Ext.messageRed.msg('Assign organisation units', 'Please first select an organisation unit in the list.');
             return;
         }
         
