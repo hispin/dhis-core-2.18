@@ -56,7 +56,7 @@ public class GetPeriodsByPeriodTypeAction
     {
         this.periodService = periodService;
     }
-    
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
