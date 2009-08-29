@@ -227,7 +227,12 @@ Ext.onReady(function()
             return 900;
         }
     }
-
+    
+    function isNumber(x) 
+    { 
+        return ( (typeof x === typeof 1) && (null !== x) && isFinite(x) );
+    }
+    
     var vmap0 = new OpenLayers.Layer.WMS(
         "World WMS",
         "http://labs.metacarta.com/wms/vmap0", 
@@ -530,7 +535,7 @@ Ext.onReady(function()
     
             Ext.Ajax.request({
                 url: path + 'getOrganisationUnitsAtLevel' + type,
-                method: 'GET',
+                method: 'POST',
                 params: { level: 1, format: 'json' },
 
                 success: function( responseObject ) {
@@ -551,30 +556,82 @@ Ext.onReady(function()
                     }
                     
                     if (validateInput(nn) == false) {
-                        Ext.messageRed.msg('New map', 'Map name cannot be longer than 25 characters.');
+                        Ext.messageRed.msg('New map', msg_highlight_start + 'Map name' + msg_highlight_end + ' cannot have more than 25 characters.');
                         return;
                     }
                     
-                    Ext.Ajax.request({
-                        url: path + 'addOrUpdateMap' + type,
-                        method: 'GET',
-                        params: { name: nn, mapLayerPath: mlp, type: t, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom},
+                    /*if (!isNumber(lon)) {
+                        Ext.messageRed.msg('New map', msg_highlight_start + 'Longitude' + msg_highlight_end + ' must be a number.');
+                        return;
+                    }
+                    else {
+                        if (lon < -180 || lon > 180) {
+                            Ext.messageRed.msg('New map', msg_highlight_start + 'Longitude' + msg_highlight_end + ' must be between -180 and 180.');
+                            return;
+                        }
+                    }
+                    
+                    if (!isNumber(lat)) {
+                        Ext.messageRed.msg('New map', msg_highlight_start + 'Latitude' + msg_highlight_end + ' must be a number.');
+                        return;
+                    }
+                    else {
+                        if (lat < -90 || lat > 90) {
+                            Ext.messageRed.msg('New map', msg_highlight_start + 'Latitude' + msg_highlight_end + ' must be between -90 and 90.');
+                            return;
+                        }
+                    }*/
 
+                    Ext.Ajax.request({
+                        url: path + 'getAllMaps' + type,
+                        method: 'GET',
                         success: function( responseObject ) {
-                            Ext.messageBlack.msg('New map', 'The map ' + msg_highlight_start + nn + msg_highlight_end + ' was registered.');
+                            var maps = Ext.util.JSON.decode(responseObject.responseText).maps;
+                            for (var i = 0; i < maps.length; i++) {
+                                if (maps[i].name == nn) {
+                                    Ext.messageRed.msg('New map', 'There is already a map called ' + msg_highlight_start + nn + msg_highlight_end + '.');
+                                    return;
+                                }
+                                else if (maps[i].mapLayerPath == mlp) {
+                                    Ext.messageRed.msg('New map', 'There is already a map with ' + msg_highlight_start + mlp + msg_highlight_end + ' as source file.');
+                                    return;
+                                }
+                            }
                             
-                            Ext.getCmp('map_cb').getStore().reload();
-                            Ext.getCmp('maps_cb').getStore().reload();
-                            Ext.getCmp('editmap_cb').getStore().reload();
-                            Ext.getCmp('deletemap_cb').getStore().reload();
+                            Ext.Ajax.request({
+                                url: path + 'addOrUpdateMap' + type,
+                                method: 'GET',
+                                params: { name: nn, mapLayerPath: mlp, type: t, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom},
+
+                                success: function( responseObject ) {
+                                    Ext.messageBlack.msg('New map', 'The map ' + msg_highlight_start + nn + msg_highlight_end + ' was registered.');
+                                    
+                                    Ext.getCmp('map_cb').getStore().reload();
+                                    Ext.getCmp('maps_cb').getStore().reload();
+                                    Ext.getCmp('editmap_cb').getStore().reload();
+                                    Ext.getCmp('deletemap_cb').getStore().reload();
+                                    
+                                    Ext.getCmp('organisationunitlevel_cb').reset();
+                                    Ext.getCmp('newname_tf').reset();
+                                    Ext.getCmp('maplayerpath_tf').reset();
+                                    Ext.getCmp('newuniquecolumn_tf').reset();
+                                    Ext.getCmp('newnamecolumn_tf').reset();
+                                    Ext.getCmp('newlongitude_tf').reset();
+                                    Ext.getCmp('newlatitude_tf').reset();
+                                    Ext.getCmp('newzoom_cb').reset();                                    
+                                },
+                                failure: function() {
+                                    alert( 'Error: addOrUpdateMap' );
+                                }
+                            });
                         },
                         failure: function() {
-                            alert( 'Status', 'Error while saving data' );
+                            alert( 'Error: getAllMaps' );
                         }
                     });
                 },
                 failure: function() {
-                    alert( 'Status', 'Error while saving data' );
+                    alert( 'Error: getOrganisationUnitsAtLevel' );
                 }
             });
         }
@@ -616,6 +673,14 @@ Ext.onReady(function()
                     Ext.getCmp('editmap_cb').reset();
                     Ext.getCmp('deletemap_cb').getStore().reload();
                     Ext.getCmp('deletemap_cb').reset();
+                    
+                    Ext.getCmp('editmap_cb').reset();
+                    Ext.getCmp('editname_tf').reset();
+                    Ext.getCmp('edituniquecolumn_tf').reset();
+                    Ext.getCmp('editnamecolumn_tf').reset();
+                    Ext.getCmp('editlongitude_tf').reset();
+                    Ext.getCmp('editlatitude_tf').reset();
+                    Ext.getCmp('editzoom_cb').reset();
                 },
                 failure: function() {
                     alert( 'Status', 'Error while saving data' );
