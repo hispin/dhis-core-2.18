@@ -42,6 +42,13 @@ import org.hisp.dhis.system.deletion.DeletionHandler;
 public class DashboardContentDeletionHandler
     extends DeletionHandler
 {
+    private DashboardService dashboardService;
+
+    public void setDashboardService( DashboardService dashboardService )
+    {
+        this.dashboardService = dashboardService;
+    }
+
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -54,36 +61,72 @@ public class DashboardContentDeletionHandler
     @Override
     public void deleteReport( Report report )
     {
-        
+        for ( DashboardContent content : dashboardService.getAllDashboardContent() )
+        {
+            if ( content.getReports().remove( report ) )
+            {
+                dashboardService.saveDashboardContent( content );
+            }
+        }
     }
     
     @Override
     public void deleteOlapURL( OlapURL olapURL )
     {
-        
+        for ( DashboardContent content : dashboardService.getAllDashboardContent() )
+        {
+            if ( content.getOlapUrls().remove( olapURL ) )
+            {
+                dashboardService.saveDashboardContent( content );
+            }
+        }
     }
     
     @Override
     public void deleteDataMartExport( DataMartExport dataMartExport )
     {
-        
+        for ( DashboardContent content : dashboardService.getAllDashboardContent() )
+        {
+            if ( content.getDataMartExports().remove( dataMartExport ) )
+            {
+                dashboardService.saveDashboardContent( content );
+            }
+        }
     }
     
     @Override
     public void deleteDocument( Document document )
     {
-        
+        for ( DashboardContent content : dashboardService.getAllDashboardContent() )
+        {
+            if ( content.getDocuments().remove( document ) )
+            {
+                dashboardService.saveDashboardContent( content );
+            }
+        }
     }
     
     @Override
     public void deleteReportTable( ReportTable reportTable )
     {
-        
+        for ( DashboardContent content : dashboardService.getAllDashboardContent() )
+        {
+            if ( content.getReportTables().remove( reportTable ) )
+            {
+                dashboardService.saveDashboardContent( content );
+            }
+        }
     }
     
     @Override
     public void deleteMapView( MapView mapView )
     {
-        
+        for ( DashboardContent content : dashboardService.getAllDashboardContent() )
+        {
+            if ( content.getMapViews().remove( mapView ) )
+            {
+                dashboardService.saveDashboardContent( content );
+            }
+        }
     }
 }

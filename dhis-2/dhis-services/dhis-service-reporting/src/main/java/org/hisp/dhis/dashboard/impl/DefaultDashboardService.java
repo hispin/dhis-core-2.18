@@ -27,6 +27,8 @@ package org.hisp.dhis.dashboard.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardContentStore;
 import org.hisp.dhis.dashboard.DashboardService;
@@ -66,5 +68,10 @@ public class DefaultDashboardService
         DashboardContent content = dashboardContentStore.get( user );
         
         return content != null ? content : new DashboardContent( user );        
+    }
+    
+    public Collection<DashboardContent> getAllDashboardContent()
+    {
+        return dashboardContentStore.getAll();
     }
 }

@@ -288,6 +288,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.chart.ChartService"/>
   </bean>
   
+  <bean id="org.hisp.dhis.dashboard.DashboardContentDeletionHandler"
+    class="org.hisp.dhis.dashboard.DashboardContentDeletionHandler">
+    <property name="dashboardService"
+      ref="org.hisp.dhis.dashboard.DashboardService"/>  
+  </bean>
+  
   <!-- DeletionManager -->
   
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -299,6 +305,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
           <ref local="org.hisp.dhis.report.ReportDeletionHandler"/>
           <ref local="org.hisp.dhis.reporttable.ReportTableDeletionHandler"/>
           <ref local="org.hisp.dhis.chart.ChartDeletionHandler"/>
+          <ref local="org.hisp.dhis.dashboard.DashboardContentDeletionHandler"/>
         </list>
       </list>
     </property>
