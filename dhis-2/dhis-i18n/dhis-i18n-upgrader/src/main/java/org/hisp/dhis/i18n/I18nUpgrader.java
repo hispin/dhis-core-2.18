@@ -44,7 +44,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetStore;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.i18n.util.LocaleUtils;
 import org.hisp.dhis.indicator.Indicator;
@@ -82,11 +82,11 @@ public class I18nUpgrader
         this.dataElementService = dataElementService;
     }
 
-    private DataSetStore dataSetStore;
-
-    public void setDataSetStore( DataSetStore dataSetStore )
+    private DataSetService dataSetService;
+    
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.dataSetStore = dataSetStore;
+        this.dataSetService = dataSetService;
     }
 
     private OrganisationUnitGroupService organisationUnitGroupService;
@@ -351,7 +351,7 @@ public class I18nUpgrader
             // DataSet
             // ---------------------------------------------------------------------
 
-            Collection<DataSet> dataSets = dataSetStore.getAllDataSets();
+            Collection<DataSet> dataSets = dataSetService.getAllDataSets();
 
             if ( dataSets != null && !dataSets.isEmpty() )
             {
