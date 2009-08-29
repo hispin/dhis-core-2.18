@@ -218,7 +218,7 @@ public class HibernateMappingStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery( "delete from OrganisationUnitRelation where map = :map" );
+        Query query = session.createQuery( "delete from MapOrganisationUnitRelation where map = :map" );
 
         return query.setParameter( "map", map ).executeUpdate();
     }

@@ -1190,6 +1190,7 @@ Ext.onReady(function()
         url: path + 'getAllMapViews' + type,
         root: 'mapViews',
         fields: ['id', 'name'],
+        id: 'id',
         sortInfo: { field: 'name', direction: 'ASC' },
         autoLoad: true
     });
@@ -1232,7 +1233,7 @@ Ext.onReady(function()
         handler: function() {
             var vn = Ext.getCmp('viewname_tf').getValue();
             var ig = Ext.getCmp('indicatorgroup_cb').getValue();
-            var i = Ext.getCmp('indicator_cb').getValue();
+            var ii = Ext.getCmp('indicator_cb').getValue();
             var pt = Ext.getCmp('periodtype_cb').getValue();
             var p = Ext.getCmp('period_cb').getValue();
             var mst = MAPSOURCE;
@@ -1241,7 +1242,7 @@ Ext.onReady(function()
             var ca = Ext.getCmp('colorA_cf').getValue();
             var cb = Ext.getCmp('colorB_cf').getValue();
             
-            if (!vn || !ig || !i || !pt || !p || !mst || !ms || !c ) {
+            if (!vn || !ig || !ii || !pt || !p || !mst || !ms || !c ) {
                 Ext.messageRed.msg('New map view', 'Map view form is not complete.');
                 return;
             }
@@ -1252,17 +1253,36 @@ Ext.onReady(function()
             }
             
             Ext.Ajax.request({
-                url: path + 'addOrUpdateMapView' + type,
-                method: 'POST',
-                params: { name: vn, indicatorGroupId: ig, indicatorId: i, periodTypeId: pt, periodId: p, mapSourceType: mst, mapSource: ms, method: 2, classes: c, colorLow: ca, colorHigh: cb },
-
+                url: path + 'getAllMapViews' + type,
+                method: 'GET',
                 success: function( responseObject ) {
-                    Ext.messageBlack.msg('New map view', 'The view ' + msg_highlight_start + vn + msg_highlight_end + ' was registered.');
-                    Ext.getCmp('view_cb').getStore().reload();
-                    Ext.getCmp('mapview_cb').getStore().reload();
+                    var mapViews = Ext.util.JSON.decode( responseObject.responseText ).mapViews;
+                    
+                    for (var i = 0; i < mapViews.length; i++) {
+                        if (mapViews[i].name == vn) {
+                            Ext.messageRed.msg('New map view', 'There is already a map view called ' + msg_highlight_start + vn + msg_highlight_end + '.');
+                            return;
+                        }
+                    }
+            
+                    Ext.Ajax.request({
+                        url: path + 'addOrUpdateMapView' + type,
+                        method: 'POST',
+                        params: { name: vn, indicatorGroupId: ig, indicatorId: ii, periodTypeId: pt, periodId: p, mapSourceType: mst, mapSource: ms, method: 2, classes: c, colorLow: ca, colorHigh: cb },
+
+                        success: function( responseObject ) {
+                            Ext.messageBlack.msg('New map view', 'The view ' + msg_highlight_start + vn + msg_highlight_end + ' was registered.');
+                            Ext.getCmp('view_cb').getStore().reload();
+                            Ext.getCmp('mapview_cb').getStore().reload();
+                            Ext.getCmp('viewname_tf').reset();
+                        },
+                        failure: function() {
+                            alert( 'Error: addOrUpdateMapView' );
+                        }
+                    });
                 },
                 failure: function() {
-                    alert( 'Status', 'Error while saving data' );
+                            alert( 'Error: getAllMapViews' );
                 }
             });
         }
@@ -1273,6 +1293,7 @@ Ext.onReady(function()
         text: 'Delete view',
         handler: function() {
             var v = Ext.getCmp('view_cb').getValue();
+            var name = Ext.getCmp('view_cb').getStore().getById(v).get('name');
             
             if (!v) {
                 Ext.messageRed.msg('Delete map view', 'Please select a map view.');
@@ -1285,7 +1306,7 @@ Ext.onReady(function()
                 params: { id: v },
 
                 success: function( responseObject ) {
-                    Ext.messageBlack.msg('Delete map view', 'The map view ' + v + ' was deleted.');
+                    Ext.messageBlack.msg('Delete map view', 'The map view ' + msg_highlight_start + name + msg_highlight_end + ' was deleted.');
                     Ext.getCmp('view_cb').getStore().reload();
                     Ext.getCmp('view_cb').reset();
                     Ext.getCmp('mapview_cb').getStore().reload();
@@ -1315,6 +1336,7 @@ Ext.onReady(function()
 
                 success: function( responseObject ) {
                     Ext.messageBlack.msg('Dashboard map view', 'The view ' + v + ' was added to dashboard.');
+                    
                     Ext.getCmp('view_cb').getStore().reload();
                     Ext.getCmp('view_cb').reset();
                     Ext.getCmp('mapview_cb').getStore().reload();
@@ -2450,7 +2472,7 @@ function dataReceivedAutoAssignOrganisationUnit( responseText ) {
         }
     }
     
-    Ext.messageBlack.msg('Assign organisation units', + msg_highlight_start + count_match.valueOf() + msg_highlight_end + ' organisation units assigned.<br><br>Database: ' + msg_highlight_start + count_orgunits/count_features + msg_highlight_end + '<br>Shapefile: ' + msg_highlight_start + count_features + msg_highlight_end);
+    Ext.messageBlack.msg('Assign organisation units', + msg_highlight_start + count_match + msg_highlight_end + ' organisation units assigned.<br><br>Database: ' + msg_highlight_start + count_orgunits/count_features + msg_highlight_end + '<br>Shapefile: ' + msg_highlight_start + count_features + msg_highlight_end);
     
     Ext.getCmp('grid_gp').getStore().reload();
     loadMapData('assignment');
