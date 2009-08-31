@@ -32,6 +32,7 @@ import java.util.Map;
 import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.GroupMemberType;
@@ -60,11 +61,11 @@ public class SemiPermanentDataValueRowHandler
 
     private DataElementCategoryOptionCombo categoryOptionCombo;
     
-    private DataElement element = new DataElement();
+    private DataElement element;
 
-    private Source source = new OrganisationUnit();
+    private Source source;
     
-    private DataValue value = new DataValue();    
+    private DataValue value;   
     
     // -------------------------------------------------------------------------
     // Constructor
@@ -73,6 +74,7 @@ public class SemiPermanentDataValueRowHandler
     public SemiPermanentDataValueRowHandler( BatchHandler<DataValue> batchHandler,
         BatchHandler<ImportDataValue> importDataValueBatchHandler,
         DataValueService dataValueService,
+        DataMartStore dataMartStore,
         Map<Object, Integer> dataElementMapping,
         Map<Period, Integer> periodMapping, 
         Map<Object, Integer> organisationUnitMapping,
@@ -82,15 +84,20 @@ public class SemiPermanentDataValueRowHandler
         this.batchHandler = batchHandler;
         this.importDataValueBatchHandler = importDataValueBatchHandler;
         this.dataValueService = dataValueService;
+        this.dataMartStore = dataMartStore;
         this.dataElementMapping = dataElementMapping;
         this.periodMapping = periodMapping;
         this.organisationUnitMapping = organisationUnitMapping;
         this.categoryOptionCombo = categoryOptionCombo;
         this.params = params;
+        
+        this.element = new DataElement();
+        this.source = new OrganisationUnit();
+        this.value = new DataValue();
     }
 
     // -------------------------------------------------------------------------
-    // BatchRowHandler implementation
+    // RowHandler implementation
     // -------------------------------------------------------------------------
 
     public void handleRow( Object object )
@@ -113,7 +120,7 @@ public class SemiPermanentDataValueRowHandler
         value.setSource( source );
         value.setValue( String.valueOf( dhis14Value.getValue() ) );
         value.setComment( dhis14Value.getComment() );
-        
+
         if ( value.getDataElement() != null && value.getPeriod() != null && value.getSource() != null && value.getValue() != null )
         {
             read( value, GroupMemberType.NONE, params );

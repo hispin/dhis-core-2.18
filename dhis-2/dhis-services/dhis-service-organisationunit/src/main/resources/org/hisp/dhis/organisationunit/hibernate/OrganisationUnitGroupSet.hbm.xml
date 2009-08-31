@@ -10,7 +10,7 @@
     </id>
 
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="160"/>
+      <column name="name" not-null="true" unique="true" length="230"/>
     </property>
 
     <property name="description"/>

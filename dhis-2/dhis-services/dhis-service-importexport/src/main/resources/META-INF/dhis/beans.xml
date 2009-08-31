@@ -246,6 +246,8 @@
       ref="org.hisp.dhis.indicator.IndicatorService"/>
     <property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>
+    <property name="dataMartStore"
+      ref="org.hisp.dhis.datamart.DataMartStore"/>
     <property name="importAnalyser"
       ref="org.hisp.dhis.importexport.analysis.ImportAnalyser"/>
     <property name="cacheManager"

@@ -32,6 +32,7 @@ import java.util.Map;
 import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.GroupMemberType;
@@ -60,13 +61,13 @@ public class RoutineDataValueRowHandler
     
     private DataElementCategoryOptionCombo categoryOptionCombo;
     
-    private DataElement element = new DataElement();
+    private DataElement element;
     
-    private Period period = new Period();
+    private Period period;
     
-    private Source source = new OrganisationUnit();
+    private Source source;
     
-    private DataValue value = new DataValue();    
+    private DataValue value;
     
     // -------------------------------------------------------------------------
     // Constructor
@@ -75,6 +76,7 @@ public class RoutineDataValueRowHandler
     public RoutineDataValueRowHandler( BatchHandler<DataValue> batchHandler,
         BatchHandler<ImportDataValue> importDataValueBatchHandler,
         DataValueService dataValueService,
+        DataMartStore dataMartStore,
         Map<Object, Integer> dataElementMapping,
         Map<Object, Integer> periodMapping, 
         Map<Object, Integer> organisationUnitMapping,
@@ -84,15 +86,21 @@ public class RoutineDataValueRowHandler
         this.batchHandler = batchHandler;
         this.importDataValueBatchHandler = importDataValueBatchHandler;
         this.dataValueService = dataValueService;
+        this.dataMartStore = dataMartStore;
         this.dataElementMapping = dataElementMapping;
         this.periodMapping = periodMapping;
         this.organisationUnitMapping = organisationUnitMapping;
         this.categoryOptionCombo = categoryOptionCombo;
         this.params = params;
+        
+        this.element = new DataElement();
+        this.period = new Period();
+        this.source = new OrganisationUnit();
+        this.value = new DataValue();
     }
     
     // -------------------------------------------------------------------------
-    // BatchRowHandler implementation
+    // RowHandler implementation
     // -------------------------------------------------------------------------
 
     public void handleRow( Object object )

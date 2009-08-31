@@ -14,7 +14,7 @@
 	</property>
 		
     <property name="name">
-      <column name="name" not-null="true" unique="true" length="160"/>
+      <column name="name" not-null="true" unique="true" length="230"/>
     </property>
     
 	<set name="children" inverse="true" cascade="save-update,delete-orphan">
