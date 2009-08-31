@@ -75,7 +75,7 @@ public class PeriodRowHandler
     }
     
     // -------------------------------------------------------------------------
-    // BatchRowHandler implementation
+    // RowHandler implementation
     // -------------------------------------------------------------------------
 
     public void handleRow( Object object )

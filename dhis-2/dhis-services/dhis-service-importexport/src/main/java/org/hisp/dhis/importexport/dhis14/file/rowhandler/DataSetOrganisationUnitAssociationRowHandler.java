@@ -71,7 +71,7 @@ public class DataSetOrganisationUnitAssociationRowHandler
     }
     
     // -------------------------------------------------------------------------
-    // BatchRowHandler implementation
+    // RowHandler implementation
     // -------------------------------------------------------------------------
 
     public void handleRow( Object object )

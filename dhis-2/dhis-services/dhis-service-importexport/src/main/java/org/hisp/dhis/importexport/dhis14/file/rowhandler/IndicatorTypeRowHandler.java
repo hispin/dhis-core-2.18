@@ -63,7 +63,7 @@ public class IndicatorTypeRowHandler
     }    
 
     // -------------------------------------------------------------------------
-    // BatchRowHandler implementation
+    // RowHandler implementation
     // -------------------------------------------------------------------------
 
     public void handleRow( Object object )

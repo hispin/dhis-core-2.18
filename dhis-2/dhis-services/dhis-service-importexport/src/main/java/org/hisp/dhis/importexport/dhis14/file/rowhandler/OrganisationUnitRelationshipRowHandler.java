@@ -71,7 +71,7 @@ public class OrganisationUnitRelationshipRowHandler
     }
     
     // -------------------------------------------------------------------------
-    // BatchRowHandler implementation
+    // RowHandler implementation
     // -------------------------------------------------------------------------
 
     public void handleRow( Object object )

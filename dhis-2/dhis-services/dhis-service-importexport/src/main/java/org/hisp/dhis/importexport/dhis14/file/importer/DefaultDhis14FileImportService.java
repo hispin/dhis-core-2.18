@@ -48,6 +48,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
@@ -232,6 +233,13 @@ public class DefaultDhis14FileImportService
         this.dataValueService = dataValueService;
     }
     
+    private DataMartStore dataMartStore;
+    
+    public void setDataMartStore( DataMartStore dataMartStore )
+    {
+        this.dataMartStore = dataMartStore;
+    }
+
     private ImportAnalyser importAnalyser;
 
     public void setImportAnalyser( ImportAnalyser importAnalyser )
@@ -751,6 +759,7 @@ public class DefaultDhis14FileImportService
         RowHandler rowHandler = new RoutineDataValueRowHandler( batchHandler,
             importDataValueBatchHandler,
             dataValueService,
+            dataMartStore,
             objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
             objectMappingGenerator.getPeriodMapping( params.skipMapping() ),
             objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),
@@ -819,6 +828,7 @@ public class DefaultDhis14FileImportService
         RowHandler rowHandler = new SemiPermanentDataValueRowHandler( batchHandler,
             importDataValueBatchHandler,
             dataValueService,
+            dataMartStore,
             objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
             objectMappingGenerator.getPeriodObjectMapping( params.skipMapping() ),
             objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),
