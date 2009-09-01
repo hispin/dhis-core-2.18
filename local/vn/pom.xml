@@ -10,7 +10,6 @@
   <name>Local Vietnam Modules</name>
   
   <modules>
-    <module>dhis-api</module>
     <module>dhis-api-chr</module>
     <module>dhis-api-vn</module>
     <module>dhis-service-aggregationengine-default</module>
@@ -19,8 +18,6 @@
     <module>dhis-service-vn</module>
     <module>dhis-web-chr-form</module>
     <module>dhis-web-gis</module>
-    <module>dhis-web-hcmc-reporttool</module>
-    <module>dhis-web-hue-reporttool</module>
     <module>dhis-web-vn-report</module>
     <module>dhis-web-dataentry-chr</module>
   </modules>
