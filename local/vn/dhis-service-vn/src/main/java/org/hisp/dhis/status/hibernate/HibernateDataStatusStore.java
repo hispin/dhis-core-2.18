@@ -1,15 +1,13 @@
 package org.hisp.dhis.status.hibernate;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Disjunction;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
 import org.hisp.dhis.status.DataStatus;
 import org.hisp.dhis.status.DataStatusStore;
 
@@ -51,11 +49,11 @@ public class HibernateDataStatusStore
     // Dependency
     // -------------------------------------------------
 
-    private HibernateSessionManager hibernateSessionManager;
+    private SessionFactory sessionFactory;
 
-    public void setHibernateSessionManager( HibernateSessionManager hibernateSessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.hibernateSessionManager = hibernateSessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -------------------------------------------------
@@ -64,7 +62,7 @@ public class HibernateDataStatusStore
 
     public void delete( int id )
     {
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( session.get( DataStatus.class, id ) );
 
@@ -72,14 +70,14 @@ public class HibernateDataStatusStore
 
     public DataStatus get( int id )
     {
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (DataStatus) session.get( DataStatus.class, id );
     }
 
     public void save( DataStatus dataStatus )
     {
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.save( dataStatus );
 
@@ -87,7 +85,7 @@ public class HibernateDataStatusStore
 
     public void update( DataStatus dataStatus )
     {
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( dataStatus );
     }
@@ -95,7 +93,7 @@ public class HibernateDataStatusStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataStatus> getALL()
     {
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataStatus.class );
 
@@ -105,7 +103,7 @@ public class HibernateDataStatusStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataStatus> getDataStatusDefault()
     {
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataStatus.class );
         criteria.add( Restrictions.eq( "frontPage", true ) );
@@ -118,7 +116,7 @@ public class HibernateDataStatusStore
         Collection<DataStatus> result = new HashSet<DataStatus>();
         if ( !dataSets.isEmpty() )
         {
-            Session session = hibernateSessionManager.getCurrentSession();
+            Session session = sessionFactory.getCurrentSession();
             
             for ( DataSet dataSet : dataSets )
             {
@@ -136,7 +134,7 @@ public class HibernateDataStatusStore
         Collection<DataStatus> result = new HashSet<DataStatus>();
         if ( !dataSets.isEmpty() )
         {
-            Session session = hibernateSessionManager.getCurrentSession();
+            Session session = sessionFactory.getCurrentSession();
             
             for ( DataSet dataSet : dataSets )
             {
