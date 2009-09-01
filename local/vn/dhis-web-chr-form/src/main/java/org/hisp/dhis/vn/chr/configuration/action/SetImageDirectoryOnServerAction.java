@@ -5,50 +5,54 @@ package org.hisp.dhis.vn.chr.configuration.action;
  * 
  */
 
-import org.hisp.dhis.options.formconfiguration.FormConfigurationManager;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class SetImageDirectoryOnServerAction extends ActionSupport {
+public class SetImageDirectoryOnServerAction
+    extends ActionSupport{
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private FormConfigurationManager formConfigurationManager;
+    private SystemSettingManager systemSettingManager;
 
-	// -------------------------------------------------------------------------
-	// Input && Output
-	// -------------------------------------------------------------------------
-	private String imageDirectoryOnServer;
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
 
-	// -------------------------------------------------------------------------
-	// Getters && Setters
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Input && Output
+    // -------------------------------------------------------------------------
+    
+    private String imageDirectoryOnServer;
 
-	public void setImageDirectoryOnServer(String imageDirectoryOnServer) {
-		this.imageDirectoryOnServer = imageDirectoryOnServer;
-	}
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
 
-	public String getImageDirectoryOnServer() {
-		return imageDirectoryOnServer;
-	}
+    public void setImageDirectoryOnServer( String imageDirectoryOnServer )
+    {
+        this.imageDirectoryOnServer = imageDirectoryOnServer;
+    }
 
-	public void setFormConfigurationManager(
-			FormConfigurationManager formConfigurationManager) {
-		this.formConfigurationManager = formConfigurationManager;
-	}
+    public String getImageDirectoryOnServer()
+    {
+        return imageDirectoryOnServer;
+    }
 
-	// --------------------------------------------------------------------
-	// Implements
-	// --------------------------------------------------------------------
+    // --------------------------------------------------------------------
+    // Implements
+    // --------------------------------------------------------------------
 
-	public String execute() throws Exception {
-		formConfigurationManager
-				.setImageDirectoryOnServer(imageDirectoryOnServer);
+    public String execute()
+        throws Exception
+    {
+        systemSettingManager.saveSystemSetting( SystemSettingManager.KEY_CHR_IMAGE_DIRECTORY, imageDirectoryOnServer );
 
-		message = i18n.getString("success");
+        message = i18n.getString( "success" );
 
-		return SUCCESS;
-	}
-
+        return SUCCESS;
+    }
 }

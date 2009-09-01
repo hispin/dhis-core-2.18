@@ -5,48 +5,54 @@ package org.hisp.dhis.vn.chr.configuration.action;
  * 
  */
 
-import org.hisp.dhis.options.formconfiguration.FormConfigurationManager;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class SetNumberOfRecordsAction extends ActionSupport {
+public class SetNumberOfRecordsAction
+    extends ActionSupport
+{
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
-	private FormConfigurationManager formConfigurationManager;
+    private SystemSettingManager systemSettingManager;
 
-	// -------------------------------------------------------------------------
-	// Input && Output
-	// -------------------------------------------------------------------------
-	private String numberOfRecords;
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
 
-	// -------------------------------------------------------------------------
-	// Getters && Setters
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Input && Output
+    // -------------------------------------------------------------------------
+    
+    private String numberOfRecords;
 
-	public String getNumberOfRecords() {
-		return numberOfRecords;
-	}
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
 
-	public void setNumberOfRecords(String numberOfRecords) {
-		this.numberOfRecords = numberOfRecords;
-	}
+    public String getNumberOfRecords()
+    {
+        return numberOfRecords;
+    }
 
-	public void setFormConfigurationManager(
-			FormConfigurationManager formConfigurationManager) {
-		this.formConfigurationManager = formConfigurationManager;
-	}
+    public void setNumberOfRecords( String numberOfRecords )
+    {
+        this.numberOfRecords = numberOfRecords;
+    }
 
-	// --------------------------------------------------------------------
-	// Implements
-	// --------------------------------------------------------------------
+    // --------------------------------------------------------------------
+    // Implements
+    // --------------------------------------------------------------------
 
-	public String execute() throws Exception {
-		formConfigurationManager.setNumberOfRecords(numberOfRecords);
+    public String execute()
+        throws Exception
+    {
+        systemSettingManager.saveSystemSetting( SystemSettingManager.KEY_CHR_NUMBER_OF_RECORDS, numberOfRecords );
 
-		message = i18n.getString("success");
+        message = i18n.getString( "success" );
 
-		return SUCCESS;
-	}
-
+        return SUCCESS;
+    }
 }

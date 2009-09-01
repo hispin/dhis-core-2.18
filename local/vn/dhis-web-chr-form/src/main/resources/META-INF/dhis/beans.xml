@@ -176,24 +176,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.vn.chr.configuration.action.GetFormConfigurationAction"
 		class="org.hisp.dhis.vn.chr.configuration.action.GetFormConfigurationAction"
 		scope="prototype">
-		<property name="formConfigurationManager"
-			ref="org.hisp.dhis.options.formconfiguration.FormConfigurationManager" />
+		<property name="systemSettingManager"
+			ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.vn.chr.configuration.action.SetImageDirectoryOnServerAction"
 		class="org.hisp.dhis.vn.chr.configuration.action.SetImageDirectoryOnServerAction"
 		scope="prototype">
-		<property name="formConfigurationManager"
-			ref="org.hisp.dhis.options.formconfiguration.FormConfigurationManager" />
+        <property name="systemSettingManager"
+            ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.vn.chr.configuration.action.SetNumberOfRecordsAction"
 		class="org.hisp.dhis.vn.chr.configuration.action.SetNumberOfRecordsAction"
 		scope="prototype">
-		<property name="formConfigurationManager"
-			ref="org.hisp.dhis.options.formconfiguration.FormConfigurationManager" />
+        <property name="systemSettingManager"
+            ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 
 	<!--  --><!--  --><!--  -->

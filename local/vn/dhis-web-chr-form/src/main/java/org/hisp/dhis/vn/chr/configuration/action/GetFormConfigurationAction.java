@@ -5,62 +5,67 @@ package org.hisp.dhis.vn.chr.configuration.action;
  * 
  */
 
-import org.hisp.dhis.options.formconfiguration.FormConfigurationManager;
+import org.hisp.dhis.options.SystemSettingManager;
 
 import com.opensymphony.xwork.Action;
 
-public class GetFormConfigurationAction implements Action {
+public class GetFormConfigurationAction
+    implements Action
+{
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
-	private FormConfigurationManager formConfigurationManager;
+    private SystemSettingManager systemSettingManager;
 
-	// -------------------------------------------------------------------------
-	// Input && Output
-	// -------------------------------------------------------------------------
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
 
-	private String imageDirectoryOnServer;
+    // -------------------------------------------------------------------------
+    // Input && Output
+    // -------------------------------------------------------------------------
 
-	private String numberOfRecords;
+    private String imageDirectoryOnServer;
 
-	// -------------------------------------------------------------------------
-	// Getters && Setters
-	// -------------------------------------------------------------------------
+    private String numberOfRecords;
 
-	public void setFormConfigurationManager(
-			FormConfigurationManager formConfigurationManager) {
-		this.formConfigurationManager = formConfigurationManager;
-	}
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
 
-	public String getImageDirectoryOnServer() {
-		return imageDirectoryOnServer;
-	}
+    public String getImageDirectoryOnServer()
+    {
+        return imageDirectoryOnServer;
+    }
 
-	public void setImageDirectoryOnServer(String imageDirectoryOnServer) {
-		this.imageDirectoryOnServer = imageDirectoryOnServer;
-	}
+    public void setImageDirectoryOnServer( String imageDirectoryOnServer )
+    {
+        this.imageDirectoryOnServer = imageDirectoryOnServer;
+    }
 
-	public String getNumberOfRecords() {
-		return numberOfRecords;
-	}
+    public String getNumberOfRecords()
+    {
+        return numberOfRecords;
+    }
 
-	public void setNumberOfRecords(String numberOfRecords) {
-		this.numberOfRecords = numberOfRecords;
-	}
+    public void setNumberOfRecords( String numberOfRecords )
+    {
+        this.numberOfRecords = numberOfRecords;
+    }
 
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-	public String execute() throws Exception {
-		
-		imageDirectoryOnServer = formConfigurationManager
-				.getImageDirectoryOnServer();
-
-		numberOfRecords = formConfigurationManager.getNumberOfRecords();
-
-		return SUCCESS;
-	}
-
+    public String execute()
+        throws Exception
+    {
+        imageDirectoryOnServer = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_CHR_IMAGE_DIRECTORY );
+        
+        numberOfRecords = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_CHR_NUMBER_OF_RECORDS );
+        
+        return SUCCESS;
+    }
 }
