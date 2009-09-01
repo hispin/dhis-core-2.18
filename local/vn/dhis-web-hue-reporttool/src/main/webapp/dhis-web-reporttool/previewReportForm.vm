@@ -1,5 +1,0 @@
-
-<input type="button" value="Done" style="width:100px" onclick="location.href='listDesignsTreeMenu.action'">
-<br>
-
-$content
