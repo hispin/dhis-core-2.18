@@ -41,7 +41,7 @@ public interface ReportExcelService
     // Service of Report
     // --------------------------------------
 
-    public void addReport( ReportExcelInterface report );
+    public int addReport( ReportExcelInterface report );
 
     public void updateReport( ReportExcelInterface report );
 

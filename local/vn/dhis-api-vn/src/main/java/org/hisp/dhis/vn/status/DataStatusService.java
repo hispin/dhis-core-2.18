@@ -1,9 +1,8 @@
-package org.hisp.dhis.status;
+package org.hisp.dhis.vn.status;
 
 import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
-import org.springframework.transaction.annotation.Transactional;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -36,64 +35,21 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-@Transactional
-public class DefaultDataStatusService
-    implements DataStatusService
+public interface DataStatusService
 {
-    // -------------------------------------------------
-    // Dependency
-    // -------------------------------------------------
+    int save( DataStatus dataStatus );
 
-    private DataStatusStore dataStatusStore;
+    DataStatus get( int id );
 
-    public void setDataStatusStore( DataStatusStore dataStatusStore )
-    {
-        this.dataStatusStore = dataStatusStore;
-    }
+    void delete( int id );
 
-    // -------------------------------------------------
-    // Implement
-    // -------------------------------------------------
+    void update( DataStatus dataStatus );
 
-    public void delete( int id )
-    {
-        dataStatusStore.delete( id );
-    }
+    Collection<DataStatus> getALL();
 
-    public DataStatus get( int id )
-    {      
-        return dataStatusStore.get( id );
-    }
+    Collection<DataStatus> getDataStatusDefault();
 
-    public void save( DataStatus dataStatus )
-    {
-        dataStatusStore.save( dataStatus );
-    }
+    Collection<DataStatus> getDataStatusByDataSets( Collection<DataSet> dataSets );
 
-    public void update( DataStatus dataStatus )
-    {
-        dataStatusStore.update( dataStatus );
-    }
-
-    public Collection<DataStatus> getALL()
-    {       
-        return dataStatusStore.getALL();
-    }
-
-    public Collection<DataStatus> getDataStatusDefault()
-    {      
-        return dataStatusStore.getDataStatusDefault();
-    }
-
-    public Collection<DataStatus> getDataStatusByDataSets( Collection<DataSet> dataSets )
-    {        
-        return dataStatusStore.getDataStatusByDataSets( dataSets );
-    }
-
-    public Collection<DataStatus> getDataStatusDefaultByDataSets( Collection<DataSet> dataSets )
-    {
-        // TODO Auto-generated method stub
-        return dataStatusStore.getDataStatusDefaultByDataSets( dataSets );
-    }
-
+    Collection<DataStatus> getDataStatusDefaultByDataSets( Collection<DataSet> dataSets );
 }

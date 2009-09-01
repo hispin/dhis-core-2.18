@@ -4,6 +4,8 @@
   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
   
+  <!-- ReportExcel -->
+  
   <bean id="org.hisp.dhis.vn.report.ReportExcelStore"
     class="org.hisp.dhis.vn.report.hibernate.HibernateReportExcelStore">
     <property name="sessionFactory" ref="sessionFactory"/>
@@ -15,15 +17,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
    	  ref="org.hisp.dhis.vn.report.ReportExcelStore"/>
   </bean>
   
-  <bean id="org.hisp.dhis.status.DataStatusStore"
-    class="org.hisp.dhis.status.hibernate.HibernateDataStatusStore">
+  <!-- DataStatus -->
+  
+  <bean id="org.hisp.dhis.vn.status.DataStatusStore"
+    class="org.hisp.dhis.vn.status.hibernate.HibernateDataStatusStore">
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
-  <bean id="org.hisp.dhis.status.DataStatusService"
-    class="org.hisp.dhis.status.DefaultDataStatusService">
+  <bean id="org.hisp.dhis.vn.status.DataStatusService"
+    class="org.hisp.dhis.vn.status.DefaultDataStatusService">
     <property name="dataStatusStore"
-   	  ref="org.hisp.dhis.status.DataStatusStore"/>
+   	  ref="org.hisp.dhis.vn.status.DataStatusStore"/>
   </bean>
    
 </beans>

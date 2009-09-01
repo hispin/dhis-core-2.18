@@ -54,9 +54,9 @@ public class DefaultReportExcelService
     // Service of Report
     // -------------------------------------------------
 
-    public void addReport( ReportExcelInterface report )
+    public int addReport( ReportExcelInterface report )
     {
-        reportStore.addReport( report );
+        return reportStore.addReport( report );
     }
 
     public void updateReport( ReportExcelInterface report )

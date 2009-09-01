@@ -1,4 +1,4 @@
-package org.hisp.dhis.status;
+package org.hisp.dhis.vn.status;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -55,6 +55,17 @@ public class DataStatus
 
     private boolean completed;
 
+    public DataStatus()
+    {   
+    }
+    
+    public DataStatus( DataSet dataSet, boolean frontPage, PeriodType periodType )
+    {
+        this.dataSet = dataSet;
+        this.frontPage = frontPage;
+        this.periodType = periodType;
+    }
+        
     public int getCompletedPercent()
     {
         return (int) ((new Double( numberOfDataValue ) / new Double( numberOfDataElement )) * 100);

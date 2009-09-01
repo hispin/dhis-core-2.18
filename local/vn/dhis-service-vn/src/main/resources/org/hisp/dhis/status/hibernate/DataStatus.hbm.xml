@@ -3,7 +3,7 @@
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="org.hisp.dhis.status.DataStatus" table="datastatus">
+	<class name="org.hisp.dhis.vn.status.DataStatus" table="datastatus">
 		<id name="id" column="datastatusid">
 			<generator class="native" />
 		</id>
