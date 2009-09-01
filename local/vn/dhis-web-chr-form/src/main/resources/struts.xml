@@ -363,19 +363,5 @@
 			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
 		</action>
 		
-	<!--  --><!--  --><!--  -->
-	   <!--  Report -->
-	<!--  --><!--  --><!--  -->
-		
-		<action name="exportData" class="org.hisp.dhis.vn.chr.report.action.ExportData">
-		 	<result name="success" type="chain">indexChain</result>
-			<!-- <result name="success" type="velocity-xml">/dhis-web-chr-form/responseSuccess.vm</result> -->
-			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
-		</action>
-		
-	    <action name="exportDataChain" class="org.hisp.dhis.vn.chr.form.action.GetInformationForSystemAction">
-	        <result name="success" type="velocity">/main.vm</result>
-	    </action> 
-		
 	</package>
 </struts>

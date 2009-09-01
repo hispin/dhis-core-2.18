@@ -213,8 +213,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="formService" ref="org.hisp.dhis.vn.chr.FormService" />
 		<property name="formManager" ref="org.hisp.dhis.vn.chr.jdbc.FormManager" />
 		<property name="elementService" ref="org.hisp.dhis.vn.chr.ElementService" />
-		<property name="formConfigurationManager"
-			ref="org.hisp.dhis.options.formconfiguration.FormConfigurationManager" />
+		<property name="systemSettingService"
+			ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 
 	<!--  Show List Relative Object  -->
@@ -224,8 +224,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="formService" ref="org.hisp.dhis.vn.chr.FormService" />
 		<property name="formManager" ref="org.hisp.dhis.vn.chr.jdbc.FormManager" />
 		<property name="elementService" ref="org.hisp.dhis.vn.chr.ElementService" />
-		<property name="formConfigurationManager"
-			ref="org.hisp.dhis.options.formconfiguration.FormConfigurationManager" />
+		<property name="systemSettingManager"
+			ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 
 	<!--  Add Object  -->
@@ -261,8 +261,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.vn.chr.object.action.SearchObjectAction" scope="prototype">
 		<property name="formService" ref="org.hisp.dhis.vn.chr.FormService" />
 		<property name="formManager" ref="org.hisp.dhis.vn.chr.jdbc.FormManager" />
-		<property name="formConfigurationManager"
-			ref="org.hisp.dhis.options.formconfiguration.FormConfigurationManager" />
+		<property name="sysetmSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 		<property name="elementService" ref="org.hisp.dhis.vn.chr.ElementService" />
 	</bean>
 
@@ -339,27 +338,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.vn.chr.formreport.action.UpdateFormReport" scope="prototype">
 		<property name="formService" ref="org.hisp.dhis.vn.chr.FormService" />
 		<property name="formReportService" ref="org.hisp.dhis.vn.chr.FormReportService" />
-	</bean>
-
-	<!--  --><!--  --><!--  -->
-	<!--  Report -->
-	<!--  --><!--  --><!--  -->
-
-	<bean id="org.hisp.dhis.vn.chr.report.action.ExportData" class="org.hisp.dhis.vn.chr.report.action.ExportData"
-		scope="prototype">
-		<property name="formReportService" ref="org.hisp.dhis.vn.chr.FormReportService" />
-		<property name="formManager" ref="org.hisp.dhis.vn.chr.jdbc.FormManager" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="dataElementCategoryOptionComboService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
-		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
-		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-		<!--
-			<property name="elementService"
-			ref="org.hisp.dhis.vn.chr.ElementService"/>
-		-->
 	</bean>
 
 </beans>

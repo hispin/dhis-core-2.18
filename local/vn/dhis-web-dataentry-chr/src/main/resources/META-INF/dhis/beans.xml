@@ -382,4 +382,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectedStateManager"
       ref="org.hisp.dhis.de.state.SelectedStateManager"/>
   </bean>
-</beans>
+  
+  <!-- Report -->
+  
+  <bean id="org.hisp.dhis.de.action.ExportDataAction" class="org.hisp.dhis.de.action.ExportDataAction"
+    scope="prototype">
+    <property name="formReportService" ref="org.hisp.dhis.vn.chr.FormReportService" />
+    <property name="formManager" ref="org.hisp.dhis.vn.chr.jdbc.FormManager" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+    <property name="dataElementCategoryOptionComboService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+    <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
+    <property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
+  </bean>
+
+  </beans>

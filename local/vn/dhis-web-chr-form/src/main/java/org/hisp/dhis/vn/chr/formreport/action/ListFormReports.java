@@ -17,11 +17,13 @@ public class ListFormReports
     // -----------------------------------------------------------------------------------------------
     // Dependencies
     // -----------------------------------------------------------------------------------------------
+    
     private FormReportService formReportService;
 
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
+    
     private Integer id; // element's id
 
     private Form form;
@@ -31,6 +33,7 @@ public class ListFormReports
     // -----------------------------------------------------------------------------------------------
     // Getters && Setters
     // -----------------------------------------------------------------------------------------------
+    
     public void setId( Integer id )
     {
         this.id = id;
@@ -58,25 +61,19 @@ public class ListFormReports
     public String execute()
         throws Exception
     {
-
         try
         {
-
             formReports = new ArrayList<FormReport>( formReportService.getAllFormReports() );
 
             Collections.sort( formReports, new FormReportNameComparator() );
 
             message = i18n.getString( "success" );
-
         }
         catch ( Exception ex )
         {
-
             message = i18n.getString( "error" ) + "\n" + ex.getMessage();
-
         }
 
         return SUCCESS;
     }
-
 }

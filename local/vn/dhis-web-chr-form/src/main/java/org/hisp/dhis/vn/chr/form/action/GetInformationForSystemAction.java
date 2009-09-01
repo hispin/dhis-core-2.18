@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserStore;
 import org.hisp.dhis.vn.chr.Form;

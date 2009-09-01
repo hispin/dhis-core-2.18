@@ -216,5 +216,16 @@
       <result name="none" type="velocity-xml">/dhis-web-dataentry/responseNone.vm</result>
     </action>
     
+    <!-- Report -->
+    
+    <action name="exportData" class="org.hisp.dhis.de.action.ExportDataAction">
+      <result name="success" type="chain">indexChain</result>
+      <result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
+    </action>
+    
+    <action name="exportDataChain" class="org.hisp.dhis.vn.chr.form.action.GetInformationForSystemAction">
+      <result name="success" type="velocity">/main.vm</result>
+    </action> 
+        
   </package>
 </xwork>

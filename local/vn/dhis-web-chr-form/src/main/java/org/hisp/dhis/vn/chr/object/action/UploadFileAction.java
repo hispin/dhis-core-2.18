@@ -41,8 +41,6 @@ public class UploadFileAction
 
     private String contentType;
 
-    private String imageDirectoryOnServer;
-
     // -----------------------------------------------------------------------------------------------
     // Getters && Setters
     // -----------------------------------------------------------------------------------------------

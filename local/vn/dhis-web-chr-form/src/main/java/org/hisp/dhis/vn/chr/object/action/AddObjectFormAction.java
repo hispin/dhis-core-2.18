@@ -8,6 +8,7 @@ package org.hisp.dhis.vn.chr.object.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.Form;
@@ -40,7 +41,7 @@ public class AddObjectFormAction
 
     private String objectId;
 
-    private ArrayList parentObject;
+    private ArrayList<String> parentObject;
 
     // -----------------------------------------------------------------------------------------------
     // Getter && Setter
@@ -96,12 +97,12 @@ public class AddObjectFormAction
         this.objectId = objectId;
     }
 
-    public ArrayList getParentObject()
+    public ArrayList<String> getParentObject()
     {
         return parentObject;
     }
 
-    public void setParentObject( ArrayList parentObject )
+    public void setParentObject( ArrayList<String> parentObject )
     {
         this.parentObject = parentObject;
     }

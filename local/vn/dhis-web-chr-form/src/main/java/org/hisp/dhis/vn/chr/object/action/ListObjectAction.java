@@ -7,12 +7,14 @@ package org.hisp.dhis.vn.chr.object.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import org.hisp.dhis.options.formconfiguration.FormConfigurationManager;
+
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.ElementService;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.jdbc.FormManager;
+
 import com.opensymphony.xwork2.Action;
 
 public class ListObjectAction
@@ -29,7 +31,7 @@ public class ListObjectAction
 
     private ElementService elementService;
 
-    private FormConfigurationManager formConfigurationManager;
+    private SystemSettingManager systemSettingManager;
 
     // -----------------------------------------------------------------------------------------------
     // Input && Output
@@ -39,7 +41,7 @@ public class ListObjectAction
 
     private Form form;
 
-    private ArrayList data;
+    private ArrayList<Object> data;
 
     private Collection<Element> formLinks;
 
@@ -51,9 +53,9 @@ public class ListObjectAction
     // Getter && Setter
     // -----------------------------------------------------------------------------------------------
 
-    public void setFormConfigurationManager( FormConfigurationManager formConfigurationManager )
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
-        this.formConfigurationManager = formConfigurationManager;
+        this.systemSettingManager = systemSettingManager;
     }
 
     public String getCur_dir()
@@ -86,14 +88,9 @@ public class ListObjectAction
         this.formService = formService;
     }
 
-    public ArrayList getData()
+    public ArrayList<Object> getData()
     {
         return data;
-    }
-
-    public void setData( ArrayList data )
-    {
-        this.data = data;
     }
 
     public Form getForm()
@@ -143,7 +140,9 @@ public class ListObjectAction
 
         formLinks = elementService.getElementsByFormLink( form );// formId.intValue());
 
-        data = formManager.listObject( form, Integer.parseInt( formConfigurationManager.getNumberOfRecords() ) );
+        int numberOfRecords = Integer.parseInt( (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_CHR_NUMBER_OF_RECORDS ) );
+        
+        data = formManager.listObject( form, numberOfRecords );
 
         return SUCCESS;
     }
