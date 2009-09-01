@@ -190,6 +190,8 @@ public interface MappingService
      * @return a generated unique id of the added MapOrganisationUnitRelation.
      */
     int addMapOrganisationUnitRelation( String mapLayerPath, int organisationUnitId, String featureId );
+    
+    void addOrUpdateMapOrganisationUnitRelations( String mapLayerPath, String relations );
 
     /**
      * Adds a MapOrganisationUnitRelation. If it already exists, it will be
@@ -228,15 +230,15 @@ public interface MappingService
     MapOrganisationUnitRelation getMapOrganisationUnitRelation( int id );
 
     /**
-     * Returns a MapOrganisationUnitRelation.
+     * Returns a Collection <MapOrganisationUnitRelation>.
      * 
      * @param map, the foreign Map in the MapOrganisationUnitRelation.
      * @param map, the foreign OrganisationUnit in the
      *        MapOrganisationUnitRelation.
-     * @return the MapOrganisationUnitRelation which contains the given Map and
+     * @return a Collection<MapOrganisationUnitRelation> which contains the given Map and
      *         OrganisationUnit.
      */
-    MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit );
+    Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit );
 
     /**
      * Returns a Collection of MapOrganisationUnitRelations.

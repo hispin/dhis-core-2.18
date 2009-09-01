@@ -144,15 +144,15 @@ public interface MappingStore
     MapOrganisationUnitRelation getMapOrganisationUnitRelation( int id );
 
     /**
-     * Returns a MapOrganisationUnitRelation.
+     * Returns a Collection<MapOrganisationUnitRelation>.
      * 
      * @param map, the foreign Map in the MapOrganisationUnitRelation.
      * @param map, the foreign OrganisationUnit in the
      *        MapOrganisationUnitRelation.
-     * @return the MapOrganisationUnitRelation which contains the given Map and
+     * @return a Collection<MapOrganisationUnitRelation> which contains the given Map and
      *         OrganisationUnit.
      */
-    MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit );
+    Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit );
     
     /**
      * Returns a Collection of MapOrganisationUnitRelations.

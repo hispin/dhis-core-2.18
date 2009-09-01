@@ -88,10 +88,12 @@ public class DeleteMapOrganisationUnitRelationAction
         
         Map map = mappingService.getMapByMapLayerPath( mapLayerPath );
         
-        MapOrganisationUnitRelation relation = mappingService.getMapOrganisationUnitRelation( map, unit );
+        MapOrganisationUnitRelation relation;
         
-        if ( relation != null )
+        if ( mappingService.getMapOrganisationUnitRelation( map, unit ).iterator().hasNext() )
         {
+            relation = mappingService.getMapOrganisationUnitRelation( map, unit ).iterator().next();
+            
             mappingService.deleteMapOrganisationUnitRelation( relation );
         }
             

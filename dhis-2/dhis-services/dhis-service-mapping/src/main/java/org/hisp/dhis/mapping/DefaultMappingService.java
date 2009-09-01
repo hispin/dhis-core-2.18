@@ -53,6 +53,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultMappingService
     implements MappingService
 {
+    private static final String PAIR_SEPARATOR = "-";
+
+    private static final String RELATION_SEPARATOR = ",";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -239,16 +243,30 @@ public class DefaultMappingService
         return addMapOrganisationUnitRelation( mapOrganisationUnitRelation );
     }
 
+    public void addOrUpdateMapOrganisationUnitRelations( String mapLayerPath, String relations )
+    {
+        String[] rels = relations.split( RELATION_SEPARATOR );
+
+        for ( int i = 0; i < rels.length; i++ )
+        {
+            String[] rel = rels[i].split( PAIR_SEPARATOR );
+
+            addOrUpdateMapOrganisationUnitRelation( mapLayerPath, Integer.parseInt( rel[0] ), rel[1] );
+        }
+    }
+
     public void addOrUpdateMapOrganisationUnitRelation( String mapLayerPath, int organisationUnitId, String featureId )
     {
         Map map = getMapByMapLayerPath( mapLayerPath );
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        MapOrganisationUnitRelation mapOrganisationUnitRelation = getMapOrganisationUnitRelation( map, organisationUnit );
-
-        if ( mapOrganisationUnitRelation != null )
+        MapOrganisationUnitRelation mapOrganisationUnitRelation;
+        
+        if ( getMapOrganisationUnitRelation( map, organisationUnit ).iterator().hasNext() )
         {
+            mapOrganisationUnitRelation = getMapOrganisationUnitRelation( map, organisationUnit ).iterator().next();
+            
             mapOrganisationUnitRelation.setFeatureId( featureId );
 
             updateMapOrganisationUnitRelation( mapOrganisationUnitRelation );
@@ -276,7 +294,7 @@ public class DefaultMappingService
         return mappingStore.getMapOrganisationUnitRelation( id );
     }
 
-    public MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit )
+    public Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit )
     {
         return mappingStore.getMapOrganisationUnitRelation( map, organisationUnit );
     }
@@ -300,11 +318,18 @@ public class DefaultMappingService
 
         for ( OrganisationUnit unit : organisationUnits )
         {
-            MapOrganisationUnitRelation relation = getMapOrganisationUnitRelation( map, unit );
-
-            relations.add( relation != null ? relation : new MapOrganisationUnitRelation( map, unit, null ) );
+            Collection<MapOrganisationUnitRelation> relation = getMapOrganisationUnitRelation( map, unit );
+            
+            if ( relation.size() == 0 )
+            {
+                relations.add( new MapOrganisationUnitRelation( map, unit, null ) );
+            }
+            else
+            {
+                relations.addAll( relation );
+            }
         }
-
+        
         return relations;
     }
 
@@ -557,7 +582,8 @@ public class DefaultMappingService
         mappingStore.updateMapLayer( mapLayer );
     }
 
-    public void addOrUpdateMapLayer( String name, String type, String mapSource, String fillColor, double fillOpacity, String strokeColor, int strokeWidth )
+    public void addOrUpdateMapLayer( String name, String type, String mapSource, String fillColor, double fillOpacity,
+        String strokeColor, int strokeWidth )
     {
         MapLayer mapLayer = mappingStore.getMapLayerByName( name );
 
@@ -570,7 +596,7 @@ public class DefaultMappingService
             mapLayer.setFillOpacity( fillOpacity );
             mapLayer.setStrokeColor( strokeColor );
             mapLayer.setStrokeWidth( strokeWidth );
-            
+
             updateMapLayer( mapLayer );
         }
         else

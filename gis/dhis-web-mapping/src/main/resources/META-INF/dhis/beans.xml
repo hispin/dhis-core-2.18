@@ -86,12 +86,26 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
   <!-- MapOrganisationUnitRelation -->
     
+  <bean id="org.hisp.dhis.mapping.action.AddMapOrganisationUnitRelationAction"
+    class="org.hisp.dhis.mapping.action.AddMapOrganisationUnitRelationAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
+	
   <bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction"
     class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction"
     scope="prototype">
     <property name="mappingService"
       ref="org.hisp.dhis.mapping.MappingService"/>
   </bean>
+	
+  <bean id="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationsAction"
+    class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationsAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>	
   
   <bean id="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction"
     class="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction"
