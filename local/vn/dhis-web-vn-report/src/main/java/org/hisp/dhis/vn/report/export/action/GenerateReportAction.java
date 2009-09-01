@@ -56,6 +56,7 @@ import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
+import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -64,7 +65,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.jdbc.StatementManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
@@ -86,7 +86,7 @@ import org.hisp.dhis.vn.report.state.ReportLocationManager;
 import org.hisp.dhis.vn.report.utils.DateUtils;
 import org.hisp.dhis.vn.report.utils.ExcelUtils;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
@@ -125,8 +125,6 @@ public class GenerateReportAction
 
     private I18nFormat format;
    
-   
-
     // -------------------------------------------
     // Input
     // -------------------------------------------
@@ -429,8 +427,6 @@ public class GenerateReportAction
 
                 for ( OrganisationUnitGroup group : groups )
                 {
-                    Map<Integer, String> formulas = new HashMap<Integer, String>();
-
                     List<OrganisationUnit> memberOfOrganisationUnitGroups = new ArrayList<OrganisationUnit>( group
                         .getMembers() );
 

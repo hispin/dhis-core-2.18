@@ -28,7 +28,7 @@ package org.hisp.dhis.vn.report.state;
 
 import java.util.Map;
 
-import com.opensymphony.xwork.ActionContext;
+import com.opensymphony.xwork2.ActionContext;
 /**
  * @author Tran Thanh Tri
  * @version $Id$

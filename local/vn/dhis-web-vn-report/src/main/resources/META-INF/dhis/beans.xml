@@ -16,8 +16,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 
-
-
 	<!-- Configuration Bean -->
 
 	<bean
@@ -234,7 +232,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
 		<property name="dataElementCategoryOptionComboService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
-		<property name="statementManager" ref="org.hisp.dhis.jdbc.StatementManager" />
+		<property name="statementManager" ref="statementManager" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />

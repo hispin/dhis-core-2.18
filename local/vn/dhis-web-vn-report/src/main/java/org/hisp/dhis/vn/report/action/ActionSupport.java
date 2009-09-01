@@ -29,17 +29,19 @@ package org.hisp.dhis.vn.report.action;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
+
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public abstract class ActionSupport implements Action
+public abstract class ActionSupport
+    implements Action
 {
     public String message;
-    
+
     public I18n i18n;
-    
+
     public I18nFormat format;
 
     public String getMessage()
@@ -71,7 +73,5 @@ public abstract class ActionSupport implements Action
     {
         this.format = format;
     }
-    
-    
 
 }

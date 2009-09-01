@@ -10,7 +10,7 @@ import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameCompar
 import org.hisp.dhis.vn.report.ReportExcelGroupListing;
 import org.hisp.dhis.vn.report.ReportExcelInterface;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
@@ -54,14 +54,15 @@ public class GetOrganisationUnitGroupAction
     public String execute()
         throws Exception
     {
-        organisationUnitGroups = new ArrayList<OrganisationUnitGroup>(organisationUnitGroupService.getAllOrganisationUnitGroups());
-        
+        organisationUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService
+            .getAllOrganisationUnitGroups() );
+
         reportOrganisationUnitGroups = ((ReportExcelGroupListing) report).getOrganisationUnitGroups();
-        
+
         organisationUnitGroups.removeAll( reportOrganisationUnitGroups );
-        
+
         Collections.sort( organisationUnitGroups, new OrganisationUnitGroupNameComparator() );
-       
+
         return SUCCESS;
     }
 }

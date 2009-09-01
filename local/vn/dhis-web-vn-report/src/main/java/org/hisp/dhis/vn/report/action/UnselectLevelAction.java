@@ -32,7 +32,7 @@ import java.util.Collection;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
@@ -64,7 +64,7 @@ public class UnselectLevelAction
     {
         this.level = level;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -84,18 +84,18 @@ public class UnselectLevelAction
         throws Exception
     {
         Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits();
-        
+
         Collection<OrganisationUnit> selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();
 
         for ( OrganisationUnit rootUnit : rootUnits )
-        {        	
+        {
             unselectLevel( rootUnit, FIRST_LEVEL, selectedUnits );
         }
 
         selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
 
         selectLevel = level;
-        
+
         return SUCCESS;
     }
 
@@ -106,13 +106,13 @@ public class UnselectLevelAction
     private void unselectLevel( OrganisationUnit orgUnit, int currentLevel, Collection<OrganisationUnit> selectedUnits )
     {
         if ( currentLevel == level )
-        {        	
+        {
             selectedUnits.remove( orgUnit );
         }
         else
         {
             for ( OrganisationUnit child : orgUnit.getChildren() )
-            {            	
+            {
                 unselectLevel( child, currentLevel + 1, selectedUnits );
             }
         }
