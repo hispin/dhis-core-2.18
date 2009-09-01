@@ -1,5 +1,10 @@
 ﻿<h2>$!encoder.htmlEncode($!reportExcel.name)</h2>
-<p align="right">
+<table width="100%">
+<tr>
+<td>
+	<input type="button" onclick="copySelectedItem()" value="$i18n.getString('copy_selected_item_to')"/>
+</td>
+<td align="">
 	$i18n.getString('filter_by_sheet')
 	<select id="sheetNoFilter" onchange="filterSheet();">
 		<option value="" >--- ALL ---</option>
@@ -8,9 +13,12 @@
 		#end
 	</select>	
 	<input type="button" onclick="openAddReportItemForm()" value="$i18n.getString('add')"/>
-</p>
+</td>
+</tr>
+</table>
 <table width="100%">
 	<tr>
+		<th><input type="checkbox" onclick="selectALL(this.checked)"/></th>
 		<th>$i18n.getString('name')</th>
 		<th>$i18n.getString('item_type')</th>
 		<th>$i18n.getString('period_type')</th>
@@ -22,6 +30,7 @@
 	#set( $mark = false )
 	#foreach($reportItem in $reportItems)
 		<tr #alternate( $mark )>
+			<td align=center><input type="checkbox" value="$reportItem.id" name="reportItemCheck"/></td>
 			<td>$encoder.htmlEncode( $reportItem.name )</td>
 			<td>$i18n.getString( $reportItem.itemType )</td>
 			<td>$i18n.getString( $reportItem.periodType )</td>
@@ -296,3 +305,23 @@
 	}
 	
 </script>
+<div id="copyTo" style="position:fixed;display:none;width:450px;z-index:10001;background-color: white;border: medium solid silver;height:200px;padding:20px;">
+<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('copyTo');">[x]</div>
+<table width="100%">
+	<tr>
+		<td>$i18n.getString('reports')</td>
+		<td>
+			<select id="targetReport">
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>$i18n.getString('sheet_no')</td>
+		<td><input id="targetSheetNo" type="text"/></td>
+	</tr>	
+</table>
+<p align="center">
+<input type="button" value="$i18n.getString('ok')" onclick="saveCopyItems();"/>
+<input type="button" value="$i18n.getString('cancel')" onclick="hideById('copyTo');"/>
+</p>
+</div>

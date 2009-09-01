@@ -106,7 +106,7 @@ public class DateUtils
         {
             if ( calendar.get( Calendar.DATE ) == calendar.getActualMinimum( Calendar.DATE ) )
             {
-                if ( calendar.get( Calendar.MONTH ) == Calendar.JANUARY )
+                if ( calendar.get( Calendar.MONTH ) == calendar.JANUARY )
                 {
                     if ( numberOfRoll < 0 )
                     {
@@ -135,7 +135,7 @@ public class DateUtils
             }
             else if ( calendar.get( Calendar.DATE ) == calendar.getActualMaximum( Calendar.DATE ) )
             {
-                if ( calendar.get( Calendar.MONTH ) == Calendar.DECEMBER )
+                if ( calendar.get( Calendar.MONTH ) == calendar.DECEMBER )
                 {
                     if ( numberOfRoll > 0 )
                     {

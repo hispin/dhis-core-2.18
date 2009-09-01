@@ -6,7 +6,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.vn.report.ReportExcelStore"
     class="org.hisp.dhis.vn.report.hibernate.HibernateReportExcelStore">
-    <property name="sessionFactory" ref="sessionFactory"/>
+    <property name="hibernateSessionManager"
+   	  ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
   </bean>
   
   <bean id="org.hisp.dhis.vn.report.ReportExcelService"
@@ -14,5 +15,34 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="reportStore"
    	  ref="org.hisp.dhis.vn.report.ReportExcelStore"/>
   </bean>
+  
+  <bean id="org.hisp.dhis.status.DataStatusStore"
+    class="org.hisp.dhis.status.hibernate.HibernateDataStatusStore">
+    <property name="hibernateSessionManager"
+   	  ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.status.DataStatusService"
+    class="org.hisp.dhis.status.DefaultDataStatusService">
+    <property name="dataStatusStore"
+   	  ref="org.hisp.dhis.status.DataStatusStore"/>
+  </bean>
+ 
+  
+  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice" ref="readWriteTransactionInterceptor"/>
+    <property name="patterns">
+      <list>       
+        <value>.*\.ReportExcelStore\.add.*</value>
+        <value>.*\.ReportExcelStore\.update.*</value>
+        <value>.*\.ReportExcelStore\.save.*</value>
+        <value>.*\.ReportExcelStore\.delete.*</value>     
+        <value>.*\.DataStatusStore\.add.*</value>
+        <value>.*\.DataStatusStore\.update.*</value>
+        <value>.*\.DataStatusStore\.save.*</value>
+        <value>.*\.DataStatusStore\.delete.*</value>  
+      </list>
+    </property>
+  </bean>	
   
 </beans>
