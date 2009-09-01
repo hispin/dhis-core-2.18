@@ -12,7 +12,8 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import org.hisp.dhis.jdbc.StatementManager;
+
+import org.amplecode.quick.StatementManager;
 
 public class JDBCAccessMetaData
     implements AccessMetaDataService

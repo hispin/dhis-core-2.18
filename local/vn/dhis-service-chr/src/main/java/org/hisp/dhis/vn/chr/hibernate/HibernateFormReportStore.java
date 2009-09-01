@@ -6,16 +6,17 @@ package org.hisp.dhis.vn.chr.hibernate;
  */
 
 import java.util.Collection;
+
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
-import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormReport;
 import org.hisp.dhis.vn.chr.FormReportStore;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class HibernateFormReportStore
     implements FormReportStore
 {
@@ -24,14 +25,11 @@ public class HibernateFormReportStore
     // Dependencies
     // -----------------------------------------------------------------------------------------------
 
-    private HibernateSessionManager hibernateSessionManager;
+    private SessionFactory sessionFactory;
 
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-    public void setHibernateSessionManager( HibernateSessionManager hibernateSessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.hibernateSessionManager = hibernateSessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -----------------------------------------------------------------------------------------------
@@ -41,7 +39,7 @@ public class HibernateFormReportStore
     public int addFormReport( FormReport formReport )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( formReport );
     }
@@ -49,7 +47,7 @@ public class HibernateFormReportStore
     public void updateFormReport( FormReport formReport )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( formReport );
 
@@ -58,7 +56,7 @@ public class HibernateFormReportStore
     public void deleteFormReport( int id )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( getFormReport( id ) );
 
@@ -68,7 +66,7 @@ public class HibernateFormReportStore
     public Collection<FormReport> getAllFormReports()
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( FormReport.class );
 
@@ -79,7 +77,7 @@ public class HibernateFormReportStore
     public Collection<FormReport> getFormReports( Form form )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( FormReport.class );
 
@@ -91,9 +89,8 @@ public class HibernateFormReportStore
     public FormReport getFormReport( int id )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (FormReport) session.get( FormReport.class, id );
     }
-
 }

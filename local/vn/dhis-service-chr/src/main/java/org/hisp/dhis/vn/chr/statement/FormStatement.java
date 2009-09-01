@@ -9,13 +9,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.jdbc.StatementBuilder;
-import org.hisp.dhis.jdbc.StatementDialect;
-import org.hisp.dhis.jdbc.factory.StatementBuilderFactory;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.vn.chr.Element;
-import org.hisp.dhis.vn.chr.FormReport;
 import org.hisp.dhis.vn.chr.Form;
+import org.hisp.dhis.vn.chr.FormReport;
 
 public abstract class FormStatement
 {
@@ -103,9 +101,9 @@ public abstract class FormStatement
      * @param dialect the dialect in configuration file
      * 
      */
-    public FormStatement( Form form, StatementDialect dialect )
+    public FormStatement( Form form, StatementBuilder statementBuilder )
     {
-        init( form, dialect );
+        init( form, statementBuilder );
     }
 
     /**
@@ -116,11 +114,11 @@ public abstract class FormStatement
      * @param element Column needs to add or alter into the table
      * 
      */
-    public FormStatement( StatementDialect dialect, String status, Element element )
+    public FormStatement( StatementBuilder statementBuilder, String status, Element element )
     {
         this.status = status;
         this.element = element;
-        init( element.getForm(), dialect );
+        init( element.getForm(), statementBuilder );
     }
 
     /**
@@ -131,11 +129,11 @@ public abstract class FormStatement
      * @param column Column's name needs to delete
      * 
      */
-    public FormStatement( Form form, StatementDialect dialect, String status, String column )
+    public FormStatement( Form form, StatementBuilder statementBuilder, String status, String column )
     {
         this.status = status;
         this.column = column;
-        init( form, dialect );
+        init( form, statementBuilder );
     }
 
     /**
@@ -146,12 +144,12 @@ public abstract class FormStatement
      * @param column Column's name needs to delete
      * 
      */
-    public FormStatement( Form form, StatementDialect dialect, String keywork, String column, int pageSize )
+    public FormStatement( Form form, StatementBuilder statementBuilder, String keywork, String column, int pageSize )
     {
         this.status = keywork;
         this.column = column;
         this.value = pageSize;
-        init( form, dialect );
+        init( form, statementBuilder );
     }
 
     /**
@@ -162,11 +160,11 @@ public abstract class FormStatement
      * @param value Index of page, ID of object, ...
      * 
      */
-    public FormStatement( Form form, StatementDialect dialect, int value )
+    public FormStatement( Form form, StatementBuilder statementBuilder, int value )
     {
         this.value = value;
 
-        init( form, dialect );
+        init( form, statementBuilder );
     }
 
     /**
@@ -177,11 +175,11 @@ public abstract class FormStatement
      * @param keyword Keyword to search
      * 
      */
-    public FormStatement( Form form, StatementDialect dialect, String keyword )
+    public FormStatement( Form form, StatementBuilder statementBuilder, String keyword )
     {
         this.keyword = keyword;
 
-        init( form, dialect );
+        init( form, statementBuilder );
     }
 
     /**
@@ -192,14 +190,14 @@ public abstract class FormStatement
      * @param data Data of Object
      * 
      */
-    public FormStatement( Form form, StatementDialect dialect, ArrayList<String> data )
+    public FormStatement( Form form, StatementBuilder statementBuilder, ArrayList<String> data )
     {
         this.data = data;
 
-        init( form, dialect );
+        init( form, statementBuilder );
     }
 
-    public FormStatement( StatementDialect dialect, String operator, Period period, FormReport formReport )
+    public FormStatement( StatementBuilder statementBuilder, String operator, Period period, FormReport formReport )
     {
 
         this.formReport = formReport;
@@ -209,7 +207,7 @@ public abstract class FormStatement
         // count, sum
         this.operator = operator;
 
-        init( null, dialect );
+        init( null, statementBuilder );
     }
 
     /**
@@ -220,10 +218,9 @@ public abstract class FormStatement
      * @param pageIndex Index of page
      * 
      */
-    public void init( Form form, StatementDialect dialect )
+    public void init( Form form, StatementBuilder statementBuilder )
     {
-
-        statementBuilder = StatementBuilderFactory.createStatementBuilder( dialect );
+        this.statementBuilder = statementBuilder;
 
         init( form );
     }

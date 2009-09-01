@@ -9,12 +9,12 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.hisp.dhis.jdbc.StatementDialect;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.vn.chr.Element;
-import org.hisp.dhis.vn.chr.FormReport;
 import org.hisp.dhis.vn.chr.Form;
+import org.hisp.dhis.vn.chr.FormReport;
 
 public class ReportDataStatement
     extends FormStatement
@@ -24,10 +24,9 @@ public class ReportDataStatement
     // Constructor
     // -------------------------------------------------------------------------
 
-    public ReportDataStatement( StatementDialect dialect, String operator, Period period, FormReport formReport )
+    public ReportDataStatement( StatementBuilder statementBuilder, String operator, Period period, FormReport formReport )
     {
-
-        super( dialect, operator, period, formReport );
+        super( statementBuilder, operator, period, formReport );
     }
 
     // -------------------------------------------------------------------------

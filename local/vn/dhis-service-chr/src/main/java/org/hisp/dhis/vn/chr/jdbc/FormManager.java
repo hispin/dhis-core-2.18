@@ -7,9 +7,7 @@ package org.hisp.dhis.vn.chr.jdbc;
 
 import java.util.ArrayList;
 
-import org.hisp.dhis.jdbc.StatementDialect;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.FormReport;
 import org.hisp.dhis.vn.chr.Form;
 
@@ -30,7 +28,7 @@ public interface FormManager
      * @param pageIndex Index of page
      * @return List Objects
      */
-    public ArrayList listObject( Form form, int pageIndex );
+    public ArrayList<Object> listObject( Form form, int pageIndex );
 
     /**
      * Get data in a Object by id of Object
@@ -39,7 +37,7 @@ public interface FormManager
      * @param id Id of object
      * @return values of a Object
      */
-    public ArrayList getObject( Form form, int id );
+    public ArrayList<String> getObject( Form form, int id );
 
     /**
      * Add Object by ID
@@ -73,7 +71,7 @@ public interface FormManager
      * 
      * @return Result List
      */
-    public ArrayList searchObject( Form form, String keyword, int pageSize );
+    public ArrayList<Object> searchObject( Form form, String keyword, int pageSize );
 
     /**
      * Load list relatived objects
@@ -84,7 +82,7 @@ public interface FormManager
      * 
      * @return List Relatived objects
      */
-    public ArrayList listRelativeObject( Form form, String column, String objectId, int pageSize );
+    public ArrayList<Object> listRelativeObject( Form form, String column, String objectId, int pageSize );
 
     /**
      * Export data into a report
