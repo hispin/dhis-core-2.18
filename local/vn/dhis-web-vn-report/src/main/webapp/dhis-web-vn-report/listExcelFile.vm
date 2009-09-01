@@ -1,0 +1,59 @@
+<h2>$!encoder.htmlEncode($!organisationUnit.name)</h2>
+<table width="100%">
+	<tr>
+		<td>
+			<form name="uploadfile" action="uploadExcelFile.action" method="post" enctype="multipart/form-data">
+				<label>$i18n.getString( 'select_excel_file' )</lable>
+				<input type="file" id="upload" name="upload" size="30px;" >
+				<input type="submit" value="$i18n.getString( 'upload_file' )"/>	
+			</form>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr>
+		<th>$i18n.getString( "name" )</th>
+		<th>$i18n.getString( "size" )</th>
+		<th>$i18n.getString( "create_date" )</th>
+		<th></th>
+	</tr>
+	#set( $mark = false )
+	#foreach($file in $files)
+		<tr #alternate( $mark )>
+			<td>$file.name</td>
+			<td>$file.size KB</td>
+			<td>$file.createDate</td>	
+			<td width="60px">
+				<a href="javascript:openImportForm('$file.name');" title="$i18n.getString( 'import' )"><img src="../images/import.png" alt="$i18n.getString( 'remove' )"></a>		
+				<a href="javascript:deleteExcelFile('$file.name');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+			</td>				
+		<tr>
+		#if( $mark )
+			#set( $mark = false )
+		#else
+			#set( $mark = true )
+		#end
+	#end
+</table>
+
+<div id="importForm" style="position:fixed;display:none;width:400;z-index:10002;background-color: white;border: medium solid silver;padding:10px;height:70px;">
+<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('importForm');deleteDivEffect();">[x]</div>
+	<table>	
+		<tr>
+			<td><label>$i18n.getString('reports')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		</tr>
+		<tr>			
+			<td>
+				<select type="text" id="targetReport" style="min-width:20em">					
+				</select>
+			</td>
+			<td>
+				<input type="button" value="$i18n.getString('view_data')" onclick="viewData();"/>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<script type="text/javascript">
+	var i18n_confirm_delete = '$encoder.jsEscape($i18n.getString( "confirm_delete" ) , "'")';
+</script>
