@@ -61,7 +61,15 @@
     
     <!-- MapOrganisationUnitRelations -->
     
-    <action name="addOrUpdateMapOrganisationUnitRelation" class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction">
+    <action name="addMapOrganisationUnitRelation" class="org.hisp.dhis.mapping.action.AddMapOrganisationUnitRelationAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+    </action>
+	  
+	<action name="addOrUpdateMapOrganisationUnitRelation" class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+    </action>
+	  
+	<action name="addOrUpdateMapOrganisationUnitRelations" class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationsAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
     </action>
     

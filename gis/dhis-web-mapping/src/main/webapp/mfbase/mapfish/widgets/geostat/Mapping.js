@@ -144,6 +144,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      
     newUrl : false,
     
+    organisationUnits: [],
+    
     /**
      * Method: initComponent
      *    Inits the component
@@ -169,18 +171,20 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         gridView = new Ext.grid.GridView({ 
             forceFit: true,
             sortClasses: ['sort-asc'],
-            getRowClass: function (row, index){
+            getRowClass: function(row,index) {
                 var cls = ''; 
-                var data = row.data;
-
-                switch (data.featureId) { 
+                switch (row.data.featureId) {
                     case '': 
                         cls = 'not-assigned-row';
                         break;
                     default:
                         cls = 'assigned-row';
                 }
-                return cls;
+                
+                return cls;                    
+            },
+            getCell: function(row,col) {
+                return '<div></div>';
             }
         });
     

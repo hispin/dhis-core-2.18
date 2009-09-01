@@ -1,5 +1,6 @@
 /*reference local blank image*/
 Ext.BLANK_IMAGE_URL = '../../mfbase/ext/resources/images/default/s.gif';
+Ext.BLANK_IMAGE_URL = '../../mfbase/ext/resources/images/default/s.gif';
 
 Ext.onReady(function()
 {
@@ -1716,31 +1717,6 @@ Ext.onReady(function()
         items:
         [   
             {
-                xtype: 'checkbox',
-                id: 'register_chb',
-                fieldLabel: 'Admin panels',
-                isFormField: true,
-                listeners: {
-                    'check': {
-                        fn: function(checkbox,checked) {
-                            if (checked) {
-                                mapping.show();
-                                shapefilePanel.show();
-                                mapLayerPanel.show();
-                                Ext.getCmp('west').doLayout();
-                            }
-                            else {
-                                mapping.hide();
-                                shapefilePanel.hide();
-                                mapLayerPanel.hide();
-                                Ext.getCmp('west').doLayout();
-                            }
-                        },
-                        scope: this
-                    }
-                }
-            },
-            {
                 xtype: 'combo',
                 fieldLabel: 'Map source',
                 id: 'mapsource_cb',
@@ -1808,6 +1784,31 @@ Ext.onReady(function()
                         }
                     }
                 }
+            },
+            {
+                xtype: 'checkbox',
+                id: 'register_chb',
+                fieldLabel: 'Admin panels',
+                isFormField: true,
+                listeners: {
+                    'check': {
+                        fn: function(checkbox,checked) {
+                            if (checked) {
+                                mapping.show();
+                                shapefilePanel.show();
+                                mapLayerPanel.show();
+                                Ext.getCmp('west').doLayout();
+                            }
+                            else {
+                                mapping.hide();
+                                shapefilePanel.hide();
+                                mapLayerPanel.hide();
+                                Ext.getCmp('west').doLayout();
+                            }
+                        },
+                        scope: this
+                    }
+                }
             }
         ],
         listeners: {
@@ -1833,8 +1834,8 @@ Ext.onReady(function()
         map: map,
         layer: choroplethLayer,
         title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR + ';">Thematic map</font>',
-        nameAttribute: 'NAME',
-        indicators: [['value', 'Indicator']],
+        //nameAttribute: 'NAME',
+        //indicators: [['value', 'Indicator']],
         url: INIT_URL,
         featureSelection: false,
         loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
@@ -1857,8 +1858,8 @@ Ext.onReady(function()
         map: map,
         layer: choroplethLayer,
         title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_ADMIN + ';">Assign organisation units</font>',
-        nameAttribute: 'NAME',
-        indicators: [['value', 'Indicator']],
+        //nameAttribute: 'NAME',
+        //indicators: [['value', 'Indicator']],
         url: INIT_URL,
         featureSelection: false,
         loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
@@ -1868,6 +1869,7 @@ Ext.onReady(function()
             expand: {
                 fn: function() {
                     choroplethLayer.setVisibility(false);
+                    mapping.classify(false);
                     
                     ACTIVEPANEL = 'mapping';
                 }
@@ -1901,14 +1903,7 @@ Ext.onReady(function()
             children: layerTreeConfig
         }
     });
-    
-    //layerTree.on({
-    //    'checkchange': function(node,checked) {
-    //        if (checked) {
-    //            MASK.show();
-    //        }   
-    //    }
-    //});
+
     
     map.events.on({
         changelayer: function(e) {
@@ -2184,7 +2179,7 @@ function getChoroplethData() {
             dataReceivedChoropleth( responseObject.responseText );
         },
         failure: function() {
-            alert( 'Status', 'Error while retrieving data' );
+            alert( 'Error: getMapValues' );
         } 
     });
 }
@@ -2442,6 +2437,7 @@ function dataReceivedAutoAssignOrganisationUnit( responseText ) {
     var count_features = 0;
     var count_orgunits = 0;
     var count_match = 0;
+    var relations = '';
 
     for ( var j=0; j < features.length; j++ ) {
         count_features++;
@@ -2450,30 +2446,32 @@ function dataReceivedAutoAssignOrganisationUnit( responseText ) {
             count_orgunits++;
             
             if (features[j].attributes[uniqueColumn] == organisationUnits[i].name) {
+            
+                count_match++;
                 var organisationUnitId = organisationUnits[i].id;
                 var organisationUnit = organisationUnits[i].name;
                 var featureId = features[j].attributes[uniqueColumn];
                 var featureName = features[j].attributes[nameColumn];
-                count_match++;
-                
-                Ext.Ajax.request({
-                    url: path + 'addOrUpdateMapOrganisationUnitRelation' + type,
-                    method: 'GET',
-                    params: { mapLayerPath: mlp, organisationUnitId: organisationUnitId, featureId: featureId },
 
-                    success: function( responseObject ) {
-
-                    },
-                    failure: function() {
-                        alert( 'Status', 'Error while retrieving data: dataReceivedAutoAssignOrganisationUnit' );
-                    } 
-                });
+                relations += organisationUnitId + '-' + featureId + ',';
             }
         }
     }
     
-    Ext.messageBlack.msg('Assign organisation units', + msg_highlight_start + count_match + msg_highlight_end + ' organisation units assigned.<br><br>Database: ' + msg_highlight_start + count_orgunits/count_features + msg_highlight_end + '<br>Shapefile: ' + msg_highlight_start + count_features + msg_highlight_end);
-    
-    Ext.getCmp('grid_gp').getStore().reload();
-    loadMapData('assignment');
+    Ext.Ajax.request({
+        url: path + 'addOrUpdateMapOrganisationUnitRelations' + type,
+        method: 'POST',
+        params: { mapLayerPath: mlp, relations: relations },
+
+        success: function( responseObject ) {
+            Ext.messageBlack.msg('Assign organisation units', '' + msg_highlight_start + count_match + msg_highlight_end + ' organisation units assigned.<br><br>Database: ' + msg_highlight_start + count_orgunits/count_features + msg_highlight_end + '<br>Shapefile: ' + msg_highlight_start + count_features + msg_highlight_end);
+            
+            Ext.getCmp('grid_gp').getStore().reload();
+            loadMapData('assignment');
+        },
+        failure: function() {
+            alert( 'Error: addOrUpdateMapOrganisationUnitRelations' );
+        } 
+    });
+                
 }
