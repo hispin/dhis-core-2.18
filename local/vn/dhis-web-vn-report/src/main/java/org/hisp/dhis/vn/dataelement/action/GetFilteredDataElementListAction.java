@@ -1,5 +1,3 @@
-
-// HIEU DONE //
 package org.hisp.dhis.vn.dataelement.action;
 
 /*
@@ -30,7 +28,6 @@ package org.hisp.dhis.vn.dataelement.action;
  */
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -38,8 +35,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
-import com.opensymphony.xwork.Action;
-
+import com.opensymphony.xwork2.Action;
 
 public class GetFilteredDataElementListAction
     implements Action
@@ -54,7 +50,6 @@ public class GetFilteredDataElementListAction
     {
         this.dataElementService = dataElementService;
     }
-
 
     // -------------------------------------------------------------------------
     // Comparator
@@ -83,7 +78,7 @@ public class GetFilteredDataElementListAction
     // -------------------------------------------------------------------------
 
     private List<DataElement> dataElements;
-    
+
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
@@ -99,12 +94,11 @@ public class GetFilteredDataElementListAction
     {
         return dataElementGroupId;
     }
-	
-	public List<DataElement> getDataElements()
+
+    public List<DataElement> getDataElements()
     {
         return dataElements;
     }
-
 
     // -------------------------------------------------------------------------
     // Action implemantation
@@ -117,26 +111,32 @@ public class GetFilteredDataElementListAction
         // Criteria
         // ---------------------------------------------------------------------
 
-        if ( dataElementGroupId != -1 ) {
-        	
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementGroup( dataElementGroupId ).getMembers() );
+        if ( dataElementGroupId != -1 )
+        {
+
+            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementGroup( dataElementGroupId )
+                .getMembers() );
         }
-        else {
+        else
+        {
             dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
         }
 
-        if (dataElements != null) {
-        	
-        	for (DataElement de : dataElements) {
-        		System.out.println("de.id = " + de.getId());
-        		System.out.println("de.name = " + de.getName());
-        	}
+        if ( dataElements != null )
+        {
+
+            for ( DataElement de : dataElements )
+            {
+                System.out.println( "de.id = " + de.getId() );
+                System.out.println( "de.name = " + de.getName() );
+            }
         }
-        else {
-        	return ERROR;
+        else
+        {
+            return ERROR;
         }
-        
-        //Collections.sort( dataElements, dataElementComparator );
+
+        // Collections.sort( dataElements, dataElementComparator );
 
         displayPropertyHandler.handle( dataElements );
 

@@ -9,7 +9,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.vn.report.state.ReportLocationManager;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 public class UploadExcelFileAction
     implements Action
@@ -62,9 +62,10 @@ public class UploadExcelFileAction
         throws Exception
     {
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-        
-        if ( organisationUnit == null ) return SUCCESS;
-        
+
+        if ( organisationUnit == null )
+            return SUCCESS;
+
         File directory = reportLocationManager.getDirectory( organisationUnit );
 
         if ( upload != null )

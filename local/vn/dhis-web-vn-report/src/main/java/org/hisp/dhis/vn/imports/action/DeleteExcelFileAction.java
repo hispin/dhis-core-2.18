@@ -6,9 +6,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.vn.report.state.ReportLocationManager;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
-public class DeleteExcelFileAction implements Action
+public class DeleteExcelFileAction
+    implements Action
 {
     // -------------------------------------------
     // Dependency
@@ -47,13 +48,13 @@ public class DeleteExcelFileAction implements Action
         throws Exception
     {
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-        
+
         File dir = reportLocationManager.getDirectory( organisationUnit );
-        
-        File excel = new File(dir,this.fileName);
-        
+
+        File excel = new File( dir, this.fileName );
+
         excel.delete();
-        
+
         return SUCCESS;
     }
 
