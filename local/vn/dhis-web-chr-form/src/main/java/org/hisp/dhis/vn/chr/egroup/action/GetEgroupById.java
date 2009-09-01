@@ -7,7 +7,7 @@ package org.hisp.dhis.vn.chr.egroup.action;
 
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.EgroupService;
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 public class GetEgroupById implements Action{
 
