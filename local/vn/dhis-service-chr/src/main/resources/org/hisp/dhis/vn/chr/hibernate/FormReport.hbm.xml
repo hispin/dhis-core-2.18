@@ -33,11 +33,6 @@
 			<list-index base="0" column="form_order"/>
 			<many-to-many class="org.hisp.dhis.vn.chr.Form" column="formid" foreign-key="fk_reportid_dataelementid"/>
 		</list>
-		    
-        <!-- <set name="forms" table="formassociations">
-			<key column="formreportid"/>
-			<many-to-many class="org.hisp.dhis.vn.chr.Form" column="formid"/>
-		</set>	  -->
 		
     </class>
 </hibernate-mapping>
