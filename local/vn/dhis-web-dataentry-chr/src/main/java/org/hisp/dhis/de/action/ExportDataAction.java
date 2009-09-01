@@ -1,4 +1,4 @@
-package org.hisp.dhis.vn.chr.report.action;
+package org.hisp.dhis.de.action;
 
 import java.util.Collection;
 import java.util.Date;
@@ -27,7 +27,7 @@ import org.hisp.dhis.vn.chr.jdbc.FormManager;
  * 
  */
 
-public class ExportData
+public class ExportDataAction
     extends ActionSupport
 {
 

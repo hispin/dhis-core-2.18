@@ -8,13 +8,14 @@ package org.hisp.dhis.vn.chr.object.action;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.options.formconfiguration.FormConfigurationManager;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.ElementService;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.jdbc.FormManager;
+
 import com.opensymphony.xwork2.Action;
 
 public class ListRelativeObjectAction
@@ -31,7 +32,7 @@ public class ListRelativeObjectAction
 
     private ElementService elementService;
 
-    private FormConfigurationManager formConfigurationManager;
+    private SystemSettingManager systemSettingManager;
 
     // -----------------------------------------------------------------------------------------------
     // Input && Output
@@ -43,30 +44,26 @@ public class ListRelativeObjectAction
 
     private Form form;
 
-    private ArrayList data;
+    private ArrayList<Object> data;
 
     private Collection<Element> formLinks;
 
     private String column;
 
-    private ArrayList parentObject;
+    private ArrayList<String> parentObject;
 
     // -----------------------------------------------------------------------------------------------
     // Getter && Setter
     // -----------------------------------------------------------------------------------------------
-    public ArrayList getParentObject()
+    
+    public ArrayList<String> getParentObject()
     {
         return parentObject;
     }
 
-    public void setParentObject( ArrayList parentObject )
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
-        this.parentObject = parentObject;
-    }
-
-    public void setFormConfigurationManager( FormConfigurationManager formConfigurationManager )
-    {
-        this.formConfigurationManager = formConfigurationManager;
+        this.systemSettingManager = systemSettingManager;
     }
 
     public Integer getFormId()
@@ -89,14 +86,9 @@ public class ListRelativeObjectAction
         this.formService = formService;
     }
 
-    public ArrayList getData()
+    public ArrayList<Object> getData()
     {
         return data;
-    }
-
-    public void setData( ArrayList data )
-    {
-        this.data = data;
     }
 
     public Form getForm()
@@ -156,8 +148,9 @@ public class ListRelativeObjectAction
 
         formLinks = elementService.getElementsByFormLink( form );
 
-        data = formManager.listRelativeObject( form, column, objectId, Integer.parseInt( formConfigurationManager
-            .getNumberOfRecords() ) );
+        int numberOfRecords = Integer.parseInt( (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_CHR_NUMBER_OF_RECORDS ) );
+        
+        data = formManager.listRelativeObject( form, column, objectId, numberOfRecords );
 
         if ( objectId != null )
         {

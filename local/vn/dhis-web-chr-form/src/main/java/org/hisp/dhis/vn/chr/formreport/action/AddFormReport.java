@@ -1,8 +1,8 @@
 package org.hisp.dhis.vn.chr.formreport.action;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.chr.Form;
@@ -90,7 +90,7 @@ public class AddFormReport
         // get all forms
         Collection<Form> forms = formService.getAllForms();
         // forms used in the formula
-        Set<Form> formulaForms = new HashSet<Form>();
+        List<Form> formulaForms = new ArrayList<Form>();
         for ( Form form : forms )
         {
             String formName = form.getName().toLowerCase() + ".";

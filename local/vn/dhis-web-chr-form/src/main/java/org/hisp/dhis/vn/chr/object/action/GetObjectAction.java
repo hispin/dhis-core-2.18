@@ -6,10 +6,11 @@ package org.hisp.dhis.vn.chr.object.action;
  */
 
 import java.util.ArrayList;
+
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
-import org.hisp.dhis.vn.chr.jdbc.FormManager;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
+import org.hisp.dhis.vn.chr.jdbc.FormManager;
 
 public class GetObjectAction
     extends ActionSupport
@@ -34,18 +35,18 @@ public class GetObjectAction
     private Integer id;
 
     // Object's data
-    private ArrayList data;
+    private ArrayList<String> data;
 
     // -----------------------------------------------------------------------------------------------
     // Getter && Setter
     // -----------------------------------------------------------------------------------------------
 
-    public ArrayList getData()
+    public ArrayList<String> getData()
     {
         return data;
     }
 
-    public void setData( ArrayList data )
+    public void setData( ArrayList<String> data )
     {
         this.data = data;
     }
