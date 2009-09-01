@@ -9,7 +9,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.vn.report.state.ReportLocationManager;
 
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork.Action;
 
 public class UploadExcelFileAction
     implements Action
