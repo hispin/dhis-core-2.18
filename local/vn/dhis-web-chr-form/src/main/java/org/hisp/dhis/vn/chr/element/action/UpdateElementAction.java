@@ -11,180 +11,211 @@ import org.hisp.dhis.vn.chr.ElementService;
 import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class UpdateElementAction extends ActionSupport {
-	// -----------------------------------------------------------------------------------------------
-	// Dependency
-	// -----------------------------------------------------------------------------------------------
+public class UpdateElementAction
+    extends ActionSupport
+{
+    // -----------------------------------------------------------------------------------------------
+    // Dependency
+    // -----------------------------------------------------------------------------------------------
 
-	private FormService formService;
+    private FormService formService;
 
-	private ElementService elementService;
+    private ElementService elementService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private Integer id;
+    private Integer id;
 
-	private int formID;
+    private int formID;
 
-	private String name;
+    private String name;
 
-	private String label;
+    private String label;
 
-	private String type;
+    private String type;
 
-	private String controlType;
+    private String controlType;
 
-	private String initialValue;
+    private String initialValue;
 
-	private int formLink;
+    private int formLink;
 
-	private boolean required;
+    private boolean required;
 
-	private int sortOrder;
+    private int sortOrder;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getters && Setters
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getters && Setters
+    // -----------------------------------------------------------------------------------------------
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public void setElementService(ElementService elementService) {
-		this.elementService = elementService;
-	}
+    public void setElementService( ElementService elementService )
+    {
+        this.elementService = elementService;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId()
+    {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public int getFormID() {
-		return formID;
-	}
+    public int getFormID()
+    {
+        return formID;
+    }
 
-	public void setFormID(int formID) {
-		this.formID = formID;
-	}
+    public void setFormID( int formID )
+    {
+        this.formID = formID;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName()
+    {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public String getLabel() {
-		return label;
-	}
+    public String getLabel()
+    {
+        return label;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public void setLabel( String label )
+    {
+        this.label = label;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType()
+    {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType( String type )
+    {
+        this.type = type;
+    }
 
-	public String getControlType() {
-		return controlType;
-	}
+    public String getControlType()
+    {
+        return controlType;
+    }
 
-	public void setControlType(String controlType) {
-		this.controlType = controlType;
-	}
+    public void setControlType( String controlType )
+    {
+        this.controlType = controlType;
+    }
 
-	public String getInitialValue() {
-		return initialValue;
-	}
+    public String getInitialValue()
+    {
+        return initialValue;
+    }
 
-	public void setInitialValue(String initialValue) {
-		this.initialValue = initialValue;
-	}
+    public void setInitialValue( String initialValue )
+    {
+        this.initialValue = initialValue;
+    }
 
-	public int getFormLink() {
-		return formLink;
-	}
+    public int getFormLink()
+    {
+        return formLink;
+    }
 
-	public void setFormLink(int formLink) {
-		this.formLink = formLink;
-	}
+    public void setFormLink( int formLink )
+    {
+        this.formLink = formLink;
+    }
 
-	public boolean isRequired() {
-		return required;
-	}
+    public boolean isRequired()
+    {
+        return required;
+    }
 
-	public void setRequired(boolean required) {
-		this.required = required;
-	}
+    public void setRequired( boolean required )
+    {
+        this.required = required;
+    }
 
-	public int getSortOrder() {
-		return sortOrder;
-	}
+    public int getSortOrder()
+    {
+        return sortOrder;
+    }
 
-	public void setSortOrder(int sortOrder) {
-		this.sortOrder = sortOrder;
-	}
+    public void setSortOrder( int sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
 
-	public FormService getFormService() {
-		return formService;
-	}
+    public FormService getFormService()
+    {
+        return formService;
+    }
 
-	public ElementService getElementService() {
-		return elementService;
-	}
+    public ElementService getElementService()
+    {
+        return elementService;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		Element element = elementService.getElement(id.intValue());
+        Element element = elementService.getElement( id.intValue() );
 
-		element.setName(CodecUtils.unescape(name).toLowerCase());
+        element.setName( CodecUtils.unescape( name ).toLowerCase() );
 
-		element.setLabel(CodecUtils.unescape(label));
+        element.setLabel( CodecUtils.unescape( label ) );
 
-		element.setType(type);
+        element.setType( type );
 
-		element.setControlType(controlType);
+        element.setControlType( controlType );
 
-		element.setInitialValue(initialValue);
+        element.setInitialValue( initialValue );
 
-		System.out.print("\n\n\n Formlink : " + formLink);
+        System.out.print( "\n\n\n Formlink : " + formLink );
 
-		if (formLink != 0) {
+        if ( formLink != 0 )
+        {
 
-			element.setFormLink(formService.getForm(formLink));
+            element.setFormLink( formService.getForm( formLink ) );
 
-		} else {
+        }
+        else
+        {
 
-			element.setFormLink(null);
+            element.setFormLink( null );
 
-		}
+        }
 
-		element.setRequired(required);
+        element.setRequired( required );
 
-		element.setSortOrder(sortOrder);
+        element.setSortOrder( sortOrder );
 
-		elementService.updateElement(element);
+        elementService.updateElement( element );
 
-		element.setForm(formService.getForm(formID));
+        element.setForm( formService.getForm( formID ) );
 
-		message = i18n.getString("success");
+        message = i18n.getString( "success" );
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 
 }

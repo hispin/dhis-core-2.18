@@ -16,121 +16,141 @@ import org.hisp.dhis.vn.chr.jdbc.FormManager;
 
 import com.opensymphony.xwork2.Action;
 
-public class AddObjectFormAction implements Action {
+public class AddObjectFormAction
+    implements Action
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormService formService;
+    private FormService formService;
 
-	private FormManager formManager;
+    private FormManager formManager;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private int formId;
+    private int formId;
 
-	private Collection<Egroup> egroups;
+    private Collection<Egroup> egroups;
 
-	private Form form;
+    private Form form;
 
-	private String objectId;
+    private String objectId;
 
-	private ArrayList parentObject;
+    private ArrayList parentObject;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public void setFormManager(FormManager formManager) {
-		this.formManager = formManager;
-	}
+    public void setFormManager( FormManager formManager )
+    {
+        this.formManager = formManager;
+    }
 
-	public Collection<Egroup> getEgroups() {
-		return this.egroups;
-	}
+    public Collection<Egroup> getEgroups()
+    {
+        return this.egroups;
+    }
 
-	public void setEgroups(Collection<Egroup> egroups) {
-		this.egroups = egroups;
-	}
+    public void setEgroups( Collection<Egroup> egroups )
+    {
+        this.egroups = egroups;
+    }
 
-	public int getFormId() {
-		return formId;
-	}
+    public int getFormId()
+    {
+        return formId;
+    }
 
-	public void setFormId(int formId) {
-		this.formId = formId;
-	}
+    public void setFormId( int formId )
+    {
+        this.formId = formId;
+    }
 
-	public Form getForm() {
-		return form;
-	}
+    public Form getForm()
+    {
+        return form;
+    }
 
-	public void setForm(Form form) {
-		this.form = form;
-	}
+    public void setForm( Form form )
+    {
+        this.form = form;
+    }
 
-	public String getObjectId() {
-		return objectId;
-	}
+    public String getObjectId()
+    {
+        return objectId;
+    }
 
-	public void setObjectId(String objectId) {
-		this.objectId = objectId;
-	}
+    public void setObjectId( String objectId )
+    {
+        this.objectId = objectId;
+    }
 
-	public ArrayList getParentObject() {
-		return parentObject;
-	}
+    public ArrayList getParentObject()
+    {
+        return parentObject;
+    }
 
-	public void setParentObject(ArrayList parentObject) {
-		this.parentObject = parentObject;
-	}
+    public void setParentObject( ArrayList parentObject )
+    {
+        this.parentObject = parentObject;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		form = formService.getForm(formId);
+        form = formService.getForm( formId );
 
-		egroups = form.getEgroups();
+        egroups = form.getEgroups();
 
-		if (objectId != null) {
+        if ( objectId != null )
+        {
 
-			Iterator<Egroup> iter = egroups.iterator();
-			if (iter.hasNext()) {
-				for (Element element : iter.next().getElements()) {
-					if (element.getFormLink() != null) {
-						Form fparent = element.getFormLink();
-						ArrayList<String> data = formManager.getObject(fparent,
-								Integer.parseInt(objectId));
-						parentObject = new ArrayList<String>();
-						int k = 0;
-						for (Egroup egroup : fparent.getEgroups()) {
-							for (Element e : egroup.getElements()) {
-								if (data.get(k) != null)
-									parentObject.add(e.getLabel() + " : "
-											+ data.get(k));
-								k++;
-								if (k == fparent.getNoColumnLink())
-									break;
-							}// end for element
+            Iterator<Egroup> iter = egroups.iterator();
+            if ( iter.hasNext() )
+            {
+                for ( Element element : iter.next().getElements() )
+                {
+                    if ( element.getFormLink() != null )
+                    {
+                        Form fparent = element.getFormLink();
+                        ArrayList<String> data = formManager.getObject( fparent, Integer.parseInt( objectId ) );
+                        parentObject = new ArrayList<String>();
+                        int k = 0;
+                        for ( Egroup egroup : fparent.getEgroups() )
+                        {
+                            for ( Element e : egroup.getElements() )
+                            {
+                                if ( data.get( k ) != null )
+                                    parentObject.add( e.getLabel() + " : " + data.get( k ) );
+                                k++;
+                                if ( k == fparent.getNoColumnLink() )
+                                    break;
+                            }// end for element
 
-							if (k == fparent.getNoColumnLink())
-								break;
-						}// end for egroup
-					}
-				}
-			}
-		}
+                            if ( k == fparent.getNoColumnLink() )
+                                break;
+                        }// end for egroup
+                    }
+                }
+            }
+        }
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 }

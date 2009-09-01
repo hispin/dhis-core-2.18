@@ -16,76 +16,84 @@ import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormReport;
 import org.hisp.dhis.vn.chr.FormReportStore;
 
-public class HibernateFormReportStore implements FormReportStore {
+public class HibernateFormReportStore
+    implements FormReportStore
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private HibernateSessionManager hibernateSessionManager;
+    private HibernateSessionManager hibernateSessionManager;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
-	public void setHibernateSessionManager(
-			HibernateSessionManager hibernateSessionManager) {
-		this.hibernateSessionManager = hibernateSessionManager;
-	}
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
+    public void setHibernateSessionManager( HibernateSessionManager hibernateSessionManager )
+    {
+        this.hibernateSessionManager = hibernateSessionManager;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implements
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implements
+    // -----------------------------------------------------------------------------------------------
 
-	public int addFormReport(FormReport formReport) {
-		
-		Session session = hibernateSessionManager.getCurrentSession();
+    public int addFormReport( FormReport formReport )
+    {
 
-		return (Integer) session.save(formReport);
-	}
+        Session session = hibernateSessionManager.getCurrentSession();
 
-	public void updateFormReport(FormReport formReport) {
-		
-		Session session = hibernateSessionManager.getCurrentSession();
-		
-		session.update(formReport);
-		
-	}
+        return (Integer) session.save( formReport );
+    }
 
-	public void deleteFormReport(int id) {
-		
-		Session session = hibernateSessionManager.getCurrentSession();
+    public void updateFormReport( FormReport formReport )
+    {
 
-		session.delete(getFormReport(id));	
-		
-	}
+        Session session = hibernateSessionManager.getCurrentSession();
 
-	@SuppressWarnings("unchecked")
-	public Collection<FormReport> getAllFormReports() {
-		
-		Session session = hibernateSessionManager.getCurrentSession();
+        session.update( formReport );
 
-		Criteria criteria = session.createCriteria(FormReport.class);
+    }
 
-		return criteria.list();
-	}
+    public void deleteFormReport( int id )
+    {
 
-	@SuppressWarnings("unchecked")
-	public Collection<FormReport> getFormReports(Form form) {
-		
-		Session session = hibernateSessionManager.getCurrentSession();
+        Session session = hibernateSessionManager.getCurrentSession();
 
-		Criteria criteria = session.createCriteria(FormReport.class);
+        session.delete( getFormReport( id ) );
 
-		criteria.add(Restrictions.eq("Form", form));
-		
-		return criteria.list();
-	}
+    }
 
-	public FormReport getFormReport(int id) {
-		
-		Session session = hibernateSessionManager.getCurrentSession();
+    @SuppressWarnings( "unchecked" )
+    public Collection<FormReport> getAllFormReports()
+    {
 
-		return (FormReport)session.get(FormReport.class, id);
-	}
-	
+        Session session = hibernateSessionManager.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( FormReport.class );
+
+        return criteria.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<FormReport> getFormReports( Form form )
+    {
+
+        Session session = hibernateSessionManager.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( FormReport.class );
+
+        criteria.add( Restrictions.eq( "Form", form ) );
+
+        return criteria.list();
+    }
+
+    public FormReport getFormReport( int id )
+    {
+
+        Session session = hibernateSessionManager.getCurrentSession();
+
+        return (FormReport) session.get( FormReport.class, id );
+    }
+
 }

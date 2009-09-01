@@ -9,56 +9,65 @@ import java.util.Collection;
 
 import org.hisp.dhis.vn.chr.Form;
 
-public class DefaultEgroupService implements EgroupService{
+public class DefaultEgroupService
+    implements EgroupService
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
-	
-	private EgroupStore egroupStore;
-	
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	public void setEgroupStore(EgroupStore egroupStore) {
-		this.egroupStore = egroupStore;
-	}
+    private EgroupStore egroupStore;
 
-	// -----------------------------------------------------------------------------------------------
-	// Implements
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public int addEgroup(Egroup egroup) {
-		
-		return egroupStore.addEgroup(egroup);
-	}
+    public void setEgroupStore( EgroupStore egroupStore )
+    {
+        this.egroupStore = egroupStore;
+    }
 
-	public void deleteEgroup(int id) {
+    // -----------------------------------------------------------------------------------------------
+    // Implements
+    // -----------------------------------------------------------------------------------------------
 
-		egroupStore.deleteEgroup(id);
-		
-	}
+    public int addEgroup( Egroup egroup )
+    {
 
-	public Collection<Egroup> getAllEgroups() {
-		
-		return egroupStore.getAllEgroups();
-	}
+        return egroupStore.addEgroup( egroup );
+    }
 
-	public Egroup getEgroup(int id) {
+    public void deleteEgroup( int id )
+    {
 
-		return egroupStore.getEgroup(id);
-	}
+        egroupStore.deleteEgroup( id );
 
-	public Collection<Egroup> getEgroupsByForm(Form form) {
+    }
 
-		return egroupStore.getEgroupsByForm(form);
-	}
+    public Collection<Egroup> getAllEgroups()
+    {
 
-	public void updateEgroup(Egroup egroup) {
+        return egroupStore.getAllEgroups();
+    }
 
-		egroupStore.updateEgroup(egroup);
-		
-	}
-	
+    public Egroup getEgroup( int id )
+    {
+
+        return egroupStore.getEgroup( id );
+    }
+
+    public Collection<Egroup> getEgroupsByForm( Form form )
+    {
+
+        return egroupStore.getEgroupsByForm( form );
+    }
+
+    public void updateEgroup( Egroup egroup )
+    {
+
+        egroupStore.updateEgroup( egroup );
+
+    }
+
 }

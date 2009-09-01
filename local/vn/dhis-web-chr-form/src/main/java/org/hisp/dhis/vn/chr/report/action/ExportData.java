@@ -27,189 +27,208 @@ import org.hisp.dhis.vn.chr.jdbc.FormManager;
  * 
  */
 
-public class ExportData extends ActionSupport {
+public class ExportData
+    extends ActionSupport
+{
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
-	private FormReportService formReportService;
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+    private FormReportService formReportService;
 
-	private FormManager formManager;
+    private FormManager formManager;
 
-	private CurrentUserService currentUserService;
+    private CurrentUserService currentUserService;
 
-	private DataElementService dataElementService;
+    private DataElementService dataElementService;
 
-	private DataValueService dataValueService;
+    private DataValueService dataValueService;
 
-	private SelectedStateManager selectedStateManager;
+    private SelectedStateManager selectedStateManager;
 
-	private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-	private ElementService elementService;
+    private ElementService elementService;
 
-	private ExpressionService expressionService;
+    private ExpressionService expressionService;
 
-	// -------------------------------------------------------------------------
-	// Input && Output
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Input && Output
+    // -------------------------------------------------------------------------
 
-	private int dataElementId;
+    private int dataElementId;
 
-	private int optionComboId;
+    private int optionComboId;
 
-	private int statusCode;
+    private int statusCode;
 
-	private Date timestamp;
+    private Date timestamp;
 
-	private String storedBy;
+    private String storedBy;
 
-	private String inputId;
+    private String inputId;
 
-	// -------------------------------------------------------------------------
-	// Getters && Setters
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
 
-	public void setFormManager(FormManager formManager) {
-		this.formManager = formManager;
-	}
+    public void setFormManager( FormManager formManager )
+    {
+        this.formManager = formManager;
+    }
 
-	public void setFormReportService(FormReportService formReportService) {
-		this.formReportService = formReportService;
-	}
+    public void setFormReportService( FormReportService formReportService )
+    {
+        this.formReportService = formReportService;
+    }
 
-	public void setExpressionService(ExpressionService expressionService) {
-		this.expressionService = expressionService;
-	}
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
 
-	public void setDataElementCategoryOptionComboService(
-			DataElementCategoryOptionComboService dataElementCategoryOptionComboService) {
-		this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
-	}
+    public void setDataElementCategoryOptionComboService(
+        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    {
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+    }
 
-	public void setSelectedStateManager(
-			SelectedStateManager selectedStateManager) {
-		this.selectedStateManager = selectedStateManager;
-	}
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
+    }
 
-	public void setElementService(ElementService elementService) {
-		this.elementService = elementService;
-	}
+    public void setElementService( ElementService elementService )
+    {
+        this.elementService = elementService;
+    }
 
-	public void setCurrentUserService(CurrentUserService currentUserService) {
-		this.currentUserService = currentUserService;
-	}
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
-	public void setDataElementService(DataElementService dataElementService) {
-		this.dataElementService = dataElementService;
-	}
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
 
-	public void setDataValueService(DataValueService dataValueService) {
-		this.dataValueService = dataValueService;
-	}
+    public void setDataValueService( DataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
+    }
 
-	public void setDataElementId(int dataElementId) {
-		this.dataElementId = dataElementId;
-	}
+    public void setDataElementId( int dataElementId )
+    {
+        this.dataElementId = dataElementId;
+    }
 
-	public int getDataElementId() {
-		return dataElementId;
-	}
+    public int getDataElementId()
+    {
+        return dataElementId;
+    }
 
-	public void setOptionComboId(int optionComboId) {
-		this.optionComboId = optionComboId;
-	}
+    public void setOptionComboId( int optionComboId )
+    {
+        this.optionComboId = optionComboId;
+    }
 
-	public int getOptionComboId() {
-		return optionComboId;
-	}
+    public int getOptionComboId()
+    {
+        return optionComboId;
+    }
 
-	public int getStatusCode() {
-		return statusCode;
-	}
+    public int getStatusCode()
+    {
+        return statusCode;
+    }
 
-	public Date getTimestamp() {
-		return timestamp;
-	}
+    public Date getTimestamp()
+    {
+        return timestamp;
+    }
 
-	public void setInputId(String inputId) {
-		this.inputId = inputId;
-	}
+    public void setInputId( String inputId )
+    {
+        this.inputId = inputId;
+    }
 
-	public String getInputId() {
-		return inputId;
-	}
+    public String getInputId()
+    {
+        return inputId;
+    }
 
-	public String getStoredBy() {
-		return storedBy;
-	}
+    public String getStoredBy()
+    {
+        return storedBy;
+    }
 
-	// --------------------------------------------------------------------
-	// Implements
-	// --------------------------------------------------------------------
+    // --------------------------------------------------------------------
+    // Implements
+    // --------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		// Get List Of formreports
-		Collection<FormReport> formReports = formReportService
-				.getAllFormReports();
+        // Get List Of formreports
+        Collection<FormReport> formReports = formReportService.getAllFormReports();
 
-		// Current OrgUnit - sourceid
-		OrganisationUnit organisationUnit = selectedStateManager
-				.getSelectedOrganisationUnit();
-		// Current period
-		Period period = selectedStateManager.getSelectedPeriod();
+        // Current OrgUnit - sourceid
+        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        // Current period
+        Period period = selectedStateManager.getSelectedPeriod();
 
-		for (FormReport formReport : formReports) {
+        for ( FormReport formReport : formReports )
+        {
 
-			// Calculator value of the report
-			int value = formManager.reportDataStatement("count", period,
-					formReport);
+            // Calculator value of the report
+            int value = formManager.reportDataStatement( "count", period, formReport );
 
-			if (value != 0) {
-				// Get operand of the element
-				Operand operand = expressionService.getOperandsInExpression(
-						formReport.getOperand()).iterator().next();
-				// Create a Datavalue Object
-				DataElement dataElement = dataElementService
-						.getDataElement(operand.getDataElementId());
+            if ( value != 0 )
+            {
+                // Get operand of the element
+                Operand operand = expressionService.getOperandsInExpression( formReport.getOperand() ).iterator()
+                    .next();
+                // Create a Datavalue Object
+                DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
 
-				DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
-						.getDataElementCategoryOptionCombo(operand
-								.getOptionComboId());
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
+                    .getDataElementCategoryOptionCombo( operand.getOptionComboId() );
 
-				// logged username
-				storedBy = currentUserService.getCurrentUsername();
+                // logged username
+                storedBy = currentUserService.getCurrentUsername();
 
-				DataValue dataValue = dataValueService.getDataValue(
-						organisationUnit, dataElement, period, optionCombo);
+                DataValue dataValue = dataValueService
+                    .getDataValue( organisationUnit, dataElement, period, optionCombo );
 
-				// if dataValue is not exist, that means data not input
-				// add value into database
-				if (dataValue == null) {
+                // if dataValue is not exist, that means data not input
+                // add value into database
+                if ( dataValue == null )
+                {
 
-					dataValue = new DataValue(dataElement, period,
-							organisationUnit, value + "", storedBy, new Date(),
-							null, optionCombo);
-					dataValueService.addDataValue(dataValue);
+                    dataValue = new DataValue( dataElement, period, organisationUnit, value + "", storedBy, new Date(),
+                        null, optionCombo );
+                    dataValueService.addDataValue( dataValue );
 
-				}
-				// if dataValue is exist, update new value
-				else {
+                }
+                // if dataValue is exist, update new value
+                else
+                {
 
-					dataValue.setValue(value + "");
-					dataValue.setTimestamp(new Date());
-					dataValue.setStoredBy(storedBy);
+                    dataValue.setValue( value + "" );
+                    dataValue.setTimestamp( new Date() );
+                    dataValue.setStoredBy( storedBy );
 
-					dataValueService.updateDataValue(dataValue);
-				}
-			}// end if (value != 0)
+                    dataValueService.updateDataValue( dataValue );
+                }
+            }// end if (value != 0)
 
-		}// end if(value > 0)
+        }// end if(value > 0)
 
-		message = i18n.getString("success");
+        message = i18n.getString( "success" );
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 
 }

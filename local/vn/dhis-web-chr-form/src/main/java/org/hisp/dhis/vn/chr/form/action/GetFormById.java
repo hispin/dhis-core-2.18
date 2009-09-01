@@ -9,60 +9,69 @@ import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
 import com.opensymphony.xwork2.Action;
 
-public class GetFormById implements Action {
+public class GetFormById
+    implements Action
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormService formService;
+    private FormService formService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private Form form;
+    private Form form;
 
-	private Integer id;
+    private Integer id;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getters && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getters && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId()
+    {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public FormService getFormService() {
-		return formService;
-	}
+    public FormService getFormService()
+    {
+        return formService;
+    }
 
-	public void setForm(Form form) {
-		this.form = form;
-	}
+    public void setForm( Form form )
+    {
+        this.form = form;
+    }
 
-	public Form getForm() {
-		return form;
-	}
+    public Form getForm()
+    {
+        return form;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		form = formService.getForm(id.intValue());
-		System.out.print("\n\n\n Form : " + form.getElements() + " with ID = "
-				+ id.intValue());
-		return SUCCESS;
-	}
+        form = formService.getForm( id.intValue() );
+        System.out.print( "\n\n\n Form : " + form.getElements() + " with ID = " + id.intValue() );
+        return SUCCESS;
+    }
 
 }

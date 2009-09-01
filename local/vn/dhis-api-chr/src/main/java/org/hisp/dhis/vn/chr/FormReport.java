@@ -7,70 +7,84 @@ package org.hisp.dhis.vn.chr;
 
 import java.util.List;
 
-public class FormReport implements java.io.Serializable {
+public class FormReport
+    implements java.io.Serializable
+{
 
-	private int id;
+    private int id;
 
-	private String name;
+    private String name;
 
-	private String formula;
+    private String formula;
 
-	private List<Form> forms;
+    private List<Form> forms;
 
-	private String operand;
+    private String operand;
 
-	private Form mainForm;
+    private Form mainForm;
 
-	// ------------------------------------------------------------
-	// Getters && Setters
-	// ------------------------------------------------------------
+    // ------------------------------------------------------------
+    // Getters && Setters
+    // ------------------------------------------------------------
 
-	public String getName() {
-		return name;
-	}
+    public String getName()
+    {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public Form getMainForm() {
-		return mainForm;
-	}
+    public Form getMainForm()
+    {
+        return mainForm;
+    }
 
-	public void setMainForm(Form mainForm) {
-		this.mainForm = mainForm;
-	}
+    public void setMainForm( Form mainForm )
+    {
+        this.mainForm = mainForm;
+    }
 
-	public String getOperand() {
-		return operand;
-	}
+    public String getOperand()
+    {
+        return operand;
+    }
 
-	public void setOperand(String operand) {
-		this.operand = operand;
-	}
+    public void setOperand( String operand )
+    {
+        this.operand = operand;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public int getId()
+    {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId( int id )
+    {
+        this.id = id;
+    }
 
-	public String getFormula() {
-		return formula;
-	}
+    public String getFormula()
+    {
+        return formula;
+    }
 
-	public void setFormula(String formula) {
-		this.formula = formula;
-	}
+    public void setFormula( String formula )
+    {
+        this.formula = formula;
+    }
 
-	public List<Form> getForms() {
-		return forms;
-	}
+    public List<Form> getForms()
+    {
+        return forms;
+    }
 
-	public void setForms(List<Form> forms) {
-		this.forms = forms;
-	}
+    public void setForms( List<Form> forms )
+    {
+        this.forms = forms;
+    }
 
 }

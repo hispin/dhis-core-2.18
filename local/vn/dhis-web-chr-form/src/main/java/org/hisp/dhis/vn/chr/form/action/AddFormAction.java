@@ -9,112 +9,129 @@ import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
 
-public class AddFormAction extends ActionSupport {
+public class AddFormAction
+    extends ActionSupport
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormService formService;
+    private FormService formService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private String name;
+    private String name;
 
-	private String label;
+    private String label;
 
-	private int noColumn;
+    private int noColumn;
 
-	private int noColumnLink;
+    private int noColumnLink;
 
-	private String icon;
+    private String icon;
 
-	private boolean visible;
+    private boolean visible;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName()
+    {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public String getLabel() {
-		return label;
-	}
+    public String getLabel()
+    {
+        return label;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public void setLabel( String label )
+    {
+        this.label = label;
+    }
 
-	public int getNoColumn() {
-		return noColumn;
-	}
+    public int getNoColumn()
+    {
+        return noColumn;
+    }
 
-	public void setNoColumn(int noColumn) {
-		this.noColumn = noColumn;
-	}
+    public void setNoColumn( int noColumn )
+    {
+        this.noColumn = noColumn;
+    }
 
-	public int getNoColumnLink() {
-		return noColumnLink;
-	}
+    public int getNoColumnLink()
+    {
+        return noColumnLink;
+    }
 
-	public void setNoColumnLink(int noColumnLink) {
-		this.noColumnLink = noColumnLink;
-	}
+    public void setNoColumnLink( int noColumnLink )
+    {
+        this.noColumnLink = noColumnLink;
+    }
 
-	public String getIcon() {
-		return icon;
-	}
+    public String getIcon()
+    {
+        return icon;
+    }
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+    public void setIcon( String icon )
+    {
+        this.icon = icon;
+    }
 
-	public boolean getVisible() {
-		return visible;
-	}
+    public boolean getVisible()
+    {
+        return visible;
+    }
 
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
+    public void setVisible( boolean visible )
+    {
+        this.visible = visible;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implements
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implements
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		Form form = new Form();
+        Form form = new Form();
 
-		form.setName(CodecUtils.unescape(name));
+        form.setName( CodecUtils.unescape( name ) );
 
-		form.setLabel(CodecUtils.unescape(label));
+        form.setLabel( CodecUtils.unescape( label ) );
 
-		form.setNoColumn(noColumn);
+        form.setNoColumn( noColumn );
 
-		form.setNoColumnLink(noColumnLink);
+        form.setNoColumnLink( noColumnLink );
 
-		form.setIcon(icon);
+        form.setIcon( icon );
 
-		form.setVisible(visible);
+        form.setVisible( visible );
 
-		form.setCreated(false);
+        form.setCreated( false );
 
-		formService.addForm(form);
+        formService.addForm( form );
 
-		message = i18n.getString("success");
+        message = i18n.getString( "success" );
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 }

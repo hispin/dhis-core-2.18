@@ -10,60 +10,68 @@ import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.EgroupService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class UpdateEgroupAction extends ActionSupport {
-	// -----------------------------------------------------------------------------------------------
-	// Dependency
-	// -----------------------------------------------------------------------------------------------
+public class UpdateEgroupAction
+    extends ActionSupport
+{
+    // -----------------------------------------------------------------------------------------------
+    // Dependency
+    // -----------------------------------------------------------------------------------------------
 
-	private EgroupService egroupService;
+    private EgroupService egroupService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private Integer id;
+    private Integer id;
 
-	private String name;
+    private String name;
 
-	private int sortOrder;
+    private int sortOrder;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getters && Setters
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getters && Setters
+    // -----------------------------------------------------------------------------------------------
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public void setSortOrder(byte sortOrder) {
-		this.sortOrder = sortOrder;
-	}
+    public void setSortOrder( byte sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
 
-	public void setEgroupService(EgroupService egroupService) {
-		this.egroupService = egroupService;
-	}
+    public void setEgroupService( EgroupService egroupService )
+    {
+        this.egroupService = egroupService;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		Egroup egroup = egroupService.getEgroup(id);
+        Egroup egroup = egroupService.getEgroup( id );
 
-		egroup.setName(CodecUtils.unescape(name));
+        egroup.setName( CodecUtils.unescape( name ) );
 
-		egroup.setSortOrder(sortOrder);
+        egroup.setSortOrder( sortOrder );
 
-		egroupService.updateEgroup(egroup);
+        egroupService.updateEgroup( egroup );
 
-		message = i18n.getString("success");
+        message = i18n.getString( "success" );
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 
 }

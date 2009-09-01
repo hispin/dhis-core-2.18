@@ -32,11 +32,13 @@ import org.hisp.dhis.vn.chr.statement.ReportDataStatement;
 import org.hisp.dhis.vn.chr.statement.SearchDataStatement;
 import org.hisp.dhis.vn.chr.statement.UpdateDataStatement;
 
-public class JDBCFormManager implements FormManager{
-	
-	private static final Log log = LogFactory.getLog( JDBCFormManager.class );
-	
-	// -------------------------------------------------------------------------
+public class JDBCFormManager
+    implements FormManager
+{
+
+    private static final Log log = LogFactory.getLog( JDBCFormManager.class );
+
+    // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
@@ -45,9 +47,9 @@ public class JDBCFormManager implements FormManager{
     private JDBCConfigurationProvider configurationProvider;
 
     private AccessMetaDataService accessMetaDataService;
-    
+
     private ElementService elementService;
-    
+
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
@@ -56,25 +58,27 @@ public class JDBCFormManager implements FormManager{
     {
         this.statementManager = statementManager;
     }
-    
+
     public void setConfigurationProvider( JDBCConfigurationProvider configurationProvider )
     {
         this.configurationProvider = configurationProvider;
     }
 
-    public void setAccessMetaDataService(AccessMetaDataService accessMetaDataService) {
-		this.accessMetaDataService = accessMetaDataService;
-	}
+    public void setAccessMetaDataService( AccessMetaDataService accessMetaDataService )
+    {
+        this.accessMetaDataService = accessMetaDataService;
+    }
 
-	public void setElementService(ElementService elementService) {
-		this.elementService = elementService;
-	}
+    public void setElementService( ElementService elementService )
+    {
+        this.elementService = elementService;
+    }
 
     // -------------------------------------------------------------------------
     // Implements
     // -------------------------------------------------------------------------
 
-	/**
+    /**
      * Create table
      * 
      * @param form needs to create table
@@ -82,109 +86,111 @@ public class JDBCFormManager implements FormManager{
      */
     public void createTable( Form form )
     {
-    	StatementHolder holder = statementManager.getHolder();
-    	
-    	String allStatement = "";
-    	
-    	try {
-    		
-			// table is exist
-    		if(form.isCreated()){
-//			if (accessMetaDataService.existTable(form.getName().toLowerCase())) { // exist table
+        StatementHolder holder = statementManager.getHolder();
 
-				// Initial statement
-				FormStatement statement = null;
-				
-				// Get columns into the table
-				Set<String> columns = accessMetaDataService
-						.getAllColumnsOfTable(form.getName().toLowerCase());
-			
-				columns.remove("id");
-				columns.remove("addby");
-				columns.remove("createddate");
-				columns.remove("editeddate");
+        String allStatement = "";
 
-				// Add or Alter columns into table
-				for (Element element : form.getElements()) {
-					// add the column in to alter list
-					
-					if (columns.contains(element.getName().toLowerCase())) {
-									
-						statement = new AlterColumnStatement(
-								configurationProvider.getConfiguration()
-										.getDialect(),
-								AlterColumnStatement.ALTER_STATUS, element);
-						
-						log.debug("Alter column with SQL statement: '"
-								+ statement.getStatement() + "'");		
-					}
+        try
+        {
 
-					// if column is not exist in table, add column
-					// add column in to add list
-					else // if(!columns.contains(element.getName()))
-					{
-						statement = new AlterColumnStatement(
-								configurationProvider.getConfiguration()
-										.getDialect(),
-								AlterColumnStatement.ADD_STATUS, element);
-						
-						log.debug("Add column with SQL statement: '"
-								+ statement.getStatement() + "'");
-					}
-					allStatement += statement.getStatement();
+            // table is exist
+            if ( form.isCreated() )
+            {
+                // if
+                // (accessMetaDataService.existTable(form.getName().toLowerCase()))
+                // { // exist table
 
-				}// end column
+                // Initial statement
+                FormStatement statement = null;
 
-				// if column is exist in table (elements exist in table, not in form),
-				// but not exist in form.elements,
-				// delete column in table
-				// add column delete list				
-				for (String column : columns) {
-					
-						Element element = elementService.getElement(column);
+                // Get columns into the table
+                Set<String> columns = accessMetaDataService.getAllColumnsOfTable( form.getName().toLowerCase() );
 
-						if (element == null){
+                columns.remove( "id" );
+                columns.remove( "addby" );
+                columns.remove( "createddate" );
+                columns.remove( "editeddate" );
 
-							statement = new AlterColumnStatement(form,
-									configurationProvider.getConfiguration()
-											.getDialect(),
-									AlterColumnStatement.DROP_STATUS, column);
+                // Add or Alter columns into table
+                for ( Element element : form.getElements() )
+                {
+                    // add the column in to alter list
 
-						allStatement += statement.getStatement();
-						
-						log.debug("Drop column with SQL statement: '"
-								+ statement.getStatement() + "'");
-					} // end if element
-				} // end for
-				
+                    if ( columns.contains( element.getName().toLowerCase() ) )
+                    {
 
-			}// end alter columns
-			
-			else { // Table is not exist or Table is not data
-				
-				// create table
-				FormStatement statement = new CreateTableStatement(form,
-						configurationProvider.getConfiguration().getDialect());
+                        statement = new AlterColumnStatement( configurationProvider.getConfiguration().getDialect(),
+                            AlterColumnStatement.ALTER_STATUS, element );
 
-				allStatement = statement.getStatement();
+                        log.debug( "Alter column with SQL statement: '" + statement.getStatement() + "'" );
+                    }
 
-				log.debug("Creating form table with SQL statement: '"
-						+ statement.getStatement() + "'");
-				
-			}// end create table
+                    // if column is not exist in table, add column
+                    // add column in to add list
+                    else
+                    // if(!columns.contains(element.getName()))
+                    {
+                        statement = new AlterColumnStatement( configurationProvider.getConfiguration().getDialect(),
+                            AlterColumnStatement.ADD_STATUS, element );
 
-			// execute command Statement
+                        log.debug( "Add column with SQL statement: '" + statement.getStatement() + "'" );
+                    }
+                    allStatement += statement.getStatement();
 
-			holder.getStatement().executeUpdate(allStatement);
-			
-		} catch (Exception ex) {
-			throw new RuntimeException("Failed to create table: "
-					+ form.getName(), ex);
-		} finally {
-			holder.close();
-		}
-	}
-   
+                }// end column
+
+                // if column is exist in table (elements exist in table, not in
+                // form),
+                // but not exist in form.elements,
+                // delete column in table
+                // add column delete list
+                for ( String column : columns )
+                {
+
+                    Element element = elementService.getElement( column );
+
+                    if ( element == null )
+                    {
+
+                        statement = new AlterColumnStatement( form, configurationProvider.getConfiguration()
+                            .getDialect(), AlterColumnStatement.DROP_STATUS, column );
+
+                        allStatement += statement.getStatement();
+
+                        log.debug( "Drop column with SQL statement: '" + statement.getStatement() + "'" );
+                    } // end if element
+                } // end for
+
+            }// end alter columns
+
+            else
+            { // Table is not exist or Table is not data
+
+                // create table
+                FormStatement statement = new CreateTableStatement( form, configurationProvider.getConfiguration()
+                    .getDialect() );
+
+                allStatement = statement.getStatement();
+
+                log.debug( "Creating form table with SQL statement: '" + statement.getStatement() + "'" );
+
+            }// end create table
+
+            // execute command Statement
+
+            holder.getStatement().executeUpdate( allStatement );
+
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to create table: " + form.getName(), ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
     /**
      * Load list object
      * 
@@ -192,228 +198,249 @@ public class JDBCFormManager implements FormManager{
      * @param pageIndex Index of page
      * @return List Objects
      */
-   public ArrayList listObject(Form form, int pageSize){
-	   
-	   ArrayList data = new ArrayList();
-	   
-	   StatementHolder holder = statementManager.getHolder();
-	   
-	   FormStatement statement = new ListDataStatement( form , 
-			   configurationProvider.getConfiguration()
-				.getDialect(), pageSize);
-	   
-	   log.debug( "Selecting data form table with SQL statement: '" + statement.getStatement() + "'" );
-	      
-	   try
-       {
-		   
-		   ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
-		  
-		   int noColumn = form.getNoColumn();
-		   
-		   while (resultSet.next()) {
-			   ArrayList<String> rowData = new ArrayList<String>();
-			   
-			   for(int i=1;i < noColumn + 3;i++){
-				   rowData.add(resultSet.getString(i));
-			   }
-			   data.add(rowData);
-	        }
+    public ArrayList listObject( Form form, int pageSize )
+    {
 
-       }
-       catch ( Exception ex )
-       {
-           throw new RuntimeException( "Failed to query data : " + form.getName(), ex );
-       }
-       finally
-       {
-           holder.close();
-       }
-       
-       return data; 
-   }
+        ArrayList data = new ArrayList();
 
-   /**
-    * Add Object by ID
-    * 
-    * @param form needs to create the table
-    * @param data Data of Object
-    */
-	public void addObject(Form form, String[] data) {
-		
-		StatementHolder holder = statementManager.getHolder();
+        StatementHolder holder = statementManager.getHolder();
 
-		try {
-			
-			ArrayList<String> arrData = new ArrayList<String>();
-			
-			for(int i=0; i<data.length;i++){
-				arrData.add(data[i]);
-			}
-			
-			FormStatement statement = new AddDataStatement(form,
-					configurationProvider.getConfiguration().getDialect(), arrData);
+        FormStatement statement = new ListDataStatement( form, configurationProvider.getConfiguration().getDialect(),
+            pageSize );
 
-			log.debug("Update data form table with SQL statement: '"
-					+ statement.getStatement() + "'");
+        log.debug( "Selecting data form table with SQL statement: '" + statement.getStatement() + "'" );
 
-			holder.getStatement().executeUpdate(statement.getStatement());
+        try
+        {
 
-		} catch (Exception ex) {
-			throw new RuntimeException("Failed to query data : "
-					+ form.getName(), ex);
-		} finally {
-			holder.close();
-		}
-	}
-	
-   /**
-    * Update Object by ID
-    * 
-    * @param form needs to create the table
-    * @param data Data of Object
-    */
-	public void updateObject(Form form, String[] data){
-		StatementHolder holder = statementManager.getHolder();
+            ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
 
-		try {
-			ArrayList<String> arrData = new ArrayList<String>();
-			
-			for(int i=0; i<data.length;i++){
-				arrData.add(data[i]);
-			}
-			
-			FormStatement statement = new UpdateDataStatement(form,
-					configurationProvider.getConfiguration().getDialect(), arrData);
+            int noColumn = form.getNoColumn();
 
-			log.debug("Update data form table with SQL statement: '"
-					+ statement.getStatement() + "'");
+            while ( resultSet.next() )
+            {
+                ArrayList<String> rowData = new ArrayList<String>();
 
-			holder.getStatement().executeUpdate(statement.getStatement());
-			
-		} catch (Exception ex) {
-			throw new RuntimeException("Failed to query data : "
-					+ form.getName(), ex);
-		} finally {
-			holder.close();
-		}
-	}
-	
-   /**
-    * Delete Object by ID
-    * 
-    * @param form needs to create the table
-    * @param id Id of object
-    */
-   public void deleteObject(Form form, int id){
-	   
-	   StatementHolder holder = statementManager.getHolder();
-	   
-	   try
-       {
-		   FormStatement statement = new DeleteDataStatement( form , 
-				   configurationProvider.getConfiguration()
-					.getDialect(), id);
+                for ( int i = 1; i < noColumn + 3; i++ )
+                {
+                    rowData.add( resultSet.getString( i ) );
+                }
+                data.add( rowData );
+            }
 
-		   log.debug( "Delete data form table with SQL statement: '" + statement.getStatement() + "'" );
-		   
-		   holder.getStatement().executeUpdate( statement.getStatement() );
-       }
-       catch ( Exception ex )
-       {
-           throw new RuntimeException( "Failed to query data : " + form.getName(), ex );
-       }
-       finally
-       {
-           holder.close();
-       }
-   }
-   
-   /**
-    * Get data in a Object by id of Object
-    * 
-    * @param form needs to create the table
-    * @param id Id of object
-    * @return Values of a Object
-    */
-   public ArrayList getObject(Form form, int id) {
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to query data : " + form.getName(), ex );
+        }
+        finally
+        {
+            holder.close();
+        }
 
-		ArrayList data = new ArrayList();
+        return data;
+    }
 
-		StatementHolder holder = statementManager.getHolder();
+    /**
+     * Add Object by ID
+     * 
+     * @param form needs to create the table
+     * @param data Data of Object
+     */
+    public void addObject( Form form, String[] data )
+    {
 
-		try {
-			FormStatement statement = new GetDataStatement(form,
-					configurationProvider.getConfiguration().getDialect(), id);
+        StatementHolder holder = statementManager.getHolder();
 
-			log.debug("Get data form table with SQL statement: '"
-					+ statement.getStatement() + "'");
+        try
+        {
 
-			ResultSet resultSet = holder.getStatement().executeQuery(
-					statement.getStatement());
+            ArrayList<String> arrData = new ArrayList<String>();
 
-			while (resultSet.next()) {
+            for ( int i = 0; i < data.length; i++ )
+            {
+                arrData.add( data[i] );
+            }
 
-				ArrayList<String> rowData = new ArrayList<String>();
+            FormStatement statement = new AddDataStatement( form,
+                configurationProvider.getConfiguration().getDialect(), arrData );
 
-				for (int i = 1; i < resultSet.getMetaData().getColumnCount() + 1; i++) {
-					data.add(resultSet.getString(i));
-				}
+            log.debug( "Update data form table with SQL statement: '" + statement.getStatement() + "'" );
 
-			}
-		} catch (Exception ex) {
-			throw new RuntimeException("Failed to query data : "
-					+ form.getName(), ex);
-		} finally {
-			holder.close();
-		}
+            holder.getStatement().executeUpdate( statement.getStatement() );
 
-		return data;
-	}
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to query data : " + form.getName(), ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
 
-   /**
-    * Search Object by keyword
-    * 
-    * @param form needs to create the table
-    * @param keyword Keyword
-    */
-	public ArrayList searchObject(Form form, String keyword, int pageSize){
-		
-		
-		ArrayList data = new ArrayList();
+    /**
+     * Update Object by ID
+     * 
+     * @param form needs to create the table
+     * @param data Data of Object
+     */
+    public void updateObject( Form form, String[] data )
+    {
+        StatementHolder holder = statementManager.getHolder();
 
-		StatementHolder holder = statementManager.getHolder();
+        try
+        {
+            ArrayList<String> arrData = new ArrayList<String>();
 
-		try {
-			FormStatement statement = new SearchDataStatement(form,
-					configurationProvider.getConfiguration().getDialect(), keyword, "", pageSize);
+            for ( int i = 0; i < data.length; i++ )
+            {
+                arrData.add( data[i] );
+            }
 
-			log.debug("Get data form table with SQL statement: '"
-					+ statement.getStatement() + "'");
+            FormStatement statement = new UpdateDataStatement( form, configurationProvider.getConfiguration()
+                .getDialect(), arrData );
 
-			ResultSet resultSet = holder.getStatement().executeQuery(
-					statement.getStatement());
-			   while (resultSet.next()) {
-				   
-				   ArrayList<String> rowData = new ArrayList<String>();
-				   
-				   for(int i=1;i < form.getNoColumn() + 3;i++){
-					   rowData.add(resultSet.getString(i));
-				   }
-				   data.add(rowData);
-				   
-		        }
-		} catch (Exception ex) {
-			throw new RuntimeException("Failed to query data : "
-					+ form.getName(), ex);
-		} finally {
-			holder.close();
-		}
+            log.debug( "Update data form table with SQL statement: '" + statement.getStatement() + "'" );
 
-		return data;
-	}
-	
-	/**
+            holder.getStatement().executeUpdate( statement.getStatement() );
+
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to query data : " + form.getName(), ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
+    /**
+     * Delete Object by ID
+     * 
+     * @param form needs to create the table
+     * @param id Id of object
+     */
+    public void deleteObject( Form form, int id )
+    {
+
+        StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            FormStatement statement = new DeleteDataStatement( form, configurationProvider.getConfiguration()
+                .getDialect(), id );
+
+            log.debug( "Delete data form table with SQL statement: '" + statement.getStatement() + "'" );
+
+            holder.getStatement().executeUpdate( statement.getStatement() );
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to query data : " + form.getName(), ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
+    /**
+     * Get data in a Object by id of Object
+     * 
+     * @param form needs to create the table
+     * @param id Id of object
+     * @return Values of a Object
+     */
+    public ArrayList getObject( Form form, int id )
+    {
+
+        ArrayList data = new ArrayList();
+
+        StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            FormStatement statement = new GetDataStatement( form,
+                configurationProvider.getConfiguration().getDialect(), id );
+
+            log.debug( "Get data form table with SQL statement: '" + statement.getStatement() + "'" );
+
+            ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
+
+            while ( resultSet.next() )
+            {
+
+                ArrayList<String> rowData = new ArrayList<String>();
+
+                for ( int i = 1; i < resultSet.getMetaData().getColumnCount() + 1; i++ )
+                {
+                    data.add( resultSet.getString( i ) );
+                }
+
+            }
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to query data : " + form.getName(), ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+
+        return data;
+    }
+
+    /**
+     * Search Object by keyword
+     * 
+     * @param form needs to create the table
+     * @param keyword Keyword
+     */
+    public ArrayList searchObject( Form form, String keyword, int pageSize )
+    {
+
+        ArrayList data = new ArrayList();
+
+        StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            FormStatement statement = new SearchDataStatement( form, configurationProvider.getConfiguration()
+                .getDialect(), keyword, "", pageSize );
+
+            log.debug( "Get data form table with SQL statement: '" + statement.getStatement() + "'" );
+
+            ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
+            while ( resultSet.next() )
+            {
+
+                ArrayList<String> rowData = new ArrayList<String>();
+
+                for ( int i = 1; i < form.getNoColumn() + 3; i++ )
+                {
+                    rowData.add( resultSet.getString( i ) );
+                }
+                data.add( rowData );
+
+            }
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to query data : " + form.getName(), ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+
+        return data;
+    }
+
+    /**
      * Load list relatived objects
      * 
      * @param form needs to create the table
@@ -421,52 +448,53 @@ public class JDBCFormManager implements FormManager{
      * @param pageIndex Index of page
      * @return List Relatived objects
      */
-	public ArrayList listRelativeObject(Form form, String column ,String objectId, int pageSize){
-			
-		   ArrayList data = new ArrayList();
-		   
-		   StatementHolder holder = statementManager.getHolder();
-		   
-		   FormStatement statement = new ListRelativeDataStatement( form , 
-				   configurationProvider.getConfiguration()
-					.getDialect(), objectId, column, pageSize );
+    public ArrayList listRelativeObject( Form form, String column, String objectId, int pageSize )
+    {
 
-		   log.debug( "Selecting data form relative table with SQL statement: '" + statement.getStatement() + "'" );
-		      
-		   try
-	       {
-			   ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
-			  
-			   int noColumn = form.getNoColumn();
-			   
-			   int rowIndex = 0;
-			   
-			   while (resultSet.next()) {
-				   ArrayList<String> rowData = new ArrayList<String>();
-				   
-				   for(int i=1;i < noColumn + 3;i++){
-					   rowData.add(resultSet.getString(i));
-				   }
-				   data.add(rowData);
-				   
-		           rowIndex++;
-		        }
+        ArrayList data = new ArrayList();
 
-	       }
-	       catch ( Exception ex )
-	       {
-	           throw new RuntimeException( "Failed to query data : " + form.getName(), ex );
-	       }
-	       finally
-	       {
-	           holder.close();
-	       }
-	       
-	       return data;
-	}
+        StatementHolder holder = statementManager.getHolder();
 
-	
-	/**
+        FormStatement statement = new ListRelativeDataStatement( form, configurationProvider.getConfiguration()
+            .getDialect(), objectId, column, pageSize );
+
+        log.debug( "Selecting data form relative table with SQL statement: '" + statement.getStatement() + "'" );
+
+        try
+        {
+            ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
+
+            int noColumn = form.getNoColumn();
+
+            int rowIndex = 0;
+
+            while ( resultSet.next() )
+            {
+                ArrayList<String> rowData = new ArrayList<String>();
+
+                for ( int i = 1; i < noColumn + 3; i++ )
+                {
+                    rowData.add( resultSet.getString( i ) );
+                }
+                data.add( rowData );
+
+                rowIndex++;
+            }
+
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to query data : " + form.getName(), ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+
+        return data;
+    }
+
+    /**
      * Export data into a report
      * 
      * @param operator needs to create the table
@@ -475,36 +503,37 @@ public class JDBCFormManager implements FormManager{
      * 
      * @return statistics Result
      */
-	public int reportDataStatement(String operator, 
-			Period period, FormReport formReport) {
+    public int reportDataStatement( String operator, Period period, FormReport formReport )
+    {
 
-		StatementHolder holder = statementManager.getHolder();
+        StatementHolder holder = statementManager.getHolder();
 
-		try {
+        try
+        {
 
-			FormStatement statement = new ReportDataStatement(
-					configurationProvider.getConfiguration().getDialect(),
-					operator, period, formReport);
-			log
-					.debug("Data statistics from relative table with SQL statement: '"
-							+ statement.getStatement() + "'");
+            FormStatement statement = new ReportDataStatement( configurationProvider.getConfiguration().getDialect(),
+                operator, period, formReport );
+            log.debug( "Data statistics from relative table with SQL statement: '" + statement.getStatement() + "'" );
 
-			ResultSet resultSet = holder.getStatement().executeQuery(
-					statement.getStatement());
+            ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
 
-			if (resultSet.next()) {
-				
-				return resultSet.getInt(1);
-			}
-		} catch (Exception ex) {
-			throw new RuntimeException("Failed to query data : ", ex);
-		}
+            if ( resultSet.next() )
+            {
 
-		finally {
-			holder.close();
-		}
+                return resultSet.getInt( 1 );
+            }
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to query data : ", ex );
+        }
 
-		return 0;
-	}
-	
+        finally
+        {
+            holder.close();
+        }
+
+        return 0;
+    }
+
 }

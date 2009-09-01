@@ -8,54 +8,62 @@ package org.hisp.dhis.vn.chr.formreport.action;
 import org.hisp.dhis.vn.chr.FormReportService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class DeleteFormReportAction extends ActionSupport {
+public class DeleteFormReportAction
+    extends ActionSupport
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
-	private FormReportService formReportService;
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
+    private FormReportService formReportService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
-	private Integer id;
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
+    private Integer id;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public void setFormReportService(FormReportService formReportService) {
-		this.formReportService = formReportService;
-	}
+    public void setFormReportService( FormReportService formReportService )
+    {
+        this.formReportService = formReportService;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement : process Select SQL
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement : process Select SQL
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		try {
+        try
+        {
 
-			formReportService.deleteFormReport(id.intValue());
+            formReportService.deleteFormReport( id.intValue() );
 
-			message = i18n.getString("delete") + " "
-					+ i18n.getString("success");
+            message = i18n.getString( "delete" ) + " " + i18n.getString( "success" );
 
-			return SUCCESS;
+            return SUCCESS;
 
-		} catch (Exception ex) {
+        }
+        catch ( Exception ex )
+        {
 
-			ex.printStackTrace();
+            ex.printStackTrace();
 
-			message = i18n.getString("delete") + " " + i18n.getString("error");
+            message = i18n.getString( "delete" ) + " " + i18n.getString( "error" );
 
-			message += "<br>" + i18n.getString("delete_message_error");
-		}
+            message += "<br>" + i18n.getString( "delete_message_error" );
+        }
 
-		return ERROR;
-	}
+        return ERROR;
+    }
 }

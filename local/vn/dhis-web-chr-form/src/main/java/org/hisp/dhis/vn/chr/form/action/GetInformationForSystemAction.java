@@ -12,86 +12,99 @@ import org.hisp.dhis.vn.chr.statement.FormStatement;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetInformationForSystemAction implements Action {
+public class GetInformationForSystemAction
+    implements Action
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private UserStore userStore;
+    private UserStore userStore;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private Collection<Form> visibleforms;
+    private Collection<Form> visibleforms;
 
-	public static int curUserid;
+    public static int curUserid;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public User getCurUser() {
-		return curUser;
-	}
+    public User getCurUser()
+    {
+        return curUser;
+    }
 
-	public void setCurUser(User curUser) {
-		this.curUser = curUser;
-	}
+    public void setCurUser( User curUser )
+    {
+        this.curUser = curUser;
+    }
 
-	public void setUserStore(UserStore userStore) {
-		this.userStore = userStore;
-	}
+    public void setUserStore( UserStore userStore )
+    {
+        this.userStore = userStore;
+    }
 
-	public Collection<Form> getVisibleforms() {
-		return visibleforms;
-	}
+    public Collection<Form> getVisibleforms()
+    {
+        return visibleforms;
+    }
 
-	public void setVisibleforms(Collection<Form> visibleforms) {
-		this.visibleforms = visibleforms;
-	}
+    public void setVisibleforms( Collection<Form> visibleforms )
+    {
+        this.visibleforms = visibleforms;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		// Get All user can process data into database
-		Collection<User> users = new ArrayList<User>();
+        // Get All user can process data into database
+        Collection<User> users = new ArrayList<User>();
 
-		curUserid = curUser.getId();
+        curUserid = curUser.getId();
 
-		Collection<OrganisationUnit> orgUnits = curUser.getOrganisationUnits();
+        Collection<OrganisationUnit> orgUnits = curUser.getOrganisationUnits();
 
-		for (OrganisationUnit orgUnit : orgUnits) {
+        for ( OrganisationUnit orgUnit : orgUnits )
+        {
 
-			getUsers(orgUnit, users);
-		}// end for
+            getUsers( orgUnit, users );
+        }// end for
 
-		FormStatement.USERS = users;
+        FormStatement.USERS = users;
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 
-	// Get All user can process data into database
-	User curUser = null;
+    // Get All user can process data into database
+    User curUser = null;
 
-	// Get All users belong to the curUser
-	private void getUsers(OrganisationUnit orgUnit, Collection<User> users) {
+    // Get All users belong to the curUser
+    private void getUsers( OrganisationUnit orgUnit, Collection<User> users )
+    {
 
-		users.addAll(userStore.getUsersByOrganisationUnit(orgUnit));
+        users.addAll( userStore.getUsersByOrganisationUnit( orgUnit ) );
 
-		Collection<OrganisationUnit> orgUnits = orgUnit.getChildren();
+        Collection<OrganisationUnit> orgUnits = orgUnit.getChildren();
 
-		if (orgUnits != null) {
+        if ( orgUnits != null )
+        {
 
-			for (OrganisationUnit org : orgUnits) {
+            for ( OrganisationUnit org : orgUnits )
+            {
 
-				getUsers(org, users);
-			}
-		}
-	}
+                getUsers( org, users );
+            }
+        }
+    }
 
 }

@@ -13,58 +13,59 @@ import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.FormReport;
 import org.hisp.dhis.vn.chr.Form;
 
-public interface FormManager {
-	
-	/**
+public interface FormManager
+{
+
+    /**
      * Create table from Form
      * 
      * @param form needs to create table
      */
-	public void createTable(Form form );
-	
-	/**
+    public void createTable( Form form );
+
+    /**
      * Load list objects
      * 
      * @param form needs to create the table
      * @param pageIndex Index of page
      * @return List Objects
      */
-	public ArrayList listObject(Form form, int pageIndex );
-	
-	/**
+    public ArrayList listObject( Form form, int pageIndex );
+
+    /**
      * Get data in a Object by id of Object
      * 
      * @param form needs to create the table
      * @param id Id of object
      * @return values of a Object
      */
-	public ArrayList getObject(Form form, int id);
-	
-	/**
+    public ArrayList getObject( Form form, int id );
+
+    /**
      * Add Object by ID
      * 
      * @param form needs to create the table
      * @param data Data of Object
      */
-	public void addObject(Form form, String[] data);
-	
-	/**
+    public void addObject( Form form, String[] data );
+
+    /**
      * Update Object by ID
      * 
      * @param form needs to create the table
      * @param data Data of Object
      */
-	public void updateObject(Form form, String[] data);
-	
-	/**
+    public void updateObject( Form form, String[] data );
+
+    /**
      * Delete Object by ID
      * 
      * @param form needs to create the table
      * @param id Id of object
      */
-	public void deleteObject(Form form, int id);
-	
-	/**
+    public void deleteObject( Form form, int id );
+
+    /**
      * Search Object by keyword
      * 
      * @param form needs to create the table
@@ -72,9 +73,9 @@ public interface FormManager {
      * 
      * @return Result List
      */
-	public ArrayList searchObject(Form form, String keyword, int pageSize);
+    public ArrayList searchObject( Form form, String keyword, int pageSize );
 
-	/**
+    /**
      * Load list relatived objects
      * 
      * @param form needs to create the table
@@ -83,9 +84,9 @@ public interface FormManager {
      * 
      * @return List Relatived objects
      */
-	public ArrayList listRelativeObject(Form form, String column , String objectId, int pageSize);
-	
-	/**
+    public ArrayList listRelativeObject( Form form, String column, String objectId, int pageSize );
+
+    /**
      * Export data into a report
      * 
      * @param operator needs to create the table
@@ -94,5 +95,5 @@ public interface FormManager {
      * 
      * @return statistics Result
      */
-	public int reportDataStatement(String operator, Period period, FormReport formReport);
+    public int reportDataStatement( String operator, Period period, FormReport formReport );
 }

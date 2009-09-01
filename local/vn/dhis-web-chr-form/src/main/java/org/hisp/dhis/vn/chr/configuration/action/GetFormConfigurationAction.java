@@ -62,10 +62,12 @@ public class GetFormConfigurationAction
     public String execute()
         throws Exception
     {
-        imageDirectoryOnServer = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_CHR_IMAGE_DIRECTORY );
-        
-        numberOfRecords = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_CHR_NUMBER_OF_RECORDS );
-        
+        imageDirectoryOnServer = (String) systemSettingManager
+            .getSystemSetting( SystemSettingManager.KEY_CHR_IMAGE_DIRECTORY );
+
+        numberOfRecords = (String) systemSettingManager
+            .getSystemSetting( SystemSettingManager.KEY_CHR_NUMBER_OF_RECORDS );
+
         return SUCCESS;
     }
 }

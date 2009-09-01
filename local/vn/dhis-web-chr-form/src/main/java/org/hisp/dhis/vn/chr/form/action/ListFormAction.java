@@ -15,46 +15,53 @@ import org.hisp.dhis.vn.chr.comparator.FormNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
-public class ListFormAction implements Action {
+public class ListFormAction
+    implements Action
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormService formService;
+    private FormService formService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private List<Form> forms;
+    private List<Form> forms;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public List<Form> getForms() {
-		return forms;
-	}
+    public List<Form> getForms()
+    {
+        return forms;
+    }
 
-	public void setForms(List<Form> forms) {
-		this.forms = forms;
-	}
+    public void setForms( List<Form> forms )
+    {
+        this.forms = forms;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		forms = new ArrayList<Form>(formService.getAllForms());
+        forms = new ArrayList<Form>( formService.getAllForms() );
 
-		Collections.sort(forms, new FormNameComparator());
+        Collections.sort( forms, new FormNameComparator() );
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 }

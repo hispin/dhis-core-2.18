@@ -7,54 +7,63 @@ package org.hisp.dhis.vn.chr;
 
 import java.util.Collection;
 
-public class DefaultFormReportService implements FormReportService {
+public class DefaultFormReportService
+    implements FormReportService
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormReportStore formReportStore;
+    private FormReportStore formReportStore;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public void setFormReportStore(FormReportStore formReportStore) {
-		this.formReportStore = formReportStore;
-	}
-	
-	// -----------------------------------------------------------------------------------------------
-	// Implements
-	// -----------------------------------------------------------------------------------------------
+    public void setFormReportStore( FormReportStore formReportStore )
+    {
+        this.formReportStore = formReportStore;
+    }
 
-	public int addFormReport(FormReport formReport) {
+    // -----------------------------------------------------------------------------------------------
+    // Implements
+    // -----------------------------------------------------------------------------------------------
 
-		return formReportStore.addFormReport(formReport);
-	}
+    public int addFormReport( FormReport formReport )
+    {
 
-	public void updateFormReport(FormReport formReport) {
-		formReportStore.updateFormReport(formReport);
-		
-	}
-	
-	public void deleteFormReport(int id) {
+        return formReportStore.addFormReport( formReport );
+    }
 
-		formReportStore.deleteFormReport(id);
-	}
+    public void updateFormReport( FormReport formReport )
+    {
+        formReportStore.updateFormReport( formReport );
 
-	public Collection<FormReport> getAllFormReports() {
-		
-		return formReportStore.getAllFormReports();
-	}
+    }
 
-	public Collection<FormReport> getFormReports(Form form) {
-		
-		return formReportStore.getFormReports(form);
-	}
+    public void deleteFormReport( int id )
+    {
 
-	public FormReport getFormReport(int id) {
-		
-		return formReportStore.getFormReport(id);
-	}
-		
+        formReportStore.deleteFormReport( id );
+    }
+
+    public Collection<FormReport> getAllFormReports()
+    {
+
+        return formReportStore.getAllFormReports();
+    }
+
+    public Collection<FormReport> getFormReports( Form form )
+    {
+
+        return formReportStore.getFormReports( form );
+    }
+
+    public FormReport getFormReport( int id )
+    {
+
+        return formReportStore.getFormReport( id );
+    }
+
 }

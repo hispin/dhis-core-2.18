@@ -12,77 +12,89 @@ import org.hisp.dhis.vn.chr.FormService;
 
 import com.opensymphony.xwork2.Action;
 
-public class ListElementAction implements Action {
+public class ListElementAction
+    implements Action
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
-	private FormService formService;
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
+    private FormService formService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private Integer formID;
+    private Integer formID;
 
-	private Form form;
+    private Form form;
 
-	private Collection<Element> elements;
+    private Collection<Element> elements;
 
-	private Collection<Form> forms;
+    private Collection<Form> forms;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	// public void setElementService(ElementService elementService) {
-	// this.elementService = elementService;
-	// }
+    // public void setElementService(ElementService elementService) {
+    // this.elementService = elementService;
+    // }
 
-	public void setForm(Form form) {
-		this.form = form;
-	}
+    public void setForm( Form form )
+    {
+        this.form = form;
+    }
 
-	public void setElements(Collection<Element> elements) {
-		this.elements = elements;
-	}
+    public void setElements( Collection<Element> elements )
+    {
+        this.elements = elements;
+    }
 
-	public void setFormID(Integer formID) {
-		this.formID = formID;
-	}
+    public void setFormID( Integer formID )
+    {
+        this.formID = formID;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public Form getForm() {
-		return form;
-	}
+    public Form getForm()
+    {
+        return form;
+    }
 
-	public Collection<Element> getElements() {
-		return elements;
-	}
+    public Collection<Element> getElements()
+    {
+        return elements;
+    }
 
-	public void setForms(Collection<Form> forms) {
-		this.forms = forms;
-	}
+    public void setForms( Collection<Form> forms )
+    {
+        this.forms = forms;
+    }
 
-	public Collection<Form> getForms() {
-		return forms;
-	}
+    public Collection<Form> getForms()
+    {
+        return forms;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		forms = formService.getAllForms();
+        forms = formService.getAllForms();
 
-		form = formService.getForm(formID.intValue());
+        form = formService.getForm( formID.intValue() );
 
-		elements = form.getElements();
+        elements = form.getElements();
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 }

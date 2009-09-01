@@ -11,97 +11,113 @@ import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.jdbc.FormManager;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class UpdateObjectAction extends ActionSupport {
+public class UpdateObjectAction
+    extends ActionSupport
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormManager formManager;
+    private FormManager formManager;
 
-	private FormService formService;
+    private FormService formService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	// Form ID
-	private Integer formId;
+    // Form ID
+    private Integer formId;
 
-	// Object data
-	private String[] data;
+    // Object data
+    private String[] data;
 
-	// ID of Object
-	private Integer id;
+    // ID of Object
+    private Integer id;
 
-	// message
-	private String message;
+    // message
+    private String message;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public String getMessage() {
-		return message;
-	}
+    public String getMessage()
+    {
+        return message;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
 
-	public String[] getData() {
-		return data;
-	}
+    public String[] getData()
+    {
+        return data;
+    }
 
-	public void setData(String[] data) {
-		this.data = data;
-	}
+    public void setData( String[] data )
+    {
+        this.data = data;
+    }
 
-	public void setFormId(Integer formId) {
-		this.formId = formId;
-	}
+    public void setFormId( Integer formId )
+    {
+        this.formId = formId;
+    }
 
-	public Integer getFormId() {
-		return this.formId;
-	}
+    public Integer getFormId()
+    {
+        return this.formId;
+    }
 
-	public void setFormManager(FormManager formManager) {
-		this.formManager = formManager;
-	}
+    public void setFormManager( FormManager formManager )
+    {
+        this.formManager = formManager;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement : process Select SQL
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement : process Select SQL
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		try {
+        try
+        {
 
-			Form form = formService.getForm(formId.intValue());
+            Form form = formService.getForm( formId.intValue() );
 
-			// convert data to Unicode
-			for (int i = 0; i < data.length; i++) {
-				if (data[i].length() != 0) {
-					data[i] = CodecUtils.unescape(data[i]);
-				}
-			}
+            // convert data to Unicode
+            for ( int i = 0; i < data.length; i++ )
+            {
+                if ( data[i].length() != 0 )
+                {
+                    data[i] = CodecUtils.unescape( data[i] );
+                }
+            }
 
-			message = i18n.getString("update") + " "
-					+ i18n.getString("success");
+            message = i18n.getString( "update" ) + " " + i18n.getString( "success" );
 
-			formManager.updateObject(form, data);
+            formManager.updateObject( form, data );
 
-			return SUCCESS;
+            return SUCCESS;
 
-		} catch (Exception ex) {
-			message = i18n.getString("update") + " " + i18n.getString("error");
-			ex.printStackTrace();
-		}
+        }
+        catch ( Exception ex )
+        {
+            message = i18n.getString( "update" ) + " " + i18n.getString( "error" );
+            ex.printStackTrace();
+        }
 
-		return ERROR;
-	}
+        return ERROR;
+    }
 }

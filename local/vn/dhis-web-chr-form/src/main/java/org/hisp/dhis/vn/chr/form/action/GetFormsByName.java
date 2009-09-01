@@ -12,55 +12,64 @@ import org.hisp.dhis.vn.chr.FormService;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetFormsByName implements Action {
+public class GetFormsByName
+    implements Action
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormService formService;
+    private FormService formService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private String name;
+    private String name;
 
-	private Collection<Form> forms;
+    private Collection<Form> forms;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getters && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getters && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public String getName() {
-		return name;
-	}
+    public String getName()
+    {
+        return name;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public Collection<Form> getForms() {
-		return forms;
-	}
+    public Collection<Form> getForms()
+    {
+        return forms;
+    }
 
-	public void setForms(Collection<Form> forms) {
-		this.forms = forms;
-	}
+    public void setForms( Collection<Form> forms )
+    {
+        this.forms = forms;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		forms = formService.getFormsByName(name);
-		//		
-		return SUCCESS;
-	}
+        forms = formService.getFormsByName( name );
+        //		
+        return SUCCESS;
+    }
 
 }

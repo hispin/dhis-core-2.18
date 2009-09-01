@@ -9,121 +9,149 @@ import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
 
-public class UpdateFormAction extends ActionSupport {
+public class UpdateFormAction
+    extends ActionSupport
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormService formService;
+    private FormService formService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private Integer id;
-	private String label;
-	private int noRow;
-	private int noColumn;
-	private int noColumnLink;
-	private String icon;
-	private boolean visible;
-	private String attached;
+    private Integer id;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    private String label;
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    private int noRow;
 
-	public Integer getId() {
-		return id;
-	}
+    private int noColumn;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private int noColumnLink;
 
-	public String getLabel() {
-		return label;
-	}
+    private String icon;
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    private boolean visible;
 
-	public int getNoRow() {
-		return noRow;
-	}
+    private String attached;
 
-	public void setNoRow(int noRow) {
-		this.noRow = noRow;
-	}
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public int getNoColumn() {
-		return noColumn;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public void setNoColumn(int noColumn) {
-		this.noColumn = noColumn;
-	}
+    public Integer getId()
+    {
+        return id;
+    }
 
-	public int getNoColumnLink() {
-		return noColumnLink;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public void setNoColumnLink(int noColumnLink) {
-		this.noColumnLink = noColumnLink;
-	}
+    public String getLabel()
+    {
+        return label;
+    }
 
-	public String getIcon() {
-		return icon;
-	}
+    public void setLabel( String label )
+    {
+        this.label = label;
+    }
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+    public int getNoRow()
+    {
+        return noRow;
+    }
 
-	public boolean getVisible() {
-		return visible;
-	}
+    public void setNoRow( int noRow )
+    {
+        this.noRow = noRow;
+    }
 
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
+    public int getNoColumn()
+    {
+        return noColumn;
+    }
 
-	public String getAttached() {
-		return attached;
-	}
+    public void setNoColumn( int noColumn )
+    {
+        this.noColumn = noColumn;
+    }
 
-	public void setAttached(String attached) {
-		this.attached = attached;
-	}
+    public int getNoColumnLink()
+    {
+        return noColumnLink;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    public void setNoColumnLink( int noColumnLink )
+    {
+        this.noColumnLink = noColumnLink;
+    }
 
-	public String execute() throws Exception {
+    public String getIcon()
+    {
+        return icon;
+    }
 
-		Form form = formService.getForm(id);
+    public void setIcon( String icon )
+    {
+        this.icon = icon;
+    }
 
-		form.setLabel(CodecUtils.unescape(label));
+    public boolean getVisible()
+    {
+        return visible;
+    }
 
-		form.setNoColumn(noColumn);
+    public void setVisible( boolean visible )
+    {
+        this.visible = visible;
+    }
 
-		form.setNoColumnLink(noColumnLink);
+    public String getAttached()
+    {
+        return attached;
+    }
 
-		form.setIcon(icon);
+    public void setAttached( String attached )
+    {
+        this.attached = attached;
+    }
 
-		form.setVisible(visible);
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-		formService.updateForm(form);
+    public String execute()
+        throws Exception
+    {
 
-		message = i18n.getString("success");
+        Form form = formService.getForm( id );
 
-		return SUCCESS;
-	}
+        form.setLabel( CodecUtils.unescape( label ) );
+
+        form.setNoColumn( noColumn );
+
+        form.setNoColumnLink( noColumnLink );
+
+        form.setIcon( icon );
+
+        form.setVisible( visible );
+
+        formService.updateForm( form );
+
+        message = i18n.getString( "success" );
+
+        return SUCCESS;
+    }
 }
