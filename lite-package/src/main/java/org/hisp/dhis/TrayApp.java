@@ -231,7 +231,6 @@ public class TrayApp
     throws Exception
   {
     log.info("Environment variable DHIS2_HOME: "+System.getenv("DHIS2_HOME"));
-    log.info("System property user.dir: "+System.getProperty("user.dir"));
     if(!SystemTray.isSupported()) {
       String message = "SystemTray not supported on this platform";
       JOptionPane.showMessageDialog((JFrame)null, message);
@@ -242,7 +241,16 @@ public class TrayApp
     new TrayApp();
   }
 
-  public static String getInstallDir() {
+
+    /**
+     *  The <code>getInstallDir</code> method is a hack to determine the current
+     *  directory the dhis2 lite package is installed in.  It does this by finding
+     *  the file URL of a resource within the executable jar and extracting the 
+     *  installation path from that. 
+     *
+     * @return a <code>String</code> value representing the installation directory
+     */
+    public static String getInstallDir() {
         // find a resource
         String resourceString = TrayApp.class.getResource("/icons/").toString();
         // we expect to see something of the form:
@@ -253,8 +261,10 @@ public class TrayApp
         }
         // find the last "/" just before the "!"
         int endIndex = resourceString.lastIndexOf("/", resourceString.lastIndexOf("!"));
-        // make a URI of type file
-        return "file://" + resourceString.substring(9, endIndex);
-      }
-
+        String result = resourceString.substring(9, endIndex); 
+        // replace encoded spaces
+        result = result.replaceAll("%20"," ");
+        return result;
+    }
+    
 }
