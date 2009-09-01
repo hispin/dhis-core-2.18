@@ -63,7 +63,6 @@ public abstract class ReportExcel
         organisationAssocitions.add( organisationUnit );
 
     }
-
     public ReportExcel( String name, String excelTemplateFile, int periodRow, int periodColumn, int organisationRow,
         int organisationColumn )
     {
@@ -87,9 +86,8 @@ public abstract class ReportExcel
         this.name = name;
         this.excelTemplateFile = excelTemplateFile;
     }
-
-    public void addReportItem( ReportItem reportItem )
-    {
+    
+    public void addReportItem(ReportItem reportItem){
         this.reportItems.add( reportItem );
     }
 
