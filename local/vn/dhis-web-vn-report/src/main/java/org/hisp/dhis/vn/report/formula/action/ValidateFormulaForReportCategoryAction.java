@@ -1,3 +1,5 @@
+// HIEU DONE //
+
 package org.hisp.dhis.vn.report.formula.action;
 
 /*
@@ -30,7 +32,8 @@ package org.hisp.dhis.vn.report.formula.action;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.vn.report.ReportItem;
 
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork.Action;
+
 
 public class ValidateFormulaForReportCategoryAction
     implements Action

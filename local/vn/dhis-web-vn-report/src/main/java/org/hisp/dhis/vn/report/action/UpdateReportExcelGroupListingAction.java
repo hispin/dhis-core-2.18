@@ -9,7 +9,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.vn.report.ReportExcelGroupListing;
 import org.hisp.dhis.vn.report.ReportExcelService;
 
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork.Action;
 
 public class UpdateReportExcelGroupListingAction
     implements Action

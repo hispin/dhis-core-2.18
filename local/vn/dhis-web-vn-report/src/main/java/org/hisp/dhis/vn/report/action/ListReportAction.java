@@ -40,7 +40,7 @@ import org.hisp.dhis.vn.report.ReportExcelInterface;
 import org.hisp.dhis.vn.report.ReportExcelService;
 import org.hisp.dhis.vn.report.comparator.ReportNameComparator;
 
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork.Action;
 
 /**
  * @author Tran Thanh Tri
@@ -90,6 +90,7 @@ public class ListReportAction
         this.userStore = userStore;
     }
 
+    // -------------------------------------------------------------------------
     public String execute()
         throws Exception
     {
@@ -104,6 +105,7 @@ public class ListReportAction
         }
         else
         {
+
             reports = new ArrayList<ReportExcelInterface>();
 
             UserCredentials credentials = userStore.getUserCredentials( currentUser );

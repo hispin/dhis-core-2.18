@@ -29,7 +29,7 @@ package org.hisp.dhis.vn.report.export.action;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork.Action;
 /**
  * @author Tran Thanh Tri
  * @version $Id$

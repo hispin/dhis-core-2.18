@@ -10,13 +10,14 @@ import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameCompar
 import org.hisp.dhis.vn.report.ReportExcelGroupListing;
 import org.hisp.dhis.vn.report.ReportExcelInterface;
 
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork.Action;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
 public class GetOrganisationUnitGroupAction
     implements Action
 {
+
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     private List<OrganisationUnitGroup> organisationUnitGroups;

@@ -43,7 +43,7 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
 
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork.Action;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
@@ -140,7 +140,7 @@ public class GetDataSetAndPeriodByPeriodTypeAction
         }
         else
         {
-            dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsByPeriodType( periodType ) );
+            dataSets = new ArrayList<DataSet>( dataSetService.getDataSets( periodType ) );
         }
 
         Collections.sort( dataSets, new DataSetNameComparator() );

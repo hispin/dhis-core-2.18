@@ -27,83 +27,83 @@
 
 package org.hisp.dhis.vn.report.action;
 
+// HIEU DONE //
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< //
+
+import org.hisp.dhis.vn.report.ReportExcel;
+import org.hisp.dhis.vn.report.ReportExcelCategory;
 import org.hisp.dhis.vn.report.ReportExcelInterface;
 import org.hisp.dhis.vn.report.ReportExcelService;
 
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork.Action;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class GetReportAction
-    implements Action
-{
-    // -------------------------------------------
-    // Dependency
-    // -------------------------------------------
+public class GetReportAction implements Action {
+	// -------------------------------------------
+	// Dependency
+	// -------------------------------------------
 
-    private ReportExcelService reportService;
+	private ReportExcelService reportService;
+	
+	// -------------------------------------------
+	// Input & Output
+	// -------------------------------------------
 
-    // -------------------------------------------
-    // Input & Output
-    // -------------------------------------------
+	private Integer id;
 
-    private Integer id;
+	private ReportExcelInterface report;
 
-    private ReportExcelInterface report;
+	// -------------------------------------------
+	// Getter & Setter
+	// -------------------------------------------
+	
+	public void setReportService(ReportExcelService reportService) {
+		this.reportService = reportService;
+	}
+	
+	public ReportExcelService getReportService() {
+		return reportService;
+	}
 
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
-    }
+	public Integer getId() {
+		return id;
+	}
+	
+	public ReportExcelInterface getReport() {
+		return report;
+	}
+	
+	public void setReport(ReportExcelInterface report) {
+		this.report = report;
+	}
 
-    public ReportExcelService getReportService()
-    {
-        return reportService;
-    }
+	// -------------------------------------------
+	// execute method
+	// -------------------------------------------
 
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public ReportExcelInterface getReport()
-    {
-        return report;
-    }
-
-    public void setReport( ReportExcelInterface report )
-    {
-        this.report = report;
-    }
-
-    // -------------------------------------------
-    // execute method
-    // -------------------------------------------
-
-    public String execute()
-        throws Exception
-    {
-
-        if ( id != null )
-        {
-            report = reportService.getReport( id.intValue() );
-        }
-        else
-        {
-            return ERROR;
-        }
-        
+	public String execute() throws Exception {
+		
+		if ( id != null ) {
+			report = reportService.getReport(id.intValue());	
+		}
+		else {
+			return ERROR;
+		}		
         return SUCCESS;
-    }
+	}
 }

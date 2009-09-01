@@ -30,7 +30,6 @@ package org.hisp.dhis.vn.report.action;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.report.ReportExcelInterface;
 import org.hisp.dhis.vn.report.ReportExcelService;
-
 /**
  * @author Tran Thanh Tri
  * @version $Id$
@@ -46,17 +45,20 @@ public class ValidateReportAction
 
     // -------------------------------------------
     // Input & Output
-    // -------------------------------------------
-
+    // -------------------------------------------  
+    
     private Integer id;
 
     private String name;
 
     private String excel;
+	
+	private String reportType;
 
     // -------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------  
+    
 
     public void setReportService( ReportExcelService reportService )
     {
@@ -78,49 +80,52 @@ public class ValidateReportAction
         this.excel = excel;
     }
 
-    public String getReportType( String reportType )
+	
+	public void setReportType( String reportType )
+    {
+        this.reportType = reportType;
+    }
+	
+	public String getReportType( String reportType )
     {
         return reportType;
     }
-
+	
+	/**
+	*/
+	
     public String execute()
         throws Exception
     {
-
-        if ( name == null )
-        {
+        
+        if(name==null){
             message = i18n.getString( "name_is_null" );
-            return ERROR;
+            return ERROR;            
         }
-        if ( name.trim().length() == 0 )
-        {
+        if(name.trim().length()==0){
             message = i18n.getString( "name_is_null" );
-            return ERROR;
+            return ERROR;  
         }
-
-        if ( id == null )
-        {
-
-            ReportExcelInterface reportExcel = reportService.getReport( CodecUtils.unescape( name ) );
-
-            if ( reportExcel != null )
-            {
+        
+        if(id==null){
+        	
+            ReportExcelInterface reportExcel = reportService.getReport( CodecUtils.unescape( name ));         
+            
+            if(reportExcel!=null){
                 message = i18n.getString( "name_ready_exist" );
-                return ERROR;
-            }
+                return ERROR;  
+            }            
         }
-
-        if ( excel == null )
-        {
+      
+        if(excel==null){
             message = i18n.getString( "excel_is_null" );
-            return ERROR;
+            return ERROR;            
         }
-        if ( excel.trim().length() == 0 )
-        {
+        if(excel.trim().length()==0){
             message = i18n.getString( "excel_is_null" );
-            return ERROR;
+            return ERROR;  
         }
-
+        
         return SUCCESS;
     }
 

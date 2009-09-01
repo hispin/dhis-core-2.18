@@ -36,7 +36,7 @@ import org.hisp.dhis.vn.report.ReportExcelListing;
 import org.hisp.dhis.vn.report.ReportExcelPeriodListing;
 import org.hisp.dhis.vn.report.ReportExcelService;
 
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork.Action;
 
 /**
  * @author Tran Thanh Tri
@@ -51,6 +51,10 @@ public class AddReportExcelAction
     // -------------------------------------------
 
     private ReportExcelService reportService;
+
+    /**
+     * 
+     */
 
     // -------------------------------------------
     // Input & Output
@@ -120,6 +124,12 @@ public class AddReportExcelAction
         this.organisationCol = organisationCol;
     }
 
+    /**
+     * ------------------------------------------------------------------------
+     * --------------- Action Implementation
+     * ------------------------------------
+     * -------------------------------------------------------
+     */
     public String execute()
         throws Exception
     {
@@ -139,7 +149,7 @@ public class AddReportExcelAction
         if ( reportType.equalsIgnoreCase( ReportExcel.TYPE.CATEGORY ) )
         {
             report = new ReportExcelCategory();
-
+           
         }
 
         // Tri lam
@@ -151,7 +161,7 @@ public class AddReportExcelAction
         // Tran lam
         if ( reportType.equalsIgnoreCase( ReportExcel.TYPE.GROUP_LISTING ) )
         {
-            report = new ReportExcelGroupListing();
+            report = new ReportExcelGroupListing();           
         }
 
         report.setName( CodecUtils.unescape( name ) );

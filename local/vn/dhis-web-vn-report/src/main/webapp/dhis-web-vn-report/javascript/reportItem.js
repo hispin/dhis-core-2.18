@@ -243,3 +243,53 @@ function getReportItemsCompleted( xmlObject ){
 		operandList.add( option, null );	
 	}
 }
+
+function selectALL( checked ){
+	var listRadio = document.getElementsByName('reportItemCheck');	
+	for(var i=0;i<listRadio.length;i++){
+		listRadio.item(i).checked = checked;
+	}
+}
+
+function copySelectedItem(){
+	var request = new Request();
+    request.setResponseTypeXML( 'xmlObject' );
+    request.setCallbackSuccess( copySelectedItemCompleted );
+	request.send( "getALLReportAjax.action");	
+	
+}
+
+function copySelectedItemCompleted(xmlObject){
+	var reports = xmlObject.getElementsByTagName("report");
+	var selectList = document.getElementById("targetReport");
+	var options = selectList.options;
+	options.length = 0;
+	for(i=0;i<reports.length;i++){
+		var id = reports[i].getElementsByTagName("id")[0].firstChild.nodeValue;
+		var name = reports[i].getElementsByTagName("name")[0].firstChild.nodeValue;
+		options.add(new Option(name,id), null);
+	}
+	setPositionCenter( 'copyTo' );	
+	showById( 'copyTo' );
+}
+
+function saveCopyItems(){
+	var targetReportId = getFieldValue("targetReport");
+	var targetSheetNo = getFieldValue("targetSheetNo");
+	var request = new Request();
+    request.setResponseTypeXML( 'xmlObject' );
+    request.setCallbackSuccess( saveCopyItemsCompleted );
+	var reportItems = "";
+	var url = "copyReportItems.action?reportId=" + targetReportId + "&sheetNo=" +  targetSheetNo;
+	
+	var listRadio = document.getElementsByName('reportItemCheck');	
+	for(var i=0;i<listRadio.length;i++){
+		if(listRadio.item(i).checked){
+			reportItems += "&reportItems=" + listRadio.item(i).value;
+		}
+	}	
+	request.send( url + reportItems );	
+}
+function saveCopyItemsCompleted( xmlObject ){
+	hideById('copyTo');
+}

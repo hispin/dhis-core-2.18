@@ -29,117 +29,100 @@ import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.report.ReportExcelListing;
 import org.hisp.dhis.vn.report.ReportExcelService;
 
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork.Action;
 
 /**
  * @author Tran Thanh Tri, update: Chau Thu Tran
  * @version $Id$
  */
-public class AddReportExcelListingAction
-    implements Action
-{
+public class AddReportExcelListingAction implements Action {
 
-    // -------------------------------------------
-    // Dependency
-    // -------------------------------------------
+	// -------------------------------------------
+	// Dependency
+	// -------------------------------------------
 
-    private ReportExcelService reportService;
+	private ReportExcelService reportService;
 
-    // -------------------------------------------
-    // Input & Output
-    // -------------------------------------------
+	// -------------------------------------------
+	// Input & Output
+	// -------------------------------------------
 
-    private String name;
+	private String name;
 
-    private String excel;
+	private String excel;
 
-    private Integer periodRow;
+	private Integer periodRow;
 
-    private Integer periodCol;
+	private Integer periodCol;
 
-    private Integer organisationRow;
+	private Integer organisationRow;
 
-    private Integer organisationCol;
+	private Integer organisationCol;
 
-    private ReportExcelListing report;
+	private ReportExcelListing report;
 
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
+	// -------------------------------------------
+	// Getter & Setter
+	// -------------------------------------------
 
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
-    }
+	public void setReportService(ReportExcelService reportService) {
+		this.reportService = reportService;
+	}
 
-    public ReportExcelListing getReport()
-    {
-        return report;
-    }
+	public ReportExcelListing getReport() {
+		return report;
+	}
 
-    public void setName( String name )
-    {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setExcel( String excel )
-    {
-        this.excel = excel;
-    }
+	public void setExcel(String excel) {
+		this.excel = excel;
+	}
 
-    public void setPeriodRow( Integer periodRow )
-    {
-        this.periodRow = periodRow;
-    }
+	public void setPeriodRow(Integer periodRow) {
+		this.periodRow = periodRow;
+	}
 
-    public void setPeriodCol( Integer periodCol )
-    {
-        this.periodCol = periodCol;
-    }
+	public void setPeriodCol(Integer periodCol) {
+		this.periodCol = periodCol;
+	}
 
-    public void setOrganisationRow( Integer organisationRow )
-    {
-        this.organisationRow = organisationRow;
-    }
+	public void setOrganisationRow(Integer organisationRow) {
+		this.organisationRow = organisationRow;
+	}
 
-    public void setOrganisationCol( Integer organisationCol )
-    {
-        this.organisationCol = organisationCol;
-    }
+	public void setOrganisationCol(Integer organisationCol) {
+		this.organisationCol = organisationCol;
+	}
 
-    public String execute()
-        throws Exception
-    {
+	public String execute() throws Exception {
 
-        report = new ReportExcelListing();
+		report = new ReportExcelListing();
 
-        report.setName( CodecUtils.unescape( name ) );
-        report.setExcelTemplateFile( excel );
+		report.setName(CodecUtils.unescape(name));
+		report.setExcelTemplateFile(excel);
+		
 
-        if ( periodCol == null || periodRow == null )
-        {
-            report.setPeriodColumn( -1 );
-            report.setPeriodRow( -1 );
-        }
-        else
-        {
-            report.setPeriodColumn( periodCol );
-            report.setPeriodRow( periodRow );
-        }
-        if ( organisationCol == null || organisationRow == null )
-        {
-            report.setOrganisationColumn( -1 );
-            report.setOrganisationRow( -1 );
-        }
-        else
-        {
-            report.setOrganisationColumn( organisationCol );
-            report.setOrganisationRow( organisationRow );
-        }
+		if (periodCol == null || periodRow == null) {
+			report.setPeriodColumn(-1);
+			report.setPeriodRow(-1);
+		} else {
+			report.setPeriodColumn(periodCol);
+			report.setPeriodRow(periodRow);
+		}
+		if (organisationCol == null || organisationRow == null) {
+			report.setOrganisationColumn(-1);
+			report.setOrganisationRow(-1);
+		} else {
+			report.setOrganisationColumn(organisationCol);
+			report.setOrganisationRow(organisationRow);
+		}
 
-        reportService.addReport( report );
+		reportService.addReport(report);
 
-        return SUCCESS;
-    }
+		return SUCCESS;
+	}
 
 }

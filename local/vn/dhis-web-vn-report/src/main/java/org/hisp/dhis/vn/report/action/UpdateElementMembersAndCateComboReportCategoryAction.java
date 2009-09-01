@@ -43,7 +43,7 @@ import org.hisp.dhis.vn.report.ReportExcel;
 import org.hisp.dhis.vn.report.ReportExcelCategory;
 import org.hisp.dhis.vn.report.ReportExcelService;
 
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork.Action;
 
 public class UpdateElementMembersAndCateComboReportCategoryAction
     implements Action
@@ -119,6 +119,12 @@ public class UpdateElementMembersAndCateComboReportCategoryAction
         this.selectedDataElements = selectedDataElements;
     }
 
+    /**
+     * ------------------------------------------------------------------------
+     * --------------- Action Implementation
+     * ------------------------------------
+     * -------------------------------------------------------
+     */
     public String execute()
         throws Exception
     {
@@ -153,8 +159,9 @@ public class UpdateElementMembersAndCateComboReportCategoryAction
                 dataElementCategoryOptionComboService.generateOptionCombos( dataElementCategoryCombo );
             }
 
-            report.setDataElements( elementMembers );
-            report.setCategoryCombo( dataElementCategoryCombo );
+            ((ReportExcelCategory) report).setDataElements( elementMembers );
+            ((ReportExcelCategory) report).setCategoryCombo( dataElementCategoryCombo );
+
         }
 
         reportService.updateReport( report );
