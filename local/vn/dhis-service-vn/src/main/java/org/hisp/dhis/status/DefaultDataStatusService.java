@@ -3,6 +3,7 @@ package org.hisp.dhis.status;
 import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.springframework.transaction.annotation.Transactional;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -35,6 +36,7 @@ import org.hisp.dhis.dataset.DataSet;
  * @author Tran Thanh Tri
  * @version $Id$
  */
+@Transactional
 public class DefaultDataStatusService
     implements DataStatusService
 {

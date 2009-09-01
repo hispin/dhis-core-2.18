@@ -29,15 +29,16 @@ package org.hisp.dhis.vn.report;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
+@Transactional
 public class DefaultReportExcelService
     implements ReportExcelService
 {
-
     // -------------------------------------------------
     // Dependency
     // -------------------------------------------------
