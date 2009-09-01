@@ -7,7 +7,7 @@ package org.hisp.dhis.vn.chr.statement;
 
 import java.util.Collection;
 
-import org.hisp.dhis.jdbc.StatementDialect;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.Element;
@@ -21,9 +21,9 @@ public class ListRelativeDataStatement
     // Constructor
     // -------------------------------------------------------------------------
 
-    public ListRelativeDataStatement( Form form, StatementDialect dialect, String objectId, String column, int pageSize )
+    public ListRelativeDataStatement( Form form, StatementBuilder statementBuilder, String objectId, String column, int pageSize )
     {
-        super( form, dialect, objectId, column, pageSize );
+        super( form, statementBuilder, objectId, column, pageSize );
     }
 
     // -------------------------------------------------------------------------

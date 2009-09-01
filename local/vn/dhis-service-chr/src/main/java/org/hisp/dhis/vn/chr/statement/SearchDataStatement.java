@@ -7,7 +7,7 @@ package org.hisp.dhis.vn.chr.statement;
 
 import java.util.Collection;
 
-import org.hisp.dhis.jdbc.StatementDialect;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.Element;
@@ -21,9 +21,9 @@ public class SearchDataStatement
     // Constructor
     // -------------------------------------------------------------------------
 
-    public SearchDataStatement( Form form, StatementDialect dialect, String keywork, String column, int pageSize )
+    public SearchDataStatement( Form form, StatementBuilder statementBuilder, String keywork, String column, int pageSize )
     {
-        super( form, dialect, keywork, column, pageSize );
+        super( form, statementBuilder, keywork, column, pageSize );
     }
 
     // -------------------------------------------------------------------------

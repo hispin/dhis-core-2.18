@@ -5,7 +5,7 @@ package org.hisp.dhis.vn.chr.statement;
  * 
  */
 
-import org.hisp.dhis.jdbc.StatementDialect;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.vn.chr.Form;
 
 public class DeleteDataStatement
@@ -16,9 +16,9 @@ public class DeleteDataStatement
     // Constructor
     // -------------------------------------------------------------------------
 
-    public DeleteDataStatement( Form form, StatementDialect dialect, int id )
+    public DeleteDataStatement( Form form, StatementBuilder statementBuilder, int id )
     {
-        super( form, dialect, id );
+        super( form, statementBuilder, id );
     }
 
     // -------------------------------------------------------------------------

@@ -5,7 +5,7 @@ package org.hisp.dhis.vn.chr.statement;
  * 
  */
 
-import org.hisp.dhis.jdbc.StatementDialect;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.Form;
 
@@ -17,14 +17,14 @@ public class AlterColumnStatement
     // Constructor
     // -------------------------------------------------------------------------
 
-    public AlterColumnStatement( StatementDialect dialect, String status, Element element )
+    public AlterColumnStatement( StatementBuilder statementBuilder, String status, Element element )
     {
-        super( dialect, status, element );
+        super( statementBuilder, status, element );
     }
 
-    public AlterColumnStatement( Form form, StatementDialect dialect, String status, String column )
+    public AlterColumnStatement( Form form, StatementBuilder statementBuilder, String status, String column )
     {
-        super( form, dialect, status, column );
+        super( form, statementBuilder, status, column );
     }
 
     // ----------------------------------------------------------------------------------------------------

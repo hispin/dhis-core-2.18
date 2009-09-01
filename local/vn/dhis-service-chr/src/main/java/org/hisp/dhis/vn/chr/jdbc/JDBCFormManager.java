@@ -9,16 +9,16 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Set;
 
+import org.amplecode.quick.StatementHolder;
+import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.jdbc.JDBCConfigurationProvider;
-import org.hisp.dhis.jdbc.StatementHolder;
-import org.hisp.dhis.jdbc.StatementManager;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.ElementService;
-import org.hisp.dhis.vn.chr.FormReport;
 import org.hisp.dhis.vn.chr.Form;
+import org.hisp.dhis.vn.chr.FormReport;
 import org.hisp.dhis.vn.chr.jdbc.util.AccessMetaDataService;
 import org.hisp.dhis.vn.chr.statement.AddDataStatement;
 import org.hisp.dhis.vn.chr.statement.AlterColumnStatement;
@@ -44,30 +44,26 @@ public class JDBCFormManager
 
     private StatementManager statementManager;
 
-    private JDBCConfigurationProvider configurationProvider;
-
-    private AccessMetaDataService accessMetaDataService;
-
-    private ElementService elementService;
-
-    // -------------------------------------------------------------------------
-    // Getters & Setters
-    // -------------------------------------------------------------------------
-
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
     }
 
-    public void setConfigurationProvider( JDBCConfigurationProvider configurationProvider )
+    private StatementBuilder statementBuilder;
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
     {
-        this.configurationProvider = configurationProvider;
+        this.statementBuilder = statementBuilder;
     }
+
+    private AccessMetaDataService accessMetaDataService;
 
     public void setAccessMetaDataService( AccessMetaDataService accessMetaDataService )
     {
         this.accessMetaDataService = accessMetaDataService;
     }
+
+    private ElementService elementService;
 
     public void setElementService( ElementService elementService )
     {
@@ -119,7 +115,7 @@ public class JDBCFormManager
                     if ( columns.contains( element.getName().toLowerCase() ) )
                     {
 
-                        statement = new AlterColumnStatement( configurationProvider.getConfiguration().getDialect(),
+                        statement = new AlterColumnStatement( statementBuilder,
                             AlterColumnStatement.ALTER_STATUS, element );
 
                         log.debug( "Alter column with SQL statement: '" + statement.getStatement() + "'" );
@@ -130,7 +126,7 @@ public class JDBCFormManager
                     else
                     // if(!columns.contains(element.getName()))
                     {
-                        statement = new AlterColumnStatement( configurationProvider.getConfiguration().getDialect(),
+                        statement = new AlterColumnStatement( statementBuilder,
                             AlterColumnStatement.ADD_STATUS, element );
 
                         log.debug( "Add column with SQL statement: '" + statement.getStatement() + "'" );
@@ -152,8 +148,7 @@ public class JDBCFormManager
                     if ( element == null )
                     {
 
-                        statement = new AlterColumnStatement( form, configurationProvider.getConfiguration()
-                            .getDialect(), AlterColumnStatement.DROP_STATUS, column );
+                        statement = new AlterColumnStatement( form, statementBuilder, AlterColumnStatement.DROP_STATUS, column );
 
                         allStatement += statement.getStatement();
 
@@ -167,8 +162,7 @@ public class JDBCFormManager
             { // Table is not exist or Table is not data
 
                 // create table
-                FormStatement statement = new CreateTableStatement( form, configurationProvider.getConfiguration()
-                    .getDialect() );
+                FormStatement statement = new CreateTableStatement( form, statementBuilder );
 
                 allStatement = statement.getStatement();
 
@@ -198,14 +192,14 @@ public class JDBCFormManager
      * @param pageIndex Index of page
      * @return List Objects
      */
-    public ArrayList listObject( Form form, int pageSize )
+    public ArrayList<Object> listObject( Form form, int pageSize )
     {
 
-        ArrayList data = new ArrayList();
+        ArrayList<Object> data = new ArrayList<Object>();
 
         StatementHolder holder = statementManager.getHolder();
 
-        FormStatement statement = new ListDataStatement( form, configurationProvider.getConfiguration().getDialect(),
+        FormStatement statement = new ListDataStatement( form, statementBuilder,
             pageSize );
 
         log.debug( "Selecting data form table with SQL statement: '" + statement.getStatement() + "'" );
@@ -219,12 +213,13 @@ public class JDBCFormManager
 
             while ( resultSet.next() )
             {
-                ArrayList<String> rowData = new ArrayList<String>();
+                ArrayList<Object> rowData = new ArrayList<Object>();
 
                 for ( int i = 1; i < noColumn + 3; i++ )
                 {
                     rowData.add( resultSet.getString( i ) );
                 }
+                
                 data.add( rowData );
             }
 
@@ -263,7 +258,7 @@ public class JDBCFormManager
             }
 
             FormStatement statement = new AddDataStatement( form,
-                configurationProvider.getConfiguration().getDialect(), arrData );
+                statementBuilder, arrData );
 
             log.debug( "Update data form table with SQL statement: '" + statement.getStatement() + "'" );
 
@@ -299,8 +294,7 @@ public class JDBCFormManager
                 arrData.add( data[i] );
             }
 
-            FormStatement statement = new UpdateDataStatement( form, configurationProvider.getConfiguration()
-                .getDialect(), arrData );
+            FormStatement statement = new UpdateDataStatement( form, statementBuilder, arrData );
 
             log.debug( "Update data form table with SQL statement: '" + statement.getStatement() + "'" );
 
@@ -330,8 +324,7 @@ public class JDBCFormManager
 
         try
         {
-            FormStatement statement = new DeleteDataStatement( form, configurationProvider.getConfiguration()
-                .getDialect(), id );
+            FormStatement statement = new DeleteDataStatement( form, statementBuilder, id );
 
             log.debug( "Delete data form table with SQL statement: '" + statement.getStatement() + "'" );
 
@@ -354,17 +347,17 @@ public class JDBCFormManager
      * @param id Id of object
      * @return Values of a Object
      */
-    public ArrayList getObject( Form form, int id )
+    public ArrayList<String> getObject( Form form, int id )
     {
 
-        ArrayList data = new ArrayList();
+        ArrayList<String> data = new ArrayList<String>();
 
         StatementHolder holder = statementManager.getHolder();
 
         try
         {
             FormStatement statement = new GetDataStatement( form,
-                configurationProvider.getConfiguration().getDialect(), id );
+                statementBuilder, id );
 
             log.debug( "Get data form table with SQL statement: '" + statement.getStatement() + "'" );
 
@@ -372,14 +365,10 @@ public class JDBCFormManager
 
             while ( resultSet.next() )
             {
-
-                ArrayList<String> rowData = new ArrayList<String>();
-
                 for ( int i = 1; i < resultSet.getMetaData().getColumnCount() + 1; i++ )
                 {
                     data.add( resultSet.getString( i ) );
                 }
-
             }
         }
         catch ( Exception ex )
@@ -400,17 +389,16 @@ public class JDBCFormManager
      * @param form needs to create the table
      * @param keyword Keyword
      */
-    public ArrayList searchObject( Form form, String keyword, int pageSize )
+    public ArrayList<Object> searchObject( Form form, String keyword, int pageSize )
     {
 
-        ArrayList data = new ArrayList();
+        ArrayList<Object> data = new ArrayList<Object>();
 
         StatementHolder holder = statementManager.getHolder();
 
         try
         {
-            FormStatement statement = new SearchDataStatement( form, configurationProvider.getConfiguration()
-                .getDialect(), keyword, "", pageSize );
+            FormStatement statement = new SearchDataStatement( form, statementBuilder, keyword, "", pageSize );
 
             log.debug( "Get data form table with SQL statement: '" + statement.getStatement() + "'" );
 
@@ -424,6 +412,7 @@ public class JDBCFormManager
                 {
                     rowData.add( resultSet.getString( i ) );
                 }
+                
                 data.add( rowData );
 
             }
@@ -448,15 +437,14 @@ public class JDBCFormManager
      * @param pageIndex Index of page
      * @return List Relatived objects
      */
-    public ArrayList listRelativeObject( Form form, String column, String objectId, int pageSize )
+    public ArrayList<Object> listRelativeObject( Form form, String column, String objectId, int pageSize )
     {
 
-        ArrayList data = new ArrayList();
+        ArrayList<Object> data = new ArrayList<Object>();
 
         StatementHolder holder = statementManager.getHolder();
 
-        FormStatement statement = new ListRelativeDataStatement( form, configurationProvider.getConfiguration()
-            .getDialect(), objectId, column, pageSize );
+        FormStatement statement = new ListRelativeDataStatement( form, statementBuilder, objectId, column, pageSize );
 
         log.debug( "Selecting data form relative table with SQL statement: '" + statement.getStatement() + "'" );
 
@@ -476,6 +464,7 @@ public class JDBCFormManager
                 {
                     rowData.add( resultSet.getString( i ) );
                 }
+                
                 data.add( rowData );
 
                 rowIndex++;
@@ -511,7 +500,7 @@ public class JDBCFormManager
         try
         {
 
-            FormStatement statement = new ReportDataStatement( configurationProvider.getConfiguration().getDialect(),
+            FormStatement statement = new ReportDataStatement( statementBuilder,
                 operator, period, formReport );
             log.debug( "Data statistics from relative table with SQL statement: '" + statement.getStatement() + "'" );
 

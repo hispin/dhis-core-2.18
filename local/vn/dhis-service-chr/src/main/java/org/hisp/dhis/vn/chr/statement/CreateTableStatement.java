@@ -5,7 +5,7 @@ package org.hisp.dhis.vn.chr.statement;
  * 
  */
 
-import org.hisp.dhis.jdbc.StatementDialect;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.Form;
 
@@ -19,9 +19,9 @@ public class CreateTableStatement
     // Constructor
     // -------------------------------------------------------------------------
 
-    public CreateTableStatement( Form form, StatementDialect dialect )
+    public CreateTableStatement( Form form, StatementBuilder statementBuilder )
     {
-        super( form, dialect );
+        super( form, statementBuilder );
     }
 
     @Override

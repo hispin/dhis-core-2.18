@@ -8,16 +8,19 @@ package org.hisp.dhis.vn.chr.hibernate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.ElementStore;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.comparator.ElementNameComparator;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class HibernateElementStore
     implements ElementStore
 {
@@ -26,14 +29,11 @@ public class HibernateElementStore
     // Dependencies
     // -----------------------------------------------------------------------------------------------
 
-    private HibernateSessionManager hibernateSessionManager;
+    private SessionFactory sessionFactory;
 
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-    public void setHibernateSessionManager( HibernateSessionManager hibernateSessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.hibernateSessionManager = hibernateSessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -----------------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ public class HibernateElementStore
     public int addElement( Element element )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         String name = element.getName().toLowerCase();
 
@@ -55,7 +55,7 @@ public class HibernateElementStore
     public void deleteElement( int id )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( getElement( id ) );
     }
@@ -64,7 +64,7 @@ public class HibernateElementStore
     public Collection<Element> getAllElements()
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Element.class );
 
@@ -78,8 +78,7 @@ public class HibernateElementStore
 
     public Element getElement( int id )
     {
-
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Element) session.get( Element.class, id );
     }
@@ -87,8 +86,7 @@ public class HibernateElementStore
     @SuppressWarnings( "unchecked" )
     public Collection<Element> getElementsByForm( Form form )
     {
-
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Element.class );
 
@@ -100,7 +98,7 @@ public class HibernateElementStore
     @SuppressWarnings( "unchecked" )
     public Collection<Element> getElementsByEgroup( Egroup egroup )
     {
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Element.class );
 
@@ -111,8 +109,7 @@ public class HibernateElementStore
 
     public void updateElement( Element element )
     {
-
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( element );
     }
@@ -121,7 +118,7 @@ public class HibernateElementStore
     public Collection<Element> getElementsByNoEgroup()
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Element.class );
 
@@ -133,7 +130,7 @@ public class HibernateElementStore
     public Element getElement( String name )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Element.class );
 
@@ -146,7 +143,7 @@ public class HibernateElementStore
     public Collection<Element> getElementsByFormLink( Form form )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Element.class );
 

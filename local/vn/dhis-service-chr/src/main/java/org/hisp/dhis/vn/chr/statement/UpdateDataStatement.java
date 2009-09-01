@@ -8,7 +8,7 @@ package org.hisp.dhis.vn.chr.statement;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.hisp.dhis.jdbc.StatementDialect;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.Form;
@@ -21,9 +21,9 @@ public class UpdateDataStatement
     // Constructor
     // -------------------------------------------------------------------------
 
-    public UpdateDataStatement( Form form, StatementDialect dialect, ArrayList<String> data )
+    public UpdateDataStatement( Form form, StatementBuilder statementBuilder, ArrayList<String> data )
     {
-        super( form, dialect, data );
+        super( form, statementBuilder, data );
     }
 
     // -------------------------------------------------------------------------

@@ -8,15 +8,18 @@ package org.hisp.dhis.vn.chr.hibernate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.EgroupStore;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.comparator.EgroupNameComparator;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class HibernateEgroupStore
     implements EgroupStore
 {
@@ -25,14 +28,11 @@ public class HibernateEgroupStore
     // Dependencies
     // -----------------------------------------------------------------------------------------------
 
-    private HibernateSessionManager hibernateSessionManager;
+    private SessionFactory sessionFactory;
 
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-    public void setHibernateSessionManager( HibernateSessionManager hibernateSessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.hibernateSessionManager = hibernateSessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -----------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ public class HibernateEgroupStore
     public int addEgroup( Egroup egroup )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         String name = egroup.getName().toLowerCase();
 
@@ -54,7 +54,7 @@ public class HibernateEgroupStore
     public void deleteEgroup( int id )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( getEgroup( id ) );
     }
@@ -63,7 +63,7 @@ public class HibernateEgroupStore
     public Collection<Egroup> getAllEgroups()
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Egroup.class );
 
@@ -77,7 +77,7 @@ public class HibernateEgroupStore
     public Egroup getEgroup( int id )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Egroup) session.get( Egroup.class, id );
     }
@@ -86,7 +86,7 @@ public class HibernateEgroupStore
     public Collection<Egroup> getEgroupsByForm( Form form )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Egroup.class );
 
@@ -99,7 +99,7 @@ public class HibernateEgroupStore
     public void updateEgroup( Egroup egroup )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( egroup );
     }

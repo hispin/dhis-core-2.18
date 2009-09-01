@@ -9,14 +9,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormStore;
 import org.hisp.dhis.vn.chr.comparator.FormNameComparator;
-import org.hisp.dhis.hibernate.HibernateSessionManager;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class HibernateFormStore
     implements FormStore
 {
@@ -25,14 +27,11 @@ public class HibernateFormStore
     // Dependencies
     // -----------------------------------------------------------------------------------------------
 
-    private HibernateSessionManager hibernateSessionManager;
+    private SessionFactory sessionFactory;
 
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-    public void setHibernateSessionManager( HibernateSessionManager hibernateSessionManager )
+    public void setSessionFactory( SessionFactory sessionFactory )
     {
-        this.hibernateSessionManager = hibernateSessionManager;
+        this.sessionFactory = sessionFactory;
     }
 
     // -----------------------------------------------------------------------------------------------
@@ -42,7 +41,7 @@ public class HibernateFormStore
     public int addForm( Form form )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         String name = form.getName().toLowerCase();
 
@@ -54,7 +53,7 @@ public class HibernateFormStore
     public void deleteForm( int id )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( id );
 
@@ -64,7 +63,7 @@ public class HibernateFormStore
     public Collection<Form> getAllForms()
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Form.class );
 
@@ -78,7 +77,7 @@ public class HibernateFormStore
     public Form getForm( int id )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (Form) session.get( Form.class, id );
     }
@@ -87,7 +86,7 @@ public class HibernateFormStore
     public Collection<Form> getVisibleForms( boolean visible )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from Form c where c.visible = :visible" );
 
@@ -99,7 +98,7 @@ public class HibernateFormStore
     public void updateForm( Form form )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( form );
 
@@ -109,7 +108,7 @@ public class HibernateFormStore
     public Collection<Form> getFormsByName( String name )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from Form c where c.name = :name" );
 
@@ -122,7 +121,7 @@ public class HibernateFormStore
     public Collection<Form> getCreatedForms()
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from Form c where c.created = :created" );
 
@@ -134,7 +133,7 @@ public class HibernateFormStore
     public Form getFormByName( String name )
     {
 
-        Session session = hibernateSessionManager.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery( "from Form c where c.name = :name" );
 
