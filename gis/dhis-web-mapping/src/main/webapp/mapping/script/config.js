@@ -2,9 +2,6 @@
 
     PHU_LEVEL = 4;
 
-    STATIC1_LAYERNAME = 'Main roads';
-    STATIC1_URL = 'geojson/sl_mainroads';
-
     COUNTRY_LONGITUDE = -11.8;
     COUNTRY_LATITUDE = 8.5;
     COUNTRY_ZOOM = 8;
@@ -23,11 +20,11 @@
     
 //  MapFish print module
 
-    printConfigUrl = '../../../print-servlet-1.2-SNAPSHOT/pdf/info.json';
+    printConfigUrl = '../../print-servlet-1.2-SNAPSHOT/pdf/info.json';
 
 //  Ajax requests
 
-    path = '../../dhis-web-mapping/';
+    path = '../dhis-web-mapping/';
     type = '.action';
 
 //  Layout
