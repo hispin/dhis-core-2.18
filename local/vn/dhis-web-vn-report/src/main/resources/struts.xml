@@ -101,7 +101,6 @@
 			<param name="page">/dhis-web-vn-report/reportassociation.vm</param>
 			<param name="menu">/dhis-web-vn-report/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
-			<interceptor-ref name="transactionStack" />
 			<param name="requiredAuthorities">F_UPDATE_REPORT_VN</param>
 		</action>
 
@@ -117,7 +116,6 @@
 			<param name="page">/dhis-web-vn-report/reportassociation.vm</param>
 			<param name="menu">/dhis-web-vn-report/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
-			<interceptor-ref name="transactionStack" />
 			<param name="requiredAuthorities">F_UPDATE_REPORT_VN</param>
 		</action>
 
@@ -201,7 +199,6 @@
 			class="org.hisp.dhis.vn.report.formula.action.GetFilteredDataElementsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseOperandList.vm</result>
-			<interceptor-ref name="transactionStack" />
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -209,7 +206,6 @@
 			class="org.hisp.dhis.vn.report.formula.action.GetFormulaTextAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseFormulaText.vm</result>
-			<interceptor-ref name="transactionStack" />
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -372,16 +368,14 @@
 			<result name="success" type="velocity-xml">/dhis-web-vn-report/categorycombo/responseCategories.vm</result>
 			<result name="error" type="velocity-xml">/dhis-web-vn-report/categorycombo/responseError.vm</result>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,javascript/dataelement.js,javascript/report.js</param>
-			<interceptor-ref name="transactionStack"/>
-	    </action>
+		</action>
 		
 		<action name="getDataElementList"
 			class="org.hisp.dhis.vn.dataelement.action.GetFilteredDataElementListAction">
 			<result name="success" type="velocity-xml">/dhis-web-vn-report/dataelement/responseDataElements.vm</result>
 			<result name="error" type="velocity-xml">/dhis-web-vn-report/dataelement/responseError.vm</result>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,javascript/dataelement.js,javascript/report.js</param>
-			<interceptor-ref name="transactionStack"/>
-	    </action>
+		</action>
 		
 		<action name="validateAddDataElementAndCateCombo" 
 			class="org.hisp.dhis.vn.dataelement.action.ValidateAddDataElementAndCateComboInCategoryReportAction">
@@ -407,7 +401,6 @@
 		<action name="openSelectedElementsAndAvailableElementsChain" 
 			class="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupMembersAction">
 			<result name="success" type="velocity-xml">/dhis-web-vn-report/responseReport.vm</result>
-			<interceptor-ref name="transactionStack"/>
 		</action>			
 
 		
@@ -423,7 +416,5 @@
 			<param name="javascripts">javascript/export.js,javascript/dataelement.js,javascript/report.js</param>
 		</action>
 		
-		
-
 	</package>
 </struts>

@@ -29,7 +29,6 @@
 		<action name="listForm" class="org.hisp.dhis.vn.chr.form.action.ListFormAction">
 			<result name="success" type="chain">getVisibleForms</result>
 			<param name="page">/dhis-web-chr-form/forms.vm</param>
-			<interceptor-ref name="transactionStack"/>
       		<param name="requiredAuthorities">F_LIST_FORM_CHR</param>
 		</action>
 			
@@ -179,7 +178,6 @@
 			<param name="page">/dhis-web-chr-form/configuration.vm</param>
 			<param name="menu">/dhis-web-chr-form/menu.vm</param>
 			<param name="javascripts">javascripts/forms.js</param>
-	      	<interceptor-ref name="transactionStack"/>
 			<param name="requiredAuthorities">F_FORM_CONFIGURATION_CHR</param>
 		</action>
 		
@@ -204,7 +202,6 @@
 			<param name="menu">/dhis-web-chr-form/menu.vm</param>
 			<param name="javascripts">javascripts/forms.js</param>
 	      	<param name="stylesheets">styles/dhtmlgoodies_calendar.css</param>
-	      	<interceptor-ref name="transactionStack"/>
 		</action>
 		
 		<!--  Show List Object  -->	
@@ -261,7 +258,6 @@
 			<param name="page">/dhis-web-chr-form/listForm.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataElementsList.js,javascript/associations.js,javascripts/forms.js</param>
 			<param name="menu">/dhis-web-chr-form/menu.vm</param>
-	      	<interceptor-ref name="transactionStack"/>
 	      	<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
 		</action>
 		
@@ -269,7 +265,6 @@
 		<action name="createForm" class="org.hisp.dhis.vn.chr.form.action.ListFormAction">
 			<result name="success" type="chain">getVisibleForms</result>
 			<param name="page">/dhis-web-chr-form/createForm.vm</param>
-			<interceptor-ref name="transactionStack"/>
 			<param name="requiredAuthorities">F_CREATE_FORM_CHR</param>
 		</action>	
 		
@@ -322,7 +317,6 @@
 			<param name="page">/dhis-web-chr-form/createFormReport.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataElementsList.js,javascript/associations.js,javascripts/forms.js</param>
 			<param name="menu">/dhis-web-chr-form/menu.vm</param>
-	      	<interceptor-ref name="transactionStack"/>
 	      	<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result> 
 		</action>
 		
@@ -342,9 +336,7 @@
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataElementsList.js,javascript/associations.js,javascripts/forms.js</param>
 			<param name="menu">/dhis-web-chr-form/menu.vm</param>
 	      	<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
-	      	<interceptor-ref name="transactionStack"/>
 			<param name="requiredAuthorities">F_LIST_FORMULA_CHR</param> 
-	      	<!-- <result name="success" type="velocity">/dhis-web-chr-form/responseSuccess.vm</result>-->
 		</action>
 		
 		<action name="deleteFormReport" class="org.hisp.dhis.vn.chr.formreport.action.DeleteFormReportAction">
