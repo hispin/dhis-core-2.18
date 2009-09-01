@@ -22,5 +22,6 @@
     <module>dhis-web-hcmc-reporttool</module>
     <module>dhis-web-hue-reporttool</module>
     <module>dhis-web-vn-report</module>
+    <module>dhis-web-dataentry-chr</module>
   </modules>
 </project>
