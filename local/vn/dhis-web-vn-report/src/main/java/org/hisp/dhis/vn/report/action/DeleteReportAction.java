@@ -27,12 +27,14 @@
 
 import org.hisp.dhis.vn.report.ReportExcelService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
+
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class DeleteReportAction implements Action
+public class DeleteReportAction
+    implements Action
 {
     // -------------------------------------------
     // Dependency
@@ -41,9 +43,9 @@ public class DeleteReportAction implements Action
     private ReportExcelService reportService;
 
     // -------------------------------------------
-    // Input 
+    // Input
     // -------------------------------------------
-    
+
     private Integer id;
 
     public void setReportService( ReportExcelService reportService )
@@ -60,10 +62,8 @@ public class DeleteReportAction implements Action
         throws Exception
     {
         reportService.deleteReport( id );
-        
+
         return SUCCESS;
     }
-    
-    
 
 }

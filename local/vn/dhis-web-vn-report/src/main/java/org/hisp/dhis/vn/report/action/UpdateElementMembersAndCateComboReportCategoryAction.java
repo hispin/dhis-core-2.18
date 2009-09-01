@@ -43,7 +43,7 @@ import org.hisp.dhis.vn.report.ReportExcel;
 import org.hisp.dhis.vn.report.ReportExcelCategory;
 import org.hisp.dhis.vn.report.ReportExcelService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 public class UpdateElementMembersAndCateComboReportCategoryAction
     implements Action
