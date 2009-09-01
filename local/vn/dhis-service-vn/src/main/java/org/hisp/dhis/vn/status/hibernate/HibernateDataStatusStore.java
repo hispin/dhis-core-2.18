@@ -1,4 +1,4 @@
-package org.hisp.dhis.status.hibernate;
+package org.hisp.dhis.vn.status.hibernate;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -8,8 +8,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.status.DataStatus;
-import org.hisp.dhis.status.DataStatusStore;
+import org.hisp.dhis.vn.status.DataStatus;
+import org.hisp.dhis.vn.status.DataStatusStore;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -60,12 +60,18 @@ public class HibernateDataStatusStore
     // Implement
     // -------------------------------------------------
 
+    public int save( DataStatus dataStatus )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        return (Integer) session.save( dataStatus );
+    }
+    
     public void delete( int id )
     {
         Session session = sessionFactory.getCurrentSession();
 
         session.delete( session.get( DataStatus.class, id ) );
-
     }
 
     public DataStatus get( int id )
@@ -73,14 +79,6 @@ public class HibernateDataStatusStore
         Session session = sessionFactory.getCurrentSession();
 
         return (DataStatus) session.get( DataStatus.class, id );
-    }
-
-    public void save( DataStatus dataStatus )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.save( dataStatus );
-
     }
 
     public void update( DataStatus dataStatus )

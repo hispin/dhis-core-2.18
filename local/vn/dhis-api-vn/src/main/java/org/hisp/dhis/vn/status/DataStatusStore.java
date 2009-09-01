@@ -1,4 +1,4 @@
-package org.hisp.dhis.status;
+package org.hisp.dhis.vn.status;
 
 import java.util.Collection;
 
@@ -37,21 +37,21 @@ import org.hisp.dhis.dataset.DataSet;
  */
 public interface DataStatusStore
 {
+    String ID = DataStatusStore.class.getName();
+    
+    int save( DataStatus dataStatus );
 
-    public abstract void save( DataStatus dataStatus );
+    DataStatus get( int id );
 
-    public abstract DataStatus get( int id );
+    void delete( int id );
 
-    public abstract void delete( int id );
+    void update( DataStatus dataStatus );
 
-    public abstract void update( DataStatus dataStatus );
+    Collection<DataStatus> getALL();
 
-    public abstract Collection<DataStatus> getALL();
+    Collection<DataStatus> getDataStatusDefault();
 
-    public abstract Collection<DataStatus> getDataStatusDefault();
+    Collection<DataStatus> getDataStatusByDataSets( Collection<DataSet> dataSets );
 
-    public abstract Collection<DataStatus> getDataStatusByDataSets( Collection<DataSet> dataSets );
-
-    public abstract Collection<DataStatus> getDataStatusDefaultByDataSets( Collection<DataSet> dataSets );
-
+    Collection<DataStatus> getDataStatusDefaultByDataSets( Collection<DataSet> dataSets );
 }

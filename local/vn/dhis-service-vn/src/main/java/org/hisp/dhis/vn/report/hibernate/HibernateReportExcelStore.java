@@ -62,11 +62,11 @@ public class HibernateReportExcelStore
     // Service of Report
     // --------------------------------------
 
-    public void addReport( ReportExcelInterface report )
+    public int addReport( ReportExcelInterface report )
     {
         Session session = sessionFactory.getCurrentSession();
 
-        session.save( report );
+        return (Integer) session.save( report );
     }
 
     public void updateReport( ReportExcelInterface report )
