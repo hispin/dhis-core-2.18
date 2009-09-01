@@ -9,7 +9,8 @@ import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
 public class SetImageDirectoryOnServerAction
-    extends ActionSupport{
+    extends ActionSupport
+{
 
     // -------------------------------------------------------------------------
     // Dependencies

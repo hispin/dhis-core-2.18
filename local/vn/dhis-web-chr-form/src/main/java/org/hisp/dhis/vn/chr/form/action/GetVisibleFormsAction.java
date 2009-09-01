@@ -7,7 +7,7 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 public class GetVisibleFormsAction implements Action {
 

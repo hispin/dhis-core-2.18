@@ -277,8 +277,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- - Upload file -->
 	<bean id='org.hisp.dhis.vn.chr.object.action.UploadFileAction'
 		class='org.hisp.dhis.vn.chr.object.action.UploadFileAction' scope="prototype">
-		<property name="formConfigurationManager"
-			ref="org.hisp.dhis.options.formconfiguration.FormConfigurationManager" />
+		<property name="systemSettingManager"
+			ref="org.hisp.dhis.options.SystemSettingManager" />
 		<!--
 			<property name="locationManager"
 			ref="org.hisp.dhis.external.location.LocationManager"/>

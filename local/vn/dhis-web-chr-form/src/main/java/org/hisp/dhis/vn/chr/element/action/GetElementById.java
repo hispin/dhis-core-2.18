@@ -7,7 +7,7 @@ package org.hisp.dhis.vn.chr.element.action;
 
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.ElementService;
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 public class GetElementById implements Action {
 

@@ -13,7 +13,7 @@ import org.hisp.dhis.vn.chr.ElementService;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.jdbc.FormManager;
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 public class ListObjectAction implements Action {
 
