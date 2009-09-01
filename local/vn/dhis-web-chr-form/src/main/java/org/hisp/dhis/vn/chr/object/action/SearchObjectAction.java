@@ -17,121 +17,140 @@ import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.jdbc.FormManager;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class SearchObjectAction extends ActionSupport {
+public class SearchObjectAction
+    extends ActionSupport
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormManager formManager;
+    private FormManager formManager;
 
-	private FormService formService;
+    private FormService formService;
 
-	private FormConfigurationManager formConfigurationManager;
+    private FormConfigurationManager formConfigurationManager;
 
-	private ElementService elementService;
+    private ElementService elementService;
 
-	public void setFormConfigurationManager(
-			FormConfigurationManager formConfigurationManager) {
-		this.formConfigurationManager = formConfigurationManager;
-	}
+    public void setFormConfigurationManager( FormConfigurationManager formConfigurationManager )
+    {
+        this.formConfigurationManager = formConfigurationManager;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	// Form ID
-	private Integer formId;
+    // Form ID
+    private Integer formId;
 
-	// keyword to search
-	private String keyword;
+    // keyword to search
+    private String keyword;
 
-	private Form form;
+    private Form form;
 
-	// Object data
-	private ArrayList data;
+    // Object data
+    private ArrayList data;
 
-	// formLinks
-	private Collection<Element> formLinks;
+    // formLinks
+    private Collection<Element> formLinks;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public String getKeyword() {
-		return keyword;
-	}
+    public String getKeyword()
+    {
+        return keyword;
+    }
 
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
-	}
+    public void setKeyword( String keyword )
+    {
+        this.keyword = keyword;
+    }
 
-	public ArrayList getData() {
-		return data;
-	}
+    public ArrayList getData()
+    {
+        return data;
+    }
 
-	public void setData(ArrayList data) {
-		this.data = data;
-	}
+    public void setData( ArrayList data )
+    {
+        this.data = data;
+    }
 
-	public void setFormId(Integer formId) {
-		this.formId = formId;
-	}
+    public void setFormId( Integer formId )
+    {
+        this.formId = formId;
+    }
 
-	public Integer getFormId() {
-		return this.formId;
-	}
+    public Integer getFormId()
+    {
+        return this.formId;
+    }
 
-	public void setFormManager(FormManager formManager) {
-		this.formManager = formManager;
-	}
+    public void setFormManager( FormManager formManager )
+    {
+        this.formManager = formManager;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public Form getForm() {
-		return form;
-	}
+    public Form getForm()
+    {
+        return form;
+    }
 
-	public void setForm(Form form) {
-		this.form = form;
-	}
+    public void setForm( Form form )
+    {
+        this.form = form;
+    }
 
-	public void setElementService(ElementService elementService) {
-		this.elementService = elementService;
-	}
+    public void setElementService( ElementService elementService )
+    {
+        this.elementService = elementService;
+    }
 
-	public Collection<Element> getFormLinks() {
-		return formLinks;
-	}
+    public Collection<Element> getFormLinks()
+    {
+        return formLinks;
+    }
 
-	public void setFormLinks(Collection<Element> formLinks) {
-		this.formLinks = formLinks;
-	}
+    public void setFormLinks( Collection<Element> formLinks )
+    {
+        this.formLinks = formLinks;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement : process Select SQL
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement : process Select SQL
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		try {
+        try
+        {
 
-			form = formService.getForm(formId.intValue());
+            form = formService.getForm( formId.intValue() );
 
-			formLinks = elementService.getElementsByFormLink(form);
+            formLinks = elementService.getElementsByFormLink( form );
 
-			data = formManager.searchObject(form, CodecUtils.unescape(keyword),
-					Integer.parseInt(formConfigurationManager
-							.getNumberOfRecords()));
+            data = formManager.searchObject( form, CodecUtils.unescape( keyword ), Integer
+                .parseInt( formConfigurationManager.getNumberOfRecords() ) );
 
-			return SUCCESS;
+            return SUCCESS;
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
 
-		return ERROR;
-	}
+        return ERROR;
+    }
 }

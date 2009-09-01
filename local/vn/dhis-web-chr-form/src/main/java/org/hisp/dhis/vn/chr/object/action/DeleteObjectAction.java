@@ -10,89 +10,103 @@ import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.jdbc.FormManager;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class DeleteObjectAction extends ActionSupport {
+public class DeleteObjectAction
+    extends ActionSupport
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormManager formManager;
+    private FormManager formManager;
 
-	private FormService formService;
+    private FormService formService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	// Form ID
-	private Integer formId;
+    // Form ID
+    private Integer formId;
 
-	// Object ID
-	private Integer id;
+    // Object ID
+    private Integer id;
 
-	// message
-	private String message;
+    // message
+    private String message;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public String getMessage() {
-		return message;
-	}
+    public String getMessage()
+    {
+        return message;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
 
-	public Integer getId() {
-		return this.id;
-	}
+    public Integer getId()
+    {
+        return this.id;
+    }
 
-	public void setFormId(Integer formId) {
-		this.formId = formId;
-	}
+    public void setFormId( Integer formId )
+    {
+        this.formId = formId;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public Integer getFormId() {
-		return this.formId;
-	}
+    public Integer getFormId()
+    {
+        return this.formId;
+    }
 
-	public void setFormManager(FormManager formManager) {
-		this.formManager = formManager;
-	}
+    public void setFormManager( FormManager formManager )
+    {
+        this.formManager = formManager;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement : process Select SQL
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement : process Select SQL
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		try {
+        try
+        {
 
-			Form form = formService.getForm(formId.intValue());
+            Form form = formService.getForm( formId.intValue() );
 
-			formManager.deleteObject(form, id.intValue());
+            formManager.deleteObject( form, id.intValue() );
 
-			message = i18n.getString("delete") + " "
-					+ i18n.getString("success");
+            message = i18n.getString( "delete" ) + " " + i18n.getString( "success" );
 
-			return SUCCESS;
+            return SUCCESS;
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
 
-			message = i18n.getString("delete") + " " + i18n.getString("error");
-			message += "<br>" + i18n.getString("delete_message_error");
-		}
+            message = i18n.getString( "delete" ) + " " + i18n.getString( "error" );
+            message += "<br>" + i18n.getString( "delete_message_error" );
+        }
 
-		return ERROR;
-	}
+        return ERROR;
+    }
 }

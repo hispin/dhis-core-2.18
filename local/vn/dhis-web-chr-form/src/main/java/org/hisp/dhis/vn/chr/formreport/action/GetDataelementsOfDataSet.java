@@ -17,96 +17,103 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class GetDataelementsOfDataSet extends ActionSupport {
+public class GetDataelementsOfDataSet
+    extends ActionSupport
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private DataSetService dataSetService;
+    private DataSetService dataSetService;
 
-	private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private List<Operand> operands = new ArrayList<Operand>();
+    private List<Operand> operands = new ArrayList<Operand>();
 
-	private ArrayList<DataElement> dataelements;
+    private ArrayList<DataElement> dataelements;
 
-	private int dataSetId;
+    private int dataSetId;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getters && Setters
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getters && Setters
+    // -----------------------------------------------------------------------------------------------
 
-	public List<Operand> getOperands() {
-		return operands;
-	}
+    public List<Operand> getOperands()
+    {
+        return operands;
+    }
 
-	public void setDataElementCategoryOptionComboService(
-			DataElementCategoryOptionComboService dataElementCategoryOptionComboService) {
-		this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
-	}
+    public void setDataElementCategoryOptionComboService(
+        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    {
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+    }
 
-	public void setDataSetService(DataSetService dataSetService) {
-		this.dataSetService = dataSetService;
-	}
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
 
-	public ArrayList<DataElement> getDataelements() {
-		return dataelements;
-	}
+    public ArrayList<DataElement> getDataelements()
+    {
+        return dataelements;
+    }
 
-	public void setDataSetId(int dataSetId) {
-		this.dataSetId = dataSetId;
-	}
+    public void setDataSetId( int dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
 
-	// -------------------------------------------------------------------------
-	// Comparator
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Comparator
+    // -------------------------------------------------------------------------
 
-	private Comparator<DataElement> dataElementComparator;
+    private Comparator<DataElement> dataElementComparator;
 
-	public void setDataElementComparator(
-			Comparator<DataElement> dataElementComparator) {
+    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
+    {
 
-		this.dataElementComparator = dataElementComparator;
-	}
+        this.dataElementComparator = dataElementComparator;
+    }
 
-	// -------------------------------------------------------------------------
-	// DisplayPropertyHandler
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // DisplayPropertyHandler
+    // -------------------------------------------------------------------------
 
-	private DisplayPropertyHandler displayPropertyHandler;
+    private DisplayPropertyHandler displayPropertyHandler;
 
-	public void setDisplayPropertyHandler(
-			DisplayPropertyHandler displayPropertyHandler) {
+    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
+    {
 
-		this.displayPropertyHandler = displayPropertyHandler;
-	}
+        this.displayPropertyHandler = displayPropertyHandler;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		dataelements = new ArrayList<DataElement>(dataSetService.getDataSet(
-				dataSetId).getDataElements());
+        dataelements = new ArrayList<DataElement>( dataSetService.getDataSet( dataSetId ).getDataElements() );
 
-		Collections.sort(dataelements, dataElementComparator);
+        Collections.sort( dataelements, dataElementComparator );
 
-		displayPropertyHandler.handle(dataelements);
+        displayPropertyHandler.handle( dataelements );
 
-		// ---------------------------------------------------------------------
-		// Create Operands
-		// ---------------------------------------------------------------------
+        // ---------------------------------------------------------------------
+        // Create Operands
+        // ---------------------------------------------------------------------
 
-		operands = new ArrayList<Operand>(dataElementCategoryOptionComboService
-				.getOperands(dataelements));
+        operands = new ArrayList<Operand>( dataElementCategoryOptionComboService.getOperands( dataelements ) );
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 
 }

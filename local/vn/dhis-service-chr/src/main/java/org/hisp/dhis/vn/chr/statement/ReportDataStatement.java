@@ -16,109 +16,109 @@ import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.FormReport;
 import org.hisp.dhis.vn.chr.Form;
 
-public class ReportDataStatement extends FormStatement {
+public class ReportDataStatement
+    extends FormStatement
+{
 
-	// -------------------------------------------------------------------------
-	// Constructor
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Constructor
+    // -------------------------------------------------------------------------
 
-	public ReportDataStatement(StatementDialect dialect, String operator,
-			Period period, FormReport formReport) {
+    public ReportDataStatement( StatementDialect dialect, String operator, Period period, FormReport formReport )
+    {
 
-		super(dialect, operator, period, formReport);
-	}
+        super( dialect, operator, period, formReport );
+    }
 
-	// -------------------------------------------------------------------------
-	// Override
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Override
+    // -------------------------------------------------------------------------
 
-	@Override
-	protected void init(Form form) {
+    @Override
+    protected void init( Form form )
+    {
 
-		StringBuffer buffer = new StringBuffer();
-		// SELECT operator(<column's name>)
-		buffer.append("SELECT" + SPACE + this.operator + "(*)" + SPACE);
-		// FROM 
-		buffer.append("FROM" + SPACE);
-		//-- forms need for select
-		String conditionForm = "";
-		//-- condition to connect to objects
-		String condition = "";
-		// loop forms' list
-		Iterator<Form> forms = formReport.getForms().iterator();
-		while (forms.hasNext()) {
+        StringBuffer buffer = new StringBuffer();
+        // SELECT operator(<column's name>)
+        buffer.append( "SELECT" + SPACE + this.operator + "(*)" + SPACE );
+        // FROM
+        buffer.append( "FROM" + SPACE );
+        // -- forms need for select
+        String conditionForm = "";
+        // -- condition to connect to objects
+        String condition = "";
+        // loop forms' list
+        Iterator<Form> forms = formReport.getForms().iterator();
+        while ( forms.hasNext() )
+        {
 
-			Form conForm = forms.next();
-			conditionForm += conForm.getName().toLowerCase() + SEPARATOR
-					+ SPACE;
+            Form conForm = forms.next();
+            conditionForm += conForm.getName().toLowerCase() + SEPARATOR + SPACE;
 
-			Collection<Element> elements = conForm.getElements();
+            Collection<Element> elements = conForm.getElements();
 
-			if (formReport.getForms().size() > 1) {
-				// get all of elements of the form have formlink property to be
-				// not null
-				for (Element element : elements) {
-					if (element.getFormLink() != null) {
-						// <form.element.name> = <element.formLink.name.id>
-						// <ref_columm> = <form.id>
-						condition += "AND" + SPACE
-								+ element.getForm().getName().toLowerCase()
-								+ "." + element.getName().toLowerCase() + "="
-								+ element.getFormLink().getName().toLowerCase()
-								+ ".id" + SPACE;
-					}// end if
-				}
-			}
-			
-		}// end while forms
-		
+            if ( formReport.getForms().size() > 1 )
+            {
+                // get all of elements of the form have formlink property to be
+                // not null
+                for ( Element element : elements )
+                {
+                    if ( element.getFormLink() != null )
+                    {
+                        // <form.element.name> = <element.formLink.name.id>
+                        // <ref_columm> = <form.id>
+                        condition += "AND" + SPACE + element.getForm().getName().toLowerCase() + "."
+                            + element.getName().toLowerCase() + "=" + element.getFormLink().getName().toLowerCase()
+                            + ".id" + SPACE;
+                    }// end if
+                }
+            }
 
-		// <table's name, table's name ...>
-		if (conditionForm.length() > 0) {
-			buffer.append(conditionForm.substring(0,
-					conditionForm.length() - 3)
-					+ SPACE);
-		}
+        }// end while forms
 
-		// -- WHERE createddate >= start day and createddate <= end day
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		String startDate = formatter.format(period.getStartDate());
-		String endDate = formatter.format(period.getEndDate());
-		
-		// WHERE <mainForm's name>
-		buffer.append(SPACE + "WHERE" + SPACE
-				+ formReport.getMainForm().getName().toLowerCase()
-				+ ".createddate>='" + startDate + "'" + SPACE + "AND"
-				+ SPACE + formReport.getMainForm().getName().toLowerCase()
-				+ ".createddate<='" + endDate + "'" + SPACE);
-		// and formula
-		if (this.formReport.getFormula().length() > 0) {
-			// AND formular
-			buffer.append("AND" + SPACE + this.formReport.getFormula()
-					+ SPACE);
-		}
-		// AND <table>.<id>=<table>.<column>
-		buffer.append(condition);
+        // <table's name, table's name ...>
+        if ( conditionForm.length() > 0 )
+        {
+            buffer.append( conditionForm.substring( 0, conditionForm.length() - 3 ) + SPACE );
+        }
 
-		// -- get data by users
-		Collection<User> users = FormStatement.USERS;
+        // -- WHERE createddate >= start day and createddate <= end day
+        SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd" );
+        String startDate = formatter.format( period.getStartDate() );
+        String endDate = formatter.format( period.getEndDate() );
 
-		// -- get add by in users' list
-		if (users != null) {
+        // WHERE <mainForm's name>
+        buffer.append( SPACE + "WHERE" + SPACE + formReport.getMainForm().getName().toLowerCase() + ".createddate>='"
+            + startDate + "'" + SPACE + "AND" + SPACE + formReport.getMainForm().getName().toLowerCase()
+            + ".createddate<='" + endDate + "'" + SPACE );
+        // and formula
+        if ( this.formReport.getFormula().length() > 0 )
+        {
+            // AND formular
+            buffer.append( "AND" + SPACE + this.formReport.getFormula() + SPACE );
+        }
+        // AND <table>.<id>=<table>.<column>
+        buffer.append( condition );
 
-			buffer.append("AND" + SPACE
-					+ formReport.getMainForm().getName().toLowerCase()
-					+ ".addby" + SPACE + "in" + SPACE + "(" + SPACE);
+        // -- get data by users
+        Collection<User> users = FormStatement.USERS;
 
-			for (User user : users) {
-				buffer.append(user.getId() + "," + SPACE);
-			}
+        // -- get add by in users' list
+        if ( users != null )
+        {
 
-			buffer.append(USERS.iterator().next().getId() + SPACE + ")"
-					+ SPACE);
-		}
+            buffer.append( "AND" + SPACE + formReport.getMainForm().getName().toLowerCase() + ".addby" + SPACE + "in"
+                + SPACE + "(" + SPACE );
 
-		statement = buffer.toString();
-		System.out.print("\n\n\n REPORTS : " + statement + "\n");
-	}
+            for ( User user : users )
+            {
+                buffer.append( user.getId() + "," + SPACE );
+            }
+
+            buffer.append( USERS.iterator().next().getId() + SPACE + ")" + SPACE );
+        }
+
+        statement = buffer.toString();
+        System.out.print( "\n\n\n REPORTS : " + statement + "\n" );
+    }
 }

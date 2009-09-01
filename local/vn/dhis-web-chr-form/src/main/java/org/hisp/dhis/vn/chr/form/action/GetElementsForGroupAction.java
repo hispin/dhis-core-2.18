@@ -14,67 +14,79 @@ import org.hisp.dhis.vn.chr.Form;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetElementsForGroupAction implements Action {
+public class GetElementsForGroupAction
+    implements Action
+{
 
-	// ------------------------------------------------------------------------------------------
-	// Input & Output
-	// ------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------
+    // Input & Output
+    // ------------------------------------------------------------------------------------------
 
-	private Form form;
+    private Form form;
 
-	// egroups of the form
+    // egroups of the form
 
-	Collection<Egroup> egroups;
+    Collection<Egroup> egroups;
 
-	Collection<Element> availableElements;
+    Collection<Element> availableElements;
 
-	// ------------------------------------------------------------------------------------------
-	// Getters & Setters
-	// ------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------
+    // Getters & Setters
+    // ------------------------------------------------------------------------------------------
 
-	public Form getForm() {
-		return form;
-	}
+    public Form getForm()
+    {
+        return form;
+    }
 
-	public void setForm(Form form) {
-		this.form = form;
-	}
+    public void setForm( Form form )
+    {
+        this.form = form;
+    }
 
-	public void setEgroups(Collection<Egroup> egroups) {
-		this.egroups = egroups;
-	}
+    public void setEgroups( Collection<Egroup> egroups )
+    {
+        this.egroups = egroups;
+    }
 
-	public Collection<Egroup> getEgroups() {
-		return egroups;
-	}
+    public Collection<Egroup> getEgroups()
+    {
+        return egroups;
+    }
 
-	public void setAvailableElements(Collection<Element> availableElements) {
-		this.availableElements = availableElements;
-	}
+    public void setAvailableElements( Collection<Element> availableElements )
+    {
+        this.availableElements = availableElements;
+    }
 
-	public Collection<Element> getAvailableElements() {
-		return availableElements;
-	}
+    public Collection<Element> getAvailableElements()
+    {
+        return availableElements;
+    }
 
-	// ------------------------------------------------------------------------------------------
-	// Implement
-	// ------------------------------------------------------------------------------------------
-	public String execute() throws Exception {
+    // ------------------------------------------------------------------------------------------
+    // Implement
+    // ------------------------------------------------------------------------------------------
+    public String execute()
+        throws Exception
+    {
 
-		this.egroups = form.getEgroups();
+        this.egroups = form.getEgroups();
 
-		this.availableElements = form.getElements();
+        this.availableElements = form.getElements();
 
-		if (availableElements != null) {
-			Iterator<Element> iter = availableElements.iterator();
-			while (iter.hasNext()) {
-				if (iter.next().getEgroup() != null)
-					iter.remove();
-			}
-		}
+        if ( availableElements != null )
+        {
+            Iterator<Element> iter = availableElements.iterator();
+            while ( iter.hasNext() )
+            {
+                if ( iter.next().getEgroup() != null )
+                    iter.remove();
+            }
+        }
 
-		return SUCCESS;
+        return SUCCESS;
 
-	}
+    }
 
 }

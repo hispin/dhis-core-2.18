@@ -7,55 +7,63 @@ import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
 import com.opensymphony.xwork2.Action;
 
-public class ListEgroupAction implements Action {
+public class ListEgroupAction
+    implements Action
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormService formService;
+    private FormService formService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private Integer formID;
+    private Integer formID;
 
-	private Form form;
+    private Form form;
 
-	private Collection<Egroup> egroups;
+    private Collection<Egroup> egroups;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public void setFormID(Integer formID) {
-		this.formID = formID;
-	}
+    public void setFormID( Integer formID )
+    {
+        this.formID = formID;
+    }
 
-	public Collection<Egroup> getEgroups() {
-		return this.egroups;
-	}
+    public Collection<Egroup> getEgroups()
+    {
+        return this.egroups;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public Form getForm() {
-		return form;
-	}
+    public Form getForm()
+    {
+        return form;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		form = formService.getForm(formID.intValue());
+        form = formService.getForm( formID.intValue() );
 
-		egroups = form.getEgroups();
+        egroups = form.getEgroups();
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 
 }

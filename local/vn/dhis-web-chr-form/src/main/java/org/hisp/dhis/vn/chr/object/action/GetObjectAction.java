@@ -11,83 +11,98 @@ import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.jdbc.FormManager;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class GetObjectAction extends ActionSupport {
+public class GetObjectAction
+    extends ActionSupport
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormManager formManager;
+    private FormManager formManager;
 
-	private FormService formService;
+    private FormService formService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	// Form ID
-	private Integer formId;
+    // Form ID
+    private Integer formId;
 
-	// Object's ID
-	private Integer id;
+    // Object's ID
+    private Integer id;
 
-	// Object's data
-	private ArrayList data;
+    // Object's data
+    private ArrayList data;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public ArrayList getData() {
-		return data;
-	}
+    public ArrayList getData()
+    {
+        return data;
+    }
 
-	public void setData(ArrayList data) {
-		this.data = data;
-	}
+    public void setData( ArrayList data )
+    {
+        this.data = data;
+    }
 
-	public Integer getId() {
-		return this.id;
-	}
+    public Integer getId()
+    {
+        return this.id;
+    }
 
-	public void setFormId(Integer formId) {
-		this.formId = formId;
-	}
+    public void setFormId( Integer formId )
+    {
+        this.formId = formId;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public Integer getFormId() {
-		return this.formId;
-	}
+    public Integer getFormId()
+    {
+        return this.formId;
+    }
 
-	public void setFormManager(FormManager formManager) {
-		this.formManager = formManager;
-	}
+    public void setFormManager( FormManager formManager )
+    {
+        this.formManager = formManager;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement : process Select SQL
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement : process Select SQL
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		try {
+        try
+        {
 
-			Form form = formService.getForm(formId.intValue());
+            Form form = formService.getForm( formId.intValue() );
 
-			data = formManager.getObject(form, id.intValue());
+            data = formManager.getObject( form, id.intValue() );
 
-			return SUCCESS;
+            return SUCCESS;
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
 
-		return ERROR;
-	}
+        return ERROR;
+    }
 }

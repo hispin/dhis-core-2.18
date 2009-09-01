@@ -7,67 +7,80 @@ package org.hisp.dhis.vn.chr.element.action;
 
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class ValidateElementAction extends ActionSupport {
+public class ValidateElementAction
+    extends ActionSupport
+{
 
-	// -------------------------------------------
-	// Input & Output
-	// -------------------------------------------
+    // -------------------------------------------
+    // Input & Output
+    // -------------------------------------------
 
-	private String name;
+    private String name;
 
-	private String label;
+    private String label;
 
-	private Integer sortOrder;
+    private Integer sortOrder;
 
-	// -------------------------------------------
-	// Getter & Setter
-	// -------------------------------------------
+    // -------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------
 
-	public String getName() {
-		return name;
-	}
+    public String getName()
+    {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public String getLabel() {
-		return label;
-	}
+    public String getLabel()
+    {
+        return label;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public void setLabel( String label )
+    {
+        this.label = label;
+    }
 
-	public Integer getSortOrder() {
-		return sortOrder;
-	}
+    public Integer getSortOrder()
+    {
+        return sortOrder;
+    }
 
-	public void setSortOrder(Integer sortOrder) {
-		this.sortOrder = sortOrder;
-	}
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
 
-	// -------------------------------------------
-	// Implement
-	// -------------------------------------------
+    // -------------------------------------------
+    // Implement
+    // -------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		if (name == null || name.trim().length() == 0) {
-			message = i18n.getString("name_is_null");
-			return ERROR;
-		}
+        if ( name == null || name.trim().length() == 0 )
+        {
+            message = i18n.getString( "name_is_null" );
+            return ERROR;
+        }
 
-		if (label == null || label.trim().length() == 0) {
-			message = i18n.getString("label_is_null");
-			return ERROR;
-		}
+        if ( label == null || label.trim().length() == 0 )
+        {
+            message = i18n.getString( "label_is_null" );
+            return ERROR;
+        }
 
-		if (sortOrder == 0) {
-			message = i18n.getString("sortOrder_is_null");
-			return ERROR;
-		}
+        if ( sortOrder == 0 )
+        {
+            message = i18n.getString( "sortOrder_is_null" );
+            return ERROR;
+        }
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 }

@@ -10,59 +10,67 @@ import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 import org.hisp.dhis.vn.chr.jdbc.FormManager;
 
-public class CreateTableByFormAction extends ActionSupport {
+public class CreateTableByFormAction
+    extends ActionSupport
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormManager formManager;
+    private FormManager formManager;
 
-	private FormService formService;
+    private FormService formService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input & Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input & Output
+    // -----------------------------------------------------------------------------------------------
 
-	private Integer id;
+    private Integer id;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getters & Setters
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getters & Setters
+    // -----------------------------------------------------------------------------------------------
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId()
+    {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public void setFormManager(FormManager formManager) {
-		this.formManager = formManager;
-	}
+    public void setFormManager( FormManager formManager )
+    {
+        this.formManager = formManager;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		Form form = formService.getForm(id.intValue());
+        Form form = formService.getForm( id.intValue() );
 
-		formManager.createTable(form);
+        formManager.createTable( form );
 
-		form.setCreated(true);
+        form.setCreated( true );
 
-		formService.updateForm(form);
+        formService.updateForm( form );
 
-		message = i18n.getString("create") + " " + i18n.getString("success");
+        message = i18n.getString( "create" ) + " " + i18n.getString( "success" );
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 
 }

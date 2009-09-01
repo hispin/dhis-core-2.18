@@ -8,54 +8,63 @@ package org.hisp.dhis.vn.chr.egroup.action;
 import org.hisp.dhis.vn.chr.EgroupService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class DeleteEgroupAction extends ActionSupport {
-	// -----------------------------------------------------------------------------------------------
-	// Dependency
-	// -----------------------------------------------------------------------------------------------
+public class DeleteEgroupAction
+    extends ActionSupport
+{
+    // -----------------------------------------------------------------------------------------------
+    // Dependency
+    // -----------------------------------------------------------------------------------------------
 
-	private EgroupService egroupService;
+    private EgroupService egroupService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private Integer id;
+    private Integer id;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getters && Setters
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getters && Setters
+    // -----------------------------------------------------------------------------------------------
 
-	public void setEgroupService(EgroupService egroupService) {
-		this.egroupService = egroupService;
-	}
+    public void setEgroupService( EgroupService egroupService )
+    {
+        this.egroupService = egroupService;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		try {
+        try
+        {
 
-			egroupService.deleteEgroup(id.intValue());
+            egroupService.deleteEgroup( id.intValue() );
 
-			message = i18n.getString("success");
+            message = i18n.getString( "success" );
 
-			return SUCCESS;
+            return SUCCESS;
 
-		} catch (Exception ex) {
+        }
+        catch ( Exception ex )
+        {
 
-			message = i18n.getString("error_delete");
+            message = i18n.getString( "error_delete" );
 
-			ex.printStackTrace();
-		}
+            ex.printStackTrace();
+        }
 
-		return ERROR;
+        return ERROR;
 
-	}
+    }
 
 }

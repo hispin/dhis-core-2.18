@@ -13,53 +13,62 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class GetDataSets extends ActionSupport {
+public class GetDataSets
+    extends ActionSupport
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private DataSetService dataSetService;
+    private DataSetService dataSetService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private ArrayList<DataSet> dataSets;
+    private ArrayList<DataSet> dataSets;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getters && Setters
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getters && Setters
+    // -----------------------------------------------------------------------------------------------
 
-	public ArrayList<DataSet> getDataSets() {
-		return dataSets;
-	}
+    public ArrayList<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
 
-	public void setDataSetService(DataSetService dataSetService) {
-		this.dataSetService = dataSetService;
-	}
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		try {
+        try
+        {
 
-			dataSets = new ArrayList<DataSet>(dataSetService.getAllDataSets());
+            dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
 
-			Collections.sort(dataSets, new DataSetNameComparator());
+            Collections.sort( dataSets, new DataSetNameComparator() );
 
-			message = i18n.getString("success");
+            message = i18n.getString( "success" );
 
-		} catch (Exception ex) {
+        }
+        catch ( Exception ex )
+        {
 
-			ex.printStackTrace();
-			message = i18n.getString("error");
+            ex.printStackTrace();
+            message = i18n.getString( "error" );
 
-		}
-		return SUCCESS;
-	}
+        }
+        return SUCCESS;
+    }
 
 }

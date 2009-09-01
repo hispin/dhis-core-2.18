@@ -13,88 +13,96 @@ import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.Form;
 
-public class ListRelativeDataStatement extends FormStatement {
+public class ListRelativeDataStatement
+    extends FormStatement
+{
 
-	// -------------------------------------------------------------------------
-	// Constructor
-	// -------------------------------------------------------------------------
-	
-	public ListRelativeDataStatement( Form form, StatementDialect dialect, String objectId, String column, int pageSize ){
-		super(form, dialect, objectId, column, pageSize);
-	}
+    // -------------------------------------------------------------------------
+    // Constructor
+    // -------------------------------------------------------------------------
 
-	// -------------------------------------------------------------------------
-	// Override
-	// -------------------------------------------------------------------------
-	
-	@Override
-	protected void init(Form form) {
-		
-		StringBuffer buffer = new StringBuffer();
+    public ListRelativeDataStatement( Form form, StatementDialect dialect, String objectId, String column, int pageSize )
+    {
+        super( form, dialect, objectId, column, pageSize );
+    }
 
-		// SELECT id,
-		buffer.append("SELECT" + SPACE + "id" + SEPARATOR);
+    // -------------------------------------------------------------------------
+    // Override
+    // -------------------------------------------------------------------------
 
-		// Number of columns selected
-		int noColumn = form.getNoColumn();
-		int index = 0;
-		// Break loop for
-		boolean flag = false;
+    @Override
+    protected void init( Form form )
+    {
 
-		for (Egroup egroup : form.getEgroups()) {
+        StringBuffer buffer = new StringBuffer();
 
-			if (flag)
-				break;
+        // SELECT id,
+        buffer.append( "SELECT" + SPACE + "id" + SEPARATOR );
 
-			for (Element element : egroup.getElements()) {
-				// element is not a foreign key
-				if(element.getFormLink() == null){
-					if (index < noColumn) {
-						// <column_name>,
-						buffer.append(element.getName() + SEPARATOR);
-						
-						index++;
-					} 
-					
-					else {
-						// <column_name>
-						flag = true;
-						break;
-					}
-					
-					
-				}// end if element
-				
-			}// end for element
+        // Number of columns selected
+        int noColumn = form.getNoColumn();
+        int index = 0;
+        // Break loop for
+        boolean flag = false;
 
-		}// end for egroup
+        for ( Egroup egroup : form.getEgroups() )
+        {
 
-		// FORM <table_name> WHERE column=value
-		buffer.append("addby" + SPACE + "FROM" + SPACE + form.getName().toLowerCase() + SPACE + "WHERE" + SPACE);
-		
+            if ( flag )
+                break;
 
-		// keyword
-		buffer.append(column + "=" + status + SPACE + "AND" + SPACE);
-		
-		// users
-		buffer.append( "addby" + SPACE + "in"+ SPACE + "(" + SPACE);
-		
-		Collection<User> users = FormStatement.USERS;
-		
-		for(User user : users){
-		
-			buffer.append( user.getId() + "," + SPACE );
-		}
-		
-		buffer.append( USERS.iterator().next().getId() + SPACE + ")" + SPACE);
-		
-		// order by editeddate
-		buffer.append("order by" + SPACE + "createddate" + SPACE + "desc" + SPACE);
-		
-		// limmit number of records showed
-		buffer.append("LIMIT" + SPACE + value);
-		
-		statement = buffer.toString();
-	}
+            for ( Element element : egroup.getElements() )
+            {
+                // element is not a foreign key
+                if ( element.getFormLink() == null )
+                {
+                    if ( index < noColumn )
+                    {
+                        // <column_name>,
+                        buffer.append( element.getName() + SEPARATOR );
+
+                        index++;
+                    }
+
+                    else
+                    {
+                        // <column_name>
+                        flag = true;
+                        break;
+                    }
+
+                }// end if element
+
+            }// end for element
+
+        }// end for egroup
+
+        // FORM <table_name> WHERE column=value
+        buffer.append( "addby" + SPACE + "FROM" + SPACE + form.getName().toLowerCase() + SPACE + "WHERE" + SPACE );
+
+        // keyword
+        buffer.append( column + "=" + status + SPACE + "AND" + SPACE );
+
+        // users
+        buffer.append( "addby" + SPACE + "in" + SPACE + "(" + SPACE );
+
+        Collection<User> users = FormStatement.USERS;
+
+        for ( User user : users )
+        {
+
+            buffer.append( user.getId() + "," + SPACE );
+        }
+
+        buffer.append( USERS.iterator().next().getId() + SPACE + ")" + SPACE );
+
+        // order by editeddate
+        buffer.append( "order by" + SPACE + "createddate" + SPACE + "desc" + SPACE );
+
+        // limmit number of records showed
+        buffer.append( "LIMIT" + SPACE + value );
+
+        statement = buffer.toString();
+    }
 
 }

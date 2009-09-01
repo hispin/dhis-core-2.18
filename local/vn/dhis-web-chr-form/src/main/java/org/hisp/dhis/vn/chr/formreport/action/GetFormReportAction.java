@@ -9,56 +9,65 @@ import org.hisp.dhis.vn.chr.FormReport;
 import org.hisp.dhis.vn.chr.FormReportService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class GetFormReportAction extends ActionSupport {
+public class GetFormReportAction
+    extends ActionSupport
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
-	private FormReportService formReportService;
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
+    private FormReportService formReportService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
-	private Integer id;
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
+    private Integer id;
 
-	private FormReport formReport;
+    private FormReport formReport;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public FormReport getFormReport() {
-		return formReport;
-	}
+    public FormReport getFormReport()
+    {
+        return formReport;
+    }
 
-	public void setFormReportService(FormReportService formReportService) {
-		this.formReportService = formReportService;
-	}
+    public void setFormReportService( FormReportService formReportService )
+    {
+        this.formReportService = formReportService;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement : process Select SQL
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement : process Select SQL
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		try {
+        try
+        {
 
-			formReport = formReportService.getFormReport(id.intValue());
+            formReport = formReportService.getFormReport( id.intValue() );
 
-			return SUCCESS;
+            return SUCCESS;
 
-		} catch (Exception ex) {
+        }
+        catch ( Exception ex )
+        {
 
-			ex.printStackTrace();
+            ex.printStackTrace();
 
-			message = i18n.getString("get_data") + " "
-					+ i18n.getString("error");
-		}
+            message = i18n.getString( "get_data" ) + " " + i18n.getString( "error" );
+        }
 
-		return ERROR;
-	}
+        return ERROR;
+    }
 }

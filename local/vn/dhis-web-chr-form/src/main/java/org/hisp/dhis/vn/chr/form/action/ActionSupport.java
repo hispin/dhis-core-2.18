@@ -35,35 +35,43 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public abstract class ActionSupport implements Action {
-	public String message;
+public abstract class ActionSupport
+    implements Action
+{
+    public String message;
 
-	public I18n i18n;
+    public I18n i18n;
 
-	public I18nFormat format;
+    public I18nFormat format;
 
-	public String getMessage() {
-		return message;
-	}
+    public String getMessage()
+    {
+        return message;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
 
-	public I18n getI18n() {
-		return i18n;
-	}
+    public I18n getI18n()
+    {
+        return i18n;
+    }
 
-	public void setI18n(I18n i18n) {
-		this.i18n = i18n;
-	}
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
 
-	public I18nFormat getFormat() {
-		return format;
-	}
+    public I18nFormat getFormat()
+    {
+        return format;
+    }
 
-	public void setFormat(I18nFormat format) {
-		this.format = format;
-	}
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
 
 }

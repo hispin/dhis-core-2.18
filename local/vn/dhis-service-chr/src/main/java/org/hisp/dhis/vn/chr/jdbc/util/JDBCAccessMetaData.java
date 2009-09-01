@@ -17,27 +17,28 @@ import org.hisp.dhis.jdbc.StatementManager;
 public class JDBCAccessMetaData
     implements AccessMetaDataService
 {
-	
-	// -------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-	private StatementManager statementManager;
-	
-	// -------------------------------------------------------------------------
+    private StatementManager statementManager;
+
+    // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
 
-	public void setStatementManager(StatementManager statementManager) {
-		this.statementManager = statementManager;
-	}
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
 
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Implements
     // -------------------------------------------------------------------------
 
-	/** Get All table */
-    public Set<String> getAllTablesName( )
+    /** Get All table */
+    public Set<String> getAllTablesName()
     {
         Connection con = statementManager.getHolder().getConnection();
 
@@ -52,17 +53,17 @@ public class JDBCAccessMetaData
 
             while ( tables.next() )
             {
-            	String tableName = tables.getString( 3 );
+                String tableName = tables.getString( 3 );
                 String tableType = tables.getString( 4 );
                 if ( tableType != null && tableType.equalsIgnoreCase( "TABLE" ) )
                 {
-                	result.add( tableName.toLowerCase());
+                    result.add( tableName.toLowerCase() );
                 }
 
             }
-            
+
             tables.close();
-            
+
             con.close();
         }
         catch ( SQLException e1 )
@@ -73,38 +74,42 @@ public class JDBCAccessMetaData
     }
 
     /** exist table */
-	public boolean existTable(String tablename) throws SQLException{
-		  
-		Iterator<String> iter = getAllTablesName().iterator();
-		
-		tablename = tablename.toLowerCase();
-		
-		while(iter.hasNext()){
-			if(iter.next().equals(tablename)){
-				return true;
-			}
-		}
-		  
+    public boolean existTable( String tablename )
+        throws SQLException
+    {
+
+        Iterator<String> iter = getAllTablesName().iterator();
+
+        tablename = tablename.toLowerCase();
+
+        while ( iter.hasNext() )
+        {
+            if ( iter.next().equals( tablename ) )
+            {
+                return true;
+            }
+        }
+
         return false;
-        
-	}
-	
-	/** Get All column */
+
+    }
+
+    /** Get All column */
     public Set<String> getAllColumnsOfTable( String tableName )
     {
-    	Connection con = statementManager.getHolder().getConnection();
+        Connection con = statementManager.getHolder().getConnection();
 
         Set<String> result = new HashSet<String>();
 
         try
         {
             DatabaseMetaData meta = con.getMetaData();
-           
+
             ResultSet columns = meta.getColumns( null, null, tableName, null );
-            
+
             while ( columns.next() )
             {
-            		result.add( columns.getString( "COLUMN_NAME" ) );            		
+                result.add( columns.getString( "COLUMN_NAME" ) );
             }
 
             columns.close();

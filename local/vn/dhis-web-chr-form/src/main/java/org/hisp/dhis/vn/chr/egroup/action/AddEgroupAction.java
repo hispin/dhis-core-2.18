@@ -11,68 +11,77 @@ import org.hisp.dhis.vn.chr.EgroupService;
 import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class AddEgroupAction extends ActionSupport {
-	// -----------------------------------------------------------------------------------------------
-	// Dependency
-	// -----------------------------------------------------------------------------------------------
+public class AddEgroupAction
+    extends ActionSupport
+{
+    // -----------------------------------------------------------------------------------------------
+    // Dependency
+    // -----------------------------------------------------------------------------------------------
 
-	private FormService formService;
+    private FormService formService;
 
-	private EgroupService egroupService;
+    private EgroupService egroupService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private Integer formID;
+    private Integer formID;
 
-	private String name;
+    private String name;
 
-	private Integer sortOrder;
+    private Integer sortOrder;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getters && Setters
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getters && Setters
+    // -----------------------------------------------------------------------------------------------
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public void setFormID(Integer formID) {
-		this.formID = formID;
-	}
+    public void setFormID( Integer formID )
+    {
+        this.formID = formID;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public void setSortOrder(Integer sortOrder) {
-		this.sortOrder = sortOrder;
-	}
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
 
-	public void setEgroupService(EgroupService egroupService) {
-		this.egroupService = egroupService;
-	}
+    public void setEgroupService( EgroupService egroupService )
+    {
+        this.egroupService = egroupService;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		Egroup egroup = new Egroup();
+        Egroup egroup = new Egroup();
 
-		egroup.setName(CodecUtils.unescape(name));
+        egroup.setName( CodecUtils.unescape( name ) );
 
-		egroup.setSortOrder(sortOrder.intValue());
+        egroup.setSortOrder( sortOrder.intValue() );
 
-		egroup.setForm(formService.getForm(formID.intValue()));
+        egroup.setForm( formService.getForm( formID.intValue() ) );
 
-		egroupService.addEgroup(egroup);
+        egroupService.addEgroup( egroup );
 
-		message = i18n.getString("success");
+        message = i18n.getString( "success" );
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 
 }

@@ -9,67 +9,77 @@ import org.hisp.dhis.vn.chr.FormService;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetVisibleFormsAction implements Action {
+public class GetVisibleFormsAction
+    implements Action
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormService formService;
+    private FormService formService;
 
-	private CurrentUserService currentUserService;
+    private CurrentUserService currentUserService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private Collection<Form> visibleforms;
+    private Collection<Form> visibleforms;
 
-	private User curUser;
+    private User curUser;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
 
-	public void setCurrentUserService(CurrentUserService currentUserService) {
-		this.currentUserService = currentUserService;
-	}
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
-	public Collection<Form> getVisibleforms() {
-		return visibleforms;
-	}
+    public Collection<Form> getVisibleforms()
+    {
+        return visibleforms;
+    }
 
-	public void setVisibleforms(Collection<Form> visibleforms) {
-		this.visibleforms = visibleforms;
-	}
+    public void setVisibleforms( Collection<Form> visibleforms )
+    {
+        this.visibleforms = visibleforms;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public User getCurUser() {
-		return curUser;
-	}
+    public User getCurUser()
+    {
+        return curUser;
+    }
 
-	public void setCurUser(User curUser) {
-		this.curUser = curUser;
-	}
+    public void setCurUser( User curUser )
+    {
+        this.curUser = curUser;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		visibleforms = formService.getVisibleForms(true);
+        visibleforms = formService.getVisibleForms( true );
 
-		Collection<Form> createdForm = formService.getCreatedForms();
+        Collection<Form> createdForm = formService.getCreatedForms();
 
-		visibleforms.retainAll(createdForm);
+        visibleforms.retainAll( createdForm );
 
-		curUser = currentUserService.getCurrentUser();
+        curUser = currentUserService.getCurrentUser();
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 
 }

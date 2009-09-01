@@ -9,66 +9,72 @@ import org.hisp.dhis.jdbc.StatementDialect;
 import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.Form;
 
-public class AlterColumnStatement extends FormStatement{
+public class AlterColumnStatement
+    extends FormStatement
+{
 
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
 
     public AlterColumnStatement( StatementDialect dialect, String status, Element element )
     {
-    	super( dialect, status, element );	
+        super( dialect, status, element );
     }
-    
+
     public AlterColumnStatement( Form form, StatementDialect dialect, String status, String column )
     {
-    	super( form, dialect, status, column );	
+        super( form, dialect, status, column );
     }
 
     // ----------------------------------------------------------------------------------------------------
     // Init method - Override
     // ----------------------------------------------------------------------------------------------------
-	
+
     @Override
-	protected void init(Form form) {
-		
-		StringBuffer buffer = new StringBuffer();
+    protected void init( Form form )
+    {
 
-		// Alter table <table_name> 
-		buffer.append("ALTER TABLE" + SPACE + form.getName() + SPACE);
+        StringBuffer buffer = new StringBuffer();
 
-		// DROP COLUMN <column_name>
-		if (status.equals(DROP_STATUS)) {
+        // Alter table <table_name>
+        buffer.append( "ALTER TABLE" + SPACE + form.getName() + SPACE );
 
-			buffer.append(status + SPACE + column + SPACE);
+        // DROP COLUMN <column_name>
+        if ( status.equals( DROP_STATUS ) )
+        {
 
-		} else {
+            buffer.append( status + SPACE + column + SPACE );
 
-			// ALTER COULMN <column_name> 
-			// or ADD <column_name>
-			buffer.append(status + SPACE + element.getName() + SPACE);
-			
-			// TYPE 
-			if (status.endsWith(ALTER_STATUS))
-				buffer.append("type" + SPACE);
+        }
+        else
+        {
 
-			buffer.append(element.getType() + SPACE);
-			
-			if(element.getFormLink() != null){
-				buffer.append(SPACE + ";" + SPACE + "ALTER" + SPACE + "TABLE" + SPACE + 
-							form.getName() + SPACE + "ADD" + SPACE + "FOREIGN KEY(" + element.getName() + ")"+ SPACE + 
-							"REFERENCES" + SPACE + element.getFormLink().getName() + SPACE + "(id)" );
-			}
+            // ALTER COULMN <column_name>
+            // or ADD <column_name>
+            buffer.append( status + SPACE + element.getName() + SPACE );
 
-		}// end else
-		
-		// ;
-		buffer.append(SEPARATOR_COMMAND);
+            // TYPE
+            if ( status.endsWith( ALTER_STATUS ) )
+                buffer.append( "type" + SPACE );
 
-		statement = buffer.toString();
+            buffer.append( element.getType() + SPACE );
 
-//System.out.print("\n\n\n"+statement);
-	}
-	
-	
+            if ( element.getFormLink() != null )
+            {
+                buffer.append( SPACE + ";" + SPACE + "ALTER" + SPACE + "TABLE" + SPACE + form.getName() + SPACE + "ADD"
+                    + SPACE + "FOREIGN KEY(" + element.getName() + ")" + SPACE + "REFERENCES" + SPACE
+                    + element.getFormLink().getName() + SPACE + "(id)" );
+            }
+
+        }// end else
+
+        // ;
+        buffer.append( SEPARATOR_COMMAND );
+
+        statement = buffer.toString();
+
+        // System.out.print("\n\n\n"+statement);
+    }
+
 }

@@ -12,217 +12,253 @@ import org.hisp.dhis.vn.report.ReportItem;
  * 
  */
 
-public class Element implements java.io.Serializable {
+public class Element
+    implements java.io.Serializable
+{
 
-	public static final String INTEGER = "INTEGER";
-	public static final String STRING = "VARCHAR";
-	public static final String DATE = "DATE";
-	public static final String DOUBLE = "NUMERIC";
-	public static final String BOOLEAN = "BOOLEAN";
-	public static final String SERIAL = "SERIAL";
+    public static final String INTEGER = "INTEGER";
 
-	/**
-	 * The database internal identifier for this DataElement.
-	 */
-	private int id;
+    public static final String STRING = "VARCHAR";
 
-	/**
-	 * The Form to which Element belongs.
-	 */
-	private Form form;
+    public static final String DATE = "DATE";
 
-	/**
-	 * The name of this DataElement. Required and unique.
-	 */
-	private String name;
+    public static final String DOUBLE = "NUMERIC";
 
-	/**
-	 * The label of this DataElement. Required and unique.
-	 */
-	private String label;
+    public static final String BOOLEAN = "BOOLEAN";
 
-	/**
-	 * The type of this DataElement; e.g. DataElement.TYPE_INT,
-	 * DataElement.TYPE_BOOL, DataElement.TYPE_STRING, DataElement.NUMBER or
-	 * DataElement.DATE
-	 */
-	private String type;
+    public static final String SERIAL = "SERIAL";
 
-	/**
-	 * The Control Type of this DataElement.
-	 */
-	private String controlType;
+    /**
+     * The database internal identifier for this DataElement.
+     */
+    private int id;
 
-	/**
-	 * The Init value of this DataElement.
-	 */
-	private String initialValue;
+    /**
+     * The Form to which Element belongs.
+     */
+    private Form form;
 
-	/**
-	 * The formLink of this DataElement.
-	 */
-	private Form formLink;
+    /**
+     * The name of this DataElement. Required and unique.
+     */
+    private String name;
 
-	/**
-	 * The DataElement is null or not.
-	 */
-	private boolean required;
+    /**
+     * The label of this DataElement. Required and unique.
+     */
+    private String label;
 
-	/**
-	 * The order number of this DataElement.
-	 */
-	private int sortOrder;
+    /**
+     * The type of this DataElement; e.g. DataElement.TYPE_INT,
+     * DataElement.TYPE_BOOL, DataElement.TYPE_STRING, DataElement.NUMBER or
+     * DataElement.DATE
+     */
+    private String type;
 
-	/**
-	 * The ID group of this DataElement.
-	 */
-	private Egroup egroup;
+    /**
+     * The Control Type of this DataElement.
+     */
+    private String controlType;
 
-	// -------------------------------------------------------------------------
-	// Constructors
-	// -------------------------------------------------------------------------
+    /**
+     * The Init value of this DataElement.
+     */
+    private String initialValue;
 
-	public Element() {
-	}
+    /**
+     * The formLink of this DataElement.
+     */
+    private Form formLink;
 
-	public Element(Form form, String name, String label, String type,
-			String controlType, String initialValue, Form formLink,
-			boolean required, int sortOrder, Egroup egroup) {
-		this.form = form;
-		this.name = name;
-		this.label = label;
-		this.type = type;
-		this.controlType = controlType;
-		this.initialValue = initialValue;
-		this.formLink = formLink;
-		this.required = required;
-		this.sortOrder = sortOrder;
-		this.egroup = egroup;
-	}
+    /**
+     * The DataElement is null or not.
+     */
+    private boolean required;
 
-	// -------------------------------------------------------------------------
-	// hashCode, equals and toString
-	// -------------------------------------------------------------------------
+    /**
+     * The order number of this DataElement.
+     */
+    private int sortOrder;
 
-	@Override
-	public int hashCode() {
-		return name.hashCode();
-	}
+    /**
+     * The ID group of this DataElement.
+     */
+    private Egroup egroup;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
 
-		if (o == null) {
-			return false;
-		}
+    public Element()
+    {
+    }
 
-		if (!(o instanceof Element)) {
-			return false;
-		}
+    public Element( Form form, String name, String label, String type, String controlType, String initialValue,
+        Form formLink, boolean required, int sortOrder, Egroup egroup )
+    {
+        this.form = form;
+        this.name = name;
+        this.label = label;
+        this.type = type;
+        this.controlType = controlType;
+        this.initialValue = initialValue;
+        this.formLink = formLink;
+        this.required = required;
+        this.sortOrder = sortOrder;
+        this.egroup = egroup;
+    }
 
-		final Element other = (Element) o;
+    // -------------------------------------------------------------------------
+    // hashCode, equals and toString
+    // -------------------------------------------------------------------------
 
-		return name.equals(other.getName());
-	}
+    @Override
+    public int hashCode()
+    {
+        return name.hashCode();
+    }
 
-	@Override
-	public String toString() {
-		return "[" + name + "]";
-	}
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
 
-	// -------------------------------------------------------------------------
-	// Getters && Setters
-	// -------------------------------------------------------------------------
+        if ( o == null )
+        {
+            return false;
+        }
 
-	public boolean isRequired() {
-		return required;
-	}
+        if ( !(o instanceof Element) )
+        {
+            return false;
+        }
 
-	public void setRequired(boolean required) {
-		this.required = required;
-	}
+        final Element other = (Element) o;
 
-	public int getId() {
-		return id;
-	}
+        return name.equals( other.getName() );
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Override
+    public String toString()
+    {
+        return "[" + name + "]";
+    }
 
-	public Form getForm() {
-		return form;
-	}
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
 
-	public void setForm(Form form) {
-		this.form = form;
-	}
+    public boolean isRequired()
+    {
+        return required;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setRequired( boolean required )
+    {
+        this.required = required;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public int getId()
+    {
+        return id;
+    }
 
-	public String getLabel() {
-		return label;
-	}
+    public void setId( int id )
+    {
+        this.id = id;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public Form getForm()
+    {
+        return form;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setForm( Form form )
+    {
+        this.form = form;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getName()
+    {
+        return name;
+    }
 
-	public String getControlType() {
-		return controlType;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public void setControlType(String controlType) {
-		this.controlType = controlType;
-	}
+    public String getLabel()
+    {
+        return label;
+    }
 
-	public String getInitialValue() {
-		return initialValue;
-	}
+    public void setLabel( String label )
+    {
+        this.label = label;
+    }
 
-	public void setInitialValue(String initialValue) {
-		this.initialValue = initialValue;
-	}
+    public String getType()
+    {
+        return type;
+    }
 
-	public Form getFormLink() {
-		return formLink;
-	}
+    public void setType( String type )
+    {
+        this.type = type;
+    }
 
-	public void setFormLink(Form formLink) {
-		this.formLink = formLink;
-	}
+    public String getControlType()
+    {
+        return controlType;
+    }
 
-	public int getSortOrder() {
-		return sortOrder;
-	}
+    public void setControlType( String controlType )
+    {
+        this.controlType = controlType;
+    }
 
-	public void setSortOrder(int sortOrder) {
-		this.sortOrder = sortOrder;
-	}
+    public String getInitialValue()
+    {
+        return initialValue;
+    }
 
-	public Egroup getEgroup() {
-		return egroup;
-	}
+    public void setInitialValue( String initialValue )
+    {
+        this.initialValue = initialValue;
+    }
 
-	public void setEgroup(Egroup egroup) {
-		this.egroup = egroup;
-	}
+    public Form getFormLink()
+    {
+        return formLink;
+    }
+
+    public void setFormLink( Form formLink )
+    {
+        this.formLink = formLink;
+    }
+
+    public int getSortOrder()
+    {
+        return sortOrder;
+    }
+
+    public void setSortOrder( int sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
+
+    public Egroup getEgroup()
+    {
+        return egroup;
+    }
+
+    public void setEgroup( Egroup egroup )
+    {
+        this.egroup = egroup;
+    }
 
 }

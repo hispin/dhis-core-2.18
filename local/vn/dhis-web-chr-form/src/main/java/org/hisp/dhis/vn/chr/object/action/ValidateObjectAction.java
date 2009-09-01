@@ -12,100 +12,115 @@ import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class ValidateObjectAction extends ActionSupport {
+public class ValidateObjectAction
+    extends ActionSupport
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormService formService;
+    private FormService formService;
 
-	// -------------------------------------------
-	// Input & Output
-	// -------------------------------------------
+    // -------------------------------------------
+    // Input & Output
+    // -------------------------------------------
 
-	// Form ID
-	private Integer formId;
+    // Form ID
+    private Integer formId;
 
-	// Object's data
-	private String[] data;
+    // Object's data
+    private String[] data;
 
-	// error string
-	private String message;
+    // error string
+    private String message;
 
-	// -------------------------------------------
-	// Getter & Setter
-	// -------------------------------------------
+    // -------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------
 
-	public Integer getFormId() {
-		return formId;
-	}
+    public Integer getFormId()
+    {
+        return formId;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public String getMessage()
+    {
+        return message;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public void setFormId(Integer formId) {
-		this.formId = formId;
-	}
+    public void setFormId( Integer formId )
+    {
+        this.formId = formId;
+    }
 
-	public String[] getData() {
-		return data;
-	}
+    public String[] getData()
+    {
+        return data;
+    }
 
-	public void setData(String[] data) {
-		this.data = data;
-	}
+    public void setData( String[] data )
+    {
+        this.data = data;
+    }
 
-	// -------------------------------------------
-	// Implement
-	// -------------------------------------------
+    // -------------------------------------------
+    // Implement
+    // -------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		message = "";
+        message = "";
 
-		Form form = formService.getForm(formId.intValue());
+        Form form = formService.getForm( formId.intValue() );
 
-		Collection<Egroup> egroups = form.getEgroups();
+        Collection<Egroup> egroups = form.getEgroups();
 
-		// Position of element, which has not-null property to be "yes"
-		int pos = 0;
+        // Position of element, which has not-null property to be "yes"
+        int pos = 0;
 
-		for (Egroup egroup : egroups) {
+        for ( Egroup egroup : egroups )
+        {
 
-			for (Element element : egroup.getElements()) {
+            for ( Element element : egroup.getElements() )
+            {
 
-				if (element.isRequired()) {
+                if ( element.isRequired() )
+                {
 
-					if (data[pos].length() == 0) {
+                    if ( data[pos].length() == 0 )
+                    {
 
-						message += " - " + element.getLabel() + "<br>";
+                        message += " - " + element.getLabel() + "<br>";
 
-					}// end not null
+                    }// end not null
 
-				}// end if
+                }// end if
 
-			}// end for element
+            }// end for element
 
-		}// end for egroup
+        }// end for egroup
 
-		// System.out.print("\n\n\n message : " + message);
+        // System.out.print("\n\n\n message : " + message);
 
-		if (message.length() > 0) {
-			message = i18n.getString("elements") + " : <br>" + message
-					+ i18n.getString("not_null");
-			return ERROR;
-		}
-		return SUCCESS;
-	}
+        if ( message.length() > 0 )
+        {
+            message = i18n.getString( "elements" ) + " : <br>" + message + i18n.getString( "not_null" );
+            return ERROR;
+        }
+        return SUCCESS;
+    }
 
 }

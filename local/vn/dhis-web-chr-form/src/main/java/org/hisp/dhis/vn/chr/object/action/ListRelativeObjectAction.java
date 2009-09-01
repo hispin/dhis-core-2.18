@@ -17,160 +17,184 @@ import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.jdbc.FormManager;
 import com.opensymphony.xwork2.Action;
 
-public class ListRelativeObjectAction implements Action {
+public class ListRelativeObjectAction
+    implements Action
+{
 
-	// -----------------------------------------------------------------------------------------------
-	// Dependencies
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Dependencies
+    // -----------------------------------------------------------------------------------------------
 
-	private FormManager formManager;
+    private FormManager formManager;
 
-	private FormService formService;
+    private FormService formService;
 
-	private ElementService elementService;
+    private ElementService elementService;
 
-	private FormConfigurationManager formConfigurationManager;
+    private FormConfigurationManager formConfigurationManager;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	private Integer formId;
+    private Integer formId;
 
-	private String objectId;
+    private String objectId;
 
-	private Form form;
+    private Form form;
 
-	private ArrayList data;
+    private ArrayList data;
 
-	private Collection<Element> formLinks;
+    private Collection<Element> formLinks;
 
-	private String column;
+    private String column;
 
-	private ArrayList parentObject;
+    private ArrayList parentObject;
 
-	// -----------------------------------------------------------------------------------------------
-	// Getter && Setter
-	// -----------------------------------------------------------------------------------------------
-	public ArrayList getParentObject() {
-		return parentObject;
-	}
+    // -----------------------------------------------------------------------------------------------
+    // Getter && Setter
+    // -----------------------------------------------------------------------------------------------
+    public ArrayList getParentObject()
+    {
+        return parentObject;
+    }
 
-	public void setParentObject(ArrayList parentObject) {
-		this.parentObject = parentObject;
-	}
+    public void setParentObject( ArrayList parentObject )
+    {
+        this.parentObject = parentObject;
+    }
 
-	public void setFormConfigurationManager(
-			FormConfigurationManager formConfigurationManager) {
-		this.formConfigurationManager = formConfigurationManager;
-	}
+    public void setFormConfigurationManager( FormConfigurationManager formConfigurationManager )
+    {
+        this.formConfigurationManager = formConfigurationManager;
+    }
 
-	public Integer getFormId() {
-		return formId;
-	}
+    public Integer getFormId()
+    {
+        return formId;
+    }
 
-	public void setFormId(Integer formId) {
-		this.formId = formId;
-	}
+    public void setFormId( Integer formId )
+    {
+        this.formId = formId;
+    }
 
-	public void setFormManager(FormManager formManager) {
-		this.formManager = formManager;
-	}
+    public void setFormManager( FormManager formManager )
+    {
+        this.formManager = formManager;
+    }
 
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
-	public ArrayList getData() {
-		return data;
-	}
+    public ArrayList getData()
+    {
+        return data;
+    }
 
-	public void setData(ArrayList data) {
-		this.data = data;
-	}
+    public void setData( ArrayList data )
+    {
+        this.data = data;
+    }
 
-	public Form getForm() {
-		return form;
-	}
+    public Form getForm()
+    {
+        return form;
+    }
 
-	public void setForm(Form form) {
-		this.form = form;
-	}
+    public void setForm( Form form )
+    {
+        this.form = form;
+    }
 
-	public void setElementService(ElementService elementService) {
-		this.elementService = elementService;
-	}
+    public void setElementService( ElementService elementService )
+    {
+        this.elementService = elementService;
+    }
 
-	public Collection<Element> getFormLinks() {
-		return formLinks;
-	}
+    public Collection<Element> getFormLinks()
+    {
+        return formLinks;
+    }
 
-	public void setFormLinks(Collection<Element> formLinks) {
-		this.formLinks = formLinks;
-	}
+    public void setFormLinks( Collection<Element> formLinks )
+    {
+        this.formLinks = formLinks;
+    }
 
-	public String getObjectId() {
-		return objectId;
-	}
+    public String getObjectId()
+    {
+        return objectId;
+    }
 
-	public void setObjectId(String objectId) {
-		this.objectId = objectId;
-	}
+    public void setObjectId( String objectId )
+    {
+        this.objectId = objectId;
+    }
 
-	public String getColumn() {
-		return column;
-	}
+    public String getColumn()
+    {
+        return column;
+    }
 
-	public void setColumn(String column) {
-		this.column = column;
-	}
+    public void setColumn( String column )
+    {
+        this.column = column;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement : process Select SQL
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Implement : process Select SQL
+    // -----------------------------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
 
-		form = formService.getForm(formId.intValue());
+        form = formService.getForm( formId.intValue() );
 
-		formLinks = elementService.getElementsByFormLink(form);
+        formLinks = elementService.getElementsByFormLink( form );
 
-		data = formManager.listRelativeObject(form, column, objectId, Integer
-				.parseInt(formConfigurationManager.getNumberOfRecords()));
+        data = formManager.listRelativeObject( form, column, objectId, Integer.parseInt( formConfigurationManager
+            .getNumberOfRecords() ) );
 
-		if (objectId != null) {
+        if ( objectId != null )
+        {
 
-			for (Element element : form.getElements()) {
+            for ( Element element : form.getElements() )
+            {
 
-				if (element.getFormLink() != null) {
+                if ( element.getFormLink() != null )
+                {
 
-					Form fparent = element.getFormLink();
+                    Form fparent = element.getFormLink();
 
-					ArrayList<String> data = formManager.getObject(fparent,
-							Integer.parseInt(objectId));
+                    ArrayList<String> data = formManager.getObject( fparent, Integer.parseInt( objectId ) );
 
-					parentObject = new ArrayList<String>();
+                    parentObject = new ArrayList<String>();
 
-					int k = 0;
+                    int k = 0;
 
-					for (Egroup egroup : fparent.getEgroups()) {
-						for (Element e : egroup.getElements()) {
+                    for ( Egroup egroup : fparent.getEgroups() )
+                    {
+                        for ( Element e : egroup.getElements() )
+                        {
 
-							if (data.get(k) != null)
-								parentObject.add(e.getLabel() + " : "
-										+ data.get(k));
-							k++;
-							if (k == fparent.getNoColumnLink())
-								break;
-						}// end for element
+                            if ( data.get( k ) != null )
+                                parentObject.add( e.getLabel() + " : " + data.get( k ) );
+                            k++;
+                            if ( k == fparent.getNoColumnLink() )
+                                break;
+                        }// end for element
 
-						if (k == fparent.getNoColumnLink())
-							break;
-					}// end for egroup
-				}
-			}
-		}
+                        if ( k == fparent.getNoColumnLink() )
+                            break;
+                    }// end for egroup
+                }
+            }
+        }
 
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 }

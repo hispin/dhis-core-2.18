@@ -23,7 +23,7 @@ public class UploadFileAction
     // -------------------------------------------------------------------------
 
     private SystemSettingManager systemSettingManager;
-    
+
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
         this.systemSettingManager = systemSettingManager;
@@ -32,7 +32,7 @@ public class UploadFileAction
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
-    
+
     private List files = new ArrayList();
 
     private File uploadFile;
@@ -96,7 +96,8 @@ public class UploadFileAction
         FileInputStream fin = null;
         FileOutputStream fout = null;
 
-        String imageDirectoryOnServer = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_CHR_IMAGE_DIRECTORY );
+        String imageDirectoryOnServer = (String) systemSettingManager
+            .getSystemSetting( SystemSettingManager.KEY_CHR_IMAGE_DIRECTORY );
 
         try
         {
