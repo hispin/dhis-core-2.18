@@ -1,6 +1,5 @@
 /*reference local blank image*/
-Ext.BLANK_IMAGE_URL = '../../mfbase/ext/resources/images/default/s.gif';
-Ext.BLANK_IMAGE_URL = '../../mfbase/ext/resources/images/default/s.gif';
+Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
 
 Ext.onReady(function()
 {
