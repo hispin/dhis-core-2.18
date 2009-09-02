@@ -29,9 +29,9 @@
         </property>
         
         <list name="forms" table="formassociations">
-			<key column="formid"/>
+			<key column="formreportid"/>
 			<list-index base="0" column="form_order"/>
-			<many-to-many class="org.hisp.dhis.vn.chr.Form" column="formid" foreign-key="fk_reportid_dataelementid"/>
+			<many-to-many class="org.hisp.dhis.vn.chr.Form" column="formid" foreign-key="fk_reportid_formid"/>
 		</list>
 		
     </class>
