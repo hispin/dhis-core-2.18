@@ -157,7 +157,7 @@ public class SelectFormAction
 
             for ( UserAuthorityGroup group : credentials.getUserAuthorityGroups() )
             {
-                //reports.addAll( group.getReportExcels() );
+                reports.addAll( group.getReportExcels() );
             }
 
         }
