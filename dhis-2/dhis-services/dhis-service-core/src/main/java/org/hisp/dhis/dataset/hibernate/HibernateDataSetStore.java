@@ -146,6 +146,8 @@ public class HibernateDataSetStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataSet> getDataSetsByPeriodType( PeriodType periodType )
     {
+        periodType = periodStore.getPeriodType( periodType.getClass() );
+        
         Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( DataSet.class );

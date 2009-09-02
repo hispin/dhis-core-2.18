@@ -87,7 +87,6 @@ public class ReportLocationManager
 
     public String getReportTemplateDirectory()
     {
-
         return (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
     }
 

@@ -85,11 +85,9 @@ public class HibernateReportExcelStore
 
     public ReportExcelInterface getReport( int id )
     {
-
         Session session = sessionFactory.getCurrentSession();
 
         return (ReportExcelInterface) session.get( ReportExcel.class, id );
-
     }
 
     public ReportExcelInterface getReport( String name )

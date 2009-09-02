@@ -55,7 +55,7 @@ public class UserSettingDeletionHandler
     // -------------------------------------------------------------------------
 
     @Override
-    protected String getClassName()
+    public String getClassName()
     {
         return User.class.getSimpleName();
     }

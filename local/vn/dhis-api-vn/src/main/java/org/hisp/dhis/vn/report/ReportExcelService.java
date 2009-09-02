@@ -29,6 +29,7 @@ package org.hisp.dhis.vn.report;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.user.User;
 /**
  * @author Tran Thanh Tri
  * @version $Id$
@@ -53,9 +54,10 @@ public interface ReportExcelService
     
     public Collection<ReportExcelInterface> getReportsByOrganisationUnit(OrganisationUnit organisationUnit);
 
-    public Collection<ReportExcelInterface> getALLReport();    
+    public Collection<ReportExcelInterface> getALLReport();
     
-
+    public Collection<ReportExcelInterface> getReports( User user, boolean superUser );
+    
     // --------------------------------------
     // Service of Report Item
     // --------------------------------------

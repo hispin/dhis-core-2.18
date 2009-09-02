@@ -8,7 +8,8 @@
 <ul>
 	<li><a href="index.action">$i18n.getString( "generate_report" )&nbsp;</a></li>	
 	<li><a href="getExcelFileByOrganisationUnit.action">$i18n.getString( "import_excel_file_manager" )&nbsp;</a></li>	
-	<li><a href="selectDataSetCompletedReport.action">$i18n.getString( "dataset_completed_report" )&nbsp;</a></li>	
+	<li><a href="selectDataSetCompletedReport.action">$i18n.getString( "dataset_completed_report" )&nbsp;</a></li>
+	<li><a href="getAdminOptions.action">$i18n.getString( "administration" )&nbsp;</a></li>
 </ul>
 
 <script type="text/javascript">

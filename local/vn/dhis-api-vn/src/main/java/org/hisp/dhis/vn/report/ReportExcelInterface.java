@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.user.UserAuthorityGroup;
 
 /**
  * @author Tran Thanh Tri
@@ -78,9 +79,7 @@ public interface ReportExcelInterface
     
     public void addOrganisationAssocition( OrganisationUnit organisationUnit);
 
-
+    public Set<UserAuthorityGroup> getUserRoles();
     
-    
-   
-
+    public void setUserRoles( Set<UserAuthorityGroup> userRoles );
 }

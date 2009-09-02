@@ -26,9 +26,15 @@
  */
 package org.hisp.dhis.vn.report;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserStore;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -49,10 +55,17 @@ public class DefaultReportExcelService
     {
         this.reportStore = reportStore;
     }
+    
+    private UserStore userStore;
 
     // -------------------------------------------------
     // Service of Report
     // -------------------------------------------------
+
+    public void setUserStore( UserStore userStore )
+    {
+        this.userStore = userStore;
+    }
 
     public int addReport( ReportExcelInterface report )
     {
@@ -87,6 +100,30 @@ public class DefaultReportExcelService
     public Collection<ReportExcelInterface> getALLReport()
     {
         return reportStore.getALLReport();
+    }
+    
+    public Collection<ReportExcelInterface> getReports( User user, boolean superUser )
+    {
+        if ( user == null || ( user != null && superUser ) )
+        {
+            return getALLReport();
+        }
+        else
+        {
+            Set<UserAuthorityGroup> userRoles = userStore.getUserCredentials( user ).getUserAuthorityGroups();
+            
+            Collection<ReportExcelInterface> reports = new ArrayList<ReportExcelInterface>();
+            
+            for ( ReportExcelInterface report : getALLReport() )
+            {
+                if ( CollectionUtils.intersection( report.getUserRoles(), userRoles ).size() > 0 )
+                {
+                    reports.add( report );
+                }
+            }
+        
+            return reports;
+        }
     }
 
     // -------------------------------------------------

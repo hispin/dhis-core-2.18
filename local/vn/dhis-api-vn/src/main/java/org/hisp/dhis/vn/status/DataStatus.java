@@ -161,7 +161,7 @@ public class DataStatus
     }
 
     @Override
-    public boolean equals( Object obj )
+    public boolean equals( Object obj ) //TODO check on better candidates
     {
         if ( this == obj )
             return true;
