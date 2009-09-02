@@ -25,71 +25,61 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.vn.report.action;
+package org.hisp.dhis.vn.admin.action;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Collection;
 
-import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserStore;
 import org.hisp.dhis.vn.report.ReportExcelInterface;
 import org.hisp.dhis.vn.report.ReportExcelService;
-import org.hisp.dhis.vn.report.comparator.ReportNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
-/**
- * @author Tran Thanh Tri
- * @version $Id$
- */
-public class ListReportAction
+public class SaveReportUserRolesAction
     implements Action
 {
-
-    // -------------------------------------------
-    // Dependency
-    // -------------------------------------------
-
     private ReportExcelService reportService;
-
-    private CurrentUserService currentUserService;
-
-    // -------------------------------------------
-    // Output
-    // -------------------------------------------
-
-    private List<ReportExcelInterface> reports;
-
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
 
     public void setReportService( ReportExcelService reportService )
     {
         this.reportService = reportService;
     }
 
-    public List<ReportExcelInterface> getReports()
+    private UserStore userStore;
+
+    public void setUserStore( UserStore userStore )
     {
-        return reports;
+        this.userStore = userStore;
     }
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
+    private Integer reportId;
+
+    public void setReportId( Integer reportId )
     {
-        this.currentUserService = currentUserService;
+        this.reportId = reportId;
     }
 
-    // -------------------------------------------------------------------------
+    private Collection<Integer> userRoleId = new ArrayList<Integer>();
+
+    public void setUserRoleId( Collection<Integer> userRoleId )
+    {
+        this.userRoleId = userRoleId;
+    }
     
     public String execute()
-        throws Exception
     {
-        reports = new ArrayList<ReportExcelInterface>( 
-            reportService.getReports( currentUserService.getCurrentUser(), currentUserService.currentUserIsSuper() ) );
+        ReportExcelInterface report = reportService.getReport( reportId );
         
-        Collections.sort( reports, new ReportNameComparator() );
-
+        report.getUserRoles().clear();
+        
+        for ( Integer id : userRoleId )
+        {
+            report.getUserRoles().add( userStore.getUserAuthorityGroup( id ) );
+        }
+        
+        reportService.updateReport( report );
+        
         return SUCCESS;
     }
-
 }

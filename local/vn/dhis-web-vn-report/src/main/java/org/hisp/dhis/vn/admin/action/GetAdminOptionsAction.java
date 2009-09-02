@@ -25,71 +25,81 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.vn.report.action;
+package org.hisp.dhis.vn.admin.action;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Collection;
 
-import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserStore;
 import org.hisp.dhis.vn.report.ReportExcelInterface;
 import org.hisp.dhis.vn.report.ReportExcelService;
-import org.hisp.dhis.vn.report.comparator.ReportNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
-/**
- * @author Tran Thanh Tri
- * @version $Id$
- */
-public class ListReportAction
+public class GetAdminOptionsAction
     implements Action
 {
-
-    // -------------------------------------------
-    // Dependency
-    // -------------------------------------------
+    private UserStore userStore;
+    
+    public void setUserStore( UserStore userStore )
+    {
+        this.userStore = userStore;
+    }
 
     private ReportExcelService reportService;
-
-    private CurrentUserService currentUserService;
-
-    // -------------------------------------------
-    // Output
-    // -------------------------------------------
-
-    private List<ReportExcelInterface> reports;
-
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
 
     public void setReportService( ReportExcelService reportService )
     {
         this.reportService = reportService;
     }
 
-    public List<ReportExcelInterface> getReports()
+    private Integer reportId;
+
+    public Integer getReportId()
+    {
+        return reportId;
+    }
+    
+    public void setReportId( Integer reportId )
+    {
+        this.reportId = reportId;
+    }
+
+    private Collection<UserAuthorityGroup> availableUserRoles;
+
+    public Collection<UserAuthorityGroup> getAvailableUserRoles()
+    {
+        return availableUserRoles;
+    }
+
+    private Collection<UserAuthorityGroup> selectedUserRoles;
+
+    public Collection<UserAuthorityGroup> getSelectedUserRoles()
+    {
+        return selectedUserRoles;
+    }
+
+    private Collection<ReportExcelInterface> reports;
+    
+    public Collection<ReportExcelInterface> getReports()
     {
         return reports;
     }
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
-    // -------------------------------------------------------------------------
-    
     public String execute()
-        throws Exception
     {
-        reports = new ArrayList<ReportExcelInterface>( 
-            reportService.getReports( currentUserService.getCurrentUser(), currentUserService.currentUserIsSuper() ) );
+        reports = reportService.getALLReport();
         
-        Collections.sort( reports, new ReportNameComparator() );
-
+        if ( reportId != null && reportId != -1 )
+        {
+            ReportExcelInterface report = reportService.getReport( reportId );
+            
+            availableUserRoles = userStore.getAllUserAuthorityGroups();            
+            availableUserRoles.removeAll( report.getUserRoles() );
+            
+            selectedUserRoles = report.getUserRoles();
+        }
+        
         return SUCCESS;
     }
-
 }

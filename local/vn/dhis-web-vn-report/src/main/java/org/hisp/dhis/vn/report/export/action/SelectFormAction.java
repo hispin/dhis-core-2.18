@@ -39,11 +39,9 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
-import org.hisp.dhis.vn.report.*;
+import org.hisp.dhis.vn.report.ReportExcelInterface;
+import org.hisp.dhis.vn.report.ReportExcelService;
 import org.hisp.dhis.vn.report.comparator.ReportNameComparator;
 import org.hisp.dhis.vn.report.state.SelectionManager;
 import org.hisp.dhis.vn.report.utils.DateUtils;
@@ -71,8 +69,6 @@ public class SelectFormAction
 
     private CurrentUserService currentUserService;
 
-    private UserStore userStore;
-
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
@@ -86,11 +82,6 @@ public class SelectFormAction
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
-
-    public void setUserStore( UserStore userStore )
-    {
-        this.userStore = userStore;
-    }
 
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
@@ -135,32 +126,15 @@ public class SelectFormAction
     public String execute()
         throws Exception
     {
-
         organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
-        if ( organisationUnit== null)  return SUCCESS;
-
-        User currentUser = currentUserService.getCurrentUser();
-
-        if ( currentUserService.currentUserIsSuper() )
+        if ( organisationUnit== null )
         {
-
-            reports = new ArrayList<ReportExcelInterface>( reportService.getALLReport() );
-
+            return SUCCESS;
         }
-        else
-        {
 
-            reports = new ArrayList<ReportExcelInterface>();
-
-            UserCredentials credentials = userStore.getUserCredentials( currentUser );
-
-            for ( UserAuthorityGroup group : credentials.getUserAuthorityGroups() )
-            {
-                reports.addAll( group.getReportExcels() );
-            }
-
-        }
+        reports = new ArrayList<ReportExcelInterface>( 
+            reportService.getReports( currentUserService.getCurrentUser(), currentUserService.currentUserIsSuper() ) );
 
         Collection<ReportExcelInterface> reportAssociation = reportService
             .getReportsByOrganisationUnit( organisationUnit );

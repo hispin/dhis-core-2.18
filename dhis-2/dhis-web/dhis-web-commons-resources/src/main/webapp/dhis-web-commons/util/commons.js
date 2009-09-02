@@ -270,9 +270,7 @@ function hideInfo()
  */
 function showDetails()
 {
-    $( '#detailsArea' ).show( "fast" ); //jquery specific
-    
-    //document.getElementById( 'detailsArea' ).style.display = 'block';
+    $( '#detailsArea' ).show( "fast" );
 }
 
 /**
@@ -280,9 +278,7 @@ function showDetails()
  */
 function hideDetails()
 {
-    $( '#detailsArea' ).hide( "fast" ); //jquery specific
-    
-    //document.getElementById( 'detailsArea' ).style.display = 'none';
+    $( '#detailsArea' ).hide( "fast" );
 }
 
 /**
@@ -290,9 +286,7 @@ function hideDetails()
  */
 function showWarning()
 {
-    $( '#warningArea' ).show( "fast" ); //jquery specific
-    
-    //document.getElementById( 'warningArea' ).style.display = 'block';
+    $( '#warningArea' ).show( "fast" );
 }
 
 /**
@@ -300,9 +294,7 @@ function showWarning()
  */
 function hideWarning()
 {
-    $( '#warningArea' ).hide( "fast" ); //jquery specific
-    
-    //document.getElementById( 'warningArea' ).style.display = 'none';
+    $( '#warningArea' ).hide( "fast" );
 }
 
 /**
@@ -446,4 +438,26 @@ function addOptionToList( list, optionValue, optionText )
     option.value = optionValue;
     option.text = optionText;
     list.add( option, null );
+}
+
+/**
+ * Returns a query string on the form <paramName>=<listValue> based on the options
+ * in the list with the given identifier.
+ * 
+ * @param listId the list identifier.
+ * @param paramName the name of the query param.
+ * @return a query string.
+ */
+function getQueryStringFromList( listId, paramName )
+{
+	var list = document.getElementById( listId );
+	
+	var params = "";
+	
+	for ( var i = 0; i < list.options.length; i++ )
+	{
+		params += paramName + "=" + list.options[i].value + "&";
+	}
+	
+	return params;
 }

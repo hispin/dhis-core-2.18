@@ -15,6 +15,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.vn.report.DefaultReportExcelService">
     <property name="reportStore"
    	  ref="org.hisp.dhis.vn.report.ReportExcelStore"/>
+    <property name="userStore" 
+      ref="org.hisp.dhis.user.UserStore" />
   </bean>
   
   <!-- DataStatus -->

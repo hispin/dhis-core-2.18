@@ -353,8 +353,6 @@
 			<param name="javascripts">javascript/imports.js</param>
 		</action>
 	
-		
-		<!-- HIEU DONE -->
 		<!-- DataElement -->
 		
 		<action name="getDataElementGroupsAndCateCombosList" 
@@ -391,29 +389,38 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		
 		<action name="getSelectedElementsAndAvailableElements" 
 			class="org.hisp.dhis.vn.report.action.GetReportAction">
 			<result name="success" type="chain">openSelectedElementsAndAvailableElementsChain</result>				
 		</action>	
-		
 		
 		<action name="openSelectedElementsAndAvailableElementsChain" 
 			class="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupMembersAction">
 			<result name="success" type="velocity-xml">/dhis-web-vn-report/responseReport.vm</result>
 		</action>			
 
-		
 		<action name="updateElementsAndComboReportCategory" 
 			class="org.hisp.dhis.vn.report.action.UpdateElementMembersAndCateComboReportCategoryAction">
 			<result name="success" type="velocity-xml">/dhis-web-vn-report/responseSuccess.vm</result>
 			<param name="requiredAuthorities">F_UPDATE_REPORT_VN</param>
 		</action>
 		
-		
 		<action name="getOptionComboList" class="org.hisp.dhis.vn.categorycombo.action.GetOptionCombosAction">
 			<result name="success" type="velocity-xml">/dhis-web-vn-report/categorycombo/responseOptionComboList.vm</result>
 			<param name="javascripts">javascript/export.js,javascript/dataelement.js,javascript/report.js</param>
+		</action>
+		
+		<!-- Admin -->
+		
+		<action name="getAdminOptions" class="org.hisp.dhis.vn.admin.action.GetAdminOptionsAction">
+		    <result name="success" type="velocity">/main.vm</result>
+		    <param name="page">/dhis-web-vn-report/viewAdminOptions.vm</param>
+		    <param name="menu">/dhis-web-vn-report/menu.vm</param>
+		    <param name="javascripts">javascript/admin.js</param>
+		</action>
+		
+		<action name="saveReportUserRoles" class="org.hisp.dhis.vn.admin.action.SaveReportUserRolesAction">
+		    <result name="success" type="chain">getAdminOptions</result>
 		</action>
 		
 	</package>

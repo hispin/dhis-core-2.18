@@ -92,7 +92,9 @@ public interface LocationManager
     /**
      * Gets a file relative to the external configuration directory location,
      * which is set through an environment variable. A LocationManagerException 
-     * is thrown if the external directory location is not set.
+     * is thrown if the external directory location is not set. The method tries
+     * to construct the directories passed as arguments if they do not already
+     * exist, and trows a LocationManagerException if the process was unsuccessful.
      * 
      * @param fileName the name of the file to be written.
      */

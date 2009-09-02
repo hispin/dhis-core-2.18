@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.user.UserAuthorityGroup;
 
 /**
  * @author Tran Thanh Tri
@@ -56,13 +57,14 @@ public abstract class ReportExcel
     private Set<ReportItem> reportItems = new HashSet<ReportItem>();
 
     private Set<OrganisationUnit> organisationAssocitions = new HashSet<OrganisationUnit>();
+    
+    private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
 
     public void addOrganisationAssocition( OrganisationUnit organisationUnit )
     {
-
         organisationAssocitions.add( organisationUnit );
-
     }
+    
     public ReportExcel( String name, String excelTemplateFile, int periodRow, int periodColumn, int organisationRow,
         int organisationColumn )
     {
@@ -150,7 +152,7 @@ public abstract class ReportExcel
         if ( getClass() != obj.getClass() )
             return false;
         ReportExcel other = (ReportExcel) obj;
-        if ( id != other.id )
+        if ( name != other.name )
             return false;
         return true;
     }
@@ -218,4 +220,13 @@ public abstract class ReportExcel
         this.organisationAssocitions = organisationAssocitions;
     }
 
+    public Set<UserAuthorityGroup> getUserRoles()
+    {
+        return userRoles;
+    }
+
+    public void setUserRoles( Set<UserAuthorityGroup> userRoles )
+    {
+        this.userRoles = userRoles;
+    }
 }

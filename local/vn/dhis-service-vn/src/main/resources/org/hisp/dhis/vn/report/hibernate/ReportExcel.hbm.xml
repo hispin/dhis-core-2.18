@@ -22,7 +22,12 @@
 		<set name="organisationAssocitions" table="reportexcelassociations">
 			<key column="reportid"/>
 			<many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationid"/>
-		</set>	
+		</set>
+		
+		<set name="userRoles" table="reportexceluserroles">
+		    <key column="reportid" />
+		    <many-to-many class="org.hisp.dhis.user.UserAuthorityGroup" column="userroleid"/>
+		</set>
 
 		<joined-subclass name="org.hisp.dhis.vn.report.ReportExcelNormal" table="reportexcelnormal">
 			<key column="reportid" />			
@@ -35,8 +40,7 @@
 		
 		<joined-subclass name="org.hisp.dhis.vn.report.ReportExcelListing" table="reportexcellisting">
 			<key column="reportid"/>
-		</joined-subclass>
-		
+		</joined-subclass>		
 
 		<joined-subclass name="org.hisp.dhis.vn.report.ReportExcelCategory" table="reportexcelcategory">
 			<key column="reportid"/>
@@ -44,23 +48,18 @@
 				<key column="reportid"/>
 				<list-index base="0" column="dataelement_order"/>
 				<many-to-many class="org.hisp.dhis.dataelement.DataElement" column="dataelementid" foreign-key="fk_reportid_dataelementid"/>
-		    </list>
-			
+		    </list>			
 			<many-to-one name="categoryCombo" class="org.hisp.dhis.dataelement.DataElementCategoryCombo" column="category_combo_id" foreign-key="fk_reportid_periodtypeid" lazy="false"/>
-			
 		</joined-subclass>
 		
-		<joined-subclass name="org.hisp.dhis.vn.report.ReportExcelGroupListing" table="reportexcelgrouplisting">
-			
-			<key column="reportid"/>
-			
+		<joined-subclass name="org.hisp.dhis.vn.report.ReportExcelGroupListing" table="reportexcelgrouplisting">			
+			<key column="reportid"/>			
 			<list  name="organisationUnitGroups" table="reportexcel_organisationgroup">
 				<key column="reportid" />
 				<list-index column="grouporder" base="0"/>				
 				<many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnitGroup" column="oganisationunitgroupid"
 				foreign-key="fk_reportid_organisationgroupid"/>
-			</list>	
-		
+			</list>		
 		</joined-subclass>
 		
 	</class>
