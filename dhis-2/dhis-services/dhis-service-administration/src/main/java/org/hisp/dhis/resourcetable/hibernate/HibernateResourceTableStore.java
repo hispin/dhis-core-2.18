@@ -38,6 +38,7 @@ import org.hisp.dhis.resourcetable.GroupSetStructure;
 import org.hisp.dhis.resourcetable.OrganisationUnitStructure;
 import org.hisp.dhis.resourcetable.ResourceTableStore;
 import org.hisp.dhis.resourcetable.statement.CreateExclusiveGroupSetTableStatement;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -166,6 +167,13 @@ public class HibernateResourceTableStore
 
     public void removeExclusiveGroupSetStructureTable()
     {
-        jdbcTemplate.update( "DROP TABLE " + CreateExclusiveGroupSetTableStatement.TABLE_NAME );    
+        try
+        {
+            jdbcTemplate.update( "DROP TABLE " + CreateExclusiveGroupSetTableStatement.TABLE_NAME );
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            // Do nothing, table does not exist
+        }
     }
 }
