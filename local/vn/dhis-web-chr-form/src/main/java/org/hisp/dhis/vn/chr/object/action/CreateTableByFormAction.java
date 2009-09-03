@@ -20,32 +20,12 @@ public class CreateTableByFormAction
 
     private FormManager formManager;
 
-    private FormService formService;
-
-    // -----------------------------------------------------------------------------------------------
-    // Input & Output
-    // -----------------------------------------------------------------------------------------------
-
-    private Integer id;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters & Setters
-    // -----------------------------------------------------------------------------------------------
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
     public void setFormManager( FormManager formManager )
     {
         this.formManager = formManager;
     }
+
+    private FormService formService;
 
     public void setFormService( FormService formService )
     {
@@ -53,7 +33,18 @@ public class CreateTableByFormAction
     }
 
     // -----------------------------------------------------------------------------------------------
-    // Implement
+    // Input & Output
+    // -----------------------------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    // -----------------------------------------------------------------------------------------------
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()

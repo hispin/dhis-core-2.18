@@ -23,24 +23,20 @@ public class GetDataSets
 
     private DataSetService dataSetService;
 
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
     private ArrayList<DataSet> dataSets;
 
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setters
-    // -----------------------------------------------------------------------------------------------
-
     public ArrayList<DataSet> getDataSets()
     {
         return dataSets;
-    }
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
     }
 
     // -----------------------------------------------------------------------------------------------
@@ -51,23 +47,12 @@ public class GetDataSets
         throws Exception
     {
 
-        try
-        {
+        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
 
-            dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        Collections.sort( dataSets, new DataSetNameComparator() );
 
-            Collections.sort( dataSets, new DataSetNameComparator() );
+        message = i18n.getString( "success" );
 
-            message = i18n.getString( "success" );
-
-        }
-        catch ( Exception ex )
-        {
-
-            ex.printStackTrace();
-            message = i18n.getString( "error" );
-
-        }
         return SUCCESS;
     }
 

@@ -25,6 +25,11 @@ public class ListFormAction
 
     private FormService formService;
 
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
+
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
@@ -40,24 +45,13 @@ public class ListFormAction
         return forms;
     }
 
-    public void setForms( List<Form> forms )
-    {
-        this.forms = forms;
-    }
-
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
-    }
-
     // -----------------------------------------------------------------------------------------------
-    // Implement
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-
         forms = new ArrayList<Form>( formService.getAllForms() );
 
         Collections.sort( forms, new FormNameComparator() );

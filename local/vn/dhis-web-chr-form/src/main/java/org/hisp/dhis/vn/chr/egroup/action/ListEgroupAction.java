@@ -17,38 +17,34 @@ public class ListEgroupAction
 
     private FormService formService;
 
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
+
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
     private Integer formID;
 
-    private Form form;
-
-    private Collection<Egroup> egroups;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-
     public void setFormID( Integer formID )
     {
         this.formID = formID;
     }
 
-    public Collection<Egroup> getEgroups()
-    {
-        return this.egroups;
-    }
-
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
-    }
+    private Form form;
 
     public Form getForm()
     {
         return form;
+    }
+
+    private Collection<Egroup> egroups;
+
+    public Collection<Egroup> getEgroups()
+    {
+        return this.egroups;
     }
 
     // -----------------------------------------------------------------------------------------------

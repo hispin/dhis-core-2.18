@@ -19,85 +19,51 @@ public class AddFormAction
 
     private FormService formService;
 
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
+
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
     private String name;
 
-    private String label;
-
-    private int noColumn;
-
-    private int noColumnLink;
-
-    private String icon;
-
-    private boolean visible;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
     public void setName( String name )
     {
         this.name = name;
     }
 
-    public String getLabel()
-    {
-        return label;
-    }
+    private String label;
 
     public void setLabel( String label )
     {
         this.label = label;
     }
 
-    public int getNoColumn()
-    {
-        return noColumn;
-    }
+    private int noColumn;
 
     public void setNoColumn( int noColumn )
     {
         this.noColumn = noColumn;
     }
 
-    public int getNoColumnLink()
-    {
-        return noColumnLink;
-    }
+    private int noColumnLink;
 
     public void setNoColumnLink( int noColumnLink )
     {
         this.noColumnLink = noColumnLink;
     }
 
-    public String getIcon()
-    {
-        return icon;
-    }
+    private String icon;
 
     public void setIcon( String icon )
     {
         this.icon = icon;
     }
 
-    public boolean getVisible()
-    {
-        return visible;
-    }
+    private boolean visible;
 
     public void setVisible( boolean visible )
     {
@@ -105,33 +71,42 @@ public class AddFormAction
     }
 
     // -----------------------------------------------------------------------------------------------
-    // Implements
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
 
-        Form form = new Form();
+        try
+        {
+            Form form = new Form();
 
-        form.setName( CodecUtils.unescape( name ) );
+            form.setName( CodecUtils.unescape( name ) );
 
-        form.setLabel( CodecUtils.unescape( label ) );
+            form.setLabel( CodecUtils.unescape( label ) );
 
-        form.setNoColumn( noColumn );
+            form.setNoColumn( noColumn );
 
-        form.setNoColumnLink( noColumnLink );
+            form.setNoColumnLink( noColumnLink );
 
-        form.setIcon( icon );
+            form.setIcon( icon );
 
-        form.setVisible( visible );
+            form.setVisible( visible );
 
-        form.setCreated( false );
+            form.setCreated( false );
 
-        formService.addForm( form );
+            formService.addForm( form );
 
-        message = i18n.getString( "success" );
+            message = i18n.getString( "success" );
 
-        return SUCCESS;
+            return SUCCESS;
+        }
+        catch ( Exception ex )
+        {
+            message = i18n.getString( "add" ) + " " + i18n.getString( "error" );
+            
+            ex.printStackTrace();
+        }
+        return ERROR;
     }
 }

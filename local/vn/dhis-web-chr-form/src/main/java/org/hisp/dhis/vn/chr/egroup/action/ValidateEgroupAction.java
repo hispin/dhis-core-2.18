@@ -17,26 +17,12 @@ public class ValidateEgroupAction
 
     private String name;
 
-    private Integer sortOrder;
-
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
-
-    public String getName()
-    {
-        return name;
-    }
-
     public void setName( String name )
     {
         this.name = name;
     }
 
-    public Integer getSortOrder()
-    {
-        return sortOrder;
-    }
+    private Integer sortOrder;
 
     public void setSortOrder( Integer sortOrder )
     {
@@ -44,7 +30,7 @@ public class ValidateEgroupAction
     }
 
     // -------------------------------------------
-    // Implement
+    // Action Implementation
     // -------------------------------------------
 
     public String execute()
@@ -57,9 +43,12 @@ public class ValidateEgroupAction
             return ERROR;
         }
 
-        if ( sortOrder == null || sortOrder.intValue() == 0 )
+        if ( sortOrder == null  )
         {
             message = i18n.getString( "sortOrder" ) + " " + i18n.getString( "not_null" );
+            return ERROR;
+        }else if(sortOrder.intValue() == 0){
+            message = i18n.getString( "sortOrder" ) + " " + i18n.getString( "not_string" );
             return ERROR;
         }
 

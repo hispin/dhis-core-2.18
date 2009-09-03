@@ -21,7 +21,17 @@ public class AddFormReport
 
     private FormService formService;
 
+    public void setFormReportService( FormReportService formReportService )
+    {
+        this.formReportService = formReportService;
+    }
+
     private FormReportService formReportService;
+
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
     // -----------------------------------------------------------------------------------------------
     // Input && Output
@@ -29,44 +39,30 @@ public class AddFormReport
 
     private String name;
 
-    private String chosenOperand;
-
-    private String formula;
-
-    private Integer mainForm;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setters
-    // -----------------------------------------------------------------------------------------------
-
-    public void setMainForm( Integer mainForm )
-    {
-        this.mainForm = mainForm;
-    }
-
     public void setName( String name )
     {
         this.name = name;
     }
+
+    private String chosenOperand;
 
     public void setChosenOperand( String chosenOperand )
     {
         this.chosenOperand = chosenOperand;
     }
 
+    private String formula;
+
     public void setFormula( String formula )
     {
         this.formula = formula;
     }
 
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
-    }
+    private Integer mainForm;
 
-    public void setFormReportService( FormReportService formReportService )
+    public void setMainForm( Integer mainForm )
     {
-        this.formReportService = formReportService;
+        this.mainForm = mainForm;
     }
 
     // -----------------------------------------------------------------------------------------------
@@ -74,47 +70,56 @@ public class AddFormReport
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
-
-        // create a new formReport
-        FormReport formReport = new FormReport();
-
-        // set name
-        formReport.setName( CodecUtils.unescape( name ) );
-
-        // set formula for the element
-        formula = formula.toLowerCase();
-        formReport.setFormula( formula );
-
-        // get all forms
-        Collection<Form> forms = formService.getAllForms();
-        // forms used in the formula
-        List<Form> formulaForms = new ArrayList<Form>();
-        for ( Form form : forms )
+        try
         {
-            String formName = form.getName().toLowerCase() + ".";
-            if ( formula.contains( formName ) )
+
+            // create a new formReport
+            FormReport formReport = new FormReport();
+
+            // set name
+            formReport.setName( CodecUtils.unescape( name ) );
+
+            // set formula for the element
+            formula = formula.toLowerCase();
+            formReport.setFormula( formula );
+
+            // get all forms
+            Collection<Form> forms = formService.getAllForms();
+            // forms used in the formula
+            List<Form> formulaForms = new ArrayList<Form>();
+            for ( Form form : forms )
             {
-                formulaForms.add( form );
+                String formName = form.getName().toLowerCase() + ".";
+                if ( formula.contains( formName ) )
+                {
+                    formulaForms.add( form );
+                }
             }
+            // set forms used in the formula
+            Form main = formService.getForm( mainForm.intValue() );
+            formulaForms.add( main );
+            formReport.setForms( formulaForms );
+            // set mainForm used to identify statistics-form
+            formReport.setMainForm( main );
+
+            // set operand of dataelement
+            formReport.setOperand( chosenOperand );
+
+            // insert new formReport into database
+            formReportService.addFormReport( formReport );
+
+            message = i18n.getString( "success" );
+
+            return SUCCESS;
         }
-        // set forms used in the formula
-        Form main = formService.getForm( mainForm.intValue() );
-        formulaForms.add( main );
-        formReport.setForms( formulaForms );
-        // set mainForm used to identify statistics-form
-        formReport.setMainForm( main );
+        catch ( Exception ex )
+        {
+            message = i18n.getString( "add" ) + " " + i18n.getString( "error" );
 
-        // set operand of dataelement
-        formReport.setOperand( chosenOperand );
-
-        // insert new formReport into database
-        formReportService.addFormReport( formReport );
-
-        message = i18n.getString( "success" );
-
-        return SUCCESS;
+            ex.printStackTrace();
+        }
+        return ERROR;
     }
 
 }

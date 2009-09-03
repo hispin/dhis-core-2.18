@@ -183,7 +183,7 @@
 	<input type="button" value="$i18n.getString('cancel')" onClick="hideById('element');deleteDivEffect();"/>
 	</p>
 </div>
-<div id="associationDataelement" style="position:fixed;display:block;width:660px;z-index:10001;background-color: white;border: medium solid silver;height:210px;padding:20px;">
+<div id="associationDataelement" style="position:fixed;display:none;width:660px;z-index:10001;background-color: white;border: medium solid silver;height:210px;padding:20px;">
   <div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onClick="hideById('associationDataelement');deleteDivEffect();">[x]</div>
   <input type="hidden" id="egroupID" name="egroupID">
 <table >

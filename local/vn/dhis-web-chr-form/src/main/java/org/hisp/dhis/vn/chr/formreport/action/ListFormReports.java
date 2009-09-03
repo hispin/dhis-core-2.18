@@ -17,37 +17,8 @@ public class ListFormReports
     // -----------------------------------------------------------------------------------------------
     // Dependencies
     // -----------------------------------------------------------------------------------------------
-    
+
     private FormReportService formReportService;
-
-    // -----------------------------------------------------------------------------------------------
-    // Input && Output
-    // -----------------------------------------------------------------------------------------------
-    
-    private Integer id; // element's id
-
-    private Form form;
-
-    private List<FormReport> formReports;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setters
-    // -----------------------------------------------------------------------------------------------
-    
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public Form getForm()
-    {
-        return form;
-    }
-
-    public List<FormReport> getFormReports()
-    {
-        return formReports;
-    }
 
     public void setFormReportService( FormReportService formReportService )
     {
@@ -55,11 +26,28 @@ public class ListFormReports
     }
 
     // -----------------------------------------------------------------------------------------------
-    // Implement
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
+
+    private Form form;
+
+    public Form getForm()
+    {
+        return form;
+    }
+
+    private List<FormReport> formReports;
+
+    public List<FormReport> getFormReports()
+    {
+        return formReports;
+    }
+
+    // -----------------------------------------------------------------------------------------------
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
         try
         {

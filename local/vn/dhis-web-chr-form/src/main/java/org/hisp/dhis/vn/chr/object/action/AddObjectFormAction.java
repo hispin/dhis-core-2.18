@@ -27,7 +27,17 @@ public class AddObjectFormAction
 
     private FormService formService;
 
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
+
     private FormManager formManager;
+
+    public void setFormManager( FormManager formManager )
+    {
+        this.formManager = formManager;
+    }
 
     // -----------------------------------------------------------------------------------------------
     // Input && Output
@@ -35,76 +45,37 @@ public class AddObjectFormAction
 
     private int formId;
 
-    private Collection<Egroup> egroups;
-
-    private Form form;
-
-    private String objectId;
-
-    private ArrayList<String> parentObject;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
-    }
-
-    public void setFormManager( FormManager formManager )
-    {
-        this.formManager = formManager;
-    }
-
-    public Collection<Egroup> getEgroups()
-    {
-        return this.egroups;
-    }
-
-    public void setEgroups( Collection<Egroup> egroups )
-    {
-        this.egroups = egroups;
-    }
-
-    public int getFormId()
-    {
-        return formId;
-    }
-
     public void setFormId( int formId )
     {
         this.formId = formId;
     }
+
+    private Collection<Egroup> egroups;
+
+    public Collection<Egroup> getEgroups()
+    {
+        return egroups;
+    }
+
+    private Form form;
 
     public Form getForm()
     {
         return form;
     }
 
-    public void setForm( Form form )
-    {
-        this.form = form;
-    }
-
-    public String getObjectId()
-    {
-        return objectId;
-    }
+    private String objectId;
 
     public void setObjectId( String objectId )
     {
         this.objectId = objectId;
     }
 
+    private ArrayList<String> parentObject;
+
     public ArrayList<String> getParentObject()
     {
         return parentObject;
-    }
-
-    public void setParentObject( ArrayList<String> parentObject )
-    {
-        this.parentObject = parentObject;
     }
 
     // -----------------------------------------------------------------------------------------------

@@ -28,22 +28,13 @@ public class SetNumberOfRecordsAction
 
     private String numberOfRecords;
 
-    // -------------------------------------------------------------------------
-    // Getters && Setters
-    // -------------------------------------------------------------------------
-
     public String getNumberOfRecords()
     {
         return numberOfRecords;
     }
 
-    public void setNumberOfRecords( String numberOfRecords )
-    {
-        this.numberOfRecords = numberOfRecords;
-    }
-
     // --------------------------------------------------------------------
-    // Implements
+    // Action implementation
     // --------------------------------------------------------------------
 
     public String execute()

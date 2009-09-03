@@ -23,17 +23,7 @@ public class GetElementsForGroupAction
     // ------------------------------------------------------------------------------------------
 
     private Form form;
-
-    // egroups of the form
-
-    Collection<Egroup> egroups;
-
-    Collection<Element> availableElements;
-
-    // ------------------------------------------------------------------------------------------
-    // Getters & Setters
-    // ------------------------------------------------------------------------------------------
-
+    
     public Form getForm()
     {
         return form;
@@ -44,20 +34,14 @@ public class GetElementsForGroupAction
         this.form = form;
     }
 
-    public void setEgroups( Collection<Egroup> egroups )
-    {
-        this.egroups = egroups;
-    }
+    Collection<Egroup> egroups;
 
     public Collection<Egroup> getEgroups()
     {
         return egroups;
     }
-
-    public void setAvailableElements( Collection<Element> availableElements )
-    {
-        this.availableElements = availableElements;
-    }
+    
+    Collection<Element> availableElements;
 
     public Collection<Element> getAvailableElements()
     {
@@ -65,7 +49,7 @@ public class GetElementsForGroupAction
     }
 
     // ------------------------------------------------------------------------------------------
-    // Implement
+    // Action Implementation
     // ------------------------------------------------------------------------------------------
     public String execute()
         throws Exception

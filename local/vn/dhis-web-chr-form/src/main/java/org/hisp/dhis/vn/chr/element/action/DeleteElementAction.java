@@ -18,44 +18,41 @@ public class DeleteElementAction
 
     private ElementService elementService;
 
-    // -----------------------------------------------------------------------------------------------
-    // Input && Output
-    // -----------------------------------------------------------------------------------------------
-
-    private Integer id;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setters
-    // -----------------------------------------------------------------------------------------------
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public Integer getId()
-    {
-        return id;
-    }
-
     public void setElementService( ElementService elementService )
     {
         this.elementService = elementService;
     }
 
     // -----------------------------------------------------------------------------------------------
-    // Implement
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    // -----------------------------------------------------------------------------------------------
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
+        try
+        {
+            elementService.deleteElement( id.intValue() );
 
-        elementService.deleteElement( id.intValue() );
+            message = i18n.getString( "success" );
 
-        message = i18n.getString( "success" );
-
-        return SUCCESS;
+            return SUCCESS;
+        }
+        catch ( Exception ex )
+        {
+            message = i18n.getString( "delete" ) + " " + i18n.getString( "error" );
+        }
+        return ERROR;
     }
 
 }

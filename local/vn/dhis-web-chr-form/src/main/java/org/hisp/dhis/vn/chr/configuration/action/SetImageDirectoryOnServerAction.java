@@ -29,22 +29,13 @@ public class SetImageDirectoryOnServerAction
 
     private String imageDirectoryOnServer;
 
-    // -------------------------------------------------------------------------
-    // Getters && Setters
-    // -------------------------------------------------------------------------
-
-    public void setImageDirectoryOnServer( String imageDirectoryOnServer )
-    {
-        this.imageDirectoryOnServer = imageDirectoryOnServer;
-    }
-
     public String getImageDirectoryOnServer()
     {
         return imageDirectoryOnServer;
     }
 
     // --------------------------------------------------------------------
-    // Implements
+    // Action implementation
     // --------------------------------------------------------------------
 
     public String execute()

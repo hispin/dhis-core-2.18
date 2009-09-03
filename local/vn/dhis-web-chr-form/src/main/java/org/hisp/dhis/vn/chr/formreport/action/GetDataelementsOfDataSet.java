@@ -27,46 +27,17 @@ public class GetDataelementsOfDataSet
 
     private DataSetService dataSetService;
 
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
-
-    // -----------------------------------------------------------------------------------------------
-    // Input && Output
-    // -----------------------------------------------------------------------------------------------
-
-    private List<Operand> operands = new ArrayList<Operand>();
-
-    private ArrayList<DataElement> dataelements;
-
-    private int dataSetId;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setters
-    // -----------------------------------------------------------------------------------------------
-
-    public List<Operand> getOperands()
-    {
-        return operands;
-    }
-
-    public void setDataElementCategoryOptionComboService(
-        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
-    {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
-    }
-
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
 
-    public ArrayList<DataElement> getDataelements()
-    {
-        return dataelements;
-    }
+    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    public void setDataSetId( int dataSetId )
+    public void setDataElementCategoryOptionComboService(
+        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
     {
-        this.dataSetId = dataSetId;
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
 
     // -------------------------------------------------------------------------
@@ -91,6 +62,31 @@ public class GetDataelementsOfDataSet
     {
 
         this.displayPropertyHandler = displayPropertyHandler;
+    }
+
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
+
+    private List<Operand> operands = new ArrayList<Operand>();
+
+    public List<Operand> getOperands()
+    {
+        return operands;
+    }
+
+    private ArrayList<DataElement> dataelements;
+
+    public ArrayList<DataElement> getDataelements()
+    {
+        return dataelements;
+    }
+
+    private int dataSetId;
+
+    public void setDataSetId( int dataSetId )
+    {
+        this.dataSetId = dataSetId;
     }
 
     // -----------------------------------------------------------------------------------------------

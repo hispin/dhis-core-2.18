@@ -19,41 +19,27 @@ public class GetElementById
 
     private ElementService elementService;
 
+    public void setElementService( ElementService elementService )
+    {
+        this.elementService = elementService;
+    }
+
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
     private Integer id;
 
-    private Element element;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setter
-    // -----------------------------------------------------------------------------------------------
-
     public void setId( Integer id )
     {
         this.id = id;
     }
 
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setElementService( ElementService elementService )
-    {
-        this.elementService = elementService;
-    }
+    private Element element;
 
     public Element getElement()
     {
         return element;
-    }
-
-    public void setElement( Element element )
-    {
-        this.element = element;
     }
 
     // -----------------------------------------------------------------------------------------------

@@ -20,7 +20,17 @@ public class AddElementAction
 
     private FormService formService;
 
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
+
     private ElementService elementService;
+
+    public void setElementService( ElementService elementService )
+    {
+        this.elementService = elementService;
+    }
 
     // -----------------------------------------------------------------------------------------------
     // Input && Output
@@ -30,44 +40,9 @@ public class AddElementAction
 
     private String name;
 
-    private String label;
-
-    private String type;
-
-    private String controlType;
-
-    private String initialValue;
-
-    private int formLink;
-
-    private boolean required;
-
-    private int sortOrder;
-
-    // private int egroupID;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setters
-    // -----------------------------------------------------------------------------------------------
-
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
-    }
-
-    public int getFormID()
-    {
-        return formID;
-    }
-
     public void setFormID( int formID )
     {
         this.formID = formID;
-    }
-
-    public String getName()
-    {
-        return name;
     }
 
     public void setName( String name )
@@ -75,114 +50,96 @@ public class AddElementAction
         this.name = name;
     }
 
-    public String getLabel()
-    {
-        return label;
-    }
+    private String label;
 
     public void setLabel( String label )
     {
         this.label = label;
     }
 
-    public String getType()
-    {
-        return type;
-    }
+    private String type;
 
     public void setType( String type )
     {
         this.type = type;
     }
 
-    public String getControlType()
-    {
-        return controlType;
-    }
+    private String controlType;
 
     public void setControlType( String controlType )
     {
         this.controlType = controlType;
     }
 
-    public String getInitialValue()
-    {
-        return initialValue;
-    }
+    private String initialValue;
 
     public void setInitialValue( String initialValue )
     {
         this.initialValue = initialValue;
     }
 
-    public int getFormLink()
-    {
-        return formLink;
-    }
+    private int formLink;
 
     public void setFormLink( int formLink )
     {
         this.formLink = formLink;
     }
 
-    public boolean isRequired()
-    {
-        return required;
-    }
+    private boolean required;
 
     public void setRequired( boolean required )
     {
         this.required = required;
     }
 
-    public int getSortOrder()
-    {
-        return sortOrder;
-    }
+    private int sortOrder;
 
     public void setSortOrder( int sortOrder )
     {
         this.sortOrder = sortOrder;
     }
 
-    public void setElementService( ElementService elementService )
-    {
-        this.elementService = elementService;
-    }
-
     // -----------------------------------------------------------------------------------------------
-    // Implement
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
+
     {
+        try
+        {
 
-        Element element = new Element();
+            Element element = new Element();
 
-        element.setName( CodecUtils.unescape( name ).toLowerCase() );
+            element.setName( CodecUtils.unescape( name ).toLowerCase() );
 
-        element.setLabel( CodecUtils.unescape( label ) );
+            element.setLabel( CodecUtils.unescape( label ) );
 
-        element.setType( type );
+            element.setType( type );
 
-        element.setControlType( controlType );
+            element.setControlType( controlType );
 
-        element.setInitialValue( initialValue );
+            element.setInitialValue( initialValue );
 
-        element.setFormLink( formService.getForm( formLink ) );
+            element.setFormLink( formService.getForm( formLink ) );
 
-        element.setRequired( required );
+            element.setRequired( required );
 
-        element.setSortOrder( sortOrder );
+            element.setSortOrder( sortOrder );
 
-        element.setForm( formService.getForm( formID ) );
+            element.setForm( formService.getForm( formID ) );
 
-        elementService.addElement( element );
+            elementService.addElement( element );
 
-        message = i18n.getString( "success" );
+            message = i18n.getString( "success" );
 
-        return SUCCESS;
+            return SUCCESS;
+        }
+        catch ( Exception ex )
+        {
+            message = i18n.getString( "add" ) + " " + i18n.getString( "error" );
+        }
+        return ERROR;
     }
 
 }

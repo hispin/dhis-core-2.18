@@ -21,60 +21,37 @@ public class ListElementAction
     // -----------------------------------------------------------------------------------------------
     private FormService formService;
 
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
+
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
     private Integer formID;
 
-    private Form form;
-
-    private Collection<Element> elements;
-
-    private Collection<Form> forms;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-
-    // public void setElementService(ElementService elementService) {
-    // this.elementService = elementService;
-    // }
-
-    public void setForm( Form form )
-    {
-        this.form = form;
-    }
-
-    public void setElements( Collection<Element> elements )
-    {
-        this.elements = elements;
-    }
-
     public void setFormID( Integer formID )
     {
         this.formID = formID;
     }
 
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
-    }
+    private Form form;
 
     public Form getForm()
     {
         return form;
     }
 
+    private Collection<Element> elements;
+
     public Collection<Element> getElements()
     {
         return elements;
     }
 
-    public void setForms( Collection<Form> forms )
-    {
-        this.forms = forms;
-    }
+    private Collection<Form> forms;
 
     public Collection<Form> getForms()
     {
@@ -82,7 +59,7 @@ public class ListElementAction
     }
 
     // -----------------------------------------------------------------------------------------------
-    // Implement
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()

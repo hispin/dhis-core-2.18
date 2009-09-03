@@ -74,7 +74,6 @@ public class AlterColumnStatement
 
         statement = buffer.toString();
 
-        // System.out.print("\n\n\n"+statement);
     }
 
 }

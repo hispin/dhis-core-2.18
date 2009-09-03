@@ -19,49 +19,45 @@ public class UpdateEgroupAction
 
     private EgroupService egroupService;
 
-    // -----------------------------------------------------------------------------------------------
-    // Input && Output
-    // -----------------------------------------------------------------------------------------------
-
-    private Integer id;
-
-    private String name;
-
-    private int sortOrder;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setters
-    // -----------------------------------------------------------------------------------------------
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public void setSortOrder( byte sortOrder )
-    {
-        this.sortOrder = sortOrder;
-    }
-
     public void setEgroupService( EgroupService egroupService )
     {
         this.egroupService = egroupService;
     }
 
     // -----------------------------------------------------------------------------------------------
-    // Implement
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    private String name;
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
+    private int sortOrder;
+
+    public void setSortOrder( byte sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
+
+    // -----------------------------------------------------------------------------------------------
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
 
-        Egroup egroup = egroupService.getEgroup( id );
+        Egroup egroup = egroupService.getEgroup( id.intValue() );
 
         egroup.setName( CodecUtils.unescape( name ) );
 

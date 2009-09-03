@@ -17,31 +17,26 @@ public class DeleteFormReportAction
     // -----------------------------------------------------------------------------------------------
     private FormReportService formReportService;
 
+    public void setFormReportService( FormReportService formReportService )
+    {
+        this.formReportService = formReportService;
+    }
+    
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
     private Integer id;
 
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-
     public void setId( Integer id )
     {
         this.id = id;
     }
-
-    public void setFormReportService( FormReportService formReportService )
-    {
-        this.formReportService = formReportService;
-    }
-
+    
     // -----------------------------------------------------------------------------------------------
-    // Implement : process Select SQL
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
 
         try

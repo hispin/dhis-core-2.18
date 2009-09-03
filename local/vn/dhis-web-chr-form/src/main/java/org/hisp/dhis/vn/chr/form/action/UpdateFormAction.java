@@ -19,113 +19,55 @@ public class UpdateFormAction
 
     private FormService formService;
 
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
+
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
     private Integer id;
 
-    private String label;
-
-    private int noRow;
-
-    private int noColumn;
-
-    private int noColumnLink;
-
-    private String icon;
-
-    private boolean visible;
-
-    private String attached;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
-    }
-
-    public Integer getId()
-    {
-        return id;
-    }
-
     public void setId( Integer id )
     {
         this.id = id;
     }
 
-    public String getLabel()
-    {
-        return label;
-    }
+    private String label;
 
     public void setLabel( String label )
     {
         this.label = label;
     }
 
-    public int getNoRow()
-    {
-        return noRow;
-    }
-
-    public void setNoRow( int noRow )
-    {
-        this.noRow = noRow;
-    }
-
-    public int getNoColumn()
-    {
-        return noColumn;
-    }
-
-    public void setNoColumn( int noColumn )
-    {
-        this.noColumn = noColumn;
-    }
-
-    public int getNoColumnLink()
-    {
-        return noColumnLink;
-    }
+    private int noColumnLink;
 
     public void setNoColumnLink( int noColumnLink )
     {
         this.noColumnLink = noColumnLink;
     }
 
-    public String getIcon()
-    {
-        return icon;
-    }
+    private String icon;
 
     public void setIcon( String icon )
     {
         this.icon = icon;
     }
 
-    public boolean getVisible()
-    {
-        return visible;
-    }
+    private boolean visible;
 
     public void setVisible( boolean visible )
     {
         this.visible = visible;
     }
 
-    public String getAttached()
-    {
-        return attached;
-    }
+    private int noColumn;
 
-    public void setAttached( String attached )
+    public void setNoColumn( int noColumn )
     {
-        this.attached = attached;
+        this.noColumn = noColumn;
     }
 
     // -----------------------------------------------------------------------------------------------
@@ -136,22 +78,32 @@ public class UpdateFormAction
         throws Exception
     {
 
-        Form form = formService.getForm( id );
+        try
+        {
+            Form form = formService.getForm( id.intValue() );
 
-        form.setLabel( CodecUtils.unescape( label ) );
+            form.setLabel( CodecUtils.unescape( label ) );
 
-        form.setNoColumn( noColumn );
+            form.setNoColumn( noColumn );
 
-        form.setNoColumnLink( noColumnLink );
+            form.setNoColumnLink( noColumnLink );
 
-        form.setIcon( icon );
+            form.setIcon( icon );
 
-        form.setVisible( visible );
+            form.setVisible( visible );
 
-        formService.updateForm( form );
+            formService.updateForm( form );
 
-        message = i18n.getString( "success" );
+            message = i18n.getString( "success" );
 
-        return SUCCESS;
+            return SUCCESS;
+        }
+        catch ( Exception ex )
+        {
+            message = i18n.getString( "update" ) + " " + i18n.getString( "error" );
+
+            ex.printStackTrace();
+        }
+        return ERROR;
     }
 }
