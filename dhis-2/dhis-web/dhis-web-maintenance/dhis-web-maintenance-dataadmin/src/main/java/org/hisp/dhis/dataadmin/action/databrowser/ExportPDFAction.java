@@ -301,8 +301,8 @@ public class ExportPDFAction
                     // Color zero values as bold red
                     if ( rowItem == 0 )
                     {
-                        phrase.font().setStyle( Font.BOLD );
-                        phrase.font().setColor( Color.RED );
+                        phrase.getFont().setStyle( Font.BOLD );
+                        phrase.getFont().setColor( Color.RED );
                     }
 
                     cell.setPhrase( phrase );
