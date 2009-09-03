@@ -27,11 +27,31 @@ public class ListObjectAction
 
     private FormManager formManager;
 
+    public void setFormManager( FormManager formManager )
+    {
+        this.formManager = formManager;
+    }
+
     private FormService formService;
+
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
     private ElementService elementService;
 
+    public void setElementService( ElementService elementService )
+    {
+        this.elementService = elementService;
+    }
+
     private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
 
     // -----------------------------------------------------------------------------------------------
     // Input && Output
@@ -39,109 +59,52 @@ public class ListObjectAction
 
     private Integer formId;
 
-    private Form form;
-
-    private ArrayList<Object> data;
-
-    private Collection<Element> formLinks;
-
-    private String cur_dir;
-
-    private String imageDirectoryOnServer;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
-    public String getCur_dir()
-    {
-        return cur_dir;
-    }
-
-    public void setCur_dir( String cur_dir )
-    {
-        this.cur_dir = cur_dir;
-    }
-
-    public Integer getFormId()
-    {
-        return formId;
-    }
-
     public void setFormId( Integer formId )
     {
         this.formId = formId;
     }
 
-    public void setFormManager( FormManager formManager )
-    {
-        this.formManager = formManager;
-    }
-
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
-    }
-
-    public ArrayList<Object> getData()
-    {
-        return data;
-    }
+    private Form form;
 
     public Form getForm()
     {
         return form;
     }
 
-    public void setForm( Form form )
+    private ArrayList<Object> data;
+
+    public ArrayList<Object> getData()
     {
-        this.form = form;
+        return data;
     }
 
-    public void setElementService( ElementService elementService )
-    {
-        this.elementService = elementService;
-    }
+    private Collection<Element> formLinks;
 
     public Collection<Element> getFormLinks()
     {
         return formLinks;
     }
 
-    public void setFormLinks( Collection<Element> formLinks )
-    {
-        this.formLinks = formLinks;
-    }
-
-    public String getImageDirectoryOnServer()
-    {
-        return imageDirectoryOnServer;
-    }
-
-    public void setImageDirectoryOnServer( String imageDirectoryOnServer )
-    {
-        this.imageDirectoryOnServer = imageDirectoryOnServer;
-    }
-
     // -----------------------------------------------------------------------------------------------
-    // Implement : process Select SQL
+    // Action implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-
         form = formService.getForm( formId.intValue() );
 
-        formLinks = elementService.getElementsByFormLink( form );// formId.intValue());
+        formLinks = elementService.getElementsByFormLink( form );
 
-        int numberOfRecords = Integer.parseInt( (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_CHR_NUMBER_OF_RECORDS ) );
-        
+        String number = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_CHR_NUMBER_OF_RECORDS );
+
+        int numberOfRecords = 50;
+
+        if ( number != null )
+        {
+            numberOfRecords = Integer.parseInt( number );
+        }
+
         data = formManager.listObject( form, numberOfRecords );
 
         return SUCCESS;

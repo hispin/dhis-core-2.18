@@ -18,42 +18,27 @@ public class GetEgroupById
     // -----------------------------------------------------------------------------------------------
 
     private EgroupService egroupService;
-
+    
+    public void setEgroupService( EgroupService egroupService )
+    {
+        this.egroupService = egroupService;
+    }
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
     private Integer id;
-
-    private Egroup egroup;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setter
-    // -----------------------------------------------------------------------------------------------
-
+    
     public void setId( Integer id )
     {
         this.id = id;
     }
 
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setEgroupService( EgroupService egroupService )
-    {
-        this.egroupService = egroupService;
-    }
+    private Egroup egroup;
 
     public Egroup getEgroup()
     {
         return egroup;
-    }
-
-    public void setEgroup( Egroup egroup )
-    {
-        this.egroup = egroup;
     }
 
     // -----------------------------------------------------------------------------------------------

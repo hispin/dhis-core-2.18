@@ -21,55 +21,12 @@ public class UpdateFormReport
 
     private FormService formService;
 
-    private FormReportService formReportService;
-
-    // -----------------------------------------------------------------------------------------------
-    // Input && Output
-    // -----------------------------------------------------------------------------------------------
-
-    private Integer id;
-
-    private String name;
-
-    private String chosenOperand;
-
-    private String formula;
-
-    private Integer mainForm;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setters
-    // -----------------------------------------------------------------------------------------------
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public void setMainForm( Integer mainForm )
-    {
-        this.mainForm = mainForm;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public void setChosenOperand( String chosenOperand )
-    {
-        this.chosenOperand = chosenOperand;
-    }
-
-    public void setFormula( String formula )
-    {
-        this.formula = formula;
-    }
-
     public void setFormService( FormService formService )
     {
         this.formService = formService;
     }
+
+    private FormReportService formReportService;
 
     public void setFormReportService( FormReportService formReportService )
     {
@@ -77,7 +34,46 @@ public class UpdateFormReport
     }
 
     // -----------------------------------------------------------------------------------------------
-    // Implement
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    private String name;
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
+    private String chosenOperand;
+
+    public void setChosenOperand( String chosenOperand )
+    {
+        this.chosenOperand = chosenOperand;
+    }
+
+    private String formula;
+
+    public void setFormula( String formula )
+    {
+        this.formula = formula;
+    }
+
+    private Integer mainForm;
+
+    public void setMainForm( Integer mainForm )
+    {
+        this.mainForm = mainForm;
+    }
+
+    // -----------------------------------------------------------------------------------------------
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()

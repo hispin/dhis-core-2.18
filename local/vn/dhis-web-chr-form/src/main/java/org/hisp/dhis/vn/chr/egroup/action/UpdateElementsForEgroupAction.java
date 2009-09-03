@@ -13,78 +13,75 @@ import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.ElementService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
-public class UpdateElementsForEgroupAction extends ActionSupport {
-	// -----------------------------------------------------------------------------------------------
-	// Dependency
-	// -----------------------------------------------------------------------------------------------
+public class UpdateElementsForEgroupAction
+    extends ActionSupport
+{
 
-	private EgroupService egroupService;
+    // -----------------------------------------------------------------------------------------------
+    // Dependency
+    // -----------------------------------------------------------------------------------------------
 
-	private ElementService elementService;
+    private EgroupService egroupService;
 
-	// -----------------------------------------------------------------------------------------------
-	// Input && Output
-	// -----------------------------------------------------------------------------------------------
+    public void setEgroupService( EgroupService egroupService )
+    {
+        this.egroupService = egroupService;
+    }
 
-	private Integer id;
+    private ElementService elementService;
 
-	private Integer[] selectedElements;
+    public void setElementService( ElementService elementService )
+    {
+        this.elementService = elementService;
+    }
 
-	// -----------------------------------------------------------------------------------------------
-	// Getters && Setters
-	// -----------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
 
-	public Integer getId() {
-		return id;
-	}
+    private Integer id;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public Integer[] getSelectedElements() {
-		return selectedElements;
-	}
+    private Integer[] selectedElements;
 
-	public void setSelectedElements(Integer[] selectedElements) {
-		this.selectedElements = selectedElements;
-	}
+    public Integer[] getSelectedElements()
+    {
+        return selectedElements;
+    }
 
-	public void setEgroupService(EgroupService egroupService) {
-		this.egroupService = egroupService;
-	}
+    // -----------------------------------------------------------------------------------------------
+    // Action Implementation
+    // -----------------------------------------------------------------------------------------------
 
-	public void setElementService(ElementService elementService) {
-		this.elementService = elementService;
-	}
+    public String execute()
+        throws Exception
+    {
 
-	// -----------------------------------------------------------------------------------------------
-	// Implement
-	// -----------------------------------------------------------------------------------------------
+        Egroup egroup = egroupService.getEgroup( id.intValue() );
 
-	public String execute() throws Exception {
+        Set<Element> elements = new HashSet<Element>();
 
-		Egroup egroup = egroupService.getEgroup(id.intValue());
+        for ( int i = 0; i < selectedElements.length; i++ )
+        {
 
-		Set<Element> elements = new HashSet<Element>();
+            Element e = elementService.getElement( selectedElements[i].intValue() );
 
-		for (int i = 0; i < selectedElements.length; i++) {
+            e.setEgroup( egroup );
 
-			Element e = elementService.getElement(selectedElements[i]
-					.intValue());
+            elements.add( e );
+        }
 
-			e.setEgroup(egroup);
+        egroup.setElements( elements );
 
-			elements.add(e);
-		}
+        egroupService.updateEgroup( egroup );
 
-		egroup.setElements(elements);
+        message = i18n.getString( "success" );
 
-		egroupService.updateEgroup(egroup);
-
-		message = i18n.getString("success");
-
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 
 }

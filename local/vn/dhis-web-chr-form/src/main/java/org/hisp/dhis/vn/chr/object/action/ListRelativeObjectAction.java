@@ -28,11 +28,31 @@ public class ListRelativeObjectAction
 
     private FormManager formManager;
 
+    public void setFormManager( FormManager formManager )
+    {
+        this.formManager = formManager;
+    }
+
     private FormService formService;
+
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
     private ElementService elementService;
 
+    public void setElementService( ElementService elementService )
+    {
+        this.elementService = elementService;
+    }
+
     private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
 
     // -----------------------------------------------------------------------------------------------
     // Input && Output
@@ -40,104 +60,55 @@ public class ListRelativeObjectAction
 
     private Integer formId;
 
-    private String objectId;
-
-    private Form form;
-
-    private ArrayList<Object> data;
-
-    private Collection<Element> formLinks;
-
-    private String column;
-
-    private ArrayList<String> parentObject;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-    
-    public ArrayList<String> getParentObject()
-    {
-        return parentObject;
-    }
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
-    public Integer getFormId()
-    {
-        return formId;
-    }
-
     public void setFormId( Integer formId )
     {
         this.formId = formId;
     }
 
-    public void setFormManager( FormManager formManager )
-    {
-        this.formManager = formManager;
-    }
-
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
-    }
-
-    public ArrayList<Object> getData()
-    {
-        return data;
-    }
-
-    public Form getForm()
-    {
-        return form;
-    }
-
-    public void setForm( Form form )
-    {
-        this.form = form;
-    }
-
-    public void setElementService( ElementService elementService )
-    {
-        this.elementService = elementService;
-    }
-
-    public Collection<Element> getFormLinks()
-    {
-        return formLinks;
-    }
-
-    public void setFormLinks( Collection<Element> formLinks )
-    {
-        this.formLinks = formLinks;
-    }
-
-    public String getObjectId()
-    {
-        return objectId;
-    }
+    private String objectId;
 
     public void setObjectId( String objectId )
     {
         this.objectId = objectId;
     }
 
-    public String getColumn()
+    private Form form;
+
+    public Form getForm()
     {
-        return column;
+        return form;
     }
+
+    private ArrayList<Object> data;
+
+    public ArrayList<Object> getData()
+    {
+        return data;
+    }
+
+    private Collection<Element> formLinks;
+
+    public Collection<Element> getFormLinks()
+    {
+        return formLinks;
+    }
+
+    private String column;
 
     public void setColumn( String column )
     {
         this.column = column;
     }
 
+    private ArrayList<String> parentObject;
+
+    public ArrayList<String> getParentObject()
+    {
+        return parentObject;
+    }
+
     // -----------------------------------------------------------------------------------------------
-    // Implement : process Select SQL
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
@@ -148,8 +119,9 @@ public class ListRelativeObjectAction
 
         formLinks = elementService.getElementsByFormLink( form );
 
-        int numberOfRecords = Integer.parseInt( (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_CHR_NUMBER_OF_RECORDS ) );
-        
+        int numberOfRecords = Integer.parseInt( (String) systemSettingManager
+            .getSystemSetting( SystemSettingManager.KEY_CHR_NUMBER_OF_RECORDS ) );
+
         data = formManager.listRelativeObject( form, column, objectId, numberOfRecords );
 
         if ( objectId != null )

@@ -22,6 +22,11 @@ public class ValidateObjectAction
 
     private FormService formService;
 
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
+
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
@@ -29,45 +34,13 @@ public class ValidateObjectAction
     // Form ID
     private Integer formId;
 
-    // Object's data
-    private String[] data;
-
-    // error string
-    private String message;
-
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
-
-    public Integer getFormId()
-    {
-        return formId;
-    }
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    public void setMessage( String message )
-    {
-        this.message = message;
-    }
-
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
-    }
-
     public void setFormId( Integer formId )
     {
         this.formId = formId;
     }
 
-    public String[] getData()
-    {
-        return data;
-    }
+    // Object's data
+    private String[] data;
 
     public void setData( String[] data )
     {
@@ -75,20 +48,18 @@ public class ValidateObjectAction
     }
 
     // -------------------------------------------
-    // Implement
+    // Action Implementation
     // -------------------------------------------
 
     public String execute()
         throws Exception
     {
-
         message = "";
 
         Form form = formService.getForm( formId.intValue() );
 
         Collection<Egroup> egroups = form.getEgroups();
 
-        // Position of element, which has not-null property to be "yes"
         int pos = 0;
 
         for ( Egroup egroup : egroups )
@@ -113,11 +84,10 @@ public class ValidateObjectAction
 
         }// end for egroup
 
-        // System.out.print("\n\n\n message : " + message);
-
         if ( message.length() > 0 )
         {
             message = i18n.getString( "elements" ) + " : <br>" + message + i18n.getString( "not_null" );
+
             return ERROR;
         }
         return SUCCESS;

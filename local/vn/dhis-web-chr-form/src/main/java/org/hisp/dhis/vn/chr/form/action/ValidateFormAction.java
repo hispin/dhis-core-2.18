@@ -9,56 +9,26 @@ public class ValidateFormAction
     extends ActionSupport
 {
 
+   
     // -------------------------------------------
-    // Input & Output
+    // Input && Output
     // -------------------------------------------
-
-    private Integer id;
 
     private String name;
-
-    private String label;
-
-    private int noColumn;
-
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
 
     public void setName( String name )
     {
         this.name = name;
     }
 
-    public String getLabel()
-    {
-        return label;
-    }
+    private String label;
 
     public void setLabel( String label )
     {
         this.label = label;
     }
 
-    public int getNoColumn()
-    {
-        return noColumn;
-    }
+    private int noColumn;
 
     public void setNoColumn( int noColumn )
     {

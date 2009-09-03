@@ -87,8 +87,6 @@ public class CreateTableStatement
 
         statement = buffer.toString();
 
-        System.out.print( "\n\n\n create table statement : " + statement );
-
     }
 
 }

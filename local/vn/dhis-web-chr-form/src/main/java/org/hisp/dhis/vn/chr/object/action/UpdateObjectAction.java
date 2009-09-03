@@ -21,66 +21,34 @@ public class UpdateObjectAction
 
     private FormManager formManager;
 
+    public void setFormManager( FormManager formManager )
+    {
+        this.formManager = formManager;
+    }
+
     private FormService formService;
+
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
 
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
-    // Form ID
     private Integer formId;
-
-    // Object data
-    private String[] data;
-
-    // ID of Object
-    private Integer id;
-
-    // message
-    private String message;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    public void setMessage( String message )
-    {
-        this.message = message;
-    }
-
-    public String[] getData()
-    {
-        return data;
-    }
-
-    public void setData( String[] data )
-    {
-        this.data = data;
-    }
 
     public void setFormId( Integer formId )
     {
         this.formId = formId;
     }
 
-    public Integer getFormId()
-    {
-        return this.formId;
-    }
+    private String[] data;
 
-    public void setFormManager( FormManager formManager )
+    public void setData( String[] data )
     {
-        this.formManager = formManager;
-    }
-
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
+        this.data = data;
     }
 
     // -----------------------------------------------------------------------------------------------
@@ -90,10 +58,8 @@ public class UpdateObjectAction
     public String execute()
         throws Exception
     {
-
         try
         {
-
             Form form = formService.getForm( formId.intValue() );
 
             // convert data to Unicode

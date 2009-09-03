@@ -19,6 +19,7 @@
 	    
 	    <action name="indexChain" class="org.hisp.dhis.vn.chr.form.action.GetInformationForSystemAction">
 	        <result name="success" type="velocity">/main.vm</result>
+	        <result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
 	    </action>    
 	
 		<!--  --><!--  --><!--  -->
@@ -82,8 +83,7 @@
 		<!--  Get Element for Egroup Chain -->
 		<action name="openAssociateElementsForEgroupChain"
 			class="org.hisp.dhis.vn.chr.form.action.GetElementsForGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-chr-form/responseForm.vm</result>
+			<result name="success" type="velocity-xml">/dhis-web-chr-form/responseForm.vm</result>
 		</action>
 		
 		<!--  --><!--  --><!--  -->
@@ -105,7 +105,6 @@
 		<!-- Update Egroup -->
 		<action name="updateEgroup" class="org.hisp.dhis.vn.chr.egroup.action.UpdateEgroupAction">
 			<result name="success" type="velocity-xml">/dhis-web-chr-form/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
 		</action>
 		
 		<!-- Delete Egroup -->
@@ -128,7 +127,6 @@
 		<!-- Update Elements for Egroup -->
 		<action name="updateElementsForEgroup" class="org.hisp.dhis.vn.chr.egroup.action.UpdateElementsForEgroupAction">
 			<result name="success" type="velocity">/dhis-web-chr-form/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
 		</action>
 		
 		<!--  --><!--  --><!--  -->
@@ -183,12 +181,10 @@
 		
 		<action name="setImageDirectoryOnServer" class="org.hisp.dhis.vn.chr.configuration.action.SetImageDirectoryOnServerAction">
 			<result name="success" type="velocity-xml">/dhis-web-chr-form/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
 		</action>
 		
 		<action name="setNumberOfRecords" class="org.hisp.dhis.vn.chr.configuration.action.SetNumberOfRecordsAction">
 			<result name="success" type="velocity-xml">/dhis-web-chr-form/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
 		</action>
 		
 		<!--  --><!--  --><!--  -->
@@ -219,7 +215,6 @@
 		<action name="listReletiveObject" class="org.hisp.dhis.vn.chr.object.action.ListRelativeObjectAction">
 			<result name="success" type="chain">getVisibleForms</result>
 			<param name="page">/dhis-web-chr-form/listForm.vm</param>
-			<!-- <param name="stylesheets">styles/black-style.css</param>  -->
 		</action>
 				
 		<!--  Add Object  -->
@@ -248,7 +243,6 @@
 		
 		<!--  Get Object  -->
 		<action name="getObject" class="org.hisp.dhis.vn.chr.object.action.GetObjectAction">
-			<!--  <result name="success" type="chain">getVisibleForms</result> -->
 			<result name="success" type="velocity-xml">responseObject.vm</result>
 		</action>
 		
@@ -258,7 +252,6 @@
 			<param name="page">/dhis-web-chr-form/listForm.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataElementsList.js,javascript/associations.js,javascripts/forms.js</param>
 			<param name="menu">/dhis-web-chr-form/menu.vm</param>
-	      	<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
 		</action>
 		
 		<!--  List Form  -->
@@ -317,12 +310,10 @@
 			<param name="page">/dhis-web-chr-form/createFormReport.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataElementsList.js,javascript/associations.js,javascripts/forms.js</param>
 			<param name="menu">/dhis-web-chr-form/menu.vm</param>
-	      	<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result> 
 		</action>
 		
 		<action name="getDataElementsOfDataSet" class="org.hisp.dhis.vn.chr.formreport.action.GetDataelementsOfDataSet">
 			<result name="success" type="velocity-xml">/dhis-web-chr-form/responseDataElementsOfDataSet.vm</result>
-			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
 		</action>
 		
 		<action name="addFormReport" class="org.hisp.dhis.vn.chr.formreport.action.AddFormReport">
@@ -346,7 +337,6 @@
 		
 		<action name="getFormReport" class="org.hisp.dhis.vn.chr.formreport.action.GetFormReportAction">
 			<result name="success" type="chain">getDataSetsAndForms</result>
-			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
 		</action>
 		
 		<action name="updateFormReport" class="org.hisp.dhis.vn.chr.formreport.action.UpdateFormReport">

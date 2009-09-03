@@ -98,8 +98,6 @@ public class ListDataStatement
         buffer.append( "LIMIT" + SPACE + value );
 
         statement = buffer.toString();
-
-        System.out.print( "statement list : " + statement );
     }
 
 }

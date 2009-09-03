@@ -20,41 +20,12 @@ public class AddEgroupAction
 
     private FormService formService;
 
-    private EgroupService egroupService;
-
-    // -----------------------------------------------------------------------------------------------
-    // Input && Output
-    // -----------------------------------------------------------------------------------------------
-
-    private Integer formID;
-
-    private String name;
-
-    private Integer sortOrder;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setters
-    // -----------------------------------------------------------------------------------------------
-
     public void setFormService( FormService formService )
     {
         this.formService = formService;
     }
 
-    public void setFormID( Integer formID )
-    {
-        this.formID = formID;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public void setSortOrder( Integer sortOrder )
-    {
-        this.sortOrder = sortOrder;
-    }
+    private EgroupService egroupService;
 
     public void setEgroupService( EgroupService egroupService )
     {
@@ -62,26 +33,63 @@ public class AddEgroupAction
     }
 
     // -----------------------------------------------------------------------------------------------
-    // Implement
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
+
+    private Integer formID;
+
+    public void setFormID( Integer formID )
+    {
+        this.formID = formID;
+    }
+
+    private String name;
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
+    private Integer sortOrder;
+
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
+
+    // -----------------------------------------------------------------------------------------------
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
 
-        Egroup egroup = new Egroup();
+        try
+        {
+            Egroup egroup = new Egroup();
 
-        egroup.setName( CodecUtils.unescape( name ) );
+            egroup.setName( CodecUtils.unescape( name ) );
 
-        egroup.setSortOrder( sortOrder.intValue() );
+            egroup.setSortOrder( sortOrder.intValue() );
 
-        egroup.setForm( formService.getForm( formID.intValue() ) );
+            egroup.setForm( formService.getForm( formID.intValue() ) );
 
-        egroupService.addEgroup( egroup );
+            egroupService.addEgroup( egroup );
 
-        message = i18n.getString( "success" );
+            message = i18n.getString( "success" );
 
-        return SUCCESS;
+            return SUCCESS;
+        }
+        catch ( Exception ex )
+        {
+            message = i18n.getString( "error" );
+
+            ex.printStackTrace();
+
+        }
+
+        return ERROR;
     }
 
 }

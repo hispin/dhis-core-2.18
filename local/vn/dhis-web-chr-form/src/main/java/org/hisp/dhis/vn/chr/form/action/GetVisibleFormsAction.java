@@ -19,7 +19,17 @@ public class GetVisibleFormsAction
 
     private FormService formService;
 
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
+
     private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     // -----------------------------------------------------------------------------------------------
     // Input && Output
@@ -27,31 +37,12 @@ public class GetVisibleFormsAction
 
     private Collection<Form> visibleforms;
 
-    private User curUser;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
     public Collection<Form> getVisibleforms()
     {
         return visibleforms;
     }
 
-    public void setVisibleforms( Collection<Form> visibleforms )
-    {
-        this.visibleforms = visibleforms;
-    }
-
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
-    }
+    private User curUser;
 
     public User getCurUser()
     {
@@ -64,7 +55,7 @@ public class GetVisibleFormsAction
     }
 
     // -----------------------------------------------------------------------------------------------
-    // Implement
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()

@@ -57,71 +57,43 @@ public class SearchObjectAction
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
-    // Form ID
     private Integer formId;
-
-    // keyword to search
-    private String keyword;
-
-    private Form form;
-
-    // Object data
-    private ArrayList<Object> data;
-
-    // formLinks
-    private Collection<Element> formLinks;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-
-    public String getKeyword()
-    {
-        return keyword;
-    }
-
-    public void setKeyword( String keyword )
-    {
-        this.keyword = keyword;
-    }
-
-    public ArrayList<Object> getData()
-    {
-        return data;
-    }
 
     public void setFormId( Integer formId )
     {
         this.formId = formId;
     }
 
-    public Integer getFormId()
+    private String keyword;
+
+    public void setKeyword( String keyword )
     {
-        return this.formId;
+        this.keyword = keyword;
     }
+
+    private Form form;
 
     public Form getForm()
     {
         return form;
     }
 
-    public void setForm( Form form )
+    private ArrayList<Object> data;
+
+    public ArrayList<Object> getData()
     {
-        this.form = form;
+        return data;
     }
+
+    private Collection<Element> formLinks;
 
     public Collection<Element> getFormLinks()
     {
         return formLinks;
     }
 
-    public void setFormLinks( Collection<Element> formLinks )
-    {
-        this.formLinks = formLinks;
-    }
-
     // -----------------------------------------------------------------------------------------------
-    // Implement : process Select SQL
+    // Actiton Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()

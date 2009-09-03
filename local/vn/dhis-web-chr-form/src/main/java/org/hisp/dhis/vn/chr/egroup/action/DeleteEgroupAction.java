@@ -17,20 +17,16 @@ public class DeleteEgroupAction
 
     private EgroupService egroupService;
 
+    public void setEgroupService( EgroupService egroupService )
+    {
+        this.egroupService = egroupService;
+    }
+
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
     private Integer id;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setters
-    // -----------------------------------------------------------------------------------------------
-
-    public void setEgroupService( EgroupService egroupService )
-    {
-        this.egroupService = egroupService;
-    }
 
     public void setId( Integer id )
     {
@@ -42,12 +38,10 @@ public class DeleteEgroupAction
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
 
         try
         {
-
             egroupService.deleteEgroup( id.intValue() );
 
             message = i18n.getString( "success" );

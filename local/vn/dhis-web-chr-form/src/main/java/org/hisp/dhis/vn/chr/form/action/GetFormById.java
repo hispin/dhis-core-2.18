@@ -19,42 +19,23 @@ public class GetFormById
 
     private FormService formService;
 
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
+
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
-    private Form form;
-
     private Integer id;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setter
-    // -----------------------------------------------------------------------------------------------
-
-    public Integer getId()
-    {
-        return id;
-    }
 
     public void setId( Integer id )
     {
         this.id = id;
     }
 
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
-    }
-
-    public FormService getFormService()
-    {
-        return formService;
-    }
-
-    public void setForm( Form form )
-    {
-        this.form = form;
-    }
+    private Form form;
 
     public Form getForm()
     {
@@ -62,7 +43,7 @@ public class GetFormById
     }
 
     // -----------------------------------------------------------------------------------------------
-    // Implement
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
@@ -70,7 +51,7 @@ public class GetFormById
     {
 
         form = formService.getForm( id.intValue() );
-        System.out.print( "\n\n\n Form : " + form.getElements() + " with ID = " + id.intValue() );
+
         return SUCCESS;
     }
 

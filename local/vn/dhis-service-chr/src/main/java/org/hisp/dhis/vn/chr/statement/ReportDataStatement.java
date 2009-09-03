@@ -118,6 +118,5 @@ public class ReportDataStatement
         }
 
         statement = buffer.toString();
-        System.out.print( "\n\n\n REPORTS : " + statement + "\n" );
     }
 }

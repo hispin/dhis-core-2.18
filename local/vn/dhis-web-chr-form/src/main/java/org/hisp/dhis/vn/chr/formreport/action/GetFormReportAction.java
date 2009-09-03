@@ -18,56 +18,37 @@ public class GetFormReportAction
     // -----------------------------------------------------------------------------------------------
     private FormReportService formReportService;
 
-    // -----------------------------------------------------------------------------------------------
-    // Input && Output
-    // -----------------------------------------------------------------------------------------------
-    private Integer id;
-
-    private FormReport formReport;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public FormReport getFormReport()
-    {
-        return formReport;
-    }
-
     public void setFormReportService( FormReportService formReportService )
     {
         this.formReportService = formReportService;
     }
 
     // -----------------------------------------------------------------------------------------------
-    // Implement : process Select SQL
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    private FormReport formReport;
+
+    public FormReport getFormReport()
+    {
+        return formReport;
+    }
+
+    // -----------------------------------------------------------------------------------------------
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
+        formReport = formReportService.getFormReport( id.intValue() );
 
-        try
-        {
+        return SUCCESS;
 
-            formReport = formReportService.getFormReport( id.intValue() );
-
-            return SUCCESS;
-
-        }
-        catch ( Exception ex )
-        {
-
-            ex.printStackTrace();
-
-            message = i18n.getString( "get_data" ) + " " + i18n.getString( "error" );
-        }
-
-        return ERROR;
     }
 }

@@ -17,38 +17,19 @@ public class ValidateElementAction
 
     private String name;
 
-    private String label;
-
-    private Integer sortOrder;
-
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
-
-    public String getName()
-    {
-        return name;
-    }
-
     public void setName( String name )
     {
         this.name = name;
     }
 
-    public String getLabel()
-    {
-        return label;
-    }
+    private String label;
 
     public void setLabel( String label )
     {
         this.label = label;
     }
 
-    public Integer getSortOrder()
-    {
-        return sortOrder;
-    }
+    private Integer sortOrder;
 
     public void setSortOrder( Integer sortOrder )
     {
@@ -56,7 +37,7 @@ public class ValidateElementAction
     }
 
     // -------------------------------------------
-    // Implement
+    // Action Implementation
     // -------------------------------------------
 
     public String execute()

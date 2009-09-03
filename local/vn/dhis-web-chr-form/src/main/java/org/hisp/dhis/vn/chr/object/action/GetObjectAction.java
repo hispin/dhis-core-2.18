@@ -22,59 +22,12 @@ public class GetObjectAction
 
     private FormManager formManager;
 
-    private FormService formService;
-
-    // -----------------------------------------------------------------------------------------------
-    // Input && Output
-    // -----------------------------------------------------------------------------------------------
-
-    // Form ID
-    private Integer formId;
-
-    // Object's ID
-    private Integer id;
-
-    // Object's data
-    private ArrayList<String> data;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getter && Setter
-    // -----------------------------------------------------------------------------------------------
-
-    public ArrayList<String> getData()
-    {
-        return data;
-    }
-
-    public void setData( ArrayList<String> data )
-    {
-        this.data = data;
-    }
-
-    public Integer getId()
-    {
-        return this.id;
-    }
-
-    public void setFormId( Integer formId )
-    {
-        this.formId = formId;
-    }
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public Integer getFormId()
-    {
-        return this.formId;
-    }
-
     public void setFormManager( FormManager formManager )
     {
         this.formManager = formManager;
     }
+
+    private FormService formService;
 
     public void setFormService( FormService formService )
     {
@@ -82,28 +35,42 @@ public class GetObjectAction
     }
 
     // -----------------------------------------------------------------------------------------------
-    // Implement : process Select SQL
+    // Input && Output
+    // -----------------------------------------------------------------------------------------------
+
+    private Integer formId;
+
+    public void setFormId( Integer formId )
+    {
+        this.formId = formId;
+    }
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    private ArrayList<String> data;
+
+    public ArrayList<String> getData()
+    {
+        return data;
+    }
+
+    // -----------------------------------------------------------------------------------------------
+    // Action Implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
+        Form form = formService.getForm( formId.intValue() );
 
-        try
-        {
+        data = formManager.getObject( form, id.intValue() );
 
-            Form form = formService.getForm( formId.intValue() );
+        return SUCCESS;
 
-            data = formManager.getObject( form, id.intValue() );
-
-            return SUCCESS;
-
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
-
-        return ERROR;
     }
 }

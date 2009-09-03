@@ -29,30 +29,16 @@ public class GetFormConfigurationAction
 
     private String imageDirectoryOnServer;
 
-    private String numberOfRecords;
-
-    // -------------------------------------------------------------------------
-    // Getters && Setters
-    // -------------------------------------------------------------------------
-
     public String getImageDirectoryOnServer()
     {
         return imageDirectoryOnServer;
     }
 
-    public void setImageDirectoryOnServer( String imageDirectoryOnServer )
-    {
-        this.imageDirectoryOnServer = imageDirectoryOnServer;
-    }
+    private String numberOfRecords;
 
     public String getNumberOfRecords()
     {
         return numberOfRecords;
-    }
-
-    public void setNumberOfRecords( String numberOfRecords )
-    {
-        this.numberOfRecords = numberOfRecords;
     }
 
     // -------------------------------------------------------------------------

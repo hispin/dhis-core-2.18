@@ -20,41 +20,27 @@ public class GetFormByName
 
     private FormService formService;
 
+    public void setFormService( FormService formService )
+    {
+        this.formService = formService;
+    }
+
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
     private String name;
 
-    private Form form;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setter
-    // -----------------------------------------------------------------------------------------------
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setFormService( FormService formService )
-    {
-        this.formService = formService;
-    }
-
     public void setName( String name )
     {
         this.name = name;
     }
 
+    private Form form;
+
     public Form getForm()
     {
         return form;
-    }
-
-    public void setForm( Form form )
-    {
-        this.form = form;
     }
 
     // -----------------------------------------------------------------------------------------------
@@ -64,7 +50,6 @@ public class GetFormByName
     public String execute()
         throws Exception
     {
-
         form = formService.getFormByName( name );
 
         return SUCCESS;

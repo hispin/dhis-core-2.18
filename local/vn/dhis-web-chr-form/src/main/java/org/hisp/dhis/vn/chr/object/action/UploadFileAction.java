@@ -33,52 +33,21 @@ public class UploadFileAction
     // Input && Output
     // -----------------------------------------------------------------------------------------------
 
-    private List files = new ArrayList();
+    private List<File> files;
 
-    private File uploadFile;
-
-    private String uploadFilename;
-
-    private String contentType;
-
-    // -----------------------------------------------------------------------------------------------
-    // Getters && Setters
-    // -----------------------------------------------------------------------------------------------
-
-    public void setFiles( List files )
-    {
-        this.files = files;
-    }
-
-    public List getFiles()
+    public List<File> getFiles()
     {
         return files;
     }
 
-    public File getUploadFile()
-    {
-        return uploadFile;
-    }
+    private File uploadFile;
 
     public void setUploadFile( File uploadFile )
     {
         this.uploadFile = uploadFile;
     }
 
-    public String getContentType()
-    {
-        return contentType;
-    }
-
-    public void setContentType( String contentType )
-    {
-        this.contentType = contentType;
-    }
-
-    public String getUploadFilename()
-    {
-        return uploadFilename;
-    }
+    private String uploadFilename;
 
     public void setUploadFilename( String uploadFilename )
     {
@@ -91,6 +60,8 @@ public class UploadFileAction
 
     public String execute()
     {
+        files = new ArrayList<File>();
+
         FileInputStream fin = null;
         FileOutputStream fout = null;
 
