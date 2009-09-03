@@ -125,7 +125,7 @@ public class UpdateElementAction
 
             element.setControlType( controlType );
 
-            element.setInitialValue( initialValue );
+            element.setInitialValue( CodecUtils.unescape( initialValue ));
 
             if ( formLink != 0 )
             {
