@@ -13,7 +13,6 @@ function showDataElementCategoryDetails( dataElementCategoryId )
 
 function dataElementCategoryReceived( dataElementCategoryElement )
 {
-	setFieldValue( 'idField', getElementValue( dataElementCategoryElement, 'id' ) );
     setFieldValue( 'nameField', getElementValue( dataElementCategoryElement, 'name' ) );    
     setFieldValue( 'categoryOptionsCountField', getElementValue( dataElementCategoryElement, 'categoryOptionCount' ) );
           
