@@ -137,7 +137,6 @@ function getDataElementGroupCompleted( xmlObject )
     }
 
     filterSelectedDataElements();
-    setMessage(i18n_member_of + " <b>" + name + "</b>");
     document.getElementById('availableDataElements').disabled=false;
 }
 
