@@ -320,7 +320,9 @@ public class SearchAction
         for ( OrganisationUnit o : tmp )
         {
             if ( o.getChildren().size() > 0 )
+            {
                 list.add( o );
+            }
         }
         Collections.sort( list, new OrganisationUnitNameComparator() );
 
