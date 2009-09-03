@@ -9,7 +9,6 @@ function showDataElementCategoryComboDetails( dataElementCategoryComboId )
 
 function dataElementCategoryComboReceived( dataElementCategoryComboElement )
 {
-	setFieldValue( 'idField', getElementValue( dataElementCategoryComboElement, 'id' ) );
     setFieldValue( 'nameField', getElementValue( dataElementCategoryComboElement, 'name' ) );
 	setFieldValue( 'dataElementCategoryCountField', getElementValue( dataElementCategoryComboElement, 'dataElementCategoryCount' ) );
           

@@ -13,7 +13,6 @@ function showDataElementCategoryOptionDetails( dataElementCategoryOptionId )
 
 function dataElementCategoryOptionReceived( dataElementCategoryOptionElement )
 {
-    setFieldValue( 'idField', getElementValue( dataElementCategoryOptionElement, 'id' ) );
     setFieldValue( 'nameField', getElementValue( dataElementCategoryOptionElement, 'name' ) );
     setFieldValue( 'shortNameField', getElementValue( dataElementCategoryOptionElement, 'shortName' ) );
             
