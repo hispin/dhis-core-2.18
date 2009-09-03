@@ -87,7 +87,7 @@
     <!-- Sort order -->
     
     <action name="showSortDataSetForm"
-      class="org.hisp.dhis.dataset.action.DataSetListAction">
+      class="org.hisp.dhis.dataset.action.GetDataSetListSortOrderAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/sortDataSetForm.vm</param>
     </action>

@@ -169,6 +169,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
   
+  <bean id="org.hisp.dhis.dataset.action.GetDataSetListSortOrderAction"
+    class="org.hisp.dhis.dataset.action.GetDataSetListSortOrderAction"
+    scope="prototype">
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+    </property>
+  </bean>
+  
   <!-- Validation -->
     
   <bean id="org.hisp.dhis.dataset.action.ValidateDataSetAction"
