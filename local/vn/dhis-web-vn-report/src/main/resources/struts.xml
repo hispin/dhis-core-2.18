@@ -7,19 +7,22 @@
 
 	<package name="dhis-web-vn-report" extends="dhis-web-commons"
 		namespace="/dhis-web-vn-report">
-		
-		<action name="getConfiguration" class="org.hisp.dhis.vn.report.configuration.action.GetReportConfigurationAction">
+
+		<action name="getConfiguration"
+			class="org.hisp.dhis.vn.report.configuration.action.GetReportConfigurationAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-vn-report/configuration.vm</param>
-			<param name="menu">/dhis-web-vn-report/menu.vm</param>	
-			<param name="requiredAuthorities">F_ADD_REPORT_VN</param>		
+			<param name="menu">/dhis-web-vn-report/menu.vm</param>
+			<param name="requiredAuthorities">F_ADD_REPORT_VN</param>
 		</action>
-		
-		<action name="setConfiguration" class="org.hisp.dhis.vn.report.configuration.action.SetReportConfigurationAction">
-			<result name="success" type="redirect">listReportExcel.action</result>	
-			<param name="requiredAuthorities">F_ADD_REPORT_VN</param>	
+
+		<action name="setConfiguration"
+			class="org.hisp.dhis.vn.report.configuration.action.SetReportConfigurationAction">
+			<result name="success" type="redirect">listReportExcel.action
+			</result>
+			<param name="requiredAuthorities">F_ADD_REPORT_VN</param>
 		</action>
-		
+
 
 		<action name="listReportExcel" class="org.hisp.dhis.vn.report.action.ListReportAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -27,9 +30,11 @@
 			<param name="menu">/dhis-web-vn-report/menu.vm</param>
 			<param name="javascripts">javascript/reports.js,javascript/dataelement.js</param>
 		</action>
-		
-		<action name="updateReportExcelGroupListing" class="org.hisp.dhis.vn.report.action.UpdateReportExcelGroupListingAction">
-			<result name="success" type="velocity-xml">/dhis-web-vn-report/responseSuccess.vm</result>		
+
+		<action name="updateReportExcelGroupListing"
+			class="org.hisp.dhis.vn.report.action.UpdateReportExcelGroupListingAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/responseSuccess.vm</result>
 		</action>
 
 		<action name="updateReportExcelGroupListing"
@@ -84,7 +89,8 @@
 
 		<action name="deleteReport"
 			class="org.hisp.dhis.vn.report.action.DeleteReportAction">
-			<result name="success" type="redirect">listReportExcel.action</result>
+			<result name="success" type="redirect">listReportExcel.action
+			</result>
 			<param name="requiredAuthorities">F_DELETE_REPORT_VN</param>
 		</action>
 
@@ -217,16 +223,19 @@
 				/dhis-web-vn-report/responseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+
 		<action name="getALLReportAjax" class="org.hisp.dhis.vn.report.action.ListReportAction">
-			<result name="success" type="velocity-xml">/dhis-web-vn-report/responseListReport.vm</result>			
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/responseListReport.vm</result>
 		</action>
-		
-		<action name="copyReportItems" class="org.hisp.dhis.vn.reportitem.action.CopyReportItemsAction">
-			<result name="success" type="velocity-xml">/dhis-web-vn-report/responseSuccess.vm</result>
+
+		<action name="copyReportItems"
+			class="org.hisp.dhis.vn.reportitem.action.CopyReportItemsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/responseSuccess.vm</result>
 			<param name="requiredAuthorities">F_UPDATE_REPORT_VN</param>
 		</action>
-		
+
 
 		<!-- Export Report-->
 
@@ -250,7 +259,7 @@
 				/dhis-web-vn-report/responsePeriods.vm</result>
 		</action>
 
-		<action name="index"
+		<action name="selectReportParamerter"
 			class="org.hisp.dhis.vn.report.export.action.SelectFormAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
@@ -301,30 +310,32 @@
 
 		<action name="getOrganisationUnit"
 			class="org.hisp.dhis.vn.report.export.action.GetOrganisationUnitAction">
-			<result name="success" type="velocity-xml">/dhis-web-vn-report/responseOrganisation.vm</result>			
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/responseOrganisation.vm</result>
 		</action>
-		
+
 		<action name="getDataSetAndPeriodByPeriodType"
 			class="org.hisp.dhis.vn.report.completed.action.GetDataSetAndPeriodByPeriodTypeAction">
-			<result name="success" type="velocity-xml">/dhis-web-vn-report/responseDataSetAndPeriodByPeriodType.vm</result>			
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/responseDataSetAndPeriodByPeriodType.vm</result>
 		</action>
-		
+
 		<action name="viewDataSetCompleted"
 			class="org.hisp.dhis.vn.report.completed.action.ViewDataSetCompletedAction">
 			<result name="success" type="velocity">/popup.vm</result>
-			<param name="page">/dhis-web-vn-report/viewDataSetCompleted.vm</param>	
+			<param name="page">/dhis-web-vn-report/viewDataSetCompleted.vm</param>
 			<param name="stylesheets">style/listTable.css</param>
-			<param name="javascripts">javascript/dataSetCompleted.js</param>		
+			<param name="javascripts">javascript/dataSetCompleted.js</param>
 		</action>
-		
+
 		<action name="viewCustomDataSetReport"
 			class="org.hisp.dhis.vn.report.completed.action.ViewCustomDataSetReportAction">
 			<result name="success" type="velocity">/popup.vm</result>
-			<param name="page">/dhis-web-vn-report/viewCustomDataSetReport.vm</param>	
+			<param name="page">/dhis-web-vn-report/viewCustomDataSetReport.vm</param>
 		</action>
-		
+
 		<!-- Import Excel File -->
-		
+
 		<action name="getExcelFileByOrganisationUnit"
 			class="org.hisp.dhis.vn.imports.action.GetListExcelFileByOrganisationAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
@@ -334,94 +345,181 @@
 			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/imports.js</param>
 		</action>
-		
+
 		<action name="uploadExcelFile"
 			class="org.hisp.dhis.vn.imports.action.UploadExcelFileAction">
-			<result name="success" type="redirect">getExcelFileByOrganisationUnit.action</result>	
-			<interceptor-ref name="fileUploadStack"/>		
+			<result name="success" type="redirect">
+				getExcelFileByOrganisationUnit.action</result>
+			<interceptor-ref name="fileUploadStack" />
 		</action>
-		
+
 		<action name="deleteExcelFile"
 			class="org.hisp.dhis.vn.imports.action.DeleteExcelFileAction">
-			<result name="success" type="redirect">getExcelFileByOrganisationUnit.action</result>			
+			<result name="success" type="redirect">
+				getExcelFileByOrganisationUnit.action</result>
 		</action>
-		
+
 		<action name="viewExcelFileDataValue"
-			class="org.hisp.dhis.vn.imports.action.ViewDataFromExcelFileAction">			
+			class="org.hisp.dhis.vn.imports.action.ViewDataFromExcelFileAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-vn-report/excelFileValue.vm</param>	
+			<param name="page">/dhis-web-vn-report/excelFileValue.vm</param>
 			<param name="javascripts">javascript/imports.js</param>
 		</action>
-	
+
 		<!-- DataElement -->
-		
-		<action name="getDataElementGroupsAndCateCombosList" 
+
+		<action name="getDataElementGroupsAndCateCombosList"
 			class="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupsAndCateCombosListAction">
-			<result name="success" type="velocity-xml">/dhis-web-vn-report/dataelement/responseElementGroupsAndCombosList.vm</result>
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/dataelement/responseElementGroupsAndCombosList.vm
+			</result>
 			<param name="javascripts">javascript/dataelement.js,javascript/report.js</param>
 		</action>
-		
-	    <action name="getCategoryList"
+
+		<action name="getCategoryList"
 			class="org.hisp.dhis.vn.categorycombo.action.GetFilteredCategoryListAction">
-			<result name="success" type="velocity-xml">/dhis-web-vn-report/categorycombo/responseCategories.vm</result>
-			<result name="error" type="velocity-xml">/dhis-web-vn-report/categorycombo/responseError.vm</result>
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/categorycombo/responseCategories.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-vn-report/categorycombo/responseError.vm</result>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,javascript/dataelement.js,javascript/report.js</param>
 		</action>
-		
+
 		<action name="getDataElementList"
 			class="org.hisp.dhis.vn.dataelement.action.GetFilteredDataElementListAction">
-			<result name="success" type="velocity-xml">/dhis-web-vn-report/dataelement/responseDataElements.vm</result>
-			<result name="error" type="velocity-xml">/dhis-web-vn-report/dataelement/responseError.vm</result>
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/dataelement/responseDataElements.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-vn-report/dataelement/responseError.vm</result>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,javascript/dataelement.js,javascript/report.js</param>
 		</action>
-		
-		<action name="validateAddDataElementAndCateCombo" 
+
+		<action name="validateAddDataElementAndCateCombo"
 			class="org.hisp.dhis.vn.dataelement.action.ValidateAddDataElementAndCateComboInCategoryReportAction">
-			<result name="success" type="velocity-xml">/dhis-web-vn-report/dataelement/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">/dhis-web-vn-report/dataelement/responseError.vm</result>
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/dataelement/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-vn-report/dataelement/responseError.vm</result>
 		</action>
-		
-		
-		<action name="validateFormulaForReportCategory" 
+
+
+		<action name="validateFormulaForReportCategory"
 			class="org.hisp.dhis.vn.report.formula.action.ValidateFormulaForReportCategoryAction">
-			<result name="success" type="velocity-xml">/dhis-web-vn-report/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">/dhis-web-vn-report/responseError.vm</result>
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-vn-report/responseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<action name="getSelectedElementsAndAvailableElements" 
-			class="org.hisp.dhis.vn.report.action.GetReportAction">
-			<result name="success" type="chain">openSelectedElementsAndAvailableElementsChain</result>				
-		</action>	
-		
-		<action name="openSelectedElementsAndAvailableElementsChain" 
-			class="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupMembersAction">
-			<result name="success" type="velocity-xml">/dhis-web-vn-report/responseReport.vm</result>
-		</action>			
+		<action name="getSelectedElementsAndAvailableElements" class="org.hisp.dhis.vn.report.action.GetReportAction">
+			<result name="success" type="chain">
+				openSelectedElementsAndAvailableElementsChain</result>
+		</action>
 
-		<action name="updateElementsAndComboReportCategory" 
+		<action name="openSelectedElementsAndAvailableElementsChain"
+			class="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupMembersAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/responseReport.vm</result>
+		</action>
+
+		<action name="updateElementsAndComboReportCategory"
 			class="org.hisp.dhis.vn.report.action.UpdateElementMembersAndCateComboReportCategoryAction">
-			<result name="success" type="velocity-xml">/dhis-web-vn-report/responseSuccess.vm</result>
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/responseSuccess.vm</result>
 			<param name="requiredAuthorities">F_UPDATE_REPORT_VN</param>
 		</action>
-		
-		<action name="getOptionComboList" class="org.hisp.dhis.vn.categorycombo.action.GetOptionCombosAction">
-			<result name="success" type="velocity-xml">/dhis-web-vn-report/categorycombo/responseOptionComboList.vm</result>
+
+		<action name="getOptionComboList"
+			class="org.hisp.dhis.vn.categorycombo.action.GetOptionCombosAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/categorycombo/responseOptionComboList.vm
+			</result>
 			<param name="javascripts">javascript/export.js,javascript/dataelement.js,javascript/report.js</param>
 		</action>
-		
+
 		<!-- Admin -->
-		
-		<action name="getAdminOptions" class="org.hisp.dhis.vn.admin.action.GetAdminOptionsAction">
-		    <result name="success" type="velocity">/main.vm</result>
-		    <param name="page">/dhis-web-vn-report/viewAdminOptions.vm</param>
-		    <param name="menu">/dhis-web-vn-report/menu.vm</param>
-		    <param name="javascripts">javascript/admin.js</param>
+
+		<action name="getAdminOptions"
+			class="org.hisp.dhis.vn.admin.action.GetAdminOptionsAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-vn-report/viewAdminOptions.vm</param>
+			<param name="menu">/dhis-web-vn-report/menu.vm</param>
+			<param name="javascripts">javascript/admin.js</param>
 		</action>
-		
-		<action name="saveReportUserRoles" class="org.hisp.dhis.vn.admin.action.SaveReportUserRolesAction">
-		    <result name="success" type="chain">getAdminOptions</result>
+
+		<action name="saveReportUserRoles"
+			class="org.hisp.dhis.vn.admin.action.SaveReportUserRolesAction">
+			<result name="success" type="chain">getAdminOptions
+			</result>
 		</action>
-		
+
+		<!-- Data Status Action -->
+
+		<action name="index"
+			class="org.hisp.dhis.vn.datastatus.action.DefaultDataStatusAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-vn-report/dataStatusShow.vm</param>
+			<param name="menu">/dhis-web-vn-report/menuWithTree.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/datastatus.js</param>
+			<param name="menuTreeHeight">400</param>
+		</action>
+
+		<action name="listDataStatus" class="org.hisp.dhis.vn.datastatus.action.ListDataStatusAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-vn-report/listDataStatus.vm</param>
+			<param name="menu">/dhis-web-vn-report/menu.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/datastatus.js</param>
+			<param name="menuTreeHeight">400</param>
+		</action>
+
+		<action name="addDataStatus" class="org.hisp.dhis.vn.datastatus.action.AddDataStatusAction">
+			<result name="success" type="redirect">listDataStatus.action
+			</result>
+			<param name="requiredAuthorities">F_EDIT_DATASTATUS</param>
+		</action>
+
+		<action name="updateDataStatus"
+			class="org.hisp.dhis.vn.datastatus.action.UpdateDataStatusAction">
+			<result name="success" type="redirect">listDataStatus.action
+			</result>
+			<param name="requiredAuthorities">F_EDIT_DATASTATUS</param>
+		</action>
+
+		<action name="deleteDataStatus"
+			class="org.hisp.dhis.vn.datastatus.action.DeleteDataStatusAction">
+			<result name="success" type="redirect">listDataStatus.action
+			</result>
+			<param name="requiredAuthorities">F_EDIT_DATASTATUS</param>
+		</action>
+
+		<action name="openUpdateDataStatus" class="org.hisp.dhis.vn.datastatus.action.GetDataStatusAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-vn-report/updateDataStatus.vm</param>
+			<param name="menu">/dhis-web-vn-report/menu.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/datastatus.js</param>
+			<param name="menuTreeHeight">400</param>
+			<param name="requiredAuthorities">F_EDIT_DATASTATUS</param>
+		</action>
+
+		<action name="openAddDataStatus" class="org.hisp.dhis.vn.datastatus.action.NoAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-vn-report/addDataStatus.vm</param>
+			<param name="menu">/dhis-web-vn-report/menu.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/datastatus.js</param>
+			<param name="menuTreeHeight">400</param>
+			<param name="requiredAuthorities">F_EDIT_DATASTATUS</param>
+		</action>
+
+		<action name="getDataSets" class="org.hisp.dhis.vn.datastatus.action.GetDataSetAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/responseDataSets.vm</result>
+		</action>
+
+
 	</package>
 </struts>

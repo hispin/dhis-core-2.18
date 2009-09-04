@@ -3,6 +3,8 @@ package org.hisp.dhis.vn.status;
 import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -52,4 +54,6 @@ public interface DataStatusService
     Collection<DataStatus> getDataStatusByDataSets( Collection<DataSet> dataSets );
 
     Collection<DataStatus> getDataStatusDefaultByDataSets( Collection<DataSet> dataSets );
+    
+    int countDataValueOfDataSet(DataSet dataSet, OrganisationUnit organisationUnit, Period period);
 }
