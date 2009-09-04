@@ -1,4 +1,4 @@
-package org.hisp.dhis.vn.report.action;
+package org.hisp.dhis.status.action;
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -25,45 +25,16 @@ package org.hisp.dhis.vn.report.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import org.hisp.dhis.vn.report.ReportExcelService;
-
-import com.opensymphony.xwork2.Action;
-
+import com.opensymphony.xwork.Action;
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class DeleteReportAction
-    implements Action
-{
-    // -------------------------------------------
-    // Dependency
-    // -------------------------------------------
+public class NoAction implements Action{
 
-    private ReportExcelService reportService;
-
-    // -------------------------------------------
-    // Input
-    // -------------------------------------------
-
-    private Integer id;
-
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
-    }
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public String execute()
-        throws Exception
-    {
-        reportService.deleteReport( id );
-
-        return SUCCESS;
-    }
+	public String execute() throws Exception {
+		
+		return SUCCESS;
+	}
 
 }

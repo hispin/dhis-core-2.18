@@ -1,4 +1,5 @@
-package org.hisp.dhis.vn.report.action;
+package org.hisp.dhis.vn.datastatus.action;
+
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -25,7 +26,8 @@ package org.hisp.dhis.vn.report.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import org.hisp.dhis.vn.report.ReportExcelService;
+import org.hisp.dhis.vn.status.DataStatus;
+import org.hisp.dhis.vn.status.DataStatusService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -33,24 +35,35 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class DeleteReportAction
+public class GetDataStatusAction
     implements Action
 {
-    // -------------------------------------------
+    // -------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------
 
-    private ReportExcelService reportService;
+    private DataStatusService dataStatusService;
 
-    // -------------------------------------------
-    // Input
-    // -------------------------------------------
+    // -------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------
 
     private Integer id;
 
-    public void setReportService( ReportExcelService reportService )
+    private DataStatus dataStatus;
+
+    // -------------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------------
+
+    public DataStatus getDataStatus()
     {
-        this.reportService = reportService;
+        return dataStatus;
+    }
+
+    public void setDataStatusService( DataStatusService dataStatusService )
+    {
+        this.dataStatusService = dataStatusService;
     }
 
     public void setId( Integer id )
@@ -61,8 +74,8 @@ public class DeleteReportAction
     public String execute()
         throws Exception
     {
-        reportService.deleteReport( id );
-
+        dataStatus = dataStatusService.get( id );
+        
         return SUCCESS;
     }
 

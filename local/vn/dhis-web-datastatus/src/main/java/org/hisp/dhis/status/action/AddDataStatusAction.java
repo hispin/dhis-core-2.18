@@ -1,4 +1,5 @@
-package org.hisp.dhis.vn.report.action;
+package org.hisp.dhis.status.action;
+
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -25,43 +26,72 @@ package org.hisp.dhis.vn.report.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import org.hisp.dhis.vn.report.ReportExcelService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.status.DataStatus;
+import org.hisp.dhis.status.DataStatusService;
 
-import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork.Action;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class DeleteReportAction
+public class AddDataStatusAction
     implements Action
 {
-    // -------------------------------------------
+
+    // -------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------
 
-    private ReportExcelService reportService;
+    private DataStatusService dataStatusService;
 
-    // -------------------------------------------
+    private DataSetService dataSetService;
+
+    // -------------------------------------------------
     // Input
-    // -------------------------------------------
+    // -------------------------------------------------
 
-    private Integer id;
+    private Integer dataSetId;
 
-    public void setReportService( ReportExcelService reportService )
+    private boolean makeDefault;
+
+    // -------------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------------
+
+    public void setDataStatusService( DataStatusService dataStatusService )
     {
-        this.reportService = reportService;
+        this.dataStatusService = dataStatusService;
     }
 
-    public void setId( Integer id )
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.id = id;
+        this.dataSetService = dataSetService;
+    }
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
+    public void setMakeDefault( boolean makeDefault )
+    {
+        this.makeDefault = makeDefault;
     }
 
     public String execute()
         throws Exception
     {
-        reportService.deleteReport( id );
+        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+
+        DataStatus dataStatus = new DataStatus();
+        dataStatus.setDataSet( dataSet );
+        dataStatus.setFrontPage( makeDefault );
+        dataStatus.setPeriodType( dataSet.getPeriodType() );
+
+        dataStatusService.save( dataStatus );
 
         return SUCCESS;
     }

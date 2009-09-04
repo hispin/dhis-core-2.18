@@ -48,6 +48,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.vn.report.action.GetReportGroupsAction" class="org.hisp.dhis.vn.report.action.GetReportGroupsAction"
+		scope="prototype">
+		<property name="reportExcelService" ref="org.hisp.dhis.vn.report.ReportExcelService" />		
+	</bean>
 
 	<bean id="org.hisp.dhis.vn.report.action.GetReportAction" class="org.hisp.dhis.vn.report.action.GetReportAction"
 		scope="prototype">

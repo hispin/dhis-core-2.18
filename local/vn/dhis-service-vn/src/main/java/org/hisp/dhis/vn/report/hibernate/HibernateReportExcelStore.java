@@ -125,6 +125,15 @@ public class HibernateReportExcelStore
         return criteria.list();
 
     }
+    
+    @SuppressWarnings("unchecked")
+	public Collection<String> getReportGroups(){
+    	  Session session = sessionFactory.getCurrentSession();
+          SQLQuery sqlQuery = session
+              .createSQLQuery( "select DISTINCT(reportgroup) from reportexcel" );
+
+          return sqlQuery.list(); 	
+    }
 
     // --------------------------------------
     // Service of Report Item

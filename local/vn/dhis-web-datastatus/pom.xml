@@ -6,15 +6,15 @@
   <parent>
     <groupId>org.hisp.dhis</groupId>
     <artifactId>dhis-web</artifactId>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>2.0.1-SNAPSHOT</version>
   </parent>
   
-  <artifactId>dhis-web-vn-report</artifactId>
-  <packaging>jar</packaging>
-  <name>DHIS Vietnam Report</name>
+  <artifactId>dhis-web-datastatus</artifactId>
+  <packaging>war</packaging>
+  <name>DHIS Data Status</name>
   
   <build>
-    <finalName>dhis-web-vn-report</finalName>
+    <finalName>dhis-web-datastatus</finalName>
   </build>
   
   <dependencies>
@@ -33,18 +33,20 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-vn</artifactId>
-	  <version>2.0.2-SNAPSHOT</version>
-    </dependency> 
+    </dependency>   
     <dependency>
 	  <groupId>org.hisp.dhis</groupId>
 	  <artifactId>dhis-service-aggregationengine-default</artifactId>
-	  <version>2.0.2-SNAPSHOT</version>
+	  <version>2.0.1-SNAPSHOT</version>
 	</dependency>	 
-        
+    
+    <!-- Web -->
+    
+    <dependency>
+      <groupId>com.opensymphony</groupId>
+      <artifactId>webwork</artifactId>
+    </dependency>
+    
     <!-- Other -->
     
     <dependency>

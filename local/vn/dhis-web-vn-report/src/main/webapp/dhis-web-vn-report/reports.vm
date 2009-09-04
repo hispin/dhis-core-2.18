@@ -94,8 +94,6 @@
 	}
 	
 	function openAddReportForm(){
-	
-		resetALLValue('report');
 		
 		setPositionCenter( 'report' );
 		showDivEffect();
@@ -129,7 +127,7 @@
 	}
 	
 </script>
-<div id="report" style="position:fixed;display:none;width:450px;z-index:10001;background-color: white;border: medium solid silver;height:200px;padding:20px;">
+<div id="report" style="position:fixed;display:none;width:450px;z-index:10001;background-color: white;border: medium solid silver;height:250px;padding:20px;">
 	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('report');deleteDivEffect();">[x]</div>
 	<input type="hidden" value="" id="id"/>
 	<table>
@@ -151,7 +149,11 @@
 					<option value='grouplisting'>$i18n.getString('grouplisting')</option>									
 				</select>
 			</td>
-		</tr>		
+		</tr>	
+		<tr>		
+			<td><label>$i18n.getString('group')</label></td>
+			<td><input type="text" id="reportGroup" style="width:20em"/></td>
+		<td>		
 		<tr>
 			<td><label>$i18n.getString('period_postion_row')</label></td>
 			<td><input type="text" id="periodRow"   style="width:10em"/></td>
@@ -169,6 +171,7 @@
 			<td><label>$i18n.getString('organisation_position_column')</label></td>
 			<td><input type="text" id="organisationColumn" style="width:10em"/></td>
 		<td>
+		
 	</table>
 	<p align="center">
 	<input type="button" value="$i18n.getString('ok')" onclick="javascript:validateAddReport();"/>

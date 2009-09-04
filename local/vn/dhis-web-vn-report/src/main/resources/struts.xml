@@ -28,13 +28,20 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-vn-report/reports.vm</param>
 			<param name="menu">/dhis-web-vn-report/menu.vm</param>
-			<param name="javascripts">javascript/reports.js,javascript/dataelement.js</param>
+			<param name="javascripts">javascript/reports.js,javascript/dataelement.js,javascript/jquery.autocomplete.js</param>
+			<param name="stylesheets">style/jquery.autocomplete.css</param>
 		</action>
 
 		<action name="updateReportExcelGroupListing"
 			class="org.hisp.dhis.vn.report.action.UpdateReportExcelGroupListingAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseSuccess.vm</result>
+		</action>
+		
+		<action name="getReportGroups"
+			class="org.hisp.dhis.vn.report.action.GetReportGroupsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/responseReportGroups.vm</result>
 		</action>
 
 		<action name="updateReportExcelGroupListing"
