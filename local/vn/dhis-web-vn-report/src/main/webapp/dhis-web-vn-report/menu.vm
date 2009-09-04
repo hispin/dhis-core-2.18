@@ -1,4 +1,4 @@
-<h2>$i18n.getString( "report_design" )</h2>
+﻿<h2>$i18n.getString( "report_design" )</h2>
 <ul>
 	<li><a href="getConfiguration.action">$i18n.getString( "configuration" )&nbsp;</a></li>	
 	<li><a href="listReportExcel.action">$i18n.getString( "report" )&nbsp;</a></li>	
@@ -6,10 +6,9 @@
 </ul>
 <h2>$i18n.getString( "generate_report" )</h2>
 <ul>
-	<li><a href="index.action">$i18n.getString( "generate_report" )&nbsp;</a></li>	
+	<li><a href="selectReportParamerter.action">$i18n.getString( "generate_report" )&nbsp;</a></li>	
 	<li><a href="getExcelFileByOrganisationUnit.action">$i18n.getString( "import_excel_file_manager" )&nbsp;</a></li>	
-	<li><a href="selectDataSetCompletedReport.action">$i18n.getString( "dataset_completed_report" )&nbsp;</a></li>
-	<li><a href="getAdminOptions.action">$i18n.getString( "administration" )&nbsp;</a></li>
+	<li><a href="selectDataSetCompletedReport.action">$i18n.getString( "dataset_completed_report" )&nbsp;</a></li>	
 </ul>
 
 <script type="text/javascript">

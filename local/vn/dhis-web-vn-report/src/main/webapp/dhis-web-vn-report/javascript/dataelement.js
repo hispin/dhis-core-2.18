@@ -1,4 +1,8 @@
 
+/**
+	HIEU DONE
+*/
+
 // init a new list from xml file //
 function initElementList( targetListId, parentElement, tagName, isHaveOptionALL )  {
 
@@ -41,9 +45,6 @@ function openAddDataElementForm( reportId ) {
 	mode = 'UPDATE';
 }
 
-function resetALLValue() {
-	//TODO implement!
-}
 
 function initDataElementGroupsAndCateCombosForm() {
 	

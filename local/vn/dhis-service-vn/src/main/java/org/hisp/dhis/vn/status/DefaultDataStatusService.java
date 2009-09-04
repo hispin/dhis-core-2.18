@@ -3,6 +3,8 @@ package org.hisp.dhis.vn.status;
 import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 import org.springframework.transaction.annotation.Transactional;
 
 /*
@@ -37,63 +39,58 @@ import org.springframework.transaction.annotation.Transactional;
  * @version $Id$
  */
 @Transactional
-public class DefaultDataStatusService
-    implements DataStatusService
-{
-    // -------------------------------------------------
-    // Dependency
-    // -------------------------------------------------
+public class DefaultDataStatusService implements DataStatusService {
+	// -------------------------------------------------
+	// Dependency
+	// -------------------------------------------------
 
-    private DataStatusStore dataStatusStore;
+	private DataStatusStore dataStatusStore;
 
-    public void setDataStatusStore( DataStatusStore dataStatusStore )
-    {
-        this.dataStatusStore = dataStatusStore;
-    }
+	public void setDataStatusStore(DataStatusStore dataStatusStore) {
+		this.dataStatusStore = dataStatusStore;
+	}
 
-    // -------------------------------------------------
-    // Implement
-    // -------------------------------------------------
+	// -------------------------------------------------
+	// Implement
+	// -------------------------------------------------
 
-    public int save( DataStatus dataStatus )
-    {
-        return dataStatusStore.save( dataStatus );
-    }
+	public int save(DataStatus dataStatus) {
+		return dataStatusStore.save(dataStatus);
+	}
 
-    public void delete( int id )
-    {
-        dataStatusStore.delete( id );
-    }
+	public void delete(int id) {
+		dataStatusStore.delete(id);
+	}
 
-    public DataStatus get( int id )
-    {      
-        return dataStatusStore.get( id );
-    }
+	public DataStatus get(int id) {
+		return dataStatusStore.get(id);
+	}
 
-    public void update( DataStatus dataStatus )
-    {
-        dataStatusStore.update( dataStatus );
-    }
+	public void update(DataStatus dataStatus) {
+		dataStatusStore.update(dataStatus);
+	}
 
-    public Collection<DataStatus> getALL()
-    {       
-        return dataStatusStore.getALL();
-    }
+	public Collection<DataStatus> getALL() {
+		return dataStatusStore.getALL();
+	}
 
-    public Collection<DataStatus> getDataStatusDefault()
-    {      
-        return dataStatusStore.getDataStatusDefault();
-    }
+	public Collection<DataStatus> getDataStatusDefault() {
+		return dataStatusStore.getDataStatusDefault();
+	}
 
-    public Collection<DataStatus> getDataStatusByDataSets( Collection<DataSet> dataSets )
-    {        
-        return dataStatusStore.getDataStatusByDataSets( dataSets );
-    }
+	public Collection<DataStatus> getDataStatusByDataSets(
+			Collection<DataSet> dataSets) {
+		return dataStatusStore.getDataStatusByDataSets(dataSets);
+	}
 
-    public Collection<DataStatus> getDataStatusDefaultByDataSets( Collection<DataSet> dataSets )
-    {
-        // TODO Auto-generated method stub
-        return dataStatusStore.getDataStatusDefaultByDataSets( dataSets );
-    }
+	public Collection<DataStatus> getDataStatusDefaultByDataSets(
+			Collection<DataSet> dataSets) {
+		return dataStatusStore.getDataStatusDefaultByDataSets(dataSets);
+	}
+
+	public int countDataValueOfDataSet(DataSet dataSet,
+			OrganisationUnit organisationUnit, Period period) {		
+		return dataStatusStore.countDataValueOfDataSet(dataSet, organisationUnit, period);
+	}
 
 }

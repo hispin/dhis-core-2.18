@@ -12,7 +12,8 @@
 		<property name="periodRow" column="periodrow" />
 		<property name="periodColumn" column="periodcolumn" />		
 		<property name="organisationRow" column="rganisationrow" />
-		<property name="organisationColumn" column="organisationcolumn" />		
+		<property name="organisationColumn" column="organisationcolumn" />	
+		<property name="group" column="reportgroup" />		
 		
 		<set name="reportItems" cascade="all">
 			<key column="reportid" />

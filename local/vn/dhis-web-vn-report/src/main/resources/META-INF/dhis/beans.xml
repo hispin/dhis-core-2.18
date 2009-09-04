@@ -28,7 +28,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.vn.report.configuration.action.SetReportConfigurationAction"
 		class="org.hisp.dhis.vn.report.configuration.action.SetReportConfigurationAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 
@@ -37,14 +37,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.vn.report.action.UpdateReportExcelGroupListingAction"
 		class="org.hisp.dhis.vn.report.action.UpdateReportExcelGroupListingAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.report.action.ListReportAction" class="org.hisp.dhis.vn.report.action.ListReportAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
@@ -64,33 +64,29 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 
 	<bean id="org.hisp.dhis.vn.report.action.AddReportExcelAction"
-		class="org.hisp.dhis.vn.report.action.AddReportExcelAction"
-        scope="prototype">
+		class="org.hisp.dhis.vn.report.action.AddReportExcelAction" scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
 
 
 	<bean id="org.hisp.dhis.vn.report.action.ValidateReportAction"
-		class="org.hisp.dhis.vn.report.action.ValidateReportAction"
-        scope="prototype">
+		class="org.hisp.dhis.vn.report.action.ValidateReportAction" scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.report.action.UpdateReportExcelAction"
-		class="org.hisp.dhis.vn.report.action.UpdateReportExcelAction"
-        scope="prototype">
+		class="org.hisp.dhis.vn.report.action.UpdateReportExcelAction" scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.report.action.DeleteReportAction"
-		class="org.hisp.dhis.vn.report.action.DeleteReportAction"
-        scope="prototype">
+		class="org.hisp.dhis.vn.report.action.DeleteReportAction" scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.report.action.OpenReportExcelAssociationAction"
 		class="org.hisp.dhis.vn.report.action.OpenReportExcelAssociationAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
@@ -98,15 +94,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.vn.report.action.UpdateReportAssociationAction"
 		class="org.hisp.dhis.vn.report.action.UpdateReportAssociationAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.report.action.GetNumberOfLevelsAction"
-		class="org.hisp.dhis.vn.report.action.GetNumberOfLevelsAction"
-        scope="prototype">
+		class="org.hisp.dhis.vn.report.action.GetNumberOfLevelsAction" scope="prototype">
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
@@ -118,8 +113,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.report.action.UnselectLevelAction"
-		class="org.hisp.dhis.vn.report.action.UnselectLevelAction" 
-		scope="prototype">
+		class="org.hisp.dhis.vn.report.action.UnselectLevelAction" scope="prototype">
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 	</bean>
@@ -133,40 +127,37 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Report Item -->
 
 	<bean id="org.hisp.dhis.vn.reportitem.action.ListReportItemAction"
-		class="org.hisp.dhis.vn.reportitem.action.ListReportItemAction"
-        scope="prototype">
+		class="org.hisp.dhis.vn.reportitem.action.ListReportItemAction" scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.reportitem.action.GetReportItemAction"
-		class="org.hisp.dhis.vn.reportitem.action.GetReportItemAction"
-        scope="prototype">
+		class="org.hisp.dhis.vn.reportitem.action.GetReportItemAction" scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.reportitem.action.AddReportItemAction"
-		class="org.hisp.dhis.vn.reportitem.action.AddReportItemAction"
-        scope="prototype">
+		class="org.hisp.dhis.vn.reportitem.action.AddReportItemAction" scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.reportitem.action.UpdateReportItemAction"
 		class="org.hisp.dhis.vn.reportitem.action.UpdateReportItemAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.reportitem.action.ValidateReportItemAction"
 		class="org.hisp.dhis.vn.reportitem.action.ValidateReportItemAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.reportitem.action.DeleteReportItemAction"
 		class="org.hisp.dhis.vn.reportitem.action.DeleteReportItemAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
 
@@ -194,7 +185,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.vn.report.formula.action.ValidateDenumAction"
 		class="org.hisp.dhis.vn.report.formula.action.ValidateDenumAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="expressionService">
 			<ref bean="org.hisp.dhis.expression.ExpressionService" />
 		</property>
@@ -202,15 +193,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.vn.reportitem.action.CopyReportItemsAction"
 		class="org.hisp.dhis.vn.reportitem.action.CopyReportItemsAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
 
 	<!-- Export Report -->
 
 	<bean id="org.hisp.dhis.vn.report.export.action.SelectFormAction"
-		class="org.hisp.dhis.vn.report.export.action.SelectFormAction"
-        scope="prototype">
+		class="org.hisp.dhis.vn.report.export.action.SelectFormAction" scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -222,14 +212,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.vn.report.export.action.GetOrganisationUnitAction"
 		class="org.hisp.dhis.vn.report.export.action.GetOrganisationUnitAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="organisationUnitSelectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.report.export.action.GetPeriodAction"
-		class="org.hisp.dhis.vn.report.export.action.GetPeriodAction"
-        scope="prototype">
+		class="org.hisp.dhis.vn.report.export.action.GetPeriodAction" scope="prototype">
 		<property name="selectionManager"
 			ref="org.hisp.dhis.vn.report.state.SelectionManager" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
@@ -238,14 +227,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.vn.report.export.action.ValidateGenerateReportAction"
 		class="org.hisp.dhis.vn.report.export.action.ValidateGenerateReportAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="organisationUnitSelectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.report.export.action.GenerateReportAction"
 		class="org.hisp.dhis.vn.report.export.action.GenerateReportAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -263,10 +252,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<!-- Delete Report temp file -->
-	
+
 	<bean id="org.hisp.dhis.vn.report.support.action.CleanTempDirectoryAction"
 		class="org.hisp.dhis.vn.report.support.action.CleanTempDirectoryAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.vn.report.state.ReportLocationManager" />
 	</bean>
@@ -281,16 +270,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
 
-	<bean id="org.hisp.dhis.vn.report.completed.action.GetDataSetAndPeriodByPeriodTypeAction"
+	<bean
+		id="org.hisp.dhis.vn.report.completed.action.GetDataSetAndPeriodByPeriodTypeAction"
 		class="org.hisp.dhis.vn.report.completed.action.GetDataSetAndPeriodByPeriodTypeAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 	</bean>
 
-	<bean id="org.hisp.dhis.vn.report.completed.action.ViewDataSetCompletedAction"
+	<bean
+		id="org.hisp.dhis.vn.report.completed.action.ViewDataSetCompletedAction"
 		class="org.hisp.dhis.vn.report.completed.action.ViewDataSetCompletedAction"
 		scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
@@ -301,7 +292,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
 
-	<bean id="org.hisp.dhis.vn.report.completed.action.ViewCustomDataSetReportAction"
+	<bean
+		id="org.hisp.dhis.vn.report.completed.action.ViewCustomDataSetReportAction"
 		class="org.hisp.dhis.vn.report.completed.action.ViewCustomDataSetReportAction"
 		scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
@@ -315,46 +307,53 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- HIEU DONE -->
 	<!-- Dataelement -->
 
-	<bean id="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupsAndCateCombosListAction"
+	<bean
+		id="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupsAndCateCombosListAction"
 		class="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupsAndCateCombosListAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="dataElementCategoryComboService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryComboService" />
 	</bean>
 
 
-	<bean id="org.hisp.dhis.vn.dataelement.action.GetFilteredDataElementListAction"
+	<bean
+		id="org.hisp.dhis.vn.dataelement.action.GetFilteredDataElementListAction"
 		class="org.hisp.dhis.vn.dataelement.action.GetFilteredDataElementListAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
 
-	<bean id="org.hisp.dhis.vn.categorycombo.action.GetFilteredCategoryListAction"
+	<bean
+		id="org.hisp.dhis.vn.categorycombo.action.GetFilteredCategoryListAction"
 		class="org.hisp.dhis.vn.categorycombo.action.GetFilteredCategoryListAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="dataElementCategoryComboService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryComboService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupMembersAction"
+	<bean
+		id="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupMembersAction"
 		class="org.hisp.dhis.vn.dataelement.action.GetDataElementGroupMembersAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.vn.dataelement.action.ValidateAddDataElementAndCateComboInCategoryReportAction"
+	<bean
+		id="org.hisp.dhis.vn.dataelement.action.ValidateAddDataElementAndCateComboInCategoryReportAction"
 		class="org.hisp.dhis.vn.dataelement.action.ValidateAddDataElementAndCateComboInCategoryReportAction"
-        scope="prototype"/>
+		scope="prototype" />
 
-	<bean id="org.hisp.dhis.vn.report.formula.action.ValidateFormulaForReportCategoryAction"
+	<bean
+		id="org.hisp.dhis.vn.report.formula.action.ValidateFormulaForReportCategoryAction"
 		class="org.hisp.dhis.vn.report.formula.action.ValidateFormulaForReportCategoryAction"
-        scope="prototype"/>
+		scope="prototype" />
 
-	<bean id="org.hisp.dhis.vn.report.action.UpdateElementMembersAndCateComboReportCategoryAction"
+	<bean
+		id="org.hisp.dhis.vn.report.action.UpdateElementMembersAndCateComboReportCategoryAction"
 		class="org.hisp.dhis.vn.report.action.UpdateElementMembersAndCateComboReportCategoryAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="dataElementCategoryComboService"
@@ -365,7 +364,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.vn.categorycombo.action.GetOptionCombosAction"
 		class="org.hisp.dhis.vn.categorycombo.action.GetOptionCombosAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="dataElementCategoryComboService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryComboService" />
 		<property name="dataElementCategoryOptionComboService"
@@ -374,9 +373,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Import Excel Files -->
 
-	<bean id="org.hisp.dhis.vn.imports.action.GetListExcelFileByOrganisationAction"
+	<bean
+		id="org.hisp.dhis.vn.imports.action.GetListExcelFileByOrganisationAction"
 		class="org.hisp.dhis.vn.imports.action.GetListExcelFileByOrganisationAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.vn.report.state.ReportLocationManager" />
 		<property name="organisationUnitSelectionManager"
@@ -384,8 +384,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.imports.action.UploadExcelFileAction"
-		class="org.hisp.dhis.vn.imports.action.UploadExcelFileAction"
-        scope="prototype">
+		class="org.hisp.dhis.vn.imports.action.UploadExcelFileAction" scope="prototype">
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.vn.report.state.ReportLocationManager" />
 		<property name="organisationUnitSelectionManager"
@@ -393,8 +392,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.imports.action.DeleteExcelFileAction"
-		class="org.hisp.dhis.vn.imports.action.DeleteExcelFileAction"
-        scope="prototype">
+		class="org.hisp.dhis.vn.imports.action.DeleteExcelFileAction" scope="prototype">
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.vn.report.state.ReportLocationManager" />
 		<property name="organisationUnitSelectionManager"
@@ -403,7 +401,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.vn.imports.action.ViewDataFromExcelFileAction"
 		class="org.hisp.dhis.vn.imports.action.ViewDataFromExcelFileAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.vn.report.state.ReportLocationManager" />
 		<property name="organisationUnitSelectionManager"
@@ -411,20 +409,77 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportExcelService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
 
-    <!-- Admin -->
-    
-    <bean id="org.hisp.dhis.vn.admin.action.GetAdminOptionsAction"
-      class="org.hisp.dhis.vn.admin.action.GetAdminOptionsAction"
-      scope="prototype">
-      <property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
-      <property name="userStore" ref="org.hisp.dhis.user.UserStore" />  
-    </bean>
+	<!-- Admin -->
 
-    <bean id="org.hisp.dhis.vn.admin.action.SaveReportUserRolesAction"
-      class="org.hisp.dhis.vn.admin.action.SaveReportUserRolesAction"
-      scope="prototype">
-      <property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
-      <property name="userStore" ref="org.hisp.dhis.user.UserStore" />  
-    </bean>
-    
+	<bean id="org.hisp.dhis.vn.admin.action.GetAdminOptionsAction"
+		class="org.hisp.dhis.vn.admin.action.GetAdminOptionsAction" scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.admin.action.SaveReportUserRolesAction"
+		class="org.hisp.dhis.vn.admin.action.SaveReportUserRolesAction" scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+	</bean>
+
+	<!-- Data Status Bean -->
+
+	<bean id="org.hisp.dhis.status.action.ListDataStatusAction" class="org.hisp.dhis.vn.datastatus.action.ListDataStatusAction"
+		scope="prototype">
+		<property name="dataStatusService" ref="org.hisp.dhis.vn.status.DataStatusService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.datastatus.action.AddDataStatusAction"
+		class="org.hisp.dhis.vn.datastatus.action.AddDataStatusAction" scope="prototype">
+		<property name="dataStatusService" ref="org.hisp.dhis.vn.status.DataStatusService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.datastatus.action.UpdateDataStatusAction"
+		class="org.hisp.dhis.vn.datastatus.action.UpdateDataStatusAction"
+		scope="prototype">
+		<property name="dataStatusService" ref="org.hisp.dhis.vn.status.DataStatusService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.datastatus.action.DeleteDataStatusAction"
+		class="org.hisp.dhis.vn.datastatus.action.DeleteDataStatusAction"
+		scope="prototype">
+		<property name="dataStatusService" ref="org.hisp.dhis.vn.status.DataStatusService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.datastatus.action.GetDataStatusAction"
+		class="org.hisp.dhis.vn.datastatus.action.GetDataStatusAction" scope="prototype">
+		<property name="dataStatusService" ref="org.hisp.dhis.vn.status.DataStatusService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.datastatus.action.DefaultDataStatusAction"
+		class="org.hisp.dhis.vn.datastatus.action.DefaultDataStatusAction"
+		scope="prototype">
+		<property name="dataStatusService" ref="org.hisp.dhis.vn.status.DataStatusService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />		
+		<property name="completeDataSetRegistrationService"
+			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.vn.datastatus.action.GetDataSetAction"
+		class="org.hisp.dhis.vn.datastatus.action.GetDataSetAction" scope="prototype">
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+	</bean>
+
 </beans>

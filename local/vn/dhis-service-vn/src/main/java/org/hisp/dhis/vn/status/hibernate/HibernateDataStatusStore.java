@@ -3,13 +3,20 @@ package org.hisp.dhis.vn.status.hibernate;
 import java.util.Collection;
 import java.util.HashSet;
 
+
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.vn.status.DataStatus;
 import org.hisp.dhis.vn.status.DataStatusStore;
+
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -50,17 +57,23 @@ public class HibernateDataStatusStore
     // -------------------------------------------------
 
     private SessionFactory sessionFactory;
-
+    
+  
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
-    }
+    }   
+
 
     // -------------------------------------------------
     // Implement
     // -------------------------------------------------
 
-    public int save( DataStatus dataStatus )
+  
+
+
+
+	public int save( DataStatus dataStatus )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -145,4 +158,21 @@ public class HibernateDataStatusStore
         return result;
 
     }
+
+	public int countDataValueOfDataSet(DataSet dataSet,
+			OrganisationUnit organisationUnit, Period period) {
+		Session session = sessionFactory.getCurrentSession();
+		String sql = "select count(*) as c from datavalue where sourceid=" + organisationUnit.getId() + " and dataelementid in (";
+		int i = 0;
+		for(DataElement de:dataSet.getDataElements()){
+			if(i<dataSet.getDataElements().size()-1)sql+= de.getId() + ",";
+			else sql+= de.getId();
+			i++;
+		}
+		sql += ") and periodid=" + period.getId();
+		SQLQuery query = session.createSQLQuery(sql);		
+		query.addScalar("c",Hibernate.INTEGER);
+		
+		return Integer.valueOf(String.valueOf(query.uniqueResult()));
+	}
 }

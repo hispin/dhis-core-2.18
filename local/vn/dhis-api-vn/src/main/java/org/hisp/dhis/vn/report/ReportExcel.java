@@ -59,6 +59,8 @@ public abstract class ReportExcel
     private Set<OrganisationUnit> organisationAssocitions = new HashSet<OrganisationUnit>();
     
     private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
+    
+    private String group;
 
     public void addOrganisationAssocition( OrganisationUnit organisationUnit )
     {
@@ -133,7 +135,15 @@ public abstract class ReportExcel
         this.reportItems = reportItems;
     }
 
-    @Override
+    public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
+	@Override
     public int hashCode()
     {
         final int prime = 31;

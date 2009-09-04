@@ -1,4 +1,5 @@
 
+
 function changeViewBy(){
 	if(byId('viewby').value=='period'){	
 		byId('period').multiple = true;
