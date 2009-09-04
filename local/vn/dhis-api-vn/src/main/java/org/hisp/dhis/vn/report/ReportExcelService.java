@@ -58,6 +58,8 @@ public interface ReportExcelService
     
     public Collection<ReportExcelInterface> getReports( User user, boolean superUser );
     
+    public Collection<String> getReportGroups();
+    
     // --------------------------------------
     // Service of Report Item
     // --------------------------------------

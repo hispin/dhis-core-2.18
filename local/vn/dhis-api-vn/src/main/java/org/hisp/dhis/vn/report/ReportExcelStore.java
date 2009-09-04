@@ -54,6 +54,8 @@ public interface ReportExcelStore
     public Collection<ReportExcelInterface> getReportsByOrganisationUnit(OrganisationUnit organisationUnit);
 
     public Collection<ReportExcelInterface> getALLReport();
+    
+    public Collection<String> getReportGroups();
 
   
     // --------------------------------------

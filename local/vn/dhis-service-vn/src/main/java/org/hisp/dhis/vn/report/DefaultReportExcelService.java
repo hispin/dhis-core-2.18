@@ -125,6 +125,10 @@ public class DefaultReportExcelService
             return reports;
         }
     }
+    
+    public Collection<String> getReportGroups() {		
+		return reportStore.getReportGroups();
+	}
 
     // -------------------------------------------------
     // Service of Report Item
@@ -172,6 +176,8 @@ public class DefaultReportExcelService
 	public Collection<Integer> getSheets(Integer reportId) {		
 		return reportStore.getSheets(reportId);
 	}
+
+	
 
 
 

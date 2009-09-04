@@ -1,4 +1,14 @@
 package org.hisp.dhis.vn.report.action;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hisp.dhis.vn.report.ReportExcelService;
+
+import com.opensymphony.xwork2.Action;
+
+import edu.emory.mathcs.backport.java.util.Collections;
+
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -25,43 +35,34 @@ package org.hisp.dhis.vn.report.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import org.hisp.dhis.vn.report.ReportExcelService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class DeleteReportAction
+public class GetReportGroupsAction
     implements Action
 {
-    // -------------------------------------------
-    // Dependency
-    // -------------------------------------------
+    private ReportExcelService reportExcelService;
 
-    private ReportExcelService reportService;
-
-    // -------------------------------------------
-    // Input
-    // -------------------------------------------
-
-    private Integer id;
-
-    public void setReportService( ReportExcelService reportService )
+    public void setReportExcelService( ReportExcelService reportExcelService )
     {
-        this.reportService = reportService;
+        this.reportExcelService = reportExcelService;
     }
 
-    public void setId( Integer id )
+    private List<String> groups;
+
+    public List<String> getGroups()
     {
-        this.id = id;
+        return groups;
     }
 
     public String execute()
         throws Exception
     {
-        reportService.deleteReport( id );
+        groups = new ArrayList<String>( reportExcelService.getReportGroups() );
+
+        Collections.sort( groups );
 
         return SUCCESS;
     }
