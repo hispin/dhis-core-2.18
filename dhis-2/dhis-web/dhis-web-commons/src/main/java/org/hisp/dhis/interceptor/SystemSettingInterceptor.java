@@ -80,9 +80,9 @@ public class SystemSettingInterceptor
         map.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE ) );
         map.put( KEY_FLAG, systemSettingManager.getSystemSetting( KEY_FLAG ) );
         map.put( KEY_START_MODULE, systemSettingManager.getSystemSetting( KEY_START_MODULE ) );
-        map.put( KEY_ZERO_VALUE_SAVE_MODE, systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE ) );
-        map.put( KEY_FORUM_INTEGRATION, systemSettingManager.getSystemSetting( KEY_FORUM_INTEGRATION ) );
-        map.put( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, systemSettingManager.getSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART ) );
+        map.put( KEY_ZERO_VALUE_SAVE_MODE, systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false ) );
+        map.put( KEY_FORUM_INTEGRATION, systemSettingManager.getSystemSetting( KEY_FORUM_INTEGRATION, false ) );
+        map.put( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, systemSettingManager.getSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, false ) );
         
         invocation.getStack().push( map );
         
