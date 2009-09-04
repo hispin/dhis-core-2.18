@@ -12,7 +12,7 @@ var urlParts = new Array();
 urlParts = urlLocation.split('viewDataEntryForm.action');
 var urlPath = urlParts[0]+'selectDataElement.action?dataSetId='+dataSetId
 
-FCKCommands.RegisterCommand( 'InsertDataElement', new FCKDialogCommand( 'InsertDataElement', 'DataElement Selector', urlPath, 700, 550 ) ) ;
+FCKCommands.RegisterCommand( 'InsertDataElement', new FCKDialogCommand( 'Insert data element', 'Data element selector', urlPath, 700, 550 ) ) ;
 
 
 // Create the "Insert Data element" toolbar button.

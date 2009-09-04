@@ -46,16 +46,15 @@ body, .BackColor
 
 .PopupTitle
 {
-	font-weight: bold;
 	font-size: 14pt;
-	color: #ffff00;
-	background: #5b0204 url(images/headerbg.jpg) repeat-x scroll top left;
+ 	color: white;
+	background-color: #425073;
 	padding: 8px 10px 8px 10px;
 }
 
 .PopupButtons
 {
-	background-color: #5b0204;
+	background-color: #425073;
 	padding: 7px 10px 7px 10px;
 }
 
@@ -68,7 +67,6 @@ body, .BackColor
 	color: #3b3b1f;
 	background-color: #c7c78f;
 }
-
 */
 
 #btnOk
@@ -88,19 +86,18 @@ body, .BackColor
 
 .PopupTitleBorder
 {
-	border-bottom: #d5d59d 1px solid;
+	border-bottom: 1px solid #202020;
 }
 
 .PopupTabArea
 {
-	color: #737357;
-	background-color: #e3e3c7;
+	background-color: white;
 }
 
 .PopupTabEmptyArea
 {
 	padding-left: 10px ;
-	border-bottom: #d5d59d 1px solid;
+	border-bottom: 1px solid #202020;
 }
 
 .PopupTab, .PopupTabSelected

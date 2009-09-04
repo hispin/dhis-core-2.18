@@ -741,30 +741,29 @@ h4 {
 		<tr>
 			<td>
 				<h4>$i18n.getString( "selectdataelement" )</h4>
-				<select name="dataElementSelector" id="dataElementSelector" onchange="getOptionCombos()" style="height: 150" multiple>
+				<select name="dataElementSelector" id="dataElementSelector" onchange="getOptionCombos()" style="width:300px;height:150px" multiple>
 				</select>
 				<div id="message" name="message">&nbsp;</div>
 			</td>
 			<td>
 				<h4>$i18n.getString( "select_optioncombo" )</h4>
-				<select name="optionComboSelector" id="optionComboSelector" style="height: 150" multiple>
+				<select name="optionComboSelector" id="optionComboSelector" style="width:300px;height:150px" multiple>
 				</select>
 			</td>
 		</tr>						
 		<tr>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
+			<td style="height:20px" colspan="2"></td>
 		</tr>
 		<tr>
 			<td>
 				<h4>$i18n.getString( "view_as" )</h4>
-				<select name="viewBySelector" id="viewBySelector">		
+				<select name="viewBySelector" id="viewBySelector" style="width:150px">		
 					<option value="deid">$i18n.getString( "id" )</option>
 					<option value="dename">$i18n.getString( "name" )</option>
 					<option value="deshortname" selected>$i18n.getString( "short_name" )</option> 	
 				</select>
 			</td>
-			<td>&nbsp;</td>
+			<td></td>
 		</tr>									
 		<input type="hidden" name="dataSetIdField" id="dataSetIdField" value="$dataSet.id" />
 </body>
