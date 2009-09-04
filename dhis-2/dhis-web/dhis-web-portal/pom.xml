@@ -114,22 +114,12 @@
       <version>${version}</version>
       <type>war</type>
     </dependency>
-	<!--
 	<dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-mapping</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
-	-->
-    <!--
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-openhealth-integration</artifactId>
-      <version>${version}</version>
-      <type>war</type>
-    </dependency>
-    -->
         
     <!-- India modules -->
     
@@ -185,6 +175,17 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-jforum-integration</artifactId>
+      <version>${version}</version>
+      <type>war</type>
+    </dependency>
+    -->
+    
+    <!-- WHO modules -->
+    
+    <!--
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-openhealth-integration</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
