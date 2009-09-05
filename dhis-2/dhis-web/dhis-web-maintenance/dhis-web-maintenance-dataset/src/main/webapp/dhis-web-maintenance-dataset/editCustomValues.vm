@@ -358,15 +358,14 @@ function findDataElementCountCompleted( dataSetElement )
     dataElementSelector.add( option, null );
   }
   
-  var messageContainer = document.getElementById('message');
   if( dataElementList.length <=0 )
   {
-    messageContainer.innerHTML = "$i18n.getString( "no_more_elements_to_select" )";     
+    setMessage( "No more elements to select" ); //?  
 //    window.parent.SetOkButton( false ) ;
   }
   else
   {
-    messageContainer.innerHTML = " ";   
+    hideMessage();
 //    window.parent.SetOkButton( true ) ;
   }
 }
@@ -422,12 +421,12 @@ function getOptionCombosCompleted( optionComboElement )
   var messageContainer = document.getElementById('message');
   if( (optionsList.length ==1 &&  optionsList[0]=="NULL") || (optionsList.length ==0) )
   {
-    messageContainer.innerHTML = "$i18n.getString( "no_more_categories_to_select" )";   
+    setMessage( "No more categories to select" ); //?   
     //window.parent.SetOkButton( false ) ;
   }
   else
   {
-    messageContainer.innerHTML = " ";   
+    hideMessage();  
 //    window.parent.SetOkButton( true ) ;
   }
 }
@@ -455,18 +454,16 @@ function getCustomValuesCompleted( customValueElement )
         
     customValueSelector.add( option, null );
   }
-  
-  var messageContainer = document.getElementById('message');
-  
+    
   //here add if single value dissable and make the only element selected
   
   if( (custom_ValueList.length ==1 &&  custom_ValueList[0]=="NULL") || (custom_ValueList.length ==0) )
   {
-    messageContainer.innerHTML = "$i18n.getString( "no_more_categories_to_select" )";   
+    setMessage( "No more categories to select" ); //?   
   }
   else
   {
-    messageContainer.innerHTML = " ";   
+    hideMessage();  
   }
 }
 
@@ -533,18 +530,16 @@ function getSuggestedCustomValuesCompleted( customValueElement )
         
     availableCustomValue.add( option, null );
   }
-  
-  var messageContainer = document.getElementById('message');
-  
+    
   //here add if single value dissable and make the only element selected
   
   if( (custom_ValueList.length ==1 &&  custom_ValueList[0]=="NULL") || (custom_ValueList.length ==0) )
   {
-    messageContainer.innerHTML = " ";   
+    hideMessage();
   }
   else
   {
-    messageContainer.innerHTML = " ";   
+    hideMessage();   
   }
 }
 
@@ -596,11 +591,11 @@ function addNew()
 {
   if (document.getElementById( 'optionComboSelector' ).selectedIndex==-1 || document.getElementById( 'dataElementSelector' )==-1) 
   {
-    alert("\nYou must make a selection from the DataElement and ComboOptions panels first.");
+    setMessage("You must make a selection from the Data element and Combo options panels first");
   }
   else if(document.getElementById( 'newCustomValue' ).value=='')
   {
-    alert("\nCustom Value Must be added and should be unique" );
+    setMessage("Custom value must be entered" );
   }
   else
   {
@@ -618,7 +613,7 @@ function addNew()
     
     if(isDuplicate=='true')
     {
-      alert("\nDude, Duplicates are not allowed");
+      setMessage("Duplicates are not allowed");
     }
     else
     {
@@ -631,15 +626,15 @@ function remove()
 {
   if (document.getElementById( 'dataElementSelector' )==-1) 
   {
-    alert("\nYou must make a selection from the DataElement panel first.");
+    setMessage("You must make a selection from the data element panel first");
   }
   else if (document.getElementById( 'optionComboSelector' ).selectedIndex==-1) 
   {
-    alert("\nYou must make a selection from the ComboOptions panel first.");
+    setMessage("You must make a selection from the Combo options panel first");
   }
   else if (document.getElementById( 'customValueSelector' ).selectedIndex==-1) 
   {
-    alert("\nYou must make a selection from the CustomValues panel first.");
+    setMessage("You must make a selection from the Custom values panel first");
   }
   else
   {
@@ -750,5 +745,5 @@ h4 {
 </tbody>
 </table>                                  
 
-<div id="message" name="message">&nbsp;</div>
+<span id="message"></span>
 <input type="hidden" name="dataSetIdField" id="dataSetIdField" value="$dataSet.id">
