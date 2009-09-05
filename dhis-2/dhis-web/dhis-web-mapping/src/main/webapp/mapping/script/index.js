@@ -230,7 +230,7 @@ Ext.onReady(function()
             return 530;
         }
         else {
-            return 900;
+            return 850;
         }
     }
     
@@ -368,7 +368,7 @@ Ext.onReady(function()
         editable: false,
         valueField: 'id',
         displayField: 'name',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         mode: 'remote',
         forceSelection: true,
         triggerAction: 'all',
@@ -385,7 +385,7 @@ Ext.onReady(function()
         editable: false,
         valueField: 'id',
         displayField: 'name',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         mode: 'remote',
         forceSelection: true,
         triggerAction: 'all',
@@ -413,19 +413,19 @@ Ext.onReady(function()
 
     var newNameTextField = new Ext.form.TextField({
         id: 'newname_tf',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
     var editNameTextField = new Ext.form.TextField({
         id: 'editname_tf',
-        emptyText: '',
+        emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
     var mapLayerPathTextField = new Ext.form.TextField({
         id: 'maplayerpath_tf',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
@@ -434,6 +434,7 @@ Ext.onReady(function()
         editable: false,
         displayField: 'name',
         valueField: 'name',
+		emptyText: MENU_EMPTYTEXT,
         width: combo_width,
         minListWidth: combo_width + 26,
         triggerAction: 'all',
@@ -447,49 +448,49 @@ Ext.onReady(function()
     
     var newUniqueColumnTextField = new Ext.form.TextField({
         id: 'newuniquecolumn_tf',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
     var editUniqueColumnTextField = new Ext.form.TextField({
         id: 'edituniquecolumn_tf',
-        emptyText: '',
+        emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
     var newNameColumnTextField = new Ext.form.TextField({
         id: 'newnamecolumn_tf',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
     var editNameColumnTextField = new Ext.form.TextField({
         id: 'editnamecolumn_tf',
-        emptyText: '',
+        emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
     var newLongitudeTextField = new Ext.form.TextField({
         id: 'newlongitude_tf',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
     var editLongitudeTextField = new Ext.form.TextField({
         id: 'editlongitude_tf',
-        emptyText: '',
+        emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
     var newLatitudeTextField = new Ext.form.TextField({
         id: 'newlatitude_tf',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
     var editLatitudeTextField = new Ext.form.TextField({
         id: 'editlatitude_tf',
-        emptyText: '',
+        emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
@@ -732,7 +733,7 @@ Ext.onReady(function()
         editable: false,
         valueField: 'level',
         displayField: 'name',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         mode: 'remote',
         forceSelection: true,
         triggerAction: 'all',
@@ -758,7 +759,7 @@ Ext.onReady(function()
         editable: false,
         valueField: 'mapLayerPath',
         displayField: 'name',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         mode: 'remote',
         forceSelection: true,
         triggerAction: 'all',
@@ -803,7 +804,7 @@ Ext.onReady(function()
         editable: false,
         valueField: 'mapLayerPath',
         displayField: 'name',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         mode: 'remote',
         forceSelection: true,
         triggerAction: 'all',
@@ -817,43 +818,43 @@ Ext.onReady(function()
         id: 'newmap_p',
         items:
         [   
-            /*{ html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Map type:</p>' }, typeComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Organisation unit level:</p>' }, newMapComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Organisation unit:</p>' }, multi, { html: '<br>' },*/
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Organisation unit level:</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Map source file:</p>' }, mapLayerPathTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Display name:</p>' }, newNameTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Unique column:</p>' }, newUniqueColumnTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Name column:</p>' }, newNameColumnTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Longitude (x):</p>' }, newLongitudeTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Latitude (y):</p>' }, newLatitudeTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Zoom:</p>' }, newZoomComboBox
+            /*{ html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map type</p>' }, typeComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Organisation unit level</p>' }, newMapComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Organisation unit</p>' }, multi, { html: '<br>' },*/
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Organisation unit level</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map source file</p>' }, mapLayerPathTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' }, newNameTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Unique column</p>' }, newUniqueColumnTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Name column</p>' }, newNameColumnTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Longitude (x)</p>' }, newLongitudeTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Latitude (y)</p>' }, newLatitudeTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Zoom</p>' }, newZoomComboBox
         ]
     });
     
     var editMapPanel = new Ext.Panel({
         id: 'editmap_p',
         items: [
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Choose a map:</p>' }, editMapComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Map name:</p>' }, editNameTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Unique column:</p>' }, editUniqueColumnTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Name column:</p>' }, editNameColumnTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Longitude:</p>' }, editLongitudeTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Latitude:</p>' }, editLatitudeTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Zoom:</p>' }, editZoomComboBox
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map</p>' }, editMapComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map name</p>' }, editNameTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Unique column</p>' }, editUniqueColumnTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Name column</p>' }, editNameColumnTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Longitude</p>' }, editLongitudeTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Latitude</p>' }, editLatitudeTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Zoom</p>' }, editZoomComboBox
         ]
     });
     
     var deleteMapPanel = new Ext.Panel({
         id: 'deletemap_p',
         items: [
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Choose a map:</p>' }, deleteMapComboBox
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map</p>' }, deleteMapComboBox
         ]
     });
 
     shapefilePanel = new Ext.Panel({
         id: 'shapefile_p',
-        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_ADMIN + ';">Register shapefiles</font>',
+        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Register maps</font>',
         items:
         [
             {
@@ -932,7 +933,7 @@ Ext.onReady(function()
     
     var legendSetNameTextField = new Ext.form.TextField({
         id: 'legendsetname_tf',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
@@ -942,7 +943,7 @@ Ext.onReady(function()
         valueField: 'value',
         displayField: 'text',
         mode: 'local',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         triggerAction: 'all',
         width: combo_width,
         minListWidth: combo_width + 26,
@@ -958,7 +959,7 @@ Ext.onReady(function()
         valueField: 'value',
         displayField: 'value',
         mode: 'local',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         triggerAction: 'all',
         width: combo_width,
         minListWidth: combo_width + 26,
@@ -1019,7 +1020,7 @@ Ext.onReady(function()
         mode: 'remote',
         forceSelection: true,
         triggerAction: 'all',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         selectOnFocus: true,
         width: combo_width,
         minListWidth: combo_width + 26,
@@ -1107,14 +1108,14 @@ Ext.onReady(function()
         id: 'newlegendset_p',
         items:
         [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Name:</p>' }, legendSetNameTextField, { html: '<br>' },
-/*            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Method:</p>' }, legendSetMethodComboBox, { html: '<br>' },*/
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Classes:</p>' }, legendSetClassesComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Lowest value color:</p>' }, legendSetLowColorColorPalette, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Highest value color:</p>' }, legendSetHighColorColorPalette, { html: '<br>' },
-/*            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Indicator group:</p>' }, legendSetIndicatorGroupComboBox, { html: '<br>' },*/
-/*            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Indicator:</p>' }, legendSetIndicatorComboBox*/
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Indicators:</p>' }, legendSetIndicatorMultiSelect
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' }, legendSetNameTextField, { html: '<br>' },
+/*            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Method</p>' }, legendSetMethodComboBox, { html: '<br>' },*/
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Classes</p>' }, legendSetClassesComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Lowest value color</p>' }, legendSetLowColorColorPalette, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Highest value color</p>' }, legendSetHighColorColorPalette, { html: '<br>' },
+/*            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Indicator group</p>' }, legendSetIndicatorGroupComboBox, { html: '<br>' },*/
+/*            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Indicator</p>' }, legendSetIndicatorComboBox*/
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Indicators</p>' }, legendSetIndicatorMultiSelect
         ]
     });
     
@@ -1122,13 +1123,13 @@ Ext.onReady(function()
         id: 'deletelegendset_p',
         items:
         [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Legend set:</p>' }, legendSetComboBox
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Legend set</p>' }, legendSetComboBox
         ]
     });
 
     var legendsetPanel = new Ext.Panel({
         id: 'legendset_p',
-        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR + ';">Map legend sets</font>',
+        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Register legend sets</font>',
         items:
         [
             {
@@ -1184,7 +1185,7 @@ Ext.onReady(function()
     
     var viewNameTextField = new Ext.form.TextField({
         id: 'viewname_tf',
-        emptyText: 'Required',
+        emptyText: '',
         width: combo_width
     });
     
@@ -1206,7 +1207,7 @@ Ext.onReady(function()
         mode: 'remote',
         forceSelection: true,
         triggerAction: 'all',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         selectOnFocus: true,
         width: combo_width,
         minListWidth: combo_width + 26,
@@ -1222,7 +1223,7 @@ Ext.onReady(function()
         mode: 'remote',
         forceSelection: true,
         triggerAction: 'all',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         selectOnFocus: true,
         width: combo_width,
         minListWidth: combo_width + 26,
@@ -1354,8 +1355,8 @@ Ext.onReady(function()
         id: 'newview_p',
         items:
         [
-            { html: '<font color="' + MENU_TEXTCOLOR + '">Saving current thematic map selection.</font>' }, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Name:</p>' }, viewNameTextField
+            { html: '<font color="' + MENU_TEXTCOLOR_INFO + '">Saving current thematic map selection.</font>' }, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' }, viewNameTextField
         ]
     });
     
@@ -1363,7 +1364,7 @@ Ext.onReady(function()
         id: 'deleteview_p',
         items:
         [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">View:</p>' }, viewComboBox
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;View</p>' }, viewComboBox
         ]
     });
     
@@ -1371,13 +1372,13 @@ Ext.onReady(function()
         id: 'dashboardview_p',
         items:
         [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">View:</p>' }, view2ComboBox
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;View</p>' }, view2ComboBox
         ]
     });
     
     var viewPanel = new Ext.Panel({
         id: 'view_p',
-        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR + ';">Map views</font>',
+        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Register views</font>',
         items:
         [
             {
@@ -1456,17 +1457,17 @@ Ext.onReady(function()
         ]
     });
     
-    /*MAP LAYER PANEL*/
+    /*OVERLAY PANEL*/
     
     var mapLayerNameTextField = new Ext.form.TextField({
         id: 'maplayername_tf',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
     var mapLayerMapSourceFileTextField = new Ext.form.TextField({
         id: 'maplayermapsourcefile_tf',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         width: combo_width
     });
     
@@ -1483,7 +1484,6 @@ Ext.onReady(function()
         valueField: 'value',
         displayField: 'value',
         mode: 'local',
-        emptyText: 'Required',
         triggerAction: 'all',
         width: combo_width,
         minListWidth: combo_width + 26,
@@ -1507,7 +1507,6 @@ Ext.onReady(function()
         valueField: 'value',
         displayField: 'value',
         mode: 'local',
-        emptyText: 'Required',
         triggerAction: 'all',
         width: combo_width,
         minListWidth: combo_width + 26,
@@ -1535,7 +1534,7 @@ Ext.onReady(function()
         mode: 'remote',
         forceSelection: true,
         triggerAction: 'all',
-        emptyText: 'Required',
+        emptyText: MENU_EMPTYTEXT,
         selectOnFocus: true,
         width: combo_width,
         minListWidth: combo_width + 26,
@@ -1544,7 +1543,7 @@ Ext.onReady(function()
     
     var newMapLayerButton = new Ext.Button({
         id: 'newmaplayer_b',
-        text: 'Register new map layer',
+        text: 'Register new overlay',
         handler: function() {
             var mln = Ext.getCmp('maplayername_tf').getRawValue();
             var mlmsf = Ext.getCmp('maplayermapsourcefile_tf').getValue();
@@ -1554,12 +1553,12 @@ Ext.onReady(function()
             var mlsw = Ext.getCmp('maplayerstrokewidth_cb').getValue();
             
             if (!mln || !mlmsf ) {
-                Ext.messageRed.msg('New map layer', 'Map layer form is not complete.');
+                Ext.messageRed.msg('New overlay', 'Overlay form is not complete.');
                 return;
             }
             
             if (validateInput(mln) == false) {
-                Ext.messageRed.msg('New map layer', 'Map layer name cannot be longer than 25 characters.');
+                Ext.messageRed.msg('New overlay', 'Overlay name cannot be longer than 25 characters.');
                 return;
             }
             
@@ -1569,7 +1568,7 @@ Ext.onReady(function()
                 params: { name: mln, type: 'overlay', mapSource: mlmsf, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw },
 
                 success: function( responseObject ) {
-                    Ext.messageBlack.msg('New map layer', 'The map layer ' + msg_highlight_start + mln + msg_highlight_end + ' was registered.');
+                    Ext.messageBlack.msg('New overlay', 'The overlay ' + msg_highlight_start + mln + msg_highlight_end + ' was registered.');
                     Ext.getCmp('maplayer_cb').getStore().reload();
                 },
                 failure: function() {
@@ -1603,13 +1602,13 @@ Ext.onReady(function()
     
     var deleteMapLayerButton = new Ext.Button({
         id: 'deletemaplayer_b',
-        text: 'Delete map layer',
+        text: 'Delete overlay',
         handler: function() {
             var ml = Ext.getCmp('maplayer_cb').getValue();
             var mln = Ext.getCmp('maplayer_cb').getRawValue();
             
             if (!ml) {
-                Ext.messageRed.msg('Delete map layer', 'Please select a map layer.');
+                Ext.messageRed.msg('Delete overlay', 'Please select an overlay.');
                 return;
             }
             
@@ -1619,7 +1618,7 @@ Ext.onReady(function()
                 params: { id: ml },
 
                 success: function( responseObject ) {
-                    Ext.messageBlack.msg('Delete map layer', 'The map layer ' + msg_highlight_start + mln + msg_highlight_end + ' was deleted.');
+                    Ext.messageBlack.msg('Delete overlay', 'The overlay ' + msg_highlight_start + mln + msg_highlight_end + ' was deleted.');
                     Ext.getCmp('maplayer_cb').getStore().reload();
                     Ext.getCmp('maplayer_cb').reset();
                 },
@@ -1629,7 +1628,6 @@ Ext.onReady(function()
             });
             
             map.getLayersByName(mln)[0].destroy();
-            //map.removeLayer('Main roads');
         }
     });
     
@@ -1637,12 +1635,12 @@ Ext.onReady(function()
         id: 'newmaplayer_p',
         items:
         [
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Name:</p>' }, mapLayerNameTextField, { html: '<br>' }, 
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Map source file:</p>' }, mapLayerMapSourceFileTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Fill color:</p>' }, mapLayerFillColorColorField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Fill opacity:</p>' }, mapLayerFillOpacityComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Stroke color:</p>' }, mapLayerStrokeColorColorField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Stroke width:</p>' }, mapLayerStrokeWidthComboBox, { html: '<br>' }
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' }, mapLayerNameTextField, { html: '<br>' }, 
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map source file</p>' }, mapLayerMapSourceFileTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Fill color</p>' }, mapLayerFillColorColorField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Fill opacity</p>' }, mapLayerFillOpacityComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Stroke color</p>' }, mapLayerStrokeColorColorField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Stroke width</p>' }, mapLayerStrokeWidthComboBox, { html: '<br>' }
         ]
     });
     
@@ -1650,13 +1648,13 @@ Ext.onReady(function()
         id: 'deletemaplayer_p',
         items:
         [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">Map layer:</p>' }, mapLayerComboBox
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Overlay</p>' }, mapLayerComboBox
         ]
     });
     
     var mapLayerPanel = new Ext.Panel({
         id: 'maplayer_p',
-        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_ADMIN + ';">Map layers</font>',
+        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Register overlays</font>',
         items:
         [
             {
@@ -1684,7 +1682,7 @@ Ext.onReady(function()
                 items:
                 [
                     {
-                        title:'New map layer',
+                        title:'New overlay',
                         id: 'maplayer0',
                         items:
                         [
@@ -1692,7 +1690,7 @@ Ext.onReady(function()
                         ]
                     },
                     {
-                        title:'Delete map layer',
+                        title:'Delete overlay',
                         id: 'maplayer1',
                         items:
                         [
@@ -1720,12 +1718,12 @@ Ext.onReady(function()
             {
                 xtype: 'combo',
                 fieldLabel: 'Map source',
+				labelSeparator: MENU_LABELSEPARATOR,
                 id: 'mapsource_cb',
                 editable: false,
                 valueField: 'id',
                 displayField: 'text',
                 mode: 'local',
-                emptyText: 'Required',
                 triggerAction: 'all',
                 width: 133,
                 minListWidth: combo_width,
@@ -1790,6 +1788,7 @@ Ext.onReady(function()
                 xtype: 'checkbox',
                 id: 'register_chb',
                 fieldLabel: 'Admin panels',
+				labelSeparator: MENU_LABELSEPARATOR,
                 isFormField: true,
                 listeners: {
                     'check': {
@@ -1834,7 +1833,7 @@ Ext.onReady(function()
         id: 'choropleth',
         map: map,
         layer: choroplethLayer,
-        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR + ';">Thematic map</font>',
+		title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Thematic map </font>',
         //nameAttribute: 'NAME',
         //indicators: [['value', 'Indicator']],
         url: INIT_URL,
@@ -1858,7 +1857,7 @@ Ext.onReady(function()
         id: 'mapping',
         map: map,
         layer: choroplethLayer,
-        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_ADMIN + ';">Assign organisation units</font>',
+        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Link organisation units to map</font>',
         //nameAttribute: 'NAME',
         //indicators: [['value', 'Indicator']],
         url: INIT_URL,
@@ -1919,7 +1918,7 @@ Ext.onReady(function()
     });
 	
 	var zoomInButton = new Ext.Button({
-		text: 'Zoom In',
+		text: 'Zoom in',
 		cls: 'x-btn-text-icon',
 		icon: '../images/zoom_in.png',
 		handler:function() {
@@ -1929,7 +1928,7 @@ Ext.onReady(function()
 	});
 	
 	var zoomOutButton = new Ext.Button({
-		text: 'Zoom Out',
+		text: 'Zoom out',
 		cls: 'x-btn-text-icon',
 		icon: '../images/zoom_out.png',
 		handler:function() {
@@ -2197,8 +2196,12 @@ function loadMapData(redirect) {
                 MAPDATA.latitude = parseFloat(MAPDATA.latitude);
                 MAPDATA.zoom = parseFloat(MAPDATA.zoom);
             }
-            
-            map.panTo(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude), MAPDATA.zoom);
+           
+            map.panTo(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude));
+			
+			if (MAPDATA.zoom != map.getZoom()) {
+				map.zoomTo(MAPDATA.zoom);
+			}
 
             if (redirect == 'choropleth') {
                 getChoroplethData(); }
