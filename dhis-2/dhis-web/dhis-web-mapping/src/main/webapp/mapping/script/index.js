@@ -2503,11 +2503,9 @@ function dataReceivedAutoAssignOrganisationUnit( responseText ) {
             
                 count_match++;
                 var organisationUnitId = organisationUnits[i].id;
-                var organisationUnit = organisationUnits[i].name;
                 var featureId = features[j].attributes[uniqueColumn];
-                var featureName = features[j].attributes[nameColumn];
 
-                relations += organisationUnitId + '-' + featureId + ',';
+                relations += organisationUnitId + '::' + featureId + ';;';
             }
         }
     }
