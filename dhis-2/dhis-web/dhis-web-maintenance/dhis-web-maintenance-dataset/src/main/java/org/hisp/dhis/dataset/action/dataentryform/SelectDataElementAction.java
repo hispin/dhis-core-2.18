@@ -32,10 +32,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+import org.hisp.dhis.system.filter.StringTypeDataElementPredicate;
 
 import com.opensymphony.xwork2.Action;
 
@@ -82,6 +84,13 @@ public class SelectDataElementAction
         this.dataSetId = dataSetId;
     }
 
+    private boolean typeTextOnly;
+    
+    public void setTypeTextOnly( boolean typeTextOnly )
+    {
+        this.typeTextOnly = typeTextOnly;
+    }
+
     private List<DataElement> dataElements;
 
     public List<DataElement> getDataElements()
@@ -116,6 +125,11 @@ public class SelectDataElementAction
         {
             dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
+            if ( typeTextOnly )
+            {
+                CollectionUtils.filter( dataElements, new StringTypeDataElementPredicate() );
+            }
+            
             Collections.sort( dataElements, dataElementComparator );
 
             displayPropertyHandler.handle( dataElements );

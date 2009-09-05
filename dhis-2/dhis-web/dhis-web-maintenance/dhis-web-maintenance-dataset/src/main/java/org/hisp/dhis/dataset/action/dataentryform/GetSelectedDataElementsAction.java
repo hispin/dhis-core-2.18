@@ -100,8 +100,6 @@ public class GetSelectedDataElementsAction
 
         dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
 
-        Collections.sort( dataElementList, dataElementComparator );        
-        
         Collections.sort( dataElementList, dataElementComparator );
         
         displayPropertyHandler.handle( dataElementList );
