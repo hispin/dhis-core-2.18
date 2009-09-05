@@ -192,11 +192,6 @@ public class GetCustomValuesAction
             customValue.setCustomValue( value );
 
             customValueService.addCustomValue( customValue );
-
-            // somehow adding occurs after return SUCCESS. Need to add manually
-            // new CustomValue
-            customValueIds.add( String.valueOf( customValue.getId() ) );
-            customValueNames.add( customValue.getCustomValue() );
         }
 
         if ( operation.equalsIgnoreCase( "delete" ) )
@@ -204,31 +199,59 @@ public class GetCustomValuesAction
             customValue = customValueService.getCustomValue( customValueId );
             customValueService.deleteCustomValue( customValue );
         }
+
         List<CustomValue> customValues = null;
-        
+
         if ( operation.equalsIgnoreCase( "find" ) )
         {
             customValues = new ArrayList<CustomValue>( customValueService.findCustomValues( value ) );
-        }else
-        {
-	        customValues = new ArrayList<CustomValue>( customValueService.getCustomValues( dataSet,
-	            dataElement, dataElementCategoryOptionCombo ) );
         }
-        
+        else
+        {
+            customValues = new ArrayList<CustomValue>( customValueService.getCustomValues( dataSet, dataElement,
+                dataElementCategoryOptionCombo ) );
+        }
+
         Iterator<CustomValue> customValueIterator = customValues.iterator();
 
-        while ( customValueIterator.hasNext() )
+        if ( operation.equalsIgnoreCase( "find" ) )
         {
-            CustomValue customVal = customValueIterator.next();
+            while ( customValueIterator.hasNext() )
+            {
+                CustomValue customVal = customValueIterator.next();
+                
+                if ( !customValueNames.contains( customVal.getCustomValue() ) )
+                {
+                    customValueIds.add( String.valueOf( customVal.getId() ) );
+                    customValueNames.add( customVal.getCustomValue() );
+                }
+            }
+        }
+        else
+        {
+            while ( customValueIterator.hasNext() )
+            {
+                CustomValue customVal = customValueIterator.next();
 
-            customValueIds.add( String.valueOf( customVal.getId() ) );
-            customValueNames.add( customVal.getCustomValue() );
+                customValueIds.add( String.valueOf( customVal.getId() ) );
+                customValueNames.add( customVal.getCustomValue() );
+            }
         }
         if ( operation.equalsIgnoreCase( "delete" ) )
         {
             customValueIds.remove( String.valueOf( customValue.getId() ) );
             customValueNames.remove( customValue.getCustomValue() );
         }
+
+        if ( operation.equalsIgnoreCase( "add" ) )
+        {
+            if ( !customValueNames.contains( customValue.getCustomValue() ) )
+            {
+                customValueIds.remove( String.valueOf( customValue.getId() ) );
+                customValueNames.remove( customValue.getCustomValue() );
+            }
+        }
+
         return SUCCESS;
     }
 }

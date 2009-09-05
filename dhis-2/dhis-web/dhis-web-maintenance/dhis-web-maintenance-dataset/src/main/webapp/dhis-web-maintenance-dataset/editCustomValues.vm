@@ -519,9 +519,11 @@ function Request()
 
 </script>
 <script>
+	
 // -----------------------------------------------------------------------------
 // Find Selected DataElement Count in the DataEntryForm
 // -----------------------------------------------------------------------------
+
 function findDataElementCount()
 {
   var request = new Request();
@@ -798,88 +800,81 @@ function getSuggestedCustomValues(operation)
 
 function addNew()
 {
-
-if (document.getElementById( 'optionComboSelector' ).selectedIndex==-1 || document.getElementById( 'dataElementSelector' )==-1) 
-{
-alert("\nYou must make a selection from the DataElement and ComboOptions panels first.");
-}
-  else
-  if(document.getElementById( 'newCustomValue' ).value=='')
+  if (document.getElementById( 'optionComboSelector' ).selectedIndex==-1 || document.getElementById( 'dataElementSelector' )==-1) 
   {
-  alert("\nCustom Value Must be added and should be unique" );
+    alert("\nYou must make a selection from the DataElement and ComboOptions panels first.");
+  }
+  else if(document.getElementById( 'newCustomValue' ).value=='')
+  {
+    alert("\nCustom Value Must be added and should be unique" );
   }
   else
   {
-  
-  var isDuplicate='false';
-  var selectobject=document.getElementById( 'customValueSelector' );
-  var newValue = document.getElementById( 'newCustomValue' ).value;
+    var isDuplicate='false';
+    var selectobject=document.getElementById( 'customValueSelector' );
+    var newValue = document.getElementById( 'newCustomValue' ).value;
   
     for (var i=0; i<selectobject.length; i++)
     {
-    if(selectobject.options[i].text==newValue)
-        {
-            isDuplicate='true';
-        }
+      if(selectobject.options[i].text==newValue)
+      {
+        isDuplicate='true';
+      }
     }
     
     if(isDuplicate=='true')
     {
-    alert("\nDude, Duplicates are not allowed");
+      alert("\nDude, Duplicates are not allowed");
     }
     else
     {
       getCustomValues('add');
     } 
-
   }
 }
 
 function remove()
-    {
-    
-    if (document.getElementById( 'dataElementSelector' )==-1) 
-    {
+{
+  if (document.getElementById( 'dataElementSelector' )==-1) 
+  {
     alert("\nYou must make a selection from the DataElement panel first.");
-    }
-    else
-    if (document.getElementById( 'optionComboSelector' ).selectedIndex==-1) 
-    {
+  }
+  else if (document.getElementById( 'optionComboSelector' ).selectedIndex==-1) 
+  {
     alert("\nYou must make a selection from the ComboOptions panel first.");
-    }
-    else
-    if (document.getElementById( 'customValueSelector' ).selectedIndex==-1) 
-    {
+  }
+  else if (document.getElementById( 'customValueSelector' ).selectedIndex==-1) 
+  {
     alert("\nYou must make a selection from the CustomValues panel first.");
-    }
-    else
-        {
-          getCustomValues('delete');
-    } 
+  }
+  else
+  {
+    getCustomValues('delete');
+  } 
 }
 
 function findSimilar()
-	{
-	
-	if(document.getElementById( 'newCustomValue' ).value.length>1)
-	{
-	getSuggestedCustomValues('find');
-	}
-	else
-	{
-	  // Clear the suggestedcustomValue list
-  var availableCustomValueList = document.getElementById( 'availableCustomValue' );
-  availableCustomValueList.options.length = 0;
-	}
-	}
+{
+  if(document.getElementById( 'newCustomValue' ).value.length>1)
+  {
+    getSuggestedCustomValues('find');
+  }
+  else
+  {
+    // Clear the suggestedcustomValue list
+    var availableCustomValueList = document.getElementById( 'availableCustomValue' );
+    availableCustomValueList.options.length = 0;
+  }
+}
 	
 function setSuggestedCustomValue()
-	{
-	var availableCustomValue = document.getElementById( 'availableCustomValue' );
-    var availableCustomValueSelected = availableCustomValue.options[availableCustomValue.selectedIndex].value;
+{
+  var availableCustomValue = document.getElementById( 'availableCustomValue' );
+  var availableCustomValueSelected = availableCustomValue.options[availableCustomValue.selectedIndex].value;
   
-	document.getElementById( 'newCustomValue' ).value = availableCustomValueSelected;
-	}
+  document.getElementById( 'newCustomValue' ).value = availableCustomValueSelected;
+}
+
 </script>
 
 <style type="text/css">
@@ -955,16 +950,15 @@ h4 {
     <tbody>        
         <tr>
             <td>
-                <button type="button" onclick="remove()">$i18n.getString( "delete_custom_value" )</button>&nbsp;&nbsp;
-            </td>
-            <td>                
-          <input type="button"
-            onclick="window.location.href='index.action'" value="$i18n.getString( "done_custom_value" )" style="width:12em">                
+                <input type="button" onclick="remove()" value="$i18n.getString( "delete_custom_value" )" style="width:10em">
+                <input type="button" onclick="window.location.href='index.action'" value="$i18n.getString( "done_custom_value" )" style="width:10em">                
             </td>
         </tr> 
-        </tbody>
-        </table>                                  
-        <div id="message" name="message">&nbsp;</div>
-        <input type="hidden" name="dataSetIdField" id="dataSetIdField" value="$dataSet.id" />
+    </tbody>
+    </table>                                  
+    
 </body>
 </html>
+
+<div id="message" name="message">&nbsp;</div>
+<input type="hidden" name="dataSetIdField" id="dataSetIdField" value="$dataSet.id">
