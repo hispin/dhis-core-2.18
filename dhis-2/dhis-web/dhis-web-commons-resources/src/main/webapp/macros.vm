@@ -89,3 +89,7 @@ Formats a boolean into a readable value
         $i18n.getString( "unknown" )
     #end
 #end
+
+#macro( openHelp $id )
+	<a href="javascript:openHelpForm('${id}')" title="$i18n.getString( 'help' )"><img src="../images/help.png" alt="$i18n.getString( 'help' )"></a>
+#end
