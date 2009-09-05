@@ -555,7 +555,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             width: combo_width,
             store: new Ext.data.SimpleStore({
                 fields: ['value', 'text'],
-                data: [[1, 'Equal intervals'], [2, 'Distributed values'], [0, 'Fixed bounds']]
+                data: [
+					[1, 'Equal intervals'],
+					// [2, 'Distributed values'],
+					[0, 'Fixed bounds']]
             }),
             listeners: {
                 'select': {
