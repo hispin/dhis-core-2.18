@@ -10,12 +10,18 @@ function showValidationRuleDetails( validationId )
 function validationRuleReceived( validationElement )
 {
     setFieldValue( 'nameField', getElementValue( validationElement, 'name' ) );
+    
     var description = getElementValue( validationElement, 'description' );
     setFieldValue( 'descriptionField', description ? description : '[' + i18n_none + ']' );
-    setFieldValue( 'leftSideDescriptionField', getElementValue( validationElement, 'leftSideDescription' ) );
+    
+    var leftSideDescription = getElementValue( validationElement, 'leftSideDescription' );
+    setFieldValue( 'leftSideDescriptionField', leftSideDescription ? leftSideDescription : '[' + i18n_none + ']' );
+    
     var operator = getElementValue( validationElement, 'operator' );
     setFieldValue( 'operatorField', i18nalizeOperator( operator ) );
-	setFieldValue( 'rightSideDescriptionField', getElementValue( validationElement, 'rightSideDescription' ) );
+	
+    var rightSideDescription = getElementValue( validationElement, 'rightSideDescription' );
+    setFieldValue( 'rightSideDescriptionField', rightSideDescription ? rightSideDescription : '[' + i18n_none + ']' );
 
     showDetails();
 }
