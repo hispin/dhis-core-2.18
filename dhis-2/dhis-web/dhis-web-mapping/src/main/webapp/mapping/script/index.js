@@ -1952,7 +1952,7 @@ Ext.onReady(function()
 		cls: 'x-btn-text-icon',
 		icon: '../images/exit.png',
 		handler: function() {
-			window.location.href = '../../dhis-web-portal/redirect.action'
+			window.location.href = '../dhis-web-portal/redirect.action'
 		}
 	});
 
