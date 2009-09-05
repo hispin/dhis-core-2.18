@@ -29,6 +29,7 @@ package org.hisp.dhis.mapping;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -261,12 +262,10 @@ public class DefaultMappingService
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        MapOrganisationUnitRelation mapOrganisationUnitRelation;
+        MapOrganisationUnitRelation mapOrganisationUnitRelation = getMapOrganisationUnitRelation( map, organisationUnit );
         
-        if ( getMapOrganisationUnitRelation( map, organisationUnit ).iterator().hasNext() )
-        {
-            mapOrganisationUnitRelation = getMapOrganisationUnitRelation( map, organisationUnit ).iterator().next();
-            
+        if ( mapOrganisationUnitRelation != null )
+        {            
             mapOrganisationUnitRelation.setFeatureId( featureId );
 
             updateMapOrganisationUnitRelation( mapOrganisationUnitRelation );
@@ -294,7 +293,7 @@ public class DefaultMappingService
         return mappingStore.getMapOrganisationUnitRelation( id );
     }
 
-    public Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit )
+    public MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit )
     {
         return mappingStore.getMapOrganisationUnitRelation( map, organisationUnit );
     }
@@ -310,27 +309,39 @@ public class DefaultMappingService
     }
 
     public Collection<MapOrganisationUnitRelation> getAvailableMapOrganisationUnitRelations( Map map )
-    {
+    {        
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( map
             .getOrganisationUnitLevel().getLevel() );
 
-        Collection<MapOrganisationUnitRelation> relations = new ArrayList<MapOrganisationUnitRelation>();
-
+        java.util.Map<Integer, MapOrganisationUnitRelation> relationMap = getRelationshipMap( mappingStore.getMapOrganisationUnitRelationByMap( map ) );
+        
+        Collection<MapOrganisationUnitRelation> availableRelations = new ArrayList<MapOrganisationUnitRelation>();
+        
         for ( OrganisationUnit unit : organisationUnits )
         {
-            Collection<MapOrganisationUnitRelation> relation = getMapOrganisationUnitRelation( map, unit );
+            MapOrganisationUnitRelation relation = relationMap.get( unit.getId() );
             
-            if ( relation.size() == 0 )
-            {
-                relations.add( new MapOrganisationUnitRelation( map, unit, null ) );
-            }
-            else
-            {
-                relations.addAll( relation );
-            }
+            availableRelations.add( relation != null ? relation : new MapOrganisationUnitRelation( map, unit, null ) );
         }
         
-        return relations;
+        return availableRelations;
+    }
+    
+    /**
+     * Returns a Map<Integer, MapOrganisationUnitRelation> where the key is the 
+     * OrganisationUnit identifier and the value the MapOrganisationUnitRelation
+     * itself.
+     */
+    private java.util.Map<Integer, MapOrganisationUnitRelation> getRelationshipMap( Collection<MapOrganisationUnitRelation> relations )
+    {
+        java.util.Map<Integer, MapOrganisationUnitRelation> map = new HashMap<Integer, MapOrganisationUnitRelation>();
+        
+        for ( MapOrganisationUnitRelation relation : relations )
+        {
+            map.put( relation.getOrganisationUnit().getId(), relation );
+        }
+        
+        return map;
     }
 
     public Collection<MapOrganisationUnitRelation> getAvailableMapOrganisationUnitRelations( String mapLayerPath )

@@ -152,7 +152,7 @@ public interface MappingStore
      * @return a Collection<MapOrganisationUnitRelation> which contains the given Map and
      *         OrganisationUnit.
      */
-    Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit );
+    MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit );
     
     /**
      * Returns a Collection of MapOrganisationUnitRelations.
