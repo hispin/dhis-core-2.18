@@ -46,6 +46,8 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.hisp.dhis.system.util.MathUtils.isNumeric;
+
 /**
  * @author Jan Henrik Overland
  * @version $Id$
@@ -54,9 +56,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultMappingService
     implements MappingService
 {
-    private static final String PAIR_SEPARATOR = "-";
-
-    private static final String RELATION_SEPARATOR = ",";
+    private static final String RELATION_SEPARATOR = ";;";
+    private static final String PAIR_SEPARATOR = "::";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -247,15 +248,40 @@ public class DefaultMappingService
     public void addOrUpdateMapOrganisationUnitRelations( String mapLayerPath, String relations )
     {
         String[] rels = relations.split( RELATION_SEPARATOR );
-
+        
         for ( int i = 0; i < rels.length; i++ )
         {
             String[] rel = rels[i].split( PAIR_SEPARATOR );
 
+            if ( rel.length != 2 )
+            {
+                throw new IllegalArgumentException( "Pair '" + toString( rel ) + "' is invalid for input '" + rels[i] + "'" ); 
+            }
+            
+            if ( !isNumeric( rel[0]) )
+            {
+                throw new IllegalArgumentException( "Organisation unit id '" + rel[0] + "' belonging to feature id '" + rel[1] + "' is not numeric" );                
+            }
+            
             addOrUpdateMapOrganisationUnitRelation( mapLayerPath, Integer.parseInt( rel[0] ), rel[1] );
         }
     }
 
+    /**
+     * Provides a textual representation of the contents of a String array.
+     */
+    private String toString( String[] array )
+    {
+        StringBuffer buffer = new StringBuffer( "{" );
+        
+        for ( int i = 0; i < array.length; i++ )
+        {
+            buffer.append( "[" + array[i] + "]," );
+        }
+        
+        return buffer.append( "}" ).toString();
+    }
+    
     public void addOrUpdateMapOrganisationUnitRelation( String mapLayerPath, int organisationUnitId, String featureId )
     {
         Map map = getMapByMapLayerPath( mapLayerPath );
