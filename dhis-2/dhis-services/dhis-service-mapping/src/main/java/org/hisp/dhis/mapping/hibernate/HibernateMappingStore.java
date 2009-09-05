@@ -171,7 +171,7 @@ public class HibernateMappingStore
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit )
+    public MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -180,7 +180,7 @@ public class HibernateMappingStore
         criteria.add( Restrictions.eq( "map", map ) );
         criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
 
-        return (Collection<MapOrganisationUnitRelation>) criteria.list();
+        return (MapOrganisationUnitRelation) criteria.uniqueResult();
     }
 
     @SuppressWarnings( "unchecked" )
