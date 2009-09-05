@@ -37,10 +37,10 @@
     gridpanel_height = 700;
     combo_width = 150;
     
-    MENU_TEXTCOLOR = '#999'; // label
+    MENU_TEXTCOLOR = '#777'; // label
 	MENU_TEXTCOLOR_INFO = '#444'; // info text
-    MENU_TITLECOLOR_LIGHT = '#666'; // panel title
-	MENU_TITLECOLOR_ADMIN = '#333';
+    MENU_TITLECOLOR_LIGHT = '#555'; // panel title
+	MENU_TITLECOLOR_ADMIN = '#222';
 	MENU_EMPTYTEXT = '';
 	MENU_LABELSEPARATOR = '';
 
