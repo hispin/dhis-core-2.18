@@ -151,8 +151,14 @@ Ext.onReady(function()
     });
 
     myMap: null;
-    map = new OpenLayers.Map($('olmap'));
-    this.myMap = map;
+	map = new OpenLayers.Map({
+		controls: [
+			new OpenLayers.Control.Navigation(),
+			new OpenLayers.Control.ArgParser(),
+			new OpenLayers.Control.Attribution(),
+		]
+	});
+	this.myMap = map;
 
     MASK = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait..."});
     
@@ -238,10 +244,6 @@ Ext.onReady(function()
         "http://labs.metacarta.com/wms/vmap0", 
         {layers: 'basic'}
     );
-                                                         
-    /*var jpl_wms = new OpenLayers.Layer.WMS("Satellite",
-                                           "http://demo.opengeo.org/geoserver/wms", 
-                                           {layers: 'bluemarble', format: 'image/png'});*/
                                    
     var choroplethLayer = new OpenLayers.Layer.Vector(CHOROPLETH_LAYERNAME, {
         'visibility': false,
@@ -1874,6 +1876,19 @@ Ext.onReady(function()
                 }
             }
         }
+    });	
+    
+	map.events.on({
+        changelayer: function(e) {
+            if (e.property == 'visibility' && e.layer != choroplethLayer) {
+                if (e.layer.visibility) {
+                    selectFeatureChoropleth.deactivate();
+                }
+                else {
+                    selectFeatureChoropleth.activate();
+                }
+            }
+        }
     });
     
     mapping.hide();
@@ -1902,20 +1917,56 @@ Ext.onReady(function()
             children: layerTreeConfig
         }
     });
+	
+	var zoomInButton = new Ext.Button({
+		text: 'Zoom In',
+		cls: 'x-btn-text-icon',
+		icon: '../images/zoom_in.png',
+		handler:function() {
+			this.map.zoomIn();
+		},
+		scope:this,
+	});
+	
+	var zoomOutButton = new Ext.Button({
+		text: 'Zoom Out',
+		cls: 'x-btn-text-icon',
+		icon: '../images/zoom_out.png',
+		handler:function() {
+			this.map.zoomOut();
+		},
+		scope:this,
+	});
+	
+	var zoomMaxExtentButton = new Ext.Button({
+		text: 'Max extent',
+		cls: 'x-btn-text-icon',
+		icon: '../images/zoom_min.png',
+		handler:function() {
+			this.map.zoomToMaxExtent();
+		},
+		scope:this,
+	});
+	
+	var exitButton = new Ext.Button({
+		text: 'Exit GIS',
+		cls: 'x-btn-text-icon',
+		icon: '../images/exit.png',
+		handler: function() {
+			window.location.href = '../../dhis-web-portal/redirect.action'
+		}
+	});
 
-    
-    map.events.on({
-        changelayer: function(e) {
-            if (e.property == 'visibility' && e.layer != choroplethLayer) {
-                if (e.layer.visibility) {
-                    selectFeatureChoropleth.deactivate();
-                }
-                else {
-                    selectFeatureChoropleth.activate();
-                }
-            }
-        }
-    });
+	var mapToolbar = new Ext.Toolbar({
+		id: 'map_tb',
+		items: [
+			zoomInButton, '-',
+			zoomOutButton, '-',
+			zoomMaxExtentButton,
+			'->',
+			exitButton
+		]
+	});
     
     viewport = new Ext.Viewport({
         id: 'viewport',
@@ -1933,9 +1984,8 @@ Ext.onReady(function()
             {
                 region: 'east',
                 id: 'east',
-                title: '',
-                width: 200,
                 collapsible: true,
+                width: 200,
                 margins: '0 5 0 5',
                 defaults: {
                     border: true,
@@ -1969,6 +2019,7 @@ Ext.onReady(function()
                 region: 'west',
                 id: 'west',
                 split: true,
+				title: 'Map panels',
                 collapsible: true,
                 width: west_width,
                 minSize: 175,
@@ -1994,10 +2045,11 @@ Ext.onReady(function()
                 region: 'center',
                 id: 'center',
                 height: 1000,
-                width: 1000,
+                width: 800,
                 map: map,
                 title: '',
-                zoom: 3
+                zoom: 3,
+				tbar: mapToolbar
             }
         ]
     });
@@ -2016,7 +2068,7 @@ Ext.onReady(function()
     }));
     
     map.addControl(new OpenLayers.Control.ZoomBox());
-    
+	
     Ext.get('loading').fadeOut({remove: true});
 });
 
@@ -2025,7 +2077,7 @@ Ext.onReady(function()
 function onHoverSelectChoropleth(feature) {
     var east_panel = Ext.getCmp('east');
     var x = east_panel.x - 210;
-    var y = east_panel.y + 15;
+    var y = east_panel.y + 41;
     style = '<p style="margin-top: 5px; padding-left:5px;">';
     space = '&nbsp;&nbsp;';
     bs = '<b>';
@@ -2146,7 +2198,7 @@ function loadMapData(redirect) {
                 MAPDATA.zoom = parseFloat(MAPDATA.zoom);
             }
             
-            map.setCenter(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude), MAPDATA.zoom);
+            map.panTo(new OpenLayers.LonLat(MAPDATA.longitude, MAPDATA.latitude), MAPDATA.zoom);
 
             if (redirect == 'choropleth') {
                 getChoroplethData(); }

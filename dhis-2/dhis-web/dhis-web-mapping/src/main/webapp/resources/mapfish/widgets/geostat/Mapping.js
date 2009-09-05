@@ -175,10 +175,10 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 var cls = ''; 
                 switch (row.data.featureId) {
                     case '': 
-                        cls = 'not-assigned-row';
+                        cls = 'row-not-assigned';
                         break;
                     default:
-                        cls = 'assigned-row';
+                        cls = 'row-assigned';
                 }
                 
                 return cls;                    
