@@ -61,7 +61,8 @@
   <listener>
     <listener-class>org.hisp.dhis.system.startup.StartupListener</listener-class>
   </listener>
-	
+
+  <!-- 
   <servlet>
     <servlet-name>mapfish.print</servlet-name>
     <servlet-class>org.mapfish.print.servlet.MapPrinterServlet</servlet-class>
@@ -74,5 +75,6 @@
     <servlet-name>mapfish.print</servlet-name>
     <url-pattern>/pdf/*</url-pattern>
   </servlet-mapping>
-	
+  -->
+  
 </web-app>
