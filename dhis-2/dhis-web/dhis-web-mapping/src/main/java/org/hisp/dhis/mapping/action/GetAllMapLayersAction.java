@@ -28,10 +28,12 @@ package org.hisp.dhis.mapping.action;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.mapping.MapLayer;
 import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.mapping.comparator.MapLayerNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -71,6 +73,8 @@ public class GetAllMapLayersAction
     public String execute()
     {
         object = new ArrayList<MapLayer>( mappingService.getAllMapLayers() );
+        
+        Collections.sort( object, new MapLayerNameComparator() );
         
         return SUCCESS;
     }

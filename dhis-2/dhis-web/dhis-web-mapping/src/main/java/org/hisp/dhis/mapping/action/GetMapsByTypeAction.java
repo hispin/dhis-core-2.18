@@ -27,12 +27,17 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.mapping.comparator.MapNameComparator;
 
 import com.opensymphony.xwork2.Action;
+
+import java.util.Collections;
 
 /**
  * @author Jan Henrik Overland
@@ -67,9 +72,9 @@ public class GetMapsByTypeAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<Map> object;
+    private List<Map> object;
 
-    public Collection<Map> getObject()
+    public List<Map> getObject()
     {
         return object;
     }
@@ -81,7 +86,9 @@ public class GetMapsByTypeAction
     public String execute()
         throws Exception
     {
-        object = mappingService.getMapsByType( type );
+        object = new ArrayList<Map>( mappingService.getMapsByType( type ) );
+        
+        Collections.sort( object, new MapNameComparator() );
         
         return SUCCESS;
     }

@@ -32,8 +32,11 @@ import java.util.List;
 
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.mapping.comparator.MapViewNameComparator;
 
 import com.opensymphony.xwork2.Action;
+
+import java.util.Collections;
 
 /**
  * @author Jan Henrik Overland
@@ -71,6 +74,8 @@ public class GetAllMapViewsAction
     public String execute()
     {
         object = new ArrayList<MapView>( mappingService.getAllMapViews() );
+        
+        Collections.sort( object, new MapViewNameComparator() );
         
         return SUCCESS;
     }

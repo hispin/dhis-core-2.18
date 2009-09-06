@@ -28,13 +28,17 @@ package org.hisp.dhis.mapping.action;
  */
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
+
+import java.util.Collections;
 
 /**
  * @author Lars Helge Overland
@@ -52,6 +56,20 @@ public class GetIndicatorsByIndicatorGroupAction
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
+    }
+
+    private DisplayPropertyHandler displayPropertyHandler;
+
+    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
+    {
+        this.displayPropertyHandler = displayPropertyHandler;
+    }
+
+    private Comparator<Indicator> indicatorComparator;
+
+    public void setIndicatorComparator( Comparator<Indicator> indicatorComparator )
+    {
+        this.indicatorComparator = indicatorComparator;
     }
 
     // -------------------------------------------------------------------------
@@ -88,6 +106,10 @@ public class GetIndicatorsByIndicatorGroupAction
         if ( group != null )
         {
             object = new ArrayList<Indicator>( group.getMembers() );
+
+            Collections.sort( object, indicatorComparator );
+            
+            displayPropertyHandler.handle( object );
         }
         
         return SUCCESS;

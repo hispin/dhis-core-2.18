@@ -1,4 +1,4 @@
-package org.hisp.dhis.mapping.action;
+package org.hisp.dhis.mapping.comparator;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,56 +27,19 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Comparator;
 
-import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.mapping.MapLayer;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class GetAllIndicatorGroupsAction
-    implements Action
+public class MapLayerNameComparator
+    implements Comparator<MapLayer>
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
+    public int compare( MapLayer mapLayer0, MapLayer mapLayer1 )
     {
-        this.indicatorService = indicatorService;
+        return mapLayer0.getName().compareTo( mapLayer1.getName() );
     }
-    
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private List<IndicatorGroup> object;
-
-    public List<IndicatorGroup> getObject()
-    {
-        return object;
-    }    
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
-    {
-        object = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
-        
-        Collections.sort( object, new IndicatorGroupNameComparator() );
-        
-        return SUCCESS;
-    }    
 }

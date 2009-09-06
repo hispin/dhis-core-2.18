@@ -28,12 +28,16 @@ package org.hisp.dhis.mapping.action;
  */
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
+
+import java.util.Collections;
 
 /**
  * @author Jan Henrik Overland
@@ -51,6 +55,20 @@ public class GetAllIndicatorsAction
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
+    }
+
+    private DisplayPropertyHandler displayPropertyHandler;
+
+    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
+    {
+        this.displayPropertyHandler = displayPropertyHandler;
+    }
+
+    private Comparator<Indicator> indicatorComparator;
+
+    public void setIndicatorComparator( Comparator<Indicator> indicatorComparator )
+    {
+        this.indicatorComparator = indicatorComparator;
     }
 
     // -------------------------------------------------------------------------
@@ -72,6 +90,10 @@ public class GetAllIndicatorsAction
         throws Exception
     {
         object = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+        
+        Collections.sort( object, indicatorComparator );
+        
+        displayPropertyHandler.handle( object );
         
         return SUCCESS;
     }
