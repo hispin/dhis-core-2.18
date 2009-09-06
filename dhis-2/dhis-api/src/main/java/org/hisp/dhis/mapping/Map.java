@@ -50,8 +50,6 @@ public class Map
 
     private OrganisationUnitLevel organisationUnitLevel;
 
-    private String uniqueColumn;
-
     private String nameColumn;
     
     private String longitude;
@@ -67,14 +65,13 @@ public class Map
     }
 
     public Map( String name, String mapLayerPath, String type, OrganisationUnit organisationUnit, OrganisationUnitLevel organisationUnitLevel, 
-        String uniqueColumn, String nameColumn, String longitude, String latitude, int zoom, Set<String> staticMapLayerPaths )
+        String nameColumn, String longitude, String latitude, int zoom, Set<String> staticMapLayerPaths )
     {
         this.name = name;
         this.mapLayerPath = mapLayerPath;
         this.type = type;
         this.organisationUnit = organisationUnit;
         this.organisationUnitLevel = organisationUnitLevel;
-        this.uniqueColumn = uniqueColumn;
         this.nameColumn = nameColumn;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -177,16 +174,6 @@ public class Map
     public void setOrganisationUnitLevel( OrganisationUnitLevel organisationUnitLevel )
     {
         this.organisationUnitLevel = organisationUnitLevel;
-    }
-
-    public String getUniqueColumn()
-    {
-        return uniqueColumn;
-    }
-
-    public void setUniqueColumn( String uniqueColumn )
-    {
-        this.uniqueColumn = uniqueColumn;
     }
 
     public String getNameColumn()

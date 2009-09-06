@@ -76,7 +76,7 @@ public interface MappingService
      * @return a generated unique id of the added Map.
      */
     int addMap( String name, String mapLayerPath, String type, int organisationUnitId, int organisationUnitLevelId,
-        String uniqueColumn, String nameColumn, String longitude, String latitude, int zoom );
+        String nameColumn, String longitude, String latitude, int zoom );
 
     /**
      * Adds a map. If a map with the same mapLayerPath already exists, the map
@@ -88,8 +88,6 @@ public interface MappingService
      * @param organisationUnitId, the id of the organisation unit.
      * @param organisationUnitLevelId, the level of the organisation units into
      *        which the map is devided.
-     * @param uniqueColumn, the shapefile column which holds the unique
-     *        organisation unit value.
      * @param nameColumn, the shapefile column which holds the name of the
      *        organisation unit.
      * @param longitude
@@ -97,7 +95,7 @@ public interface MappingService
      * @param zoom
      */
     void addOrUpdateMap( String name, String mapLayerPath, String type, int organisationUnitId,
-        int organisationUnitLevelId, String uniqueColumn, String nameColumn, String longitude, String latitude, int zoom );
+        int organisationUnitLevelId, String nameColumn, String longitude, String latitude, int zoom );
 
     /**
      * Updates a Map.
