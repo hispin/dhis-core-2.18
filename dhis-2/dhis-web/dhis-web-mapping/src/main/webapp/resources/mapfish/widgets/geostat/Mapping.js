@@ -352,7 +352,6 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      */
     requestSuccess: function(request) {
         this.ready = true;
-        this.classify(false);
 
         // if widget is rendered, hide the optional mask
         if (this.loadMask && this.rendered) {
@@ -411,7 +410,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 return;
         }
         
-		MASK.msg = 'Loading map...';
+		MASK.msg = 'Loading data...';
         MASK.show();
         
         loadMapData('assignment');

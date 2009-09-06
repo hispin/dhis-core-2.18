@@ -447,18 +447,6 @@ Ext.onReady(function()
         })
     });
     
-    var newUniqueColumnTextField = new Ext.form.TextField({
-        id: 'newuniquecolumn_tf',
-        emptyText: MENU_EMPTYTEXT,
-        width: combo_width
-    });
-    
-    var editUniqueColumnTextField = new Ext.form.TextField({
-        id: 'edituniquecolumn_tf',
-        emptyText: MENU_EMPTYTEXT,
-        width: combo_width
-    });
-    
     var newNameColumnTextField = new Ext.form.TextField({
         id: 'newnamecolumn_tf',
         emptyText: MENU_EMPTYTEXT,
@@ -548,13 +536,12 @@ Ext.onReady(function()
                     var nn = Ext.getCmp('newname_tf').getValue();
                     var mlp = Ext.getCmp('maplayerpath_tf').getValue();
                     var t = Ext.getCmp('type_cb').getValue();
-                    var uc = Ext.getCmp('newuniquecolumn_tf').getValue();
                     var nc = Ext.getCmp('newnamecolumn_tf').getValue();
                     var lon = Ext.getCmp('newlongitude_tf').getValue();
                     var lat = Ext.getCmp('newlatitude_tf').getValue();
                     var zoom = Ext.getCmp('newzoom_cb').getValue();
                      
-                    if (!nn || !mlp || !oui || !ouli || !uc || !nc || !lon || !lat) {
+                    if (!nn || !mlp || !oui || !ouli || !nc || !lon || !lat) {
                         Ext.messageRed.msg('New map', 'Form is not complete.');
                         return;
                     }
@@ -605,7 +592,7 @@ Ext.onReady(function()
                             Ext.Ajax.request({
                                 url: path + 'addOrUpdateMap' + type,
                                 method: 'GET',
-                                params: { name: nn, mapLayerPath: mlp, type: t, organisationUnitId: oui, organisationUnitLevelId: ouli, uniqueColumn: uc, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom},
+                                params: { name: nn, mapLayerPath: mlp, type: t, organisationUnitId: oui, organisationUnitLevelId: ouli, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom},
 
                                 success: function( responseObject ) {
                                     Ext.messageBlack.msg('New map', 'The map ' + msg_highlight_start + nn + msg_highlight_end + ' was registered.');
@@ -618,7 +605,6 @@ Ext.onReady(function()
                                     Ext.getCmp('organisationunitlevel_cb').reset();
                                     Ext.getCmp('newname_tf').reset();
                                     Ext.getCmp('maplayerpath_tf').reset();
-                                    Ext.getCmp('newuniquecolumn_tf').reset();
                                     Ext.getCmp('newnamecolumn_tf').reset();
                                     Ext.getCmp('newlongitude_tf').reset();
                                     Ext.getCmp('newlatitude_tf').reset();
@@ -647,13 +633,12 @@ Ext.onReady(function()
         handler: function() {
             var en = Ext.getCmp('editname_tf').getValue();
             var em = Ext.getCmp('editmap_cb').getValue();
-            var uc = Ext.getCmp('edituniquecolumn_tf').getValue();
             var nc = Ext.getCmp('editnamecolumn_tf').getValue();
             var lon = Ext.getCmp('editlongitude_tf').getValue();
             var lat = Ext.getCmp('editlatitude_tf').getValue();
             var zoom = Ext.getCmp('editzoom_cb').getValue();
             
-            if (!en || !em || !uc || !nc || !lon || !lat) {
+            if (!en || !em || !nc || !lon || !lat) {
                 Ext.messageRed.msg('New map', 'Form is not complete.');
                 return;
             }
@@ -666,7 +651,7 @@ Ext.onReady(function()
             Ext.Ajax.request({
                 url: path + 'addOrUpdateMap' + type,
                 method: 'GET',
-                params: { name: en, mapLayerPath: em, uniqueColumn: uc, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom },
+                params: { name: en, mapLayerPath: em, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom },
 
                 success: function( responseObject ) {
                     Ext.messageBlack.msg('Edit map', 'The map ' + msg_highlight_start + en + msg_highlight_end + ' was updated.');
@@ -680,7 +665,6 @@ Ext.onReady(function()
                     
                     Ext.getCmp('editmap_cb').reset();
                     Ext.getCmp('editname_tf').reset();
-                    Ext.getCmp('edituniquecolumn_tf').reset();
                     Ext.getCmp('editnamecolumn_tf').reset();
                     Ext.getCmp('editlongitude_tf').reset();
                     Ext.getCmp('editlatitude_tf').reset();
@@ -782,7 +766,6 @@ Ext.onReady(function()
                             var map = Ext.util.JSON.decode( responseObject.responseText ).map[0];
                             
                             Ext.getCmp('editname_tf').setValue(map.name);
-                            Ext.getCmp('edituniquecolumn_tf').setValue(map.uniqueColumn);
                             Ext.getCmp('editnamecolumn_tf').setValue(map.nameColumn);
                             Ext.getCmp('editlongitude_tf').setValue(map.longitude);
                             Ext.getCmp('editlatitude_tf').setValue(map.latitude);
@@ -825,7 +808,6 @@ Ext.onReady(function()
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Organisation unit level</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map source file</p>' }, mapLayerPathTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' }, newNameTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Unique column</p>' }, newUniqueColumnTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Name column</p>' }, newNameColumnTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Longitude (x)</p>' }, newLongitudeTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Latitude (y)</p>' }, newLatitudeTextField, { html: '<br>' },
@@ -838,7 +820,6 @@ Ext.onReady(function()
         items: [
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map</p>' }, editMapComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map name</p>' }, editNameTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Unique column</p>' }, editUniqueColumnTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Name column</p>' }, editNameColumnTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Longitude</p>' }, editLongitudeTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Latitude</p>' }, editLatitudeTextField, { html: '<br>' },
@@ -2135,10 +2116,9 @@ function onClickSelectChoropleth(feature) {
         var organisationUnitId = selected.data['organisationUnitId'];
         var organisationUnit = selected.data['organisationUnit'];
         
-        var uniqueColumn = MAPDATA.uniqueColumn;
         var nameColumn = MAPDATA.nameColumn;
         var mlp = MAPDATA.mapLayerPath;
-        var featureId = feature.attributes[uniqueColumn];
+        var featureId = feature.attributes[nameColumn];
         var name = feature.attributes[nameColumn];
 
         Ext.Ajax.request({
@@ -2173,8 +2153,6 @@ function loadMapData(redirect) {
         params: { mapLayerPath: URL, format: 'json' },
 
         success: function( responseObject ) {
-			MASK.msg = 'Applying colors...';
-			MASK.show();
 		
             MAPDATA = Ext.util.JSON.decode(responseObject.responseText).map[0];
             
@@ -2218,6 +2196,9 @@ function loadMapData(redirect) {
 
 /*CHOROPLETH*/
 function getChoroplethData() {
+	MASK.msg = 'Creating choropleth...';
+	MASK.show();
+	
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
     var periodId = Ext.getCmp('period_cb').getValue();
     var level = MAPDATA.organisationUnitLevel;
@@ -2274,7 +2255,7 @@ function dataReceivedChoropleth( responseText ) {
     }
     else {
         var mlp = MAPDATA.mapLayerPath;
-        var uniqueColumn = MAPDATA.uniqueColumn;
+        var nameColumn = MAPDATA.nameColumn;
         
         Ext.Ajax.request({
             url: path + 'getAvailableMapOrganisationUnitRelations' + type,
@@ -2295,7 +2276,7 @@ function dataReceivedChoropleth( responseText ) {
                                     features[k].attributes['value'] = 0;
                                 }
                                 
-                                if (featureid == features[k].attributes[uniqueColumn]) {
+                                if (featureid == features[k].attributes[nameColumn]) {
                                     features[k].attributes['value'] = mapvalues[j].value;
                                 }
                             }
@@ -2354,7 +2335,7 @@ function dataReceivedPoint( responseText ) {
     var mapvalues = Ext.util.JSON.decode(responseText).mapvalues;
     
     var mlp = MAPDATA.mapLayerPath;
-    var uniqueColumn = MAPDATA.uniqueColumn;
+    var nameColumn = MAPDATA.nameColumn;
     
     Ext.Ajax.request({
         url: path + 'getAvailableMapOrganisationUnitRelations' + type,
@@ -2375,7 +2356,7 @@ function dataReceivedPoint( responseText ) {
                                 features[k].attributes['value'] = 0;
                             }
                             
-                            if (featureid == features[k].attributes[uniqueColumn]) {
+                            if (featureid == features[k].attributes[nameColumn]) {
                                 features[k].attributes['value'] = mapvalues[j].value;
                             }
                         }
@@ -2402,6 +2383,9 @@ function dataReceivedPoint( responseText ) {
 
 /*MAPPING*/
 function getAssignOrganisationUnitData() {
+	MASK.msg = 'Creating map...';
+	MASK.show();
+	
     var mlp = MAPDATA.mapLayerPath;
     
     Ext.Ajax.request({
@@ -2424,10 +2408,10 @@ function dataReceivedAssignOrganisationUnit( responseText ) {
     
     var relations = Ext.util.JSON.decode(responseText).mapOrganisationUnitRelations;
     
-    var uniqueColumn = MAPDATA.uniqueColumn;   
+    var nameColumn = MAPDATA.nameColumn;   
     
     for (var i=0; i < features.length; i++) {
-        var featureId = features[i].attributes[uniqueColumn];
+        var featureId = features[i].attributes[nameColumn];
         features[i].attributes['value'] = 0;
         
         for (var j=0; j < relations.length; j++) {
@@ -2486,7 +2470,6 @@ function dataReceivedAutoAssignOrganisationUnit( responseText ) {
     var layers = this.myMap.getLayersByName(CHOROPLETH_LAYERNAME);
     var features = layers[0]['features'];
     var organisationUnits = Ext.util.JSON.decode(responseText).organisationUnits;
-    var uniqueColumn = MAPDATA.uniqueColumn;
     var nameColumn = MAPDATA.nameColumn;
     var mlp = MAPDATA.mapLayerPath;
     var count_features = 0;
@@ -2500,18 +2483,23 @@ function dataReceivedAutoAssignOrganisationUnit( responseText ) {
         for ( var i=0; i < organisationUnits.length; i++ ) {
             count_orgunits++;
             
-            if (features[j].attributes[uniqueColumn] == organisationUnits[i].name) {
+            if (features[j].attributes[nameColumn] == organisationUnits[i].name) {
             
                 count_match++;
                 var organisationUnitId = organisationUnits[i].id;
-                var featureId = features[j].attributes[uniqueColumn];
+                var featureId = features[j].attributes[nameColumn];
 
                 relations += organisationUnitId + '::' + featureId + ';;';
             }
         }
     }
 	
-	MASK.msg = 'Linking ' + count_match + ' organisation units...';
+	if (count_match == 0) {
+		MASK.msg = 'No organisation units assigned';
+	}
+	else {
+		MASK.msg = 'Assigning ' + count_match + ' organisation units...';
+	}
 	MASK.show();
     
     Ext.Ajax.request({

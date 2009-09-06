@@ -745,7 +745,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 return;
         }
 
-		MASK.msg = 'Loading thematic map...';
+		MASK.msg = 'Loading data...';
         MASK.show();
 
         loadMapData('choropleth');
