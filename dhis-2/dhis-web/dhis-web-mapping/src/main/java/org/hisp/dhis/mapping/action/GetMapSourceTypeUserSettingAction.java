@@ -28,7 +28,7 @@ package org.hisp.dhis.mapping.action;
  */
 
 import static org.hisp.dhis.mapping.MappingService.KEY_MAP_SOURCE_TYPE;
-import static org.hisp.dhis.mapping.MappingService.MAP_SOURCE_TYPE_DATABASE;
+import static org.hisp.dhis.mapping.MappingService.MAP_SOURCE_TYPE_SHAPEFILE;
 
 import org.hisp.dhis.user.UserSettingService;
 
@@ -70,7 +70,7 @@ public class GetMapSourceTypeUserSettingAction
     public String execute()
         throws Exception
     {
-        object = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_DATABASE );
+        object = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_SHAPEFILE );
         
         return SUCCESS;
     }
