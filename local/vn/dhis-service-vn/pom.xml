@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.hisp.dhis</groupId>
     <artifactId>dhis-services</artifactId>
-    <version>2.0.2</version>
+    <version>2.0.3-SNAPSHOT</version>
   </parent>
   
   <artifactId>dhis-service-vn</artifactId>
@@ -24,7 +24,7 @@
      <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-api-vn</artifactId>
-      <version>2.0.2</version>
+      <version>2.0.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
