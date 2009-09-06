@@ -34,6 +34,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -56,6 +58,8 @@ import static org.hisp.dhis.system.util.MathUtils.isNumeric;
 public class DefaultMappingService
     implements MappingService
 {
+    private static final Log log = LogFactory.getLog( DefaultMappingService.class );
+    
     private static final String RELATION_SEPARATOR = ";;";
     private static final String PAIR_SEPARATOR = "::";
 
@@ -249,18 +253,22 @@ public class DefaultMappingService
     {
         String[] rels = relations.split( RELATION_SEPARATOR );
         
-        for ( int i = 0; i < rels.length; i++ )
+        relationsLoop : for ( int i = 0; i < rels.length; i++ )
         {
             String[] rel = rels[i].split( PAIR_SEPARATOR );
 
             if ( rel.length != 2 )
             {
-                throw new IllegalArgumentException( "Pair '" + toString( rel ) + "' is invalid for input '" + rels[i] + "'" ); 
+                log.warn( "Pair '" + toString( rel ) + "' is invalid for input '" + rels[i] + "'" );
+                
+                continue relationsLoop;
             }
             
             if ( !isNumeric( rel[0]) )
             {
-                throw new IllegalArgumentException( "Organisation unit id '" + rel[0] + "' belonging to feature id '" + rel[1] + "' is not numeric" );                
+                log.warn( "Organisation unit id '" + rel[0] + "' belonging to feature id '" + rel[1] + "' is not numeric" );
+                
+                continue relationsLoop;
             }
             
             addOrUpdateMapOrganisationUnitRelation( mapLayerPath, Integer.parseInt( rel[0] ), rel[1] );

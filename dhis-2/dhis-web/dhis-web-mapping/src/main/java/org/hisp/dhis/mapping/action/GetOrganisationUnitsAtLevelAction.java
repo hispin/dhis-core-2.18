@@ -28,12 +28,16 @@ package org.hisp.dhis.mapping.action;
  */
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
+
+import java.util.Collections;
 
 /**
  * @author Lars Helge Overland
@@ -51,6 +55,20 @@ public class GetOrganisationUnitsAtLevelAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+    
+    private Comparator<OrganisationUnit> organisationUnitComparator;
+
+    public void setOrganisationUnitComparator( Comparator<OrganisationUnit> organisationUnitComparator )
+    {
+        this.organisationUnitComparator = organisationUnitComparator;
+    }
+
+    private DisplayPropertyHandler displayPropertyHandler;
+
+    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
+    {
+        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -83,6 +101,10 @@ public class GetOrganisationUnitsAtLevelAction
         throws Exception
     {
         object = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( level ) );
+        
+        Collections.sort( object, organisationUnitComparator );
+        
+        displayPropertyHandler.handle( object );
         
         return SUCCESS;
     }

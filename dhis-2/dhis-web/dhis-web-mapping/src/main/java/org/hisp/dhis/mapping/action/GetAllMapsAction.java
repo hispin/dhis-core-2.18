@@ -28,10 +28,12 @@ package org.hisp.dhis.mapping.action;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.mapping.comparator.MapNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -72,6 +74,8 @@ public class GetAllMapsAction
         throws Exception
     {
         object = new ArrayList<Map>( mappingService.getAllUserMaps() );
+        
+        Collections.sort( object, new MapNameComparator() );
         
         return SUCCESS;
     }
