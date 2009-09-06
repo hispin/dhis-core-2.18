@@ -741,7 +741,6 @@ public abstract class DhisConvenienceTest
         map.setOrganisationUnit( unit );
         map.setOrganisationUnitLevel( level );
         map.setMapLayerPath( "MapLayerPath" + uniqueCharacter );
-        map.setUniqueColumn( "UniqueColumn" + uniqueCharacter );
         map.setNameColumn( "NameColumn" + uniqueCharacter );
         map.setLongitude( "Longitude" + uniqueCharacter );
         map.setLatitude( "Latitude" + uniqueCharacter );

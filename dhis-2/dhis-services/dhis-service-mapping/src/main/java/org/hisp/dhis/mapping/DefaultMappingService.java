@@ -27,6 +27,8 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.MathUtils.isNumeric;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -47,8 +49,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.hisp.dhis.system.util.MathUtils.isNumeric;
 
 /**
  * @author Jan Henrik Overland
@@ -116,7 +116,7 @@ public class DefaultMappingService
     }
 
     public int addMap( String name, String mapLayerPath, String type, int organisationUnitId,
-        int organisationUnitLevelId, String uniqueColumn, String nameColumn, String longitude, String latitude, int zoom )
+        int organisationUnitLevelId, String nameColumn, String longitude, String latitude, int zoom )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
@@ -125,21 +125,20 @@ public class DefaultMappingService
 
         Set<String> staticMapLayerPaths = null;
 
-        Map map = new Map( name, mapLayerPath, type, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn,
+        Map map = new Map( name, mapLayerPath, type, organisationUnit, organisationUnitLevel, nameColumn,
             longitude, latitude, zoom, staticMapLayerPaths );
 
         return addMap( map );
     }
 
     public void addOrUpdateMap( String name, String mapLayerPath, String type, int organisationUnitId,
-        int organisationUnitLevelId, String uniqueColumn, String nameColumn, String longitude, String latitude, int zoom )
+        int organisationUnitLevelId, String nameColumn, String longitude, String latitude, int zoom )
     {
         Map map = getMapByMapLayerPath( mapLayerPath );
 
         if ( map != null )
         {
             map.setName( name );
-            map.setUniqueColumn( uniqueColumn );
             map.setNameColumn( nameColumn );
             map.setLongitude( longitude );
             map.setLatitude( latitude );
@@ -154,7 +153,7 @@ public class DefaultMappingService
             OrganisationUnitLevel organisationUnitLevel = organisationUnitService
                 .getOrganisationUnitLevel( organisationUnitLevelId );
 
-            map = new Map( name, mapLayerPath, type, organisationUnit, organisationUnitLevel, uniqueColumn, nameColumn,
+            map = new Map( name, mapLayerPath, type, organisationUnit, organisationUnitLevel, nameColumn,
                 longitude, latitude, zoom, null );
 
             addMap( map );

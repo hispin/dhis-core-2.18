@@ -88,13 +88,6 @@ public class AddOrUpdateMapAction
         this.organisationUnitLevelId = organisationUnitLevelId;
     }
 
-    private String uniqueColumn;
-
-    public void setUniqueColumn( String uniqueColumn )
-    {
-        this.uniqueColumn = uniqueColumn;
-    }
-
     private String nameColumn;
 
     public void setNameColumn( String nameColumn )
@@ -131,7 +124,7 @@ public class AddOrUpdateMapAction
         throws Exception
     {
         mappingService.addOrUpdateMap( name, mapLayerPath, type, organisationUnitId, 
-            organisationUnitLevelId, uniqueColumn, nameColumn, longitude, latitude, zoom );
+            organisationUnitLevelId, nameColumn, longitude, latitude, zoom );
         
         return SUCCESS;
     }

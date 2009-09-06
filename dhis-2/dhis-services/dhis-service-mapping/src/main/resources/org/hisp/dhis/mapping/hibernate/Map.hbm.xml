@@ -23,8 +23,6 @@
 		<many-to-one name="organisationUnitLevel" class="org.hisp.dhis.organisationunit.OrganisationUnitLevel" 
 			column="organisationunitlevelid" not-null="true" foreign-key="fk_map_organisationunitlevelid"/>
 			
-		<property name="uniqueColumn" column="uniquecolumn"/>
-		
 		<property name="nameColumn" column="namecolumn"/>
 			
 		<property name="longitude" column="longitude"/>
