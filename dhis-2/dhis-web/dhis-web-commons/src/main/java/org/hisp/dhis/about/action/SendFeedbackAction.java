@@ -84,7 +84,7 @@ public class SendFeedbackAction
         
         try
         {
-            mail.setAuthenticator( new DefaultAuthenticator( "dhis2userfeedback", "dhis2dhis2" ) );
+            mail.setAuthenticator( new DefaultAuthenticator( "dhis2hisp", "userfeedback" ) );
             
             mail.setHostName( "smtp.gmail.com" );
             mail.addTo( "dhis2-userfeedback@googlegroups.com" );
