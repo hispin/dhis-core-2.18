@@ -182,9 +182,6 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 }
                 
                 return cls;                    
-            },
-            getCell: function(row,col) {
-                return '<div></div>';
             }
         });
     

@@ -335,7 +335,7 @@ Ext.onReady(function()
 
     map.setCenter(new OpenLayers.LonLat(init_longitude, init_latitude), init_zoom);
     
-    /*REGISTER SHAPEFILE PANEL*/
+    /*REGISTER MAPS PANEL*/
     
     var organisationUnitLevelStore = new Ext.data.JsonStore({
         url: path + 'getOrganisationUnitLevels' + type,
@@ -697,6 +697,11 @@ Ext.onReady(function()
                     Ext.messageBlack.msg('Edit map', 'The map ' + msg_highlight_start + mlp + msg_highlight_end + ' was deleted.');
                     
                     Ext.getCmp('map_cb').getStore().reload();
+					
+					if (Ext.getCmp('map_cb').getValue() == mlp) {
+						Ext.getCmp('map_cb').reset();
+					}
+					
                     Ext.getCmp('maps_cb').getStore().reload();
                     Ext.getCmp('editmap_cb').getStore().reload();
                     Ext.getCmp('editmap_cb').reset();
@@ -819,7 +824,7 @@ Ext.onReady(function()
         id: 'editmap_p',
         items: [
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map</p>' }, editMapComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map name</p>' }, editNameTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' }, editNameTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Name column</p>' }, editNameColumnTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Longitude</p>' }, editLongitudeTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Latitude</p>' }, editLatitudeTextField, { html: '<br>' },
@@ -1227,8 +1232,13 @@ Ext.onReady(function()
             var ca = Ext.getCmp('colorA_cf').getValue();
             var cb = Ext.getCmp('colorB_cf').getValue();
             
-            if (!vn || !ig || !ii || !pt || !p || !mst || !ms || !c ) {
+			if (!vn) {
                 Ext.messageRed.msg('New map view', 'Map view form is not complete.');
+                return;
+            }
+			
+            if (!ig || !ii || !pt || !p || !mst || !ms || !c ) {
+                Ext.messageRed.msg('New map view', 'Thematic map form is not complete.');
                 return;
             }
             
@@ -1305,9 +1315,10 @@ Ext.onReady(function()
     
     var dashboardViewButton = new Ext.Button({
         id: 'dashboardview_b',
-        text: 'Add view to DHIS2 dashboard',
+        text: 'Add view to DHIS 2 dashboard',
         handler: function() {
             var v2 = Ext.getCmp('view2_cb').getValue();
+			var nv = Ext.getCmp('view2_cb').getRawValue();
             
             if (!v2) {
                 Ext.messageRed.msg('Dashboard map view', 'Please select a map view.');
@@ -1320,7 +1331,7 @@ Ext.onReady(function()
                 params: { id: v2 },
 
                 success: function( responseObject ) {
-                    Ext.messageBlack.msg('Dashboard map view', 'The view ' + v + ' was added to dashboard.');
+                    Ext.messageBlack.msg('Dashboard map view', 'The view ' + msg_highlight_start + nv + msg_highlight_end + ' was added to dashboard.');
                     
                     Ext.getCmp('view_cb').getStore().reload();
                     Ext.getCmp('view_cb').reset();
