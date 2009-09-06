@@ -487,7 +487,7 @@ Ext.onReady(function()
         id: 'newzoom_cb',
         editable: false,
         emptyText: 'Required',
-        displayField: 'value',
+        displayField: 'text',
         valueField: 'value',
         width: combo_width,
         minListWidth: combo_width + 26,
@@ -495,8 +495,8 @@ Ext.onReady(function()
         mode: 'local',
         value: 7,
         store: new Ext.data.SimpleStore({
-            fields: ['value'],
-            data: [[5], [6], [7], [8], [9]]
+            fields: ['value','text'],
+            data: [[5, '5 (out)'], [6,'6'], [7,'7'], [8,'8'], [9,'9 (in)']]
         })
     });
     
@@ -510,10 +510,10 @@ Ext.onReady(function()
         minListWidth: combo_width + 26,
         triggerAction: 'all',
         mode: 'local',
-        value: 5,
+        value: 7,
         store: new Ext.data.SimpleStore({
-            fields: ['value'],
-            data: [[5], [6], [7], [8], [9]]
+            fields: ['value','text'],
+            data: [[5, '5 (out)'], [6,'6'], [7,'7'], [8,'8'], [9,'9 (in)']]
         })
     });
     
