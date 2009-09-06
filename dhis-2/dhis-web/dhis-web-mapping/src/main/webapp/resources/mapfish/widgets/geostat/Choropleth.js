@@ -648,7 +648,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             isFormField: true,
             fieldLabel: '',
             labelStyle: 'color:#dfe8f6;',
-            text: 'Refresh',
+            text: 'Refresh colors',
             handler: function() {
                 this.layer.setVisibility(true);
                 this.classify(true);

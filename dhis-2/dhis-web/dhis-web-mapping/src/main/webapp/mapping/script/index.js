@@ -948,6 +948,7 @@ Ext.onReady(function()
         mode: 'local',
         emptyText: MENU_EMPTYTEXT,
         triggerAction: 'all',
+		value: 5,
         width: combo_width,
         minListWidth: combo_width + 26,
         store: new Ext.data.SimpleStore({
