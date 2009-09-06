@@ -27,6 +27,7 @@ package org.hisp.dhis.dashboard.provider;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ import java.util.Map;
 import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.mapping.MapView;
+import org.hisp.dhis.mapping.comparator.MapViewNameComparator;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
@@ -84,6 +86,8 @@ public class MapViewContentProvider
             DashboardContent dashboardContent = dashboardService.getDashboardContent( user );
             
             List<MapView> mapViews = dashboardContent.getMapViews();
+            
+            Collections.sort( mapViews, new MapViewNameComparator() );
             
             content.put( key, mapViews );
         }
