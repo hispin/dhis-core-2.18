@@ -159,8 +159,6 @@ Ext.onReady(function()
 		]
 	});
 	this.myMap = map;
-
-    MASK = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait..."});
     
     MAPDATA = null;
     URL = null;
@@ -185,7 +183,9 @@ Ext.onReady(function()
             alert( 'Status', 'Error while saving data' );
         }
     });
-    
+	
+	MASK = new Ext.LoadMask(Ext.getBody(), {msg: 'Loading...', msgCls: 'x-mask-loading2'});
+	
     function getUrlParam(strParamName) {
         var output = "";
         var strHref = window.location.href;
@@ -293,6 +293,7 @@ Ext.onReady(function()
                 });
                 
                 treeLayer.events.register('loadstart', null, function() {
+					MASK.msg = 'Loading...';
                     MASK.show();
                 });
                 
@@ -1834,11 +1835,8 @@ Ext.onReady(function()
         map: map,
         layer: choroplethLayer,
 		title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Thematic map </font>',
-        //nameAttribute: 'NAME',
-        //indicators: [['value', 'Indicator']],
         url: INIT_URL,
         featureSelection: false,
-        loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
         legendDiv: 'choroplethLegend',
         defaults: {width: 130},
         listeners: {
@@ -1857,12 +1855,9 @@ Ext.onReady(function()
         id: 'mapping',
         map: map,
         layer: choroplethLayer,
-        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Link organisation units to map</font>',
-        //nameAttribute: 'NAME',
-        //indicators: [['value', 'Indicator']],
+        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Assign organisation units to map</font>',
         url: INIT_URL,
         featureSelection: false,
-        loadMask: {msg: 'Loading shapefile...', msgCls: 'x-mask-loading'},
         legendDiv: 'choroplethLegend',
         defaults: {width: 130},
         listeners: {
@@ -2178,6 +2173,9 @@ function loadMapData(redirect) {
         params: { mapLayerPath: URL, format: 'json' },
 
         success: function( responseObject ) {
+			MASK.msg = 'Applying colors...';
+			MASK.show();
+		
             MAPDATA = Ext.util.JSON.decode(responseObject.responseText).map[0];
             
             if (MAPSOURCE == 'database') {
@@ -2465,6 +2463,9 @@ function dataReceivedAssignOrganisationUnit( responseText ) {
 /*AUTO MAPPING*/
 
 function getAutoAssignOrganisationUnitData() {
+	MASK.msg = 'Loading data...';
+	MASK.show();
+
     var level = MAPDATA.organisationUnitLevel;
 
     Ext.Ajax.request({
@@ -2509,6 +2510,9 @@ function dataReceivedAutoAssignOrganisationUnit( responseText ) {
             }
         }
     }
+	
+	MASK.msg = 'Linking ' + count_match + ' organisation units...';
+	MASK.show();
     
     Ext.Ajax.request({
         url: path + 'addOrUpdateMapOrganisationUnitRelations' + type,
@@ -2516,6 +2520,9 @@ function dataReceivedAutoAssignOrganisationUnit( responseText ) {
         params: { mapLayerPath: mlp, relations: relations },
 
         success: function( responseObject ) {
+			MASK.msg = 'Applying organisation units relations...';
+			MASK.show();
+			
             Ext.messageBlack.msg('Assign organisation units', '' + msg_highlight_start + count_match + msg_highlight_end + ' organisation units assigned.<br><br>Database: ' + msg_highlight_start + count_orgunits/count_features + msg_highlight_end + '<br>Shapefile: ' + msg_highlight_start + count_features + msg_highlight_end);
             
             Ext.getCmp('grid_gp').getStore().reload();
