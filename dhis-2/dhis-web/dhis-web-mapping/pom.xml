@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.hisp.dhis</groupId>
     <artifactId>dhis-web</artifactId>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>2.0.2</version>
   </parent>
   
   <artifactId>dhis-web-mapping</artifactId>
@@ -73,7 +73,7 @@
 	<dependency>
       <groupId>org.mapfish.print</groupId>
       <artifactId>print-lib</artifactId>
-      <version>1.2-SNAPSHOT</version>
+      <version>1.2</version>
     </dependency>
     -->
     
