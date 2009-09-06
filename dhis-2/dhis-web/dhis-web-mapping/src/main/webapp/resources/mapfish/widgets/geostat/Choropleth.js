@@ -280,7 +280,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             baseParams: { format: 'jsonmin' },
             root: 'maps',
             fields: ['id', 'name', 'mapLayerPath', 'organisationUnitLevel'],
-            sortInfo: { field: 'organisationUnitLevel', direction: 'ASC' },
             autoLoad: true,
             listeners: {
                 'load': {
