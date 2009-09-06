@@ -411,6 +411,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 return;
         }
         
+		MASK.msg = 'Loading map...';
         MASK.show();
         
         loadMapData('assignment');
