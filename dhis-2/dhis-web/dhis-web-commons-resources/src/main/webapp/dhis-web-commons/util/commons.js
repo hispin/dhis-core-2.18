@@ -391,7 +391,7 @@ function showDivEffect()
 	divEffect.style.height = height + "px";
 	divEffect.style.background = "#000000";
 	divEffect.style.opacity = 0.5;
-	divEffect.style.zIndex = 100;
+	divEffect.style.zIndex = 10;
 	//divEffect.innerHTML = "<div style='background-color:#EFEFEF;position:absolute;top:300px;width:100%;text-align:center'><img src=\"../images/ajax-loader.gif\"/></div>";	
 	document.body.appendChild( divEffect );	
 }
