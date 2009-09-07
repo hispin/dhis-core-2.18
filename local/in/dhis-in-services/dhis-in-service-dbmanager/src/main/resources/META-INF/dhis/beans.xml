@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+<!-- Store definitions -->
+
+  <bean id="org.hisp.dhis.dbmanager.DataBaseManagerInterface"
+    class="org.hisp.dhis.dbmanager.mysql.MySQLDataBaseManager">
+    <property name="sessionManager"
+      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="lineListService"
+      ref="org.hisp.dhis.linelisting.LineListService"/>
+  </bean>
+
+	
+</beans>

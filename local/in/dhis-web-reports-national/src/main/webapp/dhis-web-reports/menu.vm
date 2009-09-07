@@ -1,0 +1,32 @@
+<h2>Report Analyser</h2>
+<ul>
+    <li>Report Analysis </li>
+    <ul>
+        <li><a href = "upwardReportAnalyser.action">GOI Reports</a></li>
+        <li><a href = "routineReportAnalyser.action">Routine Reports</a></li>
+        <li><a href = "feedbackReportAnalyser.action">Feedback Reports</a></li>
+        <li><a href = "cumulativeReportAnalyser.action">Cumulative Routine Reports</a></li>
+        <li><a href = "linelistingReportAnalyser.action">Linelisting Reports</a></li>
+        <li><a href = "dataSetReport.action">Dataset Report</a></li>
+        <li><a href = "displayPivotTableForm.action">Pivot Table</a></li>        
+        <li><a href = "progressReportAnalyser.action">Progress Reports</a></li>
+        <li><a href = "ouWiseProgressReportAnalyser.action">Orgunit wise Progress</a></li>
+        <li><a href = "advancedReportAnalyser.action">Advanced Reports</a></li>        
+        <li><a href = "TwentyPointReportsAnalyser.action">Twenty Point Reports</a></li>
+        <li><a href = "rankingReportForm.action">Ranking Report</a></li>
+        <li><a href = "specialReportForm.action">OrgUnitGroupSet Reports</a></li>
+        <li><a href = "malaryaForm.action">Malaria Reports</a></li>
+        <li><a href = "nlepForm.action">NLEP Reports</a></li>
+        
+        <li><a href = "autoReportAnalyser.action">Auto Reports</a></li>
+        
+        <li>Grading</li>
+		<ul>
+			<li><a href = "gradingReportAnalyser.action">Detailed</a></li>
+			<li><a href = "gradingAbstration.action">Abstraction</a></li>			
+		</ul>
+
+<!--        <li><a href = "populateUsers.action">Populate Users</a></li>
+-->								
+    </ul>
+</ul>

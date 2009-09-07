@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+  
+<!-- Store definitions -->
+
+  <bean id="org.hisp.dhis.config.ConfigurationStore"
+    class="org.hisp.dhis.config.hibernate.HibernateConfigurationStore">
+    <property name="sessionManager"
+      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+  </bean>
+	
+  
+<!-- Service definitions -->
+
+  <bean id="org.hisp.dhis.config.ConfigurationService"
+    class="org.hisp.dhis.config.DefaultConfigurationService">
+    <property name="configurationStore"
+      ref="org.hisp.dhis.config.ConfigurationStore"/>
+  </bean>
+
+  
+<!-- AOP transaction definitions -->
+	
+  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice" ref="readOnlyTransactionInterceptor"/>
+    <property name="patterns">
+      <list>
+        <value>.*\.ConfigurationStore\.get.*</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice" ref="readWriteTransactionInterceptor"/>
+    <property name="patterns">
+      <list>
+        <value>.*\.ConfigurationStore\.add.*</value>
+        <value>.*\.ConfigurationStore\.update.*</value>
+        <value>.*\.ConfigurationStore\.delete.*</value>
+        <value>.*\.ConfigurationStore\.remove.*</value>
+      </list>
+    </property>
+  </bean>	
+	
+<!-- Startup routine definitions -->
+	
+  
+
+<!-- DeletionHandlers -->
+    
+  
+  
+<!-- DeletionManager -->
+  
+  
+<!-- Deletion AOP definitions -->
+  
+  
+  
+</beans>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+<!-- Store definitions -->
+
+  <bean id="org.hisp.dhis.linelisting.LineListStore"
+    class="org.hisp.dhis.linelisting.hibernate.HibernateLineListStore">
+    <property name="sessionManager"
+      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+    <property name="periodStore"
+      ref="org.hisp.dhis.period.PeriodStore"/>
+  </bean>
+
+  <bean id="org.hisp.dhis.linelisting.LineListValidationRuleStore"
+    class="org.hisp.dhis.linelisting.hibernate.HibernateLineListValidationRuleStore">
+    <property name="sessionManager"
+      ref="org.hisp.dhis.hibernate.HibernateSessionManager"/>
+  </bean>
+  
+<!-- Service definitions -->
+
+  <bean id="org.hisp.dhis.linelisting.LineListService"
+    class="org.hisp.dhis.linelisting.DefaultLineListService">
+    <property name="lineListStore"
+      ref="org.hisp.dhis.linelisting.LineListStore"/>
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>
+  </bean>
+
+  <bean id="org.hisp.dhis.linelisting.LineListValidationRuleService"
+    class="org.hisp.dhis.linelisting.DefaultLineListValidationRuleService">
+    <property name="lineListValidationRuleStore"
+      ref="org.hisp.dhis.linelisting.LineListValidationRuleStore"/>
+  </bean>
+
+	<!-- AOP transaction definitions -->
+	
+  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice" ref="readOnlyTransactionInterceptor"/>
+    <property name="patterns">
+      <list>
+        <value>.*\.LineListStore\.get.*</value>
+      </list>
+    </property>
+  </bean>
+	
+  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="advice" ref="readWriteTransactionInterceptor"/>
+    <property name="patterns">
+      <list>
+        <value>.*\.LineListStore\.add.*</value>
+        <value>.*\.LineListStore\.update.*</value>
+        <value>.*\.LineListStore\.delete.*</value>
+        <value>.*\.LineListStore\.remove.*</value>
+      </list>
+    </property>
+  </bean>	
+	
+</beans>
