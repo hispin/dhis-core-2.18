@@ -205,4 +205,13 @@ public interface OrganisationUnitGroupService
      * @return an OrganisationUnitGroup.
      */
     OrganisationUnitGroup getOrganisationUnitGroup( OrganisationUnitGroupSet groupSet, OrganisationUnit unit );
+    
+    /**
+     * Returns a Collection of compulsory OrganisationUnitGroupSets whichs groups 
+     * the given OrganisationUnit is not a member of.
+     * 
+     * @param organisationUnit the OrganisationUnit.
+     * @return a Collection of OrganisationUnitGroupSets.
+     */
+    Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSetsNotAssignedTo( OrganisationUnit organisationUnit );
 }

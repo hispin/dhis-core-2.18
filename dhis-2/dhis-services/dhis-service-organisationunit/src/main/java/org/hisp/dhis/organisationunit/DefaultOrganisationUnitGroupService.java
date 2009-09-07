@@ -229,4 +229,24 @@ public class DefaultOrganisationUnitGroupService
         
         return null;
     }
+    
+    public Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSetsNotAssignedTo( OrganisationUnit organisationUnit )
+    {
+        Collection<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>();
+        
+        groupSetLoop : for ( OrganisationUnitGroupSet groupSet : getCompulsoryOrganisationUnitGroupSets() )
+        {
+            for ( OrganisationUnitGroup group : groupSet.getOrganisationUnitGroups() )
+            {
+                if ( group.getMembers().contains( organisationUnit ) )
+                {
+                    continue groupSetLoop;
+                }
+            }
+            
+            groupSets.add( groupSet );
+        }
+        
+        return groupSets;
+    }
 }
