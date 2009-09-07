@@ -28,9 +28,9 @@ public class SetNumberOfRecordsAction
 
     private String numberOfRecords;
 
-    public String getNumberOfRecords()
+    public void setNumberOfRecords( String numberOfRecords )
     {
-        return numberOfRecords;
+        this.numberOfRecords = numberOfRecords;
     }
 
     // --------------------------------------------------------------------
