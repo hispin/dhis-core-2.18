@@ -53,5 +53,9 @@
       <result name="success" type="redirect">index.action</result>
     </action>
     
+    <action name="removeMapView" class="org.hisp.dhis.dashboard.action.RemoveMapViewAction">
+      <result name="success" type="redirect">index.action</result>
+    </action>
+    
   </package>
 </struts>
