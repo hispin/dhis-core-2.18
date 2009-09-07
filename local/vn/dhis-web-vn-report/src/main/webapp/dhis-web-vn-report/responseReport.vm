@@ -8,6 +8,7 @@
 	<periodColumn>#if($report.periodColumn!=-1)$report.periodColumn#end</periodColumn>
 	<organisationRow>#if($report.organisationRow!=-1)$report.organisationRow#end</organisationRow>
 	<organisationColumn>#if($report.organisationColumn!=-1)$report.organisationColumn#end</organisationColumn>
+	<group>$report.group</group>
 	
 	#if($report.getReportType()=='grouplisting')
 		<availabelGroups>

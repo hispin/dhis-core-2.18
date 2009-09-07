@@ -73,7 +73,9 @@ public class AddReportExcelAction
 
     private String reportType;
 
-    private ReportExcelInterface report;
+    private ReportExcel report;
+
+    private String group;
 
     // -------------------------------------------
     // Getter & Setter
@@ -84,12 +86,17 @@ public class AddReportExcelAction
         this.reportService = reportService;
     }
 
+    public void setGroup( String group )
+    {
+        this.group = group;
+    }
+
     public void setReportType( String reportType )
     {
         this.reportType = reportType;
     }
 
-    public ReportExcelInterface getReport()
+    public ReportExcel getReport()
     {
         return report;
     }
@@ -166,6 +173,8 @@ public class AddReportExcelAction
 
         report.setName( CodecUtils.unescape( name ) );
         report.setExcelTemplateFile( excel );
+        report.setGroup(CodecUtils.unescape( group));
+        
 
         if ( periodCol == null || periodRow == null )
         {

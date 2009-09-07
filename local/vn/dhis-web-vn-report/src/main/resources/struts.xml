@@ -13,14 +13,14 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-vn-report/configuration.vm</param>
 			<param name="menu">/dhis-web-vn-report/menu.vm</param>
-			<param name="requiredAuthorities">F_ADD_REPORT_VN</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="setConfiguration"
 			class="org.hisp.dhis.vn.report.configuration.action.SetReportConfigurationAction">
 			<result name="success" type="redirect">listReportExcel.action
 			</result>
-			<param name="requiredAuthorities">F_ADD_REPORT_VN</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 
@@ -30,17 +30,19 @@
 			<param name="menu">/dhis-web-vn-report/menu.vm</param>
 			<param name="javascripts">javascript/reports.js,javascript/dataelement.js,javascript/jquery.autocomplete.js</param>
 			<param name="stylesheets">style/jquery.autocomplete.css</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="updateReportExcelGroupListing"
 			class="org.hisp.dhis.vn.report.action.UpdateReportExcelGroupListingAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseSuccess.vm</result>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
-		
+
 		<action name="getReportGroups"
 			class="org.hisp.dhis.vn.report.action.GetReportGroupsAction">
-			<result name="success" type="velocity-xml">
+			<result name="success" type="velocity">
 				/dhis-web-vn-report/responseReportGroups.vm</result>
 		</action>
 
@@ -48,13 +50,14 @@
 			class="org.hisp.dhis.vn.report.action.UpdateReportExcelGroupListingAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseSuccess.vm</result>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="addReportExcelForm"
 			class="org.hisp.dhis.vn.report.action.AddReportExcelAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseReport.vm</result>
-			<param name="requiredAuthorities">F_ADD_REPORT_VN</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="getReport" class="org.hisp.dhis.vn.report.action.GetReportAction">
@@ -65,25 +68,28 @@
 		<action name="openAddUnitGroupForReportListing" class="org.hisp.dhis.vn.report.action.GetReportAction">
 			<result name="success" type="chain">
 				openAddUnitGroupForReportListingChain</result>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="openAddUnitGroupForReportListingChain"
 			class="org.hisp.dhis.vn.report.action.GetOrganisationUnitGroupAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseReport.vm</result>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="updateReportExcelForm"
 			class="org.hisp.dhis.vn.report.action.UpdateReportExcelAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseReport.vm</result>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="updateReportExcelForm"
 			class="org.hisp.dhis.vn.report.action.UpdateReportExcelAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseReport.vm</result>
-			<param name="requiredAuthorities">F_UPDATE_REPORT_VN</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="validateReport"
@@ -98,14 +104,14 @@
 			class="org.hisp.dhis.vn.report.action.DeleteReportAction">
 			<result name="success" type="redirect">listReportExcel.action
 			</result>
-			<param name="requiredAuthorities">F_DELETE_REPORT_VN</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="openDefineAssociationsForm"
 			class="org.hisp.dhis.vn.report.action.GetNumberOfLevelsAction">
 			<result name="success" type="chain">openDefineAssociationsFormChain
 			</result>
-			<param name="requiredAuthorities">F_DELETE_REPORT_VN</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="openDefineAssociationsFormChain"
@@ -114,14 +120,13 @@
 			<param name="page">/dhis-web-vn-report/reportassociation.vm</param>
 			<param name="menu">/dhis-web-vn-report/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
-			<param name="requiredAuthorities">F_UPDATE_REPORT_VN</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="selectLevelChain"
 			class="org.hisp.dhis.vn.report.action.GetNumberOfLevelsAction">
 			<result name="success" type="chain">getReportChain
 			</result>
-			<param name="requiredAuthorities">F_DELETE_REPORT_VN</param>
 		</action>
 
 		<action name="getReportChain" class="org.hisp.dhis.vn.report.action.GetReportAction">
@@ -129,26 +134,24 @@
 			<param name="page">/dhis-web-vn-report/reportassociation.vm</param>
 			<param name="menu">/dhis-web-vn-report/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
-			<param name="requiredAuthorities">F_UPDATE_REPORT_VN</param>
 		</action>
 
 		<action name="selectLevel" class="org.hisp.dhis.vn.report.action.SelectLevelAction">
 			<result name="success" type="chain">selectLevelChain
 			</result>
-			<param name="requiredAuthorities">F_UPDATE_REPORT_VN</param>
 		</action>
 
 		<action name="unselectLevel"
 			class="org.hisp.dhis.vn.report.action.UnselectLevelAction">
 			<result name="success" type="chain">selectLevelChain
 			</result>
-			<param name="requiredAuthorities">F_UPDATE_REPORT_VN</param>
+
 		</action>
 
 		<action name="unselectAll" class="org.hisp.dhis.vn.report.action.UnselectAllAction">
 			<result name="success" type="chain">selectLevelChain
 			</result>
-			<param name="requiredAuthorities">F_UPDATE_REPORT_VN</param>
+
 		</action>
 
 		<action name="updateDefineAssociations"
@@ -191,21 +194,21 @@
 			class="org.hisp.dhis.vn.reportitem.action.AddReportItemAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseReportItem.vm</result>
-			<param name="requiredAuthorities">F_ADD_REPORT_VN</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="updateReportItem"
 			class="org.hisp.dhis.vn.reportitem.action.UpdateReportItemAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseReportItem.vm</result>
-			<param name="requiredAuthorities">F_UPDATE_REPORT_VN</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="deleteReportItem"
 			class="org.hisp.dhis.vn.reportitem.action.DeleteReportItemAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseSuccess.vm</result>
-			<param name="requiredAuthorities">F_DELETE_REPORT_VN</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="getFilteredDataElements"
@@ -240,7 +243,7 @@
 			class="org.hisp.dhis.vn.reportitem.action.CopyReportItemsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseSuccess.vm</result>
-			<param name="requiredAuthorities">F_UPDATE_REPORT_VN</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 
@@ -258,12 +261,16 @@
 				/dhis-web-vn-report/responseReportAssociations.vm</result>
 		</action>
 
-
-
 		<action name="getPeriod"
 			class="org.hisp.dhis.vn.report.export.action.GetPeriodAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responsePeriods.vm</result>
+		</action>
+
+		<action name="getReportsByGroup"
+			class="org.hisp.dhis.vn.report.export.action.GetReportByOrganisationAndGroupAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/responseListReport.vm</result>
 		</action>
 
 		<action name="selectReportParamerter"
@@ -300,7 +307,7 @@
 			class="org.hisp.dhis.vn.report.support.action.CleanTempDirectoryAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseDeleteTempDir.vm</result>
-			<param name="requiredAuthorities">F_CLEAN_UP_TEMP_VN</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<!-- Data Set Completed -->
@@ -434,7 +441,7 @@
 			class="org.hisp.dhis.vn.report.action.UpdateElementMembersAndCateComboReportCategoryAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseSuccess.vm</result>
-			<param name="requiredAuthorities">F_UPDATE_REPORT_VN</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="getOptionComboList"
@@ -450,16 +457,27 @@
 		<action name="getAdminOptions"
 			class="org.hisp.dhis.vn.admin.action.GetAdminOptionsAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-vn-report/viewAdminOptions.vm</param>
+			<param name="page">/dhis-web-vn-report/reportUserRoles.vm</param>
 			<param name="menu">/dhis-web-vn-report/menu.vm</param>
 			<param name="javascripts">javascript/admin.js</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="saveReportUserRoles"
 			class="org.hisp.dhis.vn.admin.action.SaveReportUserRolesAction">
-			<result name="success" type="chain">getAdminOptions
-			</result>
+			<result name="success" type="chain">getAdminOptions</result>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
+
+		<action name="openAdministrator"
+			class="org.hisp.dhis.vn.admin.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-vn-report/viewAdministrator.vm</param>
+			<param name="menu">/dhis-web-vn-report/menu.vm</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
+		</action>
+
+
 
 		<!-- Data Status Action -->
 
@@ -473,7 +491,8 @@
 			<param name="menuTreeHeight">400</param>
 		</action>
 
-		<action name="listDataStatus" class="org.hisp.dhis.vn.datastatus.action.ListDataStatusAction">
+		<action name="listDataStatus"
+			class="org.hisp.dhis.vn.datastatus.action.ListDataStatusAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-vn-report/listDataStatus.vm</param>
@@ -482,34 +501,36 @@
 			<param name="menuTreeHeight">400</param>
 		</action>
 
-		<action name="addDataStatus" class="org.hisp.dhis.vn.datastatus.action.AddDataStatusAction">
+		<action name="addDataStatus"
+			class="org.hisp.dhis.vn.datastatus.action.AddDataStatusAction">
 			<result name="success" type="redirect">listDataStatus.action
 			</result>
-			<param name="requiredAuthorities">F_EDIT_DATASTATUS</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="updateDataStatus"
 			class="org.hisp.dhis.vn.datastatus.action.UpdateDataStatusAction">
 			<result name="success" type="redirect">listDataStatus.action
 			</result>
-			<param name="requiredAuthorities">F_EDIT_DATASTATUS</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="deleteDataStatus"
 			class="org.hisp.dhis.vn.datastatus.action.DeleteDataStatusAction">
 			<result name="success" type="redirect">listDataStatus.action
 			</result>
-			<param name="requiredAuthorities">F_EDIT_DATASTATUS</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
-		<action name="openUpdateDataStatus" class="org.hisp.dhis.vn.datastatus.action.GetDataStatusAction">
+		<action name="openUpdateDataStatus"
+			class="org.hisp.dhis.vn.datastatus.action.GetDataStatusAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-vn-report/updateDataStatus.vm</param>
 			<param name="menu">/dhis-web-vn-report/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/datastatus.js</param>
 			<param name="menuTreeHeight">400</param>
-			<param name="requiredAuthorities">F_EDIT_DATASTATUS</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
 		<action name="openAddDataStatus" class="org.hisp.dhis.vn.datastatus.action.NoAction">
@@ -519,10 +540,11 @@
 			<param name="menu">/dhis-web-vn-report/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/datastatus.js</param>
 			<param name="menuTreeHeight">400</param>
-			<param name="requiredAuthorities">F_EDIT_DATASTATUS</param>
+			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
-		<action name="getDataSets" class="org.hisp.dhis.vn.datastatus.action.GetDataSetAction">
+		<action name="getDataSets"
+			class="org.hisp.dhis.vn.datastatus.action.GetDataSetAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-vn-report/responseDataSets.vm</result>
 		</action>

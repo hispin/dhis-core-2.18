@@ -1,7 +1,9 @@
 ﻿<h2>$i18n.getString( "report_design" )</h2>
 <ul>
-	<li><a href="getConfiguration.action">$i18n.getString( "configuration" )&nbsp;</a></li>	
-	<li><a href="listReportExcel.action">$i18n.getString( "report" )&nbsp;</a></li>	
+	<li><a href="getConfiguration.action">$i18n.getString( "configuration" )&nbsp;</a></li>
+	<li><a href="getAdminOptions.action">$i18n.getString( "administration" )&nbsp;</a></li>	
+	
+	<li><a href="listReportExcel.action">$i18n.getString( "reports" )&nbsp;</a></li>	
 	<li><a href="javascript:cleanUp();">$i18n.getString( "clean_up" )&nbsp;</a></li>	
 </ul>
 <h2>$i18n.getString( "generate_report" )</h2>

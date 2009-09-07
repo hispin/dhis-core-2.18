@@ -48,10 +48,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.vn.report.action.GetReportGroupsAction" class="org.hisp.dhis.vn.report.action.GetReportGroupsAction"
-		scope="prototype">
-		<property name="reportExcelService" ref="org.hisp.dhis.vn.report.ReportExcelService" />		
+
+	<bean id="org.hisp.dhis.vn.report.action.GetReportGroupsAction"
+		class="org.hisp.dhis.vn.report.action.GetReportGroupsAction" scope="prototype">
+		<property name="reportExcelService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.report.action.GetReportAction" class="org.hisp.dhis.vn.report.action.GetReportAction"
@@ -212,7 +212,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.vn.report.state.SelectionManager" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.report.export.action.GetOrganisationUnitAction"
@@ -222,11 +221,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
 
+	<bean
+		id="org.hisp.dhis.vn.report.export.action.GetReportByOrganisationAndGroupAction"
+		class="org.hisp.dhis.vn.report.export.action.GetReportByOrganisationAndGroupAction"
+		scope="prototype">
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+
 	<bean id="org.hisp.dhis.vn.report.export.action.GetPeriodAction"
 		class="org.hisp.dhis.vn.report.export.action.GetPeriodAction" scope="prototype">
 		<property name="selectionManager"
 			ref="org.hisp.dhis.vn.report.state.SelectionManager" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />		
 	</bean>
 
 	<bean
@@ -472,7 +481,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />		
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="completeDataSetRegistrationService"
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />

@@ -78,7 +78,7 @@ public class DefaultDataStatusAction
     private DataSetService dataSetService;
 
     private PeriodService periodService;
-    
+
     private CompleteDataSetRegistrationService completeDataSetRegistrationService;
 
     private I18nFormat format;
@@ -161,15 +161,14 @@ public class DefaultDataStatusAction
     public String execute()
         throws Exception
     {
-    	
-       
+
         if ( selectionManager.getSelectedOrganisationUnit() != null )
         {
-        	TimeUtils.start();
+            TimeUtils.start();
             dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( selectionManager
                 .getSelectedOrganisationUnit() ) );
-			TimeUtils.markHMS("datasets");
-			TimeUtils.stop();
+            TimeUtils.markHMS( "datasets" );
+            TimeUtils.stop();
             if ( !currentUserService.currentUserIsSuper() )
             {
                 UserCredentials userCredentials = userStore.getUserCredentials( currentUserService.getCurrentUser() );
@@ -182,12 +181,10 @@ public class DefaultDataStatusAction
                 }
 
                 dataSets.retainAll( dataSetUserAuthorityGroups );
-            }            
-           
-            TimeUtils.start();
-            dataStatus = new ArrayList<DataStatus>( dataStatusService.getDataStatusDefaultByDataSets(  dataSets ) );
-            TimeUtils.markHMS("got datasets");
-            TimeUtils.stop();
+            }
+
+            dataStatus = new ArrayList<DataStatus>( dataStatusService.getDataStatusDefaultByDataSets( dataSets ) );
+
             maps = new HashMap<DataSet, List<DataStatus>>();
 
             Calendar calendar = Calendar.getInstance();
@@ -208,19 +205,16 @@ public class DefaultDataStatusAction
 
                     DataStatus dataStatusNew = new DataStatus();
                     dataStatusNew.setPeriod( p );
-                    dataStatusNew.setNumberOfDataElement( d.getNumberOfDataElement() );                    
-                    dataStatusNew.setNumberOfDataValue( dataStatusService.countDataValueOfDataSet(d.getDataSet(), selectionManager.getSelectedOrganisationUnit(), p) );
-                    TimeUtils.start();
+                    dataStatusNew.setNumberOfDataElement( d.getNumberOfDataElement() );
+                    dataStatusNew.setNumberOfDataValue( dataStatusService.countDataValueOfDataSet( d.getDataSet(),
+                        selectionManager.getSelectedOrganisationUnit(), p ) );
+
                     CompleteDataSetRegistration completeDataSetRegistration = completeDataSetRegistrationService
                         .getCompleteDataSetRegistration( d.getDataSet(), p, selectionManager
                             .getSelectedOrganisationUnit() );
-                    TimeUtils.markHMS("got complete");
-                    TimeUtils.stop();
+
                     dataStatusNew.setCompleted( (completeDataSetRegistration == null ? false : true) );
-                    
-                    
-                    
-                    
+
                     ds_temp.add( dataStatusNew );
 
                 }

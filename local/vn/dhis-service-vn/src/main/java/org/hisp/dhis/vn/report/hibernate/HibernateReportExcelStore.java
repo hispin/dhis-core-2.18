@@ -134,6 +134,18 @@ public class HibernateReportExcelStore
 
           return sqlQuery.list(); 	
     }
+    
+    
+    @SuppressWarnings("unchecked")
+    public Collection<ReportExcelInterface> getReportsByGroup(String group){
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( ReportExcel.class );
+
+        criteria.add( Restrictions.eq( "group", group ) );
+
+        return criteria.list();
+    }
 
     // --------------------------------------
     // Service of Report Item
