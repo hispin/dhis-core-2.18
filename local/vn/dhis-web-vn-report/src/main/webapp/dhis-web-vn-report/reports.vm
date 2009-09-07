@@ -1,5 +1,6 @@
 <h2>$i18n.getString('reports')</h2>
 <p><input type="button" onclick="openAddReportForm()" value="$i18n.getString('add')"/></p>
+
 <table width="100%">
 	<tr>
 		<th>$i18n.getString('name')</th>
@@ -118,16 +119,19 @@
 		document.getElementById('organisationRow').value = getElementValue(report, 'organisationRow');
 		document.getElementById('organisationColumn').value = getElementValue(report, 'organisationColumn');
 		document.getElementById('reportType').value = getElementValue(report, 'reportType');
+		document.getElementById('group').value = getElementValue(report, 'group');
 		
 		setPositionCenter( 'report' );
 		showDivEffect();
 		showById( 'report' );
 		mode = "UPDATE";
 		disable('name');
+		
+		
 	}
 	
 </script>
-<div id="report" style="position:fixed;display:none;width:450px;z-index:10001;background-color: white;border: medium solid silver;height:250px;padding:20px;">
+<div id="report" style="position:fixed;display:none;width:450px;z-index:1;background-color: white;border: medium solid silver;height:250px;padding:20px;">
 	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('report');deleteDivEffect();">[x]</div>
 	<input type="hidden" value="" id="id"/>
 	<table>
@@ -152,7 +156,7 @@
 		</tr>	
 		<tr>		
 			<td><label>$i18n.getString('group')</label></td>
-			<td><input type="text" id="reportGroup" style="width:20em"/></td>
+			<td><input type="text" id="group" style="width:20em"/></td>
 		<td>		
 		<tr>
 			<td><label>$i18n.getString('period_postion_row')</label></td>
@@ -326,5 +330,18 @@
 </div>
 
 <span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="javascript:hideById(this.id);"></span>
+
+<script>
+	$("#group").autocomplete("getReportGroups.action", {
+            width: 260,
+            formatItem:function (row){
+                return row[0];
+            },
+            formatResult:function (row){
+                return row[0];
+            },
+            selectFirst: true
+        });
+</script>
 
 

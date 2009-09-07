@@ -61,6 +61,7 @@ function addReport(){
 	var periodCol = getFieldValue("periodColumn");
 	var organsationRow = getFieldValue("organisationRow");
 	var organsationCol = getFieldValue("organisationColumn");
+	var group = $("#group").val();
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
@@ -72,6 +73,7 @@ function addReport(){
 	url += "&organisationRow=" + organsationRow;
 	url += "&organisationCol=" + organsationCol;
 	url += "&excel=" + excel;
+	url += "&group=" + group;
     request.send( url );
 }
 
@@ -83,6 +85,7 @@ function updateReport(){
 	var periodCol = getFieldValue("periodColumn");
 	var organsationRow = getFieldValue("organisationRow");
 	var organsationCol = getFieldValue("organisationColumn");
+	var group = $("#group").val();
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
@@ -94,6 +97,7 @@ function updateReport(){
 	url += "&organisationRow=" + organsationRow;
 	url += "&organisationCol=" + organsationCol;
 	url += "&excel=" + excel;
+	url += "&group=" + group;
     request.send( url );
 }
 

@@ -56,10 +56,11 @@ public interface ReportExcelService
 
     public Collection<ReportExcelInterface> getALLReport();
     
-    public Collection<ReportExcelInterface> getReports( User user, boolean superUser );
+    public Collection<ReportExcelInterface> getReports( User user, boolean superUser, String group);
     
     public Collection<String> getReportGroups();
     
+    public Collection<ReportExcelInterface> getReportsByGroup(String group); 
     // --------------------------------------
     // Service of Report Item
     // --------------------------------------

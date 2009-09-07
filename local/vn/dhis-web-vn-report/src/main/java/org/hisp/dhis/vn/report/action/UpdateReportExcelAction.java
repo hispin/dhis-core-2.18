@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.vn.report.action;
 
+import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.report.ReportExcelInterface;
 import org.hisp.dhis.vn.report.ReportExcelService;
 
@@ -61,9 +62,10 @@ public class UpdateReportExcelAction
     private Integer organisationRow;
 
     private Integer organisationCol;
-	
+
     private ReportExcelInterface report;
-	
+
+    private String group;
 
     // -------------------------------------------
     // Getter & Setter
@@ -74,11 +76,16 @@ public class UpdateReportExcelAction
         this.reportService = reportService;
     }
 
+    public void setGroup( String group )
+    {
+        this.group = group;
+    }
+
     public ReportExcelInterface getReport()
     {
         return report;
     }
-	
+
     public void setId( Integer id )
     {
         this.id = id;
@@ -108,18 +115,22 @@ public class UpdateReportExcelAction
     {
         this.organisationCol = organisationCol;
     }
-	
-	
-	/** ---------------------------------------------------------------------------------------
-		Action Implementation
-	-------------------------------------------------------------------------------------------*/
+
+    /**
+     * ------------------------------------------------------------------------
+     * --------------- Action Implementation
+     * ------------------------------------
+     * -------------------------------------------------------
+     */
     public String execute()
         throws Exception
     {
         report = reportService.getReport( id.intValue() );
-	
-        report.setExcelTemplateFile( excel );           
-	
+
+        report.setExcelTemplateFile( excel );
+        
+        report.setGroup(CodecUtils.unescape( group));
+
         if ( periodCol == null || periodRow == null )
         {
             report.setPeriodColumn( -1 );

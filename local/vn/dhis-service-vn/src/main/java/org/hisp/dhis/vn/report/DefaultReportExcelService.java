@@ -55,7 +55,7 @@ public class DefaultReportExcelService
     {
         this.reportStore = reportStore;
     }
-    
+
     private UserStore userStore;
 
     // -------------------------------------------------
@@ -101,34 +101,41 @@ public class DefaultReportExcelService
     {
         return reportStore.getALLReport();
     }
-    
-    public Collection<ReportExcelInterface> getReports( User user, boolean superUser )
+
+    public Collection<ReportExcelInterface> getReports( User user, boolean superUser, String group )
     {
-        if ( user == null || ( user != null && superUser ) )
+        if ( user == null || (user != null && superUser) )
         {
-            return getALLReport();
+            return this.getReportsByGroup( group );
         }
         else
         {
             Set<UserAuthorityGroup> userRoles = userStore.getUserCredentials( user ).getUserAuthorityGroups();
-            
+
             Collection<ReportExcelInterface> reports = new ArrayList<ReportExcelInterface>();
-            
-            for ( ReportExcelInterface report : getALLReport() )
+
+            for ( ReportExcelInterface report : this.getReportsByGroup( group ) )
             {
                 if ( CollectionUtils.intersection( report.getUserRoles(), userRoles ).size() > 0 )
                 {
                     reports.add( report );
                 }
             }
-        
+
             return reports;
         }
     }
-    
-    public Collection<String> getReportGroups() {		
-		return reportStore.getReportGroups();
-	}
+
+    public Collection<String> getReportGroups()
+    {
+        return reportStore.getReportGroups();
+    }
+
+    public Collection<ReportExcelInterface> getReportsByGroup( String group )
+    {
+        return reportStore.getReportsByGroup( group );
+
+    }
 
     // -------------------------------------------------
     // Service of Report Item
@@ -169,16 +176,14 @@ public class DefaultReportExcelService
         return reportStore.getReportItem( itemType, reportExcelNormal );
     }
 
-	public Collection<ReportItem> getReportItem(int sheetNo, Integer reportId) {		
-		return reportStore.getReportItem(sheetNo, reportId);
-	}
+    public Collection<ReportItem> getReportItem( int sheetNo, Integer reportId )
+    {
+        return reportStore.getReportItem( sheetNo, reportId );
+    }
 
-	public Collection<Integer> getSheets(Integer reportId) {		
-		return reportStore.getSheets(reportId);
-	}
-
-	
-
-
+    public Collection<Integer> getSheets( Integer reportId )
+    {
+        return reportStore.getSheets( reportId );
+    }
 
 }

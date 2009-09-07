@@ -1,3 +1,20 @@
+function getReportByGroup(){
+	$.get("getReportsByGroup.action",
+    {
+        group:$("#group").val()
+    }, function( xmlObject ){       
+        xmlObject = xmlObject.getElementsByTagName("reports")[0];
+		clearListById('report');
+		var list = xmlObject.getElementsByTagName("report");
+		for(var i=0;i<list.length;i++){
+			var item = list[i];
+			var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
+			var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
+			addOption('report',name,id);
+		}
+    }, "xml");
+}
+
 function organisationUnitSelected( orgUnits )
 {	
 	window.location.reload();

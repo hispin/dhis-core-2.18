@@ -80,13 +80,12 @@ public class ListReportAction
     }
 
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
-        reports = new ArrayList<ReportExcelInterface>( 
-            reportService.getReports( currentUserService.getCurrentUser(), currentUserService.currentUserIsSuper() ) );
-        
+        reports = new ArrayList<ReportExcelInterface>( reportService.getALLReport() );
+
         Collections.sort( reports, new ReportNameComparator() );
 
         return SUCCESS;

@@ -1,3 +1,43 @@
+function deleteReportItem( id ){
+	if(window.confirm(i18n_confirm_delete)){
+		$.get("deleteReportItem.action",{id:id}, function(data){
+			window.location.reload();
+		});		
+	}		
+}	
+
+function openAddReportItemForm(){
+	$("#sheetNo").val($("#sheetNoFilter").val());		
+	setPositionCenter( 'report' );
+	showDivEffect();
+	$("#report").show();
+	mode = "ADD";
+}
+
+function openUpdateReportItem( id ){
+	$.get("getReportItem.action",{id:id}, function(data){
+		
+		var reportItem = data.getElementsByTagName('reportItem')[0];
+		
+		$("#id").val(getElementValue(reportItem, 'id'));		
+		$("#name").val(getElementValue(reportItem, 'name'));
+		$("#itemType").val(getElementValue(reportItem, 'itemType'));
+		$("#periodType").val(getElementValue(reportItem, 'periodType'));		
+		$("#row").val(getElementValue(reportItem, 'row'));
+		$("#column").val(getElementValue(reportItem, 'column'));		
+		$("#expression").val(getElementValue(reportItem, 'expression'));
+		$("#sheetNo").val(getElementValue(reportItem, 'sheetNo'));	
+				
+		setPositionCenter( 'report' );
+		showDivEffect();
+		$("#report").show();
+		mode = "UPDATE";
+		
+	},"xml");
+	
+}	
+
+
 function filterSheet(){
 	window.location = "listReportItem.action?reportId=" +  getFieldValue("reportId") + "&sheetNo=" + getFieldValue("sheetNoFilter");
 }
@@ -35,13 +75,9 @@ function validateAddReportItemCompleted( xmlObject ){
     }
     if(type=='success')
     {
-		if(mode=='ADD'){
-			//document.forms['reportItem'].action="addReportItem.action";
-			//document.forms['reportItem'].submit();
+		if(mode=='ADD'){		
 			addReportItem();
-		}else{
-			//document.forms['reportItem'].action="updateReportItem.action";
-			//document.forms['reportItem'].submit();
+		}else{		
 			updateReportItem();
 		}      
     }
@@ -103,59 +139,9 @@ function addReportItemCompleted( xmlObject ){
 	window.location.reload();
 }
 
-function getIndicatorGroups(){
-	var list = byId('dataElementGroup');
-	list.options.length = 0;
-	list.add( new Option( "ALL", "ALL" ), null );
-	for ( id in indicatorGroups )
-	{
-		list.add( new Option( indicatorGroups[id], id ), null );
-	}
-}
 
-function filterIndicators(){
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( filterIndicatorsCompleted );
-	request.send( "../dhis-web-commons-ajax/getIndicators.action?id=" + getFieldValue('dataElementGroup'));
-}
-function filterIndicatorsCompleted( xmlObject ){
-	var indiatorList = byId( "avilableDataElements" );
-	indiatorList.options.length = 0;
-	
-	var indicators = xmlObject.getElementsByTagName( "indicator" );
-	for ( var i = 0; i < indicators.length; i++)
-	{
-		var id = indicators[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-		var indicatorName = indicators[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
-		var option = document.createElement( "option" );
-		option.value = "[" + id + "]";
-		option.text = indicatorName;
-		indiatorList.add( option, null );	
-	}
-}
 
-function getDataElementGroups(){
-	var list = byId('dataElementGroup');
-	list.options.length = 0;
-	list.add( new Option( "ALL", "ALL" ), null );
-	for ( id in dataElementGroups )
-	{
-		list.add( new Option( dataElementGroups[id], id ), null );
-	}
-}
-function filterDataElements( )
-{	
-	var dataElementGroup = document.getElementById( "dataElementGroup" );
-	var dataElementGroupId = dataElementGroup.options[ dataElementGroup.selectedIndex ].value;	
-	
-	var url = "getFilteredDataElements.action?dataElementGroupId=" + dataElementGroupId;
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( getFilteredDataElementsReceived );
-    request.send( url );
-}
+
 
 function getFilteredDataElementsReceived( xmlObject )
 {
@@ -177,72 +163,18 @@ function getFilteredDataElementsReceived( xmlObject )
 	}
 }
 
-function insertFormulaText( value ) {
-	setFieldValue('formula', getFieldValue('formula') + value);
+function insertFormulaText(sourceId, targetId) {	
+	$("#" + targetId).html($("#"+targetId).html() + $("#"+sourceId).val());
 }
 
-function validateFormula() {
-	
-	var itemTypeValue = getFieldValue('itemType');
-	var formulaValue = getFieldValue('formula');
-	
-	if ( itemTypeValue == 'element_optioncombo' ) {
-	
-		if ( (formulaValue != null) && (formulaValue != "") ) {
-			setFieldValue('expression', getFieldValue('formula'));
-			hideById('formulaDiv');
-		}
-		return;
-	}
-	
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( validateFormulaCompleted );
-
-	request.send( "validateDenum.action?formula=" + htmlEncode(getFieldValue('formula') ) + "&mode=" + getFieldValue('itemType'));
+function insertOperation(target, value ){
+	$("#" + target).html($("#" + target).html() + value);
 }
 
 
-function validateFormulaCompleted( xmlObject ) {
-	var type = xmlObject.getAttribute( 'type' );
-    
-    if(type=='error')
-    {
-        setMessage(xmlObject.firstChild.nodeValue);
-    }
-    if(type=='success')
-    {
-		setFieldValue('expression', getFieldValue('formula'));
-		hideById('formulaDiv');
-	}
-}
 
 
-function getReportItems( reportId ){
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( getReportItemsCompleted );
-	request.send( "getReportItems.action?formula=" + htmlEncode(getFieldValue('formula') ) + "&reportId=" + reportId);
-}
-function getReportItemsCompleted( xmlObject ){
-	var operandList = document.getElementById( "availableDataElements" );
-			
-	operandList.options.length = 0;
-	
-	var reportItems = xmlObject.getElementsByTagName( "reportItem" );
-	
-	for ( var i = 0; i < reportItems.length; i++)
-	{		
-		var name = reportItems[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
-		var row = reportItems[ i ].getElementsByTagName( "row" )[0].firstChild.nodeValue;
-		var column = reportItems[ i ].getElementsByTagName( "column" )[0].firstChild.nodeValue;
-		
-		var option = document.createElement( "option" );
-		option.value = "[" + row + "." + column + "]";
-		option.text = name;
-		operandList.add( option, null );	
-	}
-}
+
 
 function selectALL( checked ){
 	var listRadio = document.getElementsByName('reportItemCheck');	
@@ -293,3 +225,134 @@ function saveCopyItems(){
 function saveCopyItemsCompleted( xmlObject ){
 	hideById('copyTo');
 }
+
+/**
+* Calculation ReportItem type
+*/
+function openCalculationExpression( reportId ){
+	$("#formula").html($("#expression").val());
+	$.get("getReportItems.action",
+	{reportId:reportId},
+	function (data){
+		var xmlObject = data.getElementsByTagName('reportItems')[0];
+		var operandList = document.getElementById( "availableDataElements" );
+			
+		operandList.options.length = 0;
+		
+		var reportItems = xmlObject.getElementsByTagName( "reportItem" );
+		
+		for ( var i = 0; i < reportItems.length; i++)
+		{		
+			var name = reportItems[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
+			var row = reportItems[ i ].getElementsByTagName( "row" )[0].firstChild.nodeValue;
+			var column = reportItems[ i ].getElementsByTagName( "column" )[0].firstChild.nodeValue;
+			
+			var option = document.createElement( "option" );
+			option.value = "[" + row + "." + column + "]";
+			option.text = name;
+			operandList.add( option, null );	
+		}
+		
+		$("#dataElementGroup").attr("disabled", true);
+		$("#availableDataElements").attr("disabled", false);
+		setPositionCenter( 'normal' );	
+		$("#normal").show();
+	},
+	'xml');	
+}
+
+/**
+* DataElement Report type
+*/
+function openDataElementExpression(){
+	$("#formula").html($("#expression").val());
+	getDataElementGroups();
+	filterDataElements();
+	$("#dataElementGroup").attr("disabled", false);
+	$("#availableDataElements").attr("disabled", false);
+	setPositionCenter( 'normal' );	
+	$("#normal").show();
+}
+
+function getDataElementGroups(){
+	var list = byId('dataElementGroup');
+	list.options.length = 0;
+	list.add( new Option( "ALL", "ALL" ), null );
+	for ( id in dataElementGroups )
+	{
+		list.add( new Option( dataElementGroups[id], id ), null );
+	}
+}
+
+function filterDataElements( )
+{		
+	var dataElementGroupId = $("#dataElementGroup").val();
+	$.get("getFilteredDataElements.action",{dataElementGroupId:dataElementGroupId},
+	function(xmlObject){
+		var xmlObject = xmlObject.getElementsByTagName('operands')[0];
+		var operandList = byId( "availableDataElements" );
+			
+		operandList.options.length = 0;
+		
+		var operands = xmlObject.getElementsByTagName( "operand" );
+		
+		for ( var i = 0; i < operands.length; i++)
+		{
+			var id = operands[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
+			var elementName = operands[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
+			
+			var option = document.createElement( "option" );
+			option.value = "[" + id + "]";
+			option.text = elementName;
+			operandList.add( option, null );	
+		}
+	}
+	,'xml');	
+}
+/**
+* Indicator Report item type
+*/
+function openIndicatorExpression(){
+	$("#formulaIndicator").html($("#expression").val());
+	getIndicatorGroups();
+	filterIndicators();	
+	$("#indicatorGroups").attr("disabled", false);
+	$("#availableIndicators").attr("disabled", false);
+	setPositionCenter( 'indicatorForm' );	
+	$("#indicatorForm").show();
+}
+
+function getIndicatorGroups(){
+	var list = byId('indicatorGroups');
+	list.options.length = 0;
+	list.add( new Option( "ALL", "ALL" ), null );
+	for ( id in indicatorGroups )
+	{
+		list.add( new Option( indicatorGroups[id], id ), null );
+	}
+}
+
+function filterIndicators(){
+	var request = new Request();
+    request.setResponseTypeXML( 'xmlObject' );
+    request.setCallbackSuccess( filterIndicatorsCompleted );
+	request.send( "../dhis-web-commons-ajax/getIndicators.action?id=" + $("#indicatorGroups").val());
+}
+function filterIndicatorsCompleted( xmlObject ){
+	var indiatorList = byId( "availableIndicators" );
+	indiatorList.options.length = 0;
+	
+	var indicators = xmlObject.getElementsByTagName( "indicator" );
+	for ( var i = 0; i < indicators.length; i++)
+	{
+		var id = indicators[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
+		var indicatorName = indicators[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
+		var option = document.createElement( "option" );
+		option.value = "[" + id + "]";
+		option.text = indicatorName;
+		indiatorList.add( option, null );	
+	}
+}
+
+
+

@@ -82,4 +82,8 @@ public interface ReportExcelInterface
     public Set<UserAuthorityGroup> getUserRoles();
     
     public void setUserRoles( Set<UserAuthorityGroup> userRoles );
+    
+    public String getGroup() ;
+
+	public void setGroup(String group) ;
 }

@@ -1,13 +1,19 @@
 <h2>$i18n.getString( "generate_report" )</h2>
-<table>
+<table>	
 	<tr>
-		<td><label>$i18n.getString('organisation')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="organisation" value="$!organisationUnit.name"  style="width:20em"></td>
+		<td><label>$i18n.getString('group')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td>
+			<select type="text" id="group" name="group" style="min-width:20em" onchange="getReportByGroup()" #if(!$organisationUnit) disabled #end>
+				#foreach($group in $groups)
+					<option value='$group'>$encoder.htmlEncode( $group )</option>				
+				#end
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td><label>$i18n.getString('reports')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select type="text" id="report" name="report" style="min-width:20em" >
+			<select type="text" id="report" name="report" style="min-width:20em" #if(!$organisationUnit) disabled #end>
 				#foreach($report in $reports)
 					<option value='$report.id'>$encoder.htmlEncode( $report.name )</option>				
 				#end
@@ -17,13 +23,13 @@
 	<tr>
 		<td></td>
 		<td>
-			<input type="button" value="<<" onclick="lastYear();"/><input type="button" value=">>" onclick="nextYear()"/>
+			<input type="button" value="<<" onclick="lastYear();" #if(!$organisationUnit) disabled #end/><input type="button" value=">>" #if(!$organisationUnit) disabled #end onclick="nextYear()"/>
 		</td>
 	</tr>
 	<tr>
 		<td><label>$i18n.getString('period')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select type="text" id="period" style="min-width:20em">
+			<select type="text" id="period" style="min-width:20em" #if(!$organisationUnit) disabled #end>
 				#foreach($period in $periods)
 					<option value='$period.id'>$format.formatPeriod( $period )</option>				
 				#end
@@ -37,5 +43,11 @@
 <span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>
 <br>
 <hr>
-<p><input type="button" value="$i18n.getString( "generate_report" )" onclick="validateGenerateReport()"/></p>
+<p><input type="button" value="$i18n.getString( "generate_report" )" onclick="validateGenerateReport()" #if(!$organisationUnit) disabled #end/></p>
 <span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)"></span>
+
+<script>
+#if($organisationUnit)
+getReportByGroup();
+#end
+</script>
