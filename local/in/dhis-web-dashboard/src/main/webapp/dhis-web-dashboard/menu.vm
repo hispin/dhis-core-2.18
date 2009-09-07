@@ -1,0 +1,25 @@
+
+<h2>DashBoard</h2>
+	<ul>
+		<li>Graphical Analysis</li>
+			<ul>
+		    	<li><a href="graphicalAnalyser.action">Regular</a></li>
+		        <li><a href="annualAnalyser.action">Annual</a></li>
+		        <li><a href="surveyAnalyser.action">Survey</a></li>
+		        <li><a href="motionChartForm.action">MotionChart</a></li>
+		   	</ul>
+		<li>Data Analysis</li>
+			<ul>
+				<li><a href="tabularAnalysisForm.action">Tabular Analysis</a></li>
+		   		<li><a href="dataStatusForm.action">Data Status</a></li>
+				<li><a href="dataStatusOrgnisationunitGroupSetWiseForm.action">Groupwise Data Status</a></li>
+				<li><a href="NullReporter.action">Null Reporter</a></li>	
+	    		<!-- <li><a href="commentsForm.action">Comments</a></li>
+		   		<li><a href="dashBoardMatrixForm.action">DashBoard matrix</a></li> -->
+		   	</ul>				
+		<li>Maintenance</li>
+			<ul>
+		   		<li><a href="maintenanceForm.action">MYSQL Configuration</a></li>
+		   		<li><a href="takeMysqlBackupResult.action">Take MySQL Backup</a></li>
+		   	</ul>
+	</ul>

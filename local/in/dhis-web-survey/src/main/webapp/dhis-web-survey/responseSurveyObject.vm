@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<survey>
+  <id>$survey.id</id>
+  <name>$encoder.xmlEncode( $survey.name )</name>
+  <url>$survey.url</url>
+  
+  <indicatorCount>$surveyIndicators.size()</indicatorCount>
+ 
+</survey>
