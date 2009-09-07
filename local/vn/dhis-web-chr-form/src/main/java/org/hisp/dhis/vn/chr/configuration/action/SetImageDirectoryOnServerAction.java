@@ -29,9 +29,9 @@ public class SetImageDirectoryOnServerAction
 
     private String imageDirectoryOnServer;
 
-    public String getImageDirectoryOnServer()
+    public void setImageDirectoryOnServer( String imageDirectoryOnServer )
     {
-        return imageDirectoryOnServer;
+        this.imageDirectoryOnServer = imageDirectoryOnServer;
     }
 
     // --------------------------------------------------------------------
