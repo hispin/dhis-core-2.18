@@ -301,6 +301,12 @@
       <param name="menu">/dhis-web-commons/about/menu.vm</param>
     </action>
     
+    <action name="displayChangeLog" class="org.hisp.dhis.commons.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-commons/about/changeLog.vm</param>
+      <param name="menu">/dhis-web-commons/about/menu.vm</param>
+    </action>
+    
   </package>
   
 </struts>
