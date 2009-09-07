@@ -44,6 +44,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   </bean>
   
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator"
+    class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator">
+    <property name="organisationUnitGroupService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+  </bean>
+  
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetObject"
       ref="org.hisp.dhis.system.startup.StartupRoutineExecutor"/>
@@ -52,6 +58,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       <list>
         <list>
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitHierarchyVerifier"/>
+          <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator"/>
         </list>
       </list>
     </property>
