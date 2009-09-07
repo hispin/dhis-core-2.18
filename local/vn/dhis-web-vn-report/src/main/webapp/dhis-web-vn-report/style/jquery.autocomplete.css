@@ -3,7 +3,7 @@
 	border: 1px solid #7FB7FB;
 	overflow: hidden;
 	background-color: #AFD2FD;
-	z-index:1000;
+	z-index:1000000;
 }
 
 .ac_results ul {

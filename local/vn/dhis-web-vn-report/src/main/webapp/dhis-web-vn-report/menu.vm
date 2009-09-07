@@ -1,10 +1,6 @@
 ﻿<h2>$i18n.getString( "report_design" )</h2>
 <ul>
-	<li><a href="getConfiguration.action">$i18n.getString( "configuration" )&nbsp;</a></li>
-	<li><a href="getAdminOptions.action">$i18n.getString( "administration" )&nbsp;</a></li>	
-	
-	<li><a href="listReportExcel.action">$i18n.getString( "reports" )&nbsp;</a></li>	
-	<li><a href="javascript:cleanUp();">$i18n.getString( "clean_up" )&nbsp;</a></li>	
+	<li><a href="openAdministrator.action">$i18n.getString( "administration" )&nbsp;</a></li>	
 </ul>
 <h2>$i18n.getString( "generate_report" )</h2>
 <ul>
@@ -17,37 +13,6 @@
 	var i18n_deleted_file = '$encoder.jsEncode( $i18n.getString( "deleted_file" ) )';
 	var i18n_name = '$encoder.jsEncode( $i18n.getString( "name" ) )';
 	var i18n_size = '$encoder.jsEncode( $i18n.getString( "size" ) )';
-	var i18n_create_date = '$encoder.jsEncode( $i18n.getString( "create_date" ) )';
+	var i18n_create_date = '$encoder.jsEncode( $i18n.getString( "create_date" ) )';	
 	
-	function cleanUp(){
-		var request = new Request();
-		request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( cleanUpCompleted );
-		request.send( "cleanTempDirectory.action" );
-	}
-	function cleanUpCompleted( xmlObject ){
-		var innerHTML = "<h3>" +i18n_deleted_file+ "</h3>";
-		innerHTML += "<table width='100%'>";
-		innerHTML += "<tr>";
-		innerHTML += "<th>"+i18n_name+"</th>";
-		innerHTML += "<th>"+i18n_create_date+"</th>";
-		innerHTML += "<th>"+i18n_size+"</th>";
-		innerHTML += "</tr>";
-		
-		var list = xmlObject.getElementsByTagName('file');	
-		
-		for ( var i = 0; i < list.length; i++ )
-		{
-			var name = list.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
-			var date = list.item(i).getElementsByTagName('create-date')[0].firstChild.nodeValue;
-			var size = list.item(i).getElementsByTagName('size')[0].firstChild.nodeValue;
-			innerHTML += "<tr>";
-			innerHTML += "<td>" + name + "</td>";
-			innerHTML += "<td>" + date + "</td>";
-			innerHTML += "<td>" + size + "</td>";
-			innerHTML += "</tr>";
-		}
-		innerHTML += "</table>";
-		setInfo(innerHTML);
-	}
 </script>

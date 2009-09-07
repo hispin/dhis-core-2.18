@@ -1,5 +1,5 @@
 <h2>$i18n.getString('reports')</h2>
-<p><input type="button" onclick="openAddReportForm()" value="$i18n.getString('add')"/></p>
+<p><input type="button" onclick="openAddReportForm()" value="$i18n.getString('add')"/><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='openAdministrator.action'" style="width:100px"></p>
 
 <table width="100%">
 	<tr>
@@ -131,7 +131,7 @@
 	}
 	
 </script>
-<div id="report" style="position:fixed;display:none;width:450px;z-index:1;background-color: white;border: medium solid silver;height:250px;padding:20px;">
+<div id="report" style="position:fixed;display:none;width:450px;z-index:11;background-color: white;border: medium solid silver;height:250px;padding:20px;">
 	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('report');deleteDivEffect();">[x]</div>
 	<input type="hidden" value="" id="id"/>
 	<table>
