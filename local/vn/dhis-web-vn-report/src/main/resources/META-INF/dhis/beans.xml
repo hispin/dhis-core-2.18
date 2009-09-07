@@ -179,6 +179,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
+	<bean id="org.hisp.dhis.vn.report.formula.action.GetOptionCombosAction"
+		class="org.hisp.dhis.vn.report.formula.action.GetOptionCombosAction"
+		scope="prototype">
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		</property>
+		<property name="dataElementCategoryOptionComboService">
+			<ref
+				bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+		</property>
+	</bean>
+
+
+
 	<bean id="org.hisp.dhis.vn.report.formula.action.GetFormulaTextAction"
 		class="org.hisp.dhis.vn.report.formula.action.GetFormulaTextAction"
 		scope="prototype">
@@ -198,6 +212,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.vn.reportitem.action.CopyReportItemsAction"
 		class="org.hisp.dhis.vn.reportitem.action.CopyReportItemsAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.vn.reportitem.action.GetListSheetAction"
+		class="org.hisp.dhis.vn.reportitem.action.GetListSheetAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
@@ -235,7 +255,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.vn.report.export.action.GetPeriodAction" scope="prototype">
 		<property name="selectionManager"
 			ref="org.hisp.dhis.vn.report.state.SelectionManager" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />		
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
 	<bean

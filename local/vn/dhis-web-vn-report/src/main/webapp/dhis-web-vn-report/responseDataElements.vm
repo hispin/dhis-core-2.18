@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataelements>
+#foreach ( $dataelement in $dataElements )
+	<dataelement>
+		<id>$dataelement.id</id>
+		<name>$encoder.xmlEncode( $dataelement.name )</name>		
+	</dataelement>
+#end
+</dataelements>
