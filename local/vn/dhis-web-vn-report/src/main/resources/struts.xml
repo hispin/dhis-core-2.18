@@ -167,7 +167,8 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-vn-report/reportItems.vm</param>
 			<param name="menu">/dhis-web-vn-report/menu.vm</param>
-			<param name="javascripts">javascript/reportItem.js,javascript/dataelement.js</param>
+			<param name="javascripts">javascript/reportItem.js,javascript/dataelement.js,javascript/jquery.autocomplete.js</param>
+			<param name="stylesheets">style/jquery.autocomplete.css</param>
 		</action>
 
 		<action name="getReportItems"
@@ -214,8 +215,14 @@
 		<action name="getFilteredDataElements"
 			class="org.hisp.dhis.vn.report.formula.action.GetFilteredDataElementsAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-vn-report/responseOperandList.vm</result>
+				/dhis-web-vn-report/responseDataElements.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="getOptionCombos"
+			class="org.hisp.dhis.vn.report.formula.action.GetOptionCombosAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/responseOptionCombo.vm</result>
 		</action>
 
 		<action name="getFormulaText"
@@ -245,6 +252,15 @@
 				/dhis-web-vn-report/responseSuccess.vm</result>
 			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
+
+		<action name="getListSheet"
+			class="org.hisp.dhis.vn.reportitem.action.GetListSheetAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/sheets.vm
+			</result>
+		</action>
+
+
 
 
 		<!-- Export Report-->
@@ -465,12 +481,12 @@
 
 		<action name="saveReportUserRoles"
 			class="org.hisp.dhis.vn.admin.action.SaveReportUserRolesAction">
-			<result name="success" type="chain">getAdminOptions</result>
+			<result name="success" type="chain">getAdminOptions
+			</result>
 			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
 
-		<action name="openAdministrator"
-			class="org.hisp.dhis.vn.admin.action.NoAction">
+		<action name="openAdministrator" class="org.hisp.dhis.vn.admin.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-vn-report/viewAdministrator.vm</param>
 			<param name="menu">/dhis-web-vn-report/menu.vm</param>
