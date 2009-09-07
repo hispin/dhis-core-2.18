@@ -72,8 +72,7 @@ function LeftBar()
     {        
         var request = new Request();
         request.send( '../dhis-web-commons/menu/setMenuHidden.action' );        
-    } 
-    
+    }    
     
     this.openHelpForm = function( id )
     {
