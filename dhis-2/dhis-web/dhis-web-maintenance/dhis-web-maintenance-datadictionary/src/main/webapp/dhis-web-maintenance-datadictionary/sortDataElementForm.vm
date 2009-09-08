@@ -1,22 +1,35 @@
 
 <h3>$i18n.getString( "data_element_sort_order" )</h3>
 
-<form id="sortOrderForm" action="saveDataElementSortOrder.action" method="post">
-    
-<p>
-<input type="button" value="$i18n.getString( 'move_up' )" style="width:130px" onclick="moveUpSelectedOption( 'dataElements' )"><input 
-type="button" value="$i18n.getString( 'move_down' )" style="width:130px" onclick="moveDownSelectedOption( 'dataElements' )"><input
-type="button" value="$i18n.getString( 'move_to_top' )" style="width:130px" onclick="moveSelectedOptionToTop( 'dataElements' )"><input
-type="button" value="$i18n.getString( 'move_to_bottom' )" style="width:130px" onclick="moveSelectedOptionToBottom( 'dataElements' )">
-</p>
+<form id="sortOrderForm" action="saveDataElementSortOrder.action" method="post"> 
+<table>
+	<tr>
+		<th>$i18n.getString( "data_element" )</th>
+		<th></th>
+		<th>$i18n.getString( "data_element_sort_order" )</th>
+	</tr>
+	<tr>
+		<td>
+			<select multiple id="sourceSataElements" size="25" ondblclick="moveSelectedById('sourceSataElements','targetDataElements');" style="min-width:400px;">
+				#foreach ( $element in $dataElements )
+				<option value="$element.id">$element.name</option>
+				#end
+			</select>
+		</td>
+		<td>
+			<input type="button" value=">" onclick="moveSelectedById('sourceSataElements','targetDataElements');"/><br>
+			<input type="button" value="<" onclick="moveSelectedById('targetDataElements' , 'sourceSataElements' );"/><br>
+			<input type="button" value=">>" onclick="moveAllById('sourceSataElements' , 'targetDataElements' );"/><br>
+			<input type="button" value="<<" onclick="moveAllById('targetDataElements' , 'sourceSataElements' );"/>
+		</td>
+		<td>
+			<select multiple id="targetDataElements" name="dataElements" size="25" style="min-width:400px;" ondblclick="moveSelectedById('targetDataElements' , 'sourceSataElements' );">
+				
+			</select>
+		</td>
+	</tr>
+</table>
 
-<p>
-<select multiple id="dataElements" name="dataElements" size="25" style="width:680px">
-#foreach ( $element in $dataElements )
-    <option value="$element.id">$element.name</option>
-#end
-</select>
-</p>
 
 <p>
 <input type="button" value="$i18n.getString( 'save' )" style="width:130px" onclick="submitForm()"><input 
@@ -28,7 +41,9 @@ type="button" value="$i18n.getString( 'cancel' )" style="width:130px" onclick="w
 <script type="text/javascript">
     function submitForm()
     {
-        selectAllById( "dataElements" );
+		moveAllById('sourceSataElements' , 'targetDataElements' );
+        selectAllById( "targetDataElements" );
         document.getElementById( "sortOrderForm" ).submit();
     }
+	
 </script>
