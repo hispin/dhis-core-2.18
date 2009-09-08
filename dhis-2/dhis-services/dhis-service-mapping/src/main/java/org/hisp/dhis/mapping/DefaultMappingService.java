@@ -596,7 +596,7 @@ public class DefaultMappingService
         Collection<MapView> mapViews = mappingStore.getAllMapViews();
 
         String mapSourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE,
-            MAP_SOURCE_TYPE_DATABASE );
+            MAP_SOURCE_TYPE_SHAPEFILE );
 
         if ( mapViews != null )
         {
