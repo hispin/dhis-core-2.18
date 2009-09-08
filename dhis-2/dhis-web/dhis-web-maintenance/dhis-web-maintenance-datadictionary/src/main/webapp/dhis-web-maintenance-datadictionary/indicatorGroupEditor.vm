@@ -64,7 +64,7 @@
 		<td></td>
 		<td>
 			<a href="javascript:sortList( 'availableIndicators', 'ASC' );"><img align="absmiddle" src="images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
-			<a href="javascript:sortList( 'availableIndicators', 'DES' );"><img align="absmiddle" src="images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>			
+			<a href="javascript:sortList( 'availableIndicators', 'DES' );"><img align="absmiddle" src="images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>						
 		</td>
 		
 		

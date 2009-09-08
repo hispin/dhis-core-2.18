@@ -27,10 +27,17 @@ package org.hisp.dhis.dd.action.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 
 import com.opensymphony.xwork2.ActionSupport;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -49,7 +56,7 @@ public class GetDataElementAction
     {
         this.dataElementService = dataElementService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -66,16 +73,28 @@ public class GetDataElementAction
     public DataElement getDataElement()
     {
         return dataElement;
-    }   
-   
+    }
+
+    private List<DataElementGroup> dataElementGroups;
+
+    public List<DataElementGroup> getDataElementGroups()
+    {
+        return dataElementGroups;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        dataElement = dataElementService.getDataElement( id );       
+        dataElement = dataElementService.getDataElement( id );
+
+        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService
+            .getGroupsContainingDataElement( dataElement ) );
         
+        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+
         return SUCCESS;
     }
 }
