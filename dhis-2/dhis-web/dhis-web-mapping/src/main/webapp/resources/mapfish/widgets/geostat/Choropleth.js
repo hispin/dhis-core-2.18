@@ -267,7 +267,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                             });
                             
                             this.newUrl = MAPVIEW.mapSource;
-                            choropleth.classify(false);
                         }
                     },
                     scope: this
@@ -292,14 +291,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     }
                 }
             }
-        });
-        
-        legendStore = new Ext.data.JsonStore({
-            url: path + 'getMapLegendSet' + type,
-            baseParams: { format: 'json' },
-            root: 'mapLegendSet',
-            fields: ['id', 'name'],
-            autoLoad: false
         });
         
         this.items = [
@@ -416,7 +407,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                         var iId = Ext.getCmp('indicator_cb').getValue();
                         
                         Ext.Ajax.request({
-                            url: path + 'getMapLegendSet' + type,
+                            url: path + 'getMapLegendSetByIndicator' + type,
                             method: 'POST',
                             params: { indicatorId: iId, format: 'json' },
 
@@ -648,7 +639,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             isFormField: true,
             fieldLabel: '',
             labelStyle: 'color:#dfe8f6;',
-            text: 'Refresh colors',
+            text: 'Refresh',
             handler: function() {
                 this.layer.setVisibility(true);
                 this.classify(true);
@@ -721,7 +712,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         if (this.newUrl) {
             URL = this.newUrl;
             this.newUrl = false;
-            
+			
             if (MAPSOURCE == MAP_SOURCE_TYPE_DATABASE) {
                 if (URL == PHU_LEVEL) {
                     this.setUrl(path + 'getPointShapefile.action?level=' + URL);

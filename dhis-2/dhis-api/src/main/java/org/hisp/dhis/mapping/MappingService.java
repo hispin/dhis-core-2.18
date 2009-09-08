@@ -301,8 +301,7 @@ public interface MappingService
 
     void updateMapLegendSet( MapLegendSet legendSet );
 
-    void addOrUpdateMapLegendSet( String name, int method, int classes, String colorLow, String colorHigh,
-        Collection<String> indicators );
+    void addOrUpdateMapLegendSet( String name, int method, int classes, String colorLow, String colorHigh );
 
     void deleteMapLegendSet( MapLegendSet legendSet );
 

@@ -101,7 +101,19 @@
         
     <action name="getMapLegendSet" class="org.hisp.dhis.mapping.action.GetMapLegendSetAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapLegendSet.vm</result>
+    </action>        
+    
+	<action name="getMapLegendSetByIndicator" class="org.hisp.dhis.mapping.action.GetMapLegendSetByIndicatorAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapLegendSet.vm</result>
     </action>
+	
+	<action name="getMapLegendSetIndicators" class="org.hisp.dhis.mapping.action.GetMapLegendSetAction">
+		<result name="success" type="velocity-json">/dhis-web-mapping/jsonMapLegendSetIndicators.vm</result>
+	</action>
+	    
+	<action name="assignIndicatorsToMapLegendSet" class="org.hisp.dhis.mapping.action.AssignIndicatorsToMapLegendSetAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+    </action>	
 	  
 	<!-- MapView -->
 	  

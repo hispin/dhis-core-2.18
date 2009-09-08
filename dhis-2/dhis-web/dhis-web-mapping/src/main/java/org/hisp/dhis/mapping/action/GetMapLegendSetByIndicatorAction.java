@@ -27,9 +27,7 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-
+import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
 
 import com.opensymphony.xwork2.Action;
@@ -38,7 +36,7 @@ import com.opensymphony.xwork2.Action;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class AddOrUpdateMapLegendSetAction
+public class GetMapLegendSetByIndicatorAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -55,40 +53,23 @@ public class AddOrUpdateMapLegendSetAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
-    private String name;
 
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-    
-    private int method;
-    
-    public void setMethod( int method )
-    {
-        this.method = method;
-    }
-    
-    private int classes;
+    private int indicatorId;
 
-    public void setClasses( int classes )
+    public void setIndicatorId( int indicatorId )
     {
-        this.classes = classes;
+        this.indicatorId = indicatorId;
     }
 
-    private String colorLow;
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
 
-    public void setColorLow( String colorLow )
+    private MapLegendSet object;
+
+    public MapLegendSet getObject()
     {
-        this.colorLow = colorLow;
-    }
-
-    private String colorHigh;
-
-    public void setColorHigh( String colorHigh )
-    {
-        this.colorHigh = colorHigh;
+        return object;
     }
     
     // -------------------------------------------------------------------------
@@ -96,8 +77,9 @@ public class AddOrUpdateMapLegendSetAction
     // -------------------------------------------------------------------------
 
     public String execute()
+        throws Exception
     {
-        mappingService.addOrUpdateMapLegendSet( name, method, classes, colorLow, colorHigh );
+        object = mappingService.getMapLegendSetByIndicator( indicatorId );
         
         return SUCCESS;
     }
