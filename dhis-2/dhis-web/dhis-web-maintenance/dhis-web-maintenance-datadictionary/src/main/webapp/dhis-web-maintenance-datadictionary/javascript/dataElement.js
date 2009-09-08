@@ -59,7 +59,13 @@ function dataElementReceived( dataElementElement )
     
     var url = getElementValue( dataElementElement, 'url' );
     setFieldValue( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + i18n_none + ']' );
-    
+	
+	var dataElementGroupList = "";
+	var dataElementGroups = dataElementElement.getElementsByTagName('dataElementGroups')[0].getElementsByTagName('dataElementGroup');
+	for(var i=0;i<dataElementGroups.length;i++){
+		dataElementGroupList += (i + 1) + "-" + dataElementGroups.item(i).firstChild.nodeValue + "<br>";
+	}    
+	setFieldValue('dataElementGroups', dataElementGroupList);
     showDetails();
 }
 
