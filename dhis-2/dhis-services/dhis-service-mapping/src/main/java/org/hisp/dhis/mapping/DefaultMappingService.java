@@ -408,17 +408,11 @@ public class DefaultMappingService
         mappingStore.updateMapLegendSet( mapLegendSet );
     }
 
-    public void addOrUpdateMapLegendSet( String name, int method, int classes, String colorLow, String colorHigh,
-        Collection<String> indicators )
+    public void addOrUpdateMapLegendSet( String name, int method, int classes, String colorLow, String colorHigh )
     {
         MapLegendSet mapLegendSet = getMapLegendSetByName( name );
 
         Set<Indicator> indicatorSet = new HashSet<Indicator>();
-
-        for ( String indicator : indicators )
-        {
-            indicatorSet.add( indicatorService.getIndicator( Integer.parseInt( indicator ) ) );
-        }
 
         if ( mapLegendSet != null )
         {

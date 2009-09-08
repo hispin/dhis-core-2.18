@@ -436,6 +436,10 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
     sturgesRule: function() {
         return Math.floor(1 + 3.3 * Math.log(this.nbVal, 10));
     },
+	
+	isNumber: function(k) {
+		return ( (typeof k === typeof 1) && (null !== k) && isFinite(k) );
+	},
 
     /**
      * Method: classify
@@ -452,35 +456,36 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
      */
     classify: function(method, nbBins, bounds) {
     
-        if (method == 0)
-        {
+        if (method == 0) {
             var str = Ext.getCmp('bounds').getValue();
             
-            for (var i = 0; i < str.length; i++){
+            for (var i = 0; i < str.length; i++) {
                 str = str.replace(' ','');
             }
             
-            if (str.charAt(str.length-1) == ','){
+            if (str.charAt(str.length-1) == ',') {
                 str = str.substring(0, str.length-1);
             }
             
-            bounds = new Array();
+            var bounds = new Array();
             bounds = str.split(',');
-            
+			
+			for (var i = 0; i < bounds.length; i++) {
+				if (!this.isNumber(parseFloat(bounds[i]))) {
+					for (var j = i+1; j < (bounds.length); j++) {
+						bounds[j-1] = bounds[j];
+					}
+					bounds.pop();
+				}
+			}
+			
             for (var i = 0; i < bounds.length; i++)
             {
-                bounds[i] = parseInt(bounds[i]);
+				bounds[i] = parseFloat(bounds[i]);
                 
                 if (bounds[i] < this.minVal || bounds[i] > this.maxVal)
                 {
-                    Ext.Msg.show({
-                        title:'Bounds',
-                        msg: '<p style="padding-top:8px">Bounds should be within ' + this.minVal + ' -  ' + this.maxVal + '</p>',
-                        buttons: Ext.Msg.OK,
-                        animEl: 'elId',
-                        width: 250,
-                        icon: Ext.MessageBox.WARNING
-                    });
+                    Ext.messageRed.msg('Fixed bounds', 'Class breaks must be higher than ' + msg_highlight_start + this.minVal + msg_highlight_end + ' and lower than ' + msg_highlight_start + this.maxVal + msg_highlight_end + '.');
                 }
             }
             

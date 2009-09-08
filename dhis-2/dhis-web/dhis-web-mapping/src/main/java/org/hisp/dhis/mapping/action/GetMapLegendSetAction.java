@@ -33,7 +33,7 @@ import org.hisp.dhis.mapping.MappingService;
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
+ * @author Jan Henrik Overland
  * @version $Id$
  */
 public class GetMapLegendSetAction
@@ -54,11 +54,11 @@ public class GetMapLegendSetAction
     // Input
     // -------------------------------------------------------------------------
 
-    private int indicatorId;
+    private int id;
 
-    public void setIndicatorId( int indicatorId )
+    public void setId( int id )
     {
-        this.indicatorId = indicatorId;
+        this.id = id;
     }
 
     // -------------------------------------------------------------------------
@@ -79,7 +79,7 @@ public class GetMapLegendSetAction
     public String execute()
         throws Exception
     {
-        object = mappingService.getMapLegendSetByIndicator( indicatorId );
+        object = mappingService.getMapLegendSet( id );
         
         return SUCCESS;
     }
