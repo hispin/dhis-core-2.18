@@ -103,44 +103,49 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitGroupService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
     </property>
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupMembersAction"
+    class="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupMembersAction"
+    scope="prototype">
+    <property name="organisationUnitService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     </property>
-    <property name="currentUserService">
-      <ref bean="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="organisationUnitGroupService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
     </property>
   </bean>
   
   <bean id="org.hisp.dhis.oum.action.organisationunitgroup.ValidateOrganisationUnitGroupAction"
     class="org.hisp.dhis.oum.action.organisationunitgroup.ValidateOrganisationUnitGroupAction"
     scope="prototype">
+    <property name="organisationUnitService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    </property>
     <property name="organisationUnitGroupService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-    </property>
-		<property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
     </property>
   </bean>
   
   <bean id="org.hisp.dhis.oum.action.organisationunitgroup.AddOrganisationUnitGroupAction"
     class="org.hisp.dhis.oum.action.organisationunitgroup.AddOrganisationUnitGroupAction"
     scope="prototype">
+    <property name="organisationUnitService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    </property>
     <property name="organisationUnitGroupService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-    </property>
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
     </property>
   </bean>
   
   <bean id="org.hisp.dhis.oum.action.organisationunitgroup.UpdateOrganisationUnitGroupAction"
     class="org.hisp.dhis.oum.action.organisationunitgroup.UpdateOrganisationUnitGroupAction"
     scope="prototype">
+    <property name="organisationUnitService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    </property>
     <property name="organisationUnitGroupService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-    </property>
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
     </property>
   </bean>
   
@@ -152,17 +157,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
   
-  <bean id="org.hisp.dhis.oum.action.organisationunitgroup.ClearSelectionTreeAction"
-    class="org.hisp.dhis.oum.action.organisationunitgroup.ClearSelectionTreeAction" 
-		scope="prototype">
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    </property>
-    <property name="currentUserService">
-      <ref bean="org.hisp.dhis.user.CurrentUserService"/>
-    </property>
-  </bean>
-	
 	<!-- OrganisationUnitGroupSet -->
 	
 	<bean id="org.hisp.dhis.oum.action.organisationunitgroupset.GetGroupSetListAction"

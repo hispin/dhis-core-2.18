@@ -27,6 +27,7 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.i18n.I18n;
@@ -34,7 +35,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -56,18 +57,18 @@ public class ValidateOrganisationUnitGroupAction
         this.i18n = i18n;
     }
 
+    private OrganisationUnitService organisationUnitService;
+    
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
-    }
-
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
     }
 
     // -------------------------------------------------------------------------
@@ -86,6 +87,13 @@ public class ValidateOrganisationUnitGroupAction
     public void setName( String name )
     {
         this.name = name;
+    }
+
+    private Collection<String> groupMembers;
+
+    public void setGroupMembers( Collection<String> groupMembers )
+    {
+        this.groupMembers = groupMembers;
     }
 
     // -------------------------------------------------------------------------
@@ -142,7 +150,6 @@ public class ValidateOrganisationUnitGroupAction
         // group set.
         // ---------------------------------------------------------------------
 
-        // No need to check this if it's a new organisations group.
         if ( id == null )
         {
             message = "Everything's ok";
@@ -156,15 +163,15 @@ public class ValidateOrganisationUnitGroupAction
         Collection<OrganisationUnitGroupSet> exclusiveGroupSets = organisationUnitGroupService
             .getExclusiveOrganisationUnitGroupSetsContainingGroup( organisationUnitGroup );
 
+        // TODO move to service layer
+        
         if ( exclusiveGroupSets != null && exclusiveGroupSets.size() > 0 )
         {
-            Collection<OrganisationUnit> selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();
-
             for ( OrganisationUnitGroupSet groupSet : exclusiveGroupSets )
             {
                 for ( OrganisationUnitGroup group : groupSet.getOrganisationUnitGroups() )
                 {
-                    for ( OrganisationUnit unit : selectedUnits )
+                    for ( OrganisationUnit unit : getSelectedOrganisationUnits() )
                     {
                         if ( group.getMembers().contains( unit ) && group.getId() != id )
                         {
@@ -183,5 +190,17 @@ public class ValidateOrganisationUnitGroupAction
         message = "Everything's ok";
 
         return SUCCESS;
+    }
+    
+    private Collection<OrganisationUnit> getSelectedOrganisationUnits()
+    {
+        Collection<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
+        
+        for ( String id : groupMembers )
+        {
+            units.add( organisationUnitService.getOrganisationUnit( Integer.parseInt( id ) ) );
+        }
+        
+        return units;
     }
 }

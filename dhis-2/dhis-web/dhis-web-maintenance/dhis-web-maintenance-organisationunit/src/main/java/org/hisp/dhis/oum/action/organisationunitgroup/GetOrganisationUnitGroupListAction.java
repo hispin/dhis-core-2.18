@@ -73,7 +73,6 @@ public class GetOrganisationUnitGroupListAction
     public String execute()
         throws Exception
     {
-
         organisationUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService
             .getAllOrganisationUnitGroups() );
 

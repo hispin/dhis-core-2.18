@@ -39,10 +39,13 @@ function removeOrganisationUnitGroup( unitGroupId, unitGroupName )
 
 function validateAddOrganisationUnitGroup()
 {
+	var params = 'name=' + getFieldValue( 'name' ) + "&" + getQueryStringFromList( 'groupMembers', 'groupMembers' );
+	
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( addValidationCompleted );
-    request.send( 'validateOrganisationUnitGroup.action?name=' + getFieldValue( 'name' ) );
+    request.sendAsPost( params );
+    request.send( 'validateOrganisationUnitGroup.action' );
 
     return false;
 }
@@ -54,8 +57,8 @@ function addValidationCompleted( messageElement )
     
     if ( type == 'success' )
     {
-        var form = document.getElementById( 'addOrganisationUnitGroupForm' );
-        form.submit();
+        selectAllById( 'groupMembers' );        
+        document.getElementById( 'addOrganisationUnitGroupForm' ).submit();
     }
     else if ( type == 'error' )
     {
@@ -79,11 +82,13 @@ function getFieldValue( fieldId )
 
 function validateUpdateOrganisationUnitGroup()
 {
+	var params = 'id=' + getFieldValue( 'id' ) + '&name=' + getFieldValue( 'name' ) + "&" + getQueryStringFromList( 'groupMembers', 'groupMembers' );
+		
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( updateValidationCompleted );
-    request.send( 'validateOrganisationUnitGroup.action?id=' + getFieldValue( 'id' ) +
-        '&name=' + getFieldValue( 'name' ) );
+    request.sendAsPost( params );
+    request.send( 'validateOrganisationUnitGroup.action' );
 
     return false;
 }
@@ -92,11 +97,11 @@ function updateValidationCompleted( messageElement )
 {
     var type = messageElement.getAttribute( 'type' );
     var message = messageElement.firstChild.nodeValue;
-    
+
     if ( type == 'success' )
     {
-        var form = document.getElementById( 'updateOrganisationUnitGroupForm' );
-        form.submit();
+    	selectAllById( 'groupMembers' );
+        document.getElementById( 'updateOrganisationUnitGroupForm' ).submit();
     }
     else if ( type == 'error' )
     {

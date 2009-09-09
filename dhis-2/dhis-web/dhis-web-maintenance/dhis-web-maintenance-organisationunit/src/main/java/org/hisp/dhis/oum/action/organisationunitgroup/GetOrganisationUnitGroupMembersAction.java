@@ -1,4 +1,4 @@
-package org.hisp.dhis.oum.action.organisationunit;
+package org.hisp.dhis.oum.action.organisationunitgroup;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,13 +27,16 @@ package org.hisp.dhis.oum.action.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
+import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.system.util.ConversionUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -41,7 +44,7 @@ import com.opensymphony.xwork2.Action;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class AssignOrganisationUnitToGroupsAction
+public class GetOrganisationUnitGroupMembersAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -49,7 +52,7 @@ public class AssignOrganisationUnitToGroupsAction
     // -------------------------------------------------------------------------
 
     private OrganisationUnitService organisationUnitService;
-
+    
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
@@ -63,44 +66,96 @@ public class AssignOrganisationUnitToGroupsAction
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Comparator
     // -------------------------------------------------------------------------
 
-    private Integer organisationUnitId;
+    private Comparator<OrganisationUnit> organisationUnitComparator;
 
-    public Integer getOrganisationUnitId()
+    public void setOrganisationUnitComparator( Comparator<OrganisationUnit> organisationUnitComparator )
     {
-        return organisationUnitId;
+        this.organisationUnitComparator = organisationUnitComparator;
     }
 
-    public void setOrganisationUnitId( Integer organisationUnitId )
+    // -------------------------------------------------------------------------
+    // DisplayPropertyHandler
+    // -------------------------------------------------------------------------
+
+    private DisplayPropertyHandler displayPropertyHandler;
+
+    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
-        this.organisationUnitId = organisationUnitId;
+        this.displayPropertyHandler = displayPropertyHandler;
     }
 
-    private Collection<String> organisationUnitGroupId;
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
 
-    public void setOrganisationUnitGroupId( Collection<String> organisationUnitGroupId )
+    private Integer id;
+
+    public Integer getId()
     {
-        this.organisationUnitGroupId = organisationUnitGroupId;
+        return id;
+    }
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private List<OrganisationUnit> groupMembers = new ArrayList<OrganisationUnit>();
+
+    public List<OrganisationUnit> getGroupMembers()
+    {
+        return groupMembers;
+    }
+
+    private List<OrganisationUnit> availableOrganisationUnits = new ArrayList<OrganisationUnit>();
+
+    public List<OrganisationUnit> getAvailableOrganisationUnits()
+    {
+        return availableOrganisationUnits;
     }
     
+    private OrganisationUnitGroup organisationUnitGroup;
+
+    public OrganisationUnitGroup getOrganisationUnitGroup()
+    {
+        return organisationUnitGroup;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-        
-        for ( Integer id : ConversionUtils.getIntegerCollection( organisationUnitGroupId ) )
+        // ---------------------------------------------------------------------
+        // Get group members
+        // ---------------------------------------------------------------------
+
+        if ( id != null )
         {
-            OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( id );
+            organisationUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( id );
             
-            group.getMembers().add( unit );
+            groupMembers = new ArrayList<OrganisationUnit>( organisationUnitGroup.getMembers() );
             
-            organisationUnitGroupService.updateOrganisationUnitGroup( group );
+            Collections.sort( groupMembers, organisationUnitComparator );
+            
+            displayPropertyHandler.handle( groupMembers );
         }
+        
+        availableOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
+        
+        availableOrganisationUnits.removeAll( groupMembers );
+        
+        Collections.sort( availableOrganisationUnits, organisationUnitComparator );
+        
+        displayPropertyHandler.handle( availableOrganisationUnits );
         
         return SUCCESS;
     }
