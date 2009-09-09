@@ -313,4 +313,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.external.location.LocationManager"/>  
   </bean>
   
+  <bean id="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction"
+    class="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction"
+    scope="prototype">
+    <property name="locationManager"
+      ref="org.hisp.dhis.external.location.LocationManager"/>  
+  </bean>
+  
 </beans>

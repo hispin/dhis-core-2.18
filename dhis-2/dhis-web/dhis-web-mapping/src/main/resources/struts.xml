@@ -199,5 +199,9 @@
       </result>
     </action>    
       
+    <action name="getGeoJsonFiles" class="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction">
+      <result name="success" type="velocity">/dhis-web-mapping/jsonGeoJsonFiles.vm</result>
+    </action>
+      
   </package>
 </struts>
