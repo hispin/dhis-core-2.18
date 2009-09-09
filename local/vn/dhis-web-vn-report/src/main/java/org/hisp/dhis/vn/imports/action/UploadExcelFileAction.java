@@ -7,12 +7,13 @@ import java.io.IOException;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.vn.report.action.ActionSupport;
 import org.hisp.dhis.vn.report.state.ReportLocationManager;
 
 import com.opensymphony.xwork2.Action;
 
 public class UploadExcelFileAction
-    implements Action
+    extends ActionSupport
 {
     // -------------------------------------------
     // Dependency
@@ -54,9 +55,23 @@ public class UploadExcelFileAction
         this.upload = upload;
     }
 
+    private File fileExcel ;
+    
+    public File getFileExcel()
+    {
+        return fileExcel;
+    }
+    
+    public void setFileExcel( File fileExcel )
+    {
+        this.fileExcel = fileExcel;
+    }
+    
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
+  
+    
 
     public String execute()
         throws Exception
@@ -75,7 +90,9 @@ public class UploadExcelFileAction
             {
                 FileReader in = new FileReader( upload );
 
-                FileWriter out = new FileWriter( new File( directory, fileName ) );
+                fileExcel = new File( directory, fileName );
+                
+                FileWriter out = new FileWriter( fileExcel );
 
                 int c;
 
@@ -85,6 +102,9 @@ public class UploadExcelFileAction
                 in.close();
                 out.close();
 
+               // message = i18n.getString( "upload" ) + " " + i18n.getString( "success" ) + " '" + fileExcel.getName() + "'";
+            
+                return SUCCESS;
             }
             catch ( IOException e )
             {

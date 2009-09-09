@@ -85,5 +85,5 @@ public interface ReportExcelInterface
     
     public String getGroup() ;
 
-	public void setGroup(String group) ;
+    public void setGroup(String group) ;
 }

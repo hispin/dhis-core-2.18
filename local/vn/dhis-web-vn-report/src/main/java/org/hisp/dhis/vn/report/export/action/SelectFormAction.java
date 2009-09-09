@@ -26,6 +26,7 @@
  */
 package org.hisp.dhis.vn.report.export.action;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -117,6 +118,18 @@ public class SelectFormAction
         this.reportService = reportService;
     }
 
+    private File fileExcel;
+
+    public File getFileExcel()
+    {
+        return fileExcel;
+    }
+
+    public void setFileExcel( File fileExcel )
+    {
+        this.fileExcel = fileExcel;
+    }
+    
     public String execute()
         throws Exception
     {

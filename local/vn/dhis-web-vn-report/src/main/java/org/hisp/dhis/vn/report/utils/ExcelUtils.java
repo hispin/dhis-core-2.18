@@ -27,6 +27,7 @@
 package org.hisp.dhis.vn.report.utils;
 
 import jxl.Cell;
+import jxl.NumberCell;
 import jxl.Sheet;
 import jxl.write.Formula;
 import jxl.write.Label;
@@ -105,6 +106,21 @@ public class ExcelUtils
         {
             sheet.addCell( new Formula( column - 1, row - 1, formula, format ) );
         }        
+    }
+    
+    public static String readValue( int row, int column, Sheet sheet )
+    {
+//
+//        NumberCell _cell =(NumberCell) sheet.getCell(column,row);
+// System.out.println("\n\n\n number value = " + _cell.getValue());
+//        
+        Cell cell = sheet.getCell( column - 1, row - 1 );
+ System.out.println("\n\n\n string value = " + cell.getContents() + 
+     "\n column = " + column + "\n row = " + row);
+              
+        return cell.getContents();
+        
+//        return cell.getValue();
     }
 
 }

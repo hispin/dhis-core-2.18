@@ -10,7 +10,7 @@
   </parent>
   
   <artifactId>dhis-web-chr-form</artifactId>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <name>DHIS Childreport Form</name>
   
   <build>
