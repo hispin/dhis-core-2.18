@@ -304,4 +304,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   </bean>
   
+  <!-- GeoJson -->
+  
+  <bean id="org.hisp.dhis.mapping.action.GetGeoJsonAction"
+    class="org.hisp.dhis.mapping.action.GetGeoJsonAction"
+    scope="prototype">
+    <property name="locationManager"
+      ref="org.hisp.dhis.external.location.LocationManager"/>  
+  </bean>
+  
 </beans>
