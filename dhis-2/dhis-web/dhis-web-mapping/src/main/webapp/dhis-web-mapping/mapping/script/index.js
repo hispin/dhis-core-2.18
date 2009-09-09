@@ -2041,7 +2041,7 @@ Ext.onReady(function()
 	var zoomInButton = new Ext.Button({
 		text: 'Zoom in',
 		cls: 'x-btn-text-icon',
-		icon: '../images/zoom_in.png',
+		icon: '../../images/zoom_in.png',
 		handler:function() {
 			this.map.zoomIn();
 		},
@@ -2051,7 +2051,7 @@ Ext.onReady(function()
 	var zoomOutButton = new Ext.Button({
 		text: 'Zoom out',
 		cls: 'x-btn-text-icon',
-		icon: '../images/zoom_out.png',
+		icon: '../../images/zoom_out.png',
 		handler:function() {
 			this.map.zoomOut();
 		},
@@ -2061,7 +2061,7 @@ Ext.onReady(function()
 	var zoomMaxExtentButton = new Ext.Button({
 		text: 'Max extent',
 		cls: 'x-btn-text-icon',
-		icon: '../images/zoom_min.png',
+		icon: '../../images/zoom_min.png',
 		handler:function() {
 			this.map.zoomToMaxExtent();
 		},
@@ -2071,7 +2071,7 @@ Ext.onReady(function()
 	var exitButton = new Ext.Button({
 		text: 'Exit GIS',
 		cls: 'x-btn-text-icon',
-		icon: '../images/exit.png',
+		icon: '../../images/exit.png',
 		handler: function() {
 			window.location.href = '../dhis-web-portal/redirect.action'
 		}
