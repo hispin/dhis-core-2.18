@@ -476,8 +476,12 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 						bounds[j-1] = bounds[j];
 					}
 					bounds.pop();
+					i--;
 				}
 			}
+			
+			var newInput = bounds.join(',');
+			Ext.getCmp('bounds').setValue(newInput);
 			
             for (var i = 0; i < bounds.length; i++)
             {
