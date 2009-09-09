@@ -1856,7 +1856,7 @@ Ext.onReady(function()
                 minListWidth: combo_width,
                 store: new Ext.data.SimpleStore({
                     fields: ['id', 'text'],
-                    data: [['database', 'DHIS database'], ['shapefile', 'Shapefile']]
+                    data: [['database', 'DHIS database'], ['shapefile', 'GeoJSON files']]
                 }),
                 listeners:{
                     'select': {
