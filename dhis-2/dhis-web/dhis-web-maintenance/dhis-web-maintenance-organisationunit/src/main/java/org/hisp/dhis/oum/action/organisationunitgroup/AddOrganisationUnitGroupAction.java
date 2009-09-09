@@ -27,6 +27,7 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -72,7 +73,7 @@ public class AddOrganisationUnitGroupAction
         this.name = name;
     }
 
-    private Collection<String> groupMembers;
+    private Collection<String> groupMembers = new ArrayList<String>();
 
     public void setGroupMembers( Collection<String> groupMembers )
     {
