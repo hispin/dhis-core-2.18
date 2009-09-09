@@ -492,7 +492,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
                     Ext.messageRed.msg('Fixed bounds', 'Class breaks must be higher than ' + msg_highlight_start + this.minVal + msg_highlight_end + ' and lower than ' + msg_highlight_start + this.maxVal + msg_highlight_end + '.');
                 }
             }
-            
+			
             bounds.unshift(this.minVal);
             bounds.push(this.maxVal);
         }
