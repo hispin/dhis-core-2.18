@@ -1,0 +1,6 @@
+#set( $size = $object.size() )
+{ "files": [
+#foreach ( $file in $object )
+  "$!{file}"#if( $velocityCount < $size ),#end
+#end
+] }

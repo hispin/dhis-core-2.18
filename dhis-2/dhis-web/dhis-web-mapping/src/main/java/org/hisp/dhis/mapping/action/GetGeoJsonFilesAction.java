@@ -27,56 +27,44 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
-import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.mapping.comparator.MapNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Jan Henrik Overland
+ * @author Lars Helge Overland
  * @version $Id$
  */
-public class GetMapsByTypeAction
+public class GetGeoJsonFilesAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private MappingService mappingService;
+    private LocationManager locationManager;
 
-    public void setMappingService( MappingService mappingService )
+    public void setLocationManager( LocationManager locationManager )
     {
-        this.mappingService = mappingService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private String type;
-
-    public void setType( String type )
-    {
-        this.type = type;
+        this.locationManager = locationManager;
     }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private List<Map> object;
+    private List<String> object;
 
-    public List<Map> getObject()
+    public List<String> getObject()
     {
         return object;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -84,9 +72,12 @@ public class GetMapsByTypeAction
     public String execute()
         throws Exception
     {
-        object = new ArrayList<Map>( mappingService.getMapsByType( type ) );
+        File dir = locationManager.getFileForWriting( MappingService.GIS_DIR );
         
-        Collections.sort( object, new MapNameComparator() );
+        if ( dir != null && dir.list() != null )
+        {
+            object = Arrays.asList( dir.list() );
+        }
         
         return SUCCESS;
     }

@@ -40,6 +40,8 @@ public interface MappingService
 {
     final String ID = MappingService.class.getName();
 
+    final String GIS_DIR = "gis";
+
     final String KEY_MAP_SOURCE_TYPE = "mapSource";
 
     final String MAP_SOURCE_TYPE_DATABASE = "database";

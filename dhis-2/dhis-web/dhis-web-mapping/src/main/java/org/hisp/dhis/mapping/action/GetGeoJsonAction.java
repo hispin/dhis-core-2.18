@@ -30,6 +30,7 @@ package org.hisp.dhis.mapping.action;
 import java.io.InputStream;
 
 import org.hisp.dhis.external.location.LocationManager;
+import org.hisp.dhis.mapping.MappingService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -40,8 +41,6 @@ import com.opensymphony.xwork2.Action;
 public class GetGeoJsonAction
     implements Action
 {
-    private static final String GIS_DIR = "gis";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -82,7 +81,7 @@ public class GetGeoJsonAction
     public String execute()
         throws Exception
     {        
-        inputStream = locationManager.getInputStream( name, GIS_DIR );
+        inputStream = locationManager.getInputStream( name, MappingService.GIS_DIR );
         
         return SUCCESS;
     }
