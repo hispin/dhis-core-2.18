@@ -6,6 +6,8 @@
 <table>
 	<tr>
 		<th>$i18n.getString( "period_type" )</th>
+		<td></td>
+		<th>$i18n.getString( "period" )</th>
 	</tr>
 	<tr>
 		<td>
@@ -16,20 +18,16 @@
 				#end
 			</select>
 		</td>
+		<td></td>
+        <td>
+            <select id="periodId" name="periodId" style="min-width:325px" onchange="getDataSets()" disabled="true">
+                <option value="null">[ $i18n.getString( "select_period_all" ) ]</option>                
+            </select>
+        </td>
 	</tr>
 	<tr>
-		<td height="5px"></td>
+		<td height="5px" colspan="3"></td>
 	</tr>
-	<tr>
-		<td>
-			<select id="periodId" name="periodId" style="min-width:325px" onchange="getDataSets()" disabled="true">
-				<option value="null">[ $i18n.getString( "select_period_all" ) ]</option>				
-			</select>
-		</td>
-	</tr>
-    <tr>
-        <td height="5px"></td>
-    </tr>
 	<tr>
 		<th>$i18n.getString( "unlocked_datasets" )</th>
 		<td></td>
