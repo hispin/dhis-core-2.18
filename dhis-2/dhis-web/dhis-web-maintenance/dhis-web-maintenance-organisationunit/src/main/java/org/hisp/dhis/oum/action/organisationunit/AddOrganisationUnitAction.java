@@ -146,6 +146,17 @@ public class AddOrganisationUnitAction
     }
 
     // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private Integer organisationUnitId;
+
+    public Integer getOrganisationUnitId()
+    {
+        return organisationUnitId;
+    }
+
+    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
@@ -192,7 +203,7 @@ public class AddOrganisationUnitAction
         organisationUnit.setUrl( url );
         organisationUnit.setParent( parent );
 
-        organisationUnitService.addOrganisationUnit( organisationUnit );
+        organisationUnitId = organisationUnitService.addOrganisationUnit( organisationUnit );
 
         return SUCCESS;
     }
