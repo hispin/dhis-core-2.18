@@ -27,13 +27,8 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -53,20 +48,6 @@ public class GetOrganisationUnitGroupAction
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
-    }
-
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
-    }
-    
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
@@ -105,20 +86,6 @@ public class GetOrganisationUnitGroupAction
 
         memberCount = organisationUnitGroup.getMembers().size();
 
-        selectionTreeManager.setSelectedOrganisationUnits( organisationUnitGroup.getMembers() );        
-        
-        Collection<OrganisationUnit> units = currentUserService.getCurrentUser().getOrganisationUnits();
-        
-        if ( units.size() > 0 )
-        {
-            selectionTreeManager.setRootOrganisationUnits( units );
-        }
-        else
-        {
-            selectionTreeManager.resetRootOrganisationUnits();
-        }
-
         return SUCCESS;
     }
-
 }

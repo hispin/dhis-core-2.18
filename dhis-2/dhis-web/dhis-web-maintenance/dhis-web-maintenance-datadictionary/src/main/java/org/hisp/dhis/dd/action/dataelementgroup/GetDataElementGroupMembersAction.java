@@ -120,7 +120,7 @@ public class GetDataElementGroupMembersAction
 
         if ( id != null )
         {
-            DataElementGroup group = dataElementService.getDataElementGroup( id.intValue() );
+            DataElementGroup group = dataElementService.getDataElementGroup( id );
 
             groupMembers = new ArrayList<DataElement>( group.getMembers() );
 
