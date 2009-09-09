@@ -89,7 +89,7 @@ public class ValidateOrganisationUnitGroupAction
         this.name = name;
     }
 
-    private Collection<String> groupMembers;
+    private Collection<String> groupMembers = new ArrayList<String>();
 
     public void setGroupMembers( Collection<String> groupMembers )
     {
