@@ -195,7 +195,6 @@
       <result name="success" type="stream">
         <param name="contentType">application/json</param>
         <param name="inputName">inputStream</param>
-        <!-- <param name="contentDisposition">filename="${fileName}"</param> -->
         <param name="bufferSize">10240</param>
       </result>
     </action>    
