@@ -260,9 +260,6 @@
 			</result>
 		</action>
 
-
-
-
 		<!-- Export Report-->
 
 		<action name="getOrganisation"
@@ -366,6 +363,37 @@
 
 		<!-- Import Excel File -->
 
+		<action name="getInformation"
+			class="org.hisp.dhis.vn.imports.action.UploadExcelFileAction">
+			<result name="success" type="chain">
+				selectFormChain</result>
+			<interceptor-ref name="fileUploadStack" />
+		</action>
+
+		<action name="selectFormChain"
+			class="org.hisp.dhis.vn.report.export.action.SelectFormAction">
+			<result name="success" type="chain">getInformationChain
+			</result>
+		</action>
+
+		<action name="getInformationChain"
+			class="org.hisp.dhis.vn.imports.action.GetInformationAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-vn-report/importData.vm</param>
+			<param name="menu">/dhis-web-vn-report/menuWithTree.vm</param>
+			<param name="menuTreeHeight">220</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/imports.js, javascript/export.js</param>
+			<param name="stylesheets">style/style.css</param>
+		</action>
+
+		<action name="importData" class="org.hisp.dhis.vn.imports.action.ImportDataAction">
+		    <result name="success" type="velocity-xml">
+				/dhis-web-vn-report/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-vn-report/responseError.vm</result>
+		</action>
+
 		<action name="getExcelFileByOrganisationUnit"
 			class="org.hisp.dhis.vn.imports.action.GetListExcelFileByOrganisationAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
@@ -378,15 +406,20 @@
 
 		<action name="uploadExcelFile"
 			class="org.hisp.dhis.vn.imports.action.UploadExcelFileAction">
-			<result name="success" type="redirect">
-				getExcelFileByOrganisationUnit.action</result>
+			<result name="success" type="chain">
+				getInformation</result>
 			<interceptor-ref name="fileUploadStack" />
 		</action>
 
 		<action name="deleteExcelFile"
 			class="org.hisp.dhis.vn.imports.action.DeleteExcelFileAction">
-			<result name="success" type="redirect">
+			<!--
+				<result name="success" type="redirect">
 				getExcelFileByOrganisationUnit.action</result>
+			-->
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/dataelement/responseElementGroupsAndCombosList.vm
+			</result>
 		</action>
 
 		<action name="viewExcelFileDataValue"

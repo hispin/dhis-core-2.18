@@ -1,5 +1,7 @@
 function organisationUnitSelected( orgUnits ){
-	window.location = "getExcelFileByOrganisationUnit.action";
+	//window.location = "getExcelFileByOrganisationUnit.action";
+	window.location = "getInformation.action";
+	
 }
 selection.setListenerFunction( organisationUnitSelected );
 
@@ -70,4 +72,31 @@ function getListPeriodCompleted( xmlObject ){
         var name = node.getElementsByTagName('name')[0].firstChild.nodeValue;
 		addOption('period', name, id);
     }
+}
+
+function importData(){
+	
+	var reportId = document.getElementById('reportId').value;
+	var upload = document.getElementById('uploadFileName').value;
+	var periodId = document.getElementById('periodId').value;
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( Completed );
+	url = 'importData.action?reportId='+reportId;
+	url += '&uploadFileName='+ upload;
+	url += '&periodId='+ periodId;
+	
+	request.send(url); 
+}
+
+function Completed( xmlObject ){
+	
+	if(document.getElementById('message') != null){
+		document.getElementById('message').style.display = 'block';
+		document.getElementById('message').innerHTML = xmlObject.firstChild.nodeValue;
+	}
+	
+	//window.location.reload();
+	
 }

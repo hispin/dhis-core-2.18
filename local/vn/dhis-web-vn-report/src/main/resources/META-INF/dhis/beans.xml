@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
@@ -407,6 +406,47 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Import Excel Files -->
 
+    <bean
+        id="org.hisp.dhis.vn.imports.action.GetInformationAction"
+        class="org.hisp.dhis.vn.imports.action.GetInformationAction"
+        scope="prototype">
+        <property name="organisationUnitSelectionManager"
+            ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+        <property name="reportExcelService"
+            ref="org.hisp.dhis.vn.report.ReportExcelService" />
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.vn.imports.action.ImportDataAction"
+        class="org.hisp.dhis.vn.imports.action.ImportDataAction"
+        scope="prototype">
+        
+        <property name="dataValueService"
+            ref="org.hisp.dhis.datavalue.DataValueService" />
+            
+        <property name="reportExcelService"
+            ref="org.hisp.dhis.vn.report.ReportExcelService" />
+            
+        <property name="organisationUnitSelectionManager"
+            ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+            
+        <property name="expressionService"
+            ref="org.hisp.dhis.expression.ExpressionService" />
+            
+        <property name="dataElementService"
+            ref="org.hisp.dhis.dataelement.DataElementService" />  
+            
+        <property name="dataElementCategoryOptionComboService"
+            ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+            
+        <property name="currentUserService"
+            ref="org.hisp.dhis.user.CurrentUserService" />  
+                 
+        <property name="periodService"
+            ref="org.hisp.dhis.period.PeriodService" />
+          
+    </bean>
+    
 	<bean
 		id="org.hisp.dhis.vn.imports.action.GetListExcelFileByOrganisationAction"
 		class="org.hisp.dhis.vn.imports.action.GetListExcelFileByOrganisationAction"

@@ -5,7 +5,8 @@
 <h2>$i18n.getString( "generate_report" )</h2>
 <ul>
 	<li><a href="selectReportParamerter.action">$i18n.getString( "generate_report" )&nbsp;</a></li>	
-	<li><a href="getExcelFileByOrganisationUnit.action">$i18n.getString( "import_excel_file_manager" )&nbsp;</a></li>	
+	<!-- <li><a href="getExcelFileByOrganisationUnit.action">$i18n.getString( "import_excel_file_manager" )&nbsp;</a></li>	 -->
+	<li><a href="getInformation.action">$i18n.getString( "import_excel_file" )&nbsp;</a></li>
 	<li><a href="selectDataSetCompletedReport.action">$i18n.getString( "dataset_completed_report" )&nbsp;</a></li>	
 </ul>
 

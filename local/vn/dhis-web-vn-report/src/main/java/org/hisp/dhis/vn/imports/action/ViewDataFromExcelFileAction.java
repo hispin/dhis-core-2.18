@@ -97,9 +97,7 @@ public class ViewDataFromExcelFileAction
         System.out.println("Sheet no: " + 3);
 
         File excel = new File( reportLocationManager.getDirectory( organisationUnit ), fileName );
-        
-        System.out.println("Sheet no: " + excel.getAbsolutePath());
-
+         
         Workbook templateWorkbook = Workbook.getWorkbook( excel );
         
         System.out.println("Sheet no: " + 5);

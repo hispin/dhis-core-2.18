@@ -127,8 +127,7 @@ public class UpdateReportExcelAction
     {
         report = reportService.getReport( id.intValue() );
 
-        report.setExcelTemplateFile( excel );
-        
+        report.setExcelTemplateFile( excel );      
         report.setGroup(CodecUtils.unescape( group));
 
         if ( periodCol == null || periodRow == null )
