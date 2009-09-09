@@ -34,12 +34,35 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="org.hisp.dhis.oum.action.organisationunit.AddOrganisationUnitAction"
-    class="org.hisp.dhis.oum.action.organisationunit.AddOrganisationUnitAction" scope="prototype">
+    class="org.hisp.dhis.oum.action.organisationunit.AddOrganisationUnitAction" 
+    scope="prototype">
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     </property>
     <property name="selectionManager">
       <ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager"/>
+    </property>
+  </bean>
+  
+  <bean id="org.hisp.dhis.oum.action.organisationunit.GetCompulsoryGroupSetAction"
+    class="org.hisp.dhis.oum.action.organisationunit.GetCompulsoryGroupSetAction"
+    scope="prototype">
+    <property name="organisationUnitService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    </property>
+    <property name="organisationUnitGroupService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+    </property>
+  </bean>
+  
+  <bean id="org.hisp.dhis.oum.action.organisationunit.AssignOrganisationUnitToGroupsAction"
+    class="org.hisp.dhis.oum.action.organisationunit.AssignOrganisationUnitToGroupsAction"
+    scope="prototype">
+    <property name="organisationUnitService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    </property>
+    <property name="organisationUnitGroupService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
     </property>
   </bean>
   
@@ -59,11 +82,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 	
-	<bean id="org.hisp.dhis.oum.action.organisationunit.PrepareAddOrganisationUnitAction"
+  <bean id="org.hisp.dhis.oum.action.organisationunit.PrepareAddOrganisationUnitAction"
     class="org.hisp.dhis.oum.action.organisationunit.PrepareAddOrganisationUnitAction" 
-		scope="prototype">
+	scope="prototype">
   </bean>
-  
+    
   <!-- OrganisationUnitGroup -->
   
   <bean id="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupListAction"

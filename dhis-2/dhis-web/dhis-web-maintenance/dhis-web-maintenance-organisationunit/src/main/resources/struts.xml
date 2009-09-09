@@ -43,10 +43,20 @@
     </action>
     
     <action name="addOrganisationUnit" class="org.hisp.dhis.oum.action.organisationunit.AddOrganisationUnitAction">
-      <result name="success" type="redirect">organisationUnit.action</result>
+      <result name="success" type="chain">getCompulsoryGroupSet</result>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_ADD</param>
     </action>
-      
+    
+    <action name="getCompulsoryGroupSet" class="org.hisp.dhis.oum.action.organisationunit.GetCompulsoryGroupSetAction">
+      <result name="success" type="redirect">organisationUnit.action</result>
+      <result name="input" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-organisationunit/assignToCompulsoryGroupSetForm.vm</param>
+    </action>
+    
+    <action name="assignOrganisationUnitToGroups" class="org.hisp.dhis.oum.action.organisationunit.AssignOrganisationUnitToGroupsAction">
+        <result name="success" type="chain">getCompulsoryGroupSet</result>
+    </action>
+    
     <action name="showUpdateOrganisationUnitForm" class="org.hisp.dhis.oum.action.organisationunit.GetOrganisationUnitAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitForm.vm</param>
@@ -65,7 +75,7 @@
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_DELETE</param>
     </action>
-
+    
     <!-- OrganisationUnitGroup -->
     
     <action name="organisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupListAction">
