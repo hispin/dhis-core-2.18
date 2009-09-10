@@ -72,7 +72,7 @@ public class GetGeoJsonFilesAction
     public String execute()
         throws Exception
     {
-        File dir = locationManager.getFileForWriting( MappingService.GIS_DIR );
+        File dir = locationManager.getFileForWriting( MappingService.GEOJSON_DIR );
         
         if ( dir != null && dir.list() != null )
         {
