@@ -1,0 +1,79 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>
+
+      DHIS 2 GIS User Manual
+      Jan 
+      HenrickØverlandJasonPickering12009-09-09jppInitial 
+        drafting of DocBook format</title><meta name="generator" content="DocBook XSL Stylesheets VSPY V.1 "></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="article"><div class="titlepage">
+<div><h1 class="title"><a name="idarticle126338776"></a>
+
+      DHIS 2 GIS User Manual
+      <div class="author"><h3 class="author">Jan 
+      Henrick Øverland</h3></div><div class="author"><h3 class="author">Jason Pickering</h3></div><div class="revhistory"><table border="1" width="100%" summary="Revision history"><tr><th align="left" valign="top" colspan="3"><b>Revision History</b></th></tr><tr><td align="left">Revision 1</td><td align="left">2009-09-09</td><td align="left">jpp</td></tr><tr><td align="left" colspan="3">Initial 
+        drafting of DocBook format</td></tr></table></div></h1></div>
+
+<hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="#idsect1120103296">Production of of geographical data</a></dt><dd><dl><dt><a href="#idsect2106078848">Production of GeoJSON files with Geoserver</a></dt><dt><a href="#idsect2146987216">Production of GeoJSON files with GDAL</a></dt><dt><a href="#idsect2146984528">Copying files to the DHIS application</a></dt></dl></dd><dt><a href="#idsect1146983400">Administrator panel</a></dt><dt><a href="#idsect1146957824">Registering geographical information</a></dt></dl></div><div class="sect1"><div class="titlepage">
+<div><h2 class="title" style="clear: both"><a name="idsect1120103296"></a>Production of of geographical data</h2></div>
+
+</div><p>The DHIS2 mapping client relies on GeoJSON files in order to 
+    display a map in the browser window. Often times, geographical data 
+    is received in many different formats, but the ESRI shape file 
+    format is one of the most common. Several procedures will be 
+    described below. It is important, but not required, that the names 
+    in your geographical data match those in the DHIS2 organizational 
+    hierachy. If they do not, you will need to manually match them in a 
+    later step</p><div class="sect2"><div class="titlepage">
+<div><h3 class="title"><a name="idsect2106078848"></a>Production of GeoJSON files with Geoserver</h3></div>
+
+</div><p>Geoserver is capable of outputting GeoJSON formats. If you 
+      have geoserver running someplace, you can execute the following 
+      query.</p><p><a href="http://localhost:8080/geoserver/wfs?request=GetFeature&amp;typename=who:zm_adm1&amp;outputformat=json" target="_top">http://localhost:8080/geoserver/wfs?request=GetFeature&amp;typename=who:zm_adm1&amp;outputformat=json</a></p><p>You will need to adjust the host destination if the machine 
+      is not your local machine as well as defining the actual layer in 
+      Geoserver which should be output to GeoJSON (in this case 
+      who:zm_adm1).</p><p>Geoserver will produce a GeoJSON file, and you will be 
+      asked to save it. Once it has finished downloading, rename the 
+      file following the suggested naming convention:</p><p>ISO2CountryCode followed by an underscore, followed by the 
+      layer type (e.g. &#8220;admin&#8221; for administrative layers, &#8220;health&#8221; for 
+      health administrative boundaries)</p></div><div class="sect2"><div class="titlepage">
+<div><h3 class="title"><a name="idsect2146987216"></a>Production of GeoJSON files with GDAL</h3></div>
+
+</div><p>GDAL is a multi-platform toolkit for the manipulation of 
+      geographical data. It is freely available for a wide-range of 
+      platforms at http://gdal.org/.</p><p>Production of GeoJSON files are straightforward with GDAL. 
+      Just exectue</p><pre class="programlisting">ogr2ogr.exe -f "GeoJSON" dst_datasource_name src_datasource_name  (Windows)
+
+or
+ogr2ogr -f "GeoJSON"dst_datasource_name src_datasource_name (Linux) </pre><p>Replace dst_datasource_name with the path to the 
+      destination geographical data file (following the naming 
+      convention described above and src_datasource_name with the 
+      source geographical data file.</p></div><div class="sect2"><div class="titlepage">
+<div><h3 class="title"><a name="idsect2146984528"></a>Copying files to the DHIS application</h3></div>
+
+</div><p>Currently, your GeoJSON files should be placed in the 
+      /webapps/dhis/mapping/geojson of your DHIS application to be 
+      accessible to the GIS application.</p></div></div><div class="sect1"><div class="titlepage">
+<div><h2 class="title" style="clear: both"><a name="idsect1146983400"></a>Administrator panel</h2></div>
+
+</div><div class="screenshot"><p><img src="./images/admin_panel.png"></p></div><p><div class="variablelist"><dl><dt><span class="term">Map source</span></dt><dd><p>Shapefile: you will find your own registered maps in 
+            the Map combo box in the Thematic map panel. The Admin 
+            panels check box will become visibile.</p><p>DHIS Database: the Map combo box will simply be 
+            populated by the existing organisation unit levels and 
+            shapefiles will be created by the application on the fly. 
+            Organisation units must have coordinates stored in the 
+            datasbase in order to be displayed in the map. This 
+            function is mainly intended for the facility level as it is 
+            easy to maintain and thus will offer up-to-date 
+            shapefiles.</p></dd><dt><span class="term">Admin panel</span></dt><dd><p>Show/hide the shapefile management panels.</p></dd></dl></div></p></div><div class="sect1"><div class="titlepage">
+<div><h2 class="title" style="clear: both"><a name="idsect1146957824"></a>Registering geographical information</h2></div>
+
+</div><p>In order to view data in the GIS module, you must import your 
+    geographical data into your DHIS installation. Once you have 
+    produced GeoJSON files according to the procedure above, and 
+    imported them into the system, you will need to establish a 
+    correspondnce between the information in the DHIS database, and the 
+    GeoJSON file.</p><div class="screenshot"><p><img src="./images/register_geodata.png"></p></div><div class="variablelist"><dl><dt><span class="term">Organisation unit level</span></dt><dd><p>The level of the organization units displayed in the 
+          GeoJSON file.</p></dd><dt><span class="term">Map source file</span></dt><dd><p>The GeoJSON file name. These files must be placed in 
+          the mapping/geojson folder. Use e.g. Geoserver 2.0 (currently 
+          RC1) to easily produce GeoJSON from your shapefiles.</p></dd><dt><span class="term">Display name</span></dt><dd><p>Represents your map in the Map combo boxe in the 
+          Thematic map panel.</p></dd><dt><span class="term">Name column</span></dt><dd><p>The shapefile data column (case sensitive!) that will 
+          be matched against DHIS organisation unit names. There are 
+          several ways to get it, eg. Geoserver:</p><div class="screenshot"><p><img src="./images/get_name_geoserver.png"></p></div><p /></dd></dl></div><p /></div></div></body></html>

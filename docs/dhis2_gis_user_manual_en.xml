@@ -1,0 +1,230 @@
+<?xml version='1.0'?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN" "http://www.oasis-open.org/docbook/xml/4.3b2/docbookx.dtd">
+<article>
+
+  <articleinfo>
+
+    <title>
+
+      DHIS 2 GIS User Manual
+      <author><firstname>Jan 
+      Henrick</firstname><surname>Øverland</surname></author>
+
+      <author><firstname>Jason</firstname><surname>Pickering</surname></author>
+
+      <revhistory>
+
+        <revision><revnumber>1</revnumber><date>2009-09-09</date><authorinitials>jpp</authorinitials><revremark>Initial 
+        drafting of DocBook format</revremark></revision>
+
+      </revhistory>
+
+    </title>
+
+  </articleinfo>
+
+  <sect1>
+
+    <title>Production of of geographical data</title>
+
+    <para>The DHIS2 mapping client relies on GeoJSON files in order to 
+    display a map in the browser window. Often times, geographical data 
+    is received in many different formats, but the ESRI shape file 
+    format is one of the most common. Several procedures will be 
+    described below. It is important, but not required, that the names 
+    in your geographical data match those in the DHIS2 organizational 
+    hierachy. If they do not, you will need to manually match them in a 
+    later step</para>
+
+    <sect2>
+
+      <title>Production of GeoJSON files with Geoserver</title>
+
+      <para>Geoserver is capable of outputting GeoJSON formats. If you 
+      have geoserver running someplace, you can execute the following 
+      query.</para>
+
+      <para>
+      <ulink url="http://localhost:8080/geoserver/wfs?request=GetFeature&amp;typename=who:zm_adm1&amp;outputformat=json">http://localhost:8080/geoserver/wfs?request=GetFeature&amp;typename=who:zm_adm1&amp;outputformat=json</ulink></para>
+
+      <para>You will need to adjust the host destination if the machine 
+      is not your local machine as well as defining the actual layer in 
+      Geoserver which should be output to GeoJSON (in this case 
+      who:zm_adm1).</para>
+
+      <para>Geoserver will produce a GeoJSON file, and you will be 
+      asked to save it. Once it has finished downloading, rename the 
+      file following the suggested naming convention:</para>
+
+      <para>ISO2CountryCode followed by an underscore, followed by the 
+      layer type (e.g. “admin” for administrative layers, “health” for 
+      health administrative boundaries)</para>
+
+    </sect2>
+
+    <sect2>
+
+      <title>Production of GeoJSON files with GDAL</title>
+
+      <para>GDAL is a multi-platform toolkit for the manipulation of 
+      geographical data. It is freely available for a wide-range of 
+      platforms at http://gdal.org/.</para>
+
+      <para>Production of GeoJSON files are straightforward with GDAL. 
+      Just exectue</para>
+
+      <programlisting>ogr2ogr.exe -f &quot;GeoJSON&quot; dst_datasource_name src_datasource_name  (Windows)
+
+or
+ogr2ogr -f &quot;GeoJSON&quot;dst_datasource_name src_datasource_name (Linux) </programlisting>
+      <para>Replace dst_datasource_name with the path to the 
+      destination geographical data file (following the naming 
+      convention described above and src_datasource_name with the 
+      source geographical data file.</para>
+
+    </sect2>
+
+    <sect2>
+
+      <title>Copying files to the DHIS application</title>
+
+      <para>Currently, your GeoJSON files should be placed in the 
+      /webapps/dhis/mapping/geojson of your DHIS application to be 
+      accessible to the GIS application.</para>
+
+    </sect2>
+
+  </sect1>
+
+  <sect1>
+
+    <title>Administrator panel</title>
+
+    <screenshot><graphic fileref="./images/admin_panel.png"
+     format="PNG"/></screenshot>
+    <para>
+
+      <variablelist>
+
+        <varlistentry>
+
+          <term>Map source</term>
+
+          <listitem>
+
+            <para>Shapefile: you will find your own registered maps in 
+            the Map combo box in the Thematic map panel. The Admin 
+            panels check box will become visibile.</para>
+
+            <para>DHIS Database: the Map combo box will simply be 
+            populated by the existing organisation unit levels and 
+            shapefiles will be created by the application on the fly. 
+            Organisation units must have coordinates stored in the 
+            datasbase in order to be displayed in the map. This 
+            function is mainly intended for the facility level as it is 
+            easy to maintain and thus will offer up-to-date 
+            shapefiles.</para>
+
+          </listitem>
+
+        </varlistentry>
+
+        <varlistentry>
+
+          <term>Admin panel</term>
+
+          <listitem>
+
+            <para>Show/hide the shapefile management panels.</para>
+
+          </listitem>
+
+        </varlistentry>
+
+      </variablelist>
+
+    </para>
+
+  </sect1>
+
+  <sect1>
+
+    <title>Registering geographical information</title>
+
+    <para>In order to view data in the GIS module, you must import your 
+    geographical data into your DHIS installation. Once you have 
+    produced GeoJSON files according to the procedure above, and 
+    imported them into the system, you will need to establish a 
+    correspondnce between the information in the DHIS database, and the 
+    GeoJSON file.</para>
+
+    <screenshot><graphic fileref="./images/register_geodata.png"
+     format="PNG"/></screenshot>
+    <variablelist>
+
+      <varlistentry>
+
+        <term>Organisation unit level</term>
+
+        <listitem>
+
+          <para>The level of the organization units displayed in the 
+          GeoJSON file.</para>
+
+        </listitem>
+
+      </varlistentry>
+
+      <varlistentry>
+
+        <term>Map source file</term>
+
+        <listitem>
+
+          <para>The GeoJSON file name. These files must be placed in 
+          the mapping/geojson folder. Use e.g. Geoserver 2.0 (currently 
+          RC1) to easily produce GeoJSON from your shapefiles.</para>
+
+        </listitem>
+
+      </varlistentry>
+
+      <varlistentry>
+
+        <term>Display name</term>
+
+        <listitem>
+
+          <para>Represents your map in the Map combo boxe in the 
+          Thematic map panel.</para>
+
+        </listitem>
+
+      </varlistentry>
+
+      <varlistentry>
+
+        <term>Name column</term>
+
+        <listitem>
+
+          <para>The shapefile data column (case sensitive!) that will 
+          be matched against DHIS organisation unit names. There are 
+          several ways to get it, eg. Geoserver:</para>
+
+          <screenshot><graphic fileref="./images/get_name_geoserver.png"
+           format="PNG"/></screenshot>
+          <para />
+
+        </listitem>
+
+      </varlistentry>
+
+    </variablelist>
+
+    <para />
+
+  </sect1>
+
+</article>
+
