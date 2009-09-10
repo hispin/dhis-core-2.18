@@ -393,7 +393,14 @@
 			<result name="error" type="velocity-xml">
 				/dhis-web-vn-report/responseError.vm</result>
 		</action>
-
+		
+		<action name="previewData" class="org.hisp.dhis.vn.imports.action.ViewDataAction">
+            <result name="success" type="velocity">
+                /dhis-web-vn-report/responseReportItemValues.vm</result>
+            <result name="error" type="velocity-xml">
+                /dhis-web-vn-report/responseError.vm</result>
+        </action>
+		
 		<action name="getExcelFileByOrganisationUnit"
 			class="org.hisp.dhis.vn.imports.action.GetListExcelFileByOrganisationAction">
 			<interceptor-ref name="organisationUnitTreeStack" />

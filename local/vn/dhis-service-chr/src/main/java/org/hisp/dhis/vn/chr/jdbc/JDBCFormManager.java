@@ -22,6 +22,7 @@ import org.hisp.dhis.vn.chr.FormReport;
 import org.hisp.dhis.vn.chr.jdbc.util.AccessMetaDataService;
 import org.hisp.dhis.vn.chr.statement.AddDataStatement;
 import org.hisp.dhis.vn.chr.statement.AlterColumnStatement;
+import org.hisp.dhis.vn.chr.statement.CreateCodeStatement;
 import org.hisp.dhis.vn.chr.statement.CreateTableStatement;
 import org.hisp.dhis.vn.chr.statement.DeleteDataStatement;
 import org.hisp.dhis.vn.chr.statement.FormStatement;
@@ -115,8 +116,8 @@ public class JDBCFormManager
                     if ( columns.contains( element.getName().toLowerCase() ) )
                     {
 
-                        statement = new AlterColumnStatement( statementBuilder,
-                            AlterColumnStatement.ALTER_STATUS, element );
+                        statement = new AlterColumnStatement( statementBuilder, AlterColumnStatement.ALTER_STATUS,
+                            element );
 
                         log.debug( "Alter column with SQL statement: '" + statement.getStatement() + "'" );
                     }
@@ -126,8 +127,8 @@ public class JDBCFormManager
                     else
                     // if(!columns.contains(element.getName()))
                     {
-                        statement = new AlterColumnStatement( statementBuilder,
-                            AlterColumnStatement.ADD_STATUS, element );
+                        statement = new AlterColumnStatement( statementBuilder, AlterColumnStatement.ADD_STATUS,
+                            element );
 
                         log.debug( "Add column with SQL statement: '" + statement.getStatement() + "'" );
                     }
@@ -148,7 +149,8 @@ public class JDBCFormManager
                     if ( element == null )
                     {
 
-                        statement = new AlterColumnStatement( form, statementBuilder, AlterColumnStatement.DROP_STATUS, column );
+                        statement = new AlterColumnStatement( form, statementBuilder, AlterColumnStatement.DROP_STATUS,
+                            column );
 
                         allStatement += statement.getStatement();
 
@@ -199,8 +201,7 @@ public class JDBCFormManager
 
         StatementHolder holder = statementManager.getHolder();
 
-        FormStatement statement = new ListDataStatement( form, statementBuilder,
-            pageSize );
+        FormStatement statement = new ListDataStatement( form, statementBuilder, pageSize );
 
         log.debug( "Selecting data form table with SQL statement: '" + statement.getStatement() + "'" );
 
@@ -219,7 +220,7 @@ public class JDBCFormManager
                 {
                     rowData.add( resultSet.getString( i ) );
                 }
-                
+
                 data.add( rowData );
             }
 
@@ -257,8 +258,7 @@ public class JDBCFormManager
                 arrData.add( data[i] );
             }
 
-            FormStatement statement = new AddDataStatement( form,
-                statementBuilder, arrData );
+            FormStatement statement = new AddDataStatement( form, statementBuilder, arrData );
 
             log.debug( "Update data form table with SQL statement: '" + statement.getStatement() + "'" );
 
@@ -356,8 +356,7 @@ public class JDBCFormManager
 
         try
         {
-            FormStatement statement = new GetDataStatement( form,
-                statementBuilder, id );
+            FormStatement statement = new GetDataStatement( form, statementBuilder, id );
 
             log.debug( "Get data form table with SQL statement: '" + statement.getStatement() + "'" );
 
@@ -412,7 +411,7 @@ public class JDBCFormManager
                 {
                     rowData.add( resultSet.getString( i ) );
                 }
-                
+
                 data.add( rowData );
 
             }
@@ -464,7 +463,7 @@ public class JDBCFormManager
                 {
                     rowData.add( resultSet.getString( i ) );
                 }
-                
+
                 data.add( rowData );
 
                 rowIndex++;
@@ -500,8 +499,7 @@ public class JDBCFormManager
         try
         {
 
-            FormStatement statement = new ReportDataStatement( statementBuilder,
-                operator, period, formReport );
+            FormStatement statement = new ReportDataStatement( statementBuilder, operator, period, formReport );
             log.debug( "Data statistics from relative table with SQL statement: '" + statement.getStatement() + "'" );
 
             ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
@@ -525,4 +523,46 @@ public class JDBCFormManager
         return 0;
     }
 
+    public String createCode( Form form )
+    {
+
+        StatementHolder holder = statementManager.getHolder();
+
+        int count = 0;
+        try
+        {
+
+            FormStatement statement = new CreateCodeStatement( form, statementBuilder );
+
+            log.debug( "Statistics data from table with SQL statement: '" + statement.getStatement() + "'" );
+
+            ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
+
+            if ( resultSet.next() )
+            {
+
+                count = resultSet.getInt( 1 ) + 1;
+
+                if ( count < 10 )
+                {
+                    return "00" + count;
+                }
+                else if ( count < 100 )
+                {
+                    return "0" + count;
+                }
+            }
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to query data : ", ex );
+        }
+
+        finally
+        {
+            holder.close();
+        }
+
+        return count + "";
+    }
 }

@@ -952,3 +952,24 @@ function deleteFormReport( id ){
 		request.send( "deleteFormReport.action?id=" + id );  
 	}		
 }
+
+var inputObject;
+function createCode(inputObjectName){
+	
+	
+	this.inputObject = document.getElementById(inputObjectName).getElementsByTagName('input')[0];
+	
+	var request = new Request();
+	
+	request.setResponseTypeXML( 'xmlObject' );
+	
+	request.setCallbackSuccess( createCodeReceived );
+	
+	var formId = getParamByURL('formId');
+	
+	request.send( "createCode.action?formId=" +  formId);
+}
+
+function createCodeReceived( xmlObject ){
+		this.inputObject.value = xmlObject.getElementsByTagName("code").item[0].firstChild.nodeValue;
+}

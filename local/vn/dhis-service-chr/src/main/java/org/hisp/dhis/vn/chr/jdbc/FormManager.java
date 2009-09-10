@@ -94,4 +94,6 @@ public interface FormManager
      * @return statistics Result
      */
     public int reportDataStatement( String operator, Period period, FormReport formReport );
+    
+    public String createCode(Form form);
 }
