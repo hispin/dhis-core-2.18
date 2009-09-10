@@ -909,7 +909,7 @@ function writeTopBar()
 
 
 }
-
+var parent_div;
 function writeCalendarContent()
 {
 	var calendarContentDivExists = true;
@@ -936,6 +936,8 @@ function writeCalendarContent()
 	document.getElementById('calendar_hour_txt').innerHTML = currentHour/1 > 9 ? currentHour : '0' + currentHour;
 	document.getElementById('calendar_minute_txt').innerHTML = currentMinute/1 >9 ? currentMinute : '0' + currentMinute;
 
+	
+	
 	var existingTable = calendarContentDiv.getElementsByTagName('TABLE');
 	if(existingTable.length>0){
 		calendarContentDiv.removeChild(existingTable[0]);
@@ -1021,8 +1023,8 @@ function writeCalendarContent()
 		if(!calendarContentDivExists)setTimeout('resizeIframe()',350);else setTimeout('resizeIframe()',10);
 	}
 
-
-
+	parent_div.appendChild(calendarContentDiv); 
+	//parent_div.appendChild(calendarDiv); 
 
 }
 
