@@ -49,6 +49,7 @@ import org.hisp.dhis.dataelement.DataElementDimensionColumnOrder;
 import org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService;
 import org.hisp.dhis.dataelement.DataElementDimensionRowOrder;
 import org.hisp.dhis.dataelement.DataElementDimensionRowOrderService;
+import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataEntryForm;
 import org.hisp.dhis.dataset.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
@@ -175,6 +176,13 @@ public class FormAction
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
+    }
+    
+    private DataSetLockService dataSetLockService;
+    
+    public void setDataSetLockService( DataSetLockService dataSetLockService)
+    {
+        this.dataSetLockService = dataSetLockService;
     }
 
     // -------------------------------------------------------------------------
@@ -378,10 +386,11 @@ public class FormAction
         customValues = (List<CustomValue>) customValueService.getCustomValuesByDataSet( dataSet );
 
         Period period = selectedStateManager.getSelectedPeriod();
-
-        if ( dataSet.getLockedPeriods().contains( period ) )
-        {
-            disabled = "disabled";
+        
+        if(dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) != null){        	          	  
+		       if( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ).getSources().contains(organisationUnit) ) {
+			        	disabled = "disabled";
+			        }
         }
 
         Collection<DataElement> dataElements = dataSet.getDataElements();

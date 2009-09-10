@@ -121,6 +121,11 @@
       <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseTree.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
+	  
+	<action name="getExpandedTreeForLock" class="org.hisp.dhis.oust.action.GetExpandedTreeForLockAction">
+      <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseTree.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
     
     <action name="setorgunit" class="org.hisp.dhis.oust.action.SetSelectedOrganisationUnitAction">
       <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseSelect.vm</result>
@@ -135,6 +140,25 @@
     <action name="removeorgunit"
       class="org.hisp.dhis.oust.action.RemoveSelectedOrganisationUnitAction">
       <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseSelect.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	  
+	<action name="lockorgunit"
+      class="org.hisp.dhis.oust.action.LockSelectedOrganisationUnitAction">
+      <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseSelect.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <action name="removelockorgunit"
+      class="org.hisp.dhis.oust.action.RemoveLockSelectedOrganisationUnitAction">
+      <result name="success" type="velocity">
+        /dhis-web-commons/ouwt/responseSelect.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <action name="noactionfordatalocking"
+      class="org.hisp.dhis.oust.action.NoActionForDataLock">
+      <result name="success" type="velocity"> /dhis-web-commons/ouwt/responseSelect.vm</result>   
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     

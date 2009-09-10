@@ -1,7 +1,5 @@
-package org.hisp.dhis.dataadmin.action.datalocking;
-
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,51 +24,90 @@ package org.hisp.dhis.dataadmin.action.datalocking;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.dataadmin.action.lock;
 
 import java.util.Collection;
-
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
-
+import java.util.HashSet;
+import java.util.Set;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.source.Source;
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Jan Henrik Overland
+ * @author Brajesh Murari
  * @version $Id$
  */
-public class GetPeriodTypesAction
-    implements Action
+public class SelectAllAction implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PeriodService periodService;
+    private SelectionTreeManager selectionTreeManager;
 
-    public void setPeriodService( PeriodService periodService )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.periodService = periodService;
+        this.selectionTreeManager = selectionTreeManager;
+    }
+    
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+ 
+    private Integer selectedLockedDataSetId;
+    
+    public void setSelectedLockedDataSetId( Integer selectedLockedDataSetId )
+    {
+        this.selectedLockedDataSetId = selectedLockedDataSetId;
+    }
+
+    public Integer getSelectedLockedDataSetId()
+    {
+        return selectedLockedDataSetId;
     }
     
     // -------------------------------------------------------------------------
-    // Input/output
+    // Action
     // -------------------------------------------------------------------------
-    
-    private Collection<PeriodType> periodTypes;
 
-    public Collection<PeriodType> getPeriodTypes()
-    {
-        return periodTypes;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-    
     public String execute()
+        throws Exception
     {
-        periodTypes = periodService.getAllPeriodTypes();
+        DataSet dataSet = new DataSet();      
+        dataSet = dataSetService.getDataSet(selectedLockedDataSetId.intValue());         
+              
+        selectionTreeManager.clearSelectedOrganisationUnits();
+        selectionTreeManager.clearLockOnSelectedOrganisationUnits();
+        
+        selectionTreeManager.setSelectedOrganisationUnits( convert( dataSet.getSources() ) );             
+        selectionTreeManager.setLockOnSelectedOrganisationUnits( convert( dataSet.getSources() ) );
         
         return SUCCESS;
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+    
+    private Set<OrganisationUnit> convert( Collection<Source> sources )
+    {
+        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+        
+        for ( Source source : sources )
+        {               
+            organisationUnits.add( (OrganisationUnit) source );
+        }       
+        
+        return organisationUnits;
+    }  
 }

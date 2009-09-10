@@ -1,7 +1,5 @@
-package org.hisp.dhis.dataadmin.action.datalocking;
-
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,90 +24,92 @@ package org.hisp.dhis.dataadmin.action.datalocking;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.oust.action;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Jan Henrik Overland
- * @author Lars Helge Overland
+ * @author Brajesh Murari
  * @version $Id$
  */
-public class LockDataSetsAction
-    implements Action
+public class RemoveLockSelectedOrganisationUnitAction
+implements Action
 {
+    private static final Log LOG = LogFactory.getLog( RemoveLockSelectedOrganisationUnitAction.class );
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataSetService dataSetService;
+    private OrganisationUnitService organisationUnitService;
 
-    public void setDataSetService( DataSetService dataSetService )
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
-        this.dataSetService = dataSetService;
+        this.organisationUnitService = organisationUnitService;
     }
-    
-    private PeriodService periodService;
-    
-    public void setPeriodService( PeriodService periodService )
+
+    private SelectionTreeManager selectionTreeManager;
+
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.periodService = periodService;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
 
-    private Collection<String> lockedDataSets = new ArrayList<String>();
+    private int id;
 
-    public void setLockedDataSets( Collection<String> lockedDataSets )
+    public void setId( int organisationUnitId )
     {
-        this.lockedDataSets = lockedDataSets;
+        this.id = organisationUnitId;
     }
 
-    private Collection<String> unlockedDataSets = new ArrayList<String>();
+    private Collection<OrganisationUnit> lockedUnits;
 
-    public void setUnlockedDataSets( Collection<String> unlockedDataSets )
+    public Collection<OrganisationUnit> getLockedUnits()
     {
-        this.unlockedDataSets = unlockedDataSets;
+        return lockedUnits;
     }
-    
-    private Integer periodId;
-    
-    public void setPeriodId( Integer periodId )
-    {
-        this.periodId = periodId;
-    }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
+        throws Exception
     {
-        Period period = periodService.getPeriod( periodId );
-        
-        for ( String id : lockedDataSets )
+        try
         {
-            DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
-            dataSet.getLockedPeriods().add( period );
-            dataSetService.updateDataSet( dataSet );
+            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
+
+            if ( unit == null )
+            {
+                throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
+            }
+
+            lockedUnits = new HashSet<OrganisationUnit>( selectionTreeManager.getLockOnSelectedOrganisationUnits() );
+            lockedUnits = selectionTreeManager.getLockOnSelectedOrganisationUnits();           
+            lockedUnits.remove( unit );           
+            selectionTreeManager.setLockOnSelectedOrganisationUnits( lockedUnits );
+            //System.out.println("lockedUnits size in RemoveLockSelectedOrganisationUnitAction : " + lockedUnits.size());           
         }
-        
-        for ( String id : unlockedDataSets )
+        catch ( Exception e )
         {
-            DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
-            dataSet.getLockedPeriods().remove( period );
-            dataSetService.updateDataSet( dataSet ); 
+            LOG.error( e.getMessage(), e );
+
+            throw e;
         }
-        
         return SUCCESS;
     }
 }

@@ -27,6 +27,8 @@ package org.hisp.dhis.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.datalock.DataSetLock;
+import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSetService;
 
 import com.opensymphony.xwork2.Action;
@@ -50,6 +52,13 @@ public class DelDataSetAction
     {
         this.dataSetService = dataSetService;
     }
+    
+    private DataSetLockService dataSetLockService;
+    
+    public void setDataSetLockService( DataSetLockService dataSetLockService)
+    {
+        this.dataSetLockService = dataSetLockService;
+    }
 
     // -------------------------------------------------------------------------
     // Getters & setters
@@ -66,9 +75,17 @@ public class DelDataSetAction
 
     public String execute()
         throws Exception
-    {
-        dataSetService.deleteDataSet( dataSetService.getDataSet( dataSetId ) );
-
-        return SUCCESS;
-    }
+        {
+        	DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSet( dataSetService.getDataSet( dataSetId ) );
+            
+        	if ( dataSetLock != null )
+        	{
+                dataSetLock.getSources().removeAll( dataSetLock.getSources() ); 
+                dataSetLockService.deleteDataSetLock( dataSetLock );	            
+        	}
+        	
+        	dataSetService.deleteDataSet( dataSetService.getDataSet( dataSetId ) );
+            
+            return SUCCESS;
+        }
 }

@@ -1,7 +1,5 @@
-package org.hisp.dhis.oust.action;
-
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,89 +24,52 @@ package org.hisp.dhis.oust.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.dataadmin.action.lock;
 
 import java.util.Collection;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: RemoveSelectedOrganisationUnitAction.java 2869 2007-02-20 14:26:09Z andegje $
+ * @author Brajesh Murari
+ * @version $Id$
  */
-public class RemoveSelectedOrganisationUnitAction
-    implements Action
+public class GetPeriodTypesAction
+implements Action
 {
-    private static final Log LOG = LogFactory.getLog( RemoveSelectedOrganisationUnitAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitService organisationUnitService;
+    private PeriodService periodService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.periodService = periodService;
     }
-
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
+    
+    private Collection<PeriodType> periodTypes;
 
-    private int id;
-
-    public void setId( int organisationUnitId )
+    public Collection<PeriodType> getPeriodTypes()
     {
-        this.id = organisationUnitId;
+        return periodTypes;
     }
-
-    private Collection<OrganisationUnit> selectedUnits;
-
-    public Collection<OrganisationUnit> getSelectedUnits()
-    {
-        return selectedUnits;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
+    
     public String execute()
-        throws Exception
     {
-        try
-        {
-            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
-
-            if ( unit == null )
-            {
-                throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
-            }
-
-            selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();            
-            selectedUnits.remove( unit );           
-            selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
-        }
-        catch ( Exception e )
-        {
-            LOG.error( e.getMessage(), e );
-
-            throw e;
-        }
-
+        periodTypes = periodService.getAllPeriodTypes();
+        
         return SUCCESS;
     }
 }

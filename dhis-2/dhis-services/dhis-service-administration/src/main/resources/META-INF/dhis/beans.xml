@@ -4,6 +4,25 @@
   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
   
+  <!-- DataLoking -->
+  
+  <bean id="org.hisp.dhis.datalock.DataSetLockStore"
+    class="org.hisp.dhis.datalock.hibernate.HibernateDataSetLockStore">
+    <property name="sessionFactory" ref="sessionFactory"/>
+	<property name="periodService" 
+      ref="org.hisp.dhis.period.PeriodService"/>
+	<property name="dataSetService" 
+      ref="org.hisp.dhis.dataset.DataSetService"/>
+  </bean>
+  
+   <bean id="org.hisp.dhis.datalock.DataSetLockService"
+    class="org.hisp.dhis.datalock.DefaultDataSetLockService">
+    <property name="dataSetLockStore"
+      ref="org.hisp.dhis.datalock.DataSetLockStore"/>
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>
+  </bean>
+	
   <!-- ResourceTable -->
     
   <bean id="org.hisp.dhis.resourcetable.ResourceTableStore"

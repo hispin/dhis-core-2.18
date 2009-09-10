@@ -252,6 +252,8 @@ public class DefaultMappingService
     {
         String[] rels = relations.split( RELATION_SEPARATOR );
         
+        Map map = getMapByMapLayerPath( mapLayerPath );
+        
         relationsLoop : for ( int i = 0; i < rels.length; i++ )
         {
             String[] rel = rels[i].split( PAIR_SEPARATOR );
@@ -270,7 +272,7 @@ public class DefaultMappingService
                 continue relationsLoop;
             }
             
-            addOrUpdateMapOrganisationUnitRelation( mapLayerPath, Integer.parseInt( rel[0] ), rel[1] );
+            addOrUpdateMapOrganisationUnitRelation( map, Integer.parseInt( rel[0] ), rel[1] );
         }
     }
 
@@ -292,7 +294,12 @@ public class DefaultMappingService
     public void addOrUpdateMapOrganisationUnitRelation( String mapLayerPath, int organisationUnitId, String featureId )
     {
         Map map = getMapByMapLayerPath( mapLayerPath );
-
+        
+        addOrUpdateMapOrganisationUnitRelation( map, organisationUnitId, featureId );
+    }
+    
+    private void addOrUpdateMapOrganisationUnitRelation( Map map, int organisationUnitId, String featureId )
+    {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         MapOrganisationUnitRelation mapOrganisationUnitRelation = getMapOrganisationUnitRelation( map, organisationUnit );

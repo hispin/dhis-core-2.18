@@ -35,7 +35,7 @@ function getDataSets() {
     var periodId = periodList.options[ periodList.selectedIndex ].value;
 
     if ( periodId != null ) {
-        var url = "getDataSets.action?periodId=" + periodId;
+        var url = "getDataSetsForOrguntwiseLocking.action?periodId=" + periodId;
         $.ajax({
             url:url,
             cache: false,
@@ -56,16 +56,68 @@ function getDataSets() {
         });
     }
 }
+    
+function cancilSelection() {    
+     window.location.href = "displayLockingForm.action";   
+}
 
 function updateDataSets() {
     if ( validateLocking() )  {
         selectAllById( "lockedDataSets" );
-        selectAllById( "unlockedDataSets" );
-
+        selectAllById( "unlockedDataSets" );      
         document.getElementById( "lockingForm" ).submit();
-    }
+     }
 }
 
+function LoadOrgUnitTree() {       
+     var periodList = document.getElementById( "periodId" );
+     var periodId = periodList.options[ periodList.selectedIndex ].value;
+     var lockedDataSetList = document.getElementById('lockedDataSets');
+     var selectedLockedDataSetId = lockedDataSetList.options[ lockedDataSetList.selectedIndex ].value;       
+     iframeForOUTree.location.href='orgunitWiseSetupAssociationsTree.action?selectedLockedDataSetId=' + selectedLockedDataSetId + '&periodId=' + periodId;
+}
+    
+function ApplyAll() {
+     var lockedDataSetList = document.getElementById('lockedDataSets');
+     var selectedLockedDataSetId = lockedDataSetList.options[ lockedDataSetList.selectedIndex ].value;           
+     iframeForOUTree.location.href ='selectAll.action?selectedLockedDataSetId=' + selectedLockedDataSetId;
+}
+    
+function RemoveAll() {       
+     var periodList = document.getElementById( "periodId" );
+     var periodId = periodList.options[ periodList.selectedIndex ].value;
+     var lockedDataSetList = document.getElementById('lockedDataSets');
+     var selectedLockedDataSetId = lockedDataSetList.options[ lockedDataSetList.selectedIndex ].value;       
+     iframeForOUTree.location.href='unselectAll.action?selectedLockedDataSetId=' + selectedLockedDataSetId + '&periodId=' + periodId;
+}
+    
+function lockAllAtLevel() {
+     var periodList = document.getElementById( "periodId" );
+     var periodId = periodList.options[ periodList.selectedIndex ].value;
+     var list = document.getElementById( 'levelList' );         
+     var level = list.options[ list.selectedIndex ].value; 
+     var lockedDataSetList = document.getElementById('lockedDataSets');
+     var selectedLockedDataSetId = lockedDataSetList.options[ lockedDataSetList.selectedIndex ].value;           
+     iframeForOUTree.location.href ='selectLevel.action?level=' + level + '&selectedLockedDataSetId=' + selectedLockedDataSetId + '&periodId=' + periodId;
+}
+
+function unLockAllAtLevel() {
+     var periodList = document.getElementById( "periodId" );
+     var periodId = periodList.options[ periodList.selectedIndex ].value;
+     var list = document.getElementById( 'levelList' );         
+     var level = list.options[ list.selectedIndex ].value;
+     var lockedDataSetList = document.getElementById('lockedDataSets');
+     var selectedLockedDataSetId = lockedDataSetList.options[ lockedDataSetList.selectedIndex ].value;
+     iframeForOUTree.location.href = 'unselectLevel.action?level=' + level + '&selectedLockedDataSetId=' + selectedLockedDataSetId + '&periodId=' + periodId;
+}
+
+function updateDataSetsOrgunitwise() {
+     if ( validateLocking() )  {
+               
+        document.getElementById( "lockingForm" ).submit();            
+     }
+}
+    
 function validateLocking() {
     if ( getListValue( "periodTypeId" ) == "null" ) {
         setMessage( i18n_select_a_period_type );
