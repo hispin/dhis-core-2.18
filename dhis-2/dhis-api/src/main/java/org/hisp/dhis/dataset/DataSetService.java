@@ -154,6 +154,13 @@ public interface DataSetService
     List<DataSet> getAssignedDataSets();
     
     /**
+     * Get list of assigned (ie. which had corresponding dataentryform) datasets for specific period type.
+     * 
+     * @return A List containing assigned DataSets for specific period type.
+     */
+    List<DataSet> getAssignedDataSetsByPeriodType( PeriodType periodType );
+    
+    /**
      * Searches through the data sets with the corresponding given identifiers.
      * If the given data element is a member of one of the data sets, that
      * data sets period type is returned. This implies that if the data element

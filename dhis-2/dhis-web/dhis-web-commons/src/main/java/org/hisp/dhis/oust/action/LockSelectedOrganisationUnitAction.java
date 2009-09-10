@@ -1,7 +1,5 @@
-package org.hisp.dhis.oust.action;
-
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +24,10 @@ package org.hisp.dhis.oust.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.oust.action;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,13 +38,13 @@ import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: RemoveSelectedOrganisationUnitAction.java 2869 2007-02-20 14:26:09Z andegje $
+ * @author Brajesh Murari
+ * @version $Id$
  */
-public class RemoveSelectedOrganisationUnitAction
-    implements Action
+public class LockSelectedOrganisationUnitAction
+implements Action
 {
-    private static final Log LOG = LogFactory.getLog( RemoveSelectedOrganisationUnitAction.class );
+    private static final Log LOG = LogFactory.getLog( LockSelectedOrganisationUnitAction.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -75,11 +75,11 @@ public class RemoveSelectedOrganisationUnitAction
         this.id = organisationUnitId;
     }
 
-    private Collection<OrganisationUnit> selectedUnits;
+    private Collection<OrganisationUnit> lockedUnits;
 
-    public Collection<OrganisationUnit> getSelectedUnits()
+    public Collection<OrganisationUnit> getLockedUnits()
     {
-        return selectedUnits;
+        return lockedUnits;
     }
 
     // -------------------------------------------------------------------------
@@ -92,15 +92,11 @@ public class RemoveSelectedOrganisationUnitAction
         try
         {
             OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
-
-            if ( unit == null )
-            {
-                throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
-            }
-
-            selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();            
-            selectedUnits.remove( unit );           
-            selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
+            
+            lockedUnits = new HashSet<OrganisationUnit>( selectionTreeManager.getLockOnSelectedOrganisationUnits() );          
+            lockedUnits.add( unit );
+            selectionTreeManager.setLockOnSelectedOrganisationUnits( lockedUnits );
+            //System.out.println("lockedUnits size in LockSelectedOrganisationUnitAction : " + lockedUnits.size());
         }
         catch ( Exception e )
         {

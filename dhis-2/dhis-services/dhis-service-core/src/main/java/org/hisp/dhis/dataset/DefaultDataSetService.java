@@ -247,6 +247,24 @@ public class DefaultDataSetService
         return null;
     }
     
+    public List<DataSet> getAssignedDataSetsByPeriodType( PeriodType periodType )
+    {
+        List<DataSet> assignedDataSetListByPeriodType = new ArrayList<DataSet>();
+        List<DataSet> dataSetListByPeriodType = new ArrayList<DataSet>( getDataSetsByPeriodType( periodType ) );
+
+        for ( DataSet dataSet : dataSetListByPeriodType )
+        {
+            DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
+            
+            if ( dataEntryForm != null )
+            {
+            	assignedDataSetListByPeriodType.add( dataSet );
+            }
+        }
+
+        return assignedDataSetListByPeriodType;
+    }
+    
     public Collection<DataElement> getDistinctDataElements( Collection<Integer> dataSetIdentifiers )
     {
         Collection<DataSet> dataSets = getDataSets( dataSetIdentifiers );

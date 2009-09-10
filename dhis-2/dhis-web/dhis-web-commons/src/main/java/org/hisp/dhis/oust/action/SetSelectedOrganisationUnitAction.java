@@ -99,9 +99,8 @@ public class SetSelectedOrganisationUnitAction
                 throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
             }
 
-            selectedUnits = new HashSet<OrganisationUnit>( 1 );
+            selectedUnits = new HashSet<OrganisationUnit>( 1 );           
             selectedUnits.add( unit );
-
             selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
         }
         catch ( Exception e )

@@ -14,22 +14,64 @@
     
     <!-- Locking -->
     
-    <action name="displayLockingForm" class="org.hisp.dhis.dataadmin.action.datalocking.GetPeriodTypesAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-dataadmin/lockingForm.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <param name="javascripts">javascript/locking.js</param>
-      <param name="requiredAuthorities">F_DATASET_LOCK</param>
+    <action name="displayLockingForm"
+      class="org.hisp.dhis.dataadmin.action.lock.GetNumberOfLevelsAction">
+      <result name="success" type="chain">defineDataSetAssociationsFormChain</result>      
     </action>
     
-    <action name="lockDataSets" class="org.hisp.dhis.dataadmin.action.datalocking.LockDataSetsAction">
-      <result name="success" type="redirect">displayLockingForm.action</result>
-      <param name="requiredAuthorities">F_DATASET_LOCK</param>
+    <action name="defineDataSetAssociationsFormChain"
+      class="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">
+        /dhis-web-maintenance-dataadmin/lockingForm.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="javascripts">
+        javascript/oust.js,javascript/associations.js,javascript/locking.js</param>
     </action>
-		
-    <action name="getDataSets" class="org.hisp.dhis.dataadmin.action.datalocking.GetDataSetsAction">
+    
+    <action name="getDataSetsForOrguntwiseLocking" class="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForLockAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseDataSet.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <action name="orgunitWiseSetupAssociationsTree"
+      class="org.hisp.dhis.dataadmin.action.lock.SetupAssociationsTreeAction">
+      <result name="success" type="velocity">
+        /dhis-web-maintenance-dataadmin/selectionedTreeInFrame.vm</result>
+      <param name="javascripts">
+        javascript/oust.js,javascript/associations.js,javascript/locking.js</param>
+    </action>
+    
+    <action name="defineLockOnDataSetOrgunitAndPeriod"
+        class="org.hisp.dhis.dataadmin.action.lock.DefineLockOnDataSetOrgunitAndPeriod">
+      <result name="success" type="redirect">displayLockingForm.action</result>
+    </action>
+ 
+	<action name="selectLevel"
+      class="org.hisp.dhis.dataadmin.action.lock.SelectLevelAction">
+      <result name="success" type="chain">getSelectionTree</result>
+    </action>
+    
+    <action name="unselectLevel"
+      class="org.hisp.dhis.dataadmin.action.lock.UnselectLevelAction">
+      <result name="success" type="chain">getSelectionTree</result>
+    </action>
+    
+    <action name="selectAll"
+      class="org.hisp.dhis.dataadmin.action.lock.SelectAllAction">
+      <result name="success" type="chain">getSelectionTree</result>
+    </action>
+    
+    <action name="unselectAll"
+      class="org.hisp.dhis.dataadmin.action.lock.UnselectAllAction">
+      <result name="success" type="chain">getSelectionTree</result>
+    </action>
+    
+    <action name="getSelectionTree"
+      class="org.hisp.dhis.dataadmin.action.NoAction">
+      <result name="success" type="velocity">
+        /dhis-web-maintenance-dataadmin/selectionedTreeInFrame.vm</result>
+      <param name="javascripts">javascript/oust.js,javascript/dataElementsList.js,javascript/associations.js</param>
     </action>
     
     <!-- Maintenance -->

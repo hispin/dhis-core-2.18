@@ -39,6 +39,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataEntryForm;
@@ -101,6 +102,13 @@ public class SelectAction
     public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
     {
         this.registrationService = registrationService;
+    }
+    
+    private DataSetLockService dataSetLockService;
+    
+    public void setDataSetLockService( DataSetLockService dataSetLockService)
+    {
+        this.dataSetLockService = dataSetLockService;
     }
 
     // -------------------------------------------------------------------------
@@ -326,21 +334,23 @@ public class SelectAction
             selectedPeriodIndex = selectedStateManager.getSelectedPeriodIndex();
         }
 
-        if ( selectedPeriodIndex != null && selectedPeriodIndex >= 0 && selectedPeriodIndex < periods.size() )
-        {
-            selectedStateManager.setSelectedPeriodIndex( selectedPeriodIndex );
-
-            if ( selectedDataSet != null )
-            {
-                period = selectedStateManager.getSelectedPeriod();
-
-                if ( selectedDataSet.getLockedPeriods().contains( period ) )
-                {
-                    locked = true;
-
-                    log.info( "Dataset '" + selectedDataSet.getName() + "' is locked" );
-                }
-            }
+        //-----------------------------------------------------------------------
+        // For Data Locking 
+        //-----------------------------------------------------------------------
+       
+        if ( selectedPeriodIndex != null && selectedPeriodIndex >= 0 && selectedPeriodIndex < periods.size() ){
+           selectedStateManager.setSelectedPeriodIndex( selectedPeriodIndex );
+           
+           if(  selectedDataSet != null ){	   	           	                      
+	           period = selectedStateManager.getSelectedPeriod();
+	            
+	           if(dataSetLockService.getDataSetLockByDataSetAndPeriod( selectedDataSet, period ) != null){        	          	  
+				       if( dataSetLockService.getDataSetLockByDataSetAndPeriod( selectedDataSet, period ).getSources().contains(organisationUnit) ) {
+					 		    locked = true;
+					 		    log.info( "Dataset '" + selectedDataSet.getName() + "' is locked " );
+					        }
+		           }
+              }
         }
         else
         {

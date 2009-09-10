@@ -211,6 +211,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref local="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
     </property>
   </bean>
+	
+  <bean id="org.hisp.dhis.oust.action.GetExpandedTreeForLockAction"
+    class="org.hisp.dhis.oust.action.GetExpandedTreeForLockAction" scope="prototype">
+    <property name="selectionTreeManager">
+      <ref local="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+    </property>
+  </bean>
   
   <bean id="org.hisp.dhis.oust.action.SetSelectedOrganisationUnitAction"
     class="org.hisp.dhis.oust.action.SetSelectedOrganisationUnitAction"
@@ -240,6 +247,36 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     </property>
+    <property name="selectionTreeManager">
+      <ref local="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+    </property>
+  </bean>
+	
+  <bean id="org.hisp.dhis.oust.action.LockSelectedOrganisationUnitAction"
+    class="org.hisp.dhis.oust.action.LockSelectedOrganisationUnitAction"
+    scope="prototype">
+    <property name="organisationUnitService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    </property>
+    <property name="selectionTreeManager">
+      <ref local="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+    </property>
+  </bean>
+  
+  <bean id="org.hisp.dhis.oust.action.RemoveLockSelectedOrganisationUnitAction"
+    class="org.hisp.dhis.oust.action.RemoveLockSelectedOrganisationUnitAction"
+    scope="prototype">
+    <property name="organisationUnitService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    </property>
+    <property name="selectionTreeManager">
+      <ref local="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+    </property>
+  </bean>
+  
+  <bean id="org.hisp.dhis.oust.action.NoActionForDataLock"
+    class="org.hisp.dhis.oust.action.NoActionForDataLock"
+    scope="prototype">
     <property name="selectionTreeManager">
       <ref local="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
     </property>
