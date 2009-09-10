@@ -722,7 +722,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 }
             }
             else {
-                this.setUrl(GEOJSON_URL + URL);
+                this.setUrl(path + 'getGeoJson.action?name=' + URL);
             }
         }
                 
