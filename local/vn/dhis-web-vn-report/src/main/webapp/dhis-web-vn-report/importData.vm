@@ -43,8 +43,14 @@
   
 </table>
 <hr>
+<input type="button" name="preview" id="preview" onClick="javascript: getPreviewImportData();" value="$i18n.getString('preview')">
 <input type="button" name="import" id="import" onClick="javascript: importData();" value="$i18n.getString('import')">
 
 
+<div id='organisationUnitGroup' style="position:fixed;display:block;width:450px;z-index:10001;background-color: white;border: medium solid silver;height:200px;padding:20px;">
+	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="javascript:hideById('organisationUnitGroup');deleteDivEffect();">[x]</div>	</div>
+	<div id="showValue">
+	
+	</div>
 </body>
 

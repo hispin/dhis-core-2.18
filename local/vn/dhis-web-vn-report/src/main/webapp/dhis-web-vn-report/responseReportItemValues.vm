@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reportItemValues>
+#foreach($reportItemValue in $reportItemValues)
+	<reportItemValue>
+		<name>$encoder.xmlEncode($reportItemValue.reportItem.name)</name>
+		<value>$reportItemValue.value )</value>
+	</reportItemValue>
+#end
+</reportItemValues>

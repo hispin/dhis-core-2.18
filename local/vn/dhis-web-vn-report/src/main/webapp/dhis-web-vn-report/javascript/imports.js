@@ -100,3 +100,50 @@ function Completed( xmlObject ){
 	//window.location.reload();
 	
 }
+
+function getPreviewImportData(){
+	
+	var request = new Request();
+	
+	request.setResponseTypeXML( 'xmlObject' );
+	
+	request.setCallbackSuccess( getReportItemValuesReceived );
+	
+	var reportId = byId("reportId").value;
+	
+	var uploadFileName = byId("uploadFileName").value;
+
+	request.send( "previewData.action?reportId=" + reportId +"&uploadFileName=" + uploadFileName);
+}
+
+function getReportItemValuesReceived( xmlObject ){
+	
+		var availableDiv = byId('showValue');
+		availableDiv.style.display = 'block';
+		//var str_values = "<br><br><table border='1' style='width:100% '> <tr><td>Report</td><td>Value</td></tr>";
+		
+		
+		var availableObjectList = xmlObject.getElementsByTagName('reportItemValue');
+		
+		var myTable = document.getElementById('showReportItemValues');
+		var tBody = myTable.getElementsByTagName('tbody')[0];
+		var newTR = document.createElement('tr');
+		var newTD = document.createElement('td');
+		newTD.innerHTML = 'This is a new row';
+		
+		newTR.appendChild (newTD);
+		tBody.appendChild(newTR);
+
+		for(var i=0;i<availableObjectList.length;i++){
+			str_values += "<tr>";
+			var reportItermValue = availableObjectList.item(i);
+			str_values += "<td>" + reportItermValue.getElementsByTagName('name')[0].firstChild.nodeValue + "</td>";
+			str_values += "<td>" + reportItermValue.getElementsByTagName('value')[0].firstChild.nodeValue + "</td>";
+			str_values += "</tr>";
+		}
+		
+		str_values += "</table>";
+	
+
+		availableDiv.innerHTML = str_values;
+}

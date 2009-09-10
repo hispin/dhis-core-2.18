@@ -295,7 +295,12 @@
 			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
 		</action>
 		
-		
+		<action name="createCode" class="org.hisp.dhis.vn.chr.object.action.CreateCodeAction">
+            <result name="success" type="velocity">/dhis-web-chr-form/responseCode.vm</result>
+            <result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
+        </action>
+        
+        
 	<!--  --><!--  --><!--  -->
 	  <!--  FormReport -->
 	<!--  --><!--  --><!--  -->

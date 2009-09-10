@@ -37,7 +37,15 @@
 			 $dt<br>
 		#end
 		</td>
+		<!-- maso -->
+		  #elseif($element.name == "Maso")
+    <td>$element.label#if($element.required == "true") <font color="#FF0000">*</font> #end</td>
+    <td>
+	<div id='code$element.id'>
+		<input type="text" name="data" id="data"><input type="button" onClick="createCode('code$element.id');" value="...">
+	</div></td>
     <!-- textfield -->
+	
     #elseif($element.controlType == "checkbox")
     <td>$element.label</td>
     <td><input type="checkbox" name="data" id="data"></td>
