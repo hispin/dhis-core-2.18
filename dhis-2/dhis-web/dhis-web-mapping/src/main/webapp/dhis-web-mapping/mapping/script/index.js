@@ -339,6 +339,7 @@ Ext.onReady(function()
     
     var organisationUnitLevelStore = new Ext.data.JsonStore({
         url: path + 'getOrganisationUnitLevels' + type,
+		id: 'id',
         baseParams: { format: 'json' },
         root: 'organisationUnitLevels',
         fields: ['id', 'level', 'name'],
@@ -361,7 +362,14 @@ Ext.onReady(function()
         fields: ['id', 'name', 'mapLayerPath', 'organisationUnitLevel'],
         autoLoad: true
     });
-
+	
+	var geojsonStore = new Ext.data.JsonStore({
+        url: path + 'getGeoJsonFiles' + type,
+        root: 'files',
+        fields: ['name'],
+        autoLoad: true
+    });
+	
     var organisationUnitComboBox = new Ext.form.ComboBox({
         id: 'organisationunit_cb',
         fieldLabel: 'Organisation unit',
@@ -393,23 +401,7 @@ Ext.onReady(function()
         selectOnFocus: true,
         width: combo_width,
         minListWidth: combo_width + 26,
-        store: organisationUnitLevelStore,
-        listeners: {
-            'select': {
-                fn: function() {
-                    var level1 = Ext.getCmp('newmap_cb').getValue();
-                    var level2 = Ext.getCmp('organisationunitlevel_cb').getValue();
-                    var orgunit = Ext.getCmp('organisationunit_cb').getValue();
-
-                    if (level1 >= level2) { /*CURRENTLY NOT WORKING BECAUSE OF valuefield: 'id'*/
-                        organisationUnitLevelComboBox.reset();
-                        Ext.messageRed.msg('New map', 'The organisation unit selected above must be divided into a lower level than itself.');
-                        return;
-                    }
-                },
-                scope: this
-            }
-        }
+        store: organisationUnitLevelStore
     });
 
     var newNameTextField = new Ext.form.TextField({
@@ -428,6 +420,32 @@ Ext.onReady(function()
         id: 'maplayerpath_tf',
         emptyText: MENU_EMPTYTEXT,
         width: combo_width
+    });
+	
+	var mapLayerPathComboBox = new Ext.form.TextField({
+        id: 'maplayerpath_cb',
+        emptyText: MENU_EMPTYTEXT,
+        width: combo_width
+    });
+	
+	var mapLayerPathComboBox = new Ext.form.ComboBox({
+        id: 'maplayerpath_cb',
+        editable: false,
+        displayField: 'name',
+        valueField: 'name',
+		emptyText: MENU_EMPTYTEXT,
+        width: combo_width,
+        minListWidth: combo_width + 26,
+        triggerAction: 'all',
+        mode: 'remote',
+        store: geojsonStore,
+        listeners: {
+            'select': {
+                fn: function() {
+					alert(this.getStore().getById(this.getValue()).get('level'));
+                }
+            }
+        }
     });
     
     var typeComboBox = new Ext.form.ComboBox({
@@ -534,7 +552,7 @@ Ext.onReady(function()
                     var oui = Ext.util.JSON.decode( responseObject.responseText ).organisationUnits[0].id;
                     var ouli = Ext.getCmp('organisationunitlevel_cb').getValue();
                     var nn = Ext.getCmp('newname_tf').getValue();
-                    var mlp = Ext.getCmp('maplayerpath_tf').getValue();
+                    var mlp = Ext.getCmp('maplayerpath_cb').getValue();
                     var t = Ext.getCmp('type_cb').getValue();
                     var nc = Ext.getCmp('newnamecolumn_tf').getValue();
                     var lon = Ext.getCmp('newlongitude_tf').getValue();
@@ -811,7 +829,8 @@ Ext.onReady(function()
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Organisation unit level</p>' }, newMapComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Organisation unit</p>' }, multi, { html: '<br>' },*/
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Organisation unit level</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map source file</p>' }, mapLayerPathTextField, { html: '<br>' },
+            /*{ html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map source file</p>' }, mapLayerPathTextField, { html: '<br>' },*/
+			{ html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map source file</p>' }, mapLayerPathComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' }, newNameTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Name column</p>' }, newNameColumnTextField, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Longitude (x)</p>' }, newLongitudeTextField, { html: '<br>' },
@@ -2073,7 +2092,7 @@ Ext.onReady(function()
 		cls: 'x-btn-text-icon',
 		icon: '../../images/exit.png',
 		handler: function() {
-			window.location.href = '../dhis-web-portal/redirect.action'
+			window.location.href = '../../dhis-web-portal/redirect.action'
 		}
 	});
 
