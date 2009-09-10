@@ -40,7 +40,7 @@ public interface MappingService
 {
     final String ID = MappingService.class.getName();
 
-    final String GIS_DIR = "gis";
+    final String GEOJSON_DIR = "geojson";
 
     final String KEY_MAP_SOURCE_TYPE = "mapSource";
 

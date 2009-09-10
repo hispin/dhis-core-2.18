@@ -81,7 +81,7 @@ public class GetGeoJsonAction
     public String execute()
         throws Exception
     {        
-        inputStream = locationManager.getInputStream( name, MappingService.GIS_DIR );
+        inputStream = locationManager.getInputStream( name, MappingService.GEOJSON_DIR );
         
         return SUCCESS;
     }
