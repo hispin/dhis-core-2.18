@@ -287,7 +287,7 @@ Ext.onReady(function()
                     }),
                     'strategies': [new OpenLayers.Strategy.Fixed()],
                     'protocol': new OpenLayers.Protocol.HTTP({
-                        'url': GEOJSON_URL + mapLayers[i].mapSource,
+                        'url': path + 'getGeoJson.action?name=' + mapLayers[i].mapSource,
                         'format': new OpenLayers.Format.GeoJSON()
                     })
                 });
@@ -438,14 +438,7 @@ Ext.onReady(function()
         minListWidth: combo_width + 26,
         triggerAction: 'all',
         mode: 'remote',
-        store: geojsonStore,
-        listeners: {
-            'select': {
-                fn: function() {
-					alert(this.getStore().getById(this.getValue()).get('level'));
-                }
-            }
-        }
+        store: geojsonStore
     });
     
     var typeComboBox = new Ext.form.ComboBox({
@@ -622,7 +615,7 @@ Ext.onReady(function()
                                     
                                     Ext.getCmp('organisationunitlevel_cb').reset();
                                     Ext.getCmp('newname_tf').reset();
-                                    Ext.getCmp('maplayerpath_tf').reset();
+                                    Ext.getCmp('maplayerpath_cb').reset();
                                     Ext.getCmp('newnamecolumn_tf').reset();
                                     Ext.getCmp('newlongitude_tf').reset();
                                     Ext.getCmp('newlatitude_tf').reset();
@@ -1735,7 +1728,7 @@ Ext.onReady(function()
                     }),
                     'strategies': [new OpenLayers.Strategy.Fixed()],
                     'protocol': new OpenLayers.Protocol.HTTP({
-                        'url': GEOJSON_URL + mlmsf,
+                        'url': path + 'getGeoJson.action?name=' + mlmsf,
                         'format': new OpenLayers.Format.GeoJSON()
                     })
                 })
