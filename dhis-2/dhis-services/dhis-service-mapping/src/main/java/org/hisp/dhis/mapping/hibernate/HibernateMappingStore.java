@@ -170,7 +170,6 @@ public class HibernateMappingStore
         return (MapOrganisationUnitRelation) session.get( MapOrganisationUnitRelation.class, id );
     }
 
-    @SuppressWarnings("unchecked")
     public MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit )
     {
         Session session = sessionFactory.getCurrentSession();
