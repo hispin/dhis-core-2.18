@@ -35,8 +35,6 @@ public class AggregatedMapValue
 {
     private int organisationUnitId;
     
-    private String geoCode;
-    
     private String organisationUnitName;
     
     private double value;
@@ -49,10 +47,9 @@ public class AggregatedMapValue
     {   
     }
     
-    public AggregatedMapValue( int organisationUnitId, String geoCode, String organisationUnitName, double value )
+    public AggregatedMapValue( int organisationUnitId, String organisationUnitName, double value )
     {
         this.organisationUnitId = organisationUnitId;
-        this.geoCode = geoCode;
         this.organisationUnitName = organisationUnitName;
         this.value = value;
     }
@@ -64,7 +61,6 @@ public class AggregatedMapValue
     public void clear()
     {
         this.organisationUnitId = 0;
-        this.geoCode = null;
         this.organisationUnitName = null;
         this.value = 0.0;
     }
@@ -83,16 +79,6 @@ public class AggregatedMapValue
         this.organisationUnitId = organisationUnitId;
     }
     
-    public String getGeoCode()
-    {
-        return geoCode;
-    }
-
-    public void setGeoCode( String geoCode )
-    {
-        this.geoCode = geoCode;
-    }
-
     public String getOrganisationUnitName()
     {
         return organisationUnitName;
