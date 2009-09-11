@@ -37,6 +37,8 @@ public class AggregatedMapValue
     
     private String organisationUnitName;
     
+    private String featureId;
+    
     private double value;
 
     // ----------------------------------------------------------------------
@@ -47,10 +49,11 @@ public class AggregatedMapValue
     {   
     }
     
-    public AggregatedMapValue( int organisationUnitId, String organisationUnitName, double value )
+    public AggregatedMapValue( int organisationUnitId, String organisationUnitName, String featureId, double value )
     {
         this.organisationUnitId = organisationUnitId;
         this.organisationUnitName = organisationUnitName;
+        this.featureId = featureId;
         this.value = value;
     }
 
@@ -62,6 +65,7 @@ public class AggregatedMapValue
     {
         this.organisationUnitId = 0;
         this.organisationUnitName = null;
+        this.featureId = null;
         this.value = 0.0;
     }
     
@@ -87,6 +91,16 @@ public class AggregatedMapValue
     public void setOrganisationUnitName( String organisationUnitName )
     {
         this.organisationUnitName = organisationUnitName;
+    }
+
+    public String getFeatureId()
+    {
+        return featureId;
+    }
+
+    public void setFeatureId( String featureId )
+    {
+        this.featureId = featureId;
     }
 
     public double getValue()

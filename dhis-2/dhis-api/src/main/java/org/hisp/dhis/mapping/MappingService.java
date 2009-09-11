@@ -29,6 +29,7 @@ package org.hisp.dhis.mapping;
 
 import java.util.Collection;
 
+import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
@@ -46,7 +47,13 @@ public interface MappingService
 
     final String MAP_SOURCE_TYPE_DATABASE = "database";
     final String MAP_SOURCE_TYPE_SHAPEFILE = "shapefile";
+    
+    // -------------------------------------------------------------------------
+    // MapValue
+    // -------------------------------------------------------------------------
 
+    Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, String mapLayerPath );
+    
     // -------------------------------------------------------------------------
     // Map
     // -------------------------------------------------------------------------
