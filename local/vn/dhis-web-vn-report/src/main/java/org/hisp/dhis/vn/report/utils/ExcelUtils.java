@@ -1,3 +1,5 @@
+package org.hisp.dhis.vn.report.utils;
+
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -24,11 +26,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.vn.report.utils;
 
 import jxl.Cell;
-import jxl.NumberCell;
 import jxl.Sheet;
+import jxl.write.Blank;
 import jxl.write.Formula;
 import jxl.write.Label;
 import jxl.write.Number;
@@ -36,10 +37,16 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
-import jxl.write.Blank;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 
 /**
  * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
 public class ExcelUtils
@@ -47,6 +54,10 @@ public class ExcelUtils
     public static final String TEXT = "TEXT";
 
     public static final String NUMBER = "NUMBER";
+
+    public static final String NUMBER_OF_ZERO = "0";
+
+    private final static Integer NUMBER_OF_LETTER = new Integer( 26 );
 
     public static void writeValue( int row, int column, String value, String type, WritableSheet sheet,
         WritableCellFormat format )
@@ -65,9 +76,11 @@ public class ExcelUtils
                 if ( v != 0 )
                 {
                     sheet.addCell( new Number( column - 1, row - 1, v, format ) );
-                    
-                }else{
-                    
+
+                }
+                else
+                {
+
                     sheet.addCell( new Blank( column - 1, row - 1, format ) );
                 }
             }
@@ -99,28 +112,94 @@ public class ExcelUtils
 
         return ConvertToLetter;
     }
-    
-    public static void writeFormula( int row, int column, String formula ,WritableSheet sheet,
-        WritableCellFormat format ) throws RowsExceededException, WriteException{
+
+    public static void writeFormula( int row, int column, String formula, WritableSheet sheet, WritableCellFormat format )
+        throws RowsExceededException, WriteException
+    {
         if ( row > 0 && column > 0 )
         {
             sheet.addCell( new Formula( column - 1, row - 1, formula, format ) );
-        }        
-    }
-    
-    public static String readValue( int row, int column, Sheet sheet )
-    {
-//
-//        NumberCell _cell =(NumberCell) sheet.getCell(column,row);
-// System.out.println("\n\n\n number value = " + _cell.getValue());
-//        
-        Cell cell = sheet.getCell( column - 1, row - 1 );
- System.out.println("\n\n\n string value = " + cell.getContents() + 
-     "\n column = " + column + "\n row = " + row);
-              
-        return cell.getContents();
-        
-//        return cell.getValue();
+        }
     }
 
+    public static String readValue( int row, int column, Sheet sheet )
+    {
+        Cell cell = sheet.getCell( column - 1, row - 1 );
+        return cell.getContents();
+    }
+
+    @SuppressWarnings( "deprecation" )
+    public static void writeValueByPOI( int row, int column, String value, String type, HSSFSheet sheet,
+        HSSFCellStyle cellStyle )
+        throws RowsExceededException, WriteException
+    {
+        if ( row > 0 && column > 0 )
+        {
+            HSSFRow rowPOI = sheet.getRow( row - 1 );
+            HSSFCell cellPOI = rowPOI.createCell( column - 1 );
+
+            cellPOI.setCellStyle( cellStyle );
+
+            if ( type.equalsIgnoreCase( ExcelUtils.TEXT ) )
+            {
+                cellPOI.setCellValue( new HSSFRichTextString( value ) );
+            }
+            if ( type.equalsIgnoreCase( ExcelUtils.NUMBER ) )
+            {
+                double v = Double.parseDouble( value );
+
+                if ( v != 0 )
+                {
+                    cellPOI.setCellValue( new HSSFRichTextString( value ) );
+
+                }
+                else
+                {
+                    cellPOI.setCellValue( new HSSFRichTextString( ExcelUtils.NUMBER_OF_ZERO ) );
+                }
+            }
+        }
+    }
+
+    public static HSSFCell getValueByPOI( int row, int column, HSSFSheet sheet )
+    {
+        return sheet.getRow( row - 1 ).getCell( column - 1 );
+    }
+
+    public static void writeFormulaByPOI( int row, int column, String formula, HSSFSheet sheet, HSSFCellStyle cellStyle )
+        throws RowsExceededException, WriteException
+    {
+        if ( row > 0 && column > 0 )
+        {
+            HSSFRow rowPOI = sheet.getRow( row - 1 );
+            HSSFCell cellPOI = rowPOI.createCell( column - 1 );
+
+            cellPOI.setCellStyle( cellStyle );
+            cellPOI.setCellFormula( formula );
+        }
+    }
+
+    public static int convertExcelColumnNameToNumber( String columnName )
+    {
+        try
+        {
+            int iCol = 0;
+
+            if ( !columnName.isEmpty() )
+            {
+                char[] characters = columnName.toUpperCase().toCharArray();
+
+                for ( int i = 0; i < characters.length; i++ )
+                {
+                    iCol *= NUMBER_OF_LETTER;
+                    iCol += (characters[i] - 'A' + 1);
+                }
+            }
+            return iCol;
+        }
+        catch ( Exception e )
+        {
+            return -1;
+        }
+    }
 }

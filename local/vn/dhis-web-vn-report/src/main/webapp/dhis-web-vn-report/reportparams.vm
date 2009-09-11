@@ -43,7 +43,10 @@
 <span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>
 <br>
 <hr>
-<p><input type="button" value="$i18n.getString( "generate_report" )" onclick="validateGenerateReport()" #if(!$organisationUnit) disabled #end/></p>
+<p>
+<input type="button" value='$i18n.getString( "preview_report" )' onclick="javascript: generic_type = 'preview'; var message = '$!i18n.getString("please_wait")'; validateGenerateReport(message);" #if(!$organisationUnit) disabled #end/>
+<input type="button" value='$i18n.getString( "generate_report" )' onclick="javascript: generic_type = ''; var message = '$!i18n.getString("please_wait")'; validateGenerateReport(message);" #if(!$organisationUnit) disabled #end/>
+</p>
 <span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)"></span>
 
 <script>
