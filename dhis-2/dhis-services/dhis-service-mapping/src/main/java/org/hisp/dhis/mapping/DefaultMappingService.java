@@ -123,10 +123,8 @@ public class DefaultMappingService
         OrganisationUnitLevel organisationUnitLevel = organisationUnitService
             .getOrganisationUnitLevel( organisationUnitLevelId );
 
-        Set<String> staticMapLayerPaths = null;
-
         Map map = new Map( name, mapLayerPath, type, organisationUnit, organisationUnitLevel, nameColumn,
-            longitude, latitude, zoom, staticMapLayerPaths );
+            longitude, latitude, zoom, null );
 
         return addMap( map );
     }
@@ -172,9 +170,7 @@ public class DefaultMappingService
 
     public void deleteMapByMapLayerPath( String mapLayerPath )
     {
-        Map map = getMapByMapLayerPath( mapLayerPath );
-
-        deleteMap( map );
+        deleteMap( getMapByMapLayerPath( mapLayerPath ) );
     }
 
     public Map getMap( int id )
@@ -301,7 +297,7 @@ public class DefaultMappingService
      */
     private String toString( String[] array )
     {
-        StringBuffer buffer = new StringBuffer( "{" );
+        final StringBuffer buffer = new StringBuffer( "{" );
         
         for ( int i = 0; i < array.length; i++ )
         {
