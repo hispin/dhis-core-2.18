@@ -45,9 +45,8 @@ public class AggregatedMapValueRowMapper
         final AggregatedMapValue value = new AggregatedMapValue();
         
         value.setOrganisationUnitId( resultSet.getInt( 1 ) );
-        value.setGeoCode( resultSet.getString( 2 ) );
-        value.setOrganisationUnitName( resultSet.getString( 3 ) );
-        value.setValue( resultSet.getDouble( 4 ) );
+        value.setOrganisationUnitName( resultSet.getString( 2 ) );
+        value.setValue( resultSet.getDouble( 3 ) );
         
         return value;
     }
