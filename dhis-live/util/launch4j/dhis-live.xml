@@ -14,7 +14,7 @@
   <manifest></manifest>
   <icon>C:\development\src\dhis2\dhis-live\util\launch4j\favicon.ico</icon>
   <singleInstance>
-    <mutexName>dhis-lite.mutex</mutexName>
+    <mutexName>dhis-live.mutex</mutexName>
     <windowTitle></windowTitle>
   </singleInstance>
   <jre>
@@ -26,7 +26,7 @@
   <splash>
     <file>C:\development\src\dhis2\dhis-live\util\launch4j\dhis2-splash.bmp</file>
     <waitForWindow>false</waitForWindow>
-    <timeout>10</timeout>
+    <timeout>11</timeout>
     <timeoutErr>false</timeoutErr>
   </splash>
 </launch4jConfig>
