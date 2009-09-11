@@ -36,13 +36,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mortbay.component.LifeCycle;
 
-
 /**
- * Describe class <code>TrayApp</code> here.
- *
- * @author <a href="mailto:bobj@bobjolliffe@gmail.com">Bob Jolliffe</a>
- * @version $$Id$$
- * @version 1.0
+ * @author Bob Jolliffe
+ * @version $Id$
  */
 public class TrayApp
   implements LifeCycle.Listener
@@ -53,6 +49,7 @@ public class TrayApp
   private static final String STARTING_ICON = "/icons/starting.png";
   private static final String FAILED_ICON ="/icons/failed.png";
   private static final String RUNNING_ICON = "/icons/running.png";
+  
   /**
    * Describe variable <code>appServer</code> here.
    *
@@ -79,8 +76,8 @@ public class TrayApp
   public TrayApp()
     throws Exception
   {
-    //installDir = System.getProperty("user.dir");
     installDir = getInstallDir();
+    
     if (installDir==null) {
       log.info("jar not installed, setting installdir to DHIS2_HOME: "+System.getenv("DHIS2_HOME"));
       installDir = System.getenv("DHIS2_HOME");
@@ -241,30 +238,28 @@ public class TrayApp
     new TrayApp();
   }
 
-
-    /**
-     *  The <code>getInstallDir</code> method is a hack to determine the current
-     *  directory the dhis2 lite package is installed in.  It does this by finding
-     *  the file URL of a resource within the executable jar and extracting the 
-     *  installation path from that. 
-     *
-     * @return a <code>String</code> value representing the installation directory
-     */
-    public static String getInstallDir() {
-        // find a resource
-        String resourceString = TrayApp.class.getResource("/icons/").toString();
-        // we expect to see something of the form:
-        // "jar:file:<install_dir>/dhis_xxx.jar!/icons"
-        if (!resourceString.startsWith("jar:file:") ) {
-            // we're in trouble - its not in a jar file
-            return null;
-        }
-        // find the last "/" just before the "!"
-        int endIndex = resourceString.lastIndexOf("/", resourceString.lastIndexOf("!"));
-        String result = resourceString.substring(9, endIndex); 
-        // replace encoded spaces
-        result = result.replaceAll("%20"," ");
-        return result;
+  /**
+   *  The <code>getInstallDir</code> method is a hack to determine the current
+   *  directory the dhis2 lite package is installed in.  It does this by finding
+   *  the file URL of a resource within the executable jar and extracting the 
+   *  installation path from that. 
+   *
+   * @return a <code>String</code> value representing the installation directory
+   */
+  public static String getInstallDir() {
+    // find a resource
+    String resourceString = TrayApp.class.getResource("/icons/").toString();
+    // we expect to see something of the form:
+    // "jar:file:<install_dir>/dhis_xxx.jar!/icons"
+    if (!resourceString.startsWith("jar:file:") ) {
+      // we're in trouble - its not in a jar file
+      return null;
     }
-    
+    // find the last "/" just before the "!"
+    int endIndex = resourceString.lastIndexOf("/", resourceString.lastIndexOf("!"));
+    String result = resourceString.substring(9, endIndex); 
+    // replace encoded spaces
+    result = result.replaceAll("%20"," ");
+    return result;
+  }    
 }
