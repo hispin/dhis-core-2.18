@@ -253,10 +253,12 @@ public class DefaultMappingService
         String[] rels = relations.split( RELATION_SEPARATOR );
         
         Map map = getMapByMapLayerPath( mapLayerPath );
+
+        java.util.Map<Integer, MapOrganisationUnitRelation> relationMap = getRelationshipMap( getMapOrganisationUnitRelationByMap( map ) );
         
         relationsLoop : for ( int i = 0; i < rels.length; i++ )
         {
-            String[] rel = rels[i].split( PAIR_SEPARATOR );
+            final String[] rel = rels[i].split( PAIR_SEPARATOR );
 
             if ( rel.length != 2 )
             {
@@ -272,10 +274,28 @@ public class DefaultMappingService
                 continue relationsLoop;
             }
             
-            addOrUpdateMapOrganisationUnitRelation( map, Integer.parseInt( rel[0] ), rel[1] );
+            final int organisationUnitId = Integer.parseInt( rel[0] );
+            final String featureId = rel[1];
+            
+            MapOrganisationUnitRelation mapOrganisationUnitRelation = relationMap.get( organisationUnitId );
+
+            if ( mapOrganisationUnitRelation != null )
+            {            
+                mapOrganisationUnitRelation.setFeatureId( featureId );
+
+                updateMapOrganisationUnitRelation( mapOrganisationUnitRelation );
+            }
+            else
+            {
+                final OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+
+                mapOrganisationUnitRelation = new MapOrganisationUnitRelation( map, organisationUnit, featureId );
+
+                addMapOrganisationUnitRelation( mapOrganisationUnitRelation );
+            }            
         }
     }
-
+    
     /**
      * Provides a textual representation of the contents of a String array.
      */
@@ -290,16 +310,11 @@ public class DefaultMappingService
         
         return buffer.append( "}" ).toString();
     }
-    
+
     public void addOrUpdateMapOrganisationUnitRelation( String mapLayerPath, int organisationUnitId, String featureId )
     {
         Map map = getMapByMapLayerPath( mapLayerPath );
         
-        addOrUpdateMapOrganisationUnitRelation( map, organisationUnitId, featureId );
-    }
-    
-    private void addOrUpdateMapOrganisationUnitRelation( Map map, int organisationUnitId, String featureId )
-    {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         MapOrganisationUnitRelation mapOrganisationUnitRelation = getMapOrganisationUnitRelation( map, organisationUnit );
@@ -353,7 +368,7 @@ public class DefaultMappingService
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( map
             .getOrganisationUnitLevel().getLevel() );
 
-        java.util.Map<Integer, MapOrganisationUnitRelation> relationMap = getRelationshipMap( mappingStore.getMapOrganisationUnitRelationByMap( map ) );
+        java.util.Map<Integer, MapOrganisationUnitRelation> relationMap = getRelationshipMap( getMapOrganisationUnitRelationByMap( map ) );
         
         Collection<MapOrganisationUnitRelation> availableRelations = new ArrayList<MapOrganisationUnitRelation>();
         

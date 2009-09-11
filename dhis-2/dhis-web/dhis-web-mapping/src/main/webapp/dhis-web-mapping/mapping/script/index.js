@@ -2620,7 +2620,7 @@ function getAutoAssignOrganisationUnitData() {
         params: { level: level, format: 'json' },
 
         success: function( responseObject ) {
-            dataReceivedAutoAssignOrganisationUnit( responseObject.responseText );
+            dataReceivedAutoAssignOrganisationUnit( responseObject.responseText );			
         },
         failure: function() {
             alert( 'Status', 'Error while retrieving data' );
@@ -2638,20 +2638,20 @@ function dataReceivedAutoAssignOrganisationUnit( responseText ) {
     var count_orgunits = 0;
     var count_match = 0;
     var relations = '';
-
+	var featureName, orgunitName;
+	
     for ( var j=0; j < features.length; j++ ) {
         count_features++;
         
         for ( var i=0; i < organisationUnits.length; i++ ) {
             count_orgunits++;
-            
+			
+			// var featureName = features[j].attributes[nameColumn].split(' ').join('').toLowerCase();
+			// var orgUnitName = organisationUnits[i].name.split(' ').join('').toLowerCase();
+			
             if (features[j].attributes[nameColumn] == organisationUnits[i].name) {
-            
-                count_match++;
-                var organisationUnitId = organisationUnits[i].id;
-                var featureId = features[j].attributes[nameColumn];
-
-                relations += organisationUnitId + '::' + featureId + ';;';
+                count_match++;                
+                relations += organisationUnits[i].id + '::' + features[j].attributes[nameColumn] + ';;';
             }
         }
     }
@@ -2663,7 +2663,7 @@ function dataReceivedAutoAssignOrganisationUnit( responseText ) {
 		MASK.msg = 'Assigning ' + count_match + ' organisation units...';
 	}
 	MASK.show();
-    
+
     Ext.Ajax.request({
         url: path + 'addOrUpdateMapOrganisationUnitRelations' + type,
         method: 'POST',
