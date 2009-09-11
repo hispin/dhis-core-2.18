@@ -19,7 +19,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/>
 	<property name="userSettingService"
-      ref="org.hisp.dhis.user.UserSettingService"/>  
+      ref="org.hisp.dhis.user.UserSettingService"/>
+    <property name="dataMartStore"
+      ref="org.hisp.dhis.datamart.DataMartStore"/>
   </bean>
 		
   <!-- Store definitions -->
