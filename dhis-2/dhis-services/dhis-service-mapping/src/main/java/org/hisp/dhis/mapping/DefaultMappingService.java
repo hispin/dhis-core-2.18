@@ -38,6 +38,8 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.aggregation.AggregatedMapValue;
+import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -101,11 +103,56 @@ public class DefaultMappingService
     {
         this.userSettingService = userSettingService;
     }
+    
+    private DataMartStore dataMartStore;
+
+    public void setDataMartStore( DataMartStore dataMartStore )
+    {
+        this.dataMartStore = dataMartStore;
+    }
 
     // -------------------------------------------------------------------------
     // MappingService implementation
     // -------------------------------------------------------------------------
 
+    // -------------------------------------------------------------------------
+    // MapValues
+    // -------------------------------------------------------------------------
+
+    public Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, String mapLayerPath )
+    {
+        Map map = getMapByMapLayerPath( mapLayerPath );
+        
+        int level = map.getOrganisationUnitLevel().getLevel();
+        
+        Collection<AggregatedMapValue> mapValues = dataMartStore.getAggregatedMapValues( indicatorId, periodId, level );
+        
+        java.util.Map<Integer, String> relations = getOrganisationUnitFeatureMap( getMapOrganisationUnitRelationByMap( map ) );
+        
+        for ( AggregatedMapValue value : mapValues )
+        {
+            value.setFeatureId( relations.get( value.getOrganisationUnitId() ) );
+        }
+        
+        return mapValues;
+    }
+    
+    /**
+     * Returns a map for the given MapOrganisationUnitRelations where the key
+     * is the OrganisationUnit identifier and the value is the feature identifier.
+     */
+    private java.util.Map<Integer, String> getOrganisationUnitFeatureMap( Collection<MapOrganisationUnitRelation> relations )
+    {
+        java.util.Map<Integer, String> map = new HashMap<Integer, String>();
+        
+        for ( MapOrganisationUnitRelation relation : relations )
+        {
+            map.put( relation.getOrganisationUnit().getId(), relation.getFeatureId() );
+        }
+        
+        return map;
+    }
+    
     // -------------------------------------------------------------------------
     // Map
     // -------------------------------------------------------------------------
