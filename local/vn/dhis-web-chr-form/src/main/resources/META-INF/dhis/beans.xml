@@ -261,7 +261,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.vn.chr.object.action.SearchObjectAction" scope="prototype">
 		<property name="formService" ref="org.hisp.dhis.vn.chr.FormService" />
 		<property name="formManager" ref="org.hisp.dhis.vn.chr.jdbc.FormManager" />
-		<property name="sysetmSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 		<property name="elementService" ref="org.hisp.dhis.vn.chr.ElementService" />
 	</bean>
 

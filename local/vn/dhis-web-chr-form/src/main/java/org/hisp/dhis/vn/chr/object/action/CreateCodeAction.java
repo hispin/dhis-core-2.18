@@ -15,6 +15,10 @@ public class CreateCodeAction
     implements Action
 {
 
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
+
     private FormManager formManager;
 
     public void setFormManager( FormManager formManager )
@@ -29,6 +33,10 @@ public class CreateCodeAction
         this.formService = formService;
     }
 
+    // -------------------------------------------
+    // Input && Output
+    // -------------------------------------------
+
     private Integer formId;
 
     public void setFormId( Integer formId )
@@ -42,12 +50,14 @@ public class CreateCodeAction
     {
         return code;
     }
- 
+
+    // -------------------------------------------
+    // Action Implemantation
+    // -------------------------------------------
 
     public String execute()
         throws Exception
     {
-        // create code : MCH<yyMM>
         Date date = new Date();
 
         Format formatter = new SimpleDateFormat( "yyMM" );

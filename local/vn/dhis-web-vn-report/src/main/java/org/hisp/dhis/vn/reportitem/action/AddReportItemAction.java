@@ -65,14 +65,12 @@ public class AddReportItemAction
     private Integer reportId;
 
     private ReportItem reportItem;
-    
+
     private Integer sheetNo;
 
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
-    
-    
 
     public void setReportService( ReportExcelService reportService )
     {
@@ -137,13 +135,13 @@ public class AddReportItemAction
         reportItem.setItemType( itemType.trim() );
         reportItem.setRow( row );
         reportItem.setColumn( column );
-        reportItem.setExpression(  expression.trim() );
-        reportItem.setPeriodType( periodType.trim() );   
-        reportItem.setSheetNo( (sheetNo==null?0:sheetNo) );
+        reportItem.setExpression( expression.trim() );
+        reportItem.setPeriodType( periodType.trim() );
+        reportItem.setSheetNo( (sheetNo == null ? 0 : sheetNo) );
 
         ReportExcelInterface reportExcel = reportService.getReport( reportId.intValue() );
-        
-        reportExcel.addReportItem(reportItem);        
+
+        reportExcel.addReportItem( reportItem );
 
         reportService.updateReport( reportExcel );
 

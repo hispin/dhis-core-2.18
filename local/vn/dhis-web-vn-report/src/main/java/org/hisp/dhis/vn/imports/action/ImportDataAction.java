@@ -6,6 +6,7 @@ package org.hisp.dhis.vn.imports.action;
  */
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
@@ -122,6 +123,13 @@ public class ImportDataAction
         this.periodId = periodId;
     }
 
+    public Integer[] reportItemIds;
+
+    public void setReportItemIds( Integer[] reportItemIds )
+    {
+        this.reportItemIds = reportItemIds;
+    }
+
     // --------------------------------------------------------------------
     // Action Implementation
     // --------------------------------------------------------------------
@@ -141,9 +149,17 @@ public class ImportDataAction
         ws.setLocale( new Locale( "en", "EN" ) );
         Workbook templateWorkbook = Workbook.getWorkbook( upload, ws );
 
-        // get reportItems of the template report
-        Collection<ReportItem> reportItems = report.getReportItems();
-
+        Collection<ReportItem> reportItems = new ArrayList<ReportItem>();
+        // check reportItems inputted
+        if(reportItemIds!=null){
+            for(int i=0;i<reportItemIds.length;i++){
+                reportItems.add( reportExcelService.getReportItem( reportItemIds[i] ) );
+            }
+        }else{
+            // get reportItems of the template report
+            reportItems = report.getReportItems();
+        }
+        
         Sheet sheet = templateWorkbook.getSheet( 0 );
 
         // get period
@@ -156,46 +172,48 @@ public class ImportDataAction
 
                 String value = ExcelUtils.readValue( reportItem.getRow(), reportItem.getColumn(), sheet );
 
-                // Get expression of the reportItem
-                Operand operand = expressionService.getOperandsInExpression( reportItem.getExpression() ).iterator()
-                    .next();
-
-                // dateelement of the reportItem
-                DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
-
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
-                    .getDataElementCategoryOptionCombo( operand.getOptionComboId() );
-
-                // logged username
-                String storedBy = currentUserService.getCurrentUsername();
-
-                DataValue dataValue = dataValueService
-                    .getDataValue( organisationUnit, dataElement, period, optionCombo );
-
-                // if dataValue is not exist, that means data not input
-                // add value into database
-                if ( dataValue == null )
+                if ( !value.isEmpty() )
                 {
-                    dataValue = new DataValue( dataElement, period, organisationUnit, value + "", storedBy, new Date(),
-                        null, optionCombo );
-                    dataValueService.addDataValue( dataValue );
-                }
-                // if dataValue is exist, update new value
-                else
-                {
-                    dataValue.setValue( value + "" );
-                    dataValue.setTimestamp( new Date() );
-                    dataValue.setStoredBy( storedBy );
+                    // Get expression of the reportItem
+                    Operand operand = expressionService.getOperandsInExpression( reportItem.getExpression() )
+                        .iterator().next();
 
-                    dataValueService.updateDataValue( dataValue );
+                    // dateelement of the reportItem
+                    DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
 
-                }// end if
+                    DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
+                        .getDataElementCategoryOptionCombo( operand.getOptionComboId() );
+
+                    // logged username
+                    String storedBy = currentUserService.getCurrentUsername();
+
+                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period,
+                        optionCombo );
+
+                    // if dataValue is not exist, that means data not input
+                    // add value into database
+                    if ( dataValue == null )
+                    {
+                        dataValue = new DataValue( dataElement, period, organisationUnit, value + "", storedBy,
+                            new Date(), null, optionCombo );
+                        dataValueService.addDataValue( dataValue );
+                    }
+                    // if dataValue is exist, update new value
+                    else
+                    {
+                        dataValue.setValue( value + "" );
+                        dataValue.setTimestamp( new Date() );
+                        dataValue.setStoredBy( storedBy );
+
+                        dataValueService.updateDataValue( dataValue );
+
+                    }// end if
+                }// end if value
             }
         }
- 
+
         message = i18n.getString( "success" );
 
         return SUCCESS;
     }
-
 }

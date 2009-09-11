@@ -74,6 +74,9 @@ function getListPeriodCompleted( xmlObject ){
     }
 }
 
+// -----------------------------------------------------------------------------
+// Import data
+// -----------------------------------------------------------------------------
 function importData(){
 	
 	var reportId = document.getElementById('reportId').value;
@@ -83,9 +86,29 @@ function importData(){
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( Completed );
+	
+	// URL
 	url = 'importData.action?reportId='+reportId;
+	// USER choose reportItem
+	var preview = byId('showValue').style.display;
+	
+	alert(preview);
+	
+	if(preview == 'block'){
+		
+		var reportItems = document.getElementsByName('reportItems');
+		alert(reportItems.length);
+		for(var i=0;i<reportItems.length;i++){
+			if(reportItems[i].checked ){
+				url +='&reportItemIds=' + reportItems[i].value;
+			}
+		}
+	}
+	
 	url += '&uploadFileName='+ upload;
 	url += '&periodId='+ periodId;
+	
+	alert(url);
 	
 	request.send(url); 
 }
@@ -118,32 +141,52 @@ function getPreviewImportData(){
 
 function getReportItemValuesReceived( xmlObject ){
 	
-		var availableDiv = byId('showValue');
-		availableDiv.style.display = 'block';
-		//var str_values = "<br><br><table border='1' style='width:100% '> <tr><td>Report</td><td>Value</td></tr>";
-		
-		
-		var availableObjectList = xmlObject.getElementsByTagName('reportItemValue');
-		
-		var myTable = document.getElementById('showReportItemValues');
-		var tBody = myTable.getElementsByTagName('tbody')[0];
-		var newTR = document.createElement('tr');
-		var newTD = document.createElement('td');
-		newTD.innerHTML = 'This is a new row';
-		
-		newTR.appendChild (newTD);
-		tBody.appendChild(newTR);
-
-		for(var i=0;i<availableObjectList.length;i++){
-			str_values += "<tr>";
-			var reportItermValue = availableObjectList.item(i);
-			str_values += "<td>" + reportItermValue.getElementsByTagName('name')[0].firstChild.nodeValue + "</td>";
-			str_values += "<td>" + reportItermValue.getElementsByTagName('value')[0].firstChild.nodeValue + "</td>";
-			str_values += "</tr>";
-		}
-		
-		str_values += "</table>";
+	byId('selectAll').checked = false;
+	var availableDiv = byId('showValue');
+	availableDiv.style.display = 'block';
+	//var str_values = "<br><br><table border='1' style='width:100% '> <tr><td>Report</td><td>Value</td></tr>";
 	
+	var availableObjectList = xmlObject.getElementsByTagName('reportItemValue');
+	
+	var myTable = document.getElementById('showReportItemValues');
+	var tBody = myTable.getElementsByTagName('tbody')[0];
+	
+	for(var i = document.getElementById("showReportItemValues").rows.length; i > 1;i--)
+	{
+		document.getElementById("showReportItemValues").deleteRow(i -1);
+	}
 
-		availableDiv.innerHTML = str_values;
+	for(var i=0;i<availableObjectList.length;i++){
+		
+		// get values
+		var reportItermValue = availableObjectList.item(i);
+		// add new row
+		var newTR = document.createElement('tr');
+		// add new column
+		var newTD1 = document.createElement('td');
+		var id = reportItermValue.getElementsByTagName('id')[0].firstChild.nodeValue;
+		newTD1.innerHTML= "<input type='checkbox' name='reportItems' id='reportItems' value='" + id + "'>" ;
+		newTR.appendChild (newTD1);
+		// add new column
+		var newTD2 = document.createElement('td');
+		newTD2.innerHTML = reportItermValue.getElementsByTagName('name')[0].firstChild.nodeValue;
+		newTR.appendChild (newTD2);
+		// add new column
+		var newTD3 = document.createElement('td');
+		newTD3.innerHTML = reportItermValue.getElementsByTagName('value')[0].firstChild.nodeValue;
+		newTR.appendChild (newTD3);
+		// add row into the table
+		tBody.appendChild(newTR);
+	}
 }
+ 
+function selectAll(){
+	 
+	var select = byId('selectAll').checked;
+	
+	var reportItems = document.getElementsByName('reportItems');
+	
+	for(var i=0;i<reportItems.length;i++){
+		reportItems[i].checked = select;
+	 }
+ }

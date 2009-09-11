@@ -971,5 +971,5 @@ function createCode(inputObjectName){
 }
 
 function createCodeReceived( xmlObject ){
-		this.inputObject.value = xmlObject.getElementsByTagName("code").item[0].firstChild.nodeValue;
+		this.inputObject.value = xmlObject.getElementsByTagName("code")[0].firstChild.nodeValue;
 }
