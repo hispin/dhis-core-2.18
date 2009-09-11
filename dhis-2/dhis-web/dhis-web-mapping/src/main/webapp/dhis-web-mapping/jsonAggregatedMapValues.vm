@@ -3,6 +3,7 @@
   {
     "organisationUnitId": "$!{value.organisationUnitId}",
     "orgUnit": "$!{value.organisationUnitName}",
+    "orgUnit": "$!{value.featureId}",
     "value": "$!{value.value}"
   },
 #end

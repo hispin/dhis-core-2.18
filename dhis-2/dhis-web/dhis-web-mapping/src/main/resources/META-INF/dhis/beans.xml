@@ -66,8 +66,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.mapping.action.GetMapValuesAction"
     class="org.hisp.dhis.mapping.action.GetMapValuesAction"
     scope="prototype">
-    <property name="dataMartStore"
-      ref="org.hisp.dhis.datamart.DataMartStore"/>
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
   </bean>
 	
   <bean id="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction"
