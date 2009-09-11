@@ -10,6 +10,11 @@ import org.hisp.dhis.vn.chr.statement.FormStatement;
 
 import com.opensymphony.xwork2.Action;
 
+/**
+ * @author Chau Thu Tran
+ * @version $Id
+ */
+
 public class GetInformationForSystemAction
     implements Action
 {

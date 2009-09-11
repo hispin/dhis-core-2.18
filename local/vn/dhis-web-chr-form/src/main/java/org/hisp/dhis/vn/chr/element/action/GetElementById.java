@@ -9,6 +9,11 @@ import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.ElementService;
 import com.opensymphony.xwork2.Action;
 
+/**
+ * @author Chau Thu Tran
+ * @version $Id
+ */
+
 public class GetElementById
     implements Action
 {

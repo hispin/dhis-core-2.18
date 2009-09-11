@@ -10,6 +10,11 @@ import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.EgroupService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
+/**
+ * @author Chau Thu Tran
+ * @version $Id
+ */
+
 public class UpdateEgroupAction
     extends ActionSupport
 {

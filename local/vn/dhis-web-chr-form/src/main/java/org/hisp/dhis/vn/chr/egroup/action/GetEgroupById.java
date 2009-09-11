@@ -9,6 +9,12 @@ import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.EgroupService;
 import com.opensymphony.xwork2.Action;
 
+
+/**
+ * @author Chau Thu Tran
+ * @version $Id
+ */
+
 public class GetEgroupById
     implements Action
 {
