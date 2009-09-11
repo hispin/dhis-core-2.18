@@ -196,7 +196,7 @@
 			<result name="success" type="chain">getVisibleForms</result>
 			<param name="page">/dhis-web-chr-form/addForm.vm</param>
 			<param name="menu">/dhis-web-chr-form/menu.vm</param>
-			<param name="javascripts">javascripts/forms.js</param>
+			<param name="javascripts">javascripts/forms.js, javascripts/dhtmlgoodies_calendar.js, javascripts/calendar.js</param>
 	      	<param name="stylesheets">styles/dhtmlgoodies_calendar.css</param>
 		</action>
 		

@@ -10,8 +10,6 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.vn.report.action.ActionSupport;
 import org.hisp.dhis.vn.report.state.ReportLocationManager;
 
-import com.opensymphony.xwork2.Action;
-
 public class UploadExcelFileAction
     extends ActionSupport
 {

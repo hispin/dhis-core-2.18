@@ -91,12 +91,14 @@ public class ViewDataAction
                 if ( reportItem.getItemType().equals( ReportItem.TYPE.DATAELEMENT ) )
                 {
                     String value = ExcelUtils.readValue( reportItem.getRow(), reportItem.getColumn(), sheet );
+                    
+                    if ( !value.isEmpty() )
+                    {
+                        ReportItemValue reportItemvalue = new ReportItemValue( reportItem, value );
 
-                    ReportItemValue reportItemvalue = new ReportItemValue( reportItem, value );
-
-                    reportItemValues.add( reportItemvalue );
-
-                }// end if
+                        reportItemValues.add( reportItemvalue );
+                    } // end if value
+                }// end if reportitems
             }// end for
 
             return SUCCESS;

@@ -2,13 +2,9 @@ package org.hisp.dhis.vn.chr.statement;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.jdbc.StatementBuilder;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.vn.chr.Egroup;
-import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.Form;
 
 public class CreateCodeStatement extends FormStatement
@@ -41,13 +37,16 @@ public class CreateCodeStatement extends FormStatement
         buffer.append( "FROM" + SPACE  + form.getName().toLowerCase() + SPACE);
         // WHERE
         Date date = new Date();
-        Format formatter = new SimpleDateFormat( "yyyy-MM" );
-        String period = formatter.format(date);
+        // year
+        Format formatter = new SimpleDateFormat( "yyyy" );
+        String year = formatter.format(date);
+        // month
+        formatter = new SimpleDateFormat( "MM" );
+        int month =Integer.parseInt( formatter.format(date));
         
-        buffer.append( "WHERE" +  SPACE + "createddate>=" + period + "-" + "01" + SPACE );
-        buffer.append( "AND" +  SPACE + "createddate<=" + period + "-" + "31" );
+        buffer.append( "WHERE" +  SPACE + "createddate>='" + year + "-" + month + "-" + "01'" + SPACE );
+        buffer.append( "AND" +  SPACE + "createddate<'"+ year + "-" + (month + 1) + "-" + "01'" );
 
         statement = buffer.toString();
-        
     } 
 }

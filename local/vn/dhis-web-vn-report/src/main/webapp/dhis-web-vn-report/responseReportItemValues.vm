@@ -2,8 +2,9 @@
 <reportItemValues>
 #foreach($reportItemValue in $reportItemValues)
 	<reportItemValue>
+		<id>$encoder.xmlEncode($reportItemValue.reportItem.id)</id>
 		<name>$encoder.xmlEncode($reportItemValue.reportItem.name)</name>
-		<value>$reportItemValue.value )</value>
+		<value>$reportItemValue.value</value>
 	</reportItemValue>
 #end
 </reportItemValues>

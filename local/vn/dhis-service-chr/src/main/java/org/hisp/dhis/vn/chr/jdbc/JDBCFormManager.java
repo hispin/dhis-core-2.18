@@ -542,7 +542,7 @@ public class JDBCFormManager
             {
 
                 count = resultSet.getInt( 1 ) + 1;
-
+System.out.println("\n\n\n count : " + count);
                 if ( count < 10 )
                 {
                     return "00" + count;
@@ -562,7 +562,7 @@ public class JDBCFormManager
         {
             holder.close();
         }
-
+System.out.println("\n\n\n count : " + count);
         return count + "";
     }
 }
