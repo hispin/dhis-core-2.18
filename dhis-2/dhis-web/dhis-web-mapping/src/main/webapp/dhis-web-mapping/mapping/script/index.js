@@ -3,7 +3,7 @@ Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
 
 Ext.onReady(function()
 {
-    Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
     
     Ext.override(Ext.layout.FormLayout, {
         renderItem : function(c, position, target) {
@@ -149,6 +149,8 @@ Ext.onReady(function()
     Ext.override(Ext.form.Radio, {
         checkedCls: 'x-form-radio-checked'
     });
+	
+	document.body.oncontextmenu = function() { return false; }
 
     myMap: null;
 	map = new OpenLayers.Map({
@@ -2296,6 +2298,10 @@ function onClickSelectChoropleth(feature) {
         
         popup_feature.hide();
     }
+	else {
+		map.zoomIn();
+		map.panTo(feature.geometry.getBounds().getCenterLonLat());
+	}
 }
 
 function onClickUnselectChoropleth(feature) {}
