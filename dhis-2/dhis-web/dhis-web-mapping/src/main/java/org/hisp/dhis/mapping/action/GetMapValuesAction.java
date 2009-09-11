@@ -30,7 +30,7 @@ package org.hisp.dhis.mapping.action;
 import java.util.Collection;
 
 import org.hisp.dhis.aggregation.AggregatedMapValue;
-import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.mapping.MappingService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -44,12 +44,12 @@ public class GetMapValuesAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
+    private MappingService mappingService;
 
-    private DataMartStore dataMartStore;
-
-    public void setDataMartStore( DataMartStore dataMartStore )
+    public void setMappingService( MappingService mappingService )
     {
-        this.dataMartStore = dataMartStore;
+        this.mappingService = mappingService;
     }
 
     // -------------------------------------------------------------------------
@@ -70,13 +70,13 @@ public class GetMapValuesAction
         this.periodId = periodId;
     }
 
-    private int level;
+    private String mapLayerPath;    
 
-    public void setLevel( int level )
+    public void setMapLayerPath( String mapLayerPath )
     {
-        this.level = level;
+        this.mapLayerPath = mapLayerPath;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -91,10 +91,11 @@ public class GetMapValuesAction
     // -------------------------------------------------------------------------
     // Action implemenation
     // -------------------------------------------------------------------------
+    
     public String execute()
         throws Exception
     {
-        object = dataMartStore.getAggregatedMapValues( indicatorId, periodId, level );
+        object = mappingService.getAggregatedMapValues( indicatorId, periodId, mapLayerPath );
         
         return SUCCESS;
     }
