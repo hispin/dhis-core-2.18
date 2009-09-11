@@ -7,6 +7,12 @@ package org.hisp.dhis.vn.chr.egroup.action;
 
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
+
+/**
+ * @author Chau Thu Tran
+ * @version $Id
+ */
+
 public class ValidateEgroupAction
     extends ActionSupport
 {

@@ -1,12 +1,12 @@
 package org.hisp.dhis.vn.chr.configuration.action;
 
-/**
- * @author Chau Thu Tran
- * 
- */
-
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
+
+/**
+ * @author Chau Thu Tran
+ * @version $Id
+ */
 
 public class SetNumberOfRecordsAction
     extends ActionSupport

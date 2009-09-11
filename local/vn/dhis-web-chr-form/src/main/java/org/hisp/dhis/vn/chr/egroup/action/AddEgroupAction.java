@@ -1,15 +1,15 @@
 package org.hisp.dhis.vn.chr.egroup.action;
 
-/**
- * @author Chau Thu Tran
- * 
- */
-
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.chr.Egroup;
 import org.hisp.dhis.vn.chr.EgroupService;
 import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
+
+/**
+ * @author Chau Thu Tran
+ * @version $Id
+ */
 
 public class AddEgroupAction
     extends ActionSupport

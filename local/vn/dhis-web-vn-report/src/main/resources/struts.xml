@@ -620,6 +620,5 @@
 				/dhis-web-vn-report/responseDataSets.vm</result>
 		</action>
 
-
 	</package>
 </struts>

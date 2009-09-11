@@ -11,6 +11,11 @@ import org.hisp.dhis.vn.chr.ElementService;
 import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
+/**
+ * @author Chau Thu Tran
+ * @version $Id
+ */
+
 public class UpdateElementAction
     extends ActionSupport
 {

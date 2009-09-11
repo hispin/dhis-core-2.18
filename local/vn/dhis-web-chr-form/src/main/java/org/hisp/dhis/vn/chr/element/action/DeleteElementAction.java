@@ -8,6 +8,11 @@ package org.hisp.dhis.vn.chr.element.action;
 import org.hisp.dhis.vn.chr.ElementService;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
+/**
+ * @author Chau Thu Tran
+ * @version $Id
+ */
+
 public class DeleteElementAction
     extends ActionSupport
 {
