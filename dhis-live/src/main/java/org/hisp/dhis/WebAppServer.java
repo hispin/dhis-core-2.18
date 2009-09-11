@@ -42,8 +42,8 @@ import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
 
 /**
- *
- * @author bobj
+ * @author Bob Jolliffe
+ * @version $Id$
  */
 public class WebAppServer 
 {
