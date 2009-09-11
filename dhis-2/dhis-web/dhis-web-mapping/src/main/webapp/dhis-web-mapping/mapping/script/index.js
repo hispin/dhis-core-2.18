@@ -2357,12 +2357,12 @@ function getChoroplethData() {
 	
     var indicatorId = Ext.getCmp('indicator_cb').getValue();
     var periodId = Ext.getCmp('period_cb').getValue();
-    var level = MAPDATA.organisationUnitLevel;
+    var mapLayerPath = MAPDATA.mapLayerPath;
 
     Ext.Ajax.request({
         url: path + 'getMapValues' + type,
         method: 'POST',
-        params: { indicatorId: indicatorId, periodId: periodId, level: level, format: 'json' },
+        params: { indicatorId: indicatorId, periodId: periodId, mapLayerPath: mapLayerPath, format: 'json' },
 
         success: function( responseObject ) {
             dataReceivedChoropleth( responseObject.responseText );
@@ -2376,98 +2376,109 @@ function getChoroplethData() {
 function dataReceivedChoropleth( responseText ) {
     var layers = this.myMap.getLayersByName(CHOROPLETH_LAYERNAME);
     var features = layers[0].features;
-    
     var mapvalues = Ext.util.JSON.decode(responseText).mapvalues;
-	
+
 	if (mapvalues.length == 0) {
 		Ext.messageRed.msg('Thematic map', 'The selected indicator, period and level returned no data.');
 		MASK.hide();
 		return;
 	}
-    
-    if (MAPSOURCE == 'database') {
-        for (var i=0; i < features.length; i++) {
-            for (var j=0; j < mapvalues.length; j++) {
-				if (features[i].attributes.value == null) {
-                    features[i].attributes.value = 0;
-                }
+	
+	for (var i = 0; i < features.length; i++) {
+		features[i].attributes.value = 0;
+	}
 
-                if (features[i].attributes.name == mapvalues[j].orgUnit) {
-                    features[i].attributes.value = parseFloat(mapvalues[j].value);
-                }
-            }
-        }
+    if (MAPSOURCE == 'database') {
+		for (var i = 0; i < mapvalues.length; i++) {
+			for (var j = 0; j < features.length; j++) {
+				if (mapvalues[i].orgUnitName == features[j].attributes.name) {
+					features[j].attributes.value = parseFloat(mapvalues[i].value);
+				}
+			}
+		}
         
         var options = {};
         
-        /*hidden*/
-        choropleth.indicator = 'value';
-        choropleth.indicatorText = 'Indicator';
-        options.indicator = choropleth.indicator;
+        // /*hidden*/
+        // choropleth.indicator = 'value';
+        // choropleth.indicatorText = 'Indicator';
+        // options.indicator = choropleth.indicator;
         
-        options.method = Ext.getCmp('method').getValue();
-        options.numClasses = Ext.getCmp('numClasses').getValue();
-        options.colors = choropleth.getColors();
+        // options.method = Ext.getCmp('method').getValue();
+        // options.numClasses = Ext.getCmp('numClasses').getValue();
+        // options.colors = choropleth.getColors();
 
-        choropleth.coreComp.updateOptions(options);
-        choropleth.coreComp.applyClassification();
-        choropleth.classificationApplied = true;
+        // choropleth.coreComp.updateOptions(options);
+        // choropleth.coreComp.applyClassification();
+        // choropleth.classificationApplied = true;
         
-        MASK.hide();
+        // MASK.hide();
     }
     else {
-        var mlp = MAPDATA.mapLayerPath;
         var nameColumn = MAPDATA.nameColumn;
         
-        Ext.Ajax.request({
-            url: path + 'getAvailableMapOrganisationUnitRelations' + type,
-            method: 'POST',
-            params: { mapLayerPath: mlp, format: 'json' },
-
-            success: function( responseObject ) {
-                var relations = Ext.util.JSON.decode(responseObject.responseText).mapOrganisationUnitRelations;
-                
-                for (var i=0; i < relations.length; i++) {
-                    var orgunitid = relations[i].organisationUnitId;
-                    var featureid = relations[i].featureId;
+                // var relations = Ext.util.JSON.decode(responseObject.responseText).mapOrganisationUnitRelations;
+		
+		for (var i = 0; i < mapvalues.length; i++) {
+			for (var j = 0; j < features.length; j++) {
+				if (mapvalues[i].featureId == features[j].attributes[nameColumn]) {
+					features[j].attributes.value = mapvalues[i].value;
+				}
+			}
+		}
+                // for (var i=0; i < relations.length; i++) {
+                    // var orgunitid = relations[i].organisationUnitId;
+                    // var featureid = relations[i].featureId;
                     
-                    for (var j=0; j < mapvalues.length; j++) {
-                        if (orgunitid == mapvalues[j].organisationUnitId) {
-                            for (var k=0; k < features.length; k++) {
-                                if (features[k].attributes['value'] == null) {
-                                    features[k].attributes['value'] = 0;
-                                }
+                    // for (var j=0; j < mapvalues.length; j++) {
+                        // if (orgunitid == mapvalues[j].organisationUnitId) {
+                            // for (var k=0; k < features.length; k++) {
+                                // if (features[k].attributes['value'] == null) {
+                                    // features[k].attributes['value'] = 0;
+                                // }
                                 
-                                if (featureid == features[k].attributes[nameColumn]) {
-                                    features[k].attributes['value'] = mapvalues[j].value;
-                                }
-                            }
-                        }
-                    }
-                }
+                                // if (featureid == features[k].attributes[nameColumn]) {
+                                    // features[k].attributes['value'] = mapvalues[j].value;
+                                // }
+                            // }
+                        // }
+                    // }
+                // }
                 
-                var options = {};
-                
-                /*hidden*/
-                choropleth.indicator = 'value';
-                choropleth.indicatorText = 'Indicator';
-                options.indicator = choropleth.indicator;
-                
-                options.method = Ext.getCmp('method').getValue();
-                options.numClasses = Ext.getCmp('numClasses').getValue();
-                options.colors = choropleth.getColors();
-                
-                choropleth.coreComp.updateOptions(options);
-                choropleth.coreComp.applyClassification();
-                choropleth.classificationApplied = true;
-                
-                MASK.hide();
-            },
-            failure: function() {
-                alert( 'Error while retrieving data: dataReceivedChoropleth' );
-            } 
-        });
+		var options = {};
+		
+		// /*hidden*/
+		// choropleth.indicator = 'value';
+		// choropleth.indicatorText = 'Indicator';
+		// options.indicator = choropleth.indicator;
+		
+		// options.method = Ext.getCmp('method').getValue();
+		// options.numClasses = Ext.getCmp('numClasses').getValue();
+		// options.colors = choropleth.getColors();
+		
+		// choropleth.coreComp.updateOptions(options);
+		// choropleth.coreComp.applyClassification();
+		// choropleth.classificationApplied = true;
+		
+		// MASK.hide();
     }
+	
+		var options = {};
+		
+		/*hidden*/
+		choropleth.indicator = 'value';
+		choropleth.indicatorText = 'Indicator';
+		options.indicator = choropleth.indicator;
+		
+		options.method = Ext.getCmp('method').getValue();
+		options.numClasses = Ext.getCmp('numClasses').getValue();
+		options.colors = choropleth.getColors();
+		
+		choropleth.coreComp.updateOptions(options);
+		choropleth.coreComp.applyClassification();
+		choropleth.classificationApplied = true;
+		
+		MASK.hide();
 }
 
 /*PROPORTIONAL SYMBOL*/
