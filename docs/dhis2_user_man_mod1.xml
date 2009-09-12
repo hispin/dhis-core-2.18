@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<?altova_sps http://www.altova.com/sps/Template/Publishing/docbook.sps?>
+<?xml-stylesheet type="text/xsl" href="C:\Program Files\Altova\XMLSpy2008\Stylesheets\docbook\html\docbook.xsl"?>
+<article>
+  <articleinfo>
+    <date>12/09/09</date>
+
+    <title>What is DHIS 2?</title>
+
+    <author>
+      <surname>Unknown</surname>
+
+      <affiliation>
+        <orgname></orgname>
+      </affiliation>
+    </author>
+
+    <revhistory>
+      <revision>
+        <revnumber>1</revnumber>
+
+        <date>12/09/09</date>
+
+        <authorinitials>JPP</authorinitials>
+
+        <revdescription>
+          <para>Initial conversion from MS Word format to DocBook</para>
+        </revdescription>
+      </revision>
+    </revhistory>
+  </articleinfo>
+
+  <sect1>
+    <title>Background of The District Health Information Software – Version 2
+    (DHIS 2)</title>
+
+    <para></para>
+
+    <highlights>
+      <para>After reading this chapter you will be able to understand:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>What is DHIS2 and what purpose it serves with respect to
+          HMIS</para>
+        </listitem>
+
+        <listitem>
+          <para>What is the difference between patient based and aggregate
+          data.</para>
+        </listitem>
+
+        <listitem>
+          <para>What are the different modules in DHIS 2.</para>
+        </listitem>
+
+        <listitem>
+          <para>What is Free and Open Source Software (FOSS), platform
+          (in)dependency, and itsimplications for HMIS.</para>
+        </listitem>
+
+        <listitem>
+          <para>What is FOSS, platform (in)dependency, and their implications
+          for HMIS.</para>
+        </listitem>
+      </itemizedlist>
+    </highlights>
+
+    <para>Computer based HMIS allows for a transition from a data (and paper)
+    based HMIS to and action led HMIS. Particular strengths of a computer
+    based HMIS enumerated below:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Promotes streamlining and standardization of data
+        records.</para>
+      </listitem>
+
+      <listitem>
+        <para>Promotes streamlining and standardization of data
+        records.</para>
+      </listitem>
+
+      <listitem>
+        <para>Promotes streamlining and standardization of data
+        records.</para>
+      </listitem>
+
+      <listitem>
+        <para>Allows creation of an integrated warehouse, which supports
+        combining data from different sources and conducting cross
+        analysis.</para>
+      </listitem>
+
+      <listitem>
+        <para>Facilitates Rationalization of reporting flows</para>
+      </listitem>
+
+      <listitem>
+        <para>Supports customized reporting.</para>
+      </listitem>
+
+      <listitem>
+        <para>Makes possible various kinds of indicator based analysis</para>
+      </listitem>
+
+      <listitem>
+        <para>Allows integration of various software applications such as GIS
+        and Excel.</para>
+      </listitem>
+
+      <listitem>
+        <para>Provides functionality to conduct data quality
+        validation.</para>
+      </listitem>
+
+      <listitem>
+        <para>Allows immediate online transmission of data / reports as and
+        when required by the user</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>The District Health Information Software – Version 2 (DHIS 2) is
+    Free and Open Source Software (FOSS) HMIS designed and developed under a
+    global research and development initiative (called Health Information
+    Systems Project – HISP) originating from the Department of Informatics,
+    University of Oslo, Norway. The first version of DHIS application (DHIS
+    1.3/1.4) was developed and subsequently upgraded on an ongoing base
+    continuously upgraded in South Africa by HISP South Africa since 1997.
+    This version was developed on Microsoft Office platform, and distributed
+    free. This application is currently the national standard in South Africa
+    and being used in all the health facilities in the country. Further, this
+    application is being used in many countries in Africa such as Ethiopia,
+    Nigeria, Botswana, Tanzania, Zambia, and, various other countries.</para>
+
+    <para>In 2005, based on the various comments and feedback from the field
+    level use, the University of Oslo initiated the process of developing
+    Version 2 of DHIS, which used DHIS 1.4 as the basis for the functional
+    requirements. Using a modular structure DHIS 2 was developed based on data
+    warehousing principles. DHIS 2 is built on Java based frameworks. It is
+    platform independent, can run on both online and offline modes, is multi
+    language enabled and integrated with various other applications such as
+    Geographic Information Systems and Excel. </para>
+
+    <para>The WHO and HMN (Health Metrics Network) are currently using DHIS 2
+    for implementing an integrated solution in the first HMN country – Sierra
+    Leone. While DHIS 2 will be used for the aggregated statistics component
+    of the HMIS, it will be integrated with a free software application called
+    Open MRS for patient based management, and the WHO created Open Health for
+    GIS and Web pivot tables.</para>
+
+    <para>In this training manual, we will take the DHIS 2 as the basis to
+    illustrate the various functionalities that a computer based HMIS should
+    provide.</para>
+
+    <sect2>
+      <title>Purpose of DHIS2</title>
+
+      <para>The purpose of DHIS can be summarized as follows: </para>
+
+      <orderedlist>
+        <listitem>
+          <para>Provide a comprehensive HMIS solution based on data
+          warehousing principles and a modular structure which can easily be
+          customized to the needs of different health systems - nations,
+          states, districts, and facilities. </para>
+        </listitem>
+
+        <listitem>
+          <para>Provide data entry facilities which can either be in the form
+          of standard (scroll down) lists (of data elements), or can be
+          customized to replicate paper forms – to make easy the process of
+          data entry. </para>
+        </listitem>
+
+        <listitem>
+          <para>Provide different kinds of tools for data validation and
+          improvement of data quality.</para>
+        </listitem>
+
+        <listitem>
+          <para>Provide different tools for reporting – both for automated
+          routine reports and analysis reports, and in addition provide the
+          user with functionality and flexibility to make their user defined
+          reports</para>
+        </listitem>
+
+        <listitem>
+          <para>A dashboard for monitoring and evaluation of health programs
+          that can allow for the generation and analysis of different
+          indicators, and also carry out data quality analysis.</para>
+        </listitem>
+
+        <listitem>
+          <para>Systems management functions to carry out various operations
+          to manage hierarchy of organization units,
+          addition/deletion/modification of data elements etc.</para>
+        </listitem>
+
+        <listitem>
+          <para>Functionality to design and modify indicators.</para>
+        </listitem>
+
+        <listitem>
+          <para> Functionalities of export-import, so that data entered on an
+          offline version can be exported to the district or higher level
+          systems. Export import can also be made in relation to other
+          applications such as Excel and Epi Info. </para>
+        </listitem>
+
+        <listitem>
+          <para>Integration with other software systems – such as
+          <acronym>RIMS</acronym>.</para>
+        </listitem>
+
+        <listitem>
+          <para>Integration with <glossterm>Geographic Information
+          Systems</glossterm> (<acronym>GIS</acronym>).</para>
+        </listitem>
+
+        <listitem>
+          <para>User management module for passwords, security, and defining
+          authorization.</para>
+        </listitem>
+
+        <listitem>
+          <para>Further modules can be developed (such as for human resources
+          management) and integrated as per user needs. </para>
+        </listitem>
+      </orderedlist>
+
+      <para>In summary, DHIS 2 provides a comprehensive HMIS solution for the
+      reporting and analysis needs of health facilities at any level. It is a
+      tried and tested application in various countries, and also now being
+      adopted by WHO for their HMN implementation</para>
+    </sect2>
+
+    <sect2>
+      <title>Difference between Aggregated and Patient data in a HMIS </title>
+
+      <para><emphasis>Patient data</emphasis> is data relating to ONE patient,
+      such as his/her diagnosis, name, age, earlier medical history etc.
+      Patient based data is important when you want to track longitudinally
+      the progress of a patient over time. For example, if we want to track
+      how a patient is adhering to and responding to the process of TB
+      treatment (typically taking place over 6-9 months), we would need
+      patient based data. </para>
+
+      <para><emphasis>Aggregated data</emphasis> is the consolidation of data
+      relating to multiple patients, and therefore cannot be traced back to a
+      specific patient. They are merely counts, such as incidences of Malaria,
+      TB, or other diseases. Typically, the routine data that a health
+      facility deals with is this kind of aggregated statistics, and is used
+      for the generation of routine reports and indicators. </para>
+
+      <para>Patient data is highly confidential and therefore must be
+      protected so that no one other than doctors can get it. When in paper,
+      it must be properly stored in a secure place. For computers, patient
+      data needs secure systems with passwords and restrained access.</para>
+
+      <para>Security concerns for aggregated data are not as crucial as for
+      patient data, as there are no ways of relating it to a person. However,
+      data can still be misused and misinterpreted by others, and should not
+      be distributed uncritically. A data policy needs to be established by
+      the managers about who gets access to what data.</para>
+    </sect2>
+
+    <sect2>
+      <title>Use of DHIS 2 in HMIS: data collection, processing,
+      interpretation, and analysis. </title>
+
+      <para>The wider context of HMIS can be comprehensively described through
+      the information cycle presented in Figure 1.1 below. The information
+      cycle pictorially depicts the different components, stages and processes
+      through which the data is collected, checked for quality, processed,
+      analyzed and used.</para>
+
+      <figure>
+        <title>The health information cycle </title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/dhis2_information_cycle.png" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>DHIS 2 supports the different facets of the information cycle
+      including:<itemizedlist>
+          <listitem>
+            <para>Collecting data.</para>
+          </listitem>
+
+          <listitem>
+            <para>Running quality checks.</para>
+          </listitem>
+
+          <listitem>
+            <para>Data access at multiple levels.</para>
+          </listitem>
+
+          <listitem>
+            <para>Reporting.</para>
+          </listitem>
+
+          <listitem>
+            <para>Making graphs and maps and other forms of analysis.</para>
+          </listitem>
+
+          <listitem>
+            <para>Enabling comparison across time (for example, previous
+            months) and space (for example, across facilities and
+            districts).</para>
+          </listitem>
+
+          <listitem>
+            <para>See trends (displaying data in time series to see their min
+            and max levels).</para>
+          </listitem>
+        </itemizedlist></para>
+
+      <para>As a first step, DHIS 2 serves as a data collection, recording and
+      compilation tool, and all data (be it in numbers or text form) can be
+      entered into it. Data entry can be done in lists of data elements or in
+      customized user defined forms based on the paper forms. </para>
+
+      <para>As a next step, DHIS 2 can be used to increase data quality.
+      Firstly, at the point of data entry, a check can be made to see if data
+      falls within acceptable range levels of minimum and maximum values for
+      any particular data element. Such checking, for example, can help to
+      identify typing errors at the time of data entry. Further, user can
+      define various validation rules, and DHIS 2 can run the data through the
+      validation rules to identify violations.</para>
+
+      <para>When data has been entered and verified, DHIS 2 can help to make
+      different kinds of reports. The first kind are the routine reports that
+      can be predefined, so that all those reports that need to be routine
+      generated can be done on a click of a button. Further, DHIS 2 can help
+      in the generation of analytical reports through comparisons of for
+      example indicators across facilities or over time. Graphs, maps, reports
+      and health profiles are amongst the outputs that DHIS 2 can produce, and
+      these should routinely be produced, analyzed, and acted upon by health
+      managers.</para>
+    </sect2>
+
+    <sect2>
+      <title>Overview of DHIS 2.0</title>
+
+      <sect3>
+        <title>The different modules of DHIS 2</title>
+
+        <para>DHIS is based on a modular approach of design. A module can be
+        seen as an independent component of application that is capable of
+        both processing inputs as well as outputs, that is used to communicate
+        with other modules. The modules are flexible enough to allow changes
+        in one module without having any effect on other modules. As long as
+        input and output stays the same, it doesn’t matter what happens inside
+        a module. A module can then be changed without affecting other
+        modules, which will be working as long as the output from the first
+        module comes out as normal. This modular feature allows DHIS 2 to be
+        constantly upgraded in terms of functionality, integrated with other
+        applications such as Excel pivot tables and GIS. Thus modularity
+        allows DHIS 2 to be flexible, and changes can take place in the
+        different modules without affecting others.</para>
+
+        <para>Currently, DHIS2 has several modules for functions such as data
+        entry, data quality checks, report generation etc. These modules have
+        been categorised and presented under two core categories namely
+        Maintenance and Services. The Services module supports data record,
+        analysis, report generation etc. And the Maintenance module allows you
+        to set the content and structure of the Services module.</para>
+      </sect3>
+
+      <sect3>
+        <title>Web-based versus standalone HMIS and their suitability</title>
+
+        <para>DHIS 2 can run both as a web based and offline application. As a
+        web based application, the DHIS 2 application can run on a central
+        server and make use of client-server architecture. For example, at the
+        state level, the DHIS 2 can run on a server, and the different
+        districts act as clients, drawing upon the server application through
+        the Internet for local use of the application. </para>
+
+        <para>In a standalone application, the DHIS 2 can run as an
+        independent application on individual computers in different sites
+        such as PHCs, CHCs etc. So, if computerization is taking place at the
+        Block level, then the DHIS 2 will be installed separately on each of
+        the block level computers. The disadvantage of a standalone
+        application is that of platform dependency – where the application
+        needs to be configured to the platform on each of the respective
+        machines. A thick client requires a local runtime environment. For
+        example a Windows Form application will only run on a Windows platform
+        with the .Net framework installed. The major advantage of the offline
+        version is that it can run without any dependency on the Internet.
+        This allows the application to run in remote locations where there is
+        limited or no Internet connectivity. </para>
+
+        <para>The main advantage of a web based solution is that it is
+        centralized, which enables easy, online updation and deployment of the
+        application. The only requirements on the clients’ side are to have
+        web browser installed on the used computer and have an Internet
+        connection. The hardware on the server is often more powerful than the
+        single computer. Another advantage of the web application is that is
+        platform independent, allowing the same software to be accessed
+        through a web browser regardless of the client’s operating system.
+        </para>
+
+        <para>Where connectivity is available, and there is need for
+        centralized management, a web based application is useful, and a
+        standalone application is preferred when these conditions are not
+        available or required. However, in most cases, a mix of these two
+        approaches would be required, with a server based deployment working
+        for district-state-national level processing, and a standalone
+        deployment at lower levels where connectivity is limited. The
+        advantage of such an approach is that it is flexible, inclusive, and
+        scaleable because as facilities get internet connectivity they can be
+        hooked up to the network.</para>
+      </sect3>
+
+      <sect3>
+        <title>Free and Open Source Software (FOSS): benefits and challenges
+        </title>
+
+        <para>Software carries the instructions that tell a computer how to
+        operate. The human authored and human readable form of those
+        instructions is called source code. Before the computer can actually
+        execute the instructions, the source code must be translated into a
+        machine readable (binary) format, called the object code. All
+        distributed software includes the object code, but FOSS makes the
+        source code available as well. </para>
+
+        <para>Proprietary software owners license their copyrighted object
+        code to a user, which allows the user to run the program. FOSS
+        programs, on the other hand, license both the object and the source
+        code, permitting the user to run, modify and possibly redistribute the
+        programs. With access to the source code, the users have the freedom
+        to run the program for any purpose, redistribute, probe, adapt, learn
+        from, customize the software to suit their needs, and release
+        improvements to the public for the good of the community. Hence, some
+        FOSS is also known as free software, where “free” refers, first and
+        foremost, to the above freedoms rather than in the monetary sense of
+        the word.</para>
+
+        <para>Within the public health sector, FOSS can potentially have a
+        range of benefits, including:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Lower costs as it does not involve paying for prohibitive
+            license costs.</para>
+          </listitem>
+
+          <listitem>
+            <para>Given the information needs for the health sector are
+            constantly changing and evolving, there is a need for the user to
+            have the freedom to make the changes as per the user requirements.
+            This is often limited in proprietary systems.</para>
+          </listitem>
+
+          <listitem>
+            <para>In the health sector, including in NRHM; a key agenda is
+            that of integration, which involves the technical linking of
+            different pieces of software (for example, DHIS 2 and RIMS). For
+            this, the source code needs to be made available to the developers
+            to create the integration. This availability is often not possible
+            in the case of proprietary software. And when it is, it comes at a
+            high cost and contractual obligations.</para>
+          </listitem>
+
+          <listitem>
+            <para>FOSS applications like DHIS2 typically are supported by a
+            global network of developers, and thus have access to cutting edge
+            research and development knowledge. </para>
+          </listitem>
+        </itemizedlist>
+      </sect3>
+
+      <sect3>
+        <title>Understanding platform independency</title>
+
+        <para>All computers have an Operating System (OS) to manage it and the
+        programs running it. Such OS serve as the middle layer between the
+        software application, such as DHIS 2, and the hardware, such as the
+        CPU and RAM. The most popularly used OS is Microsoft Windows, which
+        comes in various versions (such as XP, Vista). However, this OS costs
+        money, and have also been reported to have security issues that makes
+        it vulnerable to virus attacks. Operating Systems like Linux are free,
+        and are more secure with respect to virus attacks. Usually, many of
+        the applications will work on one OS, and not on others. Platform
+        independency implies that the software application can run on ANY OS -
+        Windows, Linux, Macintosh etc. DHIS 2 is platform independent, and is
+        extremely useful in the context of public health when typically you
+        have systems in different places running different kinds of OS.
+        </para>
+      </sect3>
+
+      <sect3>
+        <title>Auxiliary software that can be used with DHIS</title>
+
+        <para>A variety of auxiliary software can be run with DHIS 2, such as
+        GIS (for mapping), BIRT (for reporting), Excel (for analysis through
+        pivot table operations), Open MRS (for patient based management), and
+        CRIS (for HIV/AIDS management). Being based on Open Standards and an
+        Open Architecture, DHIS 2 can build bridges to speak to the other
+        systems. Further, auxiliary modules can be developed and integrated
+        with the core DHIS 2 application. </para>
+      </sect3>
+    </sect2>
+  </sect1>
+</article>
