@@ -9,6 +9,29 @@
 	<package name="dhis-web-excel-reporting" extends="dhis-web-commons"
 		namespace="/dhis-web-excel-reporting">
 		
+		<action name="administration" class="org.hisp.dhis.reportexcel.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/viewAdministrator.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+		
+		<!-- SYSTEM CONFIGURATION ACTION -->
+		
+		<action name="getConfiguration"
+			class="org.hisp.dhis.reportexcel.configuration.action.GetReportConfigurationAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/configuration.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+
+		<action name="setConfiguration"
+			class="org.hisp.dhis.reportexcel.configuration.action.SetReportConfigurationAction">
+			<result name="success" type="redirect">administration.action</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+		
 		<!-- REPORT EXCEL CORE ACTION -->
 		
 		<action name="index" class="org.hisp.dhis.reportexcel.action.NoAction">
@@ -79,10 +102,19 @@
 			<result name="success" type="velocity-xml">/dhis-web-excel-reporting/responseDataElementGroups.vm</result>
 		</action>
 		
+		<action name="addDataElementGroupOrder"
+			class="org.hisp.dhis.reportexcel.category.action.SaveDataElementGroupOrderAction">
+			<result name="success" type="redirect">listDataElementGroupOrder.action?id=${id}</result>
+		</action>
+		
 		<action name="updateDataElementGroupOrder"
 			class="org.hisp.dhis.reportexcel.category.action.UpdateDataElementGroupOrderAction">
-			<result name="success" type="redirect">listReportExcel.action</result>
+			<result name="success" type="redirect">listDataElementGroupOrder.action?id=${id}</result>
 		</action>
+		
+		
+		
+		
 		
 		<action name="openSortDataElement"
 			class="org.hisp.dhis.reportexcel.action.GetReportExcelAction">
@@ -102,6 +134,8 @@
 			class="org.hisp.dhis.reportexcel.category.action.GetDataElementOrderAction">
 			<result name="success" type="velocity-xml">/dhis-web-excel-reporting/responseDataElementOrder.vm</result>
 		</action>
+		
+		
 
 	</package>
 </struts>

@@ -87,9 +87,20 @@ public class SaveDataElementGroupOrderAction
         this.dataElementIds = dataElementIds;
     }
 
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    public Integer getId()
+    {
+        return id;
+    }
+
     public String execute()
         throws Exception
     {
+
         ReportExcelCategory reportExcelCategory = (ReportExcelCategory) reportService.getReportExcel( id );
 
         DataElementGroupOrder dataElementGroupOrder = new DataElementGroupOrder();

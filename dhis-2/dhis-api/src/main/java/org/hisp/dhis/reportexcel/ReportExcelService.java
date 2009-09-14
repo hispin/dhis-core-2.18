@@ -93,6 +93,8 @@ public interface ReportExcelService
     public DataElementGroupOrder getDataElementGroupOrder( Integer id );
 
     public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder );
+    
+    public void deleteDataElementGroupOrder( Integer id );
 
     // --------------------------------------
     // Data Entry Status
@@ -102,14 +104,16 @@ public interface ReportExcelService
 
     public DataEntryStatus getDataEntryStatus( int id );
 
-    public void deleteDataEntryStatus( int id );   
+    public void deleteDataEntryStatus( int id );
 
     public Collection<DataEntryStatus> getALLDataEntryStatus();
 
-    public Collection<DataEntryStatus> getDataEntryStatusDefault();    
+    public Collection<DataEntryStatus> getDataEntryStatusDefault();
 
     Collection<DataEntryStatus> getDataEntryStatusDefaultByDataSets( Collection<DataSet> dataSets );
 
     public int countDataValueOfDataSet( DataSet dataSet, OrganisationUnit organisationUnit, Period period );
+
+   
 
 }

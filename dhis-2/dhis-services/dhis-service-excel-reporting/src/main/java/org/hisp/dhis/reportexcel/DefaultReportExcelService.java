@@ -199,6 +199,11 @@ public class DefaultReportExcelService
         reportStore.updateDataElementGroupOrder( dataElementGroupOrder );
     }
 
+    public void deleteDataElementGroupOrder( Integer id )
+    {
+        reportStore.deleteDataElementGroupOrder( id );
+    }
+
     // -------------------------------------------------
     // Data Entry Status
     // -------------------------------------------------

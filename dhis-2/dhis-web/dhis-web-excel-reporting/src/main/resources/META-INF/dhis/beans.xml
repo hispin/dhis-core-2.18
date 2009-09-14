@@ -4,6 +4,31 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
+	<!-- SERVICE BEAN -->
+
+	<bean id="org.hisp.dhis.reportexcel.ReportLocationManager" class="org.hisp.dhis.reportexcel.ReportLocationManager"
+		init-method="init" scope="singleton">
+		<property name="locationManager"
+			ref="org.hisp.dhis.external.location.LocationManager" />
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	</bean>
+
+	<!-- SYSTEM CONFIGURATION BEAN -->
+
+	<bean
+		id="org.hisp.dhis.reportexcel.configuration.action.GetReportConfigurationAction"
+		class="org.hisp.dhis.reportexcel.configuration.action.GetReportConfigurationAction"
+		scope="prototype">
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.configuration.action.SetReportConfigurationAction"
+		class="org.hisp.dhis.reportexcel.configuration.action.SetReportConfigurationAction"
+		scope="prototype">
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	</bean>
+
 	<!-- REPORT EXCEL CORE BEAN -->
 
 	<bean id="org.hisp.dhis.reportexcel.action.AddReportExcelAction"
@@ -23,7 +48,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.action.GetReportExcelGroupsAction"
-		class="org.hisp.dhis.reportexcel.action.GetReportExcelGroupsAction" scope="prototype">
+		class="org.hisp.dhis.reportexcel.action.GetReportExcelGroupsAction"
+		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
 
@@ -33,7 +59,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.action.UpdateReportExcelAction"
-		class="org.hisp.dhis.reportexcel.action.UpdateReportExcelAction" scope="prototype">
+		class="org.hisp.dhis.reportexcel.action.UpdateReportExcelAction"
+		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
 
@@ -42,41 +69,61 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.reportexcel.action.ValidateUpdateReportExcelAction"
+
+	<bean
+		id="org.hisp.dhis.reportexcel.action.ValidateUpdateReportExcelAction"
 		class="org.hisp.dhis.reportexcel.action.ValidateUpdateReportExcelAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
-	
+
 	<!-- REPORT EXCEL CATEGORY BEAN -->
-	
-	<bean id="org.hisp.dhis.reportexcel.category.action.GetAllDataElementGroupsAction"
+
+	<bean
+		id="org.hisp.dhis.reportexcel.category.action.GetAllDataElementGroupsAction"
 		class="org.hisp.dhis.reportexcel.category.action.GetAllDataElementGroupsAction"
-		scope="prototype">		
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />		
+		scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.reportexcel.category.action.UpdateDataElementGroupOrderAction"
+
+	<bean
+		id="org.hisp.dhis.reportexcel.category.action.SaveDataElementGroupOrderAction"
+		class="org.hisp.dhis.reportexcel.category.action.SaveDataElementGroupOrderAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.category.action.UpdateDataElementGroupOrderAction"
 		class="org.hisp.dhis.reportexcel.category.action.UpdateDataElementGroupOrderAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />		
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.reportexcel.category.action.UpdateSortDataElementAction"
+
+	<bean
+		id="org.hisp.dhis.reportexcel.category.action.DeleteDataElementGroupOrderAction"
+		class="org.hisp.dhis.reportexcel.category.action.DeleteDataElementGroupOrderAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.category.action.UpdateSortDataElementAction"
 		class="org.hisp.dhis.reportexcel.category.action.UpdateSortDataElementAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.reportexcel.category.action.GetDataElementOrderAction"
+
+	<bean
+		id="org.hisp.dhis.reportexcel.category.action.GetDataElementOrderAction"
 		class="org.hisp.dhis.reportexcel.category.action.GetDataElementOrderAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
-	
-	
+
+
 
 
 
