@@ -2004,7 +2004,7 @@ Ext.onReady(function()
 			{
 				xtype: 'combo',
 				id: 'baselongitude_cb',
-				fieldLabel: 'Base longitude',
+				fieldLabel: 'Base longitude (x)',
 				valueField: 'longitude',
 				displayField: 'longitude',
 				editable: true,
@@ -2020,7 +2020,7 @@ Ext.onReady(function()
 			{
 				xtype: 'combo',
 				id: 'baselatitude_cb',
-				fieldLabel: 'Base latitude',
+				fieldLabel: 'Base latitude (y)',
 				valueField: 'latitude',
 				displayField: 'latitude',
 				editable: true,
