@@ -136,6 +136,21 @@
 		</action>
 		
 		
+		<!-- preview actions -->
+		<action name="previewReport"
+			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewReportAction">
+			<result name="success" type="chain">exportXMLChain</result>
+		</action>
+
+		<action name="exportXMLChain" 
+			class="org.hisp.dhis.reportexcel.preview.action.ExportXMLAction">
+			<result name="success" type="velocity-xml">/dhis-web-vn-report/responseReportPreview.vm</result>
+			<result name="error" type="velocity-xml">/dhis-web-vn-report/responseError.vm</result>
+			<param name="page">/dhis-web-vn-report/menu.vm</param>
+			<param name="javascripts">javascript/export.js,javascript/dataelement.js,javascript/report.js</param>
+		</action>
+		<!-- -->
+		
 
 	</package>
 </struts>

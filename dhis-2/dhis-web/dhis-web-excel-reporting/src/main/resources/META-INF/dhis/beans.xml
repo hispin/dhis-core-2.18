@@ -124,7 +124,40 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 
+	<!-- Preview beans -->
+	<bean id="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewReportAction"
+		class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewReportAction"
+		scope="prototype">
+		<property name="reportService" 
+			ref="org.hisp.dhis.vn.report.ReportExcelService" />
+		<property name="periodService" 
+			ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+		<property name="aggregationService" 
+			ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="dataElementCategoryOptionComboService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+		<property name="statementManager" 
+			ref="statementManager" />
+		<property name="dataElementService" 
+			ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="currentUserService" 
+			ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="indicatorService" 
+			ref="org.hisp.dhis.indicator.IndicatorService" />
+	</bean>
 
+	<bean id="org.hisp.dhis.reportexcel.preview.action.ExportXMLAction" 
+		class="org.hisp.dhis.reportexcel.preview.action.ExportXMLAction"
+		scope="prototype">
+		<property name="reportLocationManager" 
+			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+	</bean>
+
+	<!-- -->
 
 
 </beans>

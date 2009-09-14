@@ -85,6 +85,27 @@
       <groupId>org.amplecode</groupId>
       <artifactId>cave-process</artifactId>
     </dependency>
+	
+	<!-- POI Library -->
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi</artifactId>		
+		<version>3.5-beta5</version>
+	</dependency>
+
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi-scratchpad</artifactId>		
+		<version>3.5-beta5</version>
+	</dependency>
+
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi-ooxml</artifactId>		
+		<version>3.5-beta5</version>
+	</dependency>
+	
+	
   </dependencies>
   
 </project>
