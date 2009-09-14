@@ -37,7 +37,6 @@ import org.hisp.dhis.user.UserAuthorityGroup;
  */
 public abstract class ReportExcel
 {
-
     public static class TYPE
     {
 

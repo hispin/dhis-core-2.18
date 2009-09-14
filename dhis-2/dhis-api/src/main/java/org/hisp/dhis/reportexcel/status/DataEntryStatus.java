@@ -134,5 +134,4 @@ public class DataEntryStatus
             return false;
         return true;
     }
-
 }
