@@ -112,6 +112,7 @@ public class ValidateUpdateReportExcelAction
             message = i18n.getString( "excel_is_null" );
             return ERROR;
         }
+        
         if ( excel.trim().length() == 0 )
         {
             message = i18n.getString( "excel_is_null" );
@@ -120,5 +121,4 @@ public class ValidateUpdateReportExcelAction
 
         return SUCCESS;
     }
-
 }

@@ -29,8 +29,6 @@ public class GetReportConfigurationAction
         return templateDirectory;
     }
 
-
-
     public String execute()
         throws Exception
     {
@@ -38,5 +36,4 @@ public class GetReportConfigurationAction
         
         return SUCCESS;
     }
-
 }

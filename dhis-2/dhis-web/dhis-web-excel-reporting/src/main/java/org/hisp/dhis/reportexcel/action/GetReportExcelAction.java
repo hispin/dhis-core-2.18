@@ -95,7 +95,6 @@ public class GetReportExcelAction
     public String execute()
         throws Exception
     {
-
         if ( id != null )
         {
             report = reportService.getReportExcel( id );
@@ -104,6 +103,7 @@ public class GetReportExcelAction
         {
             return ERROR;
         }
+        
         return SUCCESS;
     }
 }
