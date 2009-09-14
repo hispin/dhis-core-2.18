@@ -40,7 +40,13 @@ public class AggregatedMapValue
     private String featureId;
     
     private double value;
-
+    
+    private double factor;
+    
+    private double numeratorValue;
+    
+    private double denominatorValue;
+    
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
@@ -49,12 +55,15 @@ public class AggregatedMapValue
     {   
     }
     
-    public AggregatedMapValue( int organisationUnitId, String organisationUnitName, String featureId, double value )
+    public AggregatedMapValue( int organisationUnitId, String organisationUnitName, String featureId, double value, double factor, double numeratorValue, double denominatorValue )
     {
         this.organisationUnitId = organisationUnitId;
         this.organisationUnitName = organisationUnitName;
         this.featureId = featureId;
         this.value = value;
+        this.factor = factor;
+        this.numeratorValue = numeratorValue;
+        this.denominatorValue = denominatorValue;
     }
 
     // ----------------------------------------------------------------------
@@ -112,5 +121,34 @@ public class AggregatedMapValue
     {
         this.value = value;
     }
-}
+    
+    public double getFactor()
+    {
+        return factor;
+    }
 
+    public void setFactor( double factor )
+    {
+        this.factor = factor;
+    }
+
+    public double getNumeratorValue()
+    {
+        return numeratorValue;
+    }
+
+    public void setNumeratorValue( double numeratorValue )
+    {
+        this.numeratorValue = numeratorValue;
+    }
+
+    public double getDenominatorValue()
+    {
+        return denominatorValue;
+    }
+
+    public void setDenominatorValue( double denominatorValue )
+    {
+        this.denominatorValue = denominatorValue;
+    }    
+}

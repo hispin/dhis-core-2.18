@@ -38,7 +38,7 @@ import com.opensymphony.xwork2.Action;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class GetMapValuesAction
+public class GetMapValuesByLevelAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -70,11 +70,11 @@ public class GetMapValuesAction
         this.periodId = periodId;
     }
 
-    private String mapLayerPath;    
+    private int level;    
 
-    public void setMapLayerPath( String mapLayerPath )
+    public void setLevel( int level )
     {
-        this.mapLayerPath = mapLayerPath;
+        this.level = level;
     }
 
     // -------------------------------------------------------------------------
@@ -95,7 +95,7 @@ public class GetMapValuesAction
     public String execute()
         throws Exception
     {
-        object = mappingService.getAggregatedMapValues( indicatorId, periodId, mapLayerPath );
+        object = mappingService.getAggregatedMapValues( indicatorId, periodId, level );
         
         return SUCCESS;
     }

@@ -5,7 +5,10 @@
     "orgUnitId": "$!{value.organisationUnitId}",
     "orgUnitName": "$!{value.organisationUnitName}",
     "featureId": "$!{value.featureId}",
-    "value": "$!{value.value}"
+    "value": "$!{value.value}",
+    "factor": "$!{value.factor}",
+    "numeratorValue": "$!{value.numeratorValue}",
+    "denominatorValue": "$!{value.denominatorValue}"    
   }#if( $velocityCount < $size ),#end
 #end
 ] }

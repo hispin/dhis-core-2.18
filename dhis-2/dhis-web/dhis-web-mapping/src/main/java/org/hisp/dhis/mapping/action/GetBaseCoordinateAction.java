@@ -1,4 +1,4 @@
-package org.hisp.dhis.system.objectmapper;
+package org.hisp.dhis.mapping.action;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,30 +27,60 @@ package org.hisp.dhis.system.objectmapper;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_GIS_LONGITUDE;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_GIS_LATITUDE;
 
-import org.hisp.dhis.aggregation.AggregatedMapValue;
+import org.hisp.dhis.options.SystemSettingManager;
+
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
+ * @author Jan Henrik Overland
  * @version $Id$
  */
-public class AggregatedMapValueRowMapper
-    implements RowMapper<AggregatedMapValue>
+public class GetBaseCoordinateAction
+    implements Action
 {
-    public AggregatedMapValue mapRow( ResultSet resultSet )
-        throws SQLException
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+    
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
-        final AggregatedMapValue value = new AggregatedMapValue();
+        this.systemSettingManager = systemSettingManager;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+    
+    private String longitude;
+    
+    public String getLongitude()
+    {
+        return longitude;
+    }
+
+    private String latitude;
+
+    public String getLatitude()
+    {
+        return latitude;
+    }    
+    
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
+        throws Exception
+    {
+        longitude = (String) systemSettingManager.getSystemSetting( KEY_GIS_LONGITUDE, "0" );
         
-        value.setOrganisationUnitId( resultSet.getInt( 1 ) );
-        value.setOrganisationUnitName( resultSet.getString( 2 ) );
-        value.setValue( resultSet.getDouble( 3 ) );
-        value.setNumeratorValue( resultSet.getDouble( 4 ) );
-        value.setDenominatorValue( resultSet.getDouble( 5 ) );
-        value.setFactor( resultSet.getDouble( 6 ) );
+        latitude = (String) systemSettingManager.getSystemSetting( KEY_GIS_LATITUDE, "0" );
         
-        return value;
+        return SUCCESS;
     }
 }

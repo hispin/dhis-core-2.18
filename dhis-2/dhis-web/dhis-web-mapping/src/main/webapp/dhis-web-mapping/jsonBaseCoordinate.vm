@@ -1,0 +1,7 @@
+{
+  "baseCoordinate": [
+  {
+    "longitude": "$!encoder.jsEncode( ${longitude} )",
+    "latitude": "$!encoder.jsEncode( ${latitude} )"
+  }
+]}

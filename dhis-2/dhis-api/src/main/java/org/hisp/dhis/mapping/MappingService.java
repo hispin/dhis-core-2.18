@@ -54,6 +54,8 @@ public interface MappingService
 
     Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, String mapLayerPath );
     
+    Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, int level );
+    
     // -------------------------------------------------------------------------
     // Map
     // -------------------------------------------------------------------------
@@ -263,7 +265,7 @@ public interface MappingService
      * @return a Collection of MapOrganisationUnitRelations connected to the
      *         given Map.
      */
-    Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationByMap( Map map );
+    Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationsByMap( Map map );
 
     /**
      * Returns a Collection of all existing MapOrganisationUnitRelations and the

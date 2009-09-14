@@ -23,7 +23,7 @@
 
 //  Ajax requests
 
-    path = '../dhis-web-mapping/';
+    path = '';
     type = '.action';
 
 //  Layout
@@ -35,6 +35,13 @@
     gridpanel_width = west_width - 15;
     gridpanel_height = 700;
     combo_width = 150;
+	combo_width2 = 133;
+	combo_list_width = combo_width + 17;
+	combo_number_width = 75;
+	combo_number_list_width = combo_number_width + 17;
+	
+	// if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+		
     
     MENU_TEXTCOLOR = '#666'; // label
 	MENU_TEXTCOLOR_INFO = '#222'; // info text

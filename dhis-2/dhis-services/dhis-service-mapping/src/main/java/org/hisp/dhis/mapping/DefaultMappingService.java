@@ -127,7 +127,7 @@ public class DefaultMappingService
         
         Collection<AggregatedMapValue> mapValues = dataMartStore.getAggregatedMapValues( indicatorId, periodId, level );
         
-        java.util.Map<Integer, String> relations = getOrganisationUnitFeatureMap( getMapOrganisationUnitRelationByMap( map ) );
+        java.util.Map<Integer, String> relations = getOrganisationUnitFeatureMap( getMapOrganisationUnitRelationsByMap( map ) );
         
         for ( AggregatedMapValue value : mapValues )
         {
@@ -135,6 +135,11 @@ public class DefaultMappingService
         }
         
         return mapValues;
+    }
+    
+    public Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, int level )
+    {
+        return dataMartStore.getAggregatedMapValues( indicatorId, periodId, level );
     }
     
     /**
@@ -297,7 +302,7 @@ public class DefaultMappingService
         
         Map map = getMapByMapLayerPath( mapLayerPath );
 
-        java.util.Map<Integer, MapOrganisationUnitRelation> relationMap = getRelationshipMap( getMapOrganisationUnitRelationByMap( map ) );
+        java.util.Map<Integer, MapOrganisationUnitRelation> relationMap = getRelationshipMap( getMapOrganisationUnitRelationsByMap( map ) );
         
         relationsLoop : for ( int i = 0; i < rels.length; i++ )
         {
@@ -401,9 +406,9 @@ public class DefaultMappingService
         return mappingStore.getAllMapOrganisationUnitRelations();
     }
 
-    public Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationByMap( Map map )
+    public Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationsByMap( Map map )
     {
-        return mappingStore.getMapOrganisationUnitRelationByMap( map );
+        return mappingStore.getMapOrganisationUnitRelationsByMap( map );
     }
 
     public Collection<MapOrganisationUnitRelation> getAvailableMapOrganisationUnitRelations( Map map )
@@ -411,7 +416,7 @@ public class DefaultMappingService
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( map
             .getOrganisationUnitLevel().getLevel() );
 
-        java.util.Map<Integer, MapOrganisationUnitRelation> relationMap = getRelationshipMap( getMapOrganisationUnitRelationByMap( map ) );
+        java.util.Map<Integer, MapOrganisationUnitRelation> relationMap = getRelationshipMap( getMapOrganisationUnitRelationsByMap( map ) );
         
         Collection<MapOrganisationUnitRelation> availableRelations = new ArrayList<MapOrganisationUnitRelation>();
         

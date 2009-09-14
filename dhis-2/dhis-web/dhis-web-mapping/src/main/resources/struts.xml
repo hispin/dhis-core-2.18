@@ -14,6 +14,12 @@
     <action name="index" class="org.hisp.dhis.mapping.action.NoAction">
       <result name="success" type="redirect">mapping/index.html</result>
     </action>
+	  
+	<!-- SystemSetting -->
+  
+    <action name="getOrganisationUnitLevels" class="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/jsonOrganisationUnitLevels.vm</result>
+    </action>
     
     <!-- OrganisationUnit -->
   
@@ -47,7 +53,11 @@
       <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
     </action>
     
-    <action name="getMapValues" class="org.hisp.dhis.mapping.action.GetMapValuesAction">
+    <action name="getMapValuesByMap" class="org.hisp.dhis.mapping.action.GetMapValuesByMapAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/jsonAggregatedMapValues.vm</result>
+    </action>
+	  
+	<action name="getMapValuesByLevel" class="org.hisp.dhis.mapping.action.GetMapValuesByLevelAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonAggregatedMapValues.vm</result>
     </action>	  
 	
@@ -57,7 +67,15 @@
 	  
 	<action name="getMapSourceTypeUserSetting" class="org.hisp.dhis.mapping.action.GetMapSourceTypeUserSettingAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonUserSetting.vm</result>
-    </action>   	  
+    </action>
+
+	<action name="getBaseCoordinate" class="org.hisp.dhis.mapping.action.GetBaseCoordinateAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/jsonBaseCoordinate.vm</result>
+    </action>
+
+	<action name="setBaseCoordinate" class="org.hisp.dhis.mapping.action.SetBaseCoordinateAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+    </action>
     
     <!-- MapOrganisationUnitRelations -->
     

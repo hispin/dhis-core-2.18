@@ -50,6 +50,9 @@ public interface SystemSettingManager
     
     final String KEY_CHR_IMAGE_DIRECTORY = "chrImageDirectory";
     final String KEY_CHR_NUMBER_OF_RECORDS = "chrNumberOfRecords";
+    
+    final String KEY_GIS_LONGITUDE = "longitude";
+    final String KEY_GIS_LATITUDE = "latitude";
 
     void saveSystemSetting( String name, Serializable value );   
 
