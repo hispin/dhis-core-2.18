@@ -24,14 +24,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.category.action;
+package org.hisp.dhis.reportexcel.item.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.reportexcel.DataElementGroupOrder;
+import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 
 import com.opensymphony.xwork2.Action;
@@ -40,46 +35,55 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class UpdateDataElementGroupOrderAction
+public class UpdateReportExcelItemAction
     implements Action
 {
+
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
 
     private ReportExcelService reportService;
 
-    private DataElementService dataElementService;
-
     // -------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------
 
     private Integer id;
 
-    private Integer dataElementGroupOrderId;
-
     private String name;
 
-    private List<String> dataElementIds = new ArrayList<String>();
+    private String itemType;
+
+    private String expression;
+
+    private String periodType;
+
+    private Integer row;
+
+    private Integer column;
+
+    private ReportExcelItem reportItem;
+
+    private Integer sheetNo;
 
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
-
-    public void setDataElementGroupOrderId( Integer dataElementGroupOrderId )
-    {
-        this.dataElementGroupOrderId = dataElementGroupOrderId;
-    }
 
     public void setReportService( ReportExcelService reportService )
     {
         this.reportService = reportService;
     }
 
-    public void setDataElementService( DataElementService dataElementService )
+    public void setSheetNo( Integer sheetNo )
     {
-        this.dataElementService = dataElementService;
+        this.sheetNo = sheetNo;
+    }
+
+    public ReportExcelItem getReportItem()
+    {
+        return reportItem;
     }
 
     public void setName( String name )
@@ -87,14 +91,29 @@ public class UpdateDataElementGroupOrderAction
         this.name = name;
     }
 
-    public void setDataElementIds( List<String> dataElementIds )
+    public void setItemType( String itemType )
     {
-        this.dataElementIds = dataElementIds;
+        this.itemType = itemType;
     }
 
-    public Integer getId()
+    public void setExpression( String expression )
     {
-        return id;
+        this.expression = expression;
+    }
+
+    public void setPeriodType( String periodType )
+    {
+        this.periodType = periodType;
+    }
+
+    public void setRow( Integer row )
+    {
+        this.row = row;
+    }
+
+    public void setColumn( Integer column )
+    {
+        this.column = column;
     }
 
     public void setId( Integer id )
@@ -105,23 +124,18 @@ public class UpdateDataElementGroupOrderAction
     public String execute()
         throws Exception
     {
-        DataElementGroupOrder dataElementGroupOrder = reportService.getDataElementGroupOrder( dataElementGroupOrderId );
+        reportItem = reportService.getReportExcelItem( id );
+        reportItem.setName( name );
+        reportItem.setItemType( itemType.trim() );
+        reportItem.setRow( row );
+        reportItem.setColumn( column );
+        reportItem.setExpression( expression.trim() );
+        reportItem.setPeriodType( periodType.trim() );
+        reportItem.setSheetNo( (sheetNo == null ? 0 : sheetNo) );
 
-        List<DataElement> dataElements = new ArrayList<DataElement>();
-
-        for ( String id : dataElementIds )
-        {
-            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );
-
-            dataElements.add( dataElement );
-        }
-
-        dataElementGroupOrder.setDataElements( dataElements );
-
-        dataElementGroupOrder.setName( name );
-
-        reportService.updateDataElementGroupOrder( dataElementGroupOrder );
+        reportService.updateReportExcelItem( reportItem );
 
         return SUCCESS;
     }
+
 }

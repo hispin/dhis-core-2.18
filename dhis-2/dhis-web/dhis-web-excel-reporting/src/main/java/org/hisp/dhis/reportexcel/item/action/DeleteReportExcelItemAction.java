@@ -24,15 +24,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.category.action;
+package org.hisp.dhis.reportexcel.item.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.system.util.TimeUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -40,7 +35,7 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class UpdateDataElementGroupOrderAction
+public class DeleteReportExcelItemAction
     implements Action
 {
     // -------------------------------------------
@@ -49,52 +44,19 @@ public class UpdateDataElementGroupOrderAction
 
     private ReportExcelService reportService;
 
-    private DataElementService dataElementService;
-
     // -------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------
 
     private Integer id;
-
-    private Integer dataElementGroupOrderId;
-
-    private String name;
-
-    private List<String> dataElementIds = new ArrayList<String>();
 
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
 
-    public void setDataElementGroupOrderId( Integer dataElementGroupOrderId )
-    {
-        this.dataElementGroupOrderId = dataElementGroupOrderId;
-    }
-
     public void setReportService( ReportExcelService reportService )
     {
         this.reportService = reportService;
-    }
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public void setDataElementIds( List<String> dataElementIds )
-    {
-        this.dataElementIds = dataElementIds;
-    }
-
-    public Integer getId()
-    {
-        return id;
     }
 
     public void setId( Integer id )
@@ -105,23 +67,9 @@ public class UpdateDataElementGroupOrderAction
     public String execute()
         throws Exception
     {
-        DataElementGroupOrder dataElementGroupOrder = reportService.getDataElementGroupOrder( dataElementGroupOrderId );
-
-        List<DataElement> dataElements = new ArrayList<DataElement>();
-
-        for ( String id : dataElementIds )
-        {
-            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );
-
-            dataElements.add( dataElement );
-        }
-
-        dataElementGroupOrder.setDataElements( dataElements );
-
-        dataElementGroupOrder.setName( name );
-
-        reportService.updateDataElementGroupOrder( dataElementGroupOrder );
+        reportService.deleteReportExcelItem( id );
 
         return SUCCESS;
     }
+
 }

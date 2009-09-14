@@ -4,15 +4,16 @@
 <td>
 	<input type="button" onclick="copySelectedItem()" value="$i18n.getString('copy_selected_item_to')"/>
 </td>
-<td align="">
+<td align="right">
 	$i18n.getString('filter_by_sheet')
-	<select id="sheetNoFilter" onchange="filterSheet();">
+	<select id="sheetNoFilter" onchange="getReportItemBySheet();">
 		<option value="" >--- ALL ---</option>
 		#foreach($sheet in $sheets)
 		<option value="$sheet" #if($sheetNo==$sheet) selected #end >$sheet</option>
 		#end
 	</select>	
-	<input type="button" onclick="openAddReportItemForm()" value="$i18n.getString('add')"/>
+	<input type="button" onclick="openAddReportItemForm()" value="$i18n.getString('add')" style="width:100px"/>
+	<input type="button" onclick="window.location='listReportExcel.action'" value="$i18n.getString('cancel')" style="width:100px"/>
 </td>
 </tr>
 </table>
@@ -39,7 +40,7 @@
 			<td>$encoder.htmlEncode( $reportItem.expression )</td>
 			
 			<td align="center">				
-				<a href="javascript:deleteReportItem('$reportItem.id');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+				<a href="javascript:deleteReportExcelItem('$reportItem.id');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 				<a href="javascript:openUpdateReportItem( '$reportItem.id' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 			</td>
 		</tr>
@@ -69,13 +70,12 @@
 			<td><label>$i18n.getString('item_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
 				<select type="text" id="itemType" name="itemType" style="min-width:20em" onchange="selectItiemType(this.value);">					
-					#if($!reportExcel.getReportType()=='category')
+					#if($!reportExcel.getReportType()=='CATEGORY')
 					<option value='dataelement'>$i18n.getString('dataelement')</option>					
 					<option value='dataelement_code'>$i18n.getString('dataelement_code')</option>
 					<option value='dataelement_name'>$i18n.getString('dataelement_name')</option>	
 					<option value='serial'>$i18n.getString('serial')</option>					
-					#else
-					<option value='calculation'>$i18n.getString('calculation')</option>
+					#else					
 					<option value='dataelement'>$i18n.getString('dataelement')</option>
 					<option value='formulaexcel'>$i18n.getString('formulaexcel')</option>					
 					<option value='indicator'>$i18n.getString('indicator')</option>
@@ -122,7 +122,7 @@
 		</tr>			
 	</table>
 	<p align="center">
-	<input type="button" value="$i18n.getString('ok')" onclick="javascript:validateAddReportItem();"/>
+	<input type="button" value="$i18n.getString('ok')" id="reportItemButton"/>
 	<input type="button" value="$i18n.getString('cancel')" onclick="hideById('report');deleteDivEffect();"/>
 	</p>
 </div>
@@ -253,7 +253,7 @@
 				<input type="button" value="<" onclick="insertDataElementId_()"/>
 			</td>
 			<td>	
-				<select id="dataElementGroup_" style="min-width:500px" onchange="getDataElementOrderByGroup()"></select>				
+				<select id="dataElementGroup_" style="min-width:500px" onchange="getDataElementGroupOrder()"></select>				
 				<select id="availableDataElements_" size="11" style="min-width:500px"></select>	
 				<select id="optionCombos_" size=4 style="min-width:500px"></select>	
 			</td>
@@ -321,6 +321,7 @@
 
 	var reportId = $!reportExcel.id;
 	var sheetNo = "$sheetNo";
+	var reportItemId;
 
 	var dataElementGroups = new Object();
 	#foreach( $dataElementGroup in $dataElementGroups )
@@ -334,20 +335,20 @@
 	
 	function selectItiemType( value ){	
 		if(value=='serial'){
-			setFieldValue('expression', value);
+			$('#expression').val(value);
 		}		
-		if(value=='icd_code'){
-			setFieldValue('expression', value);
+		if(value=='dataelement_code'){
+			$('#expression').val(value);
 		}
-		if(value=='organisation'){
-			setFieldValue('expression', value);
+		if(value=='dataelement_name'){
+			$('#expression').val(value);
 		}
 	}
 
 	function openExpressionBuild() {		
 		var itemTypeValue = $("#itemType").val();
 		var reportType = '$!reportExcel.getReportType()';
-		if(reportType=='category'){
+		if(reportType=='CATEGORY'){
 			if(itemTypeValue=='dataelement'){
 				openCategoryExpression();
 			}else{
@@ -415,7 +416,7 @@
 	}
 	
 </script>
-<div id="copyTo" style="position:fixed;display:none;width:450px;z-index:10001;background-color: white;border: medium solid silver;height:200px;padding:20px;">
+<div id="copyTo" style="position:fixed;display:none;width:450px;z-index:10001;background-color: white;border: medium solid silver;padding:20px;">
 <div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('copyTo');">[x]</div>
 <table width="100%">
 	<tr>

@@ -1,16 +1,13 @@
 ﻿<h2>$i18n.getString( "sort_dataelement" )</h2>
 
-
 <p>
-<select id="availableDataElementGroups" onchange="getDataElementGroupById()">
-	#foreach($dataElementOrder in $report.dataElementOrders)
-		<option value="$dataElementOrder.id">$dataElementOrder.dataElementGroupName</option>		
-	#end
-</select>
 <input type="button" value="$i18n.getString( "update_sorted_dataelement" )" onclick="updateSortedDataElement()"/>
-<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='listReportExcel.action';"/>
+<input type="button" value="$i18n.getString( "cancel" )" onclick="history.go(-1);"/>
 </p>
 <ul id="sortable1" class="connectedSortable">	
+	#foreach( $dataElement in $dataElementGroupOrder.dataElements)
+	<li class='ui-state-default' name='dataElement' value='$dataElement.id'><span class='ui-icon ui-icon-arrowthick-2-n-s'></span>$dataElement.name</li>
+	#end
 </ul>
 <div style="position:fixed;right:10px;top:200px;">
 	<ul id="sortable2" class="connectedSortable">
@@ -20,14 +17,14 @@
 
 
 <script type="text/javascript">
+	var id = $dataElementGroupOrder.id;
 	$(function() {
 		$("#sortable1, #sortable2").sortable({
 			connectWith: '.connectedSortable',
 			placeholder: 'ui-state-highlight'
 
 		}).disableSelection();
-	});
-	getDataElementGroupById();
+	});	
 </script>
 
 <span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="javascript:hideById(this.id);"></span>

@@ -24,24 +24,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.category.action;
+package org.hisp.dhis.reportexcel.item.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.reportexcel.DataElementGroupOrder;
+import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.reportexcel.action.ActionSupport;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class UpdateDataElementGroupOrderAction
-    implements Action
+public class ValidateUpdateReportExcelItemAction
+    extends ActionSupport
 {
     // -------------------------------------------
     // Dependency
@@ -49,27 +44,29 @@ public class UpdateDataElementGroupOrderAction
 
     private ReportExcelService reportService;
 
-    private DataElementService dataElementService;
-
     // -------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------
+    private Integer reportId;
 
-    private Integer id;
-
-    private Integer dataElementGroupOrderId;
+    private Integer reportItemId;
 
     private String name;
 
-    private List<String> dataElementIds = new ArrayList<String>();
+    private String expression;
 
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
+    private Integer row;
 
-    public void setDataElementGroupOrderId( Integer dataElementGroupOrderId )
+    private Integer column;
+
+    public void setReportItemId( Integer reportItemId )
     {
-        this.dataElementGroupOrderId = dataElementGroupOrderId;
+        this.reportItemId = reportItemId;
+    }
+
+    public void setReportId( Integer reportId )
+    {
+        this.reportId = reportId;
     }
 
     public void setReportService( ReportExcelService reportService )
@@ -77,51 +74,72 @@ public class UpdateDataElementGroupOrderAction
         this.reportService = reportService;
     }
 
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
     public void setName( String name )
     {
         this.name = name;
     }
 
-    public void setDataElementIds( List<String> dataElementIds )
+    public void setExpression( String expression )
     {
-        this.dataElementIds = dataElementIds;
+        this.expression = expression;
     }
 
-    public Integer getId()
+    public void setRow( Integer row )
     {
-        return id;
+        this.row = row;
     }
 
-    public void setId( Integer id )
+    public void setColumn( Integer column )
     {
-        this.id = id;
+        this.column = column;
     }
 
     public String execute()
         throws Exception
     {
-        DataElementGroupOrder dataElementGroupOrder = reportService.getDataElementGroupOrder( dataElementGroupOrderId );
-
-        List<DataElement> dataElements = new ArrayList<DataElement>();
-
-        for ( String id : dataElementIds )
+        if ( name == null )
         {
-            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );
-
-            dataElements.add( dataElement );
+            message = i18n.getString( "name_is_null" );
+            return ERROR;
         }
+        if ( name.trim().length() == 0 )
+        {
+            message = i18n.getString( "name_is_null" );
+            return ERROR;
+        }
+        ReportExcelItem reportItem = reportService.getReportExcelItem( name );
+        ReportExcel reportExcel = reportService.getReportExcel( reportId );
 
-        dataElementGroupOrder.setDataElements( dataElements );
+        ReportExcelItem temp = reportService.getReportExcelItem( reportItemId );
 
-        dataElementGroupOrder.setName( name );
+        if ( (!temp.equals( reportItem )) && reportExcel.getReportItems().contains( reportItem ) )
+        {
+            message = i18n.getString( "name_ready_exist" );
+            return ERROR;
+        }       
 
-        reportService.updateDataElementGroupOrder( dataElementGroupOrder );
+        if ( expression == null )
+        {
+            message = i18n.getString( "name_is_null" );
+            return ERROR;
+        }
+        if ( expression.trim().length() == 0 )
+        {
+            message = i18n.getString( "expression_is_null" );
+            return ERROR;
+        }
+        if ( row == null )
+        {
+            message = i18n.getString( "row_is_null" );
+            return ERROR;
+        }
+        if ( column == null )
+        {
+            message = i18n.getString( "column_is_null" );
+            return ERROR;
+        }
 
         return SUCCESS;
     }
+
 }

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dataElements>
-#foreach( $dataElement in $dataElementOrderInGroup.dataElements )
-	<dataElement>
-		<id>$dataElement.id</id>
-		<name>$encoder.xmlEncode( $dataElement.name )</name>
-	</dataElement>
-#end
-</dataElements>
+<dataElementGroupOrder>
+	<name>$dataElementGroupOrder.name</name>
+	<dataElements>
+	#foreach( $dataElement in $dataElementGroupOrder.dataElements )
+		<dataElement>
+			<id>$dataElement.id</id>
+			<name>$encoder.xmlEncode( $dataElement.name )</name>
+		</dataElement>
+	#end
+	</dataElements>
+</dataElementGroupOrder>
