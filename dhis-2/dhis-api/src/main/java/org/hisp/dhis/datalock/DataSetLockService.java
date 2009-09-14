@@ -144,7 +144,6 @@ public interface DataSetLockService
      * @param dataSetIdentifiers the data set Lock identifiers.
      * @return a distinct collection of data sets.
      */
-    Collection<DataSet> getDistinctDataSets( Collection<Integer> dataSetLockIdentifiers );
-    
+    Collection<DataSet> getDistinctDataSets( Collection<Integer> dataSetLockIdentifiers );    
 }
 
