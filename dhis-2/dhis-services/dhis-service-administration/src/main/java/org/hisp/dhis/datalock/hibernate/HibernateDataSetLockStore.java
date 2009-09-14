@@ -35,7 +35,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockStore;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
@@ -63,13 +62,6 @@ public class HibernateDataSetLockStore
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
-    }
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -102,32 +94,6 @@ public class HibernateDataSetLockStore
         return storedPeriod;
     }
 
-    private final DataSet reloadDataSet( DataSet dataSet )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        if ( session.contains( dataSet ) )
-        {
-            return dataSet; // Already in session, no reload needed
-        }
-
-        return dataSetService.getDataSet( dataSet.getId() );
-    }
-
-    private final DataSet reloadDataSetForceAdd( DataSet dataSet )
-    {
-        DataSet storedDataSet = reloadDataSet( dataSet );
-
-        if ( storedDataSet == null )
-        {
-            dataSetService.addDataSet( storedDataSet );
-
-            return dataSet;
-        }
-
-        return storedDataSet;
-    }
-
     // -------------------------------------------------------------------------
     // DataSetLock
     // -------------------------------------------------------------------------
@@ -135,7 +101,6 @@ public class HibernateDataSetLockStore
     public int addDataSetLock( DataSetLock dataSetLock )
     {
         dataSetLock.setPeriod( reloadPeriodForceAdd( dataSetLock.getPeriod() ) );
-        dataSetLock.setDataSet( reloadDataSetForceAdd( dataSetLock.getDataSet() ) );
 
         Session session = sessionFactory.getCurrentSession();
 
@@ -145,7 +110,6 @@ public class HibernateDataSetLockStore
     public void updateDataSetLock( DataSetLock dataSetLock )
     {
         dataSetLock.setPeriod( reloadPeriodForceAdd( dataSetLock.getPeriod() ) );
-        dataSetLock.setDataSet( reloadDataSetForceAdd( dataSetLock.getDataSet() ) );
 
         Session session = sessionFactory.getCurrentSession();
 
@@ -206,15 +170,14 @@ public class HibernateDataSetLockStore
         Session session = sessionFactory.getCurrentSession();
 
         Period storedPeriod = reloadPeriod( period );
-        DataSet storedDataSet = reloadDataSet( dataSet );
 
-        if ( (storedPeriod == null) || (storedDataSet == null) )
+        if ( storedPeriod == null )
         {
             return null;
         }
 
         Criteria criteria = session.createCriteria( DataSetLock.class );
-        criteria.add( Restrictions.eq( "dataSet", storedDataSet ) );
+        criteria.add( Restrictions.eq( "dataSet", dataSet ) );
         criteria.add( Restrictions.eq( "period", storedPeriod ) );
 
         return (DataSetLock) criteria.uniqueResult();
@@ -225,15 +188,14 @@ public class HibernateDataSetLockStore
         Session session = sessionFactory.getCurrentSession();
 
         Period storedPeriod = reloadPeriod( period );
-        DataSet storedDataSet = reloadDataSet( dataSet );
 
-        if ( (storedPeriod == null) || (storedDataSet == null) )
+        if ( storedPeriod == null )
         {
             return null;
         }
 
         Criteria criteria = session.createCriteria( DataSetLock.class );
-        criteria.add( Restrictions.eq( "dataSet", storedDataSet ) );
+        criteria.add( Restrictions.eq( "dataSet", dataSet ) );
         criteria.add( Restrictions.eq( "period", storedPeriod ) );
         criteria.createAlias( "sources", "s" );
         criteria.add( Restrictions.eq( "s.id", source.getId() ) );
