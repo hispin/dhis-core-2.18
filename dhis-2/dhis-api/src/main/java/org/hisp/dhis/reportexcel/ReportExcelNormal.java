@@ -8,7 +8,6 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 public class ReportExcelNormal
     extends ReportExcel
 {
-
     public ReportExcelNormal()
     {
         super();
@@ -20,7 +19,6 @@ public class ReportExcelNormal
     {
         super( name, excelTemplateFile, periodRow, periodColumn, organisationRow, organisationColumn, reportItems,
             organisationAssocitions, userRoles, group );
-        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -28,9 +26,4 @@ public class ReportExcelNormal
     {       
         return ReportExcel.TYPE.NORMAL;
     }
-
-    
-
-    
-
 }
