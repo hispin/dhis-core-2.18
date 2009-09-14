@@ -367,7 +367,7 @@ public class JdbcDataMartStore
         try
         {
             final String sql = 
-                "SELECT o.organisationunitid, o.name, a.value " +
+                "SELECT o.organisationunitid, o.name, a.value, a.factor, a.numeratorvalue, a.denominatorvalue " +
                 "FROM aggregatedindicatorvalue AS a, organisationunit AS o " +
                 "WHERE a.indicatorid  = " + indicatorId + " " +
                 "AND a.periodid = " + periodId + " " + 

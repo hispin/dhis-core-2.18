@@ -170,7 +170,7 @@ public interface MappingStore
      * @return a Collection of MapOrganisationUnitRelations connected to the
      *         given Map.
      */
-    Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationByMap( Map map );
+    Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationsByMap( Map map );
     
     /**
      * Deletes all MapOrganisationUnitRelations associated with the given

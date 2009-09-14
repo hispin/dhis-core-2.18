@@ -193,7 +193,7 @@ public class HibernateMappingStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationByMap( Map map )
+    public Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationsByMap( Map map )
     {
         Session session = sessionFactory.getCurrentSession();
 
