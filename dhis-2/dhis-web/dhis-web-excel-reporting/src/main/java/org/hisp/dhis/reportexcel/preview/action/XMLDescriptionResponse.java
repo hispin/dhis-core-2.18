@@ -111,7 +111,6 @@ public class XMLDescriptionResponse
      */
 
     private void writeXMLDescription()
-        throws IOException
     {
         Sheet sheet = this.WORKBOOK.getSheet( 0 );
 

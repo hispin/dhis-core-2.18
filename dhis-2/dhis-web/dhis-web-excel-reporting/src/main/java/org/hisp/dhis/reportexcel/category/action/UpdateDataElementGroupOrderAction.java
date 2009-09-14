@@ -104,11 +104,9 @@ public class UpdateDataElementGroupOrderAction
 
         for ( String id : dataElementIds )
         {
-
             DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );
 
             dataElements.add( dataElement );
-
         }
 
         dataElementGroupOrder.setDataElements( dataElements );

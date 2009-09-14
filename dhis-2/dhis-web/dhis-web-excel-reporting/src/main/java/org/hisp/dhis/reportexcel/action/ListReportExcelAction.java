@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportexcel.action;
+
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -25,8 +27,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.reportexcel.action;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +34,7 @@ import java.util.List;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.comparator.ReportExcelNameComparator;
-import org.hisp.dhis.user.CurrentUserService;
+
 import com.opensymphony.xwork2.Action;
 
 /**
@@ -44,12 +44,16 @@ import com.opensymphony.xwork2.Action;
 public class ListReportExcelAction
     implements Action
 {
-
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
 
-    private ReportExcelService reportService; 
+    private ReportExcelService reportService;
+
+    public void setReportService( ReportExcelService reportService )
+    {
+        this.reportService = reportService;
+    }
 
     // -------------------------------------------
     // Output
@@ -57,21 +61,10 @@ public class ListReportExcelAction
 
     private List<ReportExcel> reports;
 
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
-
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
-    }
-
     public List<ReportExcel> getReports()
     {
         return reports;
-    }  
-
-    // -------------------------------------------------------------------------
+    }
 
     public String execute()
         throws Exception
@@ -82,5 +75,4 @@ public class ListReportExcelAction
 
         return SUCCESS;
     }
-
 }

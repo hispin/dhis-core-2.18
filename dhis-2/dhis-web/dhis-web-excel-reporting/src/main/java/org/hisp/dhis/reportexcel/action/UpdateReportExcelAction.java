@@ -29,7 +29,6 @@ package org.hisp.dhis.reportexcel.action;
 
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
-import org.hisp.dhis.system.util.TimeUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -40,7 +39,6 @@ import com.opensymphony.xwork2.Action;
 public class UpdateReportExcelAction
     implements Action
 {
-
     // -------------------------------------------
     // Dependency
     // -------------------------------------------

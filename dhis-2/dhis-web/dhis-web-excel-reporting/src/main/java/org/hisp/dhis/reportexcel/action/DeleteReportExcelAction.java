@@ -66,5 +66,4 @@ public class DeleteReportExcelAction
 
         return SUCCESS;
     }
-
 }

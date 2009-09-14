@@ -41,121 +41,144 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class AddReportExcelAction implements Action {
+public class AddReportExcelAction
+    implements Action
+{
 
-	// -------------------------------------------
-	// Dependency
-	// -------------------------------------------
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
 
-	private ReportExcelService reportService;
+    private ReportExcelService reportService;
 
-	// -------------------------------------------
-	// Input & Output
-	// -------------------------------------------
-	private String name;
+    // -------------------------------------------
+    // Input & Output
+    // -------------------------------------------
+    
+    private String name;
 
-	private String excel;
+    private String excel;
 
-	private Integer periodRow;
+    private Integer periodRow;
 
-	private Integer periodCol;
+    private Integer periodCol;
 
-	private Integer organisationRow;
+    private Integer organisationRow;
 
-	private Integer organisationCol;
+    private Integer organisationCol;
 
-	private String reportType;
+    private String reportType;
 
-	private ReportExcel report;
+    private ReportExcel report;
 
-	private String group;
+    private String group;
 
-	// -------------------------------------------
-	// Getter & Setter
-	// -------------------------------------------
+    // -------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------
 
-	public void setReportService(ReportExcelService reportService) {
-		this.reportService = reportService;
-	}
+    public void setReportService( ReportExcelService reportService )
+    {
+        this.reportService = reportService;
+    }
 
-	public void setGroup(String group) {
-		this.group = group;
-	}
+    public void setGroup( String group )
+    {
+        this.group = group;
+    }
 
-	public void setReportType(String reportType) {
-		this.reportType = reportType;
-	}
+    public void setReportType( String reportType )
+    {
+        this.reportType = reportType;
+    }
 
-	public ReportExcel getReport() {
-		return report;
-	}
+    public ReportExcel getReport()
+    {
+        return report;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public void setExcel(String excel) {
-		this.excel = excel;
-	}
+    public void setExcel( String excel )
+    {
+        this.excel = excel;
+    }
 
-	public void setPeriodRow(Integer periodRow) {
-		this.periodRow = periodRow;
-	}
+    public void setPeriodRow( Integer periodRow )
+    {
+        this.periodRow = periodRow;
+    }
 
-	public void setPeriodCol(Integer periodCol) {
-		this.periodCol = periodCol;
-	}
+    public void setPeriodCol( Integer periodCol )
+    {
+        this.periodCol = periodCol;
+    }
 
-	public void setOrganisationRow(Integer organisationRow) {
-		this.organisationRow = organisationRow;
-	}
+    public void setOrganisationRow( Integer organisationRow )
+    {
+        this.organisationRow = organisationRow;
+    }
 
-	public void setOrganisationCol(Integer organisationCol) {
-		this.organisationCol = organisationCol;
-	}
-	
-	public String execute() throws Exception {
+    public void setOrganisationCol( Integer organisationCol )
+    {
+        this.organisationCol = organisationCol;
+    }
 
-		if (reportType.equalsIgnoreCase(ReportExcel.TYPE.NORMAL)) {
-			report = new ReportExcelNormal();
-		}
-		
-		if (reportType
-				.equalsIgnoreCase(ReportExcel.TYPE.ORGANIZATION_GROUP_LISTING)) {
-			report = new ReportExcelOganiztionGroupListing();
-		}
-		
-		if (reportType.equalsIgnoreCase(ReportExcel.TYPE.CATEGORY)) {
-			report = new ReportExcelCategory();
+    public String execute()
+        throws Exception
+    {
 
-		}
-		
-		if (reportType.equalsIgnoreCase(ReportExcel.TYPE.PERIOD_COLUMN_LISTING)) {
-			report = new ReportExcelPeriodColumnListing();
-		}
+        if ( reportType.equalsIgnoreCase( ReportExcel.TYPE.NORMAL ) )
+        {
+            report = new ReportExcelNormal();
+        }
 
-		report.setName(name);
-		report.setExcelTemplateFile(excel);
-		report.setGroup(group);
+        if ( reportType.equalsIgnoreCase( ReportExcel.TYPE.ORGANIZATION_GROUP_LISTING ) )
+        {
+            report = new ReportExcelOganiztionGroupListing();
+        }
 
-		if (periodCol == null || periodRow == null) {
-			report.setPeriodColumn(-1);
-			report.setPeriodRow(-1);
-		} else {
-			report.setPeriodColumn(periodCol);
-			report.setPeriodRow(periodRow);
-		}
-		if (organisationCol == null || organisationRow == null) {
-			report.setOrganisationColumn(-1);
-			report.setOrganisationRow(-1);
-		} else {
-			report.setOrganisationColumn(organisationCol);
-			report.setOrganisationRow(organisationRow);
-		}
+        if ( reportType.equalsIgnoreCase( ReportExcel.TYPE.CATEGORY ) )
+        {
+            report = new ReportExcelCategory();
 
-		reportService.addReportExcel(report);
+        }
 
-		return SUCCESS;
+        if ( reportType.equalsIgnoreCase( ReportExcel.TYPE.PERIOD_COLUMN_LISTING ) )
+        {
+            report = new ReportExcelPeriodColumnListing();
+        }
 
-	}
+        report.setName( name );
+        report.setExcelTemplateFile( excel );
+        report.setGroup( group );
+
+        if ( periodCol == null || periodRow == null )
+        {
+            report.setPeriodColumn( -1 );
+            report.setPeriodRow( -1 );
+        }
+        else
+        {
+            report.setPeriodColumn( periodCol );
+            report.setPeriodRow( periodRow );
+        }
+        if ( organisationCol == null || organisationRow == null )
+        {
+            report.setOrganisationColumn( -1 );
+            report.setOrganisationRow( -1 );
+        }
+        else
+        {
+            report.setOrganisationColumn( organisationCol );
+            report.setOrganisationRow( organisationRow );
+        }
+
+        reportService.addReportExcel( report );
+
+        return SUCCESS;
+    }
 }

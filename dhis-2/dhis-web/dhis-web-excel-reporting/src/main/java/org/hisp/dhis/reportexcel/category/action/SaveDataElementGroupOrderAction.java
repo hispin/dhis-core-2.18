@@ -100,7 +100,6 @@ public class SaveDataElementGroupOrderAction
     public String execute()
         throws Exception
     {
-
         ReportExcelCategory reportExcelCategory = (ReportExcelCategory) reportService.getReportExcel( id );
 
         DataElementGroupOrder dataElementGroupOrder = new DataElementGroupOrder();
@@ -129,5 +128,4 @@ public class SaveDataElementGroupOrderAction
 
         return SUCCESS;
     }
-
 }
