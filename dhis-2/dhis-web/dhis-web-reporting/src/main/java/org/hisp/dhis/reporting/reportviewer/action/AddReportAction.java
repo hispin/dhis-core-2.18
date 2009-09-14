@@ -33,6 +33,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportManager;
@@ -80,6 +81,13 @@ public class AddReportAction
         this.reportTableService = reportTableService;
     }
     
+    private LocationManager locationManager;
+
+    public void setLocationManager( LocationManager locationManager )
+    {
+        this.locationManager = locationManager;
+    }
+
     // -----------------------------------------------------------------------
     // I18n
     // -----------------------------------------------------------------------
@@ -130,6 +138,13 @@ public class AddReportAction
         this.fileName = fileName;
     }
     
+    private String type;
+    
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
     private String contentType;
     
     public void setUploadContentType( String contentType )
@@ -188,32 +203,43 @@ public class AddReportAction
             
             return ERROR;
         }
-        
-        // ---------------------------------------------------------------------
-        // Design file upload
-        // ---------------------------------------------------------------------
 
-    	log.info( "Upload file name: " + fileName + ", content type: " + contentType );
-    	
-        ReportConfiguration reportConfig = reportManager.getConfiguration();
-        
-        String birtHome = reportConfig.getHome();
-        
-        File design = new File( birtHome, fileName );
-        
-        log.info( "New file: " + design.getAbsolutePath() );
-
-        // ---------------------------------------------------------------------
-        // Updating database properties in design file
-        // ---------------------------------------------------------------------
-
-        if ( file != null )
-        {
-            Map<String[], String> connectionMap = reportManager.getReportConnectionMap();
+        log.info( "Upload file name: " + fileName + ", content type: " + contentType );
             
-            StringBuffer in = StreamUtils.readContent( file, connectionMap );
-
-            StreamUtils.writeContent( design, in );
+        if ( ( type != null || type.equals( Report.TYPE_JASPER ) ) && file != null )
+        {
+            // -----------------------------------------------------------------
+            // Design file upload
+            // -----------------------------------------------------------------
+    
+            StreamUtils.write( file, locationManager.getFileForWriting( fileName, Report.TEMPLATE_DIR ) );
+        }
+        else // BIRT
+        {
+            // -----------------------------------------------------------------
+            // Design file upload
+            // -----------------------------------------------------------------
+    
+            ReportConfiguration reportConfig = reportManager.getConfiguration();
+            
+            String birtHome = reportConfig.getHome();
+            
+            File design = new File( birtHome, fileName );
+            
+            log.info( "New file: " + design.getAbsolutePath() );
+    
+            // -----------------------------------------------------------------
+            // Updating database properties in design file
+            // -----------------------------------------------------------------
+    
+            if ( file != null )
+            {
+                Map<String[], String> connectionMap = reportManager.getReportConnectionMap();
+                
+                StringBuffer in = StreamUtils.readContent( file, connectionMap );
+    
+                StreamUtils.writeContent( design, in );
+            }
         }
         
         // ---------------------------------------------------------------------
@@ -224,6 +250,7 @@ public class AddReportAction
         
         report.setName( name );
         report.setDesign( fileName );
+        report.setType( type );
         report.setReportTables( selectedReportTables != null ? new CollectionConversionUtils<ReportTable>().getSet( 
             reportTableService.getReportTables( ConversionUtils.getIntegerCollection( selectedReportTables ) ) ) : null );
         

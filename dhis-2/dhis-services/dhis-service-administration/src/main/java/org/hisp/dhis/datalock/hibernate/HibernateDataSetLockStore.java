@@ -47,7 +47,6 @@ import org.hisp.dhis.source.Source;
 public class HibernateDataSetLockStore
     implements DataSetLockStore
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -65,7 +64,7 @@ public class HibernateDataSetLockStore
     {
         this.periodService = periodService;
     }
-    
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -79,7 +78,7 @@ public class HibernateDataSetLockStore
 
     private final Period reloadPeriod( Period period )
     {
-    	Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         if ( session.contains( period ) )
         {
@@ -89,8 +88,7 @@ public class HibernateDataSetLockStore
         return periodService.getPeriod( period.getStartDate(), period.getEndDate(), period.getPeriodType() );
     }
 
-    @SuppressWarnings("unused")
-	private final Period reloadPeriodForceAdd( Period period )
+    private final Period reloadPeriodForceAdd( Period period )
     {
         Period storedPeriod = reloadPeriod( period );
 
@@ -103,23 +101,22 @@ public class HibernateDataSetLockStore
 
         return storedPeriod;
     }
-    
+
     private final DataSet reloadDataSet( DataSet dataSet )
     {
-    	Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         if ( session.contains( dataSet ) )
         {
             return dataSet; // Already in session, no reload needed
         }
 
-        return dataSetService.getDataSet( dataSet.getId());
+        return dataSetService.getDataSet( dataSet.getId() );
     }
 
-    @SuppressWarnings("unused")
-	private final DataSet reloadDataSetForceAdd( DataSet dataSet )
+    private final DataSet reloadDataSetForceAdd( DataSet dataSet )
     {
-    	DataSet storedDataSet = reloadDataSet( dataSet );
+        DataSet storedDataSet = reloadDataSet( dataSet );
 
         if ( storedDataSet == null )
         {
@@ -130,72 +127,72 @@ public class HibernateDataSetLockStore
 
         return storedDataSet;
     }
-   
+
     // -------------------------------------------------------------------------
     // DataSetLock
     // -------------------------------------------------------------------------
-    
+
     public int addDataSetLock( DataSetLock dataSetLock )
     {
-    	dataSetLock.setPeriod( reloadPeriodForceAdd( dataSetLock.getPeriod() ) );
-    	dataSetLock.setDataSet( reloadDataSetForceAdd( dataSetLock.getDataSet() ) );
-    	
-    	Session session = sessionFactory.getCurrentSession();
+        dataSetLock.setPeriod( reloadPeriodForceAdd( dataSetLock.getPeriod() ) );
+        dataSetLock.setDataSet( reloadDataSetForceAdd( dataSetLock.getDataSet() ) );
+
+        Session session = sessionFactory.getCurrentSession();
 
         return (Integer) session.save( dataSetLock );
     }
-   
+
     public void updateDataSetLock( DataSetLock dataSetLock )
     {
-    	dataSetLock.setPeriod( reloadPeriodForceAdd( dataSetLock.getPeriod() ) );
-    	dataSetLock.setDataSet( reloadDataSetForceAdd( dataSetLock.getDataSet() ) );
-    	
-    	Session session = sessionFactory.getCurrentSession();
+        dataSetLock.setPeriod( reloadPeriodForceAdd( dataSetLock.getPeriod() ) );
+        dataSetLock.setDataSet( reloadDataSetForceAdd( dataSetLock.getDataSet() ) );
+
+        Session session = sessionFactory.getCurrentSession();
 
         session.update( dataSetLock );
     }
-       
+
     public void deleteDataSetLock( DataSetLock dataSetLock )
     {
-    	Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         session.delete( dataSetLock );
     }
-   
-    @SuppressWarnings("unchecked")
+
+    @SuppressWarnings( "unchecked" )
     public Collection<DataSetLock> getAllDataSetLocks()
     {
-    	Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return session.createCriteria( DataSetLock.class ).list();
     }
-    
+
     public DataSetLock getDataSetLock( int id )
     {
-    	Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         return (DataSetLock) session.get( DataSetLock.class, id );
     }
-    
+
     public DataSetLock getDataSetLockByDataSet( DataSet dataSet )
     {
-    	Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataSetLock.class );
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
 
         return (DataSetLock) criteria.uniqueResult();
     }
-   
+
     public DataSetLock getDataSetLockByPeriod( Period period )
     {
-    	Session session = sessionFactory.getCurrentSession();
-        
+        Session session = sessionFactory.getCurrentSession();
+
         Period storedPeriod = reloadPeriod( period );
 
         if ( storedPeriod == null )
         {
-           return null;
+            return null;
         }
 
         Criteria criteria = session.createCriteria( DataSetLock.class );
@@ -203,17 +200,17 @@ public class HibernateDataSetLockStore
 
         return (DataSetLock) criteria.uniqueResult();
     }
-    
+
     public DataSetLock getDataSetLockByDataSetAndPeriod( DataSet dataSet, Period period )
     {
-    	Session session = sessionFactory.getCurrentSession();
-        
-        Period storedPeriod = reloadPeriod( period );     
+        Session session = sessionFactory.getCurrentSession();
+
+        Period storedPeriod = reloadPeriod( period );
         DataSet storedDataSet = reloadDataSet( dataSet );
 
-        if (( storedPeriod == null ) || ( storedDataSet == null ))
+        if ( (storedPeriod == null) || (storedDataSet == null) )
         {
-           return null;
+            return null;
         }
 
         Criteria criteria = session.createCriteria( DataSetLock.class );
@@ -222,17 +219,17 @@ public class HibernateDataSetLockStore
 
         return (DataSetLock) criteria.uniqueResult();
     }
-    
+
     public DataSetLock getDataSetLockByDataSetPeriodAndSource( DataSet dataSet, Period period, Source source )
     {
-    	Session session = sessionFactory.getCurrentSession();
-    	
-    	Period storedPeriod = reloadPeriod( period );     
+        Session session = sessionFactory.getCurrentSession();
+
+        Period storedPeriod = reloadPeriod( period );
         DataSet storedDataSet = reloadDataSet( dataSet );
 
-        if (( storedPeriod == null) || (storedDataSet == null))
+        if ( (storedPeriod == null) || (storedDataSet == null) )
         {
-           return null;
+            return null;
         }
 
         Criteria criteria = session.createCriteria( DataSetLock.class );
@@ -240,14 +237,14 @@ public class HibernateDataSetLockStore
         criteria.add( Restrictions.eq( "period", storedPeriod ) );
         criteria.createAlias( "sources", "s" );
         criteria.add( Restrictions.eq( "s.id", source.getId() ) );
-        
+
         return (DataSetLock) criteria.uniqueResult();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<DataSetLock> getDataSetLocksBySource( Source source )
     {
-    	Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataSetLock.class );
         criteria.createAlias( "sources", "s" );

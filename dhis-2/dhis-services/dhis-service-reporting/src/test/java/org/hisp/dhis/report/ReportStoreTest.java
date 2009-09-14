@@ -32,6 +32,8 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
+import static org.hisp.dhis.report.Report.TYPE_BIRT;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -84,8 +86,8 @@ public class ReportStoreTest
     @Test
     public void testSaveGet()
     {
-        Report reportA = new Report( "ReportA", "DesignA", reportTables );
-        Report reportB = new Report( "ReportB", "DesignB", reportTables );
+        Report reportA = new Report( "ReportA", "DesignA", TYPE_BIRT, reportTables );
+        Report reportB = new Report( "ReportB", "DesignB", TYPE_BIRT, reportTables );
         
         int idA = reportStore.save( reportA );
         int idB = reportStore.save( reportB );
@@ -97,8 +99,8 @@ public class ReportStoreTest
     @Test
     public void testSaveGetUpdate()
     {
-        Report reportA = new Report( "ReportA", "DesignA", reportTables );
-        Report reportB = new Report( "ReportB", "DesignB", reportTables );
+        Report reportA = new Report( "ReportA", "DesignA", TYPE_BIRT, reportTables );
+        Report reportB = new Report( "ReportB", "DesignB", TYPE_BIRT, reportTables );
         
         int idA = reportStore.save( reportA );
         int idB = reportStore.save( reportB );
@@ -122,8 +124,8 @@ public class ReportStoreTest
     @Test
     public void testDelete()
     {
-        Report reportA = new Report( "ReportA", "DesignA", reportTables );
-        Report reportB = new Report( "ReportB", "DesignB", reportTables );
+        Report reportA = new Report( "ReportA", "DesignA", TYPE_BIRT, reportTables );
+        Report reportB = new Report( "ReportB", "DesignB", TYPE_BIRT, reportTables );
         
         int idA = reportStore.save( reportA );
         int idB = reportStore.save( reportB );
@@ -145,8 +147,8 @@ public class ReportStoreTest
     @Test
     public void testGetAll()
     {
-        Report reportA = new Report( "ReportA", "DesignA", reportTables );
-        Report reportB = new Report( "ReportB", "DesignB", reportTables );
+        Report reportA = new Report( "ReportA", "DesignA", TYPE_BIRT, reportTables );
+        Report reportB = new Report( "ReportB", "DesignB", TYPE_BIRT, reportTables );
         
         reportStore.save( reportA );
         reportStore.save( reportB );

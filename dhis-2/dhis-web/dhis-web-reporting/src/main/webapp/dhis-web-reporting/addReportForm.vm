@@ -5,6 +5,7 @@
 
 <input type="hidden" name="id" value="$!report.id">
 <input type="hidden" name="currentDesign" value="$!report.design">
+<input type="hidden" name="type" value="$!reportFramework"/>
 
 <table>
     <tr>

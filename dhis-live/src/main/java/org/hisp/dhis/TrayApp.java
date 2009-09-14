@@ -168,7 +168,7 @@ public class TrayApp
   public void lifeCycleStarted(LifeCycle arg0) {
     log.info("Lifecycle: server started");
     String url = "http://localhost:" + appServer.getConnectorPort();
-    trayIcon.displayMessage("Started","DHIS2 is running. Point your\nbrowser to " + url,TrayIcon.MessageType.INFO);
+    trayIcon.displayMessage("Started","DHIS2 is running. Point your\nbrowser to " + url + ".",TrayIcon.MessageType.INFO);
     trayIcon.setToolTip("DHIS 2 Server running");
     trayIcon.setImage(createImage(RUNNING_ICON, "Running icon"));
   }
@@ -191,6 +191,7 @@ public class TrayApp
    */
   public void lifeCycleStopped(LifeCycle arg0) {
     log.info("Lifecycle: server stopped");
+    trayIcon.displayMessage("Stopped", "DHIS 2 has stopped.",TrayIcon.MessageType.INFO);
     trayIcon.setImage(createImage(STOPPED_ICON, "Running icon"));
   }
 

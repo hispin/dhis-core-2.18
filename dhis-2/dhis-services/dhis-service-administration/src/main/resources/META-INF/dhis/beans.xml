@@ -58,6 +58,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="organisationUnitGroupService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+    <property name="validationRuleService"
+      ref="org.hisp.dhis.validation.ValidationRuleService"/>
   </bean>
   
   <!-- Maintenance -->

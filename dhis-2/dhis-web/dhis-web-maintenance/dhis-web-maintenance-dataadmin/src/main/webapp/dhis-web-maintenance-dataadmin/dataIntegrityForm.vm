@@ -80,3 +80,6 @@
 
 #integrityHeader( $i18n.getString( "organisation_unit_groups_without_group_sets" ) $organisationUnitGroupsWithoutGroupSets.size() "organisationUnitGroupsWithoutGroupSets" )
 #violationList( "organisationUnitGroupsWithoutGroupSets" $organisationUnitGroupsWithoutGroupSets )
+
+#integrityHeader( $i18n.getString( "validation_rules_without_groups" ) $validationRulesWithoutGroups.size() "validationRulesWithoutGroups" )
+#violationList( "validationRulesWithoutGroups" $validationRulesWithoutGroups )

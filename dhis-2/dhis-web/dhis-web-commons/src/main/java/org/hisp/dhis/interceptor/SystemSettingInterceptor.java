@@ -33,11 +33,13 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_FORUM_INTEGRATION;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MODE;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_REPORT_FRAMEWORK;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.report.Report;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
@@ -80,6 +82,7 @@ public class SystemSettingInterceptor
         map.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE ) );
         map.put( KEY_FLAG, systemSettingManager.getSystemSetting( KEY_FLAG ) );
         map.put( KEY_START_MODULE, systemSettingManager.getSystemSetting( KEY_START_MODULE ) );
+        map.put( KEY_REPORT_FRAMEWORK, systemSettingManager.getSystemSetting( KEY_REPORT_FRAMEWORK, Report.TYPE_DEFAULT ) );
         map.put( KEY_ZERO_VALUE_SAVE_MODE, systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false ) );
         map.put( KEY_FORUM_INTEGRATION, systemSettingManager.getSystemSetting( KEY_FORUM_INTEGRATION, false ) );
         map.put( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, systemSettingManager.getSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, false ) );

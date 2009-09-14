@@ -1,4 +1,4 @@
-package org.hisp.dhis.options;
+package org.hisp.dhis.result;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,39 +27,18 @@ package org.hisp.dhis.options;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.SortedMap;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.Result;
 
 /**
- * @author Stian Strandli
- * @version $Id: SystemSettingManager.java 4910 2008-04-15 17:55:02Z larshelg $
+ * @author Lars Helge Overland
+ * @version $Id$
  */
-public interface SystemSettingManager
+public class OutputStreamResult
+    implements Result
 {
-    final String ID = SystemSettingManager.class.getName();
-    
-    final String KEY_ZERO_VALUE_SAVE_MODE = "zeroValueSaveMode";
-    final String KEY_APPLICATION_TITLE = "applicationTitle";
-    final String KEY_FLAG = "flag";
-    final String KEY_START_MODULE = "startModule";
-    final String KEY_FORUM_INTEGRATION = "forumIntegration";
-    final String KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART = "omitIndicatorsZeroNumeratorDataMart";
-    final String KEY_REPORT_TEMPLATE_DIRECTORY = "reportTemplateDirectory";
-    final String KEY_REPORT_FRAMEWORK = "reportFramework";
-    
-    final String KEY_CHR_IMAGE_DIRECTORY = "chrImageDirectory";
-    final String KEY_CHR_NUMBER_OF_RECORDS = "chrNumberOfRecords";
-
-    void saveSystemSetting( String name, Serializable value );   
-
-    Serializable getSystemSetting( String name );   
-    
-    Serializable getSystemSetting( String name, Serializable defaultValue );
-
-    Collection<SystemSetting> getAllSystemSettings();
-
-    void deleteSystemSetting( String name );
-    
-    SortedMap<String, String> getFlags();
+    public void execute( ActionInvocation arg0 )
+        throws Exception
+    {
+    }    
 }
