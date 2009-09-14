@@ -40,8 +40,9 @@
 	combo_number_width = 75;
 	combo_number_list_width = combo_number_width + 17;
 	
-	// if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
-		
+	if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+		combo_width2 = 125;
+	}		
     
     MENU_TEXTCOLOR = '#666'; // label
 	MENU_TEXTCOLOR_INFO = '#222'; // info text
