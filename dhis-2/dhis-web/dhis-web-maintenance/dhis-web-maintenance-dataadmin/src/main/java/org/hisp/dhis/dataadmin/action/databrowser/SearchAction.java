@@ -65,11 +65,14 @@ public class SearchAction
 {
     private static final String KEY_PERIODTYPEID = "periodTypeId";
 
-    // Session variables for PDF export
     private static final String KEY_DATABROWSERTITLENAME = "dataBrowserTitleName";
+
     private static final String KEY_DATABROWSERFROMDATE = "dataBrowserFromDate";
+
     private static final String KEY_DATABROWSERTODATE = "dataBrowserToDate";
+
     private static final String KEY_DATABROWSERPERIODTYPE = "dataBrowserPeriodType";
+
     private static final String KEY_DATABROWSERTABLE = "dataBrowserTableResults";
 
     // -------------------------------------------------------------------------
@@ -105,7 +108,7 @@ public class SearchAction
     }
 
     private OrganisationUnitGroupService organisationUnitGroupService;
-    
+
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
@@ -287,9 +290,9 @@ public class SearchAction
 
         if ( searchOption.equals( "OrganisationUnitGroup" ) )
         {
-            return organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt ( parent )).getName();
+            return organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( parent ) ).getName();
         }
-        
+
         if ( searchOption.equals( "DataElementGroup" ) )
         {
             return dataElementService.getDataElementGroup( Integer.parseInt( parent ) ).getName();
@@ -384,7 +387,8 @@ public class SearchAction
             parent = selectionManager.getSelectedOrganisationUnit().getId() + "";
         }
 
-        // Check if the second selected date is later than the first selected date
+        // Check if the second selected date is later than the first selected
+        // date
         if ( fromDate.length() == 0 && toDate.length() == 0 )
         {
             if ( checkDates( fromDate, toDate ) )
@@ -402,7 +406,8 @@ public class SearchAction
                 // Show DataElement for a given DataSet
                 Integer parentInt = Integer.parseInt( parent );
 
-                dataBrowserTable = dataBrowserService.getCountDataElementsForDataSetInPeriod( parentInt, fromDate, toDate, periodType );
+                dataBrowserTable = dataBrowserService.getCountDataElementsForDataSetInPeriod( parentInt, fromDate,
+                    toDate, periodType );
 
             }
             else
@@ -413,15 +418,16 @@ public class SearchAction
         }
         else if ( searchOption.equals( "OrganisationUnitGroup" ) )
         {
-            if( parent != null)
+            if ( parent != null )
             {
-             // Show DataElementGroups
+                // Show DataElementGroups
                 Integer parentInt = Integer.parseInt( parent );
-                dataBrowserTable = dataBrowserService.getCountDataElementGroupsForOrgUnitGroupInPeriod(parentInt, fromDate, toDate, periodType );
+                dataBrowserTable = dataBrowserService.getCountDataElementGroupsForOrgUnitGroupInPeriod( parentInt,
+                    fromDate, toDate, periodType );
             }
             else
             {
-                dataBrowserTable = dataBrowserService.getOrgUnitGroupsInPeriod( fromDate, toDate, periodType);
+                dataBrowserTable = dataBrowserService.getOrgUnitGroupsInPeriod( fromDate, toDate, periodType );
             }
         }
         else if ( searchOption.equals( "DataElementGroup" ) )
@@ -448,11 +454,13 @@ public class SearchAction
             {
                 Integer parentInt = Integer.parseInt( parent );
                 // Show DataElement values only for specified organization unit
-                dataBrowserTable = dataBrowserService.getCountDataElementsForOrgUnitInPeriod( parentInt, fromDate, toDate, periodType );
+                dataBrowserTable = dataBrowserService.getCountDataElementsForOrgUnitInPeriod( parentInt, fromDate,
+                    toDate, periodType );
             }
             else if ( selectedUnit != null )
             {
-                dataBrowserTable = dataBrowserService.getOrgUnitsInPeriod( selectedUnit.getId(), fromDate, toDate, periodType );
+                dataBrowserTable = dataBrowserService.getOrgUnitsInPeriod( selectedUnit.getId(), fromDate, toDate,
+                    periodType );
 
             }
             else
@@ -469,10 +477,10 @@ public class SearchAction
         SessionUtils.setSessionVar( KEY_DATABROWSERTABLE, dataBrowserTable );
 
         requestTime = System.currentTimeMillis() - before;
-        
+
         // Convert column date names
         convertColumnNames( dataBrowserTable );
-        
+
         // Set DataBrowserTable variable for PDF export
         setExportPDFVariables();
 
@@ -539,6 +547,7 @@ public class SearchAction
     private void convertColumnNames( DataBrowserTable dataBrowserTable )
     {
         allColumnsConverted = dataBrowserTable.getColumns();
+        
         for ( MetaValue col : allColumnsConverted )
         {
             col.setName( DateUtils.convertDate( col.getName() ) );
