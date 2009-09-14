@@ -84,13 +84,7 @@
 				/dhis-web-vn-report/responseReport.vm</result>
 			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
 		</action>
-
-		<action name="updateReportExcelForm"
-			class="org.hisp.dhis.vn.report.action.UpdateReportExcelAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-vn-report/responseReport.vm</result>
-			<param name="requiredAuthorities">F_ADMINISTRATIONS</param>
-		</action>
+		
 
 		<action name="validateReport"
 			class="org.hisp.dhis.vn.report.action.ValidateReportAction">
@@ -158,6 +152,38 @@
 			class="org.hisp.dhis.vn.report.action.UpdateReportAssociationAction">
 			<result name="success" type="redirect">listReportExcel.action
 			</result>
+		</action>
+
+		<action name="getAllDataElementGroups"
+			class="org.hisp.dhis.vn.dataelement.action.GetAllDataElementGroupsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-vn-report/responseDataElementGroups.vm
+			</result>
+		</action>
+
+		<action name="updateDataElementGroup4ReportCategory"
+			class="org.hisp.dhis.vn.report.action.UpdateDataElementGroup4ReportCategoryAction">
+			<result name="success" type="redirect">listReportExcel.action
+			</result>
+		</action>
+		
+		<action name="openSortDataElement"
+			class="org.hisp.dhis.vn.report.action.GetReportAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-vn-report/sortDataElements.vm</param>
+			<param name="menu">/dhis-web-vn-report/menu.vm</param>
+			<param name="javascripts">javascript/ui.core.js,javascript/ui.core.js,javascript/ui.sortable.js,javascript/reports.js</param>
+			<param name="stylesheets">style/ui.theme.css,style/basic.css</param>
+		</action>		
+		
+		<action name="updateSortedDataElements"
+			class="org.hisp.dhis.vn.report.action.UpdateSortDataElementAction">
+			<result name="success" type="velocity-xml">/dhis-web-vn-report/responseSuccess.vm</result>
+		</action>
+		
+		<action name="getDataElementOrder"
+			class="org.hisp.dhis.vn.report.action.GetDataElementOrderAction">
+			<result name="success" type="velocity-xml">/dhis-web-vn-report/responseDataElementOrder.vm</result>
 		</action>
 
 		<!-- Report Item -->
@@ -260,6 +286,9 @@
 			</result>
 		</action>
 
+
+
+
 		<!-- Export Report-->
 
 		<action name="getOrganisation"
@@ -303,8 +332,22 @@
 			<result name="error" type="velocity-xml">
 				/dhis-web-vn-report/responseError.vm</result>
 		</action>
+		
+		<action name="generateReport" class="org.hisp.dhis.vn.report.export.action.ReportExportFlowAction">
+			<result name="category" type="chain">generateCategoryReport</result>			
+		</action>
+		
+		<action name="generateCategoryReport"
+			class="org.hisp.dhis.vn.report.export.action.GenerateCategoryReportAction">
+			<result name="success" type="stream">
+				<param name="contentType">application/vnd.ms-excel</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename="${outputXLS}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
 
-		<action name="generateReport"
+		<action name="generateReport1"
 			class="org.hisp.dhis.vn.report.export.action.GenerateReportAction">
 			<result name="success" type="stream">
 				<param name="contentType">application/vnd.ms-excel</param>
@@ -362,7 +405,6 @@
 		</action>
 
 		<!-- Import Excel File -->
-
 		<action name="getInformation"
 			class="org.hisp.dhis.vn.imports.action.UploadExcelFileAction">
 			<result name="success" type="chain">
@@ -413,20 +455,15 @@
 
 		<action name="uploadExcelFile"
 			class="org.hisp.dhis.vn.imports.action.UploadExcelFileAction">
-			<result name="success" type="chain">
-				getInformation</result>
+			<result name="success" type="redirect">
+				getExcelFileByOrganisationUnit.action</result>
 			<interceptor-ref name="fileUploadStack" />
 		</action>
 
 		<action name="deleteExcelFile"
 			class="org.hisp.dhis.vn.imports.action.DeleteExcelFileAction">
-			<!--
-				<result name="success" type="redirect">
+			<result name="success" type="redirect">
 				getExcelFileByOrganisationUnit.action</result>
-			-->
-			<result name="success" type="velocity-xml">
-				/dhis-web-vn-report/dataelement/responseElementGroupsAndCombosList.vm
-			</result>
 		</action>
 
 		<action name="viewExcelFileDataValue"

@@ -71,7 +71,7 @@
     </dependency>
     
     <!-- Web service modules -->
-    
+    <!-- 
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-importexport</artifactId>
@@ -90,18 +90,28 @@
       <version>${version}</version>
       <type>war</type>
     </dependency>
+    -->
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dataentry</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
+	
+	 <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-excel-reporting</artifactId>
+      <version>${version}</version>
+      <type>war</type>
+    </dependency>
+    <!-- 
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-reporting</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
+   
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dashboard-integration</artifactId>
@@ -114,7 +124,7 @@
       <version>${version}</version>
       <type>war</type>
     </dependency>
-        
+    -->     
     <!-- India modules -->
     
     <!--
@@ -154,15 +164,15 @@
       <type>war</type>
     </dependency>
     -->    
-    <!--
+	<!--
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-vn-report</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
+ 
     -->
-    
     <!-- South Africa modules -->
     
     <!-- 

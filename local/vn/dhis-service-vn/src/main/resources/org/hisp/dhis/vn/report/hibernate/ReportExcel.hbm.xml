@@ -45,10 +45,10 @@
 
 		<joined-subclass name="org.hisp.dhis.vn.report.ReportExcelCategory" table="reportexcelcategory">
 			<key column="reportid"/>
-			<list name="dataElements" table="reportcategory_dataelements">
+			<list name="dataElementOrders" table="reportcategory_dataElementOrders" cascade="all">
 				<key column="reportid"/>
-				<list-index base="0" column="dataelement_order"/>
-				<many-to-many class="org.hisp.dhis.dataelement.DataElement" column="dataelementid" foreign-key="fk_reportid_dataelementid"/>
+				<list-index base="0" column="dataelementgrouporder"/>
+				<one-to-many class="org.hisp.dhis.vn.report.DataElementOrderInGroup"/>
 		    </list>			
 			<many-to-one name="categoryCombo" class="org.hisp.dhis.dataelement.DataElementCategoryCombo" column="category_combo_id" foreign-key="fk_reportid_periodtypeid" lazy="false"/>
 		</joined-subclass>

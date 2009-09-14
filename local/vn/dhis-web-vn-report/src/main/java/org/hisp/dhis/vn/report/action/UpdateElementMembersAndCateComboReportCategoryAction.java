@@ -159,7 +159,7 @@ public class UpdateElementMembersAndCateComboReportCategoryAction
                 dataElementCategoryOptionComboService.generateOptionCombos( dataElementCategoryCombo );
             }
 
-            ((ReportExcelCategory) report).setDataElements( elementMembers );
+            //((ReportExcelCategory) report).setDataElements( elementMembers );
             ((ReportExcelCategory) report).setCategoryCombo( dataElementCategoryCombo );
 
         }

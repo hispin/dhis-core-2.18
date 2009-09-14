@@ -184,6 +184,10 @@ public class ReportItem
 
         public static final String CALCULATION = "calculation";
         
+        public static final String DATAELEMENT_CODE = "dataelement_code";
+        
+        public static final String DATAELEMENT_NAME = "dataelement_name";
+        
         public static final String ELEMENT_OPTIONCOMBO = "element_optioncombo";
 
         public static final String ICD_CODE = "icd_code";

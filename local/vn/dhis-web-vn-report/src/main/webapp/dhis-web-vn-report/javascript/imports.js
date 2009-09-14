@@ -1,7 +1,5 @@
 function organisationUnitSelected( orgUnits ){
-	//window.location = "getExcelFileByOrganisationUnit.action";
-	window.location = "getInformation.action";
-	
+	window.location = "getExcelFileByOrganisationUnit.action";
 }
 selection.setListenerFunction( organisationUnitSelected );
 
@@ -190,3 +188,4 @@ function selectAll(){
 		reportItems[i].checked = select;
 	 }
  }
+ 

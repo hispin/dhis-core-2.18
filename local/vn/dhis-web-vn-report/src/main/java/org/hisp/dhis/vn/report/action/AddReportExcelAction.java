@@ -30,9 +30,8 @@ import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.report.ReportExcel;
 import org.hisp.dhis.vn.report.ReportExcelCategory;
 import org.hisp.dhis.vn.report.ReportExcelGroupListing;
-import org.hisp.dhis.vn.report.ReportExcelInterface;
-import org.hisp.dhis.vn.report.ReportExcelNormal;
 import org.hisp.dhis.vn.report.ReportExcelListing;
+import org.hisp.dhis.vn.report.ReportExcelNormal;
 import org.hisp.dhis.vn.report.ReportExcelPeriodListing;
 import org.hisp.dhis.vn.report.ReportExcelService;
 
@@ -51,10 +50,6 @@ public class AddReportExcelAction
     // -------------------------------------------
 
     private ReportExcelService reportService;
-
-    /**
-     * 
-     */
 
     // -------------------------------------------
     // Input & Output

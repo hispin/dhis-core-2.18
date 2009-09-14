@@ -29,58 +29,66 @@ package org.hisp.dhis.vn.report;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public interface ReportExcelStore
-{
-    String ID = ReportExcelStore.class.getName();
-    
-    // --------------------------------------
-    // Service of Report
-    // --------------------------------------
+public interface ReportExcelStore {
+	String ID = ReportExcelStore.class.getName();
 
-    public int addReport( ReportExcelInterface report );
+	// --------------------------------------
+	// Service of Report
+	// --------------------------------------
 
-    public void updateReport( ReportExcelInterface report );
+	public int addReport(ReportExcelInterface report);
 
-    public void deleteReport( int id );
+	public void updateReport(ReportExcelInterface report);
 
-    public ReportExcelInterface getReport( int id );
-    
-    public ReportExcelInterface getReport( String name );
-    
-    public Collection<ReportExcelInterface> getReportsByOrganisationUnit(OrganisationUnit organisationUnit);
+	public void deleteReport(int id);
 
-    public Collection<ReportExcelInterface> getALLReport();
-    
-    public Collection<String> getReportGroups();
-    
-    public Collection<ReportExcelInterface> getReportsByGroup(String group); 
+	public ReportExcelInterface getReport(int id);
 
-  
-    // --------------------------------------
-    // Service of Report Item
-    // --------------------------------------
+	public ReportExcelInterface getReport(String name);
 
-    public void addReportItem( ReportItem reportItem );
+	public Collection<ReportExcelInterface> getReportsByOrganisationUnit(
+			OrganisationUnit organisationUnit);
 
-    public void updateReportItem( ReportItem reportItem );
+	public Collection<ReportExcelInterface> getALLReport();
 
-    public void deleteReportItem( int id );
-    
-    public ReportItem getReportItem( int id );
-    
-    public ReportItem getReportItem( String name );
+	public Collection<String> getReportGroups();
 
-    public Collection<ReportItem> getALLReportItem();
-    
-    public Collection<ReportItem> getReportItem(String itemType, ReportExcelNormal reportExcelNormal);
-    
-    public Collection<ReportItem> getReportItem(int sheetNo, Integer reportId);
-    
-    public Collection<Integer> getSheets(Integer reportId);
-    
-    
+	public Collection<ReportExcelInterface> getReportsByGroup(String group);
+
+	// --------------------------------------
+	// Service of Report Item
+	// --------------------------------------
+
+	public void addReportItem(ReportItem reportItem);
+
+	public void updateReportItem(ReportItem reportItem);
+
+	public void deleteReportItem(int id);
+
+	public ReportItem getReportItem(int id);
+
+	public ReportItem getReportItem(String name);
+
+	public Collection<ReportItem> getALLReportItem();
+
+	public Collection<ReportItem> getReportItem(String itemType,
+			ReportExcelNormal reportExcelNormal);
+
+	public Collection<ReportItem> getReportItem(int sheetNo, Integer reportId);
+
+	public Collection<Integer> getSheets(Integer reportId);
+
+	// --------------------------------------
+	// Report DataElement Order
+	// --------------------------------------
+
+	public DataElementOrderInGroup getDataElementOrderInGroup(Integer id);
+
+	public void updateDataElementOrderInGroup(
+			DataElementOrderInGroup dataElementOrderInGroup);
 }

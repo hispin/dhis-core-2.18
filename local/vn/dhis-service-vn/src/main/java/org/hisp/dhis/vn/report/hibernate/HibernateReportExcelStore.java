@@ -34,6 +34,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.vn.report.DataElementOrderInGroup;
 import org.hisp.dhis.vn.report.ReportExcel;
 import org.hisp.dhis.vn.report.ReportExcelInterface;
 import org.hisp.dhis.vn.report.ReportExcelNormal;
@@ -51,7 +52,7 @@ public class HibernateReportExcelStore
     // Dependency
     // -------------------------------------------------
 
-    private SessionFactory sessionFactory;    
+    private SessionFactory sessionFactory;
 
     public void setSessionFactory( SessionFactory sessionFactory )
     {
@@ -125,19 +126,19 @@ public class HibernateReportExcelStore
         return criteria.list();
 
     }
-    
-    @SuppressWarnings("unchecked")
-	public Collection<String> getReportGroups(){
-    	  Session session = sessionFactory.getCurrentSession();
-          SQLQuery sqlQuery = session
-              .createSQLQuery( "select DISTINCT(reportgroup) from reportexcel" );
 
-          return sqlQuery.list(); 	
+    @SuppressWarnings( "unchecked" )
+    public Collection<String> getReportGroups()
+    {
+        Session session = sessionFactory.getCurrentSession();
+        SQLQuery sqlQuery = session.createSQLQuery( "select DISTINCT(reportgroup) from reportexcel" );
+
+        return sqlQuery.list();
     }
-    
-    
-    @SuppressWarnings("unchecked")
-    public Collection<ReportExcelInterface> getReportsByGroup(String group){
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<ReportExcelInterface> getReportsByGroup( String group )
+    {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( ReportExcel.class );
@@ -227,5 +228,22 @@ public class HibernateReportExcelStore
                 + reportId.intValue() );
 
         return sqlQuery.list();
+    }
+
+    // --------------------------------------
+    // Report DataElement Order
+    // --------------------------------------
+
+    public DataElementOrderInGroup getDataElementOrderInGroup( Integer arg0 )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        return (DataElementOrderInGroup) session.get( DataElementOrderInGroup.class, arg0 );
+
+    }
+
+    public void updateDataElementOrderInGroup( DataElementOrderInGroup arg0 )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        session.update( arg0 );
     }
 }

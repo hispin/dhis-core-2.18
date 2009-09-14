@@ -185,5 +185,21 @@ public class DefaultReportExcelService
     {
         return reportStore.getSheets( reportId );
     }
+ 
 
+    // --------------------------------------
+    // Report DataElement Order
+    // --------------------------------------
+ 
+    public DataElementOrderInGroup getDataElementOrderInGroup( Integer arg0 )
+    {       
+        return reportStore.getDataElementOrderInGroup( arg0 );
+    }
+
+    public void updateDataElementOrderInGroup( DataElementOrderInGroup arg0 )
+    {
+        reportStore.updateDataElementOrderInGroup( arg0 );
+    }    
+        
+    
 }

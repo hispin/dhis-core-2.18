@@ -84,5 +84,15 @@ public interface ReportExcelService
     public Collection<Integer> getSheets(Integer reportId);
     
     
+    // --------------------------------------
+    // Report DataElement Order
+    // --------------------------------------
+    
+    public DataElementOrderInGroup getDataElementOrderInGroup(Integer id);
+    
+    public void updateDataElementOrderInGroup(DataElementOrderInGroup dataElementOrderInGroup); 
+    
+    
+    
 
 }

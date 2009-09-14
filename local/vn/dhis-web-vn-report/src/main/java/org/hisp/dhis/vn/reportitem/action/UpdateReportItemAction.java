@@ -26,7 +26,6 @@
  */
 package org.hisp.dhis.vn.reportitem.action;
 
-import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.vn.report.ReportExcelService;
 import org.hisp.dhis.vn.report.ReportItem;
 
@@ -67,14 +66,12 @@ public class UpdateReportItemAction
     private ReportItem reportItem;
 
     private Integer reportId;
-    
+
     private Integer sheetNo;
 
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
-    
-    
 
     public void setReportService( ReportExcelService reportService )
     {
@@ -140,13 +137,13 @@ public class UpdateReportItemAction
         throws Exception
     {
         reportItem = reportService.getReportItem( id.intValue() );
-        reportItem.setName( CodecUtils.unescape( name ) );
+        reportItem.setName( name );
         reportItem.setItemType( itemType.trim() );
         reportItem.setRow( row );
         reportItem.setColumn( column );
-        reportItem.setExpression(  expression.trim() );
+        reportItem.setExpression( expression.trim() );
         reportItem.setPeriodType( periodType.trim() );
-        reportItem.setSheetNo( (sheetNo==null?0:sheetNo) );        
+        reportItem.setSheetNo( (sheetNo == null ? 0 : sheetNo) );
 
         reportService.updateReportItem( reportItem );
 
