@@ -186,6 +186,20 @@ public class LocationManagerTest
             assertEquals( LocationManagerException.class, ex.getClass() );
         }
     }
+    
+    public void testBuildDirectory()
+    {
+        try
+        {
+            File dir = locationManager.buildDirectory( "test", "dir" );
+            
+            System.out.println( "Built directory: " + dir.getAbsolutePath() );
+        }
+        catch ( LocationManagerException ex )
+        {
+            System.out.println( "External directory not set" );
+        }
+    }
 
     // -------------------------------------------------------------------------
     // OutputStream
