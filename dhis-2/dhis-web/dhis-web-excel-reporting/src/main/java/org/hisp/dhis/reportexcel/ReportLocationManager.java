@@ -41,7 +41,7 @@ import org.hisp.dhis.reportexcel.utils.FileUtils;
  */
 public class ReportLocationManager
 {
-    static final String REPORT_DIR = "report_vn";
+    static final String REPORT_DIR = "excelreporting";
 
     static final String REPORT_TEMP_DIR = "temp";
 

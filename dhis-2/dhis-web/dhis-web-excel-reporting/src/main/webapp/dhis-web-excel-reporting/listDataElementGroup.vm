@@ -1,0 +1,68 @@
+<h2>$i18n.getString('dataelement_groups')</h2>
+<p><input type="button" onclick="openAddDataElementGroupOrder()" value="$i18n.getString('add')" style="width:100px"/>
+<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='listReportExcel.action'" style="width:100px"></p>
+<table width="100%">
+	<tr>
+		<th>$i18n.getString('name')</th>		
+		<th width="200px">$i18n.getString('operations')</th>		
+	</tr>
+	#set( $mark = false )
+	#foreach($group in $report.dataElementOrders)
+		<tr #alternate( $mark )>
+			<td>$encoder.htmlEncode( $group.name )</td>			
+			<td align="left">			
+				<a href="javascript:deleteDataElementOrder('$group.id');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+				<a href="javascript:openUpdateDataElementOrder( '$group.id' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+				<a href="openSortDataElement.action?id=$group.id" title="$i18n.getString( 'sort_dataelement' )"><img src="../images/sort.png" border="1px"/></a>
+			</td>
+		</tr>
+		#if( $mark )
+			#set( $mark = false )
+		#else
+			#set( $mark = true )
+		#end
+	#end
+</table>
+<form name="dataElementGroups" method="post">
+<input type="hidden" name="id" value="$report.id"/>
+<input type="hidden" name="dataElementGroupOrderId" id="dataElementGroupOrderId"/>
+<div id="dataElementGroups" style="position:fixed;display:none;width:700px;z-index:10001;background-color: white;border: medium solid silver;height:300px;padding:20px;">
+	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('dataElementGroups');deleteDivEffect();">[x]</div>	
+	$i18n.getString('name')	<input type="text" style="width:400px" id="name" name="name"/><br/><br/>	
+	<table width="100%">		
+		<tr>
+			<td>
+				<select id="availableDataElementGroups" onchange="getDataElementsByGroup(this.value)" style="min-width:300px"></select>				
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<select id="availableDataElements" multiple size=13 style="min-width:300px"></select>
+			</td>
+			<td align="center">
+				<input type="button" value=">" onclick="moveSelectedById('availableDataElements','selectedDataElements');" style="width:50px"/><br>
+				<input type="button" value="<" onclick="moveSelectedById('selectedDataElements' , 'availableDataElements' );" style="width:50px"/><br>
+				<input type="button" value=">>" onclick="moveAllById('availableDataElements' , 'selectedDataElements' );" style="width:50px"/><br>
+				<input type="button" value="<<" onclick="moveAllById('selectedDataElements' , 'availableDataElements' );" style="width:50px"/>
+			</td>
+			<td>
+				<select id="selectedDataElements" name="dataElementIds" multiple size=13 style="min-width:300px"></select>
+			</td>
+		</tr>
+	</table>
+	<p align=center>
+		<input type="button" value="$i18n.getString( 'save' )" style="width:130px" onclick="submitDataElementGroupOrder()">		
+	</p>
+</div>	
+</form>
+
+<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="javascript:hideById(this.id);"></span>
+
+
+<script>
+	var i18n_confirm_delete = '$encoder.jsEscape($i18n.getString( 'confirm_delete' ) , "'")';	
+	var i18n_name_is_null = '$encoder.jsEscape($i18n.getString( 'i18n_name_is_null' ) , "'")';		
+	var reportId = $report.id;
+</script>
+

@@ -24,14 +24,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.category.action;
+package org.hisp.dhis.reportexcel.item.action;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.reportexcel.DataElementGroupOrder;
+import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 
 import com.opensymphony.xwork2.Action;
@@ -40,88 +39,81 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class UpdateDataElementGroupOrderAction
-    implements Action
+public class CopyReportExcelItemAction implements Action
 {
-    // -------------------------------------------
+ // -------------------------------------------
     // Dependency
     // -------------------------------------------
 
     private ReportExcelService reportService;
 
-    private DataElementService dataElementService;
-
     // -------------------------------------------
     // Input
     // -------------------------------------------
 
-    private Integer id;
+    private Integer reportId;
 
-    private Integer dataElementGroupOrderId;
+    private Integer sheetNo;
 
-    private String name;
-
-    private List<String> dataElementIds = new ArrayList<String>();
+    private Collection<String> reportItems;
 
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
-
-    public void setDataElementGroupOrderId( Integer dataElementGroupOrderId )
-    {
-        this.dataElementGroupOrderId = dataElementGroupOrderId;
-    }
 
     public void setReportService( ReportExcelService reportService )
     {
         this.reportService = reportService;
     }
 
-    public void setDataElementService( DataElementService dataElementService )
+    public Integer getReportId()
     {
-        this.dataElementService = dataElementService;
+        return reportId;
     }
 
-    public void setName( String name )
+    public Integer getSheetNo()
     {
-        this.name = name;
+        return sheetNo;
     }
 
-    public void setDataElementIds( List<String> dataElementIds )
+    public void setReportId( Integer reportId )
     {
-        this.dataElementIds = dataElementIds;
+        this.reportId = reportId;
     }
 
-    public Integer getId()
+    public void setReportItems( Collection<String> reportItems )
     {
-        return id;
+        this.reportItems = reportItems;
     }
 
-    public void setId( Integer id )
+    public void setSheetNo( Integer sheetNo )
     {
-        this.id = id;
+        this.sheetNo = sheetNo;
     }
 
     public String execute()
         throws Exception
     {
-        DataElementGroupOrder dataElementGroupOrder = reportService.getDataElementGroupOrder( dataElementGroupOrderId );
-
-        List<DataElement> dataElements = new ArrayList<DataElement>();
-
-        for ( String id : dataElementIds )
-        {
-            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );
-
-            dataElements.add( dataElement );
-        }
-
-        dataElementGroupOrder.setDataElements( dataElements );
-
-        dataElementGroupOrder.setName( name );
-
-        reportService.updateDataElementGroupOrder( dataElementGroupOrder );
-
+        ReportExcel reportExcel = reportService.getReportExcel( reportId  );  
+        
+            
+        for(String itemId:this.reportItems){
+            Set<ReportExcelItem> reportItems = reportExcel.getReportItems(); 
+            ReportExcelItem reportItem = reportService.getReportExcelItem( Integer.parseInt( itemId ) ) ;
+            ReportExcelItem newReportItem = new ReportExcelItem();
+            newReportItem.setName( reportItem.getName() );
+            newReportItem.setItemType( reportItem.getItemType() );
+            newReportItem.setPeriodType( reportItem.getPeriodType() );
+            newReportItem.setExpression( reportItem.getExpression() );
+            newReportItem.setRow( reportItem.getRow() );
+            newReportItem.setColumn( reportItem.getColumn() );
+            newReportItem.setSheetNo( sheetNo );
+            reportItems.add( newReportItem );
+            reportExcel.setReportItems( reportItems );
+            reportService.updateReportExcel( reportExcel );
+            
+        }   
+               
         return SUCCESS;
     }
 }

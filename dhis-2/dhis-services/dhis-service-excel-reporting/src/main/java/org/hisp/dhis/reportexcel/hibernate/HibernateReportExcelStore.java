@@ -176,7 +176,7 @@ public class HibernateReportExcelStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        session.delete( getReportExcelItem( id ) );
+        session.delete( this.getReportExcelItem( id ) );
 
     }
 
@@ -212,8 +212,8 @@ public class HibernateReportExcelStore
     public Collection<ReportExcelItem> getReportExcelItem( int sheetNo, Integer reportId )
     {
         Session session = sessionFactory.getCurrentSession();
-        SQLQuery sqlQuery = session.createSQLQuery( "SELECT * from reportexcelitems where reportexcelitems.sheetno="
-            + sheetNo + " and reportexcelitems.reportexcelid=" + reportId.intValue() );
+        SQLQuery sqlQuery = session.createSQLQuery( "SELECT * from reportexcel_items where reportexcel_items.sheetno="
+            + sheetNo + " and reportexcel_items.reportexcelid=" + reportId.intValue() );
         sqlQuery.addEntity( ReportExcelItem.class );
         return sqlQuery.list();
     }
@@ -223,7 +223,7 @@ public class HibernateReportExcelStore
     {
         Session session = sessionFactory.getCurrentSession();
         SQLQuery sqlQuery = session
-            .createSQLQuery( "select DISTINCT(sheetno) from reportexcelitemid where reportexcelitemid.reportexcelid="
+            .createSQLQuery( "select DISTINCT(sheetno) from reportexcel_items where reportexcel_items.reportexcelid="
                 + reportId.intValue() );
 
         return sqlQuery.list();

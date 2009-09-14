@@ -11,9 +11,8 @@ var reportId;
 function openAddReportExcel(){		
 	$("#reportExcelAddUpdateButton").click(validateAddReportExcel);
 	$("#name").attr("disabled", false);	
-	$("#reportType").attr("disabled", false);
-	showDivEffect();
-	$("#report").showAtCenter();
+	$("#reportType").attr("disabled", false);	
+	$("#report").showAtCenter( true );
 }
 
 /*
@@ -89,9 +88,8 @@ function openUpdateReportReportExcel( id ){
 		$("#reportType").val( getElementValue(report, 'reportType') );
 		$("#group").val( getElementValue(report, 'group') );	
 		
-		$("#reportExcelAddUpdateButton").click( validateUpdateReportExcel );
-		showDivEffect();
-		$("#report").showAtCenter();	
+		$("#reportExcelAddUpdateButton").click( validateUpdateReportExcel );		
+		$("#report").showAtCenter( true );	
 		$("#name").attr("disabled", false);	
 		$("#reportType").attr("disabled", true);
 	},'xml');	
@@ -197,9 +195,8 @@ function getReportDataElementGroups( id ){
 					availableDataElementGroups.options[i] = null;
 				}
 			}
-		}		
-		showDivEffect();
-		$("#dataElementGroups").showAtCenter();
+		}	
+		$("#dataElementGroups").showAtCenter( true );
 	},'xml');	
 }
 
@@ -217,28 +214,8 @@ function updateDataElementGroupOrder(){
 	window.location = url;
 }
 
-// Sort data element
 
-function sortDataElement(id){
-	$.get("getReport.action",{id:id},		
-	function(data){
-		var selectedDataElementGroups = document.getElementById('availableDataElementGroups_1');
-		selectedDataElementGroups.options.length = 0;
-		var dataElementGroups = data.getElementsByTagName('dataElementGroups')[0].getElementsByTagName('dataElementGroup');
-		for(var i=0;i<dataElementGroups.length;i++){
-			var id = dataElementGroups.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
-			var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
-			selectedDataElementGroups.options.add(new Option(name, id));
-		}	
-	setPositionCenter( 'sortDataElementGroup' );
-	showDivEffect();
-	$("#sortDataElementGroup").show();
-		getDataElementGroupById($("#availableDataElementGroups").val());		
-		
-	},'xml');	
-}
-
-function getDataElementGroupById(){
+function getDataElementOrderById(){
 	var url = "getDataElementOrder.action?id=" + $("#availableDataElementGroups").val();
 	var request = new Request();
 	request.setResponseTypeXML( 'datalement' );
@@ -260,20 +237,7 @@ function getDataElementGroupByIdReceived( datalement ){
 	$("#sortable1").html(html);	
 }
 
-function updateSortedDataElement(){	
-	var dataElements = document.getElementsByName('dataElement');
-	var dataElementIds = new Array();
-	for(var i=0;i<dataElements.length;i++){		
-		dataElementIds.push(dataElements.item(i).value);
-	}
-	
-	$.post("updateSortedDataElements.action",{
-		id:$("#availableDataElementGroups").val(),
-		dataElementIds:dataElementIds
-	},function (data){
-		setMessage(data.getElementsByTagName('message')[0].firstChild.nodeValue);
-	},'xml');	
-}
+
 
 
 

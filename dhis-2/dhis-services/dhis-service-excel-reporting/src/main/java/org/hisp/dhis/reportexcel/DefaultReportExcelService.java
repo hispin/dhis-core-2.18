@@ -157,7 +157,7 @@ public class DefaultReportExcelService
 
     public void deleteReportExcelItem( int id )
     {
-        reportStore.deleteReportExcel( id );
+        reportStore.deleteReportExcelItem( id );
     }
 
     public ReportExcelItem getReportExcelItem( int id )

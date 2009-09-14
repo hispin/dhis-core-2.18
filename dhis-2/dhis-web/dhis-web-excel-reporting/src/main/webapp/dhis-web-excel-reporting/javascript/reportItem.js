@@ -1,21 +1,35 @@
-function deleteReportItem( id ){
+/*
+* 	Delete Report Excel Item
+*/
+function deleteReportExcelItem( id ){
 	if(window.confirm(i18n_confirm_delete)){
-		$.get("deleteReportItem.action",{id:id}, function(data){
+		$.get("deleteReportExcelItem.action",{id:id}, function(data){
 			window.location.reload();
 		});		
 	}		
-}	
-
-function openAddReportItemForm(){
-	$("#sheetNo").val($("#sheetNoFilter").val());		
-	setPositionCenter( 'report' );
-	showDivEffect();
-	$("#report").show();
-	mode = "ADD";
+}
+/*
+* 	Get Report Excel Item by Sheet
+*/
+function getReportItemBySheet(){
+	window.location = "listReportExcelItemAction.action?reportId=" +  getFieldValue("reportId") + "&sheetNo=" + getFieldValue("sheetNoFilter");
 }
 
+/*
+* 	Open add report item
+*/
+function openAddReportItemForm(){
+	$("#reportItemButton").click(validateAddReportExcelItem);
+	$("#sheetNo").val($("#sheetNoFilter").val());		
+	$("#report").showAtCenter( true );	
+}	
+
+/*
+* 	Open update report item
+*/
+
 function openUpdateReportItem( id ){
-	$.get("getReportItem.action",{id:id}, function(data){
+	$.get("getReportExcelItem.action",{id:id}, function(data){
 		
 		var reportItem = data.getElementsByTagName('reportItem')[0];
 		
@@ -26,30 +40,25 @@ function openUpdateReportItem( id ){
 		$("#row").val(getElementValue(reportItem, 'row'));
 		$("#column").val(getElementValue(reportItem, 'column'));		
 		$("#expression").val(getElementValue(reportItem, 'expression'));
-		$("#sheetNo").val(getElementValue(reportItem, 'sheetNo'));	
-				
-		setPositionCenter( 'report' );
-		showDivEffect();
-		$("#report").show();
-		mode = "UPDATE";
+		$("#sheetNo").val(getElementValue(reportItem, 'sheetNo'));					
+		$("#reportItemButton").click(validateUpdateReportExcelItem);
+		$("#report").showAtCenter( true );		
 		
 	},"xml");
 	
 }	
 
+/*
+* 	Validate Add Report Excel Item
+*/
 
-function filterSheet(){
-	window.location = "listReportItem.action?reportId=" +  getFieldValue("reportId") + "&sheetNo=" + getFieldValue("sheetNoFilter");
-}
-function validateAddReportItem(){
+function validateAddReportExcelItem(){
 	
-	$.post("validateReportItem.action",{
-		name:$("#name").val(),
-		reportItemId:$("#id").val(),
+	$.post("validateAddReportExcelItem.action",{		
+		name:$("#name").val(),		
 		expression:$("#expression").val(),
 		row:$("#row").val(),
-		column:$("#column").val(),
-		mode:mode,
+		column:$("#column").val(),		
 		reportId:reportId
 	}, function (data){
 		var xmlObject = data.getElementsByTagName('message')[0];
@@ -60,20 +69,14 @@ function validateAddReportItem(){
 		}
 		if(type=='success')
 		{
-			if(mode=='ADD'){		
-				addReportItem();
-			}else{		
-				updateReportItem();
-			}      
+			addReportExcelItem();    
 		}
-	},'xml');
-	
-	
+	},'xml');	
 	
 }
 
-function addReportItem(){
-	$.post("addReportItem.action",{
+function addReportExcelItem(){
+	$.post("addReportExcelItem.action",{
 		name:$("#name").val(),		
 		expression:$("#expression").val(),
 		row:$("#row").val(),
@@ -87,8 +90,36 @@ function addReportItem(){
 	},'xml');
 }
 
-function updateReportItem(){
-	$.post("updateReportItem.action",{
+/*
+* 	Validate Update Report Excel Item
+*/
+
+function validateUpdateReportExcelItem(){
+	
+	$.post("validateUpdateReportExcelItem.action",{
+		name:$("#name").val(),
+		reportItemId:$("#id").val(),
+		expression:$("#expression").val(),
+		row:$("#row").val(),
+		column:$("#column").val(),		
+		reportId:reportId
+	}, function (data){
+		var xmlObject = data.getElementsByTagName('message')[0];
+		var type = xmlObject.getAttribute( 'type' );
+		if(type=='error')
+		{
+			setMessage(xmlObject.firstChild.nodeValue);
+		}
+		if(type=='success')
+		{
+			updateReportExcelItem();    
+		}
+	},'xml');	
+	
+}
+
+function updateReportExcelItem(){
+	$.post("updateReportExcelItem.action",{
 		id:$("#id").val(),
 		name:$("#name").val(),		
 		expression:$("#expression").val(),
@@ -113,11 +144,6 @@ function insertOperation(target, value ){
 	$("#" + target).html($("#" + target).html() + value);
 }
 
-
-
-
-
-
 function selectALL( checked ){
 	var listRadio = document.getElementsByName('reportItemCheck');	
 	for(var i=0;i<listRadio.length;i++){
@@ -126,47 +152,39 @@ function selectALL( checked ){
 }
 
 function copySelectedItem(){
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( copySelectedItemCompleted );
-	request.send( "getALLReportAjax.action");	
-	
-}
-
-function copySelectedItemCompleted(xmlObject){
-	var reports = xmlObject.getElementsByTagName("report");
-	var selectList = document.getElementById("targetReport");
-	var options = selectList.options;
-	options.length = 0;
-	for(i=0;i<reports.length;i++){
-		var id = reports[i].getElementsByTagName("id")[0].firstChild.nodeValue;
-		var name = reports[i].getElementsByTagName("name")[0].firstChild.nodeValue;
-		options.add(new Option(name,id), null);
-	}
-	setPositionCenter( 'copyTo' );	
-	showById( 'copyTo' );
+	$.post("getAllReportExcels.action",{},
+	function (xmlObject){
+		xmlObject = xmlObject.getElementsByTagName('reports')[0];
+		var reports = xmlObject.getElementsByTagName("report");
+		var selectList = document.getElementById("targetReport");
+		var options = selectList.options;
+		options.length = 0;
+		for(i=0;i<reports.length;i++){
+			var id = reports[i].getElementsByTagName("id")[0].firstChild.nodeValue;
+			var name = reports[i].getElementsByTagName("name")[0].firstChild.nodeValue;
+			options.add(new Option(name,id), null);
+		}	
+	$("#copyTo").showAtCenter( false );
+	},'xml');	
 }
 
 function saveCopyItems(){
-	var targetReportId = getFieldValue("targetReport");
-	var targetSheetNo = getFieldValue("targetSheetNo");
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( saveCopyItemsCompleted );
-	var reportItems = "";
-	var url = "copyReportItems.action?reportId=" + targetReportId + "&sheetNo=" +  targetSheetNo;
-	
+	var reportItems = new Array();	
 	var listRadio = document.getElementsByName('reportItemCheck');	
 	for(var i=0;i<listRadio.length;i++){
 		if(listRadio.item(i).checked){
-			reportItems += "&reportItems=" + listRadio.item(i).value;
+			reportItems.push(listRadio.item(i).value);
 		}
 	}	
-	request.send( url + reportItems );	
+	$.post("copyReportExcelItems.action",{
+		reportId:$("#targetReport").val(),
+		sheetNo:$("#targetSheetNo").val(),
+		reportItems:reportItems
+	}, function (data) {
+		$("#copyTo").hide();
+	},'xml');		
 }
-function saveCopyItemsCompleted( xmlObject ){
-	hideById('copyTo');
-}
+
 
 /**
 * Calculation ReportItem type
@@ -330,7 +348,7 @@ function filterIndicatorsCompleted( xmlObject ){
 */
 function openCategoryExpression(){
 	$("#categoryFormula").html($("#expression").val());
-	$.get("getReport.action",{id:reportId},		
+	$.get("getReportExcel.action",{id:reportId},		
 	function(data){
 		var selectedDataElementGroups = document.getElementById('dataElementGroup_');
 		selectedDataElementGroups.options.length = 0;
@@ -340,7 +358,7 @@ function openCategoryExpression(){
 			var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
 			selectedDataElementGroups.options.add(new Option(name, id));
 		}	
-		getDataElementOrderByGroup();
+		getDataElementGroupOrder();
 		setPositionCenter( 'category' );
 		$("#dataElementGroup_").attr("disabled", false);
 		$("#availableDataElements_").attr("disabled", false);
@@ -352,9 +370,9 @@ function openCategoryExpression(){
 	
 }
 
-function getDataElementOrderByGroup(){
-	$.get("getDataElementOrder.action",{id:$("#dataElementGroup_").val()},
-	function(data){
+function getDataElementGroupOrder(){
+	$.get("getDataElementGroupOrder.action",{id:$("#dataElementGroup_").val()},
+	function( data ){
 		data = data.getElementsByTagName('dataElements')[0];
 		var availableDataElements = document.getElementById('availableDataElements_');
 		availableDataElements.options.length = 0;

@@ -54,11 +54,10 @@
 		#end
 		
 		<dataElementGroups>
-			#foreach($dataElement in $report.dataElementOrders)
+			#foreach($group in $report.dataElementOrders)
 				<dataElementGroup>
-					<id>$dataElement.id</id>
-					<dataElementGroupId>$dataElement.dataElementGroupId</dataElementGroupId>
-					<name>$dataElement.dataElementGroupName</name>
+					<id>$group.id</id>					
+					<name>$group.name</name>
 				</dataElementGroup>
 			#end
 		</dataElementGroups>
