@@ -115,6 +115,17 @@ public interface LocationManager
     File getFileForWriting( String fileName, String... directories )
         throws LocationManagerException;
     
+    /**
+     * Builds the directory structure defined by the given array of directories
+     * relative to external configuration directory location. For instance calling
+     * this method with "reporting", "excel", "temp" will create the directory
+     * <external_config_dir>/reporting/excel/temp.
+     * 
+     * @param directories The directories to create.
+     * @return a File representing the created directory.
+     */
+    File buildDirectory( String... directories )
+        throws LocationManagerException;
 
     /**
      * Gets an outputstream from a file relative to the external configuration directory 
