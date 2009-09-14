@@ -154,21 +154,9 @@ public class DefaultLocationManager
     public File getFileForReading( String fileName, String... directories )
         throws LocationManagerException
     {
-        if ( externalDir == null )
-        {
-            throw new LocationManagerException( "External directory not set" );
-        }
+        File directory = buildDirectory( directories );
         
-        StringBuffer directory = new StringBuffer();
-        
-        directory.append( externalDir + separator );
-        
-        for ( String dir : directories )
-        {
-            directory.append( dir + separator );
-        }
-        
-        File file = new File( directory.toString(), fileName );
+        File file = new File( directory, fileName );
         
         if ( !canReadFile( file ) )
         {
@@ -218,21 +206,7 @@ public class DefaultLocationManager
     public File getFileForWriting( String fileName, String... directories )
         throws LocationManagerException
     {
-        if ( externalDir == null )
-        {
-            throw new LocationManagerException( "External directory not set" );
-        }
-        
-        StringBuffer directoryPath = new StringBuffer();
-        
-        directoryPath.append( externalDir + separator );
-        
-        for ( String dir : directories )
-        {
-            directoryPath.append( dir + separator );
-        }
-        
-        File directory = new File( directoryPath.toString() );
+        File directory = buildDirectory( directories );
         
         if ( !directoryIsValid( directory ) )
         {
@@ -242,6 +216,24 @@ public class DefaultLocationManager
         File file = new File( directory, fileName );
         
         return file;
+    }
+    
+    public File buildDirectory( String... directories )
+        throws LocationManagerException
+    {
+        if ( externalDir == null )
+        {
+            throw new LocationManagerException( "External directory not set" );
+        }
+        
+        StringBuffer directoryPath = new StringBuffer( externalDir + separator );
+                
+        for ( String dir : directories )
+        {
+            directoryPath.append( dir + separator );
+        }
+        
+        return new File( directoryPath.toString() );
     }
 
     // -------------------------------------------------------------------------
