@@ -48,6 +48,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator">
     <property name="organisationUnitGroupService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+    <property name="skipInTests" value="true"/>
   </bean>
   
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
