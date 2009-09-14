@@ -32,7 +32,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,13 +57,6 @@ public class DefaultDataSetLockService
         this.dataSetLockStore = dataSetLockStore;
     }
     
-    private I18nService i18nService;
-
-    public void setI18nService( I18nService service )
-    {
-        i18nService = service;
-    }
-
     // -------------------------------------------------------------------------
     // DataSet
     // -------------------------------------------------------------------------
@@ -73,22 +65,16 @@ public class DefaultDataSetLockService
     {
         int id = dataSetLockStore.addDataSetLock( dataSetLock );
         
-        i18nService.addObject( dataSetLock );
-        
         return id;
     }
 
     public void updateDataSetLock( DataSetLock dataSetLock )
     {
         dataSetLockStore.updateDataSetLock( dataSetLock );
-        
-        i18nService.verify( dataSetLock );
     }
     
     public void deleteDataSetLock( DataSetLock dataSetLock )
-    {
-        i18nService.removeObject( dataSetLock );
-        
+    {        
         dataSetLockStore.deleteDataSetLock( dataSetLock );
     }
 
