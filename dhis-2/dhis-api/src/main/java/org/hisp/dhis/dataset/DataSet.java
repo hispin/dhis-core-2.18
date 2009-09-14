@@ -90,7 +90,10 @@ public class DataSet
     
     /**
      * All locked periods within the DataSet.
-     */    
+     * 
+     * @deprecated Replaced by the DataSetLock object.
+     */
+    @Deprecated
     private Set<Period> lockedPeriods = new HashSet<Period>();
 
     /**
