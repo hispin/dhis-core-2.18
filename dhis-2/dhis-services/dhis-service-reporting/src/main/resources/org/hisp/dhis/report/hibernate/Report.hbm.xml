@@ -16,11 +16,13 @@
 
     <property name="design"/>
 
+    <property name="type"/>
+        
     <set name="reportTables" table="reportreporttables">
       <key column="reportid"/>
       <many-to-many column="reporttableid"
         class="org.hisp.dhis.reporttable.ReportTable"/>
     </set>
-        
+    
   </class>
 </hibernate-mapping>

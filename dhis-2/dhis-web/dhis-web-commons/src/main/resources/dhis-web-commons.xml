@@ -27,6 +27,8 @@
         class="org.hisp.dhis.result.VelocityXMLResult"/>
       <result-type name="velocity-json"
         class="org.hisp.dhis.result.VelocityJsonResult"/>
+      <result-type name="outputStreamResult"
+        class="org.hisp.dhis.result.OutputStreamResult"/>
     </result-types>
     
     <interceptors>

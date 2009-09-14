@@ -40,15 +40,22 @@ import org.hisp.dhis.reporttable.ReportTable;
 public class Report
     implements Serializable
 {
+    public static final String TYPE_BIRT = "birt";
+    public static final String TYPE_JASPER = "jasper";
+    public static final String TYPE_DEFAULT = TYPE_BIRT;
+    public static final String TEMPLATE_DIR = "templates";
+    
     private int id;
     
     private String name;
     
     private String design;
+
+    private String type;
     
     private Set<ReportTable> reportTables = new HashSet<ReportTable>();
     
-    private String url;
+    private transient String url;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -58,10 +65,11 @@ public class Report
     {   
     }
     
-    public Report( String name, String design, Set<ReportTable> reportTable )
+    public Report( String name, String design, String type, Set<ReportTable> reportTable )
     {
         this.name = name;
         this.design = design;
+        this.type = type;
         this.reportTables = reportTable;
     }
 
@@ -72,6 +80,11 @@ public class Report
     public boolean isHasReportTable()
     {
         return reportTables != null;
+    }
+    
+    public String getReportType()
+    {
+        return type != null && type.trim().length() > 0 ? type : TYPE_DEFAULT;
     }
     
     // -------------------------------------------------------------------------
@@ -145,6 +158,16 @@ public class Report
     public void setDesign( String design )
     {
         this.design = design;
+    }
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
     }
 
     public Set<ReportTable> getReportTables()

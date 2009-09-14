@@ -35,6 +35,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.validation.ValidationRule;
 
 /**
  * @author Fredrik Fjeld
@@ -135,4 +136,10 @@ public interface DataIntegrityService
      * Gets all organisation unit groups which are not assigned to any group set.
      */
     Collection<OrganisationUnitGroup> getOrganisationUnitGroupsWithoutGroupSets();
+
+    // -------------------------------------------------------------------------
+    // ValidationRule
+    // -------------------------------------------------------------------------
+
+    Collection<ValidationRule> getValidationRulesWithoutGroups();
 }

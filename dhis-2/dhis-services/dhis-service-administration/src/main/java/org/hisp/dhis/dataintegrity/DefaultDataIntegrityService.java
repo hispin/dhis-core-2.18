@@ -51,6 +51,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.validation.ValidationRule;
+import org.hisp.dhis.validation.ValidationRuleGroup;
+import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -100,6 +103,13 @@ public class DefaultDataIntegrityService
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+    
+    private ValidationRuleService validationRuleService;
+
+    public void setValidationRuleService( ValidationRuleService validationRuleService )
+    {
+        this.validationRuleService = validationRuleService;
     }
 
     // -------------------------------------------------------------------------
@@ -161,7 +171,7 @@ public class DefaultDataIntegrityService
         
         return dataElements;
     }
-
+    
     public Map<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes()
     {
         Collection<DataElement> dataElements = dataElementService.getAllDataElements();
@@ -461,5 +471,35 @@ public class DefaultDataIntegrityService
         }
         
         return groups;
+    }
+
+    // -------------------------------------------------------------------------
+    // ValidationRule
+    // -------------------------------------------------------------------------
+
+    public Collection<ValidationRule> getValidationRulesWithoutGroups()
+    {
+        Collection<ValidationRuleGroup> groups = validationRuleService.getAllValidationRuleGroups();
+        
+        Collection<ValidationRule> validationRules = validationRuleService.getAllValidationRules();
+        
+        Iterator<ValidationRule> iterator = validationRules.iterator();
+        
+        while ( iterator.hasNext() )
+        {
+            final ValidationRule rule = iterator.next();
+            
+            for ( ValidationRuleGroup group : groups )
+            {
+                if ( group.getMembers().contains( rule ) )
+                {
+                    iterator.remove();
+                    
+                    break;
+                }
+            }
+        }
+        
+        return validationRules;
     }
 }

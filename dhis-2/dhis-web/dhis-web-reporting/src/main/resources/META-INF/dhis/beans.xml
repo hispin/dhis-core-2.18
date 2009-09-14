@@ -307,6 +307,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.report.ReportService"/>
     <property name="reportTableService"
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
+    <property name="locationManager"
+      ref="org.hisp.dhis.external.location.LocationManager"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportOptionsAction"
@@ -364,6 +366,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="reportService"
       ref="org.hisp.dhis.report.ReportService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.reportviewer.action.RenderReportAction"
+    class="org.hisp.dhis.reporting.reportviewer.action.RenderReportAction"
+    scope="prototype">
+    <property name="locationManager"
+      ref="org.hisp.dhis.external.location.LocationManager"/>
+    <property name="jdbcTemplate"
+      ref="jdbcTemplate"/>  
   </bean>
   
   <!-- PivotTable -->

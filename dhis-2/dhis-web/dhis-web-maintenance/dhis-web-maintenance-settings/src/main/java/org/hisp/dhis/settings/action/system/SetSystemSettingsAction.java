@@ -30,6 +30,7 @@ package org.hisp.dhis.settings.action.system;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FORUM_INTEGRATION;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_REPORT_FRAMEWORK;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MODE;
@@ -81,6 +82,13 @@ public class SetSystemSettingsAction
         this.startModule = startModule;
     }
 
+    private String reportFramework;
+    
+    public void setReportFramework( String reportFramework )
+    {
+        this.reportFramework = reportFramework;
+    }
+
     private Boolean zeroValueSaveMode;
 
     public void setZeroValueSaveMode( Boolean zeroValueSaveMode )
@@ -126,6 +134,7 @@ public class SetSystemSettingsAction
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_TITLE, applicationTitle );        
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
+        systemSettingManager.saveSystemSetting( KEY_REPORT_FRAMEWORK, reportFramework );
         systemSettingManager.saveSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, zeroValueSaveMode );
         systemSettingManager.saveSystemSetting( KEY_FORUM_INTEGRATION, forumIntegration );
         systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );

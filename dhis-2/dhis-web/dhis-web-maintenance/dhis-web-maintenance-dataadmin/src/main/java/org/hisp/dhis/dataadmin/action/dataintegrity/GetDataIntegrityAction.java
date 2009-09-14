@@ -36,6 +36,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.validation.ValidationRule;
 
 import com.opensymphony.xwork2.Action;
 
@@ -152,6 +153,13 @@ public class GetDataIntegrityAction
         return organisationUnitGroupsWithoutGroupSets;
     }
 
+    private Collection<ValidationRule> validationRulesWithoutGroups;
+
+    public Collection<ValidationRule> getValidationRulesWithoutGroups()
+    {
+        return validationRulesWithoutGroups;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -175,6 +183,8 @@ public class GetDataIntegrityAction
         organisationUnitsViolatingExclusiveGroupSets = dataIntegrityService.getOrganisationUnitsViolatingExclusiveGroupSets();
         
         organisationUnitGroupsWithoutGroupSets = dataIntegrityService.getOrganisationUnitGroupsWithoutGroupSets();
+        
+        validationRulesWithoutGroups = dataIntegrityService.getValidationRulesWithoutGroups();
         
         return SUCCESS;
     }
