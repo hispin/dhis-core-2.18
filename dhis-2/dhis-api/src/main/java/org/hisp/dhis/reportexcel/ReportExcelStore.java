@@ -90,6 +90,8 @@ public interface ReportExcelStore
     public DataElementGroupOrder getDataElementGroupOrder( Integer id );
 
     public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder );
+    
+    public void deleteDataElementGroupOrder( Integer id );
 
     // --------------------------------------
     // Data Entry Status

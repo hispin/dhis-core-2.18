@@ -45,7 +45,6 @@ import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelStore;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 
-
 /**
  * @author Tran Thanh Tri
  * @version $Id$
@@ -213,8 +212,8 @@ public class HibernateReportExcelStore
     public Collection<ReportExcelItem> getReportExcelItem( int sheetNo, Integer reportId )
     {
         Session session = sessionFactory.getCurrentSession();
-        SQLQuery sqlQuery = session.createSQLQuery( "SELECT * from reportexcelitems where reportexcelitems.sheetno=" + sheetNo
-            + " and reportexcelitems.reportexcelid=" + reportId.intValue() );
+        SQLQuery sqlQuery = session.createSQLQuery( "SELECT * from reportexcelitems where reportexcelitems.sheetno="
+            + sheetNo + " and reportexcelitems.reportexcelid=" + reportId.intValue() );
         sqlQuery.addEntity( ReportExcelItem.class );
         return sqlQuery.list();
     }
@@ -245,6 +244,12 @@ public class HibernateReportExcelStore
     {
         Session session = sessionFactory.getCurrentSession();
         session.update( dataElementGroupOrder );
+    }
+
+    public void deleteDataElementGroupOrder( Integer id )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        session.delete( this.getDataElementGroupOrder( id ) );
     }
 
     // -------------------------------------------------
@@ -311,7 +316,7 @@ public class HibernateReportExcelStore
         return (Integer) session.save( arg0 );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<DataEntryStatus> getDataEntryStatusDefaultByDataSets( Collection<DataSet> dataSets )
     {
         Collection<DataEntryStatus> result = new HashSet<DataEntryStatus>();
