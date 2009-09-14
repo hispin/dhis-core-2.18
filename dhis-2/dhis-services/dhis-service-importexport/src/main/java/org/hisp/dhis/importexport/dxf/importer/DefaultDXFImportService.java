@@ -1082,7 +1082,7 @@ public class DefaultDXFImportService
                 {
                     //setMessage( "import_contains_data_for_locked_periods" );
                     
-                    log.warn( "Import file contained DataValues for locked periods" );                    
+                    log.warn( "Skipped DataValues because import file contained DataValues for locked Period, Organisation Unit and DataSet combinations" );                    
                 }
                 else
                 {

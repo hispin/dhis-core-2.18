@@ -33,9 +33,12 @@ import java.util.Collection;
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,6 +81,20 @@ public class DefaultLockingManager
     {
         this.periodService = periodService;
     }
+    
+    private OrganisationUnitService organisationUnitService;
+    
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
+    private DataSetLockService dataSetLockService;
+
+    public void setDataSetLockService( DataSetLockService dataSetLockService )
+    {
+        this.dataSetLockService = dataSetLockService;
+    }
 
     // -------------------------------------------------------------------------
     // LockingManager implementation
@@ -86,9 +103,46 @@ public class DefaultLockingManager
     @Transactional
     public boolean currentImportContainsLockedData()
     {
-        Collection<DataElement> dataElements = getDataElements( objectMappingGenerator.getDataElementMapping( false ).values() );
-        Collection<Period> periods = getPeriods( objectMappingGenerator.getPeriodMapping( false ).values() );
+        Collection<Period> periods = 
+            periodService.getPeriods( objectMappingGenerator.getPeriodMapping( false ).values() );
+        
+        Collection<OrganisationUnit> organisationUnits = 
+            organisationUnitService.getOrganisationUnits( objectMappingGenerator.getOrganisationUnitMapping( false ).values() );
+        
+        Collection<DataSet> dataSets = getRelevantDataSets();
+        
+        // TODO improve performance by using direct JDBC or load Maps into memory
+        
+        for ( DataSet dataSet : dataSets )
+        {
+            for ( Period period : periods )
+            {
+                for ( OrganisationUnit unit : organisationUnits )
+                {
+                    if ( dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, period, unit ) != null )
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
 
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+        
+    /**
+     * Returns a Collection of DataSets where the relevant DataElements
+     * has intersecting elements.
+     */
+    private Collection<DataSet> getRelevantDataSets()
+    {
+        Collection<DataElement> dataElements = 
+            dataElementService.getDataElements( objectMappingGenerator.getDataElementMapping( false ).values() );
+                
         Collection<DataSet> dataSets = new ArrayList<DataSet>();
         
         for ( DataSet dataSet : dataSetService.getAllDataSets() )
@@ -99,47 +153,15 @@ public class DefaultLockingManager
             }
         }
         
-        for ( DataSet dataSet : dataSets )
-        {
-            if ( intersects( dataSet.getLockedPeriods(), periods ) )
-            {
-                return true;
-            }
-        }
-        
-        return false;
+        return dataSets;
     }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    public boolean intersects( Collection<?> collection1, Collection<?> collection2 )
+    
+    /**
+     * Tests whether the first Collection has intersecting elements with the
+     * second Collection.
+     */
+    private boolean intersects( Collection<?> collection1, Collection<?> collection2 )
     {
         return CollectionUtils.intersection( collection1, collection2 ).size() > 0;
-    }
-    
-    public Collection<DataElement> getDataElements( Collection<Integer> identifiers )
-    {
-        Collection<DataElement> dataElements = new ArrayList<DataElement>();
-        
-        for ( Integer id : identifiers )
-        {
-            dataElements.add( dataElementService.getDataElement( id ) );
-        }
-        
-        return dataElements;
-    }
-    
-    public Collection<Period> getPeriods( Collection<Integer> identifiers )
-    {
-        Collection<Period> periods = new ArrayList<Period>();
-        
-        for ( Integer id : identifiers )
-        {
-            periods.add( periodService.getPeriod( id ) );
-        }
-        
-        return periods;
     }
 }
