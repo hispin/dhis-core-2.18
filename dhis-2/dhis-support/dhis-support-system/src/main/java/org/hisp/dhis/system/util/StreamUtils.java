@@ -373,4 +373,26 @@ public class StreamUtils
             throw new RuntimeException( "Failed to finish ZipOutputStream", ex );
         }
     }
+    
+    /**
+     * Attempts to delete the File with the given path.
+     * 
+     * @param file the File path.
+     * @return true if the operation succeeded, false otherwise.
+     */
+    public static boolean delete( String path )
+    {
+        return new File( path ).delete();
+    }
+    
+    /**
+     * Tests whether the File with the given path exists.
+     * 
+     * @param path the File path.
+     * @return true if the File exists, false otherwise.
+     */
+    public static boolean exists( String path )
+    {
+        return new File( path ).exists();
+    }   
 }
