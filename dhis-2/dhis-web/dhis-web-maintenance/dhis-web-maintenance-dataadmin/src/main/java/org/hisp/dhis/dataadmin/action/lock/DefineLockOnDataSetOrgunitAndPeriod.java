@@ -48,9 +48,8 @@ import com.opensymphony.xwork2.Action;
  * @author Brajesh Murari
  * @version $Id$
  */
-
 public class DefineLockOnDataSetOrgunitAndPeriod
-implements Action
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -62,24 +61,24 @@ implements Action
     {
         this.selectionTreeManager = selectionTreeManager;
     }
-    
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-    
+
     private PeriodService periodService;
-    
+
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
     }
-    
+
     private DataSetLockService dataSetLockService;
-    
-    public void setDataSetLockService( DataSetLockService dataSetLockService)
+
+    public void setDataSetLockService( DataSetLockService dataSetLockService )
     {
         this.dataSetLockService = dataSetLockService;
     }
@@ -90,7 +89,7 @@ implements Action
     {
         this.currentUserService = currentUserService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -101,7 +100,7 @@ implements Action
     {
         this.lockedDataSets = lockedDataSets;
     }
-    
+
     public Integer getLockedDataSets()
     {
         return lockedDataSets;
@@ -113,14 +112,14 @@ implements Action
     {
         this.unlockedDataSets = unlockedDataSets;
     }
-    
+
     public Collection<String> getUnlockedDataSets()
     {
         return unlockedDataSets;
     }
-    
+
     private Integer selectedLockedDataSetId;
-    
+
     public void setSelectedLockedDataSetId( Integer selectedLockedDataSetId )
     {
         this.selectedLockedDataSetId = selectedLockedDataSetId;
@@ -130,19 +129,19 @@ implements Action
     {
         return selectedLockedDataSetId;
     }
-    
+
     private Integer periodId;
-    
+
     public void setPeriodId( Integer periodId )
     {
         this.periodId = periodId;
     }
-    
+
     public Integer getPeriodId()
     {
         return periodId;
     }
-    
+
     private Date timestamp;
 
     public Date getTimestamp()
@@ -156,69 +155,70 @@ implements Action
     {
         return storedBy;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() 
+    public String execute()
         throws Exception
     {
-    	
         Period period = new Period();
-        period = periodService.getPeriod(periodId.intValue());                         
+        period = periodService.getPeriod( periodId.intValue() );
         storedBy = currentUserService.getCurrentUsername();
-           	       
+
         // -------------------------------------------------------------------------------
-    	// For data set movement from locked to unlocked data set list box and vice versa 
+        // For data set movement from locked to unlocked data set list box and
+        // vice versa
         // according to lock status
         // -------------------------------------------------------------------------------
-        
+
         for ( String id : unlockedDataSets )
         {
             DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
-            DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod ( dataSet, period );                     
-            
-            if (  dataSetLock != null  )
+            DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
+
+            if ( dataSetLock != null )
             {
-				if( dataSet.getLocked()== true )
-				{
-				    dataSet.setLocked( false );
-				    dataSetService.updateDataSet( dataSet);           		
-				}          	
-				dataSetLock.getSources().removeAll( dataSetLock.getSources() );
-				dataSetLockService.deleteDataSetLock( dataSetLock );             
-            }           
-        }  
-        
+                if ( dataSet.getLocked() == true )
+                {
+                    dataSet.setLocked( false );
+                    dataSetService.updateDataSet( dataSet );
+                }
+                
+                dataSetLock.getSources().removeAll( dataSetLock.getSources() );
+                dataSetLockService.deleteDataSetLock( dataSetLock );
+            }
+        }
+
         // ----------------------------------------------------------------------------------------
-        // Data sets lock for specific selected period, and selected organization unit ( or units ) 
+        // Data sets lock for specific selected period, and selected
+        // organization unit ( or units )
         // ----------------------------------------------------------------------------------------
-        
-        if( lockedDataSets != null )
+
+        if ( lockedDataSets != null )
         {
-        	DataSet dataSet = dataSetService.getDataSet( lockedDataSets.intValue() );      	
-        	Set<Source> organisationUnitsSelectedForLocking = new HashSet<Source>( selectionTreeManager.getLockOnSelectedOrganisationUnits());
-        	DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );   
-	        	        
-	        //System.out.println("locked orgunit size :" + organisationUnitsSelectedForLocking.size());
-	        
-	        if( organisationUnitsSelectedForLocking.size() < 1 )
-	        {
-	            dataSet.setLocked( false );
-                dataSetService.updateDataSet( dataSet ); 
+            DataSet dataSet = dataSetService.getDataSet( lockedDataSets );
+            Set<Source> organisationUnitsSelectedForLocking = new HashSet<Source>( selectionTreeManager
+                .getLockOnSelectedOrganisationUnits() );
+            DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
+
+            if ( organisationUnitsSelectedForLocking.size() < 1 )
+            {
+                dataSet.setLocked( false );
+                dataSetService.updateDataSet( dataSet );
                 dataSetLock.getSources().removeAll( dataSetLock.getSources() );
                 dataSetLockService.deleteDataSetLock( dataSetLock );
                 return SUCCESS;
-	        }
-	        	                       
-	        dataSetLock.getSources().removeAll( dataSetLock.getSources() ); 
-	        dataSetLock.getSources().addAll( organisationUnitsSelectedForLocking );
-	        dataSetLock.setTimestamp( new Date() );
-	        dataSetLock.setStoredBy(storedBy);
-	        dataSetLockService.updateDataSetLock(dataSetLock);	
-        } 
-        
+            }
+
+            dataSetLock.getSources().removeAll( dataSetLock.getSources() );
+            dataSetLock.getSources().addAll( organisationUnitsSelectedForLocking );
+            dataSetLock.setTimestamp( new Date() );
+            dataSetLock.setStoredBy( storedBy );
+            dataSetLockService.updateDataSetLock( dataSetLock );
+        }
+
         return SUCCESS;
     }
 }

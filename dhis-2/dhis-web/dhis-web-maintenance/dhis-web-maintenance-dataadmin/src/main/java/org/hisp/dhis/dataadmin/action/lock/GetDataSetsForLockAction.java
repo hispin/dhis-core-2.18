@@ -1,5 +1,7 @@
+package org.hisp.dhis.dataadmin.action.lock;
+
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,7 +26,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.dataadmin.action.lock;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,17 +55,17 @@ public class GetDataSetsForLockAction
     {
         this.dataSetService = dataSetService;
     }
-    
+
     private PeriodService periodService;
-    
+
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
     }
-    
+
     private DataSetLockService dataSetLockService;
-    
-    public void setDataSetLockService( DataSetLockService dataSetLockService)
+
+    public void setDataSetLockService( DataSetLockService dataSetLockService )
     {
         this.dataSetLockService = dataSetLockService;
     }
@@ -72,21 +73,21 @@ public class GetDataSetsForLockAction
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
-       
+
     private Integer periodId;
-    
+
     public void setPeriodId( Integer periodId )
     {
         this.periodId = periodId;
     }
-    
+
     private Collection<DataSet> dataSets = new ArrayList<DataSet>();
 
     public Collection<DataSet> getDataSets()
     {
         return dataSets;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -97,20 +98,20 @@ public class GetDataSetsForLockAction
         {
             Period period = new Period();
             period = periodService.getPeriod( periodId.intValue() );
-            
+
             for ( DataSet dataSet : dataSetService.getAssignedDataSetsByPeriodType( period.getPeriodType() ) )
             {
-                if(dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) != null)
+                if ( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) != null )
                 {
-                    dataSet.setLocked( true );   
-                    dataSetService.updateDataSet( dataSet);
+                    dataSet.setLocked( true );
+                    dataSetService.updateDataSet( dataSet );
                     dataSets.add( dataSet );
                 }
                 else
                 {
-                    dataSet.setLocked( false );   
-                    dataSetService.updateDataSet( dataSet);
-                    dataSets.add( dataSet ); 
+                    dataSet.setLocked( false );
+                    dataSetService.updateDataSet( dataSet );
+                    dataSets.add( dataSet );
                 }
             }
         }

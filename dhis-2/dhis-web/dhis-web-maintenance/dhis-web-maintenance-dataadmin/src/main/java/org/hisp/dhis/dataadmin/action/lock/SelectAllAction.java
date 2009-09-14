@@ -40,7 +40,8 @@ import com.opensymphony.xwork2.Action;
  * @author Brajesh Murari
  * @version $Id$
  */
-public class SelectAllAction implements Action
+public class SelectAllAction 
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

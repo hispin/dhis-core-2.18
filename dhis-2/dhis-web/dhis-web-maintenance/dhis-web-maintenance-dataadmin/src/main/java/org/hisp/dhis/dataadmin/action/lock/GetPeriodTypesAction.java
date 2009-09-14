@@ -38,7 +38,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 public class GetPeriodTypesAction
-implements Action
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
