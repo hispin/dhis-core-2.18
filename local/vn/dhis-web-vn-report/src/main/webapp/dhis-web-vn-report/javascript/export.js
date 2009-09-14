@@ -83,14 +83,15 @@ function validateGenerateReportCompleted( xmlObject ){
 		}
 	}
 }
+
 function generateReport() {
 	
 	setMessage(globalMessage);
-	
+
 	var reportId = getFieldValue('report');
 	var periodId = getFieldValue('period');
 	
-	window.location = "generateReport.action?reportId=" + reportId + "&periodId=" + periodId;
+	window.location = "generateReport.action?reportId=" + reportId + "&periodId=" + periodId + "&reportType=category";
 
 	setTimeout('setMessage("Finished !")', 3000);
 	

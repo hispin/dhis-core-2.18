@@ -3,7 +3,7 @@
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class name="org.hisp.dhis.vn.report.ReportItem" table="reportitem">
+  <class name="org.hisp.dhis.vn.report.ReportItem" table="reportexcelitems">
   	<id name="id" column="reportitemid">
   		<generator class="native"/>
   	</id>

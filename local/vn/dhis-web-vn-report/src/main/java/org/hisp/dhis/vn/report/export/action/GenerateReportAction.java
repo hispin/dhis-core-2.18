@@ -103,43 +103,43 @@ public class GenerateReportAction
     // Dependency
     // -------------------------------------------
 
-    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
+    OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
-    private CurrentUserService currentUserService;
+    CurrentUserService currentUserService;
 
-    private AggregationService aggregationService;
+    AggregationService aggregationService;
 
-    private IndicatorService indicatorService;
+    IndicatorService indicatorService;
 
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    private StatementManager statementManager;
+    StatementManager statementManager;
 
-    private DataElementService dataElementService;
+    DataElementService dataElementService;
 
-    private ReportLocationManager reportLocationManager;
+    ReportLocationManager reportLocationManager;
 
-    private ReportExcelService reportService;
+    ReportExcelService reportService;
 
-    private PeriodService periodService;
+    PeriodService periodService;
 
-    private I18nFormat format;
+    I18nFormat format;
    
     // -------------------------------------------
     // Input
     // -------------------------------------------
 
-    private Integer reportId;
+    Integer reportId;
 
-    private Integer periodId;
+    Integer periodId;
 
     // -------------------------------------------
     // Output
     // -------------------------------------------
 
-    private String outputXLS;
+    String outputXLS;
 
-    private InputStream inputStream;
+    InputStream inputStream;
 
     // -------------------------------------------
     // Getter & Setter
@@ -541,6 +541,8 @@ public class GenerateReportAction
                     }
                 }
             }
+            
+            /*
 
             // HIEU DONE //
             // -----------------------------------------------------------------
@@ -633,15 +635,13 @@ public class GenerateReportAction
 
                         Collections.sort( aItemJumpingIndex );
                     }
-                    /**
-	             * */
+                   
                     if ( !aItemRenameRow.isEmpty() )
                     {
 
                         Collections.sort( aItemRenameRow );
                     }
-                    /**
-	             * */
+                    
                     if ( serialCol > elementCol )
                     {
 
@@ -729,6 +729,9 @@ public class GenerateReportAction
         }// end of if
         // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         // //
+         * 
+         */
+        }
 
         outputReportWorkbook.write();
 

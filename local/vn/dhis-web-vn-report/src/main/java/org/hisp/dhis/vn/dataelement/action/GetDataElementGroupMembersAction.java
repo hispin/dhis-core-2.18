@@ -128,7 +128,7 @@ public class GetDataElementGroupMembersAction
 
         if ( report != null )
         {
-            selectedDataElements = new ArrayList<DataElement>( ((ReportExcelCategory) report).getDataElements() );
+           // selectedDataElements = new ArrayList<DataElement>( ((ReportExcelCategory) report).getDataElements() );
 
             // Collections.sort( selectedDataElements, dataElementComparator );
 

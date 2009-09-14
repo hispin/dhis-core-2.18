@@ -31,6 +31,7 @@
 	#end
 	
 	#if( $report.getReportType() == 'category' )
+	
 		#if ( $availableDataElements.size() != 0 )
 			<availableDataElements>
 				#foreach($availableElement in $availableDataElements)
@@ -51,6 +52,17 @@
 				#end
 			</selectedDataElements>
 		#end
+		
+		<dataElementGroups>
+			#foreach($dataElement in $report.dataElementOrders)
+				<dataElementGroup>
+					<id>$dataElement.id</id>
+					<dataElementGroupId>$dataElement.dataElementGroupId</dataElementGroupId>
+					<name>$dataElement.dataElementGroupName</name>
+				</dataElementGroup>
+			#end
+		</dataElementGroups>
+		
 	#end
 	
 </report>

@@ -128,6 +128,32 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 	</bean>
 
+	<bean id="org.hisp.dhis.vn.report.action.UpdateDataElementGroup4ReportCategoryAction"
+		class="org.hisp.dhis.vn.report.action.UpdateDataElementGroup4ReportCategoryAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />		
+	</bean>
+	
+	<bean id="org.hisp.dhis.vn.dataelement.action.GetAllDataElementGroupsAction"
+		class="org.hisp.dhis.vn.dataelement.action.GetAllDataElementGroupsAction"
+		scope="prototype">		
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />		
+	</bean>
+	
+	<bean id="org.hisp.dhis.vn.report.action.UpdateSortDataElementAction"
+		class="org.hisp.dhis.vn.report.action.UpdateSortDataElementAction"
+		scope="prototype">		
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />		
+	</bean>
+	
+	<bean id="org.hisp.dhis.vn.report.action.GetDataElementOrderAction"
+		class="org.hisp.dhis.vn.report.action.GetDataElementOrderAction"
+		scope="prototype">		
+		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />			
+	</bean>
+
 	<!-- Report Item -->
 
 	<bean id="org.hisp.dhis.vn.reportitem.action.ListReportItemAction"
@@ -214,10 +240,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
-	
+
 	<bean id="org.hisp.dhis.vn.reportitem.action.GetListSheetAction"
-		class="org.hisp.dhis.vn.reportitem.action.GetListSheetAction"
-		scope="prototype">
+		class="org.hisp.dhis.vn.reportitem.action.GetListSheetAction" scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 	</bean>
 
@@ -265,8 +290,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
 
-	<bean id="org.hisp.dhis.vn.report.export.action.GenerateReportAction"
-		class="org.hisp.dhis.vn.report.export.action.GenerateReportAction"
+	<bean id="org.hisp.dhis.vn.report.export.action.GenerateCategoryReportAction"
+		class="org.hisp.dhis.vn.report.export.action.GenerateCategoryReportAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.vn.report.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />

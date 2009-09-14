@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<include file="dhis-web-commons.xml" />
+
+	<package name="dhis-web-excel-reporting" extends="dhis-web-commons"
+		namespace="/dhis-web-excel-reporting">
+		
+		<!-- REPORT EXCEL CORE ACTION -->
+		
+		<action name="index" class="org.hisp.dhis.reportexcel.action.NoAction">
+			<result name="success" type="redirect">listReportExcel.action</result>
+		</action>		
+		
+		<action name="addReportExcel"
+			class="org.hisp.dhis.reportexcel.action.AddReportExcelAction">
+			<result name="success" type="velocity-xml">/dhis-web-excel-reporting/responseReport.vm</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+		
+		<action name="deleteReportExcel"
+			class="org.hisp.dhis.reportexcel.action.DeleteReportExcelAction">
+			<result name="success" type="redirect">listReportExcel.action</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>		
+		
+		<action name="getReportExcel" class="org.hisp.dhis.reportexcel.action.GetReportExcelAction">
+			<result name="success" type="velocity-xml">/dhis-web-excel-reporting/responseReport.vm</result>
+		</action>
+		
+		<action name="getReportExcelGroups"
+			class="org.hisp.dhis.reportexcel.action.GetReportExcelGroupsAction">
+			<result name="success" type="velocity">/dhis-web-excel-reporting/responseReportGroups.vm</result>
+		</action>
+		
+		<action name="listReportExcel" class="org.hisp.dhis.reportexcel.action.ListReportExcelAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/reports.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+			<param name="javascripts">javascript/reports.js,javascript/jquery.autocomplete.js,javascript/commons.js</param>
+			<param name="stylesheets">style/jquery.autocomplete.css</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+		
+		<action name="updateReportExcel"
+			class="org.hisp.dhis.reportexcel.action.UpdateReportExcelAction">
+			<result name="success" type="velocity-xml">/dhis-web-excel-reporting/responseReport.vm</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+		
+		<action name="validateAddReportExcel"
+			class="org.hisp.dhis.reportexcel.action.ValidateAddReportExcelAction">
+			<result name="success" type="velocity-xml">/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">/dhis-web-excel-reporting/responseError.vm</result>
+		</action>
+		
+		<action name="validateUpdateReportExcel"
+			class="org.hisp.dhis.reportexcel.action.ValidateUpdateReportExcelAction">
+			<result name="success" type="velocity-xml">/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">/dhis-web-excel-reporting/responseError.vm</result>
+		</action>
+		
+		<!-- REPORT EXCEL CATEGORY ACTION -->
+		
+		<action name="listDataElementGroupOrder"
+			class="org.hisp.dhis.reportexcel.action.GetReportExcelAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/listDataElementGroup.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+			<param name="javascripts">javascript/dataElementGroup.js,javascript/commons.js</param>
+			<param name="stylesheets">style/basic.css</param>
+		</action>	
+		
+		<action name="getAllDataElementGroups"
+			class="org.hisp.dhis.reportexcel.category.action.GetAllDataElementGroupsAction">
+			<result name="success" type="velocity-xml">/dhis-web-excel-reporting/responseDataElementGroups.vm</result>
+		</action>
+		
+		<action name="updateDataElementGroupOrder"
+			class="org.hisp.dhis.reportexcel.category.action.UpdateDataElementGroupOrderAction">
+			<result name="success" type="redirect">listReportExcel.action</result>
+		</action>
+		
+		<action name="openSortDataElement"
+			class="org.hisp.dhis.reportexcel.action.GetReportExcelAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/sortDataElements.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+			<param name="javascripts">javascript/ui.core.js,javascript/ui.core.js,javascript/ui.sortable.js,javascript/reports.js,javascript/commons.js</param>
+			<param name="stylesheets">style/ui.theme.css,style/basic.css</param>
+		</action>	
+		
+		<action name="updateSortedDataElements"
+			class="org.hisp.dhis.reportexcel.category.action.UpdateSortedDataElementAction">
+			<result name="success" type="velocity-xml">/dhis-web-excel-reporting/responseSuccess.vm</result>
+		</action>
+		
+		<action name="getDataElementOrder"
+			class="org.hisp.dhis.reportexcel.category.action.GetDataElementOrderAction">
+			<result name="success" type="velocity-xml">/dhis-web-excel-reporting/responseDataElementOrder.vm</result>
+		</action>
+
+	</package>
+</struts>

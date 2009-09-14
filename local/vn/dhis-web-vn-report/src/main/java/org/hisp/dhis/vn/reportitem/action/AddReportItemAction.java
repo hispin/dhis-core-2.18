@@ -131,7 +131,7 @@ public class AddReportItemAction
         throws Exception
     {
         reportItem = new ReportItem();
-        reportItem.setName( CodecUtils.unescape( name ) );
+        reportItem.setName( name );
         reportItem.setItemType( itemType.trim() );
         reportItem.setRow( row );
         reportItem.setColumn( column );
