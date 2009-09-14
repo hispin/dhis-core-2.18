@@ -27,6 +27,8 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -39,11 +41,17 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
+import org.hisp.dhis.system.comparator.FileLastModifiedComprator;
 
 /**
  * @author Lars Helge Overland
@@ -65,6 +73,65 @@ public class StreamUtils
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             
         return classLoader.getResourceAsStream( name );
+    }
+
+    /**
+     * Writes the content of the first File to the second File.
+     * 
+     * @param inFile the input File.
+     * @param outFile the output File.
+     */
+    public static void write( File inFile, File outFile )
+    {
+        BufferedInputStream in = null;
+        BufferedOutputStream out = null;
+        
+        int b = 0;
+        
+        try
+        {
+            in = new BufferedInputStream( new FileInputStream( inFile ) );
+            out = new BufferedOutputStream( new FileOutputStream( outFile ) );
+            
+            while ( ( b = in.read() ) != -1 )
+            {
+                out.write( b );
+            }
+        }
+        catch ( IOException ex )
+        {
+            throw new RuntimeException( ex );
+        }
+        finally
+        {
+            closeInputStream( in );
+            closeOutputStream( out );
+
+        }
+    }
+
+    /**
+     * Returns all Files in the given directory.
+     * 
+     * @param directory a File representing the relevant directory.
+     * @param sort indicates whether to sort chronologically on the lastModified property.
+     * @return a List of Files.
+     */
+    public static List<File> getFileList( File directory, boolean sort )
+    {
+        List<File> files = new ArrayList<File>();
+
+        if ( directory != null )
+        {
+            files = Arrays.asList( directory.listFiles() );
+        }
+        
+        if ( sort )
+        {
+            Collections.sort( files, new FileLastModifiedComprator() );
+        }
+        
+        return files;
     }
 
     /**
