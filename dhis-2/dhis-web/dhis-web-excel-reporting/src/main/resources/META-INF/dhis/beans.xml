@@ -129,7 +129,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewReportAction"
 		scope="prototype">
 		<property name="reportService" 
-			ref="org.hisp.dhis.vn.report.ReportExcelService" />
+			ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" 
 			ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
