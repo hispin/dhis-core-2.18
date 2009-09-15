@@ -70,12 +70,12 @@
 			<td><label>$i18n.getString('item_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
 				<select type="text" id="itemType" name="itemType" style="min-width:20em" onchange="selectItiemType(this.value);">					
-					#if($!reportExcel.getReportType()=='CATEGORY')
+					#if($!reportExcel.isCategory())
 					<option value='dataelement'>$i18n.getString('dataelement')</option>					
 					<option value='dataelement_code'>$i18n.getString('dataelement_code')</option>
 					<option value='dataelement_name'>$i18n.getString('dataelement_name')</option>	
 					<option value='serial'>$i18n.getString('serial')</option>					
-					#else if($!reportExcel.getReportType()=='NORMAL')					
+					#else if($!reportExcel.isNormal())					
 					<option value='dataelement'>$i18n.getString('dataelement')</option>
 					<option value='formulaexcel'>$i18n.getString('formulaexcel')</option>					
 					<option value='indicator'>$i18n.getString('indicator')</option>									
