@@ -27,7 +27,12 @@ package org.hisp.dhis.reportexcel.configuration.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.options.SystemSettingManager;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.ReportExcelService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -36,40 +41,62 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 
-public class GetReportConfigurationAction
+public class SaveReportUserRolesAction
     implements Action
-{   
+{
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+   
+    private ReportExcelService reportService;
 
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    public void setReportService( ReportExcelService reportService )
     {
-        this.systemSettingManager = systemSettingManager;
+        this.reportService = reportService;
     }
 
-    // -------------------------------------------------------------------------
+    private UserStore userStore;
+
+    public void setUserStore( UserStore userStore )
+    {
+        this.userStore = userStore;
+    }
+
+    // ----------------------------------------------------------------------------------
     // Getter and Setter
-    // -------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------------
     
-    private String templateDirectory;   
-    
-    public String getTemplateDirectory()
+    private Integer reportId;
+
+    public void setReportId( Integer reportId )
     {
-        return templateDirectory;
+        this.reportId = reportId;
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
+    private Collection<Integer> userRoleId = new ArrayList<Integer>();
+
+    public void setUserRoleId( Collection<Integer> userRoleId )
+    {
+        this.userRoleId = userRoleId;
+    }
+
+    // ----------------------------------------------------------------------------------
+    // Action implemantation
+    // ----------------------------------------------------------------------------------
     
     public String execute()
-        throws Exception
     {
-        templateDirectory = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
-        
+        ReportExcel report = reportService.getReportExcel( reportId );
+
+        report.getUserRoles().clear();
+
+        for ( Integer id : userRoleId )
+        {
+            report.getUserRoles().add( userStore.getUserAuthorityGroup( id ) );
+        }
+
+        reportService.updateReportExcel( report );
+
         return SUCCESS;
     }
 }

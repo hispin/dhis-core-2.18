@@ -22,6 +22,8 @@ public class Element
 
     public static final String DATE = "DATE";
 
+    public static final String DATETIME = "timestamp with time zone";
+
     public static final String DOUBLE = "NUMERIC";
 
     public static final String BOOLEAN = "BOOLEAN";

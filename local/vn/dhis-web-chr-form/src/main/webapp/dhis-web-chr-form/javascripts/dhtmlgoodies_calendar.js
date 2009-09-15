@@ -909,7 +909,6 @@ function writeTopBar()
 
 
 }
-var parent_div;
 function writeCalendarContent()
 {
 	var calendarContentDivExists = true;
@@ -1023,7 +1022,7 @@ function writeCalendarContent()
 		if(!calendarContentDivExists)setTimeout('resizeIframe()',350);else setTimeout('resizeIframe()',10);
 	}
 
-	parent_div.appendChild(calendarContentDiv); 
+//	parent_div.appendChild(calendarContentDiv); 
 	//parent_div.appendChild(calendarDiv); 
 
 }

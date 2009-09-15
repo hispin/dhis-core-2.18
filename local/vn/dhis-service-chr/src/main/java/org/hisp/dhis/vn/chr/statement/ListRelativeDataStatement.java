@@ -96,8 +96,9 @@ public class ListRelativeDataStatement
 
         buffer.append( USERS.iterator().next().getId() + SPACE + ")" + SPACE );
 
+        buffer.append( "AND" + SPACE + "editeddate is not null" + SPACE );
         // order by editeddate
-        buffer.append( "order by" + SPACE + "createddate" + SPACE + "desc" + SPACE );
+        buffer.append( "order by" + SPACE + "editeddate" + SPACE + "desc" + SPACE );
 
         // limmit number of records showed
         buffer.append( "LIMIT" + SPACE + value );

@@ -65,7 +65,8 @@
 		<action name="getVisibleForms" class="org.hisp.dhis.vn.chr.form.action.GetVisibleFormsAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="menu">/dhis-web-chr-form/menu.vm</param>
-			<param name="javascripts">javascripts/forms.js,javascripts/dhtmlgoodies_calendar.js, javascripts/intro.js</param>
+			<param name="javascripts">javascripts/forms.js,javascripts/dhtmlgoodies_calendar.js,
+			                          javascripts/intro.js</param>
 		</action>
 		
 		<!--  Varidate Form  -->
@@ -196,7 +197,10 @@
 			<result name="success" type="chain">getVisibleForms</result>
 			<param name="page">/dhis-web-chr-form/addForm.vm</param>
 			<param name="menu">/dhis-web-chr-form/menu.vm</param>
-			<param name="javascripts">javascripts/forms.js, javascripts/dhtmlgoodies_calendar.js, javascripts/calendar.js</param>
+			<param name="javascripts">
+			         javascripts/forms.js, 
+			         javascripts/dhtmlgoodies_calendar.js, 
+			         javascripts/calendar.js</param>
 	      	<param name="stylesheets">styles/dhtmlgoodies_calendar.css</param>
 		</action>
 		
@@ -211,7 +215,8 @@
 			<!-- <param name="stylesheets">styles/black-style.css</param>  -->
 		</action>
 
-		<!--  Show List relative Object  -->	
+		<!--  Show List relative Object  -->
+		
 		<action name="listReletiveObject" class="org.hisp.dhis.vn.chr.object.action.ListRelativeObjectAction">
 			<result name="success" type="chain">getVisibleForms</result>
 			<param name="page">/dhis-web-chr-form/listForm.vm</param>
@@ -219,7 +224,7 @@
 				
 		<!--  Add Object  -->
 		<action name="addObject" class="org.hisp.dhis.vn.chr.object.action.AddObjectAction">
-			<result name="success" type="velocity">/dhis-web-chr-form/responseSuccess.vm</result>
+            <result name="success" type="velocity-xml">/dhis-web-chr-form/responseSuccess.vm</result>
 			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
 		</action>
 		
@@ -231,7 +236,7 @@
 		
 		<!--  Update Object  -->
 		<action name="updateObject" class="org.hisp.dhis.vn.chr.object.action.UpdateObjectAction">
-			<result name="success" type="velocity">/dhis-web-chr-form/responseSuccess.vm</result>
+			<result name="success" type="velocity-xml">/dhis-web-chr-form/responseSuccess.vm</result>
 			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm</result>
 		</action>
 		

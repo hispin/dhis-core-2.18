@@ -27,7 +27,7 @@ public class AddObjectAction
     }
 
     private FormService formService;
-    
+
     public void setFormService( FormService formService )
     {
         this.formService = formService;
@@ -36,7 +36,7 @@ public class AddObjectAction
     // -----------------------------------------------------------------------------------------------
     // Input && Output
     // -----------------------------------------------------------------------------------------------
-    
+
     private Integer formId;
 
     public void setFormId( Integer formId )
@@ -61,9 +61,9 @@ public class AddObjectAction
 
         try
         {
-            
+
             Form form = formService.getForm( formId.intValue() );
-            
+
             for ( int i = 0; i < data.length; i++ )
             {
                 data[i] = CodecUtils.unescape( data[i] );
@@ -71,14 +71,12 @@ public class AddObjectAction
 
             formManager.addObject( form, data );
 
-            message = i18n.getString( "add" ) + " " + i18n.getString( "success" );
-
             return SUCCESS;
         }
         catch ( Exception ex )
         {
             message = i18n.getString( "add" ) + " " + i18n.getString( "error" );
-            
+
             ex.printStackTrace();
         }
         return ERROR;

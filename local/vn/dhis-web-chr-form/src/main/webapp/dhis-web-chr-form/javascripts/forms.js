@@ -1,4 +1,5 @@
 // ------------------------------------------------------------
+// ------------------------------------------------------------
 //  Add New Form
 // ------------------------------------------------------------
 function validateForm(){
@@ -468,8 +469,9 @@ function addObjectForm(){
 	
 	var url = 'addObjectForm.action?formId=' + getParamByURL('formId');
 	var objectId = getParamByURL('objectId');
-	if(objectId != '')
-		url += '&objectId=' + objectId;
+	if(objectId != ''){
+		url += '&objectId=' + objectId + '&column=' + getParamByURL('column');
+	}
 	window.location = url;
 }
 // --------------------------------------------------------------------------------------
@@ -511,6 +513,7 @@ function validateDataObject(){
 	
 	request.send( url );    
 
+	
 }
 
 function validateObjectCompleted( xmlObject ){
@@ -528,6 +531,19 @@ function validateObjectCompleted( xmlObject ){
 		else 
 			updateObject();
 	}
+	
+	
+	// get formId
+	var formId = getParamByURL('formId');
+	var objectId = getParamByURL('objectId');
+	
+	if(objectId!=''){
+		window.location.href = 'listReletiveObject.action?formId=' + formId + '&column='+getParamByURL('column') + '&objectId='+getParamByURL('objectId');
+	}else{
+		window.location.href = 'listObject.action?formId='+formId ;
+	}
+	
+
 }
 
 // Validate data inputted into a control

@@ -73,11 +73,16 @@
 	 <input name="data" id="data" type="text" value="$!element.initialValue" width="180px" onBlur="javascript : var strerror = '$!element.label' + ' ' +  '$i18n.getString("value_not_null")' ;  validateObject('$element.required', this, strerror); if(this.value != ''){var strerror =  '$i18n.getString("not_date")'; isDate(this, strerror);}"/>
 	
 	</div>
-		<img src="images/cal.gif"  alt="i18n.getString('click_here_pick_up_date')" width="16" height="16" border="no" onClick="javascript: parent_div=document.getElementById('date$element.id'); if(parent_div.style.display=='block'){parent_div.style.display='none';}else{ parent_div.style.display ='block'; }; displayCalendar(document.getElementById('datainput$element.id').getElementsByTagName('input')[0],'yyyy-mm-dd',this,true); " style="cursor:pointer "/>
+		<!-- <img src="images/cal.gif"  alt="i18n.getString('click_here_pick_up_date')" width="16" height="16" border="no" onClick="javascript: parent_div=document.getElementById('date$element.id'); if(parent_div.style.display=='block'){parent_div.style.display='none';}else{ parent_div.style.display ='block'; }; displayCalendar(document.getElementById('datainput$element.id').getElementsByTagName('input')[0],'yyyy-mm-dd',this,true); " style="cursor:pointer "/>
 
       <div id="date$element.id" style="z-index:100001; background-color:#99FF99; display:none" >
      
-    </div>
+    </div> -->
+	
+	<a href="javascript: var input = document.getElementById('datainput$element.id').getElementsByTagName('input')[0] ;  gfPop.fshowCalendar(input);" onMouseOut="window.status='';return true;" onMouseOver="window.status='Click Here to Pick up the date'; return true;" styleid="popcal">
+<img src="images/cal.gif" alt="Click Here to Pick up the date" width="16" height="16" border="no"/></a>
+<iframe width="168" height="190" name="gToday:normal:agenda.js" id="gToday:normal:agenda.js" src="javascripts/calendar/ipopeng.htm" scrolling="no" frameborder="0" style="border:2px ridge; visibility:visible; z-index:999; position:absolute; left:-500px; top:0px;"></iframe>
+
 	
     
           </td>
