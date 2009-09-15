@@ -44,12 +44,10 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-
 @Transactional
 public class DefaultReportExcelService
     implements ReportExcelService
 {
-
     // -------------------------------------------------
     // Dependency
     // -------------------------------------------------
@@ -242,5 +240,4 @@ public class DefaultReportExcelService
     {
         return reportStore.getDataEntryStatusDefaultByDataSets( arg0 );
     }
-
 }

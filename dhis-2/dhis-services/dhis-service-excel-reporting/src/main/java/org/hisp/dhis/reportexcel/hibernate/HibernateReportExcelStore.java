@@ -161,7 +161,6 @@ public class HibernateReportExcelStore
         Session session = sessionFactory.getCurrentSession();
 
         session.save( reportItem );
-
     }
 
     public void updateReportExcelItem( ReportExcelItem reportItem )
@@ -169,7 +168,6 @@ public class HibernateReportExcelStore
         Session session = sessionFactory.getCurrentSession();
 
         session.update( reportItem );
-
     }
 
     public void deleteReportExcelItem( int id )
@@ -177,7 +175,6 @@ public class HibernateReportExcelStore
         Session session = sessionFactory.getCurrentSession();
 
         session.delete( this.getReportExcelItem( id ) );
-
     }
 
     public ReportExcelItem getReportExcelItem( int id )
@@ -237,7 +234,6 @@ public class HibernateReportExcelStore
     {
         Session session = sessionFactory.getCurrentSession();
         return (DataElementGroupOrder) session.get( DataElementGroupOrder.class, id );
-
     }
 
     public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder )
@@ -259,29 +255,37 @@ public class HibernateReportExcelStore
     public int countDataValueOfDataSet( DataSet dataSet, OrganisationUnit organisationUnit, Period period )
     {
         Session session = sessionFactory.getCurrentSession();
+        
         String sql = "select count(*) as c from datavalue where sourceid=" + organisationUnit.getId()
             + " and dataelementid in (";
+        
         int i = 0;
-        for ( DataElement de : dataSet.getDataElements() )
+        
+        for ( DataElement element : dataSet.getDataElements() )
         {
-            if ( i < dataSet.getDataElements().size() - 1 )
-                sql += de.getId() + ",";
-            else
-                sql += de.getId();
-            i++;
+            sql += element.getId();
+            
+            if ( i++ < dataSet.getDataElements().size() - 1 )
+            {
+                sql += ",";
+            }
         }
+        
         sql += ") and periodid=" + period.getId();
+        
         SQLQuery query = session.createSQLQuery( sql );
+        
         query.addScalar( "c", Hibernate.INTEGER );
 
         return Integer.valueOf( String.valueOf( query.uniqueResult() ) );
 
     }
 
-    public void deleteDataEntryStatus( int arg0 )
+    public void deleteDataEntryStatus( int id )
     {
         Session session = sessionFactory.getCurrentSession();
-        session.delete( this.getDataEntryStatus( arg0 ) );
+        
+        session.delete( getDataEntryStatus( id ) );
     }
 
     @SuppressWarnings( "unchecked" )
@@ -294,10 +298,11 @@ public class HibernateReportExcelStore
         return criteria.list();
     }
 
-    public DataEntryStatus getDataEntryStatus( int arg0 )
+    public DataEntryStatus getDataEntryStatus( int id )
     {
         Session session = sessionFactory.getCurrentSession();
-        return (DataEntryStatus) session.get( DataEntryStatus.class, arg0 );
+        
+        return (DataEntryStatus) session.get( DataEntryStatus.class, id );
     }
 
     @SuppressWarnings( "unchecked" )
@@ -332,5 +337,4 @@ public class HibernateReportExcelStore
 
         return result;
     }
-
 }

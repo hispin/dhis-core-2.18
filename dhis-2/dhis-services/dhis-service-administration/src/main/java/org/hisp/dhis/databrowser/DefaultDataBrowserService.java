@@ -73,9 +73,9 @@ public class DefaultDataBrowserService
 
     public DataBrowserTable getDataSetsInPeriod( String startDate, String endDate, PeriodType periodType )
     {
-        if ( startDate == null || startDate.isEmpty() )
+        if ( startDate == null || startDate.length() == 0 )
             startDate = STARTDATE;
-        if ( endDate == null || endDate.isEmpty() )
+        if ( endDate == null || endDate.length() == 0 )
             endDate = ENDDATE;
 
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
@@ -85,9 +85,9 @@ public class DefaultDataBrowserService
 
     public DataBrowserTable getDataElementGroupsInPeriod( String startDate, String endDate, PeriodType periodType )
     {
-        if ( startDate == null || startDate.isEmpty() )
+        if ( startDate == null || startDate.length() == 0 )
             startDate = STARTDATE;
-        if ( endDate == null || endDate.isEmpty() )
+        if ( endDate == null || endDate.length() == 0 )
             endDate = ENDDATE;
 
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
@@ -97,9 +97,9 @@ public class DefaultDataBrowserService
 
     public DataBrowserTable getOrgUnitGroupsInPeriod( String startDate, String endDate, PeriodType periodType )
     {
-        if ( startDate == null || startDate.isEmpty() )
+        if ( startDate == null || startDate.length() == 0 )
             startDate = STARTDATE;
-        if ( endDate == null || endDate.isEmpty() )
+        if ( endDate == null || endDate.length() == 0 )
             endDate = ENDDATE;
 
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
@@ -110,9 +110,9 @@ public class DefaultDataBrowserService
     public DataBrowserTable getOrgUnitsInPeriod( Integer orgUnitParent, String startDate, String endDate,
         PeriodType periodType )
     {
-        if ( startDate == null || startDate.isEmpty() )
+        if ( startDate == null || startDate.length() == 0 )
             startDate = STARTDATE;
-        if ( endDate == null || endDate.isEmpty() )
+        if ( endDate == null || endDate.length() == 0 )
             endDate = ENDDATE;
 
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
@@ -130,9 +130,9 @@ public class DefaultDataBrowserService
     public DataBrowserTable getCountDataElementsForDataSetInPeriod( Integer dataSetId, String startDate,
         String endDate, PeriodType periodType )
     {
-        if ( startDate == null || startDate.isEmpty() )
+        if ( startDate == null || startDate.length() == 0 )
             startDate = STARTDATE;
-        if ( endDate == null || endDate.isEmpty() )
+        if ( endDate == null || endDate.length() == 0 )
             endDate = ENDDATE;
 
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
@@ -148,9 +148,9 @@ public class DefaultDataBrowserService
     public DataBrowserTable getCountDataElementsForDataElementGroupInPeriod( Integer dataElementGroupId,
         String startDate, String endDate, PeriodType periodType )
     {
-        if ( startDate == null || startDate.isEmpty() )
+        if ( startDate == null || startDate.length() == 0 )
             startDate = STARTDATE;
-        if ( endDate == null || endDate.isEmpty() )
+        if ( endDate == null || endDate.length() == 0 )
             endDate = ENDDATE;
 
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
@@ -168,9 +168,9 @@ public class DefaultDataBrowserService
     public DataBrowserTable getCountDataElementGroupsForOrgUnitGroupInPeriod( Integer orgUnitGroupId, String startDate,
         String endDate, PeriodType periodType )
     {
-        if ( startDate == null || startDate.isEmpty() )
+        if ( startDate == null || startDate.length() == 0 )
             startDate = STARTDATE;
-        if ( endDate == null || endDate.isEmpty() )
+        if ( endDate == null || endDate.length() == 0 )
             endDate = ENDDATE;
 
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
@@ -189,9 +189,9 @@ public class DefaultDataBrowserService
     public DataBrowserTable getCountDataElementsForOrgUnitInPeriod( Integer orgUnitGroupId, String startDate,
         String endDate, PeriodType periodType )
     {
-        if ( startDate == null || startDate.isEmpty() )
+        if ( startDate == null || startDate.length() == 0 )
             startDate = STARTDATE;
-        if ( endDate == null || endDate.isEmpty() )
+        if ( endDate == null || endDate.length() == 0 )
             endDate = ENDDATE;
 
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType );
