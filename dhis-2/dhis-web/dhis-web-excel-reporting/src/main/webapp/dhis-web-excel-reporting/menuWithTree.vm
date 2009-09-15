@@ -1,3 +1,3 @@
-#parse( "/dhis-web-excel-reporting/menu.vm" )
+#parse( "/dhis-web-vn-report/menu.vm" )
 <br>
 #parse( "/dhis-web-commons/ouwt/orgunittree.vm" )

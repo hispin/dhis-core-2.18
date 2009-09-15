@@ -75,12 +75,10 @@
 					<option value='dataelement_code'>$i18n.getString('dataelement_code')</option>
 					<option value='dataelement_name'>$i18n.getString('dataelement_name')</option>	
 					<option value='serial'>$i18n.getString('serial')</option>					
-					#else					
+					#else if($!reportExcel.getReportType()=='NORMAL')					
 					<option value='dataelement'>$i18n.getString('dataelement')</option>
 					<option value='formulaexcel'>$i18n.getString('formulaexcel')</option>					
-					<option value='indicator'>$i18n.getString('indicator')</option>
-					<option value='organisation'>$i18n.getString('organisation')</option>
-					<option value='serial'>$i18n.getString('serial')</option>
+					<option value='indicator'>$i18n.getString('indicator')</option>									
 					#end
 					
 				</select>
@@ -128,42 +126,6 @@
 </div>
 </form>
 
-
-
-<!-- This form use for  Calculation -->
-
-<div id="calculation" style="position:fixed;display:none;width:800px;z-index:10002;background-color: white;border: medium solid silver;height:300px;padding:20px;">
-	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="$('#calculation').hide();">[x]</div>
-	<table width="100%">
-		<tr>
-			<th>$i18n.getString( "formula" )</th>
-			<th></th>
-			<th>$i18n.getString( "report_items" )</th>
-		<tr>
-		<tr valign="top">
-			<td>
-				<textarea id="formulaCalculation" cols="15" rows="11" style="width:250px; height:180px" wrap="virtual">$encoder.htmlEncode( $formula )</textarea><br>
-				<a href="#" onclick="insertOperation( 'formula','(' )"><img src="images/left_parent.png" alt="$i18n.getString( 'left_brackets' )"></a>
-				<a href="#" onclick="insertOperation( 'formula',')' )"><img src="images/right_parent.png" alt="$i18n.getString( 'right_brackets' )"></a>
-				<a href="#" onclick="insertOperation( 'formula','*' )"><img src="images/multiply.png" alt="$i18n.getString( 'multiply' )"></a>
-				<a href="#" onclick="insertOperation( 'formula','/' )"><img src="images/divide.png" alt="$i18n.getString( 'divide' )"></a>
-				<a href="#" onclick="insertOperation( 'formula','+' )"><img src="images/plus.png" alt="$i18n.getString( 'plus' )"></a>
-				<a href="#" onclick="insertOperation( 'formula','-' )"><img src="images/minus.png" alt="$i18n.getString( 'minus' )"></a>
-			</td>
-			<td valign="middle">
-				<input type="button" value="<" onclick="insertCalculation()"/>
-			</td>
-			<td>						
-				<select id="availableReportItems" size="13" style="min-width:500px"></select>					
-			</td>
-		</tr>	
-	</table>	
-	<p>
-	<input type="button" value="$i18n.getString('ok')" onclick="$('#expression').val($('#formulaCalculation').html());$('#calculation').hide();"/>
-	<input type="button" value="$i18n.getString('clean')" onclick="$('#formulaCalculation').html('')"/></p>
-</div>
-
-
 <!-- This form use for  dataelement -->
 
 <div id="normal" style="position:fixed;display:none;width:800px;z-index:10002;background-color: white;border: medium solid silver;height:300px;padding:20px;">
@@ -188,7 +150,7 @@
 				<input type="button" value="<" onclick="insertDataElementId()"/>
 			</td>
 			<td>	
-				<select id="dataElementGroup" style="min-width:500px" onchange="filterDataElements()"></select>				
+				<select id="dataElementGroup" style="min-width:500px" onchange="getDataElementsByGroup()"></select>				
 				<select id="availableDataElements" size="11" style="min-width:500px"></select>	
 				<select id="optionCombos" size=4 style="min-width:500px"></select>	
 			</td>
@@ -264,56 +226,6 @@
 	<input type="button" value="$i18n.getString('clean')" onclick="$('#categoryFormula').html('')"/></p>
 </div>
 
-
-<!--
-<div id="formulaDiv" style="position:fixed;display:none;width:800px;z-index:10002;background-color: white;border: medium solid silver;height:300px;padding:20px;">
-<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('formulaDiv');">[x]</div>
-
-
-	
-	<table width="100%">
-		<tr>
-			<th>$i18n.getString( "formula" )</th>
-			<th>$i18n.getString( "dataelement" )</th>
-		<tr>
-		<tr valign="top">
-			<td>
-				<textarea id="formula" cols="15" rows="11" style="width:250px; height:180px" wrap="virtual">$encoder.htmlEncode( $formula )</textarea><br>
-				<a href="#" onclick="insertFormulaText('(' )"><img src="images/left_parent.png" alt="$i18n.getString( 'left_brackets' )"></a>
-				<a href="#" onclick="insertFormulaText( ')' )"><img src="images/right_parent.png" alt="$i18n.getString( 'right_brackets' )"></a>
-				<a href="#" onclick="insertFormulaText( '*' )"><img src="images/multiply.png" alt="$i18n.getString( 'multiply' )"></a>
-				<a href="#" onclick="insertFormulaText( '/' )"><img src="images/divide.png" alt="$i18n.getString( 'divide' )"></a>
-				<a href="#" onclick="insertFormulaText( '+' )"><img src="images/plus.png" alt="$i18n.getString( 'plus' )"></a>
-				<a href="#" onclick="insertFormulaText( '-' )"><img src="images/minus.png" alt="$i18n.getString( 'minus' )"></a>
-			</td>
-			<td>			
-				<div id="optionComboDiv" style="display:none;">
-
-					<select id="cateCombo" style="min-width:450px" onchange="javascript: showCateOptionCombos(this.id);">
-						<option value="-1">[ $i18n.getString( "choose_category_combo" ) ]</option>
-					</select>
-					
-					<select id="cateOptionCombo" size="11" style="min-width:450px" ondblclick="insertFormulaText(this.value);">
-					
-					</select>
-				</div>
-
-				<select id="dataElementGroup" style="min-width:450px">					
-
-				</select>
-				
-				<select id="availableDataElements" size="11" style="min-width:450px" ondblclick="insertFormulaText(this.value);">
-				
-				</select>
-			</td>
-		</tr>
-		
-	</table>	
-	<p>
-	<input type="button" value="$i18n.getString('ok')" onclick="validateFormula();"/>
-	<input type="button" value="$i18n.getString('clean')" onclick="setFieldValue('formula','');"/></p>
-</div>
--->
 <span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10004" onclick="hideById(this.id);"></span>
 <span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)"></span>
 
@@ -354,65 +266,13 @@
 			}else{
 				$("#expression").val(itemTypeValue);
 			}			
-		}else {
-			if(itemTypeValue == 'calculation') {
-				openCalculationExpression($reportExcel.id);	
-			}else if(itemTypeValue=='dataelement'){
+		}else {			
+			if(itemTypeValue=='dataelement'){
 				openDataElementExpression();
 			}else if(itemTypeValue=='indicator'){
 				openIndicatorExpression();
 			}
-		}
-/*		else if(itemTypeValue=='dataelement'){
-			getDataElementGroups();
-			filterDataElements();
-			byId('dataElementGroup').onchange=filterDataElements;
-			enable('dataElementGroup');
-			hideById('optionComboDiv');			
-		}
-		else if(itemTypeValue=='indicator'){
-			getIndicatorGroups();
-			filterIndicators();
-			byId('dataElementGroup').onchange=filterIndicators;
-			enable('dataElementGroup');
-			hideById('optionComboDiv');	
-		}else if(itemTypeValue=='category'){				
-		
-			if ('$!reportExcel.getReportType()' == 'category') {
-					
-				if( (itemTypeValue == 'dataelement') || (itemTypeValue == 'serial') || (itemTypeValue == 'icd_code') || (itemTypeValue == 'jumping_step') || (itemTypeValue == 'rename') ) {
-				
-					setFieldValue('expression', itemTypeValue );
-					
-					if ( itemTypeValue == 'rename' ) {
-						setFieldValue('expression', getFieldValue('name') );
-					}
- 					
-					hideById( 'formulaDiv' );
-					hideById('optionComboDiv');
-				}
-				if( itemTypeValue == 'element_optioncombo' ) {
-					
-					var elementList = byId( 'cateCombo' );
-					addOptionToList( elementList, '$!reportExcel.getCategoryCombo().id', '$!encoder.htmlEncode( $reportExcel.getCategoryCombo().name )' );
-					showById( 'formulaDiv' );
-					showById('optionComboDiv');
-					enable('cateCombo');
-					enable('cateOptionCombo');
-				}
-				
-				hideById('dataelement');
-				hideById('dataElementGroup');
-			}			
 		}		
-		
-		setFieldValue('formula', getFieldValue('expression'));
-		
-		setPositionCenter( 'formulaDiv' );	
-		showById( 'formulaDiv' );
-		
-		*/
-		
 	}
 	
 </script>
