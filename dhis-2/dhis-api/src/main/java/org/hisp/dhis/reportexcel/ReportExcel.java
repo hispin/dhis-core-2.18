@@ -75,9 +75,31 @@ public abstract class ReportExcel
         this.group = group;
     }
 
+    public boolean isCategory()
+    {
+        return this.getReportType().equalsIgnoreCase( TYPE.CATEGORY );
+    }
+
+    public boolean isOrganisationUnitGroupListing()
+    {
+        return this.getReportType().equalsIgnoreCase( TYPE.ORGANIZATION_GROUP_LISTING );
+    }
+    
+    public boolean isPeriodColumnListing()
+    {
+        return this.getReportType().equalsIgnoreCase( TYPE.PERIOD_COLUMN_LISTING );
+    }
+    
+    public boolean isNormal()
+    {
+        return this.getReportType().equalsIgnoreCase( TYPE.NORMAL );
+    }
+    
+
     // ----------------------------------------------------------------------
     // hashCode and equals
     // ----------------------------------------------------------------------
+
 
     @Override
     public int hashCode()

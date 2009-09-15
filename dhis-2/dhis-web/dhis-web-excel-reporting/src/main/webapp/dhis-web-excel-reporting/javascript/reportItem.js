@@ -151,6 +151,9 @@ function selectALL( checked ){
 	}
 }
 
+/*
+*	COPY REPORT ITEM 
+*/
 function copySelectedItem(){
 	$.post("getAllReportExcels.action",{},
 	function (xmlObject){
@@ -185,57 +188,20 @@ function saveCopyItems(){
 	},'xml');		
 }
 
-
-/**
-* Calculation ReportItem type
-*/
-function openCalculationExpression( reportId ){	
-	$("#formulaCalculation").html($("#expression").val());
-	$.get("getReportItems.action",
-	{reportId:reportId},
-	function (data){
-		var xmlObject = data.getElementsByTagName('reportItems')[0];		
-		var availableReportItemList = byId( "availableReportItems" );		
-		availableReportItemList.options.length = 0;
-		
-		var reportItems = xmlObject.getElementsByTagName( "reportItem" );
-		
-		for ( var i = 0; i < reportItems.length; i++)
-		{		
-			var name = reportItems[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
-			var row = reportItems[ i ].getElementsByTagName( "row" )[0].firstChild.nodeValue;
-			var column = reportItems[ i ].getElementsByTagName( "column" )[0].firstChild.nodeValue;
-			
-			var option = document.createElement( "option" );
-			option.value = "[" + row + "." + column + "]";
-			option.text = name;
-			availableReportItemList.add( option, null );	
-		}		
-		setPositionCenter( 'calculation' );	
-		$("#calculation").show();
-	},
-	'xml');	
-}
-
-function insertCalculation(){
-	$("#formulaCalculation").html($("#formulaCalculation").html() + $("#availableReportItems").val());
-}
-
 /**
 * DataElement Report type
 */
 function openDataElementExpression(){
 	$("#formula").html($("#expression").val());
-	getDataElementGroups();
-	filterDataElements();
+	getALLDataElementGroup();
+	getDataElementsByGroup();
 	$("#dataElementGroup").attr("disabled", false);
 	$("#availableDataElements").attr("disabled", false);
-	$("#availableDataElements").change(getOptionCombos);	
-	setPositionCenter( 'normal' );	
-	$("#normal").show();
+	$("#availableDataElements").change(getOptionCombos);		
+	$("#normal").showAtCenter( true );
 }
 
-function getDataElementGroups(){
+function getALLDataElementGroup(){
 	var list = byId('dataElementGroup');
 	list.options.length = 0;
 	list.add( new Option( "ALL", "ALL" ), null );
@@ -245,30 +211,35 @@ function getDataElementGroups(){
 	}
 }
 
-function filterDataElements( )
+function getDataElementsByGroup( )
 {		
 	var dataElementGroupId = $("#dataElementGroup").val();
-	$.get("getFilteredDataElements.action",{dataElementGroupId:dataElementGroupId},
-	function(xmlObject){
-		var xmlObject = xmlObject.getElementsByTagName('dataelements')[0];
-		var dataElementList = byId( "availableDataElements" );
-			
-		dataElementList.options.length = 0;
+	var url = "../dhis-web-commons-ajax/getDataElements.action?id=" + $("#dataElementGroup").val();
+	
+	var request = new Request();
+    request.setResponseTypeXML( 'xmlObject' );
+    request.setCallbackSuccess( getDataElementsByGroupCompleted );
+	request.send( url );	
+}
+
+function getDataElementsByGroupCompleted( xmlObject ){
+
+	var dataElementList = byId( "availableDataElements" );
 		
-		var dataelements = xmlObject.getElementsByTagName( "dataelement" );
+	dataElementList.options.length = 0;
+	
+	var dataelements = xmlObject.getElementsByTagName( "dataElement" );
+	
+	for ( var i = 0; i < dataelements.length; i++)
+	{
+		var id = dataelements[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
+		var elementName = dataelements[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
 		
-		for ( var i = 0; i < dataelements.length; i++)
-		{
-			var id = dataelements[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-			var elementName = dataelements[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
-			
-			var option = document.createElement( "option" );
-			option.value = id ;
-			option.text = elementName;
-			dataElementList.add( option, null );	
-		}
+		var option = document.createElement( "option" );
+		option.value = id ;
+		option.text = elementName;
+		dataElementList.add( option, null );	
 	}
-	,'xml');	
 }
 
 function getOptionCombos(){
@@ -412,3 +383,9 @@ function insertDataElementId_(){
 	var dataElementComboId = "[*." + $("#optionCombos_").val() + "]";
 	$("#categoryFormula").html($("#categoryFormula").html() + dataElementComboId);
 }
+
+/*
+* Organisation Unit Listing Report
+*/
+
+

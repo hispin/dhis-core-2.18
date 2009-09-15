@@ -404,7 +404,9 @@ function deleteDivEffect()
 {
 	var divEffect = document.getElementById( 'divEffect' );
 	
-	document.body.removeChild(divEffect);
+	if(divEffect!=null){	
+		document.body.removeChild(divEffect);
+	}
 }
 
 /**
