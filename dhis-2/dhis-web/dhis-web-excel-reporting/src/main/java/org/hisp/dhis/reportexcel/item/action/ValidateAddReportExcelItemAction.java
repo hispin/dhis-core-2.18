@@ -109,7 +109,7 @@ public class ValidateAddReportExcelItemAction
         ReportExcelItem reportItem = reportService.getReportExcelItem( name );
         ReportExcel reportExcel = reportService.getReportExcel( reportId );
 
-        if ( reportItem != null && reportExcel.getReportItems().contains( reportItem ) )
+        if ( reportItem != null && reportExcel.getReportExcelItems().contains( reportItem ) )
         {
             message = i18n.getString( "name_ready_exist" );
             return ERROR;

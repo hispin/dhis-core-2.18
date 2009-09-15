@@ -29,6 +29,7 @@ package org.hisp.dhis.datalock.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -138,31 +139,33 @@ public class HibernateDataSetLockStore
         return (DataSetLock) session.get( DataSetLock.class, id );
     }
 
-    public DataSetLock getDataSetLockByDataSet( DataSet dataSet )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataSetLock.class );
+    @SuppressWarnings("unchecked")
+	public Collection<DataSetLock> getDataSetLockByDataSet( DataSet dataSet )
+    {   	
+    	Session session = sessionFactory.getCurrentSession();
+    	
+    	Criteria criteria = session.createCriteria( DataSetLock.class );
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
-
-        return (DataSetLock) criteria.uniqueResult();
+        return criteria.list();
     }
 
-    public DataSetLock getDataSetLockByPeriod( Period period )
+    @SuppressWarnings("unchecked")
+	public Collection<DataSetLock> getDataSetLockByPeriod( Period period )
     {
-        Session session = sessionFactory.getCurrentSession();
-
+    	Session session = sessionFactory.getCurrentSession();
+        
         Period storedPeriod = reloadPeriod( period );
 
         if ( storedPeriod == null )
         {
-            return null;
+           return null;
         }
 
         Criteria criteria = session.createCriteria( DataSetLock.class );
+        //criteria.createAlias( "period", "ds" );
         criteria.add( Restrictions.eq( "period", storedPeriod ) );
 
-        return (DataSetLock) criteria.uniqueResult();
+        return criteria.list();
     }
 
     public DataSetLock getDataSetLockByDataSetAndPeriod( DataSet dataSet, Period period )

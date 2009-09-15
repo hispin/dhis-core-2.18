@@ -4,7 +4,7 @@
  <span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
 
 <!-- <input type="hidden" name="uploadFileName" id="uploadFileName" value="$!fileExcel">-->
-<input type="hidden" name="uploadFileName" id="uploadFileName" value="E:\data\Bieu 1 - TX.xls">
+<input type="hidden" name="uploadFileName" id="uploadFileName" value="E:\data\Bieu 1 - TX.xls" >
  #end
 <h2>$!encoder.htmlEncode($!organisationUnit.name)</h2>
 <table width="50%">
@@ -18,7 +18,8 @@
   </tr>
   <tr>
     <td>$i18n.getString( 'template_excel_file' )</td>
-    <td><select type="text" id="reportId" name="reportId" style="min-width:20em; width:100%">
+    <td><select type="text" id="reportId" name="reportId" style="min-width:20em; width:100%" #if(!$!fileExcel) disabled #end onChange="javascript: document.getElementById('lastYear').disabled=false; document.getElementById('nextYear').disabled=false; document.getElementById('periodId').disabled=false; document.getElementById('preview').disabled=false; document.getElementById('import').disabled=false;">
+	  <option value="">$i18n.getString('select')</option>
 	  #foreach($reportExcel in $reportExcels)
 		<option value="$!reportExcel.id">$!encoder.htmlEncode($!reportExcel.name)</option>
 	  #end
@@ -28,8 +29,9 @@
   <tr>
     <td>$i18n.getString( 'period' )</td>
     <td>
-	<input type="button" value="<<" onclick="lastYear();" #if(!$organisationUnit) disabled #end/><input type="button" value=">>" #if(!$organisationUnit) disabled #end onclick="nextYear()"/>
-	<select name="periodId" id="periodId" style="min-width:20em; width:100%" type="text">
+	<input type="button" value="<<" id="lastYear" name="lastYear" onclick="lastYear();" disabled />
+	<input type="button" value=">>" id="nextYear" name="nextYear" onclick="nextYear()" disabled />
+	<select name="periodId" id="periodId" style="min-width:20em; width:100%" type="text" disabled >
         	#foreach($period in $periods)
 				<option value='$period.id'>$format.formatPeriod( $period )</option>
 			#end
@@ -43,8 +45,20 @@
   
 </table>
 <hr>
-<input type="button" name="import" id="import" onClick="javascript: importData();" value="$i18n.getString('import')">
-
-
+<input type="button" name="preview" id="preview" onClick="javascript: getPreviewImportData();" value="$i18n.getString('preview')" disabled>
+<input type="button" name="import" id="import" onClick="javascript: importData();" value="$i18n.getString('import')" disabled>
+<br><br>
+	<div id="showValue" style="display:none; width:100%" >
+		<table id="showReportItemValues" width="100%">
+		<tr>
+		<th width="20px"><input type="checkbox" name="selectAll" id="selectAll" onClick="javascript: selectAll();"/></th>
+		<th>$i18n.getString('report')</th>
+		<th>$i18n.getString('value')</th>
+		</tr>
+		<tbody>
+		
+		</tbody>
+		</table>
+	</div>
 </body>
 

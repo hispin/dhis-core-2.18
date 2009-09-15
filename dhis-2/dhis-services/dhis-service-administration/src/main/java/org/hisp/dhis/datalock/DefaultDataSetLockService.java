@@ -88,12 +88,12 @@ public class DefaultDataSetLockService
         return dataSetLockStore.getDataSetLock( id );
     }
 
-    public DataSetLock getDataSetLockByDataSet( DataSet dataSet )
+    public Collection<DataSetLock> getDataSetLockByDataSet( DataSet dataSet )
     {
         return dataSetLockStore.getDataSetLockByDataSet( dataSet );
     }
    
-    public DataSetLock getDataSetLockByPeriod( Period period )
+    public Collection<DataSetLock> getDataSetLockByPeriod( Period period )
     {
         return dataSetLockStore.getDataSetLockByPeriod( period );
     }

@@ -52,6 +52,10 @@ function getDataSets() {
                 });
                 document.getElementById( "unlockedDataSets" ).disabled = false;
                 document.getElementById( "lockedDataSets" ).disabled = false;
+                document.getElementById( "submitButton1" ).disabled = false;
+     						document.getElementById( "submitButton2" ).disabled = false;
+     						document.getElementById( "submitButton3" ).disabled = false;
+     						document.getElementById( "submitButton4" ).disabled = false;   
             }
         });
     }
@@ -73,8 +77,9 @@ function LoadOrgUnitTree() {
      var periodList = document.getElementById( "periodId" );
      var periodId = periodList.options[ periodList.selectedIndex ].value;
      var lockedDataSetList = document.getElementById('lockedDataSets');
-     var selectedLockedDataSetId = lockedDataSetList.options[ lockedDataSetList.selectedIndex ].value;       
-     iframeForOUTree.location.href='orgunitWiseSetupAssociationsTree.action?selectedLockedDataSetId=' + selectedLockedDataSetId + '&periodId=' + periodId;
+     var selectedLockedDataSetId = lockedDataSetList.options[ lockedDataSetList.selectedIndex ].value;
+          
+     iframeForOUTree.location.href='orgunitWiseSetupAssociationsTree.action?selectedLockedDataSetId=' + selectedLockedDataSetId + '&periodId=' + periodId;		 
 }
     
 function ApplyAll() {
@@ -113,7 +118,7 @@ function unLockAllAtLevel() {
 
 function updateDataSetsOrgunitwise() {
      if ( validateLocking() )  {
-               
+        selectAllById( "unlockedDataSets" );       
         document.getElementById( "lockingForm" ).submit();            
      }
 }

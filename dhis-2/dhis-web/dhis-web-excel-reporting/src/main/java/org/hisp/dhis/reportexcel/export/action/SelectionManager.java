@@ -24,51 +24,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.item.action;
+package org.hisp.dhis.reportexcel.export.action;
 
-import org.hisp.dhis.reportexcel.ReportExcelService;
+import java.util.Map;
 
-import com.opensymphony.xwork2.Action;
-
+import com.opensymphony.xwork2.ActionContext;
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class DeleteReportExcelItemAction
-    implements Action
+public class SelectionManager
 {
-    // -------------------------------------------
-    // Dependency
-    // -------------------------------------------
-
-    private ReportExcelService reportService;
-
-    // -------------------------------------------
-    // Input & Output
-    // -------------------------------------------
-
-    private Integer id;
-
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
-
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
+    private static final String SELECTED_YEAR =  "SELECTED_YEAR";
+    
+    public int getSelectedYear(){
+        return (Integer) getSession().get( SELECTED_YEAR );
+    }
+    @SuppressWarnings("unchecked")
+    public void setSeletedYear(int year){
+        getSession().put( SELECTED_YEAR, year );
     }
 
-    public void setId( Integer id )
+    @SuppressWarnings( "unchecked" )
+    private static final Map getSession()
     {
-        this.id = id;
-    }
-
-    public String execute()
-        throws Exception
-    {
-        reportService.deleteReportExcelItem( id );
-
-        return SUCCESS;
+        return ActionContext.getContext().getSession();
     }
 
 }

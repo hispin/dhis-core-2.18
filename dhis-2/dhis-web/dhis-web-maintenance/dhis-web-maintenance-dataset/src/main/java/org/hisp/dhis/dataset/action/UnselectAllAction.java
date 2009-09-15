@@ -36,7 +36,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 public class UnselectAllAction
-    implements Action
+implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportexcel.importing;
+
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -24,51 +26,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.item.action;
 
-import org.hisp.dhis.reportexcel.ReportExcelService;
-
-import com.opensymphony.xwork2.Action;
-
+import org.hisp.dhis.reportexcel.ReportExcelItem;
 /**
  * @author Tran Thanh Tri
- * @version $Id$
+ * @version $Id
  */
-public class DeleteReportExcelItemAction
-    implements Action
+public class ReportExcelItemValue
 {
-    // -------------------------------------------
-    // Dependency
-    // -------------------------------------------
+    
+    private ReportExcelItem reportExcelItem;
 
-    private ReportExcelService reportService;
+    private String value;
 
-    // -------------------------------------------
-    // Input & Output
-    // -------------------------------------------
 
-    private Integer id;
-
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
-
-    public void setReportService( ReportExcelService reportService )
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
+       
+    public ReportExcelItemValue( ReportExcelItem reportExcelItem, String value )
     {
-        this.reportService = reportService;
+        super();
+        this.reportExcelItem = reportExcelItem;
+        this.value = value;
     }
 
-    public void setId( Integer id )
+    // ----------------------------------------------------------------------
+    // Getters and setters
+    // ----------------------------------------------------------------------
+    
+    public ReportExcelItem getReportExcelItem()
     {
-        this.id = id;
+        return reportExcelItem;
     }
 
-    public String execute()
-        throws Exception
+    public void setReportExcelItem( ReportExcelItem reportExcelItem )
     {
-        reportService.deleteReportExcelItem( id );
-
-        return SUCCESS;
+        this.reportExcelItem = reportExcelItem;
     }
 
+    public String getValue()
+    {
+        return value;
+    }
+
+    public void setValue( String value )
+    {
+        this.value = value;
+    }
 }

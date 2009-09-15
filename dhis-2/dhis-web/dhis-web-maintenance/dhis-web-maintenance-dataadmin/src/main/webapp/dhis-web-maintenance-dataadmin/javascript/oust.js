@@ -122,6 +122,7 @@ function SelectionTree(){
         request.setResponseTypeXML( 'units' );
         request.setCallbackSuccess( treeReceived );
         request.send( selectionTreePath + 'getExpandedTreeForLock.action' );
+        
     };
 
     function processExpand( rootElement ){
@@ -168,6 +169,7 @@ function SelectionTree(){
         }
         
         clearLoadingMessage( treeTag );
+        
     }
 
     function createChildren( parentTag, parentElement ){
@@ -232,7 +234,7 @@ function SelectionTree(){
 				}
 				else{
 					toggleTag.appendChild( toggleImg );
-				}
+				}				
     }
 
     function setVisible( tag, visible ){
