@@ -132,7 +132,6 @@ public class ExcelUtils
 	/* POI methods */
     public static void writeValueByPOI( int row, int column, String value, String type, HSSFSheet sheet,
         HSSFCellStyle cellStyle )
-        throws RowsExceededException, WriteException
     {
         if ( row > 0 && column > 0 )
         {
@@ -168,7 +167,6 @@ public class ExcelUtils
     }
 
     public static void writeFormulaByPOI( int row, int column, String formula, HSSFSheet sheet, HSSFCellStyle cellStyle )
-        throws RowsExceededException, WriteException
     {
         if ( row > 0 && column > 0 )
         {
@@ -187,7 +185,7 @@ public class ExcelUtils
         {
             int iCol = 0;
 
-            if ( !columnName.isEmpty() )
+            if ( columnName.length() > 0 )
             {
                 char[] characters = columnName.toUpperCase().toCharArray();
 
