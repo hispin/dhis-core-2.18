@@ -37,13 +37,13 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
-/*
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-*/
+
 /**
  * @author Tran Thanh Tri
  * @author Chau Thu Tran
@@ -129,7 +129,7 @@ public class ExcelUtils
         return cell.getContents();
     }
 
-	/*
+	/* POI methods */
     public static void writeValueByPOI( int row, int column, String value, String type, HSSFSheet sheet,
         HSSFCellStyle cellStyle )
         throws RowsExceededException, WriteException
@@ -179,7 +179,7 @@ public class ExcelUtils
             cellPOI.setCellFormula( formula );
         }
     }
-	*/
+	
 
     public static int convertExcelColumnNameToNumber( String columnName )
     {
