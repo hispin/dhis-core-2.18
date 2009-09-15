@@ -114,6 +114,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
+	
+	<!-- REPORT ORGANISATION UNIT GROUP LISTING BEAN -->
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.OpenUpdateOrganisationUnitGroupAction"
+		class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.OpenUpdateOrganisationUnitGroupAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.UpdateOrganisationUnitGroupAction"
+		class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.UpdateOrganisationUnitGroupAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+	</bean>
 
 	<!-- REPORT EXCEL ITEM BEAN -->
 
