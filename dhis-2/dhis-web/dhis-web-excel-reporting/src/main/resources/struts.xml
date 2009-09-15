@@ -154,22 +154,69 @@
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
-		
+
 		<!-- REPORT ORGANISATION UNIT GROUP LISTING ACTION -->
-		
+
 		<action name="openUpdateOrgnisationUnitGroupListingReport"
 			class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.OpenUpdateOrganisationUnitGroupAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/organisationUnitGroupListingReport.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/commons.js</param>			
+			<param name="javascripts">javascript/commons.js</param>
 		</action>
-		
+
 		<action name="updateOrgnisationUnitGroupListingReport"
 			class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.UpdateOrganisationUnitGroupAction">
 			<result name="success" type="redirect">listReportExcel.action</result>
 		</action>
 		
+		<!-- REPORT EXCEL ASSOCIATION ACTION -->
+		
+		<action name="openDefineAssociationsForm"
+			class="org.hisp.dhis.reportexcel.association.action.GetNumberOfLevelsAction">
+			<result name="success" type="chain">openDefineAssociationsFormChain</result>			
+		</action>
+
+		<action name="openDefineAssociationsFormChain"
+			class="org.hisp.dhis.reportexcel.action.OpenReportExcelAssociationsAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/reportassociation.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+
+		<action name="selectLevelChain"
+			class="org.hisp.dhis.reportexcel.association.action.GetNumberOfLevelsAction">
+			<result name="success" type="chain">getReportExcelChain</result>
+		</action>
+
+		<action name="getReportExcelChain" class="org.hisp.dhis.reportexcel.action.GetReportExcelAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/reportassociation.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
+		</action>
+
+		<action name="selectLevel" class="org.hisp.dhis.reportexcel.association.action.SelectLevelAction">
+			<result name="success" type="chain">selectLevelChain</result>
+		</action>
+
+		<action name="unselectLevel"
+			class="org.hisp.dhis.reportexcel.association.action.UnselectLevelAction">
+			<result name="success" type="chain">selectLevelChain</result>
+		</action>
+
+		<action name="unselectAll" class="org.hisp.dhis.reportexcel.association.action.UnselectAllAction">
+			<result name="success" type="chain">selectLevelChain</result>
+
+		</action>
+
+		<action name="updateDefineAssociations"
+			class="org.hisp.dhis.reportexcel.action.UpdateReportAssociationsAction">
+			<result name="success" type="redirect">listReportExcel.action</result>
+		</action>
+
 
 		<!-- REPORT EXCEL ITEM ACTION -->
 
@@ -291,7 +338,7 @@
 		</action>
 
 		<action name="importData"
-			class="oorg.hisp.dhis.reportexcel.importing.action.ImportDataAction">
+			class="org.hisp.dhis.reportexcel.importing.action.ImportDataAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
@@ -305,6 +352,31 @@
 			<result name="error" type="velocity-xml">
 				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>
+
+		<!-- GENERATE REPORT EXCEL ITEM ACTION -->
+
+		<action name="selectExportReportParam"
+			class="org.hisp.dhis.reportexcel.export.action.SelectFormAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/reportparams.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
+			<param name="menuTreeHeight">250</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,javascript/commons.js</param>
+		</action>
+
+		<action name="getReportExcelsByGroup"
+			class="org.hisp.dhis.reportexcel.export.action.GetReportExcelsByGroupAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseListReport.vm</result>
+		</action>
+		
+		<action name="getPeriods"
+			class="org.hisp.dhis.reportexcel.export.action.GetMonthlyPeriodsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responsePeriods.vm</result>
+		</action>
+
 
 
 	</package>
