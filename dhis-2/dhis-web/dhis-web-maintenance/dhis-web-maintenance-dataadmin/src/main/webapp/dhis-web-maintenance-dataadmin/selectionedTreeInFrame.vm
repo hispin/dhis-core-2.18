@@ -54,7 +54,7 @@
         <tr>        
             <td>
                 <input type="button" id="submitButton" value="$i18n.getString( 'save' )" style="width:15em"  onclick="parent.updateDataSetsOrgunitwise()">									
-			    <input type="button" id="submitButton1" value="$i18n.getString( 'cancel' )" style="width:15em"  onclick="parent.cancilSelection()">                                  
+			    <input type="button" id="submitButton5" value="$i18n.getString( 'cancel' )" style="width:15em"  onclick="parent.cancilSelection()">                                  
             </td>
             <td colspan="2"></td>
         </tr>    

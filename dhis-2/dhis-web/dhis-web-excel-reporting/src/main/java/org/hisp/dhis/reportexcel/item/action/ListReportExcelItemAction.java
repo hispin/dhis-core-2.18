@@ -146,7 +146,7 @@ public class ListReportExcelItemAction
         if ( sheetNo == null )
         {
 
-            reportItems = new ArrayList<ReportExcelItem>( reportExcel.getReportItems() );
+            reportItems = new ArrayList<ReportExcelItem>( reportExcel.getReportExcelItems() );
 
         }
         else

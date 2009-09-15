@@ -22,14 +22,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean
-    id="org.hisp.dhis.dataadmin.action.lock.OrgunitwiseGetDataSetsAction"
-    class="org.hisp.dhis.dataadmin.action.lock.OrgunitwiseGetDataSetsAction"
-    scope="prototype">
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
-  </bean>
-  
-  <bean
     id="org.hisp.dhis.dataadmin.action.lock.SetupAssociationsTreeAction"
     class="org.hisp.dhis.dataadmin.action.lock.SetupAssociationsTreeAction"
     scope="prototype">

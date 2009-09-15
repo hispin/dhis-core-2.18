@@ -98,7 +98,7 @@ public class CopyReportExcelItemAction implements Action
         
             
         for(String itemId:this.reportItems){
-            Set<ReportExcelItem> reportItems = reportExcel.getReportItems(); 
+            Set<ReportExcelItem> reportItems = reportExcel.getReportExcelItems(); 
             ReportExcelItem reportItem = reportService.getReportExcelItem( Integer.parseInt( itemId ) ) ;
             ReportExcelItem newReportItem = new ReportExcelItem();
             newReportItem.setName( reportItem.getName() );
@@ -109,7 +109,7 @@ public class CopyReportExcelItemAction implements Action
             newReportItem.setColumn( reportItem.getColumn() );
             newReportItem.setSheetNo( sheetNo );
             reportItems.add( newReportItem );
-            reportExcel.setReportItems( reportItems );
+            reportExcel.setReportExcelItems( reportItems );
             reportService.updateReportExcel( reportExcel );
             
         }   

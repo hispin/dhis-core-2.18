@@ -112,7 +112,7 @@ public class ValidateUpdateReportExcelItemAction
 
         ReportExcelItem temp = reportService.getReportExcelItem( reportItemId );
 
-        if ( (!temp.equals( reportItem )) && reportExcel.getReportItems().contains( reportItem ) )
+        if ( (!temp.equals( reportItem )) && reportExcel.getReportExcelItems().contains( reportItem ) )
         {
             message = i18n.getString( "name_ready_exist" );
             return ERROR;

@@ -75,20 +75,20 @@ public interface DataSetLockStore
     DataSetLock getDataSetLock( int id );
 
     /**
-     * Returns a DataSetLocks with the given DataSet.
+     * Returns a Collection of DataSetLocks with the given DataSet.
      * 
      * @param name The dataSetLock.
-     * @return A DataSetLock with the given DataSet.
+     * @return A Collection of DataSetLock with the given DataSet.
      */
-    DataSetLock getDataSetLockByDataSet( DataSet dataSet );
+    Collection<DataSetLock> getDataSetLockByDataSet( DataSet dataSet );
 
     /**
-     * Returns the DataSetLock with the given period.
+     * Returns a Collection of DataSetLock with the given period.
      * 
      * @param period The DataSetLock.
-     * @return The DataSetLock with the given DataSetLock.
+     * @return A Collection of DataSetLock with the given DataSetLock.
      */
-    DataSetLock getDataSetLockByPeriod( Period period );
+    Collection<DataSetLock> getDataSetLockByPeriod( Period period );
     
     /**
      * Returns the DataSetLock with the given dataSet and period.

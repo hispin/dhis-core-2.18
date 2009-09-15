@@ -1,0 +1,240 @@
+package org.hisp.dhis.reportexcel.importing.action;
+
+/*
+ * Copyright (c) 2004-2007, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Locale;
+
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.ReportExcelItem;
+import org.hisp.dhis.reportexcel.action.ActionSupport;
+import org.hisp.dhis.reportexcel.utils.ExcelUtils;
+
+;
+
+/**
+ * @author Chau Thu Tran
+ * @version $Id
+ */
+
+public class ImportDataAction
+    extends ActionSupport
+{
+    // --------------------------------------------------------------------
+    // Dependencies
+    // --------------------------------------------------------------------
+
+    private DataValueService dataValueService;
+
+    public void setDataValueService( DataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
+    }
+
+    private ReportExcelService reportExcelService;
+
+    public void setReportExcelService( ReportExcelService reportExcelService )
+    {
+        this.reportExcelService = reportExcelService;
+    }
+
+    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
+
+    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    {
+        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+    }
+
+    private ExpressionService expressionService;
+
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+
+    public void setDataElementCategoryOptionComboService(
+        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    {
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
+    // --------------------------------------------------------------------
+    // Getter and Setter
+    // --------------------------------------------------------------------
+
+    private Integer reportId;
+
+    public void setReportId( Integer reportId )
+    {
+        this.reportId = reportId;
+    }
+
+    private String uploadFileName;
+
+    public void setUploadFileName( String uploadFileName )
+    {
+        this.uploadFileName = uploadFileName;
+    }
+
+    private Integer periodId;
+
+    public void setPeriodId( Integer periodId )
+    {
+        this.periodId = periodId;
+    }
+
+    public Integer[] reportItemIds;
+
+    public void setReportItemIds( Integer[] reportItemIds )
+    {
+        this.reportItemIds = reportItemIds;
+    }
+
+    // --------------------------------------------------------------------
+    // Action implementation
+    // --------------------------------------------------------------------
+
+    public String execute()
+        throws Exception
+    {
+        ReportExcel report = reportExcelService.getReportExcel( reportId );
+
+        OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
+
+        File upload = new File( uploadFileName );
+        WorkbookSettings ws = new WorkbookSettings();
+        ws.setLocale( new Locale( "en", "EN" ) );
+        Workbook templateWorkbook = Workbook.getWorkbook( upload, ws );
+
+        Collection<ReportExcelItem> reportItems = new ArrayList<ReportExcelItem>();
+        if ( reportItemIds != null )
+        {
+            for ( int i = 0; i < reportItemIds.length; i++ )
+            {
+                reportItems.add( reportExcelService.getReportExcelItem( reportItemIds[i] ) );
+            }
+        }
+        else
+        {
+            reportItems = report.getReportExcelItems();
+        }
+
+        Sheet sheet = templateWorkbook.getSheet( 0 );
+
+        Period period = periodService.getPeriod( periodId.intValue() );
+
+        for ( ReportExcelItem reportItem : reportItems )
+        {
+            if ( reportItem.getItemType().equals( ReportExcelItem.TYPE.DATAELEMENT ) )
+            {
+
+                String value = ExcelUtils.readValue( reportItem.getRow(), reportItem.getColumn(), sheet );
+
+                if ( !value.isEmpty() )
+                {
+                    Operand operand = expressionService.getOperandsInExpression( reportItem.getExpression() )
+                        .iterator().next();
+
+                    DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
+
+                    DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
+                        .getDataElementCategoryOptionCombo( operand.getOptionComboId() );
+
+                    String storedBy = currentUserService.getCurrentUsername();
+
+                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period,
+                        optionCombo );
+
+                    if ( dataValue == null )
+                    {
+                        dataValue = new DataValue( dataElement, period, organisationUnit, value + "", storedBy,
+                            new Date(), null, optionCombo );
+                        dataValueService.addDataValue( dataValue );
+                    }
+                    else
+                    {
+                        dataValue.setValue( value + "" );
+                        dataValue.setTimestamp( new Date() );
+                        dataValue.setStoredBy( storedBy );
+
+                        dataValueService.updateDataValue( dataValue );
+
+                    }
+                }
+            }
+        }
+
+        message = i18n.getString( "success" );
+
+        return SUCCESS;
+    }
+}

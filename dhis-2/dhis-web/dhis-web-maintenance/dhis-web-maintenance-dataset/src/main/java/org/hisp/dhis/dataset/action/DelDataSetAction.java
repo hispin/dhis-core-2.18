@@ -27,6 +27,8 @@ package org.hisp.dhis.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSetService;
@@ -76,16 +78,18 @@ public class DelDataSetAction
     public String execute()
         throws Exception
         {
-        	DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSet( dataSetService.getDataSet( dataSetId ) );
+    		Collection<DataSetLock> dataSetLocks = dataSetLockService.getDataSetLockByDataSet( dataSetService.getDataSet( dataSetId ) );
             
-        	if ( dataSetLock != null )
-        	{
-                dataSetLock.getSources().removeAll( dataSetLock.getSources() ); 
-                dataSetLockService.deleteDataSetLock( dataSetLock );	            
-        	}
+    		if ( dataSetLocks != null )
+            {               
+        	for ( DataSetLock dataSetLock : dataSetLocks )
+                {
+                    dataSetLock.getSources().removeAll( dataSetLock.getSources() ); 
+                    dataSetLockService.deleteDataSetLock( dataSetLock );                
+                }
+            }
         	
-        	dataSetService.deleteDataSet( dataSetService.getDataSet( dataSetId ) );
-            
+            dataSetService.deleteDataSet( dataSetService.getDataSet( dataSetId ) );           
             return SUCCESS;
         }
 }

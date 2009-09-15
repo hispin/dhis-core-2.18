@@ -95,7 +95,7 @@ public class DefineLockOnDataSetOrgunitAndPeriod
     // -------------------------------------------------------------------------
 
     private Integer lockedDataSets;
-
+    
     public void setLockedDataSets( Integer lockedDataSets )
     {
         this.lockedDataSets = lockedDataSets;
@@ -169,23 +169,18 @@ public class DefineLockOnDataSetOrgunitAndPeriod
 
         // -------------------------------------------------------------------------------
         // For data set movement from locked to unlocked data set list box and
-        // vice versa
-        // according to lock status
+        // vice versa according to lock status
         // -------------------------------------------------------------------------------
 
         for ( String id : unlockedDataSets )
-        {
-            DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
+        {      	
+        	DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
             DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
-
+            
             if ( dataSetLock != null )
-            {
-                if ( dataSet.getLocked() == true )
-                {
-                    dataSet.setLocked( false );
-                    dataSetService.updateDataSet( dataSet );
-                }
-                
+            {                
+                dataSet.setLocked( false );
+                dataSetService.updateDataSet( dataSet );                               
                 dataSetLock.getSources().removeAll( dataSetLock.getSources() );
                 dataSetLockService.deleteDataSetLock( dataSetLock );
             }
@@ -198,7 +193,7 @@ public class DefineLockOnDataSetOrgunitAndPeriod
 
         if ( lockedDataSets != null )
         {
-            DataSet dataSet = dataSetService.getDataSet( lockedDataSets );
+            DataSet dataSet = dataSetService.getDataSet(  lockedDataSets.intValue() );
             Set<Source> organisationUnitsSelectedForLocking = new HashSet<Source>( selectionTreeManager
                 .getLockOnSelectedOrganisationUnits() );
             DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
