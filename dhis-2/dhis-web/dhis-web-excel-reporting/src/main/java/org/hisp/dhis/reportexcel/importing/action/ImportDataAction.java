@@ -199,7 +199,7 @@ public class ImportDataAction
 
                 String value = ExcelUtils.readValue( reportItem.getRow(), reportItem.getColumn(), sheet );
 
-                if ( !value.isEmpty() )
+                if ( value.length() > 0 )
                 {
                     Operand operand = expressionService.getOperandsInExpression( reportItem.getExpression() )
                         .iterator().next();
