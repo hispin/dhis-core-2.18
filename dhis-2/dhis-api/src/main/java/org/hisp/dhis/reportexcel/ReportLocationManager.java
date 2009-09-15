@@ -50,7 +50,4 @@ public interface ReportLocationManager
     public File getReportExcelDirectory();
     
     public File getReportExcelTemplateDirectory();
-    
-    
-
 }

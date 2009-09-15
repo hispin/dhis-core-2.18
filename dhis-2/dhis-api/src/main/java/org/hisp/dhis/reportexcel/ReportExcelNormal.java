@@ -8,6 +8,10 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 public class ReportExcelNormal
     extends ReportExcel
 {
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     public ReportExcelNormal()
     {
         super();

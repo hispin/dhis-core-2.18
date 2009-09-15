@@ -48,34 +48,27 @@ public class ReportExcelItem
     private String periodType;  
     
     private int sheetNo;   
-   
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
 
     public ReportExcelItem()
     {
-        super();
     }
 
     public ReportExcelItem( String name, String itemType, int row, int column, String expression )
-    {
-        super();
+    {        
         this.itemType = itemType;
         this.row = row;
         this.column = column;
         this.expression = expression;
         this.name = name;
     }    
-    
-    
 
-    public int getSheetNo()
-    {
-        return sheetNo;
-    }
-
-    public void setSheetNo( int sheetNo )
-    {
-        this.sheetNo = sheetNo;
-    }
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
 
     public int getId()
     {
@@ -87,21 +80,19 @@ public class ReportExcelItem
         this.id = id;
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
     public String getItemType()
     {
         return itemType;
-    }
-    
-    
-
-    public String getPeriodType()
-    {
-        return periodType;
-    }
-
-    public void setPeriodType( String periodType )
-    {
-        this.periodType = periodType;
     }
 
     public void setItemType( String itemType )
@@ -138,18 +129,30 @@ public class ReportExcelItem
     {
         this.expression = expression;
     }
-    
-    
 
-    public String getName()
+    public String getPeriodType()
     {
-        return name;
+        return periodType;
     }
 
-    public void setName( String name )
+    public void setPeriodType( String periodType )
     {
-        this.name = name;
+        this.periodType = periodType;
     }
+
+    public int getSheetNo()
+    {
+        return sheetNo;
+    }
+
+    public void setSheetNo( int sheetNo )
+    {
+        this.sheetNo = sheetNo;
+    }
+
+    // -------------------------------------------------------------------------
+    // hashCode and equals
+    // -------------------------------------------------------------------------
 
     @Override
     public int hashCode()
@@ -175,41 +178,30 @@ public class ReportExcelItem
         return true;
     }
 
+    // -------------------------------------------------------------------------
+    // Internal classes
+    // -------------------------------------------------------------------------
+
     public static class TYPE
     {
         public static final String DATAELEMENT = "dataelement";
-
-        public static final String ORGANISATION = "organisation";
-        
+        public static final String ORGANISATION = "organisation";        
         public static final String INDICATOR = "indicator";
-
-        public static final String CALCULATION = "calculation";
-        
-        public static final String DATAELEMENT_CODE = "dataelement_code";
-        
-        public static final String DATAELEMENT_NAME = "dataelement_name"; 
-        
-        public static final String SERIAL = "serial";
-        
-        public static final String FORMULA_EXCEL = "formulaexcel";
-      
+        public static final String CALCULATION = "calculation";        
+        public static final String DATAELEMENT_CODE = "dataelement_code";        
+        public static final String DATAELEMENT_NAME = "dataelement_name";         
+        public static final String SERIAL = "serial";        
+        public static final String FORMULA_EXCEL = "formulaexcel";      
     }
 
     public static class PERIODTYPE
     {
         public static final String SELECTED_MONTH = "selected_month";
-
         public static final String LAST_3_MONTH = "last_3_month";
-
-        public static final String SO_FAR_THIS_YEAR = "so_far_this_year";
-        
-        public static final String LAST_6_MONTH = "last_6_month";
-        
-        public static final String QUATERLY = "quaterly";
-        
-        public static final String SIX_MONTH = "6_month";
-        
+        public static final String SO_FAR_THIS_YEAR = "so_far_this_year";        
+        public static final String LAST_6_MONTH = "last_6_month";        
+        public static final String QUATERLY = "quaterly";        
+        public static final String SIX_MONTH = "6_month";        
         public static final String YEARLY = "yealy";
     }
-
 }

@@ -37,17 +37,27 @@ import org.hisp.dhis.user.UserAuthorityGroup;
  */
 public abstract class ReportExcel
 {
-    public static class TYPE
-    {
+    private int id;
 
-        public static final String NORMAL = "NORMAL";
+    private String name;
 
-        public static final String CATEGORY = "CATEGORY";
+    private int periodRow;
 
-        public static final String PERIOD_COLUMN_LISTING = "PERIOD_COLUMN_LISTING";
+    private int periodColumn;
 
-        public static final String ORGANIZATION_GROUP_LISTING = "ORGANIZATION_GROUP_LISTING";
-    }
+    private int organisationRow;
+
+    private int organisationColumn;
+
+    private Set<ReportExcelItem> reportExcelItems = new HashSet<ReportExcelItem>();
+
+    private Set<OrganisationUnit> organisationAssocitions = new HashSet<OrganisationUnit>();
+
+    private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
+
+    private String group;
+
+    private String excelTemplateFile;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -75,6 +85,10 @@ public abstract class ReportExcel
         this.group = group;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     public boolean isCategory()
     {
         return this.getReportType().equalsIgnoreCase( TYPE.CATEGORY );
@@ -93,20 +107,36 @@ public abstract class ReportExcel
     public boolean isNormal()
     {
         return this.getReportType().equalsIgnoreCase( TYPE.NORMAL );
+    }    
+
+    // -------------------------------------------------------------------------
+    // Abstract methods
+    // -------------------------------------------------------------------------
+
+    public abstract String getReportType();
+
+    // -------------------------------------------------------------------------
+    // Internal classes
+    // -------------------------------------------------------------------------
+
+    public static class TYPE
+    {
+        public static final String NORMAL = "NORMAL";
+        public static final String CATEGORY = "CATEGORY";
+        public static final String PERIOD_COLUMN_LISTING = "PERIOD_COLUMN_LISTING";
+        public static final String ORGANIZATION_GROUP_LISTING = "ORGANIZATION_GROUP_LISTING";
     }
     
-
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // hashCode and equals
-    // ----------------------------------------------------------------------
-
+    // -------------------------------------------------------------------------
 
     @Override
     public int hashCode()
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + id;
+        result = prime * result + name.hashCode();
         return result;
     }
 
@@ -129,8 +159,6 @@ public abstract class ReportExcel
     // Getters and setters
     // ----------------------------------------------------------------------
 
-    private int id;
-
     public int getId()
     {
         return id;
@@ -140,8 +168,6 @@ public abstract class ReportExcel
     {
         this.id = id;
     }
-
-    private String name;
 
     public String getName()
     {
@@ -153,8 +179,6 @@ public abstract class ReportExcel
         this.name = name;
     }
 
-    private int periodRow;
-
     public int getPeriodRow()
     {
         return periodRow;
@@ -164,8 +188,6 @@ public abstract class ReportExcel
     {
         this.periodRow = periodRow;
     }
-
-    private int periodColumn;
 
     public int getPeriodColumn()
     {
@@ -177,8 +199,6 @@ public abstract class ReportExcel
         this.periodColumn = periodColumn;
     }
 
-    private int organisationRow;
-
     public int getOrganisationRow()
     {
         return organisationRow;
@@ -188,8 +208,6 @@ public abstract class ReportExcel
     {
         this.organisationRow = organisationRow;
     }
-
-    private int organisationColumn;
 
     public int getOrganisationColumn()
     {
@@ -201,8 +219,6 @@ public abstract class ReportExcel
         this.organisationColumn = organisationColumn;
     }
 
-    private Set<ReportExcelItem> reportExcelItems = new HashSet<ReportExcelItem>();
-
     public Set<ReportExcelItem> getReportExcelItems()
     {
         return reportExcelItems;
@@ -212,8 +228,6 @@ public abstract class ReportExcel
     {
         this.reportExcelItems = reportExcelItems;
     }
-
-    private Set<OrganisationUnit> organisationAssocitions = new HashSet<OrganisationUnit>();
 
     public Set<OrganisationUnit> getOrganisationAssocitions()
     {
@@ -225,8 +239,6 @@ public abstract class ReportExcel
         this.organisationAssocitions = organisationAssocitions;
     }
 
-    private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
-
     public Set<UserAuthorityGroup> getUserRoles()
     {
         return userRoles;
@@ -236,8 +248,6 @@ public abstract class ReportExcel
     {
         this.userRoles = userRoles;
     }
-
-    private String group;
 
     public String getGroup()
     {
@@ -249,8 +259,6 @@ public abstract class ReportExcel
         this.group = group;
     }
 
-    private String excelTemplateFile;
-
     public String getExcelTemplateFile()
     {
         return excelTemplateFile;
@@ -260,7 +268,4 @@ public abstract class ReportExcel
     {
         this.excelTemplateFile = excelTemplateFile;
     }
-
-    public abstract String getReportType();
-
 }

@@ -43,6 +43,10 @@ public class ReportExcelOganiztionGroupListing
 {
     private List<OrganisationUnitGroup> organisationUnitGroups;
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     public ReportExcelOganiztionGroupListing()
     {
         super();       
@@ -55,6 +59,10 @@ public class ReportExcelOganiztionGroupListing
         super( name, excelTemplateFile, periodRow, periodColumn, organisationRow, organisationColumn, reportItems,
             organisationAssocitions, userRoles, group );        
     }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
 
     public List<OrganisationUnitGroup> getOrganisationUnitGroups()
     {
@@ -71,5 +79,4 @@ public class ReportExcelOganiztionGroupListing
     {       
         return ReportExcel.TYPE.ORGANIZATION_GROUP_LISTING;
     }
-
 }

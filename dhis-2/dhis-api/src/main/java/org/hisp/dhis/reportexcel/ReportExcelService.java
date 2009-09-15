@@ -113,7 +113,4 @@ public interface ReportExcelService
     Collection<DataEntryStatus> getDataEntryStatusDefaultByDataSets( Collection<DataSet> dataSets );
 
     public int countDataValueOfDataSet( DataSet dataSet, OrganisationUnit organisationUnit, Period period );
-
-   
-
 }

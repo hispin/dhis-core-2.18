@@ -42,8 +42,26 @@ public class DataElementGroupOrder
 
     private List<DataElement> dataElements;
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     public DataElementGroupOrder()
     {
+    }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId( int id )
+    {
+        this.id = id;
     }
 
     public String getName()
@@ -66,15 +84,9 @@ public class DataElementGroupOrder
         this.dataElements = dataElements;
     }
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
+    // -------------------------------------------------------------------------
+    // hashCode and equals
+    // -------------------------------------------------------------------------
 
     @Override
     public int hashCode()
@@ -99,5 +111,4 @@ public class DataElementGroupOrder
             return false;
         return true;
     }
-
 }
