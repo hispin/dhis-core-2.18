@@ -56,6 +56,7 @@ public class ViewDataAction
     // --------------------------------------------------------------------
     // Dependencies
     // --------------------------------------------------------------------
+    
     private ReportExcelService reportExcelService;
 
     public void setReportExcelService( ReportExcelService reportExcelService )
@@ -115,7 +116,7 @@ public class ViewDataAction
                 {
                     String value = ExcelUtils.readValue( reportItem.getRow(), reportItem.getColumn(), sheet );
 
-                    if ( !value.isEmpty() )
+                    if ( value.length() > 0 )
                     {
                         ReportExcelItemValue reportItemvalue = new ReportExcelItemValue( reportItem, value );
 
