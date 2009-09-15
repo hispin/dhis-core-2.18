@@ -11,6 +11,10 @@ public class ReportExcelCategory
 {
     private List<DataElementGroupOrder> dataElementOrders;
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     public ReportExcelCategory()
     {
         super();        
@@ -23,6 +27,10 @@ public class ReportExcelCategory
         super( name, excelTemplateFile, periodRow, periodColumn, organisationRow, organisationColumn, reportItems,
             organisationAssocitions, userRoles, group );        
     }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
 
     public List<DataElementGroupOrder> getDataElementOrders()
     {
@@ -39,5 +47,4 @@ public class ReportExcelCategory
     {
         return ReportExcel.TYPE.CATEGORY;
     }
-
 }

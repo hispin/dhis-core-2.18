@@ -38,11 +38,13 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 public class ReportExcelPeriodColumnListing
     extends ReportExcel
 {
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
 
     public ReportExcelPeriodColumnListing()
     {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     public ReportExcelPeriodColumnListing( String name, String excelTemplateFile, int periodRow, int periodColumn,
@@ -51,7 +53,6 @@ public class ReportExcelPeriodColumnListing
     {
         super( name, excelTemplateFile, periodRow, periodColumn, organisationRow, organisationColumn, reportItems,
             organisationAssocitions, userRoles, group );
-        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -59,5 +60,4 @@ public class ReportExcelPeriodColumnListing
     {
         return ReportExcel.TYPE.PERIOD_COLUMN_LISTING;
     }
-
 }
