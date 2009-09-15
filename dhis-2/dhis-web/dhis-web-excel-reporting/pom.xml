@@ -75,7 +75,7 @@
     </dependency>
     
     <!-- Other -->
-       
+     
     <dependency>
       <groupId>net.sourceforge.jexcelapi</groupId>
       <artifactId>jxl</artifactId>
@@ -86,6 +86,7 @@
     </dependency>
 	
 	<!-- POI Library -->
+	<!--
 	<dependency>
 		<groupId>org.apache.poi</groupId>
 		<artifactId>poi</artifactId>		
@@ -103,6 +104,7 @@
 		<artifactId>poi-ooxml</artifactId>		
 		<version>3.5-beta5</version>
 	</dependency>
+	-->
 	
   </dependencies>
   
