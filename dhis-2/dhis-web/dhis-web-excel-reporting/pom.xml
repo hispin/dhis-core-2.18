@@ -10,7 +10,7 @@
   </parent>
   
   <artifactId>dhis-web-excel-reporting</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <name>DHIS Web Excel Reporting</name>
   
   <build>
@@ -86,7 +86,7 @@
     </dependency>
 	
 	<!-- POI Library -->
-	<!--
+	
 	<dependency>
 		<groupId>org.apache.poi</groupId>
 		<artifactId>poi</artifactId>		
@@ -99,11 +99,14 @@
 		<version>3.5-beta5</version>
 	</dependency>
 
+	<!-- Used for Ms Office 2007 and over
+	
 	<dependency>
 		<groupId>org.apache.poi</groupId>
 		<artifactId>poi-ooxml</artifactId>		
 		<version>3.5-beta5</version>
 	</dependency>
+	
 	-->
 	
   </dependencies>
