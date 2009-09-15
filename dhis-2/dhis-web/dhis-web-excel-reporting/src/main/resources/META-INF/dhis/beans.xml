@@ -25,6 +25,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 
+	<bean id="org.hisp.dhis.reportexcel.configuration.action.GetAdminOptionsAction"
+		class="org.hisp.dhis.reportexcel.configuration.action.GetAdminOptionsAction" scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.reportexcel.configuration.action.SaveReportUserRolesAction"
+		class="org.hisp.dhis.reportexcel.configuration.action.SaveReportUserRolesAction" scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+	</bean>
+	
 	<!-- REPORT EXCEL CORE BEAN -->
 
 	<bean id="org.hisp.dhis.reportexcel.action.AddReportExcelAction"
@@ -339,6 +351,5 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
 	</bean>
-
 
 </beans>

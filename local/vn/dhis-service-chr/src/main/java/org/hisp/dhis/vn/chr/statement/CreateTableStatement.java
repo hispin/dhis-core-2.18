@@ -44,9 +44,9 @@ public class CreateTableStatement
         // addby INTEGER ;
         buffer.append( "addby" + SPACE + Element.INTEGER + SPACE + REQUIRED + SEPARATOR );
         // createddate DATE;
-        buffer.append( "createddate" + SPACE + Element.DATE + SPACE + REQUIRED + SEPARATOR );
+        buffer.append( "createddate" + SPACE + Element.DATETIME + SPACE + REQUIRED + SEPARATOR );
         // editeddate DATE;
-        buffer.append( "editeddate" + SPACE + Element.DATE + SPACE + REQUIRED + SEPARATOR );
+        buffer.append( "editeddate" + SPACE + Element.DATETIME + SPACE + REQUIRED + SEPARATOR );
 
         for ( Element column : form.getElements() )
         {

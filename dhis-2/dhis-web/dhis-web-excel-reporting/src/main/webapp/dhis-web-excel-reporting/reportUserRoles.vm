@@ -28,7 +28,7 @@
 	</tr>
 	<tr>
 		<td>
-			<select multiple id="availableUserRoleId" style="width:250px;height:250px">
+			<select multiple id="availableUserRoleId" style="width:250px;height:250px" onDblClick="moveSelectedById( 'availableUserRoleId', 'userRoleId' )">
             #foreach ( $role in $availableUserRoles )
                 <option value="$role.id">$encoder.htmlEncode( $role.name )</option>
             #end                
@@ -41,7 +41,7 @@
             <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:40px" onclick="moveAllById( 'userRoleId', 'availableUserRoleId' )">
         </td>
         <td>
-        	<select multiple id="userRoleId" name="userRoleId" style="width:250px;height:250px">
+        	<select multiple id="userRoleId" name="userRoleId" style="width:250px;height:250px" onDblClick="moveSelectedById( 'userRoleId', 'availableUserRoleId' )">
             #foreach ( $role in $selectedUserRoles )
                 <option value="$role.id">$encoder.htmlEncode( $role.name )</option>
             #end                

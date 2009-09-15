@@ -26,7 +26,6 @@ public class CreateCodeStatement extends FormStatement
     @Override
     protected void init( Form form )
     {
-
         StringBuffer buffer = new StringBuffer();
 
         // SELECT

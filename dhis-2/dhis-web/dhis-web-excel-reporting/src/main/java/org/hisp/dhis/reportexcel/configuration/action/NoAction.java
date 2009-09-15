@@ -1,7 +1,6 @@
 package org.hisp.dhis.reportexcel.configuration.action;
 
-/*
- * Copyright (c) 2004-2007, University of Oslo
+/* Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,8 +26,6 @@ package org.hisp.dhis.reportexcel.configuration.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.options.SystemSettingManager;
-
 import com.opensymphony.xwork2.Action;
 
 /**
@@ -36,40 +33,17 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 
-public class GetReportConfigurationAction
-    implements Action
-{   
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+public class NoAction implements Action
+{
+    // ----------------------------------------------------------------------------------
+    // Action implemantation
+    // ----------------------------------------------------------------------------------
 
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
-    // -------------------------------------------------------------------------
-    // Getter and Setter
-    // -------------------------------------------------------------------------
-    
-    private String templateDirectory;   
-    
-    public String getTemplateDirectory()
-    {
-        return templateDirectory;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-    
     public String execute()
         throws Exception
     {
-        templateDirectory = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
-        
+       
         return SUCCESS;
     }
+
 }
