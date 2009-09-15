@@ -51,6 +51,6 @@
 
 <script>
 #if($organisationUnit)
-getReportByGroup();
+	getReportExcelsByGroup();
 #end
 </script>

@@ -1,5 +1,12 @@
-function getReportByGroup(){
-	$.get("getReportsByGroup.action",
+function organisationUnitSelected( orgUnits )
+{	
+	window.location.reload();
+}
+
+selection.setListenerFunction( organisationUnitSelected );
+
+function getReportExcelsByGroup(){
+	$.post("getReportExcelsByGroup.action",
     {
         group:$("#group").val()
     }, function( xmlObject ){       
@@ -15,28 +22,19 @@ function getReportByGroup(){
     }, "xml");
 }
 
-function organisationUnitSelected( orgUnits )
-{	
-	window.location.reload();
-}
-function organisationUnitSelectedCompleted(xmlObject){
-	setFieldValue('organisation',getElementValue(xmlObject, 'name'));
-}
-
-selection.setListenerFunction( organisationUnitSelected );
 
 function lastYear(){
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( getListPeriodCompleted );
-	request.send( 'getPeriod.action?mode=previous'); 
+	request.send( 'getPeriods.action?mode=previous'); 
 }
 
 function nextYear(){
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( getListPeriodCompleted );
-	request.send( 'getPeriod.action?mode=next'); 
+	request.send( 'getPeriods.action?mode=next'); 
 }
 function getListPeriodCompleted( xmlObject ){
 	clearListById('period');
@@ -52,37 +50,6 @@ function getListPeriodCompleted( xmlObject ){
 
 globalMessage = null;
 generic_type = null;
-
-function validateGenerateReport(message) {
-
-	var reportId = getFieldValue('report');
-	var periodId = getFieldValue('period');
-
-	globalMessage = message;
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( validateGenerateReportCompleted );
-	request.send( "validateGenerateReport.action?reportId=" + reportId + "&periodId=" + periodId); 
-}
-function validateGenerateReportCompleted( xmlObject ){
-	var type = xmlObject.getAttribute( 'type' );
-    
-    if(type=='error')
-    {
-        setMessage(xmlObject.firstChild.nodeValue);
-    }
-    if(type=='success')
-    {
-		if ( generic_type == 'preview' ) {
-			
-			previewReport();
-		}
-		else {
-			generateReport();
-		}
-	}
-}
 
 function generateReport() {
 	
