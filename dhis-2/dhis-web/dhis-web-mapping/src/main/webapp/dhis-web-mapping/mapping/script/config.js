@@ -23,7 +23,7 @@
 
 //  Ajax requests
 
-    path = '';
+    path = '../';
     type = '.action';
 
 //  Layout
@@ -34,16 +34,19 @@
 
     gridpanel_width = west_width - 15;
     gridpanel_height = 700;
+	
     combo_width = 150;
-	combo_width2 = 133;
 	combo_list_width = combo_width + 17;
-	combo_number_width = 75;
+	
+	combo_width2 = 133;
+	combo_list_width2 = combo_width2 + 17;
+	
+	combo_width_fieldset = 112;
+	combo_list_width_fieldset = combo_width_fieldset + 17;
+	
+	combo_number_width = 65;
 	combo_number_list_width = combo_number_width + 17;
 	
-	if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
-		combo_width2 = 125;
-	}		
-    
     MENU_TEXTCOLOR = '#666'; // label
 	MENU_TEXTCOLOR_INFO = '#222'; // info text
     MENU_TITLECOLOR_LIGHT = '#444'; // panel title
