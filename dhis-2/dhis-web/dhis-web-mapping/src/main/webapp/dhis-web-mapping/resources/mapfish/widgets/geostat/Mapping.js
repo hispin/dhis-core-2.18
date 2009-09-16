@@ -202,7 +202,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 selectOnFocus: true,
 				labelSeparator: MENU_LABELSEPARATOR,
                 width: combo_width2,
-                minListWidth: combo_width,
+                minListWidth: combo_list_width2,
                 store: mapStore,
                 listeners: {
                     'select': {
