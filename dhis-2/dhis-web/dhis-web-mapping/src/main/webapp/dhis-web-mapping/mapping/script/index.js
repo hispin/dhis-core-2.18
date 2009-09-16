@@ -578,8 +578,8 @@ Ext.onReady(function()
                     var mlp = Ext.getCmp('maplayerpath_cb').getValue();
                     var t = Ext.getCmp('type_cb').getValue();
                     var nc = Ext.getCmp('newnamecolumn_tf').getValue();
-                    var lon = Ext.getCmp('newlongitude_cb').getValue();
-                    var lat = Ext.getCmp('newlatitude_cb').getValue();
+                    var lon = Ext.getCmp('newlongitude_cb').getRawValue();
+                    var lat = Ext.getCmp('newlatitude_cb').getRawValue();
                     var zoom = Ext.getCmp('newzoom_cb').getValue();
                      
                     if (!nn || !mlp || !oui || !ouli || !nc || !lon || !lat) {
@@ -675,11 +675,11 @@ Ext.onReady(function()
             var en = Ext.getCmp('editname_tf').getValue();
             var em = Ext.getCmp('editmap_cb').getValue();
             var nc = Ext.getCmp('editnamecolumn_tf').getValue();
-            var lon = Ext.getCmp('editlongitude_cb').getValue();
-            var lat = Ext.getCmp('editlatitude_cb').getValue();
+            var lon = Ext.getCmp('editlongitude_cb').getRawValue();
+            var lat = Ext.getCmp('editlatitude_cb').getRawValue();
             var zoom = Ext.getCmp('editzoom_cb').getValue();
 			var t = Ext.getCmp('type_cb').getValue();
-            
+			
             if (!en || !em || !nc || !lon || !lat) {
                 Ext.messageRed.msg('New map', 'Form is not complete.');
                 return;
@@ -693,7 +693,7 @@ Ext.onReady(function()
             Ext.Ajax.request({
                 url: path + 'addOrUpdateMap' + type,
                 method: 'GET',
-                params: { name: en, mapLayerPath: em, type: t, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom },
+                params: { name: en, mapLayerPath: em, nameColumn: nc, longitude: lon, latitude: lat, zoom: zoom },
 
                 success: function( responseObject ) {
                     Ext.messageBlack.msg('Edit map', 'The map ' + msg_highlight_start + en + msg_highlight_end + ' was updated.');
