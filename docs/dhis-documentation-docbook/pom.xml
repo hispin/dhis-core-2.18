@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>net.sf.docbook</groupId>
-  <artifactId>docbook-sample</artifactId>
-  <name>DHIS2 Documentation system</name>
-  <packaging>pom</packaging>
+  <groupId>org.hisp.dhis</groupId>
+  <artifactId>dhis-documentation-docbook</artifactId>
+  <name>DHIS 2 Documentation</name>
   <version>1.0.0</version>
-  <description>Sample of DocBook maven artifacts</description>
-  <url>http://sourceforge.net/projects/docbook/</url>
+  <description>DHIS 2 Documentation</description>
 
-<build>
+  <build>
     <plugins>
- <plugin>
+      <plugin>
         <groupId>com.agilejava.docbkx</groupId>
         <artifactId>docbkx-maven-plugin</artifactId>
         <configuration>
-<htmlStylesheet>images/docbook_bsd.css</htmlStylesheet>
-
+  	      <htmlStylesheet>images/docbook_bsd.css</htmlStylesheet>
           <postProcess>
             <copy todir="target/site">
               <fileset dir="target/docbkx">
@@ -33,9 +30,8 @@
               </fileset>
             </copy>
           </postProcess>
-        </configuration>
+        </configuration>  
       </plugin>
-    
-</plugins>
+    </plugins>
   </build>
 </project>
