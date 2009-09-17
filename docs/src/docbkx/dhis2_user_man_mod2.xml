@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<?altova_sps http://www.altova.com/sps/Template/Publishing/docbook.sps?>
+<article>
+	<articleinfo>
+		<date>17/09/09</date>
+		<title>Getting started with DHIS 2</title>
+		<author>
+			<surname>Unknown</surname>
+			<affiliation>
+				<orgname/>
+			</affiliation>
+		</author>
+		<revhistory>
+			<revision>
+				<revnumber>1</revnumber>
+				<date>17/09/09</date>
+				<authorinitials>JPP</authorinitials>
+				<revdescription>
+					<para>Initial conversion from MS Word format to DocBook</para>
+				</revdescription>
+			</revision>
+		</revhistory>
+	</articleinfo>
+	<sect1>
+		<title>Getting started with DHIS2</title>
+		<para/>
+		<highlights>
+			<para>After reading this chapter you will be able to understand:</para>
+			<itemizedlist>
+				<listitem>
+					<para>Start DHIS 2 from the desktop</para>
+				</listitem>
+				<listitem>
+					<para>How to log-in from the desktop</para>
+				</listitem>
+				<listitem>
+					<para>Create new users and user roles</para>
+				</listitem>
+			</itemizedlist>
+		</highlights>
+		<para/>
+		<sect2>
+			<title>Downloading and installing the desktop version</title>
+			<para>The easist way to get started with the application is to download
+      the DHIS2 Live package. This version of the applicaiton comes
+      prepackaged, and requires on a single download. You can get the latest
+      version <ulink type="" url="???" userlevel="">here</ulink>.</para>
+		</sect2>
+		<sect2>
+			<title>Downloading and installing the server version</title>
+			<para>As described in the previous module, DHIS2 functions both as a
+      desktop application, as well as a web-enabled client-server application.
+      For larger, production installations with many users and large volumes
+      of data (for instance as a national level server) it is reccomended to
+      install the server version. The latest version of the application can be
+      found <ulink url="???">here</ulink>. A seperate <olink>guide</olink>
+      describing the installation and setup of the server version can be found
+      is also available. </para>
+		</sect2>
+		<sect2>
+			<title>Starting the DHIS2 Live package</title>
+			<para>Placeholder for this text. </para>
+		</sect2>
+	</sect1>
+	<sect1>
+		<title>Logging on to DHIS2</title>
+		<para>Regardless of whether you have installed the server version of the
+    desktop Live version, you will use a web-browser to logon to the
+    application. DHIS 2 should be compatible with most modern web-browsers,
+    although you will need to ensure that JavaScript is enabled. </para>
+		<para>To logon to the application just enter <ulink type="" url="???">http://localhost:8080/dhis</ulink> if you are using the DHIS2
+    live package, or replace localhost with the name or IP address of the
+    server where the server version is installed. </para>
+		<para>Once you have started DHIS2, either online or offline, the displayed
+    screen will prompt you to enter your registered ‘user name’ and
+    ‘password’. After entering the required information click on log-in button
+    to log into the application. </para>
+		<screenshot>
+			<screeninfo>DHIS2 Login screen</screeninfo>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="???"/>
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</sect1>
+	<sect1>
+		<title>Creating new users and roles</title>
+		<para>This section will describe how to add new users to the DHIS 2
+    application. </para>
+		<sect2>
+			<title>Open User Menu</title>
+			<para>To create or find a user begin with clicking on the ‘user’ module
+      displayed in the drop down menu of the Maintenance module located on the
+      main tool bar on the top part of the displayed screen. User names
+      already registered will appear as a list as seen in the screenshot
+      below.</para>
+			<screenshot>
+				<screeninfo>Select Users menu item</screeninfo>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="???"/>
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+			<screenshot>
+				<screeninfo>Search by user name</screeninfo>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="???"/>
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+			<para>You can search for specific user names in the user list by
+      entering the name in the ‘filter by username’ field as shown
+      above.</para>
+		</sect2>
+		<sect2>
+			<title>Define a new role</title>
+			<para>As part of creating a username you are required to define the user
+      role. Do so by clicking on the ‘user role’ appearing on the left side of
+      the displayed screen.</para>
+			<screenshot>
+				<screeninfo>Create new user role</screeninfo>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="???"/>
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+			<para>This will lead you to the Role Management page where you will have
+      to click on <guibutton>Add new</guibutton> to create a new role.</para>
+			<screenshot>
+				<screeninfo>Add new user role</screeninfo>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="???"/>
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+			<para>The following screen will open and here in the first text box you
+      need to give Name of the Role such as Super User, Admin User, etc. The
+      second text box called ‘Description’ gives more information about the
+      type of User Role that is being created for e.g. State Admin User,
+      District Data Entry. </para>
+			<screenshot>
+				<screeninfo>Role maintaience page</screeninfo>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="???"/>
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+			<para>Next you will specify the particular dataset(s) that are to be
+      made available to the particular role. You will also need to specify the
+      type of ‘authority’ to be given to the particular user. For each of the
+      three options namely Datasets, Reports and Authorities user can select
+      multiple options from the scroll down menu provided against each field.
+      A user can choose multiple options either by moving them
+      one-by-one.</para>
+			<screenshot>
+				<screeninfo>Adding a dataset to a user role</screeninfo>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="???"/>
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+			<para>You can also select multiple datasets individually by pressing the
+      Ctrl key on the keyboard and clicking on individual datasets. </para>
+			<screenshot>
+				<screeninfo>Adding multiple datasets to user roles</screeninfo>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="???"/>
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+			<para>Finally when you have entered the required fields click on
+      <guibutton>Save</guibutton> which is located on the lower part of the
+      displayed screen. The desired user role and related authorization will
+      be saved to the database, and can then be assigned to a particular user.
+      </para>
+		</sect2>
+		<sect2>
+			<title>Add New User</title>
+			<para>Under particular user role there can be more than one user. To add
+      new users go to the User options under the Maintenance module. </para>
+			<screenshot>
+				<screeninfo>Add new user</screeninfo>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="???"/>
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+			<para>To add a new user, just follow these steps:</para>
+			<itemizedlist>
+				<listitem>
+					<para>Click on the <guibutton>Add New</guibutton> button.</para>
+				</listitem>
+				<listitem>
+					<para>Enter New User details like <guilabel>User name</guilabel>,
+          <guilabel>Password</guilabel>, <guilabel>Confirm
+          password</guilabel>, <guilabel>Surname</guilabel>, <guilabel>First
+          name</guilabel> and <guilabel>Email</guilabel> in new user’s option
+          tabs.</para>
+				</listitem>
+				<listitem>
+					<para>Click on <guibutton>Add</guibutton> button for confirmation of
+          new user details and follow the user error while creation of new
+          user.</para>
+				</listitem>
+				<listitem>
+					<para>The recently created new user can be seen in main’ User
+          management Screen</para>
+				</listitem>
+				<listitem>
+					<para>You can edit (like password, surname….etc) and delete the
+          details of new/old users by selecting corresponding User’s
+          <guibutton>Edit</guibutton> and <guibutton>Delete</guibutton>
+          Buttons.</para>
+				</listitem>
+				<listitem>
+					<para>Click on <guibutton>Save</guibutton> tab after editing all
+          details of a particular selected user.</para>
+					<screenshot>
+						<screeninfo>Add or edit users</screeninfo>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="???"/>
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+					<screenshot>
+						<screeninfo>User management screen</screeninfo>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="???"/>
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</listitem>
+			</itemizedlist>
+		</sect2>
+	</sect1>
+	<sect1>
+		<title>Logging off of DHIS2</title>
+		<para>Just click on the <guibutton>Log off</guibutton> button to exit the
+    application. </para>
+		<screenshot>
+			<screeninfo>Logging off of DHIS 2</screeninfo>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="???"/>
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</sect1>
+</article>
