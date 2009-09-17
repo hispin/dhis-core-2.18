@@ -8,7 +8,7 @@
 
 <p>
     <input type="checkbox" id="groupSet">
-    <label for="groupSet">$i18n.getString( "group_set_structure" ) <span style="color:#060606">(orgunitgroupsetstructure)</span></label>
+    <label for="groupSet">$i18n.getString( "group_set_structure" ) <span style="color:#606060">(orgunitgroupsetstructure)</span></label>
 </p>
 
 <p>

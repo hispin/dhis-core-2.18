@@ -140,7 +140,7 @@
     
     <!-- Databrowser -->
      
-    <action name="displayDataBrowserForm" class="org.hisp.dhis.dataadmin.action.datalocking.GetPeriodTypesAction">
+    <action name="displayDataBrowserForm" class="org.hisp.dhis.dataadmin.action.databrowser.GetPeriodTypesAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataadmin/dataBrowserForm.vm</param>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>

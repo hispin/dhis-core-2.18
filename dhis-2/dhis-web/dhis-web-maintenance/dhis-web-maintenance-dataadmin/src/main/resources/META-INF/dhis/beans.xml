@@ -228,6 +228,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />   
   </bean>
 
+  <bean id="org.hisp.dhis.dataadmin.action.databrowser.GetPeriodTypesAction"
+    class="org.hisp.dhis.dataadmin.action.databrowser.GetPeriodTypesAction"
+    scope="prototype">
+    <property name="periodService"
+      ref="org.hisp.dhis.period.PeriodService"/>
+  </bean>
+
   <bean id="org.hisp.dhis.dataadmin.action.databrowser.ExportPDFActionAction" 
     class="org.hisp.dhis.dataadmin.action.databrowser.ExportPDFAction"
     scope="prototype"/>
