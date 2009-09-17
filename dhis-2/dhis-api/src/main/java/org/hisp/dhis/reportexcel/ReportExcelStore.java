@@ -96,6 +96,8 @@ public interface ReportExcelStore
     // --------------------------------------
 
     public int saveDataEntryStatus( DataEntryStatus dataStatus );
+    
+    public void updateDataEntryStatus( DataEntryStatus dataStatus );
 
     public DataEntryStatus getDataEntryStatus( int id );
 

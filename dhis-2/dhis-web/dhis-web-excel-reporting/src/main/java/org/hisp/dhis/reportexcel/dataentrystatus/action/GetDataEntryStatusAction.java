@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportexcel.dataentrystatus.action;
+
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -24,57 +26,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel;
 
-import java.util.List;
-import java.util.Set;
+import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.user.UserAuthorityGroup;
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Dang Duy Hieu
+ * @author Tran Thanh Tri
  * @version $Id$
  */
-public class ReportExcelCategory
-    extends ReportExcel
+public class GetDataEntryStatusAction
+    implements Action
 {
-    private List<DataElementGroupOrder> dataElementOrders;
+    // -------------------------------------------------
+    // Dependency
+    // -------------------------------------------------
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
+    private ReportExcelService reportService;
 
-    public ReportExcelCategory()
+    // -------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------
+
+    private Integer id;
+
+    private DataEntryStatus dataStatus;
+
+    // -------------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------------
+
+    public DataEntryStatus getDataStatus()
     {
-        super();        
+        return dataStatus;
     }
 
-    public ReportExcelCategory( String name, String excelTemplateFile, int periodRow, int periodColumn, int organisationRow,
-        int organisationColumn, Set<ReportExcelItem> reportItems, Set<OrganisationUnit> organisationAssocitions,
-        Set<UserAuthorityGroup> userRoles, String group )
+    public void setId( Integer id )
     {
-        super( name, excelTemplateFile, periodRow, periodColumn, organisationRow, organisationColumn, reportItems,
-            organisationAssocitions, userRoles, group );        
+        this.id = id;
     }
 
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
-
-    public List<DataElementGroupOrder> getDataElementOrders()
+    public void setReportService( ReportExcelService reportService )
     {
-        return dataElementOrders;
+        this.reportService = reportService;
     }
 
-    public void setDataElementOrders( List<DataElementGroupOrder> dataElementOrders )
+    public String execute()
+        throws Exception
     {
-        this.dataElementOrders = dataElementOrders;
+        dataStatus = reportService.getDataEntryStatus( id );
+
+        return SUCCESS;
     }
 
-    @Override
-    public String getReportType()
-    {
-        return ReportExcel.TYPE.CATEGORY;
-    }
 }

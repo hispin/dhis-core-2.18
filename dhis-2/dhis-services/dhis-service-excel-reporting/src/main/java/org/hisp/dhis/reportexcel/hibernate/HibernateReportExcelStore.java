@@ -99,7 +99,7 @@ public class HibernateReportExcelStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Criteria criteria = session.createCriteria( ReportExcel.class );    
+        Criteria criteria = session.createCriteria( ReportExcel.class );
 
         criteria.add( Restrictions.eq( "name", name ) );
 
@@ -192,7 +192,7 @@ public class HibernateReportExcelStore
         Criteria criteria = session.createCriteria( ReportExcelItem.class );
 
         return criteria.list();
-    }   
+    }
 
     @SuppressWarnings( "unchecked" )
     public Collection<ReportExcelItem> getReportExcelItem( int sheetNo, Integer reportId )
@@ -244,26 +244,26 @@ public class HibernateReportExcelStore
     public int countDataValueOfDataSet( DataSet dataSet, OrganisationUnit organisationUnit, Period period )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         String sql = "select count(*) as c from datavalue where sourceid=" + organisationUnit.getId()
             + " and dataelementid in (";
-        
+
         int i = 0;
-        
+
         for ( DataElement element : dataSet.getDataElements() )
         {
             sql += element.getId();
-            
+
             if ( i++ < dataSet.getDataElements().size() - 1 )
             {
                 sql += ",";
             }
         }
-        
+
         sql += ") and periodid=" + period.getId();
-        
+
         SQLQuery query = session.createSQLQuery( sql );
-        
+
         query.addScalar( "c", Hibernate.INTEGER );
 
         return Integer.valueOf( String.valueOf( query.uniqueResult() ) );
@@ -273,7 +273,7 @@ public class HibernateReportExcelStore
     public void deleteDataEntryStatus( int id )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         session.delete( getDataEntryStatus( id ) );
     }
 
@@ -290,7 +290,7 @@ public class HibernateReportExcelStore
     public DataEntryStatus getDataEntryStatus( int id )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         return (DataEntryStatus) session.get( DataEntryStatus.class, id );
     }
 
@@ -325,5 +325,11 @@ public class HibernateReportExcelStore
         }
 
         return result;
+    }
+
+    public void updateDataEntryStatus( DataEntryStatus arg0 )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        session.update( arg0 );
     }
 }
