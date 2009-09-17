@@ -99,7 +99,7 @@ public class HibernateReportExcelStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Criteria criteria = session.createCriteria( ReportExcel.class );
+        Criteria criteria = session.createCriteria( ReportExcel.class );    
 
         criteria.add( Restrictions.eq( "name", name ) );
 
@@ -192,18 +192,7 @@ public class HibernateReportExcelStore
         Criteria criteria = session.createCriteria( ReportExcelItem.class );
 
         return criteria.list();
-    }
-
-    public ReportExcelItem getReportExcelItem( String name )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( ReportExcelItem.class );
-
-        criteria.add( Restrictions.eq( "name", name ) );
-
-        return (ReportExcelItem) criteria.uniqueResult();
-    }
+    }   
 
     @SuppressWarnings( "unchecked" )
     public Collection<ReportExcelItem> getReportExcelItem( int sheetNo, Integer reportId )

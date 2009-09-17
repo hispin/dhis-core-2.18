@@ -28,20 +28,66 @@ package org.hisp.dhis.reportexcel.export.action;
 
 import java.util.Map;
 
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.reportexcel.ReportExcel;
+
 import com.opensymphony.xwork2.ActionContext;
+
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
 public class SelectionManager
 {
-    private static final String SELECTED_YEAR =  "SELECTED_YEAR";
+    private static final String SELECTED_YEAR = "SELECTED_YEAR";
+
+    private static final String SELETED_PERIOD = "SELETED_PERIOD";
+
+    private static final String SELETED_REPORT_EXCEL = "SELETED_REPORT_EXCEL";    
     
-    public int getSelectedYear(){
+    private static final String SELECTED_REPORT_EXCEL_ID =  "SELECTED_REPORT_EXCEL_ID";
+
+    public Period getSelectedPeriod()
+    {
+        return (Period) getSession().get( SELETED_PERIOD );
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setSelectedPeriod( Period period )
+    {
+        getSession().put( SELETED_PERIOD, period );
+    }
+    
+    public ReportExcel getSelectedReportExcel()
+    {
+        return (ReportExcel) getSession().get( SELETED_REPORT_EXCEL );
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setSelectedReportExcel( ReportExcel reportExcel )
+    {
+        getSession().put( SELETED_REPORT_EXCEL, reportExcel );
+    }
+    
+    @SuppressWarnings("unchecked")
+    public void setSelectedReportExcelId( Integer id )
+    {
+        getSession().put( SELECTED_REPORT_EXCEL_ID, id );
+    }
+    
+    public Integer getSelectedReportExcelId()
+    {
+        return (Integer) getSession().get( SELECTED_REPORT_EXCEL_ID );
+    }
+
+    public int getSelectedYear()
+    {
         return (Integer) getSession().get( SELECTED_YEAR );
     }
-    @SuppressWarnings("unchecked")
-    public void setSeletedYear(int year){
+
+    @SuppressWarnings( "unchecked" )
+    public void setSeletedYear( int year )
+    {
         getSession().put( SELECTED_YEAR, year );
     }
 

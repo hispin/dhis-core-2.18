@@ -61,6 +61,8 @@ public class UpdateDataElementGroupOrderAction
 
     private String name;
 
+    private String code;
+
     private List<String> dataElementIds = new ArrayList<String>();
 
     // -------------------------------------------
@@ -102,6 +104,11 @@ public class UpdateDataElementGroupOrderAction
         this.id = id;
     }
 
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
     public String execute()
         throws Exception
     {
@@ -119,6 +126,8 @@ public class UpdateDataElementGroupOrderAction
         dataElementGroupOrder.setDataElements( dataElements );
 
         dataElementGroupOrder.setName( name );
+
+        dataElementGroupOrder.setCode( code );
 
         reportService.updateDataElementGroupOrder( dataElementGroupOrder );
 

@@ -61,6 +61,8 @@ public class SaveDataElementGroupOrderAction
 
     private String name;
 
+    private String code;
+
     private List<String> dataElementIds = new ArrayList<String>();
 
     // -------------------------------------------
@@ -97,6 +99,11 @@ public class SaveDataElementGroupOrderAction
         return id;
     }
 
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
     public String execute()
         throws Exception
     {
@@ -104,6 +111,7 @@ public class SaveDataElementGroupOrderAction
 
         DataElementGroupOrder dataElementGroupOrder = new DataElementGroupOrder();
         dataElementGroupOrder.setName( name );
+        dataElementGroupOrder.setCode( code );
 
         List<DataElement> dataElements = new ArrayList<DataElement>();
 

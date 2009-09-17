@@ -40,6 +40,8 @@ public class DataElementGroupOrder
 
     private String name;
 
+    private String code;
+
     private List<DataElement> dataElements;
 
     // -------------------------------------------------------------------------
@@ -87,6 +89,16 @@ public class DataElementGroupOrder
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
+
+    public String getCode()
+    {
+        return code;
+    }
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
 
     @Override
     public int hashCode()

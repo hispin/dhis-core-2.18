@@ -398,6 +398,46 @@
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responsePeriods.vm</result>
 		</action>
+		
+		<action name="generateReportExcel"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
+			<result name="CATEGORY" type="chain">generateReportExcelCategory</result>
+			<result name="NORMAL" type="chain">generateReportExcelNormal</result>
+			<result name="ORGANIZATION_GROUP_LISTING" type="chain">generateReportExcelOrganizationGroupListing</result>
+		</action>
+		
+		<action name="generateReportExcelCategory"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelCategoryAction">
+			<result name="success" type="stream">
+				<param name="contentType">application/vnd.ms-excel</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename="${outputXLS}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+		
+		<action name="generateReportExcelNormal"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelNormalAction">
+			<result name="success" type="stream">
+				<param name="contentType">application/vnd.ms-excel</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename="${outputXLS}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+		
+		<action name="generateReportExcelOrganizationGroupListing"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelOrganizationGroupListingAction">
+			<result name="success" type="stream">
+				<param name="contentType">application/vnd.ms-excel</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename="${outputXLS}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+		
+		
+		
 
 	</package>
 </struts>

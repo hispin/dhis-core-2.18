@@ -106,8 +106,9 @@ public class ValidateAddReportExcelItemAction
             message = i18n.getString( "name_is_null" );
             return ERROR;
         }
-        ReportExcelItem reportItem = reportService.getReportExcelItem( name );
+
         ReportExcel reportExcel = reportService.getReportExcel( reportId );
+        ReportExcelItem reportItem = reportExcel.getReportExcelItem( name );
 
         if ( reportItem != null && reportExcel.getReportExcelItems().contains( reportItem ) )
         {

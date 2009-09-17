@@ -90,7 +90,7 @@ public class DefaultReportExcelService
         return reportStore.getReportExcel( id );
     }
 
-    public ReportExcel getReportExcel( String name )
+    public ReportExcel getReportExcel(  String name )
     {
         return reportStore.getReportExcel( name );
     }
@@ -161,12 +161,7 @@ public class DefaultReportExcelService
     public ReportExcelItem getReportExcelItem( int id )
     {
         return reportStore.getReportExcelItem( id );
-    }
-
-    public ReportExcelItem getReportExcelItem( String name )
-    {
-        return reportStore.getReportExcelItem( name );
-    }
+    }   
 
     public Collection<ReportExcelItem> getALLReportExcelItem()
     {
@@ -239,5 +234,7 @@ public class DefaultReportExcelService
     public Collection<DataEntryStatus> getDataEntryStatusDefaultByDataSets( Collection<DataSet> arg0 )
     {
         return reportStore.getDataEntryStatusDefaultByDataSets( arg0 );
-    }
+
+    }   
+
 }
