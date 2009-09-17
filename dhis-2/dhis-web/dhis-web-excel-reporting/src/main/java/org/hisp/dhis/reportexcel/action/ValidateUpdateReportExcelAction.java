@@ -101,7 +101,7 @@ public class ValidateUpdateReportExcelAction
 
         ReportExcel reportExcel = reportService.getReportExcel( name );
 
-        if ( reportExcel!=null && !temp.equals( reportExcel ) )
+        if ( reportExcel != null && !temp.equals( reportExcel ) )
         {
             message = i18n.getString( "name_ready_exist" );
             return ERROR;
@@ -112,7 +112,7 @@ public class ValidateUpdateReportExcelAction
             message = i18n.getString( "excel_is_null" );
             return ERROR;
         }
-        
+
         if ( excel.trim().length() == 0 )
         {
             message = i18n.getString( "excel_is_null" );

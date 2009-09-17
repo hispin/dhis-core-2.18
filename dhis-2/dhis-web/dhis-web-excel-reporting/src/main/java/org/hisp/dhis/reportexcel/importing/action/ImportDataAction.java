@@ -170,71 +170,74 @@ public class ImportDataAction
 
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
-        File upload = new File( uploadFileName );
-        WorkbookSettings ws = new WorkbookSettings();
-        ws.setLocale( new Locale( "en", "EN" ) );
-        Workbook templateWorkbook = Workbook.getWorkbook( upload, ws );
-
-        Collection<ReportExcelItem> reportItems = new ArrayList<ReportExcelItem>();
-        if ( reportItemIds != null )
+        if ( organisationUnit != null )
         {
-            for ( int i = 0; i < reportItemIds.length; i++ )
+
+            File upload = new File( uploadFileName );
+            WorkbookSettings ws = new WorkbookSettings();
+            ws.setLocale( new Locale( "en", "EN" ) );
+            Workbook templateWorkbook = Workbook.getWorkbook( upload, ws );
+
+            Collection<ReportExcelItem> reportItems = new ArrayList<ReportExcelItem>();
+            if ( reportItemIds != null )
             {
-                reportItems.add( reportExcelService.getReportExcelItem( reportItemIds[i] ) );
-            }
-        }
-        else
-        {
-            reportItems = report.getReportExcelItems();
-        }
-
-        Sheet sheet = templateWorkbook.getSheet( 0 );
-
-        Period period = periodService.getPeriod( periodId.intValue() );
-
-        for ( ReportExcelItem reportItem : reportItems )
-        {
-            if ( reportItem.getItemType().equals( ReportExcelItem.TYPE.DATAELEMENT ) )
-            {
-
-                String value = ExcelUtils.readValue( reportItem.getRow(), reportItem.getColumn(), sheet );
-
-                if ( value.length() > 0 )
+                for ( int i = 0; i < reportItemIds.length; i++ )
                 {
-                    Operand operand = expressionService.getOperandsInExpression( reportItem.getExpression() )
-                        .iterator().next();
+                    reportItems.add( reportExcelService.getReportExcelItem( reportItemIds[i] ) );
+                }
+            }
+            else
+            {
+                reportItems = report.getReportExcelItems();
+            }
 
-                    DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
+            Sheet sheet = templateWorkbook.getSheet( 0 );
 
-                    DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
-                        .getDataElementCategoryOptionCombo( operand.getOptionComboId() );
+            Period period = periodService.getPeriod( periodId.intValue() );
 
-                    String storedBy = currentUserService.getCurrentUsername();
+            for ( ReportExcelItem reportItem : reportItems )
+            {
+                if ( reportItem.getItemType().equals( ReportExcelItem.TYPE.DATAELEMENT ) )
+                {
 
-                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period,
-                        optionCombo );
+                    String value = ExcelUtils.readValue( reportItem.getRow(), reportItem.getColumn(), sheet );
 
-                    if ( dataValue == null )
+                    if ( value.length() > 0 )
                     {
-                        dataValue = new DataValue( dataElement, period, organisationUnit, value + "", storedBy,
-                            new Date(), null, optionCombo );
-                        dataValueService.addDataValue( dataValue );
-                    }
-                    else
-                    {
-                        dataValue.setValue( value + "" );
-                        dataValue.setTimestamp( new Date() );
-                        dataValue.setStoredBy( storedBy );
+                        Operand operand = expressionService.getOperandsInExpression( reportItem.getExpression() )
+                            .iterator().next();
 
-                        dataValueService.updateDataValue( dataValue );
+                        DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
 
+                        DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
+                            .getDataElementCategoryOptionCombo( operand.getOptionComboId() );
+
+                        String storedBy = currentUserService.getCurrentUsername();
+
+                        DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period,
+                            optionCombo );
+
+                        if ( dataValue == null )
+                        {
+                            dataValue = new DataValue( dataElement, period, organisationUnit, value + "", storedBy,
+                                new Date(), null, optionCombo );
+                            dataValueService.addDataValue( dataValue );
+                        }
+                        else
+                        {
+                            dataValue.setValue( value + "" );
+                            dataValue.setTimestamp( new Date() );
+                            dataValue.setStoredBy( storedBy );
+
+                            dataValueService.updateDataValue( dataValue );
+
+                        }
                     }
                 }
             }
+
+            message = i18n.getString( "success" );
         }
-
-        message = i18n.getString( "success" );
-
         return SUCCESS;
     }
 }

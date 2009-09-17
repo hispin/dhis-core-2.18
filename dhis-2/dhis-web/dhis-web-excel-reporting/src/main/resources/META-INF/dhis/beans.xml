@@ -25,18 +25,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 
-	<bean id="org.hisp.dhis.reportexcel.configuration.action.GetAdminOptionsAction"
-		class="org.hisp.dhis.reportexcel.configuration.action.GetAdminOptionsAction" scope="prototype">
+	<bean
+		id="org.hisp.dhis.reportexcel.configuration.action.GetAdminOptionsAction"
+		class="org.hisp.dhis.reportexcel.configuration.action.GetAdminOptionsAction"
+		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 	</bean>
 
-	<bean id="org.hisp.dhis.reportexcel.configuration.action.SaveReportUserRolesAction"
-		class="org.hisp.dhis.reportexcel.configuration.action.SaveReportUserRolesAction" scope="prototype">
+	<bean
+		id="org.hisp.dhis.reportexcel.configuration.action.SaveReportUserRolesAction"
+		class="org.hisp.dhis.reportexcel.configuration.action.SaveReportUserRolesAction"
+		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 	</bean>
-	
+
 	<!-- REPORT EXCEL CORE BEAN -->
 
 	<bean id="org.hisp.dhis.reportexcel.action.AddReportExcelAction"
@@ -316,5 +320,81 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
 	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction"
+		class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelCategoryAction"
+		class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelCategoryAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="dataElementCategoryOptionComboService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+		<property name="statementManager" ref="statementManager" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelNormalAction"
+		class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelNormalAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="dataElementCategoryOptionComboService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+		<property name="statementManager" ref="statementManager" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelOrganizationGroupListingAction"
+		class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelOrganizationGroupListingAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="dataElementCategoryOptionComboService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+		<property name="statementManager" ref="statementManager" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+
+	</bean>
+
 
 </beans>

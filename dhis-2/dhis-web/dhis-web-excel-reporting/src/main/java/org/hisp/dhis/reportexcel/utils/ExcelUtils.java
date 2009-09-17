@@ -69,7 +69,7 @@ public class ExcelUtils
         {
             if ( type.equalsIgnoreCase( TEXT ) )
             {
-                sheet.addCell( new Label( column - 1, row - 1, value, format ) );
+                sheet.addCell( new Label( column - 1, row - 1, value==null?"":value , format ) );
             }
             if ( type.equalsIgnoreCase( NUMBER ) )
             {

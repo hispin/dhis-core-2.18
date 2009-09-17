@@ -24,49 +24,63 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.item.action;
+package org.hisp.dhis.reportexcel.export.action;
 
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reportexcel.ReportExcel;
-import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
-import org.hisp.dhis.reportexcel.action.ActionSupport;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class ValidateUpdateReportExcelItemAction
-    extends ActionSupport
+public class GenerateReportExcelFlowAction
+    implements Action
 {
+
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
 
     private ReportExcelService reportService;
 
+    private PeriodService periodService;
+
+    private SelectionManager selectionManager;
+
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
+
     private Integer reportId;
 
-    private Integer reportItemId;
+    private Integer periodId;
 
-    private String name;
-
-    private String expression;
-
-    private Integer row;
-
-    private Integer column;
-
-    public void setReportItemId( Integer reportItemId )
-    {
-        this.reportItemId = reportItemId;
-    }
+    // -------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------
 
     public void setReportId( Integer reportId )
     {
         this.reportId = reportId;
+    }
+
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
+    public void setPeriodId( Integer periodId )
+    {
+        this.periodId = periodId;
     }
 
     public void setReportService( ReportExcelService reportService )
@@ -74,73 +88,18 @@ public class ValidateUpdateReportExcelItemAction
         this.reportService = reportService;
     }
 
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public void setExpression( String expression )
-    {
-        this.expression = expression;
-    }
-
-    public void setRow( Integer row )
-    {
-        this.row = row;
-    }
-
-    public void setColumn( Integer column )
-    {
-        this.column = column;
-    }
-
     public String execute()
         throws Exception
     {
-        if ( name == null )
-        {
-            message = i18n.getString( "name_is_null" );
-            return ERROR;
-        }
-        if ( name.trim().length() == 0 )
-        {
-            message = i18n.getString( "name_is_null" );
-            return ERROR;
-        }
         ReportExcel reportExcel = reportService.getReportExcel( reportId );
-        
-        ReportExcelItem reportItem = reportExcel.getReportExcelItem( name );        
 
-        ReportExcelItem temp = reportService.getReportExcelItem( reportItemId );
+        Period period = periodService.getPeriod( periodId );
 
-        if ( (!temp.equals( reportItem )) && reportExcel.getReportExcelItems().contains( reportItem ) )
-        {
-            message = i18n.getString( "name_ready_exist" );
-            return ERROR;
-        }       
+        selectionManager.setSelectedPeriod( period );
 
-        if ( expression == null )
-        {
-            message = i18n.getString( "name_is_null" );
-            return ERROR;
-        }
-        if ( expression.trim().length() == 0 )
-        {
-            message = i18n.getString( "expression_is_null" );
-            return ERROR;
-        }
-        if ( row == null )
-        {
-            message = i18n.getString( "row_is_null" );
-            return ERROR;
-        }
-        if ( column == null )
-        {
-            message = i18n.getString( "column_is_null" );
-            return ERROR;
-        }
+        selectionManager.setSelectedReportExcelId( reportId );
 
-        return SUCCESS;
+        return reportExcel.getReportType();
     }
 
 }

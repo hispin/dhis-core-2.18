@@ -76,9 +76,11 @@ public class DefaultReportLocationManager
     {
         try
         {
-            REPORT = locationManager.buildDirectory( ReportLocationManager.REPORT_DIR);
-            REPORT_TEMP = locationManager.buildDirectory( ReportLocationManager.REPORT_DIR, ReportLocationManager.REPORT_TEMP_DIR );
-           
+            REPORT = new File( locationManager.getExternalDirectory(), REPORT_DIR );
+            REPORT.mkdir();
+            REPORT_TEMP = new File( REPORT, REPORT_TEMP_DIR );
+            REPORT_TEMP.mkdir();
+
         }
         catch ( LocationManagerException e )
         {
@@ -97,27 +99,23 @@ public class DefaultReportLocationManager
     }
 
     public File getOrganisationDirectory( OrganisationUnit organisationUnit )
-    {        
-        try
+    {
+        File dir = new File( REPORT, String.valueOf( organisationUnit.getId() ) );
+        if ( !dir.exists() )
         {
-            return locationManager.buildDirectory(ReportLocationManager.REPORT_DIR, String.valueOf( organisationUnit.getId() ));
+            dir.mkdir();
         }
-        catch ( Exception e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        return dir;
         
-        return null;
     }
 
     public File getReportExcelDirectory()
-    {     
+    {
         return this.REPORT;
     }
 
     public File getReportExcelTempDirectory()
-    {       
+    {
         return this.REPORT_TEMP;
     }
 

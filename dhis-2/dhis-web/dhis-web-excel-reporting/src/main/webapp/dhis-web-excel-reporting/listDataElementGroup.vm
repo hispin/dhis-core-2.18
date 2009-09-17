@@ -26,9 +26,20 @@
 <form name="dataElementGroups" method="post">
 <input type="hidden" name="id" value="$report.id"/>
 <input type="hidden" name="dataElementGroupOrderId" id="dataElementGroupOrderId"/>
-<div id="dataElementGroups" style="position:fixed;display:none;width:700px;z-index:10001;background-color: white;border: medium solid silver;height:300px;padding:20px;">
+<div id="dataElementGroups" style="position:fixed;display:none;width:700px;z-index:10001;background-color: white;border: medium solid silver;height:350px;padding:20px;">
 	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('dataElementGroups');deleteDivEffect();">[x]</div>	
-	$i18n.getString('name')	<input type="text" style="width:400px" id="name" name="name"/><br/><br/>	
+	<table>
+		<tr>
+			<td>$i18n.getString('name')</td>
+			<td><input type="text" style="width:400px" id="name" name="name"/></td>
+		</tr>
+		<tr>
+			<td>$i18n.getString('code')</td>
+			<td><input type="text" style="width:400px" id="code" name="code"/></td>
+		</tr>
+	</table>		
+	
+	<br/><br/>	
 	<table width="100%">		
 		<tr>
 			<td>

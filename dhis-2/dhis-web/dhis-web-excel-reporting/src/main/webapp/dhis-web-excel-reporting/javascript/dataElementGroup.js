@@ -51,7 +51,7 @@ function getDataElementsByGroupReceived( datalement ){
 	for(var i=0;i<availableDataElements.options.length;i++){
 		for(var j=0;j<selectedDataElements.options.length;j++){				
 			if(availableDataElements.options[i].value==selectedDataElements.options[j].value){					
-				availableDataElements.options[i] = null;
+				availableDataElements.options[i].style.display='none';				
 			}
 		}
 	}		
@@ -91,6 +91,7 @@ function openUpdateDataElementOrder( id ){
 		listDataElement.options.length = 0;
 		data = data.getElementsByTagName('dataElementGroupOrder')[0];
 		$("#name").val(data.getElementsByTagName('name')[0].firstChild.nodeValue);
+		$("#code").val(data.getElementsByTagName('code')[0].firstChild.nodeValue);
 		var dataElements = data.getElementsByTagName('dataElements')[0].getElementsByTagName('dataElement');
 		for(var i=0;i<dataElements.length;i++){
 			var name = dataElements[i].getElementsByTagName('name')[0].firstChild.nodeValue;

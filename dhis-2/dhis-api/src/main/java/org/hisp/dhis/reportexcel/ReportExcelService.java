@@ -76,9 +76,7 @@ public interface ReportExcelService
 
     public void deleteReportExcelItem( int id );
 
-    public ReportExcelItem getReportExcelItem( int id );
-
-    public ReportExcelItem getReportExcelItem( String name );
+    public ReportExcelItem getReportExcelItem( int id );   
 
     public Collection<ReportExcelItem> getALLReportExcelItem();
 

@@ -85,9 +85,18 @@ public abstract class ReportExcel
         this.group = group;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
+    public ReportExcelItem getReportExcelItem( String name )
+    {
+        for ( ReportExcelItem reportExcelItem : this.reportExcelItems )
+        {
+            if ( reportExcelItem.getName().equalsIgnoreCase( name ) )
+            {
+                return reportExcelItem;
+            }
+        }
+
+        return null;
+    }
 
     public boolean isCategory()
     {
@@ -98,16 +107,16 @@ public abstract class ReportExcel
     {
         return this.getReportType().equalsIgnoreCase( TYPE.ORGANIZATION_GROUP_LISTING );
     }
-    
+
     public boolean isPeriodColumnListing()
     {
         return this.getReportType().equalsIgnoreCase( TYPE.PERIOD_COLUMN_LISTING );
     }
-    
+
     public boolean isNormal()
     {
         return this.getReportType().equalsIgnoreCase( TYPE.NORMAL );
-    }    
+    }
 
     // -------------------------------------------------------------------------
     // Abstract methods
@@ -122,11 +131,14 @@ public abstract class ReportExcel
     public static class TYPE
     {
         public static final String NORMAL = "NORMAL";
+
         public static final String CATEGORY = "CATEGORY";
+
         public static final String PERIOD_COLUMN_LISTING = "PERIOD_COLUMN_LISTING";
+
         public static final String ORGANIZATION_GROUP_LISTING = "ORGANIZATION_GROUP_LISTING";
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------

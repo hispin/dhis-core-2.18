@@ -75,10 +75,18 @@
 					<option value='dataelement_code'>$i18n.getString('dataelement_code')</option>
 					<option value='dataelement_name'>$i18n.getString('dataelement_name')</option>	
 					<option value='serial'>$i18n.getString('serial')</option>					
-					#else if($!reportExcel.isNormal())					
+					#end
+					#if($!reportExcel.isNormal())					
 					<option value='dataelement'>$i18n.getString('dataelement')</option>
 					<option value='formulaexcel'>$i18n.getString('formulaexcel')</option>					
 					<option value='indicator'>$i18n.getString('indicator')</option>									
+					#end
+					#if($!reportExcel.isOrganisationUnitGroupListing())		
+					<option value='organisation'>$i18n.getString('organisation')</option>
+					<option value='dataelement'>$i18n.getString('dataelement')</option>
+					<option value='formulaexcel'>$i18n.getString('formulaexcel')</option>					
+					<option value='indicator'>$i18n.getString('indicator')</option>		
+					<option value='serial'>$i18n.getString('serial')</option>	
 					#end
 					
 				</select>
@@ -255,6 +263,10 @@
 		if(value=='dataelement_name'){
 			$('#expression').val(value);
 		}
+		if(value=='organisation'){
+			$('#expression').val(value);
+		}
+		
 	}
 
 	function openExpressionBuild() {		

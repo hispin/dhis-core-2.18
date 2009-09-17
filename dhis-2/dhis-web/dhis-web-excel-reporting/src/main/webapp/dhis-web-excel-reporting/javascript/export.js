@@ -48,28 +48,14 @@ function getListPeriodCompleted( xmlObject ){
     }
 }
 
-globalMessage = null;
-generic_type = null;
+function generateReportExcel() {	
 
-function generateReport() {
+	var reportId = $('#report').val();
+	var periodId = $('#period').val();
 	
-	setMessage(globalMessage);
+	window.location = "generateReportExcel.action?reportId=" + reportId + "&periodId=" + periodId + "&reportType=category";
 
-	var reportId = getFieldValue('report');
-	var periodId = getFieldValue('period');
-	
-	window.location = "generateReport.action?reportId=" + reportId + "&periodId=" + periodId + "&reportType=category";
-
-	setTimeout('setMessage("Finished !")', 3000);
-	
-	//var request = new Request();
-	//request.setResponseTypeXML( 'xmlObject' );
-	//request.setCallbackSuccess( generateReportCompleted );
-	//request.send( "generateReport.action?reportId=" + reportId + "&periodId=" + periodId); 
 }
-function generateReportCompleted( xmlObject ){
-}
-
 
 // Previewed Report Excel //
 function previewReport() {
