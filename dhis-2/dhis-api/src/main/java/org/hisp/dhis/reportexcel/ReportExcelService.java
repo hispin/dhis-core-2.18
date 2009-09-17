@@ -76,7 +76,7 @@ public interface ReportExcelService
 
     public void deleteReportExcelItem( int id );
 
-    public ReportExcelItem getReportExcelItem( int id );   
+    public ReportExcelItem getReportExcelItem( int id );
 
     public Collection<ReportExcelItem> getALLReportExcelItem();
 
@@ -91,7 +91,7 @@ public interface ReportExcelService
     public DataElementGroupOrder getDataElementGroupOrder( Integer id );
 
     public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder );
-    
+
     public void deleteDataElementGroupOrder( Integer id );
 
     // --------------------------------------
@@ -99,6 +99,8 @@ public interface ReportExcelService
     // --------------------------------------
 
     public int saveDataEntryStatus( DataEntryStatus dataStatus );
+
+    public void updateDataEntryStatus( DataEntryStatus dataStatus );
 
     public DataEntryStatus getDataEntryStatus( int id );
 

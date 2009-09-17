@@ -235,6 +235,11 @@ public class DefaultReportExcelService
     {
         return reportStore.getDataEntryStatusDefaultByDataSets( arg0 );
 
+    }
+
+    public void updateDataEntryStatus( DataEntryStatus arg0 )    {
+        
+        reportStore.updateDataEntryStatus( arg0 );
     }   
 
 }

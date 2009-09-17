@@ -17,13 +17,15 @@
 	<tr>
 		<td colspan=2 align=center>
 			<input type="button" value="$i18n.getString( 'ok' )" style="width:100px" onclick="updateDataStatus()"/>
-			<input type="button" value="$i18n.getString( 'cancel' )" style="width:100px" onclick="window.location = 'listDataStatus.action'"/>
+			<input type="button" value="$i18n.getString( 'cancel' )" style="width:100px" onclick="window.location = 'listDataEntryStatus.action'"/>
 		</td>
 	</tr>
 </table>
 <script language="javascript">
 	function updateDataStatus(){
-		window.location = "updateDataStatus.action?dataStatusId=" + $dataStatus.id + "&dataSetId=" + getFieldValue('dataSetId') + "&makeDefault=" + document.getElementById('makeDefault').checked;
+		var url = "updateDataEntryStatus.action?dataStatusId=" + $dataStatus.id + "&dataSetId=" + getFieldValue('dataSetId') + "&makeDefault=" + document.getElementById('makeDefault').checked;
+		alert(url);
+		window.location = url;
 	}
 
 	var request = new Request();

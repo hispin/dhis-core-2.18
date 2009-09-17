@@ -9,6 +9,11 @@
 	<package name="dhis-web-excel-reporting" extends="dhis-web-commons"
 		namespace="/dhis-web-excel-reporting">
 
+		<action name="index" class="org.hisp.dhis.reportexcel.action.NoAction">
+			<result name="success" type="redirect">viewDataEntryStatus.action
+			</result>
+		</action>
+
 		<action name="administration" class="org.hisp.dhis.reportexcel.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/viewAdministrator.vm</param>
@@ -42,25 +47,22 @@
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
-		<action name="openAdministrator" class="org.hisp.dhis.reportexcel.configuration.action.NoAction">
+		<action name="openAdministrator"
+			class="org.hisp.dhis.reportexcel.configuration.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/viewAdministrator.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
-        <action name="saveReportUserRoles"
-            class="org.hisp.dhis.reportexcel.configuration.action.SaveReportUserRolesAction">
-            <result name="success" type="chain">getAdminOptions</result>
-            <param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-        </action>
+		<action name="saveReportUserRoles"
+			class="org.hisp.dhis.reportexcel.configuration.action.SaveReportUserRolesAction">
+			<result name="success" type="chain">getAdminOptions
+			</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
 
 		<!-- REPORT EXCEL CORE ACTION -->
-
-		<action name="index" class="org.hisp.dhis.reportexcel.action.NoAction">
-			<result name="success" type="redirect">listReportExcel.action
-			</result>
-		</action>
 
 		<action name="addReportExcel"
 			class="org.hisp.dhis.reportexcel.action.AddReportExcelAction">
@@ -192,12 +194,13 @@
 			<result name="success" type="redirect">listReportExcel.action
 			</result>
 		</action>
-		
+
 		<!-- REPORT EXCEL ASSOCIATION ACTION -->
-		
+
 		<action name="openDefineAssociationsForm"
 			class="org.hisp.dhis.reportexcel.association.action.GetNumberOfLevelsAction">
-			<result name="success" type="chain">openDefineAssociationsFormChain</result>			
+			<result name="success" type="chain">openDefineAssociationsFormChain
+			</result>
 		</action>
 
 		<action name="openDefineAssociationsFormChain"
@@ -211,35 +214,43 @@
 
 		<action name="selectLevelChain"
 			class="org.hisp.dhis.reportexcel.association.action.GetNumberOfLevelsAction">
-			<result name="success" type="chain">getReportExcelChain</result>
+			<result name="success" type="chain">getReportExcelChain
+			</result>
 		</action>
 
-		<action name="getReportExcelChain" class="org.hisp.dhis.reportexcel.action.GetReportExcelAction">
+		<action name="getReportExcelChain"
+			class="org.hisp.dhis.reportexcel.action.GetReportExcelAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/reportassociation.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
 		</action>
 
-		<action name="selectLevel" class="org.hisp.dhis.reportexcel.association.action.SelectLevelAction">
-			<result name="success" type="chain">selectLevelChain</result>
+		<action name="selectLevel"
+			class="org.hisp.dhis.reportexcel.association.action.SelectLevelAction">
+			<result name="success" type="chain">selectLevelChain
+			</result>
 		</action>
 
 		<action name="unselectLevel"
 			class="org.hisp.dhis.reportexcel.association.action.UnselectLevelAction">
-			<result name="success" type="chain">selectLevelChain</result>
+			<result name="success" type="chain">selectLevelChain
+			</result>
 		</action>
 
-		<action name="unselectAll" class="org.hisp.dhis.reportexcel.association.action.UnselectAllAction">
-			<result name="success" type="chain">selectLevelChain</result>
+		<action name="unselectAll"
+			class="org.hisp.dhis.reportexcel.association.action.UnselectAllAction">
+			<result name="success" type="chain">selectLevelChain
+			</result>
 
 		</action>
 
 		<action name="updateDefineAssociations"
 			class="org.hisp.dhis.reportexcel.action.UpdateReportAssociationsAction">
-			<result name="success" type="redirect">listReportExcel.action</result>
+			<result name="success" type="redirect">listReportExcel.action
+			</result>
 		</action>
-		
+
 		<!-- REPORT EXCEL ITEM ACTION -->
 
 		<action name="listReportExcelItemAction"
@@ -375,7 +386,7 @@
 				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>
 
-		<!-- GENERATE REPORT EXCEL ITEM ACTION -->
+		<!-- GENERATE REPORT EXCEL ACTION -->
 
 		<action name="selectExportReportParam"
 			class="org.hisp.dhis.reportexcel.export.action.SelectFormAction">
@@ -392,20 +403,23 @@
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseListReport.vm</result>
 		</action>
-		
+
 		<action name="getPeriods"
 			class="org.hisp.dhis.reportexcel.export.action.GetMonthlyPeriodsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responsePeriods.vm</result>
 		</action>
-		
+
 		<action name="generateReportExcel"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
-			<result name="CATEGORY" type="chain">generateReportExcelCategory</result>
-			<result name="NORMAL" type="chain">generateReportExcelNormal</result>
-			<result name="ORGANIZATION_GROUP_LISTING" type="chain">generateReportExcelOrganizationGroupListing</result>
+			<result name="CATEGORY" type="chain">generateReportExcelCategory
+			</result>
+			<result name="NORMAL" type="chain">generateReportExcelNormal
+			</result>
+			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
+				generateReportExcelOrganizationGroupListing</result>
 		</action>
-		
+
 		<action name="generateReportExcelCategory"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelCategoryAction">
 			<result name="success" type="stream">
@@ -415,7 +429,7 @@
 				<param name="bufferSize">1024</param>
 			</result>
 		</action>
-		
+
 		<action name="generateReportExcelNormal"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelNormalAction">
 			<result name="success" type="stream">
@@ -425,7 +439,7 @@
 				<param name="bufferSize">1024</param>
 			</result>
 		</action>
-		
+
 		<action name="generateReportExcelOrganizationGroupListing"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelOrganizationGroupListingAction">
 			<result name="success" type="stream">
@@ -435,9 +449,80 @@
 				<param name="bufferSize">1024</param>
 			</result>
 		</action>
-		
-		
-		
+
+
+		<!-- DATA ENTRY STATUS ACTION -->
+
+		<action name="viewDataEntryStatus"
+			class="org.hisp.dhis.reportexcel.dataentrystatus.action.DefaultDataEntryStatusAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/dataStatusShow.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/datastatus.js</param>
+			<param name="menuTreeHeight">400</param>
+		</action>
+
+		<action name="listDataEntryStatus"
+			class="org.hisp.dhis.reportexcel.dataentrystatus.action.ListDataEntryStatusAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/listDataStatus.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/datastatus.js</param>
+			<param name="menuTreeHeight">400</param>
+		</action>
+
+		<action name="addDataEntryStatus"
+			class="org.hisp.dhis.reportexcel.dataentrystatus.action.AddDataEntryStatusAction">
+			<result name="success" type="redirect">listDataEntryStatus.action
+			</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+
+		<action name="updateDataEntryStatus"
+			class="org.hisp.dhis.reportexcel.dataentrystatus.action.UpdateDataEntryStatusAction">
+			<result name="success" type="redirect">listDataEntryStatus.action
+			</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+
+		<action name="deleteDataEntryStatus"
+			class="org.hisp.dhis.reportexcel.dataentrystatus.action.DeleteDataEntryStatusAction">
+			<result name="success" type="redirect">listDataEntryStatus.action
+			</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+
+		<action name="openUpdateDataEntryStatus"
+			class="org.hisp.dhis.reportexcel.dataentrystatus.action.GetDataEntryStatusAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/updateDataStatus.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/datastatus.js</param>
+			<param name="menuTreeHeight">400</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+
+		<action name="openAddDataEntryStatus" class="org.hisp.dhis.reportexcel.action.NoAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/addDataStatus.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/datastatus.js</param>
+			<param name="menuTreeHeight">400</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+
+		<action name="getDataSets"
+			class="org.hisp.dhis.reportexcel.dataentrystatus.action.GetDataSetAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseDataSets.vm</result>
+		</action>
+
+
+
 
 	</package>
 </struts>
