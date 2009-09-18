@@ -408,7 +408,7 @@ public abstract class GenerateReportExcelSupport
 
     }
 
-    private String generateIndicatorExpression( ReportExcelItem reportItem, Date startDate, Date endDate,
+    protected String generateIndicatorExpression( ReportExcelItem reportItem, Date startDate, Date endDate,
         OrganisationUnit organisationUnit )
     {
         try
@@ -513,7 +513,7 @@ public abstract class GenerateReportExcelSupport
      * 
      * @return The generated expression
      */
-    private String generateExpression( ReportExcelItem reportItem, Date startDate, Date endDate,
+    protected String generateExpression( ReportExcelItem reportItem, Date startDate, Date endDate,
         OrganisationUnit organisationUnit )
     {
         try

@@ -184,6 +184,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.category.action.UpdateSortedDataElementGroupOrderAction"
+		class="org.hisp.dhis.reportexcel.category.action.UpdateSortedDataElementGroupOrderAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+	</bean>
 
 	<!-- REPORT ORGANISATION UNIT GROUP LISTING BEAN -->
 
@@ -416,6 +423,28 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelPeriodColumnListingAction"
+		class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelPeriodColumnListingAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="dataElementCategoryOptionComboService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+		<property name="statementManager" ref="statementManager" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+
+	</bean>
 
 	<!-- DATA ENTRY STATUS BEAN -->
 
@@ -484,6 +513,50 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+	</bean>
+	
+	<!-- DATA SET COMPLETED BEAN -->
+	
+	<bean id="org.hisp.dhis.reportexcel.datasetcompleted.action.SelectParamsAction"
+		class="org.hisp.dhis.reportexcel.datasetcompleted.action.SelectParamsAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.datasetcompleted.action.GetDataSetAndPeriodByPeriodTypeAction"
+		class="org.hisp.dhis.reportexcel.datasetcompleted.action.GetDataSetAndPeriodByPeriodTypeAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewDataSetCompletedAction"
+		class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewDataSetCompletedAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="completeDataSetRegistrationService"
+			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCustomDataSetReportAction"
+		class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCustomDataSetReportAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="dataEntryFormService" ref="org.hisp.dhis.dataset.DataEntryFormService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 

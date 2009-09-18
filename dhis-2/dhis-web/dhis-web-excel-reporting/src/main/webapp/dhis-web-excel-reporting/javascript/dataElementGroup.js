@@ -121,3 +121,17 @@ function updateSortedDataElement(){
 	},'xml');	
 }
 
+/*
+*	Update data element group order
+*/
+
+function updateDataElementGroupOrder(){
+	var dataElements = document.getElementsByName('dataElementGroupOrder');
+	var url = "updateSortDataElementGroupOrder.action?reportId=" + reportId;
+	for(var i=0;i<dataElements.length;i++){			
+		url += "&dataElementGroupOrderId=" + dataElements.item(i).value;
+	}
+	window.location = url;
+	
+}
+

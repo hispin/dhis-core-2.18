@@ -336,13 +336,7 @@ public class GenerateReportAction
 
             if ( reportExcel instanceof ReportExcelPeriodListing )
             {
-                // Get list monthly period of selected year
-                PeriodType periodType = periodService.getPeriodTypeByName( "Monthly" );
-                Date firstDateOfThisYear = DateUtils.getFirstDayOfYear( calendar.get( Calendar.YEAR ) );
-                List<Period> periods = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
-                    periodType, firstDateOfThisYear, endDate ) );
-                Collections.sort( periods, new AscendingPeriodComparator() );
-
+               
                 for ( ReportItem reportItem : reportItems )
                 {
                     if ( reportItem.getItemType().equalsIgnoreCase( ReportItem.TYPE.DATAELEMENT ) )
