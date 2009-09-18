@@ -130,8 +130,8 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/listDataElementGroup.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/dataElementGroup.js,javascript/commons.js</param>
-			<param name="stylesheets">style/basic.css</param>
+			<param name="javascripts">javascript/ui.core.js,javascript/ui.core.js,javascript/ui.sortable.js,javascript/dataElementGroup.js,javascript/commons.js</param>
+			<param name="stylesheets">style/ui.theme.css,style/basic.css</param>
 		</action>
 
 		<action name="getAllDataElementGroups"
@@ -177,6 +177,12 @@
 			class="org.hisp.dhis.reportexcel.category.action.UpdateSortedDataElementAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
+		</action>
+
+		<action name="updateSortDataElementGroupOrder"
+			class="org.hisp.dhis.reportexcel.category.action.UpdateSortedDataElementGroupOrderAction">
+			<result name="success" type="redirect">
+				listDataElementGroupOrder.action?id=${reportId}</result>
 		</action>
 
 		<!-- REPORT ORGANISATION UNIT GROUP LISTING ACTION -->
@@ -418,6 +424,8 @@
 			</result>
 			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
 				generateReportExcelOrganizationGroupListing</result>
+			<result name="PERIOD_COLUMN_LISTING" type="chain">
+				generateReportExcelPeriodColumnListing</result>
 		</action>
 
 		<action name="generateReportExcelCategory"
@@ -442,6 +450,16 @@
 
 		<action name="generateReportExcelOrganizationGroupListing"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelOrganizationGroupListingAction">
+			<result name="success" type="stream">
+				<param name="contentType">application/vnd.ms-excel</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename="${outputXLS}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+
+		<action name="generateReportExcelPeriodColumnListing"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelPeriodColumnListingAction">
 			<result name="success" type="stream">
 				<param name="contentType">application/vnd.ms-excel</param>
 				<param name="inputName">inputStream</param>
@@ -521,6 +539,38 @@
 				/dhis-web-excel-reporting/responseDataSets.vm</result>
 		</action>
 
+		<!-- DATA ENTRY STATUS ACTION -->
+
+		<action name="selectDataSetCompletedReport"
+			class="org.hisp.dhis.reportexcel.datasetcompleted.action.SelectParamsAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/dataSetCompleteReportSelect.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
+			<param name="menuTreeHeight">400</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataSetCompleted.js</param>
+		</action>
+
+		<action name="getDataSetAndPeriodByPeriodType"
+			class="org.hisp.dhis.reportexcel.datasetcompleted.action.GetDataSetAndPeriodByPeriodTypeAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseDataSetAndPeriodByPeriodType.vm
+			</result>
+		</action>
+
+		<action name="viewDataSetCompleted"
+			class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewDataSetCompletedAction">
+			<result name="success" type="velocity">/popup.vm</result>
+			<param name="page">/dhis-web-excel-reporting/viewDataSetCompleted.vm</param>
+			<param name="stylesheets">style/listTable.css</param>
+			<param name="javascripts">javascript/dataSetCompleted.js</param>
+		</action>
+
+		<action name="viewCustomDataSetReport"
+			class="org.hisp.dhis.reportexcel.datasetcompleted.action.ViewCustomDataSetReportAction">
+			<result name="success" type="velocity">/popup.vm</result>
+			<param name="page">/dhis-web-excel-reporting/viewCustomDataSetReport.vm</param>
+		</action>
 
 
 
