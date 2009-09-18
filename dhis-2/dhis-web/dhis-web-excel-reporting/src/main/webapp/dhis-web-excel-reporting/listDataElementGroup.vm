@@ -20,7 +20,7 @@
 
 <ul id="sortable"> 
 #foreach($group in $report.dataElementOrders)
-	<li class="ui-state-default" name="dataElementGroupOrder" value="$group.id">		
+	<li class="ui-state-default" name="dataElementGroupOrder" value="$group.id" title="$i18n.getString( 'sort_order_help' )">		
 		<table cellspacing="0" cellpadding="0" width="100%">
 			<tr>
 				<td>$encoder.htmlEncode( $group.name )</td>
