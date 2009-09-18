@@ -33,7 +33,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.UserAuthorityGroup;
 
 /**
- * @author Dang Duy Hieu
+ * @author Tran Thanh Tri
  * @version $Id$
  */
 public class ReportExcelCategory
