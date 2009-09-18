@@ -44,7 +44,7 @@ import org.hisp.dhis.reportexcel.ReportExcelOganiztionGroupListing;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
- * @author Tran Thanh Tri
+ * @author Chau Thu Tran
  * @version $Id$
  */
 

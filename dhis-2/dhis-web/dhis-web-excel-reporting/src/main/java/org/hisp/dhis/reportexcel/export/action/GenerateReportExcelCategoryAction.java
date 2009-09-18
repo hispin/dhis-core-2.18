@@ -43,7 +43,7 @@ import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
 public class GenerateReportExcelCategoryAction
