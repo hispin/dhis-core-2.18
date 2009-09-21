@@ -1,20 +1,7 @@
 //  Country dependent
 
-    PHU_LEVEL = 4;
+    FACILITY_LEVEL = 4;
 
-    COUNTRY_LONGITUDE = -11.8;
-    COUNTRY_LATITUDE = 8.5;
-    COUNTRY_ZOOM = 8;
-
-//  Layers and widgets
-
-    INIT_URL = 'init';
-    CHOROPLETH_LAYERNAME = 'Thematic map';
-
-//  Map
-
-    init_zoom = 3;
-    
 //  MapFish print module
 
     printConfigUrl = '../../../print-servlet-1.2-SNAPSHOT/pdf/info.json';
@@ -56,5 +43,4 @@
 //  Ext.message
 
     msg_highlight_start = '<b><font color="#555555">';
-    msg_highlight_end = '</font></b>';
-        
+    msg_highlight_end = '</font></b>';      

@@ -714,7 +714,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             this.newUrl = false;
 			
             if (MAPSOURCE == MAP_SOURCE_TYPE_DATABASE) {
-                if (URL == PHU_LEVEL) {
+                if (URL == FACILITY_LEVEL) {
                     this.setUrl(path + 'getPointShapefile.action?level=' + URL);
                 }
                 else {

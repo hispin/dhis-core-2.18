@@ -14,7 +14,45 @@ var PARAMETER;
 var BOUNDS = 0;
 var MAP_SOURCE_TYPE_DATABASE = 'database';
 var MAP_SOURCE_TYPE_SHAPEFILE = 'shapefile';
-var MASK;	
+var MASK;
+
+function getUrlParam(strParamName) {
+    var output = "";
+    var strHref = window.location.href;
+    if ( strHref.indexOf("?") > -1 ) {
+        var strQueryString = strHref.substr(strHref.indexOf("?")).toLowerCase();
+        var aQueryString = strQueryString.split("&");
+        for ( var iParam = 0; iParam < aQueryString.length; iParam++ ) {
+            if (aQueryString[iParam].indexOf(strParamName.toLowerCase() + "=") > -1 ) {
+                var aParam = aQueryString[iParam].split("=");
+                output = aParam[1];
+                break;
+            }
+        }
+    }
+    return unescape(output);
+}
+
+function validateInput(name) {
+    return (name.length <= 25);
+}
+
+function getMultiSelectHeight() {
+    var h = screen.height;
+    
+    if (h <= 800) {
+        return 220;
+    }
+    else if (h <= 1050) {
+        return 310;
+    }
+    else if (h <= 1200) {
+        return 470;
+    }
+    else {
+        return 900;
+    }
+}
 
 Ext.onReady(function()
 {
@@ -165,9 +203,24 @@ Ext.onReady(function()
         checkedCls: 'x-form-radio-checked'
     });
     
-    MASK = new Ext.LoadMask(Ext.getBody(), {msg: 'Loading...', msgCls: 'x-mask-loading2'});
-    
     document.body.oncontextmenu = function() { return false; }
+	
+	Ext.QuickTips.init();
+    
+    MAP = new OpenLayers.Map({
+		controls: [
+			new OpenLayers.Control.Navigation(),
+			new OpenLayers.Control.ArgParser(),
+			new OpenLayers.Control.Attribution()
+		]
+	});
+
+    if (getUrlParam('view') != '') {
+        PARAMETER = getUrlParam('view');
+        URLACTIVE = true;
+    }
+    
+    MASK = new Ext.LoadMask(Ext.getBody(), {msg: 'Loading...', msgCls: 'x-mask-loading2'});
     
 	Ext.Ajax.request({
         url: path + 'getMapSourceTypeUserSetting' + type,
@@ -182,156 +235,676 @@ Ext.onReady(function()
                     bc = Ext.util.JSON.decode( responseObject.responseText ).baseCoordinate;
                     BASECOORDINATE = {longitude:bc[0].longitude, latitude:bc[0].latitude};
 
-	MAP = new OpenLayers.Map({
-		controls: [
-			new OpenLayers.Control.Navigation(),
-			new OpenLayers.Control.ArgParser(),
-			new OpenLayers.Control.Attribution()
-		]
-	});
+    /* VIEW PANEL */
+	var viewStore = new Ext.data.JsonStore({
+        url: path + 'getAllMapViews' + type,
+        root: 'mapViews',
+        fields: ['id', 'name'],
+        id: 'id',
+        sortInfo: { field: 'name', direction: 'ASC' },
+        autoLoad: true
+    });
 	
-    function getUrlParam(strParamName) {
-        var output = "";
-        var strHref = window.location.href;
-        if ( strHref.indexOf("?") > -1 ) {
-            var strQueryString = strHref.substr(strHref.indexOf("?")).toLowerCase();
-            var aQueryString = strQueryString.split("&");
-            for ( var iParam = 0; iParam < aQueryString.length; iParam++ ) {
-                if (aQueryString[iParam].indexOf(strParamName.toLowerCase() + "=") > -1 ) {
-                    var aParam = aQueryString[iParam].split("=");
-                    output = aParam[1];
-                    break;
-                }
+    var viewNameTextField = new Ext.form.TextField({
+        id: 'viewname_tf',
+        emptyText: '',
+        width: combo_width,
+		hideLabel: true
+    });
+    
+    var viewComboBox = new Ext.form.ComboBox({
+        id: 'view_cb',
+		isFormField: true,
+		hideLabel: true,
+        typeAhead: true,
+        editable: false,
+        valueField: 'id',
+        displayField: 'name',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        emptyText: MENU_EMPTYTEXT,
+        selectOnFocus: true,
+        width: combo_width,
+        minListWidth: combo_list_width,
+        store: viewStore
+    });
+    
+    var view2ComboBox = new Ext.form.ComboBox({
+        id: 'view2_cb',
+		isFormField: true,
+		hideLabel: true,
+        typeAhead: true,
+        editable: false,
+        valueField: 'id',
+        displayField: 'name',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        emptyText: MENU_EMPTYTEXT,
+        selectOnFocus: true,
+        width: combo_width,
+        minListWidth: combo_list_width,
+        store: viewStore,
+        bodyStyle: 'margin-bottom:4px'
+    });
+    
+    var newViewPanel = new Ext.form.FormPanel({
+        id: 'newview_p',
+		bodyStyle: 'border:0px solid #fff',
+        items:
+        [
+            { html: '<font color="' + MENU_TEXTCOLOR_INFO + '">Saving current thematic map selection.</font>' },
+			{ html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' },
+			viewNameTextField,
+			{ html: '<p style="padding-bottom:7px>' },
+			{
+				xtype: 'button',
+                id: 'newview_b',
+				isFormField: true,
+				hideLabel: true,
+				text: 'Save',
+				handler: function() {
+					var vn = Ext.getCmp('viewname_tf').getValue();
+					var ig = Ext.getCmp('indicatorgroup_cb').getValue();
+					var ii = Ext.getCmp('indicator_cb').getValue();
+					var pt = Ext.getCmp('periodtype_cb').getValue();
+					var p = Ext.getCmp('period_cb').getValue();
+					var mst = MAPSOURCE;
+					var ms = Ext.getCmp('map_cb').getValue();
+					var c = Ext.getCmp('numClasses').getValue();
+					var ca = Ext.getCmp('colorA_cf').getValue();
+					var cb = Ext.getCmp('colorB_cf').getValue();
+					
+					if (!vn) {
+						Ext.messageRed.msg('New map view', 'Map view form is not complete.');
+						return;
+					}
+					
+					if (!ig || !ii || !pt || !p || !mst || !ms || !c ) {
+						Ext.messageRed.msg('New map view', 'Thematic map form is not complete.');
+						return;
+					}
+					
+					if (validateInput(vn) == false) {
+						Ext.messageRed.msg('New map view', 'Map view name cannot be longer than 25 characters.');
+						return;
+					}
+					
+					Ext.Ajax.request({
+						url: path + 'getAllMapViews' + type,
+						method: 'GET',
+						success: function( responseObject ) {
+							var mapViews = Ext.util.JSON.decode( responseObject.responseText ).mapViews;
+							
+							for (var i = 0; i < mapViews.length; i++) {
+								if (mapViews[i].name == vn) {
+									Ext.messageRed.msg('New map view', 'There is already a map view called ' + msg_highlight_start + vn + msg_highlight_end + '.');
+									return;
+								}
+							}
+					
+							Ext.Ajax.request({
+								url: path + 'addOrUpdateMapView' + type,
+								method: 'POST',
+								params: { name: vn, indicatorGroupId: ig, indicatorId: ii, periodTypeId: pt, periodId: p, mapSourceType: mst, mapSource: ms, method: 2, classes: c, colorLow: ca, colorHigh: cb },
+
+								success: function( responseObject ) {
+									Ext.messageBlack.msg('New map view', 'The view ' + msg_highlight_start + vn + msg_highlight_end + ' was registered.');
+									Ext.getCmp('view_cb').getStore().reload();
+									Ext.getCmp('mapview_cb').getStore().reload();
+									Ext.getCmp('viewname_tf').reset();
+								},
+								failure: function() {
+									alert( 'Error: addOrUpdateMapView' );
+								}
+							});
+						},
+						failure: function() {
+									alert( 'Error: getAllMapViews' );
+						}
+					});
+				}
+			}
+        ]
+    });
+    
+    var deleteViewPanel = new Ext.form.FormPanel({   
+        id: 'deleteview_p',
+		bodyStyle: 'border:0px solid #fff',
+        items:
+        [   
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;View</p>' },
+			viewComboBox,
+			{ html: '<p style="padding-bottom:7px>' },
+			{
+				xtype: 'button',
+                id: 'deleteview_b',
+				isFormField: true,
+				hideLabel: true,
+				text: 'Delete',
+				handler: function() {
+					var v = Ext.getCmp('view_cb').getValue();
+					var name = Ext.getCmp('view_cb').getStore().getById(v).get('name');
+					
+					if (!v) {
+						Ext.messageRed.msg('Delete map view', 'Please select a map view.');
+						return;
+					}
+					
+					Ext.Ajax.request({
+						url: path + 'deleteMapView' + type,
+						method: 'POST',
+						params: { id: v },
+
+						success: function( responseObject ) {
+							Ext.messageBlack.msg('Delete map view', 'The map view ' + msg_highlight_start + name + msg_highlight_end + ' was deleted.');
+							Ext.getCmp('view_cb').getStore().reload();
+							Ext.getCmp('view_cb').reset();
+							Ext.getCmp('mapview_cb').getStore().reload();
+						},
+						failure: function() {
+							alert( 'Status', 'Error while saving data' );
+						}
+					});
+				}
+			}
+        ]
+    });
+    
+    var dashboardViewPanel = new Ext.Panel({   
+        id: 'dashboardview_p',
+		bodyStyle: 'border:0px solid #fff',
+        items:
+        [   
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;View</p>' },
+			view2ComboBox,
+			{ html: '<p style="padding-bottom:11px>' },
+			{
+				xtype: 'button',
+                id: 'dashboardview_b',
+				isFormField: true,
+				hideLabel: true,
+				text: 'Add to DHIS 2 Dashboard',
+				handler: function() {
+					var v2 = Ext.getCmp('view2_cb').getValue();
+					var nv = Ext.getCmp('view2_cb').getRawValue();
+					
+					if (!v2) {
+						Ext.messageRed.msg('Dashboard map view', 'Please select a map view.');
+						return;
+					}
+					
+					Ext.Ajax.request({
+						url: path + 'addMapViewToDashboard' + type,
+						method: 'POST',
+						params: { id: v2 },
+
+						success: function( responseObject ) {
+							Ext.messageBlack.msg('Dashboard map view', 'The view ' + msg_highlight_start + nv + msg_highlight_end + ' was added to dashboard.');
+							
+							Ext.getCmp('view_cb').getStore().reload();
+							Ext.getCmp('view_cb').reset();
+							Ext.getCmp('mapview_cb').getStore().reload();
+						},
+						failure: function() {
+							alert( 'Status', 'Error while saving data' );
+						}
+					});
+				}
+			}
+        ]
+    });
+    
+	var viewWindow = new Ext.Window({
+        id: 'view_w',
+        title: 'Favorites',
+		layout: 'fit',
+        closeAction: 'hide',
+		width: 233,
+        items:
+        [
+            {
+                xtype: 'tabpanel',
+                activeTab: 0,
+				layoutOnTabChange: true,
+                deferredRender: false,
+                plain: true,
+                defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
+                listeners: {
+                    tabchange: function(panel, tab)
+                    {
+                        if (tab.id == 'view0') { 
+                            viewWindow.setHeight(172);
+                        }
+                        else if (tab.id == 'view1') {
+                            viewWindow.setHeight(146);
+                        }
+                        else if (tab.id == 'view2') {
+                            viewWindow.setHeight(146);
+                        }
+                    }
+                },
+                items:
+                [
+                    {
+                        title: 'New',
+                        id: 'view0',
+                        items:
+                        [
+							newViewPanel
+                        ]
+                    },
+                    {
+                        title: 'Delete',
+                        id: 'view1',
+                        items:
+                        [
+                            deleteViewPanel
+                        ]
+                    },
+                    {
+                        title: 'Add to Dashboard',
+                        id: 'view2',
+                        items:
+                        [
+                            dashboardViewPanel
+                        ]
+                    }
+                ]
             }
-        }
-        return unescape(output);
-    }
+        ]
+    });
     
-    if (getUrlParam('view') != '') {
-        PARAMETER = getUrlParam('view');
-        URLACTIVE = true;
-    }
-	
-    function validateInput(name) {
-        return (name.length <= 25);
-    }
+    /* LEGEND SET PANEL */
+    var legendSetNameTextField = new Ext.form.TextField({
+        id: 'legendsetname_tf',
+        emptyText: MENU_EMPTYTEXT,
+        width: combo_width
+    });
     
-    function getMultiSelectHeight() {
-        var h = screen.height;
-        
-        if (h <= 800) {
-            return 220;
-        }
-        else if (h <= 1050) {
-            return 310;
-        }
-        else if (h <= 1200) {
-            return 470;
-        }
-        else {
-            return 900;
-        }
-    }
-	
-    var vmap0 = new OpenLayers.Layer.WMS(
-        "World WMS",
-        "http://labs.metacarta.com/wms/vmap0", 
-        {layers: 'basic'}
-    );
-                                   
-    var choroplethLayer = new OpenLayers.Layer.Vector(CHOROPLETH_LAYERNAME, {
-        'visibility': false,
-        'displayInLayerSwitcher': false,
-        'styleMap': new OpenLayers.StyleMap({
-            'default': new OpenLayers.Style(
-                OpenLayers.Util.applyDefaults(
-                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1},
-                    OpenLayers.Feature.Vector.style['default']
-                )
-            ),
-            'select': new OpenLayers.Style(
-                {'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
-            )
+    var legendSetMethodComboBox = new Ext.form.ComboBox({
+        id: 'legendsetmethod_cb',
+        editable: false,
+        valueField: 'value',
+        displayField: 'text',
+        mode: 'local',
+        emptyText: MENU_EMPTYTEXT,
+        triggerAction: 'all',
+        width: combo_width,
+        minListWidth: combo_list_width,
+        store: new Ext.data.SimpleStore({
+            fields: ['value', 'text'],
+            data: [[2, 'Distributed values'], [1, 'Equal intervals']]
         })
     });
     
-    MAP.addLayers([ vmap0, choroplethLayer ]);
+    var legendSetClassesComboBox = new Ext.form.ComboBox({
+        id: 'legendsetclasses_cb',
+        editable: false,
+        valueField: 'value',
+        displayField: 'value',
+        mode: 'local',
+        emptyText: MENU_EMPTYTEXT,
+        triggerAction: 'all',
+		value: 5,
+        width: combo_number_width,
+        minListWidth: combo_number_list_width,
+        store: new Ext.data.SimpleStore({
+            fields: ['value'],
+            data: [[1], [2], [3], [4], [5], [6], [7], [8]]
+        })
+    });
+    
+    var legendSetLowColorColorPalette = new Ext.ux.ColorField({
+        id: 'legendsetlowcolor_cp',
+        allowBlank: false,
+        width: combo_width,
+        minListWidth: combo_list_width,
+        value: "#FFFF00"
+    });
+    
+    var legendSetHighColorColorPalette = new Ext.ux.ColorField({
+        id: 'legendsethighcolor_cp',
+        allowBlank: false,
+        width: combo_width,
+        minListWidth: combo_list_width,
+        value: "#FF0000"
+    });
         
-    Ext.Ajax.request({
-        url: path + 'getAllMapLayers' + type,
-        method: 'GET',
-        success: function(responseObject) {
-            var mapLayers = Ext.util.JSON.decode(responseObject.responseText).mapLayers;
-            
-            for (var i = 0; i < mapLayers.length; i++) {
-                var fillColor = mapLayers[i].fillColor;
-                var fillOpacity = parseFloat(mapLayers[i].fillOpacity);
-                var strokeColor = mapLayers[i].strokeColor;
-                var strokeWidth = parseFloat(mapLayers[i].strokeWidth);
-                
-                var treeLayer = new OpenLayers.Layer.Vector(mapLayers[i].name, {
-                    'visibility': false,
-                    'styleMap': new OpenLayers.StyleMap({
-                        'default': new OpenLayers.Style(
-                            OpenLayers.Util.applyDefaults(
-                                {'fillColor': fillColor, 'fillOpacity': fillOpacity, 'strokeColor': strokeColor, 'strokeWidth': strokeWidth},
-                                OpenLayers.Feature.Vector.style['default']
-                            )
-                        )
-                    }),
-                    'strategies': [new OpenLayers.Strategy.Fixed()],
-                    'protocol': new OpenLayers.Protocol.HTTP({
-                        'url': path + 'getGeoJson.action?name=' + mapLayers[i].mapSource,
-                        'format': new OpenLayers.Format.GeoJSON()
-                    })
-                });
-                
-                treeLayer.events.register('loadstart', null, function() {
-					MASK.msg = 'Loading...';
-                    MASK.show();
-                });
-                
-                treeLayer.events.register('loadend', null, function() {
-                    MASK.hide();
-                });
+    var legendSetStore = new Ext.data.JsonStore({
+        url: path + 'getAllMapLegendSets' + type,
+        root: 'mapLegendSets',
+		id: 'id',
+        fields: ['id', 'name'],
+        sortInfo: { field: 'name', direction: 'ASC' },
+        autoLoad: true
+    });
+	
+	var legendSetComboBox = new Ext.form.ComboBox({
+        id: 'legendset_cb',
+        typeAhead: true,
+        editable: false,
+        valueField: 'id',
+        displayField: 'name',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        emptyText: MENU_EMPTYTEXT,
+        selectOnFocus: true,
+        width: combo_width,
+        minListWidth: combo_list_width,
+        store: legendSetStore,
+		listeners:{
+			'select': {
+				fn: function() {
+					var lsid = Ext.getCmp('legendset_cb').getValue();
+					
+					Ext.Ajax.request({
+						url: path + 'getMapLegendSetIndicators' + type,
+						method: 'POST',
+						params: { id:lsid },
+
+						success: function( responseObject ) {
+							var indicators = Ext.util.JSON.decode( responseObject.responseText ).mapLegendSet[0].indicators;
+							var indicatorString = '';
+							
+							for (var i = 0; i < indicators.length; i++) {
+								indicatorString += indicators[i];
+								if (i < indicators.length-1) {
+									indicatorString += ',';
+								}
+							}
+							
+							Ext.getCmp('legendsetindicator_ms').setValue(indicatorString);							
+						},
+						failure: function() {
+							alert( 'Status', 'Error while saving data' );
+						}
+					});
+				}
+			}
+		}					
+    });
+
+    var legendSetIndicatorStore = new Ext.data.JsonStore({
+        url: path + 'getAllIndicators' + type,
+        root: 'indicators',
+        fields: ['id', 'name', 'shortName'],
+        sortInfo: { field: 'name', direction: 'ASC' },
+        autoLoad: true
+    });
+    
+    var legendSetIndicatorMultiSelect = new Ext.ux.Multiselect({
+        id: 'legendsetindicator_ms',
+        dataFields: ['id', 'name', 'shortName'], 
+        valueField: 'id',
+        displayField: 'shortName',
+        width: multiselect_width,
+        height: getMultiSelectHeight(),
+        store: legendSetIndicatorStore
+    });
+	    
+    var legendSet2ComboBox = new Ext.form.ComboBox({
+        id: 'legendset2_cb',
+        typeAhead: true,
+        editable: false,
+        valueField: 'id',
+        displayField: 'name',
+        mode: 'remote',
+        forceSelection: true,
+        triggerAction: 'all',
+        emptyText: MENU_EMPTYTEXT,
+        selectOnFocus: true,
+        width: combo_width,
+        minListWidth: combo_list_width,
+        store: legendSetStore
+    });
+    
+    var newLegendSetPanel = new Ext.Panel({   
+        id: 'newlegendset_p',
+        items:
+        [   
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' },
+            legendSetNameTextField,
+            { html: '<br>' },
+/*            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Method</p>' }, legendSetMethodComboBox, { html: '<br>' },*/
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Classes</p>' },
+            legendSetClassesComboBox,
+            { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Lowest value color</p>' },
+            legendSetLowColorColorPalette,
+            { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Highest value color</p>' },
+            legendSetHighColorColorPalette,
+            { html: '<p style="padding-bottom:11px>' },
+            {
+                xtype: 'button',
+                id: 'newlegendset_b',
+                text: 'Save',
+                handler: function() {
+                    var ln = Ext.getCmp('legendsetname_tf').getValue();
+        /*            var lm = Ext.getCmp('legendsetmethod_cb').getValue();*/
+                    var lc = Ext.getCmp('legendsetclasses_cb').getValue();            
+                    var llc = Ext.getCmp('legendsetlowcolor_cp').getValue();
+                    var lhc = Ext.getCmp('legendsethighcolor_cp').getValue();
                     
-                MAP.addLayer(treeLayer);
+                    if (!ln || !lc) {
+                        Ext.messageRed.msg('New legend set', 'Form is not complete.');
+                        return;
+                    }
+                    
+                    if (validateInput(ln) == false) {
+                        Ext.messageRed.msg('New legend set', 'Legend set name cannot be longer than 25 characters.');
+                        return;
+                    }
+                    
+                    Ext.Ajax.request({
+                        url: path + 'getAllMapLegendSets' + type,
+                        method: 'GET',
+
+                        success: function( responseObject ) {
+                            var mapLegendSets = Ext.util.JSON.decode( responseObject.responseText ).mapLegendSets;
+                            for (var i = 0; i < mapLegendSets.length; i++) {
+                                if (ln == mapLegendSets[i].name) {
+                                    Ext.messageRed.msg('New legend set', 'A legend set called ' + msg_highlight_start + ln + msg_highlight_end + ' already exists.');
+                                    return;
+                                }
+                            }
+                            
+                            Ext.Ajax.request({
+                                url: path + 'addOrUpdateMapLegendSet' + type,
+                                method: 'POST',
+                                params: { name: ln, method: 2, classes: lc, colorLow: llc, colorHigh: lhc },
+
+                                success: function( responseObject ) {
+                                    Ext.messageBlack.msg('New legend set', 'The legend set ' + msg_highlight_start + ln + msg_highlight_end + ' was registered.');
+                                    Ext.getCmp('legendset_cb').getStore().reload();
+                                    Ext.getCmp('legendset2_cb').getStore().reload();
+                                    Ext.getCmp('legendsetname_tf').reset();
+                                    Ext.getCmp('legendsetclasses_cb').reset();
+                                    Ext.getCmp('legendsetlowcolor_cp').reset();
+                                    Ext.getCmp('legendsethighcolor_cp').reset();
+                                },
+                                failure: function() {
+                                    alert( 'Status', 'Error while saving data' );
+                                }
+                            });
+                        },
+                        failure: function() {
+                            alert( 'Error: getAllMapLegendSets' );
+                        }
+                    });
+                }
             }
-        },
-        failure: function() {
-			alert('Error: getAllMapLayers');
-		}
+        ]
+    });
+	
+	var assignLegendSetPanel = new Ext.Panel({   
+        id: 'assignlegendset_p',
+        items:
+        [   
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Legend set</p>' },
+            legendSetComboBox,
+            { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Indicators</p>' },
+            legendSetIndicatorMultiSelect,
+            { html: '<p style="padding-bottom:11px>' },
+            {
+                xtype: 'button',
+                id: 'assignlegendset_b',
+                text: 'Assign to indicators',
+                handler: function() {
+                    var ls = Ext.getCmp('legendset_cb').getValue();
+                    var lsrw = Ext.getCmp('legendset_cb').getRawValue();
+                    var lims = Ext.getCmp('legendsetindicator_ms').getValue();
+                    
+                    if (!ls) {
+                        Ext.messageRed.msg('Assign to indicators', 'Please select a legend set.');
+                        return;
+                    }
+                    
+                    if (!lims) {
+                        Ext.messageRed.msg('Link legend set to indicator', 'Please select at least one indicator.');
+                        return;
+                    }
+                    
+                    var array = new Array();
+                    array = lims.split(',');
+                    var params = '?indicators=' + array[0];
+                    
+                    if (array.length > 1) {
+                        for (var i = 1; i < array.length; i++) {
+                            array[i] = '&indicators=' + array[i];
+                            params += array[i];
+                        }
+                    }
+                    
+                    Ext.Ajax.request({
+                        url: path + 'assignIndicatorsToMapLegendSet.action' + params,
+                        method: 'POST',
+                        params: { id: ls },
+
+                        success: function( responseObject ) {
+                            Ext.messageBlack.msg('Assign to indicators', 'The legend set ' + msg_highlight_start + lsrw + msg_highlight_end + ' was updated.');
+                            Ext.getCmp('legendset_cb').getStore().reload();
+                        },
+                        failure: function() {
+                            alert( 'Error: assignIndicatorsToMapLegendSet' );
+                        }
+                    });
+                }
+            }
+        ]
     });
     
-    MAP.events.on({
-        changelayer: function(e) {
-            if (e.property == 'visibility' && e.layer != choroplethLayer) {
-                if (e.layer.visibility) {
-                    selectFeatureChoropleth.deactivate();
-                }
-                else {
-                    selectFeatureChoropleth.activate();
+    var deleteLegendSetPanel = new Ext.Panel({
+        id: 'deletelegendset_p',
+        items:
+        [   
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Legend set</p>' },
+            legendSet2ComboBox,
+            { html: '<p style="padding-bottom:11px>' },
+            {
+                xtype: 'button',
+                id: 'deletelegendset_b',
+                text: 'Delete',
+                handler: function() {
+                    var ls = Ext.getCmp('legendset2_cb').getValue();
+                    var lsrw = Ext.getCmp('legendset2_cb').getRawValue();
+                    
+                    if (!ls) {
+                        Ext.messageRed.msg('Delete legend set', 'Please select a legend set.');
+                        return;
+                    }
+                    
+                    Ext.Ajax.request({
+                        url: path + 'deleteMapLegendSet' + type,
+                        method: 'GET',
+                        params: { id: ls },
+
+                        success: function( responseObject ) {
+                            Ext.messageBlack.msg('Delete legend set', 'The legend set ' + msg_highlight_start + lsrw + msg_highlight_end + ' was deleted.');
+                            
+                            Ext.getCmp('legendset2_cb').getStore().reload();
+                            Ext.getCmp('legendset2_cb').reset();
+                            Ext.getCmp('legendset_cb').getStore().reload();
+                            Ext.getCmp('legendset_cb').reset();
+                            Ext.getCmp('legendsetindicator_ms').reset();
+                        },
+                        failure: function() {
+                            alert( 'Status', 'Error while saving data' );
+                        }
+                    });
                 }
             }
-        }
+        ]
     });
-
-    var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
-        choroplethLayer, {
-            onClickSelect: onClickSelectChoropleth,
-            onClickUnselect: onClickUnselectChoropleth,
-            onHoverSelect: onHoverSelectChoropleth,
-            onHoverUnselect: onHoverUnselectChoropleth
-        }
-    );
     
-    MAP.addControl(selectFeatureChoropleth);
-    selectFeatureChoropleth.activate();
-
-    MAP.setCenter(new OpenLayers.LonLat(BASECOORDINATE.longitude, BASECOORDINATE.latitude), init_zoom);
-    
+    var legendSetWindow = new Ext.Window({
+        id: 'legendset_w',
+        title: 'Legend sets',
+		layout: 'fit',
+        closeAction: 'hide',
+		width: multiselect_width + 35,
+        items:
+        [
+            {
+                xtype: 'tabpanel',
+                activeTab: 0,
+				layoutOnTabChange: true,
+                deferredRender: false,
+                plain: true,
+                defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
+                listeners: {
+                    tabchange: function(panel, tab)
+                    {
+                        var w = Ext.getCmp('legendset_w');
+                        
+                        if (tab.id == 'legendset0') { 
+                            w.setHeight(303);
+                        }
+                        else if (tab.id == 'legendset1') {
+                            w.setHeight(getMultiSelectHeight() + 177);
+                        }
+                        else if (tab.id == 'legendset2') {
+                            w.setHeight(146);
+                        }
+                    }
+                },
+                items:
+                [
+                    {
+                        title: 'New',
+                        id: 'legendset0',
+                        items:
+                        [
+							newLegendSetPanel
+                        ]
+                    },
+                    {
+                        title: 'Assign to indicators',
+                        id: 'legendset1',
+                        items:
+                        [
+                            assignLegendSetPanel
+                        ]
+                    },
+                    {
+                        title: 'Delete',
+                        id: 'legendset2',
+                        items:
+                        [
+                            deleteLegendSetPanel
+                        ]
+                    }
+                ]
+            }
+        ]
+    });
+	
     /* REGISTER MAPS PANEL */
-    
     var organisationUnitLevelStore = new Ext.data.JsonStore({
         url: path + 'getOrganisationUnitLevels' + type,
 		id: 'id',
@@ -957,679 +1530,7 @@ Ext.onReady(function()
         ]
     });
     
-    /* LEGEND SET PANEL */
-    
-    var legendSetNameTextField = new Ext.form.TextField({
-        id: 'legendsetname_tf',
-        emptyText: MENU_EMPTYTEXT,
-        width: combo_width
-    });
-    
-    var legendSetMethodComboBox = new Ext.form.ComboBox({
-        id: 'legendsetmethod_cb',
-        editable: false,
-        valueField: 'value',
-        displayField: 'text',
-        mode: 'local',
-        emptyText: MENU_EMPTYTEXT,
-        triggerAction: 'all',
-        width: combo_width,
-        minListWidth: combo_list_width,
-        store: new Ext.data.SimpleStore({
-            fields: ['value', 'text'],
-            data: [[2, 'Distributed values'], [1, 'Equal intervals']]
-        })
-    });
-    
-    var legendSetClassesComboBox = new Ext.form.ComboBox({
-        id: 'legendsetclasses_cb',
-        editable: false,
-        valueField: 'value',
-        displayField: 'value',
-        mode: 'local',
-        emptyText: MENU_EMPTYTEXT,
-        triggerAction: 'all',
-		value: 5,
-        width: combo_number_width,
-        minListWidth: combo_number_list_width,
-        store: new Ext.data.SimpleStore({
-            fields: ['value'],
-            data: [[1], [2], [3], [4], [5], [6], [7], [8]]
-        })
-    });
-    
-    var legendSetLowColorColorPalette = new Ext.ux.ColorField({
-        id: 'legendsetlowcolor_cp',
-        allowBlank: false,
-        width: combo_width,
-        minListWidth: combo_list_width,
-        value: "#FFFF00"
-    });
-    
-    var legendSetHighColorColorPalette = new Ext.ux.ColorField({
-        id: 'legendsethighcolor_cp',
-        allowBlank: false,
-        width: combo_width,
-        minListWidth: combo_list_width,
-        value: "#FF0000"
-    });
-        
-    var legendSetStore = new Ext.data.JsonStore({
-        url: path + 'getAllMapLegendSets' + type,
-        root: 'mapLegendSets',
-		id: 'id',
-        fields: ['id', 'name'],
-        sortInfo: { field: 'name', direction: 'ASC' },
-        autoLoad: true
-    });
-	
-	var legendSetComboBox = new Ext.form.ComboBox({
-        id: 'legendset_cb',
-        typeAhead: true,
-        editable: false,
-        valueField: 'id',
-        displayField: 'name',
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        emptyText: MENU_EMPTYTEXT,
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_list_width,
-        store: legendSetStore,
-		listeners:{
-			'select': {
-				fn: function() {
-					var lsid = Ext.getCmp('legendset_cb').getValue();
-					
-					Ext.Ajax.request({
-						url: path + 'getMapLegendSetIndicators' + type,
-						method: 'POST',
-						params: { id:lsid },
-
-						success: function( responseObject ) {
-							var indicators = Ext.util.JSON.decode( responseObject.responseText ).mapLegendSet[0].indicators;
-							var indicatorString = '';
-							
-							for (var i = 0; i < indicators.length; i++) {
-								indicatorString += indicators[i];
-								if (i < indicators.length-1) {
-									indicatorString += ',';
-								}
-							}
-							
-							Ext.getCmp('legendsetindicator_ms').setValue(indicatorString);							
-						},
-						failure: function() {
-							alert( 'Status', 'Error while saving data' );
-						}
-					});
-				}
-			}
-		}					
-    });
-
-    var legendSetIndicatorStore = new Ext.data.JsonStore({
-        url: path + 'getAllIndicators' + type,
-        root: 'indicators',
-        fields: ['id', 'name', 'shortName'],
-        sortInfo: { field: 'name', direction: 'ASC' },
-        autoLoad: true
-    });
-    
-    var legendSetIndicatorMultiSelect = new Ext.ux.Multiselect({
-        id: 'legendsetindicator_ms',
-        dataFields: ['id', 'name', 'shortName'], 
-        valueField: 'id',
-        displayField: 'shortName',
-        width: multiselect_width,
-        height: getMultiSelectHeight(),
-        store: legendSetIndicatorStore
-    });
-	    
-    var legendSet2ComboBox = new Ext.form.ComboBox({
-        id: 'legendset2_cb',
-        typeAhead: true,
-        editable: false,
-        valueField: 'id',
-        displayField: 'name',
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        emptyText: MENU_EMPTYTEXT,
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_list_width,
-        store: legendSetStore
-    });
-    
-    var newLegendSetPanel = new Ext.Panel({   
-        id: 'newlegendset_p',
-        items:
-        [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' },
-            legendSetNameTextField,
-            { html: '<br>' },
-/*            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Method</p>' }, legendSetMethodComboBox, { html: '<br>' },*/
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Classes</p>' },
-            legendSetClassesComboBox,
-            { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Lowest value color</p>' },
-            legendSetLowColorColorPalette,
-            { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Highest value color</p>' },
-            legendSetHighColorColorPalette,
-            { html: '<p style="padding-bottom:11px>' },
-            {
-                xtype: 'button',
-                id: 'newlegendset_b',
-                text: 'Save',
-                handler: function() {
-                    var ln = Ext.getCmp('legendsetname_tf').getValue();
-        /*            var lm = Ext.getCmp('legendsetmethod_cb').getValue();*/
-                    var lc = Ext.getCmp('legendsetclasses_cb').getValue();            
-                    var llc = Ext.getCmp('legendsetlowcolor_cp').getValue();
-                    var lhc = Ext.getCmp('legendsethighcolor_cp').getValue();
-                    
-                    if (!ln || !lc) {
-                        Ext.messageRed.msg('New legend set', 'Form is not complete.');
-                        return;
-                    }
-                    
-                    if (validateInput(ln) == false) {
-                        Ext.messageRed.msg('New legend set', 'Legend set name cannot be longer than 25 characters.');
-                        return;
-                    }
-                    
-                    Ext.Ajax.request({
-                        url: path + 'getAllMapLegendSets' + type,
-                        method: 'GET',
-
-                        success: function( responseObject ) {
-                            var mapLegendSets = Ext.util.JSON.decode( responseObject.responseText ).mapLegendSets;
-                            for (var i = 0; i < mapLegendSets.length; i++) {
-                                if (ln == mapLegendSets[i].name) {
-                                    Ext.messageRed.msg('New legend set', 'A legend set called ' + msg_highlight_start + ln + msg_highlight_end + ' already exists.');
-                                    return;
-                                }
-                            }
-                            
-                            Ext.Ajax.request({
-                                url: path + 'addOrUpdateMapLegendSet' + type,
-                                method: 'POST',
-                                params: { name: ln, method: 2, classes: lc, colorLow: llc, colorHigh: lhc },
-
-                                success: function( responseObject ) {
-                                    Ext.messageBlack.msg('New legend set', 'The legend set ' + msg_highlight_start + ln + msg_highlight_end + ' was registered.');
-                                    Ext.getCmp('legendset_cb').getStore().reload();
-                                    Ext.getCmp('legendset2_cb').getStore().reload();
-                                    Ext.getCmp('legendsetname_tf').reset();
-                                    Ext.getCmp('legendsetclasses_cb').reset();
-                                    Ext.getCmp('legendsetlowcolor_cp').reset();
-                                    Ext.getCmp('legendsethighcolor_cp').reset();
-                                },
-                                failure: function() {
-                                    alert( 'Status', 'Error while saving data' );
-                                }
-                            });
-                        },
-                        failure: function() {
-                            alert( 'Error: getAllMapLegendSets' );
-                        }
-                    });
-                }
-            }
-        ]
-    });
-	
-	var assignLegendSetPanel = new Ext.Panel({   
-        id: 'assignlegendset_p',
-        items:
-        [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Legend set</p>' },
-            legendSetComboBox,
-            { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Indicators</p>' },
-            legendSetIndicatorMultiSelect,
-            { html: '<p style="padding-bottom:11px>' },
-            {
-                xtype: 'button',
-                id: 'assignlegendset_b',
-                text: 'Assign to indicators',
-                handler: function() {
-                    var ls = Ext.getCmp('legendset_cb').getValue();
-                    var lsrw = Ext.getCmp('legendset_cb').getRawValue();
-                    var lims = Ext.getCmp('legendsetindicator_ms').getValue();
-                    
-                    if (!ls) {
-                        Ext.messageRed.msg('Assign to indicators', 'Please select a legend set.');
-                        return;
-                    }
-                    
-                    if (!lims) {
-                        Ext.messageRed.msg('Link legend set to indicator', 'Please select at least one indicator.');
-                        return;
-                    }
-                    
-                    var array = new Array();
-                    array = lims.split(',');
-                    var params = '?indicators=' + array[0];
-                    
-                    if (array.length > 1) {
-                        for (var i = 1; i < array.length; i++) {
-                            array[i] = '&indicators=' + array[i];
-                            params += array[i];
-                        }
-                    }
-                    
-                    Ext.Ajax.request({
-                        url: path + 'assignIndicatorsToMapLegendSet.action' + params,
-                        method: 'POST',
-                        params: { id: ls },
-
-                        success: function( responseObject ) {
-                            Ext.messageBlack.msg('Assign to indicators', 'The legend set ' + msg_highlight_start + lsrw + msg_highlight_end + ' was updated.');
-                            Ext.getCmp('legendset_cb').getStore().reload();
-                        },
-                        failure: function() {
-                            alert( 'Error: assignIndicatorsToMapLegendSet' );
-                        }
-                    });
-                }
-            }
-        ]
-    });
-    
-    var deleteLegendSetPanel = new Ext.Panel({
-        id: 'deletelegendset_p',
-        items:
-        [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Legend set</p>' },
-            legendSet2ComboBox,
-            { html: '<p style="padding-bottom:11px>' },
-            {
-                xtype: 'button',
-                id: 'deletelegendset_b',
-                text: 'Delete',
-                handler: function() {
-                    var ls = Ext.getCmp('legendset2_cb').getValue();
-                    var lsrw = Ext.getCmp('legendset2_cb').getRawValue();
-                    
-                    if (!ls) {
-                        Ext.messageRed.msg('Delete legend set', 'Please select a legend set.');
-                        return;
-                    }
-                    
-                    Ext.Ajax.request({
-                        url: path + 'deleteMapLegendSet' + type,
-                        method: 'GET',
-                        params: { id: ls },
-
-                        success: function( responseObject ) {
-                            Ext.messageBlack.msg('Delete legend set', 'The legend set ' + msg_highlight_start + lsrw + msg_highlight_end + ' was deleted.');
-                            
-                            Ext.getCmp('legendset2_cb').getStore().reload();
-                            Ext.getCmp('legendset2_cb').reset();
-                            Ext.getCmp('legendset_cb').getStore().reload();
-                            Ext.getCmp('legendset_cb').reset();
-                            Ext.getCmp('legendsetindicator_ms').reset();
-                        },
-                        failure: function() {
-                            alert( 'Status', 'Error while saving data' );
-                        }
-                    });
-                }
-            }
-        ]
-    });
-    
-    var legendSetWindow = new Ext.Window({
-        id: 'legendset_w',
-        title: 'Legend sets',
-		layout: 'fit',
-        closeAction: 'hide',
-		width: multiselect_width + 35,
-        items:
-        [
-            {
-                xtype: 'tabpanel',
-                activeTab: 0,
-				layoutOnTabChange: true,
-                deferredRender: false,
-                plain: true,
-                defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
-                listeners: {
-                    tabchange: function(panel, tab)
-                    {
-                        var w = Ext.getCmp('legendset_w');
-                        
-                        if (tab.id == 'legendset0') { 
-                            w.setHeight(303);
-                        }
-                        else if (tab.id == 'legendset1') {
-                            w.setHeight(getMultiSelectHeight() + 177);
-                        }
-                        else if (tab.id == 'legendset2') {
-                            w.setHeight(146);
-                        }
-                    }
-                },
-                items:
-                [
-                    {
-                        title: 'New',
-                        id: 'legendset0',
-                        items:
-                        [
-							newLegendSetPanel
-                        ]
-                    },
-                    {
-                        title: 'Assign to indicators',
-                        id: 'legendset1',
-                        items:
-                        [
-                            assignLegendSetPanel
-                        ]
-                    },
-                    {
-                        title: 'Delete',
-                        id: 'legendset2',
-                        items:
-                        [
-                            deleteLegendSetPanel
-                        ]
-                    }
-                ]
-            }
-        ]
-    });
-	
-    /*VIEW PANEL*/
-    
-	var viewStore = new Ext.data.JsonStore({
-        url: path + 'getAllMapViews' + type,
-        root: 'mapViews',
-        fields: ['id', 'name'],
-        id: 'id',
-        sortInfo: { field: 'name', direction: 'ASC' },
-        autoLoad: true
-    });
-	
-    var viewNameTextField = new Ext.form.TextField({
-        id: 'viewname_tf',
-        emptyText: '',
-        width: combo_width,
-		hideLabel: true
-    });
-    
-    var viewComboBox = new Ext.form.ComboBox({
-        id: 'view_cb',
-		isFormField: true,
-		hideLabel: true,
-        typeAhead: true,
-        editable: false,
-        valueField: 'id',
-        displayField: 'name',
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        emptyText: MENU_EMPTYTEXT,
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_list_width,
-        store: viewStore
-    });
-    
-    var view2ComboBox = new Ext.form.ComboBox({
-        id: 'view2_cb',
-		isFormField: true,
-		hideLabel: true,
-        typeAhead: true,
-        editable: false,
-        valueField: 'id',
-        displayField: 'name',
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        emptyText: MENU_EMPTYTEXT,
-        selectOnFocus: true,
-        width: combo_width,
-        minListWidth: combo_list_width,
-        store: viewStore,
-        bodyStyle: 'margin-bottom:4px'
-    });
-    
-    var newViewPanel = new Ext.form.FormPanel({
-        id: 'newview_p',
-		bodyStyle: 'border:0px solid #fff',
-        items:
-        [
-            { html: '<font color="' + MENU_TEXTCOLOR_INFO + '">Saving current thematic map selection.</font>' },
-			{ html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' },
-			viewNameTextField,
-			{ html: '<p style="padding-bottom:7px>' },
-			{
-				xtype: 'button',
-                id: 'newview_b',
-				isFormField: true,
-				hideLabel: true,
-				text: 'Save',
-				handler: function() {
-					var vn = Ext.getCmp('viewname_tf').getValue();
-					var ig = Ext.getCmp('indicatorgroup_cb').getValue();
-					var ii = Ext.getCmp('indicator_cb').getValue();
-					var pt = Ext.getCmp('periodtype_cb').getValue();
-					var p = Ext.getCmp('period_cb').getValue();
-					var mst = MAPSOURCE;
-					var ms = Ext.getCmp('map_cb').getValue();
-					var c = Ext.getCmp('numClasses').getValue();
-					var ca = Ext.getCmp('colorA_cf').getValue();
-					var cb = Ext.getCmp('colorB_cf').getValue();
-					
-					if (!vn) {
-						Ext.messageRed.msg('New map view', 'Map view form is not complete.');
-						return;
-					}
-					
-					if (!ig || !ii || !pt || !p || !mst || !ms || !c ) {
-						Ext.messageRed.msg('New map view', 'Thematic map form is not complete.');
-						return;
-					}
-					
-					if (validateInput(vn) == false) {
-						Ext.messageRed.msg('New map view', 'Map view name cannot be longer than 25 characters.');
-						return;
-					}
-					
-					Ext.Ajax.request({
-						url: path + 'getAllMapViews' + type,
-						method: 'GET',
-						success: function( responseObject ) {
-							var mapViews = Ext.util.JSON.decode( responseObject.responseText ).mapViews;
-							
-							for (var i = 0; i < mapViews.length; i++) {
-								if (mapViews[i].name == vn) {
-									Ext.messageRed.msg('New map view', 'There is already a map view called ' + msg_highlight_start + vn + msg_highlight_end + '.');
-									return;
-								}
-							}
-					
-							Ext.Ajax.request({
-								url: path + 'addOrUpdateMapView' + type,
-								method: 'POST',
-								params: { name: vn, indicatorGroupId: ig, indicatorId: ii, periodTypeId: pt, periodId: p, mapSourceType: mst, mapSource: ms, method: 2, classes: c, colorLow: ca, colorHigh: cb },
-
-								success: function( responseObject ) {
-									Ext.messageBlack.msg('New map view', 'The view ' + msg_highlight_start + vn + msg_highlight_end + ' was registered.');
-									Ext.getCmp('view_cb').getStore().reload();
-									Ext.getCmp('mapview_cb').getStore().reload();
-									Ext.getCmp('viewname_tf').reset();
-								},
-								failure: function() {
-									alert( 'Error: addOrUpdateMapView' );
-								}
-							});
-						},
-						failure: function() {
-									alert( 'Error: getAllMapViews' );
-						}
-					});
-				}
-			}
-        ]
-    });
-    
-    var deleteViewPanel = new Ext.form.FormPanel({   
-        id: 'deleteview_p',
-		bodyStyle: 'border:0px solid #fff',
-        items:
-        [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;View</p>' },
-			viewComboBox,
-			{ html: '<p style="padding-bottom:7px>' },
-			{
-				xtype: 'button',
-                id: 'deleteview_b',
-				isFormField: true,
-				hideLabel: true,
-				text: 'Delete',
-				handler: function() {
-					var v = Ext.getCmp('view_cb').getValue();
-					var name = Ext.getCmp('view_cb').getStore().getById(v).get('name');
-					
-					if (!v) {
-						Ext.messageRed.msg('Delete map view', 'Please select a map view.');
-						return;
-					}
-					
-					Ext.Ajax.request({
-						url: path + 'deleteMapView' + type,
-						method: 'POST',
-						params: { id: v },
-
-						success: function( responseObject ) {
-							Ext.messageBlack.msg('Delete map view', 'The map view ' + msg_highlight_start + name + msg_highlight_end + ' was deleted.');
-							Ext.getCmp('view_cb').getStore().reload();
-							Ext.getCmp('view_cb').reset();
-							Ext.getCmp('mapview_cb').getStore().reload();
-						},
-						failure: function() {
-							alert( 'Status', 'Error while saving data' );
-						}
-					});
-				}
-			}
-        ]
-    });
-    
-    var dashboardViewPanel = new Ext.Panel({   
-        id: 'dashboardview_p',
-		bodyStyle: 'border:0px solid #fff',
-        items:
-        [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;View</p>' },
-			view2ComboBox,
-			{ html: '<p style="padding-bottom:11px>' },
-			{
-				xtype: 'button',
-                id: 'dashboardview_b',
-				isFormField: true,
-				hideLabel: true,
-				text: 'Add to DHIS 2 Dashboard',
-				handler: function() {
-					var v2 = Ext.getCmp('view2_cb').getValue();
-					var nv = Ext.getCmp('view2_cb').getRawValue();
-					
-					if (!v2) {
-						Ext.messageRed.msg('Dashboard map view', 'Please select a map view.');
-						return;
-					}
-					
-					Ext.Ajax.request({
-						url: path + 'addMapViewToDashboard' + type,
-						method: 'POST',
-						params: { id: v2 },
-
-						success: function( responseObject ) {
-							Ext.messageBlack.msg('Dashboard map view', 'The view ' + msg_highlight_start + nv + msg_highlight_end + ' was added to dashboard.');
-							
-							Ext.getCmp('view_cb').getStore().reload();
-							Ext.getCmp('view_cb').reset();
-							Ext.getCmp('mapview_cb').getStore().reload();
-						},
-						failure: function() {
-							alert( 'Status', 'Error while saving data' );
-						}
-					});
-				}
-			}
-        ]
-    });
-    
-	var viewWindow = new Ext.Window({
-        id: 'view_w',
-        title: 'Favorites',
-		layout: 'fit',
-        closeAction: 'hide',
-		width: 233,
-        items:
-        [
-            {
-                xtype: 'tabpanel',
-                activeTab: 0,
-				layoutOnTabChange: true,
-                deferredRender: false,
-                plain: true,
-                defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
-                listeners: {
-                    tabchange: function(panel, tab)
-                    {
-                        if (tab.id == 'view0') { 
-                            viewWindow.setHeight(172);
-                        }
-                        else if (tab.id == 'view1') {
-                            viewWindow.setHeight(146);
-                        }
-                        else if (tab.id == 'view2') {
-                            viewWindow.setHeight(146);
-                        }
-                    }
-                },
-                items:
-                [
-                    {
-                        title: 'New',
-                        id: 'view0',
-                        items:
-                        [
-							newViewPanel
-                        ]
-                    },
-                    {
-                        title: 'Delete',
-                        id: 'view1',
-                        items:
-                        [
-                            deleteViewPanel
-                        ]
-                    },
-                    {
-                        title: 'Add to Dashboard',
-                        id: 'view2',
-                        items:
-                        [
-                            dashboardViewPanel
-                        ]
-                    }
-                ]
-            }
-        ]
-    });
-    
-    /*OVERLAY PANEL*/
-    
+    /* OVERLAY PANEL */
     var mapLayerNameTextField = new Ext.form.TextField({
         id: 'maplayername_tf',
         emptyText: MENU_EMPTYTEXT,
@@ -1648,7 +1549,6 @@ Ext.onReady(function()
         mode: 'remote',
         store: geojsonStore
     });
-	
     
     var mapLayerFillColorColorField = new Ext.ux.ColorField({
         id: 'maplayerfillcolor_cf',
@@ -1887,8 +1787,7 @@ Ext.onReady(function()
         ]
     });
     
-    /*ADMIN PANEL*/
-	
+    /* ADMIN PANEL */
     var adminPanel = new Ext.form.FormPanel({
         id: 'admin_p',
         title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_ADMIN + ';">Administrator</font>',
@@ -2103,55 +2002,78 @@ Ext.onReady(function()
         }
     });
     
-    /*WIDGETS*/
-    
-    choropleth = new mapfish.widgets.geostat.Choropleth({
-        id: 'choropleth',
-        map: MAP,
-        layer: choroplethLayer,
-		title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Thematic map </font>',
-        url: INIT_URL,
-        featureSelection: false,
-        legendDiv: 'choroplethLegend',
-        defaults: {width: 130},
-        listeners: {
-            expand: {
-                fn: function() {
-                    choroplethLayer.setVisibility(false);
-                    choropleth.classify(false);
-                    
-                    ACTIVEPANEL = 'choropleth';
-                }
-            }
-        }
+	/* LAYERS */
+	var vmap0 = new OpenLayers.Layer.WMS(
+        'World WMS',
+        'http://labs.metacarta.com/wms/vmap0', 
+        {layers: 'basic'}
+    );
+                                   
+    var choroplethLayer = new OpenLayers.Layer.Vector('Thematic map', {
+        'visibility': false,
+        'displayInLayerSwitcher': false,
+        'styleMap': new OpenLayers.StyleMap({
+            'default': new OpenLayers.Style(
+                OpenLayers.Util.applyDefaults(
+                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1},
+                    OpenLayers.Feature.Vector.style['default']
+                )
+            ),
+            'select': new OpenLayers.Style(
+                {'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+            )
+        })
     });
     
-    mapping = new mapfish.widgets.geostat.Mapping({
-        id: 'mapping',
-        map: MAP,
-        layer: choroplethLayer,
-        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Assign organisation units to map</font>',
-        url: INIT_URL,
-        featureSelection: false,
-        legendDiv: 'choroplethLegend',
-        defaults: {width: 130},
-        listeners: {
-            expand: {
-                fn: function() {
-                    choroplethLayer.setVisibility(false);
-                    mapping.classify(false);
+    MAP.addLayers([ vmap0, choroplethLayer ]);
+        
+    Ext.Ajax.request({
+        url: path + 'getAllMapLayers' + type,
+        method: 'GET',
+        success: function(responseObject) {
+            var mapLayers = Ext.util.JSON.decode(responseObject.responseText).mapLayers;
+            
+            for (var i = 0; i < mapLayers.length; i++) {
+                var fillColor = mapLayers[i].fillColor;
+                var fillOpacity = parseFloat(mapLayers[i].fillOpacity);
+                var strokeColor = mapLayers[i].strokeColor;
+                var strokeWidth = parseFloat(mapLayers[i].strokeWidth);
+                
+                var treeLayer = new OpenLayers.Layer.Vector(mapLayers[i].name, {
+                    'visibility': false,
+                    'styleMap': new OpenLayers.StyleMap({
+                        'default': new OpenLayers.Style(
+                            OpenLayers.Util.applyDefaults(
+                                {'fillColor': fillColor, 'fillOpacity': fillOpacity, 'strokeColor': strokeColor, 'strokeWidth': strokeWidth},
+                                OpenLayers.Feature.Vector.style['default']
+                            )
+                        )
+                    }),
+                    'strategies': [new OpenLayers.Strategy.Fixed()],
+                    'protocol': new OpenLayers.Protocol.HTTP({
+                        'url': path + 'getGeoJson.action?name=' + mapLayers[i].mapSource,
+                        'format': new OpenLayers.Format.GeoJSON()
+                    })
+                });
+                
+                treeLayer.events.register('loadstart', null, function() {
+					MASK.msg = 'Loading...';
+                    MASK.show();
+                });
+                
+                treeLayer.events.register('loadend', null, function() {
+                    MASK.hide();
+                });
                     
-                    ACTIVEPANEL = 'mapping';
-                }
+                MAP.addLayer(treeLayer);
             }
-        }
-    });	
-    
-    mapping.hide();
-    shapefilePanel.hide();
-    mapLayerPanel.hide();
-    
-    var layerTreeConfig = [{
+        },
+        failure: function() {
+			alert('Error: getAllMapLayers');
+		}
+    });
+	
+	var layerTreeConfig = [{
         nodeType: 'gx_baselayercontainer',
         singleClickExpand: true,
         text: 'Backgrounds'
@@ -2174,8 +2096,57 @@ Ext.onReady(function()
         }
     });
 	
+    /* WIDGETS */
+    choropleth = new mapfish.widgets.geostat.Choropleth({
+        id: 'choropleth',
+        map: MAP,
+        layer: choroplethLayer,
+		title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Thematic map </font>',
+        url: 'init',
+        featureSelection: false,
+        legendDiv: 'choroplethLegend',
+        defaults: {width: 130},
+        listeners: {
+            expand: {
+                fn: function() {
+                    choroplethLayer.setVisibility(false);
+                    choropleth.classify(false);
+                    
+                    ACTIVEPANEL = 'choropleth';
+                }
+            }
+        }
+    });
+    
+    mapping = new mapfish.widgets.geostat.Mapping({
+        id: 'mapping',
+        map: MAP,
+        layer: choroplethLayer,
+        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Assign organisation units to map</font>',
+        url: 'init',
+        featureSelection: false,
+        legendDiv: 'choroplethLegend',
+        defaults: {width: 130},
+        listeners: {
+            expand: {
+                fn: function() {
+                    choroplethLayer.setVisibility(false);
+                    mapping.classify(false);
+                    
+                    ACTIVEPANEL = 'mapping';
+                }
+            }
+        }
+    });	
+    
+    mapping.hide();
+    shapefilePanel.hide();
+    mapLayerPanel.hide();
+	
+	/* TOOLBAR */    
 	var zoomInButton = new Ext.Button({
 		iconCls: 'icon-zoomin',
+		tooltip: 'Zoom in',
 		handler:function() {
 			MAP.zoomIn();
 		},
@@ -2184,6 +2155,7 @@ Ext.onReady(function()
 	
 	var zoomOutButton = new Ext.Button({
 		iconCls: 'icon-zoomout',
+		tooltip: 'Zoom out',
 		handler:function() {
 			MAP.zoomOut();
 		},
@@ -2192,6 +2164,7 @@ Ext.onReady(function()
 	
 	var zoomMaxExtentButton = new Ext.Button({
 		iconCls: 'icon-zoommin',
+		tooltip: 'Zoom to visible extent',
 		handler: function() {
 			MAP.zoomToMaxExtent();
 		},
@@ -2202,6 +2175,7 @@ Ext.onReady(function()
 		cls: 'x-btn-text-icon',
 		icon: '../../images/favorite_star.gif',
 		text: 'Favorites',
+		tooltip: 'Favorite map views',
 		handler: showFavorites
 	});
     	
@@ -2222,6 +2196,7 @@ Ext.onReady(function()
 		cls: 'x-btn-text-icon',
 		icon: '../../images/color_swatch.png',
 		text: 'Legend sets',
+		tooltip: 'Legend sets',
 		handler: showLegendSets
 	});
     	
@@ -2242,6 +2217,7 @@ Ext.onReady(function()
 		text: 'Exit GIS',
 		cls: 'x-btn-text-icon',
 		icon: '../../images/exit.png',
+		tooltip: 'Return to DHIS 2 Dashboard',
 		handler: function() {
 			window.location.href = '../../dhis-web-portal/redirect.action'
 		}
@@ -2263,6 +2239,7 @@ Ext.onReady(function()
 		]
 	});
     
+	/* VIEWPORT */
     viewport = new Ext.Viewport({
         id: 'viewport',
         layout: 'border',
@@ -2349,7 +2326,20 @@ Ext.onReady(function()
         ]
     });
     
-    MAP.addControl(new OpenLayers.Control.MousePosition({
+	/* MAP CONTROLS */
+	var selectFeatureChoropleth = new OpenLayers.Control.newSelectFeature(
+        choroplethLayer, {
+            onClickSelect: onClickSelectChoropleth,
+            onClickUnselect: onClickUnselectChoropleth,
+            onHoverSelect: onHoverSelectChoropleth,
+            onHoverUnselect: onHoverUnselectChoropleth
+        }
+    );
+    
+    MAP.addControl(selectFeatureChoropleth);
+    selectFeatureChoropleth.activate();
+
+	MAP.addControl(new OpenLayers.Control.MousePosition({
         displayClass: 'void', 
         div: $('mouseposition'), 
         prefix: '<font color="' + MENU_TITLECOLOR_LIGHT + '">x: </font>',
@@ -2363,6 +2353,21 @@ Ext.onReady(function()
     }));
     
     MAP.addControl(new OpenLayers.Control.ZoomBox());
+	
+	MAP.setCenter(new OpenLayers.LonLat(BASECOORDINATE.longitude, BASECOORDINATE.latitude), 3);
+    
+	MAP.events.on({
+        changelayer: function(e) {
+            if (e.property == 'visibility' && e.layer != choroplethLayer) {
+                if (e.layer.visibility) {
+                    selectFeatureChoropleth.deactivate();
+                }
+                else {
+                    selectFeatureChoropleth.activate();
+                }
+            }
+        }
+    });
 	
     Ext.get('loading').fadeOut({remove: true});
 	
@@ -2421,9 +2426,6 @@ Ext.onReady(function()
     // TEST END
     //
 	
-	
-	
-	
 	},
 	failure: function() {
 		alert( 'Status', 'Error while saving data' );
@@ -2438,7 +2440,6 @@ Ext.onReady(function()
 });
 
 /*SELECT FEATURES*/
-
 function onHoverSelectChoropleth(feature) {
     var east_panel = Ext.getCmp('east');
     var x = east_panel.x - 210;
@@ -2541,7 +2542,6 @@ function onClickUnselectChoropleth(feature) {}
 
 
 /*MAP DATA*/
-
 function loadMapData(redirect) {
 
     Ext.Ajax.request({
@@ -2558,9 +2558,9 @@ function loadMapData(redirect) {
                 MAPDATA.organisationUnit = 'Country';
                 MAPDATA.organisationUnitLevel = Ext.getCmp('map_cb').getValue();
                 MAPDATA.nameColumn = 'name';
-                MAPDATA.longitude = COUNTRY_LONGITUDE;
-                MAPDATA.latitude = COUNTRY_LATITUDE;
-                MAPDATA.zoom = COUNTRY_ZOOM;
+                MAPDATA.longitude = BASECOORDINATE.longitude;
+                MAPDATA.latitude = BASECOORDINATE.latitude;
+                MAPDATA.zoom = 7;
             }
             else if (MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
                 MAPDATA.organisationUnitLevel = parseFloat(MAPDATA.organisationUnitLevel);
@@ -2620,7 +2620,7 @@ function getChoroplethData() {
 }
 
 function dataReceivedChoropleth( responseText ) {
-    var layers = MAP.getLayersByName(CHOROPLETH_LAYERNAME);
+    var layers = MAP.getLayersByName('Thematic map');
     var features = layers[0].features;
     var mapvalues = Ext.util.JSON.decode(responseText).mapvalues;
 
@@ -2698,7 +2698,7 @@ function getAssignOrganisationUnitData() {
 }
 
 function dataReceivedAssignOrganisationUnit( responseText ) {
-    var layers = MAP.getLayersByName(CHOROPLETH_LAYERNAME);
+    var layers = MAP.getLayersByName('Thematic map');
     features = layers[0]['features'];
     
     var relations = Ext.util.JSON.decode(responseText).mapOrganisationUnitRelations;
@@ -2761,7 +2761,7 @@ function getAutoAssignOrganisationUnitData() {
 }
 
 function dataReceivedAutoAssignOrganisationUnit( responseText ) {
-    var layers = MAP.getLayersByName(CHOROPLETH_LAYERNAME);
+    var layers = MAP.getLayersByName('Thematic map');
     var features = layers[0]['features'];
     var organisationUnits = Ext.util.JSON.decode(responseText).organisationUnits;
     var nameColumn = MAPDATA.nameColumn;
