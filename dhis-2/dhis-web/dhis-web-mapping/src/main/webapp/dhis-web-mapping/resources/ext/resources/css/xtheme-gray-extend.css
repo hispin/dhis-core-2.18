@@ -87,13 +87,13 @@
 /* Buttons */
 
 .x-btn-left{
-	background-image:url(../images/gray-extend/button/btn-sprite.gif);
+	background-image:url(../images/gray-extend/button/btn-sprite2.gif);
 }
 .x-btn-right{
-	background-image:url(../images/gray-extend/button/btn-sprite.gif);
+	background-image:url(../images/gray-extend/button/btn-sprite2.gif);
 }
 .x-btn-center{
-	background-image:url(../images/gray-extend/button/btn-sprite.gif);
+	background-image:url(../images/gray-extend/button/btn-sprite2.gif);
 }
 
 /* Layout classes */

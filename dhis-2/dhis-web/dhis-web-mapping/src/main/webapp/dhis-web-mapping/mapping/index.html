@@ -19,11 +19,10 @@
     <!-- JavaScript -->
         
         <!-- OpenLayers -->
-        <!-- <script type="text/javascript" src="../resources/openlayers-2.7/lib/OpenLayers.js"></script> -->
-        <script type="text/javascript" src="../resources/openlayers/OpenLayers.js"></script>
+        <script type="text/javascript" src="../resources/openlayers/lib/OpenLayers.js"></script>
             
             <!-- User extensions -->
-            <script type="text/javascript" src="../resources/openlayers/lib/OpenLayers/Control/newSelectFeature.js"></script>
+            <script type="text/javascript" src="../resources/openlayers-extensions/newSelectFeature.js"></script>
         
         <!-- Ext JS -->
         <script type="text/javascript" src="../resources/ext/adapter/ext/ext-base.js"></script>
@@ -49,7 +48,9 @@
     <style>
         .row-assigned {background-color:#72FF63;}
         .row-not-assigned {background-color:#FFFFFF;}
-        .icon-exit {background-image:url(../../images/exit.png);}
+		.x-btn .icon-zoomin {background-image:url(../../images/zoom_in.png);}
+		.x-btn .icon-zoomout {background-image:url(../../images/zoom_out.png);}
+		.x-btn .icon-zoommin {background-image:url(../../images/zoom_world.png);}
 		.x-mask-loading2 div {padding:2px 11px 3px 32px; background:#fbfbfb url('../../images/loader.gif') no-repeat 5px 2px; line-height:20px; font-weight:normal}
     </style>
 </head>
