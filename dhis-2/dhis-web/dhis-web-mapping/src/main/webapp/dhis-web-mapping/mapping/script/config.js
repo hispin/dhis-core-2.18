@@ -13,13 +13,11 @@
 
 //  Map
 
-    init_longitude = 15;
-    init_latitude = 0;
     init_zoom = 3;
     
 //  MapFish print module
 
-    printConfigUrl = '../../print-servlet-1.2-SNAPSHOT/pdf/info.json';
+    printConfigUrl = '../../../print-servlet-1.2-SNAPSHOT/pdf/info.json';
 
 //  Ajax requests
 
@@ -33,7 +31,8 @@
     south_height = 70; // viewport south
 
     gridpanel_width = west_width - 15;
-    gridpanel_height = 700;
+    
+    multiselect_width = 230;
 	
     combo_width = 150;
 	combo_list_width = combo_width + 17;
