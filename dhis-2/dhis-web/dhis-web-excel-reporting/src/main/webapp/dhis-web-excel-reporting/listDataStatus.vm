@@ -1,7 +1,7 @@
 <h2>$i18n.getString( "data_status" )</h2>
 <table width="100%">
 	<tr><td align="right">
-		<input type="button" value="$i18n.getString( 'add' )" style="width:100px" onclick="window.location='openAddDataEntryStatus.action'"/>
+		<input type="button" value="$i18n.getString( 'add' )" style="width:100px" onclick="window.location='openAddDataStatus.action'"/>
 	</td></tr>
 </table>
 <table width="100%">
@@ -15,11 +15,11 @@
 		<tr #alternate( $mark )>
 			<td>$ds.dataSet.name</td>
 			<td>
-				<input type="checkbox" #if($ds.makeDefault) checked=true #end disabled=true/>
+				<input type="checkbox" #if($ds.frontPage) checked=true #end disabled=true/>
 			</td>
 			<td>
 				<a href="javascript:deleteDataStatus('$ds.id');" title="$i18n.getString( 'delete' )"><img src="../images/delete.png" alt="$i18n.getString( 'delete' )"></a>
-				<a href="openUpdateDataEntryStatus.action?id=$ds.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+				<a href="openUpdateDataStatus.action?id=$ds.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 			</td>
 		</tr>
 		#if( $mark )
@@ -35,7 +35,7 @@
 	
 	function deleteDataStatus( id ){
 		if(window.confirm(i18n_confirm_delete)){
-			window.location = "deleteDataEntryStatus.action?dataStatusId=" + id;
+			window.location = "deleteDataStatus.action?dataStatusId=" + id;
 		}
 	}
 </script>

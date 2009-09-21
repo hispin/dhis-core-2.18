@@ -24,8 +24,18 @@ function treeClicked()
     numberOfSelects++;
     
     setMessage( i18n_loading );
-    
-    document.getElementById( "submitButton" ).disabled = true;
+
+    parent.document.getElementById( "submitButton" ).disabled = true;
+}
+
+function saveDissable()
+{
+	parent.document.getElementById( "submitButton" ).disabled = true;
+}
+
+function saveEnable()
+{
+	parent.document.getElementById( "submitButton" ).disabled = false;
 }
 
 function selectCompleted( selectedUnits )
@@ -36,6 +46,6 @@ function selectCompleted( selectedUnits )
     {
         hideMessage();
         
-        document.getElementById( "submitButton" ).disabled = false;
+       parent.document.getElementById( "submitButton" ).disabled = false;
     }
 }

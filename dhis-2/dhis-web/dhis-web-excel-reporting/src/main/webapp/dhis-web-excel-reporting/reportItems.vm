@@ -88,10 +88,6 @@
 					<option value='indicator'>$i18n.getString('indicator')</option>		
 					<option value='serial'>$i18n.getString('serial')</option>	
 					#end
-					#if ($!reportExcel.isPeriodColumnListing())					
-					<option value='dataelement'>$i18n.getString('dataelement')</option>							
-					<option value='indicator'>$i18n.getString('indicator')</option>				
-					#end
 					
 				</select>
 			</td>

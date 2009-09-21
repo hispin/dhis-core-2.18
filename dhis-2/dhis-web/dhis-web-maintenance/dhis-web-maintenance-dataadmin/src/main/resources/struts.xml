@@ -13,6 +13,14 @@
     </action>
     
     <!-- Locking -->
+	  
+	<action name="emptyOrgunitSetupAssociationsTree"
+      class="org.hisp.dhis.commons.action.NoAction">
+      <result name="success" type="velocity">
+        /dhis-web-maintenance-dataadmin/noResponseInFrame.vm</result>
+      <param name="javascripts">
+        javascript/oust.js,javascript/associations.js,javascript/locking.js</param>
+    </action>
     
     <action name="displayLockingForm"
       class="org.hisp.dhis.dataadmin.action.lock.GetNumberOfLevelsAction">
@@ -71,7 +79,7 @@
       class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">
         /dhis-web-maintenance-dataadmin/selectionedTreeInFrame.vm</result>
-      <param name="javascripts">javascript/oust.js,javascript/dataElementsList.js,javascript/associations.js</param>
+      <param name="javascripts">javascript/oust.js,javascript/locking.js,javascript/dataElementsList.js,javascript/associations.js</param>
     </action>
     
     <!-- Maintenance -->

@@ -33,6 +33,7 @@ import java.util.Collection;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 
@@ -69,6 +70,13 @@ public class GetDataSetsForLockAction
     {
         this.dataSetLockService = dataSetLockService;
     }
+    
+    private SelectionTreeManager selectionTreeManager;
+
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    {
+        this.selectionTreeManager = selectionTreeManager;
+    }
 
     // -------------------------------------------------------------------------
     // Input/output
@@ -103,9 +111,19 @@ public class GetDataSetsForLockAction
             {
                 if ( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) != null )
                 {
-                    dataSet.setLocked( true );
-                    dataSetService.updateDataSet( dataSet );
-                    dataSets.add( dataSet );
+                	if( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ).getSources() != null )
+                	{
+	                    dataSet.setLocked( true );
+	                    dataSetService.updateDataSet( dataSet );
+	                    dataSets.add( dataSet );
+                	}
+                	else
+                	{                                                
+	                    dataSetLockService.deleteDataSetLock( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) );
+	                    dataSet.setLocked( false );
+	                    dataSetService.updateDataSet( dataSet );
+	                    dataSets.add( dataSet );
+                	}
                 }
                 else
                 {
@@ -114,6 +132,8 @@ public class GetDataSetsForLockAction
                     dataSets.add( dataSet );
                 }
             }
+            //selectionTreeManager.clearLockOnSelectedOrganisationUnits();
+           // selectionTreeManager.clearSelectedOrganisationUnits();
         }
         return SUCCESS;
     }

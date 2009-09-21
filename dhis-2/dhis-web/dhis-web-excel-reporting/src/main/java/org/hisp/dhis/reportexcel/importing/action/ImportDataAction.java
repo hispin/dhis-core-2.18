@@ -56,8 +56,6 @@ import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
-;
-
 /**
  * @author Chau Thu Tran
  * @version $Id
@@ -75,13 +73,6 @@ public class ImportDataAction
     public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
-    }
-
-    private ReportExcelService reportExcelService;
-
-    public void setReportExcelService( ReportExcelService reportExcelService )
-    {
-        this.reportExcelService = reportExcelService;
     }
 
     private OrganisationUnitSelectionManager organisationUnitSelectionManager;
@@ -127,8 +118,15 @@ public class ImportDataAction
         this.periodService = periodService;
     }
 
+    private ReportExcelService reportExcelService;
+
+    public void setReportExcelService( ReportExcelService reportExcelService )
+    {
+        this.reportExcelService = reportExcelService;
+    }
+
     // --------------------------------------------------------------------
-    // Getter and Setter
+    // Getters and Setters
     // --------------------------------------------------------------------
 
     private Integer reportId;
@@ -166,7 +164,7 @@ public class ImportDataAction
     public String execute()
         throws Exception
     {
-        ReportExcel report = reportExcelService.getReportExcel( reportId );
+       ReportExcel report = reportExcelService.getReportExcel( reportId.intValue() );
 
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 

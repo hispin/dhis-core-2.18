@@ -62,7 +62,7 @@ public class GetInformationAction
     }
 
     // -------------------------------------------------------------
-    // Getter and Setter
+    // Getters and Setters
     // -------------------------------------------------------------
 
     private OrganisationUnit organisationUnit;

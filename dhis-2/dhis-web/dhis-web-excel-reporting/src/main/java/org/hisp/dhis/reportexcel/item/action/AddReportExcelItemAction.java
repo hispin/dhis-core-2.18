@@ -142,10 +142,10 @@ public class AddReportExcelItemAction
 
         ReportExcel reportExcel = reportService.getReportExcel( reportId );
 
-        Set<ReportExcelItem> reportItems = reportExcel.getReportExcelItems(); 
-        
+        Set<ReportExcelItem> reportItems = reportExcel.getReportExcelItems();
+
         reportItems.add( reportItem );
-        
+
         reportExcel.setReportExcelItems( reportItems );
 
         reportService.updateReportExcel( reportExcel );
