@@ -54,9 +54,9 @@ public class ViewDataAction
     implements Action
 {
     // --------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // --------------------------------------------------------------------
-    
+
     private ReportExcelService reportExcelService;
 
     public void setReportExcelService( ReportExcelService reportExcelService )
@@ -105,7 +105,7 @@ public class ViewDataAction
             Workbook templateWorkbook = Workbook.getWorkbook( upload, ws );
 
             Collection<ReportExcelItem> reportItems = report.getReportExcelItems();
-
+            System.out.println( "reportItems : " + reportItems.size() );
             Sheet sheet = templateWorkbook.getSheet( 0 );
 
             reportItemValues = new ArrayList<ReportExcelItemValue>();
@@ -116,13 +116,16 @@ public class ViewDataAction
                 {
                     String value = ExcelUtils.readValue( reportItem.getRow(), reportItem.getColumn(), sheet );
 
-                    if ( value.length() > 0 )
-                    {
-                        ReportExcelItemValue reportItemvalue = new ReportExcelItemValue( reportItem, value );
+                    ReportExcelItemValue reportItemvalue = new ReportExcelItemValue( reportItem, value );
 
-                        reportItemValues.add( reportItemvalue );
+                    if ( value.length() == 0 )
+                    {
+                        reportItemvalue.setValue( 0 + "" );
                     }
+
+                    reportItemValues.add( reportItemvalue );
                 }
+                
             }
 
             return SUCCESS;

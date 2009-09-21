@@ -34,7 +34,7 @@ function SelectionTreeSelection()
     {
         multipleSelectionAllowed = allowed;
     };
-
+	
     this.select = function( unitId ){
         if ( onSelectFunction ){
             onSelectFunction();
@@ -60,7 +60,7 @@ function SelectionTreeSelection()
         }
         else
         {    
-        	  request.send( selectionTreePath + 'noactionfordatalocking.action?' );       
+        	request.send( selectionTreePath + 'noactionfordatalocking.action?' );       
             linkTags[0].className = '';          
         }
     };
@@ -89,7 +89,7 @@ function SelectionTreeSelection()
 // Subtree
 // -----------------------------------------------------------------------------
 
-function SelectionTree(){
+function SelectionTree(){	
     this.toggle = function( unitId ){
         var parentTag = document.getElementById( getTagId( unitId ));
         var children = parentTag.getElementsByTagName( 'ul' );
@@ -113,6 +113,7 @@ function SelectionTree(){
         var treeTag = document.getElementById( 'selectionTree' );  
         setLoadingMessage( treeTag );
         var children = treeTag.getElementsByTagName( 'ul' );
+        
         if ( children.length > 0 )
         {
             treeTag.removeChild( children[0] );
@@ -169,7 +170,9 @@ function SelectionTree(){
         }
         
         clearLoadingMessage( treeTag );
-        
+		enableLockGeneralComponenets();
+        enableLockOptionButtons();
+		saveEnable();
     }
 
     function createChildren( parentTag, parentElement ){
@@ -234,7 +237,7 @@ function SelectionTree(){
 				}
 				else{
 					toggleTag.appendChild( toggleImg );
-				}				
+			}				
     }
 
     function setVisible( tag, visible ){

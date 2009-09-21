@@ -11,7 +11,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
-    <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService"/>  
+    <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService"/> 
+	<property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
   </bean>
   
   <bean

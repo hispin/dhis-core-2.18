@@ -164,8 +164,17 @@ public class DefineLockOnDataSetOrgunitAndPeriod
         throws Exception
     {
         Period period = new Period();
-        period = periodService.getPeriod( periodId.intValue() );
-        storedBy = currentUserService.getCurrentUsername();
+		
+		if( periodId != null )
+		{
+			period = periodService.getPeriod( periodId.intValue() );
+		}
+		else
+		{
+			return SUCCESS;
+		}
+        
+		storedBy = currentUserService.getCurrentUsername();
 
         // -------------------------------------------------------------------------------
         // For data set movement from locked to unlocked data set list box and

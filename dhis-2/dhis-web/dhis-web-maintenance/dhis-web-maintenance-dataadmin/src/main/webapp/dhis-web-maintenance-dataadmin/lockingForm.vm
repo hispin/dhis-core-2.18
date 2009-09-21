@@ -58,10 +58,10 @@
             </select>
         </td>
         <td align="center">
-            <input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:40px" onclick="moveSelectedById( 'unlockedDataSets', 'lockedDataSets' )"><br>
-            <input type="button" value="&lt;" title="$i18n.getString( 'move_all' )" style="width:40px" onclick="moveSelectedById( 'lockedDataSets', 'unlockedDataSets' )"><br>      
-            <input type="button" value="&gt;&gt;" title="$i18n.getString( 'remove_selected' )" style="width:40px" onclick="moveAllById( 'unlockedDataSets', 'lockedDataSets' )"><br>
-            <input type="button" value="&lt;&lt;" title="$i18n.getString( 'remove_all' )" style="width:40px" onclick="moveAllById( 'lockedDataSets', 'unlockedDataSets' )">
+            <input type="button" id="button5"  value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:40px" onclick="moveSelectedById( 'unlockedDataSets', 'lockedDataSets' )"><br>
+            <input type="button" id="button6"  value="&lt;" title="$i18n.getString( 'move_all' )" style="width:40px" onclick="moveSelectedById( 'lockedDataSets', 'unlockedDataSets' )"><br>      
+            <input type="button" id="button7"  value="&gt;&gt;" title="$i18n.getString( 'remove_selected' )" style="width:40px" onclick="moveAllById( 'unlockedDataSets', 'lockedDataSets' )"><br>
+            <input type="button" id="button8"  value="&lt;&lt;" title="$i18n.getString( 'remove_all' )" style="width:40px" onclick="moveAllById( 'lockedDataSets', 'unlockedDataSets' )">
         </td>
         <td>
             <select id="lockedDataSets" name="lockedDataSets" multiple="multiple" style="min-width:325px;height:8em" ondblclick="LoadOrgUnitTree()" disabled="true">
@@ -80,28 +80,34 @@
     	<table> 
 			<tr>
 				<td>
-                	<input type="button" id="submitButton1" value="$i18n.getString( "apply_lock_on_all" )" onclick="ApplyAll()" style="width:12em" disabled="true">                
-    				<input type="button" id="submitButton2" value="$i18n.getString( "remove_all" )" onclick="RemoveAll()" style="width:12em" disabled="true">             
+                	<input type="button" id="submitButton1" value="$i18n.getString( "apply_lock_on_all" )" onclick="ApplyAll()" style="width:11em" disabled="true">                
+    				<input type="button" id="submitButton2" value="$i18n.getString( "remove_all" )" onclick="RemoveAll()" style="width:11em" disabled="true">             
     				<input type="button" id="submitButton3" value="$i18n.getString( "select_all_at_level" )" onclick="lockAllAtLevel()" style="width:12em" disabled="true">      		
-                    <select id="levelList" id="levelList" name="levelList" style="width:12em">
+                    <select id="levelList" name="levelList" style="width:13em" disabled="true">
                     	#foreach( $level in $levels )
                     		<option value="$level.level" #if ( $selectLevel == $level.level )selected="selcted"#end>$encoder.htmlEncode( $level.name )</option>
                     	#end
                     </select> 			
                 	<input type="button" id="submitButton4" value="$i18n.getString( "unselect_all_at_level" )" onclick="unLockAllAtLevel()" style="width:12em" disabled="true">      		
-            	</td>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="button" id="submitButton" value="$i18n.getString( 'save' )" style="width:30em"  onclick="updateDataSetsOrgunitwise()" disabled="true">									
+					<input type="button" id="submitButton9" value="$i18n.getString( 'cancel' )" style="width:30em"  onclick="cancilSelection()" disabled="true">
+				</td>
 			</tr>
             <tr>
-                  <td colspan="3" height="15"></td>
+                <td colspan="3" height="15"></td>
             </tr>
             <tr>
-                  <th colspan="3">$i18n.getString( "organisation_units_lock" )</th>
+                <th colspan="3">$i18n.getString( "organisation_units_lock" )</th>
             </tr>
             <tr>
-                  <td colspan="3">
-                           <iframe name="iframeForOUTree" id="iframeForOUTree" width="740px" height="230px" frameborder="0">	   
-        				   </iframe>          
-                  </td>
+                <td colspan="3">
+                    <iframe name="iframeForOUTree" id="iframeForOUTree" width="740px" height="230px" frameborder="0">	   
+					</iframe>          
+                </td>
             </tr>
         </table>
 	</tr>
