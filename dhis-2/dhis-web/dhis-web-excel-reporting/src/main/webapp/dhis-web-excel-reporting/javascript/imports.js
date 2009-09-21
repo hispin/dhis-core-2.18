@@ -79,7 +79,7 @@ function importData(){
 	
 	var reportId = document.getElementById('reportId').value;
 	var upload = document.getElementById('uploadFileName').value;
-	var periodId = document.getElementById('periodId').value;
+	var periodId = document.getElementById('period').value;
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );

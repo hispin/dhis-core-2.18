@@ -18,7 +18,7 @@
   </tr>
   <tr>
     <td>$i18n.getString( 'template_excel_file' )</td>
-    <td><select type="text" id="reportId" name="reportId" style="min-width:20em; width:100%" #if(!$!fileExcel) disabled #end onChange="javascript: document.getElementById('lastYear').disabled=false; document.getElementById('nextYear').disabled=false; document.getElementById('periodId').disabled=false; document.getElementById('preview').disabled=false; document.getElementById('import').disabled=false;">
+    <td><select type="text" id="reportId" name="reportId" style="min-width:20em; width:100%" #if(!$!fileExcel) disabled #end onChange="javascript: document.getElementById('lastYear').disabled=false; document.getElementById('nextYear').disabled=false; document.getElementById('period').disabled=false; document.getElementById('preview').disabled=false; document.getElementById('import').disabled=false;">
 	  <option value="">$i18n.getString('select')</option>
 	  #foreach($reportExcel in $reportExcels)
 		<option value="$!reportExcel.id">$!encoder.htmlEncode($!reportExcel.name)</option>
@@ -31,7 +31,7 @@
     <td>
 	<input type="button" value="<<" id="lastYear" name="lastYear" onclick="lastYear();" disabled />
 	<input type="button" value=">>" id="nextYear" name="nextYear" onclick="nextYear()" disabled />
-	<select name="periodId" id="periodId" style="min-width:20em; width:100%" type="text" disabled >
+	<select name="period" id="period" style="min-width:20em; width:100%" type="text" disabled >
         	#foreach($period in $periods)
 				<option value='$period.id'>$format.formatPeriod( $period )</option>
 			#end
