@@ -2076,7 +2076,8 @@ Ext.onReady(function()
 	var layerTreeConfig = [{
         nodeType: 'gx_baselayercontainer',
         singleClickExpand: true,
-        text: 'Backgrounds'
+        text: 'Backgrounds',
+		iconCls: 'icon-background'
     }, {
         nodeType: 'gx_overlaylayercontainer',
         singleClickExpand: true
@@ -2173,7 +2174,7 @@ Ext.onReady(function()
 	
 	var favoritesButton = new Ext.Button({
 		cls: 'x-btn-text-icon',
-		icon: '../../images/favorite_star.gif',
+		icon: '../../images/favorite_star2.png',
 		text: 'Favorites',
 		tooltip: 'Favorite map views',
 		handler: showFavorites
@@ -2638,30 +2639,28 @@ function dataReceivedChoropleth( responseText ) {
     var layers = MAP.getLayersByName('Thematic map');
     var features = layers[0].features;
     var mapvalues = Ext.util.JSON.decode(responseText).mapvalues;
-
+	var mv = new Array();
+	var nameColumn = MAPDATA.nameColumn;
+	
 	if (mapvalues.length == 0) {
 		Ext.messageRed.msg('Thematic map', 'The selected indicator, period and level returned no data.');
 		MASK.hide();
 		return;
 	}
 	
-	for (var i = 0; i < features.length; i++) {
-		features[i].attributes.value = 0;
+	for (var i = 0; i < mapvalues.length; i++) {
+		var featureId = mapvalues[i].featureId;
+		if (featureId != '') {
+			mv[featureId] = mapvalues[i].value;
+		}
 	}
 	
 	if (MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
-		for (var i = 0; i < mapvalues.length; i++) {
-			for (var j = 0; j < features.length; j++) {
-				if (mapvalues[i].featureId == features[j].attributes[MAPDATA.nameColumn]) {
-					features[j].attributes.value = parseFloat(mapvalues[i].value);
-					// features[j].attributes.factor = parseFloat(mapvalues[i].factor);
-					// features[j].attributes.numeratorValue = parseFloat(mapvalues[i].numeratorValue);
-					// features[j].attributes.denominatorValue = parseFloat(mapvalues[i].denominatorValue);
-					break;
-				}
-			}
+		for (var j = 0; j < features.length; j++) {
+			var featureId = features[j].attributes[nameColumn];
+			features[j].attributes.value = mv[featureId] ? mv[featureId] : 0;
 		}
-    }
+	}
 	else if (MAPSOURCE == MAP_SOURCE_TYPE_DATABASE) {
 		for (var i = 0; i < mapvalues.length; i++) {
 			for (var j = 0; j < features.length; j++) {
