@@ -2420,7 +2420,7 @@ Ext.onReady(function()
 		items: [grid]
 	});
 	
-	win2.show();	
+	// win2.show();	
 	
     //
     // TEST END
