@@ -2230,9 +2230,9 @@ Ext.onReady(function()
 			zoomOutButton,
             ' ',
 			zoomMaxExtentButton,
-			' ',' ','-',' ',
+			' ','-',' ',
 			favoritesButton,
-            ' ','-',' ',
+            '-',
             legendSetButton,
 			'->',
 			exitButton
@@ -2501,37 +2501,52 @@ function onHoverUnselectChoropleth(feature) {
 
 function onClickSelectChoropleth(feature) {
     if (ACTIVEPANEL == 'mapping') {
-        if (!Ext.getCmp('grid_gp').getSelectionModel().getSelected()) {
+		var selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
+        if (!selected) {
             Ext.messageRed.msg('Assign organisation units', 'Please select an organisation unit in the list first.');
             return;
         }
-        
-        var selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
-        var organisationUnitId = selected.data['organisationUnitId'];
-        var organisationUnit = selected.data['organisationUnit'];
-        
-        var nameColumn = MAPDATA.nameColumn;
-        var mlp = MAPDATA.mapLayerPath;
-        var featureId = feature.attributes[nameColumn];
-        var name = feature.attributes[nameColumn];
+		
+        var featureId = feature.attributes[MAPDATA.nameColumn];
+		
+		Ext.Ajax.request({
+			url: path + 'getMapOrganisationUnitRelationByFeatureId' + type,
+            method: 'POST',
+			params: {featureId:featureId},
+			
+			success: function( responseObject ) {
+				var mour = Ext.util.JSON.decode( responseObject.responseText ).mapOrganisationUnitRelation[0];
+				var selected;
+				
+				if (mour.featureId == '') {
+					selected = Ext.getCmp('grid_gp').getSelectionModel().getSelected();
+					var organisationUnitId = selected.data.organisationUnitId;
+					var organisationUnit = selected.data.organisationUnit;
 
-        Ext.Ajax.request({
-            url: path + 'addOrUpdateMapOrganisationUnitRelation' + type,
-            method: 'GET',
-            params: { mapLayerPath: mlp, organisationUnitId: organisationUnitId, featureId: featureId },
+					Ext.Ajax.request({
+						url: path + 'addOrUpdateMapOrganisationUnitRelation' + type,
+						method: 'GET',
+						params: { mapLayerPath: MAPDATA.mapLayerPath, organisationUnitId: organisationUnitId, featureId: featureId },
 
-            success: function( responseObject ) {
-                Ext.messageBlack.msg('Assign organisation units', msg_highlight_start + organisationUnit + msg_highlight_end + ' (database) assigned to ' + msg_highlight_start + name + msg_highlight_end + ' (geojson).');
-                
-                Ext.getCmp('grid_gp').getStore().reload();
-                loadMapData('assignment');
-            },
-            failure: function() {
-                alert( 'Status', 'Error while retrieving data' );
-            } 
-        });
-        
-        popup_feature.hide();
+						success: function( responseObject ) {
+							Ext.messageBlack.msg('Assign organisation units', msg_highlight_start + organisationUnit + msg_highlight_end + ' (database) assigned to ' + msg_highlight_start + featureId + msg_highlight_end + ' (geojson).');
+							Ext.getCmp('grid_gp').getStore().reload();
+							popup_feature.hide();
+							loadMapData('assignment');
+						},
+						failure: function() {
+							alert( 'Error: addOrUpdateMapOrganisationUnitRelation' );
+						} 
+					});
+				}
+				else {
+					Ext.messageRed.msg('Assign organisation units', msg_highlight_start + featureId + msg_highlight_end + ' is already assigned.');
+				}
+			},
+			failure: function() {
+				alert('Error: getMapOrganisationUnitRelationByFeatureId');
+			}
+		});
     }
 	else {
 		MAP.setCenter(feature.geometry.getBounds().getCenterLonLat(), MAP.getZoom()+1);

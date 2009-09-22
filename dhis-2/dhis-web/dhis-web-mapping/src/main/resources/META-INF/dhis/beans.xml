@@ -126,7 +126,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="mappingService"
       ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>	
+  </bean>
+
+  <bean id="org.hisp.dhis.mapping.action.GetMapOrganisationUnitRelationByFeatureIdAction"
+    class="org.hisp.dhis.mapping.action.GetMapOrganisationUnitRelationByFeatureIdAction"
+    scope="prototype">
+    <property name="mappingService"
+      ref="org.hisp.dhis.mapping.MappingService"/>
+  </bean>
   
   <bean id="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction"
     class="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction"
