@@ -248,6 +248,8 @@ public interface MappingService
      *         OrganisationUnit.
      */
     MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit );
+    
+    MapOrganisationUnitRelation getMapOrganisationUnitRelationByFeatureId( String featureId );
 
     /**
      * Returns a Collection of MapOrganisationUnitRelations.

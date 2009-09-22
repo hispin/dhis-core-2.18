@@ -400,6 +400,21 @@ public class DefaultMappingService
     {
         return mappingStore.getMapOrganisationUnitRelation( map, organisationUnit );
     }
+    
+    public MapOrganisationUnitRelation getMapOrganisationUnitRelationByFeatureId( String featureId )
+    {   
+        Collection<MapOrganisationUnitRelation> relations = mappingStore.getAllMapOrganisationUnitRelations();
+        
+        for ( MapOrganisationUnitRelation relation : relations )
+        {
+            if ( relation.getFeatureId().equals( featureId ))
+            {
+                return relation;
+            }
+        }
+        
+        return null;
+    }
 
     public Collection<MapOrganisationUnitRelation> getAllMapOrganisationUnitRelations()
     {

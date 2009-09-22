@@ -90,6 +90,10 @@
 	<action name="addOrUpdateMapOrganisationUnitRelations" class="org.hisp.dhis.mapping.action.AddOrUpdateMapOrganisationUnitRelationsAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
     </action>
+	  
+	<action name="getMapOrganisationUnitRelationByFeatureId" class="org.hisp.dhis.mapping.action.GetMapOrganisationUnitRelationByFeatureIdAction">
+      <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapOrganisationUnitRelation.vm</result>
+    </action>  
     
     <action name="getAvailableMapOrganisationUnitRelations" class="org.hisp.dhis.mapping.action.GetAvailableMapOrganisationUnitRelationsAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapOrganisationUnitRelations.vm</result>
