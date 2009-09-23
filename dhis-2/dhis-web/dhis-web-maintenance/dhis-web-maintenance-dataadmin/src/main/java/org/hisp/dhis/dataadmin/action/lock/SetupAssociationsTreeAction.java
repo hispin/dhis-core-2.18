@@ -26,7 +26,6 @@
  */
 package org.hisp.dhis.dataadmin.action.lock;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -106,7 +105,7 @@ public class SetupAssociationsTreeAction
     {
         return selectedLockedDataSetId;
     }
-
+    
     private Integer periodId;
 
     public void setPeriodId( Integer periodId )
@@ -118,57 +117,7 @@ public class SetupAssociationsTreeAction
     {
         return periodId;
     }
-
-    private Collection<String> lockedDataSets = new ArrayList<String>();
-
-    public void setLockedDataSets( Collection<String> lockedDataSets )
-    {
-        this.lockedDataSets = lockedDataSets;
-    }
-
-    public Collection<String> getLockedDataSets()
-    {
-        return lockedDataSets;
-    }
-
-    private Collection<String> unlockedDataSets;
-
-    public void setUnlockedDataSets( Collection<String> unlockedDataSets )
-    {
-        this.unlockedDataSets = unlockedDataSets;
-    }
-
-    public Collection<String> getUnlockedDataSets()
-    {
-        return unlockedDataSets;
-    }
-
-    private DataSet dataSet;
-
-    public DataSet getDataSet()
-    {
-        return dataSet;
-    }
-
-    public void setDataSet( DataSet dataSet )
-    {
-        this.dataSet = dataSet;
-    }
-
-    private Collection<DataSet> dataSets = new ArrayList<DataSet>();
-
-    public Collection<DataSet> getDataSets()
-    {
-        return dataSets;
-    }
-
-    private Date timestamp;
-
-    public Date getTimestamp()
-    {
-        return timestamp;
-    }
-
+   
     private String storedBy;
 
     public String getStoredBy()
@@ -190,21 +139,21 @@ public class SetupAssociationsTreeAction
         dataSet = dataSetService.getDataSet( selectedLockedDataSetId.intValue() );
         storedBy = currentUserService.getCurrentUsername();
 
-        if ( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) != null )
-        {
-            selectionTreeManager.clearSelectedOrganisationUnits();
-            selectionTreeManager.clearLockOnSelectedOrganisationUnits();
+        DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
+        
+        selectionTreeManager.clearSelectedOrganisationUnits();
+        selectionTreeManager.clearLockOnSelectedOrganisationUnits();
+        
+        if ( dataSetLock != null )
+        {           
             selectionTreeManager.setSelectedOrganisationUnits( convert( dataSet.getSources() ) );
-            if ( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ).getSources() != null )
+            if ( dataSetLock.getSources() != null )
             {
-                selectionTreeManager.setLockOnSelectedOrganisationUnits( convert( dataSetLockService
-                    .getDataSetLockByDataSetAndPeriod( dataSet, period ).getSources() ) );
+                selectionTreeManager.setLockOnSelectedOrganisationUnits( convert( dataSetLock.getSources() ) );
             }
         }
         else
         {
-            selectionTreeManager.clearSelectedOrganisationUnits();
-            selectionTreeManager.clearLockOnSelectedOrganisationUnits();
             selectionTreeManager.setSelectedOrganisationUnits( convert( dataSet.getSources() ) );
             DataSetLock dataSLock = new DataSetLock( dataSet, period );
             dataSLock.setTimestamp( new Date() );
@@ -213,7 +162,6 @@ public class SetupAssociationsTreeAction
             dataSet.setLocked( true );
             dataSetService.updateDataSet( dataSet );
         }
-
         return SUCCESS;
     }
 

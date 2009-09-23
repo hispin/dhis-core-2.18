@@ -2,19 +2,12 @@
   <head>
 	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/${stylesheet}">
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css">
-    <link type="image/png" rel="icon" href="../images/favicon.png">    
-      
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script type="text/javascript" src="../dhis-web-commons/util/commons.js"></script>
-    <script type="text/javascript" src="../dhis-web-commons/util/lists.js"></script>
-    <script type="text/javascript" src="../dhis-web-commons/util/jquery.js"></script>
-    <script type="text/javascript" src="../dhis-web-commons/css/${stylesheetDirectory}/dom.js"></script>
-        
+    <link type="image/png" rel="icon" href="../images/favicon.png">         
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">		
 	<script type="text/javascript" src="../request.js"></script>
     #foreach( $javascript in $javascripts )
       <script type="text/javascript" src="$javascript"></script>
     #end
-
   </head>
   
   <body>
@@ -23,8 +16,7 @@
         <input type="hidden" name="dataSet" value="$dataSet">
 			<input type="hidden" name="selectedLockedDataSetId" value="$selectedLockedDataSetId">
 				<input type="hidden" name="periodId" value="$periodId">			
-    </div>
-	
+    </div>	
 	<table>
         <tr>
             <td colspan="3">
@@ -34,25 +26,13 @@
                       selectionTreeSelection.setMultipleSelectionAllowed( true );
                       selectionTreeSelection.setOnSelectFunction( treeClicked );
                       selectionTreeSelection.setListenerFunction( selectCompleted );
-                      selectionTree.buildSelectionTree( saveDissable );
-					  
+                      selectionTree.buildSelectionTree();				  
                 </script>  			
                 <script type="text/javascript">
                       var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
-		        </script>
-				
+		        </script>				
             </td>
-        </tr>
-		
-		<!-- Submit--> 
-    
-        <!--<tr>        
-            <td>
-                <input type="button" id="submitButton" value="$i18n.getString( 'save' )" style="width:15em"  onclick="parent.updateDataSetsOrgunitwise()" >									
-			    <input type="button" id="submitButton5" value="$i18n.getString( 'cancel' )" style="width:15em"  onclick="parent.cancilSelection()">                                 
-            </td>
-            <td colspan="2"></td>
-        </tr>-->    
+        </tr>		
     </table>
     </form>
     <span id="message"></span>

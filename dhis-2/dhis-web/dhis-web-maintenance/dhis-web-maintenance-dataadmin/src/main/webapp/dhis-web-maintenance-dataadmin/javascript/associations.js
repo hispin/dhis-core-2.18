@@ -21,21 +21,18 @@ function unselectAllAtLevel( dataSetId )
 
 function treeClicked()
 {
-    numberOfSelects++;
-    
-    setMessage( i18n_loading );
-
-    parent.document.getElementById( "submitButton" ).disabled = true;
-}
-
-function saveDissable()
-{
-	parent.document.getElementById( "submitButton" ).disabled = true;
-}
-
-function saveEnable()
-{
-	parent.document.getElementById( "submitButton" ).disabled = false;
+	if( ( parent.document.getElementById( "button5" ).disabled == true )
+			|| ( parent.document.getElementById( "button6" ).disabled == true )
+			|| ( parent.document.getElementById( "button7" ).disabled == true )
+			|| (parent.document.getElementById( "button8" ).disabled == true ) ){	  
+				alert( "Illegal Operation !" ); 
+				return true;
+			}
+   else{ 	
+    		numberOfSelects++;   
+    		setMessage( i18n_loading );
+    		parent.document.getElementById( "submitButton" ).disabled = true;
+    	}
 }
 
 function selectCompleted( selectedUnits )
@@ -44,7 +41,7 @@ function selectCompleted( selectedUnits )
     
     if ( numberOfSelects <= 0 )
     {
-        hideMessage();
+       hideMessage();
         
        parent.document.getElementById( "submitButton" ).disabled = false;
     }

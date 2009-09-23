@@ -37,6 +37,7 @@ public class SMSListener {
     private InboundNotification inboundNotification;
     private int PORT = 8; //default port
     private File infFile = new File(System.getProperty("user.home") + "/.smslistener", "SMSListener.inf");
+    SerialModemGateway gateway;
 
     public SMSListener() {
     }
@@ -46,10 +47,10 @@ public class SMSListener {
         public void process(String gatewayId, MessageTypes msgType, InboundMessage msg) {
             if (msgType == MessageTypes.INBOUND) {
                 System.out.println(">>> New Inbound message detected from Gateway: " + gatewayId);
+                processMessage(msg);
             } else if (msgType == MessageTypes.STATUSREPORT) {
                 System.out.println(">>> New Inbound Status Report message detected from Gateway: " + gatewayId);
             }
-            processMessage(msg);
             try {
                 service.deleteMessage(msg);
             } catch (Exception e) {
@@ -101,11 +102,21 @@ public class SMSListener {
             });
             //</editor-fold>
 
+            //<editor-fold defaultstate="collapsed" desc=" About Item ">
+            final MenuItem aboutItem = new MenuItem("About");
+            aboutItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    new AboutWindow().setVisible(true);
+                }
+            });
+            //</editor-fold>
+
             menu.add(serviceItem);
             menu.add(settingsItem);
+            menu.add(aboutItem);
             menu.add(exitItem);
 
-            Image img = new ImageIcon(getClass().getResource("phone.png")).getImage();
+            Image img = new ImageIcon(getClass().getResource("images/phone.png")).getImage();
             TrayIcon trayIcon = new TrayIcon(img, "DHIS SMS Listener");
             trayIcon.setPopupMenu(menu);
             try {
@@ -126,7 +137,7 @@ public class SMSListener {
     private void startSMSListener() {
         service = new Service();
         inboundNotification = new InboundNotification();
-        SerialModemGateway gateway = new SerialModemGateway("modem.com" + getPort(), "COM" + getPort(), 115200, "Generic USB", "generic-usb-modem");
+        gateway = new SerialModemGateway("modem.com" + getPort(), "COM" + getPort(), 115200, "Generic USB", "generic-usb-modem");
         gateway.setProtocol(Protocols.PDU);
         gateway.setInbound(true);
         gateway.setOutbound(false);
@@ -149,6 +160,7 @@ public class SMSListener {
     private void stopSMSListener() {
         try {
             System.out.println("Stopping Service on Com:" + getPort());
+            gateway.stopGateway();
             service.stopService();
         } catch (TimeoutException ex) {
             Logger.getLogger(SMSListener.class.getName()).log(Level.SEVERE, null, ex);
@@ -174,6 +186,8 @@ public class SMSListener {
             JOptionPane.showMessageDialog(null, "Message Decryption Error: " + uneex.getMessage());
             return;
         } catch (ClassCastException ccex) {
+            return;
+        } catch (ArithmeticException aex) {
             return;
         }
     }

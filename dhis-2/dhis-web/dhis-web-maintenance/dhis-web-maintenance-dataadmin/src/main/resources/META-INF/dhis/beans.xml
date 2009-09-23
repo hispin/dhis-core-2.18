@@ -138,6 +138,43 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     </property>
   </bean>
+	
+  <bean id="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction"
+    class="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction" scope="prototype">
+    <property name="selectionTreeManager">
+      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+    </property>
+  </bean>
+	
+	<bean id="org.hisp.dhis.dataadmin.action.lock.LockSelectedOrganisationUnitAction"
+    class="org.hisp.dhis.dataadmin.action.lock.LockSelectedOrganisationUnitAction"
+    scope="prototype">
+    <property name="organisationUnitService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    </property>
+    <property name="selectionTreeManager">
+      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+    </property>
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataadmin.action.lock.RemoveLockSelectedOrganisationUnitAction"
+    class="org.hisp.dhis.dataadmin.action.lock.RemoveLockSelectedOrganisationUnitAction"
+    scope="prototype">
+    <property name="organisationUnitService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    </property>
+    <property name="selectionTreeManager">
+      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+    </property>
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataadmin.action.lock.NoActionForDataLock"
+    class="org.hisp.dhis.dataadmin.action.lock.NoActionForDataLock"
+    scope="prototype">
+    <property name="selectionTreeManager">
+      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+    </property>
+  </bean>
   
   <!-- Maintenance -->
   
