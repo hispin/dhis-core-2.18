@@ -23,10 +23,9 @@
     <module>dhis-web-datamart</module>
     <module>dhis-web-validationrule</module>
     <module>dhis-web-reporting</module>
-	<module>dhis-web-excel-reporting</module>
     <module>dhis-web-mapping</module>
     <module>dhis-web-dashboard-integration</module>
-    <module>dhis-web-portal</module>
+    <!--<module>dhis-web-portal</module>-->
   </modules>
 
   <distributionManagement>

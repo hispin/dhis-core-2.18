@@ -47,7 +47,11 @@
       <result name="success" type="velocity">
         /dhis-web-maintenance-dataadmin/selectionedTreeInFrame.vm</result>
       <param name="javascripts">
-        javascript/oust.js,javascript/associations.js,javascript/locking.js</param>
+        javascript/oust.js,javascript/associations.js,javascript/locking.js,
+		  ../dhis-web-commons/util/commons.js,
+		  ../dhis-web-commons/util/lists.js,
+		  ../dhis-web-commons/util/jquery.js,
+		  ../dhis-web-commons/css/${stylesheetDirectory}/dom.js</param>
     </action>
     
     <action name="defineLockOnDataSetOrgunitAndPeriod"
@@ -57,29 +61,58 @@
  
 	<action name="selectLevel"
       class="org.hisp.dhis.dataadmin.action.lock.SelectLevelAction">
-      <result name="success" type="chain">getSelectionTree</result>
+      <result name="success" type="chain">getLockSelectionTree</result>
     </action>
     
     <action name="unselectLevel"
       class="org.hisp.dhis.dataadmin.action.lock.UnselectLevelAction">
-      <result name="success" type="chain">getSelectionTree</result>
+      <result name="success" type="chain">getLockSelectionTree</result>
     </action>
     
     <action name="selectAll"
       class="org.hisp.dhis.dataadmin.action.lock.SelectAllAction">
-      <result name="success" type="chain">getSelectionTree</result>
+      <result name="success" type="chain">getLockSelectionTree</result>
     </action>
     
     <action name="unselectAll"
       class="org.hisp.dhis.dataadmin.action.lock.UnselectAllAction">
-      <result name="success" type="chain">getSelectionTree</result>
+      <result name="success" type="chain">getLockSelectionTree</result>
     </action>
     
-    <action name="getSelectionTree"
+    <action name="getLockSelectionTree"
       class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">
         /dhis-web-maintenance-dataadmin/selectionedTreeInFrame.vm</result>
-      <param name="javascripts">javascript/oust.js,javascript/locking.js,javascript/dataElementsList.js,javascript/associations.js</param>
+      <param name="javascripts">javascript/oust.js,javascript/locking.js,
+		  javascript/dataElementsList.js,javascript/associations.js,
+		  ../dhis-web-commons/util/commons.js,
+		  ../dhis-web-commons/util/lists.js,
+		  ../dhis-web-commons/util/jquery.js,
+		  ../dhis-web-commons/css/${stylesheetDirectory}/dom.js</param>
+    </action>
+	  
+	<action name="getExpandedTreeForLock" class="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction">
+      <result name="success" type="velocity">../dhis-web-commons/ouwt/responseTree.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	  
+	  <action name="lockorgunit"
+      class="org.hisp.dhis.dataadmin.action.lock.LockSelectedOrganisationUnitAction">
+      <result name="success" type="velocity">../dhis-web-commons/ouwt/responseSelect.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <action name="removelockorgunit"
+      class="org.hisp.dhis.dataadmin.action.lock.RemoveLockSelectedOrganisationUnitAction">
+      <result name="success" type="velocity">
+        ../dhis-web-commons/ouwt/responseSelect.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <action name="noactionfordatalocking"
+      class="org.hisp.dhis.dataadmin.action.lock.NoActionForDataLock">
+      <result name="success" type="velocity">../dhis-web-commons/ouwt/responseSelect.vm</result>   
+      <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <!-- Maintenance -->

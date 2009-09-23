@@ -138,7 +138,6 @@ public class UnselectAllAction
 				 selectionTreeManager.clearSelectedOrganisationUnits();
 				 selectionTreeManager.clearLockOnSelectedOrganisationUnits();
 				 selectionTreeManager.setSelectedOrganisationUnits( convert( dataSet.getSources() ) );
-				 //selectionTreeManager.setLockOnSelectedOrganisationUnits( convert( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ).getSources() ) );
 			}	        
 		    return SUCCESS;   	
 	}

@@ -49,17 +49,25 @@ function SelectionTreeSelection()
 
         if ( linkTags[0].className == 'selected' ){
         	if ( multipleSelectionAllowed ){
-                request.send( selectionTreePath + 'lockorgunit.action?id=' + unitId );
-                linkTags[0].className = 'locked';
-            }         
+        	  if( ( parent.document.getElementById( "button5" ).disabled == false )
+								&& ( parent.document.getElementById( "button6" ).disabled == false )
+								&& ( parent.document.getElementById( "button7" ).disabled == false )
+								&& (parent.document.getElementById( "button8" ).disabled == false ) ){
+		                request.send( selectionTreePath + 'lockorgunit.action?id=' + unitId );
+		                linkTags[0].className = 'locked';
+            }
+          }         
         }
-        else if ( linkTags[0].className == 'locked' )
-        {
-            request.send( selectionTreePath + 'removelockorgunit.action?id=' + unitId );
-            linkTags[0].className = 'selected';
+        else if ( linkTags[0].className == 'locked' ){
+	        if( ( parent.document.getElementById( "button5" ).disabled == false )
+								&& ( parent.document.getElementById( "button6" ).disabled == false )
+								&& ( parent.document.getElementById( "button7" ).disabled == false )
+								&& (parent.document.getElementById( "button8" ).disabled == false ) ){
+			            	request.send( selectionTreePath + 'removelockorgunit.action?id=' + unitId );
+			            	linkTags[0].className = 'selected';
+            }
         }
-        else
-        {    
+        else{    
         	request.send( selectionTreePath + 'noactionfordatalocking.action?' );       
             linkTags[0].className = '';          
         }
@@ -122,8 +130,8 @@ function SelectionTree(){
         var request = new Request();
         request.setResponseTypeXML( 'units' );
         request.setCallbackSuccess( treeReceived );
-        request.send( selectionTreePath + 'getExpandedTreeForLock.action' );
-        
+        request.send( 'getExpandedTreeForLock.action' );   
+           
     };
 
     function processExpand( rootElement ){
@@ -170,9 +178,7 @@ function SelectionTree(){
         }
         
         clearLoadingMessage( treeTag );
-		enableLockGeneralComponenets();
-        enableLockOptionButtons();
-		saveEnable();
+        enableLockComponents();		
     }
 
     function createChildren( parentTag, parentElement ){
@@ -212,11 +218,10 @@ function SelectionTree(){
         if ( child.getAttribute( 'selected' ) == 'true' ){
             linkTag.className = 'selected';
         }
-        
         if ( child.getAttribute( 'locked' ) == 'true' ){
             linkTag.className = 'locked';
         }
-
+ 
         var childTag = document.createElement( 'li' );
         childTag.id = getTagId( childId );
         childTag.appendChild( document.createTextNode( ' ' ));

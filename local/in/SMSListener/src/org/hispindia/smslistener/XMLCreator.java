@@ -17,45 +17,48 @@ public class XMLCreator {
         String actualData = formData[1];
         String[] dataValues = actualData.split("\\|", 78);
         System.out.println("Total datavalues = " + dataValues.length);
+
         for (int i = 0; i < dataValues.length; i++) {
             System.out.println("Values = " + dataValues[i]);
         }
-
-        File file = new File(dhis2Home + "\\mi\\pending\\" + phoneNumber + sendTime.replace(":", "-") + ".xml");
-        try {
-            System.out.println(file.getAbsolutePath());
-            FileWriter writer = new FileWriter(file);
-            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            writer.write("<dxf>\n");
-            writer.write("<source>" + phoneNumber + "</source>\n");
-            if (period.length() == 1) {
-                writer.write("<period>2009-0" + period + "-01</period>\n");
-            } else if (period.length() == 2) {
-                if (Integer.parseInt(period) > 12 && Integer.parseInt(period) < 22) {
-                    writer.write("<period>2008-0" + (Integer.parseInt(period) - 12) + "-01</period>\n");
-                } else if (Integer.parseInt(period) >= 22) {
-                    writer.write("<period>2008-" + (Integer.parseInt(period) - 12) + "-01</period>\n");
+        if (dataValues.length == 78) {
+            File file = new File(dhis2Home + "\\mi\\pending\\" + phoneNumber + sendTime.replace(":", "-") + ".xml");
+            try {
+                System.out.println(file.getAbsolutePath());
+                FileWriter writer = new FileWriter(file);
+                writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+                writer.write("<dxf>\n");
+                writer.write("<source>" + phoneNumber + "</source>\n");
+                if (period.length() == 1) {
+                    writer.write("<period>2009-0" + period + "-01</period>\n");
+                } else if (period.length() == 2) {
+                    if (Integer.parseInt(period) > 12 && Integer.parseInt(period) < 22) {
+                        writer.write("<period>2008-0" + (Integer.parseInt(period) - 12) + "-01</period>\n");
+                    } else if (Integer.parseInt(period) >= 22) {
+                        writer.write("<period>2008-" + (Integer.parseInt(period) - 12) + "-01</period>\n");
+                    } else {
+                        writer.write("<period>2009-" + period + "-01</period>\n");
+                    }
                 } else {
-                    writer.write("<period>2009-" + period + "-01</period>\n");
+                    writer.write("<period>" + period + "</period>\n");
                 }
-            } else {
-                writer.write("<period>" + period + "</period>\n");
-            }
-            writer.write("<timeStamp>" + sendTime + "</timeStamp>\n");
-            for (int i = 0; i < elementIds.length; i++) {
-                if (dataValues[i].isEmpty()) {
-                    continue;
+                writer.write("<timeStamp>" + sendTime + "</timeStamp>\n");
+                for (int i = 0; i < elementIds.length; i++) {
+                    if (dataValues[i].isEmpty()) {
+                        continue;
+                    }
+                    writer.write("<dataValue>\n");
+                    writer.write("<dataElement>" + elementIds[i] + "</dataElement>\n");
+                    writer.write("<value>" + dataValues[i] + "</value>\n");
+                    writer.write("</dataValue>\n");
                 }
-                writer.write("<dataValue>\n");
-                writer.write("<dataElement>" + elementIds[i] + "</dataElement>\n");
-                writer.write("<value>" + dataValues[i] + "</value>\n");
-                writer.write("</dataValue>\n");
+                writer.write("<info>" + info + "</info>\n");
+                writer.write("</dxf>\n");
+                writer.close();
+            } catch (IOException ex) {
+                Logger.getLogger(SMSListener.class.getName()).log(Level.SEVERE, null, ex);
+                return;
             }
-            writer.write("<info>" + info + "</info>\n");
-            writer.write("</dxf>\n");
-            writer.close();
-        } catch (IOException ex) {
-            Logger.getLogger(SMSListener.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

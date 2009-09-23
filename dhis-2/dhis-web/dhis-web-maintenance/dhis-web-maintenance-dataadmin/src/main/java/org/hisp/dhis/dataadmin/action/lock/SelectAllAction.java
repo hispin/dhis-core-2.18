@@ -87,10 +87,10 @@ public class SelectAllAction
         DataSet dataSet = new DataSet();      
         dataSet = dataSetService.getDataSet(selectedLockedDataSetId.intValue());         
               
-        selectionTreeManager.clearSelectedOrganisationUnits();
-        selectionTreeManager.clearLockOnSelectedOrganisationUnits();
+        //selectionTreeManager.clearSelectedOrganisationUnits();
+        //selectionTreeManager.clearLockOnSelectedOrganisationUnits();
         
-        selectionTreeManager.setSelectedOrganisationUnits( convert( dataSet.getSources() ) );             
+        //selectionTreeManager.setSelectedOrganisationUnits( convert( dataSet.getSources() ) );             
         selectionTreeManager.setLockOnSelectedOrganisationUnits( convert( dataSet.getSources() ) );
         
         return SUCCESS;

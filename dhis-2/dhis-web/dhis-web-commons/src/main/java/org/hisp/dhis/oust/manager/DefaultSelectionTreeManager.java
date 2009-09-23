@@ -179,8 +179,6 @@ public class DefaultSelectionTreeManager
         // transaction
         
         Collection<OrganisationUnit> reloadedSelectedUnits = reloadOrganisationUnits( selectedUnits );
-     
-        // Remove all selected units that are not in the trees
         
         Collection<OrganisationUnit> rootUnits = getRootOrganisationUnits();
 

@@ -150,8 +150,9 @@ public class SelectLevelAction
     // Action
     // -------------------------------------------------------------------------
 
-    public String execute()
-        throws Exception
+    @SuppressWarnings("unchecked")
+	public String execute()
+    throws Exception
     {
         selectionTreeManager.clearSelectedOrganisationUnits();
         selectionTreeManager.clearLockOnSelectedOrganisationUnits();       
@@ -172,16 +173,14 @@ public class SelectLevelAction
             selectLevel( rootUnit, FIRST_LEVEL, selectedUnits );        
         }
                    
-        selectionTreeManager.setSelectedOrganisationUnits( convert( dataSet.getSources() ) );
+        selectionTreeManager.clearLockOnSelectedOrganisationUnits();
         
         if( dataSetLock.getSources() == null )
-        {
-            //selectionTreeManager.clearLockOnSelectedOrganisationUnits();
+        {  	
             selectionTreeManager.setLockOnSelectedOrganisationUnits( selectedUnits );
         }
         else
         {  
-            //selectionTreeManager.clearLockOnSelectedOrganisationUnits();
             selectedUnits.addAll(( convert( dataSetLock.getSources() )));
             selectionTreeManager.setLockOnSelectedOrganisationUnits( selectedUnits ) ;
         }
@@ -191,37 +190,38 @@ public class SelectLevelAction
         return SUCCESS;
     }
 
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-    
-    private Set<OrganisationUnit> convert( Collection<Source> sources )
-    {
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-        
-        for ( Source source : sources )
-        {               
-            organisationUnits.add( (OrganisationUnit) source );
-        }       
-        
-        return organisationUnits;
-    }  
-     
-    private void selectLevel( OrganisationUnit orgUnit, int currentLevel, Collection<OrganisationUnit> selectedUnits )
-    {
-        if ( currentLevel == level )
-        {
-            if( selectionTreeManager.getSelectedOrganisationUnits().contains( orgUnit ))
-            {
-                selectedUnits.add( orgUnit );
-            }
-        }
-        else
-        {
-            for ( OrganisationUnit child : orgUnit.getChildren() )
-            {
-                selectLevel( child, currentLevel + 1, selectedUnits );
-            }
-        }
-    }
+
+	// -------------------------------------------------------------------------
+	// Supportive methods
+	// -------------------------------------------------------------------------
+
+	private Set<OrganisationUnit> convert( Collection<Source> sources )
+	{
+	    Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+	    
+	    for ( Source source : sources )
+	    {               
+	        organisationUnits.add( (OrganisationUnit) source );
+	    }       
+	    
+	    return organisationUnits;
+	}  
+	 
+	private void selectLevel( OrganisationUnit orgUnit, int currentLevel, Collection<OrganisationUnit> selectedUnits )
+	{
+	    if ( currentLevel == level )
+	    {
+	        if( selectionTreeManager.getSelectedOrganisationUnits().contains( orgUnit ))
+	        {
+	            selectedUnits.add( orgUnit );
+	        }
+	    }
+	    else
+	    {
+	        for ( OrganisationUnit child : orgUnit.getChildren() )
+	        {
+	            selectLevel( child, currentLevel + 1, selectedUnits );
+	        }
+	    }
+	}
 }

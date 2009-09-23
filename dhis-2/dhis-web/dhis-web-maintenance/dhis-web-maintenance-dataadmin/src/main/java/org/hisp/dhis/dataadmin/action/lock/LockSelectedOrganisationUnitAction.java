@@ -24,7 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.oust.action;
+package org.hisp.dhis.dataadmin.action.lock;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -41,10 +41,10 @@ import com.opensymphony.xwork2.Action;
  * @author Brajesh Murari
  * @version $Id$
  */
-public class RemoveLockSelectedOrganisationUnitAction
+public class LockSelectedOrganisationUnitAction
 implements Action
 {
-    private static final Log LOG = LogFactory.getLog( RemoveLockSelectedOrganisationUnitAction.class );
+    private static final Log LOG = LogFactory.getLog( LockSelectedOrganisationUnitAction.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -92,17 +92,11 @@ implements Action
         try
         {
             OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
-
-            if ( unit == null )
-            {
-                throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
-            }
-
-            lockedUnits = new HashSet<OrganisationUnit>( selectionTreeManager.getLockOnSelectedOrganisationUnits() );
-            lockedUnits = selectionTreeManager.getLockOnSelectedOrganisationUnits();           
-            lockedUnits.remove( unit );           
+            
+            lockedUnits = new HashSet<OrganisationUnit>( selectionTreeManager.getLockOnSelectedOrganisationUnits().size() );
+            lockedUnits = selectionTreeManager.getLockOnSelectedOrganisationUnits();
+            lockedUnits.add( unit );
             selectionTreeManager.setLockOnSelectedOrganisationUnits( lockedUnits );
-            //System.out.println("lockedUnits size in RemoveLockSelectedOrganisationUnitAction : " + lockedUnits.size());           
         }
         catch ( Exception e )
         {
@@ -110,6 +104,7 @@ implements Action
 
             throw e;
         }
+
         return SUCCESS;
     }
 }

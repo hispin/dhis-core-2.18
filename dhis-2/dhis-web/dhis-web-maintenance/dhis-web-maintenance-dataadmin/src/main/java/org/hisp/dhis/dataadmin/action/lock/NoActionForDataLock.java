@@ -24,40 +24,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.oust.action;
+package org.hisp.dhis.dataadmin.action.lock;
 
 import java.util.Collection;
-import java.util.HashSet;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Brajesh Murari
  * @version $Id$
  */
-public class LockSelectedOrganisationUnitAction
+public class NoActionForDataLock
 implements Action
 {
-    private static final Log LOG = LogFactory.getLog( LockSelectedOrganisationUnitAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
-    private SelectionTreeManager selectionTreeManager;
+    @SuppressWarnings("unused")
+	private SelectionTreeManager selectionTreeManager;
 
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
@@ -68,18 +54,23 @@ implements Action
     // Input/output
     // -------------------------------------------------------------------------
 
-    private int id;
+    private Collection<OrganisationUnit> selectedUnits;
 
-    public void setId( int organisationUnitId )
+    public Collection<OrganisationUnit> getSelectedUnits()
     {
-        this.id = organisationUnitId;
+        return selectedUnits;
     }
-
-    private Collection<OrganisationUnit> lockedUnits;
-
-    public Collection<OrganisationUnit> getLockedUnits()
+    
+    private String message;
+    
+    public String getMessage()
     {
-        return lockedUnits;
+        return message;
+    }
+    
+    public void setMessage( String message )
+    {
+        this.message = message;
     }
 
     // -------------------------------------------------------------------------
@@ -89,22 +80,8 @@ implements Action
     public String execute()
         throws Exception
     {
-        try
-        {
-            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
-            
-            lockedUnits = new HashSet<OrganisationUnit>( selectionTreeManager.getLockOnSelectedOrganisationUnits() );          
-            lockedUnits.add( unit );
-            selectionTreeManager.setLockOnSelectedOrganisationUnits( lockedUnits );
-            //System.out.println("lockedUnits size in LockSelectedOrganisationUnitAction : " + lockedUnits.size());
-        }
-        catch ( Exception e )
-        {
-            LOG.error( e.getMessage(), e );
-
-            throw e;
-        }
-
+        message = " Please Sellect Only Assigned or Locked Organisation Unit.";
+        
         return SUCCESS;
     }
 }
