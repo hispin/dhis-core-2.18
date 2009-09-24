@@ -938,6 +938,11 @@ Ext.onReady(function()
         autoLoad: true
     });
 	
+	var nameColumnStore = new Ext.data.SimpleStore({
+		fields: ['name'],
+		data: []
+	});
+	
 	var baseCoordinateStore = new Ext.data.JsonStore({
         url: path + 'getBaseCoordinate' + type,
         root: 'baseCoordinate',
@@ -991,23 +996,54 @@ Ext.onReady(function()
         width: combo_width
     });
     
-    var mapLayerPathTextField = new Ext.form.TextField({
-        id: 'maplayerpath_tf',
-        emptyText: MENU_EMPTYTEXT,
-        width: combo_width
-    });
-	
 	var mapLayerPathComboBox = new Ext.form.ComboBox({
         id: 'maplayerpath_cb',
+		typeAhead: true,
         editable: false,
-        displayField: 'name',
         valueField: 'name',
+        displayField: 'name',
 		emptyText: MENU_EMPTYTEXT,
         width: combo_width,
         minListWidth: combo_list_width,
         triggerAction: 'all',
         mode: 'remote',
-        store: geojsonStore
+        store: geojsonStore,
+		listeners: {
+			'select': {
+				fn: function() {
+					var n = Ext.getCmp('maplayerpath_cb').getValue();
+					
+					Ext.Ajax.request({
+						url: path + 'getGeoJson' + type,
+						method: 'POST',
+						params: {name: n},
+						success: function(r) {
+							var file = Ext.util.JSON.decode(r.responseText);
+							var keys = [];
+							var data = [];
+							
+							function getKeys(object) {
+								for (var key in object) {
+									if (object.hasOwnProperty(key)) {
+										keys.push(key);
+									}
+								}
+								return keys;
+							}
+
+							var nameList = getKeys(file.features[0].properties);
+							for (var i = 0; i < nameList.length; i++) {
+								data.push(new Array(nameList[i]));
+							}
+							
+							Ext.getCmp('newnamecolumn_cb').getStore().loadData(data, false);
+						},
+						failure: function() {}
+					});
+				},
+				scope: this
+			}
+		}
     });
     
     var typeComboBox = new Ext.form.ComboBox({
@@ -1026,18 +1062,32 @@ Ext.onReady(function()
             data: [['Polygon']]
         })
     });
+	
+	var newNameColumnComboBox = new Ext.form.ComboBox({
+        id: 'newnamecolumn_cb',
+        editable: false,
+        displayField: 'name',
+        valueField: 'name',
+		emptyText: MENU_EMPTYTEXT,
+        width: combo_width,
+        minListWidth: combo_list_width,
+        triggerAction: 'all',
+        mode: 'local',
+        store: nameColumnStore
+	});
     
-    var newNameColumnTextField = new Ext.form.TextField({
-        id: 'newnamecolumn_tf',
-        emptyText: MENU_EMPTYTEXT,
-        width: combo_width
-    });
-    
-    var editNameColumnTextField = new Ext.form.TextField({
-        id: 'editnamecolumn_tf',
-        emptyText: MENU_EMPTYTEXT,
-        width: combo_width
-    });
+	var editNameColumnComboBox = new Ext.form.ComboBox({
+        id: 'editnamecolumn_cb',
+        editable: false,
+        displayField: 'name',
+        valueField: 'name',
+		emptyText: MENU_EMPTYTEXT,
+        width: combo_width,
+        minListWidth: combo_list_width,
+        triggerAction: 'all',
+        mode: 'local',
+        store: nameColumnStore
+	});
 	
     var newLongitudeComboBox = new Ext.form.ComboBox({
         id: 'newlongitude_cb',
@@ -1145,7 +1195,7 @@ Ext.onReady(function()
                     var nn = Ext.getCmp('newname_tf').getValue();
                     var mlp = Ext.getCmp('maplayerpath_cb').getValue();
                     var t = Ext.getCmp('type_cb').getValue();
-                    var nc = Ext.getCmp('newnamecolumn_tf').getValue();
+                    var nc = Ext.getCmp('newnamecolumn_cb').getValue();
                     var lon = Ext.getCmp('newlongitude_cb').getRawValue();
                     var lat = Ext.getCmp('newlatitude_cb').getRawValue();
                     var zoom = Ext.getCmp('newzoom_cb').getValue();
@@ -1214,7 +1264,7 @@ Ext.onReady(function()
                                     Ext.getCmp('organisationunitlevel_cb').reset();
                                     Ext.getCmp('newname_tf').reset();
                                     Ext.getCmp('maplayerpath_cb').reset();
-                                    Ext.getCmp('newnamecolumn_tf').reset();
+                                    Ext.getCmp('newnamecolumn_cb').reset();
                                     Ext.getCmp('newlongitude_cb').reset();
                                     Ext.getCmp('newlatitude_cb').reset();
                                     Ext.getCmp('newzoom_cb').reset();                                    
@@ -1242,7 +1292,7 @@ Ext.onReady(function()
         handler: function() {
             var en = Ext.getCmp('editname_tf').getValue();
             var em = Ext.getCmp('editmap_cb').getValue();
-            var nc = Ext.getCmp('editnamecolumn_tf').getValue();
+            var nc = Ext.getCmp('editnamecolumn_cb').getValue();
             var lon = Ext.getCmp('editlongitude_cb').getRawValue();
             var lat = Ext.getCmp('editlatitude_cb').getRawValue();
             var zoom = Ext.getCmp('editzoom_cb').getValue();
@@ -1275,7 +1325,7 @@ Ext.onReady(function()
                     
                     Ext.getCmp('editmap_cb').reset();
                     Ext.getCmp('editname_tf').reset();
-                    Ext.getCmp('editnamecolumn_tf').reset();
+                    Ext.getCmp('editnamecolumn_cb').reset();
                     Ext.getCmp('editlongitude_cb').reset();
                     Ext.getCmp('editlatitude_cb').reset();
                     Ext.getCmp('editzoom_cb').reset();
@@ -1384,7 +1434,7 @@ Ext.onReady(function()
                             var map = Ext.util.JSON.decode( responseObject.responseText ).map[0];
                             
                             Ext.getCmp('editname_tf').setValue(map.name);
-                            Ext.getCmp('editnamecolumn_tf').setValue(map.nameColumn);
+                            Ext.getCmp('editnamecolumn_cb').setValue(map.nameColumn);
                             Ext.getCmp('editlongitude_cb').setValue(map.longitude);
                             Ext.getCmp('editlatitude_cb').setValue(map.latitude);
                             Ext.getCmp('editzoom_cb').setValue(map.zoom);
@@ -1393,6 +1443,34 @@ Ext.onReady(function()
                             alert( 'Error while retrieving data: getAssignOrganisationUnitData' );
                         } 
                     });
+					
+					Ext.Ajax.request({
+						url: path + 'getGeoJson' + type,
+						method: 'POST',
+						params: {name: mlp},
+						success: function(r) {
+							var file = Ext.util.JSON.decode(r.responseText);
+							var keys = [];
+							var data = [];
+							
+							function getKeys(object) {
+								for (var key in object) {
+									if (object.hasOwnProperty(key)) {
+										keys.push(key);
+									}
+								}
+								return keys;
+							}
+
+							var nameList = getKeys(file.features[0].properties);
+							for (var i = 0; i < nameList.length; i++) {
+								data.push(new Array(nameList[i]));
+							}
+							
+							Ext.getCmp('editnamecolumn_cb').getStore().loadData(data, false);
+						},
+						failure: function() {}
+					});
                 },
                 scope: this
             }
@@ -1423,11 +1501,10 @@ Ext.onReady(function()
             /*{ html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map type</p>' }, typeComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Organisation unit level</p>' }, newMapComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Organisation unit</p>' }, multi, { html: '<br>' },*/
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Organisation unit level</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
-            /*{ html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map source file</p>' }, mapLayerPathTextField, { html: '<br>' },*/
-			{ html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map source file</p>' }, mapLayerPathComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' }, newNameTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Name column</p>' }, newNameColumnTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Organisation unit level</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
+			{ html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map source file</p>' }, mapLayerPathComboBox, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Name column</p>' }, newNameColumnComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Longitude (x)</p>' }, newLongitudeComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Latitude (y)</p>' }, newLatitudeComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Zoom</p>' }, newZoomComboBox
@@ -1439,7 +1516,7 @@ Ext.onReady(function()
         items: [
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map</p>' }, editMapComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' }, editNameTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Name column</p>' }, editNameColumnTextField, { html: '<br>' },
+            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Name column</p>' }, editNameColumnComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Longitude</p>' }, editLongitudeComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Latitude</p>' }, editLatitudeComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Zoom</p>' }, editZoomComboBox
@@ -2231,7 +2308,7 @@ Ext.onReady(function()
 			zoomOutButton,
             ' ',
 			zoomMaxExtentButton,
-			' ','-',' ',
+			' ','-',
 			favoritesButton,
             '-',
             legendSetButton,

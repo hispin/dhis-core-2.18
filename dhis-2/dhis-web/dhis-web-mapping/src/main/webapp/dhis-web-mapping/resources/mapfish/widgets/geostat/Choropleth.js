@@ -721,7 +721,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     this.setUrl(path + 'getPolygonShapefile.action?level=' + URL);
                 }
             }
-            else {
+            else if (MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
                 this.setUrl(path + 'getGeoJson.action?name=' + URL);
             }
         }
