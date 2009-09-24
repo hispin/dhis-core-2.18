@@ -340,12 +340,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="formReportService" ref="org.hisp.dhis.vn.chr.FormReportService" />
 	</bean>
 
-    <bean id="org.hisp.dhis.vn.chr.object.action.CreateCodeAction"
-        class="org.hisp.dhis.vn.chr.object.action.CreateCodeAction" scope="prototype">
-        <property name="formService" ref="org.hisp.dhis.vn.chr.FormService" />
-        <property name="formManager" ref="org.hisp.dhis.vn.chr.jdbc.FormManager" />
-    </bean>
-
 </beans>
 
 

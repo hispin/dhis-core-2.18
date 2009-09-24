@@ -32,7 +32,7 @@ import org.hisp.dhis.vn.chr.form.action.ActionSupport;
 
 /**
  * @author Chau Thu Tran
- * @version $Id
+ * @version $Id$
  */
 
 public class SetImageDirectoryOnServerAction

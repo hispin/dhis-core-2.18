@@ -500,9 +500,10 @@ function validateDataObject(){
 	var formid = getParamByURL('formId');
 	var dataParam = '?formId='+ formid;
 	
-	var arrayOfElements = document.getElementsByName('data');
-	for(var i=0;i<arrayOfElements.length;i++){
-		dataParam += '&data='+ arrayOfElements[i].value;
+	var elements = byId('editForm').elements;
+	
+	for(var i=0;i<elements.length;i++){
+		dataParam += '&'+elements[i].name + '=' + elements[i].value;
 	}
 	
 	var request = new Request();
@@ -518,32 +519,27 @@ function validateDataObject(){
 
 function validateObjectCompleted( xmlObject ){
 	
-	// get type into XML file ( The type is error or success)
 	var type = xmlObject.getAttribute( 'type' );
-	// type == error
-    if(type =='error') {
+	if(type =='error') {
 		setMessage(xmlObject.firstChild.nodeValue);
 	}
-  	// type == success
-    if(type == 'success') {
+  	if(type == 'success') {
 		if(mode == "ADD") 
 			addObject();
 		else 
 			updateObject();
 	}
 	
-	
-	// get formId
 	var formId = getParamByURL('formId');
 	var objectId = getParamByURL('objectId');
-	
+	var url = '';
 	if(objectId!=''){
-		window.location.href = 'listReletiveObject.action?formId=' + formId + '&column='+getParamByURL('column') + '&objectId='+getParamByURL('objectId');
+		url = 'listReletiveObject.action?formId=' + formId + '&column='+getParamByURL('column') + '&objectId=' + getParamByURL('objectId');
 	}else{
-		window.location.href = 'listObject.action?formId='+formId ;
+		url = 'listObject.action?formId='+formId ;
 	}
 	
-
+	window.location = url;
 }
 
 // Validate data inputted into a control
@@ -564,22 +560,20 @@ function addObject () {
 	
 	var start = 0;
 	var objectId = getParamByURL('objectId');
-	if(objectId != ''){
-		dataParam += '&data='+ objectId;
-		//start=1;
-	}
 	
-	var arrayOfElements = document.getElementsByName('data');
+	var elements = byId('editForm').elements;
 	
-	for(var i=start;i<arrayOfElements.length;i++){
+	if(getParamByURL('objectId').length >0){
+			dataParam += '&data' +  getParamByURL('column') + '=' +  getParamByURL('objectId');
+		}
 		
-		var data = null;
-		
-		// if(data=='on'){
-		if(arrayOfElements[i].type =='checkbox' ){
-			dataParam += '&data='+ arrayOfElements[i].checked;
+	for(var i=0;i<elements.length;i++){
+		//dataParam += '&'+elements[i].name + '=' + elements[i].value;
+			
+		if(elements [i].type =='checkbox' ){
+			dataParam += '&'+elements[i].name + '=' + elements[i].checked;
 		}else{
-			dataParam += '&data='+ arrayOfElements[i].value;
+			dataParam += '&'+elements[i].name + '=' + elements[i].value;
 		}
 	}
 	
@@ -589,7 +583,7 @@ function addObject () {
  	request.setCallbackSuccess( Completed );
 	
 	var url  = 'addObject.action' + dataParam;
-	
+
 	request.send( url ); 
 }
 
@@ -613,9 +607,10 @@ function fillup (strSelect, str, div_name){
 // ------------------------------------------------------------
 function openUpdateObjectForm( id ){
 	
-		var formid = getParamByURL('formId');
 		var url = 'updateObjectForm.action?id=' + id;
-		url += "&formId=" + formid;
+		url += "&formId=" + getParamByURL('formId');
+		url += "&objectId=" + getParamByURL('objectId');
+		url += "&column=" + getParamByURL('column');
 		window.location = url;
 }
 
@@ -628,37 +623,30 @@ function updateObject(){
 	var formid = getParamByURL('formId');
 	var dataParam = '?formId='+ formid;
 	
-	dataParam += '&data='+ getParamByURL('id')
+	//dataParam += '&data='+ getParamByURL('id')
 	var start = 0;
 	
-	// Get Object's data, not have id of the Object
-	/* var arrayOfElements = document.getElementsByName('data');
-	for(var i=0;i<arrayOfElements.length;i++){
-		dataParam += '&data='+ arrayOfElements[i].value;
-	}*/
+
+	var elements = byId('editForm').elements;
 	
-	var arrayOfElements = document.getElementsByName('data');
-	for(var i=start;i<arrayOfElements.length;i++){
+	for(var i=0;i<elements.length;i++){
+		//dataParam += '&'+elements[i].name + '=' + elements[i].value;
 		
-		var data = null;
-		
-		// if(data=='on'){
-		if(arrayOfElements[i].type =='checkbox' ){
-			dataParam += '&data='+ arrayOfElements[i].checked;
+		if(elements[i].name == elements[i].value){
+			dataParam += '&'+elements[i].name + '=' +  getParamByURL('id');
+			dataParam += '&column' + '=' +  getParamByURL('column');
+		}
+		else if(elements [i].type =='checkbox' ){
+			dataParam += '&'+elements[i].name + '=' + elements[i].checked;
 		}else{
-			dataParam += '&data='+ arrayOfElements[i].value;
+			dataParam += '&'+elements[i].name + '=' + elements[i].value;
 		}
 	}
-	
-	//// Get Object's Id
-	//var id = getParamByURL('id');
-	//dataParam += '&data='+ id;
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
  	request.setCallbackSuccess( Completed );
 	var url  = 'updateObject.action' + dataParam;
-	
 	request.send( url ); 
 }
 
@@ -696,7 +684,7 @@ function keyRestrict(e, validchars) {
 	 if ( key==null || key==0 || key==8 || key==9 || key==13 || key==27 )
 	  	return true;
 	 return false;
-}
+} // Copyright
 
 function getKeyCode(e)
 {
@@ -739,80 +727,6 @@ function saveNumberOfRecords(value){
  	request.send( url );    
 }
 
-
-// --------------------------------------------------------------------------------------
-//  Associate DataElements For an Element
-// --------------------------------------------------------------------------------------
-
-/* function openAssociateFormulasForElementForm( ){  	 	 	
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( openAssociateFormulasForElementFormReceived );
-	request.send( "getDataSetsAndForms.action");
-}
-
-function openAssociateFormulasForElementFormReceived( xmlObject ){
-	
-	// process when the function is called first
-	//if(!flag){
-		// Available Dataset
-		var availableList = byId('availableDataSet');
-		availableList.options.length = 0;
-
-		// Input name of datasets into combo box
-		if( xmlObject.getElementsByTagName('dataSet').length > 0){
-				
-			var availableDataSet = xmlObject.getElementsByTagName('dataSet');
-			availableList.add(new Option("", 0),null);
-
-			for(var i=0;i<availableDataSet.length;i++){
-				var dataset = availableDataSet.item(i);
-				var id = dataset.getElementsByTagName('id')[0].firstChild.nodeValue;
-				var name = dataset.getElementsByTagName('name')[0].firstChild.nodeValue;
-				availableList.add(new Option(name, id),null);
-			}//end for
-		}
-
-
-	// -------------------------------------------------------------------------
-	// show forms's list into comboBox
-	// -------------------------------------------------------------------------
-	var availableFormList = byId('availableForms');
-	availableFormList.options.length = 0;
-	// Input name of datasets into combo box
-	if( xmlObject.getElementsByTagName('form').length > 0){
-				
-		var availableDataSet = xmlObject.getElementsByTagName('form');
-		availableFormList.add(new Option("", 0),null);
-
-		for(var i=0;i<availableDataSet.length;i++){
-			var form =xmlObject.getElementsByTagName('form').item(i);
-			//var id = form.getElementsByTagName('id')[0].firstChild.nodeValue;
-			var name = form.getElementsByTagName('name')[0].firstChild.nodeValue;
-			var label = form.getElementsByTagName('label')[0].firstChild.nodeValue;
-			//availableFormList.add(new Option(name, id),null);
-			//availableFormList.add(new Option(label, id),null);
-			availableFormList.add(new Option(label, name),null);
-
-		}//end for
-	}// end if
-
-
-		// Selected Dataelements 
-		////var selectedElementslist = document.getElementById('selectedDataelements');
-		////selectedElementslist.options.length = 0;
-		document.getElementById('formula').value = '';
-	
-		// show form
-		setPositionCenter( 'associationDataelement' );
-		showDivEffect();
-		showById( 'associationDataelement' );
-		//flag = true;
-	//}
-	
-	}
-	*/
 // --------------------------------------------------------------------------------------
 //  Get DataElements Of the Chosen Dataset
 // --------------------------------------------------------------------------------------
@@ -852,8 +766,6 @@ function getDataElementsReceived( xmlObject ){
 // --------------------------------------------------------------------------------------
 
 function insertFormulaText(value){
-	
-	//document.getElementById('formular').value += ' ' + value;
 	setFieldValue('formula', getFieldValue('formula') + ' ' + value);
 }
 
@@ -907,55 +819,8 @@ function updateFormula(){
 // Show list of an element's formular
 //------------------------------------------------------------------------------
 function formularsInForm(){
-	
-	/* var request = new Request();
-	
-	request.setResponseTypeXML( 'xmlObject' );
-	
-	request.setCallbackSuccess( formularsInElementReceive );
-	
-	request.send( "listFormReports.action?id=" + elementId ); */
-	
-	
 	window.location = "listFormReports.action?id=" + formId;
 }
-	
-/* function formularsInElementReceive(xmlObject ){
-	
-	var div_formulars = byId( "listFormularsInElementDetails" );
-	div_formulars.innerHTML = "<table width='100%'>"+
-								"<tr>" +
-									"<th width='30%'>Operand</th>" +
-									"<th width='30%'>formular</th>" +
-									"<th width='30%'>Operator</th>" +
-								"</tr>";
-			
-	var elementValues = xmlObject.getElementsByTagName("elementvalue");
-	
-	alert(" elementValues.length : " + elementValues.length);
-	
-	for ( var i = 0; i < elementValues.length; i++)
-	{
-		var elementValueId = elementValues[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-		var formular = elementValues[ i ].getElementsByTagName( "formular" )[0].firstChild.nodeValue;
-		var operand = elementValues[ i ].getElementsByTagName( "operand" )[0].firstChild.nodeValue;
-		
-		div_formulars.innerHTML+= "<tr>" + 
-									"<td>" + operand + "</td>" + 
-									"<td>" + formular + "</td>" +
-									"<td>" + "<a href='javascript: deleteElementValue(elementValueId);' title='$i18n.getString('delete')'> "+
-												"<img src='../images/delete.png' alt='$i18n.getString('delete')'></a>" + "</td>" +
-								"</tr>";
-		
-	}
-	
-	div_formulars.innerHTML +="</table>" ;
-	
-	// show form
-	setPositionCenter( 'listFormularsInElement' );
-	showDivEffect();
-	showById( 'listFormularsInElement' );
-} */
 
 // --------------------------------------------------------------------------------------
 //  Delete ElementValue

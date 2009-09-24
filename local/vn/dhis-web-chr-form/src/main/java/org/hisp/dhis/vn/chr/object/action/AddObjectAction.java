@@ -1,15 +1,52 @@
 package org.hisp.dhis.vn.chr.object.action;
 
-/**
- * @author Chau Thu Tran
- * 
+/*
+ * Copyright (c) 2004-2007, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.system.util.CodecUtils;
+import org.hisp.dhis.vn.chr.Egroup;
+import org.hisp.dhis.vn.chr.Element;
 import org.hisp.dhis.vn.chr.Form;
 import org.hisp.dhis.vn.chr.FormService;
 import org.hisp.dhis.vn.chr.jdbc.FormManager;
 import org.hisp.dhis.vn.chr.form.action.ActionSupport;
+
+/**
+ * @author Chau Thu Tran
+ * @version $Id$
+ */
 
 public class AddObjectAction
     extends ActionSupport
@@ -34,7 +71,7 @@ public class AddObjectAction
     }
 
     // -----------------------------------------------------------------------------------------------
-    // Input && Output
+    // Getter && Setter
     // -----------------------------------------------------------------------------------------------
 
     private Integer formId;
@@ -44,41 +81,44 @@ public class AddObjectAction
         this.formId = formId;
     }
 
-    private String[] data;
-
-    public void setData( String[] data )
-    {
-        this.data = data;
-    }
-
     // -----------------------------------------------------------------------------------------------
-    // Implement : process Select SQL
+    // Action implementation
     // -----------------------------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
 
-        try
+        HttpServletRequest request = ServletActionContext.getRequest();
+
+        ArrayList<String> data = new ArrayList<String>();
+
+        Form form = formService.getForm( formId.intValue() );
+                
+        Collection<Egroup> egroups = form.getEgroups();
+
+        int pos = 0;
+
+        for ( Egroup egroup : egroups )
         {
 
-            Form form = formService.getForm( formId.intValue() );
-
-            for ( int i = 0; i < data.length; i++ )
+            for ( Element element : egroup.getElements() )
             {
-                data[i] = CodecUtils.unescape( data[i] );
-            }
+                    String parameterName = "data"+element.getName();
+                    
+                    if(request.getParameter( parameterName ) != null){
+                        
+                    String value = request.getParameterValues( parameterName )[0] ;
+                    
+                    data.add(CodecUtils.unescape( value ));
+                }// end if
 
-            formManager.addObject( form, data );
+            }// end for element
 
-            return SUCCESS;
-        }
-        catch ( Exception ex )
-        {
-            message = i18n.getString( "add" ) + " " + i18n.getString( "error" );
+        }// end for egroup
 
-            ex.printStackTrace();
-        }
-        return ERROR;
+        formManager.addObject( form, data );
+        
+        return SUCCESS;
     }
 }
