@@ -33,7 +33,7 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version $Id
+ * @version $Id$
  */
 
 public class GetFormConfigurationAction
