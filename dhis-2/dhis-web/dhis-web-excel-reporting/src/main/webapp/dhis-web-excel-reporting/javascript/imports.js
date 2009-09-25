@@ -71,3 +71,113 @@ function getListPeriodCompleted( xmlObject ){
 		addOption('period', name, id);
     }
 }
+
+// -----------------------------------------------------------------------------
+// Import data
+// -----------------------------------------------------------------------------
+function importData(){
+	
+	var reportId = document.getElementById('reportId').value;
+	var upload = document.getElementById('uploadFileName').value;
+	var periodId = document.getElementById('period').value;
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( Completed );
+	
+	// URL
+	url = 'importData.action?reportId='+reportId;
+	// USER choose reportItem
+	var preview = byId('showValue').style.display;
+	
+	if(preview == 'block'){
+		
+		var reportItems = document.getElementsByName('reportItems');
+		for(var i=0;i<reportItems.length;i++){
+			if(reportItems[i].checked ){
+				url +='&reportItemIds=' + reportItems[i].value;
+			}
+		}
+	}
+	
+	url += '&uploadFileName='+ upload;
+	url += '&periodId='+ periodId;
+	request.send(url); 
+}
+
+function Completed( xmlObject ){
+	
+	if(document.getElementById('message') != null){
+		document.getElementById('message').style.display = 'block';
+		document.getElementById('message').innerHTML = xmlObject.firstChild.nodeValue;
+	}
+}
+
+function getPreviewImportData(fileExcel){
+	
+	var request = new Request();
+	
+	request.setResponseTypeXML( 'xmlObject' );
+	
+	request.setCallbackSuccess( getReportItemValuesReceived );
+	
+	var reportId = byId("reportId").value;
+	
+	request.send( "previewData.action?reportId=" + reportId +"&uploadFileName=" + fileExcel);
+}
+
+function getReportItemValuesReceived( xmlObject ){
+	
+	byId('selectAll').checked = false;
+	var availableDiv = byId('showValue');
+	availableDiv.style.display = 'block';
+	
+	var availableObjectList = xmlObject.getElementsByTagName('reportItemValue');
+	
+	var myTable = document.getElementById('showReportItemValues');
+	var tBody = myTable.getElementsByTagName('tbody')[0];
+	
+	for(var i = document.getElementById("showReportItemValues").rows.length; i > 1;i--)
+	{
+		document.getElementById("showReportItemValues").deleteRow(i -1);
+	}
+
+	for(var i=0;i<availableObjectList.length;i++){
+		
+		// get values
+		var reportItermValue = availableObjectList.item(i);
+		// add new row
+		var newTR = document.createElement('tr');
+		// create new column
+		var newTD2 = document.createElement('td');
+		newTD2.innerHTML = reportItermValue.getElementsByTagName('name')[0].firstChild.nodeValue;
+		// create new column
+		var newTD3 = document.createElement('td');
+		var value = reportItermValue.getElementsByTagName('value')[0].firstChild.nodeValue;
+		newTD3.innerHTML = value;
+		// create new column
+		var newTD1 = document.createElement('td');
+		var id = reportItermValue.getElementsByTagName('id')[0].firstChild.nodeValue;
+		if(value!=0){
+			newTD1.innerHTML= "<input type='checkbox' name='reportItems' id='reportItems' value='" + id + "'>" ;
+		}
+		
+		newTR.appendChild (newTD1);
+		newTR.appendChild (newTD2);
+		newTR.appendChild (newTD3);
+		// add row into the table
+		tBody.appendChild(newTR);
+	}
+}
+ 
+function selectAll(){
+	 
+	var select = byId('selectAll').checked;
+	
+	var reportItems = document.getElementsByName('reportItems');
+	
+	for(var i=0;i<reportItems.length;i++){
+		reportItems[i].checked = select;
+	 }
+ }
+ 
