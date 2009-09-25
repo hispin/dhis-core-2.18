@@ -28,11 +28,10 @@ package org.hisp.dhis.reportexcel.importing.action;
  */
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
 
@@ -45,7 +44,7 @@ public class UploadExcelFileAction
     extends org.hisp.dhis.reportexcel.action.ActionSupport
 {
     // -------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------
 
     private ReportLocationManager reportLocationManager;
@@ -55,15 +54,15 @@ public class UploadExcelFileAction
         this.reportLocationManager = reportLocationManager;
     }
 
-    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
-
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
-    {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
-    }
+//    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
+//
+//    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+//    {
+//        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+//    }
 
     // -------------------------------------------------------------------------
-    // Getter & Setter
+    // Getters & Setters
     // -------------------------------------------------------------------------
 
     private String fileName;
@@ -99,41 +98,43 @@ public class UploadExcelFileAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
+//        OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
-        if ( organisationUnit == null )
-            return SUCCESS;
+//        if ( organisationUnit == null )
+//            return SUCCESS;
 
-        File directory = reportLocationManager.getOrganisationDirectory( organisationUnit );
-
+        File directory = reportLocationManager.getReportExcelTempDirectory(  );
+        
         if ( upload != null )
         {
 
             try
             {
-                FileReader in = new FileReader( upload );
-
+                FileInputStream fin = new FileInputStream( upload );
+                
+                byte[] data = new byte[8192];
+                int byteReads = fin.read( data );
+                
                 fileExcel = new File( directory, fileName );
 
-                FileWriter out = new FileWriter( fileExcel );
-
-                int c;
-
-                while ( (c = in.read()) != -1 )
+                FileOutputStream fout = new FileOutputStream( fileExcel );
+                
+                while ( byteReads != -1 )
                 {
-                    out.write( c );
+                    fout.write( data, 0, byteReads );
+                    fout.flush();
+                    byteReads = fin.read( data );
                 }
-
-                in.close();
-
-                out.close();
+                fin.close();
+                
+                fout.close();
 
                 return SUCCESS;
             }
             catch ( IOException e )
             {
                 e.printStackTrace();
-                return NONE;
+                return ERROR;
             }
 
         }

@@ -2,9 +2,8 @@
 #if($!fileExcel)
 <div id="messageUpload"> $!message </div>
  <span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
-
-<!-- <input type="hidden" name="uploadFileName" id="uploadFileName" value="$!fileExcel">-->
-<input type="hidden" name="uploadFileName" id="uploadFileName" value="E:\data\Bieu 1 - TX.xls" >
+<input type="hidden" name="uploadFileName" id="uploadFileName" value="$!fileExcel">
+<!-- <input type="hidden" name="uploadFileName" id="uploadFileName">-->
  #end
 <h2>$!encoder.htmlEncode($!organisationUnit.name)</h2>
 <table width="50%">
@@ -45,7 +44,7 @@
   
 </table>
 <hr>
-<input type="button" name="preview" id="preview" onClick="javascript: getPreviewImportData();" value="$i18n.getString('preview')" disabled>
+<input type="button" name="preview" id="preview" onClick="javascript: getPreviewImportData('$!fileExcel.getName()');" value="$i18n.getString('preview')" disabled>
 <input type="button" name="import" id="import" onClick="javascript: importData();" value="$i18n.getString('import')" disabled>
 <br><br>
 	<div id="showValue" style="display:none; width:100%" >

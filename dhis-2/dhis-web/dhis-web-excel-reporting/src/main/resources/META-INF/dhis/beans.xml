@@ -276,8 +276,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.reportexcel.importing.action.ImportDataAction"
+	<bean id="org.hisp.dhis.reportexcel.importing.action.ImportDataAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ImportDataAction"
 		scope="prototype">
 		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
@@ -298,14 +297,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-	</bean>
-
+		<!-- <property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" /> -->
+	</bean> 
+	
 	<bean id="org.hisp.dhis.reportexcel.importing.action.ViewDataAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ViewDataAction"
 		scope="prototype">
 		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
 
 	<!-- EXPORT REPORT EXCEL -->
