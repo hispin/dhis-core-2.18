@@ -36,6 +36,9 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.report.Report;
+import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.comparator.ReportExcelNameComparator;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 
 import com.opensymphony.xwork2.Action;
@@ -57,7 +60,7 @@ public class SetupRoleAction
     {
         this.dataSetService = dataSetService;
     }
-    
+
     private SystemAuthoritiesProvider authoritiesProvider;
 
     public void setAuthoritiesProvider( SystemAuthoritiesProvider authoritiesProvider )
@@ -71,14 +74,21 @@ public class SetupRoleAction
     {
         this.dataSetComparator = dataSetComparator;
     }
-    
+
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-    
+
+    private ReportExcelService reportExcelService;
+
+    public void setReportExcelService( ReportExcelService reportExcelService )
+    {
+        this.reportExcelService = reportExcelService;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -89,19 +99,26 @@ public class SetupRoleAction
     {
         return availableDataSets;
     }
-    
+
     private List<Report> availableReports;
 
     public List<Report> getAvailableReports()
     {
         return availableReports;
     }
-    
+
     private List<String> availableAuthorities;
 
     public List<String> getAvailableAuthorities()
     {
         return availableAuthorities;
+    }
+
+    private List<ReportExcel> availableReportExcels;
+
+    public List<ReportExcel> getAvailableReportExcels()
+    {
+        return availableReportExcels;
     }
 
     // -------------------------------------------------------------------------
@@ -112,14 +129,18 @@ public class SetupRoleAction
         throws Exception
     {
         availableDataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        
+
         Collections.sort( availableDataSets, dataSetComparator );
-        
+
         displayPropertyHandler.handle( availableDataSets );
-        
+
         availableAuthorities = new ArrayList<String>( authoritiesProvider.getSystemAuthorities() );
 
         Collections.sort( availableAuthorities );
+
+        availableReportExcels = new ArrayList<ReportExcel>( reportExcelService.getALLReportExcel() );
+
+        Collections.sort( availableReportExcels, new ReportExcelNameComparator() );
 
         return SUCCESS;
     }

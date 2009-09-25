@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.reportexcel.ReportExcel;
 
 /**
  * @author Nguyen Hong Duc
@@ -44,15 +45,17 @@ public class UserAuthorityGroup
      * Required and unique.
      */
     private String name;
-    
+
     private String description;
 
     private Set<String> authorities = new HashSet<String>();
 
     private Set<UserCredentials> members = new HashSet<UserCredentials>();
-    
+
     private Set<DataSet> dataSets = new HashSet<DataSet>();
-    
+
+    private Set<ReportExcel> reportExcels = new HashSet<ReportExcel>();
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -149,4 +152,15 @@ public class UserAuthorityGroup
     {
         this.dataSets = dataSets;
     }
+
+    public Set<ReportExcel> getReportExcels()
+    {
+        return reportExcels;
+    }
+
+    public void setReportExcels( Set<ReportExcel> reportExcels )
+    {
+        this.reportExcels = reportExcels;
+    }
+
 }

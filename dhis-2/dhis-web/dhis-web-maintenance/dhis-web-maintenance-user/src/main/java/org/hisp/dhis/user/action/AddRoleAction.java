@@ -32,6 +32,8 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserStore;
 
@@ -61,7 +63,14 @@ public class AddRoleAction
     {
         this.dataSetService = dataSetService;
     }
-    
+
+    private ReportExcelService reportExcelService;
+
+    public void setReportExcelService( ReportExcelService reportExcelService )
+    {
+        this.reportExcelService = reportExcelService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -72,26 +81,33 @@ public class AddRoleAction
     {
         this.name = rolename;
     }
-    
+
     private String description;
 
     public void setDescription( String description )
     {
         this.description = description;
     }
-    
+
     private Collection<String> selectedList = new ArrayList<String>();
 
     public void setSelectedList( Collection<String> selectedList )
     {
         this.selectedList = selectedList;
     }
-    
+
     private Collection<String> selectedListAuthority = new ArrayList<String>();
 
     public void setSelectedListAuthority( Collection<String> selectedListAuthority )
     {
         this.selectedListAuthority = selectedListAuthority;
+    }
+
+    private Collection<String> selectedReportExcel = new ArrayList<String>();
+
+    public void setSelectedReportExcel( Collection<String> selectedReportExcel )
+    {
+        this.selectedReportExcel = selectedReportExcel;
     }
 
     // -------------------------------------------------------------------------
@@ -112,7 +128,15 @@ public class AddRoleAction
 
             group.getDataSets().add( dataSet );
         }
-        
+
+        for ( String id : selectedReportExcel )
+        {
+
+            ReportExcel reportExcel = reportExcelService.getReportExcel( Integer.parseInt( id ) );
+
+            group.getReportExcels().add( reportExcel );
+        }
+
         group.getAuthorities().addAll( selectedListAuthority );
 
         userStore.addUserAuthorityGroup( group );

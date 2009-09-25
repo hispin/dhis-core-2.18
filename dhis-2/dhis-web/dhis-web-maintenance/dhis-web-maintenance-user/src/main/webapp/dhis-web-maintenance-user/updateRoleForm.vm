@@ -1,4 +1,4 @@
-
+﻿
 <h3>$i18n.getString( "edit_user_role" )</h3>
 
 <form id="updateRoleForm" action="updateRole.action" method="post" onsubmit="return validateUpdateRole()">
@@ -53,6 +53,27 @@
         	</td>
 		</tr>
 		<tr>
+		<td><label>$i18n.getString( "excel_reporting" )</label></td>		
+		<td>
+          <select size="15" id="availableExcelReporting" name="availableExcelReporting" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'availableExcelReporting', 'selectedReportExcel' )">
+            #foreach ( $availableReportExcel in $availableReportExcels )
+              <option value="$availableReportExcel.id">$encoder.htmlEncode( $availableReportExcel.name )</option>
+            #end
+          </select>
+        </td>
+        <td>
+          <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="moveSelectedById( 'selectedReportExcel', 'availableExcelReporting' )">
+          <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveSelectedById( 'availableExcelReporting', 'selectedReportExcel' )">
+		</td>
+		<td>
+          <select id="selectedReportExcel" name="selectedReportExcel" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'selectedReportExcel', 'availableExcelReporting' )">
+			#foreach ( $reportExcel in $reportExcels )
+              		<option value="$reportExcel.id">$encoder.htmlEncode( $reportExcel.name )</option>
+            #end
+          </select>
+        </td>
+	</tr>
+		<tr>
 			<td><label>$i18n.getString( "authorities" )</label></td>
 			<td>
           		<select size="15" id="availableListAuthority" name="availableListAuthority" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'availableListAuthority', 'selectedListAuthority' )">
@@ -81,5 +102,8 @@
 		</tr>
 	</table>
 </form>
-
+<script>
+	sortList('availableListAuthority','ASC');
+	sortList('selectedListAuthority','ASC');
+</script>
 <span id="message"></span>

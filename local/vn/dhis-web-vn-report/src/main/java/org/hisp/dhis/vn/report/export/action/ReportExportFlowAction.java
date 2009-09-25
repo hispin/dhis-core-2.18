@@ -1,5 +1,3 @@
-package org.hisp.dhis.reportexcel.configuration.action;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -26,13 +24,7 @@ package org.hisp.dhis.reportexcel.configuration.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.hisp.dhis.user.UserStore;
-import org.hisp.dhis.reportexcel.ReportExcel;
-import org.hisp.dhis.reportexcel.ReportExcelService;
+package org.hisp.dhis.vn.report.export.action;
 
 import com.opensymphony.xwork2.Action;
 
@@ -40,63 +32,44 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-
-public class SaveReportUserRolesAction
+public class ReportExportFlowAction
     implements Action
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-   
-    private ReportExcelService reportService;
-
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
-    }
-
-    private UserStore userStore;
-
-    public void setUserStore( UserStore userStore )
-    {
-        this.userStore = userStore;
-    }
-
-    // ----------------------------------------------------------------------------------
-    // Getter and Setter
-    // ----------------------------------------------------------------------------------
-    
     private Integer reportId;
+
+    private String reportType;
+
+    private Integer periodId;
 
     public void setReportId( Integer reportId )
     {
         this.reportId = reportId;
     }
 
-    private Collection<Integer> userRoleId = new ArrayList<Integer>();
-
-    public void setUserRoleId( Collection<Integer> userRoleId )
+    public Integer getPeriodId()
     {
-        this.userRoleId = userRoleId;
+        return periodId;
     }
 
-    // ----------------------------------------------------------------------------------
-    // Action implemantation
-    // ----------------------------------------------------------------------------------
-    
+    public void setPeriodId( Integer periodId )
+    {
+        this.periodId = periodId;
+    }
+
+    public void setReportType( String reportType )
+    {
+        this.reportType = reportType;
+    }
+
+    public Integer getReportId()
+    {
+        return reportId;
+    }
+
     public String execute()
+        throws Exception
     {
-        ReportExcel report = reportService.getReportExcel( reportId );
-
-        report.getUserRoles().clear();
-
-        for ( Integer id : userRoleId )
-        {
-            report.getUserRoles().add( userStore.getUserAuthorityGroup( id ) );
-        }
-
-        reportService.updateReportExcel( report );
-
-        return SUCCESS;
+        return reportType;
     }
+
 }
