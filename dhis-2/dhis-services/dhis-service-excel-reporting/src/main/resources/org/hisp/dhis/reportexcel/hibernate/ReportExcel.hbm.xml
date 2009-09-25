@@ -24,13 +24,7 @@
 			<key column="reportexcelid" />
 			<many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnit"
 				column="organisationid"  foreign-key="fk_reportexcel_organisation"/>
-		</set>
-
-		<set name="userRoles" table="reportexcel_userroles">
-			<key column="reportexcelid" />
-			<many-to-many class="org.hisp.dhis.user.UserAuthorityGroup"
-				column="userroleid" foreign-key="fk_reportexcel_userrole"/>
-		</set>
+		</set>		
 		
 		<joined-subclass name="org.hisp.dhis.reportexcel.ReportExcelNormal" table="reportexcels_normal">
 			<key column="reportexcelid" />			

@@ -36,16 +36,7 @@
 			<result name="success" type="redirect">administration.action
 			</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-		</action>
-
-		<action name="getAdminOptions"
-			class="org.hisp.dhis.reportexcel.configuration.action.GetAdminOptionsAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/reportUserRoles.vm</param>
-			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/admin.js</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-		</action>
+		</action>	
 
 		<action name="openAdministrator"
 			class="org.hisp.dhis.reportexcel.configuration.action.NoAction">
@@ -53,14 +44,7 @@
 			<param name="page">/dhis-web-excel-reporting/viewAdministrator.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-		</action>
-
-		<action name="saveReportUserRoles"
-			class="org.hisp.dhis.reportexcel.configuration.action.SaveReportUserRolesAction">
-			<result name="success" type="chain">getAdminOptions
-			</result>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-		</action>
+		</action>		
 
 		<!-- REPORT EXCEL CORE ACTION -->
 

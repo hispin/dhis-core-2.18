@@ -28,15 +28,14 @@ package org.hisp.dhis.reportexcel;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,7 +89,7 @@ public class DefaultReportExcelService
         return reportStore.getReportExcel( id );
     }
 
-    public ReportExcel getReportExcel(  String name )
+    public ReportExcel getReportExcel( String name )
     {
         return reportStore.getReportExcel( name );
     }
@@ -113,17 +112,16 @@ public class DefaultReportExcelService
         }
         else
         {
-            Set<UserAuthorityGroup> userRoles = userStore.getUserCredentials( user ).getUserAuthorityGroups();
-
             Collection<ReportExcel> reports = new ArrayList<ReportExcel>();
 
-            for ( ReportExcel report : this.getReportsByGroup( group ) )
+            UserCredentials credentials = userStore.getUserCredentials( user );
+
+            for ( UserAuthorityGroup ugroup : credentials.getUserAuthorityGroups() )
             {
-                if ( CollectionUtils.intersection( report.getUserRoles(), userRoles ).size() > 0 )
-                {
-                    reports.add( report );
-                }
+                reports.addAll( ugroup.getReportExcels() );
             }
+
+            reports.retainAll( this.getReportsByGroup( group ) );
 
             return reports;
         }
@@ -161,7 +159,7 @@ public class DefaultReportExcelService
     public ReportExcelItem getReportExcelItem( int id )
     {
         return reportStore.getReportExcelItem( id );
-    }   
+    }
 
     public Collection<ReportExcelItem> getALLReportExcelItem()
     {
@@ -237,9 +235,10 @@ public class DefaultReportExcelService
 
     }
 
-    public void updateDataEntryStatus( DataEntryStatus arg0 )    {
-        
+    public void updateDataEntryStatus( DataEntryStatus arg0 )
+    {
+
         reportStore.updateDataEntryStatus( arg0 );
-    }   
+    }
 
 }

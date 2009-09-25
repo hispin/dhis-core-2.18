@@ -34,6 +34,9 @@ import java.util.List;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
+import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.comparator.ReportExcelNameComparator;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserStore;
@@ -71,7 +74,14 @@ public class GetRoleAction
     {
         this.authoritiesProvider = authoritiesProvider;
     }
-    
+
+    private ReportExcelService reportExcelService;
+
+    public void setReportExcelService( ReportExcelService reportExcelService )
+    {
+        this.reportExcelService = reportExcelService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -100,14 +110,14 @@ public class GetRoleAction
     {
         return availableDataSets;
     }
-    
+
     private List<DataSet> roleDataSets;
 
     public List<DataSet> getRoleDataSets()
     {
         return roleDataSets;
     }
-        
+
     private List<String> availableAuthorities;
 
     public List<String> getAvailableAuthorities()
@@ -120,6 +130,20 @@ public class GetRoleAction
     public List<String> getRoleAuthorities()
     {
         return roleAuthorities;
+    }
+
+    private List<ReportExcel> availableReportExcels;
+
+    public List<ReportExcel> getAvailableReportExcels()
+    {
+        return availableReportExcels;
+    }
+
+    private List<ReportExcel> reportExcels;
+
+    public List<ReportExcel> getReportExcels()
+    {
+        return reportExcels;
     }
 
     // -------------------------------------------------------------------------
@@ -138,11 +162,11 @@ public class GetRoleAction
         availableDataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
 
         availableDataSets.removeAll( userAuthorityGroup.getDataSets() );
-        
+
         Collections.sort( availableDataSets, new DataSetNameComparator() );
-        
+
         roleDataSets = new ArrayList<DataSet>( userAuthorityGroup.getDataSets() );
-        
+
         Collections.sort( roleDataSets, new DataSetNameComparator() );
 
         // ---------------------------------------------------------------------
@@ -158,6 +182,20 @@ public class GetRoleAction
         roleAuthorities = new ArrayList<String>( userAuthorityGroup.getAuthorities() );
 
         Collections.sort( roleAuthorities );
+
+        // ---------------------------------------------------------------------
+        // Report Excel
+        // ---------------------------------------------------------------------
+
+        availableReportExcels = new ArrayList<ReportExcel>( reportExcelService.getALLReportExcel() );
+
+        reportExcels = new ArrayList<ReportExcel>( userAuthorityGroup.getReportExcels() );
+
+        availableReportExcels.removeAll( reportExcels );
+
+        Collections.sort( availableReportExcels, new ReportExcelNameComparator() );
+        
+        Collections.sort( reportExcels, new ReportExcelNameComparator() );
 
         return SUCCESS;
     }

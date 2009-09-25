@@ -51,9 +51,7 @@ public abstract class ReportExcel
 
     private Set<ReportExcelItem> reportExcelItems = new HashSet<ReportExcelItem>();
 
-    private Set<OrganisationUnit> organisationAssocitions = new HashSet<OrganisationUnit>();
-
-    private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
+    private Set<OrganisationUnit> organisationAssocitions = new HashSet<OrganisationUnit>();   
 
     private String group;
 
@@ -80,8 +78,7 @@ public abstract class ReportExcel
         this.organisationRow = organisationRow;
         this.organisationColumn = organisationColumn;
         this.reportExcelItems = reportExcelItems;
-        this.organisationAssocitions = organisationAssocitions;
-        this.userRoles = userRoles;
+        this.organisationAssocitions = organisationAssocitions;      
         this.group = group;
     }
 
@@ -250,17 +247,7 @@ public abstract class ReportExcel
     {
         this.organisationAssocitions = organisationAssocitions;
     }
-
-    public Set<UserAuthorityGroup> getUserRoles()
-    {
-        return userRoles;
-    }
-
-    public void setUserRoles( Set<UserAuthorityGroup> userRoles )
-    {
-        this.userRoles = userRoles;
-    }
-
+   
     public String getGroup()
     {
         return group;
