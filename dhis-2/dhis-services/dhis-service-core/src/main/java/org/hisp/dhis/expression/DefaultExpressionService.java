@@ -416,14 +416,16 @@ public class DefaultExpressionService
                 final DataElementCategoryOptionCombo categoryOptionCombo = 
                     categoryOptionComboService.getDataElementCategoryOptionCombo( operand.getOptionComboId() );
 
-                final DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, categoryOptionCombo );
+                //final DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, categoryOptionCombo );
 
-                if ( dataValue == null && nullIfNoValues )
+                final String value = dataValueService.getValue( dataElement, period, source, categoryOptionCombo );
+                
+                if ( value == null && nullIfNoValues )
                 {
                     return null;
                 }
                 
-                replaceString = ( dataValue == null ) ? NULL_REPLACEMENT : dataValue.getValue();
+                replaceString = ( value == null ) ? NULL_REPLACEMENT : value;
                 
                 matcher.appendReplacement( buffer, replaceString );
             }

@@ -149,7 +149,7 @@ public class DataValueStoreTest
         
         categoryOptionComboService.addDataElementCategoryOptionCombo( optionCombo );
     }
-
+    
     // -------------------------------------------------------------------------
     // Basic DataValue
     // -------------------------------------------------------------------------
@@ -203,7 +203,7 @@ public class DataValueStoreTest
         assertEquals( periodC, dataValueC.getPeriod() );
         assertEquals( "3", dataValueC.getValue() );
     }
-
+    
     @Test
     public void testUpdataDataValue()
         throws Exception

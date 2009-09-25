@@ -112,7 +112,8 @@ public class HibernateDbmsManager
         emptyTable( "datasetsource" );
         emptyTable( "datasetmembers" );        
         emptyTable( "dataset" );
-        
+
+        emptyTable( "expressiondataelement" );
         emptyTable( "calculateddataelement" );
         emptyTable( "dataelementgroupmembers" );
         emptyTable( "dataelementgroup" );
@@ -128,6 +129,7 @@ public class HibernateDbmsManager
         emptyTable( "dataelementcategory" );
         emptyTable( "dataelementcategoryoption" );
 
+        emptyTable( "mocksource" );
         emptyTable( "source" );
         emptyTable( "period" );
         

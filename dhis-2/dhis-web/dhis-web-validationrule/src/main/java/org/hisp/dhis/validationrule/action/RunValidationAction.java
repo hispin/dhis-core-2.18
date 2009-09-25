@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -90,6 +91,13 @@ public class RunValidationAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+    
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
     }
 
     // -------------------------------------------------------------------------
@@ -161,6 +169,8 @@ public class RunValidationAction
             sources = organisationUnits;
         }
 
+        statementManager.initialise();
+        
         if ( validationRuleGroupId == -1 )
         {
             log.info( "Validating all rules" );
@@ -178,6 +188,8 @@ public class RunValidationAction
                 format.parseDate( startDate ), format.parseDate( endDate ), sources, group ) );
         }
 
+        statementManager.destroy();
+        
         Collections.sort( validationResults, new ValidationResultComparator() );
         
         SessionUtils.setSessionVar( KEY_VALIDATIONRESULT, validationResults );

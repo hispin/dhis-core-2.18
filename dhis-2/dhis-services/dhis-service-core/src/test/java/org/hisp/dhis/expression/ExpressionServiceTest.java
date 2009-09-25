@@ -39,7 +39,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
@@ -58,7 +58,7 @@ import org.junit.Test;
  * @version $Id$
  */
 public class ExpressionServiceTest
-    extends DhisSpringTest
+    extends DhisTest
 {
     private ExpressionService expressionService;
 
@@ -147,6 +147,12 @@ public class ExpressionServiceTest
 
         dataValueService.addDataValue( createDataValue( dataElementA, period, source, "10", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementB, period, source, "5", categoryOptionCombo ) );        
+    }
+
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
     }
 
     // -------------------------------------------------------------------------

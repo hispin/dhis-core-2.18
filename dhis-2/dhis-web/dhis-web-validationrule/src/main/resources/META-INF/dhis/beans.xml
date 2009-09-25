@@ -200,7 +200,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    </property>           
+    </property>
+    <property name="statementManager">
+      <ref bean="statementManager"/>
+    </property>
   </bean>
   
   <bean id="org.hisp.dhis.validationrule.action.GetValidationResultDetailsAction"

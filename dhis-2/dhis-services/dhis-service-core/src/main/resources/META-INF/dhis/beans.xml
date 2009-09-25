@@ -28,6 +28,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.datavalue.DataValueStore"
     class="org.hisp.dhis.datavalue.hibernate.HibernateDataValueStore">
     <property name="sessionFactory" ref="sessionFactory"/>
+    <property name="statementManager" ref="statementManager"/>
     <property name="periodStore" 
       ref="org.hisp.dhis.period.PeriodStore"/>
   </bean>
