@@ -38,7 +38,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryComboService;
@@ -64,7 +64,7 @@ import org.junit.Test;
  * @version $Id$
  */
 public class ValidationRuleServiceTest
-    extends DhisSpringTest
+    extends DhisTest
 {    
     private ValidationRuleService validationRuleService;
 
@@ -200,6 +200,12 @@ public class ValidationRuleServiceTest
         validationRuleD = createValidationRule( 'D', ValidationRule.OPERATOR_LESSER, expressionA, expressionC );
         
         group = createValidationRuleGroup( 'A' );
+    }
+
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
     }
 
     // ----------------------------------------------------------------------

@@ -32,12 +32,6 @@
       <many-to-many column="datasetid" class="org.hisp.dhis.dataset.DataSet"
         foreign-key="fk_datasetid"/>
     </set>
-    
-    <set name="reportExcels" table="userrolereportexcel">
-      <key column="userroleid"/>
-      <many-to-many column="reportexcelid" class="org.hisp.dhis.reportexcel.ReportExcel"
-        foreign-key="fk_reportexcelid"/>
-    </set>
-    
+        
   </class>
 </hibernate-mapping>

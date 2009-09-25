@@ -105,6 +105,11 @@ public class DefaultDataValueService
         return dataValueStore.getDataValue( source, dataElement, period, optionCombo );
     }
 
+    public String getValue( DataElement dataElement, Period period, Source source, DataElementCategoryOptionCombo optionCombo )
+    {
+        return dataValueStore.getValue( dataElement, period, source, optionCombo );
+    }
+    
     // -------------------------------------------------------------------------
     // Collections of DataValues
     // -------------------------------------------------------------------------

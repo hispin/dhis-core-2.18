@@ -116,6 +116,8 @@ public interface DataValueService
      */
     DataValue getDataValue( Source source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo );
 
+    String getValue( DataElement dataElement, Period period, Source source, DataElementCategoryOptionCombo optionCombo );
+    
     // -------------------------------------------------------------------------
     // Collections of DataValues
     // -------------------------------------------------------------------------

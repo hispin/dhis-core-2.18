@@ -57,14 +57,14 @@ public class DefaultReportExcelService
     {
         this.reportStore = reportStore;
     }
-
+/*
     private UserStore userStore;
 
     public void setUserStore( UserStore userStore )
     {
         this.userStore = userStore;
     }
-
+*/
     // --------------------------------------
     // Service of Report
     // --------------------------------------
@@ -106,10 +106,11 @@ public class DefaultReportExcelService
 
     public Collection<ReportExcel> getReportExcels( User user, boolean superUser, String group )
     {
-        if ( user == null || (user != null && superUser) )
+        //if ( user == null || (user != null && superUser) )
         {
             return this.getReportsByGroup( group );
         }
+        /*
         else
         {
             Collection<ReportExcel> reports = new ArrayList<ReportExcel>();
@@ -124,7 +125,7 @@ public class DefaultReportExcelService
             reports.retainAll( this.getReportsByGroup( group ) );
 
             return reports;
-        }
+        }*/
     }
 
     public Collection<String> getReportExcelGroups()

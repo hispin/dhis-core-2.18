@@ -36,7 +36,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.GenericNameStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -50,7 +50,7 @@ import org.junit.Test;
  */
 @SuppressWarnings( "unchecked" )
 public class ValidationRuleStoreTest
-    extends DhisSpringTest
+    extends DhisTest
 {
     private GenericNameStore<ValidationRule> validationRuleStore;
 
@@ -103,7 +103,13 @@ public class ValidationRuleStoreTest
         expressionService.addExpression( expressionB );
         expressionService.addExpression( expressionA );
     }
-    
+
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+
     // -------------------------------------------------------------------------
     // ValidationRule
     // -------------------------------------------------------------------------
