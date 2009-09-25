@@ -26,7 +26,6 @@
  */
 package org.hisp.dhis.reportexcel;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
@@ -34,9 +33,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

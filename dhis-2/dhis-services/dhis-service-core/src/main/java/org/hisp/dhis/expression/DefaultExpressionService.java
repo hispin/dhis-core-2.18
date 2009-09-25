@@ -47,7 +47,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
-import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
@@ -415,8 +414,6 @@ public class DefaultExpressionService
                 final DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
                 final DataElementCategoryOptionCombo categoryOptionCombo = 
                     categoryOptionComboService.getDataElementCategoryOptionCombo( operand.getOptionComboId() );
-
-                //final DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, categoryOptionCombo );
 
                 final String value = dataValueService.getValue( dataElement, period, source, categoryOptionCombo );
                 
