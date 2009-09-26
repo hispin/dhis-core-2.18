@@ -26,6 +26,7 @@
  */
 package org.hisp.dhis.reportexcel;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
@@ -33,6 +34,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserAuthorityGroup;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -53,14 +57,14 @@ public class DefaultReportExcelService
     {
         this.reportStore = reportStore;
     }
-/*
+
     private UserStore userStore;
 
     public void setUserStore( UserStore userStore )
     {
         this.userStore = userStore;
     }
-*/
+
     // --------------------------------------
     // Service of Report
     // --------------------------------------
@@ -102,11 +106,11 @@ public class DefaultReportExcelService
 
     public Collection<ReportExcel> getReportExcels( User user, boolean superUser, String group )
     {
-        //if ( user == null || (user != null && superUser) )
+        if ( user == null || (user != null && superUser) )
         {
             return this.getReportsByGroup( group );
         }
-        /*
+        
         else
         {
             Collection<ReportExcel> reports = new ArrayList<ReportExcel>();
@@ -121,7 +125,7 @@ public class DefaultReportExcelService
             reports.retainAll( this.getReportsByGroup( group ) );
 
             return reports;
-        }*/
+        }
     }
 
     public Collection<String> getReportExcelGroups()

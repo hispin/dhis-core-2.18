@@ -45,7 +45,7 @@
           </select>
         </td>
 	</tr>
-	<!--
+	
 	<tr>
 		<td><label>$i18n.getString( "excel_reporting" )</label></td>		
 		<td>
@@ -64,7 +64,7 @@
           </select>
         </td>
 	</tr>
-	-->
+	
 	<tr>
 		<td><label>$i18n.getString( "authorities" )</label></td>		
 		<td>
