@@ -13,7 +13,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.reportexcel.ReportExcelService" class="org.hisp.dhis.reportexcel.DefaultReportExcelService">
 	   <property name="reportStore" ref="org.hisp.dhis.reportexcel.ReportExcelStore" />
-	   <!-- <property name="userStore" ref="org.hisp.dhis.user.UserStore" /> -->
+	   <property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 	</bean>
 
 	<!-- Report Location Manager -->

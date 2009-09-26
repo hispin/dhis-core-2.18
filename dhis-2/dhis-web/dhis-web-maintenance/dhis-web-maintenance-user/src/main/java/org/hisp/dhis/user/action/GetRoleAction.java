@@ -189,13 +189,13 @@ public class GetRoleAction
 
         availableReportExcels = new ArrayList<ReportExcel>( reportExcelService.getALLReportExcel() );
 
-       // reportExcels = new ArrayList<ReportExcel>( userAuthorityGroup.getReportExcels() );
+        reportExcels = new ArrayList<ReportExcel>( userAuthorityGroup.getReportExcels() );
 
-        //availableReportExcels.removeAll( reportExcels );
+        availableReportExcels.removeAll( reportExcels );
 
         Collections.sort( availableReportExcels, new ReportExcelNameComparator() );
-        
-        //Collections.sort( reportExcels, new ReportExcelNameComparator() );
+
+        Collections.sort( reportExcels, new ReportExcelNameComparator() );
 
         return SUCCESS;
     }
