@@ -57,7 +57,7 @@ function addValidationCompleted( messageElement )
     {
         selectAll( document.getElementById( 'selectedList' ) );
 		selectAll( document.getElementById( 'selectedListAuthority' ) );
-		selectAll( document.getElementById( 'selectedReportExcel' ) );
+		//selectAll( document.getElementById( 'selectedReportExcel' ) );
         var form = document.getElementById( 'addRoleForm' );
         
         form.submit();
@@ -98,7 +98,7 @@ function updateValidationCompleted( messageElement )
     {
         selectAll( document.getElementById( 'selectedList' ) );
 		selectAll( document.getElementById( 'selectedListAuthority' ) );
-		selectAll( document.getElementById( 'selectedReportExcel' ) );
+		//selectAll( document.getElementById( 'selectedReportExcel' ) );
         var form = document.getElementById( 'updateRoleForm' );
         
         form.submit();

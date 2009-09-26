@@ -52,7 +52,8 @@
         		</select>
         	</td>
 		</tr>
-		<tr>
+		<!--
+		<tr>		
 		<td><label>$i18n.getString( "excel_reporting" )</label></td>		
 		<td>
           <select size="15" id="availableExcelReporting" name="availableExcelReporting" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'availableExcelReporting', 'selectedReportExcel' )">
@@ -73,6 +74,7 @@
           </select>
         </td>
 	</tr>
+	-->
 		<tr>
 			<td><label>$i18n.getString( "authorities" )</label></td>
 			<td>
