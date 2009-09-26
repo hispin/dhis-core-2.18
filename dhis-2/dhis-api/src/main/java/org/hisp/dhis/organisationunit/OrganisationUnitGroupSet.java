@@ -69,6 +69,28 @@ public class OrganisationUnitGroupSet
     }
 
     // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public boolean hasOrganisationUnitGroups()
+    {
+        return organisationUnitGroups != null && organisationUnitGroups.size() > 0;
+    }
+    
+    public boolean isMemberOfOrganisationUnitGroups( OrganisationUnit organisationUnit )
+    {
+        for ( OrganisationUnitGroup group : organisationUnitGroups )
+        {
+            if ( group.getMembers().contains( organisationUnit ) )
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
 
