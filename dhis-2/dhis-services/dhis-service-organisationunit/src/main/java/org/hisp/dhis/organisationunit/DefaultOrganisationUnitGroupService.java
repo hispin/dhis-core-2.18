@@ -234,17 +234,12 @@ public class DefaultOrganisationUnitGroupService
     {
         Collection<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>();
         
-        groupSetLoop : for ( OrganisationUnitGroupSet groupSet : getCompulsoryOrganisationUnitGroupSets() )
+        for ( OrganisationUnitGroupSet groupSet : getCompulsoryOrganisationUnitGroupSets() )
         {
-            for ( OrganisationUnitGroup group : groupSet.getOrganisationUnitGroups() )
+            if ( !groupSet.isMemberOfOrganisationUnitGroups( organisationUnit ) && groupSet.hasOrganisationUnitGroups() )
             {
-                if ( group.getMembers().contains( organisationUnit ) )
-                {
-                    continue groupSetLoop;
-                }
+                groupSets.add( groupSet );
             }
-            
-            groupSets.add( groupSet );
         }
         
         return groupSets;
