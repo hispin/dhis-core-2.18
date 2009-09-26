@@ -134,7 +134,7 @@ public class AddRoleAction
 
             ReportExcel reportExcel = reportExcelService.getReportExcel( Integer.parseInt( id ) );
 
-            group.getReportExcels().add( reportExcel );
+            //group.getReportExcels().add( reportExcel );
         }
 
         group.getAuthorities().addAll( selectedListAuthority );

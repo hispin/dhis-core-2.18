@@ -131,7 +131,7 @@ public class UpdateRoleAction
 
         group.getDataSets().clear();
         group.getAuthorities().clear();
-        group.getReportExcels().clear();
+        //group.getReportExcels().clear();
 
         for ( String id : selectedList )
         {
@@ -145,7 +145,7 @@ public class UpdateRoleAction
 
             ReportExcel reportExcel = reportExcelService.getReportExcel( Integer.parseInt( id ) );
 
-            group.getReportExcels().add( reportExcel );
+            //group.getReportExcels().add( reportExcel );
         }
 
         group.getAuthorities().addAll( selectedListAuthority );
