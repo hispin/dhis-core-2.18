@@ -326,35 +326,36 @@ public class DefaultDataEntryScreenManager
         // Pattern to match data elements in the HTML code.
         // ---------------------------------------------------------------------
 
-        Pattern patDataElement = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
-        Matcher matDataElement = patDataElement.matcher( dataEntryFormCode );
+        Pattern dataElementPattern = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
+        Matcher dataElementMatcher = dataElementPattern.matcher( dataEntryFormCode );
 
+        // ---------------------------------------------------------------------
+        // Pattern to extract data element ID from data element field
+        // ---------------------------------------------------------------------
+
+        Pattern identifierPattern = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
+        
         // ---------------------------------------------------------------------
         // Iterate through all matching data element fields.
         // ---------------------------------------------------------------------
 
-        boolean result = matDataElement.find();
-
-        while ( result )
+        while ( dataElementMatcher.find() )
         {
             // Get input HTML code (HTML input field code).
-            String dataElementCode = matDataElement.group( 1 );
+            String dataElementCode = dataElementMatcher.group( 1 );
 
-            // Pattern to extract data element ID from data element field
-            Pattern patDataElementId = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
+            Matcher identifierMatcher = identifierPattern.matcher( dataElementCode );
 
-            Matcher matDataElementId = patDataElementId.matcher( dataElementCode );
-
-            if ( matDataElementId.find() && matDataElementId.groupCount() > 0 )
+            if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
                 // Get data element ID of data element.
                 // -------------------------------------------------------------
 
-                int dataElementId = Integer.parseInt( matDataElementId.group( 1 ) );
+                int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                int optionComboId = Integer.parseInt( matDataElementId.group( 2 ) );
+                int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
                 // -------------------------------------------------------------
                 // Find type of data element
@@ -405,10 +406,10 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
 
                 int count = 0;
+                
                 for ( CustomValue customValue : customValues )
                 {
-                    if ( dataElementId == customValue.getDataElement().getId()
-                        && optionComboId == customValue.getOptionCombo().getId() )
+                    if ( dataElementId == customValue.getDataElement().getId() && optionComboId == customValue.getOptionCombo().getId() )
                     {
                         count += 1;
                     }
@@ -571,15 +572,12 @@ public class DefaultDataEntryScreenManager
                     appendCode = appendCode.replace( "$MAX", String.valueOf( minMaxDataElement.getMax() ) );
                 }
 
-                matDataElement.appendReplacement( sb, appendCode );
+                dataElementMatcher.appendReplacement( sb, appendCode );
             }
-
-            // Go to next data entry field
-            result = matDataElement.find();
         }
 
         // Add remaining code (after the last match), and return formatted code.
-        matDataElement.appendTail( sb );
+        dataElementMatcher.appendTail( sb );
 
         return sb.toString();
 
@@ -619,34 +617,35 @@ public class DefaultDataEntryScreenManager
         // Pattern to match data elements in the HTML code.
         // ---------------------------------------------------------------------
 
-        Pattern patDataElement = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
-        Matcher matDataElement = patDataElement.matcher( dataEntryFormCode );
+        Pattern dataElementPattern = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
+        Matcher dataElementMatcher = dataElementPattern.matcher( dataEntryFormCode );
+
+        // ---------------------------------------------------------------------
+        // Pattern to extract data element ID from data element field
+        // ---------------------------------------------------------------------
+
+        Pattern identifierPattern = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
 
         // ---------------------------------------------------------------------
         // Iterate through all matching data element fields.
         // ---------------------------------------------------------------------
 
-        boolean result = matDataElement.find();
-
-        while ( result )
+        while ( dataElementMatcher.find() )
         {
             // Get input HTML code (HTML input field code).
-            String dataElementCode = matDataElement.group( 1 );
+            String dataElementCode = dataElementMatcher.group( 1 );
 
-            // Pattern to extract data element ID from data element field
-            Pattern patDataElementId = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
+            Matcher identifierMatcher = identifierPattern.matcher( dataElementCode );
 
-            Matcher matDataElementId = patDataElementId.matcher( dataElementCode );
-
-            if ( matDataElementId.find() && matDataElementId.groupCount() > 0 )
+            if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
                 // Get data element ID of data element.
                 // -------------------------------------------------------------
 
-                int dataElementId = Integer.parseInt( matDataElementId.group( 1 ) );
+                int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                int optionComboId = Integer.parseInt( matDataElementId.group( 2 ) );
+                int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
                 // -------------------------------------------------------------
                 // Find type of data element
@@ -699,10 +698,10 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
 
                 int count = 0;
+                
                 for ( CustomValue customValue : customValues )
                 {
-                    if ( dataElementId == customValue.getDataElement().getId()
-                        && optionComboId == customValue.getOptionCombo().getId() )
+                    if ( dataElementId == customValue.getDataElement().getId() && optionComboId == customValue.getOptionCombo().getId() )
                     {
                         count += 1;
                     }
@@ -863,15 +862,12 @@ public class DefaultDataEntryScreenManager
                     appendCode = appendCode.replace( "$MAX", String.valueOf( minMaxDataElement.getMax() ) );
                 }
 
-                matDataElement.appendReplacement( sb, appendCode );
+                dataElementMatcher.appendReplacement( sb, appendCode );
             }
-
-            // Go to next data entry field
-            result = matDataElement.find();
         }
 
         // Add remaining code (after the last match), and return formatted code.
-        matDataElement.appendTail( sb );
+        dataElementMatcher.appendTail( sb );
 
         return sb.toString();
     }
