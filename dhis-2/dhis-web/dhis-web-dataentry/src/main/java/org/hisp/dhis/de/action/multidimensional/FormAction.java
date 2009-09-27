@@ -376,11 +376,6 @@ public class FormAction
 
         zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );
 
-        if ( zeroValueSaveMode == null )
-        {
-            zeroValueSaveMode = false;
-        }
-
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         DataSet dataSet = selectedStateManager.getSelectedDataSet();
@@ -403,10 +398,10 @@ public class FormAction
             return SUCCESS;
         }
 
-        for ( DataElement de : dataElements )
+        for ( DataElement element : dataElements )
         {
             Collection<DataElementCategoryOptionCombo> optionCombos = dataElementCategoryOptionComboService
-                .sortDataElementCategoryOptionCombos( de.getCategoryCombo() );
+                .sortDataElementCategoryOptionCombos( element.getCategoryCombo() );
 
             for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
             {
@@ -417,13 +412,11 @@ public class FormAction
             }
         }
 
-        /*
-         * Perform ordering of categories and their options so that they could
-         * be displayed as in the paper form.
-         * 
-         * Note that the total number of entry cells to be generated are the
-         * multiple of options each category is going to provide.
-         */
+        // ---------------------------------------------------------------------
+        // Perform ordering of categories and their options so that they could
+        // be displayed as in the paper form. Note that the total number of entry 
+        // cells to be generated are the multiple of options fromo each category.
+        // ---------------------------------------------------------------------
 
         DataElement sample = dataElements.iterator().next();
 
@@ -434,8 +427,7 @@ public class FormAction
 
         numberOfTotalColumns = orderdCategoryOptionCombos.size();
 
-        for ( DataElementCategory category : categories ) // Get the order of
-        // categories
+        for ( DataElementCategory category : categories ) // Get the order of categories
         {
             DataElementDimensionRowOrder rowOrder = dataElementDimensionRowOrderService
                 .getDataElementDimensionRowOrder( decbo, category );
@@ -452,8 +444,7 @@ public class FormAction
 
         orderedCategories = categoryMap.values();
 
-        for ( DataElementCategory dec : orderedCategories ) // Get the order of
-        // options
+        for ( DataElementCategory dec : orderedCategories ) // Get the order of options
         {
             Map<Integer, DataElementCategoryOption> optionsMap = new TreeMap<Integer, DataElementCategoryOption>();
 
@@ -475,10 +466,9 @@ public class FormAction
             orderedOptionsMap.put( dec.getId(), optionsMap.values() );
         }
 
-        /*
-         * Calculating the number of times each category is supposed to be
-         * repeated in the dataentry form.
-         */
+        // ---------------------------------------------------------------------
+        // Calculating the number of times each category should be repeated
+        // ---------------------------------------------------------------------
 
         int catColSpan = numberOfTotalColumns;
 
@@ -487,7 +477,7 @@ public class FormAction
         for ( DataElementCategory cat : orderedCategories )
         {
             catColSpan = catColSpan / cat.getCategoryOptions().size();
-            int total = numberOfTotalColumns / (catColSpan * cat.getCategoryOptions().size());
+            int total = numberOfTotalColumns / ( catColSpan * cat.getCategoryOptions().size() );
             Collection<Integer> cols = new ArrayList<Integer>( total );
 
             for ( int i = 0; i < total; i++ )
@@ -496,7 +486,7 @@ public class FormAction
             }
 
             /*
-             * Cols are made to be a collection simply to facilitate a for loop
+             * TODO Cols are made to be a collection simply to facilitate a for loop
              * in the velocity template - there should be a better way of "for"
              * doing a loop.
              */
@@ -548,8 +538,7 @@ public class FormAction
         // Prepare values for unsaved CalculatedDataElements
         // ---------------------------------------------------------------------
 
-        calculatedValueMap = dataEntryScreenManager.populateValuesForCalculatedDataElements( organisationUnit, dataSet,
-            period );
+        calculatedValueMap = dataEntryScreenManager.populateValuesForCalculatedDataElements( organisationUnit, dataSet, period );
 
         // ---------------------------------------------------------------------
         // Make the standard comments available

@@ -294,11 +294,6 @@ public class FormAction
     {
         zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );
 
-        if ( zeroValueSaveMode == null )
-        {
-            zeroValueSaveMode = false;
-        }
-
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         DataSet dataSet = selectedStateManager.getSelectedDataSet();
@@ -330,8 +325,7 @@ public class FormAction
         // Get the min/max values
         // ---------------------------------------------------------------------
 
-        Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementService.getMinMaxDataElements(
-            organisationUnit, dataElements );
+        Collection<MinMaxDataElement> minMaxDataElements = minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataElements );
 
         minMaxMap = new HashMap<Integer, MinMaxDataElement>( minMaxDataElements.size() );
 
@@ -344,8 +338,7 @@ public class FormAction
         // Get the DataValues and create a map
         // ---------------------------------------------------------------------
 
-        Collection<DataValue> dataValues = dataValueService.getDataValues( organisationUnit, period, dataElements,
-            defaultOptionCombo );
+        Collection<DataValue> dataValues = dataValueService.getDataValues( organisationUnit, period, dataElements, defaultOptionCombo );
 
         dataValueMap = new HashMap<Integer, DataValue>( dataValues.size() );
 
@@ -358,8 +351,7 @@ public class FormAction
         // Prepare values for unsaved CalculatedDataElements
         // ---------------------------------------------------------------------
 
-        calculatedValueMap = dataEntryScreenManager.populateValuesForCalculatedDataElements( organisationUnit, dataSet,
-            period );
+        calculatedValueMap = dataEntryScreenManager.populateValuesForCalculatedDataElements( organisationUnit, dataSet, period );
 
         // ---------------------------------------------------------------------
         // Make the standard comments available
