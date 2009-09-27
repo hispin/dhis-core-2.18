@@ -66,85 +66,63 @@ public class CustomValue
      */
     private String customValue;
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     public CustomValue()
     {
     }
 
-    /**
-     * @return the id
-     */
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
     public int getId()
     {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
     public void setId( int id )
     {
         this.id = id;
     }
 
-    /**
-     * @return the dataSet
-     */
     public DataSet getDataSet()
     {
         return dataSet;
     }
 
-    /**
-     * @param dataSet the dataSet to set
-     */
     public void setDataSet( DataSet dataSet )
     {
         this.dataSet = dataSet;
     }
 
-    /**
-     * @return the dataElement
-     */
     public DataElement getDataElement()
     {
         return dataElement;
     }
 
-    /**
-     * @param dataElement the dataElement to set
-     */
     public void setDataElement( DataElement dataElement )
     {
         this.dataElement = dataElement;
     }
 
-    /**
-     * @return the optionCombo
-     */
     public DataElementCategoryOptionCombo getOptionCombo()
     {
         return optionCombo;
     }
 
-    /**
-     * @param optionCombo the optionCombo to set
-     */
     public void setOptionCombo( DataElementCategoryOptionCombo optionCombo )
     {
         this.optionCombo = optionCombo;
     }
 
-    /**
-     * @return the customValue
-     */
     public String getCustomValue()
     {
         return customValue;
     }
 
-    /**
-     * @param customValue the customValue to set
-     */
     public void setCustomValue( String customValue )
     {
         this.customValue = customValue;

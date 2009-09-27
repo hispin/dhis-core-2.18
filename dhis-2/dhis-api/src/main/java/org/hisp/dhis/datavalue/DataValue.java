@@ -42,6 +42,9 @@ import org.hisp.dhis.source.Source;
 public class DataValue
     implements Serializable
 {
+    public static final String TRUE = "true";
+    public static final String FALSE = "false";
+    
     /**
      * Part of the DataValue's composite ID
      */
