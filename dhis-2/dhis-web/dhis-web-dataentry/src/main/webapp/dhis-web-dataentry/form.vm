@@ -97,28 +97,27 @@
 			</select>				
 		#else
            
-            
-                #if( $dataElement.type == "string" )
-                    #set( $coun = 0 ) 
-                    #foreach($customValue in $customValues)
-                        #if($dataElement.id == $customValue.dataElement.id && $optionComboId == $customValue.optionCombo.id)                                    
-                            #set( $coun = $coun +1 )
-                        #end
-                    #end  
-                        #if($coun>0)   
-                            <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue" )) onchange="saveBoolean($dataElement.id,$optionComboId, this )"  #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>
-                            <option value="" </option>                
-                                #foreach($customValue in $customValues)
-                                    #if($dataElement.id == $customValue.dataElement.id && $optionComboId == $customValue.optionCombo.id)
-                                <option value="$customValue.customValue" #if( $dataValue.value == $customValue.customValue ) selected="selected" #end>$customValue.customValue</option>   
-                                    #end
-                                #end 
-                            </select>
-                        #else
-                        #set( $zeroValueSaveMode = true )
-                               <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>                                
-                        #end    
-                #end            
+            #if( $dataElement.type == "string" )
+                #set( $coun = 0 ) 
+                #foreach($customValue in $customValues)
+                    #if($dataElement.id == $customValue.dataElement.id && $optionComboId == $customValue.optionCombo.id)                                    
+                        #set( $coun = $coun +1 )
+                    #end
+                #end  
+                    #if($coun>0)   
+                        <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue" )) onchange="saveBoolean($dataElement.id,$optionComboId, this )"  #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>
+                        <option value="" </option>                
+                            #foreach($customValue in $customValues)
+                                #if($dataElement.id == $customValue.dataElement.id && $optionComboId == $customValue.optionCombo.id)
+                            <option value="$customValue.customValue" #if( $dataValue.value == $customValue.customValue ) selected="selected" #end>$customValue.customValue</option>   
+                                #end
+                            #end 
+                        </select>
+                    #else
+                    #set( $zeroValueSaveMode = true )
+                           <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>                                
+                    #end    
+            #end            
             
 			#set( $minMaxError = false )
 			#if( $dataElement.type == "int" && $dataValue && $minMax )			
