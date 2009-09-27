@@ -97,8 +97,7 @@ public class DefaultDataEntryScreenManager
 
     private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    public void setDataElementCategoryOptionComboService(
-        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
     {
         this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
@@ -515,7 +514,7 @@ public class DefaultDataEntryScreenManager
                 {
                     appendCode += jsCodeForInputs;
 
-                    if ( dataElement.getType().equalsIgnoreCase( "int" ) )
+                    if ( dataElement.getType().equals( TYPE_INT ) )
                     {
                         appendCode += historyCode;
                     }
@@ -783,7 +782,7 @@ public class DefaultDataEntryScreenManager
                 {
                     appendCode += jsCodeForInputs;
 
-                    if ( dataElement.getType().equalsIgnoreCase( "int" ) )
+                    if ( dataElement.getType().equals( TYPE_INT ) )
                     {
                         appendCode += historyCode;
                     }
