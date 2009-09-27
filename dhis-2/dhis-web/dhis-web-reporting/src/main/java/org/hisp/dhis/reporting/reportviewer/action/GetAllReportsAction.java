@@ -35,6 +35,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportManager;
 import org.hisp.dhis.report.ReportService;
@@ -71,6 +72,13 @@ public class GetAllReportsAction
     {
         this.reportService = reportService;
     }
+    
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -90,25 +98,39 @@ public class GetAllReportsAction
     public String execute() 
         throws Exception
     {
-        ReportConfiguration config = reportManager.getConfiguration();
+        String reportFramework = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_REPORT_FRAMEWORK );
         
-        String birtHome = config.getHome();
-        
-        String birtDirectory = config.getDirectory();
-
-        HttpServletRequest request = ServletActionContext.getRequest();
-        
-        String birtURL = getBaseUrl( request ) + birtDirectory + SEPARATOR + BASE_QUERY;
-        
-        if ( birtHome != null && birtDirectory != null )
+        if ( reportFramework != null && reportFramework.equals( Report.TYPE_JASPER ) )
         {
             for ( Report report : reportService.getAllReports() )
             {
-                String url = birtURL + report.getDesign();
-                
-                report.setUrl( url );
+                report.setUrl( "renderReport.action?template=" + report.getDesign() );
                 
                 reports.add( report );
+            }
+        }
+        else // BIRT
+        {
+            ReportConfiguration config = reportManager.getConfiguration();
+            
+            String birtHome = config.getHome();
+            
+            String birtDirectory = config.getDirectory();
+    
+            HttpServletRequest request = ServletActionContext.getRequest();
+            
+            String birtURL = getBaseUrl( request ) + birtDirectory + SEPARATOR + BASE_QUERY;
+            
+            if ( birtHome != null && birtDirectory != null )
+            {
+                for ( Report report : reportService.getAllReports() )
+                {
+                    String url = birtURL + report.getDesign();
+                    
+                    report.setUrl( url );
+                    
+                    reports.add( report );
+                }
             }
         }
         
