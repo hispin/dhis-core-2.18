@@ -28,6 +28,7 @@ package org.hisp.dhis.de.screen;
  */
 
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
+import static org.hisp.dhis.dataelement.DataElement.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -297,13 +298,13 @@ public class DefaultDataEntryScreenManager
         String disabled, Boolean saveMode, I18n i18n, DataSet dataSet )
     {
         // ---------------------------------------------------------------------
-        // Populating Custom Value data.
+        // Populating Custom Value data
         // ---------------------------------------------------------------------
 
         List<CustomValue> customValues = (List<CustomValue>) customValueService.getCustomValuesByDataSet( dataSet );
 
         // ---------------------------------------------------------------------
-        // Inline Javascript to add to HTML before outputting.
+        // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
         final String jsCodeForInputs = " $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME', $SAVEMODE )\" onkeypress=\"return keyPress(event, this)\" style=\"text-align:center\" ";
@@ -312,7 +313,7 @@ public class DefaultDataEntryScreenManager
         final String calDataElementCode = " class=\"calculated\" disabled ";
 
         // ---------------------------------------------------------------------
-        // Metadata code to add to HTML before outputting.
+        // Metadata code to add to HTML before outputting
         // ---------------------------------------------------------------------
 
         final String metaDataCode = "<span id=\"value[$DATAELEMENTID].name\" style=\"display:none\">$DATAELEMENTNAME</span>"
@@ -323,7 +324,7 @@ public class DefaultDataEntryScreenManager
         StringBuffer sb = new StringBuffer();
 
         // ---------------------------------------------------------------------
-        // Pattern to match data elements in the HTML code.
+        // Pattern to match data elements in the HTML code
         // ---------------------------------------------------------------------
 
         Pattern dataElementPattern = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
@@ -336,12 +337,15 @@ public class DefaultDataEntryScreenManager
         Pattern identifierPattern = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
         
         // ---------------------------------------------------------------------
-        // Iterate through all matching data element fields.
+        // Iterate through all matching data element fields
         // ---------------------------------------------------------------------
 
         while ( dataElementMatcher.find() )
         {
-            // Get input HTML code (HTML input field code).
+            // -----------------------------------------------------------------
+            // Get HTML input field code
+            // -----------------------------------------------------------------
+
             String dataElementCode = dataElementMatcher.group( 1 );
 
             Matcher identifierMatcher = identifierPattern.matcher( dataElementCode );
@@ -349,7 +353,7 @@ public class DefaultDataEntryScreenManager
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
-                // Get data element ID of data element.
+                // Get data element ID of data element
                 // -------------------------------------------------------------
 
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
@@ -364,10 +368,10 @@ public class DefaultDataEntryScreenManager
                 String dataElementType = dataElement.getType();
 
                 // -------------------------------------------------------------
-                // Find existing value of data element in data set.
+                // Find existing value of data element in data set
                 // -------------------------------------------------------------
 
-                String dataElementValue = "";
+                String dataElementValue = new String();
 
                 if ( (dataElement instanceof CalculatedDataElement) )
                 {
@@ -402,7 +406,7 @@ public class DefaultDataEntryScreenManager
                 }
 
                 // -------------------------------------------------------------
-                // Insert value of data element in output code.
+                // Insert value of data element in output code
                 // -------------------------------------------------------------
 
                 int count = 0;
@@ -415,7 +419,7 @@ public class DefaultDataEntryScreenManager
                     }
                 }
 
-                if ( dataElement.getType().equals( "bool" ) || (dataElement.getType().equals( "string" ) && count > 0) )
+                if ( dataElement.getType().equals( TYPE_BOOL ) || (dataElement.getType().equals( TYPE_STRING ) && count > 0) )
                 {
                     dataElementCode = dataElementCode.replace( "input", "select" );
                     dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
@@ -450,7 +454,7 @@ public class DefaultDataEntryScreenManager
                 }
 
                 // -------------------------------------------------------------
-                // Remove placeholder view attribute from input field.
+                // Remove placeholder view attribute from input field
                 // -------------------------------------------------------------
 
                 dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
@@ -474,12 +478,12 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
                 // Append Javascript code and meta data (type/min/max) for
                 // persisting to output code, and insert value and type for
-                // fields.
+                // fields
                 // -------------------------------------------------------------
 
                 String appendCode = dataElementCode;
 
-                if ( dataElement.getType().equalsIgnoreCase( "bool" ) )
+                if ( dataElement.getType().equals( TYPE_BOOL ) )
                 {
                     appendCode += jsCodeForCombos;
 
@@ -505,7 +509,7 @@ public class DefaultDataEntryScreenManager
 
                     appendCode += "</select>";
                 }
-                else if ( dataElement.getType().equalsIgnoreCase( "string" ) && count > 0 )
+                else if ( dataElement.getType().equals( TYPE_STRING ) && count > 0 )
                 {
                     appendCode += jsCodeForCombos;
 
@@ -548,7 +552,7 @@ public class DefaultDataEntryScreenManager
                     appendCode += " />";
                 }
 
-                if ( !dataElement.getAggregationOperator().equalsIgnoreCase( DataElement.AGGREGATION_OPERATOR_SUM ) )
+                if ( !dataElement.getAggregationOperator().equals( AGGREGATION_OPERATOR_SUM ) )
                 {
                     saveMode = true;
                 }
@@ -576,7 +580,6 @@ public class DefaultDataEntryScreenManager
             }
         }
 
-        // Add remaining code (after the last match), and return formatted code.
         dataElementMatcher.appendTail( sb );
 
         return sb.toString();
@@ -588,13 +591,13 @@ public class DefaultDataEntryScreenManager
         Map<String, MinMaxDataElement> minMaxMap, String disabled, Boolean saveMode, I18n i18n, DataSet dataSet )
     {
         // ---------------------------------------------------------------------
-        // Populating Custom Value data.
+        // Populating Custom Value data
         // ---------------------------------------------------------------------
 
         List<CustomValue> customValues = (List<CustomValue>) customValueService.getCustomValuesByDataSet( dataSet );
 
         // ---------------------------------------------------------------------
-        // Inline Javascript to add to HTML before outputting.
+        // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
         final String jsCodeForInputs = " $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME', $SAVEMODE )\" onkeypress=\"return keyPress(event, this)\" style=\"text-align:center\" ";
@@ -603,7 +606,7 @@ public class DefaultDataEntryScreenManager
         final String calDataElementCode = " class=\"calculated\" disabled ";
 
         // ---------------------------------------------------------------------
-        // Metadata code to add to HTML before outputting.
+        // Metadata code to add to HTML before outputting
         // ---------------------------------------------------------------------
 
         final String metaDataCode = "<span id=\"value[$DATAELEMENTID].name\" style=\"display:none\">$DATAELEMENTNAME</span>"
@@ -614,7 +617,7 @@ public class DefaultDataEntryScreenManager
         StringBuffer sb = new StringBuffer();
 
         // ---------------------------------------------------------------------
-        // Pattern to match data elements in the HTML code.
+        // Pattern to match data elements in the HTML code
         // ---------------------------------------------------------------------
 
         Pattern dataElementPattern = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
@@ -627,12 +630,15 @@ public class DefaultDataEntryScreenManager
         Pattern identifierPattern = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
 
         // ---------------------------------------------------------------------
-        // Iterate through all matching data element fields.
+        // Iterate through all matching data element fields
         // ---------------------------------------------------------------------
 
         while ( dataElementMatcher.find() )
         {
-            // Get input HTML code (HTML input field code).
+            // -----------------------------------------------------------------
+            // Get HTML input field code
+            // -----------------------------------------------------------------
+
             String dataElementCode = dataElementMatcher.group( 1 );
 
             Matcher identifierMatcher = identifierPattern.matcher( dataElementCode );
@@ -640,7 +646,7 @@ public class DefaultDataEntryScreenManager
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
-                // Get data element ID of data element.
+                // Get data element ID of data element
                 // -------------------------------------------------------------
 
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
@@ -654,10 +660,10 @@ public class DefaultDataEntryScreenManager
                 String dataElementType = dataElement.getType();
 
                 // -------------------------------------------------------------
-                // Find existing value of data element in data set.
+                // Find existing value of data element in data set
                 // -------------------------------------------------------------
 
-                String dataElementValue = "";
+                String dataElementValue = new String();
 
                 if ( (dataElement instanceof CalculatedDataElement) )
                 {
@@ -684,8 +690,7 @@ public class DefaultDataEntryScreenManager
                 {
                     for ( DataValue dv : dataValues )
                     {
-                        if ( dv.getDataElement().getId() == dataElementId
-                            && dv.getOptionCombo().getId() == optionComboId )
+                        if ( dv.getDataElement().getId() == dataElementId && dv.getOptionCombo().getId() == optionComboId )
                         {
                             dataElementValue = dv.getValue();
                             break;
@@ -694,7 +699,7 @@ public class DefaultDataEntryScreenManager
                 }
 
                 // -------------------------------------------------------------
-                // Insert value of data element in output code.
+                // Insert value of data element in output code
                 // -------------------------------------------------------------
 
                 int count = 0;
@@ -707,7 +712,7 @@ public class DefaultDataEntryScreenManager
                     }
                 }
 
-                if ( dataElement.getType().equals( "bool" ) || (dataElement.getType().equals( "string" ) && count > 0) )
+                if ( dataElement.getType().equals( DataElement.TYPE_BOOL ) || (dataElement.getType().equals( TYPE_STRING ) && count > 0) )
                 {
                     dataElementCode = dataElementCode.replace( "input", "select" );
                     dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
@@ -740,7 +745,7 @@ public class DefaultDataEntryScreenManager
                 }
 
                 // -------------------------------------------------------------
-                // Remove placeholder view attribute from input field.
+                // Remove placeholder view attribute from input field
                 // -------------------------------------------------------------
 
                 dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
@@ -764,12 +769,12 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
                 // Append Javascript code and meta data (type/min/max) for
                 // persisting to output code, and insert value and type for
-                // fields.
+                // fields
                 // -------------------------------------------------------------
 
                 String appendCode = dataElementCode;
 
-                if ( dataElement.getType().equalsIgnoreCase( "bool" ) )
+                if ( dataElement.getType().equals( TYPE_BOOL ) )
                 {
                     appendCode += jsCodeForCombos;
 
@@ -795,7 +800,7 @@ public class DefaultDataEntryScreenManager
 
                     appendCode += "</select>";
                 }
-                else if ( dataElement.getType().equalsIgnoreCase( "string" ) && count > 0 )
+                else if ( dataElement.getType().equals( TYPE_STRING ) && count > 0 )
                 {
                     appendCode += jsCodeForCombos;
 
@@ -866,7 +871,6 @@ public class DefaultDataEntryScreenManager
             }
         }
 
-        // Add remaining code (after the last match), and return formatted code.
         dataElementMatcher.appendTail( sb );
 
         return sb.toString();
