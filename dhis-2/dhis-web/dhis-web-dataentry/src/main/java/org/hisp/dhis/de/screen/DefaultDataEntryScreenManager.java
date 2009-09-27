@@ -58,6 +58,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.system.util.TimeUtils;
 
 /**
  * @author Abyot Asalefew
@@ -337,6 +338,8 @@ public class DefaultDataEntryScreenManager
         // Iterate through all matching data element fields
         // ---------------------------------------------------------------------
 
+        Map<Integer, DataElement> dataElementMap = getDataElementMap( dataSet );
+        
         while ( dataElementMatcher.find() )
         {
             // -----------------------------------------------------------------
@@ -354,10 +357,10 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
 
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
-                DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
                 int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
+                DataElement dataElement = dataElementMap.get( dataElementId ); //dataElementService.getDataElement( dataElementId );
+                
                 // -------------------------------------------------------------
                 // Find type of data element
                 // -------------------------------------------------------------
@@ -608,6 +611,8 @@ public class DefaultDataEntryScreenManager
         // Iterate through all matching data element fields
         // ---------------------------------------------------------------------
 
+        Map<Integer, DataElement> dataElementMap = getDataElementMap( dataSet );
+        TimeUtils.start();
         while ( dataElementMatcher.find() )
         {
             // -----------------------------------------------------------------
@@ -625,9 +630,10 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
 
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
-                DataElement dataElement = dataElementService.getDataElement( dataElementId );
                 int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
+                DataElement dataElement = dataElementMap.get( dataElementId ); //dataElementService.getDataElement( dataElementId );
+                
                 // -------------------------------------------------------------
                 // Find type of data element
                 // -------------------------------------------------------------
@@ -822,7 +828,7 @@ public class DefaultDataEntryScreenManager
                 dataElementMatcher.appendReplacement( sb, appendCode );
             }
         }
-
+TimeUtils.markHMS( "done" );
         dataElementMatcher.appendTail( sb );
 
         return sb.toString();
@@ -881,5 +887,21 @@ public class DefaultDataEntryScreenManager
         }
         
         return EMPTY;
+    }
+    
+    /**
+     * Returns a Map of all DataElements in the given DataSet where the key is
+     * the DataElement identifier and the value is the DataElement.
+     */
+    private Map<Integer, DataElement> getDataElementMap( DataSet dataSet )
+    {
+        Map<Integer, DataElement> map = new HashMap<Integer, DataElement>();
+        
+        for ( DataElement element : dataSet.getDataElements() )
+        {
+            map.put( element.getId(), element );
+        }
+        
+        return map;
     }
 }
