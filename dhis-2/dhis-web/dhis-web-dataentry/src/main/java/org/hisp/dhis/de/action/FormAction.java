@@ -40,6 +40,7 @@ import org.hisp.dhis.customvalue.CustomValueService;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataEntryForm;
 import org.hisp.dhis.dataset.DataEntryFormService;
@@ -305,11 +306,12 @@ public class FormAction
         customValues = (List<CustomValue>) customValueService.getCustomValuesByDataSet( dataSet );
 
         Period period = selectedStateManager.getSelectedPeriod();
-       
-        if(dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) != null){        	          	  
-		       if( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ).getSources().contains(organisationUnit) ) {
-			        	disabled = "disabled";
-			        }
+
+        DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
+        
+        if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
+        {
+            disabled = "disabled";
         }
 
         Collection<DataElement> dataElements = dataSet.getDataElements();

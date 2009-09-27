@@ -49,6 +49,7 @@ import org.hisp.dhis.dataelement.DataElementDimensionColumnOrder;
 import org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService;
 import org.hisp.dhis.dataelement.DataElementDimensionRowOrder;
 import org.hisp.dhis.dataelement.DataElementDimensionRowOrderService;
+import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataEntryForm;
 import org.hisp.dhis.dataset.DataEntryFormService;
@@ -122,7 +123,8 @@ public class FormAction
 
     private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setDataElementCategoryOptionComboService(
+        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
     {
         this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
@@ -177,10 +179,10 @@ public class FormAction
     {
         this.i18n = i18n;
     }
-    
+
     private DataSetLockService dataSetLockService;
-    
-    public void setDataSetLockService( DataSetLockService dataSetLockService)
+
+    public void setDataSetLockService( DataSetLockService dataSetLockService )
     {
         this.dataSetLockService = dataSetLockService;
     }
@@ -386,11 +388,12 @@ public class FormAction
         customValues = (List<CustomValue>) customValueService.getCustomValuesByDataSet( dataSet );
 
         Period period = selectedStateManager.getSelectedPeriod();
+
+        DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
         
-        if(dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) != null){        	          	  
-		       if( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ).getSources().contains(organisationUnit) ) {
-			        	disabled = "disabled";
-			        }
+        if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
+        {
+            disabled = "disabled";
         }
 
         Collection<DataElement> dataElements = dataSet.getDataElements();
@@ -432,7 +435,7 @@ public class FormAction
         numberOfTotalColumns = orderdCategoryOptionCombos.size();
 
         for ( DataElementCategory category : categories ) // Get the order of
-                                                          // categories
+        // categories
         {
             DataElementDimensionRowOrder rowOrder = dataElementDimensionRowOrderService
                 .getDataElementDimensionRowOrder( decbo, category );
@@ -450,7 +453,7 @@ public class FormAction
         orderedCategories = categoryMap.values();
 
         for ( DataElementCategory dec : orderedCategories ) // Get the order of
-                                                            // options
+        // options
         {
             Map<Integer, DataElementCategoryOption> optionsMap = new TreeMap<Integer, DataElementCategoryOption>();
 
