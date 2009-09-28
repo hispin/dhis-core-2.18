@@ -27,8 +27,11 @@ package org.hisp.dhis.de.screen;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
+import static org.hisp.dhis.dataelement.DataElement.TYPE_BOOL;
+import static org.hisp.dhis.dataelement.DataElement.TYPE_INT;
+import static org.hisp.dhis.dataelement.DataElement.TYPE_STRING;
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
-import static org.hisp.dhis.dataelement.DataElement.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +47,6 @@ import org.hisp.dhis.customvalue.CustomValue;
 import org.hisp.dhis.customvalue.CustomValueService;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
@@ -135,48 +137,20 @@ public class DefaultDataEntryScreenManager
 
     public boolean hasMultiDimensionalDataElement( DataSet dataSet )
     {
-        int numberOfTotalColumns = 1;
-
-        if ( dataSet.getDataElements().size() > 0 )
+        for ( DataElement element : dataSet.getDataElements() )
         {
-            for ( DataElement de : dataSet.getDataElements() )
+            if ( element.isMultiDimensional() )
             {
-                for ( DataElementCategory category : de.getCategoryCombo().getCategories() )
-                {
-                    numberOfTotalColumns = numberOfTotalColumns * category.getCategoryOptions().size();
-                }
-
-                if ( numberOfTotalColumns > 1 )
-                {
-                    return true;
-                }
+                return true;
             }
         }
-
+        
         return false;
     }
 
     public String getScreenType( DataSet dataSet )
     {
-        int numberOfTotalColumns = 1;
-
-        if ( dataSet.getDataElements().size() > 0 )
-        {
-            for ( DataElement de : dataSet.getDataElements() )
-            {
-                for ( DataElementCategory category : de.getCategoryCombo().getCategories() )
-                {
-                    numberOfTotalColumns = numberOfTotalColumns * category.getCategoryOptions().size();
-                }
-
-                if ( numberOfTotalColumns > 1 )
-                {
-                    return MULTI_DIMENSIONAL_FORM;
-                }
-            }
-        }
-
-        return DEFAULT_FORM;
+        return hasMultiDimensionalDataElement( dataSet ) ? MULTI_DIMENSIONAL_FORM : DEFAULT_FORM;        
     }
 
     public Collection<Integer> getAllCalculatedDataElements( DataSet dataSet )
@@ -210,12 +184,10 @@ public class DefaultDataEntryScreenManager
             {
                 cde = (CalculatedDataElement) dataElement;
 
-                if ( cde.isSaved() )
+                if ( !cde.isSaved() )
                 {
-                    continue;
-                }
-
-                calculatedDataElementMap.put( cde, dataElementService.getDataElementFactors( cde ) );
+                    calculatedDataElementMap.put( cde, dataElementService.getDataElementFactors( cde ) );
+                }                
             }
         }
 
@@ -224,7 +196,7 @@ public class DefaultDataEntryScreenManager
 
     public boolean hasSection( DataSet dataSet )
     {
-        List<Section> sections = (List<Section>) sectionService.getSectionByDataSet( dataSet );
+        Collection<Section> sections = sectionService.getSectionByDataSet( dataSet );
 
         return sections.size() != 0;
     }
@@ -267,14 +239,13 @@ public class DefaultDataEntryScreenManager
                 factor = factorMap.get( operandId );
 
                 String dataElementIdString = operandId.substring( 0, operandId.indexOf( SEPARATOR ) );
-                String optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId
-                    .length() );
+                String optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId.length() );
 
-                DataElement de = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
+                DataElement element = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
                 DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
                     .getDataElementCategoryOptionCombo( Integer.parseInt( optionComboIdString ) );
 
-                dataValue = dataValueService.getDataValue( organisationUnit, de, period, optionCombo );
+                dataValue = dataValueService.getDataValue( organisationUnit, element, period, optionCombo );
 
                 if ( dataValue != null )
                 {

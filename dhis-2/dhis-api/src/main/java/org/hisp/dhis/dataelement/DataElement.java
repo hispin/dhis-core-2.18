@@ -239,9 +239,38 @@ public class DataElement
         return true;
     }
     
+    /**
+     * Tests whether more than one aggregation level exists for the DataElement.
+     */
     public boolean hasAggregationLevels()
     {
         return aggregationLevels != null && aggregationLevels.size() > 0;
+    }
+    
+    /**
+     * Tests whether the DataElement is associated with a DataELementCategoryCombo
+     * with more than one DataElementCategory, or any DataElementCategory with more
+     * than one DataElementCategoryOption.
+     */
+    public boolean isMultiDimensional()
+    {
+        if ( categoryCombo != null )
+        {
+            if ( categoryCombo.getCategories().size() > 1 )
+            {
+                return true;
+            }
+            
+            for ( DataElementCategory category : categoryCombo.getCategories() )
+            {
+                if ( category.getCategoryOptions().size() > 1 )
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
     
     // -------------------------------------------------------------------------
