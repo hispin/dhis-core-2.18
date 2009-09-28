@@ -14,14 +14,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportexcel.ReportExcelService" class="org.hisp.dhis.reportexcel.DefaultReportExcelService">
 	   <property name="reportStore" ref="org.hisp.dhis.reportexcel.ReportExcelStore" />
 	   <property name="userStore" ref="org.hisp.dhis.user.UserStore" />
-	</bean>
-
-	<!-- Report Location Manager -->
-
-	<bean id="org.hisp.dhis.reportexcel.ReportLocationManager" class="org.hisp.dhis.reportexcel.DefaultReportLocationManager" 
-	    init-method="init">
-        <property name="locationManager" ref="org.hisp.dhis.external.location.LocationManager" />
-		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
-	</bean>
+	</bean>	
 
 </beans>
