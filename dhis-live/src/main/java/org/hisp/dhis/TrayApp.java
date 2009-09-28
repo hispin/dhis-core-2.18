@@ -47,7 +47,7 @@ public class TrayApp
   private static final Log log = LogFactory.getLog( TrayApp.class );
   private static final String CONFIG_DIR = "/conf";
   private static final String STOPPED_ICON = "/icons/stopped.png";
-  private static final String STARTING_ICON = "/icons/starting.gif";
+  private static final String STARTING_ICON = "/icons/starting.png";
   private static final String FAILED_ICON ="/icons/failed.png";
   private static final String RUNNING_ICON = "/icons/running.png";
   
@@ -98,7 +98,7 @@ public class TrayApp
     MenuItem defaultItem = new MenuItem("Exit");
     popup.add(defaultItem);
 
-    trayIcon = new TrayIcon(image,"DHIS2 Lite", popup);
+    trayIcon = new TrayIcon(image,"DHIS 2 Live", popup);
     trayIcon.setImageAutoSize(true);
 
     ActionListener listener = new ActionListener() {
@@ -169,7 +169,7 @@ public class TrayApp
   public void lifeCycleStarted(LifeCycle arg0) {
     log.info("Lifecycle: server started");
     String url = "http://localhost:" + appServer.getConnectorPort();
-    trayIcon.displayMessage("Started","DHIS2 is running. Point your\nbrowser to " + url + ".",TrayIcon.MessageType.INFO);
+    trayIcon.displayMessage("Started","DHIS 2 is running. Point your\nbrowser to " + url + ".",TrayIcon.MessageType.INFO);
     trayIcon.setToolTip("DHIS 2 Server running");
     trayIcon.setImage(createImage(RUNNING_ICON, "Running icon"));
     try {
@@ -247,7 +247,7 @@ public class TrayApp
 
   /**
    *  The <code>getInstallDir</code> method is a hack to determine the current
-   *  directory the dhis2 lite package is installed in.  It does this by finding
+   *  directory the DHIS 2 Live package is installed in.  It does this by finding
    *  the file URL of a resource within the executable jar and extracting the 
    *  installation path from that. 
    *

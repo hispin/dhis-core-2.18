@@ -70,7 +70,7 @@ public class GetDataSetsForLockAction
     {
         this.dataSetLockService = dataSetLockService;
     }
-    
+
     private SelectionTreeManager selectionTreeManager;
 
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
@@ -111,19 +111,20 @@ public class GetDataSetsForLockAction
             {
                 if ( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) != null )
                 {
-                	if( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ).getSources() != null )
-                	{
-	                    dataSet.setLocked( true );
-	                    dataSetService.updateDataSet( dataSet );
-	                    dataSets.add( dataSet );
-                	}
-                	else
-                	{                                                
-	                    dataSetLockService.deleteDataSetLock( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) );
-	                    dataSet.setLocked( false );
-	                    dataSetService.updateDataSet( dataSet );
-	                    dataSets.add( dataSet );
-                	}
+                    if ( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ).getSources() != null )
+                    {
+                        dataSet.setLocked( true );
+                        dataSetService.updateDataSet( dataSet );
+                        dataSets.add( dataSet );
+                    }
+                    else
+                    {
+                        dataSetLockService.deleteDataSetLock( dataSetLockService.getDataSetLockByDataSetAndPeriod(
+                            dataSet, period ) );
+                        dataSet.setLocked( false );
+                        dataSetService.updateDataSet( dataSet );
+                        dataSets.add( dataSet );
+                    }
                 }
                 else
                 {
@@ -132,8 +133,8 @@ public class GetDataSetsForLockAction
                     dataSets.add( dataSet );
                 }
             }
-            //selectionTreeManager.clearLockOnSelectedOrganisationUnits();
-           // selectionTreeManager.clearSelectedOrganisationUnits();
+            // selectionTreeManager.clearLockOnSelectedOrganisationUnits();
+            // selectionTreeManager.clearSelectedOrganisationUnits();
         }
         return SUCCESS;
     }
