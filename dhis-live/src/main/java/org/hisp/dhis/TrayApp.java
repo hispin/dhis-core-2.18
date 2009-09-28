@@ -169,7 +169,7 @@ public class TrayApp
   public void lifeCycleStarted(LifeCycle arg0) {
     log.info("Lifecycle: server started");
     String url = "http://localhost:" + appServer.getConnectorPort();
-    trayIcon.displayMessage("Started","DHIS 2 is running. Point your\nbrowser to " + url + ".",TrayIcon.MessageType.INFO);
+    trayIcon.displayMessage("Started","DHIS 2 is running. Your browser will\nbe pointed to " + url + ".",TrayIcon.MessageType.INFO);
     trayIcon.setToolTip("DHIS 2 Server running");
     trayIcon.setImage(createImage(RUNNING_ICON, "Running icon"));
     try {
