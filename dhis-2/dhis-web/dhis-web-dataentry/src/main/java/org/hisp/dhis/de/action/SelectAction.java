@@ -34,11 +34,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
@@ -60,14 +60,14 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 public class SelectAction
     extends ActionSupport
-{    
+{
     private static final String SECTION_FORM = "sectionform";
 
     private static final Log log = LogFactory.getLog( SelectAction.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
-    // -------------------------------------------------------------------------  
+    // -------------------------------------------------------------------------
 
     private SelectedStateManager selectedStateManager;
 
@@ -75,7 +75,7 @@ public class SelectAction
     {
         this.selectedStateManager = selectedStateManager;
     }
-    
+
     private DataEntryScreenManager dataEntryScreenManager;
 
     public void setDataEntryScreenManager( DataEntryScreenManager dataEntryScreenManager )
@@ -88,7 +88,7 @@ public class SelectAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }    
+    }
 
     private DataEntryFormService dataEntryFormService;
 
@@ -103,10 +103,10 @@ public class SelectAction
     {
         this.registrationService = registrationService;
     }
-    
+
     private DataSetLockService dataSetLockService;
-    
-    public void setDataSetLockService( DataSetLockService dataSetLockService)
+
+    public void setDataSetLockService( DataSetLockService dataSetLockService )
     {
         this.dataSetLockService = dataSetLockService;
     }
@@ -281,11 +281,11 @@ public class SelectAction
         }
 
         // ---------------------------------------------------------------------
-        // Load and Sort DataSets
+        // Load and sort DataSets
         // ---------------------------------------------------------------------
 
-        dataSets = selectedStateManager.loadDataSetsForSelectedOrgUnit( organisationUnit );       
-        
+        dataSets = selectedStateManager.loadDataSetsForSelectedOrgUnit( organisationUnit );
+
         Collections.sort( dataSets, new DataSetNameComparator() );
 
         // ---------------------------------------------------------------------
@@ -318,7 +318,7 @@ public class SelectAction
 
             return SUCCESS;
         }
-        
+
         // ---------------------------------------------------------------------
         // Generate Periods
         // ---------------------------------------------------------------------
@@ -334,23 +334,26 @@ public class SelectAction
             selectedPeriodIndex = selectedStateManager.getSelectedPeriodIndex();
         }
 
-        //-----------------------------------------------------------------------
-        // For Data Locking 
-        //-----------------------------------------------------------------------
-       
-        if ( selectedPeriodIndex != null && selectedPeriodIndex >= 0 && selectedPeriodIndex < periods.size() ){
-           selectedStateManager.setSelectedPeriodIndex( selectedPeriodIndex );
-           
-           if(  selectedDataSet != null ){	   	           	                      
-	           period = selectedStateManager.getSelectedPeriod();
-	            
-	           if(dataSetLockService.getDataSetLockByDataSetAndPeriod( selectedDataSet, period ) != null){        	          	  
-				       if( dataSetLockService.getDataSetLockByDataSetAndPeriod( selectedDataSet, period ).getSources().contains(organisationUnit) ) {
-					 		    locked = true;
-					 		    log.info( "Dataset '" + selectedDataSet.getName() + "' is locked " );
-					        }
-		           }
-              }
+        // -----------------------------------------------------------------------
+        // For Data Locking
+        // -----------------------------------------------------------------------
+
+        if ( selectedPeriodIndex != null && selectedPeriodIndex >= 0 && selectedPeriodIndex < periods.size() )
+        {
+            selectedStateManager.setSelectedPeriodIndex( selectedPeriodIndex );
+
+            if ( selectedDataSet != null )
+            {
+                period = selectedStateManager.getSelectedPeriod();
+
+                DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( selectedDataSet, period );
+                
+                if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
+                {
+                    locked = true;
+                    log.info( "Dataset '" + selectedDataSet.getName() + "' is locked " );
+                }
+            }
         }
         else
         {
@@ -361,19 +364,19 @@ public class SelectAction
         }
 
         period = selectedStateManager.getSelectedPeriod();
-        
+
         // ---------------------------------------------------------------------
         // Get Section Information
-        // ---------------------------------------------------------------------       
+        // ---------------------------------------------------------------------
 
-        haveSection = dataEntryScreenManager.hasSection( selectedDataSet ) ;  
-        
+        haveSection = dataEntryScreenManager.hasSection( selectedDataSet );
+
         // ---------------------------------------------------------------------
         // Get CalculatedDataElementInformation
         // ---------------------------------------------------------------------
 
-        calculatedDataElementIds = dataEntryScreenManager.getAllCalculatedDataElements( selectedDataSet );        
-        calculatedDataElementMap = dataEntryScreenManager.getNonSavedCalculatedDataElements( selectedDataSet );       
+        calculatedDataElementIds = dataEntryScreenManager.getAllCalculatedDataElements( selectedDataSet );
+        calculatedDataElementMap = dataEntryScreenManager.getNonSavedCalculatedDataElements( selectedDataSet );
 
         // ---------------------------------------------------------------------
         // Get the custom data entry form if any
@@ -381,7 +384,7 @@ public class SelectAction
 
         DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( selectedDataSet );
 
-        customDataEntryFormExists = ( dataEntryForm != null );
+        customDataEntryFormExists = (dataEntryForm != null);
 
         // ---------------------------------------------------------------------
         // Make available information about dataSet completeness
@@ -398,7 +401,7 @@ public class SelectAction
         {
             return SECTION_FORM;
         }
-        
-        return dataEntryScreenManager.getScreenType( selectedDataSet );        
+
+        return dataEntryScreenManager.getScreenType( selectedDataSet );
     }
 }
