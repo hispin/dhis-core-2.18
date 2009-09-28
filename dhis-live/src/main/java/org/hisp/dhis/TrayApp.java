@@ -29,6 +29,7 @@ package org.hisp.dhis;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URI;
 import java.net.URL;
 import javax.swing.*;
 
@@ -46,7 +47,7 @@ public class TrayApp
   private static final Log log = LogFactory.getLog( TrayApp.class );
   private static final String CONFIG_DIR = "/conf";
   private static final String STOPPED_ICON = "/icons/stopped.png";
-  private static final String STARTING_ICON = "/icons/starting.png";
+  private static final String STARTING_ICON = "/icons/starting.gif";
   private static final String FAILED_ICON ="/icons/failed.png";
   private static final String RUNNING_ICON = "/icons/running.png";
   
@@ -171,6 +172,11 @@ public class TrayApp
     trayIcon.displayMessage("Started","DHIS2 is running. Point your\nbrowser to " + url + ".",TrayIcon.MessageType.INFO);
     trayIcon.setToolTip("DHIS 2 Server running");
     trayIcon.setImage(createImage(RUNNING_ICON, "Running icon"));
+    try {
+    	Desktop.getDesktop().browse(URI.create(url));
+    } catch (Exception ex) {
+    	log.info("Couldn't open default desktop browse");
+    }
   }
 
   /**
