@@ -118,6 +118,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.options.style.DefaultStyleManager">
     <property name="userSettingService"
       ref="org.hisp.dhis.user.UserSettingService"/>
+    <property name="defaultStyle" value="light_blue"/>
     <property name="styles">
       <map>
         <entry>

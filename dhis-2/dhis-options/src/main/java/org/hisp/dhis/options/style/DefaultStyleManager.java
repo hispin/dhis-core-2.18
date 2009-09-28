@@ -55,7 +55,14 @@ public class DefaultStyleManager
     {
         this.userSettingService = userSettingService;
     }
-    
+
+    private String defaultStyle;
+
+    public void setDefaultStyle( String defaultStyle )
+    {
+        this.defaultStyle = defaultStyle;
+    }
+
     private SortedMap<String, String> styles;
     
     public void setStyles( SortedMap<String, String> styles )
@@ -80,7 +87,7 @@ public class DefaultStyleManager
     
     public String getCurrentStyle()
     {
-        return (String) userSettingService.getUserSetting( SETTING_NAME_STYLE, styles.values().iterator().next() );
+        return (String) userSettingService.getUserSetting( SETTING_NAME_STYLE, styles.get( defaultStyle ) );
     }
     
     public String getCurrentStyleDirectory()
