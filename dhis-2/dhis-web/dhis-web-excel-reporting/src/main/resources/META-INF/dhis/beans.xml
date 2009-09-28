@@ -8,6 +8,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.export.action.SelectionManager"
 		scope="singleton">
 	</bean>
+	
+	<!-- Report Location Manager -->
+
+	<bean id="org.hisp.dhis.reportexcel.ReportLocationManager" class="org.hisp.dhis.reportexcel.DefaultReportLocationManager" 
+	    init-method="init">
+        <property name="locationManager" ref="org.hisp.dhis.external.location.LocationManager" />
+		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	</bean>
 
 	<!-- SYSTEM CONFIGURATION BEAN -->
 

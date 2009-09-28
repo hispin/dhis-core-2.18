@@ -30,6 +30,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
+			<artifactId>dhis-service-excel-reporting</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-service-organisationunit</artifactId>
 		</dependency>
 		<dependency>
