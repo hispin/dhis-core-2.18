@@ -32,6 +32,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * A Category is a dimension of a data element.  DataElements can have sets 
+ * of dimensions (known as CategoryCombos).  An Example of a Category might 
+ * be "Sex".  The Category could have two (or more) CategoryOptions such as 
+ * "Male" and "Female".
+ * 
  * @author Abyot Asalefew
  * @version $Id$
  */
@@ -40,8 +45,19 @@ public class DataElementCategory
 {
     public static final String DEFAULT_NAME = "default";
     
+    /**
+     * The database internal identifier for this Category.
+     */
     private int id;
     
+    /**
+     * The Universally Unique Identifer for this Category. 
+     */    
+    private String uuid;
+
+    /**
+     * The name of this Category. Required and unique.
+     */
     private String name;
     
     private Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
@@ -118,6 +134,16 @@ public class DataElementCategory
         this.id = id;
     }
     
+    public String getUuid()
+    {
+        return uuid;
+    }
+
+    public void setUuid( String uuid )
+    {
+        this.uuid = uuid;
+    }
+
     public String getName()
     {
         return name;

@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.system.util.UUIdUtils;
 import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,6 +76,11 @@ public class DefaultDataElementCategoryService
 
     public int addDataElementCategory( DataElementCategory dataElementCategory )
     {
+	if ( dataElementCategory.getUuid() == null )
+	{
+	    dataElementCategory.setUuid( UUIdUtils.getUUId() );
+	}
+
         int id = dataElementCategoryStore.save( dataElementCategory );
         
         i18nService.addObject( dataElementCategory );
