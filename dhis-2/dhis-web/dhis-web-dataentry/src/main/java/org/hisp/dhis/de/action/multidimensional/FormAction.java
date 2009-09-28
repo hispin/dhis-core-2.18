@@ -400,18 +400,21 @@ public class FormAction
 
         for ( DataElement element : dataElements )
         {
-            Collection<DataElementCategoryOptionCombo> optionCombos = dataElementCategoryOptionComboService
-                .sortDataElementCategoryOptionCombos( element.getCategoryCombo() );
-
-            for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
+            if ( !orderdCategoryOptionCombos.containsAll( element.getCategoryCombo().getOptionCombos() ) )
             {
-                if ( !orderdCategoryOptionCombos.contains( optionCombo ) )
+                Collection<DataElementCategoryOptionCombo> optionCombos = dataElementCategoryOptionComboService
+                    .sortDataElementCategoryOptionCombos( element.getCategoryCombo() );
+    
+                for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
                 {
-                    orderdCategoryOptionCombos.add( optionCombo );
+                    if ( !orderdCategoryOptionCombos.contains( optionCombo ) )
+                    {
+                        orderdCategoryOptionCombos.add( optionCombo );
+                    }
                 }
             }
         }
-
+        
         // ---------------------------------------------------------------------
         // Perform ordering of categories and their options so that they could
         // be displayed as in the paper form. Note that the total number of entry 
