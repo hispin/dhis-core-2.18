@@ -50,9 +50,7 @@ import com.opensymphony.xwork2.Action;
  */
 public class UnselectLevelAction 
     implements Action
-{
-	private static final int FIRST_LEVEL = 1;
-	
+{	
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
