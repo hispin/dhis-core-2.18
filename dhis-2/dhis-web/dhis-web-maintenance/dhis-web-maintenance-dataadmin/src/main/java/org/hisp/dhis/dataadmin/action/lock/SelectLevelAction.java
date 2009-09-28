@@ -46,7 +46,7 @@ import com.opensymphony.xwork2.Action;
  * @author Brajesh Murari
  * @version $Id$
  */
-public class SelectLevelAction 
+public class SelectLevelAction
     implements Action
 {
     private static final int FIRST_LEVEL = 1;
@@ -61,28 +61,28 @@ public class SelectLevelAction
     {
         this.selectionTreeManager = selectionTreeManager;
     }
-    
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-    
+
     private PeriodService periodService;
-    
+
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
     }
-       
+
     private DataSetLockService dataSetLockService;
-    
-    public void setDataSetLockService( DataSetLockService dataSetLockService)
+
+    public void setDataSetLockService( DataSetLockService dataSetLockService )
     {
         this.dataSetLockService = dataSetLockService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -105,14 +105,14 @@ public class SelectLevelAction
     {
         this.level = level;
     }
-    
+
     public Integer getLevel()
     {
         return level;
     }
-    
+
     private Integer selectedLockedDataSetId;
-    
+
     public void setSelectedLockedDataSetId( Integer selectedLockedDataSetId )
     {
         this.selectedLockedDataSetId = selectedLockedDataSetId;
@@ -122,19 +122,19 @@ public class SelectLevelAction
     {
         return selectedLockedDataSetId;
     }
-    
+
     private Integer periodId;
-    
+
     public void setPeriodId( Integer periodId )
     {
         this.periodId = periodId;
     }
-    
+
     public Integer getPeriodId()
     {
         return periodId;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -150,78 +150,77 @@ public class SelectLevelAction
     // Action
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
-	public String execute()
-    throws Exception
+    public String execute()
+        throws Exception
     {
         selectionTreeManager.clearSelectedOrganisationUnits();
-        selectionTreeManager.clearLockOnSelectedOrganisationUnits();       
-        
-        Period period = new Period();      
-        period = periodService.getPeriod(periodId.intValue());
-       
-        DataSet dataSet = new DataSet();      
-        dataSet = dataSetService.getDataSet(selectedLockedDataSetId.intValue());                 
-        
+        selectionTreeManager.clearLockOnSelectedOrganisationUnits();
+
+        Period period = new Period();
+        period = periodService.getPeriod( periodId.intValue() );
+
+        DataSet dataSet = new DataSet();
+        dataSet = dataSetService.getDataSet( selectedLockedDataSetId.intValue() );
+
         Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits();
         selectionTreeManager.setSelectedOrganisationUnits( convert( dataSet.getSources() ) );
         DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
-        Set<OrganisationUnit> selectedUnits = new HashSet<OrganisationUnit>(selectionTreeManager.getSelectedOrganisationUnits().size());
-    
+        Set<OrganisationUnit> selectedUnits = new HashSet<OrganisationUnit>( selectionTreeManager
+            .getSelectedOrganisationUnits().size() );
+
         for ( OrganisationUnit rootUnit : rootUnits )
-        {         
-            selectLevel( rootUnit, FIRST_LEVEL, selectedUnits );        
+        {
+            selectLevel( rootUnit, FIRST_LEVEL, selectedUnits );
         }
-                   
+
         selectionTreeManager.clearLockOnSelectedOrganisationUnits();
-        
-        if( dataSetLock.getSources() == null )
-        {  	
+
+        if ( dataSetLock.getSources() == null )
+        {
             selectionTreeManager.setLockOnSelectedOrganisationUnits( selectedUnits );
         }
         else
-        {  
-            selectedUnits.addAll(( convert( dataSetLock.getSources() )));
-            selectionTreeManager.setLockOnSelectedOrganisationUnits( selectedUnits ) ;
+        {
+            selectedUnits.addAll( (convert( dataSetLock.getSources() )) );
+            selectionTreeManager.setLockOnSelectedOrganisationUnits( selectedUnits );
         }
-    
+
         selectLevel = level;
-        
+
         return SUCCESS;
     }
 
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
 
-	// -------------------------------------------------------------------------
-	// Supportive methods
-	// -------------------------------------------------------------------------
+    private Set<OrganisationUnit> convert( Collection<Source> sources )
+    {
+        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
 
-	private Set<OrganisationUnit> convert( Collection<Source> sources )
-	{
-	    Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-	    
-	    for ( Source source : sources )
-	    {               
-	        organisationUnits.add( (OrganisationUnit) source );
-	    }       
-	    
-	    return organisationUnits;
-	}  
-	 
-	private void selectLevel( OrganisationUnit orgUnit, int currentLevel, Collection<OrganisationUnit> selectedUnits )
-	{
-	    if ( currentLevel == level )
-	    {
-	        if( selectionTreeManager.getSelectedOrganisationUnits().contains( orgUnit ))
-	        {
-	            selectedUnits.add( orgUnit );
-	        }
-	    }
-	    else
-	    {
-	        for ( OrganisationUnit child : orgUnit.getChildren() )
-	        {
-	            selectLevel( child, currentLevel + 1, selectedUnits );
-	        }
-	    }
-	}
+        for ( Source source : sources )
+        {
+            organisationUnits.add( (OrganisationUnit) source );
+        }
+
+        return organisationUnits;
+    }
+
+    private void selectLevel( OrganisationUnit orgUnit, int currentLevel, Collection<OrganisationUnit> selectedUnits )
+    {
+        if ( currentLevel == level )
+        {
+            if ( selectionTreeManager.getSelectedOrganisationUnits().contains( orgUnit ) )
+            {
+                selectedUnits.add( orgUnit );
+            }
+        }
+        else
+        {
+            for ( OrganisationUnit child : orgUnit.getChildren() )
+            {
+                selectLevel( child, currentLevel + 1, selectedUnits );
+            }
+        }
+    }
 }
