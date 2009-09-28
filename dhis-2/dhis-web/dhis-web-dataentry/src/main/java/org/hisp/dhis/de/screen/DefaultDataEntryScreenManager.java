@@ -58,7 +58,6 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.system.util.TimeUtils;
 
 /**
  * @author Abyot Asalefew
@@ -612,7 +611,7 @@ public class DefaultDataEntryScreenManager
         // ---------------------------------------------------------------------
 
         Map<Integer, DataElement> dataElementMap = getDataElementMap( dataSet );
-        TimeUtils.start();
+        
         while ( dataElementMatcher.find() )
         {
             // -----------------------------------------------------------------
@@ -828,7 +827,7 @@ public class DefaultDataEntryScreenManager
                 dataElementMatcher.appendReplacement( sb, appendCode );
             }
         }
-TimeUtils.markHMS( "done" );
+        
         dataElementMatcher.appendTail( sb );
 
         return sb.toString();
