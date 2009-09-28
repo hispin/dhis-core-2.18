@@ -33,6 +33,8 @@
 
 package org.hisp.dhis;
 
+import java.io.File;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mortbay.component.LifeCycle;
@@ -68,18 +70,20 @@ public class WebAppServer
     connector.setPort(Integer.getInteger("jetty.port",8080).intValue());
     server.setConnectors(new Connector[]{connector});
 
+    ContextHandlerCollection handlers = new ContextHandlerCollection();
+    
     WebAppContext dhisWebApp = new WebAppContext();
     dhisWebApp.setWar(installDir + DHIS_DIR);
+    handlers.addHandler(dhisWebApp);
     log.info("Setting DHIS 2 web app context to: "+ installDir + DHIS_DIR);
     
-    WebAppContext birtWebApp = new WebAppContext();
-    birtWebApp.setContextPath(BIRT_CONTEXT_PATH);
-    birtWebApp.setWar(installDir + BIRT_DIR);
-    log.info("Setting BIRT web app context to: "+ installDir + BIRT_DIR);
-    
-    ContextHandlerCollection handlers = new ContextHandlerCollection();
-    handlers.addHandler(dhisWebApp);
-    handlers.addHandler(birtWebApp);    
+    if ( new File( installDir, BIRT_DIR ).exists() ) {
+      WebAppContext birtWebApp = new WebAppContext();
+      birtWebApp.setContextPath(BIRT_CONTEXT_PATH);
+      birtWebApp.setWar(installDir + BIRT_DIR);
+      handlers.addHandler(birtWebApp);  
+      log.info("Setting BIRT web app context to: "+ installDir + BIRT_DIR);
+    }
     
     server.setHandler(handlers);
     server.addLifeCycleListener(serverListener);
