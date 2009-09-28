@@ -416,7 +416,7 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.1.112</version>
+      <version>1.1.119</version>
     </dependency>
     <dependency>
       <groupId>com.ibatis</groupId>
