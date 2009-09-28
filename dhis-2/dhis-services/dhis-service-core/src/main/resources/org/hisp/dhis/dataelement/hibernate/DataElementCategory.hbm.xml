@@ -9,7 +9,11 @@
     <id name="id" column="categoryid">
       <generator class="native"/>
     </id>
-        	
+ 
+    <property name="uuid">
+      <column name="uuid" length="40"/>
+    </property>
+       	
     <property name="name">
       <column name="name" not-null="true" unique="true" length="160"/>
     </property>
