@@ -27,7 +27,7 @@
 package org.hisp.dhis.dataadmin.action.lock;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -98,8 +98,7 @@ implements Action
                 throw new RuntimeException( "OrganisationUnit with id " + id + " doesn't exist" );
             }
 
-            lockedUnits = new HashSet<OrganisationUnit>( selectionTreeManager.getLockOnSelectedOrganisationUnits().size() );
-            lockedUnits = selectionTreeManager.getLockOnSelectedOrganisationUnits();           
+            Set<OrganisationUnit> lockedUnits = (Set<OrganisationUnit>) selectionTreeManager.getLockOnSelectedOrganisationUnits();           
             lockedUnits.remove( unit );           
             selectionTreeManager.setLockOnSelectedOrganisationUnits( lockedUnits );
         }

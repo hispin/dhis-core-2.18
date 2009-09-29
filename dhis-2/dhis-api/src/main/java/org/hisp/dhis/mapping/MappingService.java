@@ -46,6 +46,7 @@ public interface MappingService
     final String KEY_MAP_SOURCE_TYPE = "mapSource";
 
     final String MAP_SOURCE_TYPE_DATABASE = "database";
+    final String MAP_SOURCE_TYPE_GEOJSON = "geojson";
     final String MAP_SOURCE_TYPE_SHAPEFILE = "shapefile";
     
     // -------------------------------------------------------------------------
@@ -86,7 +87,7 @@ public interface MappingService
      * @param zoom
      * @return a generated unique id of the added Map.
      */
-    int addMap( String name, String mapLayerPath, String type, int organisationUnitId, int organisationUnitLevelId,
+    int addMap( String name, String mapLayerPath, String type, String sourceType, int organisationUnitId, int organisationUnitLevelId,
         String nameColumn, String longitude, String latitude, int zoom );
 
     /**
@@ -105,7 +106,7 @@ public interface MappingService
      * @param latitude
      * @param zoom
      */
-    void addOrUpdateMap( String name, String mapLayerPath, String type, int organisationUnitId,
+    void addOrUpdateMap( String name, String mapLayerPath, String type, String sourceType, int organisationUnitId,
         int organisationUnitLevelId, String nameColumn, String longitude, String latitude, int zoom );
 
     /**
@@ -145,6 +146,13 @@ public interface MappingService
      * @return a Collection<Map>.
      */
     Collection<Map> getMapsByType( String type );
+    
+    /**
+     * Returns a Collection<Map> of maps by sourceType.
+     * 
+     * @return a Collection<Map>.
+     */
+    Collection<Map> getMapsBySourceType();
 
     /**
      * Returns a Collection of all Maps at the given level.
@@ -340,13 +348,15 @@ public interface MappingService
     void updateMapView( MapView mapView );
 
     void addOrUpdateMapView( String name, int indicatorGroupId, int indicatorId, String periodTypeName, int periodId,
-        String mapSourceType, String mapSource, int method, int classes, String colorLow, String colorHigh );
+        String mapSource, int method, int classes, String colorLow, String colorHigh );
 
     void deleteMapView( MapView view );
 
     MapView getMapView( int id );
 
     MapView getMapViewByName( String name );
+    
+    Collection<MapView> getMapViewsByMapSourceType();
 
     Collection<MapView> getAllMapViews();
     
@@ -365,6 +375,8 @@ public interface MappingService
     MapLayer getMapLayer( int id );
     
     MapLayer getMapLayerByName( String name );
+    
+    Collection<MapLayer> getMapLayersByMapSourceType();
     
     MapLayer getMapLayerByMapSource( String mapSource );
     

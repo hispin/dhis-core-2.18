@@ -3,7 +3,7 @@ function getPeriods() {
     var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;
 
     if ( periodTypeId != null ) {
-        var url = "../dhis-web-commons-ajax/getPeriodsForLock.action?name=" + periodTypeId;
+        var url = "getPeriodsForLock.action?name=" + periodTypeId;
         $.ajax({
             url: url,
             cache: false,

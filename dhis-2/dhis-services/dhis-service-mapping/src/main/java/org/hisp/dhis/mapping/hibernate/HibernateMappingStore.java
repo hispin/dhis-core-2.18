@@ -115,6 +115,18 @@ public class HibernateMappingStore
 
         return criteria.list();
     }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<Map> getMapsBySourceType( String sourceType )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( Map.class );
+
+        criteria.add( Restrictions.eq( "sourceType", sourceType ) );
+
+        return criteria.list();
+    }    
 
     @SuppressWarnings( "unchecked" )
     public Collection<Map> getAllMaps()
@@ -318,6 +330,18 @@ public class HibernateMappingStore
 
         return (MapView) criteria.uniqueResult();
     }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<MapView> getMapViewsByMapSourceType( String mapSourceType )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( MapView.class );
+
+        criteria.add( Restrictions.eq( "mapSourceType", mapSourceType ) );
+
+        return criteria.list();
+    }
 
     @SuppressWarnings( "unchecked" )
     public Collection<MapView> getAllMapViews()
@@ -370,6 +394,18 @@ public class HibernateMappingStore
         criteria.add( Restrictions.eq( "name", name ) );
 
         return (MapLayer) criteria.uniqueResult();
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<MapLayer> getMapLayersByMapSourceType( String mapSourceType )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( MapLayer.class );
+
+        criteria.add( Restrictions.eq( "mapSourceType", mapSourceType ) );
+
+        return criteria.list();
     }
     
     public MapLayer getMapLayerByMapSource( String mapSource )

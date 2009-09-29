@@ -16,6 +16,8 @@
 		<property name="mapLayerPath" column="maplayerpath"/>
 		
 		<property name="type" column="type"/>
+		
+		<property name="sourceType" column="sourcetype"/>
 			
 		<many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" 
 			column="organisationunitid" not-null="true" foreign-key="fk_map_organisationunitid"/>

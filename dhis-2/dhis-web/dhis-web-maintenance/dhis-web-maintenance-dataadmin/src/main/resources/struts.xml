@@ -38,7 +38,7 @@
     </action>
     
     <action name="getDataSetsForOrguntwiseLocking" class="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForLockAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseDataSet.vm</result>
+      <result name="success" type="velocity-xml"> /dhis-web-maintenance-dataadmin/responseDataSet.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -91,27 +91,37 @@
 		  ../dhis-web-commons/css/${stylesheetDirectory}/dom.js</param>
     </action>
 	  
-	<action name="getExpandedTreeForLock" class="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction">
-      <result name="success" type="velocity">../dhis-web-commons/ouwt/responseTree.vm</result>
+	 <action name="getExpandedTreeForLock" class="org.hisp.dhis.dataadmin.action.lock.GetExpandedTreeForLockAction">
+      <result name="success" type="velocity"> /dhis-web-maintenance-dataadmin/responseTree.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 	  
-	  <action name="lockorgunit"
+	<action name="lockorgunit"
       class="org.hisp.dhis.dataadmin.action.lock.LockSelectedOrganisationUnitAction">
-      <result name="success" type="velocity">../dhis-web-commons/ouwt/responseSelect.vm</result>
+      <result name="success" type="velocity"> /dhis-web-maintenance-dataadmin/responseSelect.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="removelockorgunit"
       class="org.hisp.dhis.dataadmin.action.lock.RemoveLockSelectedOrganisationUnitAction">
       <result name="success" type="velocity">
-        ../dhis-web-commons/ouwt/responseSelect.vm</result>
+        /dhis-web-maintenance-dataadmin/responseSelect.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <action name="noactionfordatalocking"
       class="org.hisp.dhis.dataadmin.action.lock.NoActionForDataLock">
-      <result name="success" type="velocity">../dhis-web-commons/ouwt/responseSelect.vm</result>   
+      <result name="success" type="velocity"> /dhis-web-maintenance-dataadmin/responseSelect.vm</result>   
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	  
+	<action name="expandSubtree" class="org.hisp.dhis.dataadmin.action.lock.ExpandSubtreeAction">
+      <result name="success" type="velocity"> /dhis-web-maintenance-dataadmin/responseExpand.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	  
+	<action name="getPeriodsForLock" class="org.hisp.dhis.dataadmin.action.lock.GetPeriodsForLockAction">
+      <result name="success" type="velocity"> /dhis-web-maintenance-dataadmin/responsePeriod.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     

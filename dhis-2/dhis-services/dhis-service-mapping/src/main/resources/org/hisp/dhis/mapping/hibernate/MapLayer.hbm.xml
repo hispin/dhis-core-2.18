@@ -15,6 +15,8 @@
 		
 		<property name="type" column="type"/>
 	
+		<property name="mapSourceType" column="mapsourcetype"/>
+		
 		<property name="mapSource" column="mapsource" unique="true"/>
 		
 		<property name="fillColor" column="fillcolor"/>

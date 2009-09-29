@@ -89,6 +89,14 @@ public interface MappingStore
      * @return a Collection<Map>.
      */
     Collection<Map> getMapsByType( String type );
+    
+    /**
+     * Returns a Collection<Map> of maps with the right sourceType.
+     * 
+     * @param type, the source type.
+     * @return a Collection<Map>.
+     */
+    Collection<Map> getMapsBySourceType( String sourceType );
 
     /**
      * Returns a Collection of all Maps.
@@ -220,6 +228,8 @@ public interface MappingStore
     
     MapView getMapViewByName( String name );
     
+    Collection<MapView> getMapViewsByMapSourceType( String mapSourceType );
+    
     Collection<MapView> getAllMapViews();
     
     // -------------------------------------------------------------------------
@@ -235,6 +245,8 @@ public interface MappingStore
     MapLayer getMapLayer( int id );
     
     MapLayer getMapLayerByName( String name );
+    
+    Collection<MapLayer> getMapLayersByMapSourceType( String mapSourceType );
     
     MapLayer getMapLayerByMapSource( String mapSource );
     

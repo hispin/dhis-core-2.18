@@ -50,7 +50,7 @@ import com.opensymphony.xwork2.Action;
  */
 public class SetupAssociationsTreeAction
     implements Action
-{
+  {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -103,26 +103,26 @@ public class SetupAssociationsTreeAction
 
     public Integer getSelectedLockedDataSetId()
     {
-        return selectedLockedDataSetId;
+         return selectedLockedDataSetId;
     }
-    
+
     private Integer periodId;
 
     public void setPeriodId( Integer periodId )
     {
-        this.periodId = periodId;
+         this.periodId = periodId;
     }
 
     public Integer getPeriodId()
     {
-        return periodId;
+         return periodId;
     }
-   
+
     private String storedBy;
 
     public String getStoredBy()
     {
-        return storedBy;
+         return storedBy;
     }
 
     // -------------------------------------------------------------------------
@@ -130,54 +130,56 @@ public class SetupAssociationsTreeAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
-    {
-        Period period = new Period();
-        period = periodService.getPeriod( periodId.intValue() );
+      throws Exception
+	  {
+	        Period period = new Period();
+	        period = periodService.getPeriod( periodId.intValue() );
+	
+	        DataSet dataSet = new DataSet();
+	        dataSet = dataSetService.getDataSet( selectedLockedDataSetId.intValue() );
+	        storedBy = currentUserService.getCurrentUsername();
+	
+	        DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
+	        
+	        selectionTreeManager.clearSelectedOrganisationUnits();
+	        selectionTreeManager.clearLockOnSelectedOrganisationUnits();
+	        
+	        Set<OrganisationUnit> selectedUnits = convert( dataSet.getSources() );
+	        if ( dataSetLock != null )
+	        {           
+	            selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
+	            Set<Source> sources = dataSetLock.getSources();
+	            if ( sources != null )
+	            {
+	                selectionTreeManager.setLockOnSelectedOrganisationUnits( convert( sources ) );
+	            }
+	        }
+	        else
+	        {
+	            selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
+	            DataSetLock dataSLock = new DataSetLock( dataSet, period );
+	            dataSLock.setTimestamp( new Date() );
+	            dataSLock.setStoredBy( storedBy );
+	            dataSetLockService.addDataSetLock( dataSLock );
+	            dataSet.setLocked( true );
+	            dataSetService.updateDataSet( dataSet );
+	        }
+	        return SUCCESS;
+	    }
 
-        DataSet dataSet = new DataSet();
-        dataSet = dataSetService.getDataSet( selectedLockedDataSetId.intValue() );
-        storedBy = currentUserService.getCurrentUsername();
+        // -------------------------------------------------------------------------
+        // Supportive methods
+        // -------------------------------------------------------------------------
 
-        DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
-        
-        selectionTreeManager.clearSelectedOrganisationUnits();
-        selectionTreeManager.clearLockOnSelectedOrganisationUnits();
-        
-        if ( dataSetLock != null )
-        {           
-            selectionTreeManager.setSelectedOrganisationUnits( convert( dataSet.getSources() ) );
-            if ( dataSetLock.getSources() != null )
+        private Set<OrganisationUnit> convert( Collection<Source> sources )
+        {
+            Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+
+            for ( Source source : sources )
             {
-                selectionTreeManager.setLockOnSelectedOrganisationUnits( convert( dataSetLock.getSources() ) );
+                organisationUnits.add( (OrganisationUnit) source );
             }
+
+            return organisationUnits;
         }
-        else
-        {
-            selectionTreeManager.setSelectedOrganisationUnits( convert( dataSet.getSources() ) );
-            DataSetLock dataSLock = new DataSetLock( dataSet, period );
-            dataSLock.setTimestamp( new Date() );
-            dataSLock.setStoredBy( storedBy );
-            dataSetLockService.addDataSetLock( dataSLock );
-            dataSet.setLocked( true );
-            dataSetService.updateDataSet( dataSet );
-        }
-        return SUCCESS;
     }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Set<OrganisationUnit> convert( Collection<Source> sources )
-    {
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-
-        for ( Source source : sources )
-        {
-            organisationUnits.add( (OrganisationUnit) source );
-        }
-
-        return organisationUnits;
-    }
-}

@@ -88,13 +88,6 @@ public class AddOrUpdateMapViewAction
         this.periodId = periodId;
     }
     
-    private String mapSourceType;
-    
-    public void setMapSourceType( String mapSourceType )
-    {
-        this.mapSourceType = mapSourceType;
-    }
-    
     private String mapSource;
     
     public void setMapSource( String mapSource )
@@ -137,7 +130,7 @@ public class AddOrUpdateMapViewAction
     public String execute()
         throws Exception
     {
-        mappingService.addOrUpdateMapView( name, indicatorGroupId, indicatorId, periodTypeId, periodId, mapSourceType, mapSource,
+        mappingService.addOrUpdateMapView( name, indicatorGroupId, indicatorId, periodTypeId, periodId, mapSource,
             method, classes, colorLow, colorHigh );
         
         return SUCCESS;

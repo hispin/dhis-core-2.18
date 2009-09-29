@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.hisp.dhis.commons.action;
+package org.hisp.dhis.dataadmin.action.lock;
 
 import java.util.ArrayList;
 import java.util.Collection;
