@@ -73,7 +73,7 @@ public class GetAllMapViewsAction
 
     public String execute()
     {
-        object = new ArrayList<MapView>( mappingService.getAllMapViews() );
+        object = new ArrayList<MapView>( mappingService.getMapViewsByMapSourceType() );
         
         Collections.sort( object, new MapViewNameComparator() );
         

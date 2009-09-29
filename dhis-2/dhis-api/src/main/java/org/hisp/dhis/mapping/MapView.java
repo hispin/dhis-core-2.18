@@ -39,6 +39,7 @@ import org.hisp.dhis.period.PeriodType;
 public class MapView
 {
     public static final String MAP_SOURCE_TYPE_DATABASE = "database";
+    public static final String MAP_SOURCE_TYPE_GEOJSON = "geojson";
     public static final String MAP_SOURCE_TYPE_SHAPEFILE = "shapefile";
 
     private int id;

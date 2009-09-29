@@ -6,7 +6,6 @@
 
 var selectionTreeSelection = new SelectionTreeSelection();
 var selectionTree = new SelectionTree();
-var selectionTreePath = '../dhis-web-commons/oust/';
 
 // -----------------------------------------------------------------------------
 // Selection
@@ -53,7 +52,7 @@ function SelectionTreeSelection()
 								&& ( parent.document.getElementById( "button6" ).disabled == false )
 								&& ( parent.document.getElementById( "button7" ).disabled == false )
 								&& (parent.document.getElementById( "button8" ).disabled == false ) ){
-		                request.send( selectionTreePath + 'lockorgunit.action?id=' + unitId );
+		                request.send( 'lockorgunit.action?id=' + unitId );
 		                linkTags[0].className = 'locked';
             }
           }         
@@ -63,13 +62,14 @@ function SelectionTreeSelection()
 								&& ( parent.document.getElementById( "button6" ).disabled == false )
 								&& ( parent.document.getElementById( "button7" ).disabled == false )
 								&& (parent.document.getElementById( "button8" ).disabled == false ) ){
-			            	request.send( selectionTreePath + 'removelockorgunit.action?id=' + unitId );
+			            	request.send( 'removelockorgunit.action?id=' + unitId );
 			            	linkTags[0].className = 'selected';
             }
         }
         else{    
-        	request.send( selectionTreePath + 'noactionfordatalocking.action?' );       
-            linkTags[0].className = '';          
+        	request.send( 'noactionfordatalocking.action?' );   
+            linkTags[0].className = '';  
+            desableLockComponents();       
         }
     };
 
@@ -108,7 +108,7 @@ function SelectionTree(){
         if ( children.length < 1 || !isVisible( children[0] ))
         {
             request.setCallbackSuccess( processExpand );
-            request.send( selectionTreePath + 'expandSubtree.action?parentId=' + unitId );
+            request.send( 'expandSubtree.action?parentId=' + unitId );
         }
         else
         {

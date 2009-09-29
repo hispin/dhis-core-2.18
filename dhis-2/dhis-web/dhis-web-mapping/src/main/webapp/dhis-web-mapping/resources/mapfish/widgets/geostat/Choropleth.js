@@ -712,7 +712,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         if (this.newUrl) {
             URL = this.newUrl;
             this.newUrl = false;
-			
+				
             if (MAPSOURCE == MAP_SOURCE_TYPE_DATABASE) {
                 if (URL == FACILITY_LEVEL) {
                     this.setUrl(path + 'getPointShapefile.action?level=' + URL);
@@ -721,9 +721,12 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     this.setUrl(path + 'getPolygonShapefile.action?level=' + URL);
                 }
             }
-            else if (MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
+            else if (MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON) {
                 this.setUrl(path + 'getGeoJson.action?name=' + URL);
             }
+			else if (MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
+				this.setUrl(path_geoserver + wfs + URL + output);
+			}
         }
                 
         if (!Ext.getCmp('indicator_cb').getValue() ||

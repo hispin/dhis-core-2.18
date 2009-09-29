@@ -33,7 +33,6 @@ import java.util.Collection;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 
@@ -45,97 +44,84 @@ import com.opensymphony.xwork2.Action;
  */
 public class GetDataSetsForLockAction
     implements Action
-{
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
     {
-        this.dataSetService = dataSetService;
-    }
+        // -------------------------------------------------------------------------
+        // Dependencies
+        // -------------------------------------------------------------------------
 
-    private PeriodService periodService;
+        private DataSetService dataSetService;
 
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
-    private DataSetLockService dataSetLockService;
-
-    public void setDataSetLockService( DataSetLockService dataSetLockService )
-    {
-        this.dataSetLockService = dataSetLockService;
-    }
-
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input/output
-    // -------------------------------------------------------------------------
-
-    private Integer periodId;
-
-    public void setPeriodId( Integer periodId )
-    {
-        this.periodId = periodId;
-    }
-
-    private Collection<DataSet> dataSets = new ArrayList<DataSet>();
-
-    public Collection<DataSet> getDataSets()
-    {
-        return dataSets;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-    {
-        if ( periodId != null )
+        public void setDataSetService( DataSetService dataSetService )
         {
-            Period period = new Period();
-            period = periodService.getPeriod( periodId.intValue() );
+            this.dataSetService = dataSetService;
+        }
 
-            for ( DataSet dataSet : dataSetService.getAssignedDataSetsByPeriodType( period.getPeriodType() ) )
-            {
-                if ( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) != null )
-                {
-                    if ( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ).getSources() != null )
-                    {
-                        dataSet.setLocked( true );
-                        dataSetService.updateDataSet( dataSet );
-                        dataSets.add( dataSet );
+        private PeriodService periodService;
+
+        public void setPeriodService( PeriodService periodService )
+        {
+            this.periodService = periodService;
+        }
+
+        private DataSetLockService dataSetLockService;
+
+        public void setDataSetLockService( DataSetLockService dataSetLockService )
+        {
+            this.dataSetLockService = dataSetLockService;
+        }   
+
+        // -------------------------------------------------------------------------
+        // Input/output
+        // -------------------------------------------------------------------------
+
+        private Integer periodId;
+
+        public void setPeriodId( Integer periodId )
+        {
+            this.periodId = periodId;
+        }
+
+        private Collection<DataSet> dataSets = new ArrayList<DataSet>();
+
+        public Collection<DataSet> getDataSets()
+        {
+            return dataSets;
+        }
+
+        // -------------------------------------------------------------------------
+        // Action implementation
+        // -------------------------------------------------------------------------
+
+        public String execute(){
+        	
+            if ( periodId != null ){
+            	
+                Period period = new Period();
+                period = periodService.getPeriod( periodId.intValue() );
+
+                for ( DataSet dataSet : dataSetService.getAssignedDataSetsByPeriodType( period.getPeriodType() ) ){
+                    
+                	if ( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) != null ){
+                    	
+                    	if( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ).getSources() != null ){
+    	                    dataSet.setLocked( true );
+    	                    dataSetService.updateDataSet( dataSet );
+    	                    dataSets.add( dataSet );
+                    	}
+                    	else{                                                
+    	                    dataSetLockService.deleteDataSetLock( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ) );
+    	                    dataSet.setLocked( false );
+    	                    dataSetService.updateDataSet( dataSet );
+    	                    dataSets.add( dataSet );
+                    	}
                     }
-                    else
-                    {
-                        dataSetLockService.deleteDataSetLock( dataSetLockService.getDataSetLockByDataSetAndPeriod(
-                            dataSet, period ) );
+                    else{
                         dataSet.setLocked( false );
                         dataSetService.updateDataSet( dataSet );
                         dataSets.add( dataSet );
                     }
                 }
-                else
-                {
-                    dataSet.setLocked( false );
-                    dataSetService.updateDataSet( dataSet );
-                    dataSets.add( dataSet );
-                }
             }
-            // selectionTreeManager.clearLockOnSelectedOrganisationUnits();
-            // selectionTreeManager.clearSelectedOrganisationUnits();
+            return SUCCESS;
         }
-        return SUCCESS;
     }
-}

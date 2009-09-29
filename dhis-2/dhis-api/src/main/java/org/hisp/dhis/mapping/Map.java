@@ -46,6 +46,8 @@ public class Map
     
     private String type;
     
+    private String sourceType;
+    
     private OrganisationUnit organisationUnit;
 
     private OrganisationUnitLevel organisationUnitLevel;
@@ -64,12 +66,13 @@ public class Map
     {
     }
 
-    public Map( String name, String mapLayerPath, String type, OrganisationUnit organisationUnit, OrganisationUnitLevel organisationUnitLevel, 
+    public Map( String name, String mapLayerPath, String type, String sourceType, OrganisationUnit organisationUnit, OrganisationUnitLevel organisationUnitLevel, 
         String nameColumn, String longitude, String latitude, int zoom, Set<String> staticMapLayerPaths )
     {
         this.name = name;
         this.mapLayerPath = mapLayerPath;
         this.type = type;
+        this.sourceType = sourceType;
         this.organisationUnit = organisationUnit;
         this.organisationUnitLevel = organisationUnitLevel;
         this.nameColumn = nameColumn;
@@ -156,6 +159,16 @@ public class Map
         this.type = type;
     }
     
+    public String getSourceType()
+    {
+        return sourceType;
+    }
+
+    public void setSourceType( String sourceType )
+    {
+        this.sourceType = sourceType;
+    }
+
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;

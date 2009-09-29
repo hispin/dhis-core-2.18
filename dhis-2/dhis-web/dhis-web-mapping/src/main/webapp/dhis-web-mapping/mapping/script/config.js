@@ -8,8 +8,13 @@
 
 //  Ajax requests
 
-    path = '../';
+    path = '../'; // dhis-web-mapping
     type = '.action';
+
+	path_geoserver = '../../../geoserver/';
+	ows = 'ows?service=WMS&request=GetCapabilities';
+	wfs = 'wfs?request=GetFeature&typename=';	
+	output = '&outputformat=json&version=1.0.0';	
 
 //  Layout
 

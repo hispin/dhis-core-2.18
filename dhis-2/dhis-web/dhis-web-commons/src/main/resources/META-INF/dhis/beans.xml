@@ -600,13 +600,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/>      
   </bean>
-	
-  <bean id="org.hisp.dhis.commons.action.GetPeriodsForLockAction"
-    class="org.hisp.dhis.commons.action.GetPeriodsForLockAction"
-    scope="prototype">
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>      
-  </bean>
   
   <bean id="org.hisp.dhis.commons.action.NoAction"
     class="org.hisp.dhis.commons.action.NoAction"/>

@@ -72,7 +72,7 @@ public class GetAllMapLayersAction
 
     public String execute()
     {
-        object = new ArrayList<MapLayer>( mappingService.getAllMapLayers() );
+        object = new ArrayList<MapLayer>( mappingService.getMapLayersByMapSourceType() );
         
         Collections.sort( object, new MapLayerNameComparator() );
         

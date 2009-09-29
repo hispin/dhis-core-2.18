@@ -26,14 +26,8 @@
  */
 package org.hisp.dhis.dataadmin.action.lock;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.source.Source;
+
 import com.opensymphony.xwork2.Action;
 
 /**
@@ -42,7 +36,7 @@ import com.opensymphony.xwork2.Action;
  */
 public class SelectAllAction 
     implements Action
-{
+    {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -51,64 +45,22 @@ public class SelectAllAction
 
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.selectionTreeManager = selectionTreeManager;
+         this.selectionTreeManager = selectionTreeManager;
     }
-    
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
+        
+    public SelectionTreeManager getSelectionTreeManager( )
     {
-        this.dataSetService = dataSetService;
+          return selectionTreeManager;
     }
-
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
- 
-    private Integer selectedLockedDataSetId;
-    
-    public void setSelectedLockedDataSetId( Integer selectedLockedDataSetId )
-    {
-        this.selectedLockedDataSetId = selectedLockedDataSetId;
-    }
-
-    public Integer getSelectedLockedDataSetId()
-    {
-        return selectedLockedDataSetId;
-    }
-    
+        
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
 
-    public String execute()
-        throws Exception
-    {
-        DataSet dataSet = new DataSet();      
-        dataSet = dataSetService.getDataSet(selectedLockedDataSetId.intValue());         
-              
-        //selectionTreeManager.clearSelectedOrganisationUnits();
-        //selectionTreeManager.clearLockOnSelectedOrganisationUnits();
-        
-        //selectionTreeManager.setSelectedOrganisationUnits( convert( dataSet.getSources() ) );             
-        selectionTreeManager.setLockOnSelectedOrganisationUnits( convert( dataSet.getSources() ) );
-        
-        return SUCCESS;
+    public String execute() throws Exception {
+        	           
+         selectionTreeManager.setLockOnSelectedOrganisationUnits( selectionTreeManager.getSelectedOrganisationUnits() );
+            
+         return SUCCESS;
+        }
     }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-    
-    private Set<OrganisationUnit> convert( Collection<Source> sources )
-    {
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-        
-        for ( Source source : sources )
-        {               
-            organisationUnits.add( (OrganisationUnit) source );
-        }       
-        
-        return organisationUnits;
-    }  
-}
