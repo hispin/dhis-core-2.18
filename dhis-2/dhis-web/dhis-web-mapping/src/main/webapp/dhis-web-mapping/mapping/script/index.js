@@ -1103,14 +1103,14 @@ Ext.onReady(function()
 			id: 'wmswindow_sb',
 			items:
 			[
-				{
-					xtype: 'button',
-					id: 'previewwms_b',
-					text: 'Preview',
-					handler: function() {
+				// {
+					// xtype: 'button',
+					// id: 'previewwms_b',
+					// text: 'Preview',
+					// handler: function() {
 						
-					}
-				},
+					// }
+				// },
 				{
 					xtype: 'button',
 					id: 'selectwms_b',
@@ -1875,13 +1875,13 @@ Ext.onReady(function()
 			items:
 			[
 				{
-					xtype: 'button',
-					id: 'previewwmsoverlay_b',
-					text: 'Preview',
-					handler: function() {
+					// xtype: 'button',
+					// id: 'previewwmsoverlay_b',
+					// text: 'Preview',
+					// handler: function() {
 						
-					}
-				},
+					// }
+				// },
 				{
 					xtype: 'button',
 					id: 'selectwmsoverlay_b',
