@@ -1874,7 +1874,7 @@ Ext.onReady(function()
 			id: 'wmsoverlaywindow_sb',
 			items:
 			[
-				{
+				// {
 					// xtype: 'button',
 					// id: 'previewwmsoverlay_b',
 					// text: 'Preview',
