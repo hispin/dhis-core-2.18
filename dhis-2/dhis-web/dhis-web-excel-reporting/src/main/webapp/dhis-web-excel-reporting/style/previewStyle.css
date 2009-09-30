@@ -1,0 +1,33 @@
+
+/* body sector
+-----------------------------------------*/
+	body { 
+		background-color:#E1FFFF; 
+	} 
+	
+
+/* table sector
+-----------------------------------------*/	
+	table { 
+		border:2px dotted #FF9933; 
+		border-collapse:seperate; 
+		border-spacing:2px;
+		width:100%; 
+		empty-cells:hide; 
+		font-weight:bold; 
+	} 
+	
+
+/* td sector
+-----------------------------------------*/	
+	
+	td { 
+		border-style:solid; 
+		border-width:0px; 
+		width:10%; 
+	} 
+	td.formatNumber { 
+		margin:60%;
+		text-align:center; 
+		color:blue; 
+	} 

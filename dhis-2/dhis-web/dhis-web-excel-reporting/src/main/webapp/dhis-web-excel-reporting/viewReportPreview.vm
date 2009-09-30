@@ -1,0 +1,6 @@
+
+<body onload="javascript: previewReport('$!reportId', '$!periodId', '$!sheetId', '$!i18n.getString("working_in_progress")');">
+
+	<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>
+	
+</body>

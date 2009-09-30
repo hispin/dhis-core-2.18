@@ -385,7 +385,7 @@
 			<param name="page">/dhis-web-excel-reporting/reportparams.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
 			<param name="menuTreeHeight">250</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,javascript/commons.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,javascript/commons.js,javascript/preview.js</param>
 		</action>
 
 		<action name="getReportExcelsByGroup"
@@ -557,5 +557,68 @@
 		</action>
 
 
+		<!-- Preview report actions -->
+		
+		<action name="validateGenerateReport"
+			class="org.hisp.dhis.reportexcel.export.action.ValidateGenerateReportAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-excel-reporting/responseError.vm</result>
+		</action>
+		
+		<action name="openPreviewReport"
+			class="org.hisp.dhis.reportexcel.preview.action.OpenPreviewReportAction">
+			<result name="success" type="velocity">/popup.vm</result>
+			<result name="input" type="velocity-xml">/dhis-web-excel-reporting/responseError.vm</result>
+			<param name="page">/dhis-web-excel-reporting/viewReportPreview.vm</param>
+			<param name="stylesheets">style/previewStyle.css</param>
+			<param name="javascripts">javascript/preview.js</param>
+		</action>
+		
+		<action name="previewReportExcel"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
+			<result name="CATEGORY" type="chain">
+				generatePreviewReportExcelCategory
+			</result>
+			<result name="NORMAL" type="chain">
+				generatePreviewReportExcelNormal
+			</result>
+			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
+				generatePreviewReportExcelOrganizationGroupListing
+			</result>
+			<result name="PERIOD_COLUMN_LISTING" type="chain">
+				generatePreviewReportExcelPeriodColumnListing
+			</result>
+		</action>
+
+		<action name="generatePreviewReportExcelCategory"
+			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewReportExcelCategoryAction">
+			<result name="success" type="chain">exportXMLChain</result>
+		</action>
+
+		<action name="generatePreviewReportExcelNormal"
+			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewReportExcelNormalAction">
+			<result name="success" type="chain">exportXMLChain</result>
+		</action>
+
+		<action name="generatePreviewReportExcelOrganizationGroupListing"
+			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewReportExcelOrganizationGroupListingAction">
+			<result name="success" type="chain">exportXMLChain</result>
+		</action>
+
+		<action name="generatePreviewReportExcelPeriodColumnListing"
+			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewReportExcelPeriodColumnListingAction">
+			<result name="success" type="chain">exportXMLChain</result>
+		</action>
+		
+		<action name="exportXMLChain" 
+			class="org.hisp.dhis.reportexcel.preview.action.ExportXMLAction">
+			<result name="success" type="velocity-xml">/dhis-web-excel-reporting/responseReportPreview.vm</result>
+			<result name="error" type="velocity-xml">/dhis-web-excel-reporting/responseError.vm</result>
+			<param name="stylesheets">style/previewStyle.css</param>
+			<param name="javascripts">javascript/preview.js</param>
+		</action>
+		
 	</package>
 </struts>
