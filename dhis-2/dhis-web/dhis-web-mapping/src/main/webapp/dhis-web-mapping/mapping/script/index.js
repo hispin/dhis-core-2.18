@@ -5,27 +5,25 @@ var MAP;
 var BASECOORDINATE;
 var MAPSOURCE;
 var MAPDATA;
-var ACTIVEPANEL = 'choropleth';
 var URL;
-var URLACTIVE = false;
-var MAPVIEW = false;
-var MAPVIEWACTIVE = false;    
+var MAPVIEW;
 var PARAMETER;
 var BOUNDS = 0;
+var ACTIVEPANEL = 'choropleth';
 var MAP_SOURCE_TYPE_DATABASE = 'database';
 var MAP_SOURCE_TYPE_GEOJSON = 'geojson';
 var MAP_SOURCE_TYPE_SHAPEFILE = 'shapefile';
 var MASK;
 
 function getUrlParam(strParamName) {
-    var output = "";
+    var output = '';
     var strHref = window.location.href;
-    if ( strHref.indexOf("?") > -1 ) {
-        var strQueryString = strHref.substr(strHref.indexOf("?")).toLowerCase();
-        var aQueryString = strQueryString.split("&");
+    if ( strHref.indexOf('?') > -1 ) {
+        var strQueryString = strHref.substr(strHref.indexOf('?')).toLowerCase();
+        var aQueryString = strQueryString.split('&');
         for ( var iParam = 0; iParam < aQueryString.length; iParam++ ) {
-            if (aQueryString[iParam].indexOf(strParamName.toLowerCase() + "=") > -1 ) {
-                var aParam = aQueryString[iParam].split("=");
+            if (aQueryString[iParam].indexOf(strParamName.toLowerCase() + '=') > -1 ) {
+                var aParam = aQueryString[iParam].split('=');
                 output = aParam[1];
                 break;
             }
@@ -55,8 +53,7 @@ function getMultiSelectHeight() {
     }
 }
 
-Ext.onReady(function()
-{
+Ext.onReady( function() {
 	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
     
     Ext.override(Ext.layout.FormLayout, {
@@ -215,27 +212,42 @@ Ext.onReady(function()
 			new OpenLayers.Control.Attribution()
 		]
 	});
-
-    if (getUrlParam('view') != '') {
+	
+	MASK = new Ext.LoadMask(Ext.getBody(), {msg: 'Loading...', msgCls: 'x-mask-loading2'});
+	
+    if (getUrlParam('view')) {
         PARAMETER = getUrlParam('view');
-        URLACTIVE = true;
     }
-    
-    MASK = new Ext.LoadMask(Ext.getBody(), {msg: 'Loading...', msgCls: 'x-mask-loading2'});
-    
+	
+	var mapViewParam = PARAMETER ? PARAMETER : 0;
+	
 	Ext.Ajax.request({
-        url: path + 'getMapSourceTypeUserSetting' + type,
-        method: 'GET',
-        success: function( responseObject ) {
-            MAPSOURCE = Ext.util.JSON.decode( responseObject.responseText ).mapSource;
-		
-            Ext.Ajax.request({
-                url: path + 'getBaseCoordinate' + type,
-                method: 'GET',
-                success: function( responseObject ) {
-                    bc = Ext.util.JSON.decode( responseObject.responseText ).baseCoordinate;
-                    BASECOORDINATE = {longitude:bc[0].longitude, latitude:bc[0].latitude};
+		url: path + 'getBaseCoordinate' + type,
+		method: 'GET',
+		success: function(r) {
+			var bc = Ext.util.JSON.decode( r.responseText ).baseCoordinate;
+			BASECOORDINATE = {longitude:bc[0].longitude, latitude:bc[0].latitude};
+			
+			Ext.Ajax.request({
+				url: path + 'getMapView' + type,
+				method: 'GET',
+				params: { id: mapViewParam },
+				success: function(r) {
+					var mst = Ext.util.JSON.decode(r.responseText).mapView[0].mapSourceType;
 					
+					Ext.Ajax.request({
+						url: path + 'getMapSourceTypeUserSetting' + type,
+						method: 'GET',
+						success: function(r) {
+							var ms = Ext.util.JSON.decode(r.responseText).mapSource;
+							MAPSOURCE = PARAMETER ? mst : ms;
+							
+							Ext.Ajax.request({
+								url: path + 'setMapSourceTypeUserSetting' + type,
+								method: 'POST',
+								params: { mapSourceType: MAPSOURCE },
+								success: function() {
+			
     /* VIEW PANEL */
 	var viewStore = new Ext.data.JsonStore({
         url: path + 'getAllMapViews' + type,
@@ -2215,76 +2227,67 @@ Ext.onReady(function()
 									var msv = Ext.getCmp('mapsource_cb').getValue();
 									var msrw = Ext.getCmp('mapsource_cb').getRawValue();
 									
-									Ext.Ajax.request({
-										url: path + 'getMapSourceTypeUserSetting' + type,
-										method: 'POST',
-										success: function( responseObject ) {
-											if (Ext.util.JSON.decode(responseObject.responseText).mapSource == msv) {
-												Ext.messageRed.msg('Map source', msg_highlight_start + msrw + msg_highlight_end + ' is already selected.');
-											}
-											else {
-												Ext.Ajax.request({
-													url: path + 'setMapSourceTypeUserSetting' + type,
-													method: 'POST',
-													params: { mapSourceType: msv },
-													success: function( responseObject ) {
-														MAPSOURCE = msv;
-														
-														Ext.getCmp('map_cb').getStore().reload();
-														Ext.getCmp('maps_cb').getStore().reload();
-														Ext.getCmp('mapview_cb').getStore().reload();
-														Ext.getCmp('view_cb').getStore().reload();
-														Ext.getCmp('editmap_cb').getStore().reload();
-														Ext.getCmp('maplayer_cb').getStore().reload();
+									if (MAPSOURCE == msv) {
+										Ext.messageRed.msg('Map source', msg_highlight_start + msrw + msg_highlight_end + ' is already selected.');
+									}
+									else {
+										Ext.Ajax.request({
+											url: path + 'setMapSourceTypeUserSetting' + type,
+											method: 'POST',
+											params: { mapSourceType: msv },
+											success: function( responseObject ) {
+												MAPSOURCE = msv;
+												
+												Ext.getCmp('map_cb').getStore().reload();
+												Ext.getCmp('maps_cb').getStore().reload();
+												Ext.getCmp('mapview_cb').getStore().reload();
+												Ext.getCmp('view_cb').getStore().reload();
+												Ext.getCmp('editmap_cb').getStore().reload();
+												Ext.getCmp('maplayer_cb').getStore().reload();
 
-														Ext.getCmp('map_cb').reset();
-														Ext.getCmp('mapview_cb').reset();
-														
-														if (MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON) {
-															Ext.getCmp('register_chb').enable();
-															
-															if (Ext.getCmp('register_chb').checked) {
-																mapping.show();
-																shapefilePanel.show();
-																mapLayerPanel.show();
-															}
-														}
-                                                        else if (MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
-															Ext.getCmp('register_chb').enable();
-															
-															if (Ext.getCmp('register_chb').checked) {
-																mapping.show();
-																shapefilePanel.show();
-																mapLayerPanel.show();
-															}
-														}
-														else if (MAPSOURCE == MAP_SOURCE_TYPE_DATABASE) {
-															Ext.getCmp('register_chb').disable();
-															
-															mapping.hide();
-															shapefilePanel.hide();
-															mapLayerPanel.hide();
-														}
-														
-														if (MAP.layers.length > 2) {
-															for (var i = MAP.layers.length - 1; i >= 2; i--) {
-																MAP.removeLayer(MAP.layers[i]);
-															}
-														}
-														addOverlaysToMap();
-														
-														Ext.messageBlack.msg('Map source', msg_highlight_start + msrw + msg_highlight_end + ' is saved as map source.');
-													},
-													failure: function() {
-														alert( 'Status', 'Error while saving data' );
+												Ext.getCmp('map_cb').reset();
+												Ext.getCmp('mapview_cb').reset();
+												
+												if (MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON) {
+													Ext.getCmp('register_chb').enable();
+													
+													if (Ext.getCmp('register_chb').checked) {
+														mapping.show();
+														shapefilePanel.show();
+														mapLayerPanel.show();
 													}
-												});
+												}
+												else if (MAPSOURCE == MAP_SOURCE_TYPE_SHAPEFILE) {
+													Ext.getCmp('register_chb').enable();
+													
+													if (Ext.getCmp('register_chb').checked) {
+														mapping.show();
+														shapefilePanel.show();
+														mapLayerPanel.show();
+													}
+												}
+												else if (MAPSOURCE == MAP_SOURCE_TYPE_DATABASE) {
+													Ext.getCmp('register_chb').disable();
+													
+													mapping.hide();
+													shapefilePanel.hide();
+													mapLayerPanel.hide();
+												}
+												
+												if (MAP.layers.length > 2) {
+													for (var i = MAP.layers.length - 1; i >= 2; i--) {
+														MAP.removeLayer(MAP.layers[i]);
+													}
+												}
+												addOverlaysToMap();
+												
+												Ext.messageBlack.msg('Map source', msg_highlight_start + msrw + msg_highlight_end + ' is saved as map source.');
+											},
+											failure: function() {
+												alert( 'Status', 'Error while saving data' );
 											}
-										},
-										failure: function() {
-											alert( 'Status', 'Error while saving data' );
-										}
-									});
+										});
+									}
 								}
 							}
 						}
@@ -2406,7 +2409,7 @@ Ext.onReady(function()
             }
         }
     });
-    
+	
 	/* LAYERS */
 	var vmap0 = new OpenLayers.Layer.WMS(
         'World WMS',
@@ -2782,17 +2785,10 @@ Ext.onReady(function()
 	
     Ext.get('loading').fadeOut({remove: true});
 	
-	},
-	failure: function() {
-		alert( 'Status', 'Error while saving data' );
-	}
-    });
-	
-	},
-	failure: function() {
-		alert( 'Status', 'Error while saving data' );
-	}
-    });
+	}});
+	}});
+	}});
+	}});
 });
 
 /*SELECT FEATURES*/
@@ -2820,7 +2816,7 @@ function onHoverSelectChoropleth(feature) {
                 y: y
             });    
 
-            var html = '<p style="margin-top: 5px; padding-left:5px; padding-bottom:5px;">' + feature.attributes[MAPDATA.nameColumn] + pe;
+            var html = '<p style="margin-top: 5px; padding-left:5px; padding-bottom:3px;">' + feature.attributes[MAPDATA.nameColumn] + pe;
             html += style + bs + 'Value' + be + ':' + space + feature.attributes.value + pe;
 			// html += style + bs + 'Factor' + be + space + feature.attributes.factor.toFixed(1) + pe;
 			// html += style + bs + 'Numerator' + be + space + feature.attributes.numeratorValue.toFixed(1) + pe;
