@@ -2,14 +2,14 @@
   [{
     "id": "$!{object.id}",
     "name": "$!encoder.jsEncode( ${object.name} )",
-    "indicatorGroupId": $!{object.indicatorGroup.id},
-    "indicatorId": $!{object.indicator.id},
+    "indicatorGroupId": "$!{object.indicatorGroup.id}",
+    "indicatorId": "$!{object.indicator.id}",
     "periodTypeId": "$!encoder.jsEncode( ${object.periodType.name} )",
-    "periodId": $!{object.period.id},
+    "periodId": "$!{object.period.id}",
     "mapSourceType": "$!encoder.jsEncode( ${object.mapSourceType} )",
     "mapSource": "$!encoder.jsEncode( ${object.mapSource} )",
-    "method": $!{object.method},
-    "classes": $!{object.classes},
+    "method": "$!{object.method}",
+    "classes": "$!{object.classes}",
     "colorLow": "$!encoder.jsEncode( ${object.colorLow} )",
     "colorHigh": "$!encoder.jsEncode( ${object.colorHigh} )"
   }]
