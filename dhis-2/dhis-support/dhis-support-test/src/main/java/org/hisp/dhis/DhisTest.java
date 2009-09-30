@@ -147,6 +147,9 @@ public abstract class DhisTest
         }
     }
 
+    /**
+     * Binds a Hibernate Session to the current thread.
+     */
     private void bindSession()
     {        
         SessionFactory sessionFactory = (SessionFactory) getBean( "sessionFactory" );
@@ -156,6 +159,9 @@ public abstract class DhisTest
         TransactionSynchronizationManager.bindResource( sessionFactory, new SessionHolder( session ) );     
     }
 
+    /**
+     * Unbinds and closes the bound Hibernate Session from the current thread.
+     */
     private void unbindSession()
     {
         SessionFactory sessionFactory = (SessionFactory) getBean( "sessionFactory" );
