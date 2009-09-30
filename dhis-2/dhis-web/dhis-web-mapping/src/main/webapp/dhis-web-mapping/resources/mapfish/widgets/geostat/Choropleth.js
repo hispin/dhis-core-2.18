@@ -151,17 +151,18 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             listeners: {
                 'load': {
                     fn: function() {
-                        if (URLACTIVE) {
+                        if (PARAMETER) {
                             Ext.Ajax.request({
                                 url: path + 'getMapView' + type,
                                 method: 'POST',
                                 params: { id: PARAMETER },
 
                                 success: function( responseObject ) {
-                                    MAPVIEWACTIVE = true;
+									PARAMETER = null;
                                     MAPVIEW = Ext.util.JSON.decode(responseObject.responseText).mapView[0];
                                     
                                     MAPSOURCE = MAPVIEW.mapSourceType;
+									Ext.getCmp('mapsource_cb').setValue(MAPSOURCE);
                                     
                                     Ext.getCmp('mapview_cb').setValue(MAPVIEW.id);
                                     
@@ -214,7 +215,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                         
                         Ext.getCmp('indicator_cb').reset();
 
-                        if (MAPVIEWACTIVE) {
+                        if (MAPVIEW) {
                             Ext.getCmp('indicator_cb').setValue(MAPVIEW.indicatorId);
                             
                             var name = MAPVIEW.periodTypeId;
@@ -245,7 +246,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             listeners: {
                 'load': {
                     fn: function() {
-                        if (MAPVIEWACTIVE) {
+                        if (MAPVIEW) {
                             Ext.getCmp('period_cb').setValue(MAPVIEW.periodId);
                             
                             var mst = MAPVIEW.mapSourceType;
@@ -283,9 +284,9 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             listeners: {
                 'load': {
                     fn: function() {
-                        if (MAPVIEWACTIVE) {
+                        if (MAPVIEW) {
                             Ext.getCmp('map_cb').setValue(MAPVIEW.mapSource);
-                            MAPVIEWACTIVE = false;
+                            MAPVIEW = null;
                             choropleth.classify(false);
                         }
                     }
@@ -322,7 +323,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                             params: { id: mId },
 
                             success: function( responseObject ) {
-                                MAPVIEWACTIVE = true;
                                 MAPVIEW = Ext.util.JSON.decode(responseObject.responseText).mapView[0];
                                 
                                 MAPSOURCE = MAPVIEW.mapSourceType;
