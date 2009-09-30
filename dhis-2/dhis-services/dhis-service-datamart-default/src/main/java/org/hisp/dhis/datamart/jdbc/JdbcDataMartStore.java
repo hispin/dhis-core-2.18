@@ -177,46 +177,18 @@ public class JdbcDataMartStore
     public int deleteAggregatedDataValues( final Collection<Integer> dataElementIds, 
         final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds )
     {
-        final StatementHolder holder = statementManager.getHolder();
+        final String sql =
+            "DELETE FROM aggregateddatavalue " +
+            "WHERE dataelementid IN ( " + getCommaDelimitedString( dataElementIds ) + " ) " +
+            "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
+            "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
         
-        try
-        {
-            final String sql =
-                "DELETE FROM aggregateddatavalue " +
-                "WHERE dataelementid IN ( " + getCommaDelimitedString( dataElementIds ) + " ) " +
-                "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
-                "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
-            
-            return holder.getStatement().executeUpdate( sql );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to delete aggregated data values", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return statementManager.getHolder().executeUpdate( sql );        
     }
 
     public int deleteAggregatedDataValues()
     {
-        final StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            final String sql = "DELETE FROM aggregateddatavalue";
-            
-            return holder.getStatement().executeUpdate( sql );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to delete aggregated data values", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return statementManager.getHolder().executeUpdate( "DELETE FROM aggregateddatavalue" ); 
     }
 
     // -------------------------------------------------------------------------
@@ -312,46 +284,18 @@ public class JdbcDataMartStore
     public int deleteAggregatedIndicatorValues( final Collection<Integer> indicatorIds, final Collection<Integer> periodIds,
         final Collection<Integer> organisationUnitIds )
     {
-        final StatementHolder holder = statementManager.getHolder();
+        final String sql =
+            "DELETE FROM aggregatedindicatorvalue " +
+            "WHERE indicatorid IN ( " + getCommaDelimitedString( indicatorIds ) + " ) " +
+            "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
+            "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
         
-        try
-        {
-            final String sql =
-                "DELETE FROM aggregatedindicatorvalue " +
-                "WHERE indicatorid IN ( " + getCommaDelimitedString( indicatorIds ) + " ) " +
-                "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
-                "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
-            
-            return holder.getStatement().executeUpdate( sql );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to delete aggregated data values", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return statementManager.getHolder().executeUpdate( sql );        
     }
     
     public int deleteAggregatedIndicatorValues()
     {
-        final StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            final String sql = "DELETE FROM aggregatedindicatorvalue";
-            
-            return holder.getStatement().executeUpdate( sql );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to delete aggregated indicator values", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return statementManager.getHolder().executeUpdate( "DELETE FROM aggregatedindicatorvalue" );
     }
 
     // -------------------------------------------------------------------------
@@ -597,22 +541,7 @@ public class JdbcDataMartStore
 
     public int deleteRelativePeriods()
     {
-        final StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            final String sql = statementBuilder.getDeleteRelativePeriods();
-            
-            return holder.getStatement().executeUpdate( sql );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to delete relative periods", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return statementManager.getHolder().executeUpdate( statementBuilder.getDeleteRelativePeriods() );
     }
     
     // -------------------------------------------------------------------------
