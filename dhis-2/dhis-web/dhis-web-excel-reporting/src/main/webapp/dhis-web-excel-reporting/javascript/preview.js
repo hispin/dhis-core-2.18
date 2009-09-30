@@ -2,9 +2,10 @@
 aKey	= null;
 aMerged = null;
 
-function previewReport(reportId, periodId, sheetId, message) {
+function previewReport(reportId, periodId, message) {
 	
-	var url = "previewReportExcel.action?reportId="+reportId+"&periodId="+periodId+"&sheetId="+sheetId;
+	//var url = "previewReportExcel.action?reportId="+reportId+"&periodId="+periodId+"&sheetId="+sheetId;
+	var url = "previewReportExcel.action?reportId="+reportId+"&periodId="+periodId;
 	
 	setMessage(message);
 	
