@@ -111,11 +111,11 @@ public class XMLStructureResponse
 
     public XMLStructureResponse()
     {
-
     }
 
     public XMLStructureResponse( String pathFileName, String enc, boolean bFormat, boolean bDetailed,
         boolean bWriteDescription, boolean bWriteVersion, boolean bWriteDTD )
+
         throws Exception
     {
         this.PATH_FILE_NAME = pathFileName;
@@ -210,6 +210,11 @@ public class XMLStructureResponse
     private void writeFormattedXML( boolean bDetailed, boolean bWriteDescription )
         throws Exception
     {
+        if ( bWriteDescription )
+        {
+            this.writeXMLDescription();
+        }
+
         if ( this.bWRITE_VERSION )
         {
             STRUCTURE_DATA_RESPONSE.append( PREFIX_VERSION_XML );
@@ -227,11 +232,6 @@ public class XMLStructureResponse
         STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
 
         FileInputStream fis = new FileInputStream( this.PATH_FILE_NAME );
-        // org.apache.poi.hssf.usermodel.HSSFWorkbook wb = (HSSFWorkbook)
-        // WorkbookFactory.create( fis );
-        // org.apache.poi.ss.usermodel.FormulaEvaluator evaluator =
-        // wb.getCreationHelper().createFormulaEvaluator();
-
         org.apache.poi.ss.usermodel.Workbook wb = new HSSFWorkbook( fis );
         org.apache.poi.ss.usermodel.FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
 
@@ -328,12 +328,7 @@ public class XMLStructureResponse
             STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
         }
         STRUCTURE_DATA_RESPONSE.append( WORKBOOK_CLOSETAG );
-        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE + PRINT_END_LINE );
-
-        if ( bWriteDescription )
-        {
-            this.writeXMLDescription();
-        }
+        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
     }
 
     // -------------------------------------------------------------------------
@@ -467,5 +462,10 @@ public class XMLStructureResponse
         {
             return s;
         }
+    }
+    
+    public static void main( String[] args ) throws Exception
+    {
+        System.out.println(new XMLStructureResponse("c:\\phammemthongke\\reporttemplate\\tx_bieu_2.xls", "UTF8", true, false, true, false, false).getSTRUCTURE_DATA_RESPONSE());
     }
 }

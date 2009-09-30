@@ -48,6 +48,8 @@ public class ExportXMLAction
 {
     private static final String SEPARATE = "/";
 
+    private static final String ENCODING = "UTF8";
+
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
@@ -63,8 +65,6 @@ public class ExportXMLAction
     private String outputXLS;
 
     private String xmlStructureResponse;
-
-    private String ENCODING;
 
     private File FILE_XLS;
 
@@ -106,7 +106,7 @@ public class ExportXMLAction
     {
         try
         {
-            init();
+            this.init();
 
             xmlStructureResponse = new XMLStructureResponse( this.FILE_XLS.getPath(), ENCODING, true, false, true,
                 false, false ).getSTRUCTURE_DATA_RESPONSE();
