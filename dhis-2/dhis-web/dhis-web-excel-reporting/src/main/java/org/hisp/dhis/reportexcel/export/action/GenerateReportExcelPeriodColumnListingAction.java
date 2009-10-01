@@ -27,8 +27,6 @@
 
 package org.hisp.dhis.reportexcel.export.action;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -93,15 +91,7 @@ public class GenerateReportExcelPeriodColumnListingAction
 
         }
 
-        outputReportWorkbook.write();
-
-        outputReportWorkbook.close();
-
-        outputXLS = outputReportFile.getName();
-
-        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
-
-        outputReportFile.delete();
+       this.complete();
 
         statementManager.destroy();
 

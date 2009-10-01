@@ -45,9 +45,13 @@
 <hr>
 <p>
 <input type="button" value='$i18n.getString( "preview_report" )' onclick="javascript: generic_type = 'preview'; validateGenerateReport('$!i18n.getString("please_wait")');" #if(!$organisationUnit) disabled #end/>
-<input type="button" value='$i18n.getString( "generate_report" )' onclick="javascript: generic_type = ''; validateGenerateReport('$!i18n.getString("please_wait")');" #if(!$organisationUnit) disabled #end/>
+<input type="button" id="generate_report" value='$i18n.getString( "generate_report" )' onclick="generateReportExcel();" #if(!$organisationUnit) disabled #end/>
+
 </p>
-<span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)"></span>
+<span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)">
+	
+</span>
+<span id="loading" style="display:none;position:fixed;"><img src="../images/ajax-loader.gif" /></span>
 
 <script>
 #if($organisationUnit)

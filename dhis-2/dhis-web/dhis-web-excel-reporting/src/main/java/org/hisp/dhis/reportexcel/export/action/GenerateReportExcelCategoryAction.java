@@ -26,8 +26,6 @@
  */
 package org.hisp.dhis.reportexcel.export.action;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.util.Collection;
 
 import jxl.write.WritableSheet;
@@ -75,16 +73,8 @@ public class GenerateReportExcelCategoryAction
             this.generateOutPutFile( organisationUnit, reportExcelItems, reportExcel, sheet );
 
         }
-
-        outputReportWorkbook.write();
-
-        outputReportWorkbook.close();
-
-        outputXLS = outputReportFile.getName();
-
-        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
-
-        outputReportFile.delete();
+     
+        this.complete();
 
         statementManager.destroy();
 

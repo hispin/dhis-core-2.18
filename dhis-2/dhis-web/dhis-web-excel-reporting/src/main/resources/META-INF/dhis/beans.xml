@@ -329,6 +329,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.reportexcel.export.action.DowloadExcelAction"
+		class="org.hisp.dhis.reportexcel.export.action.DowloadExcelAction"
+		scope="prototype">	
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.export.action.GetReportExcelsByGroupAction"
@@ -457,7 +464,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-	</bean>
+	</bean>	
 
 	<bean
 		id="org.hisp.dhis.reportexcel.dataentrystatus.action.AddDataEntryStatusAction"
