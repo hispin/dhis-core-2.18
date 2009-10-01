@@ -398,6 +398,11 @@ public class DefaultOrganisationUnitService
         return maxDepth;
     }
 
+    public void updateOrganisationUnitParent( int organisationUnitId, int parentId )
+    {
+        organisationUnitStore.updateOrganisationUnitParent( organisationUnitId, parentId );
+    }
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------

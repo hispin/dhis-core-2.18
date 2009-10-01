@@ -217,6 +217,8 @@ public interface OrganisationUnitService
      */
     int getNumberOfOrganisationalLevels();
 
+    void updateOrganisationUnitParent( int organisationUnitId, int parentId );
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
