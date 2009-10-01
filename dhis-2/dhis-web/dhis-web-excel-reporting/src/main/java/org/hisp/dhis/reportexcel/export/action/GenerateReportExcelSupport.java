@@ -73,7 +73,6 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.user.CurrentUserService;
 
-
 import com.opensymphony.xwork2.Action;
 
 /**
@@ -85,10 +84,10 @@ public abstract class GenerateReportExcelSupport
 {
 
     private static final String NULL_REPLACEMENT = "0";
-    
-    protected static final String[] chappter = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX",
-        "X","XI","XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX", "XXI", "XXII",
-        "XXIII", "XXIV", "XXV","XXVI", "XXVII", "XXVIII", "XXIX", "XXX"};
+
+    protected static final String[] chappter = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI",
+        "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX", "XXI", "XXII", "XXIII", "XXIV", "XXV", "XXVI",
+        "XXVII", "XXVIII", "XXIX", "XXX" };
 
     // -------------------------------------------
     // Dependency
@@ -406,6 +405,16 @@ public abstract class GenerateReportExcelSupport
         }
         return value;
 
+    }
+
+    public void complete()
+        throws IOException, WriteException
+    {
+        outputReportWorkbook.write();
+
+        outputReportWorkbook.close();
+        
+        selectionManager.setReportExcelOutput( outputReportFile.getPath() );
     }
 
     protected String generateIndicatorExpression( ReportExcelItem reportItem, Date startDate, Date endDate,

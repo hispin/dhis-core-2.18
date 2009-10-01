@@ -69,7 +69,7 @@ function SelectionTreeSelection()
         else{    
         	request.send( 'noactionfordatalocking.action?' );   
             linkTags[0].className = '';  
-            desableLockComponents();       
+            enableLockComponents();       
         }
     };
 

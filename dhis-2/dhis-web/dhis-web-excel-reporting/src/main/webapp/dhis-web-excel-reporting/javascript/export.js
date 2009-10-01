@@ -49,11 +49,16 @@ function getListPeriodCompleted( xmlObject ){
 }
 
 function generateReportExcel() {	
-
-	var reportId = $('#report').val();
-	var periodId = $('#period').val();
 	
-	window.location = "generateReportExcel.action?reportId=" + reportId + "&periodId=" + periodId + "&reportType=category";
+	$("#loading").showAtCenter( true );	
+	$.post("generateReportExcelAjax.action",{
+		reportId:$('#report').val(),
+		periodId:$('#period').val()
+	},function(data){		
+		window.location = "downloadExcelOutput.action";
+		deleteDivEffect();
+		$("#loading").hide();		
+	},'xml');
 
 }
 

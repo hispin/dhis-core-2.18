@@ -26,8 +26,6 @@
  */
 package org.hisp.dhis.reportexcel.export.action;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -75,18 +73,10 @@ public class GenerateReportExcelOrganizationGroupListingAction
 
             this.generateOutPutFile( reportExcel, reportExcelItems, organisationUnit, sheet );
 
-        }
+        }      
 
-        outputReportWorkbook.write();
-
-        outputReportWorkbook.close();
-
-        outputXLS = outputReportFile.getName();
-
-        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
-
-        outputReportFile.delete();
-
+        this.complete();
+        
         statementManager.destroy();
 
         return SUCCESS;
@@ -119,9 +109,10 @@ public class GenerateReportExcelOrganizationGroupListingAction
                         ExcelUtils.TEXT, sheet, this.textChapterLeft );
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.SERIAL )
-                    && (!organisationUnits.isEmpty()) ){
-                    ExcelUtils.writeValue( rowBegin, reportItem.getColumn(), chappter[chapperNo],
-                        ExcelUtils.TEXT, sheet, this.textChapterLeft );                  
+                    && (!organisationUnits.isEmpty()) )
+                {
+                    ExcelUtils.writeValue( rowBegin, reportItem.getColumn(), chappter[chapperNo], ExcelUtils.TEXT,
+                        sheet, this.textChapterLeft );
                 }
                 chapperNo++;
                 rowBegin++;

@@ -43,38 +43,40 @@ public class SelectionManager
 
     private static final String SELETED_PERIOD = "SELETED_PERIOD";
 
-    private static final String SELETED_REPORT_EXCEL = "SELETED_REPORT_EXCEL";    
-    
-    private static final String SELECTED_REPORT_EXCEL_ID =  "SELECTED_REPORT_EXCEL_ID";
+    private static final String SELETED_REPORT_EXCEL = "SELETED_REPORT_EXCEL";
+
+    private static final String SELECTED_REPORT_EXCEL_ID = "SELECTED_REPORT_EXCEL_ID";
+
+    private static final String REPORTEXCEL_OUTPUT = "REPORTEXCEL_OUTPUT";
 
     public Period getSelectedPeriod()
     {
         return (Period) getSession().get( SELETED_PERIOD );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public void setSelectedPeriod( Period period )
     {
         getSession().put( SELETED_PERIOD, period );
     }
-    
+
     public ReportExcel getSelectedReportExcel()
     {
         return (ReportExcel) getSession().get( SELETED_REPORT_EXCEL );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public void setSelectedReportExcel( ReportExcel reportExcel )
     {
         getSession().put( SELETED_REPORT_EXCEL, reportExcel );
     }
-    
-    @SuppressWarnings("unchecked")
+
+    @SuppressWarnings( "unchecked" )
     public void setSelectedReportExcelId( Integer id )
     {
         getSession().put( SELECTED_REPORT_EXCEL_ID, id );
     }
-    
+
     public Integer getSelectedReportExcelId()
     {
         return (Integer) getSession().get( SELECTED_REPORT_EXCEL_ID );
@@ -95,6 +97,17 @@ public class SelectionManager
     private static final Map getSession()
     {
         return ActionContext.getContext().getSession();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public void setReportExcelOutput( String path )
+    {
+        getSession().put( REPORTEXCEL_OUTPUT, path );
+    }
+
+    public String getReportExcelOutput()
+    {
+        return (String) getSession().get( REPORTEXCEL_OUTPUT );
     }
 
 }

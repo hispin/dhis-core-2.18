@@ -40,7 +40,7 @@
 <form name="dataElementGroups" method="post">
 <input type="hidden" name="id" value="$report.id"/>
 <input type="hidden" name="dataElementGroupOrderId" id="dataElementGroupOrderId"/>
-<div id="dataElementGroups" style="position:fixed;display:none;width:700px;z-index:10001;background-color: white;border: medium solid silver;height:350px;padding:20px;">
+<div id="dataElementGroups" style="position:fixed;display:none;width:1000px;z-index:10001;background-color: white;border: medium solid silver;height:350px;padding:20px;">
 	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('dataElementGroups');deleteDivEffect();">[x]</div>	
 	<table>
 		<tr>
@@ -54,16 +54,16 @@
 	</table>		
 	
 	<br/><br/>	
+	<div style="width:100%;overflow:auto">
 	<table width="100%">		
 		<tr>
-			<td>
+			<td colspan="3">
 				<select id="availableDataElementGroups" onchange="getDataElementsByGroup(this.value)" style="min-width:300px"></select>				
-			</td>
-			<td></td>
+			</td>			
 		</tr>
 		<tr>
 			<td>
-				<select id="availableDataElements" multiple size=13 style="min-width:300px"></select>
+				<select id="availableDataElements" multiple size=13 style="min-width:300px" ondblclick="moveSelectedById('availableDataElements','selectedDataElements');"></select>
 			</td>
 			<td align="center">
 				<input type="button" value=">" onclick="moveSelectedById('availableDataElements','selectedDataElements');" style="width:50px"/><br>
@@ -72,10 +72,12 @@
 				<input type="button" value="<<" onclick="moveAllById('selectedDataElements' , 'availableDataElements' );" style="width:50px"/>
 			</td>
 			<td>
-				<select id="selectedDataElements" name="dataElementIds" multiple size=13 style="min-width:300px"></select>
+				<select id="selectedDataElements" name="dataElementIds" multiple size=13 style="min-width:300px" ondblclick="moveSelectedById('selectedDataElements' , 'availableDataElements' );" ></select>
 			</td>
 		</tr>
 	</table>
+	</div>
+	
 	<p align=center>
 		<input type="button" value="$i18n.getString( 'save' )" style="width:130px" onclick="submitDataElementGroupOrder()">		
 	</p>
