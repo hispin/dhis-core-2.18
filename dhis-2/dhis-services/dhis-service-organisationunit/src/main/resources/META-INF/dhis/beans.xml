@@ -9,6 +9,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitStore"
     class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitStore">
     <property name="sessionFactory" ref="sessionFactory"/>
+    <property name="statementManager" ref="statementManager"/>
     <property name="sourceStore"
       ref="org.hisp.dhis.source.SourceStore"/>
   </bean>

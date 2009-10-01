@@ -86,6 +86,8 @@ public interface OrganisationUnitStore
      */
     Collection<OrganisationUnit> getRootOrganisationUnits();
 
+    void updateOrganisationUnitParent( int organisationUnitId, int parentId );
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------

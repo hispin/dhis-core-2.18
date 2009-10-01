@@ -49,15 +49,7 @@ public class AbstractOrganisationUnitRelationshipConverter
 
     protected void importUnique( GroupMemberAssociation object )
     {
-        OrganisationUnit child = organisationUnitService.getOrganisationUnit( object.getMemberId() );
-        
-        OrganisationUnit parent = new OrganisationUnit();
-        
-        parent.setId( object.getGroupId() );
-        
-        child.setParent( parent );
-        
-        organisationUnitBatchHandler.updateObject( child );
+        organisationUnitService.updateOrganisationUnitParent( object.getMemberId(), object.getGroupId() );
     }
 
     protected void importMatching( GroupMemberAssociation object, GroupMemberAssociation match )

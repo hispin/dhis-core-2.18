@@ -35,6 +35,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.amplecode.quick.StatementHolder;
+import org.amplecode.quick.StatementManager;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -64,14 +66,21 @@ public class HibernateOrganisationUnitStore
     {
         this.sessionFactory = sessionFactory;
     }
-    
+
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
+
     private SourceStore sourceStore;
 
     public void setSourceStore( SourceStore sourceStore )
     {
         this.sourceStore = sourceStore;
     }
-
+    
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
@@ -280,6 +289,18 @@ public class HibernateOrganisationUnitStore
         {
             session.delete( hierarchy );
         }
+    }
+    
+    public void updateOrganisationUnitParent( int organisationUnitId, int parentId )
+    {
+        StatementHolder holder = statementManager.getHolder();
+        
+        final String sql = 
+            "UPDATE organisationunit " + 
+            "SET parentid='" + parentId + "' " +
+            "WHERE organisationunitid='" + organisationUnitId + "'";
+        
+        holder.executeUpdate( sql );
     }
     
     // -------------------------------------------------------------------------
