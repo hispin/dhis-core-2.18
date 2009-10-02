@@ -554,8 +554,7 @@
 			<result name="success" type="velocity">/popup.vm</result>
 			<param name="page">/dhis-web-excel-reporting/viewCustomDataSetReport.vm</param>
 		</action>
-
-
+        
 		<!-- Preview report actions -->
 
 		<action name="validateGenerateReport"
@@ -625,6 +624,69 @@
 			<param name="stylesheets">style/previewStyle.css</param>
 			<param name="javascripts">javascript/preview.js</param>
 		</action>
+		
+        <!--  GERERATE ADVANCE -->
 
+        <action name="organisationUnitGroupList"
+            class="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupListAction">
+            <result name="success" type="velocity-xml">
+                /dhis-web-excel-reporting/responseOrganisationUnitGroupObjects.vm
+            </result>
+            <result name="error" type="velocity-xml">
+                /dhis-web-excel-reporting/responseError.vm</result>
+        </action>
+
+        <action name="generateAdvancedReportExcel"
+            class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
+            <result name="CATEGORY" type="chain">generateAdvancedReportExcelCategory
+            </result>
+            <result name="NORMAL" type="chain">generateAdvancedReportExcelNormal
+            </result>
+            <result name="ORGANIZATION_GROUP_LISTING" type="chain">
+                generateAdvancedReportExcelOrganizationGroupListing</result>
+            <result name="PERIOD_COLUMN_LISTING" type="chain">
+                generateAdvancedReportExcelPeriodColumnListingAction</result>
+        </action>
+        
+        <action name="generateAdvancedReportExcelNormal"
+            class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelNormalAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${outputXLS}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+        
+        <action name="generateAdvancedReportExcelOrganizationGroupListing"
+            class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelOrganisationGroupListingAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${outputXLS}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+        
+        <action name="generateAdvancedReportExcelPeriodColumnListingAction"
+            class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelPeriodColumnListingAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>g
+                <param name="contentDisposition">filename="${outputXLS}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+        
+        <action name="generateAdvancedReportExcelCategory"
+            class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelCategoryAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${outputXLS}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+   
 	</package>
 </struts>

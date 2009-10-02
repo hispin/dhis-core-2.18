@@ -61,6 +61,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -93,39 +94,39 @@ public abstract class GenerateReportExcelSupport
     // Dependency
     // -------------------------------------------
 
-    OrganisationUnitSelectionManager organisationUnitSelectionManager;
+    protected OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
-    CurrentUserService currentUserService;
+    protected CurrentUserService currentUserService;
 
-    AggregationService aggregationService;
+    protected AggregationService aggregationService;
 
-    IndicatorService indicatorService;
+    protected IndicatorService indicatorService;
 
-    DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    protected DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    StatementManager statementManager;
+    protected StatementManager statementManager;
 
-    DataElementService dataElementService;
+    protected DataElementService dataElementService;
 
-    ReportLocationManager reportLocationManager;
+    protected ReportLocationManager reportLocationManager;
 
-    ReportExcelService reportService;
+    protected ReportExcelService reportService;
 
-    PeriodService periodService;
+    protected PeriodService periodService;
 
-    I18nFormat format;
+    protected I18nFormat format;
 
-    DataMartStore dataMartStore;
+    protected DataMartStore dataMartStore;
 
-    SelectionManager selectionManager;
+    protected SelectionManager selectionManager;
 
     // -------------------------------------------
     // Output
     // -------------------------------------------
 
-    String outputXLS;
+    protected String outputXLS;
 
-    InputStream inputStream;
+    protected InputStream inputStream;
 
     // -------------------------------------------
     // Getter & Setter
@@ -205,15 +206,15 @@ public abstract class GenerateReportExcelSupport
     // -----------------------------------------
     // Local variable
     // -----------------------------------------
-    File outputReportFile;
+    protected File outputReportFile;
 
     File inputExcelTemplate;
 
-    WritableWorkbook outputReportWorkbook;
+    protected WritableWorkbook outputReportWorkbook;
 
     Date startDate;
 
-    Date endDate;
+    protected Date endDate;
 
     Date firstDayOfYear;
 
@@ -243,7 +244,7 @@ public abstract class GenerateReportExcelSupport
 
     WritableCellFormat text = new WritableCellFormat();
 
-    WritableCellFormat textLeft = new WritableCellFormat();
+    protected WritableCellFormat textLeft = new WritableCellFormat();
 
     WritableCellFormat textRight = new WritableCellFormat();
 
@@ -254,13 +255,13 @@ public abstract class GenerateReportExcelSupport
     WritableFont writableChapterFont = new WritableFont( WritableFont.ARIAL, 11, WritableFont.BOLD, false,
         UnderlineStyle.NO_UNDERLINE, Colour.BLACK );
 
-    WritableCellFormat textChapterLeft = new WritableCellFormat( writableChapterFont );
+    protected WritableCellFormat textChapterLeft = new WritableCellFormat( writableChapterFont );
 
     WritableCellFormat textNumberBoldRight = new WritableCellFormat( writableNumberFont );
 
     WritableCellFormat textICDBoldJustify = new WritableCellFormat( writableICDFont );
 
-    WritableCellFormat number = new WritableCellFormat();
+    protected WritableCellFormat number = new WritableCellFormat();
 
     protected void installExcelFormat()
         throws WriteException
@@ -431,8 +432,6 @@ public abstract class GenerateReportExcelSupport
             {
                 String replaceString = matcher.group();
 
-                System.out.println( replaceString );
-
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
 
                 String indicatorIdString = replaceString.trim();
@@ -573,6 +572,32 @@ public abstract class GenerateReportExcelSupport
         {
             throw new RuntimeException( "Illegal DataElement id", ex );
         }
+
+    }
+
+    protected void installReadTemplateFile( ReportExcel reportExcel, Period period, OrganisationUnitGroup organisationUnitGroup )
+        throws BiffException, IOException, RowsExceededException, WriteException, IndexOutOfBoundsException
+    {
+
+        File reportTempDir = reportLocationManager.getReportExcelTempDirectory();
+
+        this.inputExcelTemplate = new File( reportLocationManager.getReportExcelTemplateDirectory() + File.separator
+            + reportExcel.getExcelTemplateFile() );
+
+        Calendar calendar = Calendar.getInstance();
+
+        this.outputReportFile = new File( reportTempDir, currentUserService.getCurrentUsername()
+            + this.dateformatter.format( calendar.getTime() ) + inputExcelTemplate.getName() );
+
+        Workbook templateWorkbook = Workbook.getWorkbook( inputExcelTemplate );
+
+        outputReportWorkbook = Workbook.createWorkbook( outputReportFile, templateWorkbook );
+
+        ExcelUtils.writeValue( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(), organisationUnitGroup
+            .getName(), ExcelUtils.TEXT, outputReportWorkbook.getSheet( 0 ), text );
+
+        ExcelUtils.writeValue( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(),
+            format.formatPeriod( period ), ExcelUtils.TEXT, outputReportWorkbook.getSheet( 0 ), text );
 
     }
 

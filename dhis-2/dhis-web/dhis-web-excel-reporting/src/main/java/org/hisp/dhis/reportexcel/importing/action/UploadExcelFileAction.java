@@ -32,7 +32,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
 
 /**
@@ -53,13 +52,6 @@ public class UploadExcelFileAction
     {
         this.reportLocationManager = reportLocationManager;
     }
-
-//    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
-//
-//    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
-//    {
-//        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
-//    }
 
     // -------------------------------------------------------------------------
     // Getters & Setters
@@ -98,10 +90,6 @@ public class UploadExcelFileAction
     public String execute()
         throws Exception
     {
-//        OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-
-//        if ( organisationUnit == null )
-//            return SUCCESS;
 
         File directory = reportLocationManager.getReportExcelTempDirectory(  );
         

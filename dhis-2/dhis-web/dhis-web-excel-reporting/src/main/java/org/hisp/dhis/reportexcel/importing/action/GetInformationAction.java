@@ -117,8 +117,6 @@ public class GetInformationAction
     {
         organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
-        System.out.println( "selected orgunit : " + organisationUnit );
-
         reportExcels = new ArrayList<ReportExcel>();
 
         List<ReportExcel> listReports = new ArrayList<ReportExcel>( reportExcelService.getALLReportExcel() );
@@ -137,7 +135,7 @@ public class GetInformationAction
 
                 for ( OrganisationUnit orgUnit : orgUnits )
                 {
-                    if ( organisationUnit.getId() == orgUnit.getId() )
+                    if ( organisationUnit.getId() == orgUnit.getId() && report.isNormal());
                     {
                         reportExcels.add( report );
 
