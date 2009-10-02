@@ -522,7 +522,7 @@
 				/dhis-web-excel-reporting/responseDataSets.vm</result>
 		</action>
 
-		<!-- DATA ENTRY STATUS ACTION -->
+		<!-- DATA SET COMPLETED REPORT ACTION -->
 
 		<action name="selectDataSetCompletedReport"
 			class="org.hisp.dhis.reportexcel.datasetcompleted.action.SelectParamsAction">
@@ -555,7 +555,7 @@
 			<param name="page">/dhis-web-excel-reporting/viewCustomDataSetReport.vm</param>
 		</action>
         
-		<!-- Preview report actions -->
+		<!-- PREVIEW REPORT EXCEL ACTION -->
 
 		<action name="validateGenerateReport"
 			class="org.hisp.dhis.reportexcel.export.action.ValidateGenerateReportAction">
