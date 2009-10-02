@@ -1,4 +1,4 @@
-    /*
+﻿    /*
  * Copyright (C) 2007-2008  Camptocamp
  *
  * This file is part of MapFish Client
@@ -299,6 +299,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         {
             xtype: 'combo',
             id: 'mapview_cb',
+			labelStyle: AA_LIGHT,
             fieldLabel: 'Map view',
             typeAhead: true,
             editable: false,
@@ -351,6 +352,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         {
             xtype: 'combo',
             id: 'indicatorgroup_cb',
+			labelStyle: AA_LIGHT,
             fieldLabel: 'Indicator group',
             typeAhead: true,
             editable: false,
@@ -384,6 +386,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         {
             xtype: 'combo',
             id: 'indicator_cb',
+			labelStyle: AA_LIGHT,
             fieldLabel: 'Indicator',
             typeAhead: true,
             editable: false,
@@ -438,6 +441,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         {
             xtype: 'combo',
             id: 'periodtype_cb',
+			labelStyle: AA_LIGHT,
             fieldLabel: 'Period type',
             typeAhead: true,
             editable: false,
@@ -470,6 +474,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         {
             xtype: 'combo',
             id: 'period_cb',
+			labelStyle: AA_LIGHT,
             fieldLabel: 'Period',
             typeAhead: true,
             editable: false,
@@ -500,6 +505,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         {
             xtype: 'combo',
             id: 'map_cb',
+			labelStyle: AA_LIGHT,
             fieldLabel: 'Map',
             typeAhead: true,
             editable: false,
@@ -532,6 +538,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 
         {
             xtype: 'combo',
+			labelStyle: AA_LIGHT,
             fieldLabel: 'Method',
             id: 'method',
             editable: false,
@@ -572,6 +579,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         {
             xtype: 'textfield',
             id: 'bounds',
+			labelStyle: AA_LIGHT,
             fieldLabel: 'Bounds',
 			labelSeparator: MENU_LABELSEPARATOR,
             emptyText: 'Comma separated values',
@@ -582,6 +590,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         
         {
             xtype: 'combo',
+			labelStyle: AA_LIGHT,
             fieldLabel: 'Classes',
 			labelSeparator: MENU_LABELSEPARATOR,
             id: 'numClasses',
@@ -612,6 +621,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 
         {
             xtype: 'colorfield',
+			labelStyle: AA_LIGHT,
             fieldLabel: 'Low color',
 			labelSeparator: MENU_LABELSEPARATOR,
             id: 'colorA_cf',
@@ -623,6 +633,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         
         {
             xtype: 'colorfield',
+			labelStyle: AA_LIGHT,
             fieldLabel: 'High color',
 			labelSeparator: MENU_LABELSEPARATOR,
             id: 'colorB_cf',
@@ -636,6 +647,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 
         {
             xtype: 'button',
+			cls: 'aa_med',
             isFormField: true,
             fieldLabel: '',
             labelSeparator: '',

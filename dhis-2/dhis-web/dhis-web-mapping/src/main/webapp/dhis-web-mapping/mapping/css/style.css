@@ -1,0 +1,66 @@
+﻿.row-assigned  {
+	background-color:#b1ffa1;
+}
+
+.row-not-assigned  {
+	background-color:#FFFFFF;
+}
+
+.x-btn .icon-zoomin  {
+	background-image:url(../../../images/zoom_in.png);
+}
+
+.x-btn .icon-zoomout  {
+	background-image:url(../../../images/zoom_out.png);
+}
+
+.x-btn .icon-zoommin  {
+	background-image:url(../../../images/zoom_world.png);
+}
+
+.x-mask-loading2 div  {
+	padding:2px 11px 3px 32px;
+	background:#fbfbfb url('../../../images/loader.gif') no-repeat 5px 2px;
+	line-height:20px;
+	font-weight:normal;
+}
+
+.aa_dark button  {
+	font-family:myriad pro,frutiger,arial;
+	font-weight:bold;
+	font-size:11px;
+	letter-spacing:1px;
+	color:#111;
+}
+
+.aa_med button  {
+	font-family:myriad pro,frutiger,arial;
+	font-weight:bold;
+	font-size:12px;
+	letter-spacing:1px;
+	color:#444;
+}
+
+.aa_light button  {
+	font-family:myriad pro,frutiger,arial;
+	font-weight:bold;
+	font-size:12px;
+	letter-spacing:1px;
+	color:#888;
+}
+
+.x-grid3-cell-inner, .x-grid3-hd-inner  {
+	font-family:myriad pro,frutiger,arial;
+	font-weight:bold;
+	font-size:12px;
+	letter-spacing:1px;
+	color:#777;
+}
+
+.x-grid3-hd-inner, .x-grid3-hd-organisationUnitId  {
+	font-family:myriad pro,frutiger,arial;
+	font-weight:bold;
+	font-size:12px;
+	letter-spacing:1px;
+	color:#444;
+}

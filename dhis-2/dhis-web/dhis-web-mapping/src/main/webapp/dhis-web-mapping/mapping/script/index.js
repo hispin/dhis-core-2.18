@@ -1,4 +1,4 @@
-/* reference local blank image */
+﻿/* reference local blank image */
 Ext.BLANK_IMAGE_URL = '../resources/ext/resources/images/default/s.gif';
 
 var MAP;
@@ -307,9 +307,9 @@ Ext.onReady( function() {
 		bodyStyle: 'border:0px solid #fff',
         items:
         [
-            { html: '<font color="' + MENU_TEXTCOLOR_INFO + '">Saving current thematic map selection.</font>' },
+            { html: '<font style="' + AA_MED + '">Saving current thematic map selection.</font>' },
 			{ html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Display name</p>' },
 			viewNameTextField,
 			{ html: '<p style="padding-bottom:7px>' },
 			{
@@ -318,6 +318,7 @@ Ext.onReady( function() {
 				isFormField: true,
 				hideLabel: true,
 				text: 'Save',
+				cls: 'aa_med',
 				handler: function() {
 					var vn = Ext.getCmp('viewname_tf').getValue();
 					var ig = Ext.getCmp('indicatorgroup_cb').getValue();
@@ -387,7 +388,7 @@ Ext.onReady( function() {
 		bodyStyle: 'border:0px solid #fff',
         items:
         [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;View</p>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">View</p>' },
 			viewComboBox,
 			{ html: '<p style="padding-bottom:7px>' },
 			{
@@ -396,6 +397,7 @@ Ext.onReady( function() {
 				isFormField: true,
 				hideLabel: true,
 				text: 'Delete',
+				cls: 'aa_med',
 				handler: function() {
 					var v = Ext.getCmp('view_cb').getValue();
 					var name = Ext.getCmp('view_cb').getStore().getById(v).get('name');
@@ -430,7 +432,7 @@ Ext.onReady( function() {
 		bodyStyle: 'border:0px solid #fff',
         items:
         [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;View</p>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">View</p>' },
 			view2ComboBox,
 			{ html: '<p style="padding-bottom:11px>' },
 			{
@@ -439,6 +441,7 @@ Ext.onReady( function() {
 				isFormField: true,
 				hideLabel: true,
 				text: 'Add to DHIS 2 Dashboard',
+				cls: 'aa_med',
 				handler: function() {
 					var v2 = Ext.getCmp('view2_cb').getValue();
 					var nv = Ext.getCmp('view2_cb').getRawValue();
@@ -471,10 +474,10 @@ Ext.onReady( function() {
     
 	var viewWindow = new Ext.Window({
         id: 'view_w',
-        title: 'Favorites',
+        title: '<font style="' + AA_DARK + '">Favorites</font>',
 		layout: 'fit',
         closeAction: 'hide',
-		width: 233,
+		width: 260,
         items:
         [
             {
@@ -488,20 +491,20 @@ Ext.onReady( function() {
                     tabchange: function(panel, tab)
                     {
                         if (tab.id == 'view0') { 
-                            viewWindow.setHeight(172);
+                            viewWindow.setHeight(192);
                         }
                         else if (tab.id == 'view1') {
-                            viewWindow.setHeight(146);
+                            viewWindow.setHeight(148);
                         }
                         else if (tab.id == 'view2') {
-                            viewWindow.setHeight(146);
+                            viewWindow.setHeight(148);
                         }
                     }
                 },
                 items:
                 [
                     {
-                        title: 'New',
+                        title: '<font style="' + AA_MED + '">New</font>',
                         id: 'view0',
                         items:
                         [
@@ -509,7 +512,7 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title: 'Delete',
+                        title: '<font style="' + AA_MED + '">Delete</font>',
                         id: 'view1',
                         items:
                         [
@@ -517,7 +520,17 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title: 'Add to Dashboard',
+                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
+                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
+                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
+                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
+                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
+                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
+                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
+                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
+                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
+                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
+                        title: '<font style="' + AA_MED + '">Add to dashboard</font>',
                         id: 'view2',
                         items:
                         [
@@ -678,23 +691,24 @@ Ext.onReady( function() {
         id: 'newlegendset_p',
         items:
         [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Display name</p>' },
             legendSetNameTextField,
             { html: '<br>' },
 /*            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Method</p>' }, legendSetMethodComboBox, { html: '<br>' },*/
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Classes</p>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Classes</p>' },
             legendSetClassesComboBox,
             { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Lowest value color</p>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Lowest value color</p>' },
             legendSetLowColorColorPalette,
             { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Highest value color</p>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Highest value color</p>' },
             legendSetHighColorColorPalette,
             { html: '<p style="padding-bottom:11px>' },
             {
                 xtype: 'button',
                 id: 'newlegendset_b',
                 text: 'Save',
+				cls: 'aa_med',
                 handler: function() {
                     var ln = Ext.getCmp('legendsetname_tf').getValue();
         /*            var lm = Ext.getCmp('legendsetmethod_cb').getValue();*/
@@ -757,16 +771,17 @@ Ext.onReady( function() {
         id: 'assignlegendset_p',
         items:
         [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Legend set</p>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Legend set</p>' },
             legendSetComboBox,
             { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Indicators</p>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Indicators</p>' },
             legendSetIndicatorMultiSelect,
             { html: '<p style="padding-bottom:11px>' },
             {
                 xtype: 'button',
                 id: 'assignlegendset_b',
                 text: 'Assign to indicators',
+				cls: 'aa_med',
                 handler: function() {
                     var ls = Ext.getCmp('legendset_cb').getValue();
                     var lsrw = Ext.getCmp('legendset_cb').getRawValue();
@@ -815,13 +830,14 @@ Ext.onReady( function() {
         id: 'deletelegendset_p',
         items:
         [   
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Legend set</p>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Legend set</p>' },
             legendSet2ComboBox,
             { html: '<p style="padding-bottom:11px>' },
             {
                 xtype: 'button',
                 id: 'deletelegendset_b',
                 text: 'Delete',
+				cls: 'aa_med',
                 handler: function() {
                     var ls = Ext.getCmp('legendset2_cb').getValue();
                     var lsrw = Ext.getCmp('legendset2_cb').getRawValue();
@@ -856,10 +872,10 @@ Ext.onReady( function() {
     
     var legendSetWindow = new Ext.Window({
         id: 'legendset_w',
-        title: 'Legend sets',
+        title: '<font style="' + AA_DARK + '">Legend sets</font>',
 		layout: 'fit',
         closeAction: 'hide',
-		width: multiselect_width + 35,
+		width: multiselect_width + 37,
         items:
         [
             {
@@ -875,20 +891,20 @@ Ext.onReady( function() {
                         var w = Ext.getCmp('legendset_w');
                         
                         if (tab.id == 'legendset0') { 
-                            w.setHeight(303);
+                            w.setHeight(305);
                         }
                         else if (tab.id == 'legendset1') {
-                            w.setHeight(getMultiSelectHeight() + 177);
+                            w.setHeight(getMultiSelectHeight() + 178);
                         }
                         else if (tab.id == 'legendset2') {
-                            w.setHeight(146);
+                            w.setHeight(149);
                         }
                     }
                 },
                 items:
                 [
                     {
-                        title: 'New',
+                        title: '<font style="' + AA_MED + '">New</font>',
                         id: 'legendset0',
                         items:
                         [
@@ -896,7 +912,7 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title: 'Assign to indicators',
+                        title: '<font style="' + AA_MED + '">Assign to indicators</font>',
                         id: 'legendset1',
                         items:
                         [
@@ -904,7 +920,7 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title: 'Delete',
+                        title: '<font style="' + AA_MED + '">Delete</font>',
                         id: 'legendset2',
                         items:
                         [
@@ -1072,14 +1088,14 @@ Ext.onReady( function() {
 			singleSelect: true
 		}),
         columns: [
-            {header: 'Title', dataIndex: 'title', sortable: true},
-            {header: 'Name', dataIndex: 'name', sortable: true},
-            {header: 'Queryable', dataIndex: 'queryable', sortable: true, width: 70},
+            {header: 'Title', dataIndex: 'title', sortable: true, width: 180},
+            {header: 'Name', dataIndex: 'name', sortable: true, width: 180},
+            {header: 'Queryable', dataIndex: 'queryable', sortable: true, width: 100},
             {header: 'Description', id: 'description_c', dataIndex: 'abstract'}
         ],
         autoExpandColumn: 'description_c',
-        width: screen.width * 0.4,
-        height: screen.height * 0.4,
+        width: 700,
+        height: screen.height * 0.6,
 		store: wmsMapStore,
         listeners: {
             'rowdblclick': mapPreview
@@ -1091,7 +1107,7 @@ Ext.onReady( function() {
         var layer = record.get('layer').clone();
         
         var wmsPreviewWindow = new Ext.Window({
-            title: 'Preview: ' + record.get('title'),
+            title: '<font style="' + AA_DARK + '">Preview: ' + record.get("title") + '</font>',
             width: screen.width * 0.5,
             height: screen.height * 0.5,
             layout: 'fit',
@@ -1106,7 +1122,7 @@ Ext.onReady( function() {
 	
 	var wmsWindow = new Ext.Window({
 		id: 'wms_w',
-		title: 'Geoserver shapefiles',
+		title: '<font style="' + AA_DARK + '">Geoserver shapefiles</font>',
 		closeAction: 'hide',
 		width: wmsGrid.width,
 		height: wmsGrid.height,
@@ -1127,6 +1143,7 @@ Ext.onReady( function() {
 					xtype: 'button',
 					id: 'selectwms_b',
 					text: 'Select',
+					cls: 'aa_med',
 					handler: function() {
 						var name = Ext.getCmp('wms_g').getSelectionModel().getSelected().get('name');
 						mapLayerPathWMSTextField.setValue(name);
@@ -1333,6 +1350,7 @@ Ext.onReady( function() {
     var newMapButton = new Ext.Button({
         id: 'newmap_b',
         text: 'Register new map',
+		cls: 'aa_med',
         handler: function()
         {
             /*var nm = Ext.getCmp('newmap_cb').getValue();
@@ -1449,6 +1467,7 @@ Ext.onReady( function() {
     var editMapButton = new Ext.Button({
         id: 'editmap_b',
         text: 'Save changes',
+		cls: 'aa_med',
         handler: function() {
             var en = Ext.getCmp('editname_tf').getValue();
             var em = Ext.getCmp('editmap_cb').getValue();
@@ -1500,6 +1519,7 @@ Ext.onReady( function() {
     var deleteMapButton = new Ext.Button({
         id: 'deletemap_b',
         text: 'Delete map',
+		cls: 'aa_med',
         handler: function() {
             var mlp = Ext.getCmp('deletemap_cb').getValue();
             var mn = Ext.getCmp('deletemap_cb').getRawValue();
@@ -1692,38 +1712,38 @@ Ext.onReady( function() {
             /*{ html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map type</p>' }, typeComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Organisation unit level</p>' }, newMapComboBox, { html: '<br>' },
             { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Organisation unit</p>' }, multi, { html: '<br>' },*/
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' }, newNameTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Organisation unit level</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
-			{ html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map source file</p>' }, mapLayerPathComboBox, mapLayerPathWMSTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Name column</p>' }, newNameColumnComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Longitude (x)</p>' }, newLongitudeComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Latitude (y)</p>' }, newLatitudeComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Zoom</p>' }, newZoomComboBox
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Display name</p>' }, newNameTextField, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Organisation unit level</p>' }, organisationUnitLevelComboBox, { html: '<br>' },
+			{ html: '<p style="' + LABEL + AA_LIGHT + '">Map source file</p>' }, mapLayerPathComboBox, mapLayerPathWMSTextField, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Name column</p>' }, newNameColumnComboBox, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Longitude (x)</p>' }, newLongitudeComboBox, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Latitude (y)</p>' }, newLatitudeComboBox, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Zoom</p>' }, newZoomComboBox
         ]
     });
     
     var editMapPanel = new Ext.Panel({
         id: 'editmap_p',
         items: [
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map</p>' }, editMapComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' }, editNameTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Name column</p>' }, editNameColumnComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Longitude</p>' }, editLongitudeComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Latitude</p>' }, editLatitudeComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Zoom</p>' }, editZoomComboBox
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Map</p>' }, editMapComboBox, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Display name</p>' }, editNameTextField, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Name column</p>' }, editNameColumnComboBox, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Longitude</p>' }, editLongitudeComboBox, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Latitude</p>' }, editLatitudeComboBox, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Zoom</p>' }, editZoomComboBox
         ]
     });
     
     var deleteMapPanel = new Ext.Panel({
         id: 'deletemap_p',
         items: [
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map</p>' }, deleteMapComboBox
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Map</p>' }, deleteMapComboBox
         ]
     });
 
     shapefilePanel = new Ext.Panel({
         id: 'shapefile_p',
-        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Register maps</font>',
+        title: '<font style="' + AA_DARK + '">Register maps</font>',
         items:
         [
             {
@@ -1763,7 +1783,7 @@ Ext.onReady( function() {
                 items:
                 [
                     {
-                        title:'New',
+                        title: '<font style="' + AA_MED + '">New</font>',
                         id: 'map0',
                         items:
                         [
@@ -1771,7 +1791,7 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title:'Edit',
+                        title: '<font style="' + AA_MED + '">Edit</font>',
                         id: 'map1',
                         items:
                         [
@@ -1779,7 +1799,7 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title:'Delete',
+                        title: '<font style="' + AA_MED + '">Delete</font>',
                         id: 'map2',
                         items:
                         [
@@ -1843,14 +1863,14 @@ Ext.onReady( function() {
 			singleSelect:true
 		}),
         columns: [
-            {header: 'Title', dataIndex: 'title', sortable: true},
-            {header: 'Name', dataIndex: 'name', sortable: true},
-            {header: 'Queryable', dataIndex: 'queryable', sortable: true, width: 70},
+            {header: 'Title', dataIndex: 'title', sortable: true, width: 180},
+            {header: 'Name', dataIndex: 'name', sortable: true, width: 180},
+            {header: 'Queryable', dataIndex: 'queryable', sortable: true, width: 100},
             {header: 'Description', id: 'description', dataIndex: 'abstract'}
         ],
         autoExpandColumn: 'description',
-        width: screen.width * 0.4,
-        height: screen.height * 0.4,
+        width: 700,
+        height: screen.height * 0.6,
         store: wmsOverlayStore,
         listeners: {
             'rowdblclick': mapOverlayPreview
@@ -1862,7 +1882,7 @@ Ext.onReady( function() {
         var layer = record.get('layer').clone();
         
         var wmsOverlayPreviewWindow = new Ext.Window({
-            title: 'Preview: ' + record.get('title'),
+            title: '<font style="' + AA_DARK + '">Preview: ' + record.get("title") + '</font>',
             width: screen.width * 0.4,
             height: screen.height * 0.4,
             layout: 'fit',
@@ -1877,7 +1897,7 @@ Ext.onReady( function() {
 	
 	var wmsOverlayWindow = new Ext.Window({
 		id: 'wmsoverlay_w',
-		title: 'Geoserver shapefiles',
+		title: '<font style="' + AA_DARK + '">Geoserver shapefiles</font>',
 		closeAction: 'hide',
 		width: wmsOverlayGrid.width,
 		height: wmsOverlayGrid.height,
@@ -1999,6 +2019,7 @@ Ext.onReady( function() {
     var newMapLayerButton = new Ext.Button({
         id: 'newmaplayer_b',
         text: 'Register new overlay',
+		cls: 'aa_med',
         handler: function() {
             var mln = Ext.getCmp('maplayername_tf').getRawValue();
             var mlfc = Ext.getCmp('maplayerfillcolor_cf').getValue();
@@ -2068,6 +2089,7 @@ Ext.onReady( function() {
     var deleteMapLayerButton = new Ext.Button({
         id: 'deletemaplayer_b',
         text: 'Delete overlay',
+		cls: 'aa_med',
         handler: function() {
             var ml = Ext.getCmp('maplayer_cb').getValue();
             var mln = Ext.getCmp('maplayer_cb').getRawValue();
@@ -2100,12 +2122,12 @@ Ext.onReady( function() {
         id: 'newmaplayer_p',
         items:
         [
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Display name</p>' }, mapLayerNameTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Map source file</p>' }, mapLayerMapSourceFileComboBox, mapLayerPathWMSOverlayTextField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Fill color</p>' }, mapLayerFillColorColorField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Fill opacity</p>' }, mapLayerFillOpacityComboBox, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Stroke color</p>' }, mapLayerStrokeColorColorField, { html: '<br>' },
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Stroke width</p>' }, mapLayerStrokeWidthComboBox, { html: '<br>' }
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Display name</p>' }, mapLayerNameTextField, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Map source file</p>' }, mapLayerMapSourceFileComboBox, mapLayerPathWMSOverlayTextField, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Fill color</p>' }, mapLayerFillColorColorField, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Fill opacity</p>' }, mapLayerFillOpacityComboBox, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Stroke color</p>' }, mapLayerStrokeColorColorField, { html: '<br>' },
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Stroke width</p>' }, mapLayerStrokeWidthComboBox, { html: '<br>' }
         ]
     });
     
@@ -2113,13 +2135,13 @@ Ext.onReady( function() {
         id: 'deletemaplayer_p',
         items:
         [
-            { html: '<p style="padding-bottom:4px; color:' + MENU_TEXTCOLOR + ';">&nbsp;Overlay</p>' }, mapLayerComboBox
+            { html: '<p style="' + LABEL + AA_LIGHT + '">Overlay</p>' }, mapLayerComboBox
         ]
     });
     
     var mapLayerPanel = new Ext.Panel({
         id: 'maplayer_p',
-        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Register overlays</font>',
+        title: '<font style="' + AA_DARK + '">Register overlays</font>',
         items:
         [
             {
@@ -2147,7 +2169,7 @@ Ext.onReady( function() {
                 items:
                 [
                     {
-                        title:'New',
+                        title: '<font style="' + AA_MED + '">New</font>',
                         id: 'maplayer0',
                         items:
                         [
@@ -2155,7 +2177,7 @@ Ext.onReady( function() {
                         ]
                     },
                     {
-                        title:'Delete',
+                        title: '<font style="' + AA_MED + '">Delete</font>',
                         id: 'maplayer1',
                         items:
                         [
@@ -2190,14 +2212,14 @@ Ext.onReady( function() {
     /* ADMIN PANEL */
     var adminPanel = new Ext.form.FormPanel({
         id: 'admin_p',
-        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_ADMIN + ';">Administrator</font>',
+        title: '<font style="' + AA_DARK + '">Administrator</font>',
         items:
         [
 			{ html: '<p style="height:5px;">' },
 			{
 				xtype:'fieldset',
 				columnWidth: 0.5,
-				title: 'Map source',
+				title: '&nbsp;<font style="' + AA_MED + '">Map source</font>&nbsp;',
 				collapsible: true,
 				animCollapse: true,
 				autoHeight:true,
@@ -2205,7 +2227,8 @@ Ext.onReady( function() {
 				[
 					{
 						xtype: 'combo',
-						id: 'mapsource_cb',				
+						id: 'mapsource_cb',
+						labelStyle: AA_LIGHT,
 						fieldLabel: 'Map source',
 						labelSeparator: MENU_LABELSEPARATOR,
 						editable: false,
@@ -2295,6 +2318,7 @@ Ext.onReady( function() {
 					{
 						xtype: 'checkbox',
 						id: 'register_chb',
+						labelStyle: AA_LIGHT,
 						fieldLabel: 'Admin panels',
 						labelSeparator: MENU_LABELSEPARATOR,
 						isFormField: true,
@@ -2323,7 +2347,7 @@ Ext.onReady( function() {
 			{
 				xtype:'fieldset',
 				columnWidth: 0.5,
-				title: 'Base coordinate',
+				title: '&nbsp;<font style="' + AA_MED + '">Base coordinate</font>&nbsp;',
 				collapsible: true,
 				animCollapse: true,
 				autoHeight:true,
@@ -2332,7 +2356,8 @@ Ext.onReady( function() {
 					{
 						xtype: 'combo',
 						id: 'baselongitude_cb',
-						fieldLabel: 'Base longitude (x)',
+						labelStyle: AA_LIGHT,
+						fieldLabel: 'Longitude (x)',
 						valueField: 'longitude',
 						displayField: 'longitude',
 						editable: true,
@@ -2348,7 +2373,8 @@ Ext.onReady( function() {
 					{
 						xtype: 'combo',
 						id: 'baselatitude_cb',
-						fieldLabel: 'Base latitude (y)',
+						labelStyle: AA_LIGHT,
+						fieldLabel: 'Latitude (y)',
 						valueField: 'latitude',
 						displayField: 'latitude',
 						editable: true,
@@ -2368,6 +2394,7 @@ Ext.onReady( function() {
 						fieldLabel: '',
 						labelSeparator: '',
 						text: 'Save coordinate',
+						cls: 'aa_med',
 						handler: function() {
 							var blo = Ext.getCmp('baselongitude_cb').getRawValue();
 							var bla = Ext.getCmp('baselatitude_cb').getRawValue();
@@ -2500,7 +2527,7 @@ Ext.onReady( function() {
     }];       
     
     var layerTree = new Ext.tree.TreePanel({
-        title: 'Map layers',
+        title: '<font style="' + AA_DARK + '">Map layers</font>',
         enableDD: true,
         bodyStyle: 'padding-bottom:5px;',
         rootVisible: false,
@@ -2515,7 +2542,7 @@ Ext.onReady( function() {
         id: 'choropleth',
         map: MAP,
         layer: choroplethLayer,
-		title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Thematic map </font>',
+		title: '<font style="' + AA_DARK + '">Thematic map</div>',
         url: 'init',
         featureSelection: false,
         legendDiv: 'choroplethLegend',
@@ -2536,7 +2563,7 @@ Ext.onReady( function() {
         id: 'mapping',
         map: MAP,
         layer: choroplethLayer,
-        title: '<font style="font-family:tahoma; font-weight:normal; font-size:11px; color:' + MENU_TITLECOLOR_LIGHT + ';">Assign organisation units to map</font>',
+        title: '<font style="' + AA_DARK + '">Assign organisation units to map</font>',
         url: 'init',
         featureSelection: false,
         legendDiv: 'choroplethLegend',
@@ -2557,7 +2584,12 @@ Ext.onReady( function() {
     shapefilePanel.hide();
     mapLayerPanel.hide();
 	
-	/* TOOLBAR */    
+	/* TOOLBAR */  
+	var mapLabel = new Ext.form.Label({
+		text: 'Map',
+		style: AA_DARK
+	});
+	
 	var zoomInButton = new Ext.Button({
 		iconCls: 'icon-zoomin',
 		tooltip: 'Zoom in',
@@ -2587,6 +2619,7 @@ Ext.onReady( function() {
 	
 	var favoritesButton = new Ext.Button({
 		cls: 'x-btn-text-icon',
+		ctCls: 'aa_med',
 		icon: '../../images/favorite_star2.png',
 		text: 'Favorites',
 		tooltip: 'Favorite map views',
@@ -2608,6 +2641,7 @@ Ext.onReady( function() {
     
     var legendSetButton = new Ext.Button({
 		cls: 'x-btn-text-icon',
+		ctCls: 'aa_med',
 		icon: '../../images/color_swatch.png',
 		text: 'Legend sets',
 		tooltip: 'Assign legend sets to indicators',
@@ -2630,6 +2664,7 @@ Ext.onReady( function() {
 	var exitButton = new Ext.Button({
 		text: 'Exit GIS',
 		cls: 'x-btn-text-icon',
+		ctCls: 'aa_med',
 		icon: '../../images/exit.png',
 		tooltip: 'Return to DHIS 2 Dashboard',
 		handler: function() {
@@ -2640,6 +2675,9 @@ Ext.onReady( function() {
 	var mapToolbar = new Ext.Toolbar({
 		id: 'map_tb',
 		items: [
+			' ',' ',' ',
+			mapLabel,
+			' ',' ',' ',' ',
 			zoomInButton,
 			zoomOutButton,
             ' ',
@@ -2682,18 +2720,18 @@ Ext.onReady( function() {
                 [
                     layerTree,
                     {
-                        title: 'Overview',
+                        title: '<font style="' + AA_DARK + '">Overview map</font>',
                         html:'<div id="overviewmap" style="height:97px; padding-top:2px;"></div>'
                     },
                     {
-                        title: 'Cursor position',
+                        title: '<font style="' + AA_DARK + '">Cursor position</font>',
                         height: 65,
                         contentEl: 'position',
                         anchor: '100%',
                         bodyStyle: 'padding-left: 4px;'
                     },
                     {
-                        title: 'Map legend',
+                        title: '<font style="' + AA_DARK + '">Map legend</font>',
                         minHeight: 65,
                         autoHeight: true,
                         contentEl: 'legend',
@@ -2719,11 +2757,10 @@ Ext.onReady( function() {
                 },
                 items: [
                     choropleth,
-                    // legendsetPanel,
                     shapefilePanel,
                     mapping,
                     mapLayerPanel,
-                    adminPanel
+					adminPanel
                 ]
             },
             {
@@ -2796,19 +2833,13 @@ function onHoverSelectChoropleth(feature) {
     var east_panel = Ext.getCmp('east');
     var x = east_panel.x - 210;
     var y = east_panel.y + 41;
-    style = '<p style="margin-top: 5px; padding-left:5px;">';
-    space = '&nbsp;&nbsp;';
-    bs = '<b>';
-    be = '</b>';
-    lf = '<br>';
-    pe = '</p>';
     
     if (MAPDATA != null) {
         if (ACTIVEPANEL == 'choropleth') {
             popup_feature = new Ext.Window({
-                title: 'Organisation unit',
+                title: '<font style="' + AA_DARK + '">Organisation unit</font>',
                 width: 190,
-                height: 88,// + 60,
+                height: 90,// + 60,
                 layout: 'fit',
                 plain: true,
                 bodyStyle: 'padding:5px',
@@ -2816,8 +2847,8 @@ function onHoverSelectChoropleth(feature) {
                 y: y
             });    
 
-            var html = '<p style="margin-top: 5px; padding-left:5px; padding-bottom:3px;">' + feature.attributes[MAPDATA.nameColumn] + pe;
-            html += style + bs + 'Value' + be + ':' + space + feature.attributes.value + pe;
+            var html = '<p style="margin-top: 5px; padding-left:5px; padding-bottom:3px; ' + AA_MED + '">' + feature.attributes[MAPDATA.nameColumn] + '</p>';
+            html += '<p style="margin-top: 4px; padding-left:5px; ' + AA_LIGHT + '"><b>Value</b>:&nbsp;&nbsp;<font style="font-family:tahoma; font-size:11px; font-weight:normal; letter-spacing:0px; color:#000;">' + feature.attributes.value + '</font></p>';
 			// html += style + bs + 'Factor' + be + space + feature.attributes.factor.toFixed(1) + pe;
 			// html += style + bs + 'Numerator' + be + space + feature.attributes.numeratorValue.toFixed(1) + pe;
 			// html += style + bs + 'Denominator' + be + space + feature.attributes.denominatorValue.toFixed(1) + pe;
@@ -2827,9 +2858,9 @@ function onHoverSelectChoropleth(feature) {
         }
         else if (ACTIVEPANEL == 'mapping') {
             popup_feature = new Ext.Window({
-                title: 'Organisation unit',
+                title: '<font style="' + AA_DARK + '">Organisation unit</font>',
                 width: 190,
-                height: 84,
+                height: 71,
                 layout: 'fit',
                 plain: true,
                 bodyStyle: 'padding:5px',
@@ -2837,7 +2868,7 @@ function onHoverSelectChoropleth(feature) {
                 y: y
             });    
 
-            var html = style + feature.attributes[MAPDATA.nameColumn] + pe;
+            var html = '<p style="margin-top: 5px; padding-left:5px; padding-bottom:3px; ' + AA_MED + '">' + feature.attributes[MAPDATA.nameColumn] + '</p>';
             
             popup_feature.html = html;
             popup_feature.show();
@@ -3088,7 +3119,7 @@ function dataReceivedAssignOrganisationUnit( responseText ) {
     var colorA = new mapfish.ColorRgb();
     colorA.setFromHex('#FFFFFF');
     var colorB = new mapfish.ColorRgb();
-    colorB.setFromHex('#72FF63');
+    colorB.setFromHex('#b1ffa1');
     options.colors = [colorA, colorB]; 
     
     mapping.coreComp.updateOptions(options);
