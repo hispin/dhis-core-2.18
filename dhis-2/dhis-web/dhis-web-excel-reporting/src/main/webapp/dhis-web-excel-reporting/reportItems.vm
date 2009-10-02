@@ -276,7 +276,7 @@
 	function openExpressionBuild() {		
 		var itemTypeValue = $("#itemType").val();
 		var reportType = '$!reportExcel.getReportType()';
-		if(reportType=='CATEGORY'){
+		if($!reportExcel.isCategory()){
 			if(itemTypeValue=='dataelement'){
 				openCategoryExpression();
 			}else{

@@ -8,12 +8,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.export.action.SelectionManager"
 		scope="singleton">
 	</bean>
-	
+
 	<!-- Report Location Manager -->
 
-	<bean id="org.hisp.dhis.reportexcel.ReportLocationManager" class="org.hisp.dhis.reportexcel.DefaultReportLocationManager" 
-	    init-method="init">
-        <property name="locationManager" ref="org.hisp.dhis.external.location.LocationManager" />
+	<bean id="org.hisp.dhis.reportexcel.ReportLocationManager" class="org.hisp.dhis.reportexcel.DefaultReportLocationManager"
+		init-method="init">
+		<property name="locationManager"
+			ref="org.hisp.dhis.external.location.LocationManager" />
 		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 
@@ -305,10 +306,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
-		<!-- <property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" /> -->
-	</bean> 
-	
+	</bean>
+
 	<bean id="org.hisp.dhis.reportexcel.importing.action.ViewDataAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ViewDataAction"
 		scope="prototype">
@@ -566,7 +565,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
-
 	
 	<!-- Preview Beans -->
 	<bean 
@@ -712,5 +710,109 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
+	
+	<!--  GERERATE ADVANCE -->
+
+    <bean
+        id="org.hisp.dhis.reportexcel.export.advance.action.GetOrganisationUnitGroupListAction"
+        class="org.hisp.dhis.reportexcel.export.advance.action.GetOrganisationUnitGroupListAction"
+        scope="prototype">
+        <property name="organisationUnitGroupService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+        </property>
+    </bean>
+
+    <bean
+        id="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelNormalAction"
+        class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelNormalAction"
+        scope="prototype">
+        <property name="selectionManager"
+            ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+        <property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitSelectionManager"
+            ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+        <property name="reportLocationManager"
+            ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+        <property name="dataElementCategoryOptionComboService"
+            ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+        <property name="statementManager" ref="statementManager" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelOrganisationGroupListingAction"
+        class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelOrganisationGroupListingAction"
+        scope="prototype">
+        <property name="organisationUnitGroupService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+        <property name="selectionManager"
+            ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+        <property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitSelectionManager"
+            ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+        <property name="reportLocationManager"
+            ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+        <property name="dataElementCategoryOptionComboService"
+            ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+        <property name="statementManager" ref="statementManager" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+
+    </bean>
+    
+     <bean
+        id="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelPeriodColumnListingAction"
+        class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelPeriodColumnListingAction"
+        scope="prototype">
+        <property name="organisationUnitGroupService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+        <property name="selectionManager"
+            ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+        <property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitSelectionManager"
+            ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+        <property name="reportLocationManager"
+            ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+        <property name="dataElementCategoryOptionComboService"
+            ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+        <property name="statementManager" ref="statementManager" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+
+    </bean>
+    
+    <bean
+        id="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelCategoryAction"
+        class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelCategoryAction"
+        scope="prototype">
+         <property name="organisationUnitGroupService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+        <property name="selectionManager"
+            ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+        <property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitSelectionManager"
+            ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+        <property name="reportLocationManager"
+            ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+        <property name="dataElementCategoryOptionComboService"
+            ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+        <property name="statementManager" ref="statementManager" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+    </bean>
 
 </beans>

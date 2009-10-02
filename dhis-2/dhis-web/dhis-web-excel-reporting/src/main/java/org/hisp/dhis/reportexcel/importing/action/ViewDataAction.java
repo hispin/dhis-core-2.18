@@ -29,18 +29,17 @@ package org.hisp.dhis.reportexcel.importing.action;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import jxl.Sheet;
 import jxl.Workbook;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
+import org.hisp.dhis.reportexcel.comparator.ReportExcelItemNameComparator;
 import org.hisp.dhis.reportexcel.importing.ReportExcelItemValue;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
@@ -113,7 +112,10 @@ public class ViewDataAction
             Sheet sheet = templateWorkbook.getSheet( 0 );
 
             ReportExcel report = reportExcelService.getReportExcel( reportId );
-            Collection<ReportExcelItem> reportItems = report.getReportExcelItems();
+            
+            ArrayList<ReportExcelItem> reportItems = new ArrayList<ReportExcelItem>( report.getReportExcelItems() );
+
+            Collections.sort( reportItems, new ReportExcelItemNameComparator() );
 
             reportItemValues = new ArrayList<ReportExcelItemValue>();
 
@@ -132,7 +134,6 @@ public class ViewDataAction
 
                     reportItemValues.add( reportItemvalue );
                 }
-
             }
 
             return SUCCESS;
