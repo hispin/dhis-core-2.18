@@ -1,4 +1,4 @@
-//  Country dependent
+﻿//  Country dependent
 
     FACILITY_LEVEL = 4;
 
@@ -44,6 +44,13 @@
 	MENU_TITLECOLOR_ADMIN = '#111';
 	MENU_EMPTYTEXT = '';
 	MENU_LABELSEPARATOR = '';
+	
+//	Styles
+
+	AA_DARK = 'font-family:myriad pro,frutiger,arial; font-weight:bold; font-size:12px; color:#111; letter-spacing:1px;';
+	AA_MED = 'font-family:myriad pro,frutiger,arial; font-weight:bold; font-size:12px; color:#444; letter-spacing:1px;';
+	AA_LIGHT = 'font-family:myriad pro,frutiger,arial; font-weight:bold; font-size:12px; color:#888; letter-spacing:1px;';
+	LABEL = 'padding-bottom:2px; padding-left:3px;';
 
 //  Ext.message
 
