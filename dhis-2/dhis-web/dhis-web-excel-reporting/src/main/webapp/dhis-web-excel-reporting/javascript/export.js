@@ -69,15 +69,16 @@ function generateReportExcel() {
 
 function generateAdvancedReportExcel() {	
 
-	var reportId = $('#report').val();
-	var periodId = $('#period').val();
-	var organisationGroupId = byId('availableOrgunitGroups').value;
-	var url =  "generateAdvancedReportExcel.action?reportId=" + reportId ;
-	url += "&periodId=" + periodId ;
-	url += "&organisationGroupId=" + organisationGroupId;
-	url += "&reportType=normal";
-	
-	window.location = url;
+	$("#loading").showAtCenter( true );	
+		$.post("generateAdvancedReportExcel.action",{
+		reportId:$('#report').val(),
+		periodId:$('#period').val(),
+		organisationGroupId:$('#availableOrgunitGroups').val()
+		},function(data){		
+			window.location = "downloadExcelOutput.action";
+			deleteDivEffect();
+			$("#loading").hide();		
+	},'xml');	
 	
 }
 

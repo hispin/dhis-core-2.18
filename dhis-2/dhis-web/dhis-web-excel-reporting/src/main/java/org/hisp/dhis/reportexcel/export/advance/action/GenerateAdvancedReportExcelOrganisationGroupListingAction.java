@@ -113,15 +113,7 @@ public class GenerateAdvancedReportExcelOrganisationGroupListingAction
 
         }
 
-        outputReportWorkbook.write();
-
-        outputReportWorkbook.close();
-
-        outputXLS = outputReportFile.getName();
-
-        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
-
-        outputReportFile.delete();
+        this.complete();
 
         statementManager.destroy();
 
