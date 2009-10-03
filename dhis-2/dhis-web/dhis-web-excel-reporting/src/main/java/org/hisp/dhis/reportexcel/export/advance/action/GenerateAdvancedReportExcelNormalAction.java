@@ -27,8 +27,6 @@ package org.hisp.dhis.reportexcel.export.advance.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
@@ -82,10 +80,9 @@ public class GenerateAdvancedReportExcelNormalAction
     // Action implementation
     // ---------------------------------------------------------------------
 
-    public String execute()
+    public String execute()throws Exception
     {
-        try
-        {
+        
             Period period = selectionManager.getSelectedPeriod();
 
             this.installExcelFormat();
@@ -93,7 +90,7 @@ public class GenerateAdvancedReportExcelNormalAction
             this.installPeriod( period );
 
             OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
-                .getOrganisationUnitGroup( organisationGroupId.intValue() );
+                .getOrganisationUnitGroup( organisationGroupId );
 
             Set<OrganisationUnit> organisationList = organisationUnitGroup.getMembers();
 
@@ -127,25 +124,14 @@ public class GenerateAdvancedReportExcelNormalAction
 
             }
 
-            outputReportWorkbook.write();
-
-            outputReportWorkbook.close();
-
-            outputXLS = outputReportFile.getName();
-
-            inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
-
-            outputReportFile.delete();
+            this.complete();
 
             statementManager.destroy();
 
             return SUCCESS;
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
-        return ERROR;
+    
+      
+       
     }
 
 }

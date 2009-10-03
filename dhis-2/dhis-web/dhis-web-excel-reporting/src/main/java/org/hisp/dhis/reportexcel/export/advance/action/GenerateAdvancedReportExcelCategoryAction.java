@@ -24,7 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.export.action;
+package org.hisp.dhis.reportexcel.export.advance.action;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -112,15 +112,7 @@ public class GenerateAdvancedReportExcelCategoryAction
 
         }
 
-        outputReportWorkbook.write();
-
-        outputReportWorkbook.close();
-
-        outputXLS = outputReportFile.getName();
-
-        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
-
-        outputReportFile.delete();
+        this.complete();
 
         statementManager.destroy();
 
