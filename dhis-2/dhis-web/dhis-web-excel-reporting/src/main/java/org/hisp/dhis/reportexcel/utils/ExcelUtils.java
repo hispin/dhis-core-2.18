@@ -69,7 +69,7 @@ public class ExcelUtils
         {
             if ( type.equalsIgnoreCase( TEXT ) )
             {
-                sheet.addCell( new Label( column - 1, row - 1, value==null?"":value , format ) );
+                sheet.addCell( new Label( column - 1, row - 1, value == null ? "" : value, format ) );
             }
             if ( type.equalsIgnoreCase( NUMBER ) )
             {
@@ -129,15 +129,20 @@ public class ExcelUtils
         return cell.getContents();
     }
 
-	/* POI methods */
+    /* POI methods */
     public static void writeValueByPOI( int row, int column, String value, String type, HSSFSheet sheet,
         HSSFCellStyle cellStyle )
     {
         if ( row > 0 && column > 0 )
         {
             HSSFRow rowPOI = sheet.getRow( row - 1 );
-            HSSFCell cellPOI = rowPOI.createCell( column - 1 );
 
+            if ( rowPOI == null )
+            {
+                rowPOI = sheet.createRow( row - 1 );
+            }
+
+            HSSFCell cellPOI = rowPOI.createCell( column - 1 );
             cellPOI.setCellStyle( cellStyle );
 
             if ( type.equalsIgnoreCase( ExcelUtils.TEXT ) )
@@ -151,7 +156,6 @@ public class ExcelUtils
                 if ( v != 0 )
                 {
                     cellPOI.setCellValue( new HSSFRichTextString( value ) );
-
                 }
                 else
                 {
@@ -171,13 +175,17 @@ public class ExcelUtils
         if ( row > 0 && column > 0 )
         {
             HSSFRow rowPOI = sheet.getRow( row - 1 );
-            HSSFCell cellPOI = rowPOI.createCell( column - 1 );
 
+            if ( rowPOI == null )
+            {
+                rowPOI = sheet.createRow( row - 1 );
+            }
+
+            HSSFCell cellPOI = rowPOI.createCell( column - 1 );
             cellPOI.setCellStyle( cellStyle );
             cellPOI.setCellFormula( formula );
         }
     }
-	
 
     public static int convertExcelColumnNameToNumber( String columnName )
     {
