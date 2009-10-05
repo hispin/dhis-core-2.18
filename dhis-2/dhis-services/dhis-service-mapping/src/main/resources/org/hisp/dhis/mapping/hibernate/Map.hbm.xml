@@ -11,9 +11,9 @@
 			<generator class="native"/>
 		</id>
 			
-		<property name="name" column="name" unique="true"/>
+		<property name="name" column="name"/>
 	
-		<property name="mapLayerPath" column="maplayerpath"/>
+		<property name="mapLayerPath" column="maplayerpath" unique="true"/>
 		
 		<property name="type" column="type"/>
 		
