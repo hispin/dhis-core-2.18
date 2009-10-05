@@ -1918,6 +1918,7 @@ Ext.onReady( function() {
 					xtype: 'button',
 					id: 'selectwmsoverlay_b',
 					text: 'Select',
+					cls: 'aa_med',
 					handler: function() {
 						var name = Ext.getCmp('wmsoverlay_g').getSelectionModel().getSelected().get('name');
 						mapLayerPathWMSOverlayTextField.setValue(name);
@@ -2044,45 +2045,59 @@ Ext.onReady( function() {
                 return;
             }
 			
-			var ms = MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON ? mlmsf : mlwmso;
-            
-            Ext.Ajax.request({
-                url: path + 'addOrUpdateMapLayer' + type,
-                method: 'POST',
-                params: { name: mln, type: 'overlay', mapSource: ms, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw },
-
-                success: function( responseObject ) {
-                    Ext.messageBlack.msg('New overlay', 'The overlay ' + msg_highlight_start + mln + msg_highlight_end + ' was registered.');
-                    Ext.getCmp('maplayer_cb').getStore().reload();
-                },
-                failure: function() {
-                    alert( 'Status', 'Error while saving data' );
-                }
-            });
+			Ext.Ajax.request({
+                url: path + 'getAllMapLayers' + type,
+                method: 'GET',
+                success: function(r) {
+					var mapLayers = Ext.util.JSON.decode(r.responseText).mapLayers;
+					
+					for (i in mapLayers) {
+						if (mapLayers[i].name == mln) {
+							Ext.messageRed.msg('New overlay', 'The name ' + msg_highlight_start + mln + msg_highlight_end + ' is already in use.');
+							return;
+						}
+					}
 			
-			var mapurl = MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON ? path + 'getGeoJson.action?name=' + mlmsf : path_geoserver + wfs + mlwmso + output;
-            
-            MAP.addLayer(
-                new OpenLayers.Layer.Vector(mln, {
-                    'visibility': false,
-                    'styleMap': new OpenLayers.StyleMap({
-                        'default': new OpenLayers.Style(
-                            OpenLayers.Util.applyDefaults(
-                                {'fillColor': mlfc, 'fillOpacity': mlfo, 'strokeColor': mlsc, 'strokeWidth': mlsw},
-                                OpenLayers.Feature.Vector.style['default']
-                            )
-                        )
-                    }),
-                    'strategies': [new OpenLayers.Strategy.Fixed()],
-                    'protocol': new OpenLayers.Protocol.HTTP({
-                        'url': mapurl,
-                        'format': new OpenLayers.Format.GeoJSON()
-                    })
-                })
-            );
-            
-            Ext.getCmp('maplayername_tf').reset();
-            Ext.getCmp('maplayermapsourcefile_cb').reset();
+					var ms = MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON ? mlmsf : mlwmso;
+					
+					Ext.Ajax.request({
+						url: path + 'addOrUpdateMapLayer' + type,
+						method: 'POST',
+						params: { name: mln, type: 'overlay', mapSource: ms, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw },
+						success: function( responseObject ) {
+							Ext.messageBlack.msg('New overlay', 'The overlay ' + msg_highlight_start + mln + msg_highlight_end + ' was registered.');
+							Ext.getCmp('maplayer_cb').getStore().reload();
+					
+							var mapurl = MAPSOURCE == MAP_SOURCE_TYPE_GEOJSON ? path + 'getGeoJson.action?name=' + mlmsf : path_geoserver + wfs + mlwmso + output;
+							
+							MAP.addLayer(
+								new OpenLayers.Layer.Vector(mln, {
+									'visibility': false,
+									'styleMap': new OpenLayers.StyleMap({
+										'default': new OpenLayers.Style(
+											OpenLayers.Util.applyDefaults(
+												{'fillColor': mlfc, 'fillOpacity': mlfo, 'strokeColor': mlsc, 'strokeWidth': mlsw},
+												OpenLayers.Feature.Vector.style['default']
+											)
+										)
+									}),
+									'strategies': [new OpenLayers.Strategy.Fixed()],
+									'protocol': new OpenLayers.Protocol.HTTP({
+										'url': mapurl,
+										'format': new OpenLayers.Format.GeoJSON()
+									})
+								})
+							);
+							
+							Ext.getCmp('maplayername_tf').reset();
+							Ext.getCmp('maplayermapsourcefile_cb').reset();
+							Ext.getCmp('maplayerpathwmsoverlay_tf').reset();
+						},
+						failure: function() {}
+					});
+				},
+				failure: function() {}
+			});
         }
     });
     

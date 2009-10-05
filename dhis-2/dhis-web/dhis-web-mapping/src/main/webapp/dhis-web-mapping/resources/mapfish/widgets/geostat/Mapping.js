@@ -144,8 +144,6 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
      
     newUrl : false,
     
-    organisationUnits: [],
-    
     /**
      * Method: initComponent
      *    Inits the component
