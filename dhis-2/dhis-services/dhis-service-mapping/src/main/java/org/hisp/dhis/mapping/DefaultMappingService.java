@@ -408,9 +408,11 @@ public class DefaultMappingService
         return mappingStore.getMapOrganisationUnitRelation( map, organisationUnit );
     }
     
-    public MapOrganisationUnitRelation getMapOrganisationUnitRelationByFeatureId( String featureId )
+    public MapOrganisationUnitRelation getMapOrganisationUnitRelationByFeatureId( String featureId, String mapLayerPath )
     {   
-        Collection<MapOrganisationUnitRelation> relations = mappingStore.getAllMapOrganisationUnitRelations();
+        Map map = mappingStore.getMapByMapLayerPath( mapLayerPath );
+        
+        Collection<MapOrganisationUnitRelation> relations = mappingStore.getMapOrganisationUnitRelationsByMap( map );
         
         for ( MapOrganisationUnitRelation relation : relations )
         {

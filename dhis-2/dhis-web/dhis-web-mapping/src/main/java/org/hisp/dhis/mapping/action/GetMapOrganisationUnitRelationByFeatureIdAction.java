@@ -30,6 +30,13 @@ public class GetMapOrganisationUnitRelationByFeatureIdAction
         this.featureId = featureId;
     }
     
+    private String mapLayerPath;
+
+    public void setMapLayerPath( String mapLayerPath )
+    {
+        this.mapLayerPath = mapLayerPath;
+    }
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -48,7 +55,7 @@ public class GetMapOrganisationUnitRelationByFeatureIdAction
     public String execute()
         throws Exception
     {
-        object = mappingService.getMapOrganisationUnitRelationByFeatureId( featureId );
+        object = mappingService.getMapOrganisationUnitRelationByFeatureId( featureId, mapLayerPath );
         
         return SUCCESS;
     }

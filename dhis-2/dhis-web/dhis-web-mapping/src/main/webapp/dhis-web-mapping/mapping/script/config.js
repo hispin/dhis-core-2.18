@@ -51,6 +51,9 @@
 	AA_MED = 'font-family:myriad pro,frutiger,arial; font-weight:bold; font-size:12px; color:#444; letter-spacing:1px;';
 	AA_LIGHT = 'font-family:myriad pro,frutiger,arial; font-weight:bold; font-size:12px; color:#888; letter-spacing:1px;';
 	LABEL = 'padding-bottom:2px; padding-left:3px;';
+	
+	ASSIGNED_ROW_COLOR = '#b1ffa1';
+	UNASSIGNED_ROW_COLOR = '#ffffff';
 
 //  Ext.message
 
