@@ -5,7 +5,7 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
   <bean id="org.hisp.dhis.options.sortorder.SortOrderManager"
-	class="org.hisp.dhis.options.sortorder.DefaultSortOrderManager">
+	class="org.hisp.dhis.options.sortorder.DefaultSortOrderManager" init-method="init">
 	<property name="userSettingService"
       ref="org.hisp.dhis.user.UserSettingService"/>
   </bean>
