@@ -29,7 +29,9 @@ package org.hisp.dhis.options.sortorder;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.comparator.DataElementAlternativeNameComparator;
@@ -64,10 +66,46 @@ public class DefaultSortOrderManager
 {
     private final static String SETTING_NAME_SORT_ORDER = "currentSortOrder";
 
+    private Map<String, Comparator<DataElement>> dataElementComparators;
+    private Map<String, Comparator<Indicator>> indicatorComparators;
+    private Map<String, Comparator<OrganisationUnit>> organisationUnitComparators;
+    private Map<String, Comparator<DataSet>> dataSetComparators;
+    
+    public void init()
+    {
+        dataElementComparators = new HashMap<String, Comparator<DataElement>>();        
+        dataElementComparators.put( SORT_ORDER_NAME, new DataElementNameComparator() );
+        dataElementComparators.put( SORT_ORDER_SHORTNAME, new DataElementShortNameComparator() );
+        dataElementComparators.put( SORT_ORDER_ALTERNATIVENAME, new DataElementAlternativeNameComparator() );
+        dataElementComparators.put( SORT_ORDER_CODE, new DataElementCodeComparator() );
+        dataElementComparators.put( SORT_ORDER_CUSTOM, new DataElementSortOrderComparator() );
+        
+        indicatorComparators = new HashMap<String, Comparator<Indicator>>();        
+        indicatorComparators.put( SORT_ORDER_NAME, new IndicatorNameComparator() );
+        indicatorComparators.put( SORT_ORDER_SHORTNAME, new IndicatorShortNameComparator() );
+        indicatorComparators.put( SORT_ORDER_ALTERNATIVENAME, new IndicatorAlternativeNameComparator() );
+        indicatorComparators.put( SORT_ORDER_CODE, new IndicatorCodeComparator() );
+        indicatorComparators.put( SORT_ORDER_CUSTOM, new IndicatorSortOrderComparator() );
+        
+        organisationUnitComparators = new HashMap<String, Comparator<OrganisationUnit>>();        
+        organisationUnitComparators.put( SORT_ORDER_NAME, new OrganisationUnitNameComparator() );
+        organisationUnitComparators.put( SORT_ORDER_SHORTNAME, new OrganisationUnitShortNameComparator() );
+        organisationUnitComparators.put( SORT_ORDER_ALTERNATIVENAME, new OrganisationUnitNameComparator() ); // SIC
+        organisationUnitComparators.put( SORT_ORDER_CODE, new OrganisationUnitCodeComparator() );
+        organisationUnitComparators.put( SORT_ORDER_CUSTOM, new OrganisationUnitNameComparator() ); // SIC
+        
+        dataSetComparators = new HashMap<String, Comparator<DataSet>>();        
+        dataSetComparators.put( SORT_ORDER_NAME, new DataSetNameComparator() );
+        dataSetComparators.put( SORT_ORDER_SHORTNAME, new DataSetShortNameComparator() );
+        dataSetComparators.put( SORT_ORDER_ALTERNATIVENAME, new DataSetNameComparator() ); // SIC
+        dataSetComparators.put( SORT_ORDER_CODE, new DataSetCodeComparator() );
+        dataSetComparators.put( SORT_ORDER_CUSTOM, new DataSetSortOrderComparator() );
+    }
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+    
     private UserSettingService userSettingService;
 
     public void setUserSettingService( UserSettingService userSettingService )
@@ -97,116 +135,22 @@ public class DefaultSortOrderManager
 
     public Comparator<DataElement> getCurrentDataElementSortOrderComparator()
     {
-        String sortOrder = getCurrentSortOrder();
-
-        if ( sortOrder != null )
-        {
-            if ( sortOrder.equals( SORT_ORDER_NAME ) )
-            {
-                return new DataElementNameComparator();
-            }
-            if ( sortOrder.equals( SORT_ORDER_SHORTNAME ) )
-            {
-                return new DataElementShortNameComparator();
-            }
-            if ( sortOrder.equals( SORT_ORDER_ALTERNATIVENAME ) )
-            {
-                return new DataElementAlternativeNameComparator();
-            }
-            if ( sortOrder.equals( SORT_ORDER_CODE ) )
-            {
-                return new DataElementCodeComparator();
-            }
-            if ( sortOrder.equals( SORT_ORDER_CUSTOM ) )
-            {
-                return new DataElementSortOrderComparator();
-            }
-        }
-
-        return new DataElementNameComparator();
+        return dataElementComparators.get( getCurrentSortOrder() );
     }
     
     public Comparator<Indicator> getCurrentIndicatorSortOrderComparator()
     {
-        String sortOrder = getCurrentSortOrder();
-
-        if ( sortOrder != null )
-        {
-            if ( sortOrder.equals( SORT_ORDER_NAME ) )
-            {
-                return new IndicatorNameComparator();
-            }
-            if ( sortOrder.equals( SORT_ORDER_SHORTNAME ) )
-            {
-                return new IndicatorShortNameComparator();
-            }
-            if ( sortOrder.equals( SORT_ORDER_ALTERNATIVENAME ) )
-            {
-                return new IndicatorAlternativeNameComparator();
-            }
-            if ( sortOrder.equals( SORT_ORDER_CODE ) )
-            {
-                return new IndicatorCodeComparator();
-            }
-            if ( sortOrder.equals( SORT_ORDER_CUSTOM ) )
-            {
-                return new IndicatorSortOrderComparator();
-            }
-        }
-
-        return new IndicatorNameComparator();
+        return indicatorComparators.get( getCurrentSortOrder() );
     }
     
     public Comparator<OrganisationUnit> getCurrentOrganisationUnitSortOrderComparator()
     {
-        String sortOrder = getCurrentSortOrder();
-
-        if ( sortOrder != null )
-        {
-            if ( sortOrder.equals( SORT_ORDER_NAME ) || sortOrder.equals( SORT_ORDER_ALTERNATIVENAME ) )
-            {
-                return new OrganisationUnitNameComparator();
-            }
-            if ( sortOrder.equals( SORT_ORDER_SHORTNAME ) )
-            {
-                return new OrganisationUnitShortNameComparator();
-            }
-            if ( sortOrder.equals( SORT_ORDER_CODE ) )
-            {
-                return new OrganisationUnitCodeComparator();
-            }
-            
-            // Custom sort order not implemented
-        }
-        
-        return new OrganisationUnitNameComparator();
+        return organisationUnitComparators.get( getCurrentSortOrder() );
     }
     
     public Comparator<DataSet> getCurrentDataSetSortOrderComparator()
     {
-        String sortOrder = getCurrentSortOrder();
-        
-        if ( sortOrder != null )
-        {
-            if ( sortOrder.equals( SORT_ORDER_NAME ) || sortOrder.equals( SORT_ORDER_ALTERNATIVENAME ) )
-            {
-                return new DataSetNameComparator();
-            }
-            if ( sortOrder.equals( SORT_ORDER_SHORTNAME ) )
-            {
-                return new DataSetShortNameComparator();
-            }
-            if ( sortOrder.equals( SORT_ORDER_CODE ) )
-            {
-                return new DataSetCodeComparator();
-            }
-            if ( sortOrder.equals( SORT_ORDER_CUSTOM ) )
-            {
-                return new DataSetSortOrderComparator();
-            }
-        }
-        
-        return new DataSetNameComparator();
+        return dataSetComparators.get( getCurrentSortOrder() );
     }
 
     public List<String> getSortOrders()
