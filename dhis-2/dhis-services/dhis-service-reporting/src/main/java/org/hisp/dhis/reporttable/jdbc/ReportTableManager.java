@@ -29,7 +29,7 @@ package org.hisp.dhis.reporttable.jdbc;
 
 import java.util.Map;
 
-import org.hisp.dhis.common.MetaObject;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -68,7 +68,7 @@ public interface ReportTableManager
      * @param unit the OrganisationUnit.
      * @return a Map with String as keys and Double as values.
      */
-    Map<String, Double> getAggregatedValueMap( ReportTable reportTable, MetaObject indicator, 
+    Map<String, Double> getAggregatedValueMap( ReportTable reportTable, IdentifiableObject indicator, 
         DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit );
     
     /**

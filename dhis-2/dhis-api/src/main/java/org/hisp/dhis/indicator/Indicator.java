@@ -29,7 +29,7 @@ package org.hisp.dhis.indicator;
 
 import java.io.Serializable;
 
-import org.hisp.dhis.common.MetaObject;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 
 /**
@@ -37,22 +37,9 @@ import org.hisp.dhis.datadictionary.ExtendedDataElement;
  * @version $Id: Indicator.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 public class Indicator
-    implements Serializable, MetaObject
+    extends IdentifiableObject
+    implements Serializable 
 {
-    private int id;
-    
-    private String uuid;
-
-    private String name;
-
-    private String alternativeName;
-
-    private String shortName;
-    
-    private String code;
-
-    private String description;
-    
     private Boolean annualized;
 
     private IndicatorType indicatorType;
@@ -145,75 +132,6 @@ public class Indicator
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getUuid()
-    {
-        return uuid;
-    }
-
-    public void setUuid( String uuid )
-    {
-        this.uuid = uuid;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public String getAlternativeName()
-    {
-        return alternativeName;
-    }
-
-    public void setAlternativeName( String alternativeName )
-    {
-        this.alternativeName = alternativeName;
-    }
-    
-    public String getShortName()
-    {
-        return shortName;
-    }
-
-    public void setShortName( String shortName )
-    {
-        this.shortName = shortName;
-    }
-
-    public String getCode()
-    {
-        return code;
-    }
-
-    public void setCode( String code )
-    {
-        this.code = code;
-    }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
 
     public Boolean getAnnualized()
     {

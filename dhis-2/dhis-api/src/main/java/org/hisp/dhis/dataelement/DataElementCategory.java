@@ -31,6 +31,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.common.IdentifiableObject;
+
+
 /**
  * A Category is a dimension of a data element.  DataElements can have sets 
  * of dimensions (known as CategoryCombos).  An Example of a Category might 
@@ -41,24 +44,11 @@ import java.util.Set;
  * @version $Id$
  */
 public class DataElementCategory
+    extends IdentifiableObject
     implements Serializable
 {
     public static final String DEFAULT_NAME = "default";
     
-    /**
-     * The database internal identifier for this Category.
-     */
-    private int id;
-    
-    /**
-     * The Universally Unique Identifer for this Category. 
-     */    
-    private String uuid;
-
-    /**
-     * The name of this Category. Required and unique.
-     */
-    private String name;
     
     private Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
 
@@ -123,36 +113,6 @@ public class DataElementCategory
     // ------------------------------------------------------------------------
     // Getters and setters
     // ------------------------------------------------------------------------
-
-    public int getId() 
-    {
-        return id;
-    }
-    
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-    
-    public String getUuid()
-    {
-        return uuid;
-    }
-
-    public void setUuid( String uuid )
-    {
-        this.uuid = uuid;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-    
-    public void setName( String name )
-    {
-        this.name = name;
-    }
     
     public Set<DataElementCategoryOption> getCategoryOptions()
     {

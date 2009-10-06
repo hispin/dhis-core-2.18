@@ -31,18 +31,16 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.common.IdentifiableObject;
+
 /**
  * @author Lars Helge Overland
  * @version $Id: IndicatorGroup.java 5296 2008-05-29 16:06:14Z larshelg $
  */
 public class IndicatorGroup
-    implements Serializable
+    extends IdentifiableObject     
+    implements Serializable 
 {
-    private int id;
-
-    private String uuid;
-    
-    private String name;
 
     private Set<Indicator> members = new HashSet<Indicator>();
 
@@ -102,35 +100,6 @@ public class IndicatorGroup
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getUuid()
-    {
-        return uuid;
-    }
-
-    public void setUuid( String uuid )
-    {
-        this.uuid = uuid;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
 
     public Set<Indicator> getMembers()
     {

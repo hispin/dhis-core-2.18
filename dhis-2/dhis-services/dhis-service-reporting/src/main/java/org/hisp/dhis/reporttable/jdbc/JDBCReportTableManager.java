@@ -40,7 +40,7 @@ import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.MetaObject;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -131,7 +131,7 @@ public class JDBCReportTableManager
     }
     
     public Map<String, Double> getAggregatedValueMap( ReportTable reportTable,
-        MetaObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
+        IdentifiableObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
     {
         StatementHolder holder = statementManager.getHolder();
         

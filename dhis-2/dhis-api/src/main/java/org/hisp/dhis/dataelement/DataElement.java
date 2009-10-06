@@ -27,13 +27,13 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
+// import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.common.MetaObject;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.PeriodType;
@@ -52,7 +52,7 @@ import org.hisp.dhis.period.PeriodType;
  * @version $Id: DataElement.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 public class DataElement
-    implements Serializable, MetaObject
+    extends IdentifiableObject
 {
     public static final String TYPE_STRING = "string";
 
@@ -65,41 +65,6 @@ public class DataElement
     public static final String AGGREGATION_OPERATOR_AVERAGE ="average";
     
     public static final String AGGREGATION_OPERATOR_COUNT = "count";
-
-    /**
-     * The database internal identifier for this DataElement.
-     */
-    private int id;
-    
-    /**
-     * The Universally Unique Identifer for this DataElement. 
-     */    
-    private String uuid;
-
-    /**
-     * The name of this DataElement. Required and unique.
-     */
-    private String name;
-
-    /**
-     * An alternative name of this DataElement. Optional but unique.
-     */
-    private String alternativeName;
-
-    /**
-     * An short name representing this DataElement. Optional but unique.
-     */
-    private String shortName;
-
-    /**
-     * An code representing this DataElement. Optional but unique.
-     */
-    private String code;
-
-    /**
-     * Description of this DataElement.
-     */
-    private String description;
 
     /**
      * If this DataElement is active or not (enabled or disabled).
@@ -276,76 +241,6 @@ public class DataElement
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getUuid()
-    {
-        return uuid;
-    }
-
-    public void setUuid( String uuid )
-    {
-        this.uuid = uuid;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public String getAlternativeName()
-    {
-        return alternativeName;
-    }
-
-    public void setAlternativeName( String alternativeName )
-    {
-        this.alternativeName = alternativeName;
-    }
-
-    public String getShortName()
-    {
-        return shortName;
-    }
-
-    public void setShortName( String shortName )
-    {
-        this.shortName = shortName;
-    }
-
-    public String getCode()
-    {
-        return code;
-    }
-
-    public void setCode( String code )
-    {
-        this.code = code;
-    }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
 
     public boolean isActive()
     {

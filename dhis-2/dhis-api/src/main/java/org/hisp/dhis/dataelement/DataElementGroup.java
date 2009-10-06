@@ -31,27 +31,16 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.common.IdentifiableObject;
+
 /**
  * @author Kristian Nordal
  * @version $Id: DataElementGroup.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 public class DataElementGroup
+    extends IdentifiableObject
     implements Serializable
 {
-    /**
-     * The database internal identifier for this DataElementGroup.
-     */
-    private int id;
-
-    /**
-     * The Universally Unique Identifer for this DataElementGroup. 
-     */    
-    private String uuid;
-    
-    /**
-     * The name of the DataElementGroup. Required and unique.
-     */
-    private String name;
 
     /**
      * The members of the DataElementGroup.
@@ -114,35 +103,6 @@ public class DataElementGroup
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getUuid()
-    {
-        return uuid;
-    }
-
-    public void setUuid( String uuid )
-    {
-        this.uuid = uuid;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
 
     public Set<DataElement> getMembers()
     {
