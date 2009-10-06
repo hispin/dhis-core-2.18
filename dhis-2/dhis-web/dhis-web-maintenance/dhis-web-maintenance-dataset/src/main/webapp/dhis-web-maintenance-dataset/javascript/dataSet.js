@@ -245,17 +245,21 @@ function addDataSetMembers()
 
     while ( list.selectedIndex != -1 )
     {
+		var selectedList = byId( 'selectedList' );
         var id = list.options[list.selectedIndex].value;
-
-        list.options[list.selectedIndex].selected = false;
-
-        dataSetMembers[id] = availableDataElements[id];
+		
+		dataSetMembers[id] = availableDataElements[id];
+		
+		addOptionToList( selectedList, id, dataSetMembers[id] );
+		
+        list.remove( list.selectedIndex );
         
         delete availableDataElements[id];        
     }
     
-    filterDataSetMembers();
-    filterAvailableDataElements();
+	//Not filter anymore
+    //filterDataSetMembers();
+    //filterAvailableDataElements();
 }
 
 function removeDataSetMembers()
@@ -264,15 +268,19 @@ function removeDataSetMembers()
 
     while ( list.selectedIndex != -1 )
     {
+		var availableList = byId( 'availableList' );
         var id = list.options[list.selectedIndex].value;
 
-        list.options[list.selectedIndex].selected = false;
-
         availableDataElements[id] = dataSetMembers[id];
+		
+		addOptionToList( availableList, id, availableDataElements[id] );
+		
+		list.remove( list.selectedIndex );
         
         delete dataSetMembers[id];        
     }
     
-    filterDataSetMembers();
-    filterAvailableDataElements();
+	//Not filter anymore
+    //filterDataSetMembers();
+    //filterAvailableDataElements();
 }
