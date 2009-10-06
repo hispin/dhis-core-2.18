@@ -32,7 +32,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.MetaObject;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -41,19 +40,12 @@ import org.hisp.dhis.source.Source;
  */
 public class OrganisationUnit
     extends Source
-    implements Serializable, MetaObject
+    implements Serializable
 {
-    private String name;
-    
-    private String uuid;
 
     private Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
 
     private OrganisationUnit parent;
-
-    private String shortName;
-
-    private String code;
     
     private Date openingDate;
 
@@ -190,26 +182,6 @@ public class OrganisationUnit
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public String getUuid()
-    {
-        return uuid;
-    }
-
-    public void setUuid( String uuid )
-    {
-        this.uuid = uuid;
-    }
 
     public Set<OrganisationUnit> getChildren()
     {

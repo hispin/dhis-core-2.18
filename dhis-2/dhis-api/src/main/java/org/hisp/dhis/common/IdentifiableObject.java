@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataelement;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,83 +27,120 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-
-import org.hisp.dhis.common.IdentifiableObject;
-
 /**
- * @author Abyot Asalefew
+ * @author Bob Jolliffe
  * @version $Id$
  */
-public class DataElementCategoryOption
-    extends IdentifiableObject
-    implements Serializable
+public class IdentifiableObject
 {
-    public static final String DEFAULT_NAME = "default";
+
+    /**
+     * The database internal identifier for this Object.
+     */
+    protected int id;
     
-    
+    /**
+     * The Universally Unique Identifer for this Object. 
+     */    
+    protected String uuid;
+
+    /**
+     * The name of this Object. Required and unique.
+     */
+    protected String name;
+
+    /**
+     * An alternative name of this Object. Optional but unique.
+     */
+    protected String alternativeName;
+
+    /**
+     * An short name representing this Object. Optional but unique.
+     */
+    protected String shortName;
+
+    /**
+     * An code representing this Object. Optional but unique.
+     */
+    protected String code;
+
+    /**
+     * Description of this Object.
+     */
+    protected String description;
+
     // -------------------------------------------------------------------------
-    // Constructors
+    // Getters and setters
     // -------------------------------------------------------------------------
 
-    public DataElementCategoryOption()
+    public int getId()
     {
+        return id;
     }
-    
-    /**
-     * @param name the name.
-     */
-    public DataElementCategoryOption( String name )
+
+    public void setId( int id )
     {
-    	this.name = name;
+        this.id = id;
     }
-    
-    /**
-     * @param name the name.
-     * @param shortName the shortname.
-     */
-    public DataElementCategoryOption( String name, String shortName )
+
+    public String getUuid()
+    {
+        return uuid;
+    }
+
+    public void setUuid( String uuid )
+    {
+        this.uuid = uuid;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName( String name )
     {
         this.name = name;
+    }
+
+    public String getAlternativeName()
+    {
+        return alternativeName;
+    }
+
+    public void setAlternativeName( String alternativeName )
+    {
+        this.alternativeName = alternativeName;
+    }
+
+    public String getShortName()
+    {
+        return shortName;
+    }
+
+    public void setShortName( String shortName )
+    {
         this.shortName = shortName;
     }
-    
-    // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
 
-    @Override
-    public int hashCode()
+    public String getCode()
     {
-        return name.hashCode();
+        return code;
     }
 
-    @Override
-    public boolean equals( Object object )
+    public void setCode( String code )
     {
-        if ( this == object )
-        {
-            return true;
-        }
-        
-        if ( object == null )
-        {
-            return false;
-        }
-        
-        if ( getClass() != object.getClass() )
-        {
-            return false;
-        }
-        
-        final DataElementCategoryOption other = (DataElementCategoryOption) object;
-
-        return name.equals( other.getName() );
+        this.code = code;
     }
 
-    @Override
-    public String toString()
+    public String getDescription()
     {
-        return "[" + name + "]";
+        return description;
     }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
 }

@@ -29,7 +29,7 @@ package org.hisp.dhis.options.displayproperty;
 
 import java.util.List;
 
-import org.hisp.dhis.common.MetaObject;
+import org.hisp.dhis.common.IdentifiableObject;
 
 /**
  * @author Lars Helge Overland
@@ -37,7 +37,7 @@ import org.hisp.dhis.common.MetaObject;
  */
 public interface DisplayPropertyHandler
 {
-    List<? extends MetaObject> handle( List<? extends MetaObject> list );
+    List<? extends IdentifiableObject> handle( List<? extends IdentifiableObject> list );
     
-    MetaObject handle( MetaObject object );
+    IdentifiableObject handle( IdentifiableObject object );
 }

@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.hisp.dhis.common.MetaObject;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
@@ -149,7 +149,7 @@ public class ReportTable
      * Indicators that will be crosstabulated on the columns axis. Indicators 
      * comprises dataelements, indicators, datasets.
      */
-    private List<MetaObject> crossTabIndicators = new ArrayList<MetaObject>();
+    private List<IdentifiableObject> crossTabIndicators = new ArrayList<IdentifiableObject>();
 
     /**
      * CategoryCombos that will be crosstabulated on the columns axis. Optional dimension.
@@ -169,7 +169,7 @@ public class ReportTable
     /**
      * Indicators that will be present on the rows axis.
      */
-    private List<MetaObject> reportIndicators = new ArrayList<MetaObject>();
+    private List<IdentifiableObject> reportIndicators = new ArrayList<IdentifiableObject>();
 
     /**
      * CategoryOptionCombos that will be present on the rows axis. Optional dimension.
@@ -350,7 +350,7 @@ public class ReportTable
 
         if ( isDoIndicators() )
         {
-            crossTabIndicators = new ArrayList<MetaObject>();
+            crossTabIndicators = new ArrayList<IdentifiableObject>();
             crossTabIndicators.addAll( indicators );
             crossTabIndicators.addAll( dataElements );
             crossTabIndicators.addAll( dataSets );
@@ -360,7 +360,7 @@ public class ReportTable
         else
         {
             crossTabIndicators.add( null );
-            reportIndicators = new ArrayList<MetaObject>();
+            reportIndicators = new ArrayList<IdentifiableObject>();
             reportIndicators.addAll( indicators );
             reportIndicators.addAll( dataElements );
             reportIndicators.addAll( dataSets );
@@ -430,7 +430,7 @@ public class ReportTable
         // Init crossTabColumns and crossTabIdentifiers
         // ---------------------------------------------------------------------
 
-        for ( MetaObject indicator : crossTabIndicators )
+        for ( IdentifiableObject indicator : crossTabIndicators )
         {
             for ( DataElementCategoryOptionCombo categoryOptionCombo : crossTabCategoryOptionCombos )
             {
@@ -620,7 +620,7 @@ public class ReportTable
         return list != null && list.size() > 0;
     }
     
-    private String getPrettyColumnName( MetaObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
+    private String getPrettyColumnName( IdentifiableObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
     {
         StringBuffer buffer = new StringBuffer();
         
@@ -646,7 +646,7 @@ public class ReportTable
         return buffer.length() > 0 ? buffer.substring( 0, buffer.lastIndexOf( SPACE ) ) : buffer.toString();
     }
     
-    private String getColumnName( MetaObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
+    private String getColumnName( IdentifiableObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
     {
         StringBuffer buffer = new StringBuffer();
         
@@ -681,7 +681,7 @@ public class ReportTable
         return buffer.length() > 0 ? buffer.substring( 0, buffer.lastIndexOf( SEPARATOR ) ) : buffer.toString();
     }
     
-    private String getColumnIdentifier( MetaObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
+    private String getColumnIdentifier( IdentifiableObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
     {
         StringBuffer buffer = new StringBuffer();
 
@@ -1016,7 +1016,7 @@ public class ReportTable
         i18nFormat = format;
     }
 
-    public List<MetaObject> getReportIndicators()
+    public List<IdentifiableObject> getReportIndicators()
     {
         return reportIndicators;
     }

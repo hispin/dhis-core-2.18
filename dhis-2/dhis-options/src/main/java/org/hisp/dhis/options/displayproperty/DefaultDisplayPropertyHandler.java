@@ -29,7 +29,7 @@ package org.hisp.dhis.options.displayproperty;
 
 import java.util.List;
 
-import org.hisp.dhis.common.MetaObject;
+import org.hisp.dhis.common.IdentifiableObject;
 
 /**
  * @author Lars Helge Overland
@@ -49,11 +49,11 @@ public class DefaultDisplayPropertyHandler
     // DisplayPropertyHandler implementation
     // -------------------------------------------------------------------------
 
-    public List<? extends MetaObject> handle( List<? extends MetaObject> list )
+    public List<? extends IdentifiableObject> handle( List<? extends IdentifiableObject> list )
     {
         if ( displayProperty.equals( DisplayPropertyManager.DISPLAY_PROPERTY_SHORTNAME ) )
         {
-            for ( MetaObject object : list )
+            for ( IdentifiableObject object : list )
             {
                 if ( object.getShortName() != null )
                 {
@@ -63,7 +63,7 @@ public class DefaultDisplayPropertyHandler
         }        
         else if ( displayProperty.equals( DisplayPropertyManager.DISPLAY_PROPERTY_CODE ) )
         {
-            for ( MetaObject object : list )
+            for ( IdentifiableObject object : list )
             {
                 if ( object.getCode() != null )
                 {
@@ -74,7 +74,7 @@ public class DefaultDisplayPropertyHandler
         
         else if ( displayProperty.equals( DisplayPropertyManager.DISPLAY_PROPERTY_ALTERNATIVENAME ) )
         {
-            for ( MetaObject object : list )
+            for ( IdentifiableObject object : list )
             {
                 if ( object.getAlternativeName() != null )
                 {
@@ -86,7 +86,7 @@ public class DefaultDisplayPropertyHandler
         return list;
     }
     
-    public MetaObject handle( MetaObject object )
+    public IdentifiableObject handle( IdentifiableObject object )
     {
         if ( displayProperty.equals( DisplayPropertyManager.DISPLAY_PROPERTY_SHORTNAME ) )
         {

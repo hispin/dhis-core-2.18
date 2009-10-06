@@ -33,21 +33,17 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.hisp.dhis.common.MetaObject;
+import org.hisp.dhis.common.IdentifiableObject;
 
 /**
  * @author Abyot Aselefew
  * @version $Id$
  */
 public class DataElementCategoryOptionCombo
-    implements Serializable, MetaObject
+    extends IdentifiableObject
+    implements Serializable
 {
     public static final String DEFAULT_NAME = "default";
-    
-    /**
-     * The database internal identifier.
-     */
-    private int id;  
     
     /**
      * The category combo.
@@ -217,21 +213,7 @@ public class DataElementCategoryOptionCombo
         
         return null;
     }
-
-    // -------------------------------------------------------------------------
-    // MetaObject implementation
-    // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-    
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-    
+   
     public String getName()
     {
         StringBuffer name = new StringBuffer();

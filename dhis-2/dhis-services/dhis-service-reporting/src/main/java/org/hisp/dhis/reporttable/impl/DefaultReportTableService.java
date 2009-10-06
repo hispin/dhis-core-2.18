@@ -39,7 +39,7 @@ import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.GenericNameStore;
-import org.hisp.dhis.common.MetaObject;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -556,7 +556,7 @@ public class DefaultReportTableService
         
         Map<String, Double> map = null;
 
-        for ( final MetaObject metaObject : reportTable.getReportIndicators() )
+        for ( final IdentifiableObject metaObject : reportTable.getReportIndicators() )
         {
             for ( final DataElementCategoryOptionCombo categoryOptionCombo : reportTable.getReportCategoryOptionCombos() )
             {
