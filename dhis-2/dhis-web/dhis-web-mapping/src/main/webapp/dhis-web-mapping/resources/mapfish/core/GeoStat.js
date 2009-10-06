@@ -370,7 +370,9 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 				return 'Assigned' + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
 			}
 		}
-        // return parseFloat(bin.lowerBound).toFixed(1) + ' - ' + parseFloat(bin.upperBound).toFixed(1) + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
+		else {
+			return parseFloat(bin.lowerBound).toFixed(1) + ' - ' + parseFloat(bin.upperBound).toFixed(1) + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
+		}
     },
 
     classifyWithBounds: function(bounds) {
