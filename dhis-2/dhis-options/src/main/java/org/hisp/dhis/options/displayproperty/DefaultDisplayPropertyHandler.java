@@ -51,36 +51,9 @@ public class DefaultDisplayPropertyHandler
 
     public List<? extends IdentifiableObject> handle( List<? extends IdentifiableObject> list )
     {
-        if ( displayProperty.equals( DisplayPropertyManager.DISPLAY_PROPERTY_SHORTNAME ) )
+        for ( IdentifiableObject object : list )
         {
-            for ( IdentifiableObject object : list )
-            {
-                if ( object.getShortName() != null )
-                {
-                    object.setName( object.getShortName() );
-                }
-            }
-        }        
-        else if ( displayProperty.equals( DisplayPropertyManager.DISPLAY_PROPERTY_CODE ) )
-        {
-            for ( IdentifiableObject object : list )
-            {
-                if ( object.getCode() != null )
-                {
-                    object.setName( object.getCode() );
-                }
-            }
-        }
-        
-        else if ( displayProperty.equals( DisplayPropertyManager.DISPLAY_PROPERTY_ALTERNATIVENAME ) )
-        {
-            for ( IdentifiableObject object : list )
-            {
-                if ( object.getAlternativeName() != null )
-                {
-                    object.setName( object.getAlternativeName() );
-                }
-            }
+            handle( object );
         }
         
         return list;
@@ -101,8 +74,7 @@ public class DefaultDisplayPropertyHandler
             {
                 object.setName( object.getCode() );
             }
-        }
-        
+        }        
         else if ( displayProperty.equals( DisplayPropertyManager.DISPLAY_PROPERTY_ALTERNATIVENAME ) )
         {
             if ( object.getAlternativeName() != null )
