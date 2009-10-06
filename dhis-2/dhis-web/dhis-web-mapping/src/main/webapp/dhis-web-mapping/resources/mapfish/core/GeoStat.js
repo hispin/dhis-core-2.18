@@ -362,7 +362,15 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
      *   nBins - {Integer} Total number of bins
      */
     defaultLabelGenerator: function(bin, binIndex, nbBins) {
-        return parseFloat(bin.lowerBound).toFixed(1) + ' - ' + parseFloat(bin.upperBound).toFixed(1) + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
+		if (ACTIVEPANEL == 'mapping') {
+			if (bin.upperBound < 1) {
+				return 'Available' + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
+			}
+			else {
+				return 'Assigned' + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
+			}
+		}
+        // return parseFloat(bin.lowerBound).toFixed(1) + ' - ' + parseFloat(bin.upperBound).toFixed(1) + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
     },
 
     classifyWithBounds: function(bounds) {

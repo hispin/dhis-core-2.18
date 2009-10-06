@@ -1109,7 +1109,7 @@ Ext.onReady( function() {
         var wmsPreviewWindow = new Ext.Window({
             title: '<font style="' + AA_DARK + '">Preview: ' + record.get("title") + '</font>',
             width: screen.width * 0.5,
-            height: screen.height * 0.5,
+            height: screen.height * 0.3,
             layout: 'fit',
             items: [{
                 xtype: 'gx_mappanel',
@@ -1125,7 +1125,7 @@ Ext.onReady( function() {
 		title: '<font style="' + AA_DARK + '">Geoserver shapefiles</font>',
 		closeAction: 'hide',
 		width: wmsGrid.width,
-		height: wmsGrid.height,
+		height: screen.height * 0.4,
 		items: [wmsGrid],
 		bbar: new Ext.StatusBar({
 			id: 'wmswindow_sb',
@@ -1900,7 +1900,7 @@ Ext.onReady( function() {
 		title: '<font style="' + AA_DARK + '">Geoserver shapefiles</font>',
 		closeAction: 'hide',
 		width: wmsOverlayGrid.width,
-		height: wmsOverlayGrid.height,
+		height: screen.height * 0.4,
 		items: [wmsOverlayGrid],
 		bbar: new Ext.StatusBar({
 			id: 'wmsoverlaywindow_sb',
@@ -2593,8 +2593,8 @@ Ext.onReady( function() {
                 }
             }
         }
-    });	
-    
+    });
+	
     mapping.hide();
     shapefilePanel.hide();
     mapLayerPanel.hide();
@@ -2906,11 +2906,12 @@ function onClickSelectChoropleth(feature) {
         }
 		
         var featureId = feature.attributes[MAPDATA.nameColumn];
+		var mlp = Ext.getCmp('maps_cb').getValue();
 		
 		Ext.Ajax.request({
 			url: path + 'getMapOrganisationUnitRelationByFeatureId' + type,
             method: 'POST',
-			params: {featureId:featureId},
+			params: {featureId:featureId, mapLayerPath:mlp},
 			
 			success: function( responseObject ) {
 				var mour = Ext.util.JSON.decode( responseObject.responseText ).mapOrganisationUnitRelation[0];
@@ -2927,7 +2928,7 @@ function onClickSelectChoropleth(feature) {
 						params: { mapLayerPath: MAPDATA.mapLayerPath, organisationUnitId: organisationUnitId, featureId: featureId },
 
 						success: function( responseObject ) {
-							Ext.messageBlack.msg('Assign organisation units', msg_highlight_start + organisationUnit + msg_highlight_end + ' (database) assigned to ' + msg_highlight_start + featureId + msg_highlight_end + ' (geojson).');
+							Ext.messageBlack.msg('Assign organisation units', msg_highlight_start + organisationUnit + msg_highlight_end + ' (database) assigned to ' + msg_highlight_start + featureId + msg_highlight_end + ' (map).');
 							Ext.getCmp('grid_gp').getStore().reload();
 							popup_feature.hide();
 							loadMapData('assignment');
@@ -3108,19 +3109,35 @@ function dataReceivedAssignOrganisationUnit( responseText ) {
     
     var relations = Ext.util.JSON.decode(responseText).mapOrganisationUnitRelations;
     
-    var nameColumn = MAPDATA.nameColumn;   
-    
-    for (var i = 0; i < features.length; i++) {
+    var nameColumn = MAPDATA.nameColumn;
+	
+	var noCls = 1;
+	var noAssigned = 0;
+	
+	for (var i = 0; i < features.length; i++) {
         features[i].attributes['value'] = 0;
         
         for (var j=0; j < relations.length; j++) {
             if (relations[j].featureId == features[i].attributes[nameColumn]) {
                 features[i].attributes['value'] = 1;
+				noAssigned++;
+				if (noCls < 2) {
+					noCls = 2;
+				}
 				break;
             }
         }
     }
-    
+	
+	var color = UNASSIGNED_ROW_COLOR;
+	
+	if (noCls > 1) {
+		if (noAssigned == features.length) {
+			noCls = 1;
+			color = ASSIGNED_ROW_COLOR;
+		}
+	}
+	
     var options = {};
         
     /*hidden*/
@@ -3129,13 +3146,13 @@ function dataReceivedAssignOrganisationUnit( responseText ) {
     options.indicator = mapping.indicator;
     
     options.method = 1;
-    options.numClasses = 2;
+    options.numClasses = noCls;
     
     var colorA = new mapfish.ColorRgb();
-    colorA.setFromHex('#FFFFFF');
+    colorA.setFromHex(color);
     var colorB = new mapfish.ColorRgb();
-    colorB.setFromHex('#b1ffa1');
-    options.colors = [colorA, colorB]; 
+    colorB.setFromHex(ASSIGNED_ROW_COLOR);
+    options.colors = [colorA, colorB];
     
     mapping.coreComp.updateOptions(options);
     mapping.coreComp.applyClassification();

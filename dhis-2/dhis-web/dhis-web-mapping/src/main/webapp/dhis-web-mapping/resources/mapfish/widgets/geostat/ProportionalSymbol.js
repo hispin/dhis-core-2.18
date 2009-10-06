@@ -1,4 +1,4 @@
-    /*
+/*
  * Copyright (C) 2007-2008  Camptocamp
  *
  * This file is part of MapFish Client
@@ -130,30 +130,6 @@ mapfish.widgets.geostat.ProportionalSymbol = Ext.extend(Ext.FormPanel, {
      */
     initComponent : function() {
         this.items = [{
-            xtype: 'combo',
-            fieldLabel: 'Indicator',
-            typeAhead: true,
-            name: 'indicator',
-            editable: false,
-            valueField: 'value',
-            displayField: 'text',
-            mode: 'local',
-            emptyText: 'Select indicator',
-            selectOnFocus: true,
-            triggerAction: 'all',
-            store: new Ext.data.SimpleStore({
-                fields: ['value', 'text'],
-                data : this.indicators
-            }),
-            listeners: {
-   //             'select': {
-   //                 fn: function() {
-   //                     this.classify(false);
-   //                 },
-  //                  scope: this
-  //              }
-            }
-        },{
             xtype: 'numberfield',
             fieldLabel:'Min Size',
             name: 'minSize',
@@ -167,21 +143,14 @@ mapfish.widgets.geostat.ProportionalSymbol = Ext.extend(Ext.FormPanel, {
             width: 30,
             value: 20,
             maxValue: 50
-        },{
-            xtype: 'button',
-            text: 'Submit',
-            handler: function() {
-                this.classify(true);
-            },
-            scope: this
         }];
         
         
-//        this.buttons = [{
-//            text: 'OK',
-//            handler: this.classify,
-//            scope: this
-//        }];
+        this.buttons = [{
+            text: 'OK',
+            handler: this.classify,
+            scope: this
+        }];
         mapfish.widgets.geostat.ProportionalSymbol.superclass.initComponent.apply(this);
     },
 
@@ -207,8 +176,7 @@ mapfish.widgets.geostat.ProportionalSymbol = Ext.extend(Ext.FormPanel, {
     requestFailure: function(request) {
         OpenLayers.Console.error('Ajax request failed');
     },
-    
-    
+        
     /**
      * Method: classify
      *    Reads the features to get the different value for
@@ -223,16 +191,17 @@ mapfish.widgets.geostat.ProportionalSymbol = Ext.extend(Ext.FormPanel, {
             }
             return;
         }
-
-        this.indicator = 'value';
-        this.indicatorText = 'Indicator';
-
-        if (!this.indicator) {
-            Ext.MessageBox.alert('Error', 'You must choose an indicator');
-            return;
-        }
-
-        loadMapData('point');
+        this.indicator = 'MARK1';
+        var minSize = parseInt(this.form.findField('minSize').getValue());
+        var maxSize = parseInt(this.form.findField('maxSize').getValue());
+alert(minSize + '\n' + maxSize);
+        this.coreComp.updateOptions({
+            'indicator': this.indicator,
+            'minSize': minSize,
+            'maxSize': maxSize
+        });
+        this.coreComp.applyClassification();
+        this.classificationApplied = true;
     },
 
     /**
