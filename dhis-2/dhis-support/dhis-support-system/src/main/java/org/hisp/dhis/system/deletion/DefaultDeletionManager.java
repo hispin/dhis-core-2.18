@@ -36,6 +36,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.source.Source;
 
 /**
  * @author Lars Helge Overland
@@ -70,9 +71,9 @@ public class DefaultDeletionManager
     {
         Class clazz = object.getClass();
         
-        if ( !clazz.getSuperclass().equals( Object.class ) )
+        if ( clazz.getSuperclass().equals( Source.class ) )
         {
-            clazz = clazz.getSuperclass();
+            clazz = clazz.getSuperclass(); // Set class of Source implementations to Source 
         }
         
         String className = clazz.getSimpleName();
