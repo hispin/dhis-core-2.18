@@ -58,6 +58,8 @@ public class GenerateReportExcelFlowAction
     private Integer reportId;
 
     private Integer periodId;
+    
+    private Integer sheetId;
 
     // -------------------------------------------
     // Getter & Setter
@@ -88,6 +90,16 @@ public class GenerateReportExcelFlowAction
         this.reportService = reportService;
     }
 
+    public Integer getSheetId()
+    {
+        return sheetId;
+    }
+
+    public void setSheetId( Integer sheetId )
+    {
+        this.sheetId = sheetId;
+    }
+    
     public String execute()
         throws Exception
     {
@@ -101,5 +113,4 @@ public class GenerateReportExcelFlowAction
 
         return reportExcel.getReportType();
     }
-
 }

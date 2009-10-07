@@ -34,7 +34,8 @@ import org.apache.poi.hssf.util.HSSFColor;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id: DefaultSelectedStateManager.java 2009-09-18 16:45:00Z hieuduy$
+ * @version $Id$
+ * @since 2009-09-18 16:45:00Z
  */
 public class DefaultInitializePOIStylesManager
     implements InitializePOIStylesManager
@@ -56,15 +57,15 @@ public class DefaultInitializePOIStylesManager
 
     private static final short STYLE_DEFAULT_FONT_WEIGHT = HSSFFont.BOLDWEIGHT_NORMAL;
 
-    private static final short STYLE_DAFAULT_FONT_COLOR = new HSSFColor.WHITE().getIndex();
+    private static final short STYLE_DEFAULT_FONT_COLOR = new HSSFColor.WHITE().getIndex();
 
-    private static final short STYLE_DAFAULT_BACK_FORE_GROUND_COLOR = HSSFColor.WHITE.index;
+    private static final short STYLE_DEFAULT_BACK_FORE_GROUND_COLOR = HSSFColor.WHITE.index;
 
-    private static final short STYLE_DAFAULT_PATTERN = HSSFCellStyle.SOLID_FOREGROUND;
+    private static final short STYLE_DEFAULT_PATTERN = HSSFCellStyle.SOLID_FOREGROUND;
 
-    private static final short STYLE_DAFAULT_BORDER = HSSFCellStyle.BORDER_THIN;
+    private static final short STYLE_DEFAULT_BORDER = HSSFCellStyle.BORDER_THIN;
 
-    private static final short STYLE_DAFAULT_BORDER_COLOR = HSSFColor.LIGHT_ORANGE.index;
+    private static final short STYLE_DEFAULT_BORDER_COLOR = HSSFColor.LIGHT_ORANGE.index;
 
     /***************************************************************************
      * Default Methods
@@ -86,24 +87,24 @@ public class DefaultInitializePOIStylesManager
         test_font.setFontName( this.STYLE_DEFAULT_FONT_NAME );
         test_font.setFontHeightInPoints( this.STYLE_DEFAULT_FONT_HEIGHT );
         test_font.setBoldweight( this.STYLE_DEFAULT_FONT_WEIGHT );
-        test_font.setColor( this.STYLE_DAFAULT_FONT_COLOR );
+        test_font.setColor( this.STYLE_DEFAULT_FONT_COLOR );
     }
 
     @SuppressWarnings( "static-access" )
     public void initDefaultCellStyle( HSSFCellStyle test_cs, HSSFFont test_font )
     {
         test_cs.setFont( test_font );
-        test_cs.setFillBackgroundColor( this.STYLE_DAFAULT_BACK_FORE_GROUND_COLOR );
-        test_cs.setFillForegroundColor( this.STYLE_DAFAULT_BACK_FORE_GROUND_COLOR );
-        test_cs.setFillPattern( this.STYLE_DAFAULT_PATTERN );
-        test_cs.setBorderBottom( this.STYLE_DAFAULT_BORDER );
-        test_cs.setBottomBorderColor( this.STYLE_DAFAULT_BORDER_COLOR );
-        test_cs.setBorderTop( this.STYLE_DAFAULT_BORDER );
-        test_cs.setTopBorderColor( this.STYLE_DAFAULT_BORDER_COLOR );
-        test_cs.setBorderLeft( this.STYLE_DAFAULT_BORDER );
-        test_cs.setLeftBorderColor( this.STYLE_DAFAULT_BORDER_COLOR );
-        test_cs.setBorderRight( this.STYLE_DAFAULT_BORDER );
-        test_cs.setRightBorderColor( this.STYLE_DAFAULT_BORDER_COLOR );
+        test_cs.setFillBackgroundColor( this.STYLE_DEFAULT_BACK_FORE_GROUND_COLOR );
+        test_cs.setFillForegroundColor( this.STYLE_DEFAULT_BACK_FORE_GROUND_COLOR );
+        test_cs.setFillPattern( this.STYLE_DEFAULT_PATTERN );
+        test_cs.setBorderBottom( this.STYLE_DEFAULT_BORDER );
+        test_cs.setBottomBorderColor( this.STYLE_DEFAULT_BORDER_COLOR );
+        test_cs.setBorderTop( this.STYLE_DEFAULT_BORDER );
+        test_cs.setTopBorderColor( this.STYLE_DEFAULT_BORDER_COLOR );
+        test_cs.setBorderLeft( this.STYLE_DEFAULT_BORDER );
+        test_cs.setLeftBorderColor( this.STYLE_DEFAULT_BORDER_COLOR );
+        test_cs.setBorderRight( this.STYLE_DEFAULT_BORDER );
+        test_cs.setRightBorderColor( this.STYLE_DEFAULT_BORDER_COLOR );
 
     }
 

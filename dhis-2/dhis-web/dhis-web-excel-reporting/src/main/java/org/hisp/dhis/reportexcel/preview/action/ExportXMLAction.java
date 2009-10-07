@@ -29,9 +29,8 @@ package org.hisp.dhis.reportexcel.preview.action;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.hisp.dhis.reportexcel.ReportLocationManager;
+import org.hisp.dhis.reportexcel.export.action.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -54,13 +53,17 @@ public class ExportXMLAction
     // Dependency
     // -------------------------------------------
 
-    private ReportLocationManager reportLocationManager;
+    private SelectionManager selectionManager;
+
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
 
     // -------------------------------------------
     // Input && Output
     // -------------------------------------------
-
-    private InputStream inputStream;
+    private Integer sheetId;
 
     private String outputXLS;
 
@@ -72,14 +75,9 @@ public class ExportXMLAction
     // Getter & Setter
     // -------------------------------------------
 
-    public void setReportLocationManager( ReportLocationManager reportLocationManager )
+    public void setSheetId( Integer sheetId )
     {
-        this.reportLocationManager = reportLocationManager;
-    }
-
-    public void setInputStream( InputStream inputStream )
-    {
-        this.inputStream = inputStream;
+        this.sheetId = sheetId;
     }
 
     public String getOutputXLS()
@@ -101,6 +99,7 @@ public class ExportXMLAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @SuppressWarnings("static-access")
     public String execute()
         throws IOException
     {
@@ -108,10 +107,10 @@ public class ExportXMLAction
         {
             this.init();
 
-            xmlStructureResponse = new XMLStructureResponse( this.FILE_XLS.getPath(), ENCODING, true, false, true,
+            xmlStructureResponse = new XMLStructureResponse( this.FILE_XLS.getPath(), this.ENCODING, this.sheetId, true, false, true,
                 false, false ).getSTRUCTURE_DATA_RESPONSE();
 
-            this.FILE_XLS.deleteOnExit();
+            //this.FILE_XLS.deleteOnExit();
 
             return SUCCESS;
         }
@@ -128,15 +127,14 @@ public class ExportXMLAction
 
     private void init()
         throws Exception
-    {
-        this.FILE_XLS = new File( this.replacedSeparateSimple( reportLocationManager.getReportExcelTempDirectory()
-            .getPath() )
-            + SEPARATE + this.outputXLS );
+    {        
+        this.FILE_XLS = new File( selectionManager.getReportExcelOutput() );
 
-        inputStream.close();
+        //inputStream.close();
     }
 
-    private String replacedSeparateSimple( String path )
+    @SuppressWarnings( "unused" )
+    private static final String replacedSeparateSimple( String path )
     {
         path = path.replace( "\\", SEPARATE );
 

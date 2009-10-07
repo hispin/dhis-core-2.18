@@ -113,7 +113,7 @@ public class XMLStructureResponse
     {
     }
 
-    public XMLStructureResponse( String pathFileName, String enc, boolean bFormat, boolean bDetailed,
+    public XMLStructureResponse( String pathFileName, String enc, int sheetId, boolean bFormat, boolean bDetailed,
         boolean bWriteDescription, boolean bWriteVersion, boolean bWriteDTD )
 
         throws Exception
@@ -132,7 +132,7 @@ public class XMLStructureResponse
 
         if ( bFormat )
         {
-            writeFormattedXML( bDetailed, bWriteDescription );
+            writeFormattedXML( sheetId, bDetailed, bWriteDescription );
         }
         else
         {
@@ -207,12 +207,16 @@ public class XMLStructureResponse
      * @throws Exception
      */
 
-    private void writeFormattedXML( boolean bDetailed, boolean bWriteDescription )
+    private void writeFormattedXML( int sheetId, boolean bDetailed, boolean bWriteDescription )
         throws Exception
     {
+        FileInputStream fis = new FileInputStream( this.PATH_FILE_NAME );
+        org.apache.poi.ss.usermodel.Workbook wb = new HSSFWorkbook( fis );
+        org.apache.poi.ss.usermodel.FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
+
         if ( bWriteDescription )
         {
-            this.writeXMLDescription();
+            this.writeXMLDescription( sheetId );
         }
 
         if ( this.bWRITE_VERSION )
@@ -231,102 +235,18 @@ public class XMLStructureResponse
         STRUCTURE_DATA_RESPONSE.append( WORKBOOK_OPENTAG );
         STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
 
-        FileInputStream fis = new FileInputStream( this.PATH_FILE_NAME );
-        org.apache.poi.ss.usermodel.Workbook wb = new HSSFWorkbook( fis );
-        org.apache.poi.ss.usermodel.FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
-
-        for ( int sheet = 0; sheet < WORKBOOK.getNumberOfSheets(); sheet++ )
+        if ( sheetId > 0 )
         {
-            Sheet s = WORKBOOK.getSheet( sheet );
-            org.apache.poi.ss.usermodel.Sheet sheetPOI = wb.getSheetAt( sheet );
-
-            STRUCTURE_DATA_RESPONSE.append( "  <sheet>" );
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-            STRUCTURE_DATA_RESPONSE.append( "    <name><![CDATA[" + s.getName() + "]]></name>" );
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-
-            Cell[] cell = null;
-            CellFormat format = null;
-
-            boolean bFormula = false;
-            double recalculatedValue = 0;
-
-            for ( int i = 0; i < s.getRows(); i++ )
-            {
-                STRUCTURE_DATA_RESPONSE.append( "    <row index=\"" + i + "\">" );
-                STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-
-                cell = s.getRow( i );
-
-                for ( int j = 0; j < cell.length; j++ )
-                {
-                    // Remember that empty cells can contain format
-                    // information
-                    if ( (cell[j].getType() != CellType.EMPTY) || (cell[j].getCellFormat() != null) )
-                    {
-                        bFormula = false;
-
-                        // check the cell formula
-                        if ( cell[j].getType() == CellType.NUMBER_FORMULA
-                            || cell[j].getType() == CellType.STRING_FORMULA
-                            || cell[j].getType() == CellType.BOOLEAN_FORMULA
-                            || cell[j].getType() == CellType.DATE_FORMULA
-                            || cell[j].getType() == CellType.FORMULA_ERROR )
-                        {
-                            bFormula = true;
-                            recalculatedValue = 0;
-
-                            // suppose your formula is in Cell
-                            org.apache.poi.ss.util.CellReference cellReference = new org.apache.poi.ss.util.CellReference(
-                                cell[j].getRow(), cell[j].getColumn() );
-                            org.apache.poi.ss.usermodel.Row rowPOI = sheetPOI.getRow( cellReference.getRow() );
-                            org.apache.poi.ss.usermodel.Cell cellPOI = rowPOI.getCell( cellReference.getCol() );
-
-                            if ( cellPOI != null )
-                            {
-                                switch ( evaluator.evaluateFormulaCell( cellPOI ) )
-                                {
-                                case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
-                                    recalculatedValue = cellPOI.getNumericCellValue();
-                                    break;
-
-                                // CELL_TYPE_FORMULA will never occur
-                                case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA:
-                                    break;
-                                }
-                            }
-                        }
-
-                        // end of checking the cell formula
-                        STRUCTURE_DATA_RESPONSE.append( "      <col no=\"" + j + "\">" );
-                        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-                        STRUCTURE_DATA_RESPONSE.append( "        <data>" );
-
-                        // print data in cell
-                        if ( bFormula )
-                        {
-                            STRUCTURE_DATA_RESPONSE.append( "<![CDATA[" + recalculatedValue + "]]>" );
-                        }
-                        else
-                        {
-                            STRUCTURE_DATA_RESPONSE.append( "<![CDATA[" + cell[j].getContents() + "]]>" );
-                        }
-
-                        STRUCTURE_DATA_RESPONSE.append( "</data>" );
-                        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-
-                        this.readingDetailsFormattedCell( format, cell[j], bDetailed );
-
-                        STRUCTURE_DATA_RESPONSE.append( "      </col>" );
-                        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-                    }
-                }
-                STRUCTURE_DATA_RESPONSE.append( "    </row>" );
-                STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-            }
-            STRUCTURE_DATA_RESPONSE.append( "  </sheet>" );
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+            writeBySheetNo( wb, (sheetId - 1), evaluator, bDetailed );
         }
+        else
+        {
+            for ( int sheet = 0; sheet < WORKBOOK.getNumberOfSheets(); sheet++ )
+            {
+                writeBySheetNo( wb, sheet, evaluator, bDetailed );
+            }
+        }
+
         STRUCTURE_DATA_RESPONSE.append( WORKBOOK_CLOSETAG );
         STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
     }
@@ -334,6 +254,99 @@ public class XMLStructureResponse
     // -------------------------------------------------------------------------
     // Sub-methods
     // -------------------------------------------------------------------------
+
+    private void writeBySheetNo( org.apache.poi.ss.usermodel.Workbook wb, int sheetNo,
+        org.apache.poi.ss.usermodel.FormulaEvaluator evaluator, boolean bDetailed )
+    {
+        Sheet s = WORKBOOK.getSheet( sheetNo );
+        org.apache.poi.ss.usermodel.Sheet sheetPOI = wb.getSheetAt( sheetNo );
+
+        STRUCTURE_DATA_RESPONSE.append( "  <sheet>" );
+        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+        STRUCTURE_DATA_RESPONSE.append( "    <name><![CDATA[" + s.getName() + "]]></name>" );
+        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+
+        Cell[] cell = null;
+        CellFormat format = null;
+
+        boolean bFormula = false;
+        double recalculatedValue = 0;
+
+        for ( int i = 0; i < s.getRows(); i++ )
+        {
+            STRUCTURE_DATA_RESPONSE.append( "    <row index=\"" + i + "\">" );
+            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+
+            cell = s.getRow( i );
+
+            for ( int j = 0; j < cell.length; j++ )
+            {
+                // Remember that empty cells can contain format
+                // information
+                if ( (cell[j].getType() != CellType.EMPTY) || (cell[j].getCellFormat() != null) )
+                {
+                    bFormula = false;
+
+                    // check the cell formula
+                    if ( cell[j].getType() == CellType.NUMBER_FORMULA || cell[j].getType() == CellType.STRING_FORMULA
+                        || cell[j].getType() == CellType.BOOLEAN_FORMULA || cell[j].getType() == CellType.DATE_FORMULA
+                        || cell[j].getType() == CellType.FORMULA_ERROR )
+                    {
+                        bFormula = true;
+                        recalculatedValue = 0;
+
+                        // suppose your formula is in Cell
+                        org.apache.poi.ss.util.CellReference cellReference = new org.apache.poi.ss.util.CellReference(
+                            cell[j].getRow(), cell[j].getColumn() );
+                        org.apache.poi.ss.usermodel.Row rowPOI = sheetPOI.getRow( cellReference.getRow() );
+                        org.apache.poi.ss.usermodel.Cell cellPOI = rowPOI.getCell( cellReference.getCol() );
+
+                        if ( cellPOI != null )
+                        {
+                            switch ( evaluator.evaluateFormulaCell( cellPOI ) )
+                            {
+                            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
+                                recalculatedValue = cellPOI.getNumericCellValue();
+                                break;
+
+                            // CELL_TYPE_FORMULA will never occur
+                            case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA:
+                                break;
+                            }
+                        }
+                    }
+
+                    // end of checking the cell formula
+                    STRUCTURE_DATA_RESPONSE.append( "      <col no=\"" + j + "\">" );
+                    STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+                    STRUCTURE_DATA_RESPONSE.append( "        <data>" );
+
+                    // print data in cell
+                    if ( bFormula )
+                    {
+                        STRUCTURE_DATA_RESPONSE.append( "<![CDATA[" + recalculatedValue + "]]>" );
+                    }
+                    else
+                    {
+                        STRUCTURE_DATA_RESPONSE.append( "<![CDATA[" + cell[j].getContents() + "]]>" );
+                    }
+
+                    STRUCTURE_DATA_RESPONSE.append( "</data>" );
+                    STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+
+                    this.readingDetailsFormattedCell( format, cell[j], bDetailed );
+
+                    STRUCTURE_DATA_RESPONSE.append( "      </col>" );
+                    STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+                }
+            }
+            STRUCTURE_DATA_RESPONSE.append( "    </row>" );
+            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+        }
+        STRUCTURE_DATA_RESPONSE.append( "  </sheet>" );
+        STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+    }
+
     private void readingDetailsFormattedCell( jxl.format.CellFormat format, jxl.Cell objCell, boolean bDetailed )
     {
         // The format information
@@ -397,22 +410,10 @@ public class XMLStructureResponse
     // -------------------------------------------------------------------------
     // Get the merged cell's information
     // -------------------------------------------------------------------------
-    private void writeXMLDescription()
+    private void writeXMLDescription( int sheetId )
         throws IOException
     {
-        Sheet sheet = null;
-        Range[] aMergedCell = null;
-
         // Get the Range of the Merged Cells //
-        int no_of_sheets = WORKBOOK.getNumberOfSheets();
-        int lens_of_range = 0;
-        int iColTopLeft = 0;
-        int iRowTopLeft = 0;
-        int iColBottomRight = 0;
-
-        /*
-         * Write XML Description Contents
-         */
         if ( this.bWRITE_VERSION )
         {
             STRUCTURE_DATA_RESPONSE.append( PREFIX_VERSION_XML );
@@ -423,25 +424,17 @@ public class XMLStructureResponse
         STRUCTURE_DATA_RESPONSE.append( MERGEDCELL_OPENTAG );
         STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
 
-        for ( int i = 0; i < no_of_sheets; i++ )
+        if ( sheetId > 0 )
         {
-            sheet = WORKBOOK.getSheet( i );
-            aMergedCell = sheet.getMergedCells();
-            lens_of_range = aMergedCell.length;
-
-            for ( int j = 0; j < lens_of_range; j++ )
+            writeBySheetNo( sheetId - 1 );
+        }
+        else
+        {
+            for ( int i = 0; i < WORKBOOK.getNumberOfSheets(); i++ )
             {
-                iColTopLeft = aMergedCell[j].getTopLeft().getColumn();
-                iRowTopLeft = aMergedCell[j].getTopLeft().getRow();
-                iColBottomRight = aMergedCell[j].getBottomRight().getColumn();
-
-                if ( iColTopLeft != iColBottomRight )
-                {
-                    STRUCTURE_DATA_RESPONSE.append( "  <cell" + " iKey=\"" + i + "#" + iRowTopLeft + "#" + iColTopLeft
-                        + "\">" + (iColBottomRight - iColTopLeft + 1) + "</cell>" );
-                    STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-                }
+                writeBySheetNo( i );
             }
+
         }
 
         // Close the main Tag //
@@ -449,9 +442,34 @@ public class XMLStructureResponse
         STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
     }
 
+    private void writeBySheetNo( int sheetNo )
+    {
+        Sheet sheet = WORKBOOK.getSheet( sheetNo );
+        Range[]aMergedCell = sheet.getMergedCells();
+
+        int iColTopLeft = 0;
+        int iRowTopLeft = 0;
+        int iColBottomRight = 0;
+
+        for ( int j = 0; j < aMergedCell.length; j++ )
+        {
+            iColTopLeft = aMergedCell[j].getTopLeft().getColumn();
+            iRowTopLeft = aMergedCell[j].getTopLeft().getRow();
+            iColBottomRight = aMergedCell[j].getBottomRight().getColumn();
+
+            if ( iColTopLeft != iColBottomRight )
+            {
+                STRUCTURE_DATA_RESPONSE.append( "  <cell" + " iKey=\"" + sheetNo + "#" + iRowTopLeft + "#"
+                    + iColTopLeft + "\">" + (iColBottomRight - iColTopLeft + 1) + "</cell>" );
+                STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
+            }
+        }
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
+
     private String convertAlignmentString( String s )
     {
         if ( s.equalsIgnoreCase( "centre" ) )
@@ -462,10 +480,5 @@ public class XMLStructureResponse
         {
             return s;
         }
-    }
-    
-    public static void main( String[] args ) throws Exception
-    {
-        System.out.println(new XMLStructureResponse("c:\\phammemthongke\\reporttemplate\\tx_bieu_2.xls", "UTF8", true, false, true, false, false).getSTRUCTURE_DATA_RESPONSE());
     }
 }

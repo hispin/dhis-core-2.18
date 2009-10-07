@@ -26,8 +26,6 @@
  */
 package org.hisp.dhis.reportexcel.preview.action;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.util.Collection;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -40,10 +38,10 @@ import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
- * @author Tran Thanh Tri
  * @author Dang Duy Hieu
- * @version $Id: GenerateReportExcelCategoryAction.java 2009-09-18 17:20:00Z
- *          hieuduy$
+ * @author Tran Thanh Tri
+ * @version $Id$
+ * @since 2009-09-18
  */
 public class GeneratePreviewReportExcelCategoryAction
     extends GeneratePreviewReportExcelSupport
@@ -63,26 +61,30 @@ public class GeneratePreviewReportExcelCategoryAction
 
         this.installReadTemplateFile( reportExcel, period, organisationUnit );
 
-        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
+        if ( this.sheetId > 0 )
         {
-            HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
+            HSSFSheet sheet = this.templateWorkbook.getSheetAt( this.sheetId - 1 );
 
-            Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo, selectionManager
-                .getSelectedReportExcelId() );
+            Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( this.sheetId,
+                selectionManager.getSelectedReportExcelId() );
 
             this.generateOutPutFile( organisationUnit, reportExcelItems, reportExcel, sheet );
+        }
+        else
+        {
+            for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
+            {
+                HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
+                Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo,
+                    selectionManager.getSelectedReportExcelId() );
+
+                this.generateOutPutFile( organisationUnit, reportExcelItems, reportExcel, sheet );
+
+            }
         }
 
-        this.templateWorkbook.write( outputStreamExcelTemplate );
-
-        this.outputStreamExcelTemplate.close();
-
-        outputXLS = this.outputReportFile.getName();
-
-        inputStream = new BufferedInputStream( new FileInputStream( this.outputReportFile ) );
-
-        outputReportFile.delete();
+        this.complete();
 
         statementManager.destroy();
 
