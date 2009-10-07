@@ -64,29 +64,25 @@ public class ExcelUtils
         WritableCellFormat format )
         throws RowsExceededException, WriteException
     {
-
         if ( row > 0 && column > 0 )
         {
             if ( type.equalsIgnoreCase( TEXT ) )
             {
-                sheet.addCell( new Label( column - 1, row - 1, value == null ? "" : value, format ) );
+                sheet.addCell( new Label( column - 1, row - 1, (value == null ? "" : value), format ) );
             }
-            if ( type.equalsIgnoreCase( NUMBER ) )
+            else if ( type.equalsIgnoreCase( NUMBER ) )
             {
                 double v = Double.parseDouble( value );
                 if ( v != 0 )
                 {
                     sheet.addCell( new Number( column - 1, row - 1, v, format ) );
-
                 }
                 else
                 {
-
                     sheet.addCell( new Blank( column - 1, row - 1, format ) );
                 }
             }
         }
-
     }
 
     public static Cell getValue( int row, int column, Sheet sheet )
@@ -136,7 +132,7 @@ public class ExcelUtils
         if ( row > 0 && column > 0 )
         {
             HSSFRow rowPOI = sheet.getRow( row - 1 );
-
+            
             if ( rowPOI == null )
             {
                 rowPOI = sheet.createRow( row - 1 );
@@ -149,11 +145,9 @@ public class ExcelUtils
             {
                 cellPOI.setCellValue( new HSSFRichTextString( value ) );
             }
-            if ( type.equalsIgnoreCase( ExcelUtils.NUMBER ) )
+            else if ( type.equalsIgnoreCase( ExcelUtils.NUMBER ) )
             {
-                double v = Double.parseDouble( value );
-
-                if ( v != 0 )
+                if ( Double.parseDouble( value ) != 0 )
                 {
                     cellPOI.setCellValue( new HSSFRichTextString( value ) );
                 }
