@@ -51,6 +51,14 @@
         <td>$objects.getValue( "DATAVALUE" )</td>
     </tr>
     <tr>
+        <td>$i18n.getString( "aggregated_data_values" )</td>
+        <td>$objects.getValue( "AGGREGATEDDATAVALUE" )</td>
+    </tr>
+    <tr>
+        <td>$i18n.getString( "aggregated_indicator_values" )</td>
+        <td>$objects.getValue( "AGGREGATEDINDICATORVALUE" )</td>
+    </tr>
+    <tr>
     	<td colspan="2" style="height:15px"></td>
     </tr>
 </table>
