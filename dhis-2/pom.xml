@@ -23,7 +23,7 @@
     <module>dhis-support</module>
     <module>dhis-useradminandsecurity</module>
   </modules>
-  
+  <!--
   <repositories>
     <repository>
       <id>amplecode_maven2_repo</id>
@@ -31,7 +31,7 @@
       <url>http://www.amplecode.org/maven2</url>
     </repository>
   </repositories>
-
+  -->
   <!--
   <pluginRepositories>
     <pluginRepository>
