@@ -73,12 +73,12 @@ function generateAdvancedReportExcel() {
 		$.post("generateAdvancedReportExcel.action",{
 		reportId:$('#report').val(),
 		periodId:$('#period').val(),
-		organisationGroupId:$('#availableOrgunitGroups').val()
+		organisationGroupId: byId('availableOrgunitGroups').value
 		},function(data){		
 			window.location = "downloadExcelOutput.action";
 			deleteDivEffect();
 			$("#loading").hide();		
-	},'xml');	
+		},'xml');
 	
 }
 
@@ -105,15 +105,13 @@ function openGenerateAdvance(  ){
 					}
 				},'xml'); 
 		}
-		
 
-		byId('availableOrgunitGroups').disabled = false;		
-	} 
-	else
-	{ 	
-		
-		byId('availableOrgunitGroups').disabled=true;		
+		byId('availableOrgunitGroups').disabled = false;
+	
+	}else{
+		byId('availableOrgunitGroups').disabled = true;
 	}
+			
 	
 }
 	
@@ -173,6 +171,8 @@ function getNoSheetsOfReportExcel() {
 function openPreviewReport() {
 	
 	var reportId = $('#report').val();
-	var periodId = $('#period').val();	
+
+	var periodId = $('#period').val();
+
 	window.open("openPreviewReport.action?reportId=" + reportId + "&periodId=" + periodId, "_blank", "width=900,height=600,scrollbars=yes,menubar=yes,resizable=yes");
 }
