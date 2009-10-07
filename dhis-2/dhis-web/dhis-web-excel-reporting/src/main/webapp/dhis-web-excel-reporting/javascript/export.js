@@ -82,7 +82,7 @@ function generateAdvancedReportExcel() {
 	
 }
 
-function openGenerateAdvance(  ){		
+function openGenerateAdvance() {
 		
 	if(byId('advancedCheck').checked)
 	{
@@ -171,8 +171,6 @@ function getNoSheetsOfReportExcel() {
 function openPreviewReport() {
 	
 	var reportId = $('#report').val();
-
-	var periodId = $('#period').val();
-
-	window.open("openPreviewReport.action?reportId=" + reportId + "&periodId=" + periodId, "_blank", "width=900,height=600,scrollbars=yes,menubar=yes,resizable=yes");
+	var periodId = $('#period').val();	
+	window.open("openPreviewReport.action?reportId=" + reportId + "&periodId=" + periodId + "&sheetId=1", "_blank", "width=900,height=600,scrollbars=yes,menubar=yes,resizable=yes");
 }
