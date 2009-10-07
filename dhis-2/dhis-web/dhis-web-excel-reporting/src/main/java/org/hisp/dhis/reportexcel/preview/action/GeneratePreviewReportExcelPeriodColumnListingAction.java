@@ -27,8 +27,6 @@
 
 package org.hisp.dhis.reportexcel.preview.action;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -49,9 +47,10 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 import org.hisp.dhis.system.util.MathUtils;
 
 /**
+ * @author Dang Duy Hieu
  * @author Tran Thanh Tri
- * @version $Id: GenerateReportExcelPeriodColumnListingAction.java 2009-09-18
- *          17:20:00Z hieuduy$
+ * @version $Id$
+ * @since 2009-09-18
  */
 
 public class GeneratePreviewReportExcelPeriodColumnListingAction
@@ -78,27 +77,32 @@ public class GeneratePreviewReportExcelPeriodColumnListingAction
             .getReportExcel( selectionManager.getSelectedReportExcelId() );
 
         this.installReadTemplateFile( reportExcel, period, organisationUnit );
-
-        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
+        
+        if ( this.sheetId > 0 )
         {
-            HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
+            HSSFSheet sheet = this.templateWorkbook.getSheetAt( this.sheetId - 1 );
 
-            Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo, selectionManager
-                .getSelectedReportExcelId() );
+            Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( this.sheetId,
+                selectionManager.getSelectedReportExcelId() );
 
             this.generateOutPutFile( periods, reportExcelItems, organisationUnit, sheet );
+        }
+        else
+        {
 
+            for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
+            {
+                HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
+
+                Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo,
+                    selectionManager.getSelectedReportExcelId() );
+
+                this.generateOutPutFile( periods, reportExcelItems, organisationUnit, sheet );
+
+            }
         }
 
-        this.templateWorkbook.write( this.outputStreamExcelTemplate );
-
-        this.outputStreamExcelTemplate.close();
-
-        outputXLS = outputReportFile.getName();
-
-        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
-
-        outputReportFile.delete();
+        this.complete();
 
         statementManager.destroy();
 

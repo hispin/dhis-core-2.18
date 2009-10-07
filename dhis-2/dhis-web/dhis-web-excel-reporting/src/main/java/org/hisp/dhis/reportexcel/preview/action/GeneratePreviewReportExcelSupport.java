@@ -31,6 +31,7 @@ import static org.hisp.dhis.expression.Expression.SEPARATOR;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -56,6 +57,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -73,8 +75,10 @@ import org.hisp.dhis.user.CurrentUserService;
 import com.opensymphony.xwork2.Action;
 
 /**
+ * @author Dang Duy Hieu
  * @author Tran Thanh Tri
- * @version $Id: GenerateReportExcelSupport.java 2009-09-18 17:20:00Z hieuduy$
+ * @version $Id$
+ * @since 2009-09-18
  */
 public abstract class GeneratePreviewReportExcelSupport
     implements Action
@@ -131,8 +135,10 @@ public abstract class GeneratePreviewReportExcelSupport
     InitializePOIStylesManager initPOIStylesManager;
 
     // -------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------
+
+    Integer sheetId;
 
     String outputXLS;
 
@@ -141,6 +147,26 @@ public abstract class GeneratePreviewReportExcelSupport
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
+
+    public Integer getSheetId()
+    {
+        return sheetId;
+    }
+
+    public void setSheetId( Integer sheetId )
+    {
+        this.sheetId = sheetId;
+    }
+
+    public String getOutputXLS()
+    {
+        return outputXLS;
+    }
+
+    public InputStream getInputStream()
+    {
+        return inputStream;
+    }
 
     public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
     {
@@ -181,16 +207,6 @@ public abstract class GeneratePreviewReportExcelSupport
     public void setAggregationService( AggregationService aggregationService )
     {
         this.aggregationService = aggregationService;
-    }
-
-    public String getOutputXLS()
-    {
-        return outputXLS;
-    }
-
-    public InputStream getInputStream()
-    {
-        return inputStream;
     }
 
     public void setFormat( I18nFormat format )
@@ -297,6 +313,7 @@ public abstract class GeneratePreviewReportExcelSupport
         csTextLeft = templateWorkbook.createCellStyle();
         csTextRight = templateWorkbook.createCellStyle();
         csTextICDJustify = templateWorkbook.createCellStyle();
+        csTextChapterLeft = templateWorkbook.createCellStyle();
         csNumber = templateWorkbook.createCellStyle();
     }
 
@@ -392,8 +409,7 @@ public abstract class GeneratePreviewReportExcelSupport
             + File.separator + reportExcel.getExcelTemplateFile() );
 
         this.outputReportFile = new File( reportTempDir, currentUserService.getCurrentUsername()
-            + this.dateformatter.format( calendar.getTime() )
-            + new File( reportExcel.getExcelTemplateFile() ).getName() );
+            + this.dateformatter.format( calendar.getTime() ) + reportExcel.getExcelTemplateFile() );
 
         this.outputStreamExcelTemplate = new FileOutputStream( outputReportFile );
 
@@ -612,7 +628,51 @@ public abstract class GeneratePreviewReportExcelSupport
         {
             throw new RuntimeException( "Illegal DataElement id", ex );
         }
+    }
 
+    protected void installReadTemplateFile( ReportExcel reportExcel, Period period,
+        OrganisationUnitGroup organisationUnitGroup )
+        throws Exception
+    {
+        Calendar calendar = Calendar.getInstance();
+
+        File reportTempDir = reportLocationManager.getReportExcelTempDirectory();
+
+        this.inputStreamExcelTemplate = new FileInputStream( reportLocationManager.getReportExcelTemplateDirectory()
+            + File.separator + reportExcel.getExcelTemplateFile() );
+
+        this.outputReportFile = new File( reportTempDir, currentUserService.getCurrentUsername()
+            + this.dateformatter.format( calendar.getTime() ) + reportExcel.getExcelTemplateFile() );
+
+        this.outputStreamExcelTemplate = new FileOutputStream( outputReportFile );
+
+        this.templateWorkbook = new HSSFWorkbook( inputStreamExcelTemplate );
+
+        this.templateWorkbook.setSheetName( 0, reportExcel.getName().replaceAll( " ", "" ) );
+
+        this.initExcelFormat();
+
+        this.installDefaultExcelFormat();
+
+        ExcelUtils.writeValueByPOI( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
+            organisationUnitGroup.getName(), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
+
+        ExcelUtils.writeValueByPOI( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(), format
+            .formatPeriod( period ), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
+
+    }
+
+    protected void complete()
+        throws IOException
+    {
+        this.templateWorkbook.write( outputStreamExcelTemplate );
+
+        this.outputStreamExcelTemplate.close();
+
+        selectionManager.setReportExcelOutput( outputReportFile.getPath() );
+
+        //inputStream = new BufferedInputStream( new FileInputStream( this.outputReportFile ) );
+        //outputReportFile.delete();
     }
 
 }

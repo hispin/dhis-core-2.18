@@ -2,6 +2,7 @@
 /* body sector
 -----------------------------------------*/
 	body { 
+		background-attachment:scroll; 
 		background-color:#E1FFFF; 
 	} 
 	
@@ -11,10 +12,10 @@
 	table { 
 		border:2px dotted #FF9933; 
 		border-collapse:seperate; 
-		border-spacing:2px;
-		width:100%; 
+		border-spacing:3px;
 		empty-cells:hide; 
 		font-weight:bold; 
+		width:100%; 
 	} 
 	
 
@@ -22,12 +23,11 @@
 -----------------------------------------*/	
 	
 	td { 
-		border-style:solid; 
-		border-width:0px; 
-		width:10%; 
+		border-style:outset; 
+		border-width:1px; 
 	} 
 	td.formatNumber { 
+		color:blue; 
 		margin:60%;
 		text-align:center; 
-		color:blue; 
 	} 

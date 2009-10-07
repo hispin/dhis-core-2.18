@@ -31,7 +31,8 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id: OpenPreviewReportAction.java 2009-09-16 14:00:00Z$
+ * @version $Id$
+ * @since 2009-09-16
  */
 
 public class OpenPreviewReportAction
@@ -46,6 +47,8 @@ public class OpenPreviewReportAction
     private Integer reportId;
 
     private Integer periodId;
+
+    private Integer sheetId;
 
     // -------------------------------------------
     // Getter & Setter
@@ -71,6 +74,16 @@ public class OpenPreviewReportAction
         this.periodId = periodId;
     }
 
+    public Integer getSheetId()
+    {
+        return sheetId;
+    }
+
+    public void setSheetId( Integer sheetId )
+    {
+        this.sheetId = sheetId;
+    }
+
     // --------------------------------------------------------
     // Implemented method
     // --------------------------------------------------------
@@ -78,10 +91,17 @@ public class OpenPreviewReportAction
     public String execute()
         throws Exception
     {
+        if ( sheetId == null )
+        {
+            sheetId = -1;
+        }
         if ( (reportId == null) && (periodId == null) )
         {
             return INPUT;
         }
+        
+        System.out.println("OpenPreviewReportAction.java - sheetId = " + sheetId);
+        
         return SUCCESS;
     }
 }

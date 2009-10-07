@@ -33,7 +33,8 @@ import org.apache.poi.hssf.usermodel.HSSFHeader;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id: InitializePOIStylesManager.java 2009-09-18 16:45:00Z hieuduy$
+ * @version $Id$
+ * @since 2009-09-18 16:45:00Z
  */
 public interface InitializePOIStylesManager
 {
