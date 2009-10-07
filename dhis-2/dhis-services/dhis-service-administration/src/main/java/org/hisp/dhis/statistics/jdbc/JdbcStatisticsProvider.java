@@ -71,6 +71,8 @@ public class JdbcStatisticsProvider
         objectCounts.put( Objects.VALIDATIONRULE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM validationrule" ) );
         objectCounts.put( Objects.PERIOD, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM period" ) );
         objectCounts.put( Objects.DATAVALUE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM datavalue" ) );
+        objectCounts.put( Objects.AGGREGATEDDATAVALUE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM aggregateddatavalue" ) );
+        objectCounts.put( Objects.AGGREGATEDINDICATORVALUE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM aggregatedindicatorvalue" ) );
         
         return objectCounts;
     }
