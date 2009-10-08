@@ -27,8 +27,6 @@ package org.hisp.dhis.reportexcel.export.advance.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.util.Collection;
 import java.util.Set;
 
@@ -97,9 +95,9 @@ public class GenerateAdvancedReportExcelOrganisationGroupListingAction
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( organisationGroupId.intValue() );
 
-        ReportExcelOganiztionGroupListing reportExcel = (ReportExcelOganiztionGroupListing) reportService.getReportExcel( selectionManager
-            .getSelectedReportExcelId() );
-        
+        ReportExcelOganiztionGroupListing reportExcel = (ReportExcelOganiztionGroupListing) reportService
+            .getReportExcel( selectionManager.getSelectedReportExcelId() );
+
         this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
