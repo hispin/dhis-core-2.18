@@ -86,6 +86,8 @@ public class GenerateAdvancedReportExcelOrganisationGroupListingAction
     public String execute()
         throws Exception
     {
+        statementManager.initialise();
+        
         Period period = selectionManager.getSelectedPeriod();
 
         this.installExcelFormat();
