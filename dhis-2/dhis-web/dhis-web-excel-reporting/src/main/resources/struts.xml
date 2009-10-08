@@ -705,5 +705,11 @@
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
 
+        <action name="cleanUpReportExcel"
+            class="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction">
+            <result name="success" type="velocity-xml">
+                /dhis-web-excel-reporting/responseSuccess.vm</result>
+        </action>
+
 	</package>
 </struts>
