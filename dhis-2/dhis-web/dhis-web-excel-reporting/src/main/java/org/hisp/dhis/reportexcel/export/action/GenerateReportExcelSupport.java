@@ -259,7 +259,7 @@ public abstract class GenerateReportExcelSupport
 
     WritableCellFormat textNumberBoldRight = new WritableCellFormat( writableNumberFont );
 
-    WritableCellFormat textICDBoldJustify = new WritableCellFormat( writableICDFont );
+    protected WritableCellFormat textICDBoldJustify = new WritableCellFormat( writableICDFont );
 
     protected WritableCellFormat number = new WritableCellFormat();
 

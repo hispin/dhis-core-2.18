@@ -1,0 +1,19 @@
+﻿<h2><a href="administration.action">$i18n.getString( "administration" )&nbsp;</a></h2>
+
+<h2><a href="selectExportReportParam.action">$i18n.getString( "generate_report" )&nbsp;</a></h2>
+<ul>
+	<li><a href="selectExportReportParam.action">$i18n.getString( "generate_report" )&nbsp;</a></li>	
+	<li><a href="getInformation.action">$i18n.getString( "import_excel_file_manager" )&nbsp;</a></li>	
+	<li><a href="selectDataSetCompletedReport.action">$i18n.getString( "dataset_completed_report" )&nbsp;</a></li>	
+	<li><a href="viewDataEntryStatus.action">$i18n.getString( "data_status" )</a></li>	
+	<li><a href="openIndividualReportExcel.action">$i18n.getString( "individual_report" )</a></li>	
+
+</ul>
+
+<script type="text/javascript">
+	var i18n_deleted_file = '$encoder.jsEncode( $i18n.getString( "deleted_file" ) )';
+	var i18n_name = '$encoder.jsEncode( $i18n.getString( "name" ) )';
+	var i18n_size = '$encoder.jsEncode( $i18n.getString( "size" ) )';
+	var i18n_create_date = '$encoder.jsEncode( $i18n.getString( "create_date" ) )';	
+	
+</script>

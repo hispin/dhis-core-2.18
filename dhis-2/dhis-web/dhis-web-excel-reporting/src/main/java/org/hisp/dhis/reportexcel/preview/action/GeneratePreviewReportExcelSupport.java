@@ -301,7 +301,7 @@ public abstract class GeneratePreviewReportExcelSupport
 
     SimpleDateFormat dateformatter = new SimpleDateFormat( "dd.MM.yyyy.h.mm.ss.a" );
 
-    protected void initExcelFormat()
+    private void initExcelFormat()
         throws Exception
     {
         hssfSheet = templateWorkbook.getSheetAt( 0 );
@@ -309,7 +309,9 @@ public abstract class GeneratePreviewReportExcelSupport
         csFont = templateWorkbook.createFont();
         dFormat = templateWorkbook.createDataFormat();
         csHeader = templateWorkbook.createCellStyle();
+System.out.println("\n\n\n templateWorkbook : " + templateWorkbook);
         csText = templateWorkbook.createCellStyle();
+System.out.println("\n\n\n csText : " + csText);
         csTextLeft = templateWorkbook.createCellStyle();
         csTextRight = templateWorkbook.createCellStyle();
         csTextICDJustify = templateWorkbook.createCellStyle();

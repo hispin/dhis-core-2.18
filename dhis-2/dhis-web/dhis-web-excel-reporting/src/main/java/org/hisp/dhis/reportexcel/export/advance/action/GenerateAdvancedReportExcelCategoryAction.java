@@ -183,7 +183,6 @@ public class GenerateAdvancedReportExcelCategoryAction
                         double value = 0.0;
                         for(OrganisationUnit organisationUnit : organisationUnits){
                             value += this.getDataValue( newReportItem, organisationUnit );
-System.out.println("\n\n\n value : " + value);                            
                         }
                         ExcelUtils.writeValue( rowBegin, reportItem.getColumn(), String.valueOf( value ),
                             ExcelUtils.NUMBER, sheet, this.number );

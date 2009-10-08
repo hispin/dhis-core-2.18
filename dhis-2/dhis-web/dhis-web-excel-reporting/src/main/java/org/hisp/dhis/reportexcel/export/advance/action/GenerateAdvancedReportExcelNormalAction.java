@@ -80,58 +80,56 @@ public class GenerateAdvancedReportExcelNormalAction
     // Action implementation
     // ---------------------------------------------------------------------
 
-    public String execute()throws Exception
+    public String execute()
+        throws Exception
     {
-        
-            Period period = selectionManager.getSelectedPeriod();
 
-            this.installExcelFormat();
+        Period period = selectionManager.getSelectedPeriod();
 
-            this.installPeriod( period );
+        this.installExcelFormat();
 
-            OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
-                .getOrganisationUnitGroup( organisationGroupId );
+        this.installPeriod( period );
 
-            Set<OrganisationUnit> organisationList = organisationUnitGroup.getMembers();
+        OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
+            .getOrganisationUnitGroup( organisationGroupId );
 
-            statementManager.initialise();
-            
-            ReportExcelNormal reportExcel = (ReportExcelNormal) reportService.getReportExcel( selectionManager
-                .getSelectedReportExcelId() );
+        Set<OrganisationUnit> organisationList = organisationUnitGroup.getMembers();
 
-            Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportExcelItems();
+        statementManager.initialise();
 
-            this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );
+        ReportExcelNormal reportExcel = (ReportExcelNormal) reportService.getReportExcel( selectionManager
+            .getSelectedReportExcelId() );
 
-            for ( ReportExcelItem reportItem : reportExcelItems )
+        Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportExcelItems();
+
+        this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );
+
+        for ( ReportExcelItem reportItem : reportExcelItems )
+        {
+            double value = 0;
+
+            Iterator<OrganisationUnit> iter = organisationList.iterator();
+
+            while ( iter.hasNext() )
             {
-                double value = 0;
+                OrganisationUnit organisationUnit = iter.next();
 
-                Iterator<OrganisationUnit> iter = organisationList.iterator();
-
-                while ( iter.hasNext() )
-                {
-
-                    OrganisationUnit organisationUnit = iter.next();
-
-                    value += getDataValue( reportItem, organisationUnit );
-                }
-
-                WritableSheet sheet = outputReportWorkbook.getSheet( reportItem.getSheetNo() - 1 );
-
-                ExcelUtils.writeValue( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
-                    ExcelUtils.NUMBER, sheet, number );
-
+                value += getDataValue( reportItem, organisationUnit );
             }
 
-            this.complete();
+            WritableSheet sheet = outputReportWorkbook.getSheet( reportItem.getSheetNo() - 1 );
 
-            statementManager.destroy();
+            ExcelUtils.writeValue( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
+                ExcelUtils.NUMBER, sheet, number );
 
-            return SUCCESS;
-    
-      
-       
+        }
+
+        this.complete();
+
+        statementManager.destroy();
+
+        return SUCCESS;
+
     }
 
 }
