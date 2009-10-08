@@ -100,9 +100,6 @@ public class GenerateAdvancedReportExcelPeriodColumnListingAction
     {
         statementManager.initialise();
 
-        // OrganisationUnit organisationUnit =
-        // organisationUnitSelectionManager.getSelectedOrganisationUnit();
-
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( organisationGroupId.intValue() );
 
@@ -139,15 +136,7 @@ public class GenerateAdvancedReportExcelPeriodColumnListingAction
 
         }
 
-        outputReportWorkbook.write();
-
-        outputReportWorkbook.close();
-
-        outputXLS = outputReportFile.getName();
-
-        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
-
-        outputReportFile.delete();
+        this.complete();
 
         statementManager.destroy();
 
@@ -172,7 +161,6 @@ public class GenerateAdvancedReportExcelPeriodColumnListingAction
                     {
                         value += MathUtils.calculateExpression( generateExpression( reportItem, p.getStartDate(), p
                             .getEndDate(), organisationUnit ) );
-System.out.println("\n\n\n organisationUnit : " + organisationUnit + "\t value = " + value);                        
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ) )
                     {

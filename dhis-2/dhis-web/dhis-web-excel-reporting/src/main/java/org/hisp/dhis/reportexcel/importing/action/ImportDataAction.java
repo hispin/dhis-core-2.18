@@ -58,7 +58,7 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
  * @author Chau Thu Tran
- * @version $Id
+ * @version $Id$
  */
 
 public class ImportDataAction
@@ -164,7 +164,7 @@ public class ImportDataAction
     public String execute()
         throws Exception
     {
-       ReportExcel report = reportExcelService.getReportExcel( reportId.intValue() );
+        ReportExcel report = reportExcelService.getReportExcel( reportId.intValue() );
 
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 

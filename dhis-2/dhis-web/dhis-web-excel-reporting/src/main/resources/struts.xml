@@ -398,7 +398,7 @@
 			class="org.hisp.dhis.reportexcel.export.action.GetMonthlyPeriodsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responsePeriods.vm</result>
-		</action>	
+		</action>
 
 		<!-- Generate Report By Ajax -->
 
@@ -440,8 +440,8 @@
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelPeriodColumnListingAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
-		</action>		
-		
+		</action>
+
 		<action name="downloadExcelOutput"
 			class="org.hisp.dhis.reportexcel.export.action.DowloadExcelAction">
 			<result name="success" type="stream">
@@ -554,7 +554,7 @@
 			<result name="success" type="velocity">/popup.vm</result>
 			<param name="page">/dhis-web-excel-reporting/viewCustomDataSetReport.vm</param>
 		</action>
-        
+
 		<!-- PREVIEW REPORT EXCEL ACTION -->
 
 		<action name="validateGenerateReport"
@@ -624,53 +624,86 @@
 			<param name="stylesheets">style/previewStyle.css</param>
 			<param name="javascripts">javascript/preview.js</param>
 		</action>
-		
-        <!--  GERERATE ADVANCE -->
 
-        <action name="organisationUnitGroupList"
-            class="org.hisp.dhis.reportexcel.export.advance.action.GetOrganisationUnitGroupListAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-excel-reporting/responseOrganisationUnitGroupObjects.vm
-            </result>
-            <result name="error" type="velocity-xml">
-                /dhis-web-excel-reporting/responseError.vm</result>
-        </action>
+		<!--  GERERATE ADVANCE -->
 
-        <action name="generateAdvancedReportExcel"
-            class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
-            <result name="CATEGORY" type="chain">generateAdvancedReportExcelCategory
+		<action name="organisationUnitGroupList"
+			class="org.hisp.dhis.reportexcel.export.advance.action.GetOrganisationUnitGroupListAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseOrganisationUnitGroupObjects.vm
+			</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-excel-reporting/responseError.vm</result>
+		</action>
+
+		<action name="generateAdvancedReportExcel"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
+			<result name="CATEGORY" type="chain">
+				generateAdvancedReportExcelCategory
             </result>
-            <result name="NORMAL" type="chain">generateAdvancedReportExcelNormal
-            </result>
-            <result name="ORGANIZATION_GROUP_LISTING" type="chain">
-                generateAdvancedReportExcelOrganizationGroupListing</result>
-            <result name="PERIOD_COLUMN_LISTING" type="chain">
-                generateAdvancedReportExcelPeriodColumnListingAction</result>
-        </action>
-        
-        <action name="generateAdvancedReportExcelNormal"
-            class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelNormalAction">
-            <result name="success" type="velocity-xml">
+			<result name="NORMAL" type="chain">generateAdvancedReportExcelNormal
+			</result>
+			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
+				generateAdvancedReportExcelOrganizationGroupListing</result>
+			<result name="PERIOD_COLUMN_LISTING" type="chain">
+				generateAdvancedReportExcelPeriodColumnListingAction</result>
+		</action>
+
+		<action name="generateAdvancedReportExcelNormal"
+			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelNormalAction">
+			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
-        </action>
-        
-        <action name="generateAdvancedReportExcelOrganizationGroupListing"
-            class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelOrganisationGroupListingAction">
-            <result name="success" type="velocity-xml">
+		</action>
+
+		<action name="generateAdvancedReportExcelOrganizationGroupListing"
+			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelOrganisationGroupListingAction">
+			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
-        </action>
-        
-        <action name="generateAdvancedReportExcelPeriodColumnListingAction"
-            class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelPeriodColumnListingAction">
-            <result name="success" type="velocity-xml">
+		</action>
+
+		<action name="generateAdvancedReportExcelPeriodColumnListingAction"
+			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelPeriodColumnListingAction">
+			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
-        </action>
-        
-        <action name="generateAdvancedReportExcelCategory"
-            class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelCategoryAction">
-           <result name="success" type="velocity-xml">
+		</action>
+
+		<action name="generateAdvancedReportExcelCategory"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelCategoryAction">
+			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
-        </action>
-   
+		</action>
+
+		<!-- INDIVIDUAL REPORT EXCEL -->
+
+		<action name="openIndividualReportExcel"
+			class="org.hisp.dhis.reportexcel.export.individual.action.OpenIndividualReportExcelAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-excel-reporting/individualReportExcel.vm</param>
+            <param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
+            <param name="menuTreeHeight">220</param>
+			<param name="javascripts">javascript/individual.js,
+				javascript/commons.js,
+				../dhis-web-commons/ouwt/ouwt.js,
+				javascript/wz_tooltip/dw_event.js,
+				javascript/wz_tooltip/dw_tooltip.js,
+				javascript/wz_tooltip/dw_tooltip_aux.js,
+				javascript/wz_tooltip/dw_viewport.js</param>
+			<param name="page">/dhis-web-excel-reporting/individualReportExcel.vm</param>
+		</action>
+
+		<action name="filterAvailableDataElementsByDataElementGroup"
+			class="org.hisp.dhis.reportexcel.export.individual.action.DataElementListFilteredByGroup">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-dataset/responseDataElementGroup.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="generateIndividualReportExcel"
+			class="org.hisp.dhis.reportexcel.export.individual.action.GenerateIndividualReportExcelAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+		</action>
+
 	</package>
 </struts>
