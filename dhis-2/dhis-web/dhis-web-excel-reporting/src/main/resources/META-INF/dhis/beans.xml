@@ -827,5 +827,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
         <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 	</bean>
+	
+	<!-- Clean up Report Excel module -->
+	<bean
+        id="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction"
+        class="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction"
+        scope="prototype">
+        <property name="reportLocationManager" ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+    </bean>
 
 </beans>

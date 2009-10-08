@@ -1,8 +1,10 @@
-﻿<h3>$i18n.getString( "administration" )</h3>
+﻿<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>
+<h3>$i18n.getString( "administration" )</h3>
 <ul>
 	<li><a href="getConfiguration.action">$i18n.getString( "configuration" )&nbsp;</a></li>		
 	<li><a href="listReportExcel.action">$i18n.getString( "reports" )&nbsp;</a></li>		
-	<li><a href="listDataEntryStatus.action">$i18n.getString( "data_status" )&nbsp;</a></li>		
+	<li><a href="listDataEntryStatus.action">$i18n.getString( "data_status" )&nbsp;</a></li>
+	<li><a href="javascript: cleanUp();">$i18n.getString( "clean_up" )&nbsp;</a></li>		
 </ul>
 
 <script>
@@ -13,10 +15,10 @@
 		var request = new Request();
 		request.setResponseTypeXML( 'xmlObject' );
 		request.setCallbackSuccess( cleanUpCompleted );
-		request.send( 'cleanTempDirectory.action' );
+		request.send( 'cleanUpReportExcel.action' );
 	}
 	
 	function cleanUpCompleted( xmlObject ){	
-		alert("Clean up");
+		setMessage(xmlObject.firstChild.nodeValue);
 	}
 </script>
