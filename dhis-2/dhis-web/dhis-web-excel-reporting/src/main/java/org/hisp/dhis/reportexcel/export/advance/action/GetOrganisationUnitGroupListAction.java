@@ -39,7 +39,8 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetOrganisationUnitGroupListAction.java 1898 2006-09-22 12:06:56Z torgeilo $
+ * @version $Id: GetOrganisationUnitGroupListAction.java 1898 2006-09-22
+ *          12:06:56Z torgeilo $
  */
 public class GetOrganisationUnitGroupListAction
     extends ActionSupport
@@ -47,6 +48,11 @@ public class GetOrganisationUnitGroupListAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
     private OrganisationUnitGroupService organisationUnitGroupService;
 
