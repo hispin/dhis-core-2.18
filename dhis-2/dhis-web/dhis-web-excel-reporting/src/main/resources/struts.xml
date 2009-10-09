@@ -695,7 +695,7 @@
 		<action name="filterAvailableDataElementsByDataElementGroup"
 			class="org.hisp.dhis.reportexcel.export.individual.action.DataElementListFilteredByGroup">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-dataset/responseDataElementGroup.vm</result>
+				/dhis-web-excel-reporting/responseDataElementGroup.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
