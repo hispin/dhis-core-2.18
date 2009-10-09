@@ -578,39 +578,39 @@
 		<action name="previewReportExcel"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
 			<result name="CATEGORY" type="chain">
-				generatePreviewReportExcelCategory
+				generatePreviewCategory
 			</result>
 			<result name="NORMAL" type="chain">
-				generatePreviewReportExcelNormal
+				generatePreviewNormal
 			</result>
 			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
-				generatePreviewReportExcelOrganizationGroupListing
+				generatePreviewOrgGroupListing
 			</result>
 			<result name="PERIOD_COLUMN_LISTING" type="chain">
-				generatePreviewReportExcelPeriodColumnListing
+				generatePreviewPeriodColumnListing
 			</result>
 		</action>
 
-		<action name="generatePreviewReportExcelCategory"
-			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewReportExcelCategoryAction">
+		<action name="generatePreviewCategory"
+			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewCategoryAction">
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
 
-		<action name="generatePreviewReportExcelNormal"
-			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewReportExcelNormalAction">
+		<action name="generatePreviewNormal"
+			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewNormalAction">
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
 
-		<action name="generatePreviewReportExcelOrganizationGroupListing"
-			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewReportExcelOrganizationGroupListingAction">
+		<action name="generatePreviewOrgGroupListing"
+			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewOrgGroupListingAction">
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
 
-		<action name="generatePreviewReportExcelPeriodColumnListing"
-			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewReportExcelPeriodColumnListingAction">
+		<action name="generatePreviewPeriodColumnListing"
+			class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewPeriodColumnListingAction">
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
@@ -704,12 +704,55 @@
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
-
-		<action name="cleanUpReportExcel"
-			class="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+		
+        <action name="cleanUpReportExcel"
+            class="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction">
+            <result name="success" type="velocity-xml">
+                /dhis-web-excel-reporting/responseSuccess.vm</result>
+        </action>
+		
+		<!-- PREVIEW ADVANCED REPORT -->
+		<!--
+		<action name="previewAdvancedReportExcel"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
+			<result name="CATEGORY" type="chain">
+				generatePreviewAdvancedCategory
+            </result>
+			<result name="NORMAL" type="chain">
+				generatePreviewAdvancedNormal
+			</result>
+			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
+				generatePreviewAdvancedOrgGroupListing
+			</result>
+			<result name="PERIOD_COLUMN_LISTING" type="chain">
+				generatePreviewAdvancedPeriodColumnListing
+			</result>
+		</action>
+		
+		<action name="generatePreviewAdvancedCategory"
+			class="org.hisp.dhis.reportexcel.preview.advance.action.GeneratePreviewAdvancedCategoryAction">
+			<result name="success" type="chain">exportXMLChain
+			</result>
+		</action>
+		
+		<action name="generatePreviewAdvancedNormal"
+			class="org.hisp.dhis.reportexcel.preview.advance.action.GeneratePreviewAdvancedNormalAction">
+			<result name="success" type="chain">exportXMLChain
+			</result>
+		</action>
+	
+		<action name="generatePreviewAdvancedOrgGroupListing"
+			class="org.hisp.dhis.reportexcel.preview.advance.action.GeneratePreviewAdvancedOrgGroupListingAction">
+			<result name="success" type="chain">exportXMLChain
+			</result>
 		</action>
 
+		<action name="generatePreviewAdvancedPeriodColumnListing"
+			class="org.hisp.dhis.reportexcel.preview.advance.action.GeneratePreviewAdvancedPeriodColumnListingAction">
+			<result name="success" type="chain">exportXMLChain
+			</result>
+		</action>
+		-->
+		
 	</package>
 </struts>

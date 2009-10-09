@@ -50,6 +50,8 @@ public class OpenPreviewReportAction
 
     private Integer sheetId;
 
+    private Integer orgunitGroupId;
+
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
@@ -84,6 +86,16 @@ public class OpenPreviewReportAction
         this.sheetId = sheetId;
     }
 
+    public Integer getOrgunitGroupId()
+    {
+        return orgunitGroupId;
+    }
+
+    public void setOrgunitGroupId( Integer orgunitGroupId )
+    {
+        this.orgunitGroupId = orgunitGroupId;
+    }
+
     // --------------------------------------------------------
     // Implemented method
     // --------------------------------------------------------
@@ -99,9 +111,8 @@ public class OpenPreviewReportAction
         {
             return INPUT;
         }
-        
-        System.out.println("OpenPreviewReportAction.java - sheetId = " + sheetId);
-        
+
         return SUCCESS;
     }
+
 }
