@@ -116,33 +116,33 @@ public abstract class GeneratePreviewReportExcelSupport
 
     DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    StatementManager statementManager;
-
     DataElementService dataElementService;
 
     ReportLocationManager reportLocationManager;
-
-    ReportExcelService reportService;
-
-    PeriodService periodService;
 
     I18nFormat format;
 
     DataMartStore dataMartStore;
 
-    SelectionManager selectionManager;
-
     InitializePOIStylesManager initPOIStylesManager;
+    
+    protected StatementManager statementManager;
+    
+    protected SelectionManager selectionManager;
+    
+    protected ReportExcelService reportService;
+
+    protected PeriodService periodService;
 
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
 
-    Integer sheetId;
-
     String outputXLS;
 
     InputStream inputStream;
+    
+    protected Integer sheetId;
 
     // -------------------------------------------
     // Getter & Setter
@@ -242,62 +242,62 @@ public abstract class GeneratePreviewReportExcelSupport
     // -----------------------------------------
     // Local variable
     // -----------------------------------------
-    File outputReportFile;
+    protected File outputReportFile;
 
-    FileInputStream inputStreamExcelTemplate;
+    protected FileInputStream inputStreamExcelTemplate;
 
-    FileOutputStream outputStreamExcelTemplate;
+    protected FileOutputStream outputStreamExcelTemplate;
 
-    HSSFWorkbook templateWorkbook;
+    protected HSSFWorkbook templateWorkbook;
 
-    HSSFSheet hssfSheet;
+    protected HSSFSheet hssfSheet;
 
-    Date startDate;
+    protected Date startDate;
 
-    Date endDate;
+    protected Date endDate;
 
-    Date firstDayOfYear;
+    protected Date firstDayOfYear;
 
-    Date last3MonthStartDate;
+    protected Date last3MonthStartDate;
 
-    Date last3MonthEndDate;
+    protected Date last3MonthEndDate;
 
-    Date last6MonthStartDate;
+    protected Date last6MonthStartDate;
 
-    Date last6MonthEndDate;
+    protected Date last6MonthEndDate;
 
-    Date endDateOfYear;
+    protected Date endDateOfYear;
 
-    Date startQuaterly;
+    protected Date startQuaterly;
 
-    Date endQuaterly;
+    protected Date endQuaterly;
 
-    Date startSixMonthly;
+    protected Date startSixMonthly;
 
-    Date endSixMonthly;
+    protected Date endSixMonthly;
 
     // ------------------------------------------
     // Excel format
     // ------------------------------------------
-    HSSFFont csFont;
+    protected HSSFFont csFont;
 
-    HSSFHeader header;
+    protected HSSFHeader header;
 
-    HSSFDataFormat dFormat;
+    protected HSSFDataFormat dFormat;
 
-    HSSFCellStyle csHeader;
+    protected HSSFCellStyle csHeader;
 
-    HSSFCellStyle csText;
+    protected HSSFCellStyle csText;
 
-    HSSFCellStyle csTextLeft;
+    protected HSSFCellStyle csTextLeft;
 
-    HSSFCellStyle csTextRight;
+    protected HSSFCellStyle csTextRight;
 
-    HSSFCellStyle csTextICDJustify;
+    protected HSSFCellStyle csTextICDJustify;
 
-    HSSFCellStyle csTextChapterLeft;
+    protected HSSFCellStyle csTextChapterLeft;
 
-    HSSFCellStyle csNumber;
+    protected HSSFCellStyle csNumber;
 
     SimpleDateFormat dateformatter = new SimpleDateFormat( "dd.MM.yyyy.h.mm.ss.a" );
 
@@ -309,14 +309,13 @@ public abstract class GeneratePreviewReportExcelSupport
         csFont = templateWorkbook.createFont();
         dFormat = templateWorkbook.createDataFormat();
         csHeader = templateWorkbook.createCellStyle();
-System.out.println("\n\n\n templateWorkbook : " + templateWorkbook);
         csText = templateWorkbook.createCellStyle();
-System.out.println("\n\n\n csText : " + csText);
         csTextLeft = templateWorkbook.createCellStyle();
         csTextRight = templateWorkbook.createCellStyle();
         csTextICDJustify = templateWorkbook.createCellStyle();
         csTextChapterLeft = templateWorkbook.createCellStyle();
         csNumber = templateWorkbook.createCellStyle();
+
     }
 
     protected void installExcelFormat()
@@ -327,7 +326,7 @@ System.out.println("\n\n\n csText : " + csText);
     @SuppressWarnings( "static-access" )
     protected void installDefaultExcelFormat()
         throws Exception
-    {
+    {        
         initPOIStylesManager.initDefaultHeader( header );
         initPOIStylesManager.initDefaultFont( csFont );
         initPOIStylesManager.initDefaultCellStyle( csText, csFont );
@@ -344,12 +343,11 @@ System.out.println("\n\n\n csText : " + csText);
         initPOIStylesManager.initCellStyle( csNumber, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_CENTER );
-
+        
     }
 
     protected void installPeriod( Period period )
     {
-
         Calendar calendar = Calendar.getInstance();
 
         // Monthly period
@@ -488,8 +486,6 @@ System.out.println("\n\n\n csText : " + csText);
             {
                 String replaceString = matcher.group();
 
-                System.out.println( replaceString );
-
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
 
                 String indicatorIdString = replaceString.trim();
@@ -533,7 +529,6 @@ System.out.println("\n\n\n csText : " + csText);
 
         if ( reportItem.getPeriodType().equalsIgnoreCase( ReportExcelItem.PERIODTYPE.SELECTED_MONTH ) )
         {
-
             value = MathUtils
                 .calculateExpression( generateExpression( reportItem, startDate, endDate, organisationUnit ) );
         }
@@ -639,23 +634,23 @@ System.out.println("\n\n\n csText : " + csText);
         Calendar calendar = Calendar.getInstance();
 
         File reportTempDir = reportLocationManager.getReportExcelTempDirectory();
-
+       
         this.inputStreamExcelTemplate = new FileInputStream( reportLocationManager.getReportExcelTemplateDirectory()
             + File.separator + reportExcel.getExcelTemplateFile() );
-
+       
         this.outputReportFile = new File( reportTempDir, currentUserService.getCurrentUsername()
             + this.dateformatter.format( calendar.getTime() ) + reportExcel.getExcelTemplateFile() );
-
+       
         this.outputStreamExcelTemplate = new FileOutputStream( outputReportFile );
-
+       
         this.templateWorkbook = new HSSFWorkbook( inputStreamExcelTemplate );
-
+ 
         this.templateWorkbook.setSheetName( 0, reportExcel.getName().replaceAll( " ", "" ) );
-
+ 
         this.initExcelFormat();
-
+ 
         this.installDefaultExcelFormat();
-
+       
         ExcelUtils.writeValueByPOI( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
             organisationUnitGroup.getName(), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
 
@@ -673,8 +668,9 @@ System.out.println("\n\n\n csText : " + csText);
 
         selectionManager.setReportExcelOutput( outputReportFile.getPath() );
 
-        //inputStream = new BufferedInputStream( new FileInputStream( this.outputReportFile ) );
-        //outputReportFile.delete();
+        // inputStream = new BufferedInputStream( new FileInputStream(
+        // this.outputReportFile ) );
+        // outputReportFile.delete();
     }
 
 }

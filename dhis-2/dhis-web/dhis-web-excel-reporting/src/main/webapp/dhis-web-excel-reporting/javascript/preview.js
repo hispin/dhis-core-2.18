@@ -4,9 +4,20 @@ aMerged = null;
 globalReportId = 0;
 globalPeriodId = 0;
 
-function previewReport(reportId, periodId, sheetId, message) {
+function previewReport(reportId, periodId, sheetId, orgunitGroupId, message) {
 	
-	var url = "previewReportExcel.action?reportId="+reportId+"&periodId="+periodId+"&sheetId="+sheetId;
+	var url = "reportId="+reportId+"&periodId="+periodId+"&sheetId="+sheetId;
+	
+	if ( orgunitGroupId > 0 ) {
+	
+		url = "previewAdvancedReportExcel.action?orgunitGroupId=" + orgunitGroupId + "&" + url;
+	}
+	else {
+		url = "previewReportExcel.action?" + url;
+	}
+	
+	alert(url);
+	
 	globalReportId = reportId;
 	globalPeriodId = periodId;
 	
