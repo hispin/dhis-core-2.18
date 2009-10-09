@@ -627,15 +627,15 @@
 
 		<!--  GERERATE ADVANCE -->
 
-		<action name="organisationUnitGroupList"
-			class="org.hisp.dhis.reportexcel.export.advance.action.GetOrganisationUnitGroupListAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseOrganisationUnitGroupObjects.vm
-			</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-excel-reporting/responseError.vm</result>
-		</action>
-
+		<action name="selectAdvancedExportForm"
+            class="org.hisp.dhis.reportexcel.export.advance.action.SelectAdvancedExportFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-excel-reporting/advancedReport.vm</param>
+            <param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+            <param name="menuTreeHeight">250</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,javascript/commons.js,javascript/preview.js</param>
+        </action>
+     
 		<action name="generateAdvancedReportExcel"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
 			<result name="CATEGORY" type="chain">
@@ -678,10 +678,10 @@
 		<action name="openIndividualReportExcel"
 			class="org.hisp.dhis.reportexcel.export.individual.action.OpenIndividualReportExcelAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-excel-reporting/individualReportExcel.vm</param>
-            <param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
-            <param name="menuTreeHeight">220</param>
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/individualReportExcel.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
+			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">javascript/individual.js,
 				javascript/commons.js,
 				../dhis-web-commons/ouwt/ouwt.js,
@@ -705,11 +705,11 @@
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
 
-        <action name="cleanUpReportExcel"
-            class="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-excel-reporting/responseSuccess.vm</result>
-        </action>
+		<action name="cleanUpReportExcel"
+			class="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+		</action>
 
 	</package>
 </struts>

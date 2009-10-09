@@ -686,12 +686,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!--  GERERATE ADVANCE -->
 
 	<bean
-		id="org.hisp.dhis.reportexcel.export.advance.action.GetOrganisationUnitGroupListAction"
-		class="org.hisp.dhis.reportexcel.export.advance.action.GetOrganisationUnitGroupListAction"
+		id="org.hisp.dhis.reportexcel.export.advance.action.SelectAdvancedExportFormAction"
+		class="org.hisp.dhis.reportexcel.export.advance.action.SelectAdvancedExportFormAction"
 		scope="prototype">
 		<property name="organisationUnitGroupService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		</property>
+		<property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService" />
+        </property>
+        <property name="selectionManager">
+            <ref bean="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+        </property>
+        <property name="reportService">
+            <ref bean="org.hisp.dhis.reportexcel.ReportExcelService" />
+        </property>
 	</bean>
 
 	<bean

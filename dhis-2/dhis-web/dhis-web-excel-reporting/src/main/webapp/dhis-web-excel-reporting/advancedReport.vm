@@ -1,11 +1,11 @@
 ﻿<h2>$i18n.getString( "generate_report" )</h2>
 <table >	
 	<tr>
-		<td><label>$i18n.getString('group')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td >
-			<select type="text" id="group" name="group" style="min-width:20em" onchange="getReportExcelsByGroup()" #if(!$organisationUnit) disabled #end>
-				#foreach($group in $groups)
-					<option value='$group'>$encoder.htmlEncode( $group )</option>				
+		<td ><label>$i18n.getString('group')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td>
+			<select type="text" id="group" name="group" style="width:20em" onchange="getReportExcelsByGroup()" >
+				#foreach($reportGroup in $reportGroups)
+					<option value='$reportGroup'>$reportGroup</option>				
 				#end
 			</select>
 		</td>
@@ -13,7 +13,7 @@
 	<tr>
 		<td><label>$i18n.getString('reports')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select type="text" id="report" name="report" style="min-width:20em" #if(!$organisationUnit) disabled #end>
+			<select type="text" id="report" name="report" style="width:20em">
 				#foreach($report in $reports)
 					<option value='$report.id'>$encoder.htmlEncode( $report.name )</option>				
 				#end
@@ -23,19 +23,27 @@
 	<tr>
 		<td></td>
 		<td>
-			<input type="button" value="<<" onclick="lastYear();" #if(!$organisationUnit) disabled #end/><input type="button" value=">>" #if(!$organisationUnit) disabled #end onclick="nextYear()"/>
+			<input type="button" value="<<" onclick="lastYear();" /><input type="button" value=">>"  onclick="nextYear()"/>
 		</td>
     </tr>
 	<tr>
 		<td><label>$i18n.getString('period')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select type="text" id="period" style="min-width:20em" #if(!$organisationUnit) disabled #end>
+			<select type="text" id="period" name="period" style="width:20em" >
 				#foreach($period in $periods)
 					<option value='$period.id'>$format.formatPeriod( $period )</option>				
 				#end
 			</select>
 		</td>
     </tr>
+	<tr>
+	  <td>$i18n.getString('choose_orgunit_group')<em title="$i18n.getString( 'required' )" class="required">*</em> </td>
+	  <td><select id="availableOrgunitGroups" name="availableOrgunitGroups" style="width:20em" >
+	  	#foreach($organisationUnitGroup in $organisationUnitGroups)
+		<option value="$organisationUnitGroup.id">$organisationUnitGroup.name</option>
+		#end
+      </select></td>
+  </tr>
 </table> 
 <div id="actions" style="width:200px text-align:right">
 
@@ -50,10 +58,7 @@
 <br>
 <hr>
 <p>
-<input type="button" value='$i18n.getString( "preview_report" )' onclick="javascript: generic_type = 'preview'; validateGenerateReport('$!i18n.getString("please_wait")');" #if(!$organisationUnit) disabled #end/>
-<input name="generate_report" id="generate_report"  type="button" onClick="generateReportExcel()" value='$i18n.getString( "generate_report" )' #if(!$organisationUnit) disabled #end/>
-
-
+<input name="generate_report" id="generate_report"  type="button" onClick="generateAdvancedReportExcel()" value='$i18n.getString( "generate_report" )' />
 </p>
 <span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)">
 	
@@ -61,7 +66,5 @@
 <span id="loading" style="display:none;position:fixed;"><img src="../images/ajax-loader.gif" /></span>
 
 <script>
-#if($organisationUnit)
 	getReportExcelsByGroup();
-#end
 </script>
