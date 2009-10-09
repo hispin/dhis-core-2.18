@@ -1,15 +1,16 @@
 ﻿<h2>$i18n.getString( "generate_report" )</h2>
-<table >	
+<table width="100%">	
 	<tr>
-		<td ><label>$i18n.getString('group')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td >
+		<td width="264" ><label>$i18n.getString('group')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td width="555" >
 			<select type="text" id="group" name="group" style="min-width:20em" onchange="getReportExcelsByGroup()" #if(!$organisationUnit) disabled #end>
 				#foreach($group in $groups)
 					<option value='$group'>$encoder.htmlEncode( $group )</option>				
 				#end
 			</select>
 		</td>
-	    <td width="22%" rowspan="4" align="left" style="width:300px;vertical-align:top" >		
+	    <td width="496" align="left" style="width:300px;vertical-align:top" ><input type="checkbox" id="advancedCheck" name="advancedCheck" onChange="javascript : openGenerateAdvance();" />
+	      $i18n.getString('generate_report_by_orgunit_group') 		
 		</td>
 	</tr>
 	<tr>
@@ -21,7 +22,9 @@
 				#end
 			</select>
 		</td>
-    </tr>
+        <td width="496" rowspan="3" align="left" style="width:300px;vertical-align:top" ><select size="5" id="availableOrgunitGroups" name="availableOrgunitGroups" style="min-width:200px; max-width:200px "  disabled>
+        </select></td>
+	</tr>
 	<tr>
 		<td></td>
 		<td>
@@ -38,20 +41,6 @@
 			</select>
 		</td>
     </tr>
-	<tr>
-	  <td>&nbsp;</td>
-	  <td><input type="checkbox" id="advancedCheck" name="advancedCheck" onChange="javascript : openGenerateAdvance();" />
-$i18n.getString('generate_report_by_orgunit_group') </td>
-	  <td align="left" style="width:300px;vertical-align:top" >&nbsp;</td>
-  </tr>
-	<tr>
-	  <td>&nbsp;</td>
-	  <td><div id="generateAdvance" style="display:block;width:300px; z-index:10001;background-color: white;">
-          <select id="availableOrgunitGroups" name="availableOrgunitGroups" style="min-width:300px; "  disabled>
-  </select>
-</div>	</td>
-	  <td align="left" style="width:300px;vertical-align:top" >&nbsp;</td>
-  </tr>	
 </table> 
 <div id="actions" style="width:200px text-align:right">
 
@@ -66,7 +55,7 @@ $i18n.getString('generate_report_by_orgunit_group') </td>
 <br>
 <hr>
 <p>
-<input type="button" value='$i18n.getString( "preview_report" )' onclick="javascript: generic_type = 'preview'; openPreviewReport();" #if(!$organisationUnit) disabled #end/>
+<input type="button" value='$i18n.getString( "preview_report" )' onclick="javascript: generic_type = 'preview'; validateGenerateReport('$!i18n.getString("please_wait")');" #if(!$organisationUnit) disabled #end/>
 <input name="generate_report" id="generate_report"  type="button" onClick="generateReportExcel()" value='$i18n.getString( "generate_report" )' #if(!$organisationUnit) disabled #end/>
 
 
