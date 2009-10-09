@@ -35,6 +35,7 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
 public class GenerateReportExcelFlowAction
@@ -58,8 +59,10 @@ public class GenerateReportExcelFlowAction
     private Integer reportId;
 
     private Integer periodId;
-    
+
     private Integer sheetId;
+
+    private Integer orgunitGroupId;
 
     // -------------------------------------------
     // Getter & Setter
@@ -99,7 +102,17 @@ public class GenerateReportExcelFlowAction
     {
         this.sheetId = sheetId;
     }
-    
+
+    public Integer getOrgunitGroupId()
+    {
+        return orgunitGroupId;
+    }
+
+    public void setOrgunitGroupId( Integer orgunitGroupId )
+    {
+        this.orgunitGroupId = orgunitGroupId;
+    }
+
     public String execute()
         throws Exception
     {
@@ -113,4 +126,5 @@ public class GenerateReportExcelFlowAction
 
         return reportExcel.getReportType();
     }
+
 }

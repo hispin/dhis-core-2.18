@@ -16,8 +16,6 @@ function previewReport(reportId, periodId, sheetId, orgunitGroupId, message) {
 		url = "previewReportExcel.action?" + url;
 	}
 	
-	alert(url);
-	
 	globalReportId = reportId;
 	globalPeriodId = periodId;
 	
