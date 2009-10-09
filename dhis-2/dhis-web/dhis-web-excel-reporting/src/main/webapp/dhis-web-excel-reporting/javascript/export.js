@@ -50,11 +50,11 @@ function getListPeriodCompleted( xmlObject ){
 
 function generateReportExcel() {	
 
-	if(byId('advancedCheck').checked){
+	//if(byId('advancedCheck').checked){
 		
-		generateAdvancedReportExcel();
+		//generateAdvancedReportExcel();
 		
-	}else{
+	//}else{
 		$("#loading").showAtCenter( true );	
 		$.post("generateReportExcel.action",{
 		reportId:$('#report').val(),
@@ -64,7 +64,7 @@ function generateReportExcel() {
 			deleteDivEffect();
 			$("#loading").hide();		
 		},'xml');
-	}
+	//}
 }
 
 function generateAdvancedReportExcel() {	
@@ -81,40 +81,6 @@ function generateAdvancedReportExcel() {
 		},'xml');
 	
 }
-
-function openGenerateAdvance() {
-		
-	if(byId('advancedCheck').checked)
-	{
-		var availableList = byId('availableOrgunitGroups');
-		
-		if(availableList.options.length == 0){
-			
-			$.get("organisationUnitGroupList.action", 
-				{}, 
-				function (data){
-				
-					var xmlObject = data.getElementsByTagName('organisationUnitGroups')[0];
-					var availableObjectList = xmlObject.getElementsByTagName('organisationUnitGroup');
-		
-					for(var i=0;i<availableObjectList.length;i++){
-						var element = availableObjectList.item(i);
-						var name = element.getElementsByTagName('id')[0].firstChild.nodeValue;
-						var label = element.getElementsByTagName('name')[0].firstChild.nodeValue;
-						availableList.add(new Option(label, name),null);
-					}
-				},'xml'); 
-		}
-
-		byId('availableOrgunitGroups').disabled = false;
-	
-	}else{
-		byId('availableOrgunitGroups').disabled = true;
-	}
-			
-	
-}
-	
 
 generic_type = '';
 
@@ -171,6 +137,8 @@ function getNoSheetsOfReportExcel() {
 function openPreviewReport() {
 	
 	var reportId = $('#report').val();
-	var periodId = $('#period').val();	
-	window.open("openPreviewReport.action?reportId=" + reportId + "&periodId=" + periodId + "&sheetId=1", "_blank", "width=900,height=600,scrollbars=yes,menubar=yes,resizable=yes");
+
+	var periodId = $('#period').val();
+
+	window.open("openPreviewReport.action?reportId=" + reportId + "&periodId=" + periodId, "_blank", "width=900,height=600,scrollbars=yes,menubar=yes,resizable=yes");
 }

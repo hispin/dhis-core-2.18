@@ -220,6 +220,7 @@ function getPeriods(){
 	request.setCallbackSuccess( getListPeriodCompleted );
 	request.send( '../dhis-web-commons-ajax/getPeriods.action?name=' + $("#availabelPeriodTypes").val()); 	
 }
+
 function getListPeriodCompleted( xmlObject ){
 	
 	clearListById('availablePeriods');
