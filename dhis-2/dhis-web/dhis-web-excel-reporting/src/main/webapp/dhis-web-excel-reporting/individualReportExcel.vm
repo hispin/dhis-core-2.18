@@ -22,7 +22,7 @@ dw_Tooltip.content_vars = {
 
 </script>
 
-<h3>$i18n.getString( "fast_report_excel" )</h3>
+<h3>$i18n.getString( "individual_report" )</h3>
 
 <form id="editDataSetForm" name="editDataSetForm" method="post" onsubmit="submitForm(); return validateEditDataSet()">
   <div style="display:inline">
@@ -53,8 +53,11 @@ dw_Tooltip.content_vars = {
     <col> ## Selected DataElements
     <thead>
 	  <tr>
-	  	<td><strong>Select data element</strong></td>
+	  	<th colspan="3"><strong>Select data element</strong></th>
 	  </tr>
+	  <tr>
+	    <td colspan="3">&nbsp;</td>
+      </tr>
       <tr>
         <th>$i18n.getString( "available_data_elements" )</th>
 		<th>$i18n.getString( "filter" )</th>
@@ -80,7 +83,7 @@ dw_Tooltip.content_vars = {
       <tr>
         <td><input type="text" id="availableDataElementsFilter" name="availableDataElementsFilter" onKeyUp="filterAvailableDataElements()" style="width:30em"> </td>
         <td>&nbsp;</td>
-      	<td><input type="text" id="dataSetMembersFilter"  name="dataSetMembersFilter" onkeyup="filterDataSetMembers()" style="min-width:20em"></td>        
+      	<td><input type="text" id="dataSetMembersFilter"  name="dataSetMembersFilter" onkeyup="filterDataSetMembers()" style="max-width:30em;min-width:30em"></td>        
       </tr>
       
       <tr>
@@ -89,7 +92,8 @@ dw_Tooltip.content_vars = {
 		 
           <select size="15"  id="availableDataElements" name="availableDataElements" style="max-width:30em;min-width:30em;height:10em" onChange="getOptionCombos();">
           </select>
-		  <br>$i18n.getString('option_combo')<br>
+		  <br><br>
+		  <strong>$i18n.getString('category_option_combo')</strong><br>
 		  <select size="15" id="availableOptionCombos" name="availableOptionCombos" style="max-width:30em;min-width:30em;height:10em" ondblclick="addDataSetMembers();">
           </select>
 </td>
@@ -100,13 +104,19 @@ dw_Tooltip.content_vars = {
         </td>
         <td>
           <!-- List of all selected DataElements -->
-          <select  size="15" id="selectedDataElements" name="selectedDataElements" style="min-width:20em;height:20em" ondblclick="removeDataSetMembers();">
+          <select  size="15" id="selectedDataElements" name="selectedDataElements" style="max-width:30em;min-width:30em;height:22em" ondblclick="removeDataSetMembers();">
           </select>
         </td>
       </tr>
 	  <tr>
-	  	<td>Select period</td>
+	    <td>&nbsp;</td>
+      </tr>
+	  <tr>
+	  	<th colspan="3">Select period</th>
 	  </tr>
+	  <tr>
+	    <td colspan="3">&nbsp;</td>
+      </tr>
 	  <tr>
         <th>$i18n.getString( "available_periods" )</th>
 		<th>$i18n.getString( "filter" )</th>
@@ -114,8 +124,9 @@ dw_Tooltip.content_vars = {
       </tr>
 		<tr>
         <td>
-          <select id="availabelPeriodTypes" name="availabelPeriodTypes" style="min-width:20em" onChange="javascript: getPeriods();">
+          <select id="availabelPeriodTypes" name="availabelPeriodTypes" style="width:30em ;" onChange="javascript: getPeriods();">
             
+			<option value="" ></option>
             #foreach ( $periodType in $periodTypes )
               
             <option value="$periodType.name" >$i18n.getString( $periodType.name )</option>
@@ -130,9 +141,9 @@ dw_Tooltip.content_vars = {
 	  <tr>
         <td>
           <!-- List of all available DataElements -->
-          <select size="15" id="availablePeriods" name="availablePeriods" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' );">            
+          <select size="15" id="availablePeriods" name="availablePeriods" multiple="multiple" style="max-width:30em;min-width:30em;height:20em" ondblclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' );">
           </select>
-        </td>
+</td>
         <td>
           <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' );">
           <br>
@@ -140,7 +151,7 @@ dw_Tooltip.content_vars = {
         </td>
         <td>
           <!-- List of all selected DataElements -->
-          <select id="selectedPeriods" name="selectedPeriods" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' );">
+          <select id="selectedPeriods" name="selectedPeriods" multiple="multiple" style="max-width:30em;min-width:30em;height:20em" ondblclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' );">
           </select>
         </td>
       </tr>
@@ -149,8 +160,6 @@ dw_Tooltip.content_vars = {
         <td colspan="3">
           <input type="button" value="$i18n.getString( "generate" )" style="width:10em" onClick="generateIndividualReportExcel();">
 		  <input type="button" value="$i18n.getString( "bookmark" )" style="width:10em">
-		  <input type="button"
-            onclick="window.location.href='index.action'" value="$i18n.getString( "cancel" )" style="width:10em">
         </td>
       </tr>
       
