@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataadmin.action.outlieranalysis;
+package org.hisp.dhis.validationrule.action.outlieranalysis;
 
 /*
  * Copyright (c) 2004-${year}, University of Oslo

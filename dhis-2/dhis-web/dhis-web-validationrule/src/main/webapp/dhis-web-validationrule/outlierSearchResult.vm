@@ -3,7 +3,7 @@
 
 #if ( $outlierValues.size() == 0 )
 
-<span id="info">$i18n.getString( "no_values" ) ($searchTime ms).</span>
+<span id="info">$i18n.getString( "no_outlier_values_found" ) ($searchTime ms).</span>
 	
 <p><strong>$i18n.getString( "from_date" ):</strong> $fromDate <strong>$i18n.getString( "to_date" ):</strong> $toDate</p>
 
