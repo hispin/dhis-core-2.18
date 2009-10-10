@@ -1,4 +1,4 @@
-package org.hisp.dhis.system.deletion;
+package org.hisp.dhis.jdbc;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,30 +27,51 @@ package org.hisp.dhis.system.deletion;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.aspectj.lang.JoinPoint;
+import org.amplecode.quick.StatementManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.system.deletion.DeletionManager;
+import org.aspectj.lang.ProceedingJoinPoint;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class DeletionInterceptor
+public class StatementInterceptor
 {
+    private static final Log log = LogFactory.getLog( StatementInterceptor.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DeletionManager deletionManager;
-
-    public void setDeletionManager( DeletionManager deletionManager )
+    private StatementManager statementManager;
+        
+    public void setStatementManager( StatementManager statementManager )
     {
-        this.deletionManager = deletionManager;
+        this.statementManager = statementManager;
     }
-
-    public void intercept( JoinPoint joinPoint )
-    {
-        if ( joinPoint.getArgs() != null && joinPoint.getArgs().length > 0 )
+    
+    public Object intercept( ProceedingJoinPoint joinPoint )
+        throws Throwable
+    {      
+        Object object = null;
+        
+        statementManager.initialise();
+        
+        log.info( "Initialising statement manager" );
+        
+        try
         {
-            deletionManager.execute( joinPoint.getArgs()[0] );
+            object = joinPoint.proceed();
         }
+        finally
+        {
+            statementManager.destroy();
+            
+            log.info( "Destroying statement manager" );
+        }
+        
+        return object;
     }
 }

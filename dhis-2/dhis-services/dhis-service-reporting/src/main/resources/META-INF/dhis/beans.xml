@@ -229,17 +229,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.tallysheet.TallySheetPdfService"
     class="org.hisp.dhis.tallysheet.DefaultTallySheetPdfService"/>
         
-  <!-- AOP statement definitions --> <!-- TODO change to AOP 2.0 -->
-  
-  <bean class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-    <property name="advice" ref="statementInterceptor"/>
-    <property name="patterns">
-      <list>
-        <value>.*\.ChartService\.getJFreeChart.*</value>
-      </list>
-    </property>
-  </bean>
-  
   <!-- Startup routine definitions -->
   
   <bean id="org.hisp.dhis.startup.OpenHealthDataSourceWriter"
@@ -311,7 +300,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     </property>
   </bean>
   
-  <!-- Deletion AOP definitions -->
+  <!-- AOP definitions -->
   
   <aop:config>
   
@@ -322,6 +311,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       <aop:before pointcut="execution( * org.hisp.dhis.document.DocumentService.delete*(..) )" method="intercept"/>
     </aop:aspect>
       
+    <aop:aspect ref="statementInterceptor">
+      <aop:around pointcut="execution( * org.hisp.dhis.chart.ChartService.getJFreeChart(..) )" method="intercept"/>
+    </aop:aspect>
+      
   </aop:config>
-    
+      
 </beans>

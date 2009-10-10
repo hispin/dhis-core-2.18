@@ -93,13 +93,6 @@ public class RunValidationAction
         this.organisationUnitService = organisationUnitService;
     }
     
-    private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
-
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -169,8 +162,6 @@ public class RunValidationAction
             sources = organisationUnits;
         }
 
-        statementManager.initialise();
-        
         if ( validationRuleGroupId == -1 )
         {
             log.info( "Validating all rules" );
@@ -188,8 +179,6 @@ public class RunValidationAction
                 format.parseDate( startDate ), format.parseDate( endDate ), sources, group ) );
         }
 
-        statementManager.destroy();
-        
         Collections.sort( validationResults, new ValidationResultComparator() );
         
         SessionUtils.setSessionVar( KEY_VALIDATIONRESULT, validationResults );

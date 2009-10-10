@@ -529,7 +529,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     </property>
   </bean>
   
-  <!-- Deletion AOP definitions -->
+  <!-- AOP definitions -->
   
   <aop:config>
   
@@ -547,6 +547,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       <aop:before pointcut="execution( * org.hisp.dhis.period.PeriodService.delete*(..) )" method="intercept"/>
     </aop:aspect>
       
+    <aop:aspect ref="statementInterceptor">
+      <aop:around pointcut="execution( * org.hisp.dhis.validation.ValidationRuleService.validate(..) )" method="intercept"/>
+    </aop:aspect>
+    
   </aop:config>
   
 </beans>
