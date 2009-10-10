@@ -227,35 +227,5 @@
       </result>
     </action>
     
-    <!-- Outlier analysis -->
-    
-    <action name="outlierAnalysisForm" class="org.hisp.dhis.dataadmin.action.outlieranalysis.OutlierFormAction">
-      <result name="success" type="velocity">/main.vm</result>        
-      <param name="page">/dhis-web-maintenance-dataadmin/outlierForm.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <param name="javascripts">
-        ../dhis-web-commons/ouwt/ouwt.js,
-        ../dhis-web-commons/oust/oust.js,
-        ../dhis-web-commons/calendar/calendar.js,
-        ../dhis-web-commons/calendar/calendar-lang.js,
-        ../dhis-web-commons/calendar/calendar-setup.js,
-        ../dhis-web-commons/lists/lists.js,
-        javascript/outlierAnalysis.js
-      </param>
-      <interceptor-ref name="organisationUnitTreeStack"/>
-    </action>
-    
-    <action name="searchOutlierResult" class="org.hisp.dhis.dataadmin.action.outlieranalysis.GetOutliersAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-dataadmin/outlierSearchResult.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <param name="javascripts">javascript/outlierAnalysisEditValue.js</param>
-    </action>
-    
-    <action name="editOutlier" class="org.hisp.dhis.dataadmin.action.outlieranalysis.EditOutlierAction">
-      <result name="success" type="velocity">responseStatus.vm</result>
-      <result name="error" type="velocity">responseStatus.vm</result>
-    </action>
-    
   </package>
 </struts>

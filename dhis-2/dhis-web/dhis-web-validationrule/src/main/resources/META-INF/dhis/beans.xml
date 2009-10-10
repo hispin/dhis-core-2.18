@@ -248,4 +248,45 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
   
+  <!-- OutlierAnalysis -->
+  
+  <bean id="org.hisp.dhis.validationrule.action.outlieranalysis.GetOutliersAction" 
+    class="org.hisp.dhis.validationrule.action.outlieranalysis.GetOutliersAction"
+    scope="prototype">
+    <property name="minMaxOutlierAnalysisService" 
+      ref="org.hisp.dhis.outlieranalysis.MinMaxOutlierAnalysisService" />
+    <property name="stdDevOutlierAnalysisService" 
+      ref="org.hisp.dhis.outlieranalysis.StdDevOutlierAnalysisService" />
+    <property name="dataElementService"
+      ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="selectionTreeManager" 
+      ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+    <property name="periodService" 
+      ref="org.hisp.dhis.period.PeriodService" />
+    <property name="dataSetService" 
+      ref="org.hisp.dhis.dataset.DataSetService" />    
+  </bean>
+  
+  <bean id="org.hisp.dhis.validationrule.action.outlieranalysis.OutlierFormAction" 
+    class="org.hisp.dhis.validationrule.action.outlieranalysis.OutlierFormAction"
+    scope="prototype">
+    <property name="dataSetService"
+      ref="org.hisp.dhis.dataset.DataSetService"/>
+  </bean>
+      
+  <bean id="org.hisp.dhis.validationrule.action.outlieranalysis.EditOutlierAction" 
+    class="org.hisp.dhis.validationrule.action.outlieranalysis.EditOutlierAction"
+    scope="prototype">
+    <property name="dataValueService" 
+      ref="org.hisp.dhis.datavalue.DataValueService" />
+    <property name="dataElementService"
+      ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="periodService" 
+      ref="org.hisp.dhis.period.PeriodService" />
+    <property name="currentUserService"
+      ref="org.hisp.dhis.user.CurrentUserService" />
+  </bean>
+  
 </beans>
