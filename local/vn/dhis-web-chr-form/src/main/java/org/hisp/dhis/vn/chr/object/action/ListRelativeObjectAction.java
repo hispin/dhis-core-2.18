@@ -28,7 +28,8 @@ package org.hisp.dhis.vn.chr.object.action;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.vn.chr.Egroup;
@@ -44,7 +45,6 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-
 
 public class ListRelativeObjectAction
     implements Action
@@ -114,9 +114,9 @@ public class ListRelativeObjectAction
         return data;
     }
 
-    private Collection<Element> formLinks;
+    private List<Element> formLinks;
 
-    public Collection<Element> getFormLinks()
+    public List<Element> getFormLinks()
     {
         return formLinks;
     }
@@ -145,7 +145,7 @@ public class ListRelativeObjectAction
 
         form = formService.getForm( formId.intValue() );
 
-        formLinks = elementService.getElementsByFormLink( form );
+        formLinks = new ArrayList<Element>( elementService.getElementsByFormLink( form ) );
 
         int numberOfRecords = Integer.parseInt( (String) systemSettingManager
             .getSystemSetting( SystemSettingManager.KEY_CHR_NUMBER_OF_RECORDS ) );
@@ -162,6 +162,20 @@ public class ListRelativeObjectAction
                 {
 
                     Form fparent = element.getFormLink();
+
+                    formLinks.addAll( new ArrayList<Element>( elementService.getElementsByFormLink( fparent ) ) );
+
+                    Iterator<Element> iter = formLinks.iterator();
+
+                    while ( iter.hasNext() )
+                    {
+                        Element e = iter.next();
+
+                        if ( e.getForm().getId() == formId.intValue() )
+                        {
+                            iter.remove();
+                        }
+                    }
 
                     ArrayList<String> data = formManager.getObject( fparent, Integer.parseInt( objectId ) );
 
@@ -181,8 +195,10 @@ public class ListRelativeObjectAction
                                 break;
                         }// end for element
 
-                        if ( k == fparent.getNoColumnLink() )
+                        if ( k == fparent.getNoColumnLink() ){
                             break;
+                        }
+                        
                     }// end for egroup
                 }
             }

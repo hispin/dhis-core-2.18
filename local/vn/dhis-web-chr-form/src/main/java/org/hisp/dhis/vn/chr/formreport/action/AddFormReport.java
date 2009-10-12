@@ -115,7 +115,7 @@ public class AddFormReport
 
             // set formula for the element
             formula = formula.toLowerCase();
-            formReport.setFormula( formula );
+            formReport.setFormula( CodecUtils.unescape(formula ));
 
             // get all forms
             Collection<Form> forms = formService.getAllForms();

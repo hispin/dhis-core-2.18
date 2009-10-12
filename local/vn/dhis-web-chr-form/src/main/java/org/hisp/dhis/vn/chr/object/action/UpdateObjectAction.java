@@ -101,7 +101,7 @@ public class UpdateObjectAction
 
             String value = request.getParameterValues( "dataid" )[0];
 
-            data.add( CodecUtils.unescape( value ) );
+            data.add( value );
             
             for ( Egroup egroup : egroups )
             {

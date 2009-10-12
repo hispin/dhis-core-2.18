@@ -29,6 +29,7 @@ package org.hisp.dhis.vn.chr.object.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.vn.chr.Element;
@@ -123,7 +124,7 @@ public class ListObjectAction
         form = formService.getForm( formId.intValue() );
 
         formLinks = elementService.getElementsByFormLink( form );
-
+       
         String number = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_CHR_NUMBER_OF_RECORDS );
 
         int numberOfRecords = 50;
