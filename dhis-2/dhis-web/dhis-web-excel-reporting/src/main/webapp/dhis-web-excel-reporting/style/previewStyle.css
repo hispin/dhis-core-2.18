@@ -31,3 +31,14 @@
 		margin:60%;
 		text-align:center; 
 	} 
+
+/* label sector
+-----------------------------------------*/	
+
+	label.formatLabel { 
+		color:red; 
+		font-weight:bold; 
+		text-transform:uppercase; 
+		text-decoration:blink;
+		
+	} 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sheets>
+	<sheet>
+		<id>-1</id>
+		<name>[$!i18n.getString("all")]</name>
+	</sheet>
+	#foreach($sheet in $sheets)
+	<sheet>
+		<id>$sheet</id>
+		<name>$sheet</name>
+	</sheet>
+	#end
+</sheets>

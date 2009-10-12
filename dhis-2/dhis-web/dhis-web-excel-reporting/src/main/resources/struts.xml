@@ -323,7 +323,7 @@
 		<action name="getListSheet"
 			class="org.hisp.dhis.reportexcel.item.action.GetListSheetAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/sheets.vm</result>
+				/dhis-web-excel-reporting/responseSheets.vm</result>
 		</action>
 
 		<action name="getDataElementOrder"
@@ -621,8 +621,6 @@
 				/dhis-web-excel-reporting/responseReportPreview.vm</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-excel-reporting/responseError.vm</result>
-			<param name="stylesheets">style/previewStyle.css</param>
-			<param name="javascripts">javascript/preview.js</param>
 		</action>
 
 		<!--  GERERATE ADVANCE -->

@@ -4,6 +4,28 @@ aMerged = null;
 globalReportId = 0;
 globalPeriodId = 0;
 
+function getNoSheetsOfReportExcel( reportId ) {
+
+	if ( reportId == '-1' ) {
+		clearListById('sheetNoExcelFile');
+	}
+	else {
+		$.post("getListSheet.action", {
+			reportId:reportId
+		}, 	function ( xmlObject ) {
+			clearListById('sheetNoExcelFile');
+			xmlObject = xmlObject.getElementsByTagName('sheets')[0];
+			nodes	  = xmlObject.getElementsByTagName('sheet');
+			for (var i = 0 ; i < nodes.length ; i++)
+			{
+				var id = nodes[i].getElementsByTagName('id')[0].firstChild.nodeValue;
+				var name = nodes[i].getElementsByTagName('name')[0].firstChild.nodeValue;
+				addOptionToList(document.getElementById('sheetNoExcelFile'), id, name);
+			}
+		}, "xml");
+	}
+}
+
 function previewReport(reportId, periodId, sheetId, orgunitGroupId, message) {
 	
 	var url = "reportId="+reportId+"&periodId="+periodId+"&sheetId="+sheetId;
@@ -16,25 +38,27 @@ function previewReport(reportId, periodId, sheetId, orgunitGroupId, message) {
 		url = "previewReportExcel.action?" + url;
 	}
 	
-	globalReportId = reportId;
-	globalPeriodId = periodId;
-	
 	setMessage(message);
+	disable('sheetNoExcelFile');
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'reportXML' );
 	request.setCallbackSuccess( previewReportReceived );
 	request.send( url );
+	
 }
 
 function previewReportReceived( reportXML ) {
 
 	setMergedNumberForEachCell( reportXML );
 	exportFromXMLtoHTML( reportXML );
+	
+	hideMessage();
+	enable('sheetNoExcelFile');
 }
 
 function setMergedNumberForEachCell( parentElement ) {
-	
+		
 	aKey 		= new Array();
 	aMerged 	= new Array();
 	
@@ -61,20 +85,13 @@ return 1;
 function exportFromXMLtoHTML( parentElement ) {
 
 	var _index		= 0;
-	var _sHTML		= "";
+	var _sHTML		= "<table>";
 	var _sPattern	= "";
 	var _rows 		= new Array();
 	var _cols 		= new Array();
 	var _sheets		= parentElement.getElementsByTagName( 'sheet' );
 	var _title		= parentElement.getElementsByTagName( 'name' )[0].firstChild.nodeValue;
-		
-	_sHTML = 
-	"<html><head><title>"+_title+"<title>"
-	+"<link rel='stylesheet' type='text/css' href='style/previewStyle.css'/></head>"
-	+"<body><table>";
-		
-	document.write(_sHTML);
-
+	
 	for (var s = 0 ; s < _sheets.length ; s ++) {
 	
 		_rows = _sheets[s].getElementsByTagName( 'row' );
@@ -82,7 +99,7 @@ function exportFromXMLtoHTML( parentElement ) {
 		for (var i = 0 ; i < _rows.length ; i ++) {
 		
 			_index		= 0;
-			document.write("<tr>");
+			_sHTML = _sHTML + "<tr>";
 			
 			_cols = _rows[i].getElementsByTagName( 'col' );
 			
@@ -93,7 +110,7 @@ function exportFromXMLtoHTML( parentElement ) {
 				// Printing out the unformatted cells
 				for (; _index < _number ; _index ++) {
 					
-					document.write("<td/>");
+					_sHTML = _sHTML + "<td/>";
 				}
 
 				if ( _index == _number ) {
@@ -110,23 +127,42 @@ function exportFromXMLtoHTML( parentElement ) {
 					j 		= Number(j) + Number(_no_of_merged_cell);
 					_index 	= Number(_index) + Number(_no_of_merged_cell);
 
-					document.write("<td align='" + _align + "' colspan='" + _no_of_merged_cell) ;
+					_sHTML = _sHTML + "<td align='" + _align + "' colspan='" + _no_of_merged_cell;
 					
 					if ( isNaN(_sData) == false ) {
 						
-						document.write("' class='formatNumber");
+						_sHTML = _sHTML + "' class='formatNumber";
 					}
-					document.write("'>"+ _sData + "</td>");
+					_sHTML = _sHTML + "'>"+ _sData + "</td>";
 				}
 			}
-			document.write("</tr>");
+			_sHTML = _sHTML + "</tr>";
 		}
-		document.write("<br/>");
+		_sHTML = _sHTML + "<br/>";
 	}
-	document.write("</table></body></html>");
+	_sHTML = _sHTML + "</table>";
+	
+	document.getElementById("previewContentDiv").innerHTML = _sHTML;
 	
 	window.status= "DATAWARE HOUSE - "+ _title;
 	window.stop();
 }
 // END OF Previewed Report Excel //
 
+/**
+ * Clears the list.
+ *
+ * @param listId the id of the list.
+ */
+function clearListById( listId ) {
+    var list = document.getElementById( listId );
+    clearList( list );
+}
+
+/**
+ * Clears the list.
+ * @param list the list.
+ */
+function clearList( list ) {
+    list.options.length = 0;
+}
