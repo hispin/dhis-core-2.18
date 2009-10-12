@@ -23,6 +23,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<result name="error" type="velocity-xml">/dhis-web-chr-form/responseError.vm
 			</result>
+			<param name="stylesheets">styles/intro.css</param>
 		</action>
 
 		<!--  --><!--  --><!--  -->
@@ -256,6 +257,7 @@
 			<param name="page">/dhis-web-chr-form/addForm.vm</param>
 			<param name="menu">/dhis-web-chr-form/menu.vm</param>
 			<param name="javascripts">
+			     
 				javascripts/forms.js,
 				javascripts/dhtmlgoodies_calendar.js,
 				javascripts/calendar.js</param>
@@ -279,7 +281,7 @@
 
 		<!--  Show List relative Object  -->
 
-		<action name="listReletiveObject"
+		<action name="listRelativeObject"
 			class="org.hisp.dhis.vn.chr.object.action.ListRelativeObjectAction">
 			<result name="success" type="chain">getVisibleForms
 			</result>

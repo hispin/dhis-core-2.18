@@ -1,4 +1,35 @@
- <body onLoad="javacript: var dataObject = '$!data'; if(dataObject!=''){getData('$!data');} else{ javacript:var d, s; d = new Date(); s  = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); document.getElementById('datangaykham').value =  s ;  s  = d.getHours() + ':' + d.getMinutes(); document.getElementById('datagiokham').value =  s ;document.getElementById('tittleForm').innerHTML='$i18n.getString("add_object") - $!form.label';}">
+ <script language="javascript" src="javascripts/nutritionTable.js"></script>
+<script language="javascript">
+	function init(){
+	
+		 var dataObject = '$!data'; 
+		 
+		 if(dataObject!='')
+		 {
+		 	getData('$!data');
+		 }else
+		 { 
+		 
+		 	var d, s; 
+			d = new Date(); 
+			s  = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); 
+			
+			if( document.getElementById('datangaylapphieuskte')!=null)
+			{ 
+				document.getElementById('datangaylapphieuskte').value = s;
+			}
+			if( document.getElementById('datangaykham')!=null)
+			{ 
+				document.getElementById('datangaykham').value =  s ;  
+				s  = d.getHours() + ':' + d.getMinutes(); 
+				document.getElementById('datagiokham').value =  s ;
+				
+			} 			
+			document.getElementById('tittleForm').innerHTML='$i18n.getString("add_object") - $!form.label';
+		}
+	}
+</script>
+ <body onLoad="javacript:init();">
 
  <span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
  <form name="editForm" id="editForm" method="post" action="">
@@ -62,7 +93,7 @@
     <td><!--<select style="width:145px;" name="data" id="data" onBlur="javascript : validateObject($element.required, this.value); ">
     </select> -->
     <div id='$element.name' > 
-						  <select style=" width:145px;" id="data$element.name" name="data$element.name" onFocus="javascript: var select = '<select style=width:145px id=data name=data >'; fillup(select,'$element.initialValue', '$element.name');" ></select>
+						  <select style=" width:145px;" id="data$element.name" name="data$element.name" onFocus="javascript: var name = 'data$element.name' ; fillup(name,'$element.initialValue' );" ></select>
 	    </div>
       </td>
     <!-- date -->
@@ -128,7 +159,7 @@
   </tr>
   <tr class="formcontrol">
     <td height="25" colspan="6"  align="center"><input name="Submit" type="button" value="  $i18n.getString('save')   " onClick="javascript: var dataObject = '$!data';  if(dataObject!=''){ mode='UPDATE' ;} else{ mode='ADD';}; validateDataObject();">
-        <input name="Submit2" type="button" value=" $i18n.getString('cancel') " onClick=""></td>
+        <input name="Submit2" type="button" value=" $i18n.getString('cancel') " onClick="javascript: history.back(1)"></td>
 		  </tr>
     </table>
 </form>

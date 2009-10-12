@@ -43,7 +43,6 @@ import org.hisp.dhis.vn.chr.form.action.ActionSupport;
  * @version $Id$
  */
 
-
 public class UpdateFormReport
     extends ActionSupport
 {
@@ -121,7 +120,7 @@ public class UpdateFormReport
 
         // set formula for the element
         formula = formula.toLowerCase();
-        formReport.setFormula( formula );
+        formReport.setFormula( CodecUtils.unescape( formula ) );
 
         // get all forms
         Collection<Form> forms = formService.getAllForms();

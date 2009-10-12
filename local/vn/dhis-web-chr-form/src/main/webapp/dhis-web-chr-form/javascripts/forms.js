@@ -477,6 +477,7 @@ function addObjectForm(){
 // --------------------------------------------------------------------------------------
 //  Delete Object
 // --------------------------------------------------------------------------------------
+var i18n_confirm_delete;
 function deleteObject( id ){
 	
 	if(window.confirm(i18n_confirm_delete)){
@@ -485,9 +486,50 @@ function deleteObject( id ){
 			
 		var request = new Request();
 		request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( Completed );			
+		request.setCallbackSuccess( deleteObjectReceived );			
 		request.send( "deleteObject.action?formId="+ result + "&id=" + id );  
 	}		
+}
+
+// --------------------------------------------------------------------------------------
+//  Delete Objects
+// --------------------------------------------------------------------------------------
+function deleteObjects (i18n_confirm_delete){
+	
+	if(window.confirm(i18n_confirm_delete)){
+		
+		var result = getParamByURL('formId');
+		
+		var url =  "deleteObject.action?formId="+ result + "&id=";
+		var deleteElements = document.getElementsByName('delete');
+						
+		for(var i=0; i<deleteElements.length; i++){
+			var deleteElement = deleteElements[i];
+			if( deleteElement.checked ){
+				var request = new Request();
+				request.setResponseTypeXML( 'xmlObject' );
+				request.setCallbackSuccess( deleteObjectReceived );
+				request.send( url + deleteElement.value );
+			}
+			break;
+		}
+	}
+}
+
+function deleteObjectReceived(xmlObject){
+	var type = xmlObject.getAttribute( 'type' );
+	if(type =='error') {
+		setMessage(xmlObject.firstChild.nodeValue);
+	}
+  	if(type == 'success') {
+		
+		if(document.getElementById('message') != null){
+			document.getElementById('message').style.display = 'block';
+			document.getElementById('message').innerHTML = xmlObject.firstChild.nodeValue;
+		}
+	
+		window.location.reload();
+	}
 }
 
 // --------------------------------------------------------------------------------------
@@ -514,7 +556,6 @@ function validateDataObject(){
 	
 	request.send( url );    
 
-	
 }
 
 function validateObjectCompleted( xmlObject ){
@@ -523,23 +564,14 @@ function validateObjectCompleted( xmlObject ){
 	if(type =='error') {
 		setMessage(xmlObject.firstChild.nodeValue);
 	}
-  	if(type == 'success') {
-		if(mode == "ADD") 
+  	else if(type == 'success') {
+		if(mode == "ADD") {
 			addObject();
-		else 
+		} else {
 			updateObject();
+		}
 	}
 	
-	var formId = getParamByURL('formId');
-	var objectId = getParamByURL('objectId');
-	var url = '';
-	if(objectId!=''){
-		url = 'listReletiveObject.action?formId=' + formId + '&column='+getParamByURL('column') + '&objectId=' + getParamByURL('objectId');
-	}else{
-		url = 'listObject.action?formId='+formId ;
-	}
-	
-	window.location = url;
 }
 
 // Validate data inputted into a control
@@ -550,7 +582,6 @@ function validateObject( required, element, strerror ){
 		document.getElementById('info').innerHTML = strerror;
 		element.focus();
 	}
-	
 }
 
 function addObject () {	
@@ -578,28 +609,52 @@ function addObject () {
 	}
 	
 	var request = new Request();
+	
     request.setResponseTypeXML( 'xmlObject' );
  
- 	request.setCallbackSuccess( Completed );
+ 	request.setCallbackSuccess( objectCompleted );
 	
 	var url  = 'addObject.action' + dataParam;
 
 	request.send( url ); 
 }
 
+function objectCompleted(){
+		var url = '';
+		var objectId = getParamByURL('objectId');
+		
+		if(objectId == ''){
+			url = 'listObject.action?formId=' + getParamByURL('formId');
+		}else{
+			url = 'listReletiveObject.action?formId=' + getParamByURL('formId') +'&column=' + getParamByURL('column') + '&objectId=' + objectId;
+		}
+		
+		window.location.replace( url );  
+}
 // ------------------------------------------------------------
 //  Fillup Initial values into control
 // ------------------------------------------------------------
-function fillup (strSelect, str, div_name){
+function fillup (selectName, str){
+	
+	var operandList = byId( selectName );
+
+	operandList.options.length = 0;
+	
+	
 	if(str==null && str=='')
 		return;
 	var arr = str.split(",");
-	var result = strSelect;
+	//var result = strSelect;
 	for(var i=0; i<arr.length; i++){
-		result += "<option value='" + arr[i].replace(/^\s*|\s*$/g, "") + "'>" + arr[i] + "</option>";
+		//result += "<option value='" + arr[i].replace(/^\s*|\s*$/g, "") + "'>" + arr[i] + "</option>";
+		
+		var option = document.createElement( "option" );
+		option.value = arr[i].replace(/^\s*|\s*$/g, "") ;
+		option.text = arr[i] ;
+		
+		operandList.add( option, null );
 	}
-	result += '</select>';
-	document.getElementById(div_name).innerHTML = result;
+	
 }
 
 // ------------------------------------------------------------
@@ -645,7 +700,7 @@ function updateObject(){
 	
 	var request = new Request();
     request.setResponseTypeXML( 'xmlObject' );
- 	request.setCallbackSuccess( Completed );
+ 	request.setCallbackSuccess( objectCompleted );
 	var url  = 'updateObject.action' + dataParam;
 	request.send( url ); 
 }
@@ -853,4 +908,23 @@ function createCode(inputObjectName){
 
 function createCodeReceived( xmlObject ){
 		this.inputObject.value = xmlObject.getElementsByTagName("code")[0].firstChild.nodeValue;
+}
+
+function openLink(formId, objectId, column){
+	
+	var currentObjectId = getParamByURL('objectId');
+
+	var currentFormId = getParamByURL('formId');
+	
+	if(currentObjectId!='')
+	{
+		window.location='listReletiveObject.action?formId='+formId +'&column=' + column + '&objectId='+currentObjectId;
+	} 
+	else
+	{
+		window.location='listReletiveObject.action?formId='+formId +'&column=' + column + '&objectId='+objectId;
+	}
+	
+	
+	
 }
