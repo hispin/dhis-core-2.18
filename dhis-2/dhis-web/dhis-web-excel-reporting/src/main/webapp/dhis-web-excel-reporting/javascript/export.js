@@ -112,36 +112,12 @@ function validateGenerateReport(message) {
 	}, "xml");
 }
 
-function getNoSheetsOfReportExcel() {
-
-	if ( $("#report").val() == '-1' ) {
-		clearListById('sheetNoExcelFile');
-	}
-	else {
-		$.post("getListSheet.action", {
-			reportId:$("#report").val()
-		}, 		function ( xmlObject ) {
-				clearListById('sheetNoExcelFile');
-				xmlObject = xmlObject.getElementsByTagName('sheets')[0];
-				nodes	  = xmlObject.getElementsByTagName('sheet');
-				for (var i = 0 ; i < nodes.length ; i++)
-				{
-					var id = nodes[i].getElementsByTagName('id')[0].firstChild.nodeValue;
-					var name = nodes[i].getElementsByTagName('name')[0].firstChild.nodeValue;
-					addOption('sheetNoExcelFile', name, id);
-				}
-		}, "xml");
-	}
-}
 
 function openPreviewReport() {
 	
-	var reportId = $('#report').val();
-	var periodId = $('#period').val();	
-	var url = "openPreviewReport.action?reportId=" + reportId + "&periodId=" + periodId + "&sheetId=1";
+	var url = "openPreviewReport.action?reportId=" + $('#report').val() + "&periodId=" + $('#period').val() + "&sheetId=1";
 	
-	
-	if ( byId('advancedCheck').checked ) {
+	if ( byId('availableOrgunitGroups') != null ) {
 		
 		url = url + "&orgunitGroupId=" + byId('availableOrgunitGroups').value;
 	}

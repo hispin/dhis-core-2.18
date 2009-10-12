@@ -1,6 +1,22 @@
 
-<body onload="javascript: previewReport('$!reportId', '$!periodId', '$!sheetId', '$!i18n.getString("working_in_progress")');">
+<div id="showSheetDiv">
+	<table>
+		<tr>
+			<td><label class='formatLabel'>$i18n.getString('sheet_of_excel_file')</label></td>
+			<td>
+				<select id="sheetNoExcelFile" name="sheetNoExcelFile" onchange="javascript: previewReport('$!reportId', '$!periodId', this.value, '$!orgunitGroupId', '$!i18n.getString("working_in_progress")');">
+				</select>
+			</td>
+		</tr>
+	</table>
+</div>
+<br/>
+<div id="previewContentDiv">
+</div>
 
-	<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"></span>
-	
-</body>
+<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="hideById(this.id);"/>
+
+<script>
+	getNoSheetsOfReportExcel( '$!reportId' );
+	previewReport('$!reportId', '$!periodId', '$!sheetId', '$!orgunitGroupId', '$!i18n.getString("working_in_progress")');
+</script>
