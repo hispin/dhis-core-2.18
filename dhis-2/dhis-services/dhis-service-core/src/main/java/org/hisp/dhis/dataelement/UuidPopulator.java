@@ -35,9 +35,8 @@ import org.hisp.dhis.system.util.UUIdUtils;
 /**
  * @author Bob Jolliffe
  * @version $Id$
- *
- * Provides uuids to uniquely indentifiable objects which do not
- * already have them.
+ * 
+ * Provides uuids to uniquely indentifiable objects which do not already have them.
  */
 public class UuidPopulator
     extends AbstractStartupRoutine
@@ -48,13 +47,15 @@ public class UuidPopulator
     // Dependencies
     // -------------------------------------------------------------------------
 
-	// Should be all the things requiring uuids .. there are more.  
-	// What follows is a bit of a compromise hack essentially copying
-	// and pasting 3 times.  Should reimplement with common interface
-	// IdentifiableObject or something similar.
-	
-	private DataElementCategoryOptionService categoryOptionService;
+    // Should be all the things requiring uuids .. there are more.
+    // What follows is a bit of a compromise hack essentially copying
+    // and pasting 3 times. Should reimplement with common interface
+    // IdentifiableObject or something similar.
+
+    private DataElementCategoryOptionService categoryOptionService;
+
     private DataElementCategoryService categoryService;
+
     private DataElementService dataElementService;
 
     public void setCategoryOptionService( DataElementCategoryOptionService categoryOptionService )
@@ -62,12 +63,12 @@ public class UuidPopulator
         this.categoryOptionService = categoryOptionService;
     }
 
-	public void setCategoryService( DataElementCategoryService categoryService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
     }
 
-	public void setDataElementService( DataElementService dataElementService )
+    public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
@@ -82,42 +83,37 @@ public class UuidPopulator
         for ( DataElementCategoryOption option : categoryOptionService.getAllDataElementCategoryOptions() )
         {
             if ( option.getUuid() == null )
-        	{
-           		option.setUuid( UUIdUtils.getUUId() );
-           		categoryOptionService.updateDataElementCategoryOption( option );           		
-			    log.info( "Added uuid for CategoryOption '"+option.getName()+"'" );
-			
-        	}        
+            {
+                option.setUuid( UUIdUtils.getUUId() );
+                categoryOptionService.updateDataElementCategoryOption( option );
+                log.info( "Added uuid for CategoryOption '" + option.getName() + "'" );
+
+            }
         }
         log.info( "Checked CategoryOption uuids" );
-
 
         for ( DataElementCategory category : categoryService.getAllDataElementCategories() )
         {
             if ( category.getUuid() == null )
-        	{
-           		category.setUuid( UUIdUtils.getUUId() );
-           		categoryService.updateDataElementCategory( category );           		
-			    log.info( "Added uuid for Category '"+category.getName()+"'" );
-			
-        	}        
+            {
+                category.setUuid( UUIdUtils.getUUId() );
+                categoryService.updateDataElementCategory( category );
+                log.info( "Added uuid for Category '" + category.getName() + "'" );
+
+            }
         }
         log.info( "Checked Category uuids" );
 
         for ( DataElement de : dataElementService.getAllDataElements() )
         {
             if ( de.getUuid() == null )
-        	{
-           		de.setUuid( UUIdUtils.getUUId() );
-           		dataElementService.updateDataElement( de );           		
-			    log.info( "Added uuid for DataElement '"+de.getName()+"'" );
-			
-        	}        
+            {
+                de.setUuid( UUIdUtils.getUUId() );
+                dataElementService.updateDataElement( de );
+                log.info( "Added uuid for DataElement '" + de.getName() + "'" );
+
+            }
         }
         log.info( "Checked DataElement uuids" );
-
-     }   
-
+    }
 }
-
-

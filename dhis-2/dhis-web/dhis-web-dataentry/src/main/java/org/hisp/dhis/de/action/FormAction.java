@@ -40,6 +40,7 @@ import org.hisp.dhis.customvalue.CustomValueService;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataEntryForm;
@@ -152,6 +153,13 @@ public class FormAction
     public void setDataSetLockService( DataSetLockService dataSetLockService)
     {
         this.dataSetLockService = dataSetLockService;
+    }
+
+    private DataElementCategoryOptionComboService categoryOptionComboService;
+
+    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
+    {
+        this.categoryOptionComboService = categoryOptionComboService;
     }
 
     // -------------------------------------------------------------------------
@@ -316,10 +324,9 @@ public class FormAction
             return SUCCESS;
         }
 
-        Collection<DataElementCategoryOptionCombo> defaultOptionCombo = dataElements.iterator().next()
-            .getCategoryCombo().getOptionCombos();
-
-        optionComboId = defaultOptionCombo.iterator().next().getId();
+        DataElementCategoryOptionCombo defaultOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
+        
+        optionComboId = defaultOptionCombo.getId();
 
         // ---------------------------------------------------------------------
         // Get the min/max values
@@ -338,7 +345,7 @@ public class FormAction
         // Get the DataValues and create a map
         // ---------------------------------------------------------------------
 
-        Collection<DataValue> dataValues = dataValueService.getDataValues( organisationUnit, period, dataElements, defaultOptionCombo );
+        Collection<DataValue> dataValues = dataValueService.getDataValues( organisationUnit, period, dataElements );
 
         dataValueMap = new HashMap<Integer, DataValue>( dataValues.size() );
 

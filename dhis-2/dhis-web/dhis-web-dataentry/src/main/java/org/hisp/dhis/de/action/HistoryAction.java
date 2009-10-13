@@ -30,8 +30,6 @@ package org.hisp.dhis.de.action;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -87,13 +85,6 @@ public class HistoryAction
         this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
     
-    private DataElementCategoryComboService dataElementCategoryComboService;
-
-    public void setDataElementCategoryComboService( DataElementCategoryComboService dataElementCategoryComboService )
-    {
-        this.dataElementCategoryComboService = dataElementCategoryComboService;
-    }
-
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
@@ -183,9 +174,7 @@ public class HistoryAction
         
         if ( optionCombo == null )
         {
-            String defaultName = DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
-            
-            optionCombo = dataElementCategoryComboService.getDataElementCategoryComboByName( defaultName ).getOptionCombos().iterator().next();
+            optionCombo = dataElementCategoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
         }
 
         if ( dataElement == null )
