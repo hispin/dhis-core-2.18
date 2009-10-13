@@ -118,7 +118,7 @@ public class MinMaxGeneratingAction
         {        	
             if ( dataelement.getType().equals( DataElement.TYPE_INT ) )
             {            	
-                for( DataElementCategoryOptionCombo optionCombo : dataelement.getCategoryCombo().getOptionCombos() )
+                for ( DataElementCategoryOptionCombo optionCombo : dataelement.getCategoryCombo().getOptionCombos() )
                 {                	
                     DataElementHistory dataElementHistory = historyRetriever.getHistory( 
                         dataelement, optionCombo, organisationUnit, period, HISTORY_LENGTH );                	
