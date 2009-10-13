@@ -306,9 +306,8 @@ public class DefaultDataEntryScreenManager
         
         // ---------------------------------------------------------------------
         // Iterate through all matching data element fields
-        // ---------------------------------------------------------------------
+        // ---------------------------------------------------------------------        
 
-        //Map<Integer, DataElement> dataElementMap = getDataElementMap( dataSet );
         
         while ( dataElementMatcher.find() )
         {
@@ -329,7 +328,7 @@ public class DefaultDataEntryScreenManager
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
                 int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
-                DataElement dataElement = dataElementService.getDataElement( dataElementId ); //dataElementMap.get( dataElementId ); // //TODO change
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
                 
                 // -------------------------------------------------------------
                 // Find type of data element

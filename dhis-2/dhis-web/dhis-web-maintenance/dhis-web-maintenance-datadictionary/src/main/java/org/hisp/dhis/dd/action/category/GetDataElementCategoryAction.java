@@ -29,17 +29,11 @@ package org.hisp.dhis.dd.action.category;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementDimensionColumnOrder;
-import org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -66,15 +60,7 @@ public class GetDataElementCategoryAction
     public void setDataElementCategoryOptionService( DataElementCategoryOptionService dataElementCategoryOptionService )
     {
         this.dataElementCategoryOptionService = dataElementCategoryOptionService;
-    }
-
-    private DataElementDimensionColumnOrderService dataElementDimensionColumnOrderService;
-
-    public void setDataElementDimensionColumnOrderService(
-        DataElementDimensionColumnOrderService dataElementDimensionColumnOrderService )
-    {
-        this.dataElementDimensionColumnOrderService = dataElementDimensionColumnOrderService;
-    }
+    }    
 
     // -------------------------------------------------------------------------
     // Input/output
@@ -101,9 +87,9 @@ public class GetDataElementCategoryAction
         return dataElementCategoryOptions;
     }
 
-    private List<DataElementCategoryOption> allDataElementCategoryOptions;
+    private Collection<DataElementCategoryOption> allDataElementCategoryOptions = new ArrayList<DataElementCategoryOption>();
 
-    public List<DataElementCategoryOption> getAllDataElementCategoryOptions()
+    public Collection<DataElementCategoryOption> getAllDataElementCategoryOptions()
     {
         return allDataElementCategoryOptions;
     }
@@ -115,54 +101,14 @@ public class GetDataElementCategoryAction
     public String execute()
     {
         dataElementCategory = dataElementCategoryService.getDataElementCategory( dataElementCategoryId );
+        
+        dataElementCategoryOptions = dataElementCategory.getCategoryOptions();
+        
+        allDataElementCategoryOptions = dataElementCategoryOptionService
+        .getAllDataElementCategoryOptions();
 
-        List<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>( dataElementCategory
-            .getCategoryOptions() );
-
-        Map<Integer, DataElementCategoryOption> map = new TreeMap<Integer, DataElementCategoryOption>();
-
-        boolean storedDisplayOrder = true;
-
-        DataElementDimensionColumnOrder columnOrder = null;
-
-        for ( DataElementCategoryOption option : options )
-        {
-            columnOrder = dataElementDimensionColumnOrderService.getDataElementDimensionColumnOrder(
-                dataElementCategory, option );
-
-            if ( columnOrder == null )
-            {
-                storedDisplayOrder = false;
-                break;
-            }
-
-            map.put( columnOrder.getDisplayOrder(), option );
-        }
-
-        if ( storedDisplayOrder == false )
-        {
-            dataElementCategoryOptions = options;
-        }
-        else
-        {
-            dataElementCategoryOptions = map.values();
-        }
-
-        allDataElementCategoryOptions = new ArrayList<DataElementCategoryOption>( dataElementCategoryOptionService
-            .getAllDataElementCategoryOptions() );
-
-        Iterator<DataElementCategoryOption> categoryOptionIterator = allDataElementCategoryOptions.iterator();
-
-        while ( categoryOptionIterator.hasNext() )
-        {
-            DataElementCategoryOption option = categoryOptionIterator.next();
-
-            if ( dataElementCategoryOptions.contains( option ) )
-            {
-                categoryOptionIterator.remove();
-            }
-        }
-
+        allDataElementCategoryOptions.removeAll( dataElementCategoryOptions );
+        
         return SUCCESS;
     }
 }

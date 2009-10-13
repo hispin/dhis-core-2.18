@@ -29,8 +29,6 @@ package org.hisp.dhis.dataelement;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.hisp.dhis.common.GenericNameStore;
 import org.hisp.dhis.system.util.UUIdUtils;
@@ -54,14 +52,7 @@ public class DefaultDataElementCategoryService
     public void setDataElementCategoryStore( GenericNameStore<DataElementCategory> dataElementCategoryStore )
     {
         this.dataElementCategoryStore = dataElementCategoryStore;
-    }
-
-    private DataElementDimensionColumnOrderService dataElementDimensionColumnOrderService;
-
-    public void setDataElementDimensionColumnOrderService( DataElementDimensionColumnOrderService dataElementDimensionColumnOrderService )
-    {
-        this.dataElementDimensionColumnOrderService = dataElementDimensionColumnOrderService;
-    }
+    }    
 
     private I18nService i18nService;
 
@@ -132,27 +123,5 @@ public class DefaultDataElementCategoryService
     public DataElementCategory getDataElementCategoryByName( String name )
     {
         return dataElementCategoryStore.getByName( name );
-    }
-
-    public Collection<DataElementCategoryOption> getOrderedOptions( DataElementCategory category )
-    {
-        Map<Integer, DataElementCategoryOption> optionsMap = new TreeMap<Integer, DataElementCategoryOption>();
-
-        for ( DataElementCategoryOption option : category.getCategoryOptions() )
-        {
-            DataElementDimensionColumnOrder columnOrder = dataElementDimensionColumnOrderService
-                .getDataElementDimensionColumnOrder( category, option );
-
-            if ( columnOrder != null )
-            {
-                optionsMap.put( columnOrder.getDisplayOrder(), option );
-            }
-            else
-            {
-                optionsMap.put( option.getId(), option );
-            }
-        }
-
-        return optionsMap.values();
-    }
+    }    
 }

@@ -371,10 +371,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-    </property>
-    <property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    </property>
+    </property>    
   </bean>
   
 </beans>

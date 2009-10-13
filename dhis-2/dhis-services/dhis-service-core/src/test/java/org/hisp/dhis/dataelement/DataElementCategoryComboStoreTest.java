@@ -27,9 +27,10 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericNameStore;
@@ -55,7 +56,7 @@ public class DataElementCategoryComboStoreTest
     private DataElementCategory categoryB;
     private DataElementCategory categoryC;
     
-    private Set<DataElementCategory> categories;
+    private List<DataElementCategory> categories;
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -68,7 +69,7 @@ public class DataElementCategoryComboStoreTest
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        categories = new HashSet<DataElementCategory>();
+        categories = new ArrayList<DataElementCategory>();
         
         categoryA = new DataElementCategory( "CategoryA" );
         categoryB = new DataElementCategory( "CategoryB" );

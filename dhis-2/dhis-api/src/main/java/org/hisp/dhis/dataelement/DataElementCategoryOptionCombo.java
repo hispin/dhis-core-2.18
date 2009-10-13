@@ -28,9 +28,11 @@ package org.hisp.dhis.dataelement;
  */
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
@@ -53,7 +55,7 @@ public class DataElementCategoryOptionCombo
     /**
      * The category options.
      */
-    private Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+    private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -300,12 +302,12 @@ public class DataElementCategoryOptionCombo
         this.categoryCombo = categoryCombo;
     }
     
-    public Set<DataElementCategoryOption> getCategoryOptions()
+    public List<DataElementCategoryOption> getCategoryOptions()
     {
         return categoryOptions;
     }
     
-    public void setCategoryOptions( Set<DataElementCategoryOption> categoryOptions )
+    public void setCategoryOptions( List<DataElementCategoryOption> categoryOptions )
     {
         this.categoryOptions = categoryOptions;
     }

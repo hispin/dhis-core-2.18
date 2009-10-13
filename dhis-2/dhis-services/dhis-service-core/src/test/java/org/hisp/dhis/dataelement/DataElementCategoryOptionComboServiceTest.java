@@ -27,9 +27,10 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
@@ -115,7 +116,7 @@ public class DataElementCategoryOptionComboServiceTest
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();
         
-        Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+        List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
         
         categoryOptions.add( categoryOptionA );
         categoryOptions.add( categoryOptionB );        
@@ -137,7 +138,7 @@ public class DataElementCategoryOptionComboServiceTest
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();
         
-        Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+        List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
         
         categoryOptions.add( categoryOptionA );
         categoryOptions.add( categoryOptionB );        

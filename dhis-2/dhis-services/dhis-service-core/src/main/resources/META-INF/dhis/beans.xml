@@ -113,16 +113,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
-
-  <bean id="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderStore"
-    class="org.hisp.dhis.dataelement.hibernate.HibernateDataElementDimensionColumnOrderStore">
-    <property name="sessionFactory" ref="sessionFactory"/>
-  </bean>  
-  
-  <bean id="org.hisp.dhis.dataelement.DataElementDimensionRowOrderStore"
-    class="org.hisp.dhis.dataelement.hibernate.HibernateDataElementDimensionRowOrderStore">
-    <property name="sessionFactory" ref="sessionFactory"/>
-  </bean>  
   
   <bean id="org.hisp.dhis.dataset.SectionStore"
     class="org.hisp.dhis.dataset.hibernate.HibernateSectionStore">
@@ -234,9 +224,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryService"
     class="org.hisp.dhis.dataelement.DefaultDataElementCategoryService">
     <property name="dataElementCategoryStore"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryStore"/> 
-    <property name="dataElementDimensionColumnOrderService"
-      ref="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService"/> 
+      ref="org.hisp.dhis.dataelement.DataElementCategoryStore"/>     
     <property name="i18nService"
       ref="org.hisp.dhis.i18n.I18nService"/>  
   </bean>
@@ -244,9 +232,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryComboService"
     class="org.hisp.dhis.dataelement.DefaultDataElementCategoryComboService">
     <property name="dataElementCategoryComboStore"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboStore"/>
-    <property name="dataElementDimensionRowOrderService"
-      ref="org.hisp.dhis.dataelement.DataElementDimensionRowOrderService"/>
+      ref="org.hisp.dhis.dataelement.DataElementCategoryComboStore"/>    
   </bean>  
   
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionService"
@@ -266,26 +252,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="dataElementCategoryService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="dataElementCategoryOptionService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    <property name="dataElementDimensionRowOrderService"
-      ref="org.hisp.dhis.dataelement.DataElementDimensionRowOrderService"/>
-    <property name="dataElementDimensionColumnOrderService"
-      ref="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService"/>
+      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>    
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-  </bean>      
-
-  <bean id="org.hisp.dhis.dataelement.DataElementDimensionRowOrderService"
-    class="org.hisp.dhis.dataelement.DefaultDataElementDimensionRowOrderService">
-    <property name="dataElementDimensionRowOrderStore"
-      ref="org.hisp.dhis.dataelement.DataElementDimensionRowOrderStore"/>    
-  </bean>
-  
-  <bean id="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService"
-    class="org.hisp.dhis.dataelement.DefaultDataElementDimensionColumnOrderService">
-    <property name="dataElementDimensionColumnOrderStore"
-      ref="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderStore"/>    
-  </bean>
+  </bean> 
   
   <!-- Startup routine definitions -->
 	
@@ -307,6 +277,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="runlevel" value="1"/>
   </bean>
 	
+  
+  <bean id="org.hisp.dhis.dataelement.OptionsCategoriesDefaultSortOrderPopulator"
+    class="org.hisp.dhis.dataelement.OptionsCategoriesDefaultSortOrderPopulator">
+    <property name="statementManager" ref="statementManager"/>
+    <property name="runlevel" value="1"/>
+  </bean>
+	
   <bean id="org.hisp.dhis.expression.MultiDimensionExpressionUpgrader"
     class="org.hisp.dhis.expression.MultiDimensionExpressionUpgrader">
     <property name="expressionService"
@@ -322,7 +299,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.dataset.DataSetShortNamePopulator"
     class="org.hisp.dhis.dataset.DataSetShortNamePopulator">
     <property name="dataSetService"
-      ref="org.hisp.dhis.dataset.DataSetService"/>
+      ref="org.hisp.dhis.dataset.DataSetService"/>    
     <property name="skipInTests" value="true"/>
   </bean>
   
@@ -351,6 +328,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="arguments">
       <list>
         <list>
+          <ref local="org.hisp.dhis.dataelement.OptionsCategoriesDefaultSortOrderPopulator"/>
           <ref local="org.hisp.dhis.period.PeriodTypePopulator"/>
           <ref local="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator"/>
           <ref local="org.hisp.dhis.expression.MultiDimensionExpressionUpgrader"/>
@@ -380,19 +358,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler">
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.dataelement.DataElementDimensionRowOrderDeletionHandler"
-    class="org.hisp.dhis.dataelement.DataElementDimensionRowOrderDeletionHandler">
-    <property name="rowOrderService"
-      ref="org.hisp.dhis.dataelement.DataElementDimensionRowOrderService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderDeletionHandler"
-    class="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderDeletionHandler">
-    <property name="columnOrderService"
-      ref="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService"/>
-  </bean>
+  </bean>  
   
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler"
     class="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler">
@@ -506,9 +472,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
         <list>
           <ref local="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler"/>
           <ref local="org.hisp.dhis.dataelement.DataElementDeletionHandler"/>
-          <ref local="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler"/>
-          <ref local="org.hisp.dhis.dataelement.DataElementDimensionRowOrderDeletionHandler"/>
-          <ref local="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderDeletionHandler"/>
+          <ref local="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler"/>          
           <ref local="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler"/>
           <ref local="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler"/>
           <ref local="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler"/>

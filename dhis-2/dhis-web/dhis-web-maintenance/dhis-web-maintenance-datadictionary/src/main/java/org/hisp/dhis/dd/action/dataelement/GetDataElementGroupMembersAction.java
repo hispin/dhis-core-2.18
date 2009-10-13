@@ -36,7 +36,6 @@ import java.util.Set;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
@@ -60,15 +59,7 @@ public class GetDataElementGroupMembersAction
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    }
-
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
-
-    public void setDataElementCategoryOptionComboService(
-        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
-    {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
-    }
+    }   
 
     // -------------------------------------------------------------------------
     // Comparator
@@ -153,7 +144,7 @@ public class GetDataElementGroupMembersAction
                 for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
                 {
                     Operand operand = new Operand( dataElement.getId(), optionCombo.getId(), dataElement.getName()
-                        + dataElementCategoryOptionComboService.getOptionNames( optionCombo ) );
+                        + optionCombo.getName() );
                     operands.add( operand );
                 }
             }

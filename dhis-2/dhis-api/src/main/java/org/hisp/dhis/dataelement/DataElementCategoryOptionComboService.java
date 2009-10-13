@@ -117,15 +117,7 @@ public interface DataElementCategoryOptionComboService
      * @param categoryCombo the DataElementCategoryCombo.
      */
     void generateOptionCombos( DataElementCategoryCombo categoryCombo );
-
-    /**
-     * Generates and returns a descriptive name based on the DataElementCategoryOptions
-     * for the given DataElementCategoryOptionCombo.
-     * 
-     * @param dataElementCategoryOptionCombo the DataElementCategoryOptionCombo.
-     * @return a DataElementCategoryOptionCombo name.
-     */
-    String getOptionNames( DataElementCategoryOptionCombo dataElementCategoryOptionCombo );
+    
 
     /**
      * 
