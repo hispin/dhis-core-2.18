@@ -28,8 +28,8 @@ package org.hisp.dhis.dataelement;
  */
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hisp.dhis.common.IdentifiableObject;
 
@@ -50,7 +50,7 @@ public class DataElementCategory
     public static final String DEFAULT_NAME = "default";
     
     
-    private Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+    private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -65,7 +65,7 @@ public class DataElementCategory
     	this.name = name;
     }
     
-    public DataElementCategory( String name, Set<DataElementCategoryOption> categoryOptions )
+    public DataElementCategory( String name, List<DataElementCategoryOption> categoryOptions )
     {
         this.name = name;
         this.categoryOptions = categoryOptions;
@@ -114,12 +114,12 @@ public class DataElementCategory
     // Getters and setters
     // ------------------------------------------------------------------------
     
-    public Set<DataElementCategoryOption> getCategoryOptions()
+    public List<DataElementCategoryOption> getCategoryOptions()
     {
         return categoryOptions;
     }
     
-    public void setCategoryOptions( Set<DataElementCategoryOption> categoryOptions )
+    public void setCategoryOptions( List<DataElementCategoryOption> categoryOptions )
     {
         this.categoryOptions = categoryOptions;
     }

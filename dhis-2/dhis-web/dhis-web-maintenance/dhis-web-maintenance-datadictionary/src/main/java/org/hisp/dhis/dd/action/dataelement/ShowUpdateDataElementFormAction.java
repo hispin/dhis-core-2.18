@@ -198,7 +198,7 @@ public class ShowUpdateDataElementFormAction
     		DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
     		DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( Integer.parseInt( optionComboIdString ) );    			    			
     			
-        	Operand operand = new Operand( dataElement.getId(), optionCombo.getId(), dataElement.getName() + dataElementCategoryOptionComboService.getOptionNames( optionCombo ) );
+        	Operand operand = new Operand( dataElement.getId(), optionCombo.getId(), dataElement.getName() + optionCombo.getName() );
         		
         	operands.add( operand );
             }            

@@ -92,14 +92,6 @@ public interface DataElementCategoryService
      * @return a collection of all DataElementCategories, or an empty collection if there
      *         are no DataElementCategories.
      */
-    Collection<DataElementCategory> getAllDataElementCategories();
+    Collection<DataElementCategory> getAllDataElementCategories();    
     
-    /**
-     * Retrieves an ordered Collection of DataElementCategoryOptions for the given
-     * DataElementCategory.
-     * 
-     * @param category the DataElementCategory.
-     * @return a collection of DataElementCategories.
-     */
-    Collection<DataElementCategoryOption> getOrderedOptions( DataElementCategory category ); // TODO List instead?
 }

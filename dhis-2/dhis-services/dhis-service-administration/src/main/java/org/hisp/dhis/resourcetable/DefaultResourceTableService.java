@@ -178,7 +178,8 @@ public class DefaultResourceTableService
         Collection<OrganisationUnitGroupSet> exclusiveGroupSets = organisationUnitGroupService
             .getExclusiveOrganisationUnitGroupSets();
 
-        BatchHandler<GroupSetStructure> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetStructureBatchHandler.class );
+        BatchHandler<GroupSetStructure> batchHandler = batchHandlerFactory
+            .createBatchHandler( GroupSetStructureBatchHandler.class );
 
         batchHandler.init();
 
@@ -224,9 +225,9 @@ public class DefaultResourceTableService
 
         for ( DataElementCategoryOptionCombo combo : combos )
         {
-            String name = categoryOptionComboService.getOptionNames( combo );
 
-            DataElementCategoryOptionComboName entry = new DataElementCategoryOptionComboName( combo.getId(), name );
+            DataElementCategoryOptionComboName entry = new DataElementCategoryOptionComboName( combo.getId(), combo
+                .getName() );
 
             resourceTableStore.addDataElementCategoryOptionComboName( entry );
         }

@@ -27,8 +27,10 @@ package org.hisp.dhis.importexport.service;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -352,7 +354,7 @@ public class DefaultImportObjectManager
             
             object.setCategoryCombo( categoryComboService.getDataElementCategoryCombo( categoryComboId ) );
             
-            Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+            List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
             
             for ( DataElementCategoryOption categoryOption : object.getCategoryOptions() )
             {

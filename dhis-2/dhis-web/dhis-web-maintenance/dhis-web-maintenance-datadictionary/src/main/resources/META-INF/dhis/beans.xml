@@ -507,10 +507,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="dataElementCategoryOptionService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    </property>
-    <property name="dataElementDimensionColumnOrderService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService"/>
-    </property>
+    </property> 
     
   </bean>
   
@@ -535,10 +532,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="dataElementCategoryOptionService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    </property>
-    <property name="dataElementDimensionColumnOrderService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService"/>
-    </property>
+    </property>    
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction"
@@ -548,10 +542,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="dataElementCategoryOptionService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    </property>
-    <property name="dataElementDimensionColumnOrderService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService"/>
-    </property>
+    </property>    
   </bean>    
   
   <bean id="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryAction"
@@ -580,10 +571,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="dataElementCategoryOptionComboService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    </property>
-    <property name="dataElementDimensionRowOrderService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementDimensionRowOrderService"/>
-    </property>
+    </property>    
   </bean>
   
   <bean id="org.hisp.dhis.dd.action.categorycombo.ValidateDataElementCategoryComboAction"
@@ -610,10 +598,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="dataElementCategoryComboService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    </property>
-    <property name="dataElementDimensionRowOrderService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementDimensionRowOrderService"/>
-    </property>
+    </property>    
     <property name="dataElementCategoryOptionComboService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
     </property>
@@ -626,10 +611,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="dataElementCategoryComboService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    </property>
-    <property name="dataElementDimensionRowOrderService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementDimensionRowOrderService"/>
-    </property>
+    </property>    
   </bean>    
   
   <bean id="org.hisp.dhis.dd.action.categorycombo.RemoveDataElementCategoryComboAction"

@@ -14,7 +14,7 @@
 		
 		#foreach( $optionCombo in $orderdCategoryOptionCombos )			
 			<td>
-				<span id="value[option$optionCombo.id].name" style="display:none">$optionComboNames.get( $optionCombo.id )</span>							
+				<span id="value[option$optionCombo.id].name" style="display:none">$optionCombo.name</span>							
 			</td>		
 		#end		
 		
@@ -35,7 +35,7 @@
 		#foreach( $optionCombo in $orderdCategoryOptionCombos )
 			
 			<td>
-				<span id="value[option$optionCombo.id].name" style="display:none">$optionComboNames.get( $optionCombo.id )</span>							
+				<span id="value[option$optionCombo.id].name" style="display:none">$optionCombo.name</span>							
 			</td>		
 			
 		#end
@@ -145,7 +145,7 @@
 									#end
 								#end
 												
-								<span id="value[option$optionCombo.id].name" style="display:none">$optionComboNames.get( $optionCombo.id )</span>
+								<span id="value[option$optionCombo.id].name" style="display:none">$optionCombo.name</span>
 								<span id="value[$dataElement.id].name" style="display:none">$encoder.htmlEncode( $dataElement.shortName )</span>
 								<div id="value[$dataElement.id:$optionCombo.id].min" style="display:none">$!minMax.min</div>
 								<div id="value[$dataElement.id:$optionCombo.id].max" style="display:none">$!minMax.max</div>	

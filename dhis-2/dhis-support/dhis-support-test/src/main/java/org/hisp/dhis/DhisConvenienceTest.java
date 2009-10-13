@@ -50,8 +50,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService;
-import org.hisp.dhis.dataelement.DataElementDimensionRowOrderService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
@@ -115,11 +113,7 @@ public abstract class DhisConvenienceTest
     
     protected DataElementCategoryOptionService categoryOptionService;
     
-    protected DataElementCategoryOptionComboService categoryOptionComboService;
-    
-    protected DataElementDimensionColumnOrderService dimensionColumnOrderService;
-    
-    protected DataElementDimensionRowOrderService dimensionRowOrderService;
+    protected DataElementCategoryOptionComboService categoryOptionComboService;    
     
     protected DataDictionaryService dataDictionaryService;
     

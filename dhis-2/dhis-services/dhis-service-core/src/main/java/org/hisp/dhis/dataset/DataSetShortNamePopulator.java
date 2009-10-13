@@ -48,7 +48,7 @@ public class DataSetShortNamePopulator
     // -------------------------------------------------------------------------
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
@@ -61,27 +61,28 @@ public class DataSetShortNamePopulator
     public void execute()
         throws Exception
     {
-        for ( DataSet dataSet: dataSetService.getAllDataSets() )
+
+        for ( DataSet dataSet : dataSetService.getAllDataSets() )
         {
             boolean changed = false;
             Random random = new Random();
-                        
+
             if ( dataSet.getShortName() == null || dataSet.getShortName().trim().length() == 0 )
             {
-                String shortName = TextUtils.subString( dataSet.getName(), 0, 40 );                
-                shortName = dataSet.getName().length() > 40 ? shortName + ( random.nextInt( 900 ) + 100 ) : shortName;
-                dataSet.setShortName( shortName );                
+                String shortName = TextUtils.subString( dataSet.getName(), 0, 40 );
+                shortName = dataSet.getName().length() > 40 ? shortName + (random.nextInt( 900 ) + 100) : shortName;
+                dataSet.setShortName( shortName );
                 changed = true;
             }
-            
+
             if ( dataSet.getCode() == null || dataSet.getCode().trim().length() == 0 )
             {
                 String code = TextUtils.subString( dataSet.getName(), 0, 40 );
-                code = dataSet.getName().length() > 40 ? code + ( random.nextInt( 900 ) + 100 ) : code;
+                code = dataSet.getName().length() > 40 ? code + (random.nextInt( 900 ) + 100) : code;
                 dataSet.setCode( code );
                 changed = true;
             }
-            
+
             if ( changed )
             {
                 try
@@ -90,11 +91,14 @@ public class DataSetShortNamePopulator
                 }
                 catch ( Exception ex )
                 {
-                    log.warn( "Could not set short name or code of DataSet: '" + dataSet.getName() + "', please do it manually" );
+                    log.warn( "Could not set short name or code of DataSet: '" + dataSet.getName()
+                        + "', please do it manually" );
                 }
-            }            
+            }
         }
-        
+
         log.info( "Populated DataSet short name and code" );
+
     }
+
 }

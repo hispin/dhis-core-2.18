@@ -27,16 +27,15 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementDimensionColumnOrder;
-import org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -64,14 +63,7 @@ public class AddDataElementCategoryAction
     {
         this.dataElementCategoryOptionService = dataElementCategoryOptionService;
     }
-
-    private DataElementDimensionColumnOrderService dataElementDimensionColumnOrderService;
-
-    public void setDataElementDimensionColumnOrderService( DataElementDimensionColumnOrderService dataElementDimensionColumnOrderService )
-    {
-        this.dataElementDimensionColumnOrderService = dataElementDimensionColumnOrderService;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -99,7 +91,7 @@ public class AddDataElementCategoryAction
         DataElementCategory dataElementCategory = new DataElementCategory();
         dataElementCategory.setName( nameField );
 
-        Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+        List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
 
         for ( String id : selectedList )
         {
@@ -112,34 +104,7 @@ public class AddDataElementCategoryAction
         dataElementCategory.setCategoryOptions( categoryOptions );
 
         dataElementCategoryService.addDataElementCategory( dataElementCategory );
-
-        int displayOrder = 1;
-
-        DataElementDimensionColumnOrder columnOrder = null;
-
-        for ( String id : selectedList )
-        {
-            DataElementCategoryOption dataElementCategoryOption = dataElementCategoryOptionService
-                .getDataElementCategoryOption( Integer.parseInt( id ) );
-
-            columnOrder = dataElementDimensionColumnOrderService.getDataElementDimensionColumnOrder(
-                dataElementCategory, dataElementCategoryOption );
-
-            if ( columnOrder == null )
-            {
-                columnOrder = new DataElementDimensionColumnOrder( dataElementCategory, dataElementCategoryOption,
-                    displayOrder );
-                dataElementDimensionColumnOrderService.addDataElementDimensionColumnOrder( columnOrder );
-            }
-            else
-            {
-                columnOrder.setDisplayOrder( displayOrder );
-                dataElementDimensionColumnOrderService.updateDataElementDimensionColumnOrder( columnOrder );
-            }
-
-            displayOrder++;
-        }
-
+        
         return SUCCESS;
     }
 }

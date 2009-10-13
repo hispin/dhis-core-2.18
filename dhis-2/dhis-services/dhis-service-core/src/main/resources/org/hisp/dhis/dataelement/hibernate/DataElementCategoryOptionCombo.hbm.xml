@@ -10,16 +10,17 @@
       <generator class="native"/>
     </id>      
 
-    <set name="categoryOptions" table="categoryoptioncombos_categoryoptions">
+    <list name="categoryOptions" table="categoryoptioncombos_categoryoptions">
       <key column="categoryoptioncomboid"/>
+      <list-index column="sort_order"/>
       <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOption"
         column="categoryoptionid" foreign-key="fk_categoryoptioncombo_categoryoptionid"/> 
-    </set>
-    
+    </list>
+          
     <join table="categorycombos_optioncombos">
       <key column="categoryoptioncomboid"/>
       <many-to-one name="categoryCombo" column="categorycomboid"/>
-    </join>
+    </join>  
 
   </class>
 </hibernate-mapping>

@@ -29,8 +29,6 @@ package org.hisp.dhis.dataelement;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.hisp.dhis.common.GenericNameStore;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,14 +50,7 @@ public class DefaultDataElementCategoryComboService
     public void setDataElementCategoryComboStore( GenericNameStore<DataElementCategoryCombo> dataElementCategoryComboStore )
     {
         this.dataElementCategoryComboStore = dataElementCategoryComboStore;
-    }
-
-    private DataElementDimensionRowOrderService dataElementDimensionRowOrderService;
-
-    public void setDataElementDimensionRowOrderService( DataElementDimensionRowOrderService dataElementDimensionRowOrderService )
-    {
-        this.dataElementDimensionRowOrderService = dataElementDimensionRowOrderService;
-    }
+    }    
 
     // -------------------------------------------------------------------------
     // DataElementCategoryCombo
@@ -111,26 +102,5 @@ public class DefaultDataElementCategoryComboService
     {
         return dataElementCategoryComboStore.getByName( name );
     }
-
-    public Collection<DataElementCategory> getOrderCategories( DataElementCategoryCombo dataElementCategoryCombo )
-    {
-        Map<Integer, DataElementCategory> categoryMap = new TreeMap<Integer, DataElementCategory>();
-
-        for ( DataElementCategory category : dataElementCategoryCombo.getCategories() )
-        {
-            DataElementDimensionRowOrder rowOrder = dataElementDimensionRowOrderService
-                .getDataElementDimensionRowOrder( dataElementCategoryCombo, category );
-
-            if ( rowOrder != null )
-            {
-                categoryMap.put( rowOrder.getDisplayOrder(), category );
-            }
-            else
-            {
-                categoryMap.put( category.getId(), category );
-            }
-        }
-
-        return categoryMap.values();
-    }
+    
 }

@@ -88,13 +88,6 @@ public interface DataElementCategoryComboService
      * 
      * @return a collection of DataElementCategoryCombos.
      */
-    Collection<DataElementCategoryCombo> getAllDataElementCategoryCombos();
+    Collection<DataElementCategoryCombo> getAllDataElementCategoryCombos();    
     
-    /**
-     * Retrieves an ordered collection of DataElementCategories for the given DataElementCategoryCombo.
-     * 
-     * @param dataElementCategoryCombo the DataElementCategoryCombo.
-     * @return a Collection of DataElementCategoryCombos.
-     */
-    Collection<DataElementCategory> getOrderCategories( DataElementCategoryCombo dataElementCategoryCombo );
 }

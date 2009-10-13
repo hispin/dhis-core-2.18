@@ -27,9 +27,9 @@ package org.hisp.dhis.importexport.ixf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
@@ -141,7 +141,7 @@ public class DimensionConverter
 
     public void read( XMLReader reader, ImportParams params )
     {
-        Set<DataElementCategory> categories = new HashSet<DataElementCategory>();
+        List<DataElementCategory> categories = new ArrayList<DataElementCategory>();
         
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {

@@ -110,7 +110,7 @@ public class GetOptionCombosAction
         {
             DataElementCategoryOptionCombo optionCombo = optionComboIterator.next();           
             
-            String optionComboName = dataElementCategoryOptionComboService.getOptionNames( optionCombo );
+            String optionComboName = optionCombo.getName();
          
             String optionComboId = String.valueOf( optionCombo.getId() );
             

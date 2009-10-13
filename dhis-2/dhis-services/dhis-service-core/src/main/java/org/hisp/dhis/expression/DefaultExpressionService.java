@@ -334,7 +334,7 @@ public class DefaultExpressionService
                         + operand.getOptionComboId() );
                 }
 
-                replaceString = dataElement.getName() + SEPARATOR + categoryOptionComboService.getOptionNames( categoryOptionCombo );
+                replaceString = dataElement.getName() + SEPARATOR + categoryOptionCombo.getName();
 
                 if ( replaceString.endsWith( SEPARATOR ) )
                 {

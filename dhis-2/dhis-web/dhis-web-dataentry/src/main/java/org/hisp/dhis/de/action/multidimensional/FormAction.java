@@ -34,7 +34,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.hisp.dhis.customvalue.CustomValue;
 import org.hisp.dhis.customvalue.CustomValueService;
@@ -45,10 +44,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementDimensionColumnOrder;
-import org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService;
-import org.hisp.dhis.dataelement.DataElementDimensionRowOrder;
-import org.hisp.dhis.dataelement.DataElementDimensionRowOrderService;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataEntryForm;
@@ -149,23 +144,7 @@ public class FormAction
     {
         this.selectedStateManager = selectedStateManager;
     }
-
-    private DataElementDimensionRowOrderService dataElementDimensionRowOrderService;
-
-    public void setDataElementDimensionRowOrderService(
-        DataElementDimensionRowOrderService dataElementDimensionRowOrderService )
-    {
-        this.dataElementDimensionRowOrderService = dataElementDimensionRowOrderService;
-    }
-
-    private DataElementDimensionColumnOrderService dataElementDimensionColumnOrderService;
-
-    public void setDataElementDimensionColumnOrderService(
-        DataElementDimensionColumnOrderService dataElementDimensionColumnOrderService )
-    {
-        this.dataElementDimensionColumnOrderService = dataElementDimensionColumnOrderService;
-    }
-
+    
     private DataEntryScreenManager dataEntryScreenManager;
 
     public void setDataEntryScreenManager( DataEntryScreenManager dataEntryScreenManager )
@@ -292,14 +271,7 @@ public class FormAction
     {
         return orderdCategoryOptionCombos;
     }
-
-    private Map<Integer, String> optionComboNames = new HashMap<Integer, String>();
-
-    public Map<Integer, String> getOptionComboNames()
-    {
-        return optionComboNames;
-    }
-
+    
     private Boolean cdeFormExists;
 
     public Boolean getCdeFormExists()
@@ -424,49 +396,14 @@ public class FormAction
         DataElement sample = dataElements.iterator().next();
 
         DataElementCategoryCombo decbo = sample.getCategoryCombo();
+        
+        numberOfTotalColumns = orderdCategoryOptionCombos.size();       
 
-        List<DataElementCategory> categories = new ArrayList<DataElementCategory>( decbo.getCategories() );
-        Map<Integer, DataElementCategory> categoryMap = new TreeMap<Integer, DataElementCategory>();
-
-        numberOfTotalColumns = orderdCategoryOptionCombos.size();
-
-        for ( DataElementCategory category : categories ) // Get the order of categories
-        {
-            DataElementDimensionRowOrder rowOrder = dataElementDimensionRowOrderService
-                .getDataElementDimensionRowOrder( decbo, category );
-
-            if ( rowOrder != null )
-            {
-                categoryMap.put( rowOrder.getDisplayOrder(), category );
-            }
-            else
-            {
-                categoryMap.put( category.getId(), category );
-            }
-        }
-
-        orderedCategories = categoryMap.values();
+        orderedCategories = decbo.getCategories();
 
         for ( DataElementCategory dec : orderedCategories ) // Get the order of options
         {
-            Map<Integer, DataElementCategoryOption> optionsMap = new TreeMap<Integer, DataElementCategoryOption>();
-
-            for ( DataElementCategoryOption option : dec.getCategoryOptions() )
-            {
-                DataElementDimensionColumnOrder columnOrder = dataElementDimensionColumnOrderService
-                    .getDataElementDimensionColumnOrder( dec, option );
-
-                if ( columnOrder != null )
-                {
-                    optionsMap.put( columnOrder.getDisplayOrder(), option );
-                }
-                else
-                {
-                    optionsMap.put( option.getId(), option );
-                }
-            }
-
-            orderedOptionsMap.put( dec.getId(), optionsMap.values() );
+            orderedOptionsMap.put( dec.getId(), dec.getCategoryOptions() );
         }
 
         // ---------------------------------------------------------------------
@@ -498,12 +435,7 @@ public class FormAction
 
             catRepeat.put( cat.getId(), catColSpan );
         }
-
-        for ( DataElementCategoryOptionCombo deOptionCombo : orderdCategoryOptionCombos )
-        {
-            optionComboNames.put( deOptionCombo.getId(), dataElementCategoryOptionComboService
-                .getOptionNames( deOptionCombo ) );
-        }
+       
 
         // ---------------------------------------------------------------------
         // Get the min/max values

@@ -27,7 +27,7 @@ package org.hisp.dhis.importexport.ixf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Set;
+import java.util.List;
 
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
@@ -51,7 +51,7 @@ public class DimensionComboConverter
     // Properties
     // -------------------------------------------------------------------------
 
-    private Set<DataElementCategory> categories;
+    private List<DataElementCategory> categories;
     
     // -------------------------------------------------------------------------
     // Constructor
@@ -60,7 +60,7 @@ public class DimensionComboConverter
     /**
      * Constructor for read operations.
      */
-    public DimensionComboConverter( Set<DataElementCategory> categories,
+    public DimensionComboConverter( List<DataElementCategory> categories,
         DataElementCategoryComboService categoryComboService )
     {
         this.categories = categories;

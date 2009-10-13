@@ -145,16 +145,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementCategoryOptionComboService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
     <property name="dataEntryFormService"
-      ref="org.hisp.dhis.dataset.DataEntryFormService"/>  
-    <property name="dataElementDimensionRowOrderService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementDimensionRowOrderService"/>
-    </property>  
-    <property name="dataElementDimensionColumnOrderService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService"/>
-    </property>
-	<property name="systemSettingManager"
-	  ref="org.hisp.dhis.options.SystemSettingManager"/>  
-	<property name="customValueService">
+      ref="org.hisp.dhis.dataset.DataEntryFormService"/>    
+    <property name="systemSettingManager"
+      ref="org.hisp.dhis.options.SystemSettingManager"/>  
+    <property name="customValueService">
       <ref bean="org.hisp.dhis.customvalue.CustomValueService"/>
     </property>	          
   </bean>

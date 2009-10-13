@@ -35,7 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
+
 
 import org.hisp.dhis.common.GenericStore;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +48,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataElementCategoryOptionComboService
     implements DataElementCategoryOptionComboService
 {
-    private final static String SEPARATOR = ",";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -56,7 +55,8 @@ public class DefaultDataElementCategoryOptionComboService
 
     private GenericStore<DataElementCategoryOptionCombo> dataElementCategoryOptionComboStore;
 
-    public void setDataElementCategoryOptionComboStore( GenericStore<DataElementCategoryOptionCombo> dataElementCategoryOptionComboStore )
+    public void setDataElementCategoryOptionComboStore(
+        GenericStore<DataElementCategoryOptionCombo> dataElementCategoryOptionComboStore )
     {
         this.dataElementCategoryOptionComboStore = dataElementCategoryOptionComboStore;
     }
@@ -82,22 +82,6 @@ public class DefaultDataElementCategoryOptionComboService
         this.dataElementCategoryOptionService = dataElementCategoryOptionService;
     }
 
-    private DataElementDimensionRowOrderService dataElementDimensionRowOrderService;
-
-    public void setDataElementDimensionRowOrderService(
-        DataElementDimensionRowOrderService dataElementDimensionRowOrderService )
-    {
-        this.dataElementDimensionRowOrderService = dataElementDimensionRowOrderService;
-    }
-
-    private DataElementDimensionColumnOrderService dataElementDimensionColumnOrderService;
-
-    public void setDataElementDimensionColumnOrderService(
-        DataElementDimensionColumnOrderService dataElementDimensionColumnOrderService )
-    {
-        this.dataElementDimensionColumnOrderService = dataElementDimensionColumnOrderService;
-    }
-    
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -128,25 +112,27 @@ public class DefaultDataElementCategoryOptionComboService
     {
         return dataElementCategoryOptionComboStore.get( id );
     }
-    
-    public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos( Collection<Integer> identifiers )
+
+    public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos(
+        Collection<Integer> identifiers )
     {
         if ( identifiers == null )
         {
             return getAllDataElementCategoryOptionCombos();
         }
-        
+
         Collection<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
-        
+
         for ( Integer id : identifiers )
         {
             categoryOptionCombos.add( getDataElementCategoryOptionCombo( id ) );
         }
-        
+
         return categoryOptionCombos;
     }
 
-    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
+    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo(
+        DataElementCategoryOptionCombo categoryOptionCombo )
     {
         for ( DataElementCategoryOptionCombo dcoc : getAllDataElementCategoryOptionCombos() )
         {
@@ -163,7 +149,7 @@ public class DefaultDataElementCategoryOptionComboService
 
         return null;
     }
-    
+
     public Collection<DataElementCategoryOptionCombo> getAllDataElementCategoryOptionCombos()
     {
         return dataElementCategoryOptionComboStore.getAll();
@@ -173,76 +159,17 @@ public class DefaultDataElementCategoryOptionComboService
         DataElementCategoryCombo catCombo )
     {
         Collection<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
-            catCombo.getOptionCombos() );
-
-        List<DataElementCategory> categories = new ArrayList<DataElementCategory>( catCombo.getCategories() );
-
-        Map<Integer, DataElementCategory> categoryMap = new TreeMap<Integer, DataElementCategory>();
-
-        int totalColumns = optionCombos.size();
+            catCombo.getOptionCombos() );       
 
         // ---------------------------------------------------------------------
-        // Get the order of categories
-        // ---------------------------------------------------------------------
+        // Determine the number of times each category is going to repeat
+        // ---------------------------------------------------------------------       
 
-        int index = 1;
-
-        for ( DataElementCategory category : categories )
-        {
-            DataElementDimensionRowOrder rowOrder = dataElementDimensionRowOrderService
-                .getDataElementDimensionRowOrder( catCombo, category );
-
-            if ( rowOrder != null )
-            {
-                categoryMap.put( rowOrder.getDisplayOrder(), category );
-            }
-            else
-            {
-                categoryMap.put( index, category );
-            }
-
-            index++;
-        }
-
-        Collection<DataElementCategory> orderedCategories = categoryMap.values();
-
-        // ---------------------------------------------------------------------
-        // Get the order of options in each category
-        // ---------------------------------------------------------------------
-
-        Map<Integer, Collection<DataElementCategoryOption>> orderedOptionsMap = new HashMap<Integer, Collection<DataElementCategoryOption>>();
-
-        index = 1;
-
-        for ( DataElementCategory category : orderedCategories )
-        {
-            Map<Integer, DataElementCategoryOption> optionsMap = new TreeMap<Integer, DataElementCategoryOption>();
-
-            for ( DataElementCategoryOption option : category.getCategoryOptions() )
-            {
-                DataElementDimensionColumnOrder columnOrder = dataElementDimensionColumnOrderService
-                    .getDataElementDimensionColumnOrder( category, option );
-
-                if ( columnOrder != null )
-                {
-                    optionsMap.put( columnOrder.getDisplayOrder(), option );
-                }
-                else
-                {
-                    optionsMap.put( index, option );
-                }
-
-                index++;
-            }
-
-            orderedOptionsMap.put( category.getId(), optionsMap.values() );
-        }
-
-        int categoryColSpan = totalColumns;
+        int categoryColSpan = optionCombos.size();
 
         Map<Integer, Integer> categoryRepeat = new HashMap<Integer, Integer>();
 
-        for ( DataElementCategory category : orderedCategories )
+        for ( DataElementCategory category : catCombo.getCategories() )
         {
             categoryColSpan = categoryColSpan / category.getCategoryOptions().size();
 
@@ -252,13 +179,13 @@ public class DefaultDataElementCategoryOptionComboService
 
         Map<Integer, Collection<DataElementCategoryOption>> orderedOptions = new HashMap<Integer, Collection<DataElementCategoryOption>>();
 
-        for ( DataElementCategory cat : orderedCategories )
+        for ( DataElementCategory cat : catCombo.getCategories() )
         {
-            int outerForLoopCount = totalColumns;
+            int outerForLoopCount = optionCombos.size();
             int innerForLoopCount = categoryRepeat.get( cat.getId() );
 
             Collection<DataElementCategoryOption> requiredOptions = new ArrayList<DataElementCategoryOption>();
-            Collection<DataElementCategoryOption> options = orderedOptionsMap.get( cat.getId() );
+            Collection<DataElementCategoryOption> options = cat.getCategoryOptions();
 
             int x = 0;
 
@@ -280,11 +207,11 @@ public class DefaultDataElementCategoryOptionComboService
 
         Collection<DataElementCategoryOptionCombo> orderdCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
 
-        for ( int i = 0; i < totalColumns; i++ )
+        for ( int i = 0; i < optionCombos.size(); i++ )
         {
-            Collection<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>( orderedCategories
-                .size() );
-            Collection<DataElementCategory> copyOforderedCategories = orderedCategories;
+            Collection<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>( catCombo
+                .getCategories().size() );
+            Collection<DataElementCategory> copyOforderedCategories = catCombo.getCategories();
             Iterator<DataElementCategory> categoryIterator = copyOforderedCategories.iterator();
 
             while ( categoryIterator.hasNext() )
@@ -316,7 +243,7 @@ public class DefaultDataElementCategoryOptionComboService
         // ---------------------------------------------------------------------
 
         DataElementCategoryOption categoryOption = new DataElementCategoryOption(
-            DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+            DataElementCategoryOption.DEFAULT_NAME );
 
         dataElementCategoryOptionService.addDataElementCategoryOption( categoryOption );
 
@@ -325,9 +252,9 @@ public class DefaultDataElementCategoryOptionComboService
         // DataElementCategoryOption
         // ---------------------------------------------------------------------
 
-        DataElementCategory category = new DataElementCategory( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        DataElementCategory category = new DataElementCategory( DataElementCategory.DEFAULT_NAME );
 
-        Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+        List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
         categoryOptions.add( categoryOption );
         category.setCategoryOptions( categoryOptions );
 
@@ -341,7 +268,7 @@ public class DefaultDataElementCategoryOptionComboService
         DataElementCategoryCombo categoryCombo = new DataElementCategoryCombo(
             DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
-        Set<DataElementCategory> categories = new HashSet<DataElementCategory>();
+        List<DataElementCategory> categories = new ArrayList<DataElementCategory>();
         categories.add( category );
         categoryCombo.setCategories( categories );
 
@@ -354,7 +281,7 @@ public class DefaultDataElementCategoryOptionComboService
         DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();
 
         categoryOptionCombo.setCategoryCombo( categoryCombo );
-        categoryOptionCombo.setCategoryOptions( categoryOptions );
+        categoryOptionCombo.setCategoryOptions( new ArrayList<DataElementCategoryOption>( categoryOptions ) );
 
         addDataElementCategoryOptionCombo( categoryOptionCombo );
 
@@ -403,7 +330,7 @@ public class DefaultDataElementCategoryOptionComboService
             int innerForLoopCount = categoryOptionAppearance.get( cat.getId() );
 
             Collection<DataElementCategoryOption> requiredOptions = new ArrayList<DataElementCategoryOption>();
-            Set<DataElementCategoryOption> options = cat.getCategoryOptions();
+            List<DataElementCategoryOption> options = cat.getCategoryOptions();
 
             int x = 0;
 
@@ -428,29 +355,29 @@ public class DefaultDataElementCategoryOptionComboService
 
         for ( int i = 0; i < totalOptionCombos; i++ )
         {
-            Set<DataElementCategoryOption> options = new HashSet<DataElementCategoryOption>( categories.size() );
-            
+            List<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>( categories.size() );
+
             Collection<DataElementCategory> copyOfCategories = categories;
-            
+
             Iterator<DataElementCategory> categoryIterator = copyOfCategories.iterator();
 
             while ( categoryIterator.hasNext() )
             {
                 DataElementCategory cat = categoryIterator.next();
-            
+
                 Iterator<DataElementCategoryOption> optionIterator = optionsMap.get( cat.getId() ).iterator();
-                
+
                 DataElementCategoryOption option = optionIterator.next();
 
                 options.add( option );
-                
+
                 optionIterator.remove();
             }
 
             DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
 
             optionCombo.setCategoryCombo( categoryCombo );
-            
+
             optionCombo.setCategoryOptions( options );
 
             addDataElementCategoryOptionCombo( optionCombo );
@@ -464,96 +391,19 @@ public class DefaultDataElementCategoryOptionComboService
 
             dataElementCategoryComboService.updateDataElementCategoryCombo( categoryCombo );
         }
-    }
+    }    
 
-    public String getOptionNames( DataElementCategoryOptionCombo dataElementCategoryOptionCombo )
-    {
-        StringBuffer optionsName = new StringBuffer();
-
-        DataElementCategoryCombo catCombo = dataElementCategoryOptionCombo.getCategoryCombo();
-
-        Set<DataElementCategory> categories = catCombo.getCategories();
-
-        Map<Integer, DataElementCategory> categoryOrder = new TreeMap<Integer, DataElementCategory>();
-
-        int index = 1;
-
-        for ( DataElementCategory cat : categories )
-        {
-            DataElementDimensionRowOrder order = dataElementDimensionRowOrderService.getDataElementDimensionRowOrder(
-                catCombo, cat );
-
-            if ( order != null )
-            {
-                categoryOrder.put( dataElementDimensionRowOrderService.getDataElementDimensionRowOrder( catCombo, cat )
-                    .getDisplayOrder(), cat );
-            }
-            else
-            {
-                categoryOrder.put( index, cat );
-            }
-
-            index++;
-        }
-
-        Set<DataElementCategoryOption> tempOptions = dataElementCategoryOptionCombo.getCategoryOptions();
-
-        Map<Integer, DataElementCategoryOption> options = new TreeMap<Integer, DataElementCategoryOption>();
-
-        DataElementCategory cat = null;
-
-        for ( int i = 1; i <= categories.size(); i++ )
-        {
-            cat = categoryOrder.get( i );
-
-            if ( cat != null )
-            {
-                for ( DataElementCategoryOption option : tempOptions )
-                {
-                    if ( cat.getCategoryOptions() != null )
-                    {
-                        if ( cat.getCategoryOptions().contains( option ) )
-                        {
-                            options.put( i, option );
-
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        for ( int i = 1; i <= options.size(); i++ )
-        {
-            optionsName.append( options.get( i ).getName() ).append( SEPARATOR );
-        }
-
-        String name = optionsName.toString();
-        
-        if ( name.length() > 0 )
-        {
-            name = name.substring( 0, name.length() - 1 );
-        }
-
-        if ( name.equalsIgnoreCase( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME ) )
-        {
-            return "";
-        }
-
-        return "(" + optionsName + ")";
-    }
-    
     public Collection<Operand> getOperandsByIds( Collection<Integer> dataElementIdentifiers )
     {
         Collection<DataElement> dataElements = dataElementService.getDataElements( dataElementIdentifiers );
-        
+
         return getOperands( dataElements );
     }
 
     public Collection<Operand> getOperands( Collection<DataElement> dataElements )
     {
         Collection<Operand> operands = new ArrayList<Operand>();
-        
+
         for ( DataElement dataElement : dataElements )
         {
             Set<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
@@ -563,20 +413,20 @@ public class DefaultDataElementCategoryOptionComboService
                 for ( DataElementCategoryOptionCombo optionCombo : categoryOptionCombos )
                 {
                     Operand operand = new Operand( dataElement.getId(), optionCombo.getId(), dataElement.getName()
-                        + getOptionNames( optionCombo ), new ArrayList<Integer>( dataElement.getAggregationLevels() ) );
+                        + optionCombo.getName(), new ArrayList<Integer>( dataElement.getAggregationLevels() ) );
 
                     operands.add( operand );
                 }
             }
             else
             {
-                Operand operand = new Operand( dataElement.getId(), categoryOptionCombos.iterator().next().getId(), 
+                Operand operand = new Operand( dataElement.getId(), categoryOptionCombos.iterator().next().getId(),
                     dataElement.getName(), new ArrayList<Integer>( dataElement.getAggregationLevels() ) );
 
                 operands.add( operand );
             }
         }
-        
+
         return operands;
     }
 }

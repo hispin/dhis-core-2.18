@@ -31,9 +31,9 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericStore;
@@ -121,7 +121,7 @@ public class DataElementCategoryOptionComboStoreTest
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();
         
-        Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+        List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
         
         categoryOptions.add( categoryOptionA );
         categoryOptions.add( categoryOptionB );        
@@ -143,7 +143,7 @@ public class DataElementCategoryOptionComboStoreTest
     {
         categoryOptionComboA = new DataElementCategoryOptionCombo();
         
-        Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+        List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
         
         categoryOptions.add( categoryOptionA );
         categoryOptions.add( categoryOptionB );        
