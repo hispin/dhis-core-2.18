@@ -155,11 +155,11 @@ public class FormAction
         this.dataSetLockService = dataSetLockService;
     }
 
-    private DataElementCategoryOptionComboService categoryOptionComboService;
+    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
+    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
     {
-        this.categoryOptionComboService = categoryOptionComboService;
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
 
     // -------------------------------------------------------------------------
@@ -324,7 +324,7 @@ public class FormAction
             return SUCCESS;
         }
 
-        DataElementCategoryOptionCombo defaultOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
+        DataElementCategoryOptionCombo defaultOptionCombo = dataElementCategoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
         
         optionComboId = defaultOptionCombo.getId();
 
@@ -371,6 +371,7 @@ public class FormAction
         // ---------------------------------------------------------------------
 
         dataElementTypeMap = new HashMap<String, String>();
+        dataElementTypeMap.put( DataElement.TYPE_DATE, i18n.getString( "date" ) );
         dataElementTypeMap.put( DataElement.TYPE_BOOL, i18n.getString( "yes_no" ) );
         dataElementTypeMap.put( DataElement.TYPE_INT, i18n.getString( "number" ) );
         dataElementTypeMap.put( DataElement.TYPE_STRING, i18n.getString( "text" ) );
