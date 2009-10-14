@@ -48,7 +48,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataElementCategoryOptionComboService
     implements DataElementCategoryOptionComboService
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -156,10 +155,10 @@ public class DefaultDataElementCategoryOptionComboService
     }
 
     public Collection<DataElementCategoryOptionCombo> sortDataElementCategoryOptionCombos(
-        DataElementCategoryCombo catCombo )
+        DataElementCategoryCombo categoryCombo )
     {
         Collection<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
-            catCombo.getOptionCombos() );       
+            categoryCombo.getOptionCombos() );       
 
         // ---------------------------------------------------------------------
         // Determine the number of times each category is going to repeat
@@ -169,17 +168,16 @@ public class DefaultDataElementCategoryOptionComboService
 
         Map<Integer, Integer> categoryRepeat = new HashMap<Integer, Integer>();
 
-        for ( DataElementCategory category : catCombo.getCategories() )
+        for ( DataElementCategory category : categoryCombo.getCategories() )
         {
             categoryColSpan = categoryColSpan / category.getCategoryOptions().size();
 
             categoryRepeat.put( category.getId(), categoryColSpan );
-
         }
 
         Map<Integer, Collection<DataElementCategoryOption>> orderedOptions = new HashMap<Integer, Collection<DataElementCategoryOption>>();
 
-        for ( DataElementCategory cat : catCombo.getCategories() )
+        for ( DataElementCategory cat : categoryCombo.getCategories() )
         {
             int outerForLoopCount = optionCombos.size();
             int innerForLoopCount = categoryRepeat.get( cat.getId() );
@@ -209,9 +207,9 @@ public class DefaultDataElementCategoryOptionComboService
 
         for ( int i = 0; i < optionCombos.size(); i++ )
         {
-            Collection<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>( catCombo
+            Collection<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>( categoryCombo
                 .getCategories().size() );
-            Collection<DataElementCategory> copyOforderedCategories = catCombo.getCategories();
+            Collection<DataElementCategory> copyOforderedCategories = categoryCombo.getCategories();
             Iterator<DataElementCategory> categoryIterator = copyOforderedCategories.iterator();
 
             while ( categoryIterator.hasNext() )

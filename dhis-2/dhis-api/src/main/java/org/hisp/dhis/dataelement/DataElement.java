@@ -28,6 +28,7 @@ package org.hisp.dhis.dataelement;
  */
 
 // import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -55,15 +56,12 @@ public class DataElement
     extends IdentifiableObject
 {
     public static final String TYPE_STRING = "string";
-
     public static final String TYPE_INT = "int";
-
     public static final String TYPE_BOOL = "bool";
+    public static final String TYPE_DATE = "date";
 
     public static final String AGGREGATION_OPERATOR_SUM = "sum";
-
-    public static final String AGGREGATION_OPERATOR_AVERAGE ="average";
-    
+    public static final String AGGREGATION_OPERATOR_AVERAGE ="average";    
     public static final String AGGREGATION_OPERATOR_COUNT = "count";
 
     /**
