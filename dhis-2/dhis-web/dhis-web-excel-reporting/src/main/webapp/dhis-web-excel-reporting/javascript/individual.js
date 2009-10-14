@@ -39,36 +39,36 @@ function getOptionCombos(){
 
 function filterByDataElementGroup( selectedDataElementGroup )
 {
-  var request = new Request();
+	  var request = new Request();
 
-  var requestString = 'filterAvailableDataElementsByDataElementGroup.action';
-  
-  var params = 'dataElementGroupId=' + selectedDataElementGroup;
-
-  var selectedList = byId( 'selectedDataElements' );
-
-	
-  for ( var i = 0; i < selectedList.options.length; ++i)
-  {
-	var selectedValue = selectedList.options[i].value;
+	  var requestString = 'filterAvailableDataElementsByDataElementGroup.action';
 	  
-	var id = selectedValue.substring(selectedValue.indexOf(".") + 1, selectedValue.length);
+	  var params = 'dataElementGroupId=' + selectedDataElementGroup;
 
-  	params += '&selectedDataElements=' + id;
-  }
+	  var selectedList = byId( 'selectedDataElements' );
 
-  // Clear the Dataelement list
-  var availableList = document.getElementById( 'availableDataElements' );
-  availableList.options.length = 0;
+		
+	  for ( var i = 0; i < selectedList.options.length; ++i)
+	  {
+		var selectedValue = selectedList.options[i].value;
+		  
+		var id = selectedValue.substring(selectedValue.indexOf(".") + 1, selectedValue.length);
 
-  // Clear the OptionCombo list
-  availableList = document.getElementById( 'availableOptionCombos' );
-  availableList.options.length = 0;
-  
-  request.setResponseTypeXML( 'dataElementGroup' );
-  request.setCallbackSuccess( filterByDataElementGroupCompleted );
-  request.sendAsPost( params );
-  request.send( requestString );
+		params += '&selectedDataElements=' + id;
+	  }
+
+	  // Clear the Dataelement list
+	  var availableList = document.getElementById( 'availableDataElements' );
+	  availableList.options.length = 0;
+
+	  // Clear the OptionCombo list
+	  availableList = document.getElementById( 'availableOptionCombos' );
+	  availableList.options.length = 0;
+	  
+	  request.setResponseTypeXML( 'dataElementGroup' );
+	  request.setCallbackSuccess( filterByDataElementGroupCompleted );
+	  request.sendAsPost( params );
+	  request.send( requestString );
 
 }
 
@@ -82,11 +82,14 @@ function filterByDataElementGroupCompleted( dataElementGroup )
   for ( var i = 0; i < dataElementList.length; i++ )
   {
     var dataElement = dataElementList[i];
-    var name = dataElement.firstChild.nodeValue;
+    var value = dataElement.firstChild.nodeValue;
     var id = dataElement.getAttribute( 'id' );
-	var option = new Option( name, id );
-	dw_Tooltip.content_vars[i] = name;
-	option.setAttribute("class", "showTip " + i );
+	var option = new Option( value, id );
+	
+	option.onmousemove  = function(e){
+		showToolTip( e, availableAllDataElements[this.value]);
+	}
+	
 	availableList.add( option , null );
   }
   
@@ -109,9 +112,14 @@ function filterAvailableDataElements()
         
 		var option = new Option( value, id );
 		
-		dw_Tooltip.content_vars[id] = name;
+		//dw_Tooltip.content_vars[id] = name;
 	
-		option.setAttribute("class", "showTip " + id );
+		option.onmousemove  = function(e){
+			showToolTip(e, name);
+		}
+			
+		//option.setAttribute("onMouseOver",  showToolTip(byId('tooltip'), value) );
+		//option.setAttribute("class", "showTip " + id );
 	
         if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
         {
@@ -128,9 +136,9 @@ function initLists()
     {
 		var option = new Option( availableAllDataElements[id], id );
 		
-		dw_Tooltip.content_vars[id] = availableAllDataElements[id];
-		
-		option.setAttribute("class", "showTip " + id );
+		option.onmousemove  = function(e){
+			showToolTip(e, this.text);
+		}
 		
         list.add(option , null );
     }
@@ -152,13 +160,15 @@ function addDataSetMembers()
 
         dataSetMembers[id] = list.options[list.selectedIndex].text + " - " + listOptionCombo[listOptionCombo.selectedIndex].text;
     
-			
-		
-		dw_Tooltip.content_vars[id] = dataSetMembers[id];
+		//dw_Tooltip.content_vars[id] = dataSetMembers[id];
 	
 		var option =  new Option( dataSetMembers[id], id );
 	
-		option.setAttribute("class", "showTip " + id );
+		option.onmousemove  = function(e){
+			showToolTip( e, this.text);
+		}
+		
+		//option.setAttribute("class", "showTip " + id );
 	
 		byId( 'selectedDataElements' ).add(option, null );
 		
@@ -265,4 +275,35 @@ function generateIndividualReportExcel(){
 			deleteDivEffect();
 			$("#loading").hide();		
 		},'xml');
+}
+
+// -----------------------------------------------------------------------------
+function showToolTip( e, value){
+	
+	var tooltipDiv = byId('tooltip');
+	tooltipDiv.style.display = 'block';
+	
+	var posx = 0;
+    var posy = 0;
+	
+    if (!e) var e = window.event;
+    if (e.pageX || e.pageY)
+    {
+        posx = e.pageX;
+        posy = e.pageY;
+    }
+    else if (e.clientX || e.clientY)
+    {
+        posx = e.clientX;
+        posy = e.clientY;
+    }
+	
+	
+	tooltipDiv.style.left= posx  + 8 + 'px';
+	tooltipDiv.style.top = posy  + 8 + 'px';
+	tooltipDiv.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +   value;
+}
+
+function hideToolTip(){
+	byId('tooltip').style.display = 'none';
 }
