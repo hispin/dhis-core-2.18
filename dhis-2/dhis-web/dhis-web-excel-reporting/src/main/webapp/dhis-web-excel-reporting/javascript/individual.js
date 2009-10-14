@@ -87,7 +87,7 @@ function filterByDataElementGroupCompleted( dataElementGroup )
 	var option = new Option( value, id );
 	
 	option.onmousemove  = function(e){
-		showToolTip( e, availableAllDataElements[this.value]);
+		showToolTip( e, this.text);
 	}
 	
 	availableList.add( option , null );
@@ -112,15 +112,10 @@ function filterAvailableDataElements()
         
 		var option = new Option( value, id );
 		
-		//dw_Tooltip.content_vars[id] = name;
-	
 		option.onmousemove  = function(e){
 			showToolTip(e, name);
 		}
 			
-		//option.setAttribute("onMouseOver",  showToolTip(byId('tooltip'), value) );
-		//option.setAttribute("class", "showTip " + id );
-	
         if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
         {
             list.add(option, null );
@@ -160,16 +155,12 @@ function addDataSetMembers()
 
         dataSetMembers[id] = list.options[list.selectedIndex].text + " - " + listOptionCombo[listOptionCombo.selectedIndex].text;
     
-		//dw_Tooltip.content_vars[id] = dataSetMembers[id];
-	
 		var option =  new Option( dataSetMembers[id], id );
 	
 		option.onmousemove  = function(e){
 			showToolTip( e, this.text);
 		}
 		
-		//option.setAttribute("class", "showTip " + id );
-	
 		byId( 'selectedDataElements' ).add(option, null );
 		
 		
@@ -297,7 +288,6 @@ function showToolTip( e, value){
         posx = e.clientX;
         posy = e.clientY;
     }
-	
 	
 	tooltipDiv.style.left= posx  + 8 + 'px';
 	tooltipDiv.style.top = posy  + 8 + 'px';
