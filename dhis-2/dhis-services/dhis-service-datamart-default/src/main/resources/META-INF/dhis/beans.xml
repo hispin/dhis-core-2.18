@@ -238,17 +238,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="jdbcTemplate" ref="jdbcTemplate"/>
     <property name="statementBuilder" ref="statementBuilder"/>
   </bean>
-  
-  <bean id="org.hisp.dhis.datamart.startup.DataElementCategoryOptionComboStartupRoutine"
-    class="org.hisp.dhis.datamart.startup.DataElementCategoryOptionComboStartupRoutine">
-    <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    <property name="categoryComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/> 
-    <property name="runlevel" value="3"/>
-  </bean>
-  
+    
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetObject"
       ref="org.hisp.dhis.system.startup.StartupRoutineExecutor"/>
@@ -256,7 +246,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="arguments">
       <list>
         <ref local="org.hisp.dhis.datamart.startup.AggregationTableCreator"/>
-        <ref local="org.hisp.dhis.datamart.startup.DataElementCategoryOptionComboStartupRoutine"/>
       </list>
     </property>
   </bean>
