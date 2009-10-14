@@ -680,14 +680,7 @@
 			<param name="page">/dhis-web-excel-reporting/individualReportExcel.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
 			<param name="menuTreeHeight">220</param>
-			<param name="javascripts">javascript/individual.js,
-				javascript/commons.js,
-				../dhis-web-commons/ouwt/ouwt.js,
-				javascript/wz_tooltip/dw_event.js,
-				javascript/wz_tooltip/dw_tooltip.js,
-				javascript/wz_tooltip/dw_tooltip_aux.js,
-				javascript/wz_tooltip/dw_viewport.js</param>
-			<param name="page">/dhis-web-excel-reporting/individualReportExcel.vm</param>
+			<param name="javascripts">javascript/individual.js,javascript/commons.js,../dhis-web-commons/ouwt/ouwt.js</param>			
 		</action>
 
 		<action name="filterAvailableDataElementsByDataElementGroup"
