@@ -486,6 +486,7 @@ public class FormAction
         // ---------------------------------------------------------------------
 
         dataElementTypeMap = new HashMap<String, String>();
+        dataElementTypeMap.put( DataElement.TYPE_DATE, i18n.getString( "date" ) );
         dataElementTypeMap.put( DataElement.TYPE_BOOL, i18n.getString( "yes_no" ) );
         dataElementTypeMap.put( DataElement.TYPE_INT, i18n.getString( "number" ) );
         dataElementTypeMap.put( DataElement.TYPE_STRING, i18n.getString( "text" ) );
