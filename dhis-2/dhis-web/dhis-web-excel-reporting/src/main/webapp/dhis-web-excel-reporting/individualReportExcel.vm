@@ -1,28 +1,12 @@
-<link rel="stylesheet" href="css/ex.css" type="text/css">
 <style type="text/css">
-div#tipDiv {
+#tooltip {
     color:#000; font-size:11px; line-height:1.2;
     background-color:#E1E5F1; border:1px solid #667295; 
     width:210px; padding:4px;
 }
 </style>
-<script src="js/dw_event.js" type="text/javascript"></script>
-<script src="js/dw_viewport.js" type="text/javascript"></script>
-<script src="js/dw_tooltip.js" type="text/javascript"></script>
-<script src="js/dw_tooltip_aux.js" type="text/javascript"></script>
-<script type="text/javascript">
-
-dw_Tooltip.content_vars = {
-    L1: 'Some text in the tooltip for link 1',
-    L2: 'The tooltip can contain <strong><em>Rich HTML</em></strong>',
-    L3: '<div style="text-align:center"><img src="images/dot-com-btn.gif" /></div>',
-    L4: 'You can have a tooltip pop up when hovering over an image too of course!'
-}
-
-
-</script>
-
 <h3>$i18n.getString( "individual_report" )</h3>
+<div id="tooltip" style=" display:none; background-color:#FFFFCC; ; position:absolute;" ></div>
 
 <form id="editDataSetForm" name="editDataSetForm" method="post" onsubmit="submitForm(); return validateEditDataSet()">
   <div style="display:inline">
@@ -90,7 +74,7 @@ dw_Tooltip.content_vars = {
         <td>
           <!-- List of all available DataElements -->
 		 
-          <select size="15"  id="availableDataElements" name="availableDataElements" style="max-width:30em;min-width:30em;height:10em" onChange="getOptionCombos();">
+          <select size="15"  onMouseOut="javascript: hideToolTip();" hideToolTip id="availableDataElements" name="availableDataElements" style="max-width:30em;min-width:30em;height:10em" onChange="getOptionCombos();">
           </select>
 		  <br><br>
 		  <strong>$i18n.getString('category_option_combo')</strong><br>
@@ -104,7 +88,7 @@ dw_Tooltip.content_vars = {
         </td>
         <td>
           <!-- List of all selected DataElements -->
-          <select  size="15" id="selectedDataElements" name="selectedDataElements" style="max-width:30em;min-width:30em;height:22em" ondblclick="removeDataSetMembers();">
+          <select  size="15" onMouseOut="javascript: hideToolTip();" id="selectedDataElements" name="selectedDataElements" style="max-width:30em;min-width:30em;height:22em" ondblclick="removeDataSetMembers();">
           </select>
         </td>
       </tr>
@@ -142,7 +126,8 @@ dw_Tooltip.content_vars = {
         <td>
           <!-- List of all available DataElements -->
           <select size="15" id="availablePeriods" name="availablePeriods" multiple="multiple" style="max-width:30em;min-width:30em;height:20em" ondblclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' );">
-          </select>
+          
+		  </select>
 </td>
         <td>
           <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' );">
@@ -166,17 +151,13 @@ dw_Tooltip.content_vars = {
     </tbody>
   </table>
 </form>
-
 <span id="message"></span>
 <span id="loading" style="display:none;position:fixed;"><img src="../images/ajax-loader.gif" /></span>
 
 <script type="text/javascript">
 
 	var dataSetMembers = new Object();
-	//#foreach ( $dataElement in $dataSetDataElements )
-		//dataSetMembers['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
-	//#end
-
+	
 	var availableAllDataElements = new Object();	
 	#foreach ( $availableDataElement in $dataElements )
 		availableAllDataElements['$availableDataElement.id'] = '$encoder.jsEscape( $availableDataElement.name, "'" )';
