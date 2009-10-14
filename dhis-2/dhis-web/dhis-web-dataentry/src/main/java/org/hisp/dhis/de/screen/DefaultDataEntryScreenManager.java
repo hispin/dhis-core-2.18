@@ -603,6 +603,8 @@ public class DefaultDataEntryScreenManager
 
                 DataElement dataElement = dataElementMap.get( dataElementId ); //dataElementService.getDataElement( dataElementId );
                 
+                System.out.println("The dataset is:  " + dataSet.getId() + "  and the data element:  " + dataElementId );
+                
                 // -------------------------------------------------------------
                 // Find type of data element
                 // -------------------------------------------------------------

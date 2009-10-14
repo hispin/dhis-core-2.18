@@ -30,7 +30,6 @@ package org.hisp.dhis.jdbc;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.system.deletion.DeletionManager;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 /**
