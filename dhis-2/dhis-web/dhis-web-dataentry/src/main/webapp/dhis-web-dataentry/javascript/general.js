@@ -152,6 +152,18 @@ function saveBoolean( dataElementId, optionComboId, selectedOption )
     valueSaver.save();
 }
 
+function saveDate( dataElementId, dataElementName )
+{
+	
+	var field = document.getElementById( 'value[' + dataElementId + '].date' );
+    var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerHTML;
+    
+    field.style.backgroundColor = '#ffffcc';
+    
+    var valueSaver = new ValueSaver( dataElementId, '', field.value, '#ccffcc', '' );
+    valueSaver.save();
+}
+
 function saveComment( dataElementId, optionComboId, commentValue )
 {
     var field = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
@@ -225,13 +237,17 @@ function ValueSaver( dataElementId_, optionComboId_, value_, resultColor_, selec
     
     function markValue( color )
     {
-        var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerText;       
+        var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerHTML;       
         
         var element;
         
         if ( type == 'bool' )
         {
             element = document.getElementById( 'value[' + dataElementId + '].boolean' );
+        }
+        else if( type == 'date' )
+        {
+        	element = document.getElementById( 'value[' + dataElementId + '].date' );
         }
         else if( selectedOption )
         {
