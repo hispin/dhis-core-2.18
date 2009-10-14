@@ -274,10 +274,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
     <property name="optionComboService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    <property name="runlevel" value="1"/>
+    <property name="runlevel" value="2"/>
   </bean>
-	
-  
+	  
   <bean id="org.hisp.dhis.dataelement.OptionsCategoriesDefaultSortOrderPopulator"
     class="org.hisp.dhis.dataelement.OptionsCategoriesDefaultSortOrderPopulator">
     <property name="statementManager" ref="statementManager"/>

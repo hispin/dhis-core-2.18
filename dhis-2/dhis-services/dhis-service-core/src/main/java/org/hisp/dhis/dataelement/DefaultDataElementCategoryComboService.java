@@ -101,6 +101,5 @@ public class DefaultDataElementCategoryComboService
     public DataElementCategoryCombo getDataElementCategoryComboByName( String name )
     {
         return dataElementCategoryComboStore.getByName( name );
-    }
-    
+    }    
 }
