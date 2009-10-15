@@ -27,22 +27,15 @@ package org.hisp.dhis.gis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
 public class Feature
-    implements Serializable
 {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	private int id;
+    private int id;
 
     private OrganisationUnit organisationUnit;
 
