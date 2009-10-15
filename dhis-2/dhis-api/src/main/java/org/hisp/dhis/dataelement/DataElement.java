@@ -29,6 +29,7 @@ package org.hisp.dhis.dataelement;
 
 // import java.io.Serializable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -54,6 +55,7 @@ import org.hisp.dhis.period.PeriodType;
  */
 public class DataElement
     extends IdentifiableObject
+    implements Serializable
 {
     public static final String TYPE_STRING = "string";
     public static final String TYPE_INT = "int";
