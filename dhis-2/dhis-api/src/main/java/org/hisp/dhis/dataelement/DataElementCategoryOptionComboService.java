@@ -33,14 +33,15 @@ import java.util.Collection;
  * @author Abyot Asalefew
  * @version $Id$
  */
-public interface DataElementCategoryOptionComboService 
-{	
+public interface DataElementCategoryOptionComboService
+{
     String ID = DataElementCategoryOptionComboService.class.getName();
-    
+
     /**
      * Adds a DataElementCategoryOptionCombo.
      * 
-     * @param dataElementCategoryOptionCombo the DataElementCategoryOptionCombo to add.
+     * @param dataElementCategoryOptionCombo the DataElementCategoryOptionCombo
+     *        to add.
      * @return the generated identifier.
      */
     int addDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo );
@@ -48,14 +49,16 @@ public interface DataElementCategoryOptionComboService
     /**
      * Updates a DataElementCategoryOptionCombo.
      * 
-     * @param dataElementCategoryOptionCombo the DataElementCategoryOptionCombo to update.
+     * @param dataElementCategoryOptionCombo the DataElementCategoryOptionCombo
+     *        to update.
      */
     void updateDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo );
 
     /**
      * Deletes a DataElementCategoryOptionCombo.
      * 
-     * @param dataElementCategoryOptionCombo the DataElementCategoryOptionCombo to delete.
+     * @param dataElementCategoryOptionCombo the DataElementCategoryOptionCombo
+     *        to delete.
      */
     void deleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo );
 
@@ -66,44 +69,48 @@ public interface DataElementCategoryOptionComboService
      * @return the DataElementCategoryOptionCombo.
      */
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( int id );
-    
+
     /**
      * Retrieves the DataElementCategoryOptionCombos with the given identifiers.
      * 
-     * @param identifiers the identifiers of the DataElementCategoryOptionCombos.
+     * @param identifiers the identifiers of the
+     *        DataElementCategoryOptionCombos.
      * @return a Collection of DataElementCategoryOptionCombos.
      */
     Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos( Collection<Integer> identifiers );
-    
+
     /**
      * Retrieves a DataElementCategoryOptionCombo.
      * 
-     * @param categoryOptionCombo the DataElementCategoryOptionCombo to retrieve.
+     * @param categoryOptionCombo the DataElementCategoryOptionCombo to
+     *        retrieve.
      * @return a DataElementCategoryOptionCombo.
      */
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo ); // TODO WTF?
-    
+
     /**
      * Retrieves all DataElementCategoryOptionCombos.
      * 
      * @return a Collection of DataElementCategoryOptionCombos.
      */
-    Collection<DataElementCategoryOptionCombo> getAllDataElementCategoryOptionCombos(); 
-    
+    Collection<DataElementCategoryOptionCombo> getAllDataElementCategoryOptionCombos();
+
     /**
-     * Sorts the DataElementCategoryOptionCombos in the given DataElementCategoryCombo.
+     * Sorts the DataElementCategoryOptionCombos in the given
+     * DataElementCategoryCombo.
      * 
      * @param categoryCombo the DataElementCategoryCombo.
-     * @return a sorted Collection of DataElementCategoryOptionCombos.
+     * 
      */
-    Collection<DataElementCategoryOptionCombo> sortDataElementCategoryOptionCombos( DataElementCategoryCombo categoryCombo ); // TODO List instead?
-    
+    Collection<DataElementCategoryOptionCombo> sortOptionCombos( DataElementCategoryCombo categoryCombo );
+
     /**
-     * Generates and persists a default DataElementCategory, DataElmentCategoryOption, 
-     * DataElementCategoryCombo and DataElementCategoryOptionCombo.
+     * Generates and persists a default DataElementCategory,
+     * DataElmentCategoryOption, DataElementCategoryCombo and
+     * DataElementCategoryOptionCombo.
      */
     void generateDefaultDimension();
-    
+
     /**
      * Retrieves the default DataElementCategoryOptionCombo.
      * 
@@ -112,12 +119,12 @@ public interface DataElementCategoryOptionComboService
     DataElementCategoryOptionCombo getDefaultDataElementCategoryOptionCombo();
 
     /**
-     * Generates and persists DataElementCategoryOptionCombos for the given DataElementCategoryCombo.
+     * Generates and persists DataElementCategoryOptionCombos for the given
+     * DataElementCategoryCombo.
      * 
      * @param categoryCombo the DataElementCategoryCombo.
      */
     void generateOptionCombos( DataElementCategoryCombo categoryCombo );
-    
 
     /**
      * 
@@ -125,12 +132,12 @@ public interface DataElementCategoryOptionComboService
      * @return
      */
     Collection<Operand> getOperandsByIds( Collection<Integer> dataElementIdentifiers );
-    
+
     /**
      * Gets the Operands for the given Collection of DataElements.
      * 
      * @param dataElements the Collection of DataElements.
      * @return the Operands for the given Collection of DataElements.
      */
-    Collection<Operand> getOperands( Collection<DataElement> dataElements );    
+    Collection<Operand> getOperands( Collection<DataElement> dataElements );
 }

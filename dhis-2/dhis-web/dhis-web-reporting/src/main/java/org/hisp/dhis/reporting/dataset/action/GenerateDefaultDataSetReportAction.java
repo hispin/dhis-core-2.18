@@ -275,7 +275,7 @@ public class GenerateDefaultDataSetReportAction
                     int colCount = 0;
 
                     Collection<DataElementCategoryOptionCombo> optionCombos = dataElementCategoryOptionComboService
-                        .sortDataElementCategoryOptionCombos( catCombo );
+                        .sortOptionCombos( catCombo );
 
                     collectedDataElements.add( dataElement.getName() );
 

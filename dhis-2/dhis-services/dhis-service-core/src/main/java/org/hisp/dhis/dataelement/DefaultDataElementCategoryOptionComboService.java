@@ -128,9 +128,8 @@ public class DefaultDataElementCategoryOptionComboService
 
         return categoryOptionCombos;
     }
-
-    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo(
-        DataElementCategoryOptionCombo categoryOptionCombo )
+    
+    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
     {
         for ( DataElementCategoryOptionCombo dcoc : getAllDataElementCategoryOptionCombos() )
         {
@@ -152,89 +151,7 @@ public class DefaultDataElementCategoryOptionComboService
     {
         return dataElementCategoryOptionComboStore.getAll();
     }
-
-    public Collection<DataElementCategoryOptionCombo> sortDataElementCategoryOptionCombos(
-        DataElementCategoryCombo categoryCombo )
-    {
-
-        // Gets optionCombos for a given categoryCombo
-        Collection<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
-            categoryCombo.getOptionCombos() );
-
-        // ---------------------------------------------------------------------
-        // Determine the number of times each category is going to repeat
-        // ---------------------------------------------------------------------
-
-        int categoryColSpan = optionCombos.size();
-
-        Map<Integer, Integer> categoryRepeat = new HashMap<Integer, Integer>();
-
-        for ( DataElementCategory category : categoryCombo.getCategories() )
-        {
-            categoryColSpan = categoryColSpan / category.getCategoryOptions().size();
-
-            categoryRepeat.put( category.getId(), categoryColSpan );
-        }
-
-        Map<Integer, Collection<DataElementCategoryOption>> orderedOptions = new HashMap<Integer, Collection<DataElementCategoryOption>>();
-
-        for ( DataElementCategory cat : categoryCombo.getCategories() )
-        {
-            int outerForLoopCount = optionCombos.size();
-            int innerForLoopCount = categoryRepeat.get( cat.getId() );
-
-            Collection<DataElementCategoryOption> requiredOptions = new ArrayList<DataElementCategoryOption>();
-            Collection<DataElementCategoryOption> options = cat.getCategoryOptions();
-
-            int x = 0;
-
-            while ( x < outerForLoopCount )
-            {
-                for ( DataElementCategoryOption option : options )
-                {
-                    for ( int i = 0; i < innerForLoopCount; i++ )
-                    {
-                        requiredOptions.add( option );
-
-                        x++;
-                    }
-                }
-            }
-
-            orderedOptions.put( cat.getId(), requiredOptions );
-        }
-
-        Collection<DataElementCategoryOptionCombo> orderdCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
-
-        for ( int i = 0; i < optionCombos.size(); i++ )
-        {
-            Collection<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>( categoryCombo
-                .getCategories().size() );
-            Collection<DataElementCategory> copyOforderedCategories = categoryCombo.getCategories();
-            Iterator<DataElementCategory> categoryIterator = copyOforderedCategories.iterator();
-
-            while ( categoryIterator.hasNext() )
-            {
-                DataElementCategory category = categoryIterator.next();
-                Iterator<DataElementCategoryOption> optionIterator = orderedOptions.get( category.getId() ).iterator();
-                DataElementCategoryOption option = optionIterator.next();
-                options.add( option );
-                optionIterator.remove();
-            }
-
-            for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
-            {
-                if ( optionCombo.getCategoryOptions().containsAll( options ) )
-                {
-                    orderdCategoryOptionCombos.add( optionCombo );
-                    break;
-                }
-            }
-        }
-
-        return orderdCategoryOptionCombos;
-    }
-
+    
     public void generateDefaultDimension()
     {
         // ---------------------------------------------------------------------
@@ -299,9 +216,172 @@ public class DefaultDataElementCategoryOptionComboService
         return categoryCombo.getOptionCombos().iterator().next();
     }
 
+    public Collection<Operand> getOperandsByIds( Collection<Integer> dataElementIdentifiers )
+    {
+        Collection<DataElement> dataElements = dataElementService.getDataElements( dataElementIdentifiers );
+
+        return getOperands( dataElements );
+    }
+
+    public Collection<Operand> getOperands( Collection<DataElement> dataElements )
+    {
+        Collection<Operand> operands = new ArrayList<Operand>();
+
+        for ( DataElement dataElement : dataElements )
+        {
+            Set<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo()
+                .getOptionCombos();
+
+            if ( categoryOptionCombos.size() > 1 && !(dataElement instanceof CalculatedDataElement) )
+            {
+                for ( DataElementCategoryOptionCombo optionCombo : categoryOptionCombos )
+                {
+                    Operand operand = new Operand( dataElement.getId(), optionCombo.getId(), dataElement.getName()
+                        + optionCombo.getName(), new ArrayList<Integer>( dataElement.getAggregationLevels() ) );
+
+                    operands.add( operand );
+                }
+            }
+            else
+            {
+                Operand operand = new Operand( dataElement.getId(), categoryOptionCombos.iterator().next().getId(),
+                    dataElement.getName(), new ArrayList<Integer>( dataElement.getAggregationLevels() ) );
+
+                operands.add( operand );
+            }
+        }
+
+        return operands;
+    }
+
     public void generateOptionCombos( DataElementCategoryCombo categoryCombo )
     {
-        // Get categories for a give category
+
+        int totalOptionCombos = 1;
+
+        for ( DataElementCategory category : categoryCombo.getCategories() )
+        {
+            totalOptionCombos = totalOptionCombos * category.getCategoryOptions().size();
+        }
+
+        /*
+         * Iterate through the collection of optionsMap every time picking one option
+         * from each collection. Because we have put enough number of
+         * options in each collection, better to remove the picked options
+         * so that we don't get confused how many times to pick an option - pick
+         * an option only once!
+         */
+        
+        Map<Integer, Collection<DataElementCategoryOption>> optionsMap = prepareOptionsForCombination( categoryCombo ); 
+
+        Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>(
+            totalOptionCombos );
+
+        for ( int i = 0; i < totalOptionCombos; i++ )
+        {
+            List<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>( categoryCombo
+                .getCategories().size() );
+
+            /*
+             * We are going to iterate the list of categories a number of times.
+             * better to create a copy and iterate through the copy. we can stop
+             * iterating when we have create the required option combinations.
+             */
+            Collection<DataElementCategory> copyOfCategories = categoryCombo.getCategories();
+
+            Iterator<DataElementCategory> categoryIterator = copyOfCategories.iterator();
+
+            while ( categoryIterator.hasNext() )
+            {
+                DataElementCategory cat = categoryIterator.next();
+
+                /*
+                 * From each category pick one option
+                 */
+                Iterator<DataElementCategoryOption> optionIterator = optionsMap.get( cat.getId() ).iterator();
+
+                DataElementCategoryOption option = optionIterator.next();
+
+                options.add( option );
+
+                /*
+                 * Once we used the option, better to remove it. because we have
+                 * enough number of options
+                 */
+
+                optionIterator.remove();
+            }
+
+            DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
+
+            optionCombo.setCategoryCombo( categoryCombo );
+
+            optionCombo.setCategoryOptions( options );
+
+            addDataElementCategoryOptionCombo( optionCombo );
+
+            optionCombos.add( optionCombo );
+
+        }
+
+        categoryCombo.setOptionCombos( optionCombos );
+
+        dataElementCategoryComboService.updateDataElementCategoryCombo( categoryCombo );
+
+    }
+
+    public Collection<DataElementCategoryOptionCombo> sortOptionCombos( DataElementCategoryCombo categoryCombo )
+    {
+        Collection<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
+            categoryCombo.getOptionCombos() );
+
+        int totalColumns = optionCombos.size();        
+
+        Map<Integer, Collection<DataElementCategoryOption>> orderedOptions = prepareOptionsForCombination( categoryCombo );
+
+        Collection<DataElementCategoryOptionCombo> orderdCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+
+        for ( int i = 0; i < totalColumns; i++ )
+        {
+            Collection<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>( categoryCombo
+                .getCategories().size() );
+
+            Collection<DataElementCategory> copyOforderedCategories = categoryCombo.getCategories();
+
+            Iterator<DataElementCategory> categoryIterator = copyOforderedCategories.iterator();
+
+            while ( categoryIterator.hasNext() )
+            {
+                DataElementCategory category = categoryIterator.next();
+                Iterator<DataElementCategoryOption> optionIterator = orderedOptions.get( category.getId() ).iterator();
+                DataElementCategoryOption option = optionIterator.next();
+                options.add( option );
+                optionIterator.remove();
+            }
+
+            for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
+            {
+                if ( optionCombo.getCategoryOptions().containsAll( options ) )
+                {
+                    orderdCategoryOptionCombos.add( optionCombo );
+                    break;
+                }
+            }
+        }
+
+        return orderdCategoryOptionCombos;
+        
+    }
+
+    // -------------------------------------------------------------------------
+    // DataElementCategoryOptionCombo
+    // -------------------------------------------------------------------------
+
+    private Map<Integer, Collection<DataElementCategoryOption>> prepareOptionsForCombination(
+        DataElementCategoryCombo categoryCombo )
+    {
+        // Get categories for a given category
+        
         List<DataElementCategory> categories = new ArrayList<DataElementCategory>( categoryCombo.getCategories() );
 
         /*
@@ -319,11 +399,54 @@ public class DefaultDataElementCategoryOptionComboService
          * generalizing this we can have total option combinations by
          * multiplying the number of options in each category
          */
+        
         int totalOptionCombos = 1;
 
         for ( DataElementCategory category : categories )
         {
             totalOptionCombos = totalOptionCombos * category.getCategoryOptions().size();
+        }       
+
+        // ---------------------------------------------------------------------
+        // Determine the number of times each category is going to repeat
+        // ---------------------------------------------------------------------
+        
+        
+        /* Example again Category IPD_OPD, Options I and D
+         *               Category Sex, Options F and M
+         *               Category Age, Options 0-5,5-10,11+
+         *               
+         * Category combination is IPD_OPD+Sex+Age
+         * 
+         * Option combinations ... with the following arrangement in Data Entry
+         *  
+         *   I |  I | I | I | I  |  I | O |  O | O | O | O  |  O    
+         *   F |  F | F | F | F  |  F | M |  M | M | M | M  |  M     
+         *  0-5|5-10|11+|0-5|5-10|11+1|0-5|5-10|11+|0-5|5-10|11+1
+         *  
+         *  If we rearrange our categories like IPD_OPD+Age+Sex - then we will 
+         *  have the same option combinations, but with different arrangement. 
+         *  
+         *   I |  I | I  | I  | I  |  I | O |  O | O  | O  | O  |  O    
+         *  0-5| 0-5|5-10|5-10| 11+| 11+|0-5| 0-5|5-10|5-10| 11+|11+     
+         *  F  |  M | F  | M  |  F |  M |F  |  M | F  | M  |  F |  M 
+         *  
+         *  If we assume that we will draw a data entry table header, the top 
+         *  a category is in the order list, then the more ColSpan its options 
+         *  are going to have
+         *   
+         */
+        
+
+        int categoryColSpan = totalOptionCombos;
+
+        Map<Integer, Integer> categoryRepeat = new HashMap<Integer, Integer>();
+
+        for ( DataElementCategory category : categories )
+        {
+            categoryColSpan = categoryColSpan / category.getCategoryOptions().size();
+
+            categoryRepeat.put( category.getId(), categoryColSpan );
         }
 
         /*
@@ -354,129 +477,30 @@ public class DefaultDataElementCategoryOptionComboService
          * its options 'appearance' number of times. The size of the collection
          * should be equal to total number of options combinations.
          */
-        for ( DataElementCategory category : categories )
+        for ( DataElementCategory cat : categories )
         {
+            Collection<DataElementCategoryOption> requiredOptions = new ArrayList<DataElementCategoryOption>();
+            Collection<DataElementCategoryOption> options = cat.getCategoryOptions();
 
-            Collection<DataElementCategoryOption> repeatedOptions = new ArrayList<DataElementCategoryOption>(
-                totalOptionCombos );
+            int count = 0;
 
-            List<DataElementCategoryOption> options = category.getCategoryOptions();
-
-            for ( DataElementCategoryOption option : options )
+            while ( count < totalOptionCombos )
             {
-                /*
-                 * Collect each option 'appearance' number of times
-                 */
-                for ( int i = 0; i < (totalOptionCombos / category.getCategoryOptions().size()); i++ )
+                for ( DataElementCategoryOption option : options )
                 {
-                    repeatedOptions.add( option );
+                    for ( int i = 0; i < categoryRepeat.get( cat.getId() ); i++ )
+                    {
+                        requiredOptions.add( option );
+
+                        count++;
+                    }
                 }
             }
-            /*
-             * Each option is collected the required number of times and put it
-             * in its corresponding category
-             */
-            optionsMap.put( category.getId(), repeatedOptions );
+
+            optionsMap.put( cat.getId(), requiredOptions );
         }
 
-        /*
-         * Iterate through the list of categories every time picking one option
-         * from each of the categories. Because we have put enough number of
-         * options in the category list - better to remove the picked options,
-         * so that we don't get confused how many times to an pick an option -
-         * pick an option only once!
-         */
+        return optionsMap;
+    }   
 
-        Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>(
-            totalOptionCombos );
-
-        for ( int i = 0; i < totalOptionCombos; i++ )
-        {
-            List<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>( categories.size() );
-
-            /*
-             * We are going to iterate the list of categories a number of times
-             * better to create a copy and iterate through the copy. we can stop
-             * iterating when we have create the required option combinations.
-             */
-            Collection<DataElementCategory> copyOfCategories = categories;
-
-            Iterator<DataElementCategory> categoryIterator = copyOfCategories.iterator();
-
-            while ( categoryIterator.hasNext() )
-            {
-                DataElementCategory cat = categoryIterator.next();
-
-                /*
-                 * From each category pick an option
-                 */
-                Iterator<DataElementCategoryOption> optionIterator = optionsMap.get( cat.getId() ).iterator();
-
-                DataElementCategoryOption option = optionIterator.next();
-
-                options.add( option );
-
-                /*
-                 * Once we used the option, better to remove it. because we have
-                 * enough number of options
-                 */
-
-                optionIterator.remove();
-            }
-
-            DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
-
-            optionCombo.setCategoryCombo( categoryCombo );
-
-            optionCombo.setCategoryOptions( options );
-
-            addDataElementCategoryOptionCombo( optionCombo );
-
-            optionCombos.add( optionCombo );
-        }
-
-        if ( categoryCombo.getOptionCombos().size() != optionCombos.size() )
-        {
-            categoryCombo.setOptionCombos( optionCombos );
-
-            dataElementCategoryComboService.updateDataElementCategoryCombo( categoryCombo );
-        }
-    }
-
-    public Collection<Operand> getOperandsByIds( Collection<Integer> dataElementIdentifiers )
-    {
-        Collection<DataElement> dataElements = dataElementService.getDataElements( dataElementIdentifiers );
-
-        return getOperands( dataElements );
-    }
-
-    public Collection<Operand> getOperands( Collection<DataElement> dataElements )
-    {
-        Collection<Operand> operands = new ArrayList<Operand>();
-
-        for ( DataElement dataElement : dataElements )
-        {
-            Set<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
-
-            if ( categoryOptionCombos.size() > 1 && !(dataElement instanceof CalculatedDataElement) )
-            {
-                for ( DataElementCategoryOptionCombo optionCombo : categoryOptionCombos )
-                {
-                    Operand operand = new Operand( dataElement.getId(), optionCombo.getId(), dataElement.getName()
-                        + optionCombo.getName(), new ArrayList<Integer>( dataElement.getAggregationLevels() ) );
-
-                    operands.add( operand );
-                }
-            }
-            else
-            {
-                Operand operand = new Operand( dataElement.getId(), categoryOptionCombos.iterator().next().getId(),
-                    dataElement.getName(), new ArrayList<Integer>( dataElement.getAggregationLevels() ) );
-
-                operands.add( operand );
-            }
-        }
-
-        return operands;
-    }
 }

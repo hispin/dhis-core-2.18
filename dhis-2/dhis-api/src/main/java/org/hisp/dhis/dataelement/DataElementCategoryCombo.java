@@ -156,8 +156,8 @@ public class DataElementCategoryCombo
         return optionCombos;
     }
     
-    public void setOptionCombos( Set<DataElementCategoryOptionCombo> optionsCombo )
-    {
-        this.optionCombos = optionsCombo;
+    public void setOptionCombos( Set<DataElementCategoryOptionCombo> optionCombos )
+    {        
+        this.optionCombos = optionCombos;
     }
 }

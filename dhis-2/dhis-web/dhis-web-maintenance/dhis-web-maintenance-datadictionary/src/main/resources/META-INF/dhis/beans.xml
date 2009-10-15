@@ -598,10 +598,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="dataElementCategoryComboService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    </property>    
-    <property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    </property>
+    </property>   
   </bean>
   
   <bean id="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboAction"

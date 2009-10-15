@@ -32,8 +32,10 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MOD
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.customvalue.CustomValue;
 import org.hisp.dhis.customvalue.CustomValueService;
@@ -116,14 +118,6 @@ public class FormAction
         this.dataValueService = dataValueService;
     }
 
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
-
-    public void setDataElementCategoryOptionComboService(
-        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
-    {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
-    }
-
     private StandardCommentsManager standardCommentsManager;
 
     public void setStandardCommentsManager( StandardCommentsManager standardCommentsManager )
@@ -144,12 +138,19 @@ public class FormAction
     {
         this.selectedStateManager = selectedStateManager;
     }
-    
+
     private DataEntryScreenManager dataEntryScreenManager;
 
     public void setDataEntryScreenManager( DataEntryScreenManager dataEntryScreenManager )
     {
         this.dataEntryScreenManager = dataEntryScreenManager;
+    }   
+    
+    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+
+    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    {
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
 
     private I18n i18n;
@@ -265,13 +266,13 @@ public class FormAction
         return catColRepeat;
     }
 
-    private Collection<DataElementCategoryOptionCombo> orderdCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+    private Set<DataElementCategoryOptionCombo> orderdCategoryOptionCombos = new LinkedHashSet<DataElementCategoryOptionCombo>();
 
-    public Collection<DataElementCategoryOptionCombo> getOrderdCategoryOptionCombos()
+    public Set<DataElementCategoryOptionCombo> getOrderdCategoryOptionCombos()
     {
         return orderdCategoryOptionCombos;
     }
-    
+
     private Boolean cdeFormExists;
 
     public Boolean getCdeFormExists()
@@ -357,7 +358,7 @@ public class FormAction
         Period period = selectedStateManager.getSelectedPeriod();
 
         DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
-        
+
         if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
         {
             disabled = "disabled";
@@ -370,39 +371,39 @@ public class FormAction
             return SUCCESS;
         }
 
-        for ( DataElement element : dataElements )
+        /*
+         * Get all optionCombos for each and every dataElement so that we make
+         * sure we pick all the values for each of these optionCombos
+         */
+
+        for ( DataElement de : dataElements )
         {
-            if ( !orderdCategoryOptionCombos.containsAll( element.getCategoryCombo().getOptionCombos() ) )
-            {
-                Collection<DataElementCategoryOptionCombo> optionCombos = dataElementCategoryOptionComboService
-                    .sortDataElementCategoryOptionCombos( element.getCategoryCombo() );
-    
-                for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
-                {
-                    if ( !orderdCategoryOptionCombos.contains( optionCombo ) )
-                    {
-                        orderdCategoryOptionCombos.add( optionCombo );
-                    }
-                }
-            }
-        }
-        
+            orderdCategoryOptionCombos.addAll( dataElementCategoryOptionComboService.sortOptionCombos( de.getCategoryCombo() ) );            
+        }       
+                
         // ---------------------------------------------------------------------
         // Perform ordering of categories and their options so that they could
-        // be displayed as in the paper form. Note that the total number of entry 
-        // cells to be generated are the multiple of options fromo each category.
-        // ---------------------------------------------------------------------
+        // be displayed as in the paper form. Note that the total number of
+        // entry
+        // cells to be generated are the multiple of options from each
+        // category.
+        //
+        // For the time being we can only display a dataEntry form containing
+        // dataElements having similar categoryCombo - otherwise use custom
+        // forms
+        //
+        // ---------------------------------------------------------------------       
 
-        DataElement sample = dataElements.iterator().next();
+        DataElement sample = dataElements.iterator().next();       
 
-        DataElementCategoryCombo decbo = sample.getCategoryCombo();
-        
-        numberOfTotalColumns = orderdCategoryOptionCombos.size();       
+        DataElementCategoryCombo decbo = sample.getCategoryCombo();        
+
+        numberOfTotalColumns = orderdCategoryOptionCombos.size();
 
         orderedCategories = decbo.getCategories();
 
-        for ( DataElementCategory dec : orderedCategories ) // Get the order of options
-        {
+        for ( DataElementCategory dec : orderedCategories ) 
+        {          
             orderedOptionsMap.put( dec.getId(), dec.getCategoryOptions() );
         }
 
@@ -415,9 +416,9 @@ public class FormAction
         Map<Integer, Integer> catRepeat = new HashMap<Integer, Integer>();
 
         for ( DataElementCategory cat : orderedCategories )
-        {
+        {            
             catColSpan = catColSpan / cat.getCategoryOptions().size();
-            int total = numberOfTotalColumns / ( catColSpan * cat.getCategoryOptions().size() );
+            int total = numberOfTotalColumns / (catColSpan * cat.getCategoryOptions().size());
             Collection<Integer> cols = new ArrayList<Integer>( total );
 
             for ( int i = 0; i < total; i++ )
@@ -426,16 +427,15 @@ public class FormAction
             }
 
             /*
-             * TODO Cols are made to be a collection simply to facilitate a for loop
-             * in the velocity template - there should be a better way of "for"
-             * doing a loop.
+             * TODO Cols are made to be a collection simply to facilitate a for
+             * loop in the velocity template - there should be a better way of
+             * "for" doing a loop.
              */
 
             catColRepeat.put( cat.getId(), cols );
 
             catRepeat.put( cat.getId(), catColSpan );
         }
-       
 
         // ---------------------------------------------------------------------
         // Get the min/max values
@@ -473,7 +473,8 @@ public class FormAction
         // Prepare values for unsaved CalculatedDataElements
         // ---------------------------------------------------------------------
 
-        calculatedValueMap = dataEntryScreenManager.populateValuesForCalculatedDataElements( organisationUnit, dataSet, period );
+        calculatedValueMap = dataEntryScreenManager.populateValuesForCalculatedDataElements( organisationUnit, dataSet,
+            period );
 
         // ---------------------------------------------------------------------
         // Make the standard comments available
