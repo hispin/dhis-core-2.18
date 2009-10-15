@@ -606,12 +606,12 @@ public class ReportTableTest
         
         assertTrue( crossTabColumns.contains( "shortnamea_categoryoptiona_categoryoptionb_reporting_month" ) );
         assertTrue( crossTabColumns.contains( "shortnamea_categoryoptiona_categoryoptionb_last3_months" ) );
+        assertTrue( crossTabColumns.contains( "shortnamea_categoryoptionc_categoryoptiond_reporting_month" ) );
+        assertTrue( crossTabColumns.contains( "shortnamea_categoryoptionc_categoryoptiond_last3_months" ) );
         assertTrue( crossTabColumns.contains( "shortnameb_categoryoptiona_categoryoptionb_reporting_month" ) );
         assertTrue( crossTabColumns.contains( "shortnameb_categoryoptiona_categoryoptionb_last3_months" ) );
-        assertTrue( crossTabColumns.contains( "shortnamea_categoryoptiond_categoryoptionc_reporting_month" ) );
-        assertTrue( crossTabColumns.contains( "shortnamea_categoryoptiond_categoryoptionc_last3_months" ) );
-        assertTrue( crossTabColumns.contains( "shortnameb_categoryoptiond_categoryoptionc_reporting_month" ) );
-        assertTrue( crossTabColumns.contains( "shortnameb_categoryoptiond_categoryoptionc_last3_months" ) );
+        assertTrue( crossTabColumns.contains( "shortnameb_categoryoptionc_categoryoptiond_reporting_month" ) );
+        assertTrue( crossTabColumns.contains( "shortnameb_categoryoptionc_categoryoptiond_last3_months" ) );
         
         List<String> crossTabIdentifiers = reportTable.getCrossTabIdentifiers();
         
@@ -685,11 +685,11 @@ public class ReportTableTest
         
         assertNotNull( crossTabColumns );
         assertEquals( 4, crossTabColumns.size() );
-        
+
         assertTrue( crossTabColumns.contains( "categoryoptiona_categoryoptionb_shortnamea" ) );
         assertTrue( crossTabColumns.contains( "categoryoptiona_categoryoptionb_shortnameb" ) );
-        assertTrue( crossTabColumns.contains( "categoryoptiond_categoryoptionc_shortnamea" ) );
-        assertTrue( crossTabColumns.contains( "categoryoptiond_categoryoptionc_shortnameb" ) );
+        assertTrue( crossTabColumns.contains( "categoryoptionc_categoryoptiond_shortnamea" ) );
+        assertTrue( crossTabColumns.contains( "categoryoptionc_categoryoptiond_shortnameb" ) );
 
         List<String> crossTabIdentifiers = reportTable.getCrossTabIdentifiers();
         
@@ -750,7 +750,7 @@ public class ReportTableTest
         
         assertNotNull( crossTabColumns );        
         assertEquals( 4, crossTabColumns.size() );
-        
+
         assertTrue( crossTabColumns.contains( "shortnamea_shortnamea" ) );
         assertTrue( crossTabColumns.contains( "shortnamea_shortnameb" ) );
         assertTrue( crossTabColumns.contains( "shortnameb_shortnamea" ) );
