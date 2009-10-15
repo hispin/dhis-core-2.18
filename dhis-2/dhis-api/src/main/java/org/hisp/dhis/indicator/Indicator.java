@@ -27,8 +27,6 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 
@@ -38,7 +36,6 @@ import org.hisp.dhis.datadictionary.ExtendedDataElement;
  */
 public class Indicator
     extends IdentifiableObject
-    implements Serializable 
 {
     private Boolean annualized;
 

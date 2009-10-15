@@ -27,12 +27,11 @@ package org.hisp.dhis.source;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dataset.DataSet;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -40,7 +39,6 @@ import org.hisp.dhis.common.IdentifiableObject;
  */
 public abstract class Source
     extends IdentifiableObject
-    implements Serializable
 {
     protected Set<DataSet> dataSets = new HashSet<DataSet>();
     
