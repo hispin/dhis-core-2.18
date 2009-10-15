@@ -297,3 +297,40 @@ function showToolTip( e, value){
 function hideToolTip(){
 	byId('tooltip').style.display = 'none';
 }
+
+function getPeriodsByPeriodTypeName() {
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( responseListPeriodReceived );
+	request.send( 'getPeriodsByPeriodType.action?periodTypeName=' + $("#availabelPeriodTypes").val());
+}
+
+function lastPeriod() {
+
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( responseListPeriodReceived );
+	request.send( 'previousPeriods.action' ); 
+}
+
+function nextPeriod() {
+
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( responseListPeriodReceived );
+	request.send( 'nextPeriods.action' ); 
+}
+
+function responseListPeriodReceived( xmlObject ) {
+
+	clearListById('availablePeriods');
+	var list = xmlObject.getElementsByTagName('period');
+	for ( var i = 0; i < list.length; i++ )
+    {
+        item = list[i];  
+        var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
+        var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
+		addOption('availablePeriods', name, id);
+    }
+}

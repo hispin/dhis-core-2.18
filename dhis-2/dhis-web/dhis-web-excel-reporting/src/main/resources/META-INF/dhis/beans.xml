@@ -975,4 +975,42 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>	
 	-->
 	
+	<!-- Selection State -->
+	
+	<bean id="org.hisp.dhis.reportexcel.export.individual.manager.SelectedStateManager"
+		class="org.hisp.dhis.reportexcel.export.individual.manager.DefaultSelectedStateManager">
+		<property name="periodService"
+			ref="org.hisp.dhis.period.PeriodService"/>
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager"/>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.export.individual.action.GetPeriodsByPeriodTypeAction"
+		class="org.hisp.dhis.reportexcel.export.individual.action.GetPeriodsByPeriodTypeAction"
+		scope="prototype">
+		<property name="selectedStateManager" 
+			ref="org.hisp.dhis.reportexcel.export.individual.manager.SelectedStateManager" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.export.individual.action.PreviousPeriodsAction"
+		class="org.hisp.dhis.reportexcel.export.individual.action.PreviousPeriodsAction"
+		scope="prototype">
+		<property name="selectedStateManager" 
+			ref="org.hisp.dhis.reportexcel.export.individual.manager.SelectedStateManager" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager"/>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.export.individual.action.NextPeriodsAction"
+		class="org.hisp.dhis.reportexcel.export.individual.action.NextPeriodsAction"
+		scope="prototype">
+		<property name="selectedStateManager" 
+			ref="org.hisp.dhis.reportexcel.export.individual.manager.SelectedStateManager" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager"/>
+	</bean>
+
 </beans>
