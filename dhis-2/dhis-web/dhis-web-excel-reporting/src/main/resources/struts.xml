@@ -744,6 +744,28 @@
 			</result>
 		</action>
 		-->
+				
+		<!-- PROCESSED FOR PERIOD IN INDIVIDUAL REPORT -->
+		
+		<action name="getPeriodsByPeriodType"
+			class="org.hisp.dhis.reportexcel.export.individual.action.GetPeriodsByPeriodTypeAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responsePeriods.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-excel-reporting/responseError.vm</result>
+		</action>
+		
+		<action name="nextPeriods" 
+			class="org.hisp.dhis.reportexcel.export.individual.action.NextPeriodsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responsePeriods.vm</result>
+		</action>
+		
+		<action name="previousPeriods" 
+			class="org.hisp.dhis.reportexcel.export.individual.action.PreviousPeriodsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responsePeriods.vm</result>
+		</action>
 		
 	</package>
 </struts>

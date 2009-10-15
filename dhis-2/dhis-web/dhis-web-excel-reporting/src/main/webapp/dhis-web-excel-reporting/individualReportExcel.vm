@@ -108,7 +108,7 @@
       </tr>
 		<tr>
         <td>
-          <select id="availabelPeriodTypes" name="availabelPeriodTypes" style="width:30em ;" onChange="javascript: getPeriods();">
+          <select id="availabelPeriodTypes" name="availabelPeriodTypes" style="width:30em ;" onChange="javascript: getPeriodsByPeriodTypeName();">
             
 			<option value="" ></option>
             #foreach ( $periodType in $periodTypes )
@@ -122,6 +122,11 @@
         <td>&nbsp;</td>
         <td></td>
       </tr>
+      <tr>
+		<td><input name="button_previous" type="button" title="$i18n.getString('earlier_periods')" onClick="javascript: lastPeriod();" value="&lt;&lt;" #if( $periods.size() == 0 ) #end>	      
+		<input name="button_later" type="button" title="$i18n.getString('later_periods')" onclick="javascript: nextPeriod();" value="&gt;&gt;" #if( $periods.size() == 0 ) #end></td>
+		<td>&nbsp;</td>
+	  </tr>
 	  <tr>
         <td>
           <!-- List of all available DataElements -->
