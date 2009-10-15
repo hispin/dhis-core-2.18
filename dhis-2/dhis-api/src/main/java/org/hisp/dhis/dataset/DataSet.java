@@ -27,7 +27,6 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,9 +46,7 @@ import org.hisp.dhis.source.Source;
  */
 public class DataSet
     extends IdentifiableObject
-    implements Serializable
 {
-
     /**
      * The PeriodType indicating the frequency that this DataSet should be used
      */

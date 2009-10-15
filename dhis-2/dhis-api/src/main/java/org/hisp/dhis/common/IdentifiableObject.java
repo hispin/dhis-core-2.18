@@ -1,5 +1,8 @@
 package org.hisp.dhis.common;
 
+import java.io.Serializable;
+
+
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -31,9 +34,9 @@ package org.hisp.dhis.common;
  * @author Bob Jolliffe
  * @version $Id$
  */
-public class IdentifiableObject
+public abstract class IdentifiableObject
+    implements Serializable
 {
-
     /**
      * The database internal identifier for this Object.
      */
@@ -142,5 +145,4 @@ public class IdentifiableObject
     {
         this.description = description;
     }
-
 }

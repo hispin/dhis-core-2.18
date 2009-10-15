@@ -27,7 +27,6 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,9 +39,7 @@ import org.hisp.dhis.source.Source;
  */
 public class OrganisationUnit
     extends Source
-    implements Serializable
 {
-
     private Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
 
     private OrganisationUnit parent;

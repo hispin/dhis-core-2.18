@@ -27,7 +27,6 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +44,6 @@ import org.hisp.dhis.common.IdentifiableObject;
  */
 public class DataElementCategory
     extends IdentifiableObject
-    implements Serializable
 {
     public static final String DEFAULT_NAME = "default";
     
