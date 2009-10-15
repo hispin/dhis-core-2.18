@@ -334,11 +334,11 @@ public class DefaultExpressionService
                         + operand.getOptionComboId() );
                 }
 
-                replaceString = dataElement.getName() + SEPARATOR + categoryOptionCombo.getName();
-
-                if ( replaceString.endsWith( SEPARATOR ) )
+                replaceString = dataElement.getName();
+                
+                if ( !categoryOptionCombo.isDefault() )
                 {
-                    replaceString = replaceString.substring( 0, replaceString.length() - 1 );
+                    replaceString += SEPARATOR + categoryOptionCombo.getName();
                 }
 
                 matcher.appendReplacement( buffer, replaceString );

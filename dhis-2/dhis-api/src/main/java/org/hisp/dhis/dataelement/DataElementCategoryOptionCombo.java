@@ -66,7 +66,7 @@ public class DataElementCategoryOptionCombo
     }
     
     // -------------------------------------------------------------------------
-    // hashCode and equals
+    // hashCode, equals and toString
     // -------------------------------------------------------------------------
 
     @Override
@@ -150,6 +150,10 @@ public class DataElementCategoryOptionCombo
         return buffer.append( "]]" ).toString();
     }
 
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
     /**
      * Tests whether two objects compare on a name basis. The default equals method
      * becomes unusable in conjunction with persistence frameworks that put proxys
@@ -215,7 +219,16 @@ public class DataElementCategoryOptionCombo
         
         return null;
     }
-   
+
+    public boolean isDefault()
+    {
+        return categoryCombo != null && categoryCombo.getName().equals( DEFAULT_NAME );
+    }
+    
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
     public String getName()
     {
         StringBuffer name = new StringBuffer();
@@ -288,10 +301,6 @@ public class DataElementCategoryOptionCombo
         throw new UnsupportedOperationException( "Cannot set alternativename on DataElementCategoryOptionCombo: " + alternativeName );
     }
     
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
-
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
