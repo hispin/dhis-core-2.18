@@ -44,7 +44,13 @@ public abstract class StreamActionSupport
     extends ActionSupport
 {
     protected static final String CONTENT_TYPE_PDF = "application/pdf";
-
+    protected static final String CONTENT_TYPE_ZIP = "application/zip";
+    protected static final String CONTENT_TYPE_JSON = "application/json";
+    protected static final String CONTENT_TYPE_HTML = "text/html";
+    protected static final String CONTENT_TYPE_TEXT = "text/plain";
+    protected static final String CONTENT_TYPE_XML = "text/xml";
+    protected static final String CONTENT_TYPE_EXCEL = "application/vnd.ms-excel";
+    
     // -------------------------------------------------------------------------
     // ActionSupport implementation
     // -------------------------------------------------------------------------
