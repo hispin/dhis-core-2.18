@@ -141,13 +141,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="minMaxDataElementService"
       ref="org.hisp.dhis.minmax.MinMaxDataElementService"/>
     <property name="selectedStateManager"
-      ref="org.hisp.dhis.de.state.SelectedStateManager"/>
-    <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+      ref="org.hisp.dhis.de.state.SelectedStateManager"/>    
     <property name="dataEntryFormService"
       ref="org.hisp.dhis.dataset.DataEntryFormService"/>    
     <property name="systemSettingManager"
       ref="org.hisp.dhis.options.SystemSettingManager"/>  
+    <property name="dataElementCategoryOptionComboService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
     <property name="customValueService">
       <ref bean="org.hisp.dhis.customvalue.CustomValueService"/>
     </property>	          

@@ -67,7 +67,7 @@ public class OptionsCategoriesDefaultSortOrderPopulator
         
         statementManager.getHolder().executeUpdate( "update categorycombos_categories set sort_order=0 where sort_order is NULL" );
         
-        LOG.info( "Updated categorycombos_categories" );
+        LOG.info( "Updated categorycombos_categories" );       
         
         statementManager.getHolder().executeUpdate( "update categories_categoryoptions set sort_order=0 where sort_order is NULL" );
         
