@@ -84,14 +84,6 @@ public interface DataElementCategoryOptionService
     DataElementCategoryOption getDataElementCategoryOptionByName( String name );
     
     /**
-     * Retrieves the DataElementCategoryOption with the given short name.
-     * 
-     * @param shortName the short name of the DataElementCategoryOption to retrieve.
-     * @return the DataElementCategoryOption.
-     */
-    DataElementCategoryOption getDataElementCategoryOptionByShortName( String shortName );
-    
-    /**
      * Returns all DataElementCategoryOptions.
      * 
      * @return a collection of all DataElementCategoryOptions, or an empty collection if there

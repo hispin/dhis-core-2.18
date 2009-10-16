@@ -30,6 +30,7 @@ package org.hisp.dhis.dataelement;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericNameStore;
 import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,9 +46,9 @@ public class DefaultDataElementCategoryOptionService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementCategoryOptionStore dataElementCategoryOptionStore;
+    private GenericNameStore<DataElementCategoryOption> dataElementCategoryOptionStore;
 
-    public void setDataElementCategoryOptionStore( DataElementCategoryOptionStore dataElementCategoryOptionStore )
+    public void setDataElementCategoryOptionStore( GenericNameStore<DataElementCategoryOption> dataElementCategoryOptionStore )
     {
         this.dataElementCategoryOptionStore = dataElementCategoryOptionStore;
     }
@@ -65,7 +66,7 @@ public class DefaultDataElementCategoryOptionService
 
     public int addDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
     {
-        int id = dataElementCategoryOptionStore.addDataElementCategoryOption( dataElementCategoryOption );
+        int id = dataElementCategoryOptionStore.save( dataElementCategoryOption );
         
         i18nService.addObject( dataElementCategoryOption );
         
@@ -74,7 +75,7 @@ public class DefaultDataElementCategoryOptionService
 
     public void updateDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
     {
-        dataElementCategoryOptionStore.updateDataElementCategoryOption( dataElementCategoryOption );
+        dataElementCategoryOptionStore.update( dataElementCategoryOption );
         
         i18nService.verify( dataElementCategoryOption );
     }
@@ -83,12 +84,12 @@ public class DefaultDataElementCategoryOptionService
     {
         i18nService.removeObject( dataElementCategoryOption );
         
-        dataElementCategoryOptionStore.deleteDataElementCategoryOption( dataElementCategoryOption );
+        dataElementCategoryOptionStore.delete( dataElementCategoryOption );
     }
 
     public DataElementCategoryOption getDataElementCategoryOption( int id )
     {
-        return dataElementCategoryOptionStore.getDataElementCategoryOption( id );
+        return dataElementCategoryOptionStore.get( id );
     }
     
     public Collection<DataElementCategoryOption> getDataElementCategoryOptions( Collection<Integer> identifiers )
@@ -110,16 +111,11 @@ public class DefaultDataElementCategoryOptionService
 
     public DataElementCategoryOption getDataElementCategoryOptionByName( String name )
     {
-        return dataElementCategoryOptionStore.getDataElementCategoryOptionByName( name );
-    }
-    
-    public DataElementCategoryOption getDataElementCategoryOptionByShortName( String shortName )
-    {
-        return dataElementCategoryOptionStore.getDataElementCategoryOptionByShortName( shortName );
+        return dataElementCategoryOptionStore.getByName( name );
     }
 
     public Collection<DataElementCategoryOption> getAllDataElementCategoryOptions()
     {
-        return dataElementCategoryOptionStore.getAllDataElementCategoryOptions();
+        return dataElementCategoryOptionStore.getAll();
     }
 }

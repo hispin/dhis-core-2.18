@@ -56,16 +56,6 @@ public class DataElementCategoryOption
     	this.name = name;
     }
     
-    /**
-     * @param name the name.
-     * @param shortName the shortname.
-     */
-    public DataElementCategoryOption( String name, String shortName )
-    {
-        this.name = name;
-        this.shortName = shortName;
-    }
-    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
@@ -109,6 +99,12 @@ public class DataElementCategoryOption
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @Override
+    public String getShortName()
+    {
+        return name;
+    }
+    
     public DataElementCategory getCategory()
     {
         return category;
