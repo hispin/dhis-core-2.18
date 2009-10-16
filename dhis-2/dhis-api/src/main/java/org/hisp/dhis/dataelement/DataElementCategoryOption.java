@@ -27,8 +27,6 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-
 import org.hisp.dhis.common.IdentifiableObject;
 
 /**
@@ -37,10 +35,10 @@ import org.hisp.dhis.common.IdentifiableObject;
  */
 public class DataElementCategoryOption
     extends IdentifiableObject
-    implements Serializable
 {
     public static final String DEFAULT_NAME = "default";
     
+    private DataElementCategory category;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -105,5 +103,19 @@ public class DataElementCategoryOption
     public String toString()
     {
         return "[" + name + "]";
+    }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
+    public DataElementCategory getCategory()
+    {
+        return category;
+    }
+
+    public void setCategory( DataElementCategory category )
+    {
+        this.category = category;
     }
 }

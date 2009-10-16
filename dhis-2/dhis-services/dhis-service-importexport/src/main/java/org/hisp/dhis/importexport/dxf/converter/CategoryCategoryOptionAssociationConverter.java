@@ -58,6 +58,7 @@ public class CategoryCategoryOptionAssociationConverter
     
     private static final String FIELD_CATEGORY = "category";
     private static final String FIELD_CATEGORY_OPTION = "categoryOption";
+    private static final String FIELD_SORT_ORDER = "sortOrder";
 
     // -------------------------------------------------------------------------
     // Properties
@@ -120,7 +121,9 @@ public class CategoryCategoryOptionAssociationConverter
             for ( DataElementCategory category : categories )
             {
                 if ( category.getCategoryOptions() != null )
-                {                    
+                {
+                    int sortOrder = 0;
+                	
                     for ( DataElementCategoryOption categoryOption : category.getCategoryOptions() )
                     {
                         if ( categoryOptions.contains( categoryOption ) )
@@ -129,6 +132,7 @@ public class CategoryCategoryOptionAssociationConverter
                             
                             writer.writeElement( FIELD_CATEGORY, String.valueOf( category.getId() ) );
                             writer.writeElement( FIELD_CATEGORY_OPTION, String.valueOf( categoryOption.getId() ) );
+                            writer.writeElement( FIELD_SORT_ORDER, String.valueOf( sortOrder++ ) );
                             
                             writer.closeElement();
                         }
@@ -142,14 +146,18 @@ public class CategoryCategoryOptionAssociationConverter
     
     public void read( XMLReader reader, ImportParams params )
     {
+        int sortOrder = 1;
+        
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
             final Map<String, String> values = reader.readElements( ELEMENT_NAME );
             
-            final GroupMemberAssociation association = new GroupMemberAssociation( AssociationType.SET );
+            final GroupMemberAssociation association = new GroupMemberAssociation( AssociationType.LIST );
             
             association.setGroupId( categoryMapping.get( Integer.parseInt( values.get( FIELD_CATEGORY ) ) ) );
             association.setMemberId( categoryOptionMapping.get( Integer.parseInt( values.get( FIELD_CATEGORY_OPTION ) ) ) );
+            association.setSortOrder( sortOrder++ ); //TODO Fix
+            //association.setSortOrder( values.containsKey( FIELD_SORT_ORDER ) ? categoryMapping.get( Integer.parseInt( values.get( FIELD_SORT_ORDER ) ) ) : 0 );
             
             read( association, GroupMemberType.CATEGORY_CATEGORYOPTION, params );
         }

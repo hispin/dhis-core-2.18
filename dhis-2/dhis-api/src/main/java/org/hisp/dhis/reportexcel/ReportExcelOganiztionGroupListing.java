@@ -52,14 +52,6 @@ public class ReportExcelOganiztionGroupListing
         super();       
     }
 
-    public ReportExcelOganiztionGroupListing( String name, String excelTemplateFile, int periodRow, int periodColumn,
-        int organisationRow, int organisationColumn, Set<ReportExcelItem> reportItems,
-        Set<OrganisationUnit> organisationAssocitions, Set<UserAuthorityGroup> userRoles, String group )
-    {
-        super( name, excelTemplateFile, periodRow, periodColumn, organisationRow, organisationColumn, reportItems,
-            organisationAssocitions, userRoles, group );        
-    }
-
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

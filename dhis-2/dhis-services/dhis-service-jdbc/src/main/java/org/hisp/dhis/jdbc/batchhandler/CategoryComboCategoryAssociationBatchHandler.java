@@ -72,11 +72,13 @@ public class CategoryComboCategoryAssociationBatchHandler
     {
         statementBuilder.setColumn( "categorycomboid" );
         statementBuilder.setColumn( "categoryid" );
+        statementBuilder.setColumn( "sort_order" );
     }
     
     protected void setValues( GroupMemberAssociation association )
     {        
         statementBuilder.setValue( association.getGroupId() );
         statementBuilder.setValue( association.getMemberId() );
+        statementBuilder.setValue( association.getSortOrder() );
     }
 }
