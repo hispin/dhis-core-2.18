@@ -72,11 +72,13 @@ public class CategoryCategoryOptionAssociationBatchHandler
     {
         statementBuilder.setColumn( "categoryid" );
         statementBuilder.setColumn( "categoryoptionid" );
+        statementBuilder.setColumn( "sort_order" );
     }
     
     protected void setValues( GroupMemberAssociation association )
     {        
         statementBuilder.setValue( association.getGroupId() );
         statementBuilder.setValue( association.getMemberId() );
+        statementBuilder.setValue( association.getSortOrder() );
     }
 }

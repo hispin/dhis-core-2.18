@@ -22,7 +22,7 @@
       <key column="categoryid"/>
       <list-index column="sort_order"/>
       <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOption" 
-        column="categoryoptionid" foreign-key="fk_category_categoryoptionid"/>
+        column="categoryoptionid" foreign-key="fk_category_categoryoptionid" unique="true"/>
     </list>    
         
   </class>

@@ -24,7 +24,7 @@
     <set name="optionCombos" table="categorycombos_optioncombos" inverse="true" cascade="all">
       <key column="categorycomboid"/>
       <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo"
-        column="categoryoptioncomboid" unique="true"/>
+        column="categoryoptioncomboid" foreign-key="fk_categorycombo_categoryoptioncomboid" unique="true"/>
     </set>    
     
     </class>
