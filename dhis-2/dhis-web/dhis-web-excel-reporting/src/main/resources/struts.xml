@@ -703,7 +703,7 @@
         </action>
 		
 		<!-- PREVIEW ADVANCED REPORT -->
-		<!--
+		
 		<action name="previewAdvancedReportExcel"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
 			<result name="CATEGORY" type="chain">
@@ -743,7 +743,7 @@
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
-		-->
+		
 				
 		<!-- PROCESSED FOR PERIOD IN INDIVIDUAL REPORT -->
 		
