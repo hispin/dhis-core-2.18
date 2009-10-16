@@ -152,9 +152,12 @@ public class DataValue
         dimensions.put( Period.DIMENSION, period );
         dimensions.put( Source.DIMENSION, source );
         
-        for ( DataElementCategoryOption categoryOption : optionCombo.getCategoryOptions() )
+        if ( !optionCombo.isDefault() )
         {
-            dimensions.put( categoryOption.getCategory(), categoryOption );
+            for ( DataElementCategoryOption categoryOption : optionCombo.getCategoryOptions() )
+            {
+                dimensions.put( categoryOption.getCategory(), categoryOption );
+            }
         }
         
         return dimensions;
