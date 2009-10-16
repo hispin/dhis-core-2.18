@@ -406,7 +406,7 @@ public abstract class DhisConvenienceTest
         
         for ( char identifier : categoryOptionUniqueIdentifiers )
         {
-            categoryOptionCombo.getCategoryOptions().add( new DataElementCategoryOption( "CategoryOption" + identifier, "CategoryOption" + identifier ) );
+            categoryOptionCombo.getCategoryOptions().add( new DataElementCategoryOption( "CategoryOption" + identifier ) );
         }
         
         return categoryOptionCombo;
@@ -852,8 +852,7 @@ public abstract class DhisConvenienceTest
         this.locationManager = locationManager;
         
         setDependency( locationManager, "externalDir", EXT_TEST_DIR, String.class );
-    }
-    
+    }    
 
     /**
      * Attempts to remove the external test directory.

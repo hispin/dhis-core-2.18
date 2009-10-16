@@ -170,8 +170,8 @@ public class ReportTableServiceTest
         // Setup Dimensions
         // ---------------------------------------------------------------------
 
-        categoryOptionA = new DataElementCategoryOption( "Male", "Male" );
-        categoryOptionB = new DataElementCategoryOption( "Female", "Female" );
+        categoryOptionA = new DataElementCategoryOption( "Male" );
+        categoryOptionB = new DataElementCategoryOption( "Female" );
         
         categoryOptionService.addDataElementCategoryOption( categoryOptionA );
         categoryOptionService.addDataElementCategoryOption( categoryOptionB );

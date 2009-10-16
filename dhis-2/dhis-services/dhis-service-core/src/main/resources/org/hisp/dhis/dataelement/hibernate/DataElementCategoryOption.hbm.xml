@@ -14,8 +14,6 @@
       <column name="name" not-null="true" length="160"/>
     </property>
     
-    <property name="shortName" length="40"/>
-    
     <property name="uuid" length="40"/>
     
     <join table="categories_categoryoptions" inverse="true">

@@ -77,8 +77,8 @@ public class DataElementCategoryOptionBatchHandlerTest
 
         batchHandler.init();
         
-        categoryOptionA = new DataElementCategoryOption( "CategoryOptionA", UUID );
-        categoryOptionB = new DataElementCategoryOption( "CategoryOptionB", UUID );
+        categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
+        categoryOptionB = new DataElementCategoryOption( "CategoryOptionB" );
         categoryOptionC = new DataElementCategoryOption( "CategoryOptionC" );
     }
 

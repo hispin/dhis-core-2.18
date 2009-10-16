@@ -61,13 +61,6 @@ public class AddDataElementCategoryOptionAction
         this.name = name;
     }
     
-    private String shortName;
-
-    public void setShortName( String shortName )
-    {
-        this.shortName = shortName;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -77,7 +70,6 @@ public class AddDataElementCategoryOptionAction
         DataElementCategoryOption dataElementCategoryOption = new DataElementCategoryOption();
 
         dataElementCategoryOption.setName( name );
-        dataElementCategoryOption.setShortName( shortName );
 
         dataElementCategoryOptionService.addDataElementCategoryOption( dataElementCategoryOption );
 

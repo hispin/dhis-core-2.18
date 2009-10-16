@@ -128,34 +128,6 @@ public class ValidateDataElementCategoryOptionAction
             }
         }
 
-        if ( shortName == null )
-        {
-            message = i18n.getString( "specify_short_name" );
-
-            return INPUT;
-        }
-        else
-        {
-            shortName = shortName.trim();
-
-            if ( shortName.length() == 0 )
-            {
-                message = i18n.getString( "specify_short_name" );
-
-                return INPUT;
-            }
-
-            DataElementCategoryOption match = dataElementCategoryOptionService
-                .getDataElementCategoryOptionByShortName( shortName );
-
-            if ( match != null && (id == null || match.getId() != id) )
-            {
-                message = i18n.getString( "short_name_in_use" );
-
-                return INPUT;
-            }
-        }
-
         // ---------------------------------------------------------------------
         // Validation success
         // ---------------------------------------------------------------------
