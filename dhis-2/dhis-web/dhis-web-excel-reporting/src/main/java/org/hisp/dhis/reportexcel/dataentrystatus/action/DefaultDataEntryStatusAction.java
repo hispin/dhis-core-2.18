@@ -40,6 +40,7 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -92,6 +93,8 @@ public class DefaultDataEntryStatusAction
 
     private List<DataSet> dataSets;
 
+    private OrganisationUnit organisationUnit;
+
     // -------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------
@@ -99,6 +102,11 @@ public class DefaultDataEntryStatusAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
     }
 
     public void setFormat( I18nFormat format )
@@ -160,14 +168,13 @@ public class DefaultDataEntryStatusAction
     public String execute()
         throws Exception
     {
+        this.organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        if ( selectionManager.getSelectedOrganisationUnit() != null )
+        if ( organisationUnit != null )
         {
             TimeUtils.start();
-            dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( selectionManager
-                .getSelectedOrganisationUnit() ) );
-            TimeUtils.markHMS( "datasets" );
-            TimeUtils.stop();
+            dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( organisationUnit ) );
+
             if ( !currentUserService.currentUserIsSuper() )
             {
                 UserCredentials userCredentials = userStore.getUserCredentials( currentUserService.getCurrentUser() );
@@ -182,8 +189,7 @@ public class DefaultDataEntryStatusAction
                 dataSets.retainAll( dataSetUserAuthorityGroups );
             }
 
-            dataStatus = new ArrayList<DataEntryStatus>( reportService
-                .getDataEntryStatusDefaultByDataSets( dataSets ) );
+            dataStatus = new ArrayList<DataEntryStatus>( reportService.getDataEntryStatusDefaultByDataSets( dataSets ) );
 
             maps = new HashMap<DataSet, List<DataEntryStatus>>();
 
@@ -207,11 +213,10 @@ public class DefaultDataEntryStatusAction
                     dataStatusNew.setPeriod( p );
                     dataStatusNew.setNumberOfDataElement( d.getNumberOfDataElement() );
                     dataStatusNew.setNumberOfDataValue( reportService.countDataValueOfDataSet( d.getDataSet(),
-                        selectionManager.getSelectedOrganisationUnit(), p ) );
+                        organisationUnit, p ) );
 
                     CompleteDataSetRegistration completeDataSetRegistration = completeDataSetRegistrationService
-                        .getCompleteDataSetRegistration( d.getDataSet(), p, selectionManager
-                            .getSelectedOrganisationUnit() );
+                        .getCompleteDataSetRegistration( d.getDataSet(), p, organisationUnit );
 
                     dataStatusNew.setCompleted( (completeDataSetRegistration == null ? false : true) );
 

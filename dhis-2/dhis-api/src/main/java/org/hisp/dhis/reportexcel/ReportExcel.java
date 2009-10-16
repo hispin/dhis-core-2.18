@@ -28,8 +28,8 @@ package org.hisp.dhis.reportexcel;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.user.UserAuthorityGroup;
 
 /**
  * @author Tran Thanh Tri
@@ -64,22 +64,6 @@ public abstract class ReportExcel
     public ReportExcel()
     {
         super();
-    }
-
-    public ReportExcel( String name, String excelTemplateFile, int periodRow, int periodColumn, int organisationRow,
-        int organisationColumn, Set<ReportExcelItem> reportExcelItems, Set<OrganisationUnit> organisationAssocitions,
-        Set<UserAuthorityGroup> userRoles, String group )
-    {
-        super();
-        this.name = name;
-        this.excelTemplateFile = excelTemplateFile;
-        this.periodRow = periodRow;
-        this.periodColumn = periodColumn;
-        this.organisationRow = organisationRow;
-        this.organisationColumn = organisationColumn;
-        this.reportExcelItems = reportExcelItems;
-        this.organisationAssocitions = organisationAssocitions;      
-        this.group = group;
     }
 
     public ReportExcelItem getReportExcelItem( String name )
