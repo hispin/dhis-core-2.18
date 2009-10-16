@@ -27,10 +27,10 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.common.DimensionOption;
 import org.hisp.dhis.common.IdentifiableObject;
 
 /**
@@ -39,7 +39,7 @@ import org.hisp.dhis.common.IdentifiableObject;
  */
 public class DataElementGroup
     extends IdentifiableObject
-    implements Serializable
+    implements DimensionOption
 {
 
     /**
