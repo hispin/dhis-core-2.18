@@ -1,14 +1,8 @@
 
 <div id="showSheetDiv">
-	<table>
-		<tr>
-			<td><label class='formatLabel'>$i18n.getString('sheet_of_excel_file')</label></td>
-			<td>
-				<select id="sheetNoExcelFile" name="sheetNoExcelFile" onchange="javascript: previewReport('$!reportId', '$!periodId', this.value, '$!orgunitGroupId', '$!i18n.getString("working_in_progress")');">
-				</select>
-			</td>
-		</tr>
-	</table>
+	<label class='formatLabel'>$i18n.getString('sheet_of_excel_file')</label>
+	<select id="sheetNoExcelFile" name="sheetNoExcelFile" onchange="javascript: previewReport('$!reportId', '$!periodId', this.value, '$!orgunitGroupId', '$!i18n.getString("working_in_progress")');">
+	</select>
 </div>
 <br/>
 <div id="previewContentDiv">

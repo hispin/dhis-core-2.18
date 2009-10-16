@@ -845,7 +845,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	
 	<!-- PREVIEW ADVANCED REPORT -->
-	<!--
+	
 	<bean
 		id="org.hisp.dhis.reportexcel.preview.advance.action.GeneratePreviewAdvancedNormalAction"
 		class="org.hisp.dhis.reportexcel.preview.advance.action.GeneratePreviewAdvancedNormalAction"
@@ -973,7 +973,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
 	</bean>	
-	-->
+	
 	
 	<!-- Selection State -->
 	
