@@ -30,6 +30,7 @@ package org.hisp.dhis.dataelement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.common.Dimension;
 import org.hisp.dhis.common.IdentifiableObject;
 
 
@@ -43,7 +44,7 @@ import org.hisp.dhis.common.IdentifiableObject;
  * @version $Id$
  */
 public class DataElementCategory
-    extends IdentifiableObject
+    extends IdentifiableObject implements Dimension
 {
     public static final String DEFAULT_NAME = "default";
     

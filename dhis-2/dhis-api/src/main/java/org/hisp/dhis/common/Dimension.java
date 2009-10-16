@@ -1,4 +1,4 @@
-package org.hisp.dhis.source;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,56 +27,7 @@ package org.hisp.dhis.source;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.hisp.dhis.common.Dimension;
-import org.hisp.dhis.common.DimensionOption;
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dataset.DataSet;
-
-/**
- * @author Torgeir Lorange Ostby
- * @version $Id: Source.java 5277 2008-05-27 15:48:42Z larshelg $
- */
-public abstract class Source
-    extends IdentifiableObject implements DimensionOption
+public interface Dimension
 {
-    protected Set<DataSet> dataSets = new HashSet<DataSet>();
-
-    // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public static final Dimension DIMENSION = new Dimension()
-    {
-        public String getName()
-        {
-            return "Source";
-        }
-    };
-    
-    // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    public abstract int hashCode();
-
-    public abstract boolean equals( Object o );
-    
-    public abstract String toString();
-
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
-
-    public Set<DataSet> getDataSets()
-    {
-        return dataSets;
-    }
-
-    public void setDataSets( Set<DataSet> dataSets )
-    {
-        this.dataSets = dataSets;
-    }
+    String getName();
 }

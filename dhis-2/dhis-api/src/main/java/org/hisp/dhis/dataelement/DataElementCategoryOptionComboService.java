@@ -73,12 +73,20 @@ public interface DataElementCategoryOptionComboService
     /**
      * Retrieves the DataElementCategoryOptionCombos with the given identifiers.
      * 
-     * @param identifiers the identifiers of the
-     *        DataElementCategoryOptionCombos.
+     * @param identifiers the identifiers of the DataElementCategoryOptionCombos.
      * @return a Collection of DataElementCategoryOptionCombos.
      */
     Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos( Collection<Integer> identifiers );
 
+    /**
+     * Retrieves the DataElementCategoryOptionCombo with the given Collection
+     * of DataElementCategoryOptions.
+     * 
+     * @param categoryOptions
+     * @return
+     */
+    DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( Collection<DataElementCategoryOption> categoryOptions );
+    
     /**
      * Retrieves a DataElementCategoryOptionCombo.
      * 
@@ -86,7 +94,7 @@ public interface DataElementCategoryOptionComboService
      *        retrieve.
      * @return a DataElementCategoryOptionCombo.
      */
-    DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo ); // TODO WTF?
+    DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo );
 
     /**
      * Retrieves all DataElementCategoryOptionCombos.

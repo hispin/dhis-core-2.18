@@ -38,6 +38,7 @@ import java.util.Set;
 
 import org.hisp.dhis.common.GenericStore;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.commons.collections.CollectionUtils;
 
 /**
  * @author Abyot Asalefew
@@ -127,6 +128,21 @@ public class DefaultDataElementCategoryOptionComboService
         }
 
         return categoryOptionCombos;
+    }
+    
+    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( Collection<DataElementCategoryOption> categoryOptions )
+    {
+        // TODO Re-implement with a Hibernate Criteria
+        
+        for ( DataElementCategoryOptionCombo categoryOptionCombo : getAllDataElementCategoryOptionCombos() )
+        {
+            if ( CollectionUtils.isEqualCollection( categoryOptions, categoryOptionCombo.getCategoryOptions() ) )
+            {
+                return categoryOptionCombo;
+            }
+        }
+        
+        return null;
     }
     
     public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
@@ -501,6 +517,5 @@ public class DefaultDataElementCategoryOptionComboService
         }
 
         return optionsMap;
-    }   
-
+    }
 }
