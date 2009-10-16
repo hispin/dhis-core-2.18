@@ -34,6 +34,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.common.Dimension;
+import org.hisp.dhis.common.DimensionOption;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -53,7 +55,7 @@ import org.hisp.dhis.period.PeriodType;
  * @version $Id: DataElement.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 public class DataElement
-    extends IdentifiableObject
+    extends IdentifiableObject implements DimensionOption
 {
     public static final String TYPE_STRING = "string";
     public static final String TYPE_INT = "int";
@@ -128,7 +130,19 @@ public class DataElement
     public DataElement()
     {
     }
+    
+    // -------------------------------------------------------------------------
+    // Dimension
+    // -------------------------------------------------------------------------
 
+    public static final Dimension DIMENSION = new Dimension()
+    {
+        public String getName()
+        {
+            return "DataElement";
+        }
+    };
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------

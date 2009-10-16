@@ -27,6 +27,7 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.DimensionOption;
 import org.hisp.dhis.common.IdentifiableObject;
 
 /**
@@ -34,7 +35,7 @@ import org.hisp.dhis.common.IdentifiableObject;
  * @version $Id$
  */
 public class DataElementCategoryOption
-    extends IdentifiableObject
+    extends IdentifiableObject implements DimensionOption
 {
     public static final String DEFAULT_NAME = "default";
     

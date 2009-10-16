@@ -30,12 +30,15 @@ package org.hisp.dhis.period;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.hisp.dhis.common.Dimension;
+import org.hisp.dhis.common.DimensionOption;
+
 /**
  * @author Kristian Nordal
  * @version $Id: Period.java 5277 2008-05-27 15:48:42Z larshelg $
  */
 public class Period
-    implements Serializable
+    implements Serializable, DimensionOption
 {
     private int id;
 
@@ -74,6 +77,18 @@ public class Period
         this.endDate = endDate;
     }
 
+    // -------------------------------------------------------------------------
+    // Dimension
+    // -------------------------------------------------------------------------
+
+    public static final Dimension DIMENSION = new Dimension()
+    {
+        public String getName()
+        {
+            return "Period";
+        }
+    };
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
