@@ -13,7 +13,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
-import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.export.action.SelectionManager;
 import org.hisp.dhis.reportexcel.utils.DateUtils;

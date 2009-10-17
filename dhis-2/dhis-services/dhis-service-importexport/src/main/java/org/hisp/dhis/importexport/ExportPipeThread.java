@@ -180,22 +180,18 @@ public class ExportPipeThread
     // Overridable methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unused" )
     protected void beforeXSD( XMLWriter writer )
     {        
     }
     
-    @SuppressWarnings( "unused" )
     protected void afterXSD( XMLWriter writer )
     {   
     }
     
-    @SuppressWarnings( "unused" )
     protected void beforeXML( XMLWriter writer )
     {   
     }
     
-    @SuppressWarnings( "unused" )
     protected void afterXML( XMLWriter writer )
     {   
     }
