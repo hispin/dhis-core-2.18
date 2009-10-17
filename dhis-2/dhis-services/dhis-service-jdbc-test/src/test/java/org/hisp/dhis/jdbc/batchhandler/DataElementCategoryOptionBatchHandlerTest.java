@@ -40,7 +40,6 @@ import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.system.util.UUIdUtils;
 import org.junit.Test;
 
 /**
@@ -57,9 +56,7 @@ public class DataElementCategoryOptionBatchHandlerTest
     private DataElementCategoryOption categoryOptionA;
     private DataElementCategoryOption categoryOptionB;
     private DataElementCategoryOption categoryOptionC;
-    
-    private final String UUID = UUIdUtils.getUUId();
-    
+        
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------

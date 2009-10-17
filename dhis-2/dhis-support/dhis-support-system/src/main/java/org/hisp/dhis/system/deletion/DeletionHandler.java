@@ -79,7 +79,6 @@ import org.hisp.dhis.validation.ValidationRuleGroup;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@SuppressWarnings( "unused" )
 public abstract class DeletionHandler
 {
     // -------------------------------------------------------------------------

@@ -259,8 +259,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.item.action.GetOptionCombosAction"
 		scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="dataElementCategoryOptionComboService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.item.action.CopyReportExcelItemAction"
