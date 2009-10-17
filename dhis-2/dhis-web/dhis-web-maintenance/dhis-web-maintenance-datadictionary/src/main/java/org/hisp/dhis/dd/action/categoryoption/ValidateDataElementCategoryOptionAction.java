@@ -76,13 +76,6 @@ public class ValidateDataElementCategoryOptionAction
         this.name = name;
     }
 
-    private String shortName;
-
-    public void setShortName( String shortName )
-    {
-        this.shortName = shortName;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------

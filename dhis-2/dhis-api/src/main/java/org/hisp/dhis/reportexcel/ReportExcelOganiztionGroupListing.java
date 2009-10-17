@@ -28,11 +28,8 @@
 package org.hisp.dhis.reportexcel;
 
 import java.util.List;
-import java.util.Set;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.user.UserAuthorityGroup;
 
 /**
  * @author Chau Thu Tran
