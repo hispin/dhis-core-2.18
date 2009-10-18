@@ -60,8 +60,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.indicator.IndicatorService"/>
     <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/>
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="expressionService"
       ref="org.hisp.dhis.expression.ExpressionService"/>
   </bean>
@@ -192,8 +192,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="aggregationCache"
       ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache"/>
   </bean>

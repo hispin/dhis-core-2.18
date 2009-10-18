@@ -33,7 +33,7 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryOptionNameComparator;
 
 import com.opensymphony.xwork2.Action;
@@ -49,11 +49,11 @@ public class GetDataElementCategoryOptionListAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementCategoryOptionService dataElementCategoryOptionService;
+    private DataElementCategoryService dataElementCategoryService;
 
-    public void setDataElementCategoryOptionService( DataElementCategoryOptionService dataElementCategoryOptionService )
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-        this.dataElementCategoryOptionService = dataElementCategoryOptionService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -80,10 +80,10 @@ public class GetDataElementCategoryOptionListAction
 
     public String execute()
     {
-        defaultOption = dataElementCategoryOptionService
+        defaultOption = dataElementCategoryService
             .getDataElementCategoryOptionByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
-        dataElementCategoryOptions = new ArrayList<DataElementCategoryOption>( dataElementCategoryOptionService
+        dataElementCategoryOptions = new ArrayList<DataElementCategoryOption>( dataElementCategoryService
             .getAllDataElementCategoryOptions() );
 
         Collections.sort( dataElementCategoryOptions, new DataElementCategoryOptionNameComparator() );

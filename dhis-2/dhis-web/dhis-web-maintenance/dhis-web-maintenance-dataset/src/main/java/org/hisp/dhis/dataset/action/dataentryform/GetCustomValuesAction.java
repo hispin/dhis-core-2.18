@@ -35,7 +35,7 @@ import org.hisp.dhis.customvalue.CustomValue;
 import org.hisp.dhis.customvalue.CustomValueService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -68,11 +68,11 @@ public class GetCustomValuesAction
         this.dataElementService = dataElementService;
     }
 
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    private DataElementCategoryService dataElementCategoryService;
 
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     private CustomValueService customValueService;
@@ -179,7 +179,7 @@ public class GetCustomValuesAction
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
-        DataElementCategoryOptionCombo dataElementCategoryOptionCombo = dataElementCategoryOptionComboService
+        DataElementCategoryOptionCombo dataElementCategoryOptionCombo = dataElementCategoryService
             .getDataElementCategoryOptionCombo( categoryOptionComboId );
 
         CustomValue customValue = new CustomValue();

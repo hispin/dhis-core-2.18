@@ -27,6 +27,12 @@ package org.hisp.dhis.aggregation.impl.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.expression.Expression.SEPARATOR;
+import static org.hisp.dhis.system.util.DateUtils.DAYS_IN_YEAR;
+import static org.hisp.dhis.system.util.DateUtils.getDays;
+import static org.hisp.dhis.system.util.MathUtils.INVALID;
+import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
+
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,16 +41,10 @@ import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.aggregation.impl.cache.AggregationCache;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-
-import static org.hisp.dhis.expression.Expression.SEPARATOR;
-import static org.hisp.dhis.system.util.DateUtils.DAYS_IN_YEAR;
-import static org.hisp.dhis.system.util.DateUtils.getDays;
-import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
-import static org.hisp.dhis.system.util.MathUtils.INVALID;
 
 /**
  * @author Lars Helge Overland
@@ -72,11 +72,11 @@ public class IndicatorAggregation
         this.dataElementService = dataElementService;
     }
     
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
-    
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.categoryService = categoryService;
     }
     
     // -------------------------------------------------------------------------
@@ -178,7 +178,7 @@ public class IndicatorAggregation
                 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
                 
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
+                DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
 
                 double aggregatedValue = aggregationCache.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );                
                 

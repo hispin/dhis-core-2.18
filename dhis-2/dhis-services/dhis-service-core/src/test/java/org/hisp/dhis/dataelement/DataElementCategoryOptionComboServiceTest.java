@@ -27,15 +27,16 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -69,21 +70,15 @@ public class DataElementCategoryOptionComboServiceTest
     {
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
-        
-        categoryOptionService = (DataElementCategoryOptionService) getBean( DataElementCategoryOptionService.ID );
-        
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
-        
         categoryOptionA = new DataElementCategoryOption( "Male" );
         categoryOptionB = new DataElementCategoryOption( "Female" );
         categoryOptionC = new DataElementCategoryOption( "0-20" );
         categoryOptionD = new DataElementCategoryOption( "20-100" );
 
-        categoryOptionService.addDataElementCategoryOption( categoryOptionA );
-        categoryOptionService.addDataElementCategoryOption( categoryOptionB );
-        categoryOptionService.addDataElementCategoryOption( categoryOptionC );
-        categoryOptionService.addDataElementCategoryOption( categoryOptionD );
+        categoryService.addDataElementCategoryOption( categoryOptionA );
+        categoryService.addDataElementCategoryOption( categoryOptionB );
+        categoryService.addDataElementCategoryOption( categoryOptionC );
+        categoryService.addDataElementCategoryOption( categoryOptionD );
         
         categoryA = new DataElementCategory( "Gender" );
         categoryB = new DataElementCategory( "Agegroup" );
@@ -103,8 +98,8 @@ public class DataElementCategoryOptionComboServiceTest
         categoryComboA.getCategories().add( categoryB );
         categoryComboB.getCategories().add( categoryA );
         
-        categoryComboService.addDataElementCategoryCombo( categoryComboA );
-        categoryComboService.addDataElementCategoryCombo( categoryComboB ); 
+        categoryService.addDataElementCategoryCombo( categoryComboA );
+        categoryService.addDataElementCategoryCombo( categoryComboB ); 
     }
 
     // -------------------------------------------------------------------------
@@ -124,9 +119,9 @@ public class DataElementCategoryOptionComboServiceTest
         categoryOptionComboA.setCategoryCombo( categoryComboA );
         categoryOptionComboA.setCategoryOptions( categoryOptions );        
         
-        int id = categoryOptionComboService.addDataElementCategoryOptionCombo( categoryOptionComboA );
+        int id = categoryService.addDataElementCategoryOptionCombo( categoryOptionComboA );
         
-        categoryOptionComboA = categoryOptionComboService.getDataElementCategoryOptionCombo( id );
+        categoryOptionComboA = categoryService.getDataElementCategoryOptionCombo( id );
         
         assertNotNull( categoryOptionComboA );
         assertEquals( categoryComboA, categoryOptionComboA.getCategoryCombo() );
@@ -146,9 +141,9 @@ public class DataElementCategoryOptionComboServiceTest
         categoryOptionComboA.setCategoryCombo( categoryComboA );
         categoryOptionComboA.setCategoryOptions( categoryOptions );        
         
-        int id = categoryOptionComboService.addDataElementCategoryOptionCombo( categoryOptionComboA );
+        int id = categoryService.addDataElementCategoryOptionCombo( categoryOptionComboA );
         
-        categoryOptionComboA = categoryOptionComboService.getDataElementCategoryOptionCombo( id );
+        categoryOptionComboA = categoryService.getDataElementCategoryOptionCombo( id );
         
         assertNotNull( categoryOptionComboA );
         assertEquals( categoryComboA, categoryOptionComboA.getCategoryCombo() );
@@ -156,9 +151,9 @@ public class DataElementCategoryOptionComboServiceTest
         
         categoryOptionComboA.setCategoryCombo( categoryComboB );
         
-        categoryOptionComboService.updateDataElementCategoryOptionCombo( categoryOptionComboA );
+        categoryService.updateDataElementCategoryOptionCombo( categoryOptionComboA );
         
-        categoryOptionComboA = categoryOptionComboService.getDataElementCategoryOptionCombo( id );
+        categoryOptionComboA = categoryService.getDataElementCategoryOptionCombo( id );
         
         assertNotNull( categoryOptionComboA );
         assertEquals( categoryComboB, categoryOptionComboA.getCategoryCombo() );
@@ -172,31 +167,31 @@ public class DataElementCategoryOptionComboServiceTest
         categoryOptionComboB = new DataElementCategoryOptionCombo();
         categoryOptionComboC = new DataElementCategoryOptionCombo();
         
-        int idA = categoryOptionComboService.addDataElementCategoryOptionCombo( categoryOptionComboA );
-        int idB = categoryOptionComboService.addDataElementCategoryOptionCombo( categoryOptionComboB );
-        int idC = categoryOptionComboService.addDataElementCategoryOptionCombo( categoryOptionComboC );
+        int idA = categoryService.addDataElementCategoryOptionCombo( categoryOptionComboA );
+        int idB = categoryService.addDataElementCategoryOptionCombo( categoryOptionComboB );
+        int idC = categoryService.addDataElementCategoryOptionCombo( categoryOptionComboC );
         
-        assertNotNull( categoryOptionComboService.getDataElementCategoryOptionCombo( idA ) );
-        assertNotNull( categoryOptionComboService.getDataElementCategoryOptionCombo( idB ) );
-        assertNotNull( categoryOptionComboService.getDataElementCategoryOptionCombo( idC ) );
+        assertNotNull( categoryService.getDataElementCategoryOptionCombo( idA ) );
+        assertNotNull( categoryService.getDataElementCategoryOptionCombo( idB ) );
+        assertNotNull( categoryService.getDataElementCategoryOptionCombo( idC ) );
         
-        categoryOptionComboService.deleteDataElementCategoryOptionCombo( categoryOptionComboService.getDataElementCategoryOptionCombo( idA ) );
+        categoryService.deleteDataElementCategoryOptionCombo( categoryService.getDataElementCategoryOptionCombo( idA ) );
 
-        assertNull( categoryOptionComboService.getDataElementCategoryOptionCombo( idA ) );
-        assertNotNull( categoryOptionComboService.getDataElementCategoryOptionCombo( idB ) );
-        assertNotNull( categoryOptionComboService.getDataElementCategoryOptionCombo( idC ) );
+        assertNull( categoryService.getDataElementCategoryOptionCombo( idA ) );
+        assertNotNull( categoryService.getDataElementCategoryOptionCombo( idB ) );
+        assertNotNull( categoryService.getDataElementCategoryOptionCombo( idC ) );
 
-        categoryOptionComboService.deleteDataElementCategoryOptionCombo( categoryOptionComboService.getDataElementCategoryOptionCombo( idB ) );
+        categoryService.deleteDataElementCategoryOptionCombo( categoryService.getDataElementCategoryOptionCombo( idB ) );
 
-        assertNull( categoryOptionComboService.getDataElementCategoryOptionCombo( idA ) );
-        assertNull( categoryOptionComboService.getDataElementCategoryOptionCombo( idB ) );
-        assertNotNull( categoryOptionComboService.getDataElementCategoryOptionCombo( idC ) );
+        assertNull( categoryService.getDataElementCategoryOptionCombo( idA ) );
+        assertNull( categoryService.getDataElementCategoryOptionCombo( idB ) );
+        assertNotNull( categoryService.getDataElementCategoryOptionCombo( idC ) );
 
-        categoryOptionComboService.deleteDataElementCategoryOptionCombo( categoryOptionComboService.getDataElementCategoryOptionCombo( idC ) );
+        categoryService.deleteDataElementCategoryOptionCombo( categoryService.getDataElementCategoryOptionCombo( idC ) );
 
-        assertNull( categoryOptionComboService.getDataElementCategoryOptionCombo( idA ) );
-        assertNull( categoryOptionComboService.getDataElementCategoryOptionCombo( idB ) );
-        assertNull( categoryOptionComboService.getDataElementCategoryOptionCombo( idC ) );
+        assertNull( categoryService.getDataElementCategoryOptionCombo( idA ) );
+        assertNull( categoryService.getDataElementCategoryOptionCombo( idB ) );
+        assertNull( categoryService.getDataElementCategoryOptionCombo( idC ) );
     }
 
     @Test
@@ -206,12 +201,12 @@ public class DataElementCategoryOptionComboServiceTest
         categoryOptionComboB = new DataElementCategoryOptionCombo();
         categoryOptionComboC = new DataElementCategoryOptionCombo();
         
-        categoryOptionComboService.addDataElementCategoryOptionCombo( categoryOptionComboA );
-        categoryOptionComboService.addDataElementCategoryOptionCombo( categoryOptionComboB );
-        categoryOptionComboService.addDataElementCategoryOptionCombo( categoryOptionComboC );
+        categoryService.addDataElementCategoryOptionCombo( categoryOptionComboA );
+        categoryService.addDataElementCategoryOptionCombo( categoryOptionComboB );
+        categoryService.addDataElementCategoryOptionCombo( categoryOptionComboC );
         
         Collection<DataElementCategoryOptionCombo> categoryOptionCombos = 
-            categoryOptionComboService.getAllDataElementCategoryOptionCombos();
+            categoryService.getAllDataElementCategoryOptionCombos();
         
         assertNotNull( categoryOptionCombos );
         assertEquals( 4, categoryOptionCombos.size() ); // Including default category option combo

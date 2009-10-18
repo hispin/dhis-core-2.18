@@ -34,7 +34,7 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -63,9 +63,9 @@ public class DataElementCategoryComboConverter
     /**
      * Constructor for write operations.
      */
-    public DataElementCategoryComboConverter( DataElementCategoryComboService categoryComboService )
+    public DataElementCategoryComboConverter( DataElementCategoryService categoryService )
     {
-        this.categoryComboService = categoryComboService;
+        this.categoryService = categoryService;
     }
     
     /**
@@ -77,11 +77,11 @@ public class DataElementCategoryComboConverter
      */
     public DataElementCategoryComboConverter( BatchHandler<DataElementCategoryCombo> batchHandler, 
         ImportObjectService importObjectService,
-        DataElementCategoryComboService categoryComboService )
+        DataElementCategoryService categoryService )
     {
         this.batchHandler = batchHandler;
         this.importObjectService = importObjectService;
-        this.categoryComboService = categoryComboService;
+        this.categoryService = categoryService;
     }
     
 
@@ -91,7 +91,7 @@ public class DataElementCategoryComboConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElementCategoryCombo> categoryCombos = categoryComboService.getDataElementCategoryCombos( params.getCategoryCombos() );
+        Collection<DataElementCategoryCombo> categoryCombos = categoryService.getDataElementCategoryCombos( params.getCategoryCombos() );
         
         if ( categoryCombos != null && categoryCombos.size() > 0)
         {

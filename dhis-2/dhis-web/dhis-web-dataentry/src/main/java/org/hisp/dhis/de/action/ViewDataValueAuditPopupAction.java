@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValueAudit;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -97,11 +97,11 @@ public class ViewDataValueAuditPopupAction
         this.dataElementService = dataElementService;
     }
 
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
-
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    private DataElementCategoryService categoryService;
+    
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.categoryService = categoryService;
     }
 
     private PeriodService periodService;
@@ -215,8 +215,7 @@ public class ViewDataValueAuditPopupAction
         organisationUnit = organisationUnitService.getOrganisationUnit( getOrganisationUnitId() );
         period = periodService.getPeriod( getPeriodId() );
         
-        dataElementCategoryOptionCombo = dataElementCategoryOptionComboService
-            .getDataElementCategoryOptionCombo( getDataElementComboId() );
+        dataElementCategoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( getDataElementComboId() );
 
         dataValueAudits = (List<DataValueAudit>) dataValueService.getDataValueAudits( organisationUnit, period,
             dataElement, dataElementCategoryOptionCombo );

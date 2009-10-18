@@ -38,8 +38,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-    <property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     </property>	  
   </bean>
   
@@ -48,9 +48,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-    <property name="dataElementCategoryComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    </property>
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>   
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     </property>
@@ -75,8 +75,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-    <property name="dataElementCategoryComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     </property>    
   </bean>
   
@@ -85,9 +85,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-	<property name="dataElementCategoryComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    </property>
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>   
   </bean>
   
   <bean id="org.hisp.dhis.dd.action.dataelement.ShowUpdateDataElementFormAction"
@@ -95,12 +95,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-	<property name="dataElementCategoryComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    </property>  
-	<property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    </property>    
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>     
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     </property>
@@ -111,9 +108,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-	<property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    </property>  
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>   
   </bean> 
   
   <!-- Data Element Group -->
@@ -334,22 +331,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Indicator denum -->
 		
-	<bean id="org.hisp.dhis.dd.action.indicatordenum.GetFilteredDataElementsAction"
-		class="org.hisp.dhis.dd.action.indicatordenum.GetFilteredDataElementsAction" scope="prototype">
-		<property name="dataElementService">
+  <bean id="org.hisp.dhis.dd.action.indicatordenum.GetFilteredDataElementsAction"
+    class="org.hisp.dhis.dd.action.indicatordenum.GetFilteredDataElementsAction" scope="prototype">
+    <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-    <property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    </property>
-	</bean>
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>   
+  </bean>
 	
-	<bean id="org.hisp.dhis.dd.action.indicatordenum.GetFormulaTextAction"
-		class="org.hisp.dhis.dd.action.indicatordenum.GetFormulaTextAction" scope="prototype">
-	    <property name="expressionService">
-		  <ref bean="org.hisp.dhis.expression.ExpressionService"/>
-	    </property>
-	</bean>
+  <bean id="org.hisp.dhis.dd.action.indicatordenum.GetFormulaTextAction"
+    class="org.hisp.dhis.dd.action.indicatordenum.GetFormulaTextAction" scope="prototype">
+	<property name="expressionService">
+	  <ref bean="org.hisp.dhis.expression.ExpressionService"/>
+	</property>
+  </bean>
   
   <bean id="org.hisp.dhis.dd.action.indicatordenum.GetDenumAction"
     class="org.hisp.dhis.dd.action.indicatordenum.GetDenumAction">
@@ -370,9 +367,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<!-- DataDictionary -->
 	
-	<bean id="org.hisp.dhis.dd.action.datadictionary.AddDataDictionaryAction"
-		class="org.hisp.dhis.dd.action.datadictionary.AddDataDictionaryAction" scope="prototype">
-		<property name="dataDictionaryService">
+  <bean id="org.hisp.dhis.dd.action.datadictionary.AddDataDictionaryAction"
+    class="org.hisp.dhis.dd.action.datadictionary.AddDataDictionaryAction" scope="prototype">
+    <property name="dataDictionaryService">
       <ref bean="org.hisp.dhis.datadictionary.DataDictionaryService"/>
     </property>
     <property name="dataElementService">
@@ -381,21 +378,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
     </property>    
-	</bean>
+  </bean>
 	
-	<bean id="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryAction"
-		class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryAction" scope="prototype">
-		<property name="dataDictionaryService">
+  <bean id="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryAction"
+    class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryAction" scope="prototype">
+    <property name="dataDictionaryService">
       <ref bean="org.hisp.dhis.datadictionary.DataDictionaryService"/>
     </property>
-	</bean>
+  </bean>
 	
-	<bean id="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryListAction"
-		class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryListAction" scope="prototype">
-		<property name="dataDictionaryService">
+  <bean id="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryListAction"
+    class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryListAction" scope="prototype">
+    <property name="dataDictionaryService">
       <ref bean="org.hisp.dhis.datadictionary.DataDictionaryService"/>
     </property>
-	</bean>
+  </bean>
   
   <bean id="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryMembersAction"
     class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryMembersAction" scope="prototype">
@@ -410,16 +407,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 	
-	<bean id="org.hisp.dhis.dd.action.datadictionary.RemoveDataDictionaryAction"
-		class="org.hisp.dhis.dd.action.datadictionary.RemoveDataDictionaryAction" scope="prototype">
-		<property name="dataDictionaryService">
+  <bean id="org.hisp.dhis.dd.action.datadictionary.RemoveDataDictionaryAction"
+	class="org.hisp.dhis.dd.action.datadictionary.RemoveDataDictionaryAction" scope="prototype">
+    <property name="dataDictionaryService">
       <ref bean="org.hisp.dhis.datadictionary.DataDictionaryService"/>
     </property>
-	</bean>
+  </bean>
 	
-	<bean id="org.hisp.dhis.dd.action.datadictionary.UpdateDataDictionaryAction"
-		class="org.hisp.dhis.dd.action.datadictionary.UpdateDataDictionaryAction" scope="prototype">
-		<property name="dataDictionaryService">
+  <bean id="org.hisp.dhis.dd.action.datadictionary.UpdateDataDictionaryAction"
+    class="org.hisp.dhis.dd.action.datadictionary.UpdateDataDictionaryAction" scope="prototype">
+    <property name="dataDictionaryService">
       <ref bean="org.hisp.dhis.datadictionary.DataDictionaryService"/>
     </property>
     <property name="dataElementService">
@@ -428,14 +425,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
     </property>
-	</bean>
+  </bean>
 	
-	<bean id="org.hisp.dhis.dd.action.datadictionary.ValidateDataDictionaryAction"
-		class="org.hisp.dhis.dd.action.datadictionary.ValidateDataDictionaryAction" scope="prototype">
-		<property name="dataDictionaryService">
+  <bean id="org.hisp.dhis.dd.action.datadictionary.ValidateDataDictionaryAction"
+    class="org.hisp.dhis.dd.action.datadictionary.ValidateDataDictionaryAction" scope="prototype">
+    <property name="dataDictionaryService">
       <ref bean="org.hisp.dhis.datadictionary.DataDictionaryService"/>
     </property>
-	</bean>
+  </bean>
   
   <bean id="org.hisp.dhis.dd.action.datadictionary.SetCurrentDataDictionaryAction"
     class="org.hisp.dhis.dd.action.datadictionary.SetCurrentDataDictionaryAction" scope="prototype">
@@ -451,9 +448,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-    <property name="dataElementCategoryComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    </property>
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>   
   </bean>
 	
   <bean id="org.hisp.dhis.dd.action.extendeddataelement.UpdateExtendedDataElementAction"
@@ -504,11 +501,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.dd.action.category.AddDataElementCategoryAction" scope="prototype">
     <property name="dataElementCategoryService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-    </property>
-    <property name="dataElementCategoryOptionService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    </property> 
-    
+    </property>   
   </bean>
   
   <bean id="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryAction"
@@ -530,9 +523,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementCategoryService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     </property>
-    <property name="dataElementCategoryOptionService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    </property>    
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction"
@@ -540,9 +530,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementCategoryService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     </property>
-    <property name="dataElementCategoryOptionService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    </property>    
   </bean>    
   
   <bean id="org.hisp.dhis.dd.action.category.RemoveDataElementCategoryAction"
@@ -565,20 +552,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.dd.action.categorycombo.AddDataElementCategoryComboAction" scope="prototype">
     <property name="dataElementCategoryService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-    </property>
-    <property name="dataElementCategoryComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    </property>
-    <property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    </property>    
+    </property>  
   </bean>
   
   <bean id="org.hisp.dhis.dd.action.categorycombo.ValidateDataElementCategoryComboAction"
     class="org.hisp.dhis.dd.action.categorycombo.ValidateDataElementCategoryComboAction" scope="prototype">
-    <property name="dataElementCategoryComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    </property>
 	<property name="dataElementCategoryService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     </property>  
@@ -586,9 +564,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     
   <bean id="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboListAction"
     class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboListAction" scope="prototype">
-    <property name="dataElementCategoryComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    </property>
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>   
   </bean>
   
   <bean id="org.hisp.dhis.dd.action.categorycombo.UpdateDataElementCategoryComboAction"
@@ -596,9 +574,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementCategoryService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     </property>
-    <property name="dataElementCategoryComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    </property>   
   </bean>
   
   <bean id="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboAction"
@@ -606,60 +581,57 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementCategoryService">
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     </property>
-    <property name="dataElementCategoryComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    </property>    
   </bean>    
   
   <bean id="org.hisp.dhis.dd.action.categorycombo.RemoveDataElementCategoryComboAction"
-    class="org.hisp.dhis.dd.action.categorycombo.RemoveDataElementCategoryComboAction" scope="prototype">
-    <property name="dataElementCategoryComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    </property>
+    class="org.hisp.dhis.dd.action.categorycombo.RemoveDataElementCategoryComboAction" scope="prototype">    
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>   
   </bean>
    
   <!-- CategoryOption -->
   
   <bean id="org.hisp.dhis.dd.action.categoryoption.GetDataElementCategoryOptionListAction"
-    class="org.hisp.dhis.dd.action.categoryoption.GetDataElementCategoryOptionListAction" scope="prototype">
-    <property name="dataElementCategoryOptionService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    </property>
+    class="org.hisp.dhis.dd.action.categoryoption.GetDataElementCategoryOptionListAction" scope="prototype">    
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>   
   </bean>
   
   <bean id="org.hisp.dhis.dd.action.categoryoption.AddDataElementCategoryOptionAction"
     class="org.hisp.dhis.dd.action.categoryoption.AddDataElementCategoryOptionAction" scope="prototype">
-    <property name="dataElementCategoryOptionService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    </property>
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>   
   </bean>
   
   <bean id="org.hisp.dhis.dd.action.categoryoption.ValidateDataElementCategoryOptionAction"
     class="org.hisp.dhis.dd.action.categoryoption.ValidateDataElementCategoryOptionAction" scope="prototype">
-    <property name="dataElementCategoryOptionService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    </property>
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>   
   </bean>
   
   <bean id="org.hisp.dhis.dd.action.categoryoption.GetDataElementCategoryOptionAction"
     class="org.hisp.dhis.dd.action.categoryoption.GetDataElementCategoryOptionAction" scope="prototype">
-    <property name="dataElementCategoryOptionService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    </property>
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>   
   </bean>
   
   <bean id="org.hisp.dhis.dd.action.categoryoption.RemoveDataElementCategoryOptionAction"
     class="org.hisp.dhis.dd.action.categoryoption.RemoveDataElementCategoryOptionAction" scope="prototype">
-    <property name="dataElementCategoryOptionService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    </property>
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>   
   </bean>
   
   <bean id="org.hisp.dhis.dd.action.categoryoption.UpdateDataElementCategoryOptionAction"
     class="org.hisp.dhis.dd.action.categoryoption.UpdateDataElementCategoryOptionAction" scope="prototype">
-    <property name="dataElementCategoryOptionService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    </property>
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>   
   </bean>  
 	
   <!-- PDF -->

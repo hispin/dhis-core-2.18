@@ -33,11 +33,9 @@ import java.util.Map;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -68,10 +66,6 @@ public class DataElementCategoryOptionComboConverter
     // Properties
     // -------------------------------------------------------------------------
 
-    private DataElementCategoryOptionService categoryOptionService;
-    
-    private DataElementCategoryComboService categoryComboService;
-    
     private Map<Object, Integer> categoryComboMapping;
     private Map<Object, Integer> categoryOptionMapping;
     
@@ -82,9 +76,9 @@ public class DataElementCategoryOptionComboConverter
     /**
      * Constructor for write operations.
      */
-    public DataElementCategoryOptionComboConverter( DataElementCategoryOptionComboService categoryOptionComboService )
+    public DataElementCategoryOptionComboConverter( DataElementCategoryService categoryService )
     {
-        this.categoryOptionComboService = categoryOptionComboService;
+        this.categoryService = categoryService;
     }
     
     /**
@@ -96,16 +90,12 @@ public class DataElementCategoryOptionComboConverter
     public DataElementCategoryOptionComboConverter( ImportObjectService importObjectService,
         Map<Object, Integer> categoryComboMapping,
         Map<Object, Integer> categoryOptionMapping,
-        DataElementCategoryOptionComboService categoryOptionComboService,
-        DataElementCategoryOptionService categoryOptionService,
-        DataElementCategoryComboService categoryComboService )
+        DataElementCategoryService categoryService )
     {
         this.importObjectService = importObjectService;
         this.categoryComboMapping = categoryComboMapping;
         this.categoryOptionMapping = categoryOptionMapping;
-        this.categoryOptionComboService = categoryOptionComboService;
-        this.categoryOptionService = categoryOptionService;
-        this.categoryComboService = categoryComboService;
+        this.categoryService = categoryService;
     }    
 
     // -------------------------------------------------------------------------
@@ -115,7 +105,7 @@ public class DataElementCategoryOptionComboConverter
     public void write( XMLWriter writer, ExportParams params )
     {
         Collection<DataElementCategoryOptionCombo> categoryOptionCombos = 
-            categoryOptionComboService.getDataElementCategoryOptionCombos( params.getCategoryOptionCombos() );
+            categoryService.getDataElementCategoryOptionCombos( params.getCategoryOptionCombos() );
         
         if ( categoryOptionCombos != null && categoryOptionCombos.size() > 0 )
         {
@@ -192,7 +182,7 @@ public class DataElementCategoryOptionComboConverter
             }
             else
             {
-                categoryCombo = categoryComboService.getDataElementCategoryCombo( categoryComboMapping.get( categoryComboId ) );
+                categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboMapping.get( categoryComboId ) );
             }
             
             categoryOptionCombo.setCategoryCombo( categoryCombo );
@@ -219,7 +209,7 @@ public class DataElementCategoryOptionComboConverter
                 }
                 else
                 {
-                    categoryOption = categoryOptionService.getDataElementCategoryOption( categoryOptionMapping.get( categoryOptionId ) );                    
+                    categoryOption = categoryService.getDataElementCategoryOption( categoryOptionMapping.get( categoryOptionId ) );                    
                 }
                 
                 categoryOptionCombo.getCategoryOptions().add( categoryOption );

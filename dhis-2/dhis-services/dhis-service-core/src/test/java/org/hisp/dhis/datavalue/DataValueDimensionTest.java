@@ -27,21 +27,24 @@ package org.hisp.dhis.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.Dimension;
 import org.hisp.dhis.common.DimensionOption;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.mock.MockSource;
@@ -49,12 +52,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
-
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-
-import org.apache.commons.collections.CollectionUtils;
 
 /**
  * @author Lars Helge Overland
@@ -82,10 +80,7 @@ public class DataValueDimensionTest
     @Override
     public void setUpTest()
     {
-        categoryOptionService = (DataElementCategoryOptionService) getBean( DataElementCategoryOptionService.ID );
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         dataValueService = (DataValueService) getBean( DataValueService.ID );
         periodService = (PeriodService) getBean( PeriodService.ID );
@@ -96,10 +91,10 @@ public class DataValueDimensionTest
         under15 = new DataElementCategoryOption( "<15" );
         over15 = new DataElementCategoryOption( ">15" );
         
-        categoryOptionService.addDataElementCategoryOption( male );
-        categoryOptionService.addDataElementCategoryOption( female );
-        categoryOptionService.addDataElementCategoryOption( under15 );
-        categoryOptionService.addDataElementCategoryOption( over15 );
+        categoryService.addDataElementCategoryOption( male );
+        categoryService.addDataElementCategoryOption( female );
+        categoryService.addDataElementCategoryOption( under15 );
+        categoryService.addDataElementCategoryOption( over15 );
         
         gender = new DataElementCategory( "Gender" );
         gender.getCategoryOptions().add( male );
@@ -116,9 +111,9 @@ public class DataValueDimensionTest
         genderAndAgeGroup.getCategories().add( gender );
         genderAndAgeGroup.getCategories().add( ageGroup );
                 
-        categoryComboService.addDataElementCategoryCombo( genderAndAgeGroup );
+        categoryService.addDataElementCategoryCombo( genderAndAgeGroup );
         
-        categoryOptionComboService.generateOptionCombos( genderAndAgeGroup );
+        categoryService.generateOptionCombos( genderAndAgeGroup );
 
         dataElementA = createDataElement( 'A', genderAndAgeGroup );
         
@@ -145,7 +140,7 @@ public class DataValueDimensionTest
         categoryOptions.add( male );
         categoryOptions.add( under15 );
         
-        DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboService.getDataElementCategoryOptionCombo( categoryOptions );
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptions );
         
         DataValue dataValue = dataValueService.getDataValue( sourceA, dataElementA, periodA, categoryOptionCombo );
         
@@ -166,7 +161,7 @@ public class DataValueDimensionTest
         categoryOptions.add( male );
         categoryOptions.add( under15 );
         
-        DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboService.getDataElementCategoryOptionCombo( categoryOptions );
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptions );
         
         assertNotNull( categoryOptionCombo );
         assertEquals( genderAndAgeGroup, categoryOptionCombo.getCategoryCombo() );
@@ -176,7 +171,7 @@ public class DataValueDimensionTest
         categoryOptions.add( female );
         categoryOptions.add( over15 );
         
-        categoryOptionCombo = categoryOptionComboService.getDataElementCategoryOptionCombo( categoryOptions );
+        categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptions );
         
         assertNotNull( categoryOptionCombo );
         assertEquals( genderAndAgeGroup, categoryOptionCombo.getCategoryCombo() );
@@ -186,7 +181,7 @@ public class DataValueDimensionTest
         categoryOptions.add( male );
         categoryOptions.add( female );
         
-        categoryOptionCombo = categoryOptionComboService.getDataElementCategoryOptionCombo( categoryOptions );
+        categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptions );
         
         assertNull( categoryOptionCombo );
     }

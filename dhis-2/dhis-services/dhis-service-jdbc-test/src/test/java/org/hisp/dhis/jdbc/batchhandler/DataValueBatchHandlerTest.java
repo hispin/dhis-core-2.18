@@ -39,7 +39,7 @@ import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -89,8 +89,8 @@ public class DataValueBatchHandlerTest
         dataValueService = (DataValueService) getBean( DataValueService.ID );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
+
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         periodService = (PeriodService) getBean( PeriodService.ID );
         
@@ -104,7 +104,7 @@ public class DataValueBatchHandlerTest
         
         dataElementService.addDataElement( dataElementA );        
         
-        categoryOptionComboA = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
+        categoryOptionComboA = categoryService.getDefaultDataElementCategoryOptionCombo();
         
         periodTypeA = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
         

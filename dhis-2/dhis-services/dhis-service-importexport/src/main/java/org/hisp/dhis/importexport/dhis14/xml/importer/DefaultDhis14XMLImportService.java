@@ -41,9 +41,7 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.CSVConverter;
@@ -89,26 +87,12 @@ public class DefaultDhis14XMLImportService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private DataElementCategoryOptionService categoryOptionService;
-
-    public void setCategoryOptionService( DataElementCategoryOptionService categoryOptionService )
-    {
-        this.categoryOptionService = categoryOptionService;
-    }
-
-    private DataElementCategoryComboService categoryComboService;
     
-    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
-    {
-        this.categoryComboService = categoryComboService;
-    }
-    
-    private DataElementCategoryOptionComboService categoryOptionComboService;
+    private DataElementCategoryService categoryService;
 
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.categoryOptionComboService = categoryOptionComboService;
+        this.categoryService = categoryService;
     }
 
     private DataElementService dataElementService;
@@ -238,9 +222,9 @@ public class DefaultDhis14XMLImportService
         
                 XMLReader reader = XMLFactory.getXMLReader( zipIn );
                 
-                XMLConverter categoryOptionConverter = new DataElementCategoryOptionConverter( importObjectService, categoryOptionService );
-                XMLConverter categoryComboConverter = new DataElementCategoryComboConverter( importObjectService, categoryComboService );
-                XMLConverter categoryOptionComboConverter = new DataElementCategoryOptionComboConverter( importObjectService, categoryOptionComboService );
+                XMLConverter categoryOptionConverter = new DataElementCategoryOptionConverter( importObjectService, categoryService );
+                XMLConverter categoryComboConverter = new DataElementCategoryComboConverter( importObjectService, categoryService );
+                XMLConverter categoryOptionComboConverter = new DataElementCategoryOptionComboConverter( importObjectService, categoryService );
                 XMLConverter calculatedDataElementAssociationConverter = new CalculatedDataElementAssociationConverter( expressionMap );
                 XMLConverter dataElementConverter = new DataElementConverter( importObjectService, dataElementService, expressionMap, importAnalyser );
                 XMLConverter indicatorTypeConverter = new IndicatorTypeConverter( importObjectService, indicatorService );

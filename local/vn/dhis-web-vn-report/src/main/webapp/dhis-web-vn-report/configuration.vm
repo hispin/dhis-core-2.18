@@ -1,8 +1,0 @@
-﻿<form action="setConfiguration.action">
-<h2>$i18n.getString('configuration')</h2>
-$i18n.getString('excel_file_directory')
-<input type="text" name="templateDirectory" style="width:400px" value="$templateDirectory"/>
-<br><br><br>
-<input type="submit" value="$i18n.getString('ok')" style="width:100px"/>
-<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='openAdministrator.action'" style="width:100px">
-</form>

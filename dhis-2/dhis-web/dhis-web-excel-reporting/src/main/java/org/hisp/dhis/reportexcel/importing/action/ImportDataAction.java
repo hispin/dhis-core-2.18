@@ -39,7 +39,7 @@ import jxl.WorkbookSettings;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datavalue.DataValue;
@@ -49,12 +49,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.reportexcel.ReportExcel;
-import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
+import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
+import org.hisp.dhis.user.CurrentUserService;
 
 /**
  * @author Chau Thu Tran
@@ -96,12 +96,11 @@ public class ImportDataAction
         this.dataElementService = dataElementService;
     }
 
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    private DataElementCategoryService categoryService;
 
-    public void setDataElementCategoryOptionComboService(
-        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.categoryService = categoryService;
     }
 
     private CurrentUserService currentUserService;
@@ -207,7 +206,7 @@ public class ImportDataAction
 
                         DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
 
-                        DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
+                        DataElementCategoryOptionCombo optionCombo = categoryService
                             .getDataElementCategoryOptionCombo( operand.getOptionComboId() );
 
                         String storedBy = currentUserService.getCurrentUsername();

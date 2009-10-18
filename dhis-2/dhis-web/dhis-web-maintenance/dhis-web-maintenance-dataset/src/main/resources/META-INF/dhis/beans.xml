@@ -15,8 +15,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-    <property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     </property>
     <property name="customValueService">
       <ref bean="org.hisp.dhis.customvalue.CustomValueService"/>
@@ -316,9 +316,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-    <property name="dataElementCategoryOptionComboService">
-      <ref
-        bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     </property>
   </bean>
   

@@ -307,8 +307,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.vn.chr.formreport.action.GetDataelementsOfDataSet"
 		scope="prototype">
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="dataElementCategoryOptionComboService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService" />
+		<property name="categoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.vn.chr.formreport.action.AddFormReport"

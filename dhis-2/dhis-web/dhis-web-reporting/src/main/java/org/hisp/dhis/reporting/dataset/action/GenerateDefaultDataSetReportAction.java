@@ -41,7 +41,7 @@ import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.dataset.DataSet;
@@ -173,12 +173,12 @@ public class GenerateDefaultDataSetReportAction
         this.dataElementOrderManager = dataElementOrderManager;
     }
 
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    private DataElementCategoryService categoryService;
 
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
-    }    
+        this.categoryService = categoryService;
+    }
 
     private SelectedStateManager selectedStateManager;
 
@@ -274,8 +274,7 @@ public class GenerateDefaultDataSetReportAction
                 {
                     int colCount = 0;
 
-                    Collection<DataElementCategoryOptionCombo> optionCombos = dataElementCategoryOptionComboService
-                        .sortOptionCombos( catCombo );
+                    Collection<DataElementCategoryOptionCombo> optionCombos = categoryService.sortOptionCombos( catCombo );
 
                     collectedDataElements.add( dataElement.getName() );
 

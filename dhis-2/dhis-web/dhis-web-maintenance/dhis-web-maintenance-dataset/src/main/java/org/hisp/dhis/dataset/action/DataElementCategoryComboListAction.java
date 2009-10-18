@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -46,11 +46,11 @@ public class DataElementCategoryComboListAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementCategoryComboService dataElementCategoryComboService;
+    private DataElementCategoryService dataElementCategoryService;
 
-    public void setDataElementCategoryComboService( DataElementCategoryComboService dataElementCategoryComboService )
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-        this.dataElementCategoryComboService = dataElementCategoryComboService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -67,7 +67,7 @@ public class DataElementCategoryComboListAction
     public String execute()
         throws Exception
     {
-        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryComboService
+        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService
             .getAllDataElementCategoryCombos() );
 
         return SUCCESS;

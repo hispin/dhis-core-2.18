@@ -158,8 +158,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-	<property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+	<property name="categoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     </property>
   </bean>
   
@@ -224,9 +224,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>  
-    <property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    </property>  
+    <property name="categoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    </property>
   </bean>  
   
   <bean id="org.hisp.dhis.validationrule.action.GenerateValidationResultPDFAction"

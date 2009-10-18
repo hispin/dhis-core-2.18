@@ -38,11 +38,8 @@ import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -110,12 +107,8 @@ public class DataMartServiceMultiDimensionTest
         dataMartStore = (DataMartStore) getBean( DataMartStore.ID );
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
-        
-        categoryOptionService = (DataElementCategoryOptionService) getBean( DataElementCategoryOptionService.ID );
-        
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
+
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
@@ -143,8 +136,8 @@ public class DataMartServiceMultiDimensionTest
         categoryOptionA = new DataElementCategoryOption( "Male" );
         categoryOptionB = new DataElementCategoryOption( "Female" );
         
-        categoryOptionService.addDataElementCategoryOption( categoryOptionA );
-        categoryOptionService.addDataElementCategoryOption( categoryOptionB );
+        categoryService.addDataElementCategoryOption( categoryOptionA );
+        categoryService.addDataElementCategoryOption( categoryOptionB );
 
         categoryA = new DataElementCategory( "Gender" );
         categoryA.getCategoryOptions().add( categoryOptionA );
@@ -155,11 +148,11 @@ public class DataMartServiceMultiDimensionTest
         categoryComboA = new DataElementCategoryCombo( "Gender" );
         categoryComboA.getCategories().add( categoryA );        
         
-        categoryComboService.addDataElementCategoryCombo( categoryComboA );
+        categoryService.addDataElementCategoryCombo( categoryComboA );
         
-        categoryOptionComboService.generateOptionCombos( categoryComboA );
+        categoryService.generateOptionCombos( categoryComboA );
 
-        Iterator<DataElementCategoryOptionCombo> categoryOptionCombos = categoryOptionComboService.getAllDataElementCategoryOptionCombos().iterator();
+        Iterator<DataElementCategoryOptionCombo> categoryOptionCombos = categoryService.getAllDataElementCategoryOptionCombos().iterator();
         
         categoryOptionCombos.next(); // Omit default
         categoryOptionComboA = categoryOptionCombos.next();

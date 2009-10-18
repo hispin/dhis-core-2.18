@@ -38,7 +38,7 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.junit.Test;
 
 /**
@@ -63,7 +63,7 @@ public class DataElementCategoryComboBatchHandlerTest
     @Override
     public void setUpTest()
     {
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
@@ -101,7 +101,7 @@ public class DataElementCategoryComboBatchHandlerTest
         
         batchHandler.flush();
         
-        Collection<DataElementCategoryCombo> categoryCombos = categoryComboService.getAllDataElementCategoryCombos();
+        Collection<DataElementCategoryCombo> categoryCombos = categoryService.getAllDataElementCategoryCombos();
         
         assertTrue( categoryCombos.contains( categoryComboA  ) );
         assertTrue( categoryCombos.contains( categoryComboB  ) );
@@ -115,9 +115,9 @@ public class DataElementCategoryComboBatchHandlerTest
         int idB = batchHandler.insertObject( categoryComboB, true );
         int idC = batchHandler.insertObject( categoryComboC, true );
         
-        assertNotNull( categoryComboService.getDataElementCategoryCombo( idA ) );
-        assertNotNull( categoryComboService.getDataElementCategoryCombo( idB ) );
-        assertNotNull( categoryComboService.getDataElementCategoryCombo( idC ) );
+        assertNotNull( categoryService.getDataElementCategoryCombo( idA ) );
+        assertNotNull( categoryService.getDataElementCategoryCombo( idB ) );
+        assertNotNull( categoryService.getDataElementCategoryCombo( idC ) );
     }
 
     @Test
@@ -130,13 +130,13 @@ public class DataElementCategoryComboBatchHandlerTest
         
         batchHandler.updateObject( categoryComboA );
         
-        assertEquals( "UpdatedName", categoryComboService.getDataElementCategoryCombo( id ).getName() );
+        assertEquals( "UpdatedName", categoryService.getDataElementCategoryCombo( id ).getName() );
     }
 
     @Test
     public void testGetObjectIdentifier()
     {
-        int referenceId = categoryComboService.addDataElementCategoryCombo( categoryComboA );
+        int referenceId = categoryService.addDataElementCategoryCombo( categoryComboA );
         
         int retrievedId = batchHandler.getObjectIdentifier( "CategoryComboA" );
         
@@ -146,7 +146,7 @@ public class DataElementCategoryComboBatchHandlerTest
     @Test
     public void testObjectExists()
     {
-        categoryComboService.addDataElementCategoryCombo( categoryComboA );
+        categoryService.addDataElementCategoryCombo( categoryComboA );
         
         assertTrue( batchHandler.objectExists( categoryComboA ) );
         

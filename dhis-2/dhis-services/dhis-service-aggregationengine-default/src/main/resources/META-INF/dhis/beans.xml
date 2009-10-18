@@ -75,8 +75,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	class="org.hisp.dhis.aggregation.impl.indicator.IndicatorAggregation">
 	<property name="dataElementService"
 		ref="org.hisp.dhis.dataelement.DataElementService"/>
-	<property name="dataElementCategoryOptionComboService"
-		ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+	<property name="categoryService"
+		ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 	<property name="aggregationCache"
      ref="org.hisp.dhis.aggregation.impl.cache.AggregationCache"/>    
   </bean>

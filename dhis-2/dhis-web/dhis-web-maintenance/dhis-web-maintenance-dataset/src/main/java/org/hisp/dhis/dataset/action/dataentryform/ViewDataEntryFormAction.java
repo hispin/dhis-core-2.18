@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataEntryForm;
 import org.hisp.dhis.dataset.DataEntryFormService;
@@ -77,11 +77,11 @@ public class ViewDataEntryFormAction
         this.dataElementService = dataElementService;
     }
 
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    private DataElementCategoryService dataElementCategoryService;
 
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -207,7 +207,7 @@ public class ViewDataEntryFormAction
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
                 int optionComboId = Integer.parseInt( matDataElementId.group( 2 ) );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
                 String optionComboName = "";
 
@@ -366,7 +366,7 @@ public class ViewDataEntryFormAction
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
                 int optionComboId = Integer.parseInt( matDataElementId.group( 2 ) );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
                 String optionComboName = "";
 

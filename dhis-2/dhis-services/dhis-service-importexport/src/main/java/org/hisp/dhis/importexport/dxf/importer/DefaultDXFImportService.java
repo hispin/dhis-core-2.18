@@ -43,10 +43,7 @@ import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -196,27 +193,6 @@ public class DefaultDXFImportService
         this.categoryService = categoryService;
     }
     
-    private DataElementCategoryOptionService categoryOptionService;
-
-    public void setCategoryOptionService( DataElementCategoryOptionService categoryOptionService )
-    {
-        this.categoryOptionService = categoryOptionService;
-    }
-
-    private DataElementCategoryComboService categoryComboService;
-    
-    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
-    {
-        this.categoryComboService = categoryComboService;
-    }
-    
-    private DataElementCategoryOptionComboService categoryOptionComboService;
-
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
-    {
-        this.categoryOptionComboService = categoryOptionComboService;
-    }
-
     private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
@@ -374,7 +350,7 @@ public class DefaultDXFImportService
                 
                 XMLConverter converter = new DataElementCategoryOptionConverter( batchHandler,
                     importObjectService,
-                    categoryOptionService );
+                    categoryService );
                 
                 converterInvoker.invokeRead( converter, reader, params );
                 
@@ -410,7 +386,7 @@ public class DefaultDXFImportService
                 
                 XMLConverter converter = new DataElementCategoryComboConverter( batchHandler,
                     importObjectService,
-                    categoryComboService );
+                    categoryService );
 
                 converterInvoker.invokeRead( converter, reader, params );
                 
@@ -425,9 +401,7 @@ public class DefaultDXFImportService
                 XMLConverter converter = new DataElementCategoryOptionComboConverter( importObjectService,
                     objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ),
                     objectMappingGenerator.getCategoryOptionMapping( params.skipMapping() ),
-                    categoryOptionComboService,
-                    categoryOptionService,
-                    categoryComboService );
+                    categoryService );
 
                 converterInvoker.invokeRead( converter, reader, params );
                 

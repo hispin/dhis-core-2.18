@@ -36,7 +36,7 @@ import java.util.Set;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.system.util.ConversionUtils;
@@ -61,12 +61,12 @@ public class UpdateDataElementAction
     {
         this.dataElementService = dataElementService;
     }
-    
-    private DataElementCategoryComboService dataElementCategoryComboService;
 
-    public void setDataElementCategoryComboService( DataElementCategoryComboService dataElementCategoryComboService )
+    private DataElementCategoryService dataElementCategoryService;
+
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-        this.dataElementCategoryComboService = dataElementCategoryComboService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -208,7 +208,7 @@ public class UpdateDataElementAction
         // ---------------------------------------------------------------------
 
         DataElement dataElement = dataElementService.getDataElement( id );
-        DataElementCategoryCombo categoryCombo = dataElementCategoryComboService.getDataElementCategoryCombo( selectedCategoryComboId );
+        DataElementCategoryCombo categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( selectedCategoryComboId );
 
         dataElement.setName( name );
         dataElement.setAlternativeName( alternativeName );

@@ -37,9 +37,7 @@ import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -117,27 +115,13 @@ public class I18nUpgrader
         this.dataDictionaryService = dataDictionaryService;
     }    
     
-    private DataElementCategoryService dataElementCategoryService;
-
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
-    {
-        this.dataElementCategoryService = dataElementCategoryService;
-    }
+    private DataElementCategoryService categoryService;
     
-    private DataElementCategoryOptionService dataElementCategoryOptionService;
-
-    public void setDataElementCategoryOptionService( DataElementCategoryOptionService dataElementCategoryOptionService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dataElementCategoryOptionService = dataElementCategoryOptionService;
+        this.categoryService = categoryService;
     }
-    
-    private DataElementCategoryComboService dataElementCategoryComboService;
 
-    public void setDataElementCategoryComboService( DataElementCategoryComboService dataElementCategoryComboService )
-    {
-        this.dataElementCategoryComboService = dataElementCategoryComboService;
-    }
-    
     private LocaleManager localeManager;
 
     public void setLocaleManager( LocaleManager localeManager )
@@ -385,7 +369,7 @@ public class I18nUpgrader
             // DataElementCategory
             // ---------------------------------------------------------------------
 
-            Collection<DataElementCategory> categories = dataElementCategoryService.getAllDataElementCategories();
+            Collection<DataElementCategory> categories = categoryService.getAllDataElementCategories();
             
             if ( categories != null && !categories.isEmpty() )
             {
@@ -403,7 +387,7 @@ public class I18nUpgrader
             // DataElementCategoryOption
             // ---------------------------------------------------------------------            
             
-            Collection<DataElementCategoryOption> categoryOptions = dataElementCategoryOptionService.getAllDataElementCategoryOptions();
+            Collection<DataElementCategoryOption> categoryOptions = categoryService.getAllDataElementCategoryOptions();
             
             if ( categoryOptions != null && !categoryOptions.isEmpty() )
             {
@@ -421,7 +405,7 @@ public class I18nUpgrader
             // DataElementCategoryCombo
             // ---------------------------------------------------------------------
 
-            Collection<DataElementCategoryCombo> categoryCombos = dataElementCategoryComboService.getAllDataElementCategoryCombos();
+            Collection<DataElementCategoryCombo> categoryCombos = categoryService.getAllDataElementCategoryCombos();
             
             if ( categoryCombos != null && !categoryCombos.isEmpty() )
             {

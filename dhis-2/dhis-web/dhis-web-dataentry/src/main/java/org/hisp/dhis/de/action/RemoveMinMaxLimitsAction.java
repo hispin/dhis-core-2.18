@@ -29,7 +29,7 @@ package org.hisp.dhis.de.action;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
@@ -69,12 +69,12 @@ public class RemoveMinMaxLimitsAction
     {
         this.dataElementService = dataElementService;
     }
+
+    private DataElementCategoryService categoryService;
     
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
-    
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService)
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-    	this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;    	
+        this.categoryService = categoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -113,7 +113,7 @@ public class RemoveMinMaxLimitsAction
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
         
-        DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
+        DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
 
         MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit,
             dataElement, optionCombo );

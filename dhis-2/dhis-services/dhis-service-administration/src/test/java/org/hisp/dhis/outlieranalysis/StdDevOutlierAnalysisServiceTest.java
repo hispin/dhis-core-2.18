@@ -37,8 +37,8 @@ import java.util.Set;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
@@ -102,7 +102,7 @@ public class StdDevOutlierAnalysisServiceTest
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
 
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
 
         dataSetService = (DataSetService) getBean( DataSetService.ID );
 
@@ -128,8 +128,7 @@ public class StdDevOutlierAnalysisServiceTest
         dataElementsB.add( dataElementD );
         dataElementsC.add( dataElementB );
 
-        categoryCombo = categoryComboService
-            .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
         categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
 

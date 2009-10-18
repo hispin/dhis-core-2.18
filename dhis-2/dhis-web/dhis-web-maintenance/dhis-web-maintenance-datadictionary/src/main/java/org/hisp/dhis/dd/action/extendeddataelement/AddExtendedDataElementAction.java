@@ -27,18 +27,18 @@ package org.hisp.dhis.dd.action.extendeddataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
+
 import java.util.Date;
 
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 
 import com.opensymphony.xwork2.ActionSupport;
-
-import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
 
 /**
  * @author Lars Helge Overland
@@ -58,13 +58,13 @@ public class AddExtendedDataElementAction
         this.dataElementService = dataElementService;
     }
 
-    private DataElementCategoryComboService dataElementCategoryComboService;
+    private DataElementCategoryService dataElementCategoryService;
 
-    public void setDataElementCategoryComboService( DataElementCategoryComboService dataElementCategoryComboService )
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-        this.dataElementCategoryComboService = dataElementCategoryComboService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
-    
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -457,7 +457,7 @@ public class AddExtendedDataElementAction
             comment = null;
         }
         
-        DataElementCategoryCombo categoryCombo = dataElementCategoryComboService.
+        DataElementCategoryCombo categoryCombo = dataElementCategoryService.
             getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
         DataElement dataElement = new DataElement();

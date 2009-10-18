@@ -45,13 +45,13 @@ public class CategoryOptionShortNamePopulator
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementCategoryOptionService categoryOptionService;
+    private DataElementCategoryService categoryService;
 
-    public void setCategoryOptionService( DataElementCategoryOptionService categoryOptionService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.categoryOptionService = categoryOptionService;
+        this.categoryService = categoryService;
     }
-
+    
     // -------------------------------------------------------------------------
     // StartupRoutine implementation
     // -------------------------------------------------------------------------
@@ -59,13 +59,13 @@ public class CategoryOptionShortNamePopulator
     public void execute()
         throws Exception
     {
-        for ( DataElementCategoryOption option : categoryOptionService.getAllDataElementCategoryOptions() )
+        for ( DataElementCategoryOption option : categoryService.getAllDataElementCategoryOptions() )
         {
             if ( option.getShortName() == null || option.getShortName().trim().length() == 0 )
             {
                 option.setShortName( TextUtils.subString( option.getName(), 0, 30 ) );
                 
-                categoryOptionService.updateDataElementCategoryOption( option );
+                categoryService.updateDataElementCategoryOption( option );
             }
         }
         

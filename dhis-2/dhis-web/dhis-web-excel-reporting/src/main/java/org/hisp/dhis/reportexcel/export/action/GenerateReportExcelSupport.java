@@ -54,7 +54,7 @@ import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -102,7 +102,7 @@ public abstract class GenerateReportExcelSupport
 
     protected IndicatorService indicatorService;
 
-    protected DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    protected DataElementCategoryService categoryService;
 
     protected StatementManager statementManager;
 
@@ -152,10 +152,9 @@ public abstract class GenerateReportExcelSupport
         this.currentUserService = currentUserService;
     }
 
-    public void setDataElementCategoryOptionComboService(
-        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.categoryService = categoryService;
     }
 
     public void setStatementManager( StatementManager statementManager )
@@ -546,7 +545,7 @@ public abstract class GenerateReportExcelSupport
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
+                DataElementCategoryOptionCombo optionCombo = categoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
 
                 double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,

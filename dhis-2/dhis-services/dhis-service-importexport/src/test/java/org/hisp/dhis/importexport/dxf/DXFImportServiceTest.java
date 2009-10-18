@@ -34,9 +34,6 @@ import java.io.InputStream;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -125,14 +122,8 @@ public class DXFImportServiceTest
         
         importService = (ImportService) getBean( "org.hisp.dhis.importexport.DXFImportService" );
         
-        categoryOptionService = (DataElementCategoryOptionService) getBean( DataElementCategoryOptionService.ID );
-        
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
-        
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
-
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
         dataDictionaryService = (DataDictionaryService) getBean( DataDictionaryService.ID );
@@ -354,13 +345,13 @@ public class DXFImportServiceTest
     
     private void assertObjects( int expectedSize )
     {
-        assertEquals( categoryOptionService.getAllDataElementCategoryOptions().size(), 5 ); // Including default
+        assertEquals( categoryService.getAllDataElementCategoryOptions().size(), 5 ); // Including default
         
         assertEquals( categoryService.getAllDataElementCategories().size(), 3 ); // Including default
         
-        assertEquals( categoryComboService.getAllDataElementCategoryCombos().size(), 3 ); // Including default
+        assertEquals( categoryService.getAllDataElementCategoryCombos().size(), 3 ); // Including default
         
-        assertEquals( categoryOptionComboService.getAllDataElementCategoryOptionCombos().size(), 5 ); // Including default
+        assertEquals( categoryService.getAllDataElementCategoryOptionCombos().size(), 5 ); // Including default
         
         assertEquals( dataElementService.getAllDataElements().size(), expectedSize );
         

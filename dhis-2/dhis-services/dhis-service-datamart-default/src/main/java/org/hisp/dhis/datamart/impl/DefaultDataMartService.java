@@ -38,7 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datamart.DataMartService;
@@ -162,14 +162,14 @@ public class DefaultDataMartService
     {
         this.periodService = periodService;
     }
-    
-    private DataElementCategoryOptionComboService categoryOptionComboService;
 
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.categoryOptionComboService = categoryOptionComboService;
+        this.categoryService = categoryService;
     }
-    
+
     private ExpressionService expressionService;
 
     public void setExpressionService( ExpressionService expressionService )
@@ -218,9 +218,9 @@ public class DefaultDataMartService
         allDataElementIds.addAll( dataElementInIndicatorIds );
         allDataElementIds.addAll( dataElementInCalculatedDataElementIds );
 
-        final Collection<Operand> allDataElementOperands = categoryOptionComboService.getOperandsByIds( allDataElementIds );
-        final Collection<Operand> dataElementInIndicatorOperands = categoryOptionComboService.getOperandsByIds( dataElementInIndicatorIds );
-        final Collection<Operand> dataElementInCalculatedDataElementOperands = categoryOptionComboService.getOperandsByIds( dataElementInCalculatedDataElementIds );
+        final Collection<Operand> allDataElementOperands = categoryService.getOperandsByIds( allDataElementIds );
+        final Collection<Operand> dataElementInIndicatorOperands = categoryService.getOperandsByIds( dataElementInIndicatorIds );
+        final Collection<Operand> dataElementInCalculatedDataElementOperands = categoryService.getOperandsByIds( dataElementInCalculatedDataElementIds );
 
         // ---------------------------------------------------------------------
         // Validate crosstabtable
@@ -446,6 +446,6 @@ public class DefaultDataMartService
             }
         }
         
-        return categoryOptionComboService.getOperandsByIds( section );
+        return categoryService.getOperandsByIds( section );
     }
 }

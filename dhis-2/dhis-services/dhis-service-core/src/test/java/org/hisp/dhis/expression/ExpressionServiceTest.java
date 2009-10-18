@@ -41,9 +41,8 @@ import java.util.Set;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -100,9 +99,7 @@ public class ExpressionServiceTest
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
 
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
-        
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         dataValueService = (DataValueService) getBean( DataValueService.ID );
         
@@ -118,7 +115,7 @@ public class ExpressionServiceTest
         dataElementIdC = dataElementService.addDataElement( dataElementC );
         dataElementIdD = dataElementService.addDataElement( dataElementD );
         
-        categoryOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
+        categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
         categoryOptionComboId = categoryOptionCombo.getId();
         

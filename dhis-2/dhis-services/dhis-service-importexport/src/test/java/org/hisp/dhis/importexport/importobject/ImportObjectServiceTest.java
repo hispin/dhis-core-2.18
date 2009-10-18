@@ -38,7 +38,7 @@ import java.util.Collection;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
@@ -113,8 +113,8 @@ public class ImportObjectServiceTest
     public void setUpTest()
     {
         importObjectService = (ImportObjectService) getBean( ImportObjectService.ID );
-        
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
+
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
 
@@ -459,7 +459,7 @@ public class ImportObjectServiceTest
     {
         indicatorService.addIndicatorType( indicatorTypeA );
         
-        categoryComboService.addDataElementCategoryCombo( categoryComboA );
+        categoryService.addDataElementCategoryCombo( categoryComboA );
         
         int existingObjectIdA = dataElementService.addDataElement( dataElementA );
         int existingObjectIdB = indicatorService.addIndicator( indicatorA );

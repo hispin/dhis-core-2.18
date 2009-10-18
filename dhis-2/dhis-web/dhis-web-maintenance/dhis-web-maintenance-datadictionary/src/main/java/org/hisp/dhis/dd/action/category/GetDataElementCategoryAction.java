@@ -32,7 +32,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 import com.opensymphony.xwork2.Action;
@@ -54,13 +53,6 @@ public class GetDataElementCategoryAction
     {
         this.dataElementCategoryService = dataElementCategoryService;
     }
-
-    private DataElementCategoryOptionService dataElementCategoryOptionService;
-
-    public void setDataElementCategoryOptionService( DataElementCategoryOptionService dataElementCategoryOptionService )
-    {
-        this.dataElementCategoryOptionService = dataElementCategoryOptionService;
-    }    
 
     // -------------------------------------------------------------------------
     // Input/output
@@ -104,7 +96,7 @@ public class GetDataElementCategoryAction
         
         dataElementCategoryOptions = dataElementCategory.getCategoryOptions();
         
-        allDataElementCategoryOptions = dataElementCategoryOptionService
+        allDataElementCategoryOptions = dataElementCategoryService
         .getAllDataElementCategoryOptions();
 
         allDataElementCategoryOptions.removeAll( dataElementCategoryOptions );

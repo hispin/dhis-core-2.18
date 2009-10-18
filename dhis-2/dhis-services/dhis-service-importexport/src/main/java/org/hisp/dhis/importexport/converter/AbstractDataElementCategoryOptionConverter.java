@@ -28,7 +28,7 @@ package org.hisp.dhis.importexport.converter;
  */
 
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 /**
  * @author Lars Helge Overland
@@ -37,7 +37,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 public class AbstractDataElementCategoryOptionConverter
     extends AbstractConverter<DataElementCategoryOption>
 {
-    protected DataElementCategoryOptionService categoryOptionService;
+    protected DataElementCategoryService categoryService;
     
     // -------------------------------------------------------------------------
     // Overridden methods
@@ -55,7 +55,7 @@ public class AbstractDataElementCategoryOptionConverter
 
     protected DataElementCategoryOption getMatching( DataElementCategoryOption object )
     {
-        return categoryOptionService.getDataElementCategoryOptionByName( object.getName() );
+        return categoryService.getDataElementCategoryOptionByName( object.getName() );
     }
     
     protected boolean isIdentical( DataElementCategoryOption object, DataElementCategoryOption existing )

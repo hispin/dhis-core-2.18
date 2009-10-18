@@ -39,7 +39,7 @@ import java.util.HashSet;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementStore;
 import org.hisp.dhis.mock.MockSource;
 import org.hisp.dhis.period.Period;
@@ -105,7 +105,7 @@ public class DataValueStoreTest
         
         dataElementStore = (DataElementStore) getBean( DataElementStore.ID );
 
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         periodStore = (PeriodStore) getBean( PeriodStore.ID );
         
@@ -147,7 +147,7 @@ public class DataValueStoreTest
 
         optionCombo = new DataElementCategoryOptionCombo();
         
-        categoryOptionComboService.addDataElementCategoryOptionCombo( optionCombo );
+        categoryService.addDataElementCategoryOptionCombo( optionCombo );
     }
     
     // -------------------------------------------------------------------------

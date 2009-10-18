@@ -29,7 +29,6 @@ package org.hisp.dhis.vn.chr.object.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.vn.chr.Element;

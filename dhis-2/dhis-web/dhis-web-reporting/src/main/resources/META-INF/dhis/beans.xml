@@ -164,8 +164,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="categoryComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="indicatorService"
       ref="org.hisp.dhis.indicator.IndicatorService"/>
     <property name="periodService"
@@ -183,8 +183,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="categoryComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="indicatorService"
       ref="org.hisp.dhis.indicator.IndicatorService"/>
     <property name="periodService"
@@ -546,8 +546,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.order.manager.DataElementOrderManager"/>   
     <property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>
-    <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>		     
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>		     
   </bean>
   
   <bean id="org.hisp.dhis.reporting.dataset.action.GetViewFormStateAction" 

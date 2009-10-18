@@ -30,7 +30,7 @@ package org.hisp.dhis.importexport.dhis14.xml.converter;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -52,10 +52,10 @@ public class DataElementCategoryOptionConverter
      * @param categoryOptionService the dataElementCategoryOptionService to use.
      */
     public DataElementCategoryOptionConverter( ImportObjectService importObjectService,
-        DataElementCategoryOptionService categoryOptionService )
+        DataElementCategoryService categoryService )
     {
         this.importObjectService = importObjectService;
-        this.categoryOptionService = categoryOptionService;
+        this.categoryService = categoryService;
     }    
 
     // -------------------------------------------------------------------------

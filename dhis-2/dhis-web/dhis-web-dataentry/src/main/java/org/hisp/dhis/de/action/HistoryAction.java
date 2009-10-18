@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -77,14 +77,14 @@ public class HistoryAction
     {
         this.dataValueService = dataValueService;
     }
-    
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
-    {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
-    }
+    private DataElementCategoryService categoryService;
     
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
@@ -170,11 +170,11 @@ public class HistoryAction
     {    	
     	DataElement dataElement = dataElementService.getDataElement( dataElementId );       
         
-        DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
+        DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
         
         if ( optionCombo == null )
         {
-            optionCombo = dataElementCategoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
+            optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         }
 
         if ( dataElement == null )

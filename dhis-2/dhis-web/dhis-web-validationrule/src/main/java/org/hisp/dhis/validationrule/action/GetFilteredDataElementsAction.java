@@ -35,7 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
@@ -62,12 +62,11 @@ public class GetFilteredDataElementsAction
         this.dataElementService = dataElementService;
     }
 
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    private DataElementCategoryService categoryService;
 
-    public void setDataElementCategoryOptionComboService(
-        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.categoryService = categoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -155,7 +154,7 @@ public class GetFilteredDataElementsAction
         // Create Operands
         // ---------------------------------------------------------------------
 
-        operands = new ArrayList<Operand>( dataElementCategoryOptionComboService.getOperands( dataElements ) );
+        operands = new ArrayList<Operand>( categoryService.getOperands( dataElements ) );
         
         // ---------------------------------------------------------------------
         // String filter

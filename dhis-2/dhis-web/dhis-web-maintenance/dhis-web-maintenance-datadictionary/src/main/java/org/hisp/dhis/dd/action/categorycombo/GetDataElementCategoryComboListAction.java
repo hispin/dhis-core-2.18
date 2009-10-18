@@ -32,7 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboNameComparator;
 
 import com.opensymphony.xwork2.Action;
@@ -48,11 +48,11 @@ public class GetDataElementCategoryComboListAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementCategoryComboService dataElementCategoryComboService;
+    private DataElementCategoryService dataElementCategoryService;
 
-    public void setDataElementCategoryComboService( DataElementCategoryComboService dataElementCategoryComboService )
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-        this.dataElementCategoryComboService = dataElementCategoryComboService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -79,10 +79,10 @@ public class GetDataElementCategoryComboListAction
 
     public String execute()
     {
-        defaultCombo = dataElementCategoryComboService
+        defaultCombo = dataElementCategoryService
             .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
-        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryComboService
+        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService
             .getAllDataElementCategoryCombos() );
 
         Collections.sort( dataElementCategoryCombos, new DataElementCategoryComboNameComparator() );

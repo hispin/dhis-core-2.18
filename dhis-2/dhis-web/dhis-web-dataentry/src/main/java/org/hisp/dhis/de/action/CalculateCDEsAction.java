@@ -35,7 +35,7 @@ import java.util.Map;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.de.state.StatefulDataValueSaver;
@@ -83,12 +83,12 @@ public class CalculateCDEsAction
     {
         this.expressionService = expressionService;
     }
-    
-    private DataElementCategoryOptionComboService categoryOptionComboService;
 
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
+    private DataElementCategoryService categoryService;
+    
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.categoryOptionComboService = categoryOptionComboService;
+        this.categoryService = categoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -155,7 +155,7 @@ public class CalculateCDEsAction
     		// Should the value be saved to the database?
     		if ( cde.isSaved() )
     		{
-                    DataElementCategoryOptionCombo optionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
+                    DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
     		    statefulDataValueSaver.saveValue( cde.getId(), optionCombo.getId(), "" + value );
     		}
 

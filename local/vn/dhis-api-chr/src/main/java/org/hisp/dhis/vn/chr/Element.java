@@ -1,11 +1,5 @@
 package org.hisp.dhis.vn.chr;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.vn.report.ReportItem;
 
 /**
  * @author Chau Thu Tran

@@ -42,7 +42,7 @@ import java.util.Iterator;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -61,8 +61,6 @@ public class PeriodServiceTest
     private PeriodService periodService;
     
     private DataElementService dataElementService;
-
-    private DataElementCategoryOptionComboService categoryOptionComboService;
     
     private SourceStore sourceStore;
     
@@ -81,7 +79,7 @@ public class PeriodServiceTest
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
 
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         sourceStore = (SourceStore) getBean( SourceStore.ID );
         
@@ -89,7 +87,7 @@ public class PeriodServiceTest
 
         optionCombo = new DataElementCategoryOptionCombo();
         
-        categoryOptionComboService.addDataElementCategoryOptionCombo( optionCombo );
+        categoryService.addDataElementCategoryOptionCombo( optionCombo );
     }
     
     // -------------------------------------------------------------------------

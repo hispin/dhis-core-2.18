@@ -40,7 +40,7 @@ import org.amplecode.quick.Statement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.GroupSetStructureBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitStructureBatchHandler;
@@ -89,11 +89,11 @@ public class DefaultResourceTableService
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
-    private DataElementCategoryOptionComboService categoryOptionComboService;
+    private DataElementCategoryService categoryService;
 
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.categoryOptionComboService = categoryOptionComboService;
+        this.categoryService = categoryService;
     }
 
     private BatchHandlerFactory batchHandlerFactory;
@@ -220,8 +220,7 @@ public class DefaultResourceTableService
     {
         resourceTableStore.deleteDataElementCategoryOptionComboNames();
 
-        Collection<DataElementCategoryOptionCombo> combos = categoryOptionComboService
-            .getAllDataElementCategoryOptionCombos();
+        Collection<DataElementCategoryOptionCombo> combos = categoryService.getAllDataElementCategoryOptionCombos();
 
         for ( DataElementCategoryOptionCombo combo : combos )
         {

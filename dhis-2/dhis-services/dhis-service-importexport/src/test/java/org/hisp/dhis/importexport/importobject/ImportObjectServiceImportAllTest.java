@@ -40,11 +40,8 @@ import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -257,12 +254,6 @@ public class ImportObjectServiceImportAllTest
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
-        
-        categoryOptionService = (DataElementCategoryOptionService) getBean( DataElementCategoryOptionService.ID );
-        
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
-        
         periodService = (PeriodService) getBean( PeriodService.ID );
         
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
@@ -278,10 +269,10 @@ public class ImportObjectServiceImportAllTest
         categoryOptionC = new DataElementCategoryOption( "CategoryOptionC" );
         categoryOptionD = new DataElementCategoryOption( "CategoryOptionD" );
         
-        categoryOptionService.addDataElementCategoryOption( categoryOptionA );
-        categoryOptionService.addDataElementCategoryOption( categoryOptionB );
-        categoryOptionService.addDataElementCategoryOption( categoryOptionC );
-        categoryOptionService.addDataElementCategoryOption( categoryOptionD );
+        categoryService.addDataElementCategoryOption( categoryOptionA );
+        categoryService.addDataElementCategoryOption( categoryOptionB );
+        categoryService.addDataElementCategoryOption( categoryOptionC );
+        categoryService.addDataElementCategoryOption( categoryOptionD );
         
         categoryOptionADuplicate = new DataElementCategoryOption( "CategoryOptionA" );
         categoryOptionBDuplicate = new DataElementCategoryOption( "CategoryOptionB" );
@@ -347,8 +338,8 @@ public class ImportObjectServiceImportAllTest
         categoryComboA.getCategories().add( categoryB );
         categoryComboB.getCategories().add( categoryA );
         
-        categoryComboService.addDataElementCategoryCombo( categoryComboA );
-        categoryComboService.addDataElementCategoryCombo( categoryComboB );
+        categoryService.addDataElementCategoryCombo( categoryComboA );
+        categoryService.addDataElementCategoryCombo( categoryComboB );
         
         categoryComboADuplicate = new DataElementCategoryCombo( "CategoryComboA" );
         categoryComboBDuplicate = new DataElementCategoryCombo( "CategoryComboB" );
@@ -392,10 +383,10 @@ public class ImportObjectServiceImportAllTest
         categoryOptionComboC.getCategoryOptions().add( categoryOptionA );
         categoryOptionComboD.getCategoryOptions().add( categoryOptionB );
         
-        categoryOptionComboService.addDataElementCategoryOptionCombo( categoryOptionComboA );
-        categoryOptionComboService.addDataElementCategoryOptionCombo( categoryOptionComboB );
-        categoryOptionComboService.addDataElementCategoryOptionCombo( categoryOptionComboC );
-        categoryOptionComboService.addDataElementCategoryOptionCombo( categoryOptionComboD );
+        categoryService.addDataElementCategoryOptionCombo( categoryOptionComboA );
+        categoryService.addDataElementCategoryOptionCombo( categoryOptionComboB );
+        categoryService.addDataElementCategoryOptionCombo( categoryOptionComboC );
+        categoryService.addDataElementCategoryOptionCombo( categoryOptionComboD );
         
         categoryOptionComboADuplicate = new DataElementCategoryOptionCombo();
         categoryOptionComboBDuplicate = new DataElementCategoryOptionCombo();

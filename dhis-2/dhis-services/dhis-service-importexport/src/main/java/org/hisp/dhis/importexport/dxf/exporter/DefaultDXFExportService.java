@@ -40,9 +40,6 @@ import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartStore;
@@ -129,27 +126,6 @@ public class DefaultDXFExportService
         this.categoryService = categoryService;
     }
     
-    private DataElementCategoryOptionService categoryOptionService;
-
-    public void setCategoryOptionService( DataElementCategoryOptionService categoryOptionService )
-    {
-        this.categoryOptionService = categoryOptionService;
-    }
-
-    private DataElementCategoryComboService categoryComboService;
-
-    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
-    {
-        this.categoryComboService = categoryComboService;
-    }
-
-    private DataElementCategoryOptionComboService categoryOptionComboService;
-
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
-    {
-        this.categoryOptionComboService = categoryOptionComboService;
-    }
-
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -275,13 +251,13 @@ public class DefaultDXFExportService
             thread.setWriter( writer );
             thread.setRootName( ROOT_NAME );
             
-            thread.registerXMLConverter( new DataElementCategoryOptionConverter( categoryOptionService ) );
+            thread.registerXMLConverter( new DataElementCategoryOptionConverter( categoryService ) );
             thread.registerXMLConverter( new DataElementCategoryConverter( categoryService ) );
-            thread.registerXMLConverter( new DataElementCategoryComboConverter( categoryComboService ) );
-            thread.registerXMLConverter( new DataElementCategoryOptionComboConverter( categoryOptionComboService ) );
+            thread.registerXMLConverter( new DataElementCategoryComboConverter( categoryService ) );
+            thread.registerXMLConverter( new DataElementCategoryOptionComboConverter( categoryService ) );
             
-            thread.registerXMLConverter( new CategoryCategoryOptionAssociationConverter( categoryService, categoryOptionService ) );
-            thread.registerXMLConverter( new CategoryComboCategoryAssociationConverter( categoryComboService, categoryService ) );
+            thread.registerXMLConverter( new CategoryCategoryOptionAssociationConverter( categoryService ) );
+            thread.registerXMLConverter( new CategoryComboCategoryAssociationConverter( categoryService ) );
             
             thread.registerXMLConverter( params.isExtendedMode() ? 
                 new ExtendedDataElementConverter( dataElementService ) : new DataElementConverter( dataElementService ) );            
