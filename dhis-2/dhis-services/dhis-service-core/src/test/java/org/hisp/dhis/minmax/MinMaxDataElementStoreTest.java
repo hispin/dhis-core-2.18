@@ -37,7 +37,7 @@ import java.util.HashSet;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.mock.MockSource;
 import org.hisp.dhis.source.Source;
@@ -55,8 +55,6 @@ public class MinMaxDataElementStoreTest
 
     private DataElementService dataElementService;
     
-    private DataElementCategoryOptionComboService categoryOptionComboService;
-
     private MinMaxDataElementStore minMaxDataElementStore;
 
     @Override
@@ -67,7 +65,7 @@ public class MinMaxDataElementStoreTest
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
 
         minMaxDataElementStore = (MinMaxDataElementStore) getBean( MinMaxDataElementStore.ID );
     }
@@ -113,10 +111,10 @@ public class MinMaxDataElementStoreTest
         
         
         DataElementCategoryOptionCombo optionCombo1 = new DataElementCategoryOptionCombo();        
-        categoryOptionComboService.addDataElementCategoryOptionCombo( optionCombo1 );
+        categoryService.addDataElementCategoryOptionCombo( optionCombo1 );
         
         DataElementCategoryOptionCombo optionCombo2 = new DataElementCategoryOptionCombo();        
-        categoryOptionComboService.addDataElementCategoryOptionCombo( optionCombo2 );
+        categoryService.addDataElementCategoryOptionCombo( optionCombo2 );
 
         MinMaxDataElement minMaxDataElement1 = new MinMaxDataElement( source1, dataElement1, optionCombo1, 0, 100, false );
         MinMaxDataElement minMaxDataElement2 = new MinMaxDataElement( source2, dataElement2, optionCombo1, 0, 100, false );

@@ -33,7 +33,7 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportParams;
@@ -61,10 +61,10 @@ public class DimensionComboConverter
      * Constructor for read operations.
      */
     public DimensionComboConverter( List<DataElementCategory> categories,
-        DataElementCategoryComboService categoryComboService )
+        DataElementCategoryService categoryService )
     {
         this.categories = categories;
-        this.categoryComboService = categoryComboService;
+        this.categoryService = categoryService;
     }
     
     // -------------------------------------------------------------------------

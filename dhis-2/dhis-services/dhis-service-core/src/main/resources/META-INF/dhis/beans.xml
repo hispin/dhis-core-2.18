@@ -206,8 +206,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>
 
   <bean id="org.hisp.dhis.validation.ValidationRuleService"
@@ -225,39 +225,19 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryService"
     class="org.hisp.dhis.dataelement.DefaultDataElementCategoryService">
     <property name="dataElementCategoryStore"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryStore"/>     
+      ref="org.hisp.dhis.dataelement.DataElementCategoryStore"/>
+    <property name="dataElementCategoryOptionStore"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionStore"/>
+    <property name="dataElementCategoryComboStore"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryComboStore"/>
+    <property name="dataElementCategoryOptionComboStore"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboStore"/>  
+    <property name="dataElementService"
+      ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="i18nService"
       ref="org.hisp.dhis.i18n.I18nService"/>  
   </bean>
-  
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryComboService"
-    class="org.hisp.dhis.dataelement.DefaultDataElementCategoryComboService">
-    <property name="dataElementCategoryComboStore"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboStore"/>    
-  </bean>  
-  
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionService"
-    class="org.hisp.dhis.dataelement.DefaultDataElementCategoryOptionService">
-    <property name="dataElementCategoryOptionStore"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionStore"/>
-    <property name="i18nService"
-      ref="org.hisp.dhis.i18n.I18nService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"
-    class="org.hisp.dhis.dataelement.DefaultDataElementCategoryOptionComboService">
-    <property name="dataElementCategoryOptionComboStore"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboStore"/>
-    <property name="dataElementCategoryComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    <property name="dataElementCategoryService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-    <property name="dataElementCategoryOptionService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>    
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>
-  </bean> 
-  
+    
   <!-- Startup routine definitions -->
 	
   <bean id="org.hisp.dhis.period.PeriodTypePopulator"
@@ -271,10 +251,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator">
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="categoryComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    <property name="optionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="runlevel" value="2"/>
   </bean>
 	  
@@ -289,9 +267,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="expressionService"
       ref="org.hisp.dhis.expression.ExpressionService"/>
     <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>	  
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>  
+      ref="org.hisp.dhis.indicator.IndicatorService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/> 
     <property name="runlevel" value="2"/>
     <property name="skipInTests" value="true"/>
   </bean>
@@ -305,15 +283,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="org.hisp.dhis.dataelement.CategoryOptionShortNamePopulator"
     class="org.hisp.dhis.dataelement.CategoryOptionShortNamePopulator">
-    <property name="categoryOptionService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="skipInTests" value="true"/>
   </bean>
   
   <bean id="org.hisp.dhis.dataelement.UuidPopulator"
     class="org.hisp.dhis.dataelement.UuidPopulator">
-    <property name="categoryOptionService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
     <property name="categoryService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="dataElementService"
@@ -362,8 +338,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler"
     class="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler">
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>
   
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler"
@@ -374,8 +350,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler"
     class="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler">
-    <property name="categoryComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>
   
   <bean id="org.hisp.dhis.dataset.DataSetDeletionHandler"
@@ -501,8 +477,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       <aop:before pointcut="execution( * org.hisp.dhis.datadictionary.DataDictionaryService.delete*(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.dataelement.DataElementService.delete*(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.dataelement.DataElementCategoryService.delete*(..) )" method="intercept"/>
-      <aop:before pointcut="execution( * org.hisp.dhis.dataelement.DataElementCategoryComboService.delete*(..) )" method="intercept"/>
-      <aop:before pointcut="execution( * org.hisp.dhis.dataelement.DataElementCategoryOptionService.delete*(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.dataset.DataSetService.delete*(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.indicator.IndicatorService.delete*(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.expression.ExpressionService.delete*(..) )" method="intercept"/>

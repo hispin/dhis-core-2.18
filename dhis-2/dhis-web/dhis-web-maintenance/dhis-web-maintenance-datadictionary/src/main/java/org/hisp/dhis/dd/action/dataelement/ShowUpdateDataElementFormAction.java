@@ -37,9 +37,8 @@ import java.util.Map;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
@@ -65,20 +64,13 @@ public class ShowUpdateDataElementFormAction
     {
         this.dataElementService = dataElementService;
     }
-    
-    private DataElementCategoryComboService dataElementCategoryComboService;    
 
-    public void setDataElementCategoryComboService( DataElementCategoryComboService dataElementCategoryComboService )
+    private DataElementCategoryService dataElementCategoryService;
+
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-    	this.dataElementCategoryComboService = dataElementCategoryComboService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
-    
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;    
-
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
-    {
-    	this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
-    }   
 
     private OrganisationUnitService organisationUnitService;
 
@@ -167,7 +159,7 @@ public class ShowUpdateDataElementFormAction
 
     public String execute()
     {    	
-    	dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryComboService.getAllDataElementCategoryCombos() );
+    	dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getAllDataElementCategoryCombos() );
     	
         dataElement = dataElementService.getDataElement( id );       
 
@@ -196,7 +188,7 @@ public class ShowUpdateDataElementFormAction
                 String optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId.length() );
     			
     		DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
-    		DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( Integer.parseInt( optionComboIdString ) );    			    			
+    		DataElementCategoryOptionCombo optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( optionComboIdString ) );    			    			
     			
         	Operand operand = new Operand( dataElement.getId(), optionCombo.getId(), dataElement.getName() + optionCombo.getName() );
         		

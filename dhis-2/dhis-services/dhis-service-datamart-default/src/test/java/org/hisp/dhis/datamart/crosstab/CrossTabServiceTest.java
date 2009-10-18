@@ -41,11 +41,8 @@ import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
@@ -89,12 +86,6 @@ public class CrossTabServiceTest
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
-        
-        categoryOptionService = (DataElementCategoryOptionService) getBean( DataElementCategoryOptionService.ID );
-        
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
-        
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
         periodService = (PeriodService) getBean( PeriodService.ID );
@@ -127,8 +118,8 @@ public class CrossTabServiceTest
         DataElementCategoryOption categoryOptionA = new DataElementCategoryOption( "Male" );
         DataElementCategoryOption categoryOptionB = new DataElementCategoryOption( "Female" );
         
-        categoryOptionService.addDataElementCategoryOption( categoryOptionA );
-        categoryOptionService.addDataElementCategoryOption( categoryOptionB );
+        categoryService.addDataElementCategoryOption( categoryOptionA );
+        categoryService.addDataElementCategoryOption( categoryOptionB );
         
         DataElementCategory categoryA = new DataElementCategory( "Gender" );
         categoryA.getCategoryOptions().add( categoryOptionA );
@@ -139,11 +130,11 @@ public class CrossTabServiceTest
         DataElementCategoryCombo categoryComboA = new DataElementCategoryCombo( "Gender" );
         categoryComboA.getCategories().add( categoryA );        
         
-        categoryComboService.addDataElementCategoryCombo( categoryComboA );
+        categoryService.addDataElementCategoryCombo( categoryComboA );
         
-        categoryOptionComboService.generateOptionCombos( categoryComboA );
+        categoryService.generateOptionCombos( categoryComboA );
         
-        Collection<DataElementCategoryOptionCombo> categoryOptionCombos = categoryOptionComboService.getAllDataElementCategoryOptionCombos();
+        Collection<DataElementCategoryOptionCombo> categoryOptionCombos = categoryService.getAllDataElementCategoryOptionCombos();
                 
         Character[] characters = { 'A', 'B', 'C', 'D', 'E' };
         
@@ -169,7 +160,7 @@ public class CrossTabServiceTest
             organisationUnitIds.add( organisationUnitService.addOrganisationUnit( organisationUnit ) );
         }
         
-        operands = categoryOptionComboService.getOperands( dataElements );
+        operands = categoryService.getOperands( dataElements );
         
         for ( DataElement dataElement : dataElements )
         {

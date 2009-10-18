@@ -34,8 +34,8 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -77,14 +77,14 @@ public class SaveTableAction
     {
         this.dataElementService = dataElementService;
     }
-    
-    private DataElementCategoryComboService categoryComboService;
 
-    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.categoryComboService = categoryComboService;
-    }    
-    
+        this.categoryService = categoryService;
+    }
+
     private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
@@ -364,7 +364,7 @@ public class SaveTableAction
             organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) );
 
         DataElementCategoryCombo categoryCombo = ( categoryComboId != null ) ? 
-            categoryComboService.getDataElementCategoryCombo( categoryComboId ) : null;
+            categoryService.getDataElementCategoryCombo( categoryComboId ) : null;
         
         List<DataElementCategoryOptionCombo> categoryOptionCombos = ( categoryCombo != null ) ? 
             new ArrayList<DataElementCategoryOptionCombo>( categoryCombo.getOptionCombos() ) : new ArrayList<DataElementCategoryOptionCombo>();

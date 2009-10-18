@@ -28,7 +28,7 @@ package org.hisp.dhis.dd.action.categoryoption;
  */
 
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
@@ -44,11 +44,11 @@ public class ValidateDataElementCategoryOptionAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementCategoryOptionService dataElementCategoryOptionService;
+    private DataElementCategoryService dataElementCategoryService;
 
-    public void setDataElementCategoryOptionService( DataElementCategoryOptionService dataElementCategoryOptionService )
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-        this.dataElementCategoryOptionService = dataElementCategoryOptionService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     private I18n i18n;
@@ -110,7 +110,7 @@ public class ValidateDataElementCategoryOptionAction
                 return INPUT;
             }
 
-            DataElementCategoryOption match = dataElementCategoryOptionService
+            DataElementCategoryOption match = dataElementCategoryService
                 .getDataElementCategoryOptionByName( name );
 
             if ( match != null && (id == null || match.getId() != id) )

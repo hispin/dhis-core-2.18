@@ -35,9 +35,8 @@ import java.util.HashSet;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -76,10 +75,8 @@ public class DataMartServiceTimeDimensionTest
         
         dataMartStore = (DataMartStore) getBean( DataMartStore.ID );
 
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
-
         dataElementService = (DataElementService) getBean( DataElementService.ID );
 
         periodService = (PeriodService) getBean( PeriodService.ID );
@@ -88,9 +85,9 @@ public class DataMartServiceTimeDimensionTest
 
         dataValueService = (DataValueService) getBean( DataValueService.ID );
 
-        categoryCombo = categoryComboService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
         
-        categoryOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();        
+        categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();        
 
         dataElementIds = new HashSet<Integer>();
         indicatorIds = new HashSet<Integer>();

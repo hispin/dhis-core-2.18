@@ -49,7 +49,7 @@ import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
@@ -97,11 +97,11 @@ public class DefaultDataEntryScreenManager
         this.dataElementService = dataElementService;
     }
 
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
-
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    private DataElementCategoryService categoryService;
+    
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.categoryService = categoryService;
     }
 
     private SectionService sectionService;
@@ -242,7 +242,7 @@ public class DefaultDataEntryScreenManager
                 String optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId.length() );
 
                 DataElement element = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
+                DataElementCategoryOptionCombo optionCombo = categoryService
                     .getDataElementCategoryOptionCombo( Integer.parseInt( optionComboIdString ) );
 
                 dataValue = dataValueService.getDataValue( organisationUnit, element, period, optionCombo );

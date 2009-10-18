@@ -34,7 +34,6 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 import com.opensymphony.xwork2.Action;
@@ -55,13 +54,6 @@ public class AddDataElementCategoryAction
     public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
         this.dataElementCategoryService = dataElementCategoryService;
-    }
-
-    private DataElementCategoryOptionService dataElementCategoryOptionService;
-
-    public void setDataElementCategoryOptionService( DataElementCategoryOptionService dataElementCategoryOptionService )
-    {
-        this.dataElementCategoryOptionService = dataElementCategoryOptionService;
     }
     
     // -------------------------------------------------------------------------
@@ -95,7 +87,7 @@ public class AddDataElementCategoryAction
 
         for ( String id : selectedList )
         {
-            DataElementCategoryOption dataElementCategoryOption = dataElementCategoryOptionService
+            DataElementCategoryOption dataElementCategoryOption = dataElementCategoryService
                 .getDataElementCategoryOption( Integer.parseInt( id ) );
 
             categoryOptions.add( dataElementCategoryOption );

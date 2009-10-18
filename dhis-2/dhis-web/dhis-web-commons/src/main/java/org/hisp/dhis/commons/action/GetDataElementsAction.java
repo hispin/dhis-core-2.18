@@ -35,7 +35,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
@@ -65,13 +65,13 @@ public class GetDataElementsAction
         this.dataElementService = dataElementService;
     }    
 
-    private DataElementCategoryComboService categoryComboService;
-
-    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
-    {
-        this.categoryComboService = categoryComboService;
-    }
+    private DataElementCategoryService categoryService;
     
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -161,7 +161,7 @@ public class GetDataElementsAction
         }
         else if ( categoryComboId != null && categoryComboId != ALL )
         {
-            DataElementCategoryCombo categoryCombo = categoryComboService.getDataElementCategoryCombo( categoryComboId );
+            DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboId );
             
             if ( categoryCombo != null )
             {

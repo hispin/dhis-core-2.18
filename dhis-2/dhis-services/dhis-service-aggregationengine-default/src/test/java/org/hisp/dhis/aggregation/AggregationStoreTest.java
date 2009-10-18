@@ -38,7 +38,7 @@ import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -58,16 +58,8 @@ public class AggregationStoreTest
 {
     private AggregationStore aggregationStore;
 
-    private DataElementService dataElementService;
-    
-    private DataElementCategoryOptionComboService categoryOptionComboService;
-
-    private PeriodService periodService;
-
     private SourceStore sourceStore;
 
-    private DataValueService dataValueService;    
-    
     private DataElementCategoryOptionCombo optionCombo;
     
     private StatementManager statementManager;
@@ -79,9 +71,9 @@ public class AggregationStoreTest
         aggregationStore = (AggregationStore) getBean( AggregationStore.ID );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
 
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
+        
         periodService = (PeriodService) getBean( PeriodService.ID );
 
         sourceStore = (SourceStore) getBean( SourceStore.ID );
@@ -90,7 +82,7 @@ public class AggregationStoreTest
 
         optionCombo = new DataElementCategoryOptionCombo();
         
-        categoryOptionComboService.addDataElementCategoryOptionCombo( optionCombo );
+        categoryService.addDataElementCategoryOptionCombo( optionCombo );
         
         statementManager = (StatementManager) getBean( "statementManager" );
     }

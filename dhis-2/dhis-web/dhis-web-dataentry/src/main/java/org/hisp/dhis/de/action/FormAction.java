@@ -40,7 +40,7 @@ import org.hisp.dhis.customvalue.CustomValueService;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataEntryForm;
@@ -155,11 +155,11 @@ public class FormAction
         this.dataSetLockService = dataSetLockService;
     }
 
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
-
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    private DataElementCategoryService categoryService;
+    
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.categoryService = categoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -324,7 +324,7 @@ public class FormAction
             return SUCCESS;
         }
 
-        DataElementCategoryOptionCombo defaultOptionCombo = dataElementCategoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
+        DataElementCategoryOptionCombo defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
         optionComboId = defaultOptionCombo.getId();
 

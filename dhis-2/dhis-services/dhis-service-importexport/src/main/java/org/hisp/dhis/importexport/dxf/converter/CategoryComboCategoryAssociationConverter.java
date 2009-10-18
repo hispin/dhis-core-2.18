@@ -35,7 +35,6 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.AssociationType;
 import org.hisp.dhis.importexport.ExportParams;
@@ -64,8 +63,6 @@ public class CategoryComboCategoryAssociationConverter
     // Properties
     // -------------------------------------------------------------------------
 
-    private DataElementCategoryComboService categoryComboService;
-    
     private DataElementCategoryService categoryService;
     
     private Map<Object, Integer> categoryComboMapping;
@@ -79,10 +76,8 @@ public class CategoryComboCategoryAssociationConverter
     /**
      * Constructor for write operations.
      */
-    public CategoryComboCategoryAssociationConverter( DataElementCategoryComboService categoryComboService,
-        DataElementCategoryService categoryService )
+    public CategoryComboCategoryAssociationConverter( DataElementCategoryService categoryService )
     {
-        this.categoryComboService = categoryComboService;
         this.categoryService = categoryService;
     }
 
@@ -111,7 +106,7 @@ public class CategoryComboCategoryAssociationConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElementCategoryCombo> categoryCombos = categoryComboService.getDataElementCategoryCombos( params.getCategoryCombos() );
+        Collection<DataElementCategoryCombo> categoryCombos = categoryService.getDataElementCategoryCombos( params.getCategoryCombos() );
         
         Collection<DataElementCategory> categories = categoryService.getDataElementCategories( params.getCategories() );
         

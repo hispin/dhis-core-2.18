@@ -36,9 +36,8 @@ import java.util.Set;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
@@ -111,9 +110,7 @@ public abstract class DataBrowserTest
     public void setUpDataBrowserTest()
         throws Exception
     {
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
-
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
 
         dataSetService = (DataSetService) getBean( DataSetService.ID );
 
@@ -129,10 +126,9 @@ public abstract class DataBrowserTest
 
         organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
 
-        categoryCombo = categoryComboService
-            .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
-        categoryOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
+        categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
         // ---------------------------------------------------------------------
         // Setup identifier Collections

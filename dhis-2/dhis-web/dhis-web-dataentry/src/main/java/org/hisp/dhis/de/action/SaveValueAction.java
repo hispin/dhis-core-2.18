@@ -33,7 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -86,11 +86,11 @@ public class SaveValueAction
         this.selectedStateManager = selectedStateManager;
     }    
 
-    private DataElementCategoryOptionComboService categoryOptionComboService;
-
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
+    private DataElementCategoryService categoryService;
+    
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.categoryOptionComboService = categoryOptionComboService;
+        this.categoryService = categoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -170,7 +170,7 @@ public class SaveValueAction
         // Save or update
         // ---------------------------------------------------------------------
         
-        DataElementCategoryOptionCombo defaultOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
+        DataElementCategoryOptionCombo defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
         DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, defaultOptionCombo );
 

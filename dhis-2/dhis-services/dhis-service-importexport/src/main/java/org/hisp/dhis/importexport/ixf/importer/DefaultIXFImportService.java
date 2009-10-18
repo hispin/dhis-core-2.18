@@ -39,9 +39,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValue;
@@ -94,20 +93,13 @@ public class DefaultIXFImportService
         this.dataElementService = dataElementService;
     }
     
-    private DataElementCategoryComboService categoryComboService;
-
-    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
-    {
-        this.categoryComboService = categoryComboService;
-    }
+    private DataElementCategoryService categoryService;
     
-    private DataElementCategoryOptionComboService categoryOptionComboService;
-
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.categoryOptionComboService = categoryOptionComboService;
+        this.categoryService = categoryService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -229,10 +221,10 @@ public class DefaultIXFImportService
                 BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );                
                 BatchHandler<DataValue> dataValueBatchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
                 
-                DataElementCategoryCombo categoryCombo = categoryComboService.
+                DataElementCategoryCombo categoryCombo = categoryService.
                     getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
                 
-                DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboService.
+                DataElementCategoryOptionCombo categoryOptionCombo = categoryService.
                     getDefaultDataElementCategoryOptionCombo();
                 
                 batchHandler.init();

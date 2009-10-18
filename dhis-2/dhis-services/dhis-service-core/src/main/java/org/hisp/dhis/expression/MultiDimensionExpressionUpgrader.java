@@ -34,11 +34,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.system.startup.AbstractStartupRoutine;
-import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -66,13 +65,13 @@ public class MultiDimensionExpressionUpgrader
         this.indicatorService = indicatorService;
     }
 
-    private DataElementCategoryOptionComboService categoryOptionComboService;
+    private DataElementCategoryService categoryService;
 
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.categoryOptionComboService = categoryOptionComboService;
+        this.categoryService = categoryService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
@@ -81,7 +80,7 @@ public class MultiDimensionExpressionUpgrader
     public void execute()
         throws Exception
     {
-        DataElementCategoryOptionCombo defaultOptionCombo = categoryOptionComboService
+        DataElementCategoryOptionCombo defaultOptionCombo = categoryService
             .getDefaultDataElementCategoryOptionCombo();
 
         int defaultId = defaultOptionCombo.getId();

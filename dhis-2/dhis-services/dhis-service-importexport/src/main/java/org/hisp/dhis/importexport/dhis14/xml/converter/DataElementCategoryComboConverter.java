@@ -32,7 +32,7 @@ import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGOR
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -54,10 +54,10 @@ public class DataElementCategoryComboConverter
      * @param categoryComboService the dataElementCategoryComboService to use.
      */
     public DataElementCategoryComboConverter( ImportObjectService importObjectService,
-        DataElementCategoryComboService categoryComboService )
+        DataElementCategoryService categoryService )
     {
         this.importObjectService = importObjectService;
-        this.categoryComboService = categoryComboService;
+        this.categoryService = categoryService;
     }
     
     // -------------------------------------------------------------------------

@@ -44,7 +44,7 @@ import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -93,13 +93,13 @@ public class DefaultExpressionService
         this.dataValueService = dataValueService;
     }
 
-    private DataElementCategoryOptionComboService categoryOptionComboService;
+    private DataElementCategoryService categoryService;
 
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.categoryOptionComboService = dataElementCategoryOptionComboService;
+        this.categoryService = categoryService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Expression CRUD operations
     // -------------------------------------------------------------------------
@@ -279,7 +279,7 @@ public class DefaultExpressionService
                 return DATAELEMENT_DOES_NOT_EXIST;
             }
 
-            if ( categoryOptionComboService.getDataElementCategoryOptionCombo( categoryOptionComboId ) == null )
+            if ( categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId ) == null )
             {
                 return CATEGORYOPTIONCOMBO_DOES_NOT_EXIST;
             }
@@ -320,7 +320,7 @@ public class DefaultExpressionService
                 
                 final DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
                 final DataElementCategoryOptionCombo categoryOptionCombo = 
-                    categoryOptionComboService.getDataElementCategoryOptionCombo( operand.getOptionComboId() );
+                    categoryService.getDataElementCategoryOptionCombo( operand.getOptionComboId() );
 
                 if ( dataElement == null )
                 {
@@ -413,7 +413,7 @@ public class DefaultExpressionService
                 
                 final DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
                 final DataElementCategoryOptionCombo categoryOptionCombo = 
-                    categoryOptionComboService.getDataElementCategoryOptionCombo( operand.getOptionComboId() );
+                    categoryService.getDataElementCategoryOptionCombo( operand.getOptionComboId() );
 
                 final String value = dataValueService.getValue( dataElement, period, source, categoryOptionCombo );
                 

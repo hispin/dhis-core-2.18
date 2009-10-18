@@ -40,7 +40,7 @@ import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.junit.Test;
 
@@ -77,10 +77,10 @@ public class DataElementBatchHandlerTest
         batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
         batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
+
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
-        
-        categoryCombo = categoryComboService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
         
         batchHandler.init();
         

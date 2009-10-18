@@ -60,8 +60,6 @@ public class DataElementCategoryComboServiceTest
     @Override
     public void setUpTest()
     {
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
-        
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         categories = new ArrayList<DataElementCategory>();
@@ -90,17 +88,17 @@ public class DataElementCategoryComboServiceTest
         categoryComboB = new DataElementCategoryCombo( "CategoryComboB", categories );
         categoryComboC = new DataElementCategoryCombo( "CategoryComboC", categories );
         
-        int idA = categoryComboService.addDataElementCategoryCombo( categoryComboA );
-        int idB = categoryComboService.addDataElementCategoryCombo( categoryComboB );
-        int idC = categoryComboService.addDataElementCategoryCombo( categoryComboC );
+        int idA = categoryService.addDataElementCategoryCombo( categoryComboA );
+        int idB = categoryService.addDataElementCategoryCombo( categoryComboB );
+        int idC = categoryService.addDataElementCategoryCombo( categoryComboC );
         
-        assertEquals( categoryComboA, categoryComboService.getDataElementCategoryCombo( idA ) );
-        assertEquals( categoryComboB, categoryComboService.getDataElementCategoryCombo( idB ) );
-        assertEquals( categoryComboC, categoryComboService.getDataElementCategoryCombo( idC ) );
+        assertEquals( categoryComboA, categoryService.getDataElementCategoryCombo( idA ) );
+        assertEquals( categoryComboB, categoryService.getDataElementCategoryCombo( idB ) );
+        assertEquals( categoryComboC, categoryService.getDataElementCategoryCombo( idC ) );
         
-        assertEquals( categories, categoryComboService.getDataElementCategoryCombo( idA ).getCategories() );
-        assertEquals( categories, categoryComboService.getDataElementCategoryCombo( idB ).getCategories() );
-        assertEquals( categories, categoryComboService.getDataElementCategoryCombo( idC ).getCategories() );        
+        assertEquals( categories, categoryService.getDataElementCategoryCombo( idA ).getCategories() );
+        assertEquals( categories, categoryService.getDataElementCategoryCombo( idB ).getCategories() );
+        assertEquals( categories, categoryService.getDataElementCategoryCombo( idC ).getCategories() );        
     }
 
     @Test
@@ -110,25 +108,25 @@ public class DataElementCategoryComboServiceTest
         categoryComboB = new DataElementCategoryCombo( "CategoryComboB", categories );
         categoryComboC = new DataElementCategoryCombo( "CategoryComboC", categories );
         
-        int idA = categoryComboService.addDataElementCategoryCombo( categoryComboA );
-        int idB = categoryComboService.addDataElementCategoryCombo( categoryComboB );
-        int idC = categoryComboService.addDataElementCategoryCombo( categoryComboC );
+        int idA = categoryService.addDataElementCategoryCombo( categoryComboA );
+        int idB = categoryService.addDataElementCategoryCombo( categoryComboB );
+        int idC = categoryService.addDataElementCategoryCombo( categoryComboC );
         
-        assertNotNull( categoryComboService.getDataElementCategoryCombo( idA ) );
-        assertNotNull( categoryComboService.getDataElementCategoryCombo( idB ) );
-        assertNotNull( categoryComboService.getDataElementCategoryCombo( idC ) );
+        assertNotNull( categoryService.getDataElementCategoryCombo( idA ) );
+        assertNotNull( categoryService.getDataElementCategoryCombo( idB ) );
+        assertNotNull( categoryService.getDataElementCategoryCombo( idC ) );
         
-        categoryComboService.deleteDataElementCategoryCombo( categoryComboA );
+        categoryService.deleteDataElementCategoryCombo( categoryComboA );
 
-        assertNull( categoryComboService.getDataElementCategoryCombo( idA ) );
-        assertNotNull( categoryComboService.getDataElementCategoryCombo( idB ) );
-        assertNotNull( categoryComboService.getDataElementCategoryCombo( idC ) );
+        assertNull( categoryService.getDataElementCategoryCombo( idA ) );
+        assertNotNull( categoryService.getDataElementCategoryCombo( idB ) );
+        assertNotNull( categoryService.getDataElementCategoryCombo( idC ) );
         
-        categoryComboService.deleteDataElementCategoryCombo( categoryComboB );
+        categoryService.deleteDataElementCategoryCombo( categoryComboB );
 
-        assertNull( categoryComboService.getDataElementCategoryCombo( idA ) );
-        assertNull( categoryComboService.getDataElementCategoryCombo( idB ) );
-        assertNotNull( categoryComboService.getDataElementCategoryCombo( idC ) );        
+        assertNull( categoryService.getDataElementCategoryCombo( idA ) );
+        assertNull( categoryService.getDataElementCategoryCombo( idB ) );
+        assertNotNull( categoryService.getDataElementCategoryCombo( idC ) );        
     }
 
     @Test
@@ -138,11 +136,11 @@ public class DataElementCategoryComboServiceTest
         categoryComboB = new DataElementCategoryCombo( "CategoryComboB", categories );
         categoryComboC = new DataElementCategoryCombo( "CategoryComboC", categories );
         
-        categoryComboService.addDataElementCategoryCombo( categoryComboA );
-        categoryComboService.addDataElementCategoryCombo( categoryComboB );
-        categoryComboService.addDataElementCategoryCombo( categoryComboC );
+        categoryService.addDataElementCategoryCombo( categoryComboA );
+        categoryService.addDataElementCategoryCombo( categoryComboB );
+        categoryService.addDataElementCategoryCombo( categoryComboC );
         
-        Collection<DataElementCategoryCombo> categoryCombos = categoryComboService.getAllDataElementCategoryCombos();
+        Collection<DataElementCategoryCombo> categoryCombos = categoryService.getAllDataElementCategoryCombos();
         
         assertEquals( 4, categoryCombos.size() ); // Including default
         assertTrue( categoryCombos.contains( categoryComboA ) );

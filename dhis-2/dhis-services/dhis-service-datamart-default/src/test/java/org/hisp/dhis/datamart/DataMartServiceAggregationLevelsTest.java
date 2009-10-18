@@ -38,9 +38,8 @@ import java.util.HashSet;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -97,10 +96,8 @@ public class DataMartServiceAggregationLevelsTest
         dataMartService = (DataMartService) getBean( DataMartService.ID );
 
         dataMartStore = (DataMartStore) getBean( DataMartStore.ID );
-        
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
-        
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
+
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
@@ -110,9 +107,9 @@ public class DataMartServiceAggregationLevelsTest
 
         dataValueService = (DataValueService) getBean( DataValueService.ID );
 
-        categoryCombo = categoryComboService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
         
-        categoryOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
+        categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
         // ---------------------------------------------------------------------
         // Setup identifier Collections

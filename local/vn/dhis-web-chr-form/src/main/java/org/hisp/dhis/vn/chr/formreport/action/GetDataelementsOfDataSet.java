@@ -33,7 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
@@ -60,12 +60,11 @@ public class GetDataelementsOfDataSet
         this.dataSetService = dataSetService;
     }
 
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    private DataElementCategoryService categoryService;
 
-    public void setDataElementCategoryOptionComboService(
-        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.categoryService = categoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -135,7 +134,7 @@ public class GetDataelementsOfDataSet
         // Create Operands
         // ---------------------------------------------------------------------
 
-        operands = new ArrayList<Operand>( dataElementCategoryOptionComboService.getOperands( dataelements ) );
+        operands = new ArrayList<Operand>( categoryService.getOperands( dataelements ) );
 
         return SUCCESS;
     }

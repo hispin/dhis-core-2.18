@@ -35,7 +35,7 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
@@ -64,12 +64,11 @@ public class GetFilteredDataElementsAction
         this.dataElementService = dataElementService;
     }
 
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    private DataElementCategoryService dataElementCategoryService;
 
-    public void setDataElementCategoryOptionComboService(
-        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -177,7 +176,7 @@ public class GetFilteredDataElementsAction
         // Create Operands
         // ---------------------------------------------------------------------
 
-        operands = new ArrayList<Operand>( dataElementCategoryOptionComboService.getOperands( dataElements ) );
+        operands = new ArrayList<Operand>( dataElementCategoryService.getOperands( dataElements ) );
         
         // ---------------------------------------------------------------------
         // String filter

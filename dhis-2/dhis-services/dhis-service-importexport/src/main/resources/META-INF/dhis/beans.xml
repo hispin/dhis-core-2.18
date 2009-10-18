@@ -95,12 +95,8 @@
       ref="org.hisp.dhis.importexport.mapping.ObjectMappingGenerator"/>
     <property name="importObjectStore"
       ref="org.hisp.dhis.importexport.ImportObjectStore"/>
-    <property name="categoryOptionService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    <property name="categoryComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="dataElementService" 
       ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="organisationUnitService" 
@@ -175,12 +171,8 @@
   
   <bean id="org.hisp.dhis.importexport.Dhis14XMLImportService"
     class="org.hisp.dhis.importexport.dhis14.xml.importer.DefaultDhis14XMLImportService">
-    <property name="categoryOptionService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    <property name="categoryComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="indicatorService"
@@ -230,10 +222,8 @@
       ref="org.hisp.dhis.expression.ExpressionService"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="categoryComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/>
     <property name="dataSetService"
@@ -300,12 +290,6 @@
       ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="categoryService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-    <property name="categoryOptionService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    <property name="categoryComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
     <property name="indicatorService"
       ref="org.hisp.dhis.indicator.IndicatorService"/>
     <property name="dataDictionaryService"
@@ -363,10 +347,8 @@
       ref="org.hisp.dhis.importexport.ImportObjectService"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="categoryComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="organisationUnitService" 
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="periodService"
@@ -391,12 +373,6 @@
     <property name="sessionFactory" ref="sessionFactory"/>
     <property name="categoryService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-    <property name="categoryOptionService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionService"/>
-    <property name="categoryComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="indicatorService"
@@ -503,8 +479,8 @@
     <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
     <property name="periodStore"
       ref="org.hisp.dhis.period.PeriodStore"/>
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>
   
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

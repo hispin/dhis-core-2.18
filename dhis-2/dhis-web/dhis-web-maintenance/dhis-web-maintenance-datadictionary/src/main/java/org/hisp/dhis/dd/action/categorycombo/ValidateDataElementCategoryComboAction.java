@@ -32,7 +32,6 @@ import java.util.HashSet;
 
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
 
@@ -48,13 +47,6 @@ public class ValidateDataElementCategoryComboAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private DataElementCategoryComboService dataElementCategoryComboService;
-
-    public void setDataElementCategoryComboService( DataElementCategoryComboService dataElementCategoryComboService )
-    {
-        this.dataElementCategoryComboService = dataElementCategoryComboService;
-    }
 
     private DataElementCategoryService dataElementCategoryService;
 
@@ -129,7 +121,7 @@ public class ValidateDataElementCategoryComboAction
                 return INPUT;
             }
 
-            DataElementCategoryCombo match = dataElementCategoryComboService.getDataElementCategoryComboByName( name );
+            DataElementCategoryCombo match = dataElementCategoryService.getDataElementCategoryComboByName( name );
 
             if ( match != null && (dataElementCategoryComboId == null || match.getId() != dataElementCategoryComboId) )
             {

@@ -34,7 +34,6 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 import com.opensymphony.xwork2.Action;
@@ -56,13 +55,6 @@ public class UpdateDataElementCategoryComboAction
     {
         this.dataElementCategoryService = dataElementCategoryService;
     }
-
-    private DataElementCategoryComboService dataElementCategoryComboService;
-
-    public void setDataElementCategoryComboService( DataElementCategoryComboService dataElementCategoryComboService )
-    {
-        this.dataElementCategoryComboService = dataElementCategoryComboService;
-    }    
 
     // -------------------------------------------------------------------------
     // Input
@@ -95,7 +87,7 @@ public class UpdateDataElementCategoryComboAction
 
     public String execute()
     {
-        DataElementCategoryCombo dataElementCategoryCombo = dataElementCategoryComboService
+        DataElementCategoryCombo dataElementCategoryCombo = dataElementCategoryService
             .getDataElementCategoryCombo( dataElementCategoryComboId );
 
         dataElementCategoryCombo.setName( nameField );
@@ -112,7 +104,7 @@ public class UpdateDataElementCategoryComboAction
 
         dataElementCategoryCombo.setCategories( updatedCategories );
 
-        dataElementCategoryComboService.updateDataElementCategoryCombo( dataElementCategoryCombo );       
+        dataElementCategoryService.updateDataElementCategoryCombo( dataElementCategoryCombo );       
         
         return SUCCESS;
     }

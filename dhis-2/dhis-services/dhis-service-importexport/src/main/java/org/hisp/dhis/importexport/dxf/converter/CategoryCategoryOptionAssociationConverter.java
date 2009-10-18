@@ -35,7 +35,6 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.AssociationType;
 import org.hisp.dhis.importexport.ExportParams;
@@ -66,8 +65,6 @@ public class CategoryCategoryOptionAssociationConverter
 
     private DataElementCategoryService categoryService;
     
-    private DataElementCategoryOptionService categoryOptionService;
-    
     private Map<Object, Integer> categoryMapping;
     
     private Map<Object, Integer> categoryOptionMapping;
@@ -79,11 +76,9 @@ public class CategoryCategoryOptionAssociationConverter
     /**
      * Constructor for write operations.
      */
-    public CategoryCategoryOptionAssociationConverter( DataElementCategoryService categoryService,
-        DataElementCategoryOptionService categoryOptionService )
+    public CategoryCategoryOptionAssociationConverter( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
-        this.categoryOptionService = categoryOptionService;
     }
     
     /**
@@ -112,7 +107,7 @@ public class CategoryCategoryOptionAssociationConverter
     public void write( XMLWriter writer, ExportParams params )
     {
         Collection<DataElementCategory> categories = categoryService.getDataElementCategories( params.getCategories() );
-        Collection<DataElementCategoryOption> categoryOptions = categoryOptionService.getDataElementCategoryOptions( params.getCategoryOptions() );
+        Collection<DataElementCategoryOption> categoryOptions = categoryService.getDataElementCategoryOptions( params.getCategoryOptions() );
         
         if ( categories != null && categories.size() > 0 && categoryOptions != null && categoryOptions.size() > 0 )
         {

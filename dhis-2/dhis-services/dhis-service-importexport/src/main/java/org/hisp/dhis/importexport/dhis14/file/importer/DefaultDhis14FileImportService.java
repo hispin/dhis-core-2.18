@@ -43,9 +43,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartStore;
@@ -177,20 +176,13 @@ public class DefaultDhis14FileImportService
         this.dataElementService = dataElementService;
     }
 
-    private DataElementCategoryComboService categoryComboService;
+    private DataElementCategoryService categoryService;
     
-    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.categoryComboService = categoryComboService;
+        this.categoryService = categoryService;
     }
-    
-    private DataElementCategoryOptionComboService categoryOptionComboService;
 
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
-    {
-        this.categoryOptionComboService = categoryOptionComboService;
-    }
-    
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -330,7 +322,7 @@ public class DefaultDhis14FileImportService
         
         BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
         
-        DataElementCategoryCombo categoryCombo = categoryComboService.
+        DataElementCategoryCombo categoryCombo = categoryService.
             getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
         
         RowHandler rowHandler = new DataElementRowHandler( batchHandler,
@@ -353,7 +345,7 @@ public class DefaultDhis14FileImportService
     {
         //setMessage( "importing_data_elements" );
         
-        DataElementCategoryCombo categoryCombo = categoryComboService.
+        DataElementCategoryCombo categoryCombo = categoryService.
             getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
         
         RowHandler rowHandler = new CalculatedDataElementRowHandler( importObjectService,
@@ -404,7 +396,7 @@ public class DefaultDhis14FileImportService
             indicatorService,
             objectMappingGenerator.getIndicatorTypeMapping( params.skipMapping() ), 
             objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
-            categoryOptionComboService.getDefaultDataElementCategoryOptionCombo(),
+            categoryService.getDefaultDataElementCategoryOptionCombo(),
             params,
             importAnalyser );
         
@@ -750,7 +742,7 @@ public class DefaultDhis14FileImportService
     {
         //setMessage( "importing_routine_data_values" );
 
-        DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
         BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
         
@@ -819,7 +811,7 @@ public class DefaultDhis14FileImportService
     {
         //setMessage( "importing_semi_permanent_data_values" );
 
-        DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
         BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
 
@@ -865,7 +857,7 @@ public class DefaultDhis14FileImportService
      */
     private Map<Integer, String> createCalculatedDataElementEntryMap()
     {
-        int categoryOptionComboId = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo().getId();
+        int categoryOptionComboId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
         
         List<?> calculatedDataElements = queryManager.queryForList( "getCalculatedDataElementEntries", null );
         
@@ -915,7 +907,7 @@ public class DefaultDhis14FileImportService
      */
     private Map<Object, Integer> getCategoryOptionComboMapping()
     {
-        Integer categoryOptionComboId = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo().getId();
+        Integer categoryOptionComboId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
         
         Map<Object, Integer> mapping = new HashMap<Object, Integer>();
         

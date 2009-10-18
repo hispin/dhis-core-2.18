@@ -42,7 +42,7 @@ import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
@@ -117,13 +117,13 @@ public class DefaultCalculatedDataElementDataMart
         this.dataElementService = dataElementService;
     }
     
-    private DataElementCategoryOptionComboService categoryOptionComboService;
+    private DataElementCategoryService categoryService;
 
-    public void setCategoryOptionComboService( DataElementCategoryOptionComboService categoryOptionComboService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.categoryOptionComboService = categoryOptionComboService;
+        this.categoryService = categoryService;
     }
-    
+
     private AggregationCache aggregationCache;
 
     public void setAggregationCache( AggregationCache aggregationCache )
@@ -148,7 +148,7 @@ public class DefaultCalculatedDataElementDataMart
         final Collection<Period> periods = periodService.getPeriods( periodIds );
         final Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnits( organisationUnitIds );
         
-        final DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboService.getDefaultDataElementCategoryOptionCombo();
+        final DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
         final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
         

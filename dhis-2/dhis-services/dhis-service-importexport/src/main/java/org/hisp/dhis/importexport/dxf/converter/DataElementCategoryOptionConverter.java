@@ -34,7 +34,7 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -63,9 +63,9 @@ public class DataElementCategoryOptionConverter
     /**
      * Constructor for write operations.
      */
-    public DataElementCategoryOptionConverter( DataElementCategoryOptionService categoryOptionService )
+    public DataElementCategoryOptionConverter( DataElementCategoryService categoryService )
     {
-        this.categoryOptionService = categoryOptionService;
+        this.categoryService = categoryService;
     }
     
     /**
@@ -77,11 +77,11 @@ public class DataElementCategoryOptionConverter
      */
     public DataElementCategoryOptionConverter( BatchHandler<DataElementCategoryOption> batchHandler, 
         ImportObjectService importObjectService,
-        DataElementCategoryOptionService categoryOptionService )
+        DataElementCategoryService categoryService )
     {
         this.batchHandler = batchHandler;
         this.importObjectService = importObjectService;
-        this.categoryOptionService = categoryOptionService;
+        this.categoryService = categoryService;
     }
     
     // -------------------------------------------------------------------------
@@ -90,7 +90,7 @@ public class DataElementCategoryOptionConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElementCategoryOption> categoryOptions = categoryOptionService.getDataElementCategoryOptions( params.getCategoryOptions() );
+        Collection<DataElementCategoryOption> categoryOptions = categoryService.getDataElementCategoryOptions( params.getCategoryOptions() );
         
         if ( categoryOptions != null && categoryOptions.size() > 0 )
         {

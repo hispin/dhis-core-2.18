@@ -28,7 +28,7 @@ package org.hisp.dhis.dd.action.categoryoption;
  */
 
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -43,11 +43,11 @@ public class GetDataElementCategoryOptionAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementCategoryOptionService dataElementCategoryOptionService;
+    private DataElementCategoryService dataElementCategoryService;
 
-    public void setDataElementCategoryOptionService( DataElementCategoryOptionService dataElementCategoryOptionService )
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-        this.dataElementCategoryOptionService = dataElementCategoryOptionService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -74,7 +74,7 @@ public class GetDataElementCategoryOptionAction
 
     public String execute()
     {
-        dataElementCategoryOption = dataElementCategoryOptionService
+        dataElementCategoryOption = dataElementCategoryService
             .getDataElementCategoryOption( dataElementCategoryOptionId );
 
         return SUCCESS;

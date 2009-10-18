@@ -121,7 +121,7 @@ public class GenerateIndividualReportExcelAction
 
             DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
 
-            DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
+            DataElementCategoryOptionCombo optionCombo = categoryService
                 .getDataElementCategoryOptionCombo( operand.getOptionComboId() );
 
             // start row = 2, start column = 1 --> dataelement name

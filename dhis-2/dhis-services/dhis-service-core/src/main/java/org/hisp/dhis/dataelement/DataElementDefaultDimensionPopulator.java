@@ -62,18 +62,11 @@ public class DataElementDefaultDimensionPopulator
         this.dataElementService = dataElementService;
     }
 
-    private DataElementCategoryComboService categoryComboService;
+    private DataElementCategoryService categoryService;
 
-    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.categoryComboService = categoryComboService;
-    }
-
-    private DataElementCategoryOptionComboService optionComboService;
-
-    public void setOptionComboService( DataElementCategoryOptionComboService optionComboService )
-    {
-        this.optionComboService = optionComboService;
+        this.categoryService = categoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -86,15 +79,15 @@ public class DataElementDefaultDimensionPopulator
     {
         String defaultName = DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
 
-        DataElementCategoryCombo categoryCombo = categoryComboService.getDataElementCategoryComboByName( defaultName );
+        DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryComboByName( defaultName );
 
         if ( categoryCombo == null )
         {
-            optionComboService.generateDefaultDimension();
+            categoryService.generateDefaultDimension();
 
             log.info( "Added default dataelement dimension" );
 
-            categoryCombo = categoryComboService.getDataElementCategoryComboByName( defaultName );
+            categoryCombo = categoryService.getDataElementCategoryComboByName( defaultName );
         }
 
         // ---------------------------------------------------------------------

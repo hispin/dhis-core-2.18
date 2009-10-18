@@ -28,7 +28,7 @@ package org.hisp.dhis.dd.action.categorycombo;
  */
 
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -43,12 +43,12 @@ public class RemoveDataElementCategoryComboAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataElementCategoryComboService dataElementCategoryComboService;
+    private DataElementCategoryService dataElementCategoryService;
 
-    public void setDataElementCategoryComboService( DataElementCategoryComboService dataElementCategoryComboService )
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-        this.dataElementCategoryComboService = dataElementCategoryComboService;
-    }  
+        this.dataElementCategoryService = dataElementCategoryService;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -67,13 +67,13 @@ public class RemoveDataElementCategoryComboAction
 
     public String execute()
     {
-    	DataElementCategoryCombo categoryCombo = dataElementCategoryComboService.getDataElementCategoryCombo( dataElementCategoryComboId );
+    	DataElementCategoryCombo categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( dataElementCategoryComboId );
     	
-    	DataElementCategoryCombo defaultCategoryCombo = dataElementCategoryComboService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+    	DataElementCategoryCombo defaultCategoryCombo = dataElementCategoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
     	
     	if ( !categoryCombo.equals( defaultCategoryCombo ) ) 
     	{
-    	    dataElementCategoryComboService.deleteDataElementCategoryCombo( categoryCombo );
+    	    dataElementCategoryService.deleteDataElementCategoryCombo( categoryCombo );
     	}
 
         return SUCCESS;

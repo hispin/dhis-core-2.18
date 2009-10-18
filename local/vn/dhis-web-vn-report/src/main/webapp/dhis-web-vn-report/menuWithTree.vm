@@ -1,3 +1,0 @@
-#parse( "/dhis-web-vn-report/menu.vm" )
-<br>
-#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )

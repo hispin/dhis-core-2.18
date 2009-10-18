@@ -52,16 +52,9 @@ public class UuidPopulator
     // and pasting 3 times. Should reimplement with common interface
     // IdentifiableObject or something similar.
 
-    private DataElementCategoryOptionService categoryOptionService;
-
     private DataElementCategoryService categoryService;
 
     private DataElementService dataElementService;
-
-    public void setCategoryOptionService( DataElementCategoryOptionService categoryOptionService )
-    {
-        this.categoryOptionService = categoryOptionService;
-    }
 
     public void setCategoryService( DataElementCategoryService categoryService )
     {
@@ -80,12 +73,12 @@ public class UuidPopulator
     public void execute()
         throws Exception
     {
-        for ( DataElementCategoryOption option : categoryOptionService.getAllDataElementCategoryOptions() )
+        for ( DataElementCategoryOption option : categoryService.getAllDataElementCategoryOptions() )
         {
             if ( option.getUuid() == null )
             {
                 option.setUuid( UUIdUtils.getUUId() );
-                categoryOptionService.updateDataElementCategoryOption( option );
+                categoryService.updateDataElementCategoryOption( option );
                 log.info( "Added uuid for CategoryOption '" + option.getName() + "'" );
 
             }

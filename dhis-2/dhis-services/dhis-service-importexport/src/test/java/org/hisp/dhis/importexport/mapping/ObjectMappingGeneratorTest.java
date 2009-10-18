@@ -34,11 +34,9 @@ import java.util.Map;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -69,12 +67,8 @@ public class ObjectMappingGeneratorTest
         objectMappingGenerator = (ObjectMappingGenerator) getBean( ObjectMappingGenerator.ID );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
-        
-        categoryOptionService = (DataElementCategoryOptionService) getBean( DataElementCategoryOptionService.ID );
-        
-        categoryOptionComboService = (DataElementCategoryOptionComboService) getBean( DataElementCategoryOptionComboService.ID );
+
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         periodService = (PeriodService) getBean( PeriodService.ID );
         
@@ -122,17 +116,17 @@ public class ObjectMappingGeneratorTest
     {
         DataElementCategoryCombo categoryComboA = new DataElementCategoryCombo( "CategoryComboA" );
         
-        categoryComboService.addDataElementCategoryCombo( categoryComboA );
+        categoryService.addDataElementCategoryCombo( categoryComboA );
         
         DataElementCategoryOption categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
         DataElementCategoryOption categoryOptionB = new DataElementCategoryOption( "CategoryOptionB" );
         DataElementCategoryOption categoryOptionC = new DataElementCategoryOption( "CategoryOptionC" );
         DataElementCategoryOption categoryOptionD = new DataElementCategoryOption( "CategoryOptionD" );
         
-        categoryOptionService.addDataElementCategoryOption( categoryOptionA );
-        categoryOptionService.addDataElementCategoryOption( categoryOptionB );
-        categoryOptionService.addDataElementCategoryOption( categoryOptionC );
-        categoryOptionService.addDataElementCategoryOption( categoryOptionD );
+        categoryService.addDataElementCategoryOption( categoryOptionA );
+        categoryService.addDataElementCategoryOption( categoryOptionB );
+        categoryService.addDataElementCategoryOption( categoryOptionC );
+        categoryService.addDataElementCategoryOption( categoryOptionD );
         
         DataElementCategoryOptionCombo categoryOptionComboA = new DataElementCategoryOptionCombo();
         categoryOptionComboA.setId( 'A' );
@@ -149,8 +143,8 @@ public class ObjectMappingGeneratorTest
         NameMappingUtil.addCategoryOptionComboMapping( categoryOptionComboA.getId(), categoryOptionComboA );
         NameMappingUtil.addCategoryOptionComboMapping( categoryOptionComboB.getId(), categoryOptionComboB );        
 
-        int idA = categoryOptionComboService.addDataElementCategoryOptionCombo( categoryOptionComboA );
-        int idB = categoryOptionComboService.addDataElementCategoryOptionCombo( categoryOptionComboB );
+        int idA = categoryService.addDataElementCategoryOptionCombo( categoryOptionComboA );
+        int idB = categoryService.addDataElementCategoryOptionCombo( categoryOptionComboB );
         
         Map<Object, Integer> mapping = objectMappingGenerator.getCategoryOptionComboMapping( false );
 

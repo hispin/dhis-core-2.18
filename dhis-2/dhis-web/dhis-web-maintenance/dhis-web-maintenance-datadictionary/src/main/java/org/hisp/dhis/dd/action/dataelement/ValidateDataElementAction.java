@@ -31,7 +31,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 
@@ -56,12 +56,12 @@ public class ValidateDataElementAction
     {
         this.dataElementService = dataElementService;
     }
-    
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    private DataElementCategoryService dataElementCategoryService;
+
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     private I18n i18n;
@@ -274,7 +274,7 @@ public class ValidateDataElementAction
                     String optionComboIdStr = operandId.substring( operandId.indexOf('.')+1, operandId.length() );                    
                     
                     dataElement = dataElementService.getDataElement( Integer.parseInt(dataElementIdStr) );
-                    optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( Integer.parseInt( optionComboIdStr ) );
+                    optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( optionComboIdStr ) );
                     
                     if ( !dataElement.getType().equals( DataElement.TYPE_INT ) || optionCombo == null )
                     {

@@ -32,7 +32,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -57,12 +57,12 @@ public class ShowAddDataElementForm
     {
         this.dataElementService = dataElementService;
     }
-    
-    private DataElementCategoryComboService dataElementCategoryComboService;    
 
-    public void setDataElementCategoryComboService( DataElementCategoryComboService dataElementCategoryComboService )
+    private DataElementCategoryService dataElementCategoryService;
+
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-    	this.dataElementCategoryComboService = dataElementCategoryComboService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -117,11 +117,11 @@ public class ShowAddDataElementForm
     
     public String execute()
     {    	
-    	defaultCategoryCombo = dataElementCategoryComboService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+    	defaultCategoryCombo = dataElementCategoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
     	
         dataElementGroups = dataElementService.getAllDataElementGroups();
         
-        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryComboService.getAllDataElementCategoryCombos() );
+        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getAllDataElementCategoryCombos() );
         
         organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
         

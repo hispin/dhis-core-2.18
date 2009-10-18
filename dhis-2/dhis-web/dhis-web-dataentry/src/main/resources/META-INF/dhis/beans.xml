@@ -42,8 +42,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataelement.DataElementService"/>    
     <property name="sectionService"
       ref="org.hisp.dhis.dataset.SectionService"/>
-    <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>
     <property name="customValueService">
@@ -61,8 +61,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.datavalue.DataValueService"/>
     <property name="currentUserService"
       ref="org.hisp.dhis.user.CurrentUserService"/>
-	<property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>  
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>  
   </bean>  
   
   <!-- Actions -->
@@ -117,12 +117,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.de.state.SelectedStateManager"/>    
     <property name="systemSettingManager"
       ref="org.hisp.dhis.options.SystemSettingManager"/>
-    <property name="customValueService">
-      <ref bean="org.hisp.dhis.customvalue.CustomValueService"/>
-    </property>    
-    <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService">
-    </property>
+    <property name="customValueService"
+      ref="org.hisp.dhis.customvalue.CustomValueService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>
 	
   <bean id="org.hisp.dhis.de.action.multidimensional.FormAction"
@@ -146,11 +144,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataset.DataEntryFormService"/>    
     <property name="systemSettingManager"
       ref="org.hisp.dhis.options.SystemSettingManager"/>  
-    <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    <property name="customValueService">
-      <ref bean="org.hisp.dhis.customvalue.CustomValueService"/>
-    </property>	          
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    <property name="customValueService"
+      ref="org.hisp.dhis.customvalue.CustomValueService"/>
   </bean>
   
    <bean id="org.hisp.dhis.de.action.SectionFormAction"
@@ -184,8 +181,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.datavalue.DataValueService"/>
     <property name="selectedStateManager"
       ref="org.hisp.dhis.de.state.SelectedStateManager"/>
-    <property name="categoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/> 
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>
   
   <bean id="org.hisp.dhis.de.action.multidimensional.SaveValueAction"
@@ -199,8 +196,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.datavalue.DataValueService"/>
     <property name="selectedStateManager"
       ref="org.hisp.dhis.de.state.SelectedStateManager"/>
-    <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>        
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>      
   </bean>
   
   <bean id="org.hisp.dhis.de.action.SaveCommentAction"
@@ -214,8 +211,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.datavalue.DataValueService"/>
     <property name="selectedStateManager"
       ref="org.hisp.dhis.de.state.SelectedStateManager"/>
-    <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/> 
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>
   
   <bean id="org.hisp.dhis.de.action.SaveMinMaxLimitsAction"
@@ -227,8 +224,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>
   
   <bean id="org.hisp.dhis.de.action.RemoveMinMaxLimitsAction"
@@ -240,8 +237,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/> 
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>
   
   <bean id="org.hisp.dhis.de.action.CalculateCDEsAction"
@@ -255,8 +252,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.de.state.SelectedStateManager"/>
     <property name="statefulDataValueSaver"
       ref="org.hisp.dhis.de.state.StatefulDataValueSaver"/>
-	<property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>      
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>     
   </bean>
   
   <bean id="org.hisp.dhis.de.action.order.GetDataElementOrderAction"
@@ -338,8 +335,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="selectedStateManager"
       ref="org.hisp.dhis.de.state.SelectedStateManager"/>
-    <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>
     <property name="standardCommentsManager"
@@ -381,8 +378,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.de.action.ViewDataValueAuditPopupAction"
     class="org.hisp.dhis.de.action.ViewDataValueAuditPopupAction">
-    <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>   
     <property name="dataElementService"

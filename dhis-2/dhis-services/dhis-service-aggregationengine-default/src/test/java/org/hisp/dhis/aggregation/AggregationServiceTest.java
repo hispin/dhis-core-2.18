@@ -36,8 +36,8 @@ import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.indicator.Indicator;
@@ -60,18 +60,6 @@ public class AggregationServiceTest
 {
     private AggregationService aggregationService;
 
-    private DataValueService dataValueService;
-
-    private PeriodService periodService;
-
-    private DataElementService dataElementService;
-
-    private DataElementCategoryComboService categoryComboService;
-    
-    private IndicatorService indicatorService;
-
-    private OrganisationUnitService organisationUnitService;
-
     private StatementManager statementManager;
 
     private DataElementCategoryCombo categoryCombo;
@@ -90,9 +78,9 @@ public class AggregationServiceTest
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
 
-        categoryComboService = (DataElementCategoryComboService) getBean( DataElementCategoryComboService.ID );
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        categoryCombo = categoryComboService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );             
+        categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );             
         
         categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
         

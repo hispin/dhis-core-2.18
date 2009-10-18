@@ -28,7 +28,7 @@ package org.hisp.dhis.importexport.converter;
  */
 
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 /**
  * @author Lars Helge Overland
@@ -37,7 +37,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 public class AbstractDataElementCategoryComboConverter
     extends AbstractConverter<DataElementCategoryCombo>
 {
-    protected DataElementCategoryComboService categoryComboService;
+    protected DataElementCategoryService categoryService;
     
     // -------------------------------------------------------------------------
     // Overridden methods
@@ -55,7 +55,7 @@ public class AbstractDataElementCategoryComboConverter
 
     protected DataElementCategoryCombo getMatching( DataElementCategoryCombo object )
     {
-        return categoryComboService.getDataElementCategoryComboByName( object.getName() );
+        return categoryService.getDataElementCategoryComboByName( object.getName() );
     }
     
     protected boolean isIdentical( DataElementCategoryCombo object, DataElementCategoryCombo existing )

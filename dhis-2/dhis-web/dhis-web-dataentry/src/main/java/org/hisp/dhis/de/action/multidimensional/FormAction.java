@@ -45,7 +45,7 @@ import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataEntryForm;
@@ -145,12 +145,12 @@ public class FormAction
     {
         this.dataEntryScreenManager = dataEntryScreenManager;
     }   
-    
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
 
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    private DataElementCategoryService categoryService;
+    
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.categoryService = categoryService;
     }
 
     private I18n i18n;
@@ -378,20 +378,18 @@ public class FormAction
 
         for ( DataElement de : dataElements )
         {
-            orderdCategoryOptionCombos.addAll( dataElementCategoryOptionComboService.sortOptionCombos( de.getCategoryCombo() ) );            
+            orderdCategoryOptionCombos.addAll( categoryService.sortOptionCombos( de.getCategoryCombo() ) );            
         }       
                 
         // ---------------------------------------------------------------------
         // Perform ordering of categories and their options so that they could
         // be displayed as in the paper form. Note that the total number of
-        // entry
-        // cells to be generated are the multiple of options from each
+        // entry cells to be generated are the multiple of options from each
         // category.
         //
         // For the time being we can only display a dataEntry form containing
         // dataElements having similar categoryCombo - otherwise use custom
         // forms
-        //
         // ---------------------------------------------------------------------       
 
         DataElement sample = dataElements.iterator().next();       
