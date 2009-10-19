@@ -60,8 +60,6 @@ public class ListDataEntryStatusAction
 
     private UserStore userStore;
 
-    private OrganisationUnitSelectionManager selectionManager;
-
     private DataSetService dataSetService;
 
     // -------------------------------------------------
@@ -77,11 +75,6 @@ public class ListDataEntryStatusAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
     }
 
     public void setUserStore( UserStore userStore )
@@ -107,29 +100,24 @@ public class ListDataEntryStatusAction
     public String execute()
         throws Exception
     {
-        if ( selectionManager.getSelectedOrganisationUnit() != null )
+        List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+
+        if ( !currentUserService.currentUserIsSuper() )
         {
+            UserCredentials userCredentials = userStore.getUserCredentials( currentUserService.getCurrentUser() );
 
-            List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( selectionManager
-                .getSelectedOrganisationUnit() ) );
+            Set<DataSet> dataSetUserAuthorityGroups = new HashSet<DataSet>();
 
-            if ( !currentUserService.currentUserIsSuper() )
+            for ( UserAuthorityGroup userAuthorityGroup : userCredentials.getUserAuthorityGroups() )
             {
-                UserCredentials userCredentials = userStore.getUserCredentials( currentUserService.getCurrentUser() );
-
-                Set<DataSet> dataSetUserAuthorityGroups = new HashSet<DataSet>();
-
-                for ( UserAuthorityGroup userAuthorityGroup : userCredentials.getUserAuthorityGroups() )
-                {
-                    dataSetUserAuthorityGroups.addAll( userAuthorityGroup.getDataSets() );
-                }
-
-                dataSets.retainAll( dataSetUserAuthorityGroups );
+                dataSetUserAuthorityGroups.addAll( userAuthorityGroup.getDataSets() );
             }
 
-            dataStatus = new ArrayList<DataEntryStatus>( reportService.getDataEntryStatusDefaultByDataSets( dataSets ) );
+            dataSets.retainAll( dataSetUserAuthorityGroups );
+        }       
 
-        }
+        dataStatus = new ArrayList<DataEntryStatus>( reportService.getDataEntryStatusDefaultByDataSets( dataSets ) );
+
         return SUCCESS;
     }
 }

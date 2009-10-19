@@ -172,7 +172,7 @@ public class DefaultDataEntryStatusAction
 
         if ( organisationUnit != null )
         {
-            TimeUtils.start();
+            
             dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( organisationUnit ) );
 
             if ( !currentUserService.currentUserIsSuper() )
