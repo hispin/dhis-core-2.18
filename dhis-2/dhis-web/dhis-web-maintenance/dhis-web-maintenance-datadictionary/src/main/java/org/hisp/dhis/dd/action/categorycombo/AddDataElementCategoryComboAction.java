@@ -60,11 +60,11 @@ public class AddDataElementCategoryComboAction
     // Input
     // -------------------------------------------------------------------------
 
-    private String nameField;;
+    private String name;;
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
 
     private Collection<String> selectedList = new HashSet<String>();
@@ -81,7 +81,7 @@ public class AddDataElementCategoryComboAction
     public String execute()
     {
         DataElementCategoryCombo dataElementCategoryCombo = new DataElementCategoryCombo();
-        dataElementCategoryCombo.setName( nameField );
+        dataElementCategoryCombo.setName( name );
 
         List<DataElementCategory> categories = new ArrayList<DataElementCategory>();
 

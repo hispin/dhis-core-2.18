@@ -25,7 +25,6 @@
   <ul>
 	<li><a href="category.action">$i18n.getString( "category" )&nbsp;</a></li>
 	<li><a href="categoryCombo.action">$i18n.getString( "category_combination" )&nbsp;</a></li>
- 	<li><a href="categoryOption.action">$i18n.getString( "category_option" )&nbsp;</a></li>		
   </ul>
 
 #end

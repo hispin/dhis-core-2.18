@@ -27,6 +27,9 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
@@ -62,11 +65,11 @@ public class ValidateDataElementCategoryAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer dataElementCategoryId;
+    private Integer id;
 
-    public void setDataElementCategoryId( Integer dataElementCategoryId )
+    public void setId( Integer id )
     {
-        this.dataElementCategoryId = dataElementCategoryId;
+        this.id = id;
     }
 
     private String name;
@@ -74,6 +77,13 @@ public class ValidateDataElementCategoryAction
     public void setName( String name )
     {
         this.name = name;
+    }
+    
+    private List<String> categoryOptionNames = new ArrayList<String>();
+
+    public void setCategoryOptionNames( List<String> categoryOptionNames )
+    {
+        this.categoryOptionNames = categoryOptionNames;
     }
 
     // -------------------------------------------------------------------------
@@ -112,12 +122,19 @@ public class ValidateDataElementCategoryAction
 
             DataElementCategory match = dataElementCategoryService.getDataElementCategoryByName( name );
 
-            if ( match != null && (dataElementCategoryId == null || match.getId() != dataElementCategoryId) )
+            if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "name_in_use" );
 
                 return INPUT;
             }
+        }
+        
+        if ( categoryOptionNames == null || categoryOptionNames.size() == 0 )
+        {
+            message = i18n.getString( "must_include_category_option" );
+            
+            return INPUT;
         }
 
         return SUCCESS;

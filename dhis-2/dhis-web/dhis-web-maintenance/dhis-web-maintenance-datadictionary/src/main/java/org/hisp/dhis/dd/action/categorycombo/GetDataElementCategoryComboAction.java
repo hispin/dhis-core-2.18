@@ -58,11 +58,11 @@ public class GetDataElementCategoryComboAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private Integer dataElementCategoryComboId;
+    private Integer id;
 
-    public void setDataElementCategoryComboId( Integer dataElementCategoryComboId )
+    public void setId( Integer id )
     {
-        this.dataElementCategoryComboId = dataElementCategoryComboId;
+        this.id = id;
     }
 
     private DataElementCategoryCombo dataElementCategoryCombo;
@@ -93,7 +93,7 @@ public class GetDataElementCategoryComboAction
     public String execute()
     {
         dataElementCategoryCombo = dataElementCategoryService
-            .getDataElementCategoryCombo( dataElementCategoryComboId );
+            .getDataElementCategoryCombo( id );
         
         dataElementCategories = dataElementCategoryCombo.getCategories();
         

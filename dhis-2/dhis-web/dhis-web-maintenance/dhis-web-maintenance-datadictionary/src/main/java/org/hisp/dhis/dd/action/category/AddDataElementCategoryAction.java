@@ -28,8 +28,6 @@ package org.hisp.dhis.dd.action.category;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -60,18 +58,18 @@ public class AddDataElementCategoryAction
     // Input
     // -------------------------------------------------------------------------
 
-    private String nameField;;
+    private String name;
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
 
-    private Collection<String> selectedList = new HashSet<String>();
+    private List<String> categoryOptionNames = new ArrayList<String>();
 
-    public void setSelectedList( Collection<String> selectedList )
+    public void setCategoryOptionNames( List<String> categoryOptionNames )
     {
-        this.selectedList = selectedList;
+        this.categoryOptionNames = categoryOptionNames;
     }
 
     // -------------------------------------------------------------------------
@@ -81,19 +79,14 @@ public class AddDataElementCategoryAction
     public String execute()
     {
         DataElementCategory dataElementCategory = new DataElementCategory();
-        dataElementCategory.setName( nameField );
-
-        List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
-
-        for ( String id : selectedList )
+        dataElementCategory.setName( name );
+        
+        for ( String categoryOptionName : categoryOptionNames )
         {
-            DataElementCategoryOption dataElementCategoryOption = dataElementCategoryService
-                .getDataElementCategoryOption( Integer.parseInt( id ) );
-
-            categoryOptions.add( dataElementCategoryOption );
+            DataElementCategoryOption categoryOption = new DataElementCategoryOption( categoryOptionName );
+            dataElementCategoryService.addDataElementCategoryOption( categoryOption );
+            dataElementCategory.getCategoryOptions().add( categoryOption );
         }
-
-        dataElementCategory.setCategoryOptions( categoryOptions );
 
         dataElementCategoryService.addDataElementCategory( dataElementCategory );
         

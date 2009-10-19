@@ -27,13 +27,7 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-
 import org.hisp.dhis.dataelement.DataElementCategory;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 import com.opensymphony.xwork2.Action;
@@ -60,25 +54,18 @@ public class UpdateDataElementCategoryAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer dataElementCategoryId;
+    private Integer id;
 
-    public void setDataElementCategoryId( Integer dataElementCategoryId )
+    public void setId( Integer id )
     {
-        this.dataElementCategoryId = dataElementCategoryId;
+        this.id = id;
     }
 
-    private String nameField;
+    private String name;
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
-    }
-
-    private Collection<String> selectedList = new HashSet<String>();
-
-    public void setSelectedList( Collection<String> selectedList )
-    {
-        this.selectedList = selectedList;
+        this.name = name;
     }
 
     // -------------------------------------------------------------------------
@@ -87,23 +74,9 @@ public class UpdateDataElementCategoryAction
 
     public String execute()
     {
-        // ---------------------------------------------------------------------
-        // Update data element category
-        // ---------------------------------------------------------------------
+        DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( id );
 
-        DataElementCategory dataElementCategory = dataElementCategoryService
-            .getDataElementCategory( dataElementCategoryId );
-
-        dataElementCategory.setName( nameField );        
-        
-        List<DataElementCategoryOption> updatedCategoryOptions = new ArrayList<DataElementCategoryOption>();
-
-        for ( String id : selectedList )
-        {
-            updatedCategoryOptions.add( dataElementCategoryService.getDataElementCategoryOption( Integer.parseInt( id ) ) );
-        }
-
-        dataElementCategory.setCategoryOptions( updatedCategoryOptions );
+        dataElementCategory.setName( name );        
         
         dataElementCategoryService.updateDataElementCategory( dataElementCategory );        
 

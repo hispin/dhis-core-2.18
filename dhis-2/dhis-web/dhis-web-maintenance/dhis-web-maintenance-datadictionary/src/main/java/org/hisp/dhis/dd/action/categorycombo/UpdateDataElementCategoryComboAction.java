@@ -60,18 +60,18 @@ public class UpdateDataElementCategoryComboAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer dataElementCategoryComboId;
+    private Integer id;
 
-    public void setDataElementCategoryComboId( Integer dataElementCategoryComboId )
+    public void setId( Integer id )
     {
-        this.dataElementCategoryComboId = dataElementCategoryComboId;
+        this.id = id;
     }
 
-    private String nameField;
+    private String name;
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
 
     private Collection<String> selectedList = new HashSet<String>();
@@ -88,9 +88,9 @@ public class UpdateDataElementCategoryComboAction
     public String execute()
     {
         DataElementCategoryCombo dataElementCategoryCombo = dataElementCategoryService
-            .getDataElementCategoryCombo( dataElementCategoryComboId );
+            .getDataElementCategoryCombo( id );
 
-        dataElementCategoryCombo.setName( nameField );
+        dataElementCategoryCombo.setName( name );
         
         List<DataElementCategory> updatedCategories = new ArrayList<DataElementCategory>();
 
