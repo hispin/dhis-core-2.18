@@ -462,7 +462,7 @@ function deleteDivEffect()
 }
 
 /**
- * Returns a query string with all selected element values in the select with
+ * Returns a query string with all element values in the select list with
  * the specified identifier.
  */
 function getParamString( elementId )

@@ -170,7 +170,7 @@ function addOption( listId, text, value ) {
  * @param listId the id of the list.
  */
 function removeSelectedOption( listId ) {
-    var list = document.getElementById( "levelNames" );
+    var list = document.getElementById( listId );
     for ( var i = list.length - 1; i >= 0; i-- ) {
         if ( list.options[ i ].selected ) {
             list.remove( i );
