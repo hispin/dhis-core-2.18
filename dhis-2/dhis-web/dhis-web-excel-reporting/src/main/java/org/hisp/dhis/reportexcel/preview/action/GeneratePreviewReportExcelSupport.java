@@ -125,11 +125,11 @@ public abstract class GeneratePreviewReportExcelSupport
     DataMartStore dataMartStore;
 
     InitializePOIStylesManager initPOIStylesManager;
-    
+
     protected StatementManager statementManager;
-    
+
     protected SelectionManager selectionManager;
-    
+
     protected ReportExcelService reportService;
 
     protected PeriodService periodService;
@@ -141,7 +141,7 @@ public abstract class GeneratePreviewReportExcelSupport
     String outputXLS;
 
     InputStream inputStream;
-    
+
     protected Integer sheetId;
 
     // -------------------------------------------
@@ -191,6 +191,11 @@ public abstract class GeneratePreviewReportExcelSupport
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
+    }
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
     }
 
     public void setDataElementService( DataElementService dataElementService )
@@ -320,7 +325,7 @@ public abstract class GeneratePreviewReportExcelSupport
     @SuppressWarnings( "static-access" )
     protected void installDefaultExcelFormat()
         throws Exception
-    {        
+    {
         initPOIStylesManager.initDefaultHeader( header );
         initPOIStylesManager.initDefaultFont( csFont );
         initPOIStylesManager.initDefaultCellStyle( csText, csFont );
@@ -337,7 +342,7 @@ public abstract class GeneratePreviewReportExcelSupport
         initPOIStylesManager.initCellStyle( csNumber, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_CENTER );
-        
+
     }
 
     protected void installPeriod( Period period )
@@ -628,23 +633,23 @@ public abstract class GeneratePreviewReportExcelSupport
         Calendar calendar = Calendar.getInstance();
 
         File reportTempDir = reportLocationManager.getReportExcelTempDirectory();
-       
+
         this.inputStreamExcelTemplate = new FileInputStream( reportLocationManager.getReportExcelTemplateDirectory()
             + File.separator + reportExcel.getExcelTemplateFile() );
-       
+
         this.outputReportFile = new File( reportTempDir, currentUserService.getCurrentUsername()
             + this.dateformatter.format( calendar.getTime() ) + reportExcel.getExcelTemplateFile() );
-       
+
         this.outputStreamExcelTemplate = new FileOutputStream( outputReportFile );
-       
+
         this.templateWorkbook = new HSSFWorkbook( inputStreamExcelTemplate );
- 
+
         this.templateWorkbook.setSheetName( 0, reportExcel.getName().replaceAll( " ", "" ) );
- 
+
         this.initExcelFormat();
- 
+
         this.installDefaultExcelFormat();
-       
+
         ExcelUtils.writeValueByPOI( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
             organisationUnitGroup.getName(), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
 
@@ -666,5 +671,4 @@ public abstract class GeneratePreviewReportExcelSupport
         // this.outputReportFile ) );
         // outputReportFile.delete();
     }
-
 }
