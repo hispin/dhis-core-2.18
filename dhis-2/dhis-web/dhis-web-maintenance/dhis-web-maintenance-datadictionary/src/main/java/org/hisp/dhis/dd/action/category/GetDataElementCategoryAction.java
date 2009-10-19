@@ -27,11 +27,7 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.hisp.dhis.dataelement.DataElementCategory;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 import com.opensymphony.xwork2.Action;
@@ -55,15 +51,19 @@ public class GetDataElementCategoryAction
     }
 
     // -------------------------------------------------------------------------
-    // Input/output
+    // Input
     // -------------------------------------------------------------------------
 
-    private Integer dataElementCategoryId;
+    private Integer id;
 
-    public void setDataElementCategoryId( Integer dataElementCategoryId )
+    public void setId( Integer id )
     {
-        this.dataElementCategoryId = dataElementCategoryId;
+        this.id = id;
     }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
 
     private DataElementCategory dataElementCategory;
 
@@ -72,34 +72,15 @@ public class GetDataElementCategoryAction
         return dataElementCategory;
     }
 
-    private Collection<DataElementCategoryOption> dataElementCategoryOptions = new ArrayList<DataElementCategoryOption>();
-
-    public Collection<DataElementCategoryOption> getDataElementCategoryOptions()
-    {
-        return dataElementCategoryOptions;
-    }
-
-    private Collection<DataElementCategoryOption> allDataElementCategoryOptions = new ArrayList<DataElementCategoryOption>();
-
-    public Collection<DataElementCategoryOption> getAllDataElementCategoryOptions()
-    {
-        return allDataElementCategoryOptions;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        dataElementCategory = dataElementCategoryService.getDataElementCategory( dataElementCategoryId );
+        dataElementCategory = dataElementCategoryService.getDataElementCategory( id );
         
-        dataElementCategoryOptions = dataElementCategory.getCategoryOptions();
-        
-        allDataElementCategoryOptions = dataElementCategoryService
-        .getAllDataElementCategoryOptions();
-
-        allDataElementCategoryOptions.removeAll( dataElementCategoryOptions );
+        System.out.println( "options " + dataElementCategory.getCategoryOptions().size() );
         
         return SUCCESS;
     }

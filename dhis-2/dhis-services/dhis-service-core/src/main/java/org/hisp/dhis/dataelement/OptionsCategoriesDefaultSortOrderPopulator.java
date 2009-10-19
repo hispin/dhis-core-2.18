@@ -59,17 +59,16 @@ public class OptionsCategoriesDefaultSortOrderPopulator
     
     @Transactional
     public void execute()
-        throws Exception
-    {       
-        statementManager.getHolder().executeUpdate( "update categoryoptioncombos_categoryoptions set sort_order=0 where sort_order is NULL" );
+    {
+        statementManager.getHolder().executeUpdate( "update categoryoptioncombos_categoryoptions set sort_order=categoryoptionid where sort_order is NULL or sort_order=0" );
         
         LOG.info( "Updated categoryoptioncombos_categoryoptions" );
         
-        statementManager.getHolder().executeUpdate( "update categorycombos_categories set sort_order=0 where sort_order is NULL" );
+        statementManager.getHolder().executeUpdate( "update categorycombos_categories set sort_order=categoryid where sort_order is NULL or sort_order=0" );
         
         LOG.info( "Updated categorycombos_categories" );       
         
-        statementManager.getHolder().executeUpdate( "update categories_categoryoptions set sort_order=0 where sort_order is NULL" );
+        statementManager.getHolder().executeUpdate( "update categories_categoryoptions set sort_order=categoryoptionid where sort_order is NULL or sort_order=0" );
         
         LOG.info( "Updated categories_categoryoptions" );  
     }

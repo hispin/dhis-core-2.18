@@ -66,11 +66,11 @@ public class ValidateDataElementCategoryComboAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer dataElementCategoryComboId;
+    private Integer id;
 
-    public void setDataElementCategoryComboId( Integer dataElementCategoryComboId )
+    public void setId( Integer id )
     {
-        this.dataElementCategoryComboId = dataElementCategoryComboId;
+        this.id = id;
     }
 
     private String name;
@@ -123,7 +123,7 @@ public class ValidateDataElementCategoryComboAction
 
             DataElementCategoryCombo match = dataElementCategoryService.getDataElementCategoryComboByName( name );
 
-            if ( match != null && (dataElementCategoryComboId == null || match.getId() != dataElementCategoryComboId) )
+            if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "name_in_use" );
 

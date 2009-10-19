@@ -54,12 +54,12 @@ public class RemoveDataElementCategoryComboAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer dataElementCategoryComboId;
+    private Integer id;
 
-    public void setDataElementCategoryComboId( Integer dataElementCategoryComboId )
+    public void setId( Integer id )
     {
-        this.dataElementCategoryComboId = dataElementCategoryComboId;
-    }   
+        this.id = id;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -67,7 +67,7 @@ public class RemoveDataElementCategoryComboAction
 
     public String execute()
     {
-    	DataElementCategoryCombo categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( dataElementCategoryComboId );
+    	DataElementCategoryCombo categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( id );
     	
     	DataElementCategoryCombo defaultCategoryCombo = dataElementCategoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
     	

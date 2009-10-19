@@ -1,70 +1,69 @@
 
 <h3>$i18n.getString( "edit_data_element_category" )</h3>
 
-<form id="editDataElementCategoryForm" name="editDataElementCategoryForm" action="updateDataElementCategory.action" method="post" onsubmit="submitForm(); return validateEditDataElementCategory()">
-  <div style="display:inline">
-  <input type="hidden" id="dataElementCategoryId" name="dataElementCategoryId" value="$dataElementCategory.id">
-  </div>
+<form id="editDataElementCategoryForm" name="editDataElementCategoryForm" action="updateDataElementCategory.action" method="post">
   
-  <table id="detailsList">
-    <thead>
-      <tr>
-        <th colspan="2">$i18n.getString( "data_element_category_details" )</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="nameField" name="nameField" style="width:20em" value="$encoder.htmlEncode( $dataElementCategory.name )"></td>
-      </tr>      
-      <tr>
-      	<td colspan="2" style="height:15px"></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <table id="dataElementCategoryOptionSelectionArea">
-    <thead>
-      <tr>
-        <th>$i18n.getString( "available_options" )</th>
-		<td></td>
-		<th>$i18n.getString( "selected_options" )</th>       
-      </tr>
-    </thead>
+  <input type="hidden" id="id" name="id" value="$dataElementCategory.id">
   
-    <tbody>
-      <tr>
-        <td></td>
-        <td></td>        
-      </tr>
-      <tr>       
-		<td>
-          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'availableList' )">
-            #foreach ( $availableDataElementCategoryOption in $allDataElementCategoryOptions )
-              <option value="$availableDataElementCategoryOption.id">$encoder.htmlEncode( $availableDataElementCategoryOption.name )</option>
-            #end
-          </select>
-        </td>
-        <td valign="top" align="center">		 
-          <input type="button" value="&gt;" onclick="move( 'availableList' )"><br>	
-		  <input type="button" value="&lt;" onclick="move ( 'selectedList' )">	<br>	<br>  	
-		  <a href="#" onclick="moveUp('selectedList')"><img src="../images/move_up.png" border="0" alt=""></a><br><br>
-		  <a href="#" onclick="moveDown('selectedList')"><img src="../images/move_down.png" border="0" alt=""></a>		  
-        </td>    
-		 <td>
-          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="move( 'selectedList' )">
-            #foreach ( $dataElementCategoryOption in $dataElementCategoryOptions )
-              <option value="$dataElementCategoryOption.id">$encoder.htmlEncode( $dataElementCategoryOption.name )</option>
-            #end
-          </select>
-        </td>       
-      </tr>
-    </tbody>
+  <table>
+    <tr>
+      <th colspan="2">$i18n.getString( "details" )</th>
+      <td></td>
+    </tr>
+    <tr>
+      <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+      <td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $dataElementCategory.name )" style="width:25em"></td>
+      <td></td>
+    </tr>      
+    <tr>
+      <td colspan="3" style="height:15px"></td>
+    </tr>
+    <tr>
+      <th colspan="2">$i18n.getString( "category_options" )</th>
+      <td></td>
+    </tr>
+    <tr>
+      <td><label>$i18n.getString( "name" )</label></td>
+      <td><input type="text" id="categoryOptionName" style="width:25em"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td colspan="2">
+        <input type="button" value="$i18n.getString( "add_category_option" )" onclick="addCategoryOptionToCategory()" style="width:200px">
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <select multiple size="10" id="categoryOptionNames" name="categoryOptionNames" style="width:300px">
+        #foreach( $categoryOption in $dataElementCategory.categoryOptions )
+        	<option value="$categoryOption.name">$encoder.htmlEncode( $categoryOption.name )</option>
+        #end
+        </select>   
+      </td>
+      <td style="width:30px; text-align:center">
+        <a href="javascript:moveUpSelectedOption( 'categoryOptionNames' )"><img src="../images/move_up.png"></a><br><br>
+        <a href="javascript:moveDownSelectedOption( 'categoryOptionNames' )"><img src="../images/move_down.png"></a><br><br>
+        <a href="javascript:removeSelectedOption( 'categoryOptionNames' )"><img src="../images/delete.png"></a>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" style="height:15px"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td colspan="2">
+        <input type="button" onclick="validateEditDataElementCategory()" value="$i18n.getString( "edit" )" style="width:100px"><input 
+               type="button" onclick="window.location.href='category.action'" value="$i18n.getString( "cancel" )" style="width:100px"></p>
+      </td>
+    </tr>
   </table>
-
-<p><input type="submit" name="update" value="$i18n.getString( "update" )" style="width:10em"><input 
-          type="button" name="cancel" onclick="window.location.href='category.action'" value="$i18n.getString( "cancel" )" style="width:10em"></p>
-
 </form>
 
 <span id="message"></span>
+
+<script type="text/javascript">
+    var i18n_specify_category_option_name = '$encoder.jsEscape( $i18n.getString( "specify_category_option_name" ) , "'")';
+    var i18n_category_option_name_already_exists = '$encoder.jsEscape( $i18n.getString( "category_option_name_already_exists" ) , "'")';
+</script>

@@ -624,17 +624,15 @@
       <result name="input" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-	  
-    <!-- MultiDimensional DataElement -->
-	      
+	   
     <!-- Category -->
     
     <action name="showAddDataElementCategoryForm"
-      class="org.hisp.dhis.dd.action.categoryoption.GetDataElementCategoryOptionListAction">
+      class="org.hisp.dhis.dd.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryForm.vm</param>
       <param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
-      <param name="javascripts">javascript/dataElementCategoryOptionList.js,javascript/category.js</param>
+      <param name="javascripts">javascript/category.js</param>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>
     
@@ -652,7 +650,7 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     	
-	  <action name="category" 
+	<action name="category" 
       class="org.hisp.dhis.dd.action.category.GetDataElementCategoryListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/category.vm</param>
@@ -676,7 +674,7 @@
       class="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryForm.vm</param>
-      <param name="javascripts">javascript/dataElementCategoryOptionList.js,javascript/category.js</param>
+      <param name="javascripts">javascript/category.js</param>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
     
@@ -747,75 +745,6 @@
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
      
-    <!-- CategoryOption -->
-        
-    <action name="categoryOption"
-      class="org.hisp.dhis.dd.action.categoryoption.GetDataElementCategoryOptionListAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/categoryOption.vm</param>
-      <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
-      <param name="javascripts">javascript/categoryOption.js,javascript/filterTable.js</param>
-    </action>
-    
-    <action name="dataElementCategoryOption"
-      class="org.hisp.dhis.dd.action.categoryoption.GetDataElementCategoryOptionListAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/categoryOption.vm</param>
-      <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
-      <param name="javascripts">javascript/categoryOption.js,javascript/filterTable.js</param>
-    </action>
-    
-    <action name="getDataElementCategoryOption"
-      class="org.hisp.dhis.dd.action.categoryoption.GetDataElementCategoryOptionAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/multidimensional/responseCategoryOption.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>   
-	
-    <action name="showAddDataElementCategoryOptionForm"
-      class="org.hisp.dhis.dd.action.NoAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/addDataElementCategoryOptionForm.vm</param>
-      <param name="javascripts">javascript/shortName.js,javascript/categoryOption.js</param>
-      <param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
-    </action>
-    
-    <action name="addDataElementCategoryOption"
-      class="org.hisp.dhis.dd.action.categoryoption.AddDataElementCategoryOptionAction">
-      <result name="success" type="redirect">categoryOption.action</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
-    </action>
-    
-    <action name="validateDataElementCategoryOption"
-      class="org.hisp.dhis.dd.action.categoryoption.ValidateDataElementCategoryOptionAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-      <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
-      <result name="input" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseInput.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action> 
-    
-    <action name="removeDataElementCategoryOption"
-      class="org.hisp.dhis.dd.action.categoryoption.RemoveDataElementCategoryOptionAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-      <result name="error" type="velocity-xml">/dhis-web-maintenance-datadictionary/responseError.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
-    </action>
-    
-    <action name="updateDataElementCategoryOption"
-      class="org.hisp.dhis.dd.action.categoryoption.UpdateDataElementCategoryOptionAction">
-      <result name="success" type="redirect">categoryOption.action</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
-    </action>
-    
-    <action name="showUpdateDataElementCategoryOptionForm"
-      class="org.hisp.dhis.dd.action.categoryoption.GetDataElementCategoryOptionAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/updateDataElementCategoryOptionForm.vm</param>
-      <param name="javascripts">javascript/shortName.js,javascript/categoryOption.js</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
-    </action>
-    
     <!-- PDF -->
         
     <action name="exportToPdf" class="org.hisp.dhis.dd.action.pdf.ExportToPdfAction">

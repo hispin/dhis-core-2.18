@@ -3,18 +3,18 @@
 // View details
 // -----------------------------------------------------------------------------
 
-function showDataElementCategoryDetails( dataElementCategoryId )
+function showDataElementCategoryDetails( categoryId )
 {	
     var request = new Request();
     request.setResponseTypeXML( 'dataElementCategory' );
     request.setCallbackSuccess( dataElementCategoryReceived );
-    request.send( 'getDataElementCategory.action?dataElementCategoryId=' + dataElementCategoryId );
+    request.send( 'getDataElementCategory.action?id=' + categoryId );
 }
 
-function dataElementCategoryReceived( dataElementCategoryElement )
+function dataElementCategoryReceived( categoryElement )
 {
-    setFieldValue( 'nameField', getElementValue( dataElementCategoryElement, 'name' ) );    
-    setFieldValue( 'categoryOptionsCountField', getElementValue( dataElementCategoryElement, 'categoryOptionCount' ) );
+    setFieldValue( 'nameField', getElementValue( categoryElement, 'name' ) );    
+    setFieldValue( 'categoryOptionsCountField', getElementValue( categoryElement, 'categoryOptionCount' ) );
           
     showDetails();
 }
@@ -23,18 +23,16 @@ function dataElementCategoryReceived( dataElementCategoryElement )
 // Delete Category
 // -----------------------------------------------------------------------------
 
-var tmpDataElementCategoryId;
-
-function removeDataElementCategory( dataElementCategoryId, dataElementCategoryName )
+function removeDataElementCategory( categoryId, categoryName )
 {
-  var result = window.confirm( i18n_confirm_delete + '\n\n' + dataElementCategoryName );
+  var result = window.confirm( i18n_confirm_delete + '\n\n' + categoryName );
 
   if ( result )
   {
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( removeDataElementCategoryCompleted );
-    request.send( 'removeDataElementCategory.action?id=' + dataElementCategoryId );
+    request.send( 'removeDataElementCategory.action?id=' + categoryId );
   }
 }
 
@@ -55,6 +53,26 @@ function removeDataElementCategoryCompleted( messageElement )
     }
 }
 
+function addCategoryOptionToCategory()
+{
+	var categoryName = document.getElementById( 'categoryOptionName' ).value;
+	
+	if ( categoryName == "" )
+	{
+		setMessage( i18n_specify_category_option_name );
+	}
+	else if ( listContainsById( 'categoryOptionNames', categoryName ) )
+	{
+		setMessage( i18n_category_option_name_already_exists );
+	}
+	else
+	{
+	   addOption( 'categoryOptionNames', categoryName, categoryName );
+	
+	   document.getElementById( 'categoryOptionName' ).value = "";
+	}
+}
+
 // ----------------------------------------------------------------------
 // Validation
 // ----------------------------------------------------------------------
@@ -65,7 +83,9 @@ function validateAddDataElementCategory()
   request.setResponseTypeXML( 'message' );
   request.setCallbackSuccess( addDataElementCategoryValidationCompleted );
 
-  var requestString = 'validateDataElementCategory.action?name=' + document.getElementById( 'nameField' ).value;
+  var requestString = 'validateDataElementCategory.action?name=' + document.getElementById( 'name' ).value;
+  
+  requestString += "&" + getParamString( 'categoryOptionNames' );
 
   request.send( requestString );
   
@@ -78,7 +98,8 @@ function addDataElementCategoryValidationCompleted( messageElement )
   var message = messageElement.firstChild.nodeValue;
 
   if ( type == 'success' )
-  {           
+  {
+  	  selectAllById( 'categoryOptionNames' );
       document.forms['addDataElementCategoryForm'].submit();
   }
   
@@ -95,8 +116,9 @@ function validateEditDataElementCategory()
   request.setResponseTypeXML( 'message' );
   request.setCallbackSuccess( editDataElementCategoryValidationCompleted );
 
-  var requestString = 'validateDataElementCategory.action?name=' + document.getElementById( 'nameField' ).value
-          + '&dataElementCategoryId=' + document.getElementById( 'dataElementCategoryId' ).value;
+  var requestString = 'validateDataElementCategory.action?name=' + document.getElementById( 'name' ).value;
+
+  requestString += "&" + getParamString( 'categoryOptionNames' );
 
   request.send( requestString );
     
@@ -110,7 +132,7 @@ function editDataElementCategoryValidationCompleted( messageElement )
 
     if ( type == 'success' )
     {
-        // Both edit and add form has id='dataSetForm'
+        selectAllById( 'categoryOptionNames' );
         document.forms['editDataElementCategoryForm'].submit();
     }
     else if ( type == 'input' )

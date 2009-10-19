@@ -28,6 +28,7 @@ package org.hisp.dhis.dd.action.category;
  */
 
 import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
 
@@ -87,8 +88,10 @@ public class RemoveDataElementCategoryAction
     public String execute()
     {
         try
-        {            
-            dataElementCategoryService.deleteDataElementCategory( dataElementCategoryService.getDataElementCategory( id ) );
+        {
+            DataElementCategory category = dataElementCategoryService.getDataElementCategory( id );
+            
+            dataElementCategoryService.deleteDataElementCategory( category );
         }
         catch ( DeleteNotAllowedException ex )
         {

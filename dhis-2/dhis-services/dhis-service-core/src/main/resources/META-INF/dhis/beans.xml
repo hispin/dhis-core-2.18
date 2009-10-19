@@ -328,14 +328,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dataelement.DataElementService"/>
   </bean>  
   
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler"
-    class="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler">
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler"
+    class="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler">
     <property name="categoryService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>
   
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler"
-    class="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler">
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler"
+    class="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler">
     <property name="categoryService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>
@@ -440,9 +440,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
         <list>
           <ref local="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler"/>
           <ref local="org.hisp.dhis.dataelement.DataElementDeletionHandler"/>
-          <ref local="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler"/>          
+          <ref local="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler"/>
+		  <ref local="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler"/>        
           <ref local="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler"/>
-          <ref local="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler"/>
           <ref local="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler"/>
           <ref local="org.hisp.dhis.dataset.DataSetDeletionHandler"/>
           <ref local="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler"/>
