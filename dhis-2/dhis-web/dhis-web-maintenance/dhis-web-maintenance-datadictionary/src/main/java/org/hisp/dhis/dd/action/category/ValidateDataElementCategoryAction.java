@@ -27,9 +27,6 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
@@ -78,13 +75,6 @@ public class ValidateDataElementCategoryAction
     {
         this.name = name;
     }
-    
-    private List<String> categoryOptionNames = new ArrayList<String>();
-
-    public void setCategoryOptionNames( List<String> categoryOptionNames )
-    {
-        this.categoryOptionNames = categoryOptionNames;
-    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -130,13 +120,8 @@ public class ValidateDataElementCategoryAction
             }
         }
         
-        if ( categoryOptionNames == null || categoryOptionNames.size() == 0 )
-        {
-            message = i18n.getString( "must_include_category_option" );
-            
-            return INPUT;
-        }
-
+        message = "ok";
+        
         return SUCCESS;
     }
 }

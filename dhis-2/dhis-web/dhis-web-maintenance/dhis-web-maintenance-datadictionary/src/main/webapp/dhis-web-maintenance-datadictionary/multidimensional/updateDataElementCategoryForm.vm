@@ -23,29 +23,17 @@
       <td></td>
     </tr>
     <tr>
-      <td><label>$i18n.getString( "name" )</label></td>
-      <td><input type="text" id="categoryOptionName" style="width:25em"></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td colspan="2">
-        <input type="button" value="$i18n.getString( "add_category_option" )" onclick="addCategoryOptionToCategory()" style="width:200px">
-      </td>
-    </tr>
-    <tr>
       <td></td>
       <td>
-        <select multiple size="10" id="categoryOptionNames" name="categoryOptionNames" style="width:300px">
+        <select multiple size="10" id="categoryOptions" name="categoryOptions" style="width:300px">
         #foreach( $categoryOption in $dataElementCategory.categoryOptions )
-        	<option value="$categoryOption.name">$encoder.htmlEncode( $categoryOption.name )</option>
+        	<option value="$categoryOption.id">$encoder.htmlEncode( $categoryOption.name )</option>
         #end
         </select>   
       </td>
       <td style="width:30px; text-align:center">
-        <a href="javascript:moveUpSelectedOption( 'categoryOptionNames' )"><img src="../images/move_up.png"></a><br><br>
-        <a href="javascript:moveDownSelectedOption( 'categoryOptionNames' )"><img src="../images/move_down.png"></a><br><br>
-        <a href="javascript:removeSelectedOption( 'categoryOptionNames' )"><img src="../images/delete.png"></a>
+        <a href="javascript:moveUpSelectedOption( 'categoryOptions' )"><img src="../images/move_up.png"></a><br><br>
+        <a href="javascript:moveDownSelectedOption( 'categoryOptions' )"><img src="../images/move_down.png"></a><br><br>
       </td>
     </tr>
     <tr>

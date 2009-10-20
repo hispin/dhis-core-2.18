@@ -27,6 +27,9 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
@@ -68,6 +71,13 @@ public class UpdateDataElementCategoryAction
         this.name = name;
     }
 
+    private List<String> categoryOptions = new ArrayList<String>();
+
+    public void setCategoryOptions( List<String> categoryOptions )
+    {
+        this.categoryOptions = categoryOptions;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -75,8 +85,18 @@ public class UpdateDataElementCategoryAction
     public String execute()
     {
         DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( id );
-
         dataElementCategory.setName( name );        
+        
+        // ---------------------------------------------------------------------
+        // CategoryOptions can only be sorted on update
+        // ---------------------------------------------------------------------
+
+        dataElementCategory.getCategoryOptions().clear();
+        
+        for ( String id : categoryOptions )
+        {
+            dataElementCategory.getCategoryOptions().add( dataElementCategoryService.getDataElementCategoryOption( Integer.parseInt( id ) ) );
+        }
         
         dataElementCategoryService.updateDataElementCategory( dataElementCategory );        
 

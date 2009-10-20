@@ -62,9 +62,9 @@ public class DefaultDataElementCategoryService
         this.dataElementCategoryStore = dataElementCategoryStore;
     }    
 
-    private GenericNameStore<DataElementCategoryOption> dataElementCategoryOptionStore;
+    private GenericStore<DataElementCategoryOption> dataElementCategoryOptionStore;
 
-    public void setDataElementCategoryOptionStore( GenericNameStore<DataElementCategoryOption> dataElementCategoryOptionStore )
+    public void setDataElementCategoryOptionStore( GenericStore<DataElementCategoryOption> dataElementCategoryOptionStore )
     {
         this.dataElementCategoryOptionStore = dataElementCategoryOptionStore;
     }
@@ -209,11 +209,6 @@ public class DefaultDataElementCategoryService
         }
         
         return categoryOptions;
-    }
-
-    public DataElementCategoryOption getDataElementCategoryOptionByName( String name )
-    {
-        return dataElementCategoryOptionStore.getByName( name );
     }
 
     public Collection<DataElementCategoryOption> getAllDataElementCategoryOptions()

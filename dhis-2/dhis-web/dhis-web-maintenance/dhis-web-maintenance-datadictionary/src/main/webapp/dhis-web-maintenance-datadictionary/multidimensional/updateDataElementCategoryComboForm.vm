@@ -2,9 +2,7 @@
 <h3>$i18n.getString( "edit_data_element_category_combo" )</h3>
 
 <form id="editDataElementCategoryComboForm" name="editDataElementCategoryComboForm" action="updateDataElementCategoryCombo.action" method="post" onsubmit="submitForm(); return validateEditDataElementCategoryCombo()">
-  <div style="display:inline">
-  <input type="hidden" id="dataElementCategoryComboId" name="dataElementCategoryComboId" value="$dataElementCategoryCombo.id">
-  </div>
+  <input type="hidden" id="id" name="id" value="$dataElementCategoryCombo.id">
   
   <table id="detailsList">
     <thead>
@@ -15,7 +13,7 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="nameField" name="nameField" style="width:20em" value="$encoder.htmlEncode( $dataElementCategoryCombo.name )"></td>
+        <td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $dataElementCategoryCombo.name )"></td>
       </tr>      
       <tr>
       	<td colspan="2" style="height:15px"></td>
