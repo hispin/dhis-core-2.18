@@ -34,12 +34,12 @@
   <tr>
   	<td valign="top">
   	  <textarea id="formula" name="formula" cols="30" rows="12" style="width:250px; height:180px" wrap="virtual" onkeyup="validate( 'formula', 'aggregationOperator' )">$encoder.htmlEncode( $formula )</textarea><br>
-  	  <a href="#" onclick="insertText( 'formula', '(', 'aggregationOperator' )"><img src="images/left_parent.png" alt="$i18n.getString( "left_brackets" )"></a>
-	  <a href="#" onclick="insertText( 'formula', ')', 'aggregationOperator' )"><img src="images/right_parent.png" alt="$i18n.getString( "right_brackets" )"></a>
-	  <a href="#" onclick="insertText( 'formula', '*', 'aggregationOperator' )"><img src="images/multiply.png" alt="$i18n.getString( "multiply" )"></a>
-	  <a href="#" onclick="insertText( 'formula', '/', 'aggregationOperator' )"><img src="images/divide.png" alt="$i18n.getString( "divide" )"></a>
-	  <a href="#" onclick="insertText( 'formula', '+', 'aggregationOperator' )"><img src="images/plus.png" alt="$i18n.getString( "plus" )"></a>
-	  <a href="#" onclick="insertText( 'formula', '-', 'aggregationOperator' )"><img src="images/minus.png" alt="$i18n.getString( "minus" )"></a>
+  	  <a href="#" onclick="insertText( 'formula', '(', 'aggregationOperator' )"><img src="../images/left_parent.png" alt="$i18n.getString( "left_brackets" )"></a>
+	  <a href="#" onclick="insertText( 'formula', ')', 'aggregationOperator' )"><img src="../images/right_parent.png" alt="$i18n.getString( "right_brackets" )"></a>
+	  <a href="#" onclick="insertText( 'formula', '*', 'aggregationOperator' )"><img src="../images/multiply.png" alt="$i18n.getString( "multiply" )"></a>
+	  <a href="#" onclick="insertText( 'formula', '/', 'aggregationOperator' )"><img src="../images/divide.png" alt="$i18n.getString( "divide" )"></a>
+	  <a href="#" onclick="insertText( 'formula', '+', 'aggregationOperator' )"><img src="../images/plus.png" alt="$i18n.getString( "plus" )"></a>
+	  <a href="#" onclick="insertText( 'formula', '-', 'aggregationOperator' )"><img src="../images/minus.png" alt="$i18n.getString( "minus" )"></a>
 	</td>
 	<td></td>
   	<td valign="top">

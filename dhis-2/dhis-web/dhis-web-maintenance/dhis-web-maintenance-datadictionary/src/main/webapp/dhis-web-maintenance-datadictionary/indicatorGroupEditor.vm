@@ -50,21 +50,21 @@
 	</tr>
 	<tr>
 		<td>			
-			<a href="javascript:sortList( 'indicatorGroups', 'ASC' );"><img align="absmiddle" src="images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
-			<a href="javascript:sortList( 'indicatorGroups', 'DES' );"><img align="absmiddle" src="images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>			
+			<a href="javascript:sortList( 'indicatorGroups', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
+			<a href="javascript:sortList( 'indicatorGroups', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>			
 			<input type="button" value="$i18n.getString( 'new' )" onclick="javascript:showAddIndicatorGroupForm()" style="width:70px"><input 
 			       type="button" value="$i18n.getString( 'rename' )" onclick="javascript:showRenameIndicatorGroupForm()" style="width:70px"><input 
 			       type="button" value="$i18n.getString( 'delete' )" onclick="javascript:deleteIndicatorGroup()" style="width:70px">
 		</td>
 		<td>
-			<a href="javascript:sortList( 'selectedIndicatoss', 'ASC' );"><img align="absmiddle" src="images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
-			<a href="javascript:sortList( 'selectedIndicatoss', 'DES' );"><img align="absmiddle" src="images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>			
+			<a href="javascript:sortList( 'selectedIndicatoss', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
+			<a href="javascript:sortList( 'selectedIndicatoss', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>			
 			<input type="button" value="$i18n.getString( 'update_indicator_group_member' )" onclick="javascript:updateIndicatorGroupMembers()">
 		</td>
 		<td></td>
 		<td>
-			<a href="javascript:sortList( 'availableIndicators', 'ASC' );"><img align="absmiddle" src="images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
-			<a href="javascript:sortList( 'availableIndicators', 'DES' );"><img align="absmiddle" src="images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>						
+			<a href="javascript:sortList( 'availableIndicators', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>
+			<a href="javascript:sortList( 'availableIndicators', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"></a>						
 		</td>
 		
 		
