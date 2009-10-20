@@ -260,6 +260,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.dataelement.OptionsCategoriesDefaultSortOrderPopulator">
     <property name="statementManager" ref="statementManager"/>
     <property name="runlevel" value="1"/>
+	<property name="skipInTests" value="true"/>
   </bean>
 	
   <bean id="org.hisp.dhis.expression.MultiDimensionExpressionUpgrader"
