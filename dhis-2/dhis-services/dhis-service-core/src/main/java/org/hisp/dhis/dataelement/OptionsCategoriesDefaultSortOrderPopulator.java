@@ -27,6 +27,14 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,7 +48,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OptionsCategoriesDefaultSortOrderPopulator
     extends AbstractStartupRoutine
 {
-    private static final Log LOG = LogFactory.getLog( OptionsCategoriesDefaultSortOrderPopulator.class );
+    private static final Log log = LogFactory.getLog( OptionsCategoriesDefaultSortOrderPopulator.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -60,16 +68,151 @@ public class OptionsCategoriesDefaultSortOrderPopulator
     @Transactional
     public void execute()
     {
-        statementManager.getHolder().executeUpdate( "update categoryoptioncombos_categoryoptions set sort_order=categoryoptionid where sort_order is NULL or sort_order=0" );
+        //categories_categoryoptions
+        int c1 = executeSql( "UPDATE categories_categoryoptions SET sort_order=0 WHERE sort_order is NULL OR sort_order=0" ); // set to 0 temporarily
+        if ( c1 > 0 )
+        {
+            updateSortOrder( "categories_categoryoptions", "categoryid", "categoryoptionid" );
+        }
+        executeSql( "ALTER TABLE categories_categoryoptions DROP CONSTRAINT categories_categoryoptions_pkey" );
+        executeSql( "ALTER TABLE categories_categoryoptions ADD CONSTRAINT categories_categoryoptions_pkey PRIMARY KEY (categoryid, sort_order)" );
+
+        //categorycombos_categories
+        int c2 = executeSql( "update categorycombos_categories SET sort_order=0 where sort_order is NULL OR sort_order=0" ); // set to 0 temporarily
+        if ( c2 > 0 )
+        {
+            updateSortOrder( "categorycombos_categories", "categorycomboid", "categoryid" );
+        }
+        executeSql( "ALTER TABLE categorycombos_categories DROP CONSTRAINT categorycombos_categories_pkey" );
+        executeSql( "ALTER TABLE categorycombos_categories ADD CONSTRAINT categorycombos_categories_pkey PRIMARY KEY (categorycomboid, sort_order)" );
         
-        LOG.info( "Updated categoryoptioncombos_categoryoptions" );
+        //categorycombos_optioncombos
+        executeSql( "ALTER TABLE categorycombos_optioncombos DROP CONSTRAINT categorycombos_optioncombos_pkey" );
+        executeSql( "ALTER TABLE categorycombos_optioncombos ADD CONSTRAINT categorycombos_optioncombos_pkey PRIMARY KEY (categoryoptioncomboid)" );
+        executeSql( "ALTER TABLE categorycombos_optioncombos DROP CONSTRAINT fk4bae70f697e49675" );
         
-        statementManager.getHolder().executeUpdate( "update categorycombos_categories set sort_order=categoryid where sort_order is NULL or sort_order=0" );
+        //categoryoptioncombo
+        executeSql( "ALTER TABLE categoryoptioncombo DROP COLUMN displayorder" );
         
-        LOG.info( "Updated categorycombos_categories" );       
+        //categoryoptioncombos_categoryoptions
+        int c3 = executeSql( "update categoryoptioncombos_categoryoptions SET sort_order=0 where sort_order is NULL OR sort_order=0" ); // set to 0 temporarily
+        if ( c3 > 0 )
+        {
+            updateSortOrder( "categoryoptioncombos_categoryoptions", "categoryoptioncomboid", "categoryoptionid" );
+        }
+        executeSql( "ALTER TABLE categoryoptioncombos_categoryoptions DROP CONSTRAINT categoryoptioncombos_categoryoptions_pkey" );
+        executeSql( "ALTER TABLE categoryoptioncombos_categoryoptions ADD CONSTRAINT categoryoptioncombos_categoryoptions_pkey PRIMARY KEY (categoryoptioncomboid, sort_order)" );
         
-        statementManager.getHolder().executeUpdate( "update categories_categoryoptions set sort_order=categoryoptionid where sort_order is NULL or sort_order=0" );
+        //dataelementcategoryoption
+        executeSql( "ALTER TABLE dataelementcategoryoption DROP COLUMN shortname" );
+        executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT fk_dataelement_categoryid" );
+        executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_name_key" );
+        executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_shortname_key" );
         
-        LOG.info( "Updated categories_categoryoptions" );  
+        log.info( "Updated Category sort order and primary keys" );  
+    }
+    
+    private List<Integer> getDistinctIdList( String table, String col1 )
+    {       
+        StatementHolder holder = statementManager.getHolder();
+
+        List<Integer> distinctIds = new ArrayList<Integer>();
+        
+        try
+        {
+            Statement statement = holder.getStatement();
+            
+            ResultSet resultSet = statement.executeQuery( "SELECT DISTINCT " + col1 + " FROM " + table );
+            
+            while ( resultSet.next() )
+            {
+                distinctIds.add( resultSet.getInt( 1 ) );
+            }
+        }
+        catch ( Exception ex )
+        {
+            log.error( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+        
+        return distinctIds;
+    }
+    
+    private Map<Integer, List<Integer>> getIdMap( String table, String col1, String col2, List<Integer> distinctIds )
+    {
+        StatementHolder holder = statementManager.getHolder();
+        
+        Map<Integer, List<Integer>> idMap = new HashMap<Integer, List<Integer>>();
+        
+        try
+        {
+            Statement statement = holder.getStatement();
+            
+            for ( Integer distinctId : distinctIds )
+            {
+                List<Integer> foreignIds = new ArrayList<Integer>();
+                
+                ResultSet resultSet = statement.executeQuery( "SELECT " + col2 + " FROM " + table + " WHERE " + col1 + "=" + distinctId );
+                
+                while ( resultSet.next() )
+                {
+                    foreignIds.add( resultSet.getInt( 1 ) );
+                }
+                
+                idMap.put( distinctId, foreignIds );
+            }
+        }
+        catch ( Exception ex )
+        {
+            log.error( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+        
+        return idMap;
+    }
+
+    private void updateSortOrder( String table, String col1, String col2 )
+    {
+        List<Integer> distinctIds = getDistinctIdList( table, col1 );
+        
+        log.info( "Got distinct ids: " + distinctIds.size() );
+        
+        Map<Integer, List<Integer>> idMap = getIdMap( table, col1, col2, distinctIds );
+
+        log.info( "Got id map: " + idMap.size() );
+        
+        for ( Integer distinctId : idMap.keySet() )
+        {
+            int sortOrder = 1;
+            
+            for ( Integer foreignId : idMap.get( distinctId ) )
+            {
+                String sql = "UPDATE " + table + " SET sort_order=" + sortOrder++ + " WHERE " + col1 + "=" + distinctId + " AND " + col2 + "=" + foreignId;
+            
+                int count = executeSql( sql );
+                
+                log.info( "Executed: " + count + " - " + sql );
+            }
+        }
+    }
+    
+    private int executeSql( String sql )
+    {
+        try
+        {
+            return statementManager.getHolder().executeUpdate( sql );
+        }
+        catch ( Exception ex )
+        {
+            log.debug( ex );
+            
+            return -1;
+        }
     }
 }
