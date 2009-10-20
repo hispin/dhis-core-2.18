@@ -13,7 +13,7 @@
       class="org.hisp.dhis.dd.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/index.vm</param>
-      <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
+      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
     </action>
     
     <!-- DataElement -->
@@ -22,7 +22,7 @@
       class="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/dataElement.vm</param>
-      <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
+      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/dataElement.js,javascript/dataDictionary.js,javascript/filterTable.js</param>
     </action>
     
@@ -107,7 +107,7 @@
       class="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction">
       <result name="success" type="velocity">/main.vm</result>
 	  <param name="page">/dhis-web-maintenance-datadictionary/dataElementGroupEditor.vm</param>
-	  <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
+	  <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 	  <param name="javascripts">javascript/dataElementGroupEditor.js</param>
     </action>
 	
@@ -146,7 +146,7 @@
       class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/dataElementGroup.vm</param>
-      <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
+      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/dataElementGroup.js,javascript/filterTable.js</param>
     </action>
     
@@ -208,7 +208,7 @@
       class="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction">
       <result name="success" type="velocity">/main.vm</result>
 	  <param name="page">/dhis-web-maintenance-datadictionary/indicatorGroupEditor.vm</param>
-	  <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
+	  <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 	  <param name="javascripts">javascript/indicatorGroupEditor.js</param>
 	  <param name="stylesheets">style/indicatorGroupEditor.css</param>
     </action>
@@ -248,7 +248,7 @@
       class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/indicatorGroup.vm</param>
-      <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
+      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/indicatorGroup.js,javascript/filterTable.js</param>
     </action>
     
@@ -312,7 +312,7 @@
       class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/indicatorType.vm</param>
-      <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
+      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/indicatorType.js</param>
     </action>
     
@@ -372,7 +372,7 @@
       class="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/indicator.vm</param>
-      <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
+      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/indicator.js,javascript/dataDictionary.js,javascript/filterTable.js,javascript/denum.js</param>
     </action>
     
@@ -483,7 +483,7 @@
       class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/dataDictionary.vm</param>
-      <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
+      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/dataDictionary.js</param>
     </action>
 		
@@ -654,7 +654,7 @@
       class="org.hisp.dhis.dd.action.category.GetDataElementCategoryListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/category.vm</param>
-      <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
+      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/category.js,javascript/filterTable.js</param>
     </action>
     
@@ -715,7 +715,7 @@
       class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/categoryCombo.vm</param>
-      <param name="menu">/dhis-web-maintenance-datadictionary/menu/MainMenu.vm</param>
+      <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/categoryCombo.js,javascript/filterTable.js</param>
     </action>
 	  
