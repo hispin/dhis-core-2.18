@@ -11,7 +11,7 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="nameField" name="nameField" style="width:20em"></td>
+        <td><input type="text" id="name" name="name" style="width:20em"></td>
       </tr>      
       <tr>
       	<td colspan="2" style="height:15px"></td>

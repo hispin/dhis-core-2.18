@@ -79,50 +79,55 @@ function addCategoryOptionToCategory()
 
 function validateAddDataElementCategory()
 {
-  var request = new Request();
-  request.setResponseTypeXML( 'message' );
-  request.setCallbackSuccess( addDataElementCategoryValidationCompleted );
+    var request = new Request();
+    request.setResponseTypeXML( 'message' );
+    request.setCallbackSuccess( addDataElementCategoryValidationCompleted );
 
-  var requestString = 'validateDataElementCategory.action?name=' + document.getElementById( 'name' ).value;
-  
-  requestString += "&" + getParamString( 'categoryOptionNames' );
+    if ( document.getElementById( 'categoryOptionNames' ).options.length == 0 )
+    {
+        setMessage( i18n_must_include_category_option );
+        return;
+    }
 
-  request.send( requestString );
+    var requestString = 'validateDataElementCategory.action?name=' + htmlEncode( document.getElementById( 'name' ).value );
   
-  return false;
+    requestString += "&" + getParamString( 'categoryOptionNames' );
+
+    request.send( requestString );
+  
+    return false;
 }
 
 function addDataElementCategoryValidationCompleted( messageElement )
 {
-  var type = messageElement.getAttribute( 'type' );
-  var message = messageElement.firstChild.nodeValue;
+    var type = messageElement.getAttribute( 'type' );
+    var message = messageElement.firstChild.nodeValue;
 
-  if ( type == 'success' )
-  {
-  	  selectAllById( 'categoryOptionNames' );
-      document.forms['addDataElementCategoryForm'].submit();
-  }
-  
-  else if ( type == 'input' )
-  {
-    document.getElementById( 'message' ).innerHTML = message;
-    document.getElementById( 'message' ).style.display = 'block';
-  }
+    if ( type == 'success' )
+    {
+  	    selectAllById( 'categoryOptionNames' );
+        document.getElementById( 'addDataElementCategoryForm' ).submit();
+    }  
+    else if ( type == 'input' )
+    {
+  	    setMessage( message );
+    }
 }
 
 function validateEditDataElementCategory()
 {
-  var request = new Request();
-  request.setResponseTypeXML( 'message' );
-  request.setCallbackSuccess( editDataElementCategoryValidationCompleted );
+    var request = new Request();
+    request.setResponseTypeXML( 'message' );
+    request.setCallbackSuccess( editDataElementCategoryValidationCompleted );
+  
+    var requestString = 'validateDataElementCategory.action?id=' + document.getElementById( 'id' ).value + 
+        '&name=' + htmlEncode( document.getElementById( 'name' ).value );
 
-  var requestString = 'validateDataElementCategory.action?name=' + document.getElementById( 'name' ).value;
-
-  requestString += "&" + getParamString( 'categoryOptionNames' );
-
-  request.send( requestString );
+    requestString += "&" + getParamString( 'categoryOptions' );
+  
+    request.send( requestString );
     
-  return false;
+    return false;
 }
 
 function editDataElementCategoryValidationCompleted( messageElement )
@@ -132,13 +137,11 @@ function editDataElementCategoryValidationCompleted( messageElement )
 
     if ( type == 'success' )
     {
-        selectAllById( 'categoryOptionNames' );
-        document.forms['editDataElementCategoryForm'].submit();
+        selectAllById( 'categoryOptions' );
+        document.getElementById( 'editDataElementCategoryForm' ).submit();
     }
     else if ( type == 'input' )
     {
-      document.getElementById( 'message' ).innerHTML = message;
-      document.getElementById( 'message' ).style.display = 'block';
+        setMessage( message );
     }
 }
-

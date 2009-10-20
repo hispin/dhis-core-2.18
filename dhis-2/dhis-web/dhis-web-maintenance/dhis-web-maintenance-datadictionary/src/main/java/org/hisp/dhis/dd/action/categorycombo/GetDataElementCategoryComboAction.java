@@ -92,8 +92,7 @@ public class GetDataElementCategoryComboAction
 
     public String execute()
     {
-        dataElementCategoryCombo = dataElementCategoryService
-            .getDataElementCategoryCombo( id );
+        dataElementCategoryCombo = dataElementCategoryService.getDataElementCategoryCombo( id );
         
         dataElementCategories = dataElementCategoryCombo.getCategories();
         

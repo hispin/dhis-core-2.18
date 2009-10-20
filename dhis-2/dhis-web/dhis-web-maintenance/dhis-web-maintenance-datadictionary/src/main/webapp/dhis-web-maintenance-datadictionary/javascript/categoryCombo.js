@@ -1,10 +1,10 @@
 
-function showDataElementCategoryComboDetails( dataElementCategoryComboId )
+function showDataElementCategoryComboDetails( categoryComboId )
 {
     var request = new Request();
     request.setResponseTypeXML( 'dataElementCategoryCombo' );
     request.setCallbackSuccess( dataElementCategoryComboReceived );
-    request.send( 'getDataElementCategoryCombo.action?dataElementCategoryComboId=' + dataElementCategoryComboId );
+    request.send( 'getDataElementCategoryCombo.action?id=' + categoryComboId );
 }
 
 function dataElementCategoryComboReceived( dataElementCategoryComboElement )
@@ -19,14 +19,14 @@ function dataElementCategoryComboReceived( dataElementCategoryComboElement )
 // Delete Category
 // -----------------------------------------------------------------------------
 
-function removeDataElementCategoryCombo( dataElementCategoryComboId, dataElementCategoryComboName )
+function removeDataElementCategoryCombo( categoryComboId, categoryComboName )
 {
-  var result = window.confirm( i18n_confirm_delete + '\n\n' + dataElementCategoryComboName );
+    var result = window.confirm( i18n_confirm_delete + '\n\n' + categoryComboName );
 
-  if ( result )
-  {
-    window.location.href = 'removeDataElementCategoryCombo.action?dataElementCategoryComboId=' + dataElementCategoryComboId;
-  }
+    if ( result )
+    {
+        window.location.href = 'removeDataElementCategoryCombo.action?id=' + categoryComboId;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -35,68 +35,64 @@ function removeDataElementCategoryCombo( dataElementCategoryComboId, dataElement
 
 function validateAddDataElementCategoryCombo()
 {
-  var request = new Request();
-  request.setResponseTypeXML( 'message' );
-  request.setCallbackSuccess( addDataElementCategoryComboValidationCompleted );
+    var request = new Request();
+    request.setResponseTypeXML( 'message' );
+    request.setCallbackSuccess( addDataElementCategoryComboValidationCompleted );
 
-  var requestString = 'validateDataElementCategoryCombo.action';  
+    var requestString = 'validateDataElementCategoryCombo.action';  
 
-  var selectedList = document.getElementById( 'selectedList' );
+    var selectedList = document.getElementById( 'selectedList' );
   
-  var params = 'name=' + document.getElementById( 'nameField' ).value;
+    var params = 'name=' + htmlEncode( document.getElementById( 'name' ).value );
 
-  for ( var i = 0; i < selectedList.options.length; ++i)
-  {  	
-  	params += '&selectedCategories=' + selectedList.options[i].value;
-  }
+    for ( var i = 0; i < selectedList.options.length; ++i)
+    {  	
+        params += '&selectedCategories=' + selectedList.options[i].value;
+    }
   
-  request.sendAsPost( params );
-    
-  request.send( requestString );
+    request.sendAsPost( params );    
+    request.send( requestString );
   
-  return false;
+    return false;
 }
 
 function addDataElementCategoryComboValidationCompleted( messageElement )
 {
-  var type = messageElement.getAttribute( 'type' );
-  var message = messageElement.firstChild.nodeValue;
+    var type = messageElement.getAttribute( 'type' );
+    var message = messageElement.firstChild.nodeValue;
 
-  if ( type == 'success' )
-  {           
-      document.forms['addDataElementCategoryComboForm'].submit();
-  }
-  
-  else if ( type == 'input' )
-  {
-    document.getElementById( 'message' ).innerHTML = message;
-    document.getElementById( 'message' ).style.display = 'block';
-  }
+    if ( type == 'success' )
+    {           
+        document.getElementById( 'addDataElementCategoryComboForm' ).submit();
+    }  
+    else if ( type == 'input' )
+    {
+  	    setMessage( message );
+    }
 }
 
 function validateEditDataElementCategoryCombo()
 {
-  var request = new Request();
-  request.setResponseTypeXML( 'message' );
-  request.setCallbackSuccess( editDataElementCategoryComboValidationCompleted );
+    var request = new Request();
+    request.setResponseTypeXML( 'message' );
+    request.setCallbackSuccess( editDataElementCategoryComboValidationCompleted );
   
-  var requestString = 'validateDataElementCategoryCombo.action';
+    var requestString = 'validateDataElementCategoryCombo.action';
     
-  var selectedList = document.getElementById( 'selectedList' );
+    var selectedList = document.getElementById( 'selectedList' );
   
-  var params = 'name=' + document.getElementById( 'nameField' ).value;
-  	  params += '&dataElementCategoryComboId=' + document.getElementById( 'dataElementCategoryComboId' ).value;
+    var params = 'id=' + document.getElementById( 'id' ).value;
+  	params += '&name=' + htmlEncode( document.getElementById( 'name' ).value );
 
-  for ( var i = 0; i < selectedList.options.length; ++i)
-  {   	
-  	params += '&selectedCategories=' + selectedList.options[i].value;
-  }
+    for ( var i = 0; i < selectedList.options.length; ++i)
+    {   	
+        params += '&selectedCategories=' + selectedList.options[i].value;
+    }
   
-  request.sendAsPost( params );
-    
-  request.send( requestString );
+    request.sendAsPost( params );    
+    request.send( requestString );
       
-  return false;
+    return false;
 }
 
 function editDataElementCategoryComboValidationCompleted( messageElement )
@@ -106,13 +102,11 @@ function editDataElementCategoryComboValidationCompleted( messageElement )
 
     if ( type == 'success' )
     {
-        // Both edit and add form has id='dataSetForm'
-        document.forms['editDataElementCategoryComboForm'].submit();
+        document.getElementById( 'editDataElementCategoryComboForm' ).submit();
     }
     else if ( type == 'input' )
     {
-      document.getElementById( 'message' ).innerHTML = message;
-      document.getElementById( 'message' ).style.display = 'block';
+    	setMessage( message );
     }
 }
 

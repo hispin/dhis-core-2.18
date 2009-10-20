@@ -80,8 +80,6 @@ public class GetDataElementCategoryAction
     {
         dataElementCategory = dataElementCategoryService.getDataElementCategory( id );
         
-        System.out.println( "options " + dataElementCategory.getCategoryOptions().size() );
-        
         return SUCCESS;
     }
 }
