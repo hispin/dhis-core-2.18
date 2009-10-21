@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.common.Dimension;
+import org.hisp.dhis.common.DimensionOption;
 import org.hisp.dhis.common.IdentifiableObject;
 
 
@@ -47,8 +48,7 @@ public class DataElementCategory
     extends IdentifiableObject implements Dimension
 {
     public static final String DEFAULT_NAME = "default";
-    
-    
+        
     private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
 
     // -------------------------------------------------------------------------
@@ -68,6 +68,28 @@ public class DataElementCategory
     {
         this.name = name;
         this.categoryOptions = categoryOptions;
+    }
+
+    // -------------------------------------------------------------------------
+    // Dimension
+    // -------------------------------------------------------------------------
+    
+    public List<DataElementCategoryOption> getDimensionOptions()
+    {
+        return categoryOptions;
+    }
+    
+    public DimensionOption getDimensionOption( Object object )
+    {
+        for ( DataElementCategoryOption categoryOption : categoryOptions )
+        {
+            if ( categoryOption.getCategoryOptionCombos().contains( object ) )
+            {
+                return categoryOption;
+            }
+        }
+        
+        return null;
     }
     
     // -------------------------------------------------------------------------

@@ -123,6 +123,11 @@ public class DataElement
      */
     private List<Integer> aggregationLevels = new ArrayList<Integer>();
     
+    /**
+     * A Set of DataElementGroupSets.
+     */
+    private Set<DataElementGroupSet> groupSets = new HashSet<DataElementGroupSet>();
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -131,17 +136,72 @@ public class DataElement
     {
     }
     
+    public DataElement( String name )
+    {
+        this.name = name;
+    }
+    
     // -------------------------------------------------------------------------
     // Dimension
     // -------------------------------------------------------------------------
 
-    public static final Dimension DIMENSION = new Dimension()
+    public static Dimension DIMENSION = new DataElementDimension();
+    
+    public static class DataElementDimension
+        implements Dimension
     {
+        private static final String NAME = "DataElement";
+        
         public String getName()
         {
-            return "DataElement";
+            return NAME;
         }
-    };
+        
+        public List<? extends DimensionOption> getDimensionOptions()
+        {
+            return null;
+        }
+
+        public DimensionOption getDimensionOption( Object object )
+        {
+            return null;
+        }
+        
+        @Override
+        public boolean equals( Object o )
+        {
+            if ( this == o )
+            {
+                return true;
+            }
+            
+            if ( o == null )
+            {
+                return false;
+            }
+            
+            if ( !( o instanceof DataElementDimension ) )
+            {
+                return false;
+            }
+            
+            final DataElementDimension other = (DataElementDimension) o;
+            
+            return NAME.equals( other.getName() );
+        }
+        
+        @Override
+        public int hashCode()
+        {
+            return NAME.hashCode();
+        }
+
+        @Override
+        public String toString()
+        {
+            return "[" + NAME + "]";
+        }
+    }
     
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
@@ -363,5 +423,15 @@ public class DataElement
     public void setAggregationLevels( List<Integer> aggregationLevels )
     {
         this.aggregationLevels = aggregationLevels;
+    }
+
+    public Set<DataElementGroupSet> getGroupSets()
+    {
+        return groupSets;
+    }
+
+    public void setGroupSets( Set<DataElementGroupSet> groupSets )
+    {
+        this.groupSets = groupSets;
     }
 }

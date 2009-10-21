@@ -29,6 +29,7 @@ package org.hisp.dhis.period;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import org.hisp.dhis.common.Dimension;
 import org.hisp.dhis.common.DimensionOption;
@@ -81,13 +82,63 @@ public class Period
     // Dimension
     // -------------------------------------------------------------------------
 
-    public static final Dimension DIMENSION = new Dimension()
+    public static Dimension DIMENSION = new PeriodDimension();
+    
+    public static class PeriodDimension
+        implements Dimension
     {
+        private static final String NAME = "Period";
+        
         public String getName()
         {
-            return "Period";
+            return NAME;
         }
-    };
+        
+        public List<? extends DimensionOption> getDimensionOptions()
+        {
+            return null;
+        }
+        
+        public DimensionOption getDimensionOption( Object object )
+        {
+            return null;
+        }
+        
+        @Override
+        public boolean equals( Object o )
+        {
+            if ( this == o )
+            {
+                return true;
+            }
+            
+            if ( o == null )
+            {
+                return false;
+            }
+            
+            if ( !( o instanceof PeriodDimension ) )
+            {
+                return false;
+            }
+            
+            final PeriodDimension other = (PeriodDimension) o;
+            
+            return NAME.equals( other.getName() );
+        }
+        
+        @Override
+        public int hashCode()
+        {
+            return NAME.hashCode();
+        }
+
+        @Override
+        public String toString()
+        {
+            return "[" + NAME + "]";
+        }
+    }
     
     // -------------------------------------------------------------------------
     // hashCode, equals and toString

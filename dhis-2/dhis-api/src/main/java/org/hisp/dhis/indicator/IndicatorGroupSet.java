@@ -1,4 +1,4 @@
-package org.hisp.dhis.source;
+package org.hisp.dhis.indicator;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,107 +27,111 @@ package org.hisp.dhis.source;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.common.Dimension;
 import org.hisp.dhis.common.DimensionOption;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dataset.DataSet;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: Source.java 5277 2008-05-27 15:48:42Z larshelg $
+ * An IndicatorGroupSet is a set of IndicatorGroups. It is by default exclusive,
+ * in the sense that an Indicator can only be a member of one or zero of the
+ * IndicatorGroups in a IndicatorGroupSet. 
+ * 
+ * @author Lars Helge Overland
  */
-public abstract class Source
-    extends IdentifiableObject implements DimensionOption
+public class IndicatorGroupSet
+    extends IdentifiableObject
+    implements Dimension
 {
-    protected Set<DataSet> dataSets = new HashSet<DataSet>();
+    private List<IndicatorGroup> members = new ArrayList<IndicatorGroup>();
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    public IndicatorGroupSet()
+    {   
+    }
+
+    public IndicatorGroupSet( String name )
+    {
+        this.name = name;
+    }
+
+    // -------------------------------------------------------------------------
+    // equals and hashCode
+    // -------------------------------------------------------------------------
+
+    @Override
+    public int hashCode()
+    {
+        return name.hashCode();
+    }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+
+        if ( o == null )
+        {
+            return false;
+        }
+
+        if ( !( o instanceof IndicatorGroupSet ) )
+        {
+            return false;
+        }
+
+        final IndicatorGroupSet other = (IndicatorGroupSet) o;
+
+        return name.equals( other.getName() );
+    }
+
+    @Override
+    public String toString()
+    {
+        return "[" + name + "]";
+    }
 
     // -------------------------------------------------------------------------
     // Dimension
     // -------------------------------------------------------------------------
 
-    public static Dimension DIMENSION = new SourceDimension();
-    
-    public static class SourceDimension
-        implements Dimension
+    public List<? extends DimensionOption> getDimensionOptions()
     {
-        private static final String NAME = "Source";
-        
-        public String getName()
-        {
-            return NAME;
-        }
-        
-        public List<? extends DimensionOption> getDimensionOptions()
-        {
-            return null;
-        }
-
-        public DimensionOption getDimensionOption( Object object )
-        {
-            return null;
-        }
-        
-        @Override
-        public boolean equals( Object o )
-        {
-            if ( this == o )
-            {
-                return true;
-            }
-            
-            if ( o == null )
-            {
-                return false;
-            }
-            
-            if ( !( o instanceof SourceDimension ) )
-            {
-                return false;
-            }
-            
-            final SourceDimension other = (SourceDimension) o;
-            
-            return NAME.equals( other.getName() );
-        }
-        
-        @Override
-        public int hashCode()
-        {
-            return NAME.hashCode();
-        }
-
-        @Override
-        public String toString()
-        {
-            return "[" + NAME + "]";
-        }
+        return members;
     }
     
-    // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    public abstract int hashCode();
-
-    public abstract boolean equals( Object o );
+    public DimensionOption getDimensionOption( Object object )
+    {        
+        for ( IndicatorGroup group : members )
+        {
+            if ( group.getMembers().contains( object ) )
+            {
+                return group;
+            }
+        }
+        
+        return null;
+    }
     
-    public abstract String toString();
-
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public Set<DataSet> getDataSets()
+    public List<IndicatorGroup> getMembers()
     {
-        return dataSets;
+        return members;
     }
 
-    public void setDataSets( Set<DataSet> dataSets )
+    public void setMembers( List<IndicatorGroup> members )
     {
-        this.dataSets = dataSets;
-    }
+        this.members = members;
+    }    
 }

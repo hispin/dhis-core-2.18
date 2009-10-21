@@ -37,6 +37,7 @@ import org.hisp.dhis.common.DimensionOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 
@@ -141,7 +142,7 @@ public class DataValue
     }
 
     // -------------------------------------------------------------------------
-    // Logic
+    // Dimension
     // -------------------------------------------------------------------------
 
     public Map<Dimension, DimensionOption> getDimensions()
@@ -152,12 +153,24 @@ public class DataValue
         dimensions.put( Period.DIMENSION, period );
         dimensions.put( Source.DIMENSION, source );
         
-        if ( !optionCombo.isDefault() )
+        if ( optionCombo != null && !optionCombo.isDefault() )
         {
             for ( DataElementCategoryOption categoryOption : optionCombo.getCategoryOptions() )
             {
                 dimensions.put( categoryOption.getCategory(), categoryOption );
             }
+        }
+        
+        return dimensions;
+    }
+    
+    public Map<Dimension, DimensionOption> getDimensions( DataElement dataElement )
+    {
+        Map<Dimension, DimensionOption> dimensions = getDimensions();
+                
+        for ( DataElementGroupSet groupSet : dataElement.getGroupSets() )
+        {
+            dimensions.put( groupSet, groupSet.getDimensionOption( this.dataElement ) );
         }
         
         return dimensions;
