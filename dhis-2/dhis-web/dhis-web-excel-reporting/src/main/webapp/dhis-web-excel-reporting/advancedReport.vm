@@ -58,6 +58,8 @@
 <br>
 <hr>
 <p>
+<input type="button" value='$i18n.getString( "preview_report" )' onclick="javascript: openPreviewReport();" />
+
 <input name="generate_report" id="generate_report"  type="button" onClick="generateAdvancedReportExcel()" value='$i18n.getString( "generate_report" )' />
 </p>
 <span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)">
