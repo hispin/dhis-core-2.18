@@ -27,7 +27,16 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
+/**
+ * @author Lars Helge Overland
+ */
 public interface Dimension
 {
     String getName();
+    
+    List<? extends DimensionOption> getDimensionOptions();
+    
+    DimensionOption getDimensionOption( Object object );
 }

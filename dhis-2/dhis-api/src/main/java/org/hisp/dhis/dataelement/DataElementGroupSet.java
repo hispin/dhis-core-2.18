@@ -1,4 +1,4 @@
-package org.hisp.dhis.source;
+package org.hisp.dhis.dataelement;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,107 +27,112 @@ package org.hisp.dhis.source;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.common.Dimension;
 import org.hisp.dhis.common.DimensionOption;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dataset.DataSet;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: Source.java 5277 2008-05-27 15:48:42Z larshelg $
+ * DataElementGroupSet is a set of DataElementGroups. It is by default exclusive,
+ * in the sense that a DataElement can only be a member of one or zero of the 
+ * DataElementGroups in a DataElementGroupSet.
+ * 
+ * @author Lars Helge Overland
  */
-public abstract class Source
-    extends IdentifiableObject implements DimensionOption
+public class DataElementGroupSet
+    extends IdentifiableObject
+    implements Dimension
 {
-    protected Set<DataSet> dataSets = new HashSet<DataSet>();
+    private List<DataElementGroup> members = new ArrayList<DataElementGroup>();
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    public DataElementGroupSet()
+    {   
+    }
+    
+    public DataElementGroupSet( String name )
+    {
+        this.name = name;
+    }
 
     // -------------------------------------------------------------------------
     // Dimension
     // -------------------------------------------------------------------------
 
-    public static Dimension DIMENSION = new SourceDimension();
-    
-    public static class SourceDimension
-        implements Dimension
+    public List<? extends DimensionOption> getDimensionOptions()
     {
-        private static final String NAME = "Source";
-        
-        public String getName()
+        return members;
+    }
+    
+    public DimensionOption getDimensionOption( Object object )
+    {
+        for ( DataElementGroup group : members )
         {
-            return NAME;
-        }
-        
-        public List<? extends DimensionOption> getDimensionOptions()
-        {
-            return null;
-        }
-
-        public DimensionOption getDimensionOption( Object object )
-        {
-            return null;
-        }
-        
-        @Override
-        public boolean equals( Object o )
-        {
-            if ( this == o )
+            System.out.println( "group: " + group + " object " + object );
+            if ( group.getMembers().contains( object ) )
             {
-                return true;
+                return group;
             }
-            
-            if ( o == null )
-            {
-                return false;
-            }
-            
-            if ( !( o instanceof SourceDimension ) )
-            {
-                return false;
-            }
-            
-            final SourceDimension other = (SourceDimension) o;
-            
-            return NAME.equals( other.getName() );
         }
         
-        @Override
-        public int hashCode()
-        {
-            return NAME.hashCode();
-        }
-
-        @Override
-        public String toString()
-        {
-            return "[" + NAME + "]";
-        }
+        return null;
     }
     
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
+    // equals and hashCode
     // -------------------------------------------------------------------------
 
-    public abstract int hashCode();
+    @Override
+    public int hashCode()
+    {
+        return name.hashCode();
+    }
 
-    public abstract boolean equals( Object o );
-    
-    public abstract String toString();
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+
+        if ( o == null )
+        {
+            return false;
+        }
+
+        if ( !( o instanceof DataElementGroupSet ) )
+        {
+            return false;
+        }
+
+        final DataElementGroupSet other = (DataElementGroupSet) o;
+
+        return name.equals( other.getName() );
+    }
+
+    @Override
+    public String toString()
+    {
+        return "[" + name + "]";
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public Set<DataSet> getDataSets()
+    public List<DataElementGroup> getMembers()
     {
-        return dataSets;
+        return members;
     }
 
-    public void setDataSets( Set<DataSet> dataSets )
+    public void setMembers( List<DataElementGroup> members )
     {
-        this.dataSets = dataSets;
-    }
+        this.members = members;
+    }    
 }

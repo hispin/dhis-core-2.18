@@ -27,6 +27,9 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 
@@ -59,6 +62,8 @@ public class Indicator
 
     private String url;
         
+    private Set<IndicatorGroupSet> groupSets = new HashSet<IndicatorGroupSet>();
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -238,5 +243,15 @@ public class Indicator
     public void setUrl( String url )
     {
         this.url = url;
+    }
+
+    public Set<IndicatorGroupSet> getGroupSets()
+    {
+        return groupSets;
+    }
+
+    public void setGroupSets( Set<IndicatorGroupSet> groupSets )
+    {
+        this.groupSets = groupSets;
     }
 }

@@ -27,6 +27,9 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/**
+ * @author Lars Helge Overland
+ */
 public interface DimensionOption
 {
     String getName();
