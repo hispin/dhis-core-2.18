@@ -49,11 +49,11 @@ import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 import org.hisp.dhis.reportexcel.utils.DateUtils;
-import org.hisp.dhis.system.util.TimeUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
+
 import com.opensymphony.xwork2.Action;
 
 /**
