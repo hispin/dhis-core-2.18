@@ -1,20 +1,24 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns = "http://maven.apache.org/POM/4.0.0" xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
   <groupId>org.hisp.dhis</groupId>
   <artifactId>dhis</artifactId>
   <version>2.0.3-SNAPSHOT</version>
-  
   <packaging>pom</packaging>
   <name>DHIS 2 - District Health Information System</name>
-  <url>http://www.hisp.info/confluence/display/DHIS2</url>
-  <description>The District Health Information System deals with registering,
+  <url>http://dhis2.com</url>
+  
+  <description>
+    The District Health Information System deals with registering,
     aggregating and reporting statistical health data. The goal is to allow users to analyze
     and use this data to guide local action. The system is based around an goals of empowering
-    users, by allowing them to decide what to register and report data for.</description>
-  
+    users, by allowing them to decide what to register and report data for.
+  </description>
+
+  <organization>
+    <name>HISP</name>
+    <url>http://hisp.info</url>
+  </organization>
+
   <modules>
     <module>dhis-api</module>
     <module>dhis-i18n</module>
@@ -23,73 +27,55 @@
     <module>dhis-support</module>
     <module>dhis-useradminandsecurity</module>
   </modules>
-  <!--
-  <repositories>
-    <repository>
-      <id>amplecode_maven2_repo</id>
-      <name>AmpleCode Maven 2 repository</name>
-      <url>http://www.amplecode.org/maven2</url>
-    </repository>
-  </repositories>
-  -->
-  <!--
-  <pluginRepositories>
-    <pluginRepository>
-      <id>dhis_maven2_repo</id>
-      <name>DHIS Maven 2 repository</name>
-      <url>http://www.hisp.info/maven2</url>
-    </pluginRepository>
-  </pluginRepositories>  
-  -->
+
+  <licenses>
+    <license>
+      <name>BSD</name>
+      <url>http://</url>
+    </license>
+  </licenses>
 
   <distributionManagement>
-    <site>
-      <id>dhis_site</id>
-      <url>scp://login.hisp.info/var/www/html/site</url>
-    </site>
     <repository>
-      <id>dhis_maven2_repo</id>
-      <url>scp://login.hisp.info/var/www/html/maven2</url>
+      <id></id>
+      <name>DHIS 2 Maven repository</name>
+      <url>scp://</url>
     </repository>
   </distributionManagement>
-  
+  <!--<repositories>
+  <repository>
+  <id>amplecode_maven2_repo</id>
+  <name>AmpleCode Maven 2 repository</name>
+  <url>http://www.amplecode.org/maven2</url>
+  </repository>
+  </repositories>
+  -->
+
   <issueManagement>
     <system>Trac</system>
-    <url>http://www.hisp.info/dhis2</url>
+    <url>https://launchpad.net/dhis2</url>
   </issueManagement>
-  
   <scm>
-    <connection>scm:svn:http://www.hisp.info/svn</connection>
-    <tag>HEAD</tag>
-    <url>http://www.hisp.info/svn</url>
+    <url>lp:dhis2</url>
   </scm>
 
   <mailingLists>
     <mailingList>
       <name>Developer mailing list</name>
-      <post>dhis-dev@hisp.info</post>
-      <subscribe>dhis-dev-subscribe@hisp.info</subscribe>
-      <unsubscribe>dhis-dev-unsubscribe@hisp.info</unsubscribe>
-      <archive>http://www.hisp.info/pipermail/dhis-dev/</archive>
-    </mailingList>
-    <mailingList>
-      <name>SCM commit mail list</name>
-      <post>dhis-scm@hisp.info</post>
-      <subscribe>dhis-scm-subscribe@hisp.info</subscribe>
-      <unsubscribe>dhis-scm-unsubscribe@hisp.info</unsubscribe>
-      <archive>http://www.hisp.info/pipermail/dhis-scm/</archive>
+      <post>dhis2-devs@lists.launchpad.net</post>
+      <subscribe>https://launchpad.net/~dhis2-devs</subscribe>
     </mailingList>
   </mailingLists>
-  
+
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-            <encoding>${project.build.sourceEncoding}</encoding>
+          <source>1.6</source>
+          <target>1.6</target>
+          <encoding>${project.build.sourceEncoding}</encoding>
         </configuration>
       </plugin>
       <plugin>
@@ -105,47 +91,29 @@
           <argLine>-Xmx256m</argLine>
         </configuration>
       </plugin>
-      <!--
-      <plugin>
-        <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-i18n-reportgenerator</artifactId>
-        <configuration>
-          <matchedStr>.*?i18n.*?</matchedStr>
-          <ignoreStr>.*?module\\.</ignoreStr>
-        </configuration>
+      <!--<plugin>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-i18n-reportgenerator</artifactId>
+      <configuration>
+      <matchedStr>.*?i18n.*?</matchedStr>
+      <ignoreStr>.*?module\\.</ignoreStr>
+      </configuration>
       </plugin>
       -->
-      <!--
-	  <plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.2</version>
         <configuration>
-          <links>
-            <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
-            <link>http://www.hibernate.org/hib_docs/v3/api</link>
-            <link>http://static.springframework.org/spring/docs/2.0.x/api</link>
-            <link>http://www.acegisecurity.org/acegi-security/apidocs</link>
-            <link>http://java.sun.com/products/servlet/2.2/javadoc</link>
-          </links>
+          <encoding>${project.build.sourceEncoding}</encoding>
         </configuration>
       </plugin>
-	  -->
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-resources-plugin</artifactId>
-            <version>2.2</version>
-            <configuration>
-                <encoding>${project.build.sourceEncoding}</encoding>
-            </configuration>
-        </plugin>
     </plugins>
   </build>
 
   <dependencyManagement>
     <dependencies>
-
-      <!-- DHIS -->
-
+      <!--DHIS -->
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-api</artifactId>
@@ -258,9 +226,7 @@
         <artifactId>dhis-useradminandsecurity</artifactId>
         <version>${version}</version>
       </dependency>
-
-      <!-- Other -->
-
+      <!--Other -->
       <dependency>
         <groupId>org.apache.struts</groupId>
         <artifactId>struts2-core</artifactId>
@@ -282,13 +248,13 @@
         <version>1.2</version>
       </dependency>
       <dependency>
-         <groupId>org.amplecode</groupId>
-         <artifactId>staxwax</artifactId>
+        <groupId>org.amplecode</groupId>
+        <artifactId>staxwax</artifactId>
         <version>1.0.7</version>
       </dependency>
       <dependency>
-         <groupId>org.amplecode</groupId>
-         <artifactId>quick</artifactId>
+        <groupId>org.amplecode</groupId>
+        <artifactId>quick</artifactId>
         <version>1.1.2</version>
       </dependency>
       <dependency>
@@ -336,36 +302,36 @@
         <artifactId>commons-digester</artifactId>
         <version>1.7</version>
       </dependency>
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>1.3</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-math</groupId>
-      <artifactId>commons-math</artifactId>
-      <version>1.2</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-validator</groupId>
-      <artifactId>commons-validator</artifactId>
-      <version>1.3.1</version>
-    </dependency> 
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.1</version>
-      <scope>compile</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>avalon-framework</groupId>
-          <artifactId>avalon-framework</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>logkit</groupId>
-          <artifactId>logkit</artifactId>
-        </exclusion>
-      </exclusions>
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>1.3</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-math</groupId>
+        <artifactId>commons-math</artifactId>
+        <version>1.2</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-validator</groupId>
+        <artifactId>commons-validator</artifactId>
+        <version>1.3.1</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.1</version>
+        <scope>compile</scope>
+        <exclusions>
+          <exclusion>
+            <groupId>avalon-framework</groupId>
+            <artifactId>avalon-framework</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>logkit</groupId>
+            <artifactId>logkit</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -408,136 +374,129 @@
         <artifactId>servlet-api</artifactId>
         <version>2.4</version>
       </dependency>
-
-    <!-- DBMS -->
-
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <version>1.1.119</version>
-    </dependency>
-    <dependency>
-      <groupId>com.ibatis</groupId>
-      <artifactId>ibatis2-common</artifactId>
-      <version>2.1.7.597</version>
-    </dependency>
-    <dependency>
-      <groupId>com.ibatis</groupId>
-      <artifactId>ibatis2-sqlmap</artifactId>
-      <version>2.1.7.597</version>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate</artifactId>
-      <version>3.2.6.ga</version>
-      <exclusions>
-        <exclusion>
-          <groupId>javax.transaction</groupId>
-          <artifactId>jta</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>pull-parser</groupId>
-          <artifactId>pull-parser</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>net.sf.ehcache</groupId>
-      <artifactId>ehcache</artifactId>
-      <version>1.5.0</version>
-    </dependency>
-    <dependency>
-      <groupId>geronimo-spec</groupId>
-      <artifactId>geronimo-spec-jta</artifactId>
-      <version>1.0-M1</version>
-    </dependency>
-    <dependency>
-      <groupId>c3p0</groupId>
-      <artifactId>c3p0</artifactId>
-      <version>0.9.1.2</version>
-    </dependency>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.6</version>
-    </dependency>
-    <dependency>
-      <groupId>postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>8.3-603.jdbc4</version>
-    </dependency>
-
-    <!-- Security -->
-
-    <dependency>
-      <groupId>org.acegisecurity</groupId>
-      <artifactId>acegi-security</artifactId>
-      <version>1.0.2</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-remoting</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-jdbc</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-support</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.acegisecurity</groupId>
-      <artifactId>acegi-security-tiger</artifactId>
-      <version>1.0.2</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-aop</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <!-- Reporting -->
-
-    <dependency>
-      <groupId>jasperreports</groupId>
-      <artifactId>jasperreports</artifactId>
-     <version>3.5.2</version>
-    </dependency>
-    <dependency>
-      <groupId>jfree</groupId>
-      <artifactId>jfreechart</artifactId>
-      <version>1.0.11</version>
-      <exclusions>
-        <exclusion>
-          <groupId>gnujaxp</groupId>
-          <artifactId>gnujaxp</artifactId>
-        </exclusion>
-      </exclusions>
-	</dependency>
-    <dependency>
-      <groupId>jfree</groupId>
-      <artifactId>jcommon</artifactId>
-      <version>1.0.14</version>
-      <exclusions>
-        <exclusion>
-          <groupId>gnujaxp</groupId>
-          <artifactId>gnujaxp</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>net.sourceforge.jexcelapi</groupId>
-      <artifactId>jxl</artifactId>
-      <version>2.6</version>
-    </dependency>
-
+      <!--DBMS -->
+      <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>1.1.119</version>
+      </dependency>
+      <dependency>
+        <groupId>com.ibatis</groupId>
+        <artifactId>ibatis2-common</artifactId>
+        <version>2.1.7.597</version>
+      </dependency>
+      <dependency>
+        <groupId>com.ibatis</groupId>
+        <artifactId>ibatis2-sqlmap</artifactId>
+        <version>2.1.7.597</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate</artifactId>
+        <version>3.2.6.ga</version>
+        <exclusions>
+          <exclusion>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>pull-parser</groupId>
+            <artifactId>pull-parser</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>net.sf.ehcache</groupId>
+        <artifactId>ehcache</artifactId>
+        <version>1.5.0</version>
+      </dependency>
+      <dependency>
+        <groupId>geronimo-spec</groupId>
+        <artifactId>geronimo-spec-jta</artifactId>
+        <version>1.0-M1</version>
+      </dependency>
+      <dependency>
+        <groupId>c3p0</groupId>
+        <artifactId>c3p0</artifactId>
+        <version>0.9.1.2</version>
+      </dependency>
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>5.1.6</version>
+      </dependency>
+      <dependency>
+        <groupId>postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>8.3-603.jdbc4</version>
+      </dependency>
+      <!--Security -->
+      <dependency>
+        <groupId>org.acegisecurity</groupId>
+        <artifactId>acegi-security</artifactId>
+        <version>1.0.2</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-remoting</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-support</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.acegisecurity</groupId>
+        <artifactId>acegi-security-tiger</artifactId>
+        <version>1.0.2</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <!--Reporting -->
+      <dependency>
+        <groupId>jasperreports</groupId>
+        <artifactId>jasperreports</artifactId>
+        <version>3.5.2</version>
+      </dependency>
+      <dependency>
+        <groupId>jfree</groupId>
+        <artifactId>jfreechart</artifactId>
+        <version>1.0.11</version>
+        <exclusions>
+          <exclusion>
+            <groupId>gnujaxp</groupId>
+            <artifactId>gnujaxp</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>jfree</groupId>
+        <artifactId>jcommon</artifactId>
+        <version>1.0.14</version>
+        <exclusions>
+          <exclusion>
+            <groupId>gnujaxp</groupId>
+            <artifactId>gnujaxp</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>net.sourceforge.jexcelapi</groupId>
+        <artifactId>jxl</artifactId>
+        <version>2.6</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 </project>
