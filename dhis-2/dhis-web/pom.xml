@@ -1,19 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns = "http://maven.apache.org/POM/4.0.0" xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>org.hisp.dhis</groupId>
     <artifactId>dhis</artifactId>
     <version>2.0.3-SNAPSHOT</version>
   </parent>
-
   <artifactId>dhis-web</artifactId>
   <packaging>pom</packaging>
   <name>DHIS Web Modules Project</name>
   <description>This project is a web based GUI for the DHIS 2 system.</description>
-
+  
   <modules>
     <module>dhis-web-commons</module>
     <module>dhis-web-commons-resources</module>
@@ -26,16 +22,9 @@
     <module>dhis-web-mapping</module>
     <module>dhis-web-dashboard-integration</module>
     <module>dhis-web-excel-reporting</module>
-    <!--<module>dhis-web-portal</module>-->
+    <module>dhis-web-portal</module>
   </modules>
-
-  <distributionManagement>
-    <site>
-      <id>website</id>
-      <url>scp://login.hisp.info/var/www/html/site/web/</url>
-    </site>
-  </distributionManagement>
-
+  
   <build>
     <plugins>
       <plugin>
@@ -54,7 +43,7 @@
           <systemProperties>
             <systemProperty>
               <name>org.mortbay.jetty.Request.maxFormContentSize</name>
-                <value>10000000</value>
+              <value>10000000</value>
             </systemProperty>
           </systemProperties>
           <contextPath>/</contextPath>
@@ -69,20 +58,11 @@
       <artifactId>dhis-i18n-upgrader</artifactId>
       <version>${version}</version>
     </dependency>
-<!--
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-populator</artifactId>
-      <version>${version}</version>
-    </dependency>
--->
   </dependencies>
 
   <dependencyManagement>
     <dependencies>
-
-      <!-- DHIS -->
-
+      <!--DHIS -->
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-web-commons</artifactId>
@@ -96,21 +76,7 @@
         <type>war</type>
         <scope>runtime</scope>
       </dependency>
-
-      <!-- Web -->
-
-      <dependency>
-        <groupId>com.opensymphony</groupId>
-        <artifactId>webwork</artifactId>
-        <version>2.2.6</version>
-        <scope>compile</scope>
-        <exclusions>
-          <exclusion>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
+      <!--Web -->
       <dependency>
         <groupId>commons-fileupload</groupId>
         <artifactId>commons-fileupload</artifactId>
