@@ -89,6 +89,8 @@ public class XMLStructureResponse
     private static final String MERGEDCELL_CLOSETAG = "</MergedCells>";
 
     private static final String PRINT_END_LINE = "\n";
+    
+    public static final String NUMBER_OF_ZERO = "0";
 
     // ------------------------------------------------
     // Get & Set methods //
@@ -328,7 +330,13 @@ public class XMLStructureResponse
                     }
                     else
                     {
-                        STRUCTURE_DATA_RESPONSE.append( "<![CDATA[" + cell[j].getContents() + "]]>" );
+                        if ( cell[j].getContents().equals( NUMBER_OF_ZERO ) ) {
+                            
+                            STRUCTURE_DATA_RESPONSE.append( "<![CDATA[-]]>" );
+                        }
+                        else {
+                            STRUCTURE_DATA_RESPONSE.append( "<![CDATA[" + cell[j].getContents() + "]]>" );
+                        }
                     }
 
                     STRUCTURE_DATA_RESPONSE.append( "</data>" );
@@ -445,7 +453,7 @@ public class XMLStructureResponse
     private void writeBySheetNo( int sheetNo )
     {
         Sheet sheet = WORKBOOK.getSheet( sheetNo );
-        Range[]aMergedCell = sheet.getMergedCells();
+        Range[] aMergedCell = sheet.getMergedCells();
 
         int iColTopLeft = 0;
         int iRowTopLeft = 0;
@@ -481,4 +489,5 @@ public class XMLStructureResponse
             return s;
         }
     }
+
 }
