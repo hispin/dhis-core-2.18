@@ -73,7 +73,6 @@ public class DataElementGroupSet
     {
         for ( DataElementGroup group : members )
         {
-            System.out.println( "group: " + group + " object " + object );
             if ( group.getMembers().contains( object ) )
             {
                 return group;

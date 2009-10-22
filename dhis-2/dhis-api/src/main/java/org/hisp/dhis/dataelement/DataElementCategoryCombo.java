@@ -33,20 +33,26 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.common.Dimension;
+import org.hisp.dhis.common.DimensionSet;
+
 /**
  * @author Abyot Aselefew
  * @version $Id$
  */
 public class DataElementCategoryCombo
-    implements Serializable
+    implements Serializable, DimensionSet
 {
     public static final String DEFAULT_CATEGORY_COMBO_NAME = "default";
     
     /**
-     * The database internal identifier for this DataElementCategoryCombo.
+     * The database internal identifier.
      */
     private int id;
     
+    /**
+     * The name.
+     */
     private String name;
     
     /**
@@ -55,9 +61,18 @@ public class DataElementCategoryCombo
     private List<DataElementCategory> categories = new ArrayList<DataElementCategory>();
     
     /**
-     *
+     * A set of category option combos.
      */
     private Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    public List<? extends Dimension> getDimensions()
+    {
+        return categories;
+    }
     
     // -------------------------------------------------------------------------
     // Constructors
