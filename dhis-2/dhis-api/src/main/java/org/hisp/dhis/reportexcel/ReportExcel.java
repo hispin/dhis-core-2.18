@@ -49,9 +49,9 @@ public abstract class ReportExcel
 
     private int organisationColumn;
 
-    private Set<ReportExcelItem> reportExcelItems = new HashSet<ReportExcelItem>();
+    private Set<ReportExcelItem> reportExcelItems;
 
-    private Set<OrganisationUnit> organisationAssocitions = new HashSet<OrganisationUnit>();   
+    private Set<OrganisationUnit> organisationAssocitions;   
 
     private String group;
 
@@ -63,7 +63,8 @@ public abstract class ReportExcel
 
     public ReportExcel()
     {
-        super();
+        this.reportExcelItems = new HashSet<ReportExcelItem>();
+        this.organisationAssocitions = new HashSet<OrganisationUnit>();
     }
 
     public ReportExcelItem getReportExcelItem( String name )
@@ -99,6 +100,8 @@ public abstract class ReportExcel
         return this.getReportType().equalsIgnoreCase( TYPE.NORMAL );
     }
 
+    
+    
     // -------------------------------------------------------------------------
     // Abstract methods
     // -------------------------------------------------------------------------
@@ -251,4 +254,6 @@ public abstract class ReportExcel
     {
         this.excelTemplateFile = excelTemplateFile;
     }
+    
+    
 }

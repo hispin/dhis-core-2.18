@@ -293,7 +293,7 @@ function SelectionTree()
     function getToggleExpand()
     {
         var imgTag = getToggleImage();
-        imgTag.src = '../images/plus.png';
+        imgTag.src = '../images/colapse.png';
         imgTag.alt = '[+]';
         return imgTag;
     }
@@ -301,7 +301,7 @@ function SelectionTree()
     function getToggleCollapse()
     {
         var imgTag = getToggleImage();
-        imgTag.src = '../images/minus.png';
+        imgTag.src = '../images/expand.png';
         imgTag.alt = '[-]';
         return imgTag;
     }

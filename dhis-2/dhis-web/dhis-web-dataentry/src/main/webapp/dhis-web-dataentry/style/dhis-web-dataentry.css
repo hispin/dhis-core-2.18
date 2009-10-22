@@ -7,6 +7,9 @@
   border: 1px solid black;
   font-size: 14px;
   text-align: right;
+  position:fixed;
+  top:80px;
+  right:10px;
 }
 
 #selectForm 
