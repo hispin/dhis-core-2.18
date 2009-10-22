@@ -31,7 +31,7 @@
 	#set( $mark = false )
 	#foreach($reportItem in $reportItems)
 		<tr #alternate( $mark )>
-			<td align=center><input type="checkbox" value="$reportItem.id" name="reportItemCheck"/></td>
+			<td align=center><input type="checkbox" value="$reportItem.id" name="reportItemCheck" id="reportItemCheck"/></td>
 			<td>$encoder.htmlEncode( $reportItem.name )</td>
 			<td>$i18n.getString( $reportItem.itemType )</td>
 			<td>$i18n.getString( $reportItem.periodType )</td>
