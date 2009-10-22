@@ -225,6 +225,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.item.action.AddReportExcelItemAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="statementManager" ref="statementManager" />
 	</bean>
 
 	<bean
@@ -265,6 +266,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.item.action.CopyReportExcelItemAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="statementManager" ref="statementManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.item.action.GetListSheetAction"

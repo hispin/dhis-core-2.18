@@ -2,9 +2,9 @@
 #macro( parseNode $node )
 	#if( $node.hasChildren )
 		#if( $node.children )
-			#set( $toggle = '<img src="../images/minus.png" width="9" height="9" alt="[-]">' )
+			#set( $toggle = '<img src="../images/expand.png" width="9" height="9" alt="[-]">' )
 		#else
-			#set( $toggle = '<img src="../images/plus.png" width="9" height="9" alt="[+]">' )
+			#set( $toggle = '<img src="../images/colapse.png" width="9" height="9" alt="[+]">' )
 		#end
 	#else
 		#set( $toggle = '<img src="../images/transparent.gif" width="9" height="9" alt="">' )

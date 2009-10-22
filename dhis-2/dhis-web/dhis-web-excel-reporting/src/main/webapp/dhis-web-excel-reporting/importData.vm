@@ -3,7 +3,6 @@
 <div id="messageUpload"> $!message </div>
  <span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
 <input type="hidden" name="uploadFileName" id="uploadFileName" value="$!fileExcel">
-<!-- <input type="hidden" name="uploadFileName" id="uploadFileName">-->
  #end
 <h2>$!encoder.htmlEncode($!organisationUnit.name)</h2>
 <table width="50%">
@@ -16,7 +15,7 @@
     </form>
   </tr>
   <tr>
-    <td>$i18n.getString( 'template_excel_file' )</td>
+    <td>$i18n.getString( 'reports' )</td>
     <td><select type="text" id="reportId" name="reportId" style="min-width:20em; width:100%" #if(!$!fileExcel) disabled #end onChange="javascript: document.getElementById('lastYear').disabled=false; document.getElementById('nextYear').disabled=false; document.getElementById('period').disabled=false; document.getElementById('preview').disabled=false; document.getElementById('import').disabled=false;">
 	  <option value="">$i18n.getString('select')</option>
 	  #foreach($reportExcel in $reportExcels)

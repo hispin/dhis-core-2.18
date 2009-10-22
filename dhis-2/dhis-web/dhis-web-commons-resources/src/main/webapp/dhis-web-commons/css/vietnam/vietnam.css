@@ -219,7 +219,7 @@ div#menuDropDown3
 #leftBar
 {
   background-color: #7B0A0F;
-  height: 472px;
+  height: 100%;
   width: 250px;
   float: left;
   position: absolute;

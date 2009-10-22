@@ -34,7 +34,7 @@ package org.hisp.dhis.reportexcel;
 public class ReportExcelItem
 {
     private int id;
-    
+
     private String name;
 
     private String itemType;
@@ -45,9 +45,11 @@ public class ReportExcelItem
 
     private String expression;
 
-    private String periodType;  
-    
-    private int sheetNo;   
+    private String periodType;
+
+    private int sheetNo;
+
+    private ReportExcel reportExcel;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -58,13 +60,13 @@ public class ReportExcelItem
     }
 
     public ReportExcelItem( String name, String itemType, int row, int column, String expression )
-    {        
+    {
         this.itemType = itemType;
         this.row = row;
         this.column = column;
         this.expression = expression;
         this.name = name;
-    }    
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters
@@ -73,6 +75,16 @@ public class ReportExcelItem
     public int getId()
     {
         return id;
+    }
+
+    public ReportExcel getReportExcel()
+    {
+        return reportExcel;
+    }
+
+    public void setReportExcel( ReportExcel reportExcel )
+    {        
+        this.reportExcel = reportExcel;
     }
 
     public void setId( int id )
@@ -184,24 +196,37 @@ public class ReportExcelItem
 
     public static class TYPE
     {
-        public static final String DATAELEMENT = "dataelement";      
-        public static final String ORGANISATION = "organisation";        
+        public static final String DATAELEMENT = "dataelement";
+
+        public static final String ORGANISATION = "organisation";
+
         public static final String INDICATOR = "indicator";
-        public static final String CALCULATION = "calculation";        
-        public static final String DATAELEMENT_CODE = "dataelement_code";        
-        public static final String DATAELEMENT_NAME = "dataelement_name";         
-        public static final String SERIAL = "serial";        
-        public static final String FORMULA_EXCEL = "formulaexcel";      
+
+        public static final String CALCULATION = "calculation";
+
+        public static final String DATAELEMENT_CODE = "dataelement_code";
+
+        public static final String DATAELEMENT_NAME = "dataelement_name";
+
+        public static final String SERIAL = "serial";
+
+        public static final String FORMULA_EXCEL = "formulaexcel";
     }
 
     public static class PERIODTYPE
     {
         public static final String SELECTED_MONTH = "selected_month";
+
         public static final String LAST_3_MONTH = "last_3_month";
-        public static final String SO_FAR_THIS_YEAR = "so_far_this_year";        
-        public static final String LAST_6_MONTH = "last_6_month";        
-        public static final String QUATERLY = "quaterly";        
-        public static final String SIX_MONTH = "6_month";        
+
+        public static final String SO_FAR_THIS_YEAR = "so_far_this_year";
+
+        public static final String LAST_6_MONTH = "last_6_month";
+
+        public static final String QUATERLY = "quaterly";
+
+        public static final String SIX_MONTH = "6_month";
+
         public static final String YEARLY = "yealy";
     }
 }

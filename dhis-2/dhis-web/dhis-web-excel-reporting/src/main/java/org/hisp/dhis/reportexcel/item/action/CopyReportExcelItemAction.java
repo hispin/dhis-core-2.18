@@ -27,8 +27,8 @@
 package org.hisp.dhis.reportexcel.item.action;
 
 import java.util.Collection;
-import java.util.Set;
 
+import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
@@ -39,87 +39,92 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class CopyReportExcelItemAction implements Action {
 
-	// -------------------------------------------
-	// Dependency
-	// -------------------------------------------
+public class CopyReportExcelItemAction
+    implements Action
+{
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
 
-	private ReportExcelService reportService;
+    private ReportExcelService reportService;
 
-	// -------------------------------------------
-	// Input
-	// -------------------------------------------
+    private StatementManager statementManager;
 
-	private Integer reportId;
+    // -------------------------------------------
+    // Input
+    // -------------------------------------------
 
-	private Integer sheetNo;
+    private Integer reportId;
 
-	private Collection<String> reportItems;
+    private Integer sheetNo;
 
-	// -------------------------------------------
-	// Getter & Setter
-	// -------------------------------------------
+    private Collection<String> reportItems;
 
-	public void setReportService(ReportExcelService reportService) {
-		this.reportService = reportService;
-	}
+    // -------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------
 
-	public Integer getReportId() {
-		return reportId;
-	}
+    public void setReportService( ReportExcelService reportService )
+    {
+        this.reportService = reportService;
+    }
 
-	public Integer getSheetNo() {
-		return sheetNo;
-	}
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
 
-	public void setReportId(Integer reportId) {
-		this.reportId = reportId;
-	}
+    public Integer getReportId()
+    {
+        return reportId;
+    }
 
-	public void setReportItems(Collection<String> reportItems) {
-		this.reportItems = reportItems;
-	}
+    public Integer getSheetNo()
+    {
+        return sheetNo;
+    }
 
-	public void setSheetNo(Integer sheetNo) {
-		this.sheetNo = sheetNo;
-	}
+    public void setReportId( Integer reportId )
+    {
+        this.reportId = reportId;
+    }
 
-	public String execute() throws Exception {
+    public void setReportItems( Collection<String> reportItems )
+    {
+        this.reportItems = reportItems;
+    }
 
-		ReportExcel reportExcel = reportService.getReportExcel(reportId);
+    public void setSheetNo( Integer sheetNo )
+    {
+        this.sheetNo = sheetNo;
+    }
 
-		Set<ReportExcelItem> reportItems = reportExcel.getReportExcelItems();
+    public String execute()
+        throws Exception
+    {
+        statementManager.initialise();
 
-		for (String itemId : this.reportItems) {
+        ReportExcel reportExcel = reportService.getReportExcel( reportId );
 
-			ReportExcelItem reportItem = reportService
-					.getReportExcelItem(Integer.parseInt(itemId));
+        for ( String itemId : this.reportItems )
+        {
+            ReportExcelItem reportItem = reportService.getReportExcelItem( Integer.parseInt( itemId ) );
+            ReportExcelItem newReportItem = new ReportExcelItem();
+            newReportItem.setName( reportItem.getName() );
+            newReportItem.setItemType( reportItem.getItemType() );
+            newReportItem.setPeriodType( reportItem.getPeriodType() );
+            newReportItem.setExpression( reportItem.getExpression() );
+            newReportItem.setRow( reportItem.getRow() );
+            newReportItem.setColumn( reportItem.getColumn() );
+            newReportItem.setSheetNo( sheetNo );
+            newReportItem.setReportExcel( reportExcel );
+            reportService.addReportExcelItem( newReportItem );
+        }     
 
-			ReportExcelItem newReportItem = new ReportExcelItem();
+        statementManager.destroy();
 
-			newReportItem.setName(reportItem.getName());
+        return SUCCESS;
+    }
 
-			newReportItem.setItemType(reportItem.getItemType());
-
-			newReportItem.setPeriodType(reportItem.getPeriodType());
-
-			newReportItem.setExpression(reportItem.getExpression());
-
-			newReportItem.setRow(reportItem.getRow());
-
-			newReportItem.setColumn(reportItem.getColumn());
-
-			newReportItem.setSheetNo(sheetNo);
-
-			reportItems.add(newReportItem);
-
-			reportExcel.getReportExcelItems().add(newReportItem);
-
-		}
-
-		reportService.updateReportExcel(reportExcel);
-
-		return SUCCESS;
-	}
 }

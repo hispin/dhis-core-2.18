@@ -27,8 +27,10 @@
 
 package org.hisp.dhis.reportexcel;
 
+import java.util.HashSet;
 import java.util.List;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 
 /**
@@ -47,7 +49,7 @@ public class ReportExcelOganiztionGroupListing
 
     public ReportExcelOganiztionGroupListing()
     {
-        super();       
+       super();  
     }
 
     // -------------------------------------------------------------------------

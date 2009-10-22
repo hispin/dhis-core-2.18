@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>dhis-web-gis</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>DHIS GIS</name>
 
 	<build>

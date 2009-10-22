@@ -14,5 +14,8 @@
 		<property name="expression" column="itemexpression" />
 		<property name="periodType" column="periodtype" />
 		<property name="sheetNo" column="sheetno" />
+		<many-to-one name="reportExcel" column="reportexcelid"
+			class="org.hisp.dhis.reportexcel.ReportExcel" foreign-key="pk_reportitem_report"
+			lazy="false" insert="true"/>
 	</class>
 </hibernate-mapping>
