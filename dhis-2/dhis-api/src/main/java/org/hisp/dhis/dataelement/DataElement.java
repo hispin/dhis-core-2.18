@@ -36,6 +36,7 @@ import java.util.Set;
 
 import org.hisp.dhis.common.Dimension;
 import org.hisp.dhis.common.DimensionOption;
+import org.hisp.dhis.common.DimensionSet;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -55,7 +56,7 @@ import org.hisp.dhis.period.PeriodType;
  * @version $Id: DataElement.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 public class DataElement
-    extends IdentifiableObject implements DimensionOption
+    extends IdentifiableObject implements DimensionOption, DimensionSet
 {
     public static final String TYPE_STRING = "string";
     public static final String TYPE_INT = "int";
@@ -126,7 +127,7 @@ public class DataElement
     /**
      * A Set of DataElementGroupSets.
      */
-    private Set<DataElementGroupSet> groupSets = new HashSet<DataElementGroupSet>();
+    private List<DataElementGroupSet> groupSets = new ArrayList<DataElementGroupSet>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -201,6 +202,11 @@ public class DataElement
         {
             return "[" + NAME + "]";
         }
+    }
+    
+    public List<? extends Dimension> getDimensions()
+    {
+        return groupSets;
     }
     
     // -------------------------------------------------------------------------
@@ -425,12 +431,12 @@ public class DataElement
         this.aggregationLevels = aggregationLevels;
     }
 
-    public Set<DataElementGroupSet> getGroupSets()
+    public List<DataElementGroupSet> getGroupSets()
     {
         return groupSets;
     }
 
-    public void setGroupSets( Set<DataElementGroupSet> groupSets )
+    public void setGroupSets( List<DataElementGroupSet> groupSets )
     {
         this.groupSets = groupSets;
     }

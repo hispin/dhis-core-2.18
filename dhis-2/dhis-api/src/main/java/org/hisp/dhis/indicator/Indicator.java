@@ -27,9 +27,11 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.hisp.dhis.common.Dimension;
+import org.hisp.dhis.common.DimensionSet;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 
@@ -38,7 +40,7 @@ import org.hisp.dhis.datadictionary.ExtendedDataElement;
  * @version $Id: Indicator.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 public class Indicator
-    extends IdentifiableObject
+    extends IdentifiableObject implements DimensionSet
 {
     private Boolean annualized;
 
@@ -62,7 +64,7 @@ public class Indicator
 
     private String url;
         
-    private Set<IndicatorGroupSet> groupSets = new HashSet<IndicatorGroupSet>();
+    private List<IndicatorGroupSet> groupSets = new ArrayList<IndicatorGroupSet>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -89,6 +91,15 @@ public class Indicator
         this.denominator = denominator;
         this.denominatorDescription = denominatorDescription;
         this.denominatorAggregationOperator = denominatorAggregationOperator;
+    }
+
+    // -------------------------------------------------------------------------
+    // Dimension
+    // -------------------------------------------------------------------------
+
+    public List<? extends Dimension> getDimensions()
+    {
+        return groupSets;
     }
     
     // -------------------------------------------------------------------------
@@ -133,7 +144,6 @@ public class Indicator
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
 
     public Boolean getAnnualized()
     {
@@ -245,12 +255,12 @@ public class Indicator
         this.url = url;
     }
 
-    public Set<IndicatorGroupSet> getGroupSets()
+    public List<IndicatorGroupSet> getGroupSets()
     {
         return groupSets;
     }
 
-    public void setGroupSets( Set<IndicatorGroupSet> groupSets )
+    public void setGroupSets( List<IndicatorGroupSet> groupSets )
     {
         this.groupSets = groupSets;
     }

@@ -34,10 +34,10 @@ import java.util.Map;
 
 import org.hisp.dhis.common.Dimension;
 import org.hisp.dhis.common.DimensionOption;
+import org.hisp.dhis.common.DimensionSet;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 
@@ -164,13 +164,13 @@ public class DataValue
         return dimensions;
     }
     
-    public Map<Dimension, DimensionOption> getDimensions( DataElement dataElement )
+    public Map<Dimension, DimensionOption> getDimensions( DimensionSet dimensionSet )
     {
         Map<Dimension, DimensionOption> dimensions = getDimensions();
                 
-        for ( DataElementGroupSet groupSet : dataElement.getGroupSets() )
+        for ( Dimension dimension : dimensionSet.getDimensions() )
         {
-            dimensions.put( groupSet, groupSet.getDimensionOption( this.dataElement ) );
+            dimensions.put( dimension, dimension.getDimensionOption( dataElement ) );
         }
         
         return dimensions;
