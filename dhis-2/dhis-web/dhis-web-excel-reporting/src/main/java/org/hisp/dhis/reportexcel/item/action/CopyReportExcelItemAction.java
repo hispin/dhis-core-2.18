@@ -39,81 +39,87 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class CopyReportExcelItemAction implements Action
-{
- // -------------------------------------------
-    // Dependency
-    // -------------------------------------------
+public class CopyReportExcelItemAction implements Action {
 
-    private ReportExcelService reportService;
+	// -------------------------------------------
+	// Dependency
+	// -------------------------------------------
 
-    // -------------------------------------------
-    // Input
-    // -------------------------------------------
+	private ReportExcelService reportService;
 
-    private Integer reportId;
+	// -------------------------------------------
+	// Input
+	// -------------------------------------------
 
-    private Integer sheetNo;
+	private Integer reportId;
 
-    private Collection<String> reportItems;
+	private Integer sheetNo;
 
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
+	private Collection<String> reportItems;
 
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
-    }
+	// -------------------------------------------
+	// Getter & Setter
+	// -------------------------------------------
 
-    public Integer getReportId()
-    {
-        return reportId;
-    }
+	public void setReportService(ReportExcelService reportService) {
+		this.reportService = reportService;
+	}
 
-    public Integer getSheetNo()
-    {
-        return sheetNo;
-    }
+	public Integer getReportId() {
+		return reportId;
+	}
 
-    public void setReportId( Integer reportId )
-    {
-        this.reportId = reportId;
-    }
+	public Integer getSheetNo() {
+		return sheetNo;
+	}
 
-    public void setReportItems( Collection<String> reportItems )
-    {
-        this.reportItems = reportItems;
-    }
+	public void setReportId(Integer reportId) {
+		this.reportId = reportId;
+	}
 
-    public void setSheetNo( Integer sheetNo )
-    {
-        this.sheetNo = sheetNo;
-    }
+	public void setReportItems(Collection<String> reportItems) {
+		this.reportItems = reportItems;
+	}
 
-    public String execute()
-        throws Exception
-    {
-        ReportExcel reportExcel = reportService.getReportExcel( reportId  );  
-        
-            
-        for(String itemId:this.reportItems){
-            Set<ReportExcelItem> reportItems = reportExcel.getReportExcelItems(); 
-            ReportExcelItem reportItem = reportService.getReportExcelItem( Integer.parseInt( itemId ) ) ;
-            ReportExcelItem newReportItem = new ReportExcelItem();
-            newReportItem.setName( reportItem.getName() );
-            newReportItem.setItemType( reportItem.getItemType() );
-            newReportItem.setPeriodType( reportItem.getPeriodType() );
-            newReportItem.setExpression( reportItem.getExpression() );
-            newReportItem.setRow( reportItem.getRow() );
-            newReportItem.setColumn( reportItem.getColumn() );
-            newReportItem.setSheetNo( sheetNo );
-            reportItems.add( newReportItem );
-            reportExcel.setReportExcelItems( reportItems );
-            reportService.updateReportExcel( reportExcel );
-            
-        }   
-               
-        return SUCCESS;
-    }
+	public void setSheetNo(Integer sheetNo) {
+		this.sheetNo = sheetNo;
+	}
+
+	public String execute() throws Exception {
+
+		ReportExcel reportExcel = reportService.getReportExcel(reportId);
+
+		Set<ReportExcelItem> reportItems = reportExcel.getReportExcelItems();
+
+		for (String itemId : this.reportItems) {
+
+			ReportExcelItem reportItem = reportService
+					.getReportExcelItem(Integer.parseInt(itemId));
+
+			ReportExcelItem newReportItem = new ReportExcelItem();
+
+			newReportItem.setName(reportItem.getName());
+
+			newReportItem.setItemType(reportItem.getItemType());
+
+			newReportItem.setPeriodType(reportItem.getPeriodType());
+
+			newReportItem.setExpression(reportItem.getExpression());
+
+			newReportItem.setRow(reportItem.getRow());
+
+			newReportItem.setColumn(reportItem.getColumn());
+
+			newReportItem.setSheetNo(sheetNo);
+
+			reportItems.add(newReportItem);
+
+			reportExcel.getReportExcelItems().add(newReportItem);
+
+		}
+
+		reportService.updateReportExcel(reportExcel);
+
+		return SUCCESS;
+	}
 }
