@@ -44,6 +44,8 @@ import org.hisp.dhis.translation.TranslationService;
 
 /**
  * @author Oyvind Brucker
+ * @modifier Dang Duy Hieu
+ * @since 2009-10-23
  */
 public class DefaultI18nService
     implements I18nService
@@ -93,8 +95,11 @@ public class DefaultI18nService
                     getId( object ), locale );
 
                 Map<String, String> translationsCurrentLocale = convertTranslations( translations );
-                
-                Collection<Translation> translationsFallback = null; // Dont initiate unless needed
+
+                Collection<Translation> translationsFallback = null; // Dont
+                // initiate
+                // unless
+                // needed
                 Map<String, String> translationsFallbackLocale = null;
 
                 List<String> propertyNames = i18nObject.getPropertyNames();
@@ -139,7 +144,7 @@ public class DefaultI18nService
         Locale locale = null;
 
         locale = localeManager.getCurrentLocale();
-        
+
         if ( locale == null )
         {
             log.error( "Unable to get current locale" );
@@ -160,10 +165,10 @@ public class DefaultI18nService
         }
 
         /**
-         * Check if all objects are of the same type, in as good
-         * as all cases this will be true so we use the optimized query for that.
+         * Check if all objects are of the same type, in as good as all cases
+         * this will be true so we use the optimized query for that.
          */
-        
+
         boolean oneType = true;
         Class<?> type = null;
 
@@ -197,15 +202,18 @@ public class DefaultI18nService
                 {
                     Collection<Translation> allTranslations = translationService.getTranslations( i18nObject
                         .getClassName(), locale );
-                                        
-                    Collection<Translation> fallbackTranslations = null; // Don't initiate unless needed
+
+                    Collection<Translation> fallbackTranslations = null; // Don't
+                    // initiate
+                    // unless
+                    // needed
                     Map<String, String> fallbackTranslationsMap = null;
 
                     for ( Object object : intObjects )
                     {
                         Map<String, String> translations = getTranslationsForObject( allTranslations, getId( object ) );
 
-                        for ( Map.Entry<String,String> translation : translations.entrySet() )
+                        for ( Map.Entry<String, String> translation : translations.entrySet() )
                         {
                             String property = translation.getKey();
                             String value = translation.getValue();
@@ -218,8 +226,8 @@ public class DefaultI18nService
                             {
                                 if ( fallbackTranslations == null )
                                 {
-                                    fallbackTranslations = translationService.getTranslations( i18nObject.getClassName(),
-                                        locale );
+                                    fallbackTranslations = translationService.getTranslations( i18nObject
+                                        .getClassName(), locale );
 
                                     fallbackTranslationsMap = getTranslationsForObject( fallbackTranslations,
                                         getId( object ) );
@@ -281,7 +289,7 @@ public class DefaultI18nService
 
     public void updateTranslation( String className, int id, Locale locale, Map<String, String> translations )
     {
-        for ( Map.Entry<String,String> translationEntry : translations.entrySet() )
+        for ( Map.Entry<String, String> translationEntry : translations.entrySet() )
         {
             String key = translationEntry.getKey();
             String value = translationEntry.getValue();
@@ -289,7 +297,7 @@ public class DefaultI18nService
             if ( value != null && value.trim().length() > 0 )
             {
                 Translation translation = translationService.getTranslation( className, id, locale, key );
-                
+
                 if ( translation != null )
                 {
                     translation.setValue( value );
@@ -343,7 +351,7 @@ public class DefaultI18nService
         /**
          * Set properties to properties from the fallback locale
          */
-        
+
         if ( !locale.equals( localeManager.getFallbackLocale() ) )
         {
             internationalise( object, localeManager.getFallbackLocale() );
@@ -463,9 +471,9 @@ public class DefaultI18nService
 
     /**
      * Returns property/value pairs of translations for one object matching id.
-     *
+     * 
      * @param translations Collection to search
-     * @param id           Object id
+     * @param id Object id
      * @return Map of property/value pairs
      */
     private Map<String, String> getTranslationsForObject( Collection<Translation> translations, int id )
@@ -485,10 +493,28 @@ public class DefaultI18nService
 
     /**
      * Returns property/value pairs of a collection of translations as a map
-     *
+     * 
      * @param translations
      * @return Map containing translations
      */
+
+    // private Map<String, String> convertTranslations( Collection<Translation>
+    // translations )
+    // {
+    // Map<String, String> translationMap = new Hashtable<String, String>();
+    //
+    // for ( Translation translation : translations )
+    // {
+    // if ( translation.getProperty() != null && translation.getValue() != null
+    // )
+    // {
+    // translationMap.put( translation.getProperty(), translation.getValue() );
+    // }
+    // }
+    //    
+    // return translationMap;
+    // }
+    
     private Map<String, String> convertTranslations( Collection<Translation> translations )
     {
         Map<String, String> translationMap = new Hashtable<String, String>();
@@ -497,19 +523,20 @@ public class DefaultI18nService
         {
             if ( translation.getProperty() != null && translation.getValue() != null )
             {
-                translationMap.put( translation.getProperty(), translation.getValue() );
+                translationMap.put( translation.getId() + "_" + translation.getProperty(), translation.getValue() );
             }
         }
 
         return translationMap;
     }
 
+
     /**
      * Sets a property for the supplied object
-     *
+     * 
      * @param object Object to modify
-     * @param name   Name of property to set
-     * @param value  Value the property will be set to
+     * @param name Name of property to set
+     * @param value Value the property will be set to
      */
     private void setProperty( Object object, String name, String value )
     {
@@ -550,7 +577,7 @@ public class DefaultI18nService
 
     /**
      * Fetch a property off the object using reflection
-     *
+     * 
      * @param object Object to search
      * @param property Name of the property to get
      * @return the value of the property or null
@@ -590,7 +617,7 @@ public class DefaultI18nService
     /**
      * Returns the name of the class that the object is an instance of
      * org.hisp.dhis.indicator.Indicactor returns Indicator
-     *
+     * 
      * @param object Object to determine className of
      * @return String containing the class name
      */
@@ -605,8 +632,9 @@ public class DefaultI18nService
 
     /**
      * Calls the method getId for this object, throws exception if this fails.
-     *
-     * @param object object to call method on, needs to have the public method getId():int
+     * 
+     * @param object object to call method on, needs to have the public method
+     *        getId():int
      * @return The id
      */
     private int getId( Object object )
@@ -640,9 +668,9 @@ public class DefaultI18nService
     }
 
     /**
-     * Converts the property to a i18n keystring
-     * alternativeName produces alternative_name
-     *
+     * Converts the property to a i18n keystring alternativeName produces
+     * alternative_name
+     * 
      * @param propName string to parse
      * @return Modified string
      */
@@ -669,7 +697,7 @@ public class DefaultI18nService
 
     /**
      * Test if an object is enabled for i18n
-     *
+     * 
      * @param object Object to check
      * @return true if the object is enabled for i18n
      */
@@ -684,5 +712,20 @@ public class DefaultI18nService
         }
 
         return false;
+    }
+
+    // -------------------------------------------------------------------------
+    public Map<String, String> getTranslations( String className, Locale locale )
+    {
+        Collection<Translation> translationsCol = translationService.getTranslations( className, locale );
+
+        return convertTranslations( translationsCol );
+    }
+
+    public Map<String, String> getTranslations( String className, String propertyName, Locale locate )
+    {
+        Collection<Translation> translationCol = translationService.getTranslations( className, propertyName, locate );
+
+        return convertTranslations( translationCol );
     }
 }

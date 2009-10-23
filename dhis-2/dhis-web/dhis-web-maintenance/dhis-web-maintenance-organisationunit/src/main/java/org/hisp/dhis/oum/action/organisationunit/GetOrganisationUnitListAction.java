@@ -31,8 +31,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
+import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -41,7 +46,10 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetOrganisationUnitListAction.java 1898 2006-09-22 12:06:56Z torgeilo $
+ * @version $Id: GetOrganisationUnitListAction.java 1898 2006-09-22 12:06:56Z
+ *          torgeilo $
+ * @modifier Dang Duy Hieu
+ * @since 2009-10-20
  */
 public class GetOrganisationUnitListAction
     extends ActionSupport
@@ -50,11 +58,32 @@ public class GetOrganisationUnitListAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    private static String TRANSLATION_PROPERTY_NAME = "name";
+
     private OrganisationUnitSelectionManager selectionManager;
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
+    }
+
+    private LocaleManager localeManager;
+
+    public void setLocaleManager( LocaleManager localeManager )
+    {
+        this.localeManager = localeManager;
+    }
+
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
     }
 
     // -------------------------------------------------------------------------
@@ -67,7 +96,7 @@ public class GetOrganisationUnitListAction
     {
         this.organisationUnitComparator = organisationUnitComparator;
     }
-    
+
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
@@ -77,8 +106,8 @@ public class GetOrganisationUnitListAction
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
-    }    
-    
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -90,6 +119,25 @@ public class GetOrganisationUnitListAction
         return organisationUnits;
     }
 
+    private List<String> getPropertyNames()
+    {
+        return i18nService.getPropertyNames( OrganisationUnit.class.getSimpleName() );
+    }
+
+    private Map<String, String> translationsOrgUnit = new HashMap<String, String>();
+
+    public Map<String, String> getTranslationsOrgUnit()
+    {
+        return translationsOrgUnit;
+    }
+
+    private Map<String, String> refTranslationOrgUnit = new HashMap<String, String>();
+
+    public Map<String, String> getRefTranslationOrgUnit()
+    {
+        return refTranslationOrgUnit;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -97,6 +145,7 @@ public class GetOrganisationUnitListAction
     public String execute()
         throws Exception
     {
+
         Collection<OrganisationUnit> selectedUnits = selectionManager.getSelectedOrganisationUnits();
 
         if ( selectedUnits.isEmpty() )
@@ -110,11 +159,50 @@ public class GetOrganisationUnitListAction
                 organisationUnits.addAll( selectedUnit.getChildren() );
             }
         }
-        
+
         Collections.sort( organisationUnits, organisationUnitComparator );
-        
+
         displayPropertyHandler.handle( organisationUnits );
-        
+
+        translationsOrgUnit = i18nService.getTranslations( OrganisationUnit.class.getSimpleName(),
+            TRANSLATION_PROPERTY_NAME, getCurrentLocale() );
+        refTranslationOrgUnit = i18nService.getTranslations( OrganisationUnit.class.getSimpleName(),
+            TRANSLATION_PROPERTY_NAME, getCurrentRefLocale() );
+
+        /**
+         * Fill in empty strings for null values
+         */
+
+        for ( OrganisationUnit o : organisationUnits )
+        {
+            for ( String property : getPropertyNames() )
+            {
+                if ( translationsOrgUnit.get( String.valueOf( o.getId() ) + "_" + property ) == null )
+                {
+                    translationsOrgUnit.put( String.valueOf( o.getId() ) + "_" + property, "" );
+                }
+                if ( refTranslationOrgUnit.get( String.valueOf( o.getId() ) + "_" + property ) == null )
+                {
+                    refTranslationOrgUnit.put( String.valueOf( o.getId() ) + "_" + property, "" );
+                }
+            }
+        }
+
         return SUCCESS;
     }
+
+    // -------------------------------------------------------------------------
+    // Supporting method
+    // -------------------------------------------------------------------------
+
+    private Locale getCurrentLocale()
+    {
+        return localeManager.getCurrentLocale();
+    }
+
+    private Locale getCurrentRefLocale()
+    {
+        return localeManager.getFallbackLocale();
+    }
+
 }

@@ -41,7 +41,7 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Oyvind Brucker
  */
-public class I18nAction 
+public class I18nAction
     implements Action
 {
     private String className;
@@ -107,7 +107,6 @@ public class I18nAction
         return objectId;
     }
 
-
     public String getReturnUrl()
     {
         return returnUrl;
@@ -160,8 +159,8 @@ public class I18nAction
 
         translations = i18nService.getTranslations( className, Integer.parseInt( objectId ), getCurrentLocale() );
 
-        referenceTranslations =
-            i18nService.getTranslations( className, Integer.parseInt( objectId ), getCurrentRefLocale() );
+        referenceTranslations = i18nService.getTranslations( className, Integer.parseInt( objectId ),
+            getCurrentRefLocale() );
 
         /**
          * Fill in empty strings for null values
@@ -169,16 +168,16 @@ public class I18nAction
 
         for ( String property : getPropertyNames() )
         {
-            if ( translations.get( property ) == null )
+            if ( translations.get( String.valueOf( objectId ) + "_" + property ) == null )
             {
-                translations.put( property, "" );
+                translations.put( String.valueOf( objectId ) + "_" + property, "" );
             }
-            if ( referenceTranslations.get( property ) == null )
+            if ( referenceTranslations.get( String.valueOf( objectId ) + "_" + property ) == null )
             {
-                referenceTranslations.put( property, "" );
+                referenceTranslations.put( String.valueOf( objectId ) + "_" + property, "" );
             }
         }
-        
+
         return SUCCESS;
     }
 }

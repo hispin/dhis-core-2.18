@@ -38,6 +38,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Lars Helge Overland
  * @version $Id$
+ * @modifier Dang Duy Hieu
+ * @since 2009-10-23
  */
 @Transactional
 public class DefaultTranslationService
@@ -49,7 +51,7 @@ public class DefaultTranslationService
     {
         this.translationStore = translationStore;
     }
-    
+
     public Translation getTranslation( String className, int id, Locale locale, String property )
     {
         return translationStore.getTranslation( className, id, locale, property );
@@ -93,5 +95,11 @@ public class DefaultTranslationService
     public void deleteTranslations( String className, int id )
     {
         translationStore.deleteTranslations( className, id );
+    }
+
+    // -------------------------------------------------------------------------
+    public Collection<Translation> getTranslations( String className, String propertyName, Locale locate )
+    {
+        return translationStore.getTranslations( className, propertyName, locate );
     }
 }
