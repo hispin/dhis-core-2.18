@@ -414,7 +414,7 @@ public abstract class GenerateReportExcelSupport
 
         outputReportWorkbook.close();
         
-        selectionManager.setReportExcelOutput( outputReportFile.getPath() );
+        selectionManager.setDownloadFilePath(  outputReportFile.getPath() );
     }
 
     protected String generateIndicatorExpression( ReportExcelItem reportItem, Date startDate, Date endDate,

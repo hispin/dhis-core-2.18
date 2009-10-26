@@ -158,7 +158,7 @@ public class GenerateIndividualReportExcelAction
 
         tempWorkbook.close();
 
-        selectionManager.setReportExcelOutput( tempFile.getPath() );
+        selectionManager.setDownloadFilePath( tempFile.getPath() );
 
         statementManager.destroy();
 

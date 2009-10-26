@@ -33,6 +33,28 @@ package org.hisp.dhis.reportexcel;
  */
 public class ReportExcelItem
 {
+    public static class XML_TAG
+    {
+        public static final String REPORT_ITEMS = "report-items";
+        
+        public static final String REPORT_ITEM = "report-item";        
+
+        public static final String NAME = "name";
+
+        public static final String ROW = "row";
+
+        public static final String COLUMN = "column";
+
+        public static final String SHEET_NO = "sheet-no";
+
+        public static final String EXPRESSION = "expression";
+
+        public static final String TYPE = "item-type";
+
+        public static final String PERIOD_TYPE = "period-type";
+       
+    }
+
     private int id;
 
     private String name;
@@ -83,7 +105,7 @@ public class ReportExcelItem
     }
 
     public void setReportExcel( ReportExcel reportExcel )
-    {        
+    {
         this.reportExcel = reportExcel;
     }
 

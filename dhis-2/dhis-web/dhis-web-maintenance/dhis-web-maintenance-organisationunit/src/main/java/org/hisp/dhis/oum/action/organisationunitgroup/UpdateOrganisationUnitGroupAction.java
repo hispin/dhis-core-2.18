@@ -27,20 +27,21 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: UpdateOrganisationUnitGroupAction.java 1898 2006-09-22 12:06:56Z torgeilo $
+ * @version $Id: UpdateOrganisationUnitGroupAction.java 1898 2006-09-22
+ *          12:06:56Z torgeilo $
  */
+@SuppressWarnings("serial")
 public class UpdateOrganisationUnitGroupAction
     extends ActionSupport
 {
@@ -48,11 +49,11 @@ public class UpdateOrganisationUnitGroupAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitService organisationUnitService;
-    
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    private SelectionTreeManager selectionTreeManager;
+
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     private OrganisationUnitGroupService organisationUnitGroupService;
@@ -80,13 +81,6 @@ public class UpdateOrganisationUnitGroupAction
         this.name = name;
     }
 
-    private Collection<String> groupMembers = new ArrayList<String>();
-
-    public void setGroupMembers( Collection<String> groupMembers )
-    {
-        this.groupMembers = groupMembers;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -97,15 +91,10 @@ public class UpdateOrganisationUnitGroupAction
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( id );
 
         organisationUnitGroup.setName( name );
-        organisationUnitGroup.getMembers().clear();
-        
-        for ( String id : groupMembers )
-        {
-            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( Integer.parseInt( id ) );
-            
-            organisationUnitGroup.getMembers().add( unit );
-        }
-        
+
+        organisationUnitGroup.setMembers( new HashSet<OrganisationUnit>( selectionTreeManager
+            .getSelectedOrganisationUnits() ) );
+
         organisationUnitGroupService.updateOrganisationUnitGroup( organisationUnitGroup );
 
         return SUCCESS;

@@ -161,6 +161,8 @@ public class GetDataElementListAction
     @SuppressWarnings( "unchecked" )
     public String execute()
     {
+    	System.out.println("data dictionary id : " + dataDictionaryId);
+    	
         if ( dataDictionaryId == null ) // None, get current data dictionary
         {
             dataDictionaryId = dataDictionaryModeManager.getCurrentDataDictionary();
@@ -190,6 +192,8 @@ public class GetDataElementListAction
 
         if ( dataDictionaryId != null && dataElementGroupId == null )
         {
+        	System.out.println("data dictionary id : " + dataDictionaryId);
+        	
             dataElements = new ArrayList<DataElement>( dataDictionaryService.getDataDictionary( dataDictionaryId ).getDataElements() );
         }
         else if ( dataDictionaryId == null && dataElementGroupId != null )

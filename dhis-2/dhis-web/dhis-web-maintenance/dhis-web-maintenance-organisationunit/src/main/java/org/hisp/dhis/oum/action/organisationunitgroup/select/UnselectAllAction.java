@@ -1,3 +1,5 @@
+package org.hisp.dhis.oum.action.organisationunitgroup.select;
+
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -24,54 +26,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.export.action;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Tran Thanh Tri
+ * @author Lars Helge Overland
  * @version $Id$
  */
-public class DowloadExcelAction
-    implements Action
+public class UnselectAllAction
+implements Action
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-    private SelectionManager selectionManager;
+    private SelectionTreeManager selectionTreeManager;
 
-    private String outputXLS;
-
-    private InputStream inputStream;
-
-    public String getOutputXLS()
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        return outputXLS;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
-    public InputStream getInputStream()
-    {
-        return inputStream;
-    }
-
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
+    // -------------------------------------------------------------------------
+    // Action
+    // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        File outputReportFile = new File(selectionManager.getReportExcelOutput());
+        selectionTreeManager.clearSelectedOrganisationUnits();
         
-        outputXLS = outputReportFile.getName();
-        
-        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );        
-                
         return SUCCESS;
-    }
-
+    }   
 }

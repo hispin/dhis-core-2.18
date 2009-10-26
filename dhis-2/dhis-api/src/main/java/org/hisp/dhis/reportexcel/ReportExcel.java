@@ -29,7 +29,13 @@ package org.hisp.dhis.reportexcel;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * @author Tran Thanh Tri
@@ -37,6 +43,32 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
  */
 public abstract class ReportExcel
 {
+    public static class XML_TAG
+    {
+        public static final String REPORT_EXCEL = "report-excel";
+
+        public static final String NAME = "name";
+
+        public static final String PERIOD_ROW = "period-row";
+
+        public static final String PERIOD_COLUMN = "period-column";
+
+        public static final String ORGANISATIONUNIT_ROW = "organisation-row";
+
+        public static final String ORGANISATIONUNIT_COLUMN = "organisation-column";
+
+        public static final String GROUP = "group";
+
+        public static final String EXCEL_FILE = "excel-file";
+
+        public static final String EXCEL_REPORT_TYPE = "report-excel-type";
+
+        public static final String ASSOCIATION = "associations";
+
+        public static final String ID = "id";
+
+    }
+
     private int id;
 
     private String name;
@@ -51,7 +83,7 @@ public abstract class ReportExcel
 
     private Set<ReportExcelItem> reportExcelItems;
 
-    private Set<OrganisationUnit> organisationAssocitions;   
+    private Set<OrganisationUnit> organisationAssocitions;
 
     private String group;
 
@@ -100,8 +132,6 @@ public abstract class ReportExcel
         return this.getReportType().equalsIgnoreCase( TYPE.NORMAL );
     }
 
-    
-    
     // -------------------------------------------------------------------------
     // Abstract methods
     // -------------------------------------------------------------------------
@@ -234,7 +264,7 @@ public abstract class ReportExcel
     {
         this.organisationAssocitions = organisationAssocitions;
     }
-   
+
     public String getGroup()
     {
         return group;
@@ -255,5 +285,10 @@ public abstract class ReportExcel
         this.excelTemplateFile = excelTemplateFile;
     }
     
+    public abstract Document createDocument() throws ParserConfigurationException;
+
     
+    
+    
+
 }
