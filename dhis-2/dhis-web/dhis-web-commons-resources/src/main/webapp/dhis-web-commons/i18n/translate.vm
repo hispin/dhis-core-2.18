@@ -76,7 +76,7 @@
     var propNames = new Array()
     #set( $count = 0 )
     #foreach ($propertyName in $propertyNames )
-        propNames[$count] = $objectId + "_" + "$propertyName";
+        propNames[$count] = "$propertyName";
         #set( $count = $count + 1 )
     #end
 
