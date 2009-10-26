@@ -1,4 +1,4 @@
-package org.hisp.dhis.oum.action.organisationunitgroup;
+package org.hisp.dhis.oum.action.organisationunitgroup.select;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,34 +27,25 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
+import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: AddOrganisationUnitGroupAction.java 1898 2006-09-22 12:06:56Z
- *          torgeilo $
+ * @version $Id: SelectLevelAction.java 4524 2008-02-04 18:48:53Z larshelg $
  */
-@SuppressWarnings("serial")
-public class AddOrganisationUnitGroupAction
-    extends ActionSupport
+public class SelectLevelAction
+    implements Action
 {
+    private static final int FIRST_LEVEL = 1;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
 
     private SelectionTreeManager selectionTreeManager;
 
@@ -67,27 +58,50 @@ public class AddOrganisationUnitGroupAction
     // Input
     // -------------------------------------------------------------------------
 
-    private String name;
+    private Integer level;
 
-    public void setName( String name )
+    public void setLevel( Integer level )
     {
-        this.name = name;
+        this.level = level;
     }
-
+    
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Action
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        OrganisationUnitGroup organisationUnitGroup = new OrganisationUnitGroup( name );
+        Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits();
 
-        organisationUnitGroup.setMembers( new HashSet<OrganisationUnit>( selectionTreeManager
-            .getSelectedOrganisationUnits() ) );
+        Collection<OrganisationUnit> selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();
 
-        organisationUnitGroupService.addOrganisationUnitGroup( organisationUnitGroup );
+        for ( OrganisationUnit rootUnit : rootUnits )
+        {
+            selectLevel( rootUnit, FIRST_LEVEL, selectedUnits );
+        }
+
+        selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
 
         return SUCCESS;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private void selectLevel( OrganisationUnit orgUnit, int currentLevel, Collection<OrganisationUnit> selectedUnits )
+    {
+        if ( currentLevel == level )
+        {
+            selectedUnits.add( orgUnit );
+        }
+        else
+        {
+            for ( OrganisationUnit child : orgUnit.getChildren() )
+            {
+                selectLevel( child, currentLevel + 1, selectedUnits );
+            }
+        }
     }
 }

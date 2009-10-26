@@ -36,7 +36,9 @@ import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,14 +51,7 @@ public class GetOrganisationUnitGroupMembersAction
 {
     // -------------------------------------------------------------------------
     // Dependencies
-    // -------------------------------------------------------------------------
-
-    private OrganisationUnitService organisationUnitService;
-    
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
+    // -------------------------------------------------------------------------  
 
     private OrganisationUnitGroupService organisationUnitGroupService;
 
@@ -65,26 +60,11 @@ public class GetOrganisationUnitGroupMembersAction
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
+    private SelectionTreeManager selectionTreeManager;
 
-    private Comparator<OrganisationUnit> organisationUnitComparator;
-
-    public void setOrganisationUnitComparator( Comparator<OrganisationUnit> organisationUnitComparator )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.organisationUnitComparator = organisationUnitComparator;
-    }
-
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     // -------------------------------------------------------------------------
@@ -92,11 +72,6 @@ public class GetOrganisationUnitGroupMembersAction
     // -------------------------------------------------------------------------
 
     private Integer id;
-
-    public Integer getId()
-    {
-        return id;
-    }
 
     public void setId( Integer id )
     {
@@ -107,25 +82,35 @@ public class GetOrganisationUnitGroupMembersAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<OrganisationUnit> groupMembers = new ArrayList<OrganisationUnit>();
-
-    public List<OrganisationUnit> getGroupMembers()
-    {
-        return groupMembers;
-    }
-
-    private List<OrganisationUnit> availableOrganisationUnits = new ArrayList<OrganisationUnit>();
-
-    public List<OrganisationUnit> getAvailableOrganisationUnits()
-    {
-        return availableOrganisationUnits;
-    }
-    
     private OrganisationUnitGroup organisationUnitGroup;
 
     public OrganisationUnitGroup getOrganisationUnitGroup()
     {
         return organisationUnitGroup;
+    }
+
+    private List<OrganisationUnitLevel> levels;
+
+    public List<OrganisationUnitLevel> getLevels()
+    {
+        return levels;
+    }
+
+    public void setLevels( List<OrganisationUnitLevel> levels )
+    {
+        this.levels = levels;
+    }
+
+    private List<OrganisationUnitGroup> groups;
+
+    public List<OrganisationUnitGroup> getGroups()
+    {
+        return groups;
+    }
+
+    public void setGroups( List<OrganisationUnitGroup> groups )
+    {
+        this.groups = groups;
     }
 
     // -------------------------------------------------------------------------
@@ -141,22 +126,11 @@ public class GetOrganisationUnitGroupMembersAction
         if ( id != null )
         {
             organisationUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( id );
-            
-            groupMembers = new ArrayList<OrganisationUnit>( organisationUnitGroup.getMembers() );
-            
-            Collections.sort( groupMembers, organisationUnitComparator );
-            
-            displayPropertyHandler.handle( groupMembers );
+
+            selectionTreeManager.setSelectedOrganisationUnits( organisationUnitGroup.getMembers() );
+
         }
-        
-        availableOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
-        
-        availableOrganisationUnits.removeAll( groupMembers );
-        
-        Collections.sort( availableOrganisationUnits, organisationUnitComparator );
-        
-        displayPropertyHandler.handle( availableOrganisationUnits );
-        
+
         return SUCCESS;
     }
 }

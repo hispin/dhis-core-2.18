@@ -1,5 +1,3 @@
-package org.hisp.dhis.reportexcel.preview.action;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -27,117 +25,82 @@ package org.hisp.dhis.reportexcel.preview.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.hisp.dhis.reportexcel.action;
+
+import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 import org.hisp.dhis.reportexcel.export.action.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * Simple demo class which uses the api to present the contents of an excel 97
- * spreadsheet as an XML document, using a workbook and output stream of your
- * choice
- * 
- * @author Dang Duy Hieu
+ * @author Tran Thanh Tri
  * @version $Id$
  */
-public class ExportXMLAction
+
+public class DownloadFileAction
     implements Action
 {
-    private static final String SEPARATE = "/";
-
-    private static final String ENCODING = "UTF8";
-
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
 
     private SelectionManager selectionManager;
 
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
-
     // -------------------------------------------
-    // Input && Output
+    // Output & Input
     // -------------------------------------------
-    private Integer sheetId;
 
-    private String outputXLS;
+    private String fileName;
 
-    private String xmlStructureResponse;
+    private InputStream inputStream;
 
-    private File FILE_XLS;
+    private String outputFormat;
 
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
 
-    public void setSheetId( Integer sheetId )
+    public String getFileName()
     {
-        this.sheetId = sheetId;
+        return fileName;
     }
 
-    public String getOutputXLS()
+    public String getOutputFormat()
     {
-        return outputXLS;
+        return outputFormat;
     }
 
-    public void setOutputXLS( String outputXLS )
+    public void setOutputFormat( String outputFormat )
     {
-        this.outputXLS = outputXLS;
+        this.outputFormat = outputFormat;
     }
 
-    public String getXmlStructureResponse()
+    public InputStream getInputStream()
     {
-        return xmlStructureResponse;
+        return inputStream;
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
 
-    @SuppressWarnings( "static-access" )
+    @Override
     public String execute()
-        throws IOException
-    {
-        try
-        {
-            this.init();
-
-            xmlStructureResponse = new XMLStructureResponse( this.FILE_XLS.getPath(), this.ENCODING, this.sheetId,
-                true, false, true, false, false ).getSTRUCTURE_DATA_RESPONSE();
-
-            // this.FILE_XLS.deleteOnExit();
-
-            return SUCCESS;
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-            return ERROR;
-        }
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private void init()
         throws Exception
     {
-        this.FILE_XLS = new File( selectionManager.getDownloadFilePath() );
+       
+        File output = new File( selectionManager.getDownloadFilePath() );
 
-        // inputStream.close();
+        fileName = output.getName();
+
+        inputStream = new BufferedInputStream( new FileInputStream( output ) );
+
+        return SUCCESS;
     }
 
-    @SuppressWarnings( "unused" )
-    private static final String replacedSeparateSimple( String path )
-    {
-        path = path.replace( "\\", SEPARATE );
-
-        return path;
-    }
 }

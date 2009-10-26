@@ -21,6 +21,17 @@
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
+		<action name="downloadFile"
+			class="org.hisp.dhis.reportexcel.action.DownloadFileAction">
+			<result name="success" type="stream">
+				<param name="contentType">${outputFormat}</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename="${fileName}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+
+
 		<!-- SYSTEM CONFIGURATION ACTION -->
 
 		<action name="getConfiguration"
@@ -99,13 +110,29 @@
 				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>
 
-		<action name="validateUpdateReportExcel"
-			class="org.hisp.dhis.reportexcel.action.ValidateUpdateReportExcelAction">
+		<action name="backupReportExcel"
+			class="org.hisp.dhis.reportexcel.action.BackupReportExcelAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+		</action>
+
+		<action name="uploadBackupFile"
+			class="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction">
+			<result name="success" type="redirect">listReportExcel.action</result>
+			<interceptor-ref name="fileUploadStack" />
+		</action>
+
+		<action name="restoreReportExcel"
+			class="org.hisp.dhis.reportexcel.action.RestoreReportExcelAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>
+
+
+
+
 
 		<!-- REPORT EXCEL CATEGORY ACTION -->
 
@@ -442,16 +469,6 @@
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
 
-		<action name="downloadExcelOutput"
-			class="org.hisp.dhis.reportexcel.export.action.DowloadExcelAction">
-			<result name="success" type="stream">
-				<param name="contentType">application/vnd.ms-excel</param>
-				<param name="inputName">inputStream</param>
-				<param name="contentDisposition">filename="${outputXLS}"</param>
-				<param name="bufferSize">1024</param>
-			</result>
-		</action>
-
 		<!-- DATA ENTRY STATUS ACTION -->
 
 		<action name="viewDataEntryStatus"
@@ -626,14 +643,14 @@
 		<!--  GERERATE ADVANCE -->
 
 		<action name="selectAdvancedExportForm"
-            class="org.hisp.dhis.reportexcel.export.advance.action.SelectAdvancedExportFormAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-excel-reporting/advancedReport.vm</param>
-            <param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-            <param name="menuTreeHeight">250</param>
-            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,javascript/commons.js,javascript/preview.js</param>
-        </action>
-     
+			class="org.hisp.dhis.reportexcel.export.advance.action.SelectAdvancedExportFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/advancedReport.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+			<param name="menuTreeHeight">250</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,javascript/commons.js,javascript/preview.js</param>
+		</action>
+
 		<action name="generateAdvancedReportExcel"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
 			<result name="CATEGORY" type="chain">
@@ -680,7 +697,7 @@
 			<param name="page">/dhis-web-excel-reporting/individualReportExcel.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
 			<param name="menuTreeHeight">220</param>
-			<param name="javascripts">javascript/individual.js,javascript/commons.js,../dhis-web-commons/ouwt/ouwt.js</param>			
+			<param name="javascripts">javascript/individual.js,javascript/commons.js,../dhis-web-commons/ouwt/ouwt.js</param>
 		</action>
 
 		<action name="filterAvailableDataElementsByDataElementGroup"
@@ -695,20 +712,20 @@
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
-		
-        <action name="cleanUpReportExcel"
-            class="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction">
-            <result name="success" type="velocity-xml">
-                /dhis-web-excel-reporting/responseSuccess.vm</result>
-        </action>
-		
+
+		<action name="cleanUpReportExcel"
+			class="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+		</action>
+
 		<!-- PREVIEW ADVANCED REPORT -->
-		
+
 		<action name="previewAdvancedReportExcel"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
 			<result name="CATEGORY" type="chain">
 				generatePreviewAdvancedCategory
-            </result>
+			</result>
 			<result name="NORMAL" type="chain">
 				generatePreviewAdvancedNormal
 			</result>
@@ -719,19 +736,19 @@
 				generatePreviewAdvancedPeriodColumnListing
 			</result>
 		</action>
-		
+
 		<action name="generatePreviewAdvancedCategory"
 			class="org.hisp.dhis.reportexcel.preview.advance.action.GeneratePreviewAdvancedCategoryAction">
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
-		
+
 		<action name="generatePreviewAdvancedNormal"
 			class="org.hisp.dhis.reportexcel.preview.advance.action.GeneratePreviewAdvancedNormalAction">
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
-	
+
 		<action name="generatePreviewAdvancedOrgGroupListing"
 			class="org.hisp.dhis.reportexcel.preview.advance.action.GeneratePreviewAdvancedOrgGroupListingAction">
 			<result name="success" type="chain">exportXMLChain
@@ -743,10 +760,10 @@
 			<result name="success" type="chain">exportXMLChain
 			</result>
 		</action>
-		
-				
+
+
 		<!-- PROCESSED FOR PERIOD IN INDIVIDUAL REPORT -->
-		
+
 		<action name="getPeriodsByPeriodType"
 			class="org.hisp.dhis.reportexcel.export.individual.action.GetPeriodsByPeriodTypeAction">
 			<result name="success" type="velocity-xml">
@@ -754,18 +771,18 @@
 			<result name="error" type="velocity-xml">
 				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>
-		
-		<action name="nextPeriods" 
+
+		<action name="nextPeriods"
 			class="org.hisp.dhis.reportexcel.export.individual.action.NextPeriodsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responsePeriods.vm</result>
 		</action>
-		
-		<action name="previousPeriods" 
+
+		<action name="previousPeriods"
 			class="org.hisp.dhis.reportexcel.export.individual.action.PreviousPeriodsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responsePeriods.vm</result>
 		</action>
-		
+
 	</package>
 </struts>

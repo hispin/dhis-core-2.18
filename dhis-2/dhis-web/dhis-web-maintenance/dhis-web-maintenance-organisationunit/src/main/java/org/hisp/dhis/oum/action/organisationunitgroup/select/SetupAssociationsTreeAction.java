@@ -1,4 +1,4 @@
-package org.hisp.dhis.oum.action.organisationunitgroup;
+package org.hisp.dhis.oum.action.organisationunitgroup.select;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,27 +27,36 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: AddOrganisationUnitGroupAction.java 1898 2006-09-22 12:06:56Z
- *          torgeilo $
+ * @author Kristian
+ * @version $Id: SetupAssociationsTreeAction.java 5652 2008-09-06 13:24:34Z
+ *          larshelg $
  */
-@SuppressWarnings("serial")
-public class AddOrganisationUnitGroupAction
-    extends ActionSupport
+public class SetupAssociationsTreeAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
-    // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------   
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
 
     private OrganisationUnitGroupService organisationUnitGroupService;
 
@@ -56,38 +65,38 @@ public class AddOrganisationUnitGroupAction
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
-    private SelectionTreeManager selectionTreeManager;
+    // -------------------------------------------------------------------------
+    // Getters & Setters
+    // -------------------------------------------------------------------------
 
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    private List<OrganisationUnitLevel> levels;
+
+    public List<OrganisationUnitLevel> getLevels()
     {
-        this.selectionTreeManager = selectionTreeManager;
+        return levels;
     }
 
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
+    private List<OrganisationUnitGroup> groups;
 
-    private String name;
-
-    public void setName( String name )
+    public List<OrganisationUnitGroup> getGroups()
     {
-        this.name = name;
+        return groups;
     }
-
+    
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Execute
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        OrganisationUnitGroup organisationUnitGroup = new OrganisationUnitGroup( name );
+        levels = organisationUnitService.getOrganisationUnitLevels();
 
-        organisationUnitGroup.setMembers( new HashSet<OrganisationUnit>( selectionTreeManager
-            .getSelectedOrganisationUnits() ) );
+        groups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
 
-        organisationUnitGroupService.addOrganisationUnitGroup( organisationUnitGroup );
+        Collections.sort( groups, new OrganisationUnitGroupNameComparator() );
 
         return SUCCESS;
     }
+
 }

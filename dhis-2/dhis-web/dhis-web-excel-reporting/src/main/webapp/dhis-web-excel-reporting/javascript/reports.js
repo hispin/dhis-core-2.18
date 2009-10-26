@@ -214,14 +214,26 @@ function updateDataElementGroupOrder(){
 	window.location = url;
 }
 
-//===============================================
-//  REPORT EXCEL ORGANISATION UNIT LISTING
-//===============================================
 
-/*
-*   Update Data Element Group Order
-*/
+function backupReportExcel( id ){
+	$.post("backupReportExcel.action",{id:id},function(data){
+		window.location = "downloadFile.action?outputFormat=application/xml-external-parsed-entity";
+	},'xml');
+}
 
+function restoreReportExcel(){
+	$.post("restoreReportExcel.action",{},function(xmlObject){
+		var xmlObject = xmlObject.getElementsByTagName('message')[0];
+		var type = xmlObject.getAttribute( 'type' );
+		if(type=='error')
+		{
+			setMessage(xmlObject.firstChild.nodeValue);
+		}else if(type=='success')
+		{		
+			window.location.reload();	
+		}
+	},'xml');	
+}
 
 
 

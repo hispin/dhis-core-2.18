@@ -1,66 +1,123 @@
-
 <h3>$i18n.getString( "edit_org_unit_group" )</h3>
 
-<form id="updateOrganisationUnitGroupForm" action="updateOrganisationUnitGroup.action" method="post" onsubmit="return validateUpdateOrganisationUnitGroup()">
-
-<table>
+<form id="updateOrganisationUnitGroupForm" action="updateOrganisationUnitGroup.action" method="post">
+<input type="hidden" name="id" id="id" style="width:300px" value="$!organisationUnitGroup.id"/>
+<span id="message" style="position:absolute;top:80px;right:5px"></span>
+<p>$i18n.getString( "name" )  <input type="text" name="name" id="name" style="width:300px" value="$!organisationUnitGroup.name"/></p>
+<table id="selectionTable">
+	<tr>
+	  <td>
+		<input type="button" value="$i18n.getString( "select_all_at_level" )" onclick="selectAllAtLevel()" style="width:12em">
+		<select id="levelList" name="levelList" style="width:12em">
+			#foreach( $lev in $levels )
+				<option value="$lev.level" #if ( $level == $lev.level )selected="selected"#end>$encoder.htmlEncode( $lev.name )</option>
+			#end
+		</select>
+		<input type="button" value="$i18n.getString( "unselect_all_at_level" )" onclick="unselectAllAtLevel()" style="width:12em">
+		<input type="button" value="$i18n.getString( "unselect_all" )" onclick="unselectAll()" style="width:12em">        
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	  	<input type="button" value="$i18n.getString( "select_all_in_group" )" onclick="selectGroup()" style="width:12em">
+	  	<select id="groupList" name="groupList" style="width:12em">
+	  		#foreach ( $group in $groups )
+	  			<option value="$group.id" #if ( $organisationUnitGroupId == $group.id )selected="selected"#end>$encoder.htmlEncode( $group.name )</option>
+		  	#end
+	  	</select>
+	  	<input type="button" value="$i18n.getString( "unselect_all_in_group" )" onclick="unselectGroup()" style="width:12em">
+  	  </td>
+	</tr>
     <tr>
-        <th colspan="2">$i18n.getString( "details" )</th>
-    </tr>
-    <tr>
-        <td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:20em" value="$!encoder.htmlEncode( $organisationUnitGroup.name )"></td>
-    </tr>
-    <tr>
-        <td colspan="2" height="15px"></td>
-    </tr>
-</table>
+      <td>
+        <div id="selectionTree" style="width:50em;height:30em;overflow:auto;border:1px solid #cccccc"></div>
 
-<table>
+        <script type="text/javascript">
+		
+			var organisationUnitGroupId = $!organisationUnitGroup.id;
+		
+			var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
+
+			selectionTreeSelection.setMultipleSelectionAllowed( true );
+			selectionTreeSelection.setOnSelectFunction( treeClicked );
+			selectionTreeSelection.setListenerFunction( selectCompleted );
+			selectionTree.buildSelectionTree();
+
+			var numberOfSelects = 0;
+
+			function selectAllAtLevel()
+			{
+				var request = new Request();
+				request.setCallbackSuccess( selectReceived );
+				request.send( 'selectLevel.action?level=' + getListValue( 'levelList' ) );
+			}
+
+			function unselectAllAtLevel()
+			{
+				var request = new Request();
+				request.setCallbackSuccess( selectReceived );
+				request.send( 'unselectLevel.action?level=' + getListValue( 'levelList' ) );
+			}
+
+			function selectGroup()
+			{
+				var request = new Request();
+				request.setCallbackSuccess( selectReceived );
+				request.send( 'selectOrganisationUnitGroup.action?organisationUnitGroupId=' + getListValue( 'groupList' ) );
+			}
+
+			function unselectGroup()
+			{
+				var request = new Request();
+				request.setCallbackSuccess( selectReceived );
+				request.send( 'unselectOrganisationUnitGroup.action?organisationUnitGroupId=' + getListValue( 'groupList' ) );
+			}
+
+			function unselectAll()
+			{
+				var request = new Request();
+				request.setCallbackSuccess( selectReceived );
+				request.send( 'unselectAll.action' );
+			}
+
+			function selectReceived()
+			{
+				selectionTree.buildSelectionTree();
+			}
+
+			function treeClicked()
+			{
+				numberOfSelects++;
+				
+				setMessage( i18n_loading );
+				
+				document.getElementById( "submitButton" ).disabled = true;
+			}
+
+			function selectCompleted( selectedUnits )
+			{
+				numberOfSelects--;
+				
+				if ( numberOfSelects <= 0 )
+				{
+					hideMessage();
+					
+					document.getElementById( "submitButton" ).disabled = false;
+				}
+			}
+
+
+
+        </script>
+        
+      </td>
+    </tr>
+
     <tr>
-        <th>$i18n.getString( "available_organisation_units" )</th><td></td><th>$i18n.getString( "group_members" )</th>
+      <td>
+        <input type="button" id="submitButton" value="$i18n.getString( "save" )" style="width:10em" onclick="validateUpdateOrganisationUnitGroup()">
+		<input type="button" onclick="window.location.href='organisationUnitGroup.action'" value="$i18n.getString( "cancel" )" style="width:10em">
+      </td>
     </tr>
-    <tr>        
-        <td><input type="text" id="availableOrganisationUnitsFilter" onkeyup="filterList( this.value, 'availableOrganisationUnits' )" style="width:25em"></td>
-        <td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>
-        <td><input type="text" id="groupMembersFilter" onkeyup="filterList( this.value, 'groupMembers' )" style="width:25em"></td>
-    </tr>
-    <tr>
-        <td>
-            <select id="availableOrganisationUnits" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'availableOrganisationUnits', 'groupMembers' )">
-            #foreach ( $unit in $availableOrganisationUnits )
-                <option value="$unit.id">$encoder.htmlEncode( $unit.name )</option>
-            #end
-            </select>
-        </td>        
-        <td align="center">
-            <input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:40px" onclick="moveSelectedById( 'availableOrganisationUnits', 'groupMembers' )"><br>
-            <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" style="width:40px" onclick="moveSelectedById( 'groupMembers', 'availableOrganisationUnits' )"><br>      
-            <input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:40px" onclick="moveAllById( 'availableOrganisationUnits', 'groupMembers' )"><br>
-            <input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:40px" onclick="moveAllById( 'groupMembers', 'availableOrganisationUnits' )"><br>
-        </td>
-        <td>
-            <select id="groupMembers" name="groupMembers" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'groupMembers', 'availableOrganisationUnits' )">
-            #foreach ( $unit in $groupMembers )
-                <option value="$unit.id">$encoder.htmlEncode( $unit.name )</option>
-            #end
-            </select>
-        </td>
-    </tr>
-</table>
-
-<p><input type="submit" value="$i18n.getString( "save" )" style="width:10em"><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='organisationUnitGroup.action'" style="width:10em"></p>
-
-<input type="hidden" id="id" name="id" value="$id">
-
+  </table>
 </form>
-
-<span id="message"></span>
-
-<script type="text/javascript">
-
-    var nameField = document.getElementById( 'name' );
-    nameField.select();
-    nameField.focus();
-
-</script>

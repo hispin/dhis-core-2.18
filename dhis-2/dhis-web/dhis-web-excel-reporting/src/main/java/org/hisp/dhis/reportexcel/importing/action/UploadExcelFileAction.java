@@ -33,6 +33,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.hisp.dhis.reportexcel.ReportLocationManager;
+import org.hisp.dhis.reportexcel.export.action.SelectionManager;
 
 /**
  * @author Tran Thanh Tri
@@ -51,6 +52,13 @@ public class UploadExcelFileAction
     public void setReportLocationManager( ReportLocationManager reportLocationManager )
     {
         this.reportLocationManager = reportLocationManager;
+    }
+
+    private SelectionManager selectionManager;
+
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
     }
 
     // -------------------------------------------------------------------------
@@ -91,22 +99,24 @@ public class UploadExcelFileAction
         throws Exception
     {
 
-        File directory = reportLocationManager.getReportExcelTempDirectory(  );
-        
+        File directory = reportLocationManager.getReportExcelTempDirectory();
+
         if ( upload != null )
         {
 
             try
             {
                 FileInputStream fin = new FileInputStream( upload );
-                
+
                 byte[] data = new byte[8192];
                 int byteReads = fin.read( data );
-                
+
                 fileExcel = new File( directory, fileName );
 
                 FileOutputStream fout = new FileOutputStream( fileExcel );
-                
+
+                selectionManager.setUploadFilepath( fileExcel.getAbsolutePath() );
+
                 while ( byteReads != -1 )
                 {
                     fout.write( data, 0, byteReads );
@@ -114,7 +124,7 @@ public class UploadExcelFileAction
                     byteReads = fin.read( data );
                 }
                 fin.close();
-                
+
                 fout.close();
 
                 return SUCCESS;

@@ -1,6 +1,13 @@
 <h2>$i18n.getString('reports')</h2>
-<p><input type="button" onclick="openAddReportExcel()" value="$i18n.getString('add')" style="width:100px"/>
-<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='administration.action'" style="width:100px"></p>
+<p>
+<form name="fileName" action="uploadBackupFile.action" method="post" enctype="multipart/form-data">
+		<input type="button" onclick="openAddReportExcel()" value="$i18n.getString('add')" style="width:100px"/>
+		<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='administration.action'" style="width:100px">     
+		<input type="file" id="upload" name="upload"/>
+		<input name="submit" type="submit" value="$i18n.getString( 'Upload' )" />
+		<input type="button" value="$i18n.getString( 'import' )" onclick="restoreReportExcel()"/>
+</form>
+</p>
 
 <table width="100%">
 	<tr>
@@ -18,8 +25,9 @@
 			<td align="left">
 				<a href="openDefineAssociationsForm.action?reportId=$report.id" title="$i18n.getString( 'define_associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'define_associations' )"></a>
 				<a href="listReportExcelItemAction.action?reportId=$report.id" title="$i18n.getString( 'report_item' )"><img src="../images/add_section.png" alt="$i18n.getString( 'report_item' )"></a>
-				<a href="javascript:deleteReportExcel('$report.id');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
-				<a href="javascript:openUpdateReportReportExcel( '$report.id' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+				<a href="javascript:deleteReportExcel($report.id);" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+				<a href="javascript:openUpdateReportReportExcel( $report.id );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+				<a href="javascript:backupReportExcel( $report.id );" title="$i18n.getString( 'backup' )"><img src="../images/open.png" alt="$i18n.getString( 'backup' )"></a>
 				#if($report.isOrganisationUnitGroupListing())
 				<a href="openUpdateOrgnisationUnitGroupListingReport.action?id=$report.id" title="$i18n.getString( 'organisation_unit_group' )"><img src="images/group_1.jpg"/></a>
 				#end
@@ -346,7 +354,7 @@
 
 </div>
 
-<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="javascript:hideById(this.id);"></span>
+<span id="message" style="top:100px;right:5px;position:absolute;width:200px;z-index:10002" onclick="javascript:hideById(this.id);"></span>
 
 
 

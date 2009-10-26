@@ -24,10 +24,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.item.action;
+package org.hisp.dhis.reportexcel.action;
 
-import org.hisp.dhis.reportexcel.ReportExcelItem;
+import java.io.File;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.ReportLocationManager;
+import org.hisp.dhis.reportexcel.export.action.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -35,114 +46,69 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class AddReportExcelItemAction
+public class BackupReportExcelAction
     implements Action
 {
+    private static final String xml = ".xml";
+
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
 
-    private ReportExcelService reportService;
+    private ReportExcelService reportExcelService;
+
+    private ReportLocationManager locationManager;
+
+    private SelectionManager selectionManager;
 
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
 
-    private String name;
-
-    private String itemType;
-
-    private String expression;
-
-    private String periodType;
-
-    private Integer row;
-
-    private Integer column;
-
-    private Integer reportId;
-
-    private ReportExcelItem reportItem;
-
-    private Integer sheetNo;
+    private Integer id;
 
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
 
-    public void setReportService( ReportExcelService reportService )
+    public void setReportExcelService( ReportExcelService reportExcelService )
     {
-        this.reportService = reportService;
-    }   
-
-    public void setSheetNo( Integer sheetNo )
-    {
-        this.sheetNo = sheetNo;
+        this.reportExcelService = reportExcelService;
     }
 
-    public ReportExcelItem getReportItem()
+    public void setLocationManager( ReportLocationManager locationManager )
     {
-        return reportItem;
+        this.locationManager = locationManager;
     }
 
-    public void setName( String name )
+    public void setSelectionManager( SelectionManager selectionManager )
     {
-        this.name = name;
+        this.selectionManager = selectionManager;
     }
 
-    public void setItemType( String itemType )
+    public void setId( Integer id )
     {
-        this.itemType = itemType;
+        this.id = id;
     }
 
-    public void setExpression( String expression )
-    {
-        this.expression = expression;
-    }
-
-    public void setPeriodType( String periodType )
-    {
-        this.periodType = periodType;
-    }
-
-    public void setRow( Integer row )
-    {
-        this.row = row;
-    }
-
-    public void setColumn( Integer column )
-    {
-        this.column = column;
-    }
-
-    public void setReportId( Integer reportId )
-    {
-        this.reportId = reportId;
-    }
-
-    public Integer getReportId()
-    {
-        return reportId;
-    }
-
+    @Override
     public String execute()
         throws Exception
-    {        
+    {
+        ReportExcel reportExcel = reportExcelService.getReportExcel( id );
 
-        reportItem = new ReportExcelItem();
-        reportItem.setName( name );
-        reportItem.setItemType( itemType.trim() );
-        reportItem.setRow( row );
-        reportItem.setColumn( column );
-        reportItem.setExpression( expression.trim() );
-        reportItem.setPeriodType( periodType.trim() );
-        reportItem.setSheetNo( (sheetNo == null ? 1 : sheetNo) );
-        reportItem.setReportExcel( reportService.getReportExcel( reportId ) );
-        
+        Source source = new DOMSource( reportExcel.createDocument() );
 
-        reportService.addReportExcelItem( reportItem );        
-       
+        File file = new File( locationManager.getReportExcelTempDirectory() + File.separator + (Math.random() * id)
+            + xml );
+        Result result = new StreamResult( file );
+
+        Transformer xformer = TransformerFactory.newInstance().newTransformer();
+        xformer.transform( source, result );
+
+        selectionManager.setDownloadFilePath( file.getAbsolutePath() );
 
         return SUCCESS;
     }
+
 }

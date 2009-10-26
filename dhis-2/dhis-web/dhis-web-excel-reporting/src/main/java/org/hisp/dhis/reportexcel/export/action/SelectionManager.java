@@ -47,7 +47,9 @@ public class SelectionManager
 
     private static final String SELECTED_REPORT_EXCEL_ID = "SELECTED_REPORT_EXCEL_ID";
 
-    private static final String REPORTEXCEL_OUTPUT = "REPORTEXCEL_OUTPUT";
+    private static final String FILE_DOWNLOAD = "FILE_DOWNLOAD";
+    
+    private static final String FILE_UPLOAD = "FILE_UPLOAD";
 
     public Period getSelectedPeriod()
     {
@@ -100,14 +102,25 @@ public class SelectionManager
     }
 
     @SuppressWarnings( "unchecked" )
-    public void setReportExcelOutput( String path )
+    public void setDownloadFilePath( String path )
     {
-        getSession().put( REPORTEXCEL_OUTPUT, path );
+        getSession().put( FILE_DOWNLOAD, path );
     }
 
-    public String getReportExcelOutput()
+    public String getDownloadFilePath()
     {
-        return (String) getSession().get( REPORTEXCEL_OUTPUT );
+        return (String) getSession().get( FILE_DOWNLOAD );
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public void setUploadFilepath( String path )
+    {
+        getSession().put( FILE_UPLOAD, path );
+    }
+
+    public String getUploadFilePath()
+    {
+        return (String) getSession().get( FILE_UPLOAD );
     }
 
 }

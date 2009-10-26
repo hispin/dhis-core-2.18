@@ -665,7 +665,7 @@ public abstract class GeneratePreviewReportExcelSupport
 
         this.outputStreamExcelTemplate.close();
 
-        selectionManager.setReportExcelOutput( outputReportFile.getPath() );
+        selectionManager.setDownloadFilePath( outputReportFile.getPath() );
 
         // inputStream = new BufferedInputStream( new FileInputStream(
         // this.outputReportFile ) );

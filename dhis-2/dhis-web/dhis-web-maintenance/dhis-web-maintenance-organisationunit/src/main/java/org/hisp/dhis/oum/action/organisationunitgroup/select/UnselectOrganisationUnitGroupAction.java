@@ -1,4 +1,4 @@
-package org.hisp.dhis.oum.action.organisationunitgroup;
+package org.hisp.dhis.oum.action.organisationunitgroup.select;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,34 +27,25 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
+import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: AddOrganisationUnitGroupAction.java 1898 2006-09-22 12:06:56Z
- *          torgeilo $
+ * @author Lars Helge Overland
+ * @version $Id$
  */
-@SuppressWarnings("serial")
-public class AddOrganisationUnitGroupAction
-    extends ActionSupport
+public class UnselectOrganisationUnitGroupAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
 
     private SelectionTreeManager selectionTreeManager;
 
@@ -63,31 +54,41 @@ public class AddOrganisationUnitGroupAction
         this.selectionTreeManager = selectionTreeManager;
     }
 
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
+    private OrganisationUnitGroupService organisationUnitGroupService;
 
-    private String name;
-
-    public void setName( String name )
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
-        this.name = name;
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
-
+    
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Input & output
+    // -------------------------------------------------------------------------
+
+    private Integer organisationUnitGroupId;
+
+    public void setOrganisationUnitGroupId( Integer organisationUnitGroupId )
+    {
+        this.organisationUnitGroupId = organisationUnitGroupId;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Action
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
-        OrganisationUnitGroup organisationUnitGroup = new OrganisationUnitGroup( name );
-
-        organisationUnitGroup.setMembers( new HashSet<OrganisationUnit>( selectionTreeManager
-            .getSelectedOrganisationUnits() ) );
-
-        organisationUnitGroupService.addOrganisationUnitGroup( organisationUnitGroup );
-
+        OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( organisationUnitGroupId );
+        
+        if ( group != null )
+        {
+            Collection<OrganisationUnit> units = selectionTreeManager.getSelectedOrganisationUnits();
+            
+            units.removeAll( group.getMembers() );
+            
+            selectionTreeManager.setSelectedOrganisationUnits( units );
+        }
+        
         return SUCCESS;
     }
 }
