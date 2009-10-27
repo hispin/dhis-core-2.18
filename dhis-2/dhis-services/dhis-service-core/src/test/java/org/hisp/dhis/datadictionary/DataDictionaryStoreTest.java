@@ -35,7 +35,7 @@ import static junit.framework.Assert.assertTrue;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
@@ -51,7 +51,7 @@ import org.junit.Test;
 public class DataDictionaryStoreTest
     extends DhisSpringTest
 {
-    private GenericNameStore<DataDictionary> dataDictionaryStore;
+    private GenericIdentifiableObjectStore<DataDictionary> dataDictionaryStore;
 
     private DataElement dataElementA;
     private DataElement dataElementB;
@@ -72,7 +72,7 @@ public class DataDictionaryStoreTest
     public void setUpTest()
         throws Exception
     {
-        dataDictionaryStore = (GenericNameStore<DataDictionary>) getBean( "org.hisp.dhis.datadictionary.DataDictionaryStore" );
+        dataDictionaryStore = (GenericIdentifiableObjectStore<DataDictionary>) getBean( "org.hisp.dhis.datadictionary.DataDictionaryStore" );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         

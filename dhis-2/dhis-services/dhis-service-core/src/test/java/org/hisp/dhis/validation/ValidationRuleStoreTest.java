@@ -37,7 +37,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.DhisTest;
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.Expression;
@@ -52,7 +52,7 @@ import org.junit.Test;
 public class ValidationRuleStoreTest
     extends DhisTest
 {
-    private GenericNameStore<ValidationRule> validationRuleStore;
+    private GenericIdentifiableObjectStore<ValidationRule> validationRuleStore;
 
     private ExpressionService expressionService;
     
@@ -74,7 +74,7 @@ public class ValidationRuleStoreTest
     public void setUpTest()
         throws Exception
     {       
-        validationRuleStore = (GenericNameStore<ValidationRule>) getBean( "org.hisp.dhis.validation.ValidationRuleStore" );
+        validationRuleStore = (GenericIdentifiableObjectStore<ValidationRule>) getBean( "org.hisp.dhis.validation.ValidationRuleStore" );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         

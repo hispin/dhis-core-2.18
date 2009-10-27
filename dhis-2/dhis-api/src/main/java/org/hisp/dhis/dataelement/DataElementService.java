@@ -353,4 +353,20 @@ public interface DataElementService
      * @return a collection of all DataElementGroups that contain the given DataElement.
      */
     Collection<DataElementGroup> getGroupsContainingDataElement( DataElement dataElement );
+
+    // -------------------------------------------------------------------------
+    // DataElementGroupSet
+    // -------------------------------------------------------------------------
+
+    int addDataElementGroupSet( DataElementGroupSet groupSet );
+    
+    void updateDataElementGroupSet( DataElementGroupSet groupSet );
+    
+    void deleteDataElementGroupSet( DataElementGroupSet groupSet );
+    
+    DataElementGroupSet getDataElementGroupSet( int id );
+    
+    DataElementGroupSet getDataElementGroupSetByName( String name );
+    
+    Collection<DataElementGroupSet> getAllDataElementGroupSets();
 }
