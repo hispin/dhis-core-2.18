@@ -35,9 +35,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorStore;
-import org.hisp.dhis.indicator.IndicatorType;
 
 /**
  * @author Lars Helge Overland
@@ -152,117 +150,5 @@ public class HibernateIndicatorStore
         query.setString( "code", code );
 
         return (Indicator) query.uniqueResult();
-    }
-
-    // -------------------------------------------------------------------------
-    // IndicatorType
-    // -------------------------------------------------------------------------
-
-    public int addIndicatorType( IndicatorType indicatorType )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( indicatorType );
-    }
-
-    public void updateIndicatorType( IndicatorType indicatorType )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.update( indicatorType );
-    }
-
-    public void deleteIndicatorType( IndicatorType indicatorType )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.delete( indicatorType );
-    }
-
-    public IndicatorType getIndicatorType( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (IndicatorType) session.get( IndicatorType.class, id );
-    }
-
-    @SuppressWarnings("unchecked")
-    public Collection<IndicatorType> getAllIndicatorTypes()
-    {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( IndicatorType.class );
-        
-        return criteria.setCacheable( true ).list();
-    }
-
-    public IndicatorType getIndicatorTypeByName( String name )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "from IndicatorType i where i.name = :name" );
-
-        query.setString( "name", name );
-
-        return (IndicatorType) query.uniqueResult();
-    }
-
-    // -------------------------------------------------------------------------
-    // IndicatorGroup
-    // -------------------------------------------------------------------------
-
-    public int addIndicatorGroup( IndicatorGroup indicatorGroup )
-    {        
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( indicatorGroup );
-    }
-
-    public void updateIndicatorGroup( IndicatorGroup indicatorGroup )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        
-        session.update( indicatorGroup );
-    }
-
-    public void deleteIndicatorGroup( IndicatorGroup indicatorGroup )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.delete( indicatorGroup );
-    }
-
-    public IndicatorGroup getIndicatorGroup( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (IndicatorGroup) session.get( IndicatorGroup.class, id );
-    }
-
-    public IndicatorGroup getIndicatorGroup( String uuid )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        
-        Criteria criteria = session.createCriteria( IndicatorGroup.class );
-        criteria.add( Restrictions.eq( "uuid", uuid ) );
-        
-        return (IndicatorGroup) criteria.uniqueResult();
-    }
-
-    @SuppressWarnings("unchecked")
-    public Collection<IndicatorGroup> getAllIndicatorGroups()
-    {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( IndicatorGroup.class );
-        
-        return criteria.setCacheable( true ).list();
-    }
-
-    public IndicatorGroup getIndicatorGroupByName( String name )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "from IndicatorGroup i where i.name = :name" );
-
-        query.setString( "name", name );
-
-        return (IndicatorGroup) query.uniqueResult();
     }
 }

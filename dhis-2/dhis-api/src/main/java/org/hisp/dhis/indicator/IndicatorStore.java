@@ -37,10 +37,6 @@ public interface IndicatorStore
 {
     String ID = IndicatorStore.class.getName();
 
-    // -------------------------------------------------------------------------
-    // Indicator
-    // -------------------------------------------------------------------------
-
     int addIndicator( Indicator indicator );
 
     void updateIndicator( Indicator indicator );
@@ -60,38 +56,4 @@ public interface IndicatorStore
     Indicator getIndicatorByAlternativeName( String alternativeName );
 
     Indicator getIndicatorByCode( String code );
-
-    // -------------------------------------------------------------------------
-    // IndicatorType
-    // -------------------------------------------------------------------------
-
-    int addIndicatorType( IndicatorType indicatorType );
-
-    void updateIndicatorType( IndicatorType indicatorType );
-
-    void deleteIndicatorType( IndicatorType indicatorType );
-
-    IndicatorType getIndicatorType( int id );
-
-    Collection<IndicatorType> getAllIndicatorTypes();
-
-    IndicatorType getIndicatorTypeByName( String name );
-
-    // -------------------------------------------------------------------------
-    // IndicatorGroup
-    // -------------------------------------------------------------------------
-
-    int addIndicatorGroup( IndicatorGroup indicatorGroup );
-
-    void updateIndicatorGroup( IndicatorGroup indicatorGroup );
-
-    void deleteIndicatorGroup( IndicatorGroup indicatorGroup );
-
-    IndicatorGroup getIndicatorGroup( int id );
-    
-    IndicatorGroup getIndicatorGroup( String uuid );
-
-    Collection<IndicatorGroup> getAllIndicatorGroups();
-
-    IndicatorGroup getIndicatorGroupByName( String name );
 }

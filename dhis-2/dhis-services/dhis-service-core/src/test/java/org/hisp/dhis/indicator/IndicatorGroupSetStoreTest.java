@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataelement;
+package org.hisp.dhis.indicator;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -33,23 +33,23 @@ import org.hisp.dhis.GenericDhisSpringTest;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class DataElementGroupSetStoreTest
-    extends GenericDhisSpringTest<DataElementGroupSet>
+public class IndicatorGroupSetStoreTest
+    extends GenericDhisSpringTest<IndicatorGroupSet>
 {
-    private DataElementGroupSet[] objects = {
-        new DataElementGroupSet( "GroupSetA" ),
-        new DataElementGroupSet( "GroupSetB" ),
-        new DataElementGroupSet( "GroupSetC" ) };
+    private IndicatorGroupSet[] objects = { 
+        new IndicatorGroupSet( "GroupSetA" ), 
+        new IndicatorGroupSet( "GroupSetB" ),
+        new IndicatorGroupSet( "GroupSetC" ) };
     
     @Override
-    protected DataElementGroupSet[] getObjects()
+    protected IndicatorGroupSet[] getObjects()
     {
         return objects;
-    }    
+    }
 
     @Override
     protected String getGenericStoreBeanId()
     {
-        return "org.hisp.dhis.dataelement.DataElementGroupSetStore";
+        return "org.hisp.dhis.indicator.IndicatorGroupSetStore";
     }
 }

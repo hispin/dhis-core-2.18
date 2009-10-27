@@ -102,4 +102,20 @@ public interface IndicatorService
     IndicatorGroup getIndicatorGroupByName( String name );
     
     Collection<IndicatorGroup> getGroupsContainingIndicator( Indicator indicator );
+
+    // -------------------------------------------------------------------------
+    // IndicatorGroupSet
+    // -------------------------------------------------------------------------
+
+    int addIndicatorGroupSet( IndicatorGroupSet groupSet );
+    
+    void updateIndicatorGroupSet( IndicatorGroupSet groupSet );
+    
+    void deleteIndicatorGroupSet( IndicatorGroupSet groupSet );
+    
+    IndicatorGroupSet getIndicatorGroupSet( int id );
+    
+    IndicatorGroupSet getIndicatorGroupSetByName( String name );
+    
+    Collection<IndicatorGroupSet> getAllIndicatorGroupSets();
 }
