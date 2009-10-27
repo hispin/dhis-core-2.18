@@ -4,7 +4,6 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-
   <class name="org.hisp.dhis.dataelement.DataElementGroupSet" table="dataelementgroupset">
         
     <id name="id" column="dataelementgroupsetid">

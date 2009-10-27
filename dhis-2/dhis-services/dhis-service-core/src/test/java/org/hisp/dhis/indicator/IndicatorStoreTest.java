@@ -36,6 +36,7 @@ import static junit.framework.Assert.fail;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.system.util.UUIdUtils;
 import org.junit.Test;
 
@@ -43,10 +44,13 @@ import org.junit.Test;
  * @author Lars Helge Overland
  * @version $Id: IndicatorStoreTest.java 3286 2007-05-07 18:05:21Z larshelg $
  */
+@SuppressWarnings( "unchecked" )
 public class IndicatorStoreTest
     extends DhisSpringTest
 {
     private IndicatorStore indicatorStore;
+    
+    private GenericIdentifiableObjectStore<IndicatorType> indicatorTypeStore;
 
     // -------------------------------------------------------------------------
     // Set up/tear down
@@ -57,6 +61,8 @@ public class IndicatorStoreTest
         throws Exception
     {
         indicatorStore = (IndicatorStore) getBean( IndicatorStore.ID );
+        
+        indicatorTypeStore = (GenericIdentifiableObjectStore<IndicatorType>) getBean( "org.hisp.dhis.indicator.IndicatorTypeStore" );
     }
 
     // -------------------------------------------------------------------------
@@ -84,23 +90,23 @@ public class IndicatorStoreTest
         IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1 );
         IndicatorType typeC = new IndicatorType( "IndicatorTypeA", 100 );
         
-        int idA = indicatorStore.addIndicatorType( typeA );
-        int idB = indicatorStore.addIndicatorType( typeB );
+        int idA = indicatorTypeStore.save( typeA );
+        int idB = indicatorTypeStore.save( typeB );
         
         try
         {
-            indicatorStore.addIndicatorType( typeC );
+            indicatorTypeStore.save( typeC );
             fail( "Expected unique constraint exception" );
         }
         catch ( Exception ex )
         {
         }
 
-        typeA = indicatorStore.getIndicatorType( idA );
+        typeA = indicatorTypeStore.get( idA );
         assertNotNull( typeA );
         assertEquals( idA, typeA.getId() );
         
-        typeB = indicatorStore.getIndicatorType( idB );
+        typeB = indicatorTypeStore.get( idB );
         assertNotNull( typeB );
         assertEquals( idB, typeB.getId() );
     }
@@ -110,13 +116,13 @@ public class IndicatorStoreTest
         throws Exception
     {
         IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
-        int idA = indicatorStore.addIndicatorType( typeA );
-        typeA = indicatorStore.getIndicatorType( idA );
+        int idA = indicatorTypeStore.save( typeA );
+        typeA = indicatorTypeStore.get( idA );
         assertEquals( typeA.getName(), "IndicatorTypeA" );
         
         typeA.setName( "IndicatorTypeB" );
-        indicatorStore.updateIndicatorType( typeA );
-        typeA = indicatorStore.getIndicatorType( idA );
+        indicatorTypeStore.update( typeA );
+        typeA = indicatorTypeStore.get( idA );
         assertNotNull( typeA );
         assertEquals( typeA.getName(), "IndicatorTypeB" );
     }
@@ -128,21 +134,21 @@ public class IndicatorStoreTest
         IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
         IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1 );
         
-        int idA = indicatorStore.addIndicatorType( typeA );
-        int idB = indicatorStore.addIndicatorType( typeB );
+        int idA = indicatorTypeStore.save( typeA );
+        int idB = indicatorTypeStore.save( typeB );
         
-        assertNotNull( indicatorStore.getIndicatorType( idA ) );
-        assertNotNull( indicatorStore.getIndicatorType( idB ) );
+        assertNotNull( indicatorTypeStore.get( idA ) );
+        assertNotNull( indicatorTypeStore.get( idB ) );
         
-        indicatorStore.deleteIndicatorType( typeA );
+        indicatorTypeStore.delete( typeA );
 
-        assertNull( indicatorStore.getIndicatorType( idA ) );
-        assertNotNull( indicatorStore.getIndicatorType( idB ) );
+        assertNull( indicatorTypeStore.get( idA ) );
+        assertNotNull( indicatorTypeStore.get( idB ) );
 
-        indicatorStore.deleteIndicatorType( typeB );
+        indicatorTypeStore.delete( typeB );
 
-        assertNull( indicatorStore.getIndicatorType( idA ) );
-        assertNull( indicatorStore.getIndicatorType( idB ) );        
+        assertNull( indicatorTypeStore.get( idA ) );
+        assertNull( indicatorTypeStore.get( idB ) );        
     }
 
     @Test
@@ -152,10 +158,10 @@ public class IndicatorStoreTest
         IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
         IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1 );
         
-        indicatorStore.addIndicatorType( typeA );
-        indicatorStore.addIndicatorType( typeB );
+        indicatorTypeStore.save( typeA );
+        indicatorTypeStore.save( typeB );
         
-        Collection<IndicatorType> types = indicatorStore.getAllIndicatorTypes();
+        Collection<IndicatorType> types = indicatorTypeStore.getAll();
         
         assertEquals( types.size(), 2 );
         assertTrue( types.contains( typeA ) );
@@ -169,147 +175,20 @@ public class IndicatorStoreTest
         IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
         IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1 );
         
-        int idA = indicatorStore.addIndicatorType( typeA );
-        int idB = indicatorStore.addIndicatorType( typeB );
+        int idA = indicatorTypeStore.save( typeA );
+        int idB = indicatorTypeStore.save( typeB );
         
-        assertNotNull( indicatorStore.getIndicatorType( idA ) );
-        assertNotNull( indicatorStore.getIndicatorType( idB ) );
+        assertNotNull( indicatorTypeStore.get( idA ) );
+        assertNotNull( indicatorTypeStore.get( idB ) );
         
-        typeA = indicatorStore.getIndicatorTypeByName( "IndicatorTypeA" );
+        typeA = indicatorTypeStore.getByName( "IndicatorTypeA" );
         assertNotNull( typeA );
         assertEquals( typeA.getId(), idA );
         
-        IndicatorType typeC = indicatorStore.getIndicatorTypeByName( "IndicatorTypeC" );
+        IndicatorType typeC = indicatorTypeStore.getByName( "IndicatorTypeC" );
         assertNull( typeC );
     }
     
-    // -------------------------------------------------------------------------
-    // IndicatorGroup
-    // -------------------------------------------------------------------------
-
-    @Test
-    public void testAddIndicatorGroup()
-        throws Exception
-    {        
-        IndicatorGroup groupA = new IndicatorGroup( "IndicatorGroupA" );
-        IndicatorGroup groupB = new IndicatorGroup( "IndicatorGroupB" );
-        IndicatorGroup groupC = new IndicatorGroup( "IndicatorGroupA" );
-        
-        int idA = indicatorStore.addIndicatorGroup( groupA );
-        int idB = indicatorStore.addIndicatorGroup( groupB );
-        
-        try
-        {
-            indicatorStore.addIndicatorGroup( groupC );
-            fail( "Expected unique constraint exception" );
-        }
-        catch ( Exception ex )
-        {
-        }
-
-        groupA = indicatorStore.getIndicatorGroup( idA );
-        assertNotNull( groupA );
-        assertEquals( idA, groupA.getId() );
-        
-        groupB = indicatorStore.getIndicatorGroup( idB );
-        assertNotNull( groupB );
-        assertEquals( idB, groupB.getId() );
-    }
-
-    @Test
-    public void testUpdateIndicatorGroup()
-        throws Exception
-    {
-        IndicatorGroup groupA = new IndicatorGroup( "IndicatorGroupA" );
-        int idA = indicatorStore.addIndicatorGroup( groupA );
-        groupA = indicatorStore.getIndicatorGroup( idA );
-        assertEquals( groupA.getName(), "IndicatorGroupA" );
-        
-        groupA.setName( "IndicatorGroupB" );
-        indicatorStore.updateIndicatorGroup( groupA );
-        groupA = indicatorStore.getIndicatorGroup( idA );
-        assertNotNull( groupA );
-        assertEquals( groupA.getName(), "IndicatorGroupB" );
-    }
-
-    @Test
-    public void testGetAndDeleteIndicatorGroup()
-        throws Exception
-    {
-        IndicatorGroup groupA = new IndicatorGroup( "IndicatorGroupA" );
-        IndicatorGroup groupB = new IndicatorGroup( "IndicatorGroupB" );
-        
-        int idA = indicatorStore.addIndicatorGroup( groupA );
-        int idB = indicatorStore.addIndicatorGroup( groupB );
-        
-        assertNotNull( indicatorStore.getIndicatorGroup( idA ) );
-        assertNotNull( indicatorStore.getIndicatorGroup( idB ) );
-        
-        indicatorStore.deleteIndicatorGroup( groupA );
-
-        assertNull( indicatorStore.getIndicatorGroup( idA ) );
-        assertNotNull( indicatorStore.getIndicatorGroup( idB ) );
-
-        indicatorStore.deleteIndicatorGroup( groupB );
-
-        assertNull( indicatorStore.getIndicatorGroup( idA ) );
-        assertNull( indicatorStore.getIndicatorGroup( idB ) );        
-    }
-
-    @Test
-    public void testGetIndicatorGroupByUUID()
-        throws Exception
-    {
-        String uuid = UUIdUtils.getUUId();
-        
-        IndicatorGroup groupA = new IndicatorGroup( "IndicatorGroupA" );
-        groupA.setUuid( uuid );
-        
-        indicatorStore.addIndicatorGroup( groupA );
-        
-        groupA = indicatorStore.getIndicatorGroup( uuid );
-        
-        assertNotNull( groupA );
-        assertEquals( groupA.getUuid(), uuid );
-    }
-
-    @Test
-    public void testGetAllIndicatorGroups()
-        throws Exception
-    {
-        IndicatorGroup groupA = new IndicatorGroup( "IndicatorGroupA" );
-        IndicatorGroup groupB = new IndicatorGroup( "IndicatorGroupB" );
-        
-        indicatorStore.addIndicatorGroup( groupA );
-        indicatorStore.addIndicatorGroup( groupB );
-        
-        Collection<IndicatorGroup> groups = indicatorStore.getAllIndicatorGroups();
-        
-        assertEquals( groups.size(), 2 );
-        assertTrue( groups.contains( groupA ) );
-        assertTrue( groups.contains( groupB ) );
-    }
-
-    @Test
-    public void testGetIndicatorGroupByName()
-        throws Exception
-    {
-        IndicatorGroup groupA = new IndicatorGroup( "IndicatorGroupA" );
-        IndicatorGroup groupB = new IndicatorGroup( "IndicatorGroupB" );
-        
-        int idA = indicatorStore.addIndicatorGroup( groupA );
-        int idB = indicatorStore.addIndicatorGroup( groupB );
-        
-        assertNotNull( indicatorStore.getIndicatorGroup( idA ) );
-        assertNotNull( indicatorStore.getIndicatorGroup( idB ) );
-        
-        groupA = indicatorStore.getIndicatorGroupByName( "IndicatorGroupA" );
-        assertNotNull( groupA );
-        assertEquals( groupA.getId(), idA );
-        
-        IndicatorGroup groupC = indicatorStore.getIndicatorGroupByName( "IndicatorGroupC" );
-        assertNull( groupC );
-    }
     
     // -------------------------------------------------------------------------
     // Indicator
@@ -321,7 +200,7 @@ public class IndicatorStoreTest
     {        
         IndicatorType type = new IndicatorType( "IndicatorType", 100 );
         
-        indicatorStore.addIndicatorType( type );
+        indicatorTypeStore.save( type );
         
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );
@@ -354,7 +233,7 @@ public class IndicatorStoreTest
     {
         IndicatorType type = new IndicatorType( "IndicatorType", 100 );
 
-        indicatorStore.addIndicatorType( type );
+        indicatorTypeStore.save( type );
         
         Indicator indicatorA = createIndicator( 'A', type );
         int idA = indicatorStore.addIndicator( indicatorA );
@@ -374,7 +253,7 @@ public class IndicatorStoreTest
     {
         IndicatorType type = new IndicatorType( "IndicatorType", 100 );
 
-        indicatorStore.addIndicatorType( type );
+        indicatorTypeStore.save( type );
         
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );
@@ -403,7 +282,7 @@ public class IndicatorStoreTest
         String uuid = UUIdUtils.getUUId();
         
         IndicatorType type = new IndicatorType( "IndicatorType", 100 );
-        indicatorStore.addIndicatorType( type );
+        indicatorTypeStore.save( type );
         
         Indicator indicatorA = createIndicator( 'A', type );
         indicatorA.setUuid( uuid );
@@ -422,7 +301,7 @@ public class IndicatorStoreTest
     {
         IndicatorType type = new IndicatorType( "IndicatorType", 100 );
 
-        indicatorStore.addIndicatorType( type );
+        indicatorTypeStore.save( type );
         
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );
@@ -443,7 +322,7 @@ public class IndicatorStoreTest
     {
         IndicatorType type = new IndicatorType( "IndicatorType", 100 );
 
-        indicatorStore.addIndicatorType( type );
+        indicatorTypeStore.save( type );
         
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );
@@ -468,7 +347,7 @@ public class IndicatorStoreTest
     {
         IndicatorType type = new IndicatorType( "IndicatorType", 100 );
 
-        indicatorStore.addIndicatorType( type );
+        indicatorTypeStore.save( type );
         
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );
@@ -493,7 +372,7 @@ public class IndicatorStoreTest
     {
         IndicatorType type = new IndicatorType( "IndicatorType", 100 );
 
-        indicatorStore.addIndicatorType( type );
+        indicatorTypeStore.save( type );
         
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );
@@ -518,7 +397,7 @@ public class IndicatorStoreTest
     {
         IndicatorType type = new IndicatorType( "IndicatorType", 100 );
 
-        indicatorStore.addIndicatorType( type );
+        indicatorTypeStore.save( type );
         
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );

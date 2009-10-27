@@ -50,6 +50,24 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 	
+  <bean id="org.hisp.dhis.indicator.IndicatorTypeStore"
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.indicator.IndicatorType"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+    
+  <bean id="org.hisp.dhis.indicator.IndicatorGroupStore"
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.indicator.IndicatorGroup"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+    
+  <bean id="org.hisp.dhis.indicator.IndicatorGroupSetStore"
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.indicator.IndicatorGroupSet"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+    
   <bean id="org.hisp.dhis.period.PeriodStore"
     class="org.hisp.dhis.period.hibernate.HibernatePeriodStore">
     <property name="sessionFactory" ref="sessionFactory"/>
@@ -176,6 +194,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	class="org.hisp.dhis.indicator.DefaultIndicatorService">
    <property name="indicatorStore"
      ref="org.hisp.dhis.indicator.IndicatorStore"/>
+   <property name="indicatorTypeStore"
+	 ref="org.hisp.dhis.indicator.IndicatorTypeStore"/>
+   <property name="indicatorGroupStore"
+	 ref="org.hisp.dhis.indicator.IndicatorGroupStore"/>
+   <property name="indicatorGroupSetStore"
+	 ref="org.hisp.dhis.indicator.IndicatorGroupSetStore"/>
    <property name="i18nService"
      ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
