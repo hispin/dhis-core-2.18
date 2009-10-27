@@ -35,14 +35,14 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class HibernateGenericStore<T>
-    implements GenericNameStore<T>
+    implements GenericIdentifiableObjectStore<T>
 {
     protected SessionFactory sessionFactory;
 
@@ -138,7 +138,7 @@ public class HibernateGenericStore<T>
     }
 
     // -------------------------------------------------------------------------
-    // GenericDao implementation
+    // GenericStore implementation
     // -------------------------------------------------------------------------
 
     public final int save( T object )
@@ -167,10 +167,30 @@ public class HibernateGenericStore<T>
     {
         return (T) sessionFactory.getCurrentSession().load( getClazz(), id );
     }
+
+    public final T getByUuid( String uuid )
+    {
+        return getObject( Restrictions.eq( "uuid", uuid ) );
+    }
     
     public final T getByName( String name )
     {
         return getObject( Restrictions.eq( "name", name ) );
+    }
+    
+    public final T getByAlternativeName( String alternativeName )
+    {
+        return getObject( Restrictions.eq( "alternativeName", alternativeName ) );
+    }
+    
+    public final T getByShortName( String shortName )
+    {
+        return getObject( Restrictions.eq( "shortName", shortName ) );
+    }
+    
+    public final T getByCode( String code )
+    {
+        return getObject( Restrictions.eq( "code", code ) );
     }
     
     @SuppressWarnings( "unchecked" )

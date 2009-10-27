@@ -29,7 +29,7 @@ package org.hisp.dhis.datamart.impl;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.DataMartExportService;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,9 +46,9 @@ public class DefaultDataMartExportService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericNameStore<DataMartExport> dataMartExportStore;
+    private GenericIdentifiableObjectStore<DataMartExport> dataMartExportStore;
 
-    public void setDataMartExportStore( GenericNameStore<DataMartExport> dataMartExportStore )
+    public void setDataMartExportStore( GenericIdentifiableObjectStore<DataMartExport> dataMartExportStore )
     {
         this.dataMartExportStore = dataMartExportStore;
     }

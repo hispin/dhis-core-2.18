@@ -27,13 +27,16 @@ package org.hisp.dhis.document;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -43,7 +46,7 @@ import static junit.framework.Assert.*;
 public class DocumentStoreTest
     extends DhisSpringTest
 {
-    private GenericNameStore<Document> documentStore;
+    private GenericIdentifiableObjectStore<Document> documentStore;
     
     private Document documentA;
     private Document documentB;
@@ -52,7 +55,7 @@ public class DocumentStoreTest
     @Override
     public void setUpTest()
     {
-        documentStore = (GenericNameStore<Document>) getBean( "org.hisp.dhis.document.DocumentStore" );
+        documentStore = (GenericIdentifiableObjectStore<Document>) getBean( "org.hisp.dhis.document.DocumentStore" );
         
         documentA = new Document( "DocumentA", "UrlA", true );
         documentB = new Document( "DocumentB", "UrlB", true );

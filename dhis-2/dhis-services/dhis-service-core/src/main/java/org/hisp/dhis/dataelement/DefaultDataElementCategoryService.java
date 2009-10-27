@@ -37,10 +37,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.GenericStore;
-import org.hisp.dhis.system.util.UUIdUtils;
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.system.util.UUIdUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -55,9 +55,9 @@ public class DefaultDataElementCategoryService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericNameStore<DataElementCategory> dataElementCategoryStore;
+    private GenericIdentifiableObjectStore<DataElementCategory> dataElementCategoryStore;
 
-    public void setDataElementCategoryStore( GenericNameStore<DataElementCategory> dataElementCategoryStore )
+    public void setDataElementCategoryStore( GenericIdentifiableObjectStore<DataElementCategory> dataElementCategoryStore )
     {
         this.dataElementCategoryStore = dataElementCategoryStore;
     }    
@@ -69,9 +69,9 @@ public class DefaultDataElementCategoryService
         this.dataElementCategoryOptionStore = dataElementCategoryOptionStore;
     }
 
-    private GenericNameStore<DataElementCategoryCombo> dataElementCategoryComboStore;
+    private GenericIdentifiableObjectStore<DataElementCategoryCombo> dataElementCategoryComboStore;
 
-    public void setDataElementCategoryComboStore( GenericNameStore<DataElementCategoryCombo> dataElementCategoryComboStore )
+    public void setDataElementCategoryComboStore( GenericIdentifiableObjectStore<DataElementCategoryCombo> dataElementCategoryComboStore )
     {
         this.dataElementCategoryComboStore = dataElementCategoryComboStore;
     }    

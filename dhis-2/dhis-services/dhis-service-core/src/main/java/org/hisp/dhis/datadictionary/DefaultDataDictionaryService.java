@@ -30,7 +30,7 @@ package org.hisp.dhis.datadictionary;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,9 +46,9 @@ public class DefaultDataDictionaryService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericNameStore<DataDictionary> dataDictionaryStore;
+    private GenericIdentifiableObjectStore<DataDictionary> dataDictionaryStore;
     
-    public void setDataDictionaryStore( GenericNameStore<DataDictionary> dataDictionaryStore )
+    public void setDataDictionaryStore( GenericIdentifiableObjectStore<DataDictionary> dataDictionaryStore )
     {
         this.dataDictionaryStore = dataDictionaryStore;
     }
