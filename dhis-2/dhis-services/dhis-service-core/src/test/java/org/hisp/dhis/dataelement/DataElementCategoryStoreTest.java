@@ -37,7 +37,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
 
 /**
@@ -48,7 +48,7 @@ import org.junit.Test;
 public class DataElementCategoryStoreTest
     extends DhisSpringTest
 {
-    private GenericNameStore<DataElementCategory> categoryStore;
+    private GenericIdentifiableObjectStore<DataElementCategory> categoryStore;
     
     private DataElementCategoryOption categoryOptionA;
     private DataElementCategoryOption categoryOptionB;
@@ -69,7 +69,7 @@ public class DataElementCategoryStoreTest
     {
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        categoryStore = (GenericNameStore<DataElementCategory>) getBean( "org.hisp.dhis.dataelement.DataElementCategoryStore" );
+        categoryStore = (GenericIdentifiableObjectStore<DataElementCategory>) getBean( "org.hisp.dhis.dataelement.DataElementCategoryStore" );
 
         categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
         categoryOptionB = new DataElementCategoryOption( "CategoryOptionB" );

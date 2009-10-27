@@ -29,13 +29,10 @@ package org.hisp.dhis.reportexcel;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * @author Tran Thanh Tri

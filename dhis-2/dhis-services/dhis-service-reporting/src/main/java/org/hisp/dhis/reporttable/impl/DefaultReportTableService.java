@@ -27,6 +27,8 @@ package org.hisp.dhis.reporttable.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -38,7 +40,7 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -66,8 +68,6 @@ import org.hisp.dhis.reporttable.jdbc.ReportTableManager;
 import org.hisp.dhis.system.grid.Grid;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
-
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -93,9 +93,9 @@ public class DefaultReportTableService
         this.reportTableManager = reportTableManager;
     }
 
-    private GenericNameStore<ReportTable> reportTableStore;
+    private GenericIdentifiableObjectStore<ReportTable> reportTableStore;
     
-    public void setReportTableStore( GenericNameStore<ReportTable> reportTableStore )
+    public void setReportTableStore( GenericIdentifiableObjectStore<ReportTable> reportTableStore )
     {
         this.reportTableStore = reportTableStore;
     }

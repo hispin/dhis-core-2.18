@@ -37,7 +37,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
@@ -58,7 +58,7 @@ import org.junit.Test;
 public class DataMartExportStoreTest
     extends DhisSpringTest
 {
-    private GenericNameStore<DataMartExport> dataMartExportStore;
+    private GenericIdentifiableObjectStore<DataMartExport> dataMartExportStore;
     
     private DataMartExport exportA;
     private DataMartExport exportB;
@@ -76,7 +76,7 @@ public class DataMartExportStoreTest
     @Override
     public void setUpTest()
     {
-        dataMartExportStore = (GenericNameStore<DataMartExport>) getBean( "org.hisp.dhis.datamart.DataMartExportStore" );
+        dataMartExportStore = (GenericIdentifiableObjectStore<DataMartExport>) getBean( "org.hisp.dhis.datamart.DataMartExportStore" );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         

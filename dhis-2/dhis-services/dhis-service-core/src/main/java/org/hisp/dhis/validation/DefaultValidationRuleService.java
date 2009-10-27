@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.expression.ExpressionService;
@@ -57,16 +57,16 @@ public class DefaultValidationRuleService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericNameStore<ValidationRule> validationRuleStore;
+    private GenericIdentifiableObjectStore<ValidationRule> validationRuleStore;
 
-    public void setValidationRuleStore( GenericNameStore<ValidationRule> validationRuleStore )
+    public void setValidationRuleStore( GenericIdentifiableObjectStore<ValidationRule> validationRuleStore )
     {
         this.validationRuleStore = validationRuleStore;
     }
     
-    private GenericNameStore<ValidationRuleGroup> validationRuleGroupStore;
+    private GenericIdentifiableObjectStore<ValidationRuleGroup> validationRuleGroupStore;
 
-    public void setValidationRuleGroupStore( GenericNameStore<ValidationRuleGroup> validationRuleGroupStore )
+    public void setValidationRuleGroupStore( GenericIdentifiableObjectStore<ValidationRuleGroup> validationRuleGroupStore )
     {
         this.validationRuleGroupStore = validationRuleGroupStore;
     }

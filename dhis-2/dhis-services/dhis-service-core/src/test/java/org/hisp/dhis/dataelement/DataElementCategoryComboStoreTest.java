@@ -27,16 +27,18 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -46,7 +48,7 @@ import static junit.framework.Assert.*;
 public class DataElementCategoryComboStoreTest
     extends DhisSpringTest
 {
-    private GenericNameStore<DataElementCategoryCombo> categoryComboStore;
+    private GenericIdentifiableObjectStore<DataElementCategoryCombo> categoryComboStore;
     
     private DataElementCategoryCombo categoryComboA;
     private DataElementCategoryCombo categoryComboB;
@@ -65,7 +67,7 @@ public class DataElementCategoryComboStoreTest
     @Override
     public void setUpTest()
     {
-        categoryComboStore = (GenericNameStore<DataElementCategoryCombo>) getBean( "org.hisp.dhis.dataelement.DataElementCategoryComboStore" );
+        categoryComboStore = (GenericIdentifiableObjectStore<DataElementCategoryCombo>) getBean( "org.hisp.dhis.dataelement.DataElementCategoryComboStore" );
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         

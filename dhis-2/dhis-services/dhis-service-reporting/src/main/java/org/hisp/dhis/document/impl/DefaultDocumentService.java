@@ -29,7 +29,7 @@ package org.hisp.dhis.document.impl;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,9 +46,9 @@ public class DefaultDocumentService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericNameStore<Document> documentStore;
+    private GenericIdentifiableObjectStore<Document> documentStore;
 
-    public void setDocumentStore( GenericNameStore<Document> documentStore )
+    public void setDocumentStore( GenericIdentifiableObjectStore<Document> documentStore )
     {
         this.documentStore = documentStore;
     }
