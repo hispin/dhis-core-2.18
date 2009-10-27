@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excelitem>
+	<id>$excelItem.id</id>
+	<name>$encoder.xmlEncode( $excelItem.name )</name>
+	<row>$excelItem.row</row>	
+	<column>$excelItem.column</column>
+	<expression>$encoder.xmlEncode( $excelItem.expression )</expression>
+	<sheetNo>$encoder.xmlEncode( $excelItem.sheetNo )</sheetNo>
+</excelitem>

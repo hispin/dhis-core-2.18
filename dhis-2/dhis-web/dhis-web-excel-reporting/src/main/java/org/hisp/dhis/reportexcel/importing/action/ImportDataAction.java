@@ -61,106 +61,93 @@ import org.hisp.dhis.user.CurrentUserService;
  * @version $Id$
  */
 
-public class ImportDataAction
-    extends ActionSupport
-{
-    // --------------------------------------------------------------------
-    // Dependencies
-    // --------------------------------------------------------------------
+public class ImportDataAction extends ActionSupport {
+	// --------------------------------------------------------------------
+	// Dependencies
+	// --------------------------------------------------------------------
 
-    private DataValueService dataValueService;
+	private DataValueService dataValueService;
 
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
+	public void setDataValueService(DataValueService dataValueService) {
+		this.dataValueService = dataValueService;
+	}
 
-    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
+	private OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
-    {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
-    }
+	public void setOrganisationUnitSelectionManager(
+			OrganisationUnitSelectionManager organisationUnitSelectionManager) {
+		this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+	}
 
-    private ExpressionService expressionService;
+	private ExpressionService expressionService;
 
-    public void setExpressionService( ExpressionService expressionService )
-    {
-        this.expressionService = expressionService;
-    }
+	public void setExpressionService(ExpressionService expressionService) {
+		this.expressionService = expressionService;
+	}
 
-    private DataElementService dataElementService;
+	private DataElementService dataElementService;
 
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
+	public void setDataElementService(DataElementService dataElementService) {
+		this.dataElementService = dataElementService;
+	}
 
-    private DataElementCategoryService categoryService;
+	private DataElementCategoryService categoryService;
 
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
+	public void setCategoryService(DataElementCategoryService categoryService) {
+		this.categoryService = categoryService;
+	}
 
-    private CurrentUserService currentUserService;
+	private CurrentUserService currentUserService;
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
+	public void setCurrentUserService(CurrentUserService currentUserService) {
+		this.currentUserService = currentUserService;
+	}
 
-    private PeriodService periodService;
+	private PeriodService periodService;
 
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
+	public void setPeriodService(PeriodService periodService) {
+		this.periodService = periodService;
+	}
 
-    private ReportExcelService reportExcelService;
+	private ReportExcelService reportExcelService;
 
-    public void setReportExcelService( ReportExcelService reportExcelService )
-    {
-        this.reportExcelService = reportExcelService;
-    }
+	public void setReportExcelService(ReportExcelService reportExcelService) {
+		this.reportExcelService = reportExcelService;
+	}
 
-    // --------------------------------------------------------------------
-    // Getters and Setters
-    // --------------------------------------------------------------------
+	// --------------------------------------------------------------------
+	// Getters and Setters
+	// --------------------------------------------------------------------
 
-    private Integer reportId;
+	private Integer reportId;
 
-    public void setReportId( Integer reportId )
-    {
-        this.reportId = reportId;
-    }
+	public void setReportId(Integer reportId) {
+		this.reportId = reportId;
+	}
 
-    private String uploadFileName;
+	private String uploadFileName;
 
-    public void setUploadFileName( String uploadFileName )
-    {
-        this.uploadFileName = uploadFileName;
-    }
+	public void setUploadFileName(String uploadFileName) {
+		this.uploadFileName = uploadFileName;
+	}
 
-    private Integer periodId;
+	private Integer periodId;
 
-    public void setPeriodId( Integer periodId )
-    {
-        this.periodId = periodId;
-    }
+	public void setPeriodId(Integer periodId) {
+		this.periodId = periodId;
+	}
 
-    public Integer[] reportItemIds;
+	public Integer[] reportItemIds;
 
-    public void setReportItemIds( Integer[] reportItemIds )
-    {
-        this.reportItemIds = reportItemIds;
-    }
+	public void setReportItemIds(Integer[] reportItemIds) {
+		this.reportItemIds = reportItemIds;
+	}
 
-    // --------------------------------------------------------------------
-    // Action implementation
-    // --------------------------------------------------------------------
+	// --------------------------------------------------------------------
+	// Action implementation
+	// --------------------------------------------------------------------
 
-    public String execute()
+	public String execute()
         throws Exception
     {
         ReportExcel report = reportExcelService.getReportExcel( reportId.intValue() );
@@ -190,7 +177,7 @@ public class ImportDataAction
 
             Sheet sheet = templateWorkbook.getSheet( 0 );
 
-            Period period = periodService.getPeriod( periodId.intValue() );
+            
 
             for ( ReportExcelItem reportItem : reportItems )
             {
@@ -201,6 +188,8 @@ public class ImportDataAction
 
                     if ( value.length() > 0 )
                     {
+                    	Period period = periodService.getPeriod( periodId.intValue() );                 
+                    	
                         Operand operand = expressionService.getOperandsInExpression( reportItem.getExpression() )
                             .iterator().next();
 
@@ -237,4 +226,5 @@ public class ImportDataAction
         }
         return SUCCESS;
     }
+
 }

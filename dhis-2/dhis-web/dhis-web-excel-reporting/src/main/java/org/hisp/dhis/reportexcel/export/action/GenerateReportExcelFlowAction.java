@@ -26,6 +26,8 @@
  */
 package org.hisp.dhis.reportexcel.export.action;
 
+import java.util.Date;
+
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reportexcel.ReportExcel;
@@ -96,6 +98,7 @@ public class GenerateReportExcelFlowAction
     public Integer getSheetId()
     {
         return sheetId;
+
     }
 
     public void setSheetId( Integer sheetId )
@@ -116,6 +119,7 @@ public class GenerateReportExcelFlowAction
     public String execute()
         throws Exception
     {
+    	
         ReportExcel reportExcel = reportService.getReportExcel( reportId );
 
         Period period = periodService.getPeriod( periodId );
@@ -123,7 +127,7 @@ public class GenerateReportExcelFlowAction
         selectionManager.setSelectedPeriod( period );
 
         selectionManager.setSelectedReportExcelId( reportId );
-
+        
         return reportExcel.getReportType();
     }
 

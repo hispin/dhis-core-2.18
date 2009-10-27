@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.importing;
+package org.hisp.dhis.reportexcel.excelitem.action;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,52 +27,52 @@ package org.hisp.dhis.reportexcel.importing;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
+import java.util.Collection;
+
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+
+import com.opensymphony.xwork2.Action;
+
 /**
- * @author Tran Thanh Tri
- * @version $Id
+ * @author Chau Thu Tran
+ * @version $Id$
  */
-public class ReportExcelItemValue
-{
-    
-    private ExcelItem excelItem;
+public class GetExcelItemParamAction implements Action {
 
-    private String value;
+	// -------------------------------------------------------------------------
+	// Dependency
+	// -------------------------------------------------------------------------
 
+	private DataSetService dataSetService;
 
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-       
-    public ReportExcelItemValue( ExcelItem excelItem, String value )
-    {
-        super();
-        
-        this.excelItem = excelItem;
-        
-        this.value = value;
-    }
+	// -------------------------------------------------------------------------
+	// Output
+	// -------------------------------------------------------------------------
 
-    // ----------------------------------------------------------------------
-    // Getters and setters
-    // ----------------------------------------------------------------------
-    
-    public String getValue()
-    {
-        return value;
-    }
-    
-    public void setValue( String value )
-    {
-        this.value = value;
-    }
+	private Collection<DataSet> dataSets;
 
-    public ExcelItem getExcelItem() {
-		return excelItem;
+	// -------------------------------------------------------------------------
+	// Getter && Setter
+	// -------------------------------------------------------------------------
+
+	public Collection<DataSet> getDataSets() {
+		return dataSets;
 	}
 
-	public void setExcelItem(ExcelItem excelItem) {
-		this.excelItem = excelItem;
+	public void setDataSetService(DataSetService dataSetService) {
+		this.dataSetService = dataSetService;
 	}
 	
+	// -------------------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------------------
+
+	public String execute() throws Exception {
+
+		dataSets = dataSetService.getAllDataSets();
+
+		return SUCCESS;
+	}
+
 }

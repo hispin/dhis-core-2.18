@@ -6,14 +6,34 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- ReportExcel -->
 
-    <bean id="org.hisp.dhis.reportexcel.ReportExcelStore"
-	   class="org.hisp.dhis.reportexcel.hibernate.HibernateReportExcelStore">
-	   <property name="sessionFactory" ref="sessionFactory" />
+	<bean id="org.hisp.dhis.reportexcel.ReportExcelStore"
+		class="org.hisp.dhis.reportexcel.hibernate.HibernateReportExcelStore">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.ReportExcelService" class="org.hisp.dhis.reportexcel.DefaultReportExcelService">
-	   <property name="reportStore" ref="org.hisp.dhis.reportexcel.ReportExcelStore" />
-	   <property name="userStore" ref="org.hisp.dhis.user.UserStore" />
-	</bean>	
+		<property name="reportStore" ref="org.hisp.dhis.reportexcel.ReportExcelStore" />
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+	</bean>
 
+
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- EXCELITEM STORE                                               -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<bean id="org.hisp.dhis.reportexcel.excelitem.ExcelItemStore"
+		class="org.hisp.dhis.reportexcel.excelitem.hibernate.HibernateExcelItemStore">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- EXCELITEM SERVICE                                             -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<bean id="org.hisp.dhis.reportexcel.excelitem.ExcelItemService"
+		class="org.hisp.dhis.reportexcel.excelitem.DefaultExcelItemService">
+		<property name="excelItemStore"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemStore" />
+	</bean>
 </beans>
