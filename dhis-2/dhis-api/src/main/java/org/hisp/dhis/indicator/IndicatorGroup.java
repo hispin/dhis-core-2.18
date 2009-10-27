@@ -30,7 +30,7 @@ package org.hisp.dhis.indicator;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.DimensionOption;
+import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.common.IdentifiableObject;
 
 /**

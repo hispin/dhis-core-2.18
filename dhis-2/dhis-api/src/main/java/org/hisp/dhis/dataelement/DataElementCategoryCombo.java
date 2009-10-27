@@ -33,8 +33,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.common.Dimension;
-import org.hisp.dhis.common.DimensionSet;
+import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionSet;
 
 /**
  * @author Abyot Aselefew

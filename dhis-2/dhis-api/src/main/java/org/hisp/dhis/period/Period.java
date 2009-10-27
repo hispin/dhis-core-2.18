@@ -31,8 +31,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import org.hisp.dhis.common.Dimension;
-import org.hisp.dhis.common.DimensionOption;
+import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionOption;
 
 /**
  * @author Kristian Nordal

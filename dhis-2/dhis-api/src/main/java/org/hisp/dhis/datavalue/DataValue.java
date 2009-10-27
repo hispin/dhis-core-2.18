@@ -32,12 +32,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.common.Dimension;
-import org.hisp.dhis.common.DimensionOption;
-import org.hisp.dhis.common.DimensionSet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.dimension.DimensionSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 

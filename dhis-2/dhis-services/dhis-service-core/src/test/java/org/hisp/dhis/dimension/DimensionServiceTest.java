@@ -30,7 +30,7 @@ package org.hisp.dhis.dimension;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.common.Dimension;
+import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.junit.Test;

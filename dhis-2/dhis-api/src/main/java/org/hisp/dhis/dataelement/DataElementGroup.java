@@ -30,8 +30,8 @@ package org.hisp.dhis.dataelement;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.DimensionOption;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dimension.DimensionOption;
 
 /**
  * @author Kristian Nordal

@@ -30,9 +30,9 @@ package org.hisp.dhis.dimension;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.common.Dimension;
-import org.hisp.dhis.common.DimensionOption;
-import org.hisp.dhis.common.DimensionSet;
+import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.dimension.DimensionSet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
