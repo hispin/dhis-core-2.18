@@ -34,7 +34,7 @@ import static junit.framework.Assert.assertNull;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
 
 /**
@@ -45,7 +45,7 @@ import org.junit.Test;
 public class SystemSettingStoreTest
     extends DhisSpringTest
 {
-    private GenericNameStore<SystemSetting> systemSettingStore;
+    private GenericIdentifiableObjectStore<SystemSetting> systemSettingStore;
 
     private SystemSetting settingA;
     private SystemSetting settingB;
@@ -55,7 +55,7 @@ public class SystemSettingStoreTest
     public void setUpTest()
         throws Exception
     {
-        systemSettingStore = (GenericNameStore<SystemSetting>) getBean( "org.hisp.dhis.options.SystemSettingStore" );
+        systemSettingStore = (GenericIdentifiableObjectStore<SystemSetting>) getBean( "org.hisp.dhis.options.SystemSettingStore" );
 
         settingA = new SystemSetting();
         settingA.setName( "Setting1" );

@@ -30,9 +30,9 @@ package org.hisp.dhis.indicator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.common.Dimension;
-import org.hisp.dhis.common.DimensionOption;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionOption;
 
 /**
  * An IndicatorGroupSet is a set of IndicatorGroups. It is by default exclusive,

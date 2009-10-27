@@ -29,8 +29,8 @@ package org.hisp.dhis.dataelement;
 
 import java.util.Map;
 
-import org.hisp.dhis.common.Dimension;
-import org.hisp.dhis.common.DimensionOption;
+import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.MonthlyPeriodType;

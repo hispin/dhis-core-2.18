@@ -29,10 +29,6 @@ package org.hisp.dhis.dimension;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.Dimension;
-import org.hisp.dhis.common.DimensionOption;
-import org.hisp.dhis.common.DimensionSet;
-
 /**
  * @author Lars Helge Overland
  * @version $Id: Indicator.java 5540 2008-08-19 10:47:07Z larshelg $

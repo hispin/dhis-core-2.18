@@ -30,10 +30,10 @@ package org.hisp.dhis.indicator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.common.Dimension;
-import org.hisp.dhis.common.DimensionSet;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
+import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionSet;
 
 /**
  * @author Lars Helge Overland

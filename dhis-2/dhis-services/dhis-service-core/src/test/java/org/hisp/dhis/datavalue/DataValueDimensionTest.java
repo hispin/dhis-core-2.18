@@ -38,8 +38,8 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.common.Dimension;
-import org.hisp.dhis.common.DimensionOption;
+import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;

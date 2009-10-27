@@ -34,12 +34,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.common.Dimension;
-import org.hisp.dhis.common.DimensionOption;
-import org.hisp.dhis.common.DimensionSet;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.dimension.DimensionSet;
 import org.hisp.dhis.period.PeriodType;
 
 /**
