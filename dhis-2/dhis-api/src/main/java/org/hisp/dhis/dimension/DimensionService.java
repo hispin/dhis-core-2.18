@@ -1,4 +1,4 @@
-package org.hisp.dhis.common;
+package org.hisp.dhis.dimension;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,18 +27,23 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.util.Collection;
+
+import org.hisp.dhis.common.Dimension;
+import org.hisp.dhis.common.DimensionOption;
+import org.hisp.dhis.common.DimensionSet;
 
 /**
  * @author Lars Helge Overland
+ * @version $Id: Indicator.java 5540 2008-08-19 10:47:07Z larshelg $
  */
-public interface Dimension
+public interface DimensionService
 {
-    //TODO move to dimension package
+    final String ID = DimensionService.class.getName();
     
-    String getName();
+    Collection<DimensionSet> getAllDimensionSets();
     
-    List<? extends DimensionOption> getDimensionOptions();
+    Collection<Dimension> getAllDimensions();
     
-    DimensionOption getDimensionOption( Object object );
+    Collection<DimensionOption> getAllDimensionOptions();
 }

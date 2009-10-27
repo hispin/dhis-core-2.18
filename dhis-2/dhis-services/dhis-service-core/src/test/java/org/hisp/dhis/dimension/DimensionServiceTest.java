@@ -1,4 +1,4 @@
-package org.hisp.dhis.common;
+package org.hisp.dhis.dimension;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,18 +27,50 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.util.Collection;
+
+import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.Dimension;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
+ * @version $Id$
  */
-public interface Dimension
+public class DimensionServiceTest
+    extends DhisSpringTest
 {
-    //TODO move to dimension package
+    private DimensionService dimensionService;
     
-    String getName();
+    private DataElementGroupSet dataElementGroupSetA;
+    private DataElementGroupSet dataElementGroupSetB;
     
-    List<? extends DimensionOption> getDimensionOptions();
+    @Override
+    public void setUpTest()
+    {
+        dataElementService = (DataElementService) getBean( DataElementService.ID );
+        
+        dimensionService = (DimensionService) getBean( DimensionService.ID );
+        
+        dataElementGroupSetA = new DataElementGroupSet( "DataElementGroupSetA" );
+        dataElementGroupSetB = new DataElementGroupSet( "DataElementGroupSetB" );
+        
+        dataElementService.addDataElementGroupSet( dataElementGroupSetA );
+        dataElementService.addDataElementGroupSet( dataElementGroupSetB );        
+    }
     
-    DimensionOption getDimensionOption( Object object );
+    @Test
+    public void getDimensions()
+    {
+        Collection<Dimension> dimensions = dimensionService.getAllDimensions();
+        
+        assertNotNull( dimensions );
+        assertEquals( 3, dimensions.size() ); // Including default
+        assertTrue( dimensions.contains( dataElementGroupSetA ) );
+        assertTrue( dimensions.contains( dataElementGroupSetB ) );
+    }
 }

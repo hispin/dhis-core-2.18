@@ -277,6 +277,16 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="i18nService"
       ref="org.hisp.dhis.i18n.I18nService"/>  
   </bean>
+  
+  <bean id="org.hisp.dhis.dimension.DimensionService"
+	class="org.hisp.dhis.dimension.DefaultDimensionService">
+    <property name="dataElementService"
+      ref="org.hisp.dhis.dataelement.DataElementService"/>
+    <property name="indicatorService"
+	  ref="org.hisp.dhis.indicator.IndicatorService"/>
+	<property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+  </bean>
     
   <!-- Startup routine definitions -->
 	
