@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="org.hisp.dhis.reportexcel.excelitem.ExcelItem"
+		table="excelitem">
+
+		<id name="id" column="excelitemid">
+			<generator class="native" />
+		</id>
+
+		<property name="name" column="name" />
+
+		<property name="expression" column="expression" />
+
+		<property name="row" column="excelrow" />
+
+		<property name="column" column="excelcolumn" />
+
+		<property name="sheetNo" column="sheetNo" />
+
+		<many-to-one name="excelItemGroup" column="excelItemGroupId"
+			class="org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup"
+			foreign-key="fk_exceltitem_group" lazy="false" insert="true" />
+	</class>
+
+</hibernate-mapping>
