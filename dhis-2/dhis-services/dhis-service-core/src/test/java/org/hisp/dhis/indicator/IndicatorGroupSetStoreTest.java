@@ -48,7 +48,7 @@ public class IndicatorGroupSetStoreTest
     }
 
     @Override
-    protected String getGenericStoreBeanId()
+    protected String getGenericBeanId()
     {
         return "org.hisp.dhis.indicator.IndicatorGroupSetStore";
     }
