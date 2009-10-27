@@ -4,7 +4,8 @@
 	<li><a href="getConfiguration.action">$i18n.getString( "configuration" )&nbsp;</a></li>		
 	<li><a href="listReportExcel.action">$i18n.getString( "reports" )&nbsp;</a></li>		
 	<li><a href="listDataEntryStatus.action">$i18n.getString( "data_status" )&nbsp;</a></li>
-	<li><a href="javascript: cleanUp();">$i18n.getString( "clean_up" )&nbsp;</a></li>		
+	<li><a href="javascript: cleanUp();">$i18n.getString( "clean_up" )&nbsp;</a></li>
+	<li><a href="listAllExcelItemGroup.action">$i18n.getString( "excel_item" )&nbsp;</a></li>		
 </ul>
 
 <script>

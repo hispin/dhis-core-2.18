@@ -32,7 +32,7 @@ import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
  * @author Tran Thanh Tri
  * @version $Id
  */
-public class ReportExcelItemValue
+public class ExcelItemValue
 {
     
     private ExcelItem excelItem;
@@ -44,7 +44,7 @@ public class ReportExcelItemValue
     // Constructors
     // ----------------------------------------------------------------------
        
-    public ReportExcelItemValue( ExcelItem excelItem, String value )
+    public ExcelItemValue( ExcelItem excelItem, String value )
     {
         super();
         

@@ -341,7 +341,7 @@ public abstract class GenerateReportExcelSupport
     protected void installReadTemplateFile( ReportExcel reportExcel, Period period, OrganisationUnit organisationUnit )
         throws BiffException, IOException, RowsExceededException, WriteException, IndexOutOfBoundsException
     {
-
+    	
         File reportTempDir = reportLocationManager.getReportExcelTempDirectory();
 
         this.inputExcelTemplate = new File( reportLocationManager.getReportExcelTemplateDirectory() + File.separator
@@ -351,7 +351,7 @@ public abstract class GenerateReportExcelSupport
 
         this.outputReportFile = new File( reportTempDir, currentUserService.getCurrentUsername()
             + this.dateformatter.format( calendar.getTime() ) + inputExcelTemplate.getName() );
-
+		
         Workbook templateWorkbook = Workbook.getWorkbook( inputExcelTemplate );
 
         outputReportWorkbook = Workbook.createWorkbook( outputReportFile, templateWorkbook );
@@ -361,7 +361,7 @@ public abstract class GenerateReportExcelSupport
 
         ExcelUtils.writeValue( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(),
             format.formatPeriod( period ), ExcelUtils.TEXT, outputReportWorkbook.getSheet( 0 ), text );
-
+        
     }
 
     protected double getIndicatorValue( ReportExcelItem reportItem, OrganisationUnit organisationUnit )

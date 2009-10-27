@@ -35,12 +35,12 @@ import java.util.List;
 import jxl.Sheet;
 import jxl.Workbook;
 
-import org.hisp.dhis.reportexcel.ReportExcel;
-import org.hisp.dhis.reportexcel.ReportExcelItem;
-import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
-import org.hisp.dhis.reportexcel.comparator.ReportExcelItemNameComparator;
-import org.hisp.dhis.reportexcel.importing.ReportExcelItemValue;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
+import org.hisp.dhis.reportexcel.excelitem.comparator.ExcelItemComparator;
+import org.hisp.dhis.reportexcel.importing.ExcelItemValue;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -50,99 +50,94 @@ import com.opensymphony.xwork2.Action;
  * @version $Id
  */
 
-public class ViewDataAction
-    implements Action
-{
-    // --------------------------------------------------------------------
-    // Dependencies
-    // --------------------------------------------------------------------
+public class ViewDataAction implements Action {
+	// --------------------------------------------------------------------
+	// Dependencies
+	// --------------------------------------------------------------------
 
-    private ReportExcelService reportExcelService;
+	private ExcelItemService excelItemService;
 
-    public void setReportExcelService( ReportExcelService reportExcelService )
-    {
-        this.reportExcelService = reportExcelService;
-    }
+	private ReportLocationManager reportLocationManager;
 
-    private ReportLocationManager reportLocationManager;
+	// --------------------------------------------------------------------
+	// Inputs && Outputs
+	// --------------------------------------------------------------------
 
-    public void setReportLocationManager( ReportLocationManager reportLocationManager )
-    {
-        this.reportLocationManager = reportLocationManager;
-    }
+	private Integer excelItemGroupId;
 
-    // --------------------------------------------------------------------
-    // Getters and Setters
-    // --------------------------------------------------------------------
+	private String uploadFileName;
 
-    private Integer reportId;
+	private List<ExcelItemValue> excelItemValues;
 
-    public void setReportId( Integer reportId )
-    {
-        this.reportId = reportId;
-    }
+	// --------------------------------------------------------------------
+	// Getters and Setters
+	// --------------------------------------------------------------------
 
-    private String uploadFileName;
+	public void setExcelItemService(ExcelItemService excelItemService) {
+		this.excelItemService = excelItemService;
+	}
 
-    public void setUploadFileName( String uploadFileName )
-    {
-        this.uploadFileName = uploadFileName;
-    }
+	public List<ExcelItemValue> getExcelItemValues() {
+		return excelItemValues;
+	}
 
-    private List<ReportExcelItemValue> reportItemValues;
+	public void setReportLocationManager(ReportLocationManager reportLocationManager) {
+		this.reportLocationManager = reportLocationManager;
+	}
 
-    public List<ReportExcelItemValue> getReportItemValues()
-    {
-        return reportItemValues;
-    }
+	public void setExcelItemGroupId(Integer excelItemGroupId) {
+		this.excelItemGroupId = excelItemGroupId;
+	}
 
-    // --------------------------------------------------------------------
-    // Action implementation
-    // --------------------------------------------------------------------
+	public void setUploadFileName(String uploadFileName) {
+		this.uploadFileName = uploadFileName;
+	}
 
-    public String execute()
-    {
-        try
-        {            
-            File upload = new File( reportLocationManager.getReportExcelTempDirectory() + File.separator
-                + uploadFileName );
-            
-            Workbook templateWorkbook = Workbook.getWorkbook( upload );
-            
-            Sheet sheet = templateWorkbook.getSheet( 0 );
+	// --------------------------------------------------------------------
+	// Action implementation
+	// --------------------------------------------------------------------
 
-            ReportExcel report = reportExcelService.getReportExcel( reportId );
-            
-            ArrayList<ReportExcelItem> reportItems = new ArrayList<ReportExcelItem>( report.getReportExcelItems() );
+	public String execute() {
+		try {
+			File upload = new File(reportLocationManager
+					.getReportExcelTempDirectory()
+					+ File.separator + uploadFileName);
 
-            Collections.sort( reportItems, new ReportExcelItemNameComparator() );
+			Workbook templateWorkbook = Workbook.getWorkbook(upload);
 
-            reportItemValues = new ArrayList<ReportExcelItemValue>();
+			Sheet sheet = templateWorkbook.getSheet(0);
 
-            for ( ReportExcelItem reportItem : reportItems )
-            {
-                if ( reportItem.getItemType().equals( ReportExcelItem.TYPE.DATAELEMENT ) )
-                {
-                    String value = ExcelUtils.readValue( reportItem.getRow(), reportItem.getColumn(), sheet );
+			ExcelItemGroup excelItemGroup = excelItemService.getExcelItemGroup(excelItemGroupId);
 
-                    ReportExcelItemValue reportItemvalue = new ReportExcelItemValue( reportItem, value );
+			ArrayList<ExcelItem> excelItems = new ArrayList<ExcelItem>(
+					excelItemGroup.getExcelItems());
 
-                    if ( value.length() == 0 )
-                    {
-                        reportItemvalue.setValue( 0 + "" );
-                    }
+			Collections.sort(excelItems, new ExcelItemComparator());
 
-                    reportItemValues.add( reportItemvalue );
-                }
-            }
+			excelItemValues = new ArrayList<ExcelItemValue>();
 
-            return SUCCESS;
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
-        return ERROR;
-    }
+			for (ExcelItem excelItem : excelItems) {
+				
+				String value = ExcelUtils.readValue(excelItem.getRow(),
+						excelItem.getColumn(), sheet);
+
+					ExcelItemValue excelItemvalue = new ExcelItemValue(
+							excelItem, value);
+
+					if (value.length() == 0) {
+						excelItemvalue.setValue(0 + "");
+					}
+
+					excelItemValues.add(excelItemvalue);
+			}
+
+			return SUCCESS;
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return ERROR;
+	}
 
 }

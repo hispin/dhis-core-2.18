@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.importing;
+package org.hisp.dhis.reportexcel.excelitem.action;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -28,51 +28,54 @@ package org.hisp.dhis.reportexcel.importing;
  */
 
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
+
+import com.opensymphony.xwork2.Action;
+
 /**
- * @author Tran Thanh Tri
- * @version $Id
+ * @author Chau Thu Tran
+ * @version $Id$
  */
-public class ReportExcelItemValue
-{
-    
-    private ExcelItem excelItem;
+public class GetExcelItemByIdAction implements Action {
 
-    private String value;
+	// -------------------------------------------------------------------------
+	// Dependency
+	// -------------------------------------------------------------------------
 
+	private ExcelItemService excelItemService;
 
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-       
-    public ReportExcelItemValue( ExcelItem excelItem, String value )
-    {
-        super();
-        
-        this.excelItem = excelItem;
-        
-        this.value = value;
-    }
+	// -------------------------------------------------------------------------
+	// Input
+	// -------------------------------------------------------------------------
 
-    // ----------------------------------------------------------------------
-    // Getters and setters
-    // ----------------------------------------------------------------------
-    
-    public String getValue()
-    {
-        return value;
-    }
-    
-    public void setValue( String value )
-    {
-        this.value = value;
-    }
+	private int id;
 
-    public ExcelItem getExcelItem() {
+	private ExcelItem excelItem;
+	
+	// -------------------------------------------------------------------------
+	// Setters
+	// -------------------------------------------------------------------------
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public ExcelItem getExcelItem() {
 		return excelItem;
 	}
 
-	public void setExcelItem(ExcelItem excelItem) {
-		this.excelItem = excelItem;
+	public void setExcelItemService(ExcelItemService excelItemService) {
+		this.excelItemService = excelItemService;
 	}
-	
+
+	// -------------------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------------------
+
+	public String execute() throws Exception {
+
+		excelItem = excelItemService.getExcelItem(id);
+
+		return SUCCESS;
+	}
 }

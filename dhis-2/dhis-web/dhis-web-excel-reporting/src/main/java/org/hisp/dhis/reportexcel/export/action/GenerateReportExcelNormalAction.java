@@ -27,6 +27,7 @@
 package org.hisp.dhis.reportexcel.export.action;
 
 import java.util.Collection;
+import java.util.Date;
 
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
@@ -42,62 +43,67 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class GenerateReportExcelNormalAction
-    extends GenerateReportExcelSupport
-{
+public class GenerateReportExcelNormalAction extends GenerateReportExcelSupport {
 
-    public String execute()
-        throws Exception
-    {
-        statementManager.initialise();
+	public String execute() throws Exception {
 
-        OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-        Period period = selectionManager.getSelectedPeriod();
-        this.installExcelFormat();
-        this.installPeriod( period );
+		statementManager.initialise();
 
-        ReportExcelNormal reportExcel = (ReportExcelNormal) reportService.getReportExcel( selectionManager
-            .getSelectedReportExcelId() );
+		OrganisationUnit organisationUnit = organisationUnitSelectionManager
+				.getSelectedOrganisationUnit();
+		
+		Period period = selectionManager.getSelectedPeriod();
+		
+		this.installExcelFormat();
+		
+		this.installPeriod(period);
+		
+		ReportExcelNormal reportExcel = (ReportExcelNormal) reportService
+				.getReportExcel(selectionManager.getSelectedReportExcelId());
+		
+		this.installReadTemplateFile(reportExcel, period, organisationUnit);
+		
+		for (Integer sheetNo : reportService.getSheets(selectionManager
+				.getSelectedReportExcelId())) {
+			WritableSheet sheet = outputReportWorkbook.getSheet(sheetNo - 1);
 
-        this.installReadTemplateFile( reportExcel, period, organisationUnit );
-        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
-        {
-            WritableSheet sheet = outputReportWorkbook.getSheet( sheetNo - 1 );
+			Collection<ReportExcelItem> reportExcelItems = reportService
+					.getReportExcelItem(sheetNo, selectionManager
+							.getSelectedReportExcelId());
 
-            Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo, selectionManager
-                .getSelectedReportExcelId() );
+			this.generateOutPutFile(organisationUnit, reportExcelItems, sheet);
 
-            this.generateOutPutFile( organisationUnit, reportExcelItems, sheet );
+		}
 
-        }     
+		this.complete();
+		
+		statementManager.destroy();
 
-        this.complete();
+		return SUCCESS;
+	}
 
-        return SUCCESS;
-    }
+	private void generateOutPutFile(OrganisationUnit organisationUnit,
+			Collection<ReportExcelItem> reportExcelItems, WritableSheet sheet)
+			throws RowsExceededException, WriteException {
+		for (ReportExcelItem reportItem : reportExcelItems) {
+			if (reportItem.getItemType().equalsIgnoreCase(
+					ReportExcelItem.TYPE.DATAELEMENT)) {
+				double value = getDataValue(reportItem, organisationUnit);
 
-    private void generateOutPutFile( OrganisationUnit organisationUnit, Collection<ReportExcelItem> reportExcelItems,
-        WritableSheet sheet )
-        throws RowsExceededException, WriteException
-    {
-        for ( ReportExcelItem reportItem : reportExcelItems )
-        {
-            if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) )
-            {
-                double value = getDataValue( reportItem, organisationUnit );
+				ExcelUtils.writeValue(reportItem.getRow(), reportItem
+						.getColumn(), String.valueOf(value), ExcelUtils.NUMBER,
+						sheet, number);
+			}
 
-                ExcelUtils.writeValue( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
-                    ExcelUtils.NUMBER, sheet, number );
-            }
+			if (reportItem.getItemType().equalsIgnoreCase(
+					ReportExcelItem.TYPE.INDICATOR)) {
+				double value = getIndicatorValue(reportItem, organisationUnit);
 
-            if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ) )
-            {
-                double value = getIndicatorValue( reportItem, organisationUnit );
-
-                ExcelUtils.writeValue( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
-                    ExcelUtils.NUMBER, sheet, number );
-            }
-        }
-    }
+				ExcelUtils.writeValue(reportItem.getRow(), reportItem
+						.getColumn(), String.valueOf(value), ExcelUtils.NUMBER,
+						sheet, number);
+			}
+		}
+	}
 
 }

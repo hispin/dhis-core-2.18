@@ -28,6 +28,7 @@ package org.hisp.dhis.reportexcel.export.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import jxl.write.WritableSheet;
@@ -53,6 +54,8 @@ public class GenerateReportExcelOrganizationGroupListingAction
     public String execute()
         throws Exception
     {
+    	
+    	
         statementManager.initialise();
 
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
@@ -64,6 +67,7 @@ public class GenerateReportExcelOrganizationGroupListingAction
             .getReportExcel( selectionManager.getSelectedReportExcelId() );
 
         this.installReadTemplateFile( reportExcel, period, organisationUnit );
+        
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
         {
             WritableSheet sheet = outputReportWorkbook.getSheet( sheetNo - 1 );
@@ -78,7 +82,7 @@ public class GenerateReportExcelOrganizationGroupListingAction
         this.complete();
         
         statementManager.destroy();
-
+        
         return SUCCESS;
     }
 

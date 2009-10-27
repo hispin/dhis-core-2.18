@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.importing;
+package org.hisp.dhis.reportexcel.excelitemgroup.action;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,52 +27,55 @@ package org.hisp.dhis.reportexcel.importing;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
+
+import com.opensymphony.xwork2.Action;
+
 /**
- * @author Tran Thanh Tri
- * @version $Id
+ * @author Chau Thu Tran
+ * @version $Id$
  */
-public class ReportExcelItemValue
-{
-    
-    private ExcelItem excelItem;
+public class GetExcelItemGroupByIdAction implements Action {
 
-    private String value;
+	// -------------------------------------------------------------------------
+	// Dependency
+	// -------------------------------------------------------------------------
 
+	private ExcelItemService excelItemService;
 
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
-       
-    public ReportExcelItemValue( ExcelItem excelItem, String value )
-    {
-        super();
-        
-        this.excelItem = excelItem;
-        
-        this.value = value;
-    }
+	// -------------------------------------------------------------------------
+	// Input
+	// -------------------------------------------------------------------------
 
-    // ----------------------------------------------------------------------
-    // Getters and setters
-    // ----------------------------------------------------------------------
-    
-    public String getValue()
-    {
-        return value;
-    }
-    
-    public void setValue( String value )
-    {
-        this.value = value;
-    }
+	private int id;
 
-    public ExcelItem getExcelItem() {
-		return excelItem;
-	}
+	private ExcelItemGroup excelItemGroup;
+	
+	// -------------------------------------------------------------------------
+	// Setters
+	// -------------------------------------------------------------------------
 
-	public void setExcelItem(ExcelItem excelItem) {
-		this.excelItem = excelItem;
+	public void setId(int id) {
+		this.id = id;
 	}
 	
+	public ExcelItemGroup getExcelItemGroup() {
+		return excelItemGroup;
+	}
+
+	public void setExcelItemService(ExcelItemService excelItemService) {
+		this.excelItemService = excelItemService;
+	}
+
+	// -------------------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------------------
+
+	public String execute() throws Exception {
+
+		excelItemGroup = excelItemService.getExcelItemGroup(id);
+
+		return SUCCESS;
+	}
 }

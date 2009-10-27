@@ -166,6 +166,9 @@ public class SaveValueAction
 
     public String execute()
     {
+
+    	LOG.info("SAVE DATA ELEMENT VALUE");
+    	
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         Period period = selectedStateManager.getSelectedPeriod();

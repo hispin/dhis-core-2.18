@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excelitemgroup>
+	<id>$excelItemGroup.id</id>
+	<name>$encoder.xmlEncode( $!excelItemGroup.name )</name>
+	<type>$excelItemGroup.type</type>
+	<excelTemplateFile>$excelItemGroup.excelTemplateFile</excelTemplateFile>
+</excelitemgroup>
