@@ -48,7 +48,7 @@ public class DataElementGroupSetStoreTest
     }    
 
     @Override
-    protected String getGenericStoreBeanId()
+    protected String getGenericBeanId()
     {
         return "org.hisp.dhis.dataelement.DataElementGroupSetStore";
     }

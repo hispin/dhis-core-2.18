@@ -48,7 +48,7 @@ public abstract class GenericDhisSpringTest<T>
     public final void setUpTest()
         throws Exception
     {
-        genericStore = (GenericStore<T>) getBean( getGenericStoreBeanId() );
+        genericStore = (GenericStore<T>) getBean( getGenericBeanId() );
         
         setUpGenericTest();
     }
@@ -147,5 +147,5 @@ public abstract class GenericDhisSpringTest<T>
     /**
      * Should return the Spring bean identifier of the store which is to be tested.
      */
-    protected abstract String getGenericStoreBeanId();
+    protected abstract String getGenericBeanId();
 }
