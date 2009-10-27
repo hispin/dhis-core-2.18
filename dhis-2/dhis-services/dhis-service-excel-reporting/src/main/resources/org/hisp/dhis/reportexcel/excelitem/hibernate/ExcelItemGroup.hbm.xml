@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup" table="excelitemgroup">
+		
+		<id name="id" column="excelitemgroupid">
+			<generator class="native" />
+		</id>
+		
+		<property name="name" />
+		
+		<property name="type" />
+		
+		<property name="excelTemplateFile" column="exceltemplate" />
+		
+		<set name="excelItems" lazy="false" cascade="delete">
+			<key column="excelitemgroupid" />
+			<one-to-many class="org.hisp.dhis.reportexcel.excelitem.ExcelItem" />
+		</set>
+		
+		<set name="organisationAssocitions" table="excelgroup_associations" lazy="false">
+			<key column="excelitemgroupid" />
+			<many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnit"
+				column="organisationid"  foreign-key="fk_excelitemgroup_organisation"/>
+		</set>		
+
+	</class>
+</hibernate-mapping>
