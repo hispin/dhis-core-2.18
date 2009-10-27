@@ -102,6 +102,11 @@ public class Indicator
         return groupSets;
     }
     
+    public boolean isDimensionSet()
+    {
+        return groupSets != null && groupSets.size() > 0;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------

@@ -209,6 +209,11 @@ public class DataElement
         return groupSets;
     }
     
+    public boolean isDimensionSet()
+    {
+        return groupSets != null && groupSets.size() > 0;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
