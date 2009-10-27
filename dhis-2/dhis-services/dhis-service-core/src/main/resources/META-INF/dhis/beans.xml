@@ -19,6 +19,18 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
+  <bean id="org.hisp.dhis.dataelement.DataElementGroupStore"
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.dataelement.DataElementGroup"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataelement.DataElementGroupSetStore"
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.dataelement.DataElementGroupSet"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+  
   <bean id="org.hisp.dhis.datadictionary.DataDictionaryStore"
     class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="clazz" value="org.hisp.dhis.datadictionary.DataDictionary"/>
@@ -138,6 +150,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.dataelement.DefaultDataElementService">
     <property name="dataElementStore"
       ref="org.hisp.dhis.dataelement.DataElementStore"/>
+	<property name="dataElementGroupStore"
+	  ref="org.hisp.dhis.dataelement.DataElementGroupStore"/>
+    <property name="dataElementGroupSetStore"
+      ref="org.hisp.dhis.dataelement.DataElementGroupSetStore"/>	
     <property name="i18nService"
       ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>

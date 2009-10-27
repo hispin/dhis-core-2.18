@@ -37,7 +37,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.common.GenericNameStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.Expression;
@@ -52,9 +52,9 @@ import org.junit.Test;
 public class ValidationRuleGroupStoreTest
     extends DhisSpringTest
 {
-    private GenericNameStore<ValidationRule> validationRuleStore;
+    private GenericIdentifiableObjectStore<ValidationRule> validationRuleStore;
     
-    private GenericNameStore<ValidationRuleGroup> validationRuleGroupStore;
+    private GenericIdentifiableObjectStore<ValidationRuleGroup> validationRuleGroupStore;
 
     private ExpressionService expressionService;
     
@@ -76,9 +76,9 @@ public class ValidationRuleGroupStoreTest
     public void setUpTest()
         throws Exception
     {       
-        validationRuleStore = (GenericNameStore<ValidationRule>) getBean( "org.hisp.dhis.validation.ValidationRuleStore" );
+        validationRuleStore = (GenericIdentifiableObjectStore<ValidationRule>) getBean( "org.hisp.dhis.validation.ValidationRuleStore" );
         
-        validationRuleGroupStore = (GenericNameStore<ValidationRuleGroup>) getBean( "org.hisp.dhis.validation.ValidationRuleGroupStore" );
+        validationRuleGroupStore = (GenericIdentifiableObjectStore<ValidationRuleGroup>) getBean( "org.hisp.dhis.validation.ValidationRuleGroupStore" );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         
