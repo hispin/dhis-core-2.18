@@ -65,7 +65,7 @@
 		</tr>
 		<tr>
 			<td>
-				<div style="border:1px dashed gray; max-height: 16.5em; overflow:auto; padding:0 3px 3px 0;">
+				<div style="border:1px dashed gray; height: 16.5em; overflow:auto; padding:0 3px 3px 0;">
 				#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )	
 				</div>
 			</td>

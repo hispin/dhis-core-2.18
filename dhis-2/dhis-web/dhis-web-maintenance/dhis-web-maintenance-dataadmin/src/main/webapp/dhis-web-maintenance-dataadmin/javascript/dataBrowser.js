@@ -56,7 +56,7 @@ function modeHandler()
     var modeList = document.getElementById( "searchOption" );
     var modeSelection = modeList.value;
     
-    var treeSection = document.getElementById( "treeSection" );
+    var treeSection = document.getElementById( "organisationUnitSection" );
     
     if ( modeSelection == "OrganisationUnit" )
     {   
