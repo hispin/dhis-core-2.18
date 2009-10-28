@@ -118,7 +118,8 @@
 
 		<action name="uploadBackupFile"
 			class="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction">
-			<result name="success" type="redirect">listReportExcel.action</result>
+			<result name="success" type="redirect">listReportExcel.action
+			</result>
 			<interceptor-ref name="fileUploadStack" />
 		</action>
 
@@ -357,61 +358,6 @@
 			class="org.hisp.dhis.reportexcel.category.action.GetDataElementOrderAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseDataElementOrder.vm</result>
-		</action>
-
-
-		<!-- IMPORT EXCEL FILES -->
-
-		<action name="getInformation"
-			class="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction">
-			<result name="success" type="chain">
-				selectFormChain</result>
-			<interceptor-ref name="fileUploadStack" />
-		</action>
-
-		<action name="selectFormChain"
-			class="org.hisp.dhis.reportexcel.export.action.SelectFormAction">
-			<result name="success" type="chain">getInformationChain
-			</result>
-		</action>
-
-		<action name="getInformationChain"
-			class="org.hisp.dhis.reportexcel.importing.action.GetInformationAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/importDataParams.vm</param>
-			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
-			<param name="menuTreeHeight">220</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/imports.js,
-				javascript/export.js</param>
-			<param name="stylesheets">style/style.css</param>
-		</action>
-
-		<action name="getExcelItemParamChain"
-			class="org.hisp.dhis.reportexcel.importing.excelitem.action.GetExcelItemParamAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-excel-reporting/importDataParams.vm</param>
-			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
-			<param name="menuTreeHeight">220</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/imports.js,
-				javascript/export.js</param>
-			<param name="stylesheets">style/style.css</param>
-		</action>
-
-		<action name="importData"
-			class="org.hisp.dhis.reportexcel.importing.action.ImportDataAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-excel-reporting/responseError.vm</result>
-		</action>
-
-		<action name="previewData"
-			class="org.hisp.dhis.reportexcel.importing.action.ViewDataAction">
-			<result name="success" type="velocity">
-				/dhis-web-excel-reporting/responseExcelItemValues.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>
 
 		<!-- GENERATE REPORT EXCEL ACTION -->
@@ -926,7 +872,7 @@
 			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
 			<param name="menuTreeHeight">220</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,
-									javascript/commons.js,javascript/imports.js</param>
+				javascript/commons.js,javascript/imports.js</param>
 			<param name="stylesheets">style/style.css</param>
 		</action>
 
@@ -975,5 +921,21 @@
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
 		</action>
 
+		<action name="importData"
+			class="org.hisp.dhis.reportexcel.importing.action.ImportDataAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-excel-reporting/responseError.vm</result>
+		</action>
+
+		<action name="previewData"
+			class="org.hisp.dhis.reportexcel.importing.action.ViewDataAction">
+			<result name="success" type="velocity">
+				/dhis-web-excel-reporting/responseExcelItemValues.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-excel-reporting/responseError.vm</result>
+		</action>
+		
 	</package>
 </struts>
