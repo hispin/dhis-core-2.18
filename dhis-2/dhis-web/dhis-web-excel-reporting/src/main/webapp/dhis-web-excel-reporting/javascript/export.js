@@ -60,7 +60,7 @@ function generateReportExcel() {
 		reportId:$('#report').val(),
 		periodId:$('#period').val()
 		},function(data){		
-			window.location = "downloadExcelOutput.action";
+			window.location = "downloadFile.action";
 			deleteDivEffect();
 			$("#loading").hide();		
 		},'xml');
@@ -75,7 +75,7 @@ function generateAdvancedReportExcel() {
 		periodId:$('#period').val(),
 		organisationGroupId: byId('availableOrgunitGroups').value
 		},function(data){		
-			window.location = "downloadExcelOutput.action";
+			window.location = "downloadFile.action";
 			deleteDivEffect();
 			$("#loading").hide();		
 		},'xml');
