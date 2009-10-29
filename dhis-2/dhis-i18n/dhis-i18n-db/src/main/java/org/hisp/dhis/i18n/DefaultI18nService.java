@@ -51,6 +51,8 @@ public class DefaultI18nService
     implements I18nService
 {
     private static final Log log = LogFactory.getLog( DefaultI18nService.class );
+    
+    private static final String UNDERSCORE = "_";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -523,7 +525,7 @@ public class DefaultI18nService
         {
             if ( translation.getProperty() != null && translation.getValue() != null )
             {
-                translationMap.put( translation.getId() + "_" + translation.getProperty(), translation.getValue() );
+                translationMap.put( translation.getId() + UNDERSCORE + translation.getProperty(), translation.getValue() );
             }
         }
 
