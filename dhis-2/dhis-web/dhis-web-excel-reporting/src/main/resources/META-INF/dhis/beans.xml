@@ -23,7 +23,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
 	</bean>
-	
+
 	<bean id="org.hisp.dhis.reportexcel.action.UploadFileAction"
 		class="org.hisp.dhis.reportexcel.action.UploadFileAction" scope="prototype">
 		<property name="selectionManager"
@@ -105,13 +105,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="locationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
-	
+
 	<bean id="org.hisp.dhis.reportexcel.action.RestoreReportExcelAction"
 		class="org.hisp.dhis.reportexcel.action.RestoreReportExcelAction"
 		scope="prototype">
 		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />		
+			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
 	</bean>
 
 	<!-- REPORT EXCEL ASSOCIATION BEAN -->
@@ -256,7 +256,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportexcel.item.action.AddReportExcelItemAction"
 		class="org.hisp.dhis.reportexcel.item.action.AddReportExcelItemAction"
 		scope="prototype">
-		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />		
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
 
 	<bean
@@ -305,51 +305,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
-
-	<!-- IMPORT EXCEL FILES -->
-
-	<bean id="org.hisp.dhis.reportexcel.importing.action.GetInformationAction"
-		class="org.hisp.dhis.reportexcel.importing.action.GetInformationAction"
-		scope="prototype">
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.reportexcel.importing.action.ImportDataAction"
-		class="org.hisp.dhis.reportexcel.importing.action.ImportDataAction"
-		scope="prototype">
-		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction"
-		class="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction"
-		scope="prototype">
-		<property name="reportLocationManager"
-			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />	
-	</bean>
-
-	<!-- <bean id="org.hisp.dhis.reportexcel.importing.action.ViewDataAction"
-		class="org.hisp.dhis.reportexcel.importing.action.ViewDataAction"
-		scope="prototype">
-		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-		<property name="reportLocationManager"
-			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
-	</bean> -->
 
 	<!-- EXPORT REPORT EXCEL -->
 
@@ -1060,7 +1015,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateExcelItemGroupAssociationsAction"
 		class="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateExcelItemGroupAssociationsAction"
@@ -1070,10 +1025,41 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 	</bean>
-	
+
+	<bean
+		id="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenExcelItemGroupAssociationsAction"
+		class="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenExcelItemGroupAssociationsAction"
+		scope="prototype">
+		<property name="excelItemService"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenUpdateOrganisationUnitGroupAction"
+		class="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenUpdateOrganisationUnitGroupAction"
+		scope="prototype">
+		<property name="excelItemService"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="organisationUnitGroupService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateOrganisationUnitGroupAction"
+		class="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateOrganisationUnitGroupAction"
+		scope="prototype">
+		<property name="excelItemService"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="organisationUnitGroupService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- EXCEL ITEM                                               -->
+	<!-- EXCEL ITEM                                                    -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 	<bean id="org.hisp.dhis.reportexcel.excelitem.action.AddExcelItemAction"
@@ -1136,9 +1122,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 	</bean>
-	
-	<!-- IMPORT DATA -->
-	
+
+
+	<!--  IMPORT DATA 													   -->
+
 	<bean
 		id="org.hisp.dhis.reportexcel.importing.action.GetImportingParamsAction"
 		class="org.hisp.dhis.reportexcel.importing.action.GetImportingParamsAction"
@@ -1147,30 +1134,94 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
-		<property name="periodService"
-			ref="org.hisp.dhis.period.PeriodService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenExcelItemGroupAssociationsAction"
-		class="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenExcelItemGroupAssociationsAction"
-		scope="prototype">
-		<property name="excelItemService"
-			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-	
+
 	<bean id="org.hisp.dhis.reportexcel.importing.action.ViewDataAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ViewDataAction"
 		scope="prototype">
-		<property name="excelItemService" ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="excelItemService"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
+
+	<bean id="org.hisp.dhis.reportexcel.importing.action.ImportDataFlowAction"
+		class="org.hisp.dhis.reportexcel.importing.action.ImportDataFlowAction"
+		scope="prototype">
+		<property name="excelItemService"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.importing.action.ImportDataNormalExcelGroupAction"
+		class="org.hisp.dhis.reportexcel.importing.action.ImportDataNormalExcelGroupAction"
+		scope="prototype">
+		<property name="excelItemService"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="categoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.importing.action.ImportDataExcelOrganizationGroupAction"
+		class="org.hisp.dhis.reportexcel.importing.action.ImportDataExcelOrganizationGroupAction"
+		scope="prototype">
+		<property name="excelItemService"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="categoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.importing.action.ImportDataCategoryExcelGroupAction"
+		class="org.hisp.dhis.reportexcel.importing.action.ImportDataCategoryExcelGroupAction"
+		scope="prototype">
+		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
+		<!--
+			<property name="dataElementService"
+			ref="org.hisp.dhis.dataelement.DataElementService" />
+		-->
+		<property name="categoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction"
+		class="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction"
+		scope="prototype">
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+	</bean>
+
 
 </beans>

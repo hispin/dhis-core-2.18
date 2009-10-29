@@ -1,5 +1,5 @@
 function organisationUnitSelected( orgUnits ){
-	window.location = "getExcelFileByOrganisationUnit.action";
+	window.location = "getImportingParams.action";
 }
 selection.setListenerFunction( organisationUnitSelected );
 
@@ -73,11 +73,11 @@ function getListPeriodCompleted( xmlObject ){
 }
 
 // -----------------------------------------------------------------------------
-// Import data
+// IMPORT DATA FROM EXCEL FILE INTO DATABASE
 // -----------------------------------------------------------------------------
 function importData(){
 	
-	var reportId = document.getElementById('reportId').value;
+	var excelItemGroupId = document.getElementById('excelItemGroupId').value;
 	var upload = document.getElementById('uploadFileName').value;
 	var periodId = document.getElementById('period').value;
 	
@@ -86,16 +86,16 @@ function importData(){
 	request.setCallbackSuccess( Completed );
 	
 	// URL
-	url = 'importData.action?reportId='+reportId;
+	url = 'importData.action?excelItemGroupId='+excelItemGroupId;
 	// USER choose reportItem
 	var preview = byId('showValue').style.display;
 	
 	if(preview == 'block'){
 		
-		var reportItems = document.getElementsByName('reportItems');
-		for(var i=0;i<reportItems.length;i++){
-			if(reportItems[i].checked ){
-				url +='&reportItemIds=' + reportItems[i].value;
+		var excelItems = document.getElementsByName('excelItems');
+		for(var i=0;i<excelItems.length;i++){
+			if(excelItems[i].checked ){
+				url +='&excelItemIds=' + excelItems[i].value;
 			}
 		}
 	}
@@ -121,9 +121,9 @@ function getPreviewImportData(fileExcel){
 	
 	request.setCallbackSuccess( getReportItemValuesReceived );
 	
-	var reportId = byId("reportId").value;
+	var excelItemGroupId = byId("excelItemGroupId").value;
 	
-	request.send( "previewData.action?reportId=" + reportId +"&uploadFileName=" + fileExcel);
+	request.send( "previewData.action?excelItemGroupId=" + excelItemGroupId +"&uploadFileName=" + fileExcel);
 }
 
 function getReportItemValuesReceived( xmlObject ){
@@ -132,14 +132,14 @@ function getReportItemValuesReceived( xmlObject ){
 	var availableDiv = byId('showValue');
 	availableDiv.style.display = 'block';
 	
-	var availableObjectList = xmlObject.getElementsByTagName('reportItemValue');
+	var availableObjectList = xmlObject.getElementsByTagName('excelItemValue');
 	
-	var myTable = document.getElementById('showReportItemValues');
+	var myTable = byId('showExcelItemValues');
 	var tBody = myTable.getElementsByTagName('tbody')[0];
 	
-	for(var i = document.getElementById("showReportItemValues").rows.length; i > 1;i--)
+	for(var i = byId("showExcelItemValues").rows.length; i > 1;i--)
 	{
-		document.getElementById("showReportItemValues").deleteRow(i -1);
+		byId("showExcelItemValues").deleteRow(i -1);
 	}
 
 	for(var i=0;i<availableObjectList.length;i++){
@@ -159,7 +159,7 @@ function getReportItemValuesReceived( xmlObject ){
 		var newTD1 = document.createElement('td');
 		var id = reportItermValue.getElementsByTagName('id')[0].firstChild.nodeValue;
 		if(value!=0){
-			newTD1.innerHTML= "<input type='checkbox' name='reportItems' id='reportItems' value='" + id + "'>" ;
+			newTD1.innerHTML= "<input type='checkbox' name='excelItems' id='excelItems' value='" + id + "'>" ;
 		}
 		
 		newTR.appendChild (newTD1);
@@ -174,7 +174,7 @@ function selectAll(){
 	 
 	var select = byId('selectAll').checked;
 	
-	var reportItems = document.getElementsByName('reportItems');
+	var reportItems = document.getElementsByName('excelItems');
 	
 	for(var i=0;i<reportItems.length;i++){
 		reportItems[i].checked = select;

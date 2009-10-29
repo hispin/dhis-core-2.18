@@ -2,8 +2,10 @@ package org.hisp.dhis.reportexcel.importing.action;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -13,6 +15,8 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
+import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
@@ -33,28 +37,40 @@ public class GetImportingParamsAction extends ActionSupport {
 
 	private SelectionManager selectionManager;
 
+	private ReportExcelService reportExcelService;
+
 	// -------------------------------------------------------------
 	// Inputs && Outputs
 	// -------------------------------------------------------------
 
 	private OrganisationUnit organisationUnit;
 
-	private List<ExcelItemGroup> excelItemGroups;
+	private Collection<ExcelItemGroup> excelItemGroups;
 
 	private List<Period> periods;
 
 	private File fileExcel;
 
+	private Collection<ReportExcel> categoryGroups;
+
 	// -------------------------------------------------------------
 	// Getters && Setters
 	// -------------------------------------------------------------
-	
+
 	public void setSelectionManager(SelectionManager selectionManager) {
 		this.selectionManager = selectionManager;
 	}
 
+	public void setReportExcelService(ReportExcelService reportExcelService) {
+		this.reportExcelService = reportExcelService;
+	}
+
 	public void setPeriodService(PeriodService periodService) {
 		this.periodService = periodService;
+	}
+
+	public Collection<ReportExcel> getCategoryGroups() {
+		return categoryGroups;
 	}
 
 	public void setOrganisationUnitSelectionManager(
@@ -66,7 +82,7 @@ public class GetImportingParamsAction extends ActionSupport {
 		this.organisationUnit = organisationUnit;
 	}
 
-	public List<ExcelItemGroup> getExcelItemGroups() {
+	public Collection<ExcelItemGroup> getExcelItemGroups() {
 		return excelItemGroups;
 	}
 
@@ -105,21 +121,27 @@ public class GetImportingParamsAction extends ActionSupport {
 		// ---------------------------------------------------------
 		organisationUnit = organisationUnitSelectionManager
 				.getSelectedOrganisationUnit();
-		
-		excelItemGroups = new ArrayList<ExcelItemGroup>();
-
-		List<ExcelItemGroup> listExcelItemGroup = new ArrayList<ExcelItemGroup>(
-				excelItemService.getAllExcelItemGroup());
 
 		if (organisationUnit == null) {
-			excelItemGroups.addAll(excelItemGroups);
-		} else {
-
-			for (ExcelItemGroup excelItemGroup : listExcelItemGroup) {
-				excelItemGroups.add(excelItemGroup);
-			}
+			return SUCCESS;
 		}
+		excelItemGroups = excelItemService
+				.getExcelItemGroupsByOrganisationUnit(organisationUnit);
 
+		// ---------------------------------------------------------
+		// Get Report Excel Category by the selected Organisation group
+		// ---------------------------------------------------------
+		
+        categoryGroups = reportExcelService.getReportExcelsByOrganisationUnit(organisationUnit);
+        
+        Iterator<ReportExcel> iter = categoryGroups.iterator();
+        
+        while (iter.hasNext()){
+        	if(!iter.next().isCategory()){
+        		iter.remove();
+        	}
+        }
+        
 		if (fileExcel != null) {
 			message = i18n.getString("upload_file") + " "
 					+ i18n.getString("success") + " <br>      ' "

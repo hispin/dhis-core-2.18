@@ -105,8 +105,6 @@ public class ViewDataAction implements Action {
 
 			Workbook templateWorkbook = Workbook.getWorkbook(upload);
 
-			Sheet sheet = templateWorkbook.getSheet(0);
-
 			ExcelItemGroup excelItemGroup = excelItemService.getExcelItemGroup(excelItemGroupId);
 
 			ArrayList<ExcelItem> excelItems = new ArrayList<ExcelItem>(
@@ -117,6 +115,8 @@ public class ViewDataAction implements Action {
 			excelItemValues = new ArrayList<ExcelItemValue>();
 
 			for (ExcelItem excelItem : excelItems) {
+				
+				Sheet sheet = templateWorkbook.getSheet(excelItem.getSheetNo()-1);
 				
 				String value = ExcelUtils.readValue(excelItem.getRow(),
 						excelItem.getColumn(), sheet);
