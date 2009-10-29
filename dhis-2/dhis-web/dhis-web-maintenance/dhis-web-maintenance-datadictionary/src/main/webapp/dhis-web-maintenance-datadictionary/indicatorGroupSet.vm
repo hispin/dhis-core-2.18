@@ -1,4 +1,5 @@
-<h2>$i18n.getString( "data_element_group_set" )</h2>
+
+<h3>$i18n.getString( "indicator_group_set" )</h3>
 
 <table style="min-width:500px;">
 	<thead>

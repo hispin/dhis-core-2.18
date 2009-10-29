@@ -1,11 +1,5 @@
 package org.hisp.dhis.dd.action.dataelementgroupset;
 
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.system.deletion.DeletionHandler;
-import org.hisp.dhis.system.deletion.DeletionManager;
-
-import com.opensymphony.xwork2.Action;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -32,6 +26,10 @@ import com.opensymphony.xwork2.Action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import org.hisp.dhis.dataelement.DataElementService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
@@ -63,15 +61,14 @@ public class DeleteDataElementGroupSetAction
         this.id = id;
     }
 
-    @Override
-    public String execute()
-        throws Exception
-    {
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
+    public String execute()
+    {
         dataElementService.deleteDataElementGroupSet( dataElementService.getDataElementGroupSet( id ) );       
-       
 
         return SUCCESS;
     }
-
 }

@@ -66,6 +66,10 @@ public class ListIndicatorGroupSetAction
         return indicatorGroupSets;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {

@@ -1,4 +1,5 @@
-﻿<h2>$i18n.getString( "update_indicatorgroupset" ) : $indicatorGroupSet.name</h2>
+
+<h3>$i18n.getString( "update_indicatorgroupset" ) : $indicatorGroupSet.name</h3>
 
 <form id="updateIndicatorGroupSet" action="updateIndicatorGroupSet.action" method="post">
 <input type=hidden id="id" name="id" value="$indicatorGroupSet.id"/>

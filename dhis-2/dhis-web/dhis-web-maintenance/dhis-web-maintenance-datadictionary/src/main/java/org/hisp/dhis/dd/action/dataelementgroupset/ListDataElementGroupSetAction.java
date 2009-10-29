@@ -37,8 +37,6 @@ import org.hisp.dhis.dataelement.comparator.DataElementGroupSetNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
-
-
 /**
  * @author Tran Thanh Tri
  * @version $Id$
@@ -68,14 +66,16 @@ public class ListDataElementGroupSetAction
         return dataElementGroupSets;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
-        throws Exception
     {
         this.dataElementGroupSets = new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() );
         
-        Collections.sort( this.dataElementGroupSets, new DataElementGroupSetNameComparator() );
+        Collections.sort( dataElementGroupSets, new DataElementGroupSetNameComparator() );
 
         return SUCCESS;
     }
-
 }

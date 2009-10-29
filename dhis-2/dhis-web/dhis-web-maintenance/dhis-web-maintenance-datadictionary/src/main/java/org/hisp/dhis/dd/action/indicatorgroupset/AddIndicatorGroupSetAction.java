@@ -44,7 +44,6 @@ import com.opensymphony.xwork2.Action;
 public class AddIndicatorGroupSetAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -60,8 +59,6 @@ public class AddIndicatorGroupSetAction
     // Input
     // -------------------------------------------------------------------------
 
-    
-
     private String name;
 
     public void setName( String name )
@@ -76,9 +73,11 @@ public class AddIndicatorGroupSetAction
         this.selectedIndicatorGroups = selectedIndicatorGroups;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
-        throws Exception
     {
         IndicatorGroupSet indicatorGroupSet = new IndicatorGroupSet( name );
         
@@ -88,11 +87,9 @@ public class AddIndicatorGroupSetAction
 
         for ( String id : this.selectedIndicatorGroups )
         {
-
             IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( Integer.parseInt( id ) );
 
             indicatorGroups.add( indicatorGroup );
-
         }
 
         indicatorGroupSet.setMembers( indicatorGroups );
@@ -101,5 +98,4 @@ public class AddIndicatorGroupSetAction
 
         return SUCCESS;
     }
-
 }
