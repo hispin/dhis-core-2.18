@@ -194,6 +194,21 @@ public class DefaultDataElementCategoryService
         return dataElementCategoryOptionStore.get( id );
     }
     
+    public Collection<DataElementCategoryOption> getDataElementCategoryOptionsByName( String name )
+    {
+        Collection<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
+        
+        for ( DataElementCategoryOption categoryOption : getAllDataElementCategoryOptions() )
+        {
+            if ( categoryOption.getName().equals( name ) )
+            {
+                categoryOptions.add( categoryOption );
+            }
+        }
+        
+        return categoryOptions;
+    }
+    
     public Collection<DataElementCategoryOption> getDataElementCategoryOptions( Collection<Integer> identifiers )
     {
         if ( identifiers == null )

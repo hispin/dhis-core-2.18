@@ -1,6 +1,7 @@
-<h2>$i18n.getString( "data_element_group_set" )</h2>
 
-<table style="min-width:500px;">
+<h3>$i18n.getString( "data_element_group_set" )</h3>
+
+<table class="mainPageTable">
 	<thead>
 		<tr>
 			<th>$i18n.getString( "filter_by_name" ) <input type="text" id="dataElementGroupSetFilter" style="width:300px" onkeyup="filterDataElementSet( this.value )"/></th>
@@ -14,7 +15,7 @@
 	<tbody id="contents">		
 		
 	</tbody>
-</table>	
+</table>
 
 <script>
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_group" ) , "'")';
@@ -28,6 +29,4 @@
 	
 	filterDataElementSet( $("#dataElementGroupSetFilter").val() );
 	
-	
-	 
 </script>

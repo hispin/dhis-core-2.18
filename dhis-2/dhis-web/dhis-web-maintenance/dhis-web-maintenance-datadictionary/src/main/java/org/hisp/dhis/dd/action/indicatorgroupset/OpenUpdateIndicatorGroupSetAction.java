@@ -84,9 +84,11 @@ public class OpenUpdateIndicatorGroupSetAction
         this.indicatorGroups = indicatorGroups;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
-        throws Exception
     {
         indicatorGroupSet = indicatorService.getIndicatorGroupSet( id );
 
@@ -94,5 +96,4 @@ public class OpenUpdateIndicatorGroupSetAction
 
         return SUCCESS;
     }
-
 }

@@ -74,7 +74,10 @@ public class AddDataElementGroupSetAction
         this.selectedDataElementGroupIds = selectedDataElementGroupIds;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
@@ -86,11 +89,9 @@ public class AddDataElementGroupSetAction
 
         for ( String id : this.selectedDataElementGroupIds )
         {
-
             DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( Integer.parseInt( id ) );
 
             dataElementGroups.add( dataElementGroup );
-
         }
 
         dataElementGroupSet.setMembers( dataElementGroups );
@@ -99,5 +100,4 @@ public class AddDataElementGroupSetAction
 
         return SUCCESS;
     }
-
 }

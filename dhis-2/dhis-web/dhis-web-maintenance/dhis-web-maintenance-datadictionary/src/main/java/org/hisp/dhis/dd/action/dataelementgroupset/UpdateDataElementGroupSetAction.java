@@ -43,7 +43,6 @@ import com.opensymphony.xwork2.Action;
 public class UpdateDataElementGroupSetAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -80,7 +79,10 @@ public class UpdateDataElementGroupSetAction
         this.selectedDataElementGroupIds = selectedDataElementGroupIds;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
@@ -92,16 +94,13 @@ public class UpdateDataElementGroupSetAction
 
         for ( String id : selectedDataElementGroupIds )
         {
-
             DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( Integer.parseInt( id ) );           
 
             dataElementGroupSet.getMembers().add( dataElementGroup );
-
         }
 
         dataElementService.updateDataElementGroupSet( dataElementGroupSet );
 
         return SUCCESS;
     }
-
 }

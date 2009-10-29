@@ -27,8 +27,6 @@ package org.hisp.dhis.dd.action.indicatorgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataelement.DataElementGroupSet;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -86,11 +84,12 @@ public class ValidateIndicatorGroupSetAction
         return message;
     }
 
-    @Override
-    public String execute()
-        throws Exception
-    {
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
+    public String execute()
+    {
         if ( name == null )
         {
             message = i18n.getString( "please_enter_name" );
@@ -116,7 +115,6 @@ public class ValidateIndicatorGroupSetAction
 
                 return ERROR;
             }
-
         }
         else
         {
@@ -133,5 +131,4 @@ public class ValidateIndicatorGroupSetAction
 
         return SUCCESS;
     }
-
 }

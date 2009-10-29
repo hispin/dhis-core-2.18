@@ -80,6 +80,10 @@ public class UpdateIndicatorGroupSetAction
         this.selectedIndicatorGroups = selectedIndicatorGroups;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     @Override
     public String execute()
         throws Exception
@@ -101,5 +105,4 @@ public class UpdateIndicatorGroupSetAction
 
         return SUCCESS;
     }
-
 }

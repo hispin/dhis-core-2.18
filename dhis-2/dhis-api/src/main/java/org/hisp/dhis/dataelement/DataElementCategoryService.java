@@ -141,6 +141,13 @@ public interface DataElementCategoryService
     Collection<DataElementCategoryOption> getDataElementCategoryOptions( Collection<Integer> identifiers );
     
     /**
+     * Retrieves the DataElementCategoryOptions with the given name.
+     * @param name the name.
+     * @return the DataElementCategoryOptions with the given name.
+     */
+    Collection<DataElementCategoryOption> getDataElementCategoryOptionsByName( String name );
+    
+    /**
      * Returns all DataElementCategoryOptions.
      * 
      * @return a collection of all DataElementCategoryOptions, or an empty collection if there

@@ -40,7 +40,6 @@ import com.opensymphony.xwork2.Action;
 public class ValidateDataElementGroupSetAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -84,9 +83,11 @@ public class ValidateDataElementGroupSetAction
         return message;
     }
 
-    @Override
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
-        throws Exception
     {
         if ( name == null )
         {

@@ -1,9 +1,5 @@
 package org.hisp.dhis.dd.action.indicatorgroupset;
 
-import org.hisp.dhis.indicator.IndicatorService;
-
-import com.opensymphony.xwork2.Action;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -31,11 +27,14 @@ import com.opensymphony.xwork2.Action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.indicator.IndicatorService;
+
+import com.opensymphony.xwork2.Action;
+
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-
 public class DeleteIndicatorGroupSetAction
     implements Action
 {
@@ -61,14 +60,16 @@ public class DeleteIndicatorGroupSetAction
         this.id = id;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     @Override
     public String execute()
         throws Exception
     {
-
         indicatorService.deleteIndicatorGroupSet( indicatorService.getIndicatorGroupSet( id ) );
 
         return SUCCESS;
     }
-
 }
