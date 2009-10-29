@@ -24,15 +24,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.excelitemgroup.action;
+package org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
@@ -42,78 +41,90 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class OpenUpdateOrganisationUnitGroupForCategoryAction implements Action {
+
+public class SaveDataElementGroupOrderForCategoryAction implements Action {
+	
 	// -------------------------------------------
 	// Dependency
 	// -------------------------------------------
 
 	private ExcelItemService excelItemService;
 
-	private OrganisationUnitGroupService organisationUnitGroupService;
+	private DataElementService dataElementService;
 
 	// -------------------------------------------
-	// Input & Output
+	// Input
 	// -------------------------------------------
 
 	private Integer id;
 
-	private List<OrganisationUnitGroup> availableOrganisationUnitGroups;
+	private String name;
 
-	private List<OrganisationUnitGroup> selectedOrganisationUnitGroups;
+	private String code;
 
-	private ExcelItemGroup excelItemGroup;
+	private List<String> dataElementIds = new ArrayList<String>();
 
 	// -------------------------------------------
 	// Getter & Setter
 	// -------------------------------------------
-	
+
+	public void setDataElementService(DataElementService dataElementService) {
+		this.dataElementService = dataElementService;
+	}
+
 	public void setExcelItemService(ExcelItemService excelItemService) {
 		this.excelItemService = excelItemService;
 	}
 
-	public List<OrganisationUnitGroup> getSelectedOrganisationUnitGroups() {
-		return selectedOrganisationUnitGroups;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public ExcelItemGroup getExcelItemGroup() {
-		return excelItemGroup;
-	}
-
-	public List<OrganisationUnitGroup> getAvailableOrganisationUnitGroups() {
-		return availableOrganisationUnitGroups;
-	}
-
-	public void setOrganisationUnitGroupService(
-			OrganisationUnitGroupService organisationUnitGroupService) {
-		this.organisationUnitGroupService = organisationUnitGroupService;
+	public void setDataElementIds(List<String> dataElementIds) {
+		this.dataElementIds = dataElementIds;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	// -------------------------------------------
-	// Action implementation
-	// -------------------------------------------
+	public Integer getId() {
+		return id;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 
 	public String execute() throws Exception {
+		ExcelItemGroup excelItemGroup = (ExcelItemGroup) excelItemService
+				.getExcelItemGroup(id);
 
-		this.excelItemGroup = excelItemService.getExcelItemGroup(id);
+		DataElementGroupOrder dataElementGroupOrder = new DataElementGroupOrder();
+		dataElementGroupOrder.setName(name);
+		dataElementGroupOrder.setCode(code);
 
-		this.availableOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>(
-				this.organisationUnitGroupService
-						.getAllOrganisationUnitGroups());
+		List<DataElement> dataElements = new ArrayList<DataElement>();
 
-		this.selectedOrganisationUnitGroups = excelItemGroup
-				.getOrganisationUnitGroups();
+		for (String id : dataElementIds) {
 
-		availableOrganisationUnitGroups
-				.removeAll(selectedOrganisationUnitGroups);
+			DataElement dataElement = dataElementService.getDataElement(Integer
+					.parseInt(id));
 
-		Collections.sort(this.availableOrganisationUnitGroups,
-				new OrganisationUnitGroupNameComparator());
+			dataElements.add(dataElement);
+		}
+
+		dataElementGroupOrder.setDataElements(dataElements);
+
+		List<DataElementGroupOrder> dataElementGroupOrders = excelItemGroup
+				.getDataElementOrders();
+
+		dataElementGroupOrders.add(dataElementGroupOrder);
+
+		excelItemGroup.setDataElementOrders(dataElementGroupOrders);
+
+		excelItemService.updateExcelItemGroup(excelItemGroup);
 
 		return SUCCESS;
 	}
-
 }
