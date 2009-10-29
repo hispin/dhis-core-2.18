@@ -967,7 +967,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- EXCELITEM GROUP                                               -->
+	<!-- EXCEL ITEM GROUP                                               -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 	<bean
@@ -1056,6 +1056,33 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenUpdateOrganisationUnitGroupForCategoryAction"
+		class="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenUpdateOrganisationUnitGroupForCategoryAction"
+		scope="prototype">
+		<property name="excelItemService"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="organisationUnitGroupService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.SaveDataElementGroupOrderForCategoryAction"
+		class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.SaveDataElementGroupOrderForCategoryAction"
+		scope="prototype">
+		<property name="excelItemService"
+			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="organisationUnitGroupService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.GetDataElementGroupOrderByCategoryAction"
+		class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.GetDataElementGroupOrderByCategoryAction"
+		scope="prototype">
+		<property name="excelItemService" ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

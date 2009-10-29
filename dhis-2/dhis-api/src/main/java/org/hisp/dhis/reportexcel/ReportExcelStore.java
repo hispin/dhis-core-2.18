@@ -82,7 +82,7 @@ public interface ReportExcelStore
     public Collection<Integer> getSheets( Integer reportId );
 
     // --------------------------------------
-    // Report DataElement Order
+    // DataElement Order
     // --------------------------------------
 
     public DataElementGroupOrder getDataElementGroupOrder( Integer id );
@@ -110,4 +110,6 @@ public interface ReportExcelStore
     Collection<DataEntryStatus> getDataEntryStatusDefaultByDataSets( Collection<DataSet> dataSets );
 
     public int countDataValueOfDataSet( DataSet dataSet, OrganisationUnit organisationUnit, Period period );
+    
+
 }
