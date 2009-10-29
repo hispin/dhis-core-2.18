@@ -820,6 +820,20 @@
 			<param name="stylesheets">style/ui.theme.css,style/basic.css</param>
 		</action>
 
+		<action name="openUpdateOrganisationUnitGroupForCategory"
+			class="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenUpdateOrganisationUnitGroupForCategoryAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/organisationUnitGroupListingReport.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+			<param name="javascripts">javascript/commons.js</param>
+		</action>
+
+		<action name="saveDataElementGroupOrderForCategory"
+			class="org.hisp.dhis.reportexcel.excelitemgroup.action.SaveDataElementGroupOrderForCategoryAction">
+			<result name="success" type="redirect">listReportExcel.action
+			</result>
+		</action>
+		
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<!-- EXCEL ITEM                                                     -->
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

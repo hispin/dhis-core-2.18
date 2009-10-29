@@ -30,6 +30,7 @@ package org.hisp.dhis.reportexcel.excelitem;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -81,8 +82,9 @@ public class DefaultExcelItemService implements ExcelItemService {
 
 	public Collection<ExcelItemGroup> getExcelItemGroupsByOrganisationUnit(
 			OrganisationUnit organisationUnit) {
-	
-		return excelItemStore.getExcelItemGroupsByOrganisationUnit(organisationUnit);
+
+		return excelItemStore
+				.getExcelItemGroupsByOrganisationUnit(organisationUnit);
 	}
 
 	// --------------------------------------
@@ -112,6 +114,23 @@ public class DefaultExcelItemService implements ExcelItemService {
 	public ExcelItem getExcelItem(int id) {
 
 		return excelItemStore.getExcelItem(id);
+	}
+
+	// --------------------------------------
+	// DataElement Order
+	// --------------------------------------
+
+	public DataElementGroupOrder getDataElementGroupOrder(Integer id) {
+		return excelItemStore.getDataElementGroupOrder(id);
+	}
+
+	public void updateDataElementGroupOrder(
+			DataElementGroupOrder dataElementGroupOrder) {
+		excelItemStore.updateDataElementGroupOrder(dataElementGroupOrder);
+	}
+
+	public void deleteDataElementGroupOrder(Integer id) {
+		excelItemStore.deleteDataElementGroupOrder(id);
 	}
 
 }

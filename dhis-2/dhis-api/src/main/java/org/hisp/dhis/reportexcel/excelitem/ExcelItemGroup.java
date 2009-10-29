@@ -27,90 +27,99 @@ package org.hisp.dhis.reportexcel.excelitem;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 
 /**
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class ExcelItemGroup
-{
-    private int id;
+public class ExcelItemGroup {
+	private int id;
 
-    private String name;
+	private String name;
 
-    private Set<ExcelItem> excelItems;
+	private Set<ExcelItem> excelItems;
 
-    private String excelTemplateFile;
-    
-    private String type;
-    
-    private Set<OrganisationUnit> organisationAssocitions;
+	private String excelTemplateFile;
 
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
+	private String type;
 
-    public ExcelItemGroup()
-    {
-       
-    }
-   
-    // -------------------------------------------------------------------------
-    // Internal classes
-    // -------------------------------------------------------------------------
+	private Set<OrganisationUnit> organisationAssocitions;
 
-    public static class TYPE
-    {
-        public static final String NORMAL = "NORMAL";
+	private List<OrganisationUnitGroup> organisationUnitGroups;
+	
+	private List<DataElementGroupOrder> dataElementOrders;
 
-        public static final String CATEGORY = "CATEGORY";
+	// ----------------------------------------------------------------------
+	// Constructors
+	// ----------------------------------------------------------------------
 
-        public static final String PERIOD_COLUMN_LISTING = "PERIOD_COLUMN_LISTING";
+	public ExcelItemGroup() {
 
-        public static final String ORGANIZATION_GROUP_LISTING = "ORGANIZATION_GROUP_LISTING";
-    }
+	}
 
-    // -------------------------------------------------------------------------
-    // hashCode and equals
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Internal classes
+	// -------------------------------------------------------------------------
 
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + name.hashCode();
-        return result;
-    }
+	public static class TYPE {
+		public static final String NORMAL = "NORMAL";
 
-    @Override
-    public boolean equals( Object obj )
-    {
-        if ( this == obj )
-            return true;
-        if ( obj == null )
-            return false;
-        if ( getClass() != obj.getClass() )
-            return false;
-        ExcelItemGroup other = (ExcelItemGroup) obj;
-        if ( name != other.name )
-            return false;
-        return true;
-    }
+		public static final String CATEGORY = "CATEGORY";
 
-    // ----------------------------------------------------------------------
-    // Getters and setters
-    // ----------------------------------------------------------------------
+		public static final String PERIOD_COLUMN_LISTING = "PERIOD_COLUMN_LISTING";
 
-    public int getId()
-    {
-        return id;
-    }
+		public static final String ORGANIZATION_GROUP_LISTING = "ORGANIZATION_GROUP_LISTING";
+	}
 
-    public String getType() {
+	// -------------------------------------------------------------------------
+	// hashCode and equals
+	// -------------------------------------------------------------------------
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + name.hashCode();
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ExcelItemGroup other = (ExcelItemGroup) obj;
+		if (name != other.name)
+			return false;
+		return true;
+	}
+
+	// ----------------------------------------------------------------------
+	// Getters and setters
+	// ----------------------------------------------------------------------
+
+	public int getId() {
+		return id;
+	}
+
+	public List<DataElementGroupOrder> getDataElementOrders() {
+		return dataElementOrders;
+	}
+
+	public void setDataElementOrders(List<DataElementGroupOrder> dataElementOrders) {
+		this.dataElementOrders = dataElementOrders;
+	}
+
+	public String getType() {
 		return type;
 	}
 
@@ -118,30 +127,34 @@ public class ExcelItemGroup
 		this.type = type;
 	}
 
-	public void setId( int id )
-    {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getName()
-    {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName( String name )
-    {
-        this.name = name;
-    }
+	public List<OrganisationUnitGroup> getOrganisationUnitGroups() {
+		return organisationUnitGroups;
+	}
 
-    public String getExcelTemplateFile()
-    {
-        return excelTemplateFile;
-    }
+	public void setOrganisationUnitGroups(
+			List<OrganisationUnitGroup> organisationUnitGroups) {
+		this.organisationUnitGroups = organisationUnitGroups;
+	}
 
-    public void setExcelTemplateFile( String excelTemplateFile )
-    {
-        this.excelTemplateFile = excelTemplateFile;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getExcelTemplateFile() {
+		return excelTemplateFile;
+	}
+
+	public void setExcelTemplateFile(String excelTemplateFile) {
+		this.excelTemplateFile = excelTemplateFile;
+	}
 
 	public Set<ExcelItem> getExcelItems() {
 		return excelItems;
@@ -160,4 +173,28 @@ public class ExcelItemGroup
 		this.organisationAssocitions = organisationAssocitions;
 	}
 	
+	// ----------------------------------------------------------------------
+	// getType
+	// ----------------------------------------------------------------------
+
+	public boolean isCategory()
+    {
+        return this.getType().equalsIgnoreCase( TYPE.CATEGORY );
+    }
+
+    public boolean isOrganisationUnitGroupListing()
+    {
+        return this.getType().equalsIgnoreCase( TYPE.ORGANIZATION_GROUP_LISTING );
+    }
+
+    public boolean isPeriodColumnListing()
+    {
+        return this.getType().equalsIgnoreCase( TYPE.PERIOD_COLUMN_LISTING );
+    }
+
+    public boolean isNormal()
+    {
+        return this.getType().equalsIgnoreCase( TYPE.NORMAL );
+    }
+
 }

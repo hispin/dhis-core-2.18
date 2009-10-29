@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemStore;
@@ -69,7 +69,7 @@ public class HibernateExcelItemStore implements ExcelItemStore {
 
 		Session session = sessionFactory.getCurrentSession();
 
-		session.delete( getExcelItem(id));
+		session.delete(getExcelItem(id));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -88,20 +88,20 @@ public class HibernateExcelItemStore implements ExcelItemStore {
 
 		session.saveOrUpdate(excelItem);
 	}
-	
-	public ExcelItem getExcelItem(int id){
-		
+
+	public ExcelItem getExcelItem(int id) {
+
 		Session session = sessionFactory.getCurrentSession();
 
 		Criteria criteria = session.createCriteria(ExcelItem.class);
 
 		criteria.add(Restrictions.eq("id", id));
 
-		return (ExcelItem)criteria.uniqueResult();
+		return (ExcelItem) criteria.uniqueResult();
 	}
 
 	public void addExcelItemGroup(ExcelItemGroup excelItemGroup) {
-		
+
 		sessionFactory.getCurrentSession().save(excelItemGroup);
 	}
 
@@ -109,12 +109,12 @@ public class HibernateExcelItemStore implements ExcelItemStore {
 
 		Session session = sessionFactory.getCurrentSession();
 
-		session.delete( getExcelItemGroup(id));
+		session.delete(getExcelItemGroup(id));
 	}
 
 	@SuppressWarnings("unchecked")
 	public Collection<ExcelItemGroup> getAllExcelItemGroup() {
-		
+
 		Session session = sessionFactory.getCurrentSession();
 
 		Criteria criteria = session.createCriteria(ExcelItemGroup.class);
@@ -130,29 +130,46 @@ public class HibernateExcelItemStore implements ExcelItemStore {
 
 		criteria.add(Restrictions.eq("id", id));
 
-		return (ExcelItemGroup)criteria.uniqueResult();
+		return (ExcelItemGroup) criteria.uniqueResult();
 	}
 
 	public void updateExcelItemGroup(ExcelItemGroup excelItemGroup) {
-		
+
 		Session session = sessionFactory.getCurrentSession();
 
 		session.saveOrUpdate(excelItemGroup);
 
 	}
-	
-	@SuppressWarnings( "unchecked" )
+
+	@SuppressWarnings("unchecked")
 	public Collection<ExcelItemGroup> getExcelItemGroupsByOrganisationUnit(
 			OrganisationUnit organisationUnit) {
-		
+
 		Session session = sessionFactory.getCurrentSession();
 
-        Criteria criteria = session.createCriteria( ReportExcel.class );
+		Criteria criteria = session.createCriteria(ExcelItemGroup.class);
 
-        criteria.createAlias( "organisationAssocitions", "o" );
+		criteria.createAlias("organisationAssocitions", "o");
 
-        criteria.add( Restrictions.eq( "o.id", organisationUnit.getId() ) );
+		criteria.add(Restrictions.eq("o.id", organisationUnit.getId()));
 
-        return criteria.list();
+		return criteria.list();
+	}
+
+	public DataElementGroupOrder getDataElementGroupOrder(Integer id) {
+		Session session = sessionFactory.getCurrentSession();
+		return (DataElementGroupOrder) session.get(DataElementGroupOrder.class,
+				id);
+	}
+
+	public void updateDataElementGroupOrder(
+			DataElementGroupOrder dataElementGroupOrder) {
+		Session session = sessionFactory.getCurrentSession();
+		session.update(dataElementGroupOrder);
+	}
+
+	public void deleteDataElementGroupOrder(Integer id) {
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(this.getDataElementGroupOrder(id));
 	}
 }
