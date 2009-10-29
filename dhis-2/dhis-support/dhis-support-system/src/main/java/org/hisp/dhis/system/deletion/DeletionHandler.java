@@ -35,6 +35,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataEntryForm;
@@ -46,6 +47,7 @@ import org.hisp.dhis.document.Document;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapLegendSet;
@@ -123,6 +125,15 @@ public abstract class DeletionHandler
     }
 
     public boolean allowDeleteDataElementGroup( DataElementGroup dataElementGroup )
+    {
+        return true;
+    }
+    
+    public void deleteDataElementGroupSet( DataElementGroupSet dataElementGroupSet )
+    {
+    }
+    
+    public boolean allowDeleteDataElementGroupSet( DataElementGroupSet dataElementGroupSet )
     {
         return true;
     }
@@ -240,6 +251,15 @@ public abstract class DeletionHandler
     }
 
     public boolean allowDeleteIndicatorType( IndicatorType indicatorType )
+    {
+        return true;
+    }
+
+    public void deleteIndicatorGroupSet( IndicatorGroupSet indicatorGroupSet )
+    {
+    }
+    
+    public boolean allowDeleteIndicatorGroupSet( IndicatorGroupSet indicatorGroupSet )
     {
         return true;
     }
