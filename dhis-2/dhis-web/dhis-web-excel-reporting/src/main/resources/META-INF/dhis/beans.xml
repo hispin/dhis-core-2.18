@@ -1039,16 +1039,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenUpdateOrganisationUnitGroupAction"
-		class="org.hisp.dhis.reportexcel.excelitemgroup.action.OpenUpdateOrganisationUnitGroupAction"
-		scope="prototype">
-		<property name="excelItemService"
-			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-	</bean>
-
-	<bean
 		id="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateOrganisationUnitGroupAction"
 		class="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateOrganisationUnitGroupAction"
 		scope="prototype">
