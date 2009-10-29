@@ -1,4 +1,4 @@
-package org.hisp.dhis.i18n;
+package org.hisp.dhis.i18n.action;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -30,43 +30,24 @@ package org.hisp.dhis.i18n;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Collection;
 
 /**
- * @author Oyvind Brucker
+ * @author Dang Duy Hieu
+ * @version $Id$
+ * @since 2009-10-28
  */
-public interface I18nService
+
+public interface TranslationUserSettingSupport
 {
-    String ID = I18nService.class.getName();
+    Locale getCurrentLocale();
 
-    public void internationalise( Object object );
+    Locale getCurrentRefLocale();
 
-    public void internationaliseCollection( Collection<?> objects );
+    List<String> getPropertyNames();
 
-    public Map<String, String> getTranslations( String className, int id, Locale locale );
+    void setClazz( Class<?> clazz );
 
-    public List<String> getPropertyNames( String className );
+    void setObjectList( List<Object> objectList );
 
-    public void updateTranslation( String className, int id, Locale thisLocale, Map<String, String> translations );
-
-    public Collection<Locale> getAvailableLocales();
-
-    public Map<String, String> getPropertyNamesLabel( String className );
-
-    public void addObject( Object object );
-
-    public void addTranslation( Object object, String property, String value, Locale locale );
-
-    public void setToFallback( Object object );
-
-    public void verify( Object object );
-
-    public void verifyCollection( Collection<?> collection );
-
-    public void removeObject( Object object );
-
-    // -------------------------------------------------------------------------
-    public Map<String, String> getTranslations( String className, Locale locale );
-
-    public Map<String, String> getTranslations( String className, String propertyName, Locale locate );
+    Map<String, String> initTranslations( Map<String, String> translationsClazz );
 }

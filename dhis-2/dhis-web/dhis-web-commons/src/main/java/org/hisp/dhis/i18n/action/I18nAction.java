@@ -44,6 +44,8 @@ import com.opensymphony.xwork2.Action;
 public class I18nAction
     implements Action
 {
+	private static final String UNDERSCORE = "_";
+
     private String className;
 
     private String objectId;
@@ -155,7 +157,8 @@ public class I18nAction
     public String execute()
         throws Exception
     {
-        propertyLabels = i18nService.getPropertyNamesLabel( className );
+
+		propertyLabels = i18nService.getPropertyNamesLabel( className );
 
         translations = i18nService.getTranslations( className, Integer.parseInt( objectId ), getCurrentLocale() );
 
@@ -168,13 +171,13 @@ public class I18nAction
 
         for ( String property : getPropertyNames() )
         {
-            if ( translations.get( String.valueOf( objectId ) + "_" + property ) == null )
+            if ( translations.get( String.valueOf( objectId ) + UNDERSCORE + property ) == null )
             {
-                translations.put( String.valueOf( objectId ) + "_" + property, "" );
+                translations.put( String.valueOf( objectId ) + UNDERSCORE + property, "" );
             }
-            if ( referenceTranslations.get( String.valueOf( objectId ) + "_" + property ) == null )
+            if ( referenceTranslations.get( String.valueOf( objectId ) + UNDERSCORE + property ) == null )
             {
-                referenceTranslations.put( String.valueOf( objectId ) + "_" + property, "" );
+                referenceTranslations.put( String.valueOf( objectId ) + UNDERSCORE + property, "" );
             }
         }
 

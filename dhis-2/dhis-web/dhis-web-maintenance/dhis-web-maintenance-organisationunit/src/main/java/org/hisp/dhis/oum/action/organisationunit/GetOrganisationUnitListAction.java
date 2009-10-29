@@ -33,11 +33,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.i18n.locale.LocaleManager;
+import org.hisp.dhis.i18n.action.TranslationUserSettingSupport;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -63,8 +61,6 @@ public class GetOrganisationUnitListAction
      */
     private static final long serialVersionUID = 1L;
 
-    private static String TRANSLATION_PROPERTY_NAME = "name";
-
     private OrganisationUnitSelectionManager selectionManager;
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
@@ -72,18 +68,11 @@ public class GetOrganisationUnitListAction
         this.selectionManager = selectionManager;
     }
 
-    private LocaleManager localeManager;
+    private TranslationUserSettingSupport translationUserSettingSupport;
 
-    public void setLocaleManager( LocaleManager localeManager )
+    public void setTranslationUserSettingSupport( TranslationUserSettingSupport translationUserSettingSupport )
     {
-        this.localeManager = localeManager;
-    }
-
-    private I18nService i18nService;
-
-    public void setI18nService( I18nService service )
-    {
-        i18nService = service;
+        this.translationUserSettingSupport = translationUserSettingSupport;
     }
 
     // -------------------------------------------------------------------------
@@ -119,11 +108,6 @@ public class GetOrganisationUnitListAction
         return organisationUnits;
     }
 
-    private List<String> getPropertyNames()
-    {
-        return i18nService.getPropertyNames( OrganisationUnit.class.getSimpleName() );
-    }
-
     private Map<String, String> translationsOrgUnit = new HashMap<String, String>();
 
     public Map<String, String> getTranslationsOrgUnit()
@@ -131,11 +115,11 @@ public class GetOrganisationUnitListAction
         return translationsOrgUnit;
     }
 
-    private Map<String, String> refTranslationOrgUnit = new HashMap<String, String>();
+    private Map<String, String> refTranslationsOrgUnit = new HashMap<String, String>();
 
-    public Map<String, String> getRefTranslationOrgUnit()
+    public Map<String, String> getRefTranslationsOrgUnit()
     {
-        return refTranslationOrgUnit;
+        return refTranslationsOrgUnit;
     }
 
     // -------------------------------------------------------------------------
@@ -164,45 +148,19 @@ public class GetOrganisationUnitListAction
 
         displayPropertyHandler.handle( organisationUnits );
 
-        translationsOrgUnit = i18nService.getTranslations( OrganisationUnit.class.getSimpleName(),
-            TRANSLATION_PROPERTY_NAME, getCurrentLocale() );
-        refTranslationOrgUnit = i18nService.getTranslations( OrganisationUnit.class.getSimpleName(),
-            TRANSLATION_PROPERTY_NAME, getCurrentRefLocale() );
+        // ---------------------------------------------------------------------
+        // Translation for Organization Unit
+        // ---------------------------------------------------------------------
 
-        /**
-         * Fill in empty strings for null values
-         */
+        this.translationUserSettingSupport.setClazz( OrganisationUnit.class );
+        
+        this.translationUserSettingSupport.setObjectList( new ArrayList<Object>( organisationUnits ) );
+        
+        translationsOrgUnit = this.translationUserSettingSupport.initTranslations( translationsOrgUnit );
+        
+        refTranslationsOrgUnit = this.translationUserSettingSupport.initTranslations( refTranslationsOrgUnit );
 
-        for ( OrganisationUnit o : organisationUnits )
-        {
-            for ( String property : getPropertyNames() )
-            {
-                if ( translationsOrgUnit.get( String.valueOf( o.getId() ) + "_" + property ) == null )
-                {
-                    translationsOrgUnit.put( String.valueOf( o.getId() ) + "_" + property, "" );
-                }
-                if ( refTranslationOrgUnit.get( String.valueOf( o.getId() ) + "_" + property ) == null )
-                {
-                    refTranslationOrgUnit.put( String.valueOf( o.getId() ) + "_" + property, "" );
-                }
-            }
-        }
 
         return SUCCESS;
     }
-
-    // -------------------------------------------------------------------------
-    // Supporting method
-    // -------------------------------------------------------------------------
-
-    private Locale getCurrentLocale()
-    {
-        return localeManager.getCurrentLocale();
-    }
-
-    private Locale getCurrentRefLocale()
-    {
-        return localeManager.getFallbackLocale();
-    }
-
 }
