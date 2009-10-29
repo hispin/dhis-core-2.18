@@ -94,6 +94,7 @@ public class GenerateReportExcelCategoryAction
             {
 
                 int beginChapter = rowBegin;
+                
                 if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_NAME ) )
                 {
                     ExcelUtils.writeValue( rowBegin, reportItem.getColumn(), dataElementGroup.getName(),
@@ -106,7 +107,9 @@ public class GenerateReportExcelCategoryAction
                 }
 
                 rowBegin++;
+                
                 int serial = 1;
+                
                 for ( DataElement dataElement : dataElementGroup.getDataElements() )
                 {
 

@@ -26,8 +26,6 @@
  */
 package org.hisp.dhis.reportexcel.export.action;
 
-import java.util.Date;
-
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reportexcel.ReportExcel;

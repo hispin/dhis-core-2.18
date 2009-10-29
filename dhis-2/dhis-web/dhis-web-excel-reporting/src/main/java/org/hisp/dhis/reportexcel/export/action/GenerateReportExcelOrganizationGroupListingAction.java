@@ -28,7 +28,6 @@ package org.hisp.dhis.reportexcel.export.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import jxl.write.WritableSheet;
@@ -54,7 +53,6 @@ public class GenerateReportExcelOrganizationGroupListingAction
     public String execute()
         throws Exception
     {
-    	
     	
         statementManager.initialise();
 
@@ -97,7 +95,6 @@ public class GenerateReportExcelOrganizationGroupListingAction
 
             for ( OrganisationUnitGroup organisationUnitGroup : reportExcel.getOrganisationUnitGroups() )
             {
-
                 List<OrganisationUnit> childrenOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnit
                     .getChildren() );
 

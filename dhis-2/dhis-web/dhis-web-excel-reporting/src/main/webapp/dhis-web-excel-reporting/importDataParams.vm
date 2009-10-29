@@ -5,7 +5,7 @@
 <input type="hidden" name="uploadFileName" id="uploadFileName" value="$!fileExcel">
 <!-- <input type="hidden" name="uploadFileName" id="uploadFileName">-->
  #end
-<h2>$!encoder.htmlEncode($!organisationUnit.name)</h2>
+<h2>$i18n.getString('import_data')</h2>
 <table width="50%">
   <tr>
     <form name="uploadfile" action="getImportingParams.action" method="post" enctype="multipart/form-data">
@@ -21,6 +21,9 @@
 	  <option value="">$i18n.getString('select')</option>
 	  #foreach($excelItemGroup in $excelItemGroups)
 		<option value="$!excelItemGroup.id">$!encoder.htmlEncode($!excelItemGroup.name)</option>
+	  #end
+	  #foreach($categoryGroup in $categoryGroups)
+		<option value="$!categoryGroup.id">$!encoder.htmlEncode($!categoryGroup.name)</option>
 	  #end
       </select>
     </td>
@@ -48,7 +51,7 @@
 <input type="button" name="import" id="import" onClick="javascript: importData();" value="$i18n.getString('import')" disabled>
 <br><br>
 	<div id="showValue" style="display:none; width:100%" >
-		<table id="showReportItemValues" width="100%">
+		<table id="showExcelItemValues" width="100%">
 		<tr>
 		<th width="20px"><input type="checkbox" name="selectAll" id="selectAll" onClick="javascript: selectAll();"/></th>
 		<th>$i18n.getString('report')</th>

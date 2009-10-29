@@ -27,7 +27,6 @@
 package org.hisp.dhis.reportexcel.export.action;
 
 import java.util.Collection;
-import java.util.Date;
 
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;

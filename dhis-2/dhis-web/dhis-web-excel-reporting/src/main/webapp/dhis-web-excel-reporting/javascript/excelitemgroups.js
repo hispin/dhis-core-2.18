@@ -88,3 +88,17 @@ function deleteExcelItemGroup(id){
 			},'xml');
 	}
 }
+
+/*
+*   Update Data Element Group Order
+*/
+
+function updateDataElementGroupOrder(){
+	var url = "updateDataElementGroupOrder.action?reportId=" + reportId;
+	var selectedDataElementGroups = document.getElementById('selectedDataElementGroups').options;
+	for(var i=0;i<selectedDataElementGroups.length;i++){
+		url += "&dataElementGroupsId=" + selectedDataElementGroups[i].value
+	}
+	
+	window.location = url;
+}
