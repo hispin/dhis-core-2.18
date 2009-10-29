@@ -1,0 +1,33 @@
+<h2>$i18n.getString( "data_element_group_set" )</h2>
+
+<table style="min-width:500px;">
+	<thead>
+		<tr>
+			<th>$i18n.getString( "filter_by_name" ) <input type="text" id="dataElementGroupSetFilter" style="width:300px" onkeyup="filterDataElementSet( this.value )"/></th>
+			<td align="right"><input type=button value="$i18n.getString( "add_new" )" onclick="window.location='openAddDataElementGroupSet.action'"/></td>
+		</tr>
+		<tr>
+			<th>$i18n.getString( "name" )</th>
+			<th width="100px">$i18n.getString( "operations" )</th>
+		</tr>
+	</thead>
+	<tbody id="contents">		
+		
+	</tbody>
+</table>	
+
+<script>
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_group" ) , "'")';
+	var i18n_edit = '$encoder.jsEscape( $i18n.getString( "edit" ) , "'")';
+	var i18n_delete = '$encoder.jsEscape( $i18n.getString( "delete" ) , "'")';
+	
+	var dataElementGroupSets = new Array();
+	#foreach( $dataElementGroupSet in $dataElementGroupSets )
+		dataElementGroupSets.push( new DataElementGroupSet( $dataElementGroupSet.id, "$encoder.htmlEncode( $dataElementGroupSet.name )" ) );
+	#end
+	
+	filterDataElementSet( $("#dataElementGroupSetFilter").val() );
+	
+	
+	 
+</script>
