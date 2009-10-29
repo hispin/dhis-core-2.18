@@ -42,8 +42,9 @@ import com.opensymphony.xwork2.Action;
  */
 
 public class OpenExcelItemGroupAssociationsAction implements Action {
+
 	// -------------------------------------------
-	// Dependency
+	// Dependencies
 	// -------------------------------------------
 
 	private ExcelItemService excelItemService;
