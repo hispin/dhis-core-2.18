@@ -7,6 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
@@ -56,6 +58,13 @@ public class HibernateExcelItemStore implements ExcelItemStore {
 		this.sessionFactory = sessionFactory;
 	}
 
+	private PeriodStore periodStore;
+
+    public void setPeriodStore( PeriodStore periodStore )
+    {
+        this.periodStore = periodStore;
+    }
+
 	// ----------------------------------------------------------------------
 	// ExcelItemStore implementation
 	// ----------------------------------------------------------------------
@@ -102,7 +111,13 @@ public class HibernateExcelItemStore implements ExcelItemStore {
 
 	public void addExcelItemGroup(ExcelItemGroup excelItemGroup) {
 
-		sessionFactory.getCurrentSession().save(excelItemGroup);
+		PeriodType periodType = periodStore.getPeriodType( excelItemGroup.getPeriodType().getClass() );
+
+		excelItemGroup.setPeriodType( periodType );
+
+        Session session = sessionFactory.getCurrentSession();
+
+        session.save( excelItemGroup );
 	}
 
 	public void deleteExcelItemGroup(int id) {
@@ -135,10 +150,13 @@ public class HibernateExcelItemStore implements ExcelItemStore {
 
 	public void updateExcelItemGroup(ExcelItemGroup excelItemGroup) {
 
-		Session session = sessionFactory.getCurrentSession();
+		PeriodType periodType = periodStore.getPeriodType( excelItemGroup.getPeriodType().getClass() );
 
-		session.saveOrUpdate(excelItemGroup);
+		excelItemGroup.setPeriodType( periodType );
 
+        Session session = sessionFactory.getCurrentSession();
+
+        session.update( excelItemGroup );
 	}
 
 	@SuppressWarnings("unchecked")
@@ -157,9 +175,14 @@ public class HibernateExcelItemStore implements ExcelItemStore {
 	}
 
 	public DataElementGroupOrder getDataElementGroupOrder(Integer id) {
+		
 		Session session = sessionFactory.getCurrentSession();
-		return (DataElementGroupOrder) session.get(DataElementGroupOrder.class,
-				id);
+		
+		Criteria criteria = session.createCriteria(DataElementGroupOrder.class);
+
+		criteria.add(Restrictions.eq("id", id.intValue()));
+
+		return (DataElementGroupOrder) criteria.uniqueResult();
 	}
 
 	public void updateDataElementGroupOrder(
@@ -169,7 +192,9 @@ public class HibernateExcelItemStore implements ExcelItemStore {
 	}
 
 	public void deleteDataElementGroupOrder(Integer id) {
+		
 		Session session = sessionFactory.getCurrentSession();
-		session.delete(this.getDataElementGroupOrder(id));
+		
+		session.delete(getDataElementGroupOrder(id));
 	}
 }

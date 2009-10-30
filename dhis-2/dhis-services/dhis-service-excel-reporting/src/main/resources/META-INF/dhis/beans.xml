@@ -17,7 +17,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 
-
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<!-- EXCELITEM STORE                                               -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -25,6 +24,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportexcel.excelitem.ExcelItemStore"
 		class="org.hisp.dhis.reportexcel.excelitem.hibernate.HibernateExcelItemStore">
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
