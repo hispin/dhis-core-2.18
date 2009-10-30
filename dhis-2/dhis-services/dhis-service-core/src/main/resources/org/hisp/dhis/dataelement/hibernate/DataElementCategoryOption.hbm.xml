@@ -13,7 +13,7 @@
     <property name="uuid" length="40"/>
     
     <property name="name">
-      <column name="name" not-null="true" length="160"/>
+      <column name="name" not-null="true" unique="true" length="160"/>
     </property>
     
     <list name="categoryOptionCombos" table="categoryoptioncombos_categoryoptions" inverse="true">
