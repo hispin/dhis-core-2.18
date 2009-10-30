@@ -62,9 +62,9 @@ public class DefaultDataElementCategoryService
         this.dataElementCategoryStore = dataElementCategoryStore;
     }    
 
-    private GenericStore<DataElementCategoryOption> dataElementCategoryOptionStore;
+    private GenericIdentifiableObjectStore<DataElementCategoryOption> dataElementCategoryOptionStore;
 
-    public void setDataElementCategoryOptionStore( GenericStore<DataElementCategoryOption> dataElementCategoryOptionStore )
+    public void setDataElementCategoryOptionStore( GenericIdentifiableObjectStore<DataElementCategoryOption> dataElementCategoryOptionStore )
     {
         this.dataElementCategoryOptionStore = dataElementCategoryOptionStore;
     }
@@ -194,19 +194,9 @@ public class DefaultDataElementCategoryService
         return dataElementCategoryOptionStore.get( id );
     }
     
-    public Collection<DataElementCategoryOption> getDataElementCategoryOptionsByName( String name )
+    public DataElementCategoryOption getDataElementCategoryOptionByName( String name )
     {
-        Collection<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
-        
-        for ( DataElementCategoryOption categoryOption : getAllDataElementCategoryOptions() )
-        {
-            if ( categoryOption.getName().equals( name ) )
-            {
-                categoryOptions.add( categoryOption );
-            }
-        }
-        
-        return categoryOptions;
+        return dataElementCategoryOptionStore.getByName( name );
     }
     
     public Collection<DataElementCategoryOption> getDataElementCategoryOptions( Collection<Integer> identifiers )
