@@ -166,7 +166,10 @@ import org.hisp.dhis.validation.ValidationRuleService;
 public class DefaultDXFImportService
     implements ImportService
 {
-    private final Log log = LogFactory.getLog( DefaultDXFImportService.class );
+	public static final String ROOT_NAME = "dxf";
+	public static final String DXF2_NAMESPACE_URI = "http://dhis2.org/ns/schema/dxf2";
+	
+	private final Log log = LogFactory.getLog( DefaultDXFImportService.class );
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -337,10 +340,26 @@ public class DefaultDXFImportService
         StreamUtils.getNextZipEntry( zipIn );
         
         XMLReader reader = XMLFactory.getXMLReader( zipIn );
+  
+        // assume default version 1
+        int dxfVersion = 1;
         
         while ( reader.next() )
         {
-            if ( reader.isStartElement( DataElementCategoryOptionConverter.COLLECTION_NAME ) )
+            if (reader.isStartElement( ROOT_NAME)  )
+            {
+            		if (reader.getXmlStreamReader().getNamespaceURI() ==  DXF2_NAMESPACE_URI)
+            		{
+            			dxfVersion = 2;
+            		}
+            		else
+            		{
+            			dxfVersion = 1;
+            		}
+            	log.info("dxf version "+dxfVersion);
+            }
+
+        	if ( reader.isStartElement( DataElementCategoryOptionConverter.COLLECTION_NAME ) )
             {
                 //setMessage( "importing_data_element_category_options" );
                 

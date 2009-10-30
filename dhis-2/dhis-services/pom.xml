@@ -21,11 +21,11 @@
     <module>dhis-service-user-hibernate</module>
     <module>dhis-service-importexport</module>
     <module>dhis-service-reporting</module>
-	<module>dhis-service-excel-reporting</module>
+    <module>dhis-service-excel-reporting</module>
     <module>dhis-service-mapping</module>
     <module>dhis-service-jdbc</module>
     <module>dhis-service-jdbc-test</module>
-	<module>dhis-service-aggregationengine-default</module>
+    <module>dhis-service-aggregationengine-default</module>
   </modules>
   
   <dependencies>
