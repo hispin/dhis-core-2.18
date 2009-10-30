@@ -75,6 +75,7 @@ function getListPeriodCompleted( xmlObject ){
 // -----------------------------------------------------------------------------
 // IMPORT DATA FROM EXCEL FILE INTO DATABASE
 // -----------------------------------------------------------------------------
+
 function importData(){
 	
 	var excelItemGroupId = document.getElementById('excelItemGroupId').value;
@@ -180,4 +181,44 @@ function selectAll(){
 		reportItems[i].checked = select;
 	 }
  }
- 
+
+// --------------------------------------------------------------------
+// PERIOD TYPE
+// --------------------------------------------------------------------
+
+function getPeriodsByPeriodTypeName(excelItemGroupId) {
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( responseListPeriodReceived );
+	request.send( 'getPeriods.action?excelItemGroupId=' + excelItemGroupId);
+}
+
+function responseListPeriodReceived( xmlObject ) {
+
+	clearListById('period');
+	var list = xmlObject.getElementsByTagName('period');
+	for ( var i = 0; i < list.length; i++ )
+    {
+        item = list[i];  
+        var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
+        var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
+		addOption('period', name, id);
+    }
+}
+
+function lastPeriod() {
+
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( responseListPeriodReceived );
+	request.send( 'previousPeriods.action' ); 
+}
+
+function nextPeriod() {
+
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( responseListPeriodReceived );
+	request.send( 'nextPeriods.action' ); 
+}

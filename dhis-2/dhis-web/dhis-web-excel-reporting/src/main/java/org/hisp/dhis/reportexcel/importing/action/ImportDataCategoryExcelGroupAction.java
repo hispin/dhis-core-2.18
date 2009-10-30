@@ -30,9 +30,7 @@ package org.hisp.dhis.reportexcel.importing.action;
 import java.io.File;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 
 import jxl.Sheet;
 import jxl.Workbook;
@@ -50,10 +48,10 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
-import org.hisp.dhis.reportexcel.ReportExcelCategory;
-import org.hisp.dhis.reportexcel.ReportExcelItem;
-import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -74,15 +72,13 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 
 	private ExpressionService expressionService;
 
-	// private DataElementService dataElementService;
-
 	private DataElementCategoryService categoryService;
 
 	private CurrentUserService currentUserService;
 
 	private PeriodService periodService;
 
-	private ReportExcelService reportExcelService;
+	private ExcelItemService excelItemService;
 
 	// --------------------------------------------------------------------
 	// Inputs && Outputs
@@ -104,8 +100,8 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 		this.organisationUnitSelectionManager = organisationUnitSelectionManager;
 	}
 
-	public void setReportExcelService(ReportExcelService reportExcelService) {
-		this.reportExcelService = reportExcelService;
+	public void setExcelItemService(ExcelItemService excelItemService) {
+		this.excelItemService = excelItemService;
 	}
 
 	public void setReportExcelItemIds(Integer[] reportExcelItemIds) {
@@ -155,8 +151,8 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 
 	public String execute() throws Exception {
 
-		ReportExcelCategory reportExcel = (ReportExcelCategory) reportExcelService
-				.getReportExcel(excelItemGroupId.intValue());
+		ExcelItemGroup excelItemGroup = (ExcelItemGroup) excelItemService
+				.getExcelItemGroup(excelItemGroupId.intValue());
 
 		OrganisationUnit organisationUnit = organisationUnitSelectionManager
 				.getSelectedOrganisationUnit();
@@ -168,39 +164,33 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 			ws.setLocale(new Locale("en", "EN"));
 			Workbook templateWorkbook = Workbook.getWorkbook(upload, ws);
 
-			Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportExcelItems();
+			Collection<ExcelItem> excelItems = excelItemGroup.getExcelItems();
 
-			for (ReportExcelItem reportExelItem : reportExcelItems) {
+			for (ExcelItem exelItem : excelItems) {
 
-				Sheet sheet = templateWorkbook.getSheet(reportExelItem
-						.getSheetNo() - 1 );
+				Sheet sheet = templateWorkbook.getSheet(exelItem
+						.getSheetNo() - 1);
 
-				int rowBegin = reportExelItem.getRow();
+				int rowBegin = exelItem.getRow();
 
-				for (DataElementGroupOrder dataElementGroup : reportExcel
+				for (DataElementGroupOrder dataElementGroup : excelItemGroup
 						.getDataElementOrders()) {
 
 					for (DataElement dataElement : dataElementGroup
 							.getDataElements()) {
 
 						String value = ExcelUtils.readValue(rowBegin,
-								reportExelItem.getColumn(), sheet);
-						
+								exelItem.getColumn(), sheet);
+
 						if (value.length() > 0) {
 
-							System.out.println("\n\n reportExelItem = " + reportExelItem.getName() + "\t value = " + value
-									+ "\t sheet = "	+ reportExelItem.getSheetNo() + "\t row = "
-									+ rowBegin + "\t col = "
-									+ reportExelItem.getColumn());
-
-							addDataValue(reportExelItem, value,
+							addDataValue(exelItem, value,
 									organisationUnit, dataElement);
 						}
-						
+
 						rowBegin++;
 					}
 
-					
 				}
 
 			}// end for (ExcelItem ...
@@ -212,15 +202,15 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	private void addDataValue(ReportExcelItem reportExcelItem, String value,
+	private void addDataValue(ExcelItem excelItem, String value,
 			OrganisationUnit organisationUnit, DataElement dataElement) {
 
-		if (!reportExcelItem.getExpression().contains("*"))
+		if (!excelItem.getExpression().contains("*"))
 			return;
 
 		Period period = periodService.getPeriod(periodId.intValue());
 
-		String expression = reportExcelItem.getExpression().replace("*",
+		String expression = excelItem.getExpression().replace("*",
 				String.valueOf(dataElement.getId()));
 
 		Operand operand = expressionService.getOperandsInExpression(expression)

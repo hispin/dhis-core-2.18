@@ -17,13 +17,10 @@
   </tr>
   <tr>
     <td>$i18n.getString( 'excelitem_group' )</td>
-    <td><select type="text" id="excelItemGroupId" name="excelItemGroupId" style="min-width:20em; width:100%" #if(!$!fileExcel) disabled #end onChange="javascript: document.getElementById('lastYear').disabled=false; document.getElementById('nextYear').disabled=false; document.getElementById('period').disabled=false; document.getElementById('preview').disabled=false; document.getElementById('import').disabled=false;">
+    <td><select type="text" id="excelItemGroupId" name="excelItemGroupId" onChange="getPeriodsByPeriodTypeName(this.value);" style="min-width:20em; width:100%" >
 	  <option value="">$i18n.getString('select')</option>
 	  #foreach($excelItemGroup in $excelItemGroups)
 		<option value="$!excelItemGroup.id">$!encoder.htmlEncode($!excelItemGroup.name)</option>
-	  #end
-	  #foreach($categoryGroup in $categoryGroups)
-		<option value="$!categoryGroup.id">$!encoder.htmlEncode($!categoryGroup.name)</option>
 	  #end
       </select>
     </td>
@@ -31,13 +28,9 @@
   <tr>
     <td>$i18n.getString( 'period' )</td>
     <td>
-	<input type="button" value="<<" id="lastYear" name="lastYear" onclick="lastYear();" disabled />
-	<input type="button" value=">>" id="nextYear" name="nextYear" onclick="nextYear()" disabled />
-	<select name="period" id="period" style="min-width:20em; width:100%" type="text" disabled >
-        	#foreach($period in $periods)
-				<option value='$period.id'>$format.formatPeriod( $period )</option>
-			#end
-			
+	<input type="button" value="<<" id="lastYear" name="lastYear" onclick="lastPeriod();"  />
+	<input type="button" value=">>" id="nextYear" name="nextYear" onclick="nextPeriod()"  />
+	<select name="period" id="period" style="min-width:20em; width:100%" type="text" >
     </select></td>
   </tr>
   <tr>

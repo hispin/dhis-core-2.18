@@ -27,6 +27,8 @@ package org.hisp.dhis.reportexcel.excelitemgroup.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
@@ -43,6 +45,8 @@ public class UpdateExcelItemGroupAction implements Action {
 
 	private ExcelItemService excelItemService;
 
+	private PeriodService periodService;
+
 	// -------------------------------------------------------------------------
 	// Inputs
 	// -------------------------------------------------------------------------
@@ -55,9 +59,18 @@ public class UpdateExcelItemGroupAction implements Action {
 
 	private String type;
 
+	private String periodTypeName;
+
 	// -------------------------------------------------------------------------
 	// Setters
 	// -------------------------------------------------------------------------
+	public void setPeriodService(PeriodService periodService) {
+		this.periodService = periodService;
+	}
+
+	public void setPeriodTypeName(String periodTypeName) {
+		this.periodTypeName = periodTypeName;
+	}
 
 	public void setExcelItemService(ExcelItemService excelItemService) {
 		this.excelItemService = excelItemService;
@@ -92,6 +105,11 @@ public class UpdateExcelItemGroupAction implements Action {
 		excelItemGroup.setType(type);
 
 		excelItemGroup.setExcelTemplateFile(excelTemplateFile);
+		
+		PeriodType periodType = periodService
+				.getPeriodTypeByName(periodTypeName);
+		
+		excelItemGroup.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
 
 		excelItemService.updateExcelItemGroup(excelItemGroup);
 

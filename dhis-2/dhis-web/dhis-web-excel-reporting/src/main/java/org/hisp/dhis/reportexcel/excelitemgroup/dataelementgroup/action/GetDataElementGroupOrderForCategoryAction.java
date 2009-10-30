@@ -1,5 +1,3 @@
-package org.hisp.dhis.reportexcel.importing.action;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -26,12 +24,10 @@ package org.hisp.dhis.reportexcel.importing.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action;
 
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
-import org.hisp.dhis.reportexcel.export.action.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -39,81 +35,46 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class ImportDataFlowAction implements Action {
-
+public class GetDataElementGroupOrderForCategoryAction implements Action {
 	// -------------------------------------------
 	// Dependency
 	// -------------------------------------------
 
 	private ExcelItemService excelItemService;
 
-	private PeriodService periodService;
-
-	private SelectionManager selectionManager;
-
 	// -------------------------------------------
 	// Input & Output
 	// -------------------------------------------
 
-	private Integer excelItemGroupId;
+	private Integer id;
 
-	private Integer periodId;
-
-	private Integer sheetId;
-
-	private Integer orgunitGroupId;
+	private DataElementGroupOrder dataElementGroupOrder;
 
 	// -------------------------------------------
 	// Getter & Setter
 	// -------------------------------------------
 
-	public void setSelectionManager(SelectionManager selectionManager) {
-		this.selectionManager = selectionManager;
-	}
-
-	public void setExcelItemGroupId(Integer excelItemGroupId) {
-		this.excelItemGroupId = excelItemGroupId;
-	}
-
-	public void setPeriodService(PeriodService periodService) {
-		this.periodService = periodService;
-	}
-
-	public void setPeriodId(Integer periodId) {
-		this.periodId = periodId;
+	public DataElementGroupOrder getDataElementGroupOrder() {
+		return dataElementGroupOrder;
 	}
 
 	public void setExcelItemService(ExcelItemService excelItemService) {
 		this.excelItemService = excelItemService;
 	}
 
-	public Integer getSheetId() {
-		return sheetId;
-
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public void setSheetId(Integer sheetId) {
-		this.sheetId = sheetId;
-	}
-
-	public Integer getOrgunitGroupId() {
-		return orgunitGroupId;
-	}
-
-	public void setOrgunitGroupId(Integer orgunitGroupId) {
-		this.orgunitGroupId = orgunitGroupId;
-	}
+	// -------------------------------------------
+	// Action implementation
+	// -------------------------------------------
 
 	public String execute() throws Exception {
 
-		Period period = periodService.getPeriod(periodId);
+		dataElementGroupOrder = excelItemService.getDataElementGroupOrder(id.intValue());
 
-		selectionManager.setSelectedPeriod(period);
-
-		ExcelItemGroup excelItemGroup = excelItemService
-				.getExcelItemGroup(excelItemGroupId);
-		
-		return excelItemGroup.getType();
+		return SUCCESS;
 	}
 
 }

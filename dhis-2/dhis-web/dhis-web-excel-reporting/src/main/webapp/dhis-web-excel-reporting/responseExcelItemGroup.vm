@@ -3,5 +3,6 @@
 	<id>$excelItemGroup.id</id>
 	<name>$encoder.xmlEncode( $!excelItemGroup.name )</name>
 	<type>$excelItemGroup.type</type>
+	<periodType>$excelItemGroup.periodType.name</periodType>
 	<excelTemplateFile>$excelItemGroup.excelTemplateFile</excelTemplateFile>
 </excelitemgroup>
