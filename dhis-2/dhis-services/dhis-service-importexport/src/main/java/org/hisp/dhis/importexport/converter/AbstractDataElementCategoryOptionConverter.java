@@ -55,7 +55,7 @@ public class AbstractDataElementCategoryOptionConverter
 
     protected DataElementCategoryOption getMatching( DataElementCategoryOption object )
     {
-        return null; //TODO Fix categoryService.getDataElementCategoryOptionByName( object.getName() );
+        return categoryService.getDataElementCategoryOptionByName( object.getName() );
     }
     
     protected boolean isIdentical( DataElementCategoryOption object, DataElementCategoryOption existing )
