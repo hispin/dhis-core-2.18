@@ -1,5 +1,4 @@
 package org.hisp.dhis.dd.action.indicatorgroupset;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -27,10 +26,6 @@ package org.hisp.dhis.dd.action.indicatorgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 
@@ -40,7 +35,7 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class UpdateIndicatorGroupSetAction
+public class GetIndicatorGroupSetAction
     implements Action
 {
 
@@ -56,7 +51,7 @@ public class UpdateIndicatorGroupSetAction
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private Integer id;
@@ -66,43 +61,19 @@ public class UpdateIndicatorGroupSetAction
         this.id = id;
     }
 
-    private String name;
+    private IndicatorGroupSet indicatorGroupSet;
 
-    public void setName( String name )
+    public IndicatorGroupSet getIndicatorGroupSet()
     {
-        this.name = name;
+        return indicatorGroupSet;
     }
-
-    private List<String> groupMembers = new ArrayList<String>();
-
-    public void setGroupMembers( List<String> groupMembers )
-    {
-        this.groupMembers = groupMembers;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
 
     @Override
     public String execute()
         throws Exception
     {
-        IndicatorGroupSet indicatorGroupSet = indicatorService.getIndicatorGroupSet( id );
-
-        indicatorGroupSet.setName( name.trim() );
-
-        indicatorGroupSet.getMembers().clear();
-
-        for ( String id : groupMembers )
-        {
-            IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( Integer.parseInt( id ) );
-
-            indicatorGroupSet.getMembers().add( indicatorGroup );
-        }
-
-        indicatorService.updateIndicatorGroupSet( indicatorGroupSet );
-
+        indicatorGroupSet = indicatorService.getIndicatorGroupSet( id );
+        
         return SUCCESS;
     }
 }

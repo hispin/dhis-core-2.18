@@ -1,5 +1,4 @@
-package org.hisp.dhis.dd.action.indicatorgroupset;
-
+package org.hisp.dhis.dd.action.dataelementgroupset;
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -27,12 +26,8 @@ package org.hisp.dhis.dd.action.indicatorgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.indicator.IndicatorGroupSet;
-import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -40,23 +35,22 @@ import com.opensymphony.xwork2.Action;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class UpdateIndicatorGroupSetAction
-    implements Action
+public class GetDataElementGroupSetAction
+   implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private IndicatorService indicatorService;
+    private DataElementService dataElementService;
 
-    public void setIndicatorService( IndicatorService indicatorService )
+    public void setDataElementService( DataElementService dataElementService )
     {
-        this.indicatorService = indicatorService;
+        this.dataElementService = dataElementService;
     }
-
+       
     // -------------------------------------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private Integer id;
@@ -65,43 +59,21 @@ public class UpdateIndicatorGroupSetAction
     {
         this.id = id;
     }
-
-    private String name;
-
-    public void setName( String name )
+    
+    private DataElementGroupSet dataElementGroupSet;
+    
+    public DataElementGroupSet getDataElementGroupSet()
     {
-        this.name = name;
+        return dataElementGroupSet;
     }
-
-    private List<String> groupMembers = new ArrayList<String>();
-
-    public void setGroupMembers( List<String> groupMembers )
-    {
-        this.groupMembers = groupMembers;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
 
     @Override
     public String execute()
         throws Exception
     {
-        IndicatorGroupSet indicatorGroupSet = indicatorService.getIndicatorGroupSet( id );
 
-        indicatorGroupSet.setName( name.trim() );
-
-        indicatorGroupSet.getMembers().clear();
-
-        for ( String id : groupMembers )
-        {
-            IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( Integer.parseInt( id ) );
-
-            indicatorGroupSet.getMembers().add( indicatorGroup );
-        }
-
-        indicatorService.updateIndicatorGroupSet( indicatorGroupSet );
+        dataElementGroupSet = dataElementService.getDataElementGroupSet( id  );       
+       
 
         return SUCCESS;
     }

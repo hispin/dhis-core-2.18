@@ -72,11 +72,11 @@ public class UpdateDataElementGroupSetAction
         this.name = name;
     }
 
-    private List<String> selectedDataElementGroupIds = new ArrayList<String>();
+    private List<String> groupMembers = new ArrayList<String>();
 
-    public void setSelectedDataElementGroupIds( List<String> selectedDataElementGroupIds )
+    public void setGroupMembers( List<String> groupMembers )
     {
-        this.selectedDataElementGroupIds = selectedDataElementGroupIds;
+        this.groupMembers = groupMembers;
     }
 
     // -------------------------------------------------------------------------
@@ -92,7 +92,7 @@ public class UpdateDataElementGroupSetAction
 
         dataElementGroupSet.getMembers().clear();
 
-        for ( String id : selectedDataElementGroupIds )
+        for ( String id : groupMembers )
         {
             DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( Integer.parseInt( id ) );           
 
