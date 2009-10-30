@@ -66,11 +66,11 @@ public class AddIndicatorGroupSetAction
         this.name = name;
     }
 
-    private List<String> selectedIndicatorGroups = new ArrayList<String>();
+    private List<String> groupMembers = new ArrayList<String>();
 
-    public void setSelectedIndicatorGroups( List<String> selectedIndicatorGroups )
+    public void setGroupMembers( List<String> groupMembers )
     {
-        this.selectedIndicatorGroups = selectedIndicatorGroups;
+        this.groupMembers = groupMembers;
     }
 
     // -------------------------------------------------------------------------
@@ -80,12 +80,12 @@ public class AddIndicatorGroupSetAction
     public String execute()
     {
         IndicatorGroupSet indicatorGroupSet = new IndicatorGroupSet( name );
-        
+
         indicatorGroupSet.setUuid( UUIdUtils.getUUId() );
 
         List<IndicatorGroup> indicatorGroups = new ArrayList<IndicatorGroup>();
 
-        for ( String id : this.selectedIndicatorGroups )
+        for ( String id : this.groupMembers )
         {
             IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( Integer.parseInt( id ) );
 

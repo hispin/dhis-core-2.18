@@ -246,16 +246,19 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/addDataElementGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 			<param name="javascripts">javascript/dataElementGroupSet.js,javascript/filterTable.js</param>
+			<param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
 		</action>
 		
 		<action name="addDataElementGroupSet"
 			class="org.hisp.dhis.dd.action.dataelementgroupset.AddDataElementGroupSetAction">
 			<result name="success" type="redirect">listDataElementGroupSet.action</result>
+			<param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
 		</action>
 		
 		<action name="openUpdateDataElementGroupSet"
 			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupListAction">
 			<result name="success" type="chain">openUpdateDataElementGroupSetChain</result>
+			<param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
 		</action>
 		
 		<action name="openUpdateDataElementGroupSetChain"
@@ -269,6 +272,7 @@
 		<action name="updateDataElementGroupSet"
 			class="org.hisp.dhis.dd.action.dataelementgroupset.UpdateDataElementGroupSetAction">
 			<result name="success" type="redirect">listDataElementGroupSet.action</result>
+			<param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
 		</action>
 		
 		<action name="validateDataElementGroupSet"
@@ -282,6 +286,13 @@
 		<action name="deleteDataElementGroupSet"
 			class="org.hisp.dhis.dd.action.dataelementgroupset.DeleteDataElementGroupSetAction">
 			<result name="success" type="redirect">listDataElementGroupSet.action</result>
+			<param name="requiredAuthorities">F_DATAELEMENTGROUP_DELETE</param>
+		</action>
+		
+		<action name="showDataElementGroupSetDetails"
+			class="org.hisp.dhis.dd.action.dataelementgroupset.GetDataElementGroupSetAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-datadictionary/responseDataElementGroupSet.vm</result>			
 		</action>
 		
 		<!-- Indicator Group Editor -->
@@ -422,16 +433,19 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/addIndicatorGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 			<param name="javascripts">javascript/indicatorGroupSet.js,javascript/filterTable.js</param>
+			<param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
 		</action>
 		
 		<action name="addIndicatorGroupSet"
 			class="org.hisp.dhis.dd.action.indicatorgroupset.AddIndicatorGroupSetAction">
 			<result name="success" type="redirect">lisIndicatorGroupSet.action</result>
+			<param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
 		</action>
 		
 		<action name="openUpdateIndicatorGroupSet"
 			class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupListAction">
 			<result name="success" type="chain">openUpdateIndicatorGroupSetChain</result>
+			<param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
 		</action>
 		
 		<action name="openUpdateIndicatorGroupSetChain"
@@ -445,6 +459,7 @@
 		<action name="updateIndicatorGroupSet"
 			class="org.hisp.dhis.dd.action.indicatorgroupset.UpdateIndicatorGroupSetAction">
 			<result name="success" type="redirect">lisIndicatorGroupSet.action</result>
+			<param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
 		</action>
 		
 		<action name="validateIndicatorGroupSet"
@@ -458,6 +473,13 @@
 		<action name="deleteIndicatorGroupSet"
 			class="org.hisp.dhis.dd.action.indicatorgroupset.DeleteIndicatorGroupSetAction">
 			<result name="success" type="redirect">lisIndicatorGroupSet.action</result>
+			<param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
+		</action>
+		
+		<action name="showIndicatorGroupSetDetails"
+			class="org.hisp.dhis.dd.action.indicatorgroupset.GetIndicatorGroupSetAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-datadictionary/responseIndicatorGroupSet.vm</result>			
 		</action>
 		
 

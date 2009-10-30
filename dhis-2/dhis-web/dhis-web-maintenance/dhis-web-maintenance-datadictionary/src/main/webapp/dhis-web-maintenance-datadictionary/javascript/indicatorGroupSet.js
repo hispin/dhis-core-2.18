@@ -1,7 +1,15 @@
-function DataElementGroupSet(id, name){
+// -----------------------------------------------------------------------------
+// Javascript Indicator Group Set
+// -----------------------------------------------------------------------------
+
+function IndicatorGroupSet(id, name){
 	this.id = id;
 	this.name = name;
 }
+
+// -----------------------------------------------------------------------------
+// Validate Update  Indicator Group Set
+// -----------------------------------------------------------------------------
 
 function validateUpdateIndicatorGroupSet(){
 	$.post("validateIndicatorGroupSet.action",
@@ -13,7 +21,7 @@ function validateUpdateIndicatorGroupSet(){
 		message = message.getElementsByTagName("message")[0];
 		var type = message.getAttribute("type");
 		if(type=="success"){
-			selectAllById("selectedDataElementGroups");
+			selectAllById("groupMembers");
 			document.forms['updateIndicatorGroupSet'].submit();
 		}else{
 			setMessage(message.firstChild.nodeValue);
@@ -22,6 +30,9 @@ function validateUpdateIndicatorGroupSet(){
 	);	
 }
 
+// -----------------------------------------------------------------------------
+// Validate Add Indicator Group Set
+// -----------------------------------------------------------------------------
 
 function validateAddIndicatorGroupSet(){	
 
@@ -31,7 +42,7 @@ function validateAddIndicatorGroupSet(){
 		message = message.getElementsByTagName("message")[0];
 		var type = message.getAttribute("type");
 		if(type=="success"){
-			selectAllById("selectedDataElementGroups");
+			selectAllById("groupMembers");
 			document.forms['addIndicatorGroupSet'].submit();
 		}else{
 			setMessage(message.firstChild.nodeValue);
@@ -41,21 +52,29 @@ function validateAddIndicatorGroupSet(){
 	
 }
 
+// -----------------------------------------------------------------------------
+// Delete Indicator Group Set
+// -----------------------------------------------------------------------------
+
 function deleteIndicatorGroupSet( id ){
 	if(window.confirm(i18n_confirm_delete)){
 		window.location = "deleteIndicatorGroupSet.action?id=" + id;
 	}
 }
 
-function filterDataElementSet( value ){	
+// -----------------------------------------------------------------------------
+// Filter Indicator Group Set
+// -----------------------------------------------------------------------------
+
+function filterIndicatorGroupSet( value ){	
 	
 	var html = "";
 	var mark = false;
-	for(var i=0;i<dataElementGroupSets.length;i++){
+	for(var i=0;i<indicatorGroupSets.length;i++){
 		
-		var dataElementGroup = dataElementGroupSets[i];
+		var indicatorGroupSet = indicatorGroupSets[i];
 		
-		if ( dataElementGroup.name.toLowerCase().indexOf( value.toLowerCase() ) != -1 )
+		if ( indicatorGroupSet.name.toLowerCase().indexOf( value.toLowerCase() ) != -1 )
         {	
 			if(mark){
 				mark=false;
@@ -64,11 +83,11 @@ function filterDataElementSet( value ){
 				mark=true;
 				html += "<tr class='listRow'>";
 			}
-			html += "<td>" + dataElementGroup.name +"</td>";
+			html += "<td>" + indicatorGroupSet.name +"</td>";
 			html += "<td>";
-				html += "<a href=\"openUpdateIndicatorGroupSet.action?id=" + dataElementGroup.id + "\" title=\""+i18n_edit+"\"><img src=\"../images/edit.png\" alt=\""+i18n_edit+"\"></a>";
-				html += "<a href=\"javascript:deleteIndicatorGroupSet(" + dataElementGroup.id + ")\" title=\""+i18n_delete+"\"><img src=\"../images/delete.png\" alt=\""+i18n_delete+"\"></a>";
-				
+				html += "<a href=\"openUpdateIndicatorGroupSet.action?id=" + indicatorGroupSet.id + "\" title=\""+i18n_edit+"\"><img src=\"../images/edit.png\" alt=\""+i18n_edit+"\"></a>";
+				html += "<a href=\"javascript:deleteIndicatorGroupSet(" + indicatorGroupSet.id + ")\" title=\""+i18n_delete+"\"><img src=\"../images/delete.png\" alt=\""+i18n_delete+"\"></a>";
+				html += "<a href=\"javascript:showDetails(" + indicatorGroupSet.id + ")\" title=\""+i18n_information+"\"><img src=\"../images/information.png\" alt=\""+i18n_information+"\"></a>";			
 			html += "</td>";
 			html += "</tr>";		
 			
@@ -79,37 +98,58 @@ function filterDataElementSet( value ){
 }
 
 // -----------------------------------------------------------------------------
+// Show Data Element Group Set details
+// -----------------------------------------------------------------------------
+
+function showDetails( id ){
+	$.post("showIndicatorGroupSetDetails.action",
+	{id:id},
+	function( xml ){
+		var indicatorGroupSet = xml.getElementsByTagName("indicatorGroupSet")[0];
+		var name = indicatorGroupSet.getElementsByTagName("name")[0].firstChild.nodeValue;
+		var memberCount = indicatorGroupSet.getElementsByTagName("memberCount")[0].firstChild.nodeValue;
+		
+		$("#nameField").html(name);
+		$("#memberCountField").html(memberCount);
+		
+		$("#detailsArea").slideDown();	
+		
+		
+	},"xml");
+}
+
+// -----------------------------------------------------------------------------
 // Select lists
 // -----------------------------------------------------------------------------
 
 function initLists()
 {
-    var list = document.getElementById( 'selectedDataElementGroups' );
+    var list = document.getElementById( 'groupMembers' );
     var id;
 
-    for ( id in selectedDataElementGroups )
+    for ( id in groupMembers )
     {
-        list.add( new Option( selectedDataElementGroups[id], id ), null );
+        list.add( new Option( groupMembers[id], id ), null );
     }
 
-    list = document.getElementById( 'availableDataElementGroups' );
+    list = document.getElementById( 'availableIndicatorGroups' );
 
-    for ( id in availableDataElementGroups )
+    for ( id in availableIndicatorGroups )
     {
-        list.add( new Option( availableDataElementGroups[id], id ), null );
+        list.add( new Option( availableIndicatorGroups[id], id ), null );
     }
 }
 
-function filterAvailableDataElementGroups()
+function filterAvailableIndicatorGroups()
 {
-    var filter = document.getElementById( 'availableFilter' ).value;
-    var list = document.getElementById( 'availableDataElementGroups' );
+    var filter = document.getElementById( 'availableIndicatorGroupsFilter' ).value;
+    var list = document.getElementById( 'availableIndicatorGroups' );
     
     list.options.length = 0;
     
-    for ( var id in availableDataElementGroups )
+    for ( var id in availableIndicatorGroups )
     {
-        var value = availableDataElementGroups[id];
+        var value = availableIndicatorGroups[id];
         
         if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
         {
@@ -118,16 +158,16 @@ function filterAvailableDataElementGroups()
     }
 }
 
-function filterSelectedDataElementGroups()
+function filterGroupMembers()
 {
-    var filter = document.getElementById( 'selectedFilter' ).value;
-    var list = document.getElementById( 'selectedDataElementGroups' );
+    var filter = document.getElementById( 'groupMembersFilter' ).value;
+    var list = document.getElementById( 'groupMembers' );
     
     list.options.length = 0;
     
-    for ( var id in selectedDataElementGroups )
+    for ( var id in groupMembers )
     {
-        var value = selectedDataElementGroups[id];
+        var value = groupMembers[id];
         
         if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
         {
@@ -138,7 +178,7 @@ function filterSelectedDataElementGroups()
 
 function addGroupMembers()
 {
-    var list = document.getElementById( 'availableDataElementGroups' );
+    var list = document.getElementById( 'availableIndicatorGroups' );
 
     while ( list.selectedIndex != -1 )
     {
@@ -146,18 +186,18 @@ function addGroupMembers()
 
         list.options[list.selectedIndex].selected = false;
 
-        selectedDataElementGroups[id] = availableDataElementGroups[id];
+        groupMembers[id] = availableIndicatorGroups[id];
         
-        delete availableDataElementGroups[id];        
+        delete availableIndicatorGroups[id];        
     }
     
-    filterSelectedDataElementGroups();
-    filterAvailableDataElementGroups();
+    filterGroupMembers();
+    filterAvailableIndicatorGroups();
 }
 
 function removeGroupMembers()
 {
-    var list = document.getElementById( 'selectedDataElementGroups' );
+    var list = document.getElementById( 'groupMembers' );
 
     while ( list.selectedIndex != -1 )
     {
@@ -165,13 +205,13 @@ function removeGroupMembers()
 
         list.options[list.selectedIndex].selected = false;
 
-        availableDataElementGroups[id] = selectedDataElementGroups[id];
+        availableIndicatorGroups[id] = groupMembers[id];
         
-        delete selectedDataElementGroups[id];        
+        delete groupMembers[id];        
     }
     
-    filterSelectedDataElementGroups();
-    filterAvailableDataElementGroups();
+    filterGroupMembers();
+    filterAvailableIndicatorGroups();
 }
 
 

@@ -18,12 +18,12 @@
 
 <table>
 	<tr>
-		<th>$i18n.getString( "available_dataelementgroup" )</th><td></td><th>$i18n.getString( "selected_dataelementgroup" )</th>
+		<th>$i18n.getString( "available_dataelementgroup" )</th><td></td><th>$i18n.getString( "group_members" )</th>
 	</tr>
 	<tr>		
-		<td><input type="text" id="availableFilter" onkeyup="filterAvailableDataElementGroups()" style="width:25em"></td>
+		<td><input type="text" id="availableDataElementGroupsFilter" onkeyup="filterAvailableDataElementGroups()" style="width:25em"></td>
 		<td style="text-align:center">&lt; $i18n.getString( "filters" ) &gt;</td>
-		<td><input type="text" id="selectedFilter" onkeyup="filterSelectedDataElementGroups()" style="width:25em"></td>
+		<td><input type="text" id="groupMembersFilter" onkeyup="filterGroupMembers()" style="width:25em"></td>
 	</tr>
 	<tr>
 		<td>
@@ -37,7 +37,13 @@
 		</td>
 	
 		<td>
-			<select id="selectedDataElementGroups" name="selectedDataElementGroupIds" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="removeGroupMembers()" />
+			<select id="groupMembers" name="groupMembers" size="2" multiple="multiple" style="min-width:25em; height:25em" ondblclick="removeGroupMembers()" />
+		</td>
+		
+		<td>
+			<a href="javascript:moveUpSelectedOption( 'groupMembers')" title="$i18n.getString( "move_up" )"><img src="../images/move_up.png" alt="$i18n.getString( "move_up" )"></a>
+			<br>
+			<a href="javascript:moveDownSelectedOption( 'groupMembers' )" title="$i18n.getString( "move_down" )"><img src="../images/move_down.png" alt="$i18n.getString( "move_up" )"></a>
 		</td>
 	</tr>
 </table>
@@ -50,9 +56,9 @@
 
 <script type="text/javascript">
 
-	var selectedDataElementGroups = new Object();
+	var groupMembers = new Object();
 #foreach( $dataElement in $dataElementGroupSet.members )
-	selectedDataElementGroups['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
+	groupMembers['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
 #end
 	var availableDataElementGroups = new Object();
 #foreach( $dataElement in $dataElementGroups )

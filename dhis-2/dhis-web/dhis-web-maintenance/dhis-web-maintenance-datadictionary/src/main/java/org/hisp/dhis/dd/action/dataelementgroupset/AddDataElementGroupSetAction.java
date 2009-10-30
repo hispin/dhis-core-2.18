@@ -67,11 +67,11 @@ public class AddDataElementGroupSetAction
         this.name = name;
     }
 
-    private List<String> selectedDataElementGroupIds = new ArrayList<String>();
+    private List<String> groupMembers = new ArrayList<String>();
 
-    public void setSelectedDataElementGroupIds( List<String> selectedDataElementGroupIds )
+    public void setGroupMembers( List<String> groupMembers )
     {
-        this.selectedDataElementGroupIds = selectedDataElementGroupIds;
+        this.groupMembers = groupMembers;
     }
 
     // -------------------------------------------------------------------------
@@ -87,7 +87,7 @@ public class AddDataElementGroupSetAction
 
         List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
 
-        for ( String id : this.selectedDataElementGroupIds )
+        for ( String id : this.groupMembers )
         {
             DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( Integer.parseInt( id ) );
 
