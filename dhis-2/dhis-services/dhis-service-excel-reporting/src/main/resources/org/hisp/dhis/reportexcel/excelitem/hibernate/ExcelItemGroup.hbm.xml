@@ -16,6 +16,9 @@
 
 		<property name="excelTemplateFile" column="exceltemplate" />
 
+		<many-to-one name="periodType" class="org.hisp.dhis.period.PeriodType"
+			lazy="false" column="periodtypeid" not-null="true" foreign-key="fk_excelitemgroup_periodtypeid" />
+
 		<set name="excelItems" lazy="false" cascade="delete">
 			<key column="excelitemgroupid" />
 			<one-to-many class="org.hisp.dhis.reportexcel.excelitem.ExcelItem" />
