@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.importing.action;
+package org.hisp.dhis.reportexcel.importing.period.action;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,93 +27,78 @@ package org.hisp.dhis.reportexcel.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collections;
+import java.util.List;
+
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
-import org.hisp.dhis.reportexcel.export.action.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Chau Thu Tran
+ * @author Nguyen Tran Do Xuan Thuy
  * @version $Id$
+ * @since 2009-10-14
  */
-public class ImportDataFlowAction implements Action {
 
-	// -------------------------------------------
-	// Dependency
-	// -------------------------------------------
+public class GetPeriodsByExcelItemGroupAction implements Action {
+
+	// -------------------------------------------------------------------------
+	// Dependences
+	// -------------------------------------------------------------------------
+
+	private SelectedStatePeriodManager selectedStateManager;
 
 	private ExcelItemService excelItemService;
 
-	private PeriodService periodService;
-
-	private SelectionManager selectionManager;
-
-	// -------------------------------------------
+	// -------------------------------------------------------------------------
 	// Input & Output
-	// -------------------------------------------
+	// -------------------------------------------------------------------------
 
-	private Integer excelItemGroupId;
+	private List<Period> periods;
 
-	private Integer periodId;
+	private int excelItemGroupId;
 
-	private Integer sheetId;
+	// -------------------------------------------------------------------------
+	// Getters & Setters
+	// -------------------------------------------------------------------------
 
-	private Integer orgunitGroupId;
-
-	// -------------------------------------------
-	// Getter & Setter
-	// -------------------------------------------
-
-	public void setSelectionManager(SelectionManager selectionManager) {
-		this.selectionManager = selectionManager;
+	public List<Period> getPeriods() {
+		return periods;
 	}
 
-	public void setExcelItemGroupId(Integer excelItemGroupId) {
+	public void setExcelItemGroupId(int excelItemGroupId) {
 		this.excelItemGroupId = excelItemGroupId;
 	}
 
-	public void setPeriodService(PeriodService periodService) {
-		this.periodService = periodService;
-	}
-
-	public void setPeriodId(Integer periodId) {
-		this.periodId = periodId;
+	public void setSelectedStateManager(
+			SelectedStatePeriodManager selectedStateManager) {
+		this.selectedStateManager = selectedStateManager;
 	}
 
 	public void setExcelItemService(ExcelItemService excelItemService) {
 		this.excelItemService = excelItemService;
 	}
 
-	public Integer getSheetId() {
-		return sheetId;
-
-	}
-
-	public void setSheetId(Integer sheetId) {
-		this.sheetId = sheetId;
-	}
-
-	public Integer getOrgunitGroupId() {
-		return orgunitGroupId;
-	}
-
-	public void setOrgunitGroupId(Integer orgunitGroupId) {
-		this.orgunitGroupId = orgunitGroupId;
-	}
+	// -------------------------------------------------------------------------
+	// Implement Action method
+	// -------------------------------------------------------------------------
 
 	public String execute() throws Exception {
 
-		Period period = periodService.getPeriod(periodId);
-
-		selectionManager.setSelectedPeriod(period);
-
 		ExcelItemGroup excelItemGroup = excelItemService
 				.getExcelItemGroup(excelItemGroupId);
-		
-		return excelItemGroup.getType();
-	}
 
+		selectedStateManager.setSelectedExcelItemGroup(excelItemGroup);
+		
+        selectedStateManager.clearSelectedPeriod();
+		
+		periods = selectedStateManager.getPeriodList();
+		
+		Collections.sort(periods, new PeriodComparator());
+
+		return SUCCESS;
+	}
 }

@@ -27,6 +27,8 @@ package org.hisp.dhis.reportexcel.excelitemgroup.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
@@ -44,6 +46,8 @@ public class AddExcelItemGroupAction implements Action {
 
 	private ExcelItemService excelItemService;
 
+	private PeriodService periodService;
+
 	// -------------------------------------------------------------------------
 	// Inputs
 	// -------------------------------------------------------------------------
@@ -54,6 +58,8 @@ public class AddExcelItemGroupAction implements Action {
 
 	private String type;
 
+	private String periodTypeName;
+
 	// -------------------------------------------------------------------------
 	// Setters
 	// -------------------------------------------------------------------------
@@ -62,8 +68,16 @@ public class AddExcelItemGroupAction implements Action {
 		this.excelItemService = excelItemService;
 	}
 
+	public void setPeriodTypeName(String periodTypeName) {
+		this.periodTypeName = periodTypeName;
+	}
+
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setPeriodService(PeriodService periodService) {
+		this.periodService = periodService;
 	}
 
 	public void setExcelTemplateFile(String excelTemplateFile) {
@@ -79,17 +93,21 @@ public class AddExcelItemGroupAction implements Action {
 	// -------------------------------------------------------------------------
 
 	public String execute() throws Exception {
-		
+
 		ExcelItemGroup excelItemGroup = new ExcelItemGroup();
-		
+
 		excelItemGroup.setName(name);
-		
+
 		excelItemGroup.setType(type);
-		
+
 		excelItemGroup.setExcelTemplateFile(excelTemplateFile);
 		
-		excelItemService.addExcelItemGroup(excelItemGroup);
+		PeriodType periodType = periodService.getPeriodTypeByName(periodTypeName);
 		
+		excelItemGroup.setPeriodType(periodType);
+		
+		excelItemService.addExcelItemGroup(excelItemGroup);
+
 		return SUCCESS;
 	}
 

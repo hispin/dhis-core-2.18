@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.export.individual.action;
+package org.hisp.dhis.reportexcel.importing.period.action;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,66 +27,51 @@ package org.hisp.dhis.reportexcel.export.individual.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reportexcel.export.action.SelectionManager;
-import org.hisp.dhis.reportexcel.export.individual.manager.SelectedStateManager;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: NextPeriodsAction.java 2966 2007-03-03 14:38:20Z torgeilo $ *
- * @modifier Dang Duy Hieu
- * @since 2009-10-14
+ * @version $Id: SelectedStateManager.java 3311 2007-05-18 14:08:01Z torgeilo $
  */
-public class NextPeriodsAction
-    implements Action
+public interface SelectedStatePeriodManager
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private SelectionManager selectionManager;
-
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
-
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private List<Period> periods;
-
-    public List<Period> getPeriods()
-    {
-        return periods;
-    }
+//    // -------------------------------------------------------------------------
+//    // OrganisationUnit
+//    // -------------------------------------------------------------------------
+//    
+//    OrganisationUnit getSelectedOrganisationUnit();  
+//
+//    // -------------------------------------------------------------------------
+//    // DataSet
+//    // -------------------------------------------------------------------------
+//    
+    void setSelectedExcelItemGroup( ExcelItemGroup excelItemGroup );
+//
+    ExcelItemGroup getSelectedExcelItemGroup();
+//
+//    void clearSelectedExcelItemGroup();
+//    
+//    List<ExcelItemGroup> loadExcelItemGroupsForSelectedOrgUnit( OrganisationUnit organisationUnit );    
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Period
     // -------------------------------------------------------------------------
+    
+    void setSelectedPeriodIndex( Integer index );
 
-    public String execute()
-        throws Exception
-    {
-        selectionManager.setSeletedYear( selectionManager.getSelectedYear() + 1 );
-        
-        selectedStateManager.nextPeriodSpan();
+    Integer getSelectedPeriodIndex();
 
-        periods = new ArrayList<Period>( selectedStateManager.getPeriodList() );
+    Period getSelectedPeriod();
 
-        return SUCCESS;
-    }
+    void clearSelectedPeriod();
+
+    List<Period> getPeriodList();
+
+    void nextPeriodSpan();
+
+    void previousPeriodSpan();
+	
 }

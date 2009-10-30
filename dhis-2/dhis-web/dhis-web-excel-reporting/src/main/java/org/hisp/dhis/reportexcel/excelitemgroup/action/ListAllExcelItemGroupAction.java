@@ -28,7 +28,10 @@ package org.hisp.dhis.reportexcel.excelitemgroup.action;
  */
 
 import java.util.Collection;
+import java.util.List;
 
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
@@ -41,12 +44,16 @@ public class ListAllExcelItemGroupAction implements Action {
 	// -------------------------------------------------------------
 
 	private ExcelItemService excelItemService;
+	
+	private PeriodService periodService;
 
 	// -------------------------------------------------------------
 	// Input && Output
 	// -------------------------------------------------------------
 
 	private Collection<ExcelItemGroup> excelItemGroups;
+	
+	private List<PeriodType> periodTypes;
 
 	// -------------------------------------------------------------
 	// Getters and Setters
@@ -59,7 +66,15 @@ public class ListAllExcelItemGroupAction implements Action {
 	public Collection<ExcelItemGroup> getExcelItemGroups() {
 		return excelItemGroups;
 	}
-	
+
+	public List<PeriodType> getPeriodTypes() {
+		return periodTypes;
+	}
+
+	public void setPeriodService(PeriodService periodService) {
+		this.periodService = periodService;
+	}
+
 	// -------------------------------------------------------------
 	// Action implementation
 	// -------------------------------------------------------------
@@ -68,6 +83,8 @@ public class ListAllExcelItemGroupAction implements Action {
 
 		excelItemGroups = excelItemService.getAllExcelItemGroup();
 
+		periodTypes = periodService.getAllPeriodTypes();
+		
 		return SUCCESS;
 	}
 

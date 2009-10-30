@@ -24,58 +24,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action;
 
-import org.hisp.dhis.reportexcel.DataElementGroupOrder;
-import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Tran Thanh Tri
+ * @author Chau Thu Tran
  * @version $Id$
  */
-public class GetDataElementGroupOrderByCategoryAction
+public class DeleteDataElementGroupOrderForCategoryAction
     implements Action
 {
+
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
 
-    private ReportExcelService reportService;
+    private ExcelItemService excelItemService;
 
     // -------------------------------------------
-    // Input & Output
+    // Input & Ouput
     // -------------------------------------------
 
     private Integer id;
 
-    private DataElementGroupOrder dataElementGroupOrder;
-
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
-
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
-    }
-
-    public DataElementGroupOrder getDataElementGroupOrder()
-    {
-        return dataElementGroupOrder;
-    }
 
     public void setId( Integer id )
     {
         this.id = id;
     }
 
-    public String execute()
+    public void setExcelItemService(ExcelItemService excelItemService) {
+		this.excelItemService = excelItemService;
+	}
+
+
+    // -------------------------------------------
+    // Implementation Action
+    // -------------------------------------------
+
+	public String execute()
         throws Exception
     {
-        dataElementGroupOrder = reportService.getDataElementGroupOrder( id );
-
+		excelItemService.deleteDataElementGroupOrder( id );
+        
         return SUCCESS;
     }
 

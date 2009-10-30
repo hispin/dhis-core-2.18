@@ -1,5 +1,3 @@
-package org.hisp.dhis.reportexcel.importing.action;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -27,11 +25,16 @@ package org.hisp.dhis.reportexcel.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
+package org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
-import org.hisp.dhis.reportexcel.export.action.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -39,81 +42,80 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class ImportDataFlowAction implements Action {
-
+public class UpdateSortedDataElementForCategoryAction implements Action {
 	// -------------------------------------------
 	// Dependency
 	// -------------------------------------------
 
 	private ExcelItemService excelItemService;
 
-	private PeriodService periodService;
-
-	private SelectionManager selectionManager;
+	private DataElementService dataElementService;
 
 	// -------------------------------------------
 	// Input & Output
 	// -------------------------------------------
 
-	private Integer excelItemGroupId;
+	private Integer id;
 
-	private Integer periodId;
+	private List<String> dataElementIds = new ArrayList<String>();
 
-	private Integer sheetId;
+	public String message;
 
-	private Integer orgunitGroupId;
+	public I18n i18n;
 
 	// -------------------------------------------
 	// Getter & Setter
 	// -------------------------------------------
 
-	public void setSelectionManager(SelectionManager selectionManager) {
-		this.selectionManager = selectionManager;
-	}
-
-	public void setExcelItemGroupId(Integer excelItemGroupId) {
-		this.excelItemGroupId = excelItemGroupId;
-	}
-
-	public void setPeriodService(PeriodService periodService) {
-		this.periodService = periodService;
-	}
-
-	public void setPeriodId(Integer periodId) {
-		this.periodId = periodId;
+	public String getMessage() {
+		return message;
 	}
 
 	public void setExcelItemService(ExcelItemService excelItemService) {
 		this.excelItemService = excelItemService;
 	}
 
-	public Integer getSheetId() {
-		return sheetId;
-
+	public void setDataElementService(DataElementService dataElementService) {
+		this.dataElementService = dataElementService;
 	}
 
-	public void setSheetId(Integer sheetId) {
-		this.sheetId = sheetId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public Integer getOrgunitGroupId() {
-		return orgunitGroupId;
+	public void setDataElementIds(List<String> dataElementIds) {
+		this.dataElementIds = dataElementIds;
 	}
 
-	public void setOrgunitGroupId(Integer orgunitGroupId) {
-		this.orgunitGroupId = orgunitGroupId;
+	public void setI18n(I18n i18n) {
+		this.i18n = i18n;
 	}
+
+	// -------------------------------------------
+	// Action implementation
+	// -------------------------------------------
 
 	public String execute() throws Exception {
-
-		Period period = periodService.getPeriod(periodId);
-
-		selectionManager.setSelectedPeriod(period);
-
-		ExcelItemGroup excelItemGroup = excelItemService
-				.getExcelItemGroup(excelItemGroupId);
 		
-		return excelItemGroup.getType();
-	}
+		DataElementGroupOrder dataElementGroupOrder = excelItemService
+				.getDataElementGroupOrder(id);
 
+		List<DataElement> dataElements = new ArrayList<DataElement>();
+
+		for (String dataElementId : this.dataElementIds) {
+
+			DataElement dataElement = dataElementService.getDataElement(Integer
+					.parseInt(dataElementId));
+			dataElements.add(dataElement);
+
+		}
+
+		dataElementGroupOrder.setDataElements(dataElements);
+
+		this.message = i18n.getString("update_sort_dataelement_success");
+
+		excelItemService.updateDataElementGroupOrder(dataElementGroupOrder);
+
+		return SUCCESS;
+	}
 }
