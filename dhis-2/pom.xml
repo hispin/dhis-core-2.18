@@ -156,7 +156,7 @@
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-service-importexport-default</artifactId>
+        <artifactId>dhis-service-aggregationengine-default</artifactId>
         <version>${version}</version>
       </dependency>
       <dependency>
