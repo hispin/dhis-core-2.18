@@ -344,23 +344,42 @@ public class DefaultDXFImportService
         // assume default version 1
         int dxfVersion = 1;
         
-        while ( reader.next() )
+        // move to root element
+        reader.next();
+        
+        if (reader.isStartElement( ROOT_NAME)  )
         {
-            if (reader.isStartElement( ROOT_NAME)  )
-            {
-            		if (reader.getXmlStreamReader().getNamespaceURI() ==  DXF2_NAMESPACE_URI)
-            		{
-            			dxfVersion = 2;
-            		}
-            		else
-            		{
-            			dxfVersion = 1;
-            		}
-            	log.info("dxf version "+dxfVersion);
-            }
+        	if (reader.getXmlStreamReader().getNamespaceURI() ==  DXF2_NAMESPACE_URI)
+        	{
+        		dxfVersion = 2;
+            	log.info("parsing dxf version "+dxfVersion);
+        	}
+        	else
+        	{
+        		dxfVersion = 1;
+        		parseDXFv1(params, reader);
+        	}
+        		
+        }
+            
+        //setMessage( "import_process_done" );
+        
+        StreamUtils.closeInputStream( zipIn );
+        
+        reader.closeReader();
+        
+        NameMappingUtil.clearMapping();
+            
+        cacheManager.clearCache();
 
-            // dxfv1 only 
-            if ( reader.isStartElement( DataValueConverter.COLLECTION_NAME ) && params.isDataValues() )
+    }
+    
+
+    void parseDXFv1(ImportParams params, XMLReader reader)
+    {
+    	while (reader.next()) {
+
+    		if ( reader.isStartElement( DataValueConverter.COLLECTION_NAME ) && params.isDataValues() )
             {
                 if ( params.skipMapping() == false && lockingManager.currentImportContainsLockedData() )
                 {
@@ -370,8 +389,6 @@ public class DefaultDXFImportService
                 }
                 else
                 {
-                    //setMessage( "importing_data_values" );
-                    
                     BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
                     
                     BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
@@ -401,9 +418,9 @@ public class DefaultDXFImportService
                 }
             }
             
-            else if ( reader.isStartElement( DataElementCategoryOptionConverter.COLLECTION_NAME ) && dxfVersion==1)
+            else if ( reader.isStartElement( DataElementCategoryOptionConverter.COLLECTION_NAME ))
             {
-                //setMessage( "importing_data_element_category_options" );
+            	//setMessage( "importing_data_element_category_options" );
                 
                 BatchHandler<DataElementCategoryOption> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryOptionBatchHandler.class );
                 
@@ -1117,15 +1134,5 @@ public class DefaultDXFImportService
             }
             
         }
-                
-        //setMessage( "import_process_done" );
-        
-        StreamUtils.closeInputStream( zipIn );
-
-        reader.closeReader();
-
-        NameMappingUtil.clearMapping();
-        
-        cacheManager.clearCache();
-    }
+    }           
 }
