@@ -161,16 +161,18 @@ import org.hisp.dhis.validation.ValidationRuleService;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultDXFImportService.java 6425 2008-11-22 00:08:57Z larshelg $
+ * @version $Id: DefaultDXFImportService.java 6425 2008-11-22 00:08:57Z larshelg
+ *          $
  */
 public class DefaultDXFImportService
     implements ImportService
 {
-	public static final String ROOT_NAME = "dxf";
-	public static final String DXF2_NAMESPACE_URI = "http://dhis2.org/ns/schema/dxf2";
-	
-	private final Log log = LogFactory.getLog( DefaultDXFImportService.class );
-    
+    public static final String ROOT_NAME = "dxf";
+
+    public static final String DXF2_NAMESPACE_URI = "http://dhis2.org/ns/schema/dxf2";
+
+    private final Log log = LogFactory.getLog( DefaultDXFImportService.class );
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -188,56 +190,56 @@ public class DefaultDXFImportService
     {
         this.dataElementService = dataElementService;
     }
-    
+
     private DataElementCategoryService categoryService;
 
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
     }
-    
+
     private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
     }
-    
+
     private DataDictionaryService dataDictionaryService;
 
     public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
     {
         this.dataDictionaryService = dataDictionaryService;
     }
-    
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-    
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
     }
-    
+
     private ExpressionService expressionService;
 
     public void setExpressionService( ExpressionService expressionService )
@@ -251,21 +253,21 @@ public class DefaultDXFImportService
     {
         this.validationRuleService = validationRuleService;
     }
-    
+
     private ReportTableService reportTableService;
 
     public void setReportTableService( ReportTableService reportTableService )
     {
         this.reportTableService = reportTableService;
     }
-    
+
     private OlapURLService olapURLService;
 
     public void setOlapURLService( OlapURLService olapURLService )
     {
         this.olapURLService = olapURLService;
     }
-    
+
     private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
@@ -279,7 +281,7 @@ public class DefaultDXFImportService
     {
         this.dataMartStore = dataMartStore;
     }
-    
+
     private BatchHandlerFactory batchHandlerFactory;
 
     public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
@@ -293,21 +295,22 @@ public class DefaultDXFImportService
     {
         this.objectMappingGenerator = objectMappingGenerator;
     }
-    
+
+    @SuppressWarnings( "unused" )
     private LockingManager lockingManager;
 
     public void setLockingManager( LockingManager lockingManager )
     {
         this.lockingManager = lockingManager;
     }
-    
+
     private HibernateCacheManager cacheManager;
 
     public void setCacheManager( HibernateCacheManager cacheManager )
     {
         this.cacheManager = cacheManager;
     }
-    
+
     private ConverterInvoker converterInvoker;
 
     public void setConverterInvoker( ConverterInvoker converterInvoker )
@@ -323,816 +326,830 @@ public class DefaultDXFImportService
     {
         super();
     }
-    
+
     // -------------------------------------------------------------------------
     // ImportService implementation
     // -------------------------------------------------------------------------
 
     public void importData( ImportParams params, InputStream inputStream )
-    {        
+    {
         if ( params.isPreview() )
         {
             importObjectService.deleteImportObjects();
         }
-        
-        ZipInputStream zipIn = new ZipInputStream ( inputStream );
-        
+
+        ZipInputStream zipIn = new ZipInputStream( inputStream );
+
         StreamUtils.getNextZipEntry( zipIn );
-        
+
         XMLReader reader = XMLFactory.getXMLReader( zipIn );
-  
+
         // assume default version 1
         int dxfVersion = 1;
-        
+
         // move to root element
         reader.next();
-        
-        if (reader.isStartElement( ROOT_NAME)  )
+
+        if ( reader.isStartElement( ROOT_NAME ) )
         {
-        	if (reader.getXmlStreamReader().getNamespaceURI() ==  DXF2_NAMESPACE_URI)
-        	{
-        		dxfVersion = 2;
-            	log.info("parsing dxf version "+dxfVersion);
-        	}
-        	else
-        	{
-        		dxfVersion = 1;
-        		parseDXFv1(params, reader);
-        	}
-        		
+            if ( reader.getXmlStreamReader().getNamespaceURI() == DXF2_NAMESPACE_URI )
+            {
+                dxfVersion = 2;
+                log.info( "parsing dxf version " + dxfVersion );
+            }
+            else
+            {
+                dxfVersion = 1;
+                parseDXFv1( params, reader );
+            }
         }
-            
-        //setMessage( "import_process_done" );
-        
+
+        // setMessage( "import_process_done" );
+
         StreamUtils.closeInputStream( zipIn );
-        
+
         reader.closeReader();
-        
+
         NameMappingUtil.clearMapping();
-            
+
         cacheManager.clearCache();
 
     }
-    
 
-    void parseDXFv1(ImportParams params, XMLReader reader)
+    void parseDXFv1( ImportParams params, XMLReader reader )
     {
-    	while (reader.next()) {
-
-    		if ( reader.isStartElement( DataValueConverter.COLLECTION_NAME ) && params.isDataValues() )
+        while ( reader.next() )
+        {
+            if ( reader.isStartElement( DataElementCategoryOptionConverter.COLLECTION_NAME ) )
             {
-                if ( params.skipMapping() == false && lockingManager.currentImportContainsLockedData() )
-                {
-                    //setMessage( "import_contains_data_for_locked_periods" );
-                    
-                    log.warn( "Skipped DataValues because import file contained DataValues for locked Period, Organisation Unit and DataSet combinations" );                    
-                }
-                else
-                {
-                    BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
-                    
-                    BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
-                    
-                    batchHandler.init();
-                    
-                    importDataValueBatchHandler.init();
-                    
-                    XMLConverter converter = new DataValueConverter( batchHandler, 
-                        importDataValueBatchHandler,                    
-                        dataValueService,
-                        dataMartStore,
-                        importObjectService,
-                        params,
-                        objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
-                        objectMappingGenerator.getPeriodMapping( params.skipMapping() ),
-                        objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),
-                        objectMappingGenerator.getCategoryOptionComboMapping( params.skipMapping() ) );
+                // setMessage( "importing_data_element_category_options" );
 
-                    converterInvoker.invokeRead( converter, reader, params );
-                    
-                    batchHandler.flush();
-                    
-                    importDataValueBatchHandler.flush();
-                    
-                    log.info( "Imported DataValues" );
-                }
-            }
-            
-            else if ( reader.isStartElement( DataElementCategoryOptionConverter.COLLECTION_NAME ))
-            {
-            	//setMessage( "importing_data_element_category_options" );
-                
-                BatchHandler<DataElementCategoryOption> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryOptionBatchHandler.class );
-                
+                BatchHandler<DataElementCategoryOption> batchHandler = batchHandlerFactory
+                    .createBatchHandler( DataElementCategoryOptionBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new DataElementCategoryOptionConverter( batchHandler,
-                    importObjectService,
+
+                XMLConverter converter = new DataElementCategoryOptionConverter( batchHandler, importObjectService,
                     categoryService );
-                
+
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported DataElementCategoryOptions" );
             }
-        	 
-        	else if ( reader.isStartElement( DataElementCategoryConverter.COLLECTION_NAME ) )
+            else if ( reader.isStartElement( DataElementCategoryConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_data_element_categories" );
-                
-                BatchHandler<DataElementCategory> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryBatchHandler.class );
-                
-                batchHandler.init();
-                
-                XMLConverter converter = new DataElementCategoryConverter( batchHandler,
-                    importObjectService, 
-                    categoryService);
+                // setMessage( "importing_data_element_categories" );
 
-                converterInvoker.invokeRead( converter, reader, params );
-                
-                batchHandler.flush();
-                
-                log.info( "Imported DataElementCategories" );                
-            }
-        
-            else if ( reader.isStartElement( DataElementCategoryComboConverter.COLLECTION_NAME ) )
-            {
-                //setMessage( "importing_data_element_category_combos" );
-                
-                BatchHandler<DataElementCategoryCombo> batchHandler = batchHandlerFactory.createBatchHandler( DataElementCategoryComboBatchHandler.class );
-                
+                BatchHandler<DataElementCategory> batchHandler = batchHandlerFactory
+                    .createBatchHandler( DataElementCategoryBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new DataElementCategoryComboConverter( batchHandler,
-                    importObjectService,
+
+                XMLConverter converter = new DataElementCategoryConverter( batchHandler, importObjectService,
                     categoryService );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
-                log.info( "Imported DataElementCategoryCombos" );                
+
+                log.info( "Imported DataElementCategories" );
+            }
+            else if ( reader.isStartElement( DataElementCategoryComboConverter.COLLECTION_NAME ) )
+            {
+                // setMessage( "importing_data_element_category_combos" );
+
+                BatchHandler<DataElementCategoryCombo> batchHandler = batchHandlerFactory
+                    .createBatchHandler( DataElementCategoryComboBatchHandler.class );
+
+                batchHandler.init();
+
+                XMLConverter converter = new DataElementCategoryComboConverter( batchHandler, importObjectService,
+                    categoryService );
+
+                converterInvoker.invokeRead( converter, reader, params );
+
+                batchHandler.flush();
+
+                log.info( "Imported DataElementCategoryCombos" );
             }
             else if ( reader.isStartElement( DataElementCategoryOptionComboConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_data_element_category_option_combos" );
-                
+                // setMessage( "importing_data_element_category_option_combos"
+                // );
+
                 XMLConverter converter = new DataElementCategoryOptionComboConverter( importObjectService,
-                    objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ),
-                    objectMappingGenerator.getCategoryOptionMapping( params.skipMapping() ),
-                    categoryService );
+                    objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ), objectMappingGenerator
+                        .getCategoryOptionMapping( params.skipMapping() ), categoryService );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
-                log.info( "Imported DataElementCategoryOptionCombos" );       
+
+                log.info( "Imported DataElementCategoryOptionCombos" );
             }
-        	// dxfv1 only
-            else if ( reader.isStartElement( CategoryCategoryOptionAssociationConverter.COLLECTION_NAME ))
+            // dxfv1 only
+            else if ( reader.isStartElement( CategoryCategoryOptionAssociationConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_data_element_category_members" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( CategoryCategoryOptionAssociationBatchHandler.class );
+                // setMessage( "importing_data_element_category_members" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( CategoryCategoryOptionAssociationBatchHandler.class );
 
                 batchHandler.init();
-                
+
                 XMLConverter converter = new CategoryCategoryOptionAssociationConverter( batchHandler,
-                    importObjectService,
-                    objectMappingGenerator.getCategoryMapping( params.skipMapping() ),
+                    importObjectService, objectMappingGenerator.getCategoryMapping( params.skipMapping() ),
                     objectMappingGenerator.getCategoryOptionMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported CategoryCategoryOption associations" );
             }
-        	// dxfv1 only
+            // dxfv1 only
             else if ( reader.isStartElement( CategoryComboCategoryAssociationConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_data_element_category_combo_members" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( CategoryComboCategoryAssociationBatchHandler.class );
+                // setMessage( "importing_data_element_category_combo_members"
+                // );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( CategoryComboCategoryAssociationBatchHandler.class );
 
                 batchHandler.init();
-                
+
                 XMLConverter converter = new CategoryComboCategoryAssociationConverter( batchHandler,
-                    importObjectService,
-                    objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ),
+                    importObjectService, objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ),
                     objectMappingGenerator.getCategoryMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported CategoryComboCategory associations" );
             }
             else if ( reader.isStartElement( DataElementConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_data_elements" );
-                
-                BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
-                
+                // setMessage( "importing_data_elements" );
+
+                BatchHandler<DataElement> batchHandler = batchHandlerFactory
+                    .createBatchHandler( DataElementBatchHandler.class );
+
                 batchHandler.init();
-                                
-                XMLConverter converter = new DataElementConverter( batchHandler, 
-                    importObjectService,
-                    objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ),
-                    dataElementService );
+
+                XMLConverter converter = new DataElementConverter( batchHandler, importObjectService,
+                    objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ), dataElementService );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
-                batchHandler.flush();  
-                
+
+                batchHandler.flush();
+
                 log.info( "Imported DataElements" );
             }
             else if ( reader.isStartElement( ExtendedDataElementConverter.COLLECTION_NAME ) )
-            {                
-                //setMessage( "importing_data_elements" );
+            {
+                // setMessage( "importing_data_elements" );
 
-                BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler( DataElementBatchHandler.class );
-                
-                BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler = batchHandlerFactory.createBatchHandler( ExtendedDataElementBatchHandler.class );
-                
+                BatchHandler<DataElement> batchHandler = batchHandlerFactory
+                    .createBatchHandler( DataElementBatchHandler.class );
+
+                BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler = batchHandlerFactory
+                    .createBatchHandler( ExtendedDataElementBatchHandler.class );
+
                 extendedDataElementBatchHandler.init();
-                
+
                 batchHandler.init();
-                
+
                 XMLConverter converter = new ExtendedDataElementConverter( batchHandler,
-                    extendedDataElementBatchHandler, 
-                    importObjectService,
-                    objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ),
-                    dataElementService );
+                    extendedDataElementBatchHandler, importObjectService, objectMappingGenerator
+                        .getCategoryComboMapping( params.skipMapping() ), dataElementService );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 extendedDataElementBatchHandler.flush();
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported ExtendedDataElements" );
             }
             else if ( reader.isStartElement( CalculatedDataElementConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_calculated_data_elements" );
-                
-                XMLConverter converter = new CalculatedDataElementConverter( importObjectService,
-                    dataElementService,
-                    expressionService,
-                    objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
-                    objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ),
-                    objectMappingGenerator.getCategoryOptionComboMapping( params.skipMapping() ) );
+                // setMessage( "importing_calculated_data_elements" );
+
+                XMLConverter converter = new CalculatedDataElementConverter( importObjectService, dataElementService,
+                    expressionService, objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
+                    objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ), objectMappingGenerator
+                        .getCategoryOptionComboMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 log.info( "Imported CalculatedDataElements" );
             }
             else if ( reader.isStartElement( DataElementGroupConverter.COLLECTION_NAME ) )
-            {                
-                //setMessage( "importing_data_element_groups" );
-                
-                BatchHandler<DataElementGroup> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupBatchHandler.class );
-                
+            {
+                // setMessage( "importing_data_element_groups" );
+
+                BatchHandler<DataElementGroup> batchHandler = batchHandlerFactory
+                    .createBatchHandler( DataElementGroupBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new DataElementGroupConverter( batchHandler, importObjectService, dataElementService );
+
+                XMLConverter converter = new DataElementGroupConverter( batchHandler, importObjectService,
+                    dataElementService );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported DataElementGroups" );
             }
             else if ( reader.isStartElement( DataElementGroupMemberConverter.COLLECTION_NAME ) )
-            {                
-                //setMessage( "importing_data_element_group_members" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupMemberBatchHandler.class );
-                
+            {
+                // setMessage( "importing_data_element_group_members" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( DataElementGroupMemberBatchHandler.class );
+
                 batchHandler.init();
-                
+
                 XMLConverter converter = new DataElementGroupMemberConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
-                    objectMappingGenerator.getDataElementGroupMapping( params.skipMapping() ) );
+                    objectMappingGenerator.getDataElementMapping( params.skipMapping() ), objectMappingGenerator
+                        .getDataElementGroupMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported DataElementGroup members" );
             }
             else if ( reader.isStartElement( IndicatorTypeConverter.COLLECTION_NAME ) )
-            {                
-                //setMessage( "importing_indicator_types" );
-                
-                BatchHandler<IndicatorType> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorTypeBatchHandler.class );
-                
+            {
+                // setMessage( "importing_indicator_types" );
+
+                BatchHandler<IndicatorType> batchHandler = batchHandlerFactory
+                    .createBatchHandler( IndicatorTypeBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new IndicatorTypeConverter( batchHandler, importObjectService, indicatorService );
+
+                XMLConverter converter = new IndicatorTypeConverter( batchHandler, importObjectService,
+                    indicatorService );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported IndicatorTypes" );
             }
             else if ( reader.isStartElement( IndicatorConverter.COLLECTION_NAME ) )
-            {                
-                //setMessage( "importing_indicators" );
-                
-                BatchHandler<Indicator> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class );
-                
+            {
+                // setMessage( "importing_indicators" );
+
+                BatchHandler<Indicator> batchHandler = batchHandlerFactory
+                    .createBatchHandler( IndicatorBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new IndicatorConverter( batchHandler, 
-                    importObjectService, 
-                    indicatorService,
-                    expressionService,
-                    objectMappingGenerator.getIndicatorTypeMapping( params.skipMapping() ), 
-                    objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
-                    objectMappingGenerator.getCategoryOptionComboMapping( params.skipMapping() ) );
+
+                XMLConverter converter = new IndicatorConverter( batchHandler, importObjectService, indicatorService,
+                    expressionService, objectMappingGenerator.getIndicatorTypeMapping( params.skipMapping() ),
+                    objectMappingGenerator.getDataElementMapping( params.skipMapping() ), objectMappingGenerator
+                        .getCategoryOptionComboMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported Indicators" );
             }
             else if ( reader.isStartElement( ExtendedIndicatorConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_indicators" );
+                // setMessage( "importing_indicators" );
 
-                BatchHandler<Indicator> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class );
-                
-                BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler = batchHandlerFactory.createBatchHandler( ExtendedDataElementBatchHandler.class );
-                
+                BatchHandler<Indicator> batchHandler = batchHandlerFactory
+                    .createBatchHandler( IndicatorBatchHandler.class );
+
+                BatchHandler<ExtendedDataElement> extendedDataElementBatchHandler = batchHandlerFactory
+                    .createBatchHandler( ExtendedDataElementBatchHandler.class );
+
                 extendedDataElementBatchHandler.init();
-                
+
                 batchHandler.init();
-                
-                XMLConverter converter = new ExtendedIndicatorConverter( batchHandler,
-                    extendedDataElementBatchHandler,
-                    importObjectService, 
-                    indicatorService,
-                    expressionService,
-                    objectMappingGenerator.getIndicatorTypeMapping( params.skipMapping() ), 
-                    objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
-                    objectMappingGenerator.getCategoryOptionComboMapping( params.skipMapping() ) );
+
+                XMLConverter converter = new ExtendedIndicatorConverter( batchHandler, extendedDataElementBatchHandler,
+                    importObjectService, indicatorService, expressionService, objectMappingGenerator
+                        .getIndicatorTypeMapping( params.skipMapping() ), objectMappingGenerator
+                        .getDataElementMapping( params.skipMapping() ), objectMappingGenerator
+                        .getCategoryOptionComboMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 extendedDataElementBatchHandler.flush();
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported ExtendedIndicators" );
             }
             else if ( reader.isStartElement( IndicatorGroupConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_indicator_groups" );
-                
-                BatchHandler<IndicatorGroup> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupBatchHandler.class );
-                
+                // setMessage( "importing_indicator_groups" );
+
+                BatchHandler<IndicatorGroup> batchHandler = batchHandlerFactory
+                    .createBatchHandler( IndicatorGroupBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new IndicatorGroupConverter( batchHandler, importObjectService, indicatorService );
+
+                XMLConverter converter = new IndicatorGroupConverter( batchHandler, importObjectService,
+                    indicatorService );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported IndicatorGroups" );
             }
             else if ( reader.isStartElement( IndicatorGroupMemberConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_indicator_group_members" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupMemberBatchHandler.class );
-                
+                // setMessage( "importing_indicator_group_members" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( IndicatorGroupMemberBatchHandler.class );
+
                 batchHandler.init();
-                
+
                 XMLConverter converter = new IndicatorGroupMemberConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getIndicatorMapping( params.skipMapping() ),
-                    objectMappingGenerator.getIndicatorGroupMapping( params.skipMapping() ) );
+                    objectMappingGenerator.getIndicatorMapping( params.skipMapping() ), objectMappingGenerator
+                        .getIndicatorGroupMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported IndicatorGroup members" );
             }
             else if ( reader.isStartElement( DataDictionaryConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_data_dictionaries" );
-                
-                BatchHandler<DataDictionary> batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryBatchHandler.class );
-                
+                // setMessage( "importing_data_dictionaries" );
+
+                BatchHandler<DataDictionary> batchHandler = batchHandlerFactory
+                    .createBatchHandler( DataDictionaryBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new DataDictionaryConverter( batchHandler, 
-                    importObjectService,
+
+                XMLConverter converter = new DataDictionaryConverter( batchHandler, importObjectService,
                     dataDictionaryService );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported DataDictionaries" );
             }
             else if ( reader.isStartElement( DataDictionaryDataElementConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_data_dictionary_data_elements" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryDataElementBatchHandler.class );
-                
+                // setMessage( "importing_data_dictionary_data_elements" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( DataDictionaryDataElementBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new DataDictionaryDataElementConverter( batchHandler,
-                    importObjectService,
-                    objectMappingGenerator.getDataDictionaryMapping( params.skipMapping() ),
-                    objectMappingGenerator.getDataElementMapping( params.skipMapping() ) );
+
+                XMLConverter converter = new DataDictionaryDataElementConverter( batchHandler, importObjectService,
+                    objectMappingGenerator.getDataDictionaryMapping( params.skipMapping() ), objectMappingGenerator
+                        .getDataElementMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported DataDictionary DataElements" );
             }
             else if ( reader.isStartElement( DataDictionaryIndicatorConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_data_dictionary_indicators" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataDictionaryIndicatorBatchHandler.class );
-                
+                // setMessage( "importing_data_dictionary_indicators" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( DataDictionaryIndicatorBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new DataDictionaryIndicatorConverter( batchHandler,
-                    importObjectService,
-                    objectMappingGenerator.getDataDictionaryMapping( params.skipMapping() ),
-                    objectMappingGenerator.getIndicatorMapping( params.skipMapping() ) );
+
+                XMLConverter converter = new DataDictionaryIndicatorConverter( batchHandler, importObjectService,
+                    objectMappingGenerator.getDataDictionaryMapping( params.skipMapping() ), objectMappingGenerator
+                        .getIndicatorMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported DataDictionary Indicators" );
             }
             else if ( reader.isStartElement( DataSetConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_data_sets" );
-                
+                // setMessage( "importing_data_sets" );
+
                 BatchHandler<DataSet> batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class );
-                
+
                 batchHandler.init();
-                
+
                 XMLConverter converter = new DataSetConverter( batchHandler, importObjectService, dataSetService,
                     objectMappingGenerator.getPeriodTypeMapping() );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported DataSets" );
             }
             else if ( reader.isStartElement( DataSetMemberConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_data_set_members" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataSetMemberBatchHandler.class );
-                
+                // setMessage( "importing_data_set_members" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( DataSetMemberBatchHandler.class );
+
                 batchHandler.init();
-                
+
                 XMLConverter converter = new DataSetMemberConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
-                    objectMappingGenerator.getDataSetMapping( params.skipMapping() ) );
+                    objectMappingGenerator.getDataElementMapping( params.skipMapping() ), objectMappingGenerator
+                        .getDataSetMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported DataSet members" );
             }
             else if ( reader.isStartElement( OrganisationUnitConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_organisation_units" );
-                
-                BatchHandler<Source> sourceBatchHandler = batchHandlerFactory.createBatchHandler( SourceBatchHandler.class );
-                BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
-                
+                // setMessage( "importing_organisation_units" );
+
+                BatchHandler<Source> sourceBatchHandler = batchHandlerFactory
+                    .createBatchHandler( SourceBatchHandler.class );
+                BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory
+                    .createBatchHandler( OrganisationUnitBatchHandler.class );
+
                 sourceBatchHandler.init();
                 batchHandler.init();
-                
+
                 XMLConverter converter = new OrganisationUnitConverter( batchHandler, sourceBatchHandler,
                     importObjectService, organisationUnitService );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 sourceBatchHandler.flush();
                 batchHandler.flush();
-                
+
                 log.info( "Imported OrganisationUnits" );
             }
             else if ( reader.isStartElement( OrganisationUnitRelationshipConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_organisation_unit_relationships" );
-                
-                BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitBatchHandler.class );
-                
+                // setMessage( "importing_organisation_unit_relationships" );
+
+                BatchHandler<OrganisationUnit> batchHandler = batchHandlerFactory
+                    .createBatchHandler( OrganisationUnitBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new OrganisationUnitRelationshipConverter( batchHandler, 
-                    importObjectService,
-                    organisationUnitService,
-                    objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ) );
+
+                XMLConverter converter = new OrganisationUnitRelationshipConverter( batchHandler, importObjectService,
+                    organisationUnitService, objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported OrganisationUnit relationships" );
             }
             else if ( reader.isStartElement( OrganisationUnitGroupConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_organisation_unit_groups" );
-                
-                BatchHandler<OrganisationUnitGroup> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupBatchHandler.class );
-                
+                // setMessage( "importing_organisation_unit_groups" );
+
+                BatchHandler<OrganisationUnitGroup> batchHandler = batchHandlerFactory
+                    .createBatchHandler( OrganisationUnitGroupBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new OrganisationUnitGroupConverter( batchHandler, importObjectService, organisationUnitGroupService );
+
+                XMLConverter converter = new OrganisationUnitGroupConverter( batchHandler, importObjectService,
+                    organisationUnitGroupService );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported OrganisationUnitGroups" );
             }
             else if ( reader.isStartElement( OrganisationUnitGroupMemberConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_organisation_unit_group_members" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( OrganisationUnitGroupMemberBatchHandler.class );
-                
+                // setMessage( "importing_organisation_unit_group_members" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( OrganisationUnitGroupMemberBatchHandler.class );
+
                 batchHandler.init();
-                
+
                 XMLConverter converter = new OrganisationUnitGroupMemberConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),
-                    objectMappingGenerator.getOrganisationUnitGroupMapping( params.skipMapping() ) );
+                    objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ), objectMappingGenerator
+                        .getOrganisationUnitGroupMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported OrganisationUnitGroup members" );
             }
             else if ( reader.isStartElement( GroupSetConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_organisation_unit_group_sets" );
-                
-                BatchHandler<OrganisationUnitGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetBatchHandler.class );
-                
+                // setMessage( "importing_organisation_unit_group_sets" );
+
+                BatchHandler<OrganisationUnitGroupSet> batchHandler = batchHandlerFactory
+                    .createBatchHandler( GroupSetBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new GroupSetConverter( batchHandler, importObjectService, organisationUnitGroupService );
+
+                XMLConverter converter = new GroupSetConverter( batchHandler, importObjectService,
+                    organisationUnitGroupService );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported OrganisationUnitGroupSets" );
             }
             else if ( reader.isStartElement( GroupSetMemberConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_organisation_unit_group_set_members" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( GroupSetMemberBatchHandler.class );
-                
+                // setMessage( "importing_organisation_unit_group_set_members"
+                // );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( GroupSetMemberBatchHandler.class );
+
                 batchHandler.init();
-                
+
                 XMLConverter converter = new GroupSetMemberConverter( batchHandler, importObjectService,
                     objectMappingGenerator.getOrganisationUnitGroupMapping( params.skipMapping() ),
                     objectMappingGenerator.getOrganisationUnitGroupSetMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported OrganisationUnitGroupSet members" );
             }
             else if ( reader.isStartElement( OrganisationUnitLevelConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_organisation_unit_levels" );
-                
-                XMLConverter converter = new OrganisationUnitLevelConverter( organisationUnitService, importObjectService );
+                // setMessage( "importing_organisation_unit_levels" );
+
+                XMLConverter converter = new OrganisationUnitLevelConverter( organisationUnitService,
+                    importObjectService );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 log.info( "Imported OrganisationUnitLevels" );
             }
             else if ( reader.isStartElement( DataSetSourceAssociationConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_data_set_source_associations" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataSetSourceAssociationBatchHandler.class );
-                
+                // setMessage( "importing_data_set_source_associations" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( DataSetSourceAssociationBatchHandler.class );
+
                 batchHandler.init();
-                
+
                 XMLConverter converter = new DataSetSourceAssociationConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getDataSetMapping( params.skipMapping() ),
-                    objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ) );
+                    objectMappingGenerator.getDataSetMapping( params.skipMapping() ), objectMappingGenerator
+                        .getOrganisationUnitMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported DataSet Source associations" );
             }
             else if ( reader.isStartElement( ValidationRuleConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_validation_rules" );
-                
-                XMLConverter converter = new ValidationRuleConverter( importObjectService, 
-                    validationRuleService, 
-                    expressionService,
-                    objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
+                // setMessage( "importing_validation_rules" );
+
+                XMLConverter converter = new ValidationRuleConverter( importObjectService, validationRuleService,
+                    expressionService, objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
                     objectMappingGenerator.getCategoryOptionComboMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 log.info( "Imported ValidationRules" );
             }
             else if ( reader.isStartElement( PeriodConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_periods" );
-                
+                // setMessage( "importing_periods" );
+
                 BatchHandler<Period> batchHandler = batchHandlerFactory.createBatchHandler( PeriodBatchHandler.class );
-                
+
                 batchHandler.init();
-                
+
                 XMLConverter converter = new PeriodConverter( batchHandler, importObjectService, periodService,
                     objectMappingGenerator.getPeriodTypeMapping() );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported Periods" );
             }
             else if ( reader.isStartElement( ReportTableConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_report_tables" );
-                
-                BatchHandler<ReportTable> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableBatchHandler.class );
-                
+                // setMessage( "importing_report_tables" );
+
+                BatchHandler<ReportTable> batchHandler = batchHandlerFactory
+                    .createBatchHandler( ReportTableBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new ReportTableConverter( batchHandler, reportTableService, importObjectService );
+
+                XMLConverter converter = new ReportTableConverter( batchHandler, reportTableService,
+                    importObjectService );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported ReportTables" );
             }
             else if ( reader.isStartElement( ReportTableDataElementConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_report_table_dataelements" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableDataElementBatchHandler.class );
-                
+                // setMessage( "importing_report_table_dataelements" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( ReportTableDataElementBatchHandler.class );
+
                 batchHandler.init();
-                
+
                 XMLConverter converter = new ReportTableDataElementConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ),
-                    objectMappingGenerator.getDataElementMapping( params.skipMapping() ) );
+                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ), objectMappingGenerator
+                        .getDataElementMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported ReportTable DataElements" );
             }
             else if ( reader.isStartElement( ReportTableCategoryOptionComboConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_report_table_category_option_combos" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableCategoryOptionComboBatchHandler.class );
-                
+                // setMessage( "importing_report_table_category_option_combos" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( ReportTableCategoryOptionComboBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new ReportTableCategoryOptionComboConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ),
+
+                XMLConverter converter = new ReportTableCategoryOptionComboConverter( batchHandler,
+                    importObjectService, objectMappingGenerator.getReportTableMapping( params.skipMapping() ),
                     objectMappingGenerator.getCategoryOptionComboMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported ReportTable CategoryOptionCombos" );
             }
             else if ( reader.isStartElement( ReportTableIndicatorConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_report_table_indicators" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableIndicatorBatchHandler.class );
-                
+                // setMessage( "importing_report_table_indicators" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( ReportTableIndicatorBatchHandler.class );
+
                 batchHandler.init();
-                
+
                 XMLConverter converter = new ReportTableIndicatorConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ),
-                    objectMappingGenerator.getIndicatorMapping( params.skipMapping() ) );
+                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ), objectMappingGenerator
+                        .getIndicatorMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported ReportTable Indicators" );
             }
             else if ( reader.isStartElement( ReportTableDataSetConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_report_table_datasets" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableDataSetBatchHandler.class );
-                
+                // setMessage( "importing_report_table_datasets" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( ReportTableDataSetBatchHandler.class );
+
                 batchHandler.init();
-                
+
                 XMLConverter converter = new ReportTableDataSetConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ),
-                    objectMappingGenerator.getDataSetMapping( params.skipMapping() ) );
+                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ), objectMappingGenerator
+                        .getDataSetMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported ReportTable DataSets" );
             }
             else if ( reader.isStartElement( ReportTablePeriodConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_report_table_periods" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTablePeriodBatchHandler.class );
-                
+                // setMessage( "importing_report_table_periods" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( ReportTablePeriodBatchHandler.class );
+
                 batchHandler.init();
-                
+
                 XMLConverter converter = new ReportTablePeriodConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ),
-                    objectMappingGenerator.getPeriodMapping( params.skipMapping() ) );
+                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ), objectMappingGenerator
+                        .getPeriodMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported ReportTable Periods" );
             }
             else if ( reader.isStartElement( ReportTableOrganisationUnitConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_report_table_organisation_units" );
-                
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableOrganisationUnitBatchHandler.class );
-                
+                // setMessage( "importing_report_table_organisation_units" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
+                    .createBatchHandler( ReportTableOrganisationUnitBatchHandler.class );
+
                 batchHandler.init();
-                
+
                 XMLConverter converter = new ReportTableOrganisationUnitConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ),
-                    objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ) );
+                    objectMappingGenerator.getReportTableMapping( params.skipMapping() ), objectMappingGenerator
+                        .getOrganisationUnitMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported ReportTable OrganisationUnits" );
             }
             else if ( reader.isStartElement( OlapUrlConverter.COLLECTION_NAME ) )
             {
-                //setMessage( "importing_olap_urls" );
-                
+                // setMessage( "importing_olap_urls" );
+
                 XMLConverter converter = new OlapUrlConverter( importObjectService, olapURLService );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 log.info( "Imported OlapURLs" );
             }
-            else if ( reader.isStartElement( CompleteDataSetRegistrationConverter.COLLECTION_NAME ) && params.isDataValues() )
+            else if ( reader.isStartElement( CompleteDataSetRegistrationConverter.COLLECTION_NAME )
+                && params.isDataValues() )
             {
-                //setMessage( "importing_complete_data_set_registrations" );
-                
-                BatchHandler<CompleteDataSetRegistration> batchHandler = batchHandlerFactory.createBatchHandler( CompleteDataSetRegistrationBatchHandler.class );
-                
+                // setMessage( "importing_complete_data_set_registrations" );
+
+                BatchHandler<CompleteDataSetRegistration> batchHandler = batchHandlerFactory
+                    .createBatchHandler( CompleteDataSetRegistrationBatchHandler.class );
+
                 batchHandler.init();
-                
-                XMLConverter converter = new CompleteDataSetRegistrationConverter( batchHandler, importObjectService, params,
-                    objectMappingGenerator.getDataSetMapping( params.skipMapping() ),
-                    objectMappingGenerator.getPeriodMapping( params.skipMapping() ),
-                    objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ) );
+
+                XMLConverter converter = new CompleteDataSetRegistrationConverter( batchHandler, importObjectService,
+                    params, objectMappingGenerator.getDataSetMapping( params.skipMapping() ), objectMappingGenerator
+                        .getPeriodMapping( params.skipMapping() ), objectMappingGenerator
+                        .getOrganisationUnitMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
-                
+
                 batchHandler.flush();
-                
+
                 log.info( "Imported CompleteDataSetRegistrations" );
             }
-            
+            else if ( reader.isStartElement( DataValueConverter.COLLECTION_NAME ) && params.isDataValues() )
+            {
+                /*if ( params.skipMapping() == false && lockingManager.currentImportContainsLockedData() )
+                {
+                    // setMessage( "import_contains_data_for_locked_periods" );
+
+                    log.warn( "Skipped DataValues because import file contained DataValues for locked Period, Organisation Unit and DataSet combinations" );
+                }
+                else */
+                {
+                    BatchHandler<DataValue> batchHandler = batchHandlerFactory
+                        .createBatchHandler( DataValueBatchHandler.class );
+
+                    BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory
+                        .createBatchHandler( ImportDataValueBatchHandler.class );
+
+                    batchHandler.init();
+
+                    importDataValueBatchHandler.init();
+
+                    XMLConverter converter = new DataValueConverter( batchHandler, importDataValueBatchHandler,
+                        dataValueService, dataMartStore, importObjectService, params, objectMappingGenerator
+                            .getDataElementMapping( params.skipMapping() ), objectMappingGenerator
+                            .getPeriodMapping( params.skipMapping() ), objectMappingGenerator
+                            .getOrganisationUnitMapping( params.skipMapping() ), objectMappingGenerator
+                            .getCategoryOptionComboMapping( params.skipMapping() ) );
+
+                    converterInvoker.invokeRead( converter, reader, params );
+
+                    batchHandler.flush();
+
+                    importDataValueBatchHandler.flush();
+
+                    log.info( "Imported DataValues" );
+                }
+            }
         }
-    }           
+    }
 }
