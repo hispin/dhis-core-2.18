@@ -359,7 +359,49 @@ public class DefaultDXFImportService
             	log.info("dxf version "+dxfVersion);
             }
 
-        	if ( reader.isStartElement( DataElementCategoryOptionConverter.COLLECTION_NAME ) )
+            // dxfv1 only 
+            if ( reader.isStartElement( DataValueConverter.COLLECTION_NAME ) && params.isDataValues() )
+            {
+                if ( params.skipMapping() == false && lockingManager.currentImportContainsLockedData() )
+                {
+                    //setMessage( "import_contains_data_for_locked_periods" );
+                    
+                    log.warn( "Skipped DataValues because import file contained DataValues for locked Period, Organisation Unit and DataSet combinations" );                    
+                }
+                else
+                {
+                    //setMessage( "importing_data_values" );
+                    
+                    BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
+                    
+                    BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
+                    
+                    batchHandler.init();
+                    
+                    importDataValueBatchHandler.init();
+                    
+                    XMLConverter converter = new DataValueConverter( batchHandler, 
+                        importDataValueBatchHandler,                    
+                        dataValueService,
+                        dataMartStore,
+                        importObjectService,
+                        params,
+                        objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
+                        objectMappingGenerator.getPeriodMapping( params.skipMapping() ),
+                        objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),
+                        objectMappingGenerator.getCategoryOptionComboMapping( params.skipMapping() ) );
+
+                    converterInvoker.invokeRead( converter, reader, params );
+                    
+                    batchHandler.flush();
+                    
+                    importDataValueBatchHandler.flush();
+                    
+                    log.info( "Imported DataValues" );
+                }
+            }
+            
+            else if ( reader.isStartElement( DataElementCategoryOptionConverter.COLLECTION_NAME ) && dxfVersion==1)
             {
                 //setMessage( "importing_data_element_category_options" );
                 
@@ -377,7 +419,8 @@ public class DefaultDXFImportService
                 
                 log.info( "Imported DataElementCategoryOptions" );
             }
-            else if ( reader.isStartElement( DataElementCategoryConverter.COLLECTION_NAME ) )
+        	 
+        	else if ( reader.isStartElement( DataElementCategoryConverter.COLLECTION_NAME ) )
             {
                 //setMessage( "importing_data_element_categories" );
                 
@@ -387,7 +430,7 @@ public class DefaultDXFImportService
                 
                 XMLConverter converter = new DataElementCategoryConverter( batchHandler,
                     importObjectService, 
-                    categoryService );
+                    categoryService);
 
                 converterInvoker.invokeRead( converter, reader, params );
                 
@@ -395,6 +438,7 @@ public class DefaultDXFImportService
                 
                 log.info( "Imported DataElementCategories" );                
             }
+        
             else if ( reader.isStartElement( DataElementCategoryComboConverter.COLLECTION_NAME ) )
             {
                 //setMessage( "importing_data_element_category_combos" );
@@ -426,7 +470,8 @@ public class DefaultDXFImportService
                 
                 log.info( "Imported DataElementCategoryOptionCombos" );       
             }
-            else if ( reader.isStartElement( CategoryCategoryOptionAssociationConverter.COLLECTION_NAME ) )
+        	// dxfv1 only
+            else if ( reader.isStartElement( CategoryCategoryOptionAssociationConverter.COLLECTION_NAME ))
             {
                 //setMessage( "importing_data_element_category_members" );
                 
@@ -445,6 +490,7 @@ public class DefaultDXFImportService
                 
                 log.info( "Imported CategoryCategoryOption associations" );
             }
+        	// dxfv1 only
             else if ( reader.isStartElement( CategoryComboCategoryAssociationConverter.COLLECTION_NAME ) )
             {
                 //setMessage( "importing_data_element_category_combo_members" );
@@ -1069,46 +1115,7 @@ public class DefaultDXFImportService
                 
                 log.info( "Imported CompleteDataSetRegistrations" );
             }
-            else if ( reader.isStartElement( DataValueConverter.COLLECTION_NAME ) && params.isDataValues() )
-            {
-                if ( params.skipMapping() == false && lockingManager.currentImportContainsLockedData() )
-                {
-                    //setMessage( "import_contains_data_for_locked_periods" );
-                    
-                    log.warn( "Skipped DataValues because import file contained DataValues for locked Period, Organisation Unit and DataSet combinations" );                    
-                }
-                else
-                {
-                    //setMessage( "importing_data_values" );
-                    
-                    BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
-                    
-                    BatchHandler<ImportDataValue> importDataValueBatchHandler = batchHandlerFactory.createBatchHandler( ImportDataValueBatchHandler.class );
-                    
-                    batchHandler.init();
-                    
-                    importDataValueBatchHandler.init();
-                    
-                    XMLConverter converter = new DataValueConverter( batchHandler, 
-                        importDataValueBatchHandler,                    
-                        dataValueService,
-                        dataMartStore,
-                        importObjectService,
-                        params,
-                        objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
-                        objectMappingGenerator.getPeriodMapping( params.skipMapping() ),
-                        objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),
-                        objectMappingGenerator.getCategoryOptionComboMapping( params.skipMapping() ) );
-
-                    converterInvoker.invokeRead( converter, reader, params );
-                    
-                    batchHandler.flush();
-                    
-                    importDataValueBatchHandler.flush();
-                    
-                    log.info( "Imported DataValues" );
-                }
-            }
+            
         }
                 
         //setMessage( "import_process_done" );
