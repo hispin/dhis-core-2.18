@@ -58,11 +58,11 @@ public class DefaultSelectedStateManager
 {
     private static final Log LOG = LogFactory.getLog( DefaultSelectedStateManager.class );
 
-    public static final String SESSION_KEY_SELECTED_PERIOD_TYPE_NAME = "_selected_period_type_name";
+    public static final String SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_TYPE_NAME = "_individual_selected_period_type_name";
 
-    public static final String SESSION_KEY_SELECTED_PERIOD_INDEX = "_selected_period_index";
+    public static final String SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_INDEX = "_individual_selected_period_index";
 
-    public static final String SESSION_KEY_BASE_PERIOD = "_base_period";
+    public static final String SESSION_INDIVIDUAL_KEY_BASE_PERIOD = "_individual_base_period";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -95,23 +95,23 @@ public class DefaultSelectedStateManager
     @SuppressWarnings( "unchecked" )
     public void setSelectedPeriodIndex( Integer index )
     {
-        getSession().put( SESSION_KEY_SELECTED_PERIOD_INDEX, index );
+        getSession().put( SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_INDEX, index );
     }
 
     public Integer getSelectedPeriodIndex()
     {
-        return (Integer) getSession().get( SESSION_KEY_SELECTED_PERIOD_INDEX );
+        return (Integer) getSession().get( SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_INDEX );
     }
 
     @SuppressWarnings( "unchecked" )
     public void setSelectedPeriodTypeName( String periodTypeName )
     {
-        getSession().put( SESSION_KEY_SELECTED_PERIOD_TYPE_NAME, periodTypeName );
+        getSession().put( SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_TYPE_NAME, periodTypeName );
     }
 
     public String getSelectedPeriodTypeName()
     {
-        return (String) getSession().get( SESSION_KEY_SELECTED_PERIOD_TYPE_NAME );
+        return (String) getSession().get( SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_TYPE_NAME );
     }
 
     public Period getSelectedPeriod()
@@ -147,7 +147,7 @@ public class DefaultSelectedStateManager
 
     public void clearSelectedPeriod()
     {
-        getSession().remove( SESSION_KEY_SELECTED_PERIOD_INDEX );
+        getSession().remove( SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_INDEX );
     }
 
     public List<Period> getPeriodList()
@@ -190,7 +190,7 @@ public class DefaultSelectedStateManager
         // Future periods not allowed
         if ( newBasePeriod.getStartDate().before( new Date() ) )
         {
-            getSession().put( SESSION_KEY_BASE_PERIOD, newBasePeriod );
+            getSession().put( SESSION_INDIVIDUAL_KEY_BASE_PERIOD, newBasePeriod );
         }
         generatedPeriodsCache.remove();
 
@@ -205,7 +205,7 @@ public class DefaultSelectedStateManager
         Period basePeriod = periods.get( 0 );
         Period newBasePeriod = periodType.getPreviousPeriod( basePeriod );
 
-        getSession().put( SESSION_KEY_BASE_PERIOD, newBasePeriod );
+        getSession().put( SESSION_INDIVIDUAL_KEY_BASE_PERIOD, newBasePeriod );
 
         generatedPeriodsCache.remove();
     }
@@ -221,7 +221,7 @@ public class DefaultSelectedStateManager
     @SuppressWarnings( "unchecked" )
     private Period getBasePeriod()
     {
-        Period basePeriod = (Period) getSession().get( SESSION_KEY_BASE_PERIOD );
+        Period basePeriod = (Period) getSession().get( SESSION_INDIVIDUAL_KEY_BASE_PERIOD );
         PeriodType periodType = getPeriodType();
 
         if ( basePeriod == null )
@@ -229,7 +229,7 @@ public class DefaultSelectedStateManager
             LOG.debug( "getBasePeriod(): Base period is null, creating new." );
 
             basePeriod = periodType.createPeriod();
-            getSession().put( SESSION_KEY_BASE_PERIOD, basePeriod );
+            getSession().put( SESSION_INDIVIDUAL_KEY_BASE_PERIOD, basePeriod );
 
             selectionManager.setSeletedYear( DateUtils.getCurrentYear() );
         }
