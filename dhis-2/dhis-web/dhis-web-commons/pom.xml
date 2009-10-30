@@ -67,7 +67,7 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-organisationunit</artifactId>
     </dependency>
-	<dependency>
+    <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-administration</artifactId>
     </dependency>
