@@ -32,152 +32,184 @@ import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 
 /**
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class ExcelItemGroup {
-	private int id;
+public class ExcelItemGroup
+{
+    private int id;
 
-	private String name;
+    private String name;
 
-	private Set<ExcelItem> excelItems;
+    private Set<ExcelItem> excelItems;
 
-	private String excelTemplateFile;
+    private String excelTemplateFile;
 
-	private String type;
+    private String type;
 
-	private Set<OrganisationUnit> organisationAssocitions;
+    private Set<OrganisationUnit> organisationAssocitions;
 
-	private List<OrganisationUnitGroup> organisationUnitGroups;
-	
-	private List<DataElementGroupOrder> dataElementOrders;
+    private List<OrganisationUnitGroup> organisationUnitGroups;
 
-	// ----------------------------------------------------------------------
-	// Constructors
-	// ----------------------------------------------------------------------
+    private List<DataElementGroupOrder> dataElementOrders;
+    
+    private PeriodType periodType;
 
-	public ExcelItemGroup() {
+    // ----------------------------------------------------------------------
+    // Constructors
+    // ----------------------------------------------------------------------
 
-	}
+    public ExcelItemGroup()
+    {
 
-	// -------------------------------------------------------------------------
-	// Internal classes
-	// -------------------------------------------------------------------------
+    }
 
-	public static class TYPE {
-		public static final String NORMAL = "NORMAL";
+    // -------------------------------------------------------------------------
+    // Internal classes
+    // -------------------------------------------------------------------------
 
-		public static final String CATEGORY = "CATEGORY";
+    public static class TYPE
+    {
+        public static final String NORMAL = "NORMAL";
 
-		public static final String PERIOD_COLUMN_LISTING = "PERIOD_COLUMN_LISTING";
+        public static final String CATEGORY = "CATEGORY";
 
-		public static final String ORGANIZATION_GROUP_LISTING = "ORGANIZATION_GROUP_LISTING";
-	}
+        public static final String PERIOD_COLUMN_LISTING = "PERIOD_COLUMN_LISTING";
 
-	// -------------------------------------------------------------------------
-	// hashCode and equals
-	// -------------------------------------------------------------------------
+        public static final String ORGANIZATION_GROUP_LISTING = "ORGANIZATION_GROUP_LISTING";
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + name.hashCode();
-		return result;
-	}
+    // -------------------------------------------------------------------------
+    // hashCode and equals
+    // -------------------------------------------------------------------------
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ExcelItemGroup other = (ExcelItemGroup) obj;
-		if (name != other.name)
-			return false;
-		return true;
-	}
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + name.hashCode();
+        return result;
+    }
 
-	// ----------------------------------------------------------------------
-	// Getters and setters
-	// ----------------------------------------------------------------------
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( this == obj )
+            return true;
+        if ( obj == null )
+            return false;
+        if ( getClass() != obj.getClass() )
+            return false;
+        ExcelItemGroup other = (ExcelItemGroup) obj;
+        if ( name != other.name )
+            return false;
+        return true;
+    }
 
-	public int getId() {
-		return id;
-	}
+    // ----------------------------------------------------------------------
+    // Getters and setters
+    // ----------------------------------------------------------------------
 
-	public List<DataElementGroupOrder> getDataElementOrders() {
-		return dataElementOrders;
-	}
+    public int getId()
+    {
+        return id;
+    }
 
-	public void setDataElementOrders(List<DataElementGroupOrder> dataElementOrders) {
-		this.dataElementOrders = dataElementOrders;
-	}
+    public List<DataElementGroupOrder> getDataElementOrders()
+    {
+        return dataElementOrders;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setDataElementOrders( List<DataElementGroupOrder> dataElementOrders )
+    {
+        this.dataElementOrders = dataElementOrders;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getType()
+    {
+        return type;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setType( String type )
+    {
+        this.type = type;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId( int id )
+    {
+        this.id = id;
+    }
 
-	public List<OrganisationUnitGroup> getOrganisationUnitGroups() {
-		return organisationUnitGroups;
-	}
+    public String getName()
+    {
+        return name;
+    }
 
-	public void setOrganisationUnitGroups(
-			List<OrganisationUnitGroup> organisationUnitGroups) {
-		this.organisationUnitGroups = organisationUnitGroups;
-	}
+    public List<OrganisationUnitGroup> getOrganisationUnitGroups()
+    {
+        return organisationUnitGroups;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setOrganisationUnitGroups( List<OrganisationUnitGroup> organisationUnitGroups )
+    {
+        this.organisationUnitGroups = organisationUnitGroups;
+    }
 
-	public String getExcelTemplateFile() {
-		return excelTemplateFile;
-	}
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public void setExcelTemplateFile(String excelTemplateFile) {
-		this.excelTemplateFile = excelTemplateFile;
-	}
+    public String getExcelTemplateFile()
+    {
+        return excelTemplateFile;
+    }
 
-	public Set<ExcelItem> getExcelItems() {
-		return excelItems;
-	}
+    public void setExcelTemplateFile( String excelTemplateFile )
+    {
+        this.excelTemplateFile = excelTemplateFile;
+    }
 
-	public void setExcelItems(Set<ExcelItem> excelItems) {
-		this.excelItems = excelItems;
-	}
+    public Set<ExcelItem> getExcelItems()
+    {
+        return excelItems;
+    }
 
-	public Set<OrganisationUnit> getOrganisationAssocitions() {
-		return organisationAssocitions;
-	}
+    public void setExcelItems( Set<ExcelItem> excelItems )
+    {
+        this.excelItems = excelItems;
+    }
 
-	public void setOrganisationAssocitions(
-			Set<OrganisationUnit> organisationAssocitions) {
-		this.organisationAssocitions = organisationAssocitions;
-	}
-	
-	// ----------------------------------------------------------------------
-	// getType
-	// ----------------------------------------------------------------------
+    public Set<OrganisationUnit> getOrganisationAssocitions()
+    {
+        return organisationAssocitions;
+    }
 
-	public boolean isCategory()
+    public void setOrganisationAssocitions( Set<OrganisationUnit> organisationAssocitions )
+    {
+        this.organisationAssocitions = organisationAssocitions;
+    }
+
+    public PeriodType getPeriodType()
+    {
+        return periodType;
+    }
+
+    public void setPeriodType( PeriodType periodType )
+    {
+        this.periodType = periodType;
+    }
+
+    // ----------------------------------------------------------------------
+    // getType
+    // ----------------------------------------------------------------------
+
+    public boolean isCategory()
     {
         return this.getType().equalsIgnoreCase( TYPE.CATEGORY );
     }
@@ -196,5 +228,4 @@ public class ExcelItemGroup {
     {
         return this.getType().equalsIgnoreCase( TYPE.NORMAL );
     }
-
 }
