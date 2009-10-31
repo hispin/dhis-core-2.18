@@ -53,200 +53,188 @@ import com.opensymphony.xwork2.ActionContext;
  * @modifier Dang Duy Hieu
  * @since 2009-10-14
  */
-public class DefaultSelectedStateManager
-    implements SelectedStateManager
-{
-    private static final Log LOG = LogFactory.getLog( DefaultSelectedStateManager.class );
+public class DefaultSelectedStateManager implements SelectedStateManager {
+	private static final Log LOG = LogFactory
+			.getLog(DefaultSelectedStateManager.class);
 
-    public static final String SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_TYPE_NAME = "_individual_selected_period_type_name";
+	public static final String SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_TYPE_NAME = "_individual_selected_period_type_name";
 
-    public static final String SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_INDEX = "_individual_selected_period_index";
+	public static final String SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_INDEX = "_individual_selected_period_index";
 
-    public static final String SESSION_INDIVIDUAL_KEY_BASE_PERIOD = "_individual_base_period";
+	public static final String SESSION_INDIVIDUAL_KEY_BASE_PERIOD = "_individual_base_period";
 
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private SelectionManager selectionManager;
+	private SelectionManager selectionManager;
 
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
+	public void setSelectionManager(SelectionManager selectionManager) {
+		this.selectionManager = selectionManager;
+	}
 
-    private PeriodService periodService;
+	private PeriodService periodService;
 
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
+	public void setPeriodService(PeriodService periodService) {
+		this.periodService = periodService;
+	}
 
-    // -------------------------------------------------------------------------
-    // Cache
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Cache
+	// -------------------------------------------------------------------------
 
-    private ThreadLocal<List<Period>> generatedPeriodsCache = new ThreadLocal<List<Period>>();
+	private ThreadLocal<List<Period>> generatedPeriodsCache = new ThreadLocal<List<Period>>();
 
-    // -------------------------------------------------------------------------
-    // SelectedStateManager implementation
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// SelectedStateManager implementation
+	// -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
-    public void setSelectedPeriodIndex( Integer index )
-    {
-        getSession().put( SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_INDEX, index );
-    }
+	@SuppressWarnings("unchecked")
+	public void setSelectedPeriodIndex(Integer index) {
+		getSession().put(SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_INDEX, index);
+	}
 
-    public Integer getSelectedPeriodIndex()
-    {
-        return (Integer) getSession().get( SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_INDEX );
-    }
+	public Integer getSelectedPeriodIndex() {
+		return (Integer) getSession().get(
+				SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_INDEX);
+	}
 
-    @SuppressWarnings( "unchecked" )
-    public void setSelectedPeriodTypeName( String periodTypeName )
-    {
-        getSession().put( SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_TYPE_NAME, periodTypeName );
-    }
+	@SuppressWarnings("unchecked")
+	public void setSelectedPeriodTypeName(String periodTypeName) {
+		getSession().put(SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_TYPE_NAME,
+				periodTypeName);
+	}
 
-    public String getSelectedPeriodTypeName()
-    {
-        return (String) getSession().get( SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_TYPE_NAME );
-    }
+	public String getSelectedPeriodTypeName() {
+		return (String) getSession().get(
+				SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_TYPE_NAME);
+	}
 
-    public Period getSelectedPeriod()
-    {
-        Integer index = getSelectedPeriodIndex();
+	public Period getSelectedPeriod() {
+		Integer index = getSelectedPeriodIndex();
 
-        if ( index == null )
-        {
-            return null;
-        }
+		if (index == null) {
+			return null;
+		}
 
-        List<Period> periods = getPeriodList();
+		List<Period> periods = getPeriodList();
 
-        if ( index >= 0 && index < periods.size() )
-        {
-            Period selectedPeriod = periods.get( index );
+		if (index >= 0 && index < periods.size()) {
+			Period selectedPeriod = periods.get(index);
 
-            Period period = null;
+			Period period = null;
 
-            for ( Period p : periodService.getAllPeriods() )
-            {
-                if ( selectedPeriod.equals( p ) )
-                {
-                    period = p;
+			for (Period p : periodService.getAllPeriods()) {
+				if (selectedPeriod.equals(p)) {
+					period = p;
 
-                    return period;
-                }
-            }
-        }
+					return period;
+				}
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public void clearSelectedPeriod()
-    {
-        getSession().remove( SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_INDEX );
-    }
+	public void clearSelectedPeriod() {
+		getSession().remove(SESSION_INDIVIDUAL_KEY_SELECTED_PERIOD_INDEX);
+	}
 
-    public List<Period> getPeriodList()
-    {
-        List<Period> periods = generatedPeriodsCache.get();
+	public List<Period> getPeriodList() {
+		List<Period> periods = generatedPeriodsCache.get();
 
-        Period basePeriod = getBasePeriod();
+		Period basePeriod = getBasePeriod();
 
-        if ( periods == null || periods.size() == 0
-            || !periods.get( 0 ).getPeriodType().equals( basePeriod.getPeriodType() ) || !periods.contains( basePeriod ) )
-        {
-            CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
+		if (periods == null
+				|| periods.size() == 0
+				|| !periods.get(0).getPeriodType().equals(
+						basePeriod.getPeriodType())
+				|| !periods.contains(basePeriod)) {
+			CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
 
-            LOG.debug( "Generated periods cache invalid, generating new periods based on " + basePeriod );
+			LOG
+					.debug("Generated periods cache invalid, generating new periods based on "
+							+ basePeriod);
 
-            periods = periodType.generatePeriods( basePeriod );
+			periods = periodType.generatePeriods(basePeriod);
 
-            generatedPeriodsCache.set( periods );
-        }
+			generatedPeriodsCache.set(periods);
+		}
 
-        Collection<Period> persistedPeriods = periodService.getPeriodsByPeriodType( getPeriodType() );
+		Collection<Period> persistedPeriods = periodService
+				.getPeriodsByPeriodType(getPeriodType());
 
-        // get the period elements which exist in Collection
-        persistedPeriods.retainAll( periods );
-        Collections.sort( (ArrayList<Period>) persistedPeriods, new PeriodComparator() );
+		// get the period elements which exist in Collection
+		persistedPeriods.retainAll(periods);
+		Collections.sort((ArrayList<Period>) persistedPeriods,
+				new PeriodComparator());
 
-        // return periods;
-        return (ArrayList<Period>) persistedPeriods;
-    }
+		// return periods;
+		return (ArrayList<Period>) persistedPeriods;
+	}
 
-    @SuppressWarnings( "unchecked" )
-    public void nextPeriodSpan()
-    {
-        List<Period> periods = getPeriodList();
-        CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
+	@SuppressWarnings("unchecked")
+	public void nextPeriodSpan() {
+		List<Period> periods = getPeriodList();
+		CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
 
-        Period basePeriod = periods.get( periods.size() - 1 );
-        Period newBasePeriod = periodType.getNextPeriod( basePeriod );
+		Period basePeriod = periods.get(periods.size() - 1);
+		Period newBasePeriod = periodType.getNextPeriod(basePeriod);
 
-        // Future periods not allowed
-        if ( newBasePeriod.getStartDate().before( new Date() ) )
-        {
-            getSession().put( SESSION_INDIVIDUAL_KEY_BASE_PERIOD, newBasePeriod );
-        }
-        generatedPeriodsCache.remove();
+		// Future periods not allowed
+		if (newBasePeriod.getStartDate().before(new Date())) {
+			getSession().put(SESSION_INDIVIDUAL_KEY_BASE_PERIOD, newBasePeriod);
+		}
+		generatedPeriodsCache.remove();
 
-    }
+	}
 
-    @SuppressWarnings( "unchecked" )
-    public void previousPeriodSpan()
-    {
-        List<Period> periods = getPeriodList();
-        CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
+	@SuppressWarnings("unchecked")
+	public void previousPeriodSpan() {
+		List<Period> periods = getPeriodList();
+		CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
 
-        Period basePeriod = periods.get( 0 );
-        Period newBasePeriod = periodType.getPreviousPeriod( basePeriod );
+		Period basePeriod = periods.get(0);
+		Period newBasePeriod = periodType.getPreviousPeriod(basePeriod);
 
-        getSession().put( SESSION_INDIVIDUAL_KEY_BASE_PERIOD, newBasePeriod );
+		getSession().put(SESSION_INDIVIDUAL_KEY_BASE_PERIOD, newBasePeriod);
 
-        generatedPeriodsCache.remove();
-    }
+		generatedPeriodsCache.remove();
+	}
 
-    // -------------------------------------------------------------------------
-    // Support methods
-    // -------------------------------------------------------------------------
-    private PeriodType getPeriodType()
-    {
-        return periodService.getPeriodTypeByName( getSelectedPeriodTypeName() );
-    }
+	// -------------------------------------------------------------------------
+	// Support methods
+	// -------------------------------------------------------------------------
+	private PeriodType getPeriodType() {
+		return periodService.getPeriodTypeByName(getSelectedPeriodTypeName());
+	}
 
-    @SuppressWarnings( "unchecked" )
-    private Period getBasePeriod()
-    {
-        Period basePeriod = (Period) getSession().get( SESSION_INDIVIDUAL_KEY_BASE_PERIOD );
-        PeriodType periodType = getPeriodType();
+	@SuppressWarnings("unchecked")
+	private Period getBasePeriod() {
+		Period basePeriod = (Period) getSession().get(
+				SESSION_INDIVIDUAL_KEY_BASE_PERIOD);
+		PeriodType periodType = getPeriodType();
 
-        if ( basePeriod == null )
-        {
-            LOG.debug( "getBasePeriod(): Base period is null, creating new." );
+		if (basePeriod == null) {
+			LOG.debug("getBasePeriod(): Base period is null, creating new.");
 
-            basePeriod = periodType.createPeriod();
-            getSession().put( SESSION_INDIVIDUAL_KEY_BASE_PERIOD, basePeriod );
+			basePeriod = periodType.createPeriod();
+			getSession().put(SESSION_INDIVIDUAL_KEY_BASE_PERIOD, basePeriod);
 
-            selectionManager.setSeletedYear( DateUtils.getCurrentYear() );
-        }
-        else if ( selectionManager.getSelectedYear() > 0 )
-        {
-            Date firstDayOfYear = DateUtils.getFirstDayOfYear( selectionManager.getSelectedYear() );
+			selectionManager.setSeletedYear(DateUtils.getCurrentYear());
+		} else if (selectionManager.getSelectedYear() > 0) {
+			Date firstDayOfYear = DateUtils.getFirstDayOfYear(selectionManager
+					.getSelectedYear());
 
-            basePeriod = periodType.createPeriod( firstDayOfYear );
-        }
+			basePeriod = periodType.createPeriod(firstDayOfYear);
+		}
 
-        return basePeriod;
-    }
+		return basePeriod;
+	}
 
-    @SuppressWarnings( "unchecked" )
-    private static final Map getSession()
-    {
-        return ActionContext.getContext().getSession();
-    }
+	@SuppressWarnings("unchecked")
+	private static final Map getSession() {
+		return ActionContext.getContext().getSession();
+	}
 
 }
