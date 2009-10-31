@@ -390,7 +390,7 @@ public class DefaultDXFImportService
 
     }
 
-    void parseDXFv1( ImportParams params, XMLReader reader )
+    private void parseDXFv1( ImportParams params, XMLReader reader )
     {
         while ( reader.next() )
         {

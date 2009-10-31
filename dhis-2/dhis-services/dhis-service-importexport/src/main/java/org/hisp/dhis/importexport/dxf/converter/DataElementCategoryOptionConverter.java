@@ -103,8 +103,6 @@ public class DataElementCategoryOptionConverter
                 writer.writeElement( FIELD_ID, String.valueOf( categoryOption.getId() ) );
                 writer.writeElement( FIELD_NAME, categoryOption.getName() );
                 
-                //TODO add shortname
-                
                 writer.closeElement();
             }
             

@@ -108,8 +108,6 @@ public class DataSetMemberConverter
         Collection<DataSet> dataSets = dataSetService.getDataSets( params.getDataSets() );
         
         Collection<DataElement> elements = dataElementService.getDataElements( params.getAllDataElements() );
-        System.out.println( "datasets " + dataSets.size() );
-        System.out.println( "dataelmts " + elements.size() );
         
         if ( dataSets != null && dataSets.size() > 0 && elements != null && elements.size() > 0 )
         {
