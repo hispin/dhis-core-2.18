@@ -39,6 +39,7 @@ import org.hisp.dhis.reportexcel.DataElementGroupOrder;
  * @author Chau Thu Tran
  * @version $Id$
  */
+
 public class ExcelItemGroup
 {
     private int id;
@@ -195,16 +196,6 @@ public class ExcelItemGroup
         this.organisationAssocitions = organisationAssocitions;
     }
 
-    public PeriodType getPeriodType()
-    {
-        return periodType;
-    }
-
-    public void setPeriodType( PeriodType periodType )
-    {
-        this.periodType = periodType;
-    }
-
     // ----------------------------------------------------------------------
     // getType
     // ----------------------------------------------------------------------
@@ -228,4 +219,13 @@ public class ExcelItemGroup
     {
         return this.getType().equalsIgnoreCase( TYPE.NORMAL );
     }
+
+	public PeriodType getPeriodType() {
+		return periodType;
+	}
+
+	public void setPeriodType(PeriodType periodType) {
+		this.periodType = periodType;
+	}
+	
 }
