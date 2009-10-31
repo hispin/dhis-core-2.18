@@ -104,7 +104,7 @@ public class DateUtils
             final SimpleDateFormat format = new SimpleDateFormat();
             format.applyPattern( "yyyy-MM-dd" );
         
-            return dateString != null ? format.parse( dateString ) : null;
+            return dateString != null && !dateString.isEmpty() ? format.parse( dateString ) : null;
         }
         catch ( ParseException ex )
         {

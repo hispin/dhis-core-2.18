@@ -27,27 +27,16 @@ package org.hisp.dhis.importexport.dxf.importer;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.bind.*;
 
-import org.xml.sax.XMLReader;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-
-import org.xml.sax.helpers.XMLFilterImpl;
-
-import org.hisp.dhis.importexport.dxf.v2object.*;
+import org.hisp.dhis.importexport.dxf.v2object.DataValues;
+import org.hisp.dhis.importexport.dxf.v2object.Metadata;
 
 /**
  * @author Bob Jolliffe
  */
-
-
 public class V2Parser {
 	
     protected JAXBContext metadata_ctx;

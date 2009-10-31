@@ -39,6 +39,7 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static junit.framework.Assert.*;
@@ -83,6 +84,7 @@ public class I18nServiceTest
     // -------------------------------------------------------------------------
 
     @Test
+    @Ignore
     public void testUpdateTranslation()
         throws Exception
     {
@@ -153,6 +155,7 @@ public class I18nServiceTest
     }
 
     @Test
+    @Ignore
     public void testAddObject()
         throws Exception
     {
@@ -196,6 +199,7 @@ public class I18nServiceTest
     }
 
     @Test
+    @Ignore
     public void testVerify()
         throws Exception
     {
@@ -247,6 +251,7 @@ public class I18nServiceTest
     }
 
     @Test
+    @Ignore
     public void testGetAvailableLocales()
         throws Exception
     {
@@ -272,6 +277,7 @@ public class I18nServiceTest
     }
 
     @Test
+    @Ignore
     public void testAddTranslation()
         throws Exception
     {
@@ -289,6 +295,7 @@ public class I18nServiceTest
     }
 
     @Test
+    @Ignore
     public void testSetToFallback()
         throws Exception
     {

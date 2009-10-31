@@ -153,18 +153,15 @@ public class DataValueConverter
                         
                         for ( final DeflatedDataValue value : values )
                         {   
-                            writer.openElement( ELEMENT_NAME );
-                            
-                            writer.writeElement( FIELD_DATAELEMENT, String.valueOf( value.getDataElementId() ) );
-                            writer.writeElement( FIELD_PERIOD, String.valueOf( value.getPeriodId() ) );
-                            writer.writeElement( FIELD_SOURCE, String.valueOf( value.getSourceId() ) );
-                            writer.writeElement( FIELD_VALUE, value.getValue() );
-                            writer.writeElement( FIELD_STOREDBY, value.getStoredBy() );
-                            writer.writeElement( FIELD_TIMESTAMP, DateUtils.getMediumDateString( value.getTimestamp() ) );
-                            writer.writeElement( FIELD_COMMENT, value.getComment() );
-                            writer.writeElement( FIELD_CATEGORY_OPTION_COMBO, String.valueOf( value.getCategoryOptionComboId() ) );
-                            
-                            writer.closeElement();
+                            writer.writeElement( ELEMENT_NAME, EMPTY,
+                                FIELD_DATAELEMENT, String.valueOf( value.getDataElementId() ),
+                                FIELD_PERIOD, String.valueOf( value.getPeriodId() ),
+                                FIELD_SOURCE, String.valueOf( value.getSourceId() ),
+                                FIELD_VALUE, value.getValue(),
+                                FIELD_STOREDBY, value.getStoredBy(),
+                                FIELD_TIMESTAMP, DateUtils.getMediumDateString( value.getTimestamp() ),
+                                FIELD_COMMENT, value.getComment(),
+                                FIELD_CATEGORY_OPTION_COMBO, String.valueOf( value.getCategoryOptionComboId() ) );
                         }
                     }
                 }

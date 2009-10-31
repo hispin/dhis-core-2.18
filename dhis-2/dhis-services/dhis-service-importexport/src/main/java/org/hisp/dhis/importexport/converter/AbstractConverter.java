@@ -47,6 +47,8 @@ import org.hisp.dhis.importexport.analysis.ImportAnalyser;
  */
 public abstract class AbstractConverter<T>
 {
+    protected static final String EMPTY = "";
+    
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------

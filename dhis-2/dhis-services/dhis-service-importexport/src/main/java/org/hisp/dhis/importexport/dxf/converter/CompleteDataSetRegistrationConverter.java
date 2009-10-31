@@ -149,14 +149,11 @@ public class CompleteDataSetRegistrationConverter
                 
                 for ( final CompleteDataSetRegistration registration : registrations )
                 {
-                    writer.openElement( ELEMENT_NAME );
-                    
-                    writer.writeElement( FIELD_DATASET, String.valueOf( registration.getDataSet().getId() ) );
-                    writer.writeElement( FIELD_PERIOD, String.valueOf( registration.getPeriod().getId() ) );
-                    writer.writeElement( FIELD_SOURCE, String.valueOf( registration.getSource().getId() ) );
-                    writer.writeElement( FIELD_DATE, DateUtils.getMediumDateString( registration.getDate() ) );
-                    
-                    writer.closeElement();
+                    writer.writeElement( ELEMENT_NAME, EMPTY,
+                        FIELD_DATASET, String.valueOf( registration.getDataSet().getId() ),
+                        FIELD_PERIOD, String.valueOf( registration.getPeriod().getId() ),
+                        FIELD_SOURCE, String.valueOf( registration.getSource().getId() ),
+                        FIELD_DATE, DateUtils.getMediumDateString( registration.getDate() ) );
                 }
                 
                 writer.closeElement();
