@@ -25,6 +25,10 @@
 		<td><input id="dataElementGroups" name="dataElementGroups" type="checkbox" value="true"></td>
 		<td><label for="dataElementGroups">$i18n.getString( 'data_element_groups' )</label></td>
   	</tr>  	
+    <tr>
+        <td><input id="dataElementGroupSets" name="dataElementGroupSets" type="checkbox" value="true"></td>
+        <td><label for="dataElementGroupSets">$i18n.getString( 'data_element_group_sets' )</label></td>
+    </tr>   
   	<tr>
 		<td><input id="indicators" name="indicators" type="checkbox" value="true"></td>
 		<td><label for="indicators">$i18n.getString( 'indicators' )</label></td>
@@ -33,6 +37,10 @@
 		<td><input id="indicatorGroups" name="indicatorGroups" type="checkbox" value="true"></td>
 		<td><label for="indicatorGroups">$i18n.getString( 'indicator_groups' )</label></td>
   	</tr>
+    <tr>
+        <td><input id="indicatorGroupSets" name="indicatorGroupSets" type="checkbox" value="true"></td>
+        <td><label for="indicatorGroupSets">$i18n.getString( 'indicator_group_sets' )</label></td>
+    </tr>
   	<tr>
   		<td><input id="dataDictionaries" name="dataDictionaries" type="checkbox" value="true"></td>
   		<td><label for="dataDictionaries">$i18n.getString( 'data_dictionaries' )</label></td>
