@@ -143,6 +143,13 @@ public class MetaDataExportAction
         this.dataElementGroups = dataElementGroups;
     }
     
+    private boolean dataElementGroupSets;
+    
+    public void setDataElementGroupSets( boolean dataElementGroupSets )
+    {
+        this.dataElementGroupSets = dataElementGroupSets;
+    }
+
     private boolean dataDictionaries;
 
     public void setDataDictionaries( boolean dataDictionaries )
@@ -169,6 +176,13 @@ public class MetaDataExportAction
     public void setIndicatorGroups( boolean indicatorGroups )
     {
         this.indicatorGroups = indicatorGroups;
+    }
+    
+    private boolean indicatorGroupSets;
+
+    public void setIndicatorGroupSets( boolean indicatorGroupSets )
+    {
+        this.indicatorGroupSets = indicatorGroupSets;
     }
 
     private boolean organisationUnits;
@@ -249,6 +263,11 @@ public class MetaDataExportAction
             params.setDataElementGroups( null );
         }
         
+        if ( dataElementGroupSets )
+        {
+            params.setDataElementGroupSets( null );
+        }
+        
         if ( indicators || indicatorGroups || reportTables )
         {
             params.setIndicators( null );
@@ -259,6 +278,11 @@ public class MetaDataExportAction
         if ( indicatorGroups )
         {
             params.setIndicatorGroups( null );
+        }
+        
+        if ( indicatorGroupSets )
+        {
+            params.setIndicatorGroupSets( null );
         }
 
         if ( dataDictionaries )

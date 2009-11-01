@@ -349,28 +349,34 @@ public class DefaultDXFImportService
         int dxfVersion = 1;
 
         // move to root element
-        while (!reader.isStartElement( ROOT_NAME ) ) {
-        	reader.next();
+        while ( !reader.isStartElement( ROOT_NAME ) )
+        {
+            reader.next();
         }
 
-        if (reader.getXmlStreamReader().getNamespaceURI() == DXF2_NAMESPACE_URI) {
-			dxfVersion = 2;
-			log.info("parsing dxf version " + dxfVersion);
+        if ( reader.getXmlStreamReader().getNamespaceURI() == DXF2_NAMESPACE_URI )
+        {
+            dxfVersion = 2;
+            log.info( "parsing dxf version " + dxfVersion );
 
-			try {
-				V2Parser v2parser = new V2Parser();
-
-				v2parser.getMetadata(reader.getXmlStreamReader());
-				v2parser.getDataValues(reader.getXmlStreamReader());
-			} catch (javax.xml.bind.JAXBException ex) {
-				log.info("Parsing error: " + ex);
-				// report something to GUI ....
-			}
-		} else {
-			dxfVersion = 1;
-			log.info("parsing dxf version " + dxfVersion);
-			parseDXFv1(params, reader);
-		}
+            try
+            {
+                V2Parser v2parser = new V2Parser();
+                v2parser.getMetadata( reader.getXmlStreamReader() );
+                v2parser.getDataValues( reader.getXmlStreamReader() );
+            }
+            catch ( javax.xml.bind.JAXBException ex )
+            {
+                log.info( "Parsing error: " + ex );
+                // report something to GUI ....
+            }
+        }
+        else
+        {
+            dxfVersion = 1;
+            log.info( "parsing dxf version " + dxfVersion );
+            parseDXFv1( params, reader );
+        }
 
         // setMessage( "import_process_done" );
 
@@ -381,7 +387,6 @@ public class DefaultDXFImportService
         NameMappingUtil.clearMapping();
 
         cacheManager.clearCache();
-
     }
 
     private void parseDXFv1( ImportParams params, XMLReader reader )

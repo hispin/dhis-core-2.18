@@ -63,6 +63,8 @@ import org.hisp.dhis.importexport.dxf.converter.DataElementCategoryOptionConvert
 import org.hisp.dhis.importexport.dxf.converter.DataElementConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataElementGroupConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataElementGroupMemberConverter;
+import org.hisp.dhis.importexport.dxf.converter.DataElementGroupSetConverter;
+import org.hisp.dhis.importexport.dxf.converter.DataElementGroupSetMemberConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataSetConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataSetMemberConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataSetSourceAssociationConverter;
@@ -74,6 +76,8 @@ import org.hisp.dhis.importexport.dxf.converter.GroupSetMemberConverter;
 import org.hisp.dhis.importexport.dxf.converter.IndicatorConverter;
 import org.hisp.dhis.importexport.dxf.converter.IndicatorGroupConverter;
 import org.hisp.dhis.importexport.dxf.converter.IndicatorGroupMemberConverter;
+import org.hisp.dhis.importexport.dxf.converter.IndicatorGroupSetConverter;
+import org.hisp.dhis.importexport.dxf.converter.IndicatorGroupSetMemberConverter;
 import org.hisp.dhis.importexport.dxf.converter.IndicatorTypeConverter;
 import org.hisp.dhis.importexport.dxf.converter.OlapUrlConverter;
 import org.hisp.dhis.importexport.dxf.converter.OrganisationUnitConverter;
@@ -264,12 +268,16 @@ public class DefaultDXFExportService
             thread.registerXMLConverter( new CalculatedDataElementConverter( dataElementService ) );
             thread.registerXMLConverter( new DataElementGroupConverter( dataElementService ) );
             thread.registerXMLConverter( new DataElementGroupMemberConverter( dataElementService ) );
+            thread.registerXMLConverter( new DataElementGroupSetConverter( dataElementService ) );
+            thread.registerXMLConverter( new DataElementGroupSetMemberConverter( dataElementService ) );
             
             thread.registerXMLConverter( new IndicatorTypeConverter( indicatorService ) );
             thread.registerXMLConverter( params.isExtendedMode() ? 
                 new ExtendedIndicatorConverter( indicatorService ) : new IndicatorConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorGroupConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorGroupMemberConverter( indicatorService ) );
+            thread.registerXMLConverter( new IndicatorGroupSetConverter( indicatorService ) );
+            thread.registerXMLConverter( new IndicatorGroupSetMemberConverter( indicatorService ) );
             
             thread.registerXMLConverter( new DataDictionaryConverter( dataDictionaryService ) );
             thread.registerXMLConverter( new DataDictionaryDataElementConverter( dataDictionaryService ) );

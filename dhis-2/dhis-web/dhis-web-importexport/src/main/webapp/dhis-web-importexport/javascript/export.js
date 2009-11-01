@@ -151,9 +151,11 @@ function toggle( knob )
 	
     document.getElementById( "dataElements" ).checked = toggle;
     document.getElementById( "dataElementGroups" ).checked = toggle;
+    document.getElementById( "dataElementGroupSets" ).checked = toggle;
     document.getElementById( "dataSets" ).checked = toggle;
     document.getElementById( "indicators" ).checked = toggle;
     document.getElementById( "indicatorGroups" ).checked = toggle;
+    document.getElementById( "indicatorGroupSets" ).checked = toggle;
     document.getElementById( "dataDictionaries" ).checked = toggle;
     document.getElementById( "organisationUnits" ).checked = toggle;
     document.getElementById( "organisationUnitGroups" ).checked = toggle;
@@ -172,9 +174,11 @@ function validateMetaDataExportForm()
 {
     if ( !isChecked( "dataElements" ) &&
          !isChecked( "dataElementGroups" ) &&
+         !isChecked( "dataElementGroupSets" ) &&
          !isChecked( "dataSets" ) &&
          !isChecked( "indicators" ) &&
          !isChecked( "indicatorGroups" ) &&
+         !isChecked( "indicatorGroupSets" ) &&
          !isChecked( "dataDictionaries" ) &&
          !isChecked( "organisationUnits" ) &&
          !isChecked( "organisationUnitGroups" ) &&

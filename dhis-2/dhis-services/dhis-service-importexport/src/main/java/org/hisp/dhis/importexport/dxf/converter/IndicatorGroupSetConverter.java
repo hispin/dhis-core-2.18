@@ -51,8 +51,8 @@ import org.hisp.dhis.indicator.IndicatorService;
 public class IndicatorGroupSetConverter
     extends AbstractIndicatorGroupSetConverter implements XMLConverter
 {
-    public static final String COLLECTION_NAME = "indicatorGroups";
-    public static final String ELEMENT_NAME = "indicatorGroup";
+    public static final String COLLECTION_NAME = "indicatorGroupSets";
+    public static final String ELEMENT_NAME = "indicatorGroupSet";
     
     private static final String FIELD_ID = "id";
     private static final String FIELD_UUID = "uuid";
