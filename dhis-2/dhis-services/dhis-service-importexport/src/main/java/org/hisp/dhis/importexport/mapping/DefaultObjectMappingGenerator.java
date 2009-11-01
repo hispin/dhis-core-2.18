@@ -40,9 +40,11 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementBatchHandler;
@@ -50,10 +52,12 @@ import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryComboBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryOptionBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementGroupSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.GroupSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.IndicatorBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.IndicatorTypeBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
@@ -166,6 +170,17 @@ public class DefaultObjectMappingGenerator
     }
 
     // -------------------------------------------------------------------------
+    // DataElementGroupSet
+    // -------------------------------------------------------------------------
+
+    public Map<Object, Integer> getDataElementGroupSetMapping( boolean skipMapping )
+    {
+        BatchHandler<DataElementGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupSetBatchHandler.class );
+        
+        return getMapping( batchHandler, NameMappingUtil.getDataElementGroupSetMap(), skipMapping );
+    }
+
+    // -------------------------------------------------------------------------
     // Indicator
     // -------------------------------------------------------------------------
 
@@ -185,6 +200,17 @@ public class DefaultObjectMappingGenerator
         BatchHandler<IndicatorGroup> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupBatchHandler.class );
                 
         return getMapping( batchHandler, NameMappingUtil.getIndicatorGroupMap(), skipMapping );
+    }
+
+    // -------------------------------------------------------------------------
+    // IndicatorGroupSet
+    // -------------------------------------------------------------------------
+
+    public Map<Object, Integer> getIndicatorGroupSetMapping( boolean skipMapping )
+    {
+        BatchHandler<IndicatorGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupSetBatchHandler.class );
+                
+        return getMapping( batchHandler, NameMappingUtil.getIndicatorGroupSetMap(), skipMapping );
     }
 
     // -------------------------------------------------------------------------

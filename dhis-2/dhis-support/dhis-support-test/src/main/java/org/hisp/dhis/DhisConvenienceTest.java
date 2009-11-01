@@ -47,6 +47,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -61,6 +62,7 @@ import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportObjectStatus;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.mapping.Map;
@@ -414,6 +416,19 @@ public abstract class DhisConvenienceTest
         
         return group;
     }
+
+    /**
+     * @param uniqueCharacter A unique character to identify the object.
+     */
+    public static DataElementGroupSet createDataElementGroupSet( char uniqueCharacter )
+    {
+        DataElementGroupSet groupSet = new DataElementGroupSet();
+        
+        groupSet.setUuid( BASE_UUID + uniqueCharacter );
+        groupSet.setName( "DataElementGroupSet" + uniqueCharacter );
+        
+        return groupSet;
+    }
     
     /**
      * @param uniqueCharacter A unique character to identify the object.
@@ -479,6 +494,19 @@ public abstract class DhisConvenienceTest
         group.setName( "IndicatorGroup" + uniqueCharacter );
         
         return group;
+    }
+    
+    /**
+     * @param uniqueCharacter A unique character to identify the object.
+     */
+    public static IndicatorGroupSet createIndicatorGroupSet( char uniqueCharacter )
+    {
+        IndicatorGroupSet groupSet = new IndicatorGroupSet();
+        
+        groupSet.setUuid( BASE_UUID + uniqueCharacter );
+        groupSet.setName( "IndicatorGroupSet" + uniqueCharacter );
+        
+        return groupSet;
     }
     
     /**
