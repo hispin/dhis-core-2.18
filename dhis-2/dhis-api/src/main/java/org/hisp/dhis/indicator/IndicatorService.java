@@ -118,4 +118,6 @@ public interface IndicatorService
     IndicatorGroupSet getIndicatorGroupSetByName( String name );
     
     Collection<IndicatorGroupSet> getAllIndicatorGroupSets();
+    
+    Collection<IndicatorGroupSet> getIndicatorGroupSets( Collection<Integer> identifiers );
 }

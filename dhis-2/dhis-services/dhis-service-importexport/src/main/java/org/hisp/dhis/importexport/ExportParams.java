@@ -67,9 +67,13 @@ public class ExportParams
     
     private Collection<Integer> dataElementGroups = new ArrayList<Integer>();
     
+    private Collection<Integer> dataElementGroupSets = new ArrayList<Integer>();
+    
     private Collection<Integer> indicators = new ArrayList<Integer>();
     
     private Collection<Integer> indicatorGroups = new ArrayList<Integer>();
+    
+    private Collection<Integer> indicatorGroupSets = new ArrayList<Integer>();
     
     private Collection<Integer> indicatorTypes = new ArrayList<Integer>();
     
@@ -288,6 +292,16 @@ public class ExportParams
         this.dataElementGroups = dataElementGroups;
     }
 
+    public Collection<Integer> getDataElementGroupSets()
+    {
+        return dataElementGroupSets;
+    }
+
+    public void setDataElementGroupSets( Collection<Integer> dataElementGroupSets )
+    {
+        this.dataElementGroupSets = dataElementGroupSets;
+    }
+
     public Collection<Integer> getIndicators()
     {
         return indicators;
@@ -306,6 +320,16 @@ public class ExportParams
     public void setIndicatorGroups( Collection<Integer> indicatorGroups )
     {
         this.indicatorGroups = indicatorGroups;
+    }
+
+    public Collection<Integer> getIndicatorGroupSets()
+    {
+        return indicatorGroupSets;
+    }
+
+    public void setIndicatorGroupSets( Collection<Integer> indicatorGroupSets )
+    {
+        this.indicatorGroupSets = indicatorGroupSets;
     }
 
     public Collection<Integer> getIndicatorTypes()

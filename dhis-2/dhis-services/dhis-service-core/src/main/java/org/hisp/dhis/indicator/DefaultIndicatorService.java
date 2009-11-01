@@ -347,4 +347,21 @@ public class DefaultIndicatorService
     {
         return indicatorGroupSetStore.getAll();
     }
+    
+    public Collection<IndicatorGroupSet> getIndicatorGroupSets( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllIndicatorGroupSets();
+        }
+        
+        Collection<IndicatorGroupSet> groupSets = new ArrayList<IndicatorGroupSet>();
+        
+        for ( Integer id : identifiers )
+        {
+            groupSets.add( getIndicatorGroupSet( id ) );
+        }
+        
+        return groupSets;       
+    }
 }

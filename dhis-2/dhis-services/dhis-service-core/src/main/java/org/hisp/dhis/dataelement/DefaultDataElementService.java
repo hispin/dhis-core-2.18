@@ -480,4 +480,21 @@ public class DefaultDataElementService
     {
         return dataElementGroupSetStore.getAll();
     }
+
+    public Collection<DataElementGroupSet> getDataElementGroupSets( Collection<Integer> identifiers )
+    {
+        if ( identifiers == null )
+        {
+            return getAllDataElementGroupSets();
+        }
+        
+        Collection<DataElementGroupSet> groupSets = new ArrayList<DataElementGroupSet>();
+        
+        for ( Integer id : identifiers )
+        {
+            groupSets.add( getDataElementGroupSet( id ) );
+        }
+        
+        return groupSets;
+    }
 }

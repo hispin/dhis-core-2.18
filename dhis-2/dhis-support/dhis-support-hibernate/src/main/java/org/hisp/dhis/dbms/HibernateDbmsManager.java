@@ -115,6 +115,8 @@ public class HibernateDbmsManager
 
         emptyTable( "expressiondataelement" );
         emptyTable( "calculateddataelement" );
+        emptyTable( "dataelementgroupsetmembers" );
+        emptyTable( "dataelementgroupset" );
         emptyTable( "dataelementgroupmembers" );
         emptyTable( "dataelementgroup" );
         emptyTable( "dataelementaggregationlevels" );
@@ -132,7 +134,9 @@ public class HibernateDbmsManager
         emptyTable( "mocksource" );
         emptyTable( "source" );
         emptyTable( "period" );
-        
+
+        emptyTable( "indicatorgroupsetmembers" );
+        emptyTable( "indicatorgroupset" );
         emptyTable( "indicatorgroupmembers" );
         emptyTable( "indicatorgroup" );
         emptyTable( "indicator" );

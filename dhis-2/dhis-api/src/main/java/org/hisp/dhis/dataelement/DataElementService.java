@@ -369,4 +369,6 @@ public interface DataElementService
     DataElementGroupSet getDataElementGroupSetByName( String name );
     
     Collection<DataElementGroupSet> getAllDataElementGroupSets();
+    
+    Collection<DataElementGroupSet> getDataElementGroupSets( Collection<Integer> identifiers );
 }

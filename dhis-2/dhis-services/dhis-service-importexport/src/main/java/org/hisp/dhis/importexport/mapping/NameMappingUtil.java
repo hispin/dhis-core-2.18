@@ -46,8 +46,10 @@ public class NameMappingUtil
     private static ThreadLocal<Map<Object, DataElementCategoryOptionCombo>> categoryOptionComboMap = new ThreadLocal<Map<Object, DataElementCategoryOptionCombo>>();    
     private static ThreadLocal<Map<Object, String>> dataElementMap = new ThreadLocal<Map<Object, String>>();
     private static ThreadLocal<Map<Object, String>> dataElementGroupMap = new ThreadLocal<Map<Object, String>>();
+    private static ThreadLocal<Map<Object, String>> dataElementGroupSetMap = new ThreadLocal<Map<Object,String>>();
     private static ThreadLocal<Map<Object, String>> indicatorMap = new ThreadLocal<Map<Object, String>>();
     private static ThreadLocal<Map<Object, String>> indicatorGroupMap = new ThreadLocal<Map<Object, String>>();
+    private static ThreadLocal<Map<Object, String>> indicatorGroupSetMap = new ThreadLocal<Map<Object,String>>();
     private static ThreadLocal<Map<Object, String>> indicatorTypeMap = new ThreadLocal<Map<Object, String>>();
     private static ThreadLocal<Map<Object, String>> dataDictionaryMap = new ThreadLocal<Map<Object,String>>();
     private static ThreadLocal<Map<Object, Period>> periodMap = new ThreadLocal<Map<Object, Period>>();
@@ -70,8 +72,10 @@ public class NameMappingUtil
         categoryOptionComboMap.remove();
         dataElementMap.remove();
         dataElementGroupMap.remove();
+        dataElementGroupSetMap.remove();
         indicatorMap.remove();
         indicatorGroupMap.remove();
+        indicatorGroupSetMap.remove();
         indicatorTypeMap.remove();
         dataDictionaryMap.remove();
         periodMap.remove();
@@ -218,6 +222,26 @@ public class NameMappingUtil
     }
 
     // -------------------------------------------------------------------------
+    // DataElementGroupSet
+    // -------------------------------------------------------------------------
+
+    /**
+     * Adds a map entry with DataElementGroupSet identifier as key and name as value.
+     */
+    public static void addDataElementGroupSetMapping( Object groupId, String groupName )
+    {
+        put( dataElementGroupSetMap, groupId, groupName );
+    }
+    
+    /**
+     * Returns a map with all DataElementGroupSet identifier and name entries. 
+     */
+    public static Map<Object, String> getDataElementGroupSetMap()
+    {
+        return dataElementGroupSetMap.get() != null ? new HashMap<Object, String>( dataElementGroupSetMap.get() ) : new HashMap<Object, String>();
+    }
+
+    // -------------------------------------------------------------------------
     // Indicator
     // -------------------------------------------------------------------------
 
@@ -250,11 +274,31 @@ public class NameMappingUtil
     }
     
     /**
-     * Returns a map with all Indicator identifier and name entries.
+     * Returns a map with all IndicatorGroup identifier and name entries.
      */
     public static Map<Object, String> getIndicatorGroupMap()
     {
         return indicatorGroupMap.get() != null ? new HashMap<Object, String>( indicatorGroupMap.get() ) : new HashMap<Object, String>();
+    }
+
+    // -------------------------------------------------------------------------
+    // IndicatorGroupSet
+    // -------------------------------------------------------------------------
+
+    /**
+     * Adds a map entry with IndicatorGroupSet identifier as key and name as value.
+     */
+    public static void addIndicatorGroupSetMapping( Object groupId, String groupName )
+    {
+        put( indicatorGroupSetMap, groupId, groupName );
+    }
+    
+    /**
+     * Returns a map with all IndicatorGroupSet identifier and name entries.
+     */
+    public static Map<Object, String> getIndicatorGroupSetMap()
+    {
+        return indicatorGroupSetMap.get() != null ? new HashMap<Object, String>( indicatorGroupSetMap.get() ) : new HashMap<Object, String>();
     }
 
     // -------------------------------------------------------------------------

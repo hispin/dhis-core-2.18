@@ -35,6 +35,7 @@ import org.hisp.dhis.indicator.IndicatorService;
  * @version $Id$
  */
 public class AbstractIndicatorGroupSetConverter
+    extends AbstractConverter<IndicatorGroupSet>
 {
     protected IndicatorService indicatorService;
 

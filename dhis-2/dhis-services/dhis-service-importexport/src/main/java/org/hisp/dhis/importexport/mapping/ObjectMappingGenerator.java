@@ -56,9 +56,13 @@ public interface ObjectMappingGenerator
     
     Map<Object, Integer> getDataElementGroupMapping( boolean skipMapping );
     
+    Map<Object, Integer> getDataElementGroupSetMapping( boolean skipMapping );
+    
     Map<Object, Integer> getIndicatorMapping( boolean skipMapping );
 
     Map<Object, Integer> getIndicatorGroupMapping( boolean skipMapping );
+    
+    Map<Object, Integer> getIndicatorGroupSetMapping( boolean skipMapping );
     
     Map<Object, Integer> getIndicatorTypeMapping( boolean skipMapping );
     
