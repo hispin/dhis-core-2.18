@@ -110,19 +110,16 @@ public class DataElementGroupMemberConverter
             
             for ( DataElementGroup group : groups )
             {
-                if ( group.getMembers() != null )
-                {                    
-                    for ( DataElement element : group.getMembers() )
+                for ( DataElement element : group.getMembers() )
+                {
+                    if ( elements.contains( element ) )
                     {
-                        if ( elements.contains( element ) )
-                        {
-                            writer.openElement( ELEMENT_NAME );
-                            
-                            writer.writeElement( FIELD_DATAELEMENT_GROUP, String.valueOf( group.getId() ) );
-                            writer.writeElement( FIELD_DATAELEMENT, String.valueOf( element.getId() ) );
-                            
-                            writer.closeElement();
-                        }
+                        writer.openElement( ELEMENT_NAME );
+                        
+                        writer.writeElement( FIELD_DATAELEMENT_GROUP, String.valueOf( group.getId() ) );
+                        writer.writeElement( FIELD_DATAELEMENT, String.valueOf( element.getId() ) );
+                        
+                        writer.closeElement();
                     }
                 }
             }

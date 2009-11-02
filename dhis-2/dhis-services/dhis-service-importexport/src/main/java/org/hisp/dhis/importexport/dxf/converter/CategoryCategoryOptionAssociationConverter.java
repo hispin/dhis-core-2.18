@@ -117,7 +117,7 @@ public class CategoryCategoryOptionAssociationConverter
             {
                 if ( category.getCategoryOptions() != null )
                 {
-                    int sortOrder = 0;
+                    int sortOrder = 1;
                 	
                     for ( DataElementCategoryOption categoryOption : category.getCategoryOptions() )
                     {

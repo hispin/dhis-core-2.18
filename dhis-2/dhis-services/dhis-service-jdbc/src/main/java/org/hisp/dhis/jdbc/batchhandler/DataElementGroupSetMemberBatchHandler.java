@@ -72,11 +72,13 @@ public class DataElementGroupSetMemberBatchHandler
     {
         statementBuilder.setColumn( "dataelementgroupsetid" );
         statementBuilder.setColumn( "dataelementgroupid" );
+        statementBuilder.setColumn( "sort_order" );
     }
     
     protected void setValues( GroupMemberAssociation association )
     {        
         statementBuilder.setValue( association.getGroupId() );
         statementBuilder.setValue( association.getMemberId() );
+        statementBuilder.setValue( association.getSortOrder() );
     }    
 }
