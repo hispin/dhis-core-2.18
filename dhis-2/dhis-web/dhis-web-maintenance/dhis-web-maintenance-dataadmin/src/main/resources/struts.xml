@@ -8,8 +8,10 @@
   	
   <package name="dhis-web-maintenance-dataadmin" extends="dhis-web-commons" namespace="/dhis-web-maintenance-dataadmin">
 	
-    <action name="index" class="org.hisp.dhis.commons.action.NoAction">
-      <result name="success" type="redirect">displayLockingForm.action</result>
+    <action name="index" class="org.hisp.dhis.dataadmin.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/index.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
     </action>
     
     <!-- Locking -->
