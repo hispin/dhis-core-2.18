@@ -46,6 +46,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
@@ -65,6 +66,7 @@ import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.CategoryComboCategoryAssociationBatchHandler;
@@ -78,6 +80,8 @@ import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryComboBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryOptionBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementGroupSetBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementGroupSetMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetSourceAssociationBatchHandler;
@@ -88,6 +92,8 @@ import org.hisp.dhis.jdbc.batchhandler.GroupSetMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.IndicatorBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupSetBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupSetMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.IndicatorTypeBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
@@ -532,7 +538,7 @@ public class DefaultImportObjectManager
         
         log.info( "Imported DataElementGroups" );
     }
-
+    
     @Transactional
     public void importDataElementGroupMembers()
     {
@@ -543,6 +549,52 @@ public class DefaultImportObjectManager
             objectMappingGenerator.getDataElementMapping( false ) );
         
         log.info( "Imported DataElementGroup members" );
+    }
+    
+    @Transactional
+    public void importDataElementGroupSets()
+    {
+        BatchHandler<DataElementGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupSetBatchHandler.class );
+        
+        batchHandler.init();
+        
+        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataElementGroupSet.class );
+        
+        for ( ImportObject importObject : importObjects )
+        {
+            DataElementGroupSet object = (DataElementGroupSet) importObject.getObject();
+            
+            NameMappingUtil.addDataElementGroupSetMapping( object.getId(), object.getName() );
+            
+            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
+            {
+                DataElementGroupSet compareObject = (DataElementGroupSet) importObject.getCompareObject();
+                
+                object.setId( compareObject.getId() );
+            }
+            
+            importObject.setObject( object );
+            
+            addOrUpdateObject( batchHandler, importObject );
+        }
+        
+        batchHandler.flush();
+        
+        importObjectStore.deleteImportObjects( DataElementGroupSet.class );
+        
+        log.info( "Imported DataElementGroupSets" );
+    }
+
+    @Transactional
+    public void importDataElementGroupSetMembers()
+    {
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( DataElementGroupSetMemberBatchHandler.class );
+        
+        importGroupMemberAssociation( batchHandler, GroupMemberType.DATAELEMENTGROUPSET, 
+            objectMappingGenerator.getDataElementGroupSetMapping( false ), 
+            objectMappingGenerator.getDataElementGroupMapping( false ) );
+        
+        log.info( "Imported DataElementGroupSet members" );
     }
 
     @Transactional
@@ -684,7 +736,7 @@ public class DefaultImportObjectManager
         
         log.info( "Imported IndicatorGroups" );
     }
-
+    
     @Transactional
     public void importIndicatorGroupMembers()
     {
@@ -695,6 +747,52 @@ public class DefaultImportObjectManager
             objectMappingGenerator.getIndicatorMapping( false ) );
         
         log.info( "Imported IndicatorGroup members" );
+    }
+    
+    @Transactional
+    public void importIndicatorGroupSets()
+    {
+        BatchHandler<IndicatorGroupSet> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupSetBatchHandler.class );
+        
+        batchHandler.init();
+        
+        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( IndicatorGroupSet.class );
+        
+        for ( ImportObject importObject : importObjects )
+        {
+            IndicatorGroupSet object = (IndicatorGroupSet) importObject.getObject();
+            
+            NameMappingUtil.addIndicatorGroupSetMapping( object.getId(), object.getName() );
+            
+            if ( importObject.getStatus() == ImportObjectStatus.UPDATE )
+            {
+                IndicatorGroupSet compareObject = (IndicatorGroupSet) importObject.getCompareObject();
+                
+                object.setId( compareObject.getId() );
+            }
+            
+            importObject.setObject( object );
+            
+            addOrUpdateObject( batchHandler, importObject );
+        }
+        
+        batchHandler.flush();
+        
+        importObjectStore.deleteImportObjects( IndicatorGroupSet.class );
+        
+        log.info( "Imported IndicatorGroupSets" );
+    }
+
+    @Transactional
+    public void importIndicatorGroupSetMembers()
+    {
+        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorGroupSetMemberBatchHandler.class );
+        
+        importGroupMemberAssociation( batchHandler, GroupMemberType.INDICATORGROUPSET, 
+            objectMappingGenerator.getIndicatorGroupSetMapping( false ), 
+            objectMappingGenerator.getIndicatorGroupMapping( false ) );
+        
+        log.info( "Imported IndicatorGroupSet members" );
     }
 
     @Transactional
@@ -1244,11 +1342,12 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataValues()
     {
+        /*
         if ( lockingManager.currentImportContainsLockedData() )
         {
             log.warn( "Import file contained DataValues for locked periods" );
         }
-        else
+        else*/ //TODO too slow
         {
             BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
             

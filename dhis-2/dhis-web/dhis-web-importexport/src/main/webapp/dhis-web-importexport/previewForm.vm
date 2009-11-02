@@ -91,7 +91,32 @@
 			<td>$i18n.getString( "none" )</td>
 		#end
 		<td></td>
-	</tr>
+	</tr><tr>
+        <td>$i18n.getString( "data_element_group_set" )</td>
+        #if ( $newDataElementGroupSets > 0 )
+            <td id="newDataElementGroupSetTd" style="background-color:#CEEACC">
+                <a href="displayPreviewForm.action?type=DATAELEMENTGROUPSET&status=NEW" style="width:100%; display:block; text-align:center">
+                    <span id="newDataElementGroupSetSpan">
+                        $newDataElementGroupSets
+                    </span>
+                </a>
+            </td>
+        #else
+            <td>$i18n.getString( "none" )</td>
+        #end
+        #if ( $updateDataElementGroupSets > 0 )
+            <td id="updateDataElementGroupSetTd" style="background-color:#D1D9E5">
+                <a href="displayPreviewForm.action?type=DATAELEMENTGROUPSET&status=UPDATE" style="width:100%; display:block; text-align:center">
+                    <span id="updateDataElementGroupSetSpan">
+                        $updateDataElementGroupSets
+                    </span>
+                </a>
+            </td>
+        #else
+            <td>$i18n.getString( "none" )</td>
+        #end
+        <td></td>
+    </tr>
 	<tr>
   		<td>$i18n.getString( "indicator_type" )</td>
   		#if ( $newIndicatorTypes > 0 )
@@ -170,6 +195,32 @@
 		#end
 		<td></td>
 	</tr>
+    <tr>
+        <td>$i18n.getString( "indicator_group_set" )</td>
+        #if ( $newIndicatorGroupSets > 0 )
+            <td id="newIndicatorGroupSetTd" style="background-color:#CEEACC">
+                <a href="displayPreviewForm.action?type=INDICATORGROUPSET&status=NEW" style="width:100%; display:block; text-align:center">
+                    <span id="newIndicatorGroupSetSpan">                       
+                        $newIndicatorGroupSets
+                    </span> 
+                </a>
+            </td>
+        #else
+            <td>$i18n.getString( "none" )</td>
+        #end
+        #if ( $updateIndicatorGroupSets > 0 )
+            <td id="updateIndicatorGroupSetTd" style="background-color:#D1D9E5">
+                <a href="displayPreviewForm.action?type=INDICATORGROUPSET&status=UPDATE" style="width:100%; display:block; text-align:center">
+                    <span id="updateIndicatorGroupSetSpan">
+                        $updateIndicatorGroupSets
+                    </span>
+                </a>
+            </td>
+        #else
+            <td>$i18n.getString( "none" )</td>
+        #end
+        <td></td>
+    </tr>
     <tr>
         <td>$i18n.getString( "data_dictionary" )</td>
         #if ( $newDataDictionaries > 0 )

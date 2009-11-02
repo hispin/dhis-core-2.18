@@ -94,6 +94,14 @@ function discardObjectCallback( xmlElement )
 		{
 			handleField( discardedElements, "updateDataElementGroupSpan", "updateDataElementGroupTd" );
 		}
+        else if ( elementType == "DATAELEMENTGROUPSET" && elementStatus == "NEW" )
+        {
+            handleField( discardedElements, "newDataElementGroupSetSpan", "newDataElementGroupSetTd" );
+        }
+        else if ( elementType == "DATAELEMENTGROUPSET" && elementStatus == "UPDATE" )
+        {
+            handleField( discardedElements, "updateDataElementGroupSetSpan", "updateDataElementGroupSetTd" );
+        }
 		else if ( elementType == "INDICATORTYPE" && elementStatus == "NEW" )
 		{
 			handleField( discardedElements, "newIndicatorTypeSpan", "newIndicatorTypeTd" );
@@ -118,6 +126,14 @@ function discardObjectCallback( xmlElement )
 		{
 			handleField( discardedElements, "updateIndicatorGroupSpan", "updateIndicatorGroupTd" );
 		}
+        else if ( elementType == "INDICATORGROUPSET" && elementStatus == "NEW" )
+        {
+            handleField( discardedElements, "newIndicatorGroupSetSpan", "newIndicatorGroupSetTd" );
+        }
+        else if ( elementType == "INDICATORGROUPSET" && elementStatus == "UPDATE" )
+        {
+            handleField( discardedElements, "updateIndicatorGroupSetSpan", "updateIndicatorGroupSetTd" );
+        }
 		else if ( elementType == "DATASET" && elementStatus == "NEW" )
 		{
 			handleField( discardedElements, "newDataSetSpan", "newDataSetTd" );
@@ -239,6 +255,11 @@ function discardObjectsOfTypeCallback( xmlElement )
 			clearField( "newDataElementGroupTd" );
 			clearField( "updateDataElementGroupTd" );
 		}
+        else if ( elementType == "DATAELEMENTGROUPSET" )
+        {
+            clearField( "newDataElementGroupSetTd" );
+            clearField( "updateDataElementGroupSetTd" );
+        }
 		else if ( elementType == "INDICATORTYPE")
 		{
 			clearField( "newIndicatorTypeTd" );
@@ -256,6 +277,11 @@ function discardObjectsOfTypeCallback( xmlElement )
 			clearField( "newIndicatorGroupTd" );
 			clearField( "updateIndicatorGroupTd" );
 		}
+        else if ( elementType == "INDICATORGROUPSET" )
+        {
+            clearField( "newIndicatorGroupSetTd" );
+            clearField( "updateIndicatorGroupSetTd" );
+        }
 		else if ( elementType == "DATASET" )
 		{
 			clearField( "newDataSetTd" );

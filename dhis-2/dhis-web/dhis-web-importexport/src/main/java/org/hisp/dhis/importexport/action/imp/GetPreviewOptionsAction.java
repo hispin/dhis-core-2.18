@@ -36,6 +36,7 @@ import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.importexport.ImportDataValueService;
 import org.hisp.dhis.importexport.ImportObjectService;
@@ -43,6 +44,7 @@ import org.hisp.dhis.importexport.ImportObjectStatus;
 import org.hisp.dhis.importexport.action.util.ClassMapUtil;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -139,6 +141,13 @@ public class GetPreviewOptionsAction
         return newDataElementGroups;
     }
     
+    private Integer newDataElementGroupSets;
+    
+    public Integer getNewDataElementGroupSets()
+    {
+        return newDataElementGroupSets;
+    }
+
     private Integer newIndicatorTypes;
 
     public Integer getNewIndicatorTypes()
@@ -160,6 +169,13 @@ public class GetPreviewOptionsAction
         return newIndicatorGroups;
     }
     
+    private Integer newIndicatorGroupSets;
+    
+    public Integer getNewIndicatorGroupSets()
+    {
+        return newIndicatorGroupSets;
+    }
+
     private Integer newDataDictionaries;
 
     public Integer getNewDataDictionaries()
@@ -258,6 +274,13 @@ public class GetPreviewOptionsAction
         return updateDataElementGroups;
     }
     
+    private Integer updateDataElementGroupSets;
+    
+    public Integer getUpdateDataElementGroupSets()
+    {
+        return updateDataElementGroupSets;
+    }
+
     private Integer updateIndicatorTypes;
 
     public Integer getUpdateIndicatorTypes()
@@ -279,6 +302,13 @@ public class GetPreviewOptionsAction
         return updateIndicatorGroups;
     }
     
+    private Integer updateIndicatorGroupSets;
+    
+    public Integer getUpdateIndicatorGroupSets()
+    {
+        return updateIndicatorGroupSets;
+    }
+
     private Integer updateDataDictionaries;
 
     public Integer getUpdateDataDictionaries()
@@ -374,9 +404,11 @@ public class GetPreviewOptionsAction
         newCalculatedDataElements = importObjectService.getImportObjects( ImportObjectStatus.NEW, CalculatedDataElement.class ).size();
         newExtendedDataElements = importObjectService.getImportObjects( ImportObjectStatus.NEW, ExtendedDataElement.class  ).size();
         newDataElementGroups = importObjectService.getImportObjects( ImportObjectStatus.NEW, DataElementGroup.class ).size();
+        newDataElementGroupSets = importObjectService.getImportObjects( ImportObjectStatus.NEW, DataElementGroupSet.class ).size();
         newIndicatorTypes = importObjectService.getImportObjects( ImportObjectStatus.NEW, IndicatorType.class ).size();
         newIndicators = importObjectService.getImportObjects( ImportObjectStatus.NEW, Indicator.class ).size();
         newIndicatorGroups = importObjectService.getImportObjects( ImportObjectStatus.NEW, IndicatorGroup.class ).size();
+        newIndicatorGroupSets = importObjectService.getImportObjects( ImportObjectStatus.NEW, IndicatorGroupSet.class ).size();
         newDataDictionaries = importObjectService.getImportObjects( ImportObjectStatus.NEW, DataDictionary.class ).size();
         newDataSets = importObjectService.getImportObjects( ImportObjectStatus.NEW, DataSet.class ).size();
         newOrganisationUnits = importObjectService.getImportObjects( ImportObjectStatus.NEW, OrganisationUnit.class ).size();
@@ -392,9 +424,11 @@ public class GetPreviewOptionsAction
         updateCalculatedDataElements = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, CalculatedDataElement.class ).size();
         updateExtendedDataElements = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, ExtendedDataElement.class ).size();
         updateDataElementGroups = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, DataElementGroup.class ).size();
+        updateDataElementGroupSets = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, DataElementGroupSet.class ).size();
         updateIndicatorTypes = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, IndicatorType.class ).size();
         updateIndicators = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, Indicator.class ).size();
         updateIndicatorGroups = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, IndicatorGroup.class ).size();
+        updateIndicatorGroupSets = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, IndicatorGroupSet.class ).size();
         updateDataDictionaries = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, DataDictionary.class ).size();
         updateDataSets = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, DataSet.class ).size();
         updateOrganisationUnits = importObjectService.getImportObjects( ImportObjectStatus.UPDATE, OrganisationUnit.class ).size();

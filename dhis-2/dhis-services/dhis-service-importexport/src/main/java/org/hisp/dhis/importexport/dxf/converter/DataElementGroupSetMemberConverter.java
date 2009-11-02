@@ -145,7 +145,7 @@ public class DataElementGroupSetMemberConverter
             association.setMemberId( dataElementGroupMapping.get( Integer.parseInt( values.get( FIELD_DATAELEMENT_GROUP ) ) ) );
             association.setSortOrder( Integer.parseInt( values.get( FIELD_SORT_ORDER ) ) );
             
-            read( association, GroupMemberType.DATAELEMENTGROUP, params );
+            read( association, GroupMemberType.DATAELEMENTGROUPSET, params );
         }
     }
 }

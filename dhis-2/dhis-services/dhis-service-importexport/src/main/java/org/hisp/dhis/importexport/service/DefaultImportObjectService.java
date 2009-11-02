@@ -43,6 +43,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
@@ -60,6 +61,7 @@ import org.hisp.dhis.importexport.ImportObjectStore;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.olap.OlapURL;
@@ -293,6 +295,13 @@ public class DefaultImportObjectService<T>
                 DataElementGroup group = (DataElementGroup) importObject.getObject();
                 
                 deleteGroupAssociations( GroupMemberType.DATAELEMENTGROUP, group.getId() );
+                deleteMemberAssociations( GroupMemberType.DATAELEMENTGROUPSET, group.getId() );
+            }
+            else if ( importObject.getClassName().equals( DataElementGroupSet.class.getName() ) )
+            {
+                DataElementGroupSet groupSet = (DataElementGroupSet) importObject.getObject();
+                
+                deleteGroupAssociations( GroupMemberType.DATAELEMENTGROUPSET, groupSet.getId() );
             }
             else if ( importObject.getClassName().equals( IndicatorType.class.getName() ) )
             {
@@ -313,6 +322,13 @@ public class DefaultImportObjectService<T>
                 IndicatorGroup group = (IndicatorGroup) importObject.getObject();
                 
                 deleteGroupAssociations( GroupMemberType.INDICATORGROUP, group.getId() );
+                deleteMemberAssociations( GroupMemberType.INDICATORGROUPSET, group.getId() );
+            }
+            else if ( importObject.getClassName().equals( IndicatorGroupSet.class.getName() ) )
+            {
+                IndicatorGroupSet groupSet = (IndicatorGroupSet) importObject.getObject();
+                
+                deleteGroupAssociations( GroupMemberType.INDICATORGROUPSET, groupSet.getId() );
             }
             else if ( importObject.getClassName().equals( DataDictionary.class.getName() ) )
             {
@@ -409,6 +425,11 @@ public class DefaultImportObjectService<T>
         else if ( clazz.equals( DataElementGroup.class ) )
         {
             importObjectStore.deleteImportObjects( GroupMemberType.DATAELEMENTGROUP );
+            importObjectStore.deleteImportObjects( GroupMemberType.DATAELEMENTGROUPSET );
+        }
+        else if ( clazz.equals( DataElementGroupSet.class ) )
+        {
+            importObjectStore.deleteImportObjects( GroupMemberType.DATAELEMENTGROUPSET );
         }
         else if ( clazz.equals( IndicatorType.class ) )
         {
@@ -426,6 +447,11 @@ public class DefaultImportObjectService<T>
         else if ( clazz.equals( IndicatorGroup.class ) )
         {
             importObjectStore.deleteImportObjects( GroupMemberType.INDICATORGROUP );
+            importObjectStore.deleteImportObjects( GroupMemberType.INDICATORGROUPSET );
+        }
+        else if ( clazz.equals( IndicatorGroupSet.class ) )
+        {
+            importObjectStore.deleteImportObjects( GroupMemberType.INDICATORGROUPSET );
         }
         else if ( clazz.equals( DataDictionary.class ) )
         {
@@ -498,6 +524,12 @@ public class DefaultImportObjectService<T>
             
             group.setName( dataElementService.getDataElementGroup( existingObjectId ).getName() );
         }
+        else if ( object.getClass().equals( DataElementGroupSet.class ) )
+        {
+            DataElementGroupSet groupSet = (DataElementGroupSet) object;
+            
+            groupSet.setName( dataElementService.getDataElementGroupSet( existingObjectId ).getName() );
+        }
         else if ( object.getClass().equals( IndicatorType.class ) )
         {
             IndicatorType type = (IndicatorType) object;
@@ -515,6 +547,12 @@ public class DefaultImportObjectService<T>
             IndicatorGroup group = (IndicatorGroup) object;
             
             group.setName( indicatorService.getIndicatorGroup( existingObjectId ).getName() );
+        }
+        else if ( object.getClass().equals( IndicatorGroupSet.class ) )
+        {
+            IndicatorGroupSet groupSet = (IndicatorGroupSet) object;
+            
+            groupSet.setName( indicatorService.getIndicatorGroupSet( existingObjectId ).getName() );
         }
         else if ( object.getClass().equals( DataDictionary.class ) )
         {
@@ -604,10 +642,14 @@ public class DefaultImportObjectService<T>
         importObjectManager.importCalculatedDataElements();
         importObjectManager.importDataElementGroups();
         importObjectManager.importDataElementGroupMembers();
+        importObjectManager.importDataElementGroupSets();
+        importObjectManager.importDataElementGroupSetMembers();
         importObjectManager.importIndicatorTypes();
         importObjectManager.importIndicators();
         importObjectManager.importIndicatorGroups();
         importObjectManager.importIndicatorGroupMembers();
+        importObjectManager.importIndicatorGroupSets();
+        importObjectManager.importIndicatorGroupSetMembers();
         importObjectManager.importDataDictionaries();
         importObjectManager.importDataDictionaryDataElements();
         importObjectManager.importDataDictionaryIndicators();

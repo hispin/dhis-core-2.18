@@ -53,13 +53,21 @@ public interface ImportObjectManager
     
     void importDataElementGroupMembers();
     
+    void importDataElementGroupSets();
+    
+    void importDataElementGroupSetMembers();
+    
     void importIndicatorTypes();
     
     void importIndicators();
     
     void importIndicatorGroups();
-    
+
     void importIndicatorGroupMembers();
+    
+    void importIndicatorGroupSets();
+    
+    void importIndicatorGroupSetMembers();
     
     void importDataDictionaries();
     
