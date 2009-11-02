@@ -32,6 +32,7 @@ import static org.hisp.dhis.importexport.dhis14.util.Dhis14ExpressionConverter.c
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14ExpressionConverter.convertExpressionToDhis14;
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14ExpressionConverter.getFirstDataElementId;
 import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBooleanFromDhis14;
+import static org.hisp.dhis.system.util.ConversionUtils.parseInt;
 
 import java.util.Collection;
 import java.util.Map;
@@ -144,7 +145,7 @@ public class IndicatorConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( object.getId() ) );
-                writer.writeElement( FIELD_SORT_ORDER, String.valueOf( object.getId() ) );
+                writer.writeElement( FIELD_SORT_ORDER, object.getSortOrder() != null ? String.valueOf( object.getSortOrder() ) : EMPTY );
                 writer.writeElement( FIELD_NAME, object.getName() );
                 writer.writeElement( FIELD_SHORT_NAME, object.getShortName() );
                 writer.writeElement( FIELD_DOS, TextUtils.subString( object.getShortName(), 0, 8 ) );
@@ -154,7 +155,7 @@ public class IndicatorConverter
                 writer.writeElement( FIELD_SELECTED, String.valueOf( 0 ) );
                 writer.writeElement( FIELD_INDICATOR_TYPE, String.valueOf( object.getIndicatorType().getId() ) );
                 writer.writeElement( FIELD_PERIOD_TYPE, String.valueOf( 1 ) );
-                writer.writeElement( FIELD_ANNUALISED, object.getAnnualized() ? String.valueOf( 1 ) : String.valueOf( 0 ) );
+                writer.writeElement( FIELD_ANNUALISED, object.isAnnualized() ? String.valueOf( 1 ) : String.valueOf( 0 ) );
                 writer.writeElement( FIELD_NUMERATOR, convertExpressionToDhis14( object.getNumerator(), mapping ) );
                 writer.writeElement( FIELD_NUMERATOR_AGG_LEVEL, String.valueOf( AGG_START_LEVEL ) );
                 writer.writeElement( FIELD_NUMERATOR_TIME_LAG, String.valueOf( 0 ) );
@@ -197,6 +198,8 @@ public class IndicatorConverter
         
         indicator.setNumerator( convertExpressionFromDhis14( values.get( FIELD_NUMERATOR ), dataElementMapping, 1, indicator.getName() ) );
         indicator.setDenominator( convertExpressionFromDhis14( values.get( FIELD_DENOMINATOR ), dataElementMapping, 1, indicator.getName() ) );
+
+        indicator.setSortOrder( parseInt( values.get( FIELD_SORT_ORDER ) ) );
         
         read( indicator, GroupMemberType.NONE, params );
     }

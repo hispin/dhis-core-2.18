@@ -21,6 +21,7 @@
 		<result property="description" column="DataElementDescription"/>
 		<result property="type" column="DataTypeID" typeHandler="dataElementTypeTypeHandler"/>
 		<result property="aggregationOperator" column="AggregateOperator" typeHandler="aggregationOperatorTypeHandler"/>
+		<result property="sortOrder" column="SortOrder"/>
 	</resultMap>
 	
 	<!-- Statement -->

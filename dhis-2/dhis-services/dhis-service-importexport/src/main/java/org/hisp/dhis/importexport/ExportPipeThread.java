@@ -164,6 +164,12 @@ public class ExportPipeThread
             
             log.info( "Export done" );
         }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+            
+            throw new RuntimeException( "Writing failed" + ex );
+        }
         finally
         {
             StreamUtils.finishZipEntry( zipOutputStream );

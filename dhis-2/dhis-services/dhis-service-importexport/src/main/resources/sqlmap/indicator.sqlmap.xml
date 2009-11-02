@@ -23,7 +23,8 @@
 		<result property="numerator" column="IndicatorNumerator"/>
 		<result property="numeratorDescription" column="IndicatorNumeratorDescription"/>
 		<result property="denominator" column="IndicatorDenominator"/>
-		<result property="denominatorDescription" column="IndicatorDenominatorDescription"/>		
+		<result property="denominatorDescription" column="IndicatorDenominatorDescription"/>
+        <result property="sortOrder" column="SortOrder"/>
 	</resultMap>
 	
 	<!-- Statement -->
