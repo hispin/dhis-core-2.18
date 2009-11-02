@@ -47,7 +47,7 @@
 	</tr>
 </table>
 
-<p><input type="button" value="$i18n.getString( "add" )" style="width:10em" onclick="validateAddDataElementGroupSet()"/><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='listDataElementGroupSet.action'" style="width:10em"></p>
+<p><input type="button" value="$i18n.getString( "add" )" style="width:10em" onclick="validateAddDataElementGroupSet()"/><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='dataElementGroupSet.action'" style="width:10em"></p>
 
 </form>
 

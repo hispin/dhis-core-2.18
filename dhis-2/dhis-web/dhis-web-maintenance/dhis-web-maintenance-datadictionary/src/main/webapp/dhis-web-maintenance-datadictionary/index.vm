@@ -1,3 +1,17 @@
+
 <h3>$i18n.getString("dhis-web-maintenance-datadictionary")</h3>
 
-<p>$i18n.getString("data_dictionary_intro")</p>
+<ul class="introList">
+	#introListItem( "dataElement.action" "data_element" )
+	#introListItem( "dataElementGroup.action" "data_element_group" )
+    #introListItem( "dataElementGroupEditor.action" "data_element_group_editor" )
+    #introListItem( "dataElementGroupSet.action" "data_element_group_set" )
+    #introListItem( "category.action" "data_element_category" )
+    #introListItem( "categoryCombo.action" "data_element_category_combo" )
+    #introListItem( "indicator.action" "indicator" )
+    #introListItem( "indicatorType.action" "indicator_type" )
+    #introListItem( "indicatorGroup.action" "indicator_group" )
+    #introListItem( "indicatorGroupEditor.action" "indicator_group_editor" )
+    #introListItem( "indicatorGroupSet.action" "indicator_group_set" )
+    #introListItem( "dataDictionary.action" "data_dictionary" )
+</ul>
