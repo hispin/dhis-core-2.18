@@ -30,6 +30,7 @@ package org.hisp.dhis.importexport.dxf.converter;
 import java.util.Collection;
 import java.util.Map;
 
+import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -66,10 +67,13 @@ public class DataElementGroupSetConverter
         this.dataElementService = dataElementService;
     }
 
-    public DataElementGroupSetConverter( DataElementService dataElementService, ImportObjectService importObjectService )
+    public DataElementGroupSetConverter( BatchHandler<DataElementGroupSet> batchHandler, 
+        ImportObjectService importObjectService,
+        DataElementService dataElementService )
     {
-        this.dataElementService = dataElementService;
+        this.batchHandler = batchHandler;
         this.importObjectService = importObjectService;
+        this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------

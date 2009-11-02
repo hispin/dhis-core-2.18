@@ -46,6 +46,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
@@ -74,6 +75,8 @@ import org.hisp.dhis.importexport.dxf.converter.DataElementCategoryOptionConvert
 import org.hisp.dhis.importexport.dxf.converter.DataElementConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataElementGroupConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataElementGroupMemberConverter;
+import org.hisp.dhis.importexport.dxf.converter.DataElementGroupSetConverter;
+import org.hisp.dhis.importexport.dxf.converter.DataElementGroupSetMemberConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataSetConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataSetMemberConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataSetSourceAssociationConverter;
@@ -85,6 +88,8 @@ import org.hisp.dhis.importexport.dxf.converter.GroupSetMemberConverter;
 import org.hisp.dhis.importexport.dxf.converter.IndicatorConverter;
 import org.hisp.dhis.importexport.dxf.converter.IndicatorGroupConverter;
 import org.hisp.dhis.importexport.dxf.converter.IndicatorGroupMemberConverter;
+import org.hisp.dhis.importexport.dxf.converter.IndicatorGroupSetConverter;
+import org.hisp.dhis.importexport.dxf.converter.IndicatorGroupSetMemberConverter;
 import org.hisp.dhis.importexport.dxf.converter.IndicatorTypeConverter;
 import org.hisp.dhis.importexport.dxf.converter.OlapUrlConverter;
 import org.hisp.dhis.importexport.dxf.converter.OrganisationUnitConverter;
@@ -107,6 +112,7 @@ import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHandler;
@@ -121,6 +127,8 @@ import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryComboBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryOptionBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementGroupSetBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementGroupSetMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetSourceAssociationBatchHandler;
@@ -132,6 +140,8 @@ import org.hisp.dhis.jdbc.batchhandler.ImportDataValueBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.IndicatorBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupSetBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupSetMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.IndicatorTypeBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
@@ -483,8 +493,7 @@ public class DefaultDXFImportService
             // dxfv1 only
             else if ( reader.isStartElement( CategoryComboCategoryAssociationConverter.COLLECTION_NAME ) )
             {
-                // setMessage( "importing_data_element_category_combo_members"
-                // );
+                // setMessage( "importing_data_element_category_combo_members" );
 
                 BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
                     .createBatchHandler( CategoryComboCategoryAssociationBatchHandler.class );
@@ -595,6 +604,42 @@ public class DefaultDXFImportService
 
                 log.info( "Imported DataElementGroup members" );
             }
+            else if ( reader.isStartElement( DataElementGroupSetConverter.COLLECTION_NAME ) )
+            {
+                // setMessage( "importing_data_element_group_sets" );
+                
+                BatchHandler<DataElementGroupSet> batchHandler = batchHandlerFactory.
+                    createBatchHandler( DataElementGroupSetBatchHandler.class );
+                
+                batchHandler.init();
+                
+                XMLConverter converter = new DataElementGroupSetConverter( batchHandler, importObjectService, dataElementService );
+                
+                converterInvoker.invokeRead( converter, reader, params );
+                
+                batchHandler.flush();
+                
+                log.info( "Imported DataElementGroupSets" );
+            }
+            else if ( reader.isStartElement( DataElementGroupSetMemberConverter.COLLECTION_NAME ) )
+            {
+                // setMessage( "importing_data_element_group_set_members" );
+
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.
+                    createBatchHandler( DataElementGroupSetMemberBatchHandler.class );
+                
+                batchHandler.init();
+                
+                XMLConverter converter = new DataElementGroupSetMemberConverter( batchHandler, importObjectService,
+                    objectMappingGenerator.getDataElementGroupMapping( params.skipMapping() ), 
+                    objectMappingGenerator.getDataElementGroupSetMapping( params.skipMapping() ) );
+                
+                converterInvoker.invokeRead( converter, reader, params );
+                
+                batchHandler.flush();
+                
+                log.info( "Imported DataElementGroupSet members" );
+            }
             else if ( reader.isStartElement( IndicatorTypeConverter.COLLECTION_NAME ) )
             {
                 // setMessage( "importing_indicator_types" );
@@ -697,6 +742,42 @@ public class DefaultDXFImportService
                 batchHandler.flush();
 
                 log.info( "Imported IndicatorGroup members" );
+            }
+            else if ( reader.isStartElement( IndicatorGroupSetConverter.COLLECTION_NAME ) )
+            {
+                // setMessage( "importing_indicator_group_sets" );
+                
+                BatchHandler<IndicatorGroupSet> batchHandler = batchHandlerFactory.
+                    createBatchHandler( IndicatorGroupSetBatchHandler.class );
+                
+                batchHandler.init();
+                
+                XMLConverter converter = new IndicatorGroupSetConverter( batchHandler, importObjectService, indicatorService );
+                
+                converterInvoker.invokeRead( converter, reader, params );
+                
+                batchHandler.flush();
+                
+                log.info( "Imported IndicatorGroupSets" );
+            }
+            else if ( reader.isStartElement( IndicatorGroupSetMemberConverter.COLLECTION_NAME ) )
+            {
+                // setMessage( "importing_indicator_group_set_members" );
+                
+                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.
+                    createBatchHandler( IndicatorGroupSetMemberBatchHandler.class );
+                
+                batchHandler.init();
+                
+                XMLConverter converter = new IndicatorGroupSetMemberConverter( batchHandler, importObjectService,
+                    objectMappingGenerator.getIndicatorGroupMapping( params.skipMapping() ),
+                    objectMappingGenerator.getIndicatorGroupSetMapping( params.skipMapping() ) );
+                
+                converterInvoker.invokeRead( converter, reader, params );
+                
+                batchHandler.flush();
+                
+                log.info( "Imported IndicatorGroupSet members" );
             }
             else if ( reader.isStartElement( DataDictionaryConverter.COLLECTION_NAME ) )
             {

@@ -118,7 +118,7 @@ public class CategoryComboCategoryAssociationConverter
             {
                 if ( categoryCombo.getCategories() != null )
                 {
-                    int sortOrder = 0;
+                    int sortOrder = 1;
                     
                     for ( DataElementCategory category : categoryCombo.getCategories() )
                     {

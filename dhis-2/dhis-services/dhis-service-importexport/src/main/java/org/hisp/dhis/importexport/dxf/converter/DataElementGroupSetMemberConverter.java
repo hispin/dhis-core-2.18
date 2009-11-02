@@ -58,6 +58,7 @@ public class DataElementGroupSetMemberConverter
     
     private static final String FIELD_DATAELEMENT_GROUP = "dataElementGroup";
     private static final String FIELD_DATAELEMENT_GROUP_SET = "dataElementGroupSet";
+    private static final String FIELD_SORT_ORDER = "sortOrder";
 
     // -------------------------------------------------------------------------
     // Properties
@@ -110,20 +111,20 @@ public class DataElementGroupSetMemberConverter
             writer.openElement( COLLECTION_NAME );
             
             for ( DataElementGroupSet groupSet : groupSets )
-            {
-                if ( groupSet.getMembers() != null )
+            {           
+                int sortOrder = 1;
+                
+                for ( DataElementGroup group : groupSet.getMembers() )
                 {                    
-                    for ( DataElementGroup group : groupSet.getMembers() )
+                    if ( groups.contains( group ) )
                     {
-                        if ( groups.contains( group ) )
-                        {
-                            writer.openElement( ELEMENT_NAME );
-                            
-                            writer.writeElement( FIELD_DATAELEMENT_GROUP_SET, String.valueOf( groupSet.getId() ) );
-                            writer.writeElement( FIELD_DATAELEMENT_GROUP, String.valueOf( group.getId() ) );
-                            
-                            writer.closeElement();
-                        }
+                        writer.openElement( ELEMENT_NAME );
+                        
+                        writer.writeElement( FIELD_DATAELEMENT_GROUP_SET, String.valueOf( groupSet.getId() ) );
+                        writer.writeElement( FIELD_DATAELEMENT_GROUP, String.valueOf( group.getId() ) );
+                        writer.writeElement( FIELD_SORT_ORDER, String.valueOf( sortOrder++ ) );
+                        
+                        writer.closeElement();
                     }
                 }
             }
@@ -142,6 +143,7 @@ public class DataElementGroupSetMemberConverter
             
             association.setGroupId( dataElementGroupSetMapping.get( Integer.parseInt( values.get( FIELD_DATAELEMENT_GROUP_SET )) ) );
             association.setMemberId( dataElementGroupMapping.get( Integer.parseInt( values.get( FIELD_DATAELEMENT_GROUP ) ) ) );
+            association.setSortOrder( Integer.parseInt( values.get( FIELD_SORT_ORDER ) ) );
             
             read( association, GroupMemberType.DATAELEMENTGROUP, params );
         }

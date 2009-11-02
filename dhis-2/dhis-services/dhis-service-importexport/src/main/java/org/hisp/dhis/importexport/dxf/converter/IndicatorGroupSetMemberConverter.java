@@ -58,6 +58,7 @@ public class IndicatorGroupSetMemberConverter
     
     private static final String FIELD_INDICATOR_GROUP = "indicatorGroup";
     private static final String FIELD_INDICATOR_GROUP_SET = "indicatorGroupSet";
+    private static final String FIELD_SORT_ORDER = "sortOrder";
     
     // -------------------------------------------------------------------------
     // Properties
@@ -111,14 +112,17 @@ public class IndicatorGroupSetMemberConverter
             
             for ( IndicatorGroupSet groupSet : groupSets )
             {
+                int sortOrder = 1;
+                
                 for ( IndicatorGroup group : groupSet.getMembers() )
-                {
+                {                    
                     if ( groups.contains( group ) )
                     {
                         writer.openElement( ELEMENT_NAME );
                     
                         writer.writeElement( FIELD_INDICATOR_GROUP_SET, String.valueOf( groupSet.getId() ) );
                         writer.writeElement( FIELD_INDICATOR_GROUP, String.valueOf( group.getId() ) );
+                        writer.writeElement( FIELD_SORT_ORDER, String.valueOf( sortOrder++ ) );
                     
                         writer.closeElement();
                     }
@@ -139,6 +143,7 @@ public class IndicatorGroupSetMemberConverter
             
             association.setGroupId( indicatorGroupSetMapping.get( Integer.parseInt( values.get( FIELD_INDICATOR_GROUP_SET ) ) ) );
             association.setMemberId( indicatorGroupMapping.get( Integer.parseInt( values.get( FIELD_INDICATOR_GROUP ) ) ) );
+            association.setSortOrder( Integer.parseInt( values.get( FIELD_SORT_ORDER ) ) );
             
             read( association, GroupMemberType.INDICATORGROUP, params );
         }
