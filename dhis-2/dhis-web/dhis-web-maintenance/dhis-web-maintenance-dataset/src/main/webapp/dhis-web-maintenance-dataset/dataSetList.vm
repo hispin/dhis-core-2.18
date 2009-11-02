@@ -43,7 +43,7 @@
                   <a href="editDataSetFormCustomValues.action?dataSetId=$dataSet.id&typeTextOnly=true" title="$i18n.getString( "edit_custom_values" )"><img src="../images/custom_value.png" alt="$i18n.getString( "edit_custom_values" )"></a>
                 </td>                 
                 <td style="text-align:center"#alternate( $mark )>
-                   <a href="$i18n.getString( "translation_translate" )" title="$i18n.getString( "translation_translate" )" onclick="this.href='javascript:location.href= \'../dhis-web-commons/i18n.action?className=DataSet&amp;objectId=$dataSet.id&amp;returnUrl=\' + location.href'"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a>
+                   <a href="javascript:translate( 'DataSet', '$dataSet.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a>
                 </td>
                 <td style="text-align:center"#alternate( $mark )>
                   <a href="javascript:viewDataEntryForm( '$dataSet.id' )" title="$i18n.getString( "design_data_entry_form" )"><img src="../images/edit_layout.png" alt="$i18n.getString( "design_data_entry_form" )"></a>
