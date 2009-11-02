@@ -33,7 +33,7 @@
 						#end
 					</td>
 					<td style="text-align:center"#alternate( $mark )><a href="showUpdateOrganisationUnitForm.action?id=$organisationUnit.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
-					<td style="text-align:center"#alternate( $mark )><a href="$i18n.getString( "translation_translate" )" title="$i18n.getString( "translation_translate" )" onclick="this.href='javascript:location.href= \'../dhis-web-commons/i18n.action?className=OrganisationUnit&amp;objectId=$organisationUnit.id&amp;returnUrl=\' + location.href'"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a></td>
+					<td style="text-align:center"#alternate( $mark )><a href="javascript:translate( 'OrganisationUnit', '$organisationUnit.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a></td>
 					<td style="text-align:center"#alternate( $mark )>#if( $organisationUnit.children.size() == 0 )<a href="javascript:removeOrganisationUnit( $organisationUnit.id, '$encoder.jsEncode( $organisationUnit.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>#end</td>
 					<td style="text-align:center"#alternate( $mark )><a href="javascript:showOrganisationUnitDetails( $organisationUnit.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
 				</tr>

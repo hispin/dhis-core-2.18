@@ -50,7 +50,7 @@ Supportive method for displaying rows with alternating colors in a table.
 @param mark boolean alternating the color.
 *#
 #macro( alternate $mark )
-    #if ( $mark ) class="listAlternateRow"#else class="listRow"#end
+#if ( $mark ) class="listAlternateRow"#else class="listRow"#end
 #end
 
 #*
@@ -59,37 +59,37 @@ Formats a boolean into a readable value
 @param bool the boolean to format.
 *#
 #macro( formatBool $bool )
-	#if ( $bool )
-		$i18n.getString( "yes" )
-	#else
-	   $i18n.getString( "no" )
-    #end
+#if ( $bool )
+  $i18n.getString( "yes" )
+#else
+  $i18n.getString( "no" )
+#end
 #end
 
 #macro( formatAggregationOperator $operator )
-	#if ( $operator == "average" )
-		$i18n.getString( "average" )
-    #elseif ( $operator == "count" )
-        $i18n.getString( "count" )
-    #elseif ( $operator == "sum" )
-        $i18n.getString( "sum" )
-    #else
-        $i18n.getString( "unknown" )
-    #end
+#if ( $operator == "average" )
+  $i18n.getString( "average" )
+#elseif ( $operator == "count" )
+  $i18n.getString( "count" )
+#elseif ( $operator == "sum" )
+  $i18n.getString( "sum" )
+#else
+  $i18n.getString( "unknown" )
+#end
 #end
 
 #macro( formatType $type )
-	#if ( $type == "string" )
-		$i18n.getString( "text" )
-    #elseif ( $type == "bool" )
-        $i18n.getString( "yes_no" )
-    #elseif ( $type == "int" )
-        $i18n.getString( "number" )
-	#else	   
-        $i18n.getString( "unknown" )
-    #end
+#if ( $type == "string" )
+  $i18n.getString( "text" )
+#elseif ( $type == "bool" )
+  $i18n.getString( "yes_no" )
+#elseif ( $type == "int" )
+  $i18n.getString( "number" )
+#else	   
+  $i18n.getString( "unknown" )
+#end
 #end
 
 #macro( openHelp $id )
-	<a href="javascript:openHelpForm('${id}')" title="$i18n.getString( 'help' )"><img src="../images/help.png" alt="$i18n.getString( 'help' )"></a>
+<a href="javascript:openHelpForm('${id}')" title="$i18n.getString( 'help' )"><img src="../images/help.png" alt="$i18n.getString( 'help' )"></a>
 #end

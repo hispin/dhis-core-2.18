@@ -1,5 +1,18 @@
 
 /**
+ * Redirects to the translate GUI.
+ * 
+ * @param className the name of the object class.
+ * @param objectId the identifier of the object.
+ */
+function translate( className, objectId )
+{
+    var url = "../dhis-web-commons/i18n.action?className=" + className + "&objectId=" + objectId + "&returnUrl=" + window.location.href; 
+    
+    window.location.href = url; 
+}
+
+/**
  * Opens a help popup window.
  * 
  * @param id the key of the help property content.

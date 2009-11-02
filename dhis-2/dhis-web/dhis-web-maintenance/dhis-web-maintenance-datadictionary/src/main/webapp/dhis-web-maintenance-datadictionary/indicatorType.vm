@@ -25,7 +25,7 @@
 				<tr>
 					<td#alternate( $mark )>$encoder.htmlEncode( $indicatorType.name )</td>
 					<td style="text-align:center"#alternate( $mark )><a href="showUpdateIndicatorTypeForm.action?id=$indicatorType.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
-					<td style="text-align:center"#alternate( $mark )><a href="$i18n.getString( "translation_translate" )" title="$i18n.getString( "translation_translate" )" onclick="this.href='javascript:location.href= \'../dhis-web-commons/i18n.action?className=IndicatorType&amp;objectId=$indicatorType.id&amp;returnUrl=\' + location.href'"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a></td>
+					<td style="text-align:center"#alternate( $mark )><a href="javascript:translate( 'IndicatorType', '$indicatorType.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a></td>
 					<td style="text-align:center"#alternate( $mark )><a href="javascript:removeIndicatorType( $indicatorType.id, '$encoder.jsEncode( $indicatorType.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
 					<td style="text-align:center"#alternate( $mark )><a href="javascript:showIndicatorTypeDetails( $indicatorType.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
 				</tr>
