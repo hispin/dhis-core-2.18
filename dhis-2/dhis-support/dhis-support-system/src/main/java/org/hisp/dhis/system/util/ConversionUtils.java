@@ -89,4 +89,21 @@ public class ConversionUtils
         
         return integers;
     }
+    
+    /**
+     * Parses the string argument as a signed decimal integer. Null is returedn 
+     * if the argument is null or has zero length.
+     * 
+     * @param string the string to parse.
+     * @return an integer or null.
+     */
+    public static Integer parseInt( String string )
+    {
+        if ( string == null || string.isEmpty() )
+        {
+            return null;
+        }
+        
+        return Integer.parseInt( string );
+    }
 }

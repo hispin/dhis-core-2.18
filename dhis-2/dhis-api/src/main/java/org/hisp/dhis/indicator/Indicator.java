@@ -106,6 +106,15 @@ public class Indicator
     {
         return groupSets != null && groupSets.size() > 0;
     }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public boolean isAnnualized()
+    {
+        return annualized != null && annualized;
+    }
     
     // -------------------------------------------------------------------------
     // hashCode and equals

@@ -94,6 +94,7 @@ public class DataSetBatchHandler
         statementBuilder.setColumn( "shortName" );
         statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "periodtypeid" );
+        statementBuilder.setColumn( "sortorder" );
     }
     
     protected void setValues( DataSet dataSet )
@@ -102,5 +103,6 @@ public class DataSetBatchHandler
         statementBuilder.setValue( dataSet.getShortName() );
         statementBuilder.setValue( dataSet.getCode() );
         statementBuilder.setValue( dataSet.getPeriodType().getId() );
+        statementBuilder.setValue( dataSet.getSortOrder() );
     }
 }

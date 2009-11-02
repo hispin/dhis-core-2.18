@@ -108,10 +108,10 @@ public class DefaultDhis14XMLExportService
     {
         try
         {
-            // -------------------------------------------------------------------------
-            // Pipes are input/output pairs. Data written on the output stream shows 
-            // up on the input stream at the other end of the pipe. 
-            // -------------------------------------------------------------------------
+            // -----------------------------------------------------------------
+            // Pipes are input/output pairs. Data written on the output stream 
+            // shows up on the input stream at the other end of the pipe. 
+            // -----------------------------------------------------------------
             
             PipedOutputStream out = new PipedOutputStream();
             
@@ -123,9 +123,9 @@ public class DefaultDhis14XMLExportService
 
             XMLWriter writer = XMLFactory.getPlainXMLWriter( zipOut );
             
-            // -------------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Writes to one end of the pipe 
-            // -------------------------------------------------------------------------
+            // -----------------------------------------------------------------
 
             ExportPipeThread thread = new Dhis14ExportPipeThread( sessionFactory );
             
@@ -136,8 +136,7 @@ public class DefaultDhis14XMLExportService
             thread.setRootName( ROOT_NAME );
             thread.setRootProperties( ROOT_PROPERTIES );
 
-            thread.registerXSDConverter( new DataRootXSDConverter() );
-            
+            thread.registerXSDConverter( new DataRootXSDConverter() );            
             thread.registerXSDConverter( new PeriodTypeXSDConverter() );
             thread.registerXSDConverter( new DataElementXSDConverter() );
             thread.registerXSDConverter( new CalculatedDataElementAssociationXSDConverter() );
@@ -158,9 +157,9 @@ public class DefaultDhis14XMLExportService
             
             thread.start();
 
-            // -------------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Reads at the other end of the pipe 
-            // -------------------------------------------------------------------------
+            // -----------------------------------------------------------------
             
             InputStream bis = new BufferedInputStream( in );
             
