@@ -378,3 +378,32 @@ div#menuDropDown3
   border-bottom: 1px solid #cad5e5;
   background-color: #ebf0f6;
 }
+
+/*----------------------------------------------------------------------------*/
+/* Intro                                                                      */
+/*----------------------------------------------------------------------------*/
+
+.introList
+{    
+  list-style-type:none;
+  width: 450px;
+  background-color: #d5efd5;
+  border: 1px solid #a4d2a3;
+  padding-top: 15px;
+  padding-bottom: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+	
+.introItem
+{
+  padding: 15px;
+  cursor: pointer;
+  border: 1px solid #d5efd5;
+}
+
+.introItemHeader
+{
+  color: #3c533c;
+  font-weight: bold;
+}
