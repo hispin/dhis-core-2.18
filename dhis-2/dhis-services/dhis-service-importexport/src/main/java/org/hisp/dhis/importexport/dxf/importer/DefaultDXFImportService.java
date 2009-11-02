@@ -367,7 +367,7 @@ public class DefaultDXFImportService
         if ( reader.getXmlStreamReader().getNamespaceURI() == DXF2_NAMESPACE_URI )
         {
             dxfVersion = 2;
-            log.info( "parsing dxf version " + dxfVersion );
+            log.info( "Parsing DXF version " + dxfVersion );
 
             try
             {
@@ -377,14 +377,14 @@ public class DefaultDXFImportService
             }
             catch ( javax.xml.bind.JAXBException ex )
             {
-                log.info( "Parsing error: " + ex );
+                log.warn( "Parsing error: " + ex );
                 // report something to GUI ....
             }
         }
         else
         {
             dxfVersion = 1;
-            log.info( "parsing dxf version " + dxfVersion );
+            log.info( "Parsing DXF version " + dxfVersion );
             parseDXFv1( params, reader );
         }
 
@@ -1216,7 +1216,7 @@ public class DefaultDXFImportService
 
                     log.warn( "Skipped DataValues because import file contained DataValues for locked Period, Organisation Unit and DataSet combinations" );
                 }
-                else */
+                else */ //TODO too slow
                 {
                     BatchHandler<DataValue> batchHandler = batchHandlerFactory
                         .createBatchHandler( DataValueBatchHandler.class );

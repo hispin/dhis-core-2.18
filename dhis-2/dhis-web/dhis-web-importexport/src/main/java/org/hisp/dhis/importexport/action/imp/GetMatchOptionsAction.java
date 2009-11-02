@@ -27,13 +27,30 @@ package org.hisp.dhis.importexport.action.imp;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.Objects.CALCULATEDDATAELEMENT;
+import static org.hisp.dhis.common.Objects.DATADICTIONARY;
+import static org.hisp.dhis.common.Objects.DATAELEMENT;
+import static org.hisp.dhis.common.Objects.DATAELEMENTGROUP;
+import static org.hisp.dhis.common.Objects.DATAELEMENTGROUPSET;
+import static org.hisp.dhis.common.Objects.DATASET;
+import static org.hisp.dhis.common.Objects.INDICATOR;
+import static org.hisp.dhis.common.Objects.INDICATORGROUP;
+import static org.hisp.dhis.common.Objects.INDICATORGROUPSET;
+import static org.hisp.dhis.common.Objects.INDICATORTYPE;
+import static org.hisp.dhis.common.Objects.OLAPURL;
+import static org.hisp.dhis.common.Objects.ORGANISATIONUNIT;
+import static org.hisp.dhis.common.Objects.ORGANISATIONUNITGROUP;
+import static org.hisp.dhis.common.Objects.ORGANISATIONUNITGROUPSET;
+import static org.hisp.dhis.common.Objects.ORGANISATIONUNITLEVEL;
+import static org.hisp.dhis.common.Objects.REPORTTABLE;
+import static org.hisp.dhis.common.Objects.VALIDATIONRULE;
+
 import java.util.Collection;
 
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ImportObjectService;
-import org.hisp.dhis.importexport.action.util.ClassMapUtil;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.olap.OlapURLService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -179,63 +196,71 @@ public class GetMatchOptionsAction
     {
         importObject = importObjectService.getImportObject( Integer.valueOf( objectId ) );
         
-        if ( objectType.equals( ClassMapUtil.ObjectType.DATAELEMENT.name() ) )
+        if ( objectType.equals( DATAELEMENT.name() ) )
         {
             objects = dataElementService.getNonCalculatedDataElements();
         }
-        else if ( objectType.equals( ClassMapUtil.ObjectType.CALCULATEDDATAELEMENT.name() ) )
+        else if ( objectType.equals( CALCULATEDDATAELEMENT.name() ) )
         {
             objects = dataElementService.getCalculatedDataElements();
         }
-        else if ( objectType.equals( ClassMapUtil.ObjectType.DATAELEMENTGROUP.name() ) )
+        else if ( objectType.equals( DATAELEMENTGROUP.name() ) )
         {
             objects = dataElementService.getAllDataElementGroups();        
         }
-        else if ( objectType.equals( ClassMapUtil.ObjectType.INDICATORTYPE.name() ) )
+        else if ( objectType.equals( DATAELEMENTGROUPSET.name() ) )
+        {
+            objects = dataElementService.getAllDataElementGroupSets();
+        }
+        else if ( objectType.equals( INDICATORTYPE.name() ) )
         {
             objects = indicatorService.getAllIndicatorTypes();
         }
-        else if ( objectType.equals( ClassMapUtil.ObjectType.INDICATOR.name() ) ) 
+        else if ( objectType.equals( INDICATOR.name() ) ) 
         {
             objects = indicatorService.getAllIndicators();
         }
-        else if ( objectType.equals( ClassMapUtil.ObjectType.INDICATORGROUP.name() ) )
+        else if ( objectType.equals( INDICATORGROUP.name() ) )
         {
             objects = indicatorService.getAllIndicatorGroups();
         }
-        else if ( objectType.equals( ClassMapUtil.ObjectType.DATADICTIONARY.name() ) )
+        else if ( objectType.equals( INDICATORGROUPSET.name() ) )
+        {
+            objects = indicatorService.getAllIndicatorGroupSets();
+        }
+        else if ( objectType.equals( DATADICTIONARY.name() ) )
         {
             objects = dataDictionaryService.getAllDataDictionaries();
         }
-        else if ( objectType.equals( ClassMapUtil.ObjectType.DATASET.name() ) )
+        else if ( objectType.equals( DATASET.name() ) )
         {
             objects = dataSetService.getAllDataSets();
         }
-        else if ( objectType.equals( ClassMapUtil.ObjectType.ORGANISATIONUNIT.name() ) )
+        else if ( objectType.equals( ORGANISATIONUNIT.name() ) )
         {
             objects = organisationUnitService.getAllOrganisationUnits();
         }
-        else if ( objectType.equals( ClassMapUtil.ObjectType.ORGANISATIONUNITGROUP.name() ) )
+        else if ( objectType.equals( ORGANISATIONUNITGROUP.name() ) )
         {
             objects = organisationUnitGroupService.getAllOrganisationUnitGroups();
         }
-        else if ( objectType.equals( ClassMapUtil.ObjectType.ORGANISATIONUNITGROUPSET.name() ) )
+        else if ( objectType.equals( ORGANISATIONUNITGROUPSET.name() ) )
         {
             objects = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
         }
-        else if ( objectType.equals( ClassMapUtil.ObjectType.ORGANISATIONUNITLEVEL.name() ) )
+        else if ( objectType.equals( ORGANISATIONUNITLEVEL.name() ) )
         {
             objects = organisationUnitService.getOrganisationUnitLevels();
         }
-        else if ( objectType.equals( ClassMapUtil.ObjectType.VALIDATIONRULE.name() ) )
+        else if ( objectType.equals( VALIDATIONRULE.name() ) )
         {
             objects = validationRuleService.getAllValidationRules();
         }
-        else if ( objectType.equals( ClassMapUtil.ObjectType.REPORTTABLE.name() ) )
+        else if ( objectType.equals( REPORTTABLE.name() ) )
         {
             objects = reportTableService.getAllReportTables();
         }
-        else if ( objectType.equals( ClassMapUtil.ObjectType.OLAPURL.name() ) )
+        else if ( objectType.equals( OLAPURL.name() ) )
         {
             objects = olapURLService.getAllOlapURLs();
         }

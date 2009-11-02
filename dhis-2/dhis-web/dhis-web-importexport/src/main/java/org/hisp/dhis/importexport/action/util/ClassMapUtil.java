@@ -30,15 +30,18 @@ package org.hisp.dhis.importexport.action.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hisp.dhis.common.Objects;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -48,65 +51,48 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.validation.ValidationRule;
 
+import static org.hisp.dhis.common.Objects.*;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class ClassMapUtil
 {
-    //TODO move to API?
+   
     
-    public static enum ObjectType
-    {
-        DATAELEMENT,
-        CALCULATEDDATAELEMENT,
-        EXTENDEDDATAELEMENT,
-        DATAELEMENTGROUP,
-        INDICATORTYPE,
-        INDICATOR,
-        INDICATORGROUP,
-        DATADICTIONARY,
-        DATASET,
-        ORGANISATIONUNIT,
-        ORGANISATIONUNITGROUP,
-        ORGANISATIONUNITGROUPSET,
-        ORGANISATIONUNITLEVEL,
-        VALIDATIONRULE,
-        REPORTTABLE,
-        OLAPURL,
-        DATAVALUE
-    }
-    
-    private static Map<ObjectType, Class<?>> classMap;
+    private static Map<Objects, Class<?>> classMap;
     
     static
     {
-        classMap = new HashMap<ObjectType, Class<?>>();
+        classMap = new HashMap<Objects, Class<?>>();
         
-        classMap.put( ObjectType.DATAELEMENT, DataElement.class );
-        classMap.put( ObjectType.CALCULATEDDATAELEMENT, CalculatedDataElement.class );
-        classMap.put( ObjectType.EXTENDEDDATAELEMENT, ExtendedDataElement.class );
-        classMap.put( ObjectType.DATAELEMENTGROUP, DataElementGroup.class );
-        classMap.put( ObjectType.INDICATORTYPE, IndicatorType.class );
-        classMap.put( ObjectType.INDICATOR, Indicator.class );
-        classMap.put( ObjectType.INDICATORGROUP, IndicatorGroup.class );
-        classMap.put( ObjectType.DATADICTIONARY, DataDictionary.class );
-        classMap.put( ObjectType.DATASET, DataSet.class );
-        classMap.put( ObjectType.ORGANISATIONUNIT, OrganisationUnit.class );
-        classMap.put( ObjectType.ORGANISATIONUNITGROUP, OrganisationUnitGroup.class );
-        classMap.put( ObjectType.ORGANISATIONUNITGROUPSET, OrganisationUnitGroupSet.class );
-        classMap.put( ObjectType.ORGANISATIONUNITLEVEL, OrganisationUnitLevel.class );
-        classMap.put( ObjectType.VALIDATIONRULE, ValidationRule.class );
-        classMap.put( ObjectType.REPORTTABLE, ReportTable.class );
-        classMap.put( ObjectType.OLAPURL, OlapURL.class );
-        classMap.put( ObjectType.DATAVALUE, DataValue.class );
+        classMap.put( DATAELEMENT, DataElement.class );
+        classMap.put( CALCULATEDDATAELEMENT, CalculatedDataElement.class );
+        classMap.put( EXTENDEDDATAELEMENT, ExtendedDataElement.class );
+        classMap.put( DATAELEMENTGROUP, DataElementGroup.class );
+        classMap.put( DATAELEMENTGROUPSET, DataElementGroupSet.class );
+        classMap.put( INDICATORTYPE, IndicatorType.class );
+        classMap.put( INDICATOR, Indicator.class );
+        classMap.put( INDICATORGROUP, IndicatorGroup.class );
+        classMap.put( INDICATORGROUPSET, IndicatorGroupSet.class );
+        classMap.put( DATADICTIONARY, DataDictionary.class );
+        classMap.put( DATASET, DataSet.class );
+        classMap.put( ORGANISATIONUNIT, OrganisationUnit.class );
+        classMap.put( ORGANISATIONUNITGROUP, OrganisationUnitGroup.class );
+        classMap.put( ORGANISATIONUNITGROUPSET, OrganisationUnitGroupSet.class );
+        classMap.put( ORGANISATIONUNITLEVEL, OrganisationUnitLevel.class );
+        classMap.put( VALIDATIONRULE, ValidationRule.class );
+        classMap.put( REPORTTABLE, ReportTable.class );
+        classMap.put( OLAPURL, OlapURL.class );
+        classMap.put( DATAVALUE, DataValue.class );
     }
     
     public static Class<?> getClass( String type )
     {
         try
         {
-            return classMap.get( ObjectType.valueOf( type ) );
+            return classMap.get( valueOf( type ) );
         }
         catch ( IllegalArgumentException ex )
         {

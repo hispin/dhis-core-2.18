@@ -145,7 +145,7 @@ public class IndicatorGroupSetMemberConverter
             association.setMemberId( indicatorGroupMapping.get( Integer.parseInt( values.get( FIELD_INDICATOR_GROUP ) ) ) );
             association.setSortOrder( Integer.parseInt( values.get( FIELD_SORT_ORDER ) ) );
             
-            read( association, GroupMemberType.INDICATORGROUP, params );
+            read( association, GroupMemberType.INDICATORGROUPSET, params );
         }
     }
 }
