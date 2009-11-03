@@ -40,6 +40,9 @@ function organisationUnitReceived( unitElement )
     var url = getElementValue( unitElement, 'url' );
     setFieldValue( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + none + ']' );
     
+    var lastUpdated = getElementValue( unitElement, 'lastUpdated' );
+    setFieldValue( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + none + ']' );
+    
     showDetails();
 }
 

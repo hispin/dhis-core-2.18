@@ -60,6 +60,9 @@ function dataElementReceived( dataElementElement )
     var url = getElementValue( dataElementElement, 'url' );
     setFieldValue( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + i18n_none + ']' );
 	
+	var lastUpdated = getElementValue( dataElementElement, 'lastUpdated' );
+	setFieldValue( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + i18n_none + ']' );
+	
     showDetails();
 }
 

@@ -50,6 +50,9 @@ function indicatorReceived( indicatorElement )
     var url = getElementValue( indicatorElement, 'url' );
     setFieldValue( 'urlField', url ? '<a href="' + url + '">' + url + '</a>' : '[' + i18n_none + ']' );
     
+    var lastUpdated = getElementValue( indicatorElement, 'lastUpdated' );
+    setFieldValue( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + i18n_none + ']' );
+    
     showDetails();
 }
 

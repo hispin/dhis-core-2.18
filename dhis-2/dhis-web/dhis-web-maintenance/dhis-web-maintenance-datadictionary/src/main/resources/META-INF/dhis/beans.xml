@@ -18,9 +18,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataDictionaryService">
 			<ref bean="org.hisp.dhis.datadictionary.DataDictionaryService" />
 		</property>
-		<property name="translationUserSettingSupport">
-		  <ref bean="translationUserSettingSupport"/>
-		</property>
 	</bean>
 
 	<bean
