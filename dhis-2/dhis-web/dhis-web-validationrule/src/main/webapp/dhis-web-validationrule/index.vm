@@ -1,0 +1,9 @@
+
+<h3>$i18n.getString( "dhis-web-validationrule" )</h3>
+
+<ul class="introList">
+    #introListItem( "showValidationRuleForm.action" "validation_rule" )
+    #introListItem( "showValidationRuleGroupForm.action" "validation_rule_group" )
+    #introListItem( "showRunValidationForm.action" "run_validation" )
+    #introListItem( "outlierAnalysisForm.action" "outlier_analysis" )
+</ul>

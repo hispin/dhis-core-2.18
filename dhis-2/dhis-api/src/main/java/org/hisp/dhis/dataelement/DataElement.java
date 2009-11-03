@@ -30,6 +30,7 @@ package org.hisp.dhis.dataelement;
 // import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -113,6 +114,11 @@ public class DataElement
      * URL for lookup of additional information on the web.
      */
     private String url;
+    
+    /**
+     * The date this data element was last updated.
+     */
+    private Date lastUpdated;
     
     /**
      * The data sets which this data element is a member of.
@@ -414,6 +420,16 @@ public class DataElement
     public void setUrl( String url )
     {
         this.url = url;
+    }
+
+    public Date getLastUpdated()
+    {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated( Date lastUpdated )
+    {
+        this.lastUpdated = lastUpdated;
     }
 
     public Set<DataSet> getDataSets()

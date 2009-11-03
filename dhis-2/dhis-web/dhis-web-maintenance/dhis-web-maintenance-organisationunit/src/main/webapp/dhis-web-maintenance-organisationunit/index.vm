@@ -1,0 +1,10 @@
+
+<h3>$i18n.getString( "dhis-web-maintenance-organisationunit" )</h3>
+
+<ul class="introList">
+    #introListItem( "organisationUnit.action" "org_unit" )
+    #introListItem( "organisationUnitGroup.action" "org_unit_group" )
+    #introListItem( "organisationUnitGroupSet.action" "org_unit_group_set" )
+    #introListItem( "organisationUnitLevel.action" "org_unit_level" )
+    #introListItem( "hierarchyOperations.action" "hierarchy_operations_menu" )
+</ul>

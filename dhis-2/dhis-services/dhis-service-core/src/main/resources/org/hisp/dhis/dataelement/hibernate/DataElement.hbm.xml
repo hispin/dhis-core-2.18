@@ -49,6 +49,8 @@
     <property name="sortOrder"/>
     
     <property name="url"/>
+	
+	<property name="lastUpdated"/>
     
     <set name="dataSets" table="datasetmembers" inverse="true">
       <key column="dataelementid"/>
