@@ -53,24 +53,18 @@ function removeDataElementCategoryCompleted( messageElement )
     }
 }
 
-function addCategoryOptionToCategory()
+function addCategoryOptionToCategory( categoryName )
 {
-	var categoryName = document.getElementById( 'categoryOptionName' ).value;
-	
-	if ( categoryName == "" )
-	{
-		setMessage( i18n_specify_category_option_name );
-	}
-	else if ( listContainsById( 'categoryOptionNames', categoryName ) )
+	if ( listContainsById( 'categoryOptionNames', categoryName ) )
 	{
 		setMessage( i18n_category_option_name_already_exists );
 	}
 	else
 	{
-	   addOption( 'categoryOptionNames', categoryName, categoryName );
-	
-	   document.getElementById( 'categoryOptionName' ).value = "";
+		addOption( 'categoryOptionNames', categoryName, categoryName );
+		document.getElementById( 'categoryOptionName' ).value = "";
 	}
+	
 }
 
 // ----------------------------------------------------------------------
@@ -145,3 +139,26 @@ function editDataElementCategoryValidationCompleted( messageElement )
         setMessage( message );
     }
 }
+
+
+function validateCategoryOptionJQuery() {
+
+	var categoryName = $("#categoryOptionName").val();
+	
+	$.post("validateDataElementCategoryOption.action", {
+		name:categoryName
+	}, function ( xmlObject ) {
+	
+		xmlObject = xmlObject.getElementsByTagName("message")[0];
+		var type = xmlObject.getAttribute("type");
+		
+		if ( type == "input" ) {
+		
+			setMessage(xmlObject.firstChild.nodeValue);
+		}
+		else {
+			addCategoryOptionToCategory( categoryName );
+		}
+	}, "xml");
+}
+

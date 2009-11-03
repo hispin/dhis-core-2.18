@@ -991,7 +991,17 @@
 				<param name="bufferSize">10240</param>
 			</result>
 		</action>
-
+		
+		<!-- Validate CategoryOption -->
+		
+		<action name="validateDataElementCategoryOption"
+			class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
+			<result name="input" type="velocity-xml">
+				/dhis-web-maintenance-datadictionary/responseInput.vm</result>
+		</action>
+	
 	</package>
 
 </struts>
