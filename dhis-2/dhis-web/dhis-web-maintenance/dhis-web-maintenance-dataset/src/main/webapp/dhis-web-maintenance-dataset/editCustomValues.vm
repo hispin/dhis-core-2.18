@@ -739,7 +739,7 @@ h4 {
     <tr>
         <td>
             <input type="button" onclick="remove()" value="$i18n.getString( "delete_custom_value" )" style="width:10em">
-            <input type="button" onclick="window.location.href='index.action'" value="$i18n.getString( "done_custom_value" )" style="width:10em">                
+            <input type="button" onclick="window.location.href='dataSet.action'" value="$i18n.getString( "done_custom_value" )" style="width:10em">                
         </td>
     </tr> 
 </tbody>

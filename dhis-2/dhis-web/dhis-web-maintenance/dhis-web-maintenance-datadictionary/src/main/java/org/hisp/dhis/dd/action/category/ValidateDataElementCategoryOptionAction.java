@@ -85,7 +85,7 @@ public class ValidateDataElementCategoryOptionAction
 
     public String execute()
     {
-        if ( (name == null) || (name.trim().equals( "" )) )
+        if ( name == null || name.isEmpty() )
         {
             message = i18n.getString( "specify_name" );
 
@@ -93,13 +93,14 @@ public class ValidateDataElementCategoryOptionAction
         }
         else
         {
-            if (dataElementCategoryService.getDataElementCategoryOptionByName( name ) != null)
+            if ( dataElementCategoryService.getDataElementCategoryOptionByName( name ) != null )
             {
                 message = i18n.getString( "name_in_use" );
-                
+
                 return INPUT;
             }
         }
+        
         message = "ok";
 
         return SUCCESS;

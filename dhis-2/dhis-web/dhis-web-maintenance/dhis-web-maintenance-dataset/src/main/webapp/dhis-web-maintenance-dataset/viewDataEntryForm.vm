@@ -61,7 +61,7 @@
       <tr>
         <td>
           <input type="submit" name="save" value="$i18n.getString( "save" )">
-          <input type="button" name="cancel" value="$i18n.getString( "cancel" )" onclick="window.location.href='index.action'">
+          <input type="button" name="cancel" value="$i18n.getString( "cancel" )" onclick="window.location.href='dataSet.action'">
         </td>
         <td id="cde_deletebuttoncell">
           <input type="button" name="delete" value="$i18n.getString( "delete" )" onclick="removeDataEntryForm( $dataEntryForm.id, '$dataEntryForm.name' )" #if($status == "ADD") disabled #end>

@@ -20,7 +20,7 @@ type="button" value="$i18n.getString( 'move_to_bottom' )" style="width:130px" on
 
 <p>
 <input type="button" value="$i18n.getString( 'save' )" style="width:130px" onclick="submitForm()"><input 
-type="button" value="$i18n.getString( 'cancel' )" style="width:130px" onclick="window.location.href='index.action'">
+type="button" value="$i18n.getString( 'cancel' )" style="width:130px" onclick="window.location.href='dataSet.action'">
 </p>
 
 </form>

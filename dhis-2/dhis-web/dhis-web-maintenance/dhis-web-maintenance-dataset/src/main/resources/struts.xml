@@ -8,6 +8,12 @@
   
   <package name="dhis-web-maintenance-dataset" extends="dhis-web-commons" namespace="/dhis-web-maintenance-dataset">
     
+	<action name="index" class="org.hisp.dhis.dataset.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataset/index.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
+	</action>
+	
     <!-- Custom Value -->
 
     <action name="editDataSetFormCustomValues"
@@ -18,9 +24,9 @@
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
         
-    <!-- Entry point -->
+    <!-- Dataset -->
     
-    <action name="index" class="org.hisp.dhis.dataset.action.DataSetListAction">
+    <action name="dataSet" class="org.hisp.dhis.dataset.action.DataSetListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/dataSetList.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
@@ -94,7 +100,7 @@
     
     <action name="saveDataSetSortOrder"
       class="org.hisp.dhis.dataset.action.SaveDataSetSortOrderAction">
-      <result name="success" type="redirect">index.action</result>
+      <result name="success" type="redirect">dataSet.action</result>
     </action>
     
     <!-- Show add DataSet form chain -->
@@ -158,19 +164,19 @@
     
     <action name="addDataSet"
       class="org.hisp.dhis.dataset.action.AddDataSetAction">
-      <result name="success" type="redirect">index.action</result>
+      <result name="success" type="redirect">dataSet.action</result>
       <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
     
     <action name="updateDataSet"
       class="org.hisp.dhis.dataset.action.UpdateDataSetAction">
-      <result name="success" type="redirect">index.action</result>
+      <result name="success" type="redirect">dataSet.action</result>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
     
     <action name="delDataSet"
       class="org.hisp.dhis.dataset.action.DelDataSetAction">
-      <result name="success" type="redirect">index.action</result>
+      <result name="success" type="redirect">dataSet.action</result>
       <param name="requiredAuthorities">F_DATASET_DELETE</param>
     </action>
     
@@ -192,7 +198,7 @@
     
     <action name="defineDataSetAssociations"
       class="org.hisp.dhis.dataset.action.DefineDataSetAssociationsAction">
-      <result name="success" type="redirect">index.action</result>
+      <result name="success" type="redirect">dataSet.action</result>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
     
@@ -246,7 +252,7 @@
     
     <action name="saveDataEntryForm"
       class="org.hisp.dhis.dataset.action.dataentryform.SaveDataEntryFormAction">
-      <result name="success" type="redirect">index.action</result>
+      <result name="success" type="redirect">dataSet.action</result>
     </action>
     
     <action name="validateDataEntryForm"
@@ -259,7 +265,7 @@
     
     <action name="delDataEntryForm"
       class="org.hisp.dhis.dataset.action.dataentryform.DelDataEntryFormAction">
-      <result name="success" type="redirect">index.action</result>
+      <result name="success" type="redirect">dataSet.action</result>
       <result name="input" type="velocity-xml">/dhis-web-maintenance-dataset/responseInput.vm</result>
     </action>
     
