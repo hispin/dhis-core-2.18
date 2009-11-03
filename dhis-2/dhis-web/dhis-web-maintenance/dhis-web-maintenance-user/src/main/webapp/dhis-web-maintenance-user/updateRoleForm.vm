@@ -1,4 +1,4 @@
-﻿
+
 <h3>$i18n.getString( "edit_user_role" )</h3>
 
 <form id="updateRoleForm" action="updateRole.action" method="post" onsubmit="return validateUpdateRole()">
