@@ -18,6 +18,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataDictionaryService">
 			<ref bean="org.hisp.dhis.datadictionary.DataDictionaryService" />
 		</property>
+		<property name="translationUserSettingSupport">
+		  <ref bean="translationUserSettingSupport"/>
+		</property>
 	</bean>
 
 	<bean
@@ -839,4 +842,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.dd.action.NoAction" class="org.hisp.dhis.dd.action.NoAction" />
 
+	
+	<!-- Validate CategoryOption -->
+	
+	<bean id="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction" 
+		class="org.hisp.dhis.dd.action.category.ValidateDataElementCategoryOptionAction"
+		scope="prototype">
+		<property name="dataElementCategoryService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		</property>
+	</bean>
+	
 </beans>
