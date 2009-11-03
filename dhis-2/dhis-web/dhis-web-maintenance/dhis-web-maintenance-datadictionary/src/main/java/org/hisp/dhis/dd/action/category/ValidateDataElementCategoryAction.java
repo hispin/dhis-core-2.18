@@ -93,7 +93,7 @@ public class ValidateDataElementCategoryAction
 
     public String execute()
     {
-        if ( name == null )
+        if ( name == null || name.isEmpty() )
         {
             message = i18n.getString( "specify_name" );
 
@@ -101,15 +101,6 @@ public class ValidateDataElementCategoryAction
         }
         else
         {
-            name = name.trim();
-
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "specify_name" );
-
-                return INPUT;
-            }
-
             DataElementCategory match = dataElementCategoryService.getDataElementCategoryByName( name );
 
             if ( match != null && (id == null || match.getId() != id) )
@@ -119,9 +110,8 @@ public class ValidateDataElementCategoryAction
                 return INPUT;
             }
         }
-        
         message = "ok";
-        
+
         return SUCCESS;
     }
 }
