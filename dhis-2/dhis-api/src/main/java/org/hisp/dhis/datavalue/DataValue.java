@@ -38,6 +38,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionSet;
+import org.hisp.dhis.dimension.Measure;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 
@@ -46,7 +47,7 @@ import org.hisp.dhis.source.Source;
  * @version $Id: DataValue.java 4638 2008-02-25 10:06:47Z larshelg $
  */
 public class DataValue
-    implements Serializable
+    implements Serializable, Measure
 {
     public static final String TRUE = "true";
     public static final String FALSE = "false";
@@ -174,6 +175,11 @@ public class DataValue
         }
         
         return dimensions;
+    }
+    
+    public String getMeasure()
+    {
+        return value;
     }
     
     // -------------------------------------------------------------------------
