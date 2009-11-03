@@ -28,7 +28,6 @@ package org.hisp.dhis.hibernate;
  */
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,19 +42,18 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.Configuration;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ResourceUtils;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: DefaultHibernateConfigurationProvider.java 3644 2007-10-15
- *          16:13:31Z torgeilo $
  */
 public class DefaultHibernateConfigurationProvider
     implements HibernateConfigurationProvider
 {
-    private static final Log LOG = LogFactory.getLog( DefaultHibernateConfigurationProvider.class );
+    private static final Log log = LogFactory.getLog( DefaultHibernateConfigurationProvider.class );
 
     private Configuration configuration = null;
 
@@ -66,13 +64,10 @@ public class DefaultHibernateConfigurationProvider
     // -------------------------------------------------------------------------
 
     private String defaultPropertiesFile = "hibernate-default.properties";
-
     private String regularPropertiesFile = "hibernate.properties";
-
     private String testPropertiesFile = "hibernate-test.properties";
     
-    private List<Resource> jarResources = new ArrayList<Resource>();
-    
+    private List<Resource> jarResources = new ArrayList<Resource>();    
     private List<Resource> dirResources = new ArrayList<Resource>();
     
     // -------------------------------------------------------------------------
@@ -113,9 +108,9 @@ public class DefaultHibernateConfigurationProvider
 
                 File file = ResourceUtils.getFile( jarFile );
                 
-                this.jarResources.add( new FileSystemResource( file.getAbsolutePath() ) );
+                jarResources.add( new FileSystemResource( file.getAbsolutePath() ) );
                 
-                LOG.debug( "Adding jar in which to search for hbm.xml files: " + file.getAbsolutePath() );
+                log.debug( "Adding jar in which to search for hbm.xml files: " + file.getAbsolutePath() );
 
                 configuration.addJar( file );
             }
@@ -123,9 +118,9 @@ public class DefaultHibernateConfigurationProvider
             {
                 File file = ResourceUtils.getFile( resource );
 
-                this.dirResources.add( new FileSystemResource( file ) );
+                dirResources.add( new FileSystemResource( file ) );
                 
-                LOG.debug( "Adding directory in which to search for hbm.xml files: " + file.getAbsolutePath() );
+                log.debug( "Adding directory in which to search for hbm.xml files: " + file.getAbsolutePath() );
                 
                 configuration.addDirectory( file );
             }
@@ -135,32 +130,23 @@ public class DefaultHibernateConfigurationProvider
         // Add default properties
         // ---------------------------------------------------------------------
 
-        Properties defaultProperties = loadProperties( defaultPropertiesFile, classLoader );
+        Properties defaultProperties = getProperties( defaultPropertiesFile );
 
         configuration.addProperties( defaultProperties );
 
         // ---------------------------------------------------------------------
-        // Choose the properties file to look for
+        // Choose which properties file to look for
         // ---------------------------------------------------------------------
-
-        String propertiesFile;
 
         String testing = System.getProperty( "org.hisp.dhis.test", "false" );
 
-        if ( testing.equals( "true" ) )
-        {
-            propertiesFile = testPropertiesFile;
-        }
-        else
-        {
-            propertiesFile = regularPropertiesFile;
-        }
+        String propertiesFile = testing.equals( "true" ) ? testPropertiesFile : regularPropertiesFile;
 
         // ---------------------------------------------------------------------
         // Add custom properties from classpath
         // ---------------------------------------------------------------------
 
-        Properties customProperties = getProperties( propertiesFile, classLoader );
+        Properties customProperties = getProperties( propertiesFile );
 
         if ( customProperties != null )
         {
@@ -173,13 +159,11 @@ public class DefaultHibernateConfigurationProvider
         
         try
         {
-            File customFile = locationManager.getFileForReading( propertiesFile );
-        
-            configuration.addProperties( getProperties( customFile ) );   
+            configuration.addProperties( getProperties( locationManager.getInputStream( propertiesFile ) ) );   
         }
         catch ( LocationManagerException ex )
         {
-            LOG.info( "Could not read external configuration from file system" );
+            log.info( "Could not read external configuration from file system" );
         }
         
         this.configuration = configuration;
@@ -210,116 +194,41 @@ public class DefaultHibernateConfigurationProvider
     }    
     
     // -------------------------------------------------------------------------
-    // Supporting methods
+    // Supportive methods
     // -------------------------------------------------------------------------
 
-    /**
-     * Loads properties file from classpath.
-     */
-    private Properties getProperties( String propertiesFile, ClassLoader classLoader )
+    private Properties getProperties( String path )
         throws IOException
     {
         try
         {
-            return loadProperties( propertiesFile, classLoader );
+            return getProperties( new ClassPathResource( path ).getInputStream() );
         }
-        catch ( FileNotFoundException e )
+        catch ( FileNotFoundException ex )
         {
             return null;
         }
-        catch ( SecurityException e )
+        catch ( SecurityException ex )
         {
-            LOG.warn( "SecurityException: Not permitted to read properties file: " + propertiesFile );
-
+            log.warn( "Not permitted to read properties file: " + path, ex );
+            
             return null;
         }
     }
-
-    private Properties loadProperties( String propertiesFile, ClassLoader classLoader )
+    
+    private Properties getProperties( InputStream inputStream )
         throws IOException
     {
-        URL resourceURL = classLoader.getResource( propertiesFile );
-
-        if ( resourceURL == null )
-        {
-            throw new FileNotFoundException( "Properties file not found: " + propertiesFile );
-        }
-
-        LOG.info( "Hibernate properties file found: " + resourceURL.toExternalForm() );
-
-        InputStream inputStream = resourceURL.openStream();
-
-        Properties properties = new Properties();
-
         try
         {
+            Properties properties = new Properties();            
             properties.load( inputStream );
-        }
-        catch ( IOException e )
-        {
-            throw e;
+            
+            return properties;
         }
         finally
         {
-            try
-            {
-                inputStream.close();
-            }
-            catch ( IOException ee )
-            {
-                LOG.error( "Failed to close input stream", ee );
-            }
+            inputStream.close();
         }
-
-        return properties;
-    }
-
-    /**
-     * Loads properties file from file.
-     */
-    private Properties getProperties( File file )
-        throws IOException
-    {
-        try
-        {
-            if ( !file.exists() )
-            {
-                return null;
-            }
-        }
-        catch ( SecurityException e )
-        {
-            LOG.warn( "SecurityException: Not permitted to read properties file: " + file.getPath() );
-
-            return null;
-        }
-
-        LOG.info( "Hibernate properties file found: " + file.getPath() );
-
-        InputStream inputStream = new FileInputStream( file );
-
-        Properties properties = new Properties();
-
-        try
-        {
-            properties.load( inputStream );
-        }
-        catch ( IOException e )
-        {
-            throw e;
-        }
-        finally
-        {
-            try
-            {
-                inputStream.close();
-            }
-            catch ( IOException ee )
-            {
-                LOG.error( "Failed to close input stream", ee );
-            }
-        }
-
-        return properties;
-    }
+    }    
 }
