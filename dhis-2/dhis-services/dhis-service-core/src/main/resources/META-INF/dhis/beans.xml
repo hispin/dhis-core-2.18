@@ -159,7 +159,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   </bean>
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore"
-    class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitGroupStore">
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.organisationunit.OrganisationUnitGroup"/>
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetStore"
+    class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet"/>
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
@@ -315,6 +322,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.organisationunit.DefaultOrganisationUnitGroupService">
     <property name="organisationUnitGroupStore"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore"/>
+    <property name="organisationUnitGroupSetStore"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetStore"/>
     <property name="i18nService"
       ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>

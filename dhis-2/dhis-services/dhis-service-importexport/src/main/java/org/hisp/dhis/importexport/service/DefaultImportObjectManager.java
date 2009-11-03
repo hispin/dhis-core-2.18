@@ -204,6 +204,7 @@ public class DefaultImportObjectManager
         this.importDataValueService = importDataValueService;
     }
 
+    @SuppressWarnings( "unused" )
     private LockingManager lockingManager;
 
     public void setLockingManager( LockingManager lockingManager )
