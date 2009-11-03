@@ -64,7 +64,6 @@ function addCategoryOptionToCategory( categoryName )
 		addOption( 'categoryOptionNames', categoryName, categoryName );
 		document.getElementById( 'categoryOptionName' ).value = "";
 	}
-	
 }
 
 // ----------------------------------------------------------------------
@@ -140,23 +139,25 @@ function editDataElementCategoryValidationCompleted( messageElement )
     }
 }
 
+function validateAddCategoryOption() {
 
-function validateCategoryOptionJQuery() {
-
-	var categoryName = $("#categoryOptionName").val();
+	var categoryName = $( "#categoryOptionName" ).val();
 	
-	$.post("validateDataElementCategoryOption.action", {
+	$.post( "validateDataElementCategoryOption.action", 
+	{
 		name:categoryName
-	}, function ( xmlObject ) {
-	
-		xmlObject = xmlObject.getElementsByTagName("message")[0];
-		var type = xmlObject.getAttribute("type");
+	},
+	function ( xmlObject ) 
+	{
+		xmlObject = xmlObject.getElementsByTagName( "message" )[0];
+		var type = xmlObject.getAttribute( "type" );
 		
-		if ( type == "input" ) {
-		
-			setMessage(xmlObject.firstChild.nodeValue);
+		if ( type == "input" ) 
+		{
+			setMessage( xmlObject.firstChild.nodeValue );
 		}
-		else {
+		else 
+		{
 			addCategoryOptionToCategory( categoryName );
 		}
 	}, "xml");

@@ -25,6 +25,7 @@
 		  	<td colspan="4" style="text-align:right">
 		  		<input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:addSectionSubmit()">
                 <input type="button" value="$i18n.getString( "sort_section" )" onclick="javascript:sortOrderSubmit()">
+                <input type="button" value="$i18n.getString( "cancel" )" onclick="javascript:window.location.href='dataSet.action'">
 	  		</td>
   		  </tr>
           <tr>

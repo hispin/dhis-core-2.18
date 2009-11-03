@@ -10,19 +10,21 @@
     namespace="/dhis-web-maintenance-settings">
         
     <action name="index" class="org.hisp.dhis.settings.action.NoAction">
-      <result name="success" type="redirect">userSettings.action</result>
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-settings/index.vm</param>
+      <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
     </action>
     
     <!-- System settings -->
     
-    <action name="getSystemSettings" class="org.hisp.dhis.settings.action.system.GetSystemSettingsAction">
+    <action name="systemSettings" class="org.hisp.dhis.settings.action.system.GetSystemSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-settings/systemSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
     </action>
     
     <action name="setSystemSettings" class="org.hisp.dhis.settings.action.system.SetSystemSettingsAction">
-      <result name="success" type="redirect">getSystemSettings.action</result>
+      <result name="success" type="redirect">systemSettings.action</result>
     </action>
     
     <!-- User settings -->

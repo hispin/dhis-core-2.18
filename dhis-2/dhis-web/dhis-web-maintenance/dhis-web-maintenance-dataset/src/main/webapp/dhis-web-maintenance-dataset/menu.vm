@@ -1,6 +1,6 @@
 
 <h2>$i18n.getString( "dataset" )&nbsp;</h2>
 <ul>
-	<li><a href="index.action">$i18n.getString( "dataset_management" )&nbsp;</a></li>
-	<li><a href="section.action">$i18n.getString( "section_management" )&nbsp;</a></li>
+	<li><a href="dataSet.action">$i18n.getString( "dataset" )&nbsp;</a></li>
+	<li><a href="section.action">$i18n.getString( "dataset_section" )&nbsp;</a></li>
 </ul>

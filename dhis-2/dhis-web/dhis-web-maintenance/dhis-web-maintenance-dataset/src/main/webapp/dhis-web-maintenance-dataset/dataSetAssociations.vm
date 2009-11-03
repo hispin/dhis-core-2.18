@@ -50,7 +50,7 @@
     <tr>
       <td>
         <input type="submit" id="submitButton" value="$i18n.getString( "save" )" style="width:10em"><input type="button"
-            onclick="window.location.href='index.action'" value="$i18n.getString( "cancel" )" style="width:10em">
+            onclick="window.location.href='dataSet.action'" value="$i18n.getString( "cancel" )" style="width:10em">
       </td>
     </tr>
   </table>
