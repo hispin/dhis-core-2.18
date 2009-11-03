@@ -154,8 +154,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitStore">
     <property name="sessionFactory" ref="sessionFactory"/>
     <property name="statementManager" ref="statementManager"/>
-    <property name="sourceStore"
-      ref="org.hisp.dhis.source.SourceStore"/>
+    <property name="jdbcTemplate" ref="jdbcTemplate"/>
   </bean>
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore"

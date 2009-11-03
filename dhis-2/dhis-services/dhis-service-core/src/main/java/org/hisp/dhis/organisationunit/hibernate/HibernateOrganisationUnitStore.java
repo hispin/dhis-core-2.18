@@ -47,7 +47,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitStore;
-import org.hisp.dhis.source.SourceStore;
+import org.hisp.dhis.system.objectmapper.OrganisationUnitHierarchyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Kristian Nordal
@@ -74,13 +75,13 @@ public class HibernateOrganisationUnitStore
         this.statementManager = statementManager;
     }
 
-    private SourceStore sourceStore;
+    private JdbcTemplate jdbcTemplate;
 
-    public void setSourceStore( SourceStore sourceStore )
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
-        this.sourceStore = sourceStore;
+        this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
@@ -149,37 +150,32 @@ public class HibernateOrganisationUnitStore
      * @param date The date to assign to the organisation unit hierarchy
      * @return Id of the organisation unit hierarchy
      */
+    @SuppressWarnings( "unchecked" )
     public int addOrganisationUnitHierarchy( Date date )
     {
         Session session = sessionFactory.getCurrentSession();
 
-        // -----------------------------------------------------------------
+        // ---------------------------------------------------------------------
         // Removes any hierarchies registered on the same date
-        // -----------------------------------------------------------------
+        // ---------------------------------------------------------------------
 
         removeOrganisationUnitHierarchies( date );
 
-        Collection<OrganisationUnit> units = sourceStore.getAllSources( OrganisationUnit.class );
+        final String sql = "SELECT organisationunitid, parentid FROM organisationunit";
 
+        List<Integer[]> units = jdbcTemplate.query( sql, new OrganisationUnitHierarchyRowMapper() );
+        
         Map<Integer, Integer> structure = new HashMap<Integer, Integer>( units.size() );
 
-        // -----------------------------------------------------------------
-        // Fills the array with id / parentId pairs for all organisation
-        // units
-        // -----------------------------------------------------------------
+        // ---------------------------------------------------------------------
+        // Fills the array with id / parentId pairs for all organisation units
+        // ---------------------------------------------------------------------
 
-        for ( OrganisationUnit unit : units )
+        for ( Integer[] unit : units )
         {
-            if ( unit.getParent() != null )
-            {
-                structure.put( unit.getId(), unit.getParent().getId() );
-            }
-            else
-            {
-                structure.put( unit.getId(), 0 );
-            }
+            structure.put( unit[0], unit[1] );
         }
-
+        
         OrganisationUnitHierarchy organisationUnitHierarchy = new OrganisationUnitHierarchy( date, structure );
 
         return (Integer) session.save( organisationUnitHierarchy );
