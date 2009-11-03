@@ -27,18 +27,16 @@ package org.hisp.dhis.dimension;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Lars Helge Overland
  */
-public interface DimensionService
+public interface Measure
 {
-    final String ID = DimensionService.class.getName();
+    Map<Dimension, DimensionOption> getDimensions();
     
-    Collection<DimensionSet> getAllDimensionSets();
+    Map<Dimension, DimensionOption> getDimensions( DimensionSet dimensionSet );
     
-    Collection<Dimension> getAllDimensions();
-    
-    Collection<DimensionOption> getAllDimensionOptions();
+    String getMeasure();
 }
