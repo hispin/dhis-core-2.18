@@ -150,7 +150,20 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
-	<!-- Service definitions -->
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitStore"
+    class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitStore">
+    <property name="sessionFactory" ref="sessionFactory"/>
+    <property name="statementManager" ref="statementManager"/>
+    <property name="sourceStore"
+      ref="org.hisp.dhis.source.SourceStore"/>
+  </bean>
+
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore"
+    class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitGroupStore">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+  
+  <!-- Service definitions -->
 
   <bean id="org.hisp.dhis.customvalue.CustomValueService"
     class="org.hisp.dhis.customvalue.DefaultCustomValueService">
@@ -288,6 +301,24 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>
     
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitService"
+    class="org.hisp.dhis.organisationunit.DefaultOrganisationUnitService">
+    <property name="sourceStore"
+      ref="org.hisp.dhis.source.SourceStore"/>
+    <property name="organisationUnitStore"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitStore"/>
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>
+  </bean>
+
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"
+    class="org.hisp.dhis.organisationunit.DefaultOrganisationUnitGroupService">
+    <property name="organisationUnitGroupStore"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore"/>
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>
+  </bean>
+  
   <!-- Startup routine definitions -->
 	
   <bean id="org.hisp.dhis.period.PeriodTypePopulator"
@@ -341,6 +372,19 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="skipInTests" value="true"/>
   </bean>
   
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitHierarchyVerifier"
+    class="org.hisp.dhis.organisationunit.OrganisationUnitHierarchyVerifier">
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator"
+    class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator">
+    <property name="organisationUnitGroupService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+    <property name="skipInTests" value="true"/>
+  </bean>
+    
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetObject"
       ref="org.hisp.dhis.system.startup.StartupRoutineExecutor"/>
@@ -354,6 +398,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
           <ref local="org.hisp.dhis.expression.MultiDimensionExpressionUpgrader"/>
           <ref local="org.hisp.dhis.dataset.DataSetShortNamePopulator"/>
           <ref local="org.hisp.dhis.dataelement.UuidPopulator"/>
+		  <ref local="org.hisp.dhis.organisationunit.OrganisationUnitHierarchyVerifier"/>
+          <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator"/>
         </list>
       </list>
     </property>
@@ -481,6 +527,18 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="jdbcTemplate" ref="jdbcTemplate"/>
   </bean>
   
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler"
+    class="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler">
+    <property name="organisationUnitGroupService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler"
+    class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler">
+    <property name="organisationUnitGroupService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+  </bean>
+    
   <!-- DeletionManager -->
   
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -507,6 +565,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
           <ref local="org.hisp.dhis.validation.ValidationRuleDeletionHandler"/>
           <ref local="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler"/>
           <ref local="org.hisp.dhis.datavalue.DataValueDeletionHandler"/>
+		  <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler"/>
+          <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler"/>
         </list>
       </list>
     </property>
@@ -526,6 +586,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       <aop:before pointcut="execution( * org.hisp.dhis.minmax.MinMaxDataElementService.delete*(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.validation.ValidationRuleService.delete*(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.period.PeriodService.delete*(..) )" method="intercept"/>
+	  <aop:before pointcut="execution( * org.hisp.dhis.organisationunit.OrganisationUnitService.delete*(..) )" method="intercept"/>
+      <aop:before pointcut="execution( * org.hisp.dhis.organisationunit.OrganisationUnitGroupService.delete*(..) )" method="intercept"/>
     </aop:aspect>
       
     <aop:aspect ref="statementInterceptor">
