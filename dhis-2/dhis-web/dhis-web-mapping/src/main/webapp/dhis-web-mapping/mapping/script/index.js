@@ -2477,6 +2477,8 @@ Ext.onReady( function() {
     
     MAP.addLayers([ vmap0, choroplethLayer ]);
     
+	MAP.layers[0].setVisibility(false);
+    
 	function addOverlaysToMap() {
 		Ext.Ajax.request({
 			url: path + 'getAllMapLayers' + type,
@@ -2531,6 +2533,7 @@ Ext.onReady( function() {
 	var layerTreeConfig = [{
         nodeType: 'gx_baselayercontainer',
         singleClickExpand: true,
+        expanded: true,
         text: 'Backgrounds',
 		iconCls: 'icon-background'
     }, {
