@@ -10,8 +10,9 @@
 		namespace="/dhis-web-maintenance-organisationunit">
 
 		<action name="index" class="org.hisp.dhis.oum.action.NoAction">
-			<result name="success" type="redirect">organisationUnit.action
-			</result>
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-maintenance-organisationunit/index.vm</param>
+            <param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>
 		</action>
 
 		<!-- OrganisationUnit -->

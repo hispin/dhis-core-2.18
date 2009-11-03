@@ -77,7 +77,7 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<div id="selectionTree" style="width:50em;height:30em;overflow:auto;/*border:1px solid #cccccc*/"></div>
+			<div id="selectionTree" style="width:40em;height:20em;overflow:auto;/*border:1px solid #cccccc*/"></div>
 			<script type="text/javascript">
 
           		selectionTreeSelection.setMultipleSelectionAllowed( true );

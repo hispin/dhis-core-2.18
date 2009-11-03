@@ -9,7 +9,9 @@
   <package name="dhis-web-reporting" extends="dhis-web-commons" namespace="/dhis-web-reporting">
     
     <action name="index" class="org.hisp.dhis.reporting.action.NoAction">
-      <result name="success" type="redirect">displayViewReportFormVerifyConfiguration.action</result>
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-reporting/index.vm</param>
+      <param name="menu">/dhis-web-reporting/menu.vm</param>
     </action>
     
     <!-- Document -->

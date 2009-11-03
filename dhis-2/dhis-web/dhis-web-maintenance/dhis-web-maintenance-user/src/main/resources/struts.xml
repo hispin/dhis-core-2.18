@@ -12,7 +12,9 @@
     <!-- User -->
     
     <action name="index" class="org.hisp.dhis.user.action.NoAction">
-      <result name="success" type="redirect">alluser.action</result>
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-user/index.vm</param>  
+      <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
     </action>
 
     <action name="changePassword" class="org.hisp.dhis.user.action.ChangePasswordAction">
