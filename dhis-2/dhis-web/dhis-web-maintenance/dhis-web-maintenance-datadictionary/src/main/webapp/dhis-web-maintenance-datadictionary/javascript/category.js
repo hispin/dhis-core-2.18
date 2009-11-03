@@ -61,6 +61,7 @@ function addCategoryOptionToCategory( categoryName )
 	}
 	else
 	{
+		hideById( "message" );
 		addOption( 'categoryOptionNames', categoryName, categoryName );
 		document.getElementById( 'categoryOptionName' ).value = "";
 	}
