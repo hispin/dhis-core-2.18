@@ -63,6 +63,8 @@ public class OrganisationUnit
     private String longitude;
     
     private String url;
+
+    private Date lastUpdated;
     
     private transient int level;
     
@@ -328,6 +330,16 @@ public class OrganisationUnit
     public void setUrl( String url )
     {
         this.url = url;
+    }
+
+    public Date getLastUpdated()
+    {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated( Date lastUpdated )
+    {
+        this.lastUpdated = lastUpdated;
     }
 
     public int getLevel()

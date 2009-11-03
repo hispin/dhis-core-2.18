@@ -92,6 +92,8 @@ public class DefaultOrganisationUnitService
             organisationUnit.setUuid( UUIdUtils.getUUId() );
         }
 
+        organisationUnit.setLastUpdated( new Date() );
+        
         int id = sourceStore.addSource( organisationUnit );
 
         i18nService.addObject( organisationUnit );
@@ -103,6 +105,8 @@ public class DefaultOrganisationUnitService
 
     public void updateOrganisationUnit( OrganisationUnit organisationUnit )
     {
+        organisationUnit.setLastUpdated( new Date() );
+        
         sourceStore.updateSource( organisationUnit );
         
         i18nService.verify( organisationUnit );

@@ -29,6 +29,7 @@ package org.hisp.dhis.indicator;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
@@ -94,6 +95,8 @@ public class DefaultIndicatorService
             indicator.setUuid( UUIdUtils.getUUId() );            
         }
         
+        indicator.setLastUpdated( new Date() );
+        
         int id = indicatorStore.addIndicator( indicator );
         
         i18nService.addObject( indicator );
@@ -103,6 +106,8 @@ public class DefaultIndicatorService
 
     public void updateIndicator( Indicator indicator )
     {
+        indicator.setLastUpdated( new Date() );
+        
         indicatorStore.updateIndicator( indicator );
         
         i18nService.verify( indicator );

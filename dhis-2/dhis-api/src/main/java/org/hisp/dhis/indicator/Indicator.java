@@ -28,6 +28,7 @@ package org.hisp.dhis.indicator;
  */
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.common.IdentifiableObject;
@@ -63,7 +64,9 @@ public class Indicator
     private Integer sortOrder;
 
     private String url;
-        
+
+    private Date lastUpdated;
+    
     private List<IndicatorGroupSet> groupSets = new ArrayList<IndicatorGroupSet>();
     
     // -------------------------------------------------------------------------
@@ -257,6 +260,16 @@ public class Indicator
     public void setSortOrder( Integer sortOrder )
     {
         this.sortOrder = sortOrder;
+    }
+
+    public Date getLastUpdated()
+    {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated( Date lastUpdated )
+    {
+        this.lastUpdated = lastUpdated;
     }
 
     public String getUrl()

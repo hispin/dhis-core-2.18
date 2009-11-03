@@ -53,5 +53,7 @@
     
     <property name="url"/>
 		
+    <property name="lastUpdated"/>
+    
   </joined-subclass>
 </hibernate-mapping>

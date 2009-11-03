@@ -29,6 +29,7 @@ package org.hisp.dhis.dataelement;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -93,6 +94,8 @@ public class DefaultDataElementService
             dataElement.setUuid( UUIdUtils.getUUId() );
         }
         
+        dataElement.setLastUpdated( new Date() );
+        
         int id = dataElementStore.addDataElement( dataElement );
 
         i18nService.addObject( dataElement );
@@ -102,6 +105,8 @@ public class DefaultDataElementService
 
     public void updateDataElement( DataElement dataElement )
     {
+        dataElement.setLastUpdated( new Date() );
+        
         dataElementStore.updateDataElement( dataElement );
         
         i18nService.verify( dataElement );
