@@ -27,6 +27,7 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.UUIdUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,11 +48,18 @@ public class DefaultOrganisationUnitGroupService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitGroupStore organisationUnitGroupStore;
+    private GenericIdentifiableObjectStore<OrganisationUnitGroup> organisationUnitGroupStore;
 
-    public void setOrganisationUnitGroupStore( OrganisationUnitGroupStore organisationUnitGroupStore )
+    public void setOrganisationUnitGroupStore( GenericIdentifiableObjectStore<OrganisationUnitGroup> organisationUnitGroupStore )
     {
         this.organisationUnitGroupStore = organisationUnitGroupStore;
+    }
+    
+    private GenericIdentifiableObjectStore<OrganisationUnitGroupSet> organisationUnitGroupSetStore;
+
+    public void setOrganisationUnitGroupSetStore( GenericIdentifiableObjectStore<OrganisationUnitGroupSet> organisationUnitGroupSetStore )
+    {
+        this.organisationUnitGroupSetStore = organisationUnitGroupSetStore;
     }
 
     private I18nService i18nService;
@@ -72,7 +80,7 @@ public class DefaultOrganisationUnitGroupService
             organisationUnitGroup.setUuid( UUIdUtils.getUUId() );
         }
         
-        int id = organisationUnitGroupStore.addOrganisationUnitGroup( organisationUnitGroup );
+        int id = organisationUnitGroupStore.save( organisationUnitGroup );
         
         i18nService.addObject( organisationUnitGroup );
         
@@ -81,7 +89,7 @@ public class DefaultOrganisationUnitGroupService
 
     public void updateOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
     {
-        organisationUnitGroupStore.updateOrganisationUnitGroup( organisationUnitGroup );
+        organisationUnitGroupStore.update( organisationUnitGroup );
         
         i18nService.verify( organisationUnitGroup );
     }
@@ -90,12 +98,12 @@ public class DefaultOrganisationUnitGroupService
     {
         i18nService.removeObject( organisationUnitGroup );
         
-        organisationUnitGroupStore.deleteOrganisationUnitGroup( organisationUnitGroup );
+        organisationUnitGroupStore.delete( organisationUnitGroup );
     }
 
     public OrganisationUnitGroup getOrganisationUnitGroup( int id )
     {
-        return organisationUnitGroupStore.getOrganisationUnitGroup( id );
+        return organisationUnitGroupStore.get( id );
     }
     
     public Collection<OrganisationUnitGroup> getOrganisationUnitGroups( Collection<Integer> identifiers )
@@ -117,17 +125,17 @@ public class DefaultOrganisationUnitGroupService
 
     public OrganisationUnitGroup getOrganisationUnitGroup( String uuid )
     {
-        return organisationUnitGroupStore.getOrganisationUnitGroup( uuid );
+        return organisationUnitGroupStore.getByUuid( uuid );
     }
 
     public OrganisationUnitGroup getOrganisationUnitGroupByName( String name )
     {
-        return organisationUnitGroupStore.getOrganisationUnitGroupByName( name );
+        return organisationUnitGroupStore.getByName( name );
     }
 
     public Collection<OrganisationUnitGroup> getAllOrganisationUnitGroups()
     {
-        return organisationUnitGroupStore.getAllOrganisationUnitGroups();
+        return organisationUnitGroupStore.getAll();
     }
 
     // -------------------------------------------------------------------------
@@ -136,7 +144,7 @@ public class DefaultOrganisationUnitGroupService
 
     public int addOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet )
     {
-        int id = organisationUnitGroupStore.addOrganisationUnitGroupSet( organisationUnitGroupSet );
+        int id = organisationUnitGroupSetStore.save( organisationUnitGroupSet );
         
         i18nService.addObject( organisationUnitGroupSet );
         
@@ -145,7 +153,7 @@ public class DefaultOrganisationUnitGroupService
 
     public void updateOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet )
     {
-        organisationUnitGroupStore.updateOrganisationUnitGroupSet( organisationUnitGroupSet );
+        organisationUnitGroupSetStore.update( organisationUnitGroupSet );
         
         i18nService.verify( organisationUnitGroupSet );
     }
@@ -154,12 +162,12 @@ public class DefaultOrganisationUnitGroupService
     {
         i18nService.removeObject( organisationUnitGroupSet );
         
-        organisationUnitGroupStore.deleteOrganisationUnitGroupSet( organisationUnitGroupSet );
+        organisationUnitGroupSetStore.delete( organisationUnitGroupSet );
     }
 
     public OrganisationUnitGroupSet getOrganisationUnitGroupSet( int id )
     {
-        return organisationUnitGroupStore.getOrganisationUnitGroupSet( id );
+        return organisationUnitGroupSetStore.get( id );
     }
     
     public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSets( Collection<Integer> identifiers )
@@ -181,22 +189,42 @@ public class DefaultOrganisationUnitGroupService
 
     public OrganisationUnitGroupSet getOrganisationUnitGroupSetByName( String name )
     {
-        return organisationUnitGroupStore.getOrganisationUnitGroupSetByName( name );
+        return organisationUnitGroupSetStore.getByName( name );
     }
 
     public Collection<OrganisationUnitGroupSet> getAllOrganisationUnitGroupSets()
     {
-        return organisationUnitGroupStore.getAllOrganisationUnitGroupSets();
+        return organisationUnitGroupSetStore.getAll();
     }
 
     public Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSets()
     {
-        return organisationUnitGroupStore.getCompulsoryOrganisationUnitGroupSets();
+        Collection<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>();
+        
+        for ( OrganisationUnitGroupSet groupSet : getAllOrganisationUnitGroupSets() )
+        {
+            if ( groupSet.isCompulsory() )
+            {
+                groupSets.add( groupSet );
+            }
+        }
+        
+        return groupSets;
     }
 
     public Collection<OrganisationUnitGroupSet> getExclusiveOrganisationUnitGroupSets()
     {
-        return organisationUnitGroupStore.getExclusiveOrganisationUnitGroupSets();
+        Collection<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>();
+        
+        for ( OrganisationUnitGroupSet groupSet : getAllOrganisationUnitGroupSets() )
+        {
+            if ( groupSet.isExclusive() )
+            {
+                groupSets.add( groupSet );
+            }
+        }
+        
+        return groupSets;
     }
 
     public Collection<OrganisationUnitGroupSet> getExclusiveOrganisationUnitGroupSetsContainingGroup(
