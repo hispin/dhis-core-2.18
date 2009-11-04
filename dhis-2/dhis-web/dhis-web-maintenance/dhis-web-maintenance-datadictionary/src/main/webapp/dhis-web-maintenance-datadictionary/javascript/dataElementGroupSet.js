@@ -1,54 +1,49 @@
 // -----------------------------------------------------------------------------
-// Java Script Data Element Group Set Object
-// -----------------------------------------------------------------------------
-function DataElementGroupSet(id, name){
-	this.id = id;
-	this.name = name;
-}
-
-// -----------------------------------------------------------------------------
 // Validate Update Data Element Group
 // -----------------------------------------------------------------------------
 
 function validateUpdateDataElementGroupSet(){
-	$.post("validateDataElementGroupSet.action",
-	{
-		name:$("#name").val(),
-		id:$("#id").val()
-	},
-	function(message){
-		message = message.getElementsByTagName("message")[0];
-		var type = message.getAttribute("type");
-		if(type=="success"){
-			selectAllById("groupMembers");
-			document.forms['updateDataElementGroupSet'].submit();
-		}else{
-			setMessage(message.firstChild.nodeValue);
-		}
+
+	var request = new Request();
+    request.setResponseTypeXML( 'message' );
+    request.setCallbackSuccess( validateUpdateDataElementGroupSetCompleted );
+	request.sendAsPost( "id=" + getFieldValue("id") + "&name=" +  getFieldValue("name"));
+	request.send( "validateDataElementGroupSet.action");    
+	
+}
+
+function validateUpdateDataElementGroupSetCompleted( message ){
+	var type = message.getAttribute("type");
+	if(type=="success"){
+		selectAllById("groupMembers");
+		document.forms['updateDataElementGroupSet'].submit();
+	}else{
+		setMessage(message.firstChild.nodeValue);
 	}
-	);	
 }
 
 // -----------------------------------------------------------------------------
 // Validate Add Data Element Group
 // -----------------------------------------------------------------------------
 
-function validateAddDataElementGroupSet(){	
-
-	$.post("validateDataElementGroupSet.action",
-	{name:$("#name").val()},
-	function(message){
-		message = message.getElementsByTagName("message")[0];
-		var type = message.getAttribute("type");
-		if(type=="success"){
-			selectAllById("groupMembers");
-			document.forms['addDataElementGroupSet'].submit();
-		}else{
-			setMessage(message.firstChild.nodeValue);
-		}
-	}
-	);	
+function validateAddDataElementGroupSet(){		
 	
+	var request = new Request();
+    request.setResponseTypeXML( 'message' );
+    request.setCallbackSuccess( validateAddDataElementGroupSetCompleted );    
+	request.sendAsPost( "name=" +  getFieldValue("name") );
+	request.send( "validateDataElementGroupSet.action");
+	
+}
+
+function validateAddDataElementGroupSetCompleted( message ){
+	var type = message.getAttribute("type");
+	if(type=="success"){
+		selectAllById("groupMembers");
+		document.forms['addDataElementGroupSet'].submit();
+	}else{
+		setMessage(message.firstChild.nodeValue);
+	}
 }
 
 // -----------------------------------------------------------------------------
@@ -65,58 +60,22 @@ function deleteDataElementGroupSet( id ){
 // Show Data Element Group Set details
 // -----------------------------------------------------------------------------
 
-function showDetails( id ){
-	$.post("showDataElementGroupSetDetails.action",
-	{id:id},
-	function( xml ){
-		var dataElementGroupSet = xml.getElementsByTagName("dataElementGroupSet")[0];
-		var name = dataElementGroupSet.getElementsByTagName("name")[0].firstChild.nodeValue;
-		var memberCount = dataElementGroupSet.getElementsByTagName("memberCount")[0].firstChild.nodeValue;
-		
-		$("#nameField").html(name);
-		$("#memberCountField").html(memberCount);
-		
-		$("#detailsArea").slideDown();	
-		
-		
-	},"xml");
+function showDataElementGroupSetDetails( id ){
+
+	var request = new Request();
+    request.setResponseTypeXML( 'dataElementGroupSet' );
+    request.setCallbackSuccess( showDetailsCompleted );
+    request.send( "showDataElementGroupSetDetails.action?id=" + id);
+	
 }
 
 
-// -----------------------------------------------------------------------------
-// Filter list data element group set by name
-// -----------------------------------------------------------------------------
+function showDetailsCompleted( dataElementGroupSet ){
 
-function filterDataElementSet( value ){	
-	
-	var html = "";
-	var mark = false;
-	for(var i=0;i<dataElementGroupSets.length;i++){
-		
-		var dataElementGroup = dataElementGroupSets[i];
-		
-		if ( dataElementGroup.name.toLowerCase().indexOf( value.toLowerCase() ) != -1 )
-        {	
-			if(mark){
-				mark=false;
-				html += "<tr class='listAlternateRow'>";				
-			}else{
-				mark=true;
-				html += "<tr class='listRow'>";
-			}
-			html += "<td>" + dataElementGroup.name +"</td>";
-			html += "<td>";
-				html += "<a href=\"openUpdateDataElementGroupSet.action?id=" + dataElementGroup.id + "\" title=\""+i18n_edit+"\"><img src=\"../images/edit.png\" alt=\""+i18n_edit+"\"></a>";
-				html += "<a href=\"javascript:deleteDataElementGroupSet(" + dataElementGroup.id + ")\" title=\""+i18n_delete+"\"><img src=\"../images/delete.png\" alt=\""+i18n_delete+"\"></a>";
-				html += "<a href=\"javascript:showDetails(" + dataElementGroup.id + ")\" title=\""+i18n_information+"\"><img src=\"../images/information.png\" alt=\""+i18n_information+"\"></a>";			
-				
-			html += "</td>";
-			html += "</tr>";		
-			
-        }
-	}
-	
-	$("#contents").html(html);
+	setFieldValue( 'nameField', getElementValue( dataElementGroupSet, 'name' ) );
+    setFieldValue( 'memberCountField', getElementValue( dataElementGroupSet, 'memberCount' ) );
+
+    showDetails();
 }
 
 // -----------------------------------------------------------------------------

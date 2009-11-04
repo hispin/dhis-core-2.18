@@ -237,7 +237,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/dataElementGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/dataElementGroupSet.js</param>
+			<param name="javascripts">javascript/dataElementGroupSet.js,javascript/filterTable.js</param>
 		</action>
 		
 		<action name="openAddDataElementGroupSet"
@@ -251,7 +251,7 @@
 		
 		<action name="addDataElementGroupSet"
 			class="org.hisp.dhis.dd.action.dataelementgroupset.AddDataElementGroupSetAction">
-			<result name="success" type="redirect">listDataElementGroupSet.action</result>
+			<result name="success" type="redirect">dataElementGroupSet.action</result>
 			<param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
 		</action>
 		
@@ -271,7 +271,7 @@
 		
 		<action name="updateDataElementGroupSet"
 			class="org.hisp.dhis.dd.action.dataelementgroupset.UpdateDataElementGroupSetAction">
-			<result name="success" type="redirect">listDataElementGroupSet.action</result>
+			<result name="success" type="redirect">dataElementGroupSet.action</result>
 			<param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
 		</action>
 		
@@ -285,7 +285,7 @@
 		
 		<action name="deleteDataElementGroupSet"
 			class="org.hisp.dhis.dd.action.dataelementgroupset.DeleteDataElementGroupSetAction">
-			<result name="success" type="redirect">listDataElementGroupSet.action</result>
+			<result name="success" type="redirect">dataElementGroupSet.action</result>
 			<param name="requiredAuthorities">F_DATAELEMENTGROUP_DELETE</param>
 		</action>
 		
@@ -424,7 +424,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/indicatorGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/indicatorGroupSet.js</param>
+			<param name="javascripts">javascript/indicatorGroupSet.js,javascript/filterTable.js</param>
 		</action>
 		
 		<action name="openAddIndicatorGroupSet"

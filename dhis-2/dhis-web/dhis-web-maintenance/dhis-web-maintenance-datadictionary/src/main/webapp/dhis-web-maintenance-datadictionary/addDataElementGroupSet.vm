@@ -51,7 +51,7 @@
 
 </form>
 
-<span id="message"></span>
+<span id='message' style="position:fixed;top:80px;right:5px;"></span>
 
 <script type="text/javascript">
 
