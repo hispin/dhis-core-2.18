@@ -2,6 +2,7 @@ package org.hisp.dhis.datamart;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -61,7 +62,7 @@ public class DataMartExportDeletionHandler
     }
     
     @Override
-    public boolean allowDeleteDataElement( DataElement dataElement )
+    public void deleteDataElement( DataElement dataElement )
     {
         for ( DataMartExport export : dataMartExportService.getAllDataMartExports() )
         {
@@ -70,12 +71,10 @@ public class DataMartExportDeletionHandler
                 dataMartExportService.saveDataMartExport( export );
             }
         }
-        
-        return true;
     }
     
     @Override
-    public boolean allowDeleteIndicator( Indicator indicator )
+    public void deleteIndicator( Indicator indicator )
     {
         for ( DataMartExport export : dataMartExportService.getAllDataMartExports() )
         {
@@ -84,12 +83,22 @@ public class DataMartExportDeletionHandler
                 dataMartExportService.saveDataMartExport( export );
             }
         }
-        
-        return true;
     }
     
     @Override
-    public boolean allowDeleteSource( Source source )
+    public void deletePeriod( Period period )
+    {
+        for ( DataMartExport export : dataMartExportService.getAllDataMartExports() )
+        {
+            if ( export.getPeriods().remove( period ) )
+            {
+                dataMartExportService.saveDataMartExport( export );
+            }
+        }
+    }
+    
+    @Override
+    public void deleteSource( Source source )
     {
         for ( DataMartExport export : dataMartExportService.getAllDataMartExports() )
         {
@@ -98,7 +107,5 @@ public class DataMartExportDeletionHandler
                 dataMartExportService.saveDataMartExport( export );
             }
         }
-        
-        return true;
-    }
+    }    
 }
