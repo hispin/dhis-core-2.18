@@ -66,12 +66,6 @@ public class I18nObject
             return false;
         }
 
-        String pathToClassName = object.getClass().getName();
-
-        int start = pathToClassName.lastIndexOf( "." );
-
-        String objectClassName = pathToClassName.substring( start + 1, pathToClassName.length() );
-
-        return className.equalsIgnoreCase( objectClassName );
+        return className.equalsIgnoreCase( object.getClass().getSimpleName() );
     }
 }
