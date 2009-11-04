@@ -1,33 +1,24 @@
 // -----------------------------------------------------------------------------
-// Javascript Indicator Group Set
-// -----------------------------------------------------------------------------
-
-function IndicatorGroupSet(id, name){
-	this.id = id;
-	this.name = name;
-}
-
-// -----------------------------------------------------------------------------
 // Validate Update  Indicator Group Set
 // -----------------------------------------------------------------------------
 
 function validateUpdateIndicatorGroupSet(){
-	$.post("validateIndicatorGroupSet.action",
-	{
-		name:$("#name").val(),
-		id:$("#id").val()
-	},
-	function(message){
-		message = message.getElementsByTagName("message")[0];
-		var type = message.getAttribute("type");
-		if(type=="success"){
-			selectAllById("groupMembers");
-			document.forms['updateIndicatorGroupSet'].submit();
-		}else{
-			setMessage(message.firstChild.nodeValue);
-		}
+
+	var request = new Request();
+    request.setResponseTypeXML( 'message' );
+    request.setCallbackSuccess( validateUpdateIndicatorGroupSetCompleted );
+	request.sendAsPost( "id=" + getFieldValue("id") + "&name=" +  getFieldValue("name"));
+	request.send( "validateIndicatorGroupSet.action");    	
+}
+
+function validateUpdateIndicatorGroupSetCompleted( message ){
+	var type = message.getAttribute("type");
+	if(type=="success"){
+		selectAllById("groupMembers");
+		document.forms['updateIndicatorGroupSet'].submit();
+	}else{
+		setMessage(message.firstChild.nodeValue);
 	}
-	);	
 }
 
 // -----------------------------------------------------------------------------
@@ -36,20 +27,22 @@ function validateUpdateIndicatorGroupSet(){
 
 function validateAddIndicatorGroupSet(){	
 
-	$.post("validateIndicatorGroupSet.action",
-	{name:$("#name").val()},
-	function(message){
-		message = message.getElementsByTagName("message")[0];
-		var type = message.getAttribute("type");
-		if(type=="success"){
-			selectAllById("groupMembers");
-			document.forms['addIndicatorGroupSet'].submit();
-		}else{
-			setMessage(message.firstChild.nodeValue);
-		}
-	}
-	);	
+	var request = new Request();
+    request.setResponseTypeXML( 'message' );
+    request.setCallbackSuccess( validateAddIndicatorGroupSetCompleted );
+	request.sendAsPost( "name=" + getFieldValue("name") );
+	request.send( "validateIndicatorGroupSet.action");    
 	
+}
+
+function validateAddIndicatorGroupSetCompleted( message ){
+	var type = message.getAttribute("type");
+	if(type=="success"){
+		selectAllById("groupMembers");
+		document.forms['addIndicatorGroupSet'].submit();
+	}else{
+		setMessage(message.firstChild.nodeValue);
+	}
 }
 
 // -----------------------------------------------------------------------------
@@ -63,59 +56,25 @@ function deleteIndicatorGroupSet( id ){
 }
 
 // -----------------------------------------------------------------------------
-// Filter Indicator Group Set
-// -----------------------------------------------------------------------------
-
-function filterIndicatorGroupSet( value ){	
-	
-	var html = "";
-	var mark = false;
-	for(var i=0;i<indicatorGroupSets.length;i++){
-		
-		var indicatorGroupSet = indicatorGroupSets[i];
-		
-		if ( indicatorGroupSet.name.toLowerCase().indexOf( value.toLowerCase() ) != -1 )
-        {	
-			if(mark){
-				mark=false;
-				html += "<tr class='listAlternateRow'>";				
-			}else{
-				mark=true;
-				html += "<tr class='listRow'>";
-			}
-			html += "<td>" + indicatorGroupSet.name +"</td>";
-			html += "<td>";
-				html += "<a href=\"openUpdateIndicatorGroupSet.action?id=" + indicatorGroupSet.id + "\" title=\""+i18n_edit+"\"><img src=\"../images/edit.png\" alt=\""+i18n_edit+"\"></a>";
-				html += "<a href=\"javascript:deleteIndicatorGroupSet(" + indicatorGroupSet.id + ")\" title=\""+i18n_delete+"\"><img src=\"../images/delete.png\" alt=\""+i18n_delete+"\"></a>";
-				html += "<a href=\"javascript:showDetails(" + indicatorGroupSet.id + ")\" title=\""+i18n_information+"\"><img src=\"../images/information.png\" alt=\""+i18n_information+"\"></a>";			
-			html += "</td>";
-			html += "</tr>";		
-			
-        }
-	}
-	
-	$("#contents").html(html);
-}
-
-// -----------------------------------------------------------------------------
 // Show Data Element Group Set details
 // -----------------------------------------------------------------------------
 
-function showDetails( id ){
-	$.post("showIndicatorGroupSetDetails.action",
-	{id:id},
-	function( xml ){
-		var indicatorGroupSet = xml.getElementsByTagName("indicatorGroupSet")[0];
-		var name = indicatorGroupSet.getElementsByTagName("name")[0].firstChild.nodeValue;
-		var memberCount = indicatorGroupSet.getElementsByTagName("memberCount")[0].firstChild.nodeValue;
-		
-		$("#nameField").html(name);
-		$("#memberCountField").html(memberCount);
-		
-		$("#detailsArea").slideDown();	
-		
-		
-	},"xml");
+function showIndicatorGroupSetDetails( id ){
+
+	var request = new Request();
+    request.setResponseTypeXML( 'indicatorGroupSet' );
+    request.setCallbackSuccess( showDetailsCompleted );
+	request.sendAsPost( "id=" + id );
+	request.send( "showIndicatorGroupSetDetails.action"); 
+	
+}
+
+function showDetailsCompleted( indicatorGroupSet ){
+
+	setFieldValue( 'nameField', getElementValue( indicatorGroupSet, 'name' ) );
+    setFieldValue( 'memberCountField', getElementValue( indicatorGroupSet, 'memberCount' ) );
+
+    showDetails();
 }
 
 // -----------------------------------------------------------------------------
