@@ -30,6 +30,8 @@ package org.hisp.dhis.importexport.dhis14.util;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.hisp.dhis.system.util.DateUtils;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -51,5 +53,25 @@ public class Dhis14DateUtil
         Date date = cal.getTime();
         
         return date;
+    }
+    
+    public static Date getDate( String dateString )
+    {        
+        if ( dateString == null || dateString.trim().length() < 10 || !DateUtils.dateIsValid( dateString.substring( 0, 10 ) ) )
+        {
+            return null;
+        }
+        
+        return DateUtils.getMediumDate( dateString.substring( 0, 10 ) );
+    }
+    
+    public static String getDateString( Date date )
+    {
+        if ( date == null )
+        {
+            return "";
+        }
+        
+        return DateUtils.getMediumDateString( date ) + "T00:00:00";
     }
 }

@@ -44,11 +44,13 @@
   </distributionManagement>
 
   <repositories>
+    <!--
     <repository>
     <id>amplecode_maven2_repo</id>
     <name>AmpleCode Maven 2 repository</name>
     <url>http://www.amplecode.org/maven2</url>
     </repository>
+    -->
   </repositories>
   
   <issueManagement>

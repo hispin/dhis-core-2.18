@@ -44,6 +44,7 @@ import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.system.util.DateUtils;
 
 /**
  * @author Lars Helge Overland
@@ -70,6 +71,7 @@ public class IndicatorConverter
     private static final String FIELD_DENOMINATOR = "denominator";
     private static final String FIELD_DENOMINATOR_DESCRIPTION = "denominatorDescription";
     private static final String FIELD_DENOMINATOR_AGGREGATION_OPERATOR = "denominatorAggregationOperator";
+    private static final String FIELD_LAST_UPDATED = "lastUpdated";
     
     // -------------------------------------------------------------------------
     // Properties
@@ -154,6 +156,7 @@ public class IndicatorConverter
                 writer.writeElement( FIELD_DENOMINATOR, indicator.getDenominator() );
                 writer.writeElement( FIELD_DENOMINATOR_DESCRIPTION, indicator.getDenominatorDescription() );
                 writer.writeElement( FIELD_DENOMINATOR_AGGREGATION_OPERATOR, indicator.getDenominatorAggregationOperator() );
+                writer.writeElement( FIELD_LAST_UPDATED, DateUtils.getMediumDateString( indicator.getLastUpdated() ), EMPTY );
                             
                 writer.closeElement();
             }
@@ -188,6 +191,7 @@ public class IndicatorConverter
             indicator.setDenominator( expressionService.convertExpression( values.get( FIELD_DENOMINATOR ), dataElementMapping, categoryOptionComboMapping ) );
             indicator.setDenominatorDescription( values.get( FIELD_DENOMINATOR_DESCRIPTION ) );
             indicator.setDenominatorAggregationOperator( values.get( FIELD_DENOMINATOR_AGGREGATION_OPERATOR ) );
+            indicator.setLastUpdated( DateUtils.getMediumDate( values.get( FIELD_LAST_UPDATED ) ) );            
             
             NameMappingUtil.addIndicatorMapping( indicator.getId(), indicator.getName() );
             

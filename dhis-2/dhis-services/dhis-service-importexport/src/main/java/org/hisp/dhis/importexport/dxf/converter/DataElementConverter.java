@@ -43,6 +43,7 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.converter.AbstractDataElementConverter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+import org.hisp.dhis.system.util.DateUtils;
 
 /**
  * @author Lars Helge Overland
@@ -65,6 +66,7 @@ public class DataElementConverter
     private static final String FIELD_TYPE = "type";
     private static final String FIELD_AGGREGATION_OPERATOR = "aggregationOperator";
     private static final String FIELD_CATEGORY_COMBO = "categoryCombo";
+    private static final String FIELD_LAST_UPDATED = "lastUpdated";
 
     // -------------------------------------------------------------------------
     // Properties
@@ -130,6 +132,7 @@ public class DataElementConverter
                 writer.writeElement( FIELD_TYPE, element.getType() );
                 writer.writeElement( FIELD_AGGREGATION_OPERATOR, element.getAggregationOperator() );
                 writer.writeElement( FIELD_CATEGORY_COMBO, String.valueOf( element.getCategoryCombo().getId() ) );
+                writer.writeElement( FIELD_LAST_UPDATED, DateUtils.getMediumDateString( element.getLastUpdated(), EMPTY ) );
                 
                 writer.closeElement();
             }
@@ -160,6 +163,7 @@ public class DataElementConverter
             element.setType( values.get( FIELD_TYPE ) );
             element.setAggregationOperator( values.get( FIELD_AGGREGATION_OPERATOR ) );
             element.getCategoryCombo().setId( categoryComboMapping.get( Integer.parseInt( values.get( FIELD_CATEGORY_COMBO ) ) ) );
+            element.setLastUpdated( DateUtils.getMediumDate( values.get( FIELD_LAST_UPDATED ) ) );            
             
             NameMappingUtil.addDataElementMapping( element.getId(), element.getName() );
             

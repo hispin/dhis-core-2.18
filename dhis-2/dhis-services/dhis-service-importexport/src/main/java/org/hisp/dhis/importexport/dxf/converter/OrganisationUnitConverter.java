@@ -65,6 +65,7 @@ public class OrganisationUnitConverter
     private static final String FIELD_ACTIVE = "active";
     private static final String FIELD_COMMENT = "comment";
     private static final String FIELD_GEO_CODE = "geoCode";
+    private static final String FIELD_LAST_UPDATED = "lastUpdated";
     
     // -------------------------------------------------------------------------
     // Constructor
@@ -122,6 +123,7 @@ public class OrganisationUnitConverter
                 writer.writeElement( FIELD_ACTIVE, String.valueOf( unit.isActive() ) );
                 writer.writeElement( FIELD_COMMENT, unit.getComment() );
                 writer.writeElement( FIELD_GEO_CODE, unit.getGeoCode() );
+                writer.writeElement( FIELD_LAST_UPDATED, DateUtils.getMediumDateString( unit.getLastUpdated(), EMPTY ) );
                 
                 writer.closeElement();
             }
@@ -148,6 +150,7 @@ public class OrganisationUnitConverter
             unit.setActive( Boolean.parseBoolean( values.get( FIELD_ACTIVE ) ) );
             unit.setComment( values.get( FIELD_COMMENT ) );
             unit.setGeoCode( values.get( FIELD_GEO_CODE ) );
+            unit.setLastUpdated( DateUtils.getMediumDate( values.get( FIELD_LAST_UPDATED ) ) );            
             
             NameMappingUtil.addOrganisationUnitMapping( unit.getId(), unit.getName() );
             

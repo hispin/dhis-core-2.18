@@ -41,6 +41,7 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.converter.AbstractOrganisationUnitConverter;
+import org.hisp.dhis.importexport.dhis14.util.Dhis14DateUtil;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
@@ -119,7 +120,7 @@ public class OrganisationUnitConverter
                 writer.writeElement( FIELD_ACTIVE, convertBooleanToDhis14( unit.isActive() ) );
                 writer.writeElement( FIELD_SELECTED, String.valueOf( 0 ) );
                 writer.writeElement( FIELD_LAST_USER, String.valueOf( 1 ) );
-                writer.writeElement( FIELD_LAST_UPDATED, String.valueOf( VALID_FROM ) );
+                writer.writeElement( FIELD_LAST_UPDATED, Dhis14DateUtil.getDateString( unit.getLastUpdated() ) );
                 
                 writer.closeElement();
             }
@@ -137,6 +138,7 @@ public class OrganisationUnitConverter
         unit.setShortName( values.get( FIELD_SHORT_NAME ) );
         unit.setCode( values.get( FIELD_CODE ) );
         unit.setActive( true );
+        unit.setLastUpdated( Dhis14DateUtil.getDate( values.get( FIELD_LAST_UPDATED ) ) );
 
         read( unit, GroupMemberType.NONE, params );        
     }

@@ -46,6 +46,7 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.converter.AbstractIndicatorConverter;
+import org.hisp.dhis.importexport.dhis14.util.Dhis14DateUtil;
 import org.hisp.dhis.importexport.dhis14.util.Dhis14ParsingUtils;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.indicator.Indicator;
@@ -165,7 +166,7 @@ public class IndicatorConverter
                 writer.writeElement( FIELD_DENOMINATOR_TIME_LAG, String.valueOf( 0 ) );
                 writer.writeElement( FIELD_DENOMINATOR_DESCRIPTION, object.getDenominatorDescription() );
                 writer.writeElement( FIELD_LAST_USER, String.valueOf( 1 ) );
-                writer.writeElement( FIELD_LAST_UPDATED, String.valueOf( VALID_FROM ) );
+                writer.writeElement( FIELD_LAST_UPDATED, Dhis14DateUtil.getDateString( object.getLastUpdated() ) );
                 
                 writer.closeElement();
             }
@@ -200,6 +201,7 @@ public class IndicatorConverter
         indicator.setDenominator( convertExpressionFromDhis14( values.get( FIELD_DENOMINATOR ), dataElementMapping, 1, indicator.getName() ) );
 
         indicator.setSortOrder( parseInt( values.get( FIELD_SORT_ORDER ) ) );
+        indicator.setLastUpdated( Dhis14DateUtil.getDate( values.get( FIELD_LAST_UPDATED ) ) );
         
         read( indicator, GroupMemberType.NONE, params );
     }
