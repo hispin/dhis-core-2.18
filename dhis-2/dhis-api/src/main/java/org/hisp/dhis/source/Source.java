@@ -35,6 +35,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.dimension.DimensionOptionElement;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -52,7 +53,7 @@ public abstract class Source
     public static Dimension DIMENSION = new SourceDimension();
     
     public static class SourceDimension
-        implements Dimension
+        extends Dimension
     {
         private static final String NAME = "Source";
         
@@ -66,7 +67,7 @@ public abstract class Source
             return null;
         }
 
-        public DimensionOption getDimensionOption( Object object )
+        public DimensionOption getDimensionOption( DimensionOptionElement element )
         {
             return null;
         }
@@ -105,6 +106,11 @@ public abstract class Source
         {
             return "[" + NAME + "]";
         }
+    }
+
+    public List<? extends DimensionOptionElement> getDimensionOptionElements()
+    {
+        return null;
     }
     
     // -------------------------------------------------------------------------

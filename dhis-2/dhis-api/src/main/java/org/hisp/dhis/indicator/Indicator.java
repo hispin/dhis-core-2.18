@@ -34,6 +34,7 @@ import java.util.List;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.dimension.DimensionSet;
 
 /**
@@ -41,7 +42,7 @@ import org.hisp.dhis.dimension.DimensionSet;
  * @version $Id: Indicator.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 public class Indicator
-    extends IdentifiableObject implements DimensionSet
+    extends IdentifiableObject implements DimensionSet, DimensionOptionElement
 {
     private Boolean annualized;
 

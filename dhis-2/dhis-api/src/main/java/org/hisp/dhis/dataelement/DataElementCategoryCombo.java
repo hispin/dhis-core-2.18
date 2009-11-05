@@ -66,7 +66,7 @@ public class DataElementCategoryCombo
     private Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
 
     // -------------------------------------------------------------------------
-    // Constructors
+    // Dimension
     // -------------------------------------------------------------------------
 
     public List<? extends Dimension> getDimensions()

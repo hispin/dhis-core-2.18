@@ -27,11 +27,14 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.dimension.DimensionOptionElement;
 
 /**
  * @author Kristian Nordal
@@ -60,6 +63,15 @@ public class DataElementGroup
         this.name = name;
     }
 
+    // -------------------------------------------------------------------------
+    // Dimension
+    // -------------------------------------------------------------------------
+
+    public List<? extends DimensionOptionElement> getDimensionOptionElements()
+    {
+        return new ArrayList<DataElement>( members );
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
