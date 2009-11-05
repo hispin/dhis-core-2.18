@@ -43,27 +43,37 @@ public interface ReportTableService
     String ID = ReportTableService.class.getName();
 
     /**
+     * Generate and set report parameters for reporting period, parent organisation 
+     * unit and organisation unit. Delegates to <code>createReportTable( ReportTable, boolean )</code> 
+     * to generate the table.
      * 
-     * @param id
-     * @param mode
-     * @param reportingPeriod
-     * @param parentOrganisationUnitId
-     * @param organisationUnitId
-     * @param format
+     * @param id the identifier.
+     * @param mode the mode, can be <li>dataelements</i>, <i>indicators</i>, and <i>datasets</i>.
+     * @param reportingPeriod the number of months back in time which will be used
+     *        as basis for the generation of relative periods.
+     * @param parentOrganisationUnitId the identifier of the parent organisation
+     *        unit of the report parameter.
+     * @param organisationUnitId the identifier of the organisation unit of the
+     *        report parameter.
+     * @param format the I18nFormat to use.
      */
     void createReportTables( int id, String mode, Integer reportingPeriod, 
         Integer parentOrganisationUnitId, Integer organisationUnitId, I18nFormat format );
     
     /**
+     * Creates a report table. Exports the relevant data to data mart, updates
+     * the existing database table name, add potential regression columns and data
+     * and generates the table. 
      * 
-     * @param reportTable
-     * @param doDataMart
+     * @param reportTable the ReportTable to create.
+     * @param doDataMart indicators whether to perform datamart before processing.
      */
     void createReportTable( ReportTable reportTable, boolean doDataMart );
     
     /**
+     * Removes a ReportTable.
      * 
-     * @param reportTable
+     * @param reportTable the ReportTable to remove.
      */
     void removeReportTable( ReportTable reportTable );
     
