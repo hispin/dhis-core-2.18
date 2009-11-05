@@ -35,13 +35,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dimension.DimensionOptionElement;
 
 /**
  * @author Abyot Aselefew
  * @version $Id$
  */
 public class DataElementCategoryOptionCombo
-    extends IdentifiableObject
+    extends IdentifiableObject implements DimensionOptionElement
 {
     public static final String DEFAULT_NAME = "default";
     

@@ -43,12 +43,12 @@ public interface ReportTableService
     String ID = ReportTableService.class.getName();
 
     /**
-     * Generate and set report parameters for reporting period, parent organisation 
+     * Generates and sets report parameters for reporting period, parent organisation 
      * unit and organisation unit. Delegates to <code>createReportTable( ReportTable, boolean )</code> 
      * to generate the table.
      * 
      * @param id the identifier.
-     * @param mode the mode, can be <li>dataelements</i>, <i>indicators</i>, and <i>datasets</i>.
+     * @param mode the mode, can be <l>dataelements</i>, <i>indicators</i>, and <i>datasets</i>.
      * @param reportingPeriod the number of months back in time which will be used
      *        as basis for the generation of relative periods.
      * @param parentOrganisationUnitId the identifier of the parent organisation

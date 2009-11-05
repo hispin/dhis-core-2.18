@@ -27,14 +27,10 @@ package org.hisp.dhis.dimension;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-
 /**
  * @author Lars Helge Overland
  */
-public interface Measure
+public interface DimensionOptionElement
 {
-    Map<Dimension, DimensionOption> getDimensions();
-    
-    Map<Dimension, DimensionOption> getDimensions( DimensionSet dimensionSet );
+    String getName();
 }

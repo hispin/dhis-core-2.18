@@ -40,6 +40,7 @@ import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.dimension.DimensionSet;
 import org.hisp.dhis.period.PeriodType;
 
@@ -53,11 +54,14 @@ import org.hisp.dhis.period.PeriodType;
  * Hiearchies of DataElements are used to give more fine- or course-grained
  * representations of the entities.
  * 
+ * DataElement acts as a DimensionSet in the dynamic dimensional model, and as a
+ * DimensionOption in the static DataElement dimension.
+ * 
  * @author Kristian Nordal
  * @version $Id: DataElement.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 public class DataElement
-    extends IdentifiableObject implements DimensionOption, DimensionSet
+    extends IdentifiableObject implements DimensionSet, DimensionOption, DimensionOptionElement
 {
     public static final String TYPE_STRING = "string";
     public static final String TYPE_INT = "int";
@@ -155,7 +159,7 @@ public class DataElement
     public static Dimension DIMENSION = new DataElementDimension();
     
     public static class DataElementDimension
-        implements Dimension
+        extends Dimension
     {
         private static final String NAME = "DataElement";
         
@@ -169,7 +173,7 @@ public class DataElement
             return null;
         }
 
-        public DimensionOption getDimensionOption( Object object )
+        public DimensionOption getDimensionOption( DimensionOptionElement element )
         {
             return null;
         }
@@ -215,6 +219,11 @@ public class DataElement
         return groupSets;
     }
     
+    public List<? extends DimensionOptionElement> getDimensionOptionElements()
+    {
+        return null;
+    }
+
     public boolean isDimensionSet()
     {
         return groupSets != null && groupSets.size() > 0;

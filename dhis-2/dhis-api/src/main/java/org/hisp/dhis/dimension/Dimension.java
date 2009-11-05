@@ -29,14 +29,26 @@ package org.hisp.dhis.dimension;
 
 import java.util.List;
 
+import org.hisp.dhis.common.IdentifiableObject;
+
 /**
  * @author Lars Helge Overland
  */
-public interface Dimension
-{    
-    String getName();
-    
-    List<? extends DimensionOption> getDimensionOptions();
-    
-    DimensionOption getDimensionOption( Object object );
+public abstract class Dimension
+    extends IdentifiableObject
+{
+    public abstract List<? extends DimensionOption> getDimensionOptions();
+
+    public DimensionOption getDimensionOption( DimensionOptionElement dimensionOptionElement )
+    {
+        for ( DimensionOption dimensionOption : getDimensionOptions() )
+        {
+            if ( dimensionOption.getDimensionOptionElements().contains( dimensionOptionElement ) )
+            {
+                return dimensionOption;
+            }
+        }
+        
+        return null;
+    }
 }
