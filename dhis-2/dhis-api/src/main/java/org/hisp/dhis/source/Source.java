@@ -66,11 +66,6 @@ public abstract class Source
         {
             return null;
         }
-
-        public DimensionOption getDimensionOption( DimensionOptionElement element )
-        {
-            return null;
-        }
         
         @Override
         public boolean equals( Object o )

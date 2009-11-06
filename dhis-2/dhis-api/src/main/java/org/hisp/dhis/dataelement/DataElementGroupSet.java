@@ -32,7 +32,6 @@ import java.util.List;
 
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionOptionElement;
 
 /**
  * DataElementGroupSet is a set of DataElementGroups. It is by default exclusive,
@@ -66,19 +65,6 @@ public class DataElementGroupSet
     public List<? extends DimensionOption> getDimensionOptions()
     {
         return members;
-    }
-    
-    public DimensionOption getDimensionOption( DimensionOptionElement dimensionOptionElement )
-    {
-        for ( DimensionOption dimensionOption : members )
-        {
-            if ( dimensionOption.getDimensionOptionElements().contains( dimensionOptionElement ) )
-            {
-                return dimensionOption;
-            }
-        }
-        
-        return null;
     }
     
     // -------------------------------------------------------------------------

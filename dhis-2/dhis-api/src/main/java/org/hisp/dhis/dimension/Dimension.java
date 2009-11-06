@@ -39,7 +39,7 @@ public abstract class Dimension
 {
     public abstract List<? extends DimensionOption> getDimensionOptions();
 
-    public DimensionOption getDimensionOption( DimensionOptionElement dimensionOptionElement )
+    public final DimensionOption getDimensionOption( DimensionOptionElement dimensionOptionElement )
     {
         for ( DimensionOption dimensionOption : getDimensionOptions() )
         {

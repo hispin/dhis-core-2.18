@@ -37,4 +37,6 @@ public interface Measure
     Map<Dimension, DimensionOption> getDimensions();
     
     Map<Dimension, DimensionOption> getDimensions( DimensionSet dimensionSet );
+    
+    String getMeasure();
 }
