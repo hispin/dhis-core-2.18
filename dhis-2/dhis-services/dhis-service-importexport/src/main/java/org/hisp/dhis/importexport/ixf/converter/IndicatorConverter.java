@@ -207,7 +207,7 @@ public class IndicatorConverter
             element.setDescription( reader.getElementValue() );
             
             element.setActive( true );            
-            element.setType( DataElement.TYPE_INT );            
+            element.setValueType( DataElement.VALUE_TYPE_INT );            
             element.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
             
             element.setCategoryCombo( categoryCombo );

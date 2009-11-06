@@ -156,11 +156,20 @@ public interface DataElementStore
     Collection<DataElement> getDataElementsByAggregationOperator( String aggregationOperator );
 
     /**
+     * Returns all DataElements with the given value type.
+     * 
+     * @param valueType the valueType.
+     * @return all DataElements with the given valueType.
+     */
+    Collection<DataElement> getDataElementsByValueType( String valueType );
+    
+    /**
      * Returns all DataElements with the given type.
      * 
      * @param type the type.
      * @return all DataElements with the given type.
      */
+    
     Collection<DataElement> getDataElementsByType( String type );
     
     /**

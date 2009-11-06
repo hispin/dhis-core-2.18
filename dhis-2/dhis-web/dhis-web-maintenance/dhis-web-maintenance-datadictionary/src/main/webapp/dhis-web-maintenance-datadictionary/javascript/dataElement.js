@@ -39,7 +39,11 @@ function dataElementReceived( dataElementElement )
     var active = getElementValue( dataElementElement, 'active' );
     setFieldValue( 'activeField', active == 'true' ? i18n_yes : i18n_no );
     
-    var typeMap = { 'int':i18n_number, 'bool':i18n_yes_no, 'string':i18n_text };
+    var valueTypeMap = { 'int':i18n_number, 'bool':i18n_yes_no, 'string':i18n_text };
+    var valueType = getElementValue( dataElementElement, 'valueType' );
+    setFieldValue( 'valueTypeField', valueTypeMap[valueType] );
+    
+    var typeMap = { 'aggregate':i18n_aggregate, 'patient':i18n_patient };
     var type = getElementValue( dataElementElement, 'type' );
     setFieldValue( 'typeField', typeMap[type] );
     

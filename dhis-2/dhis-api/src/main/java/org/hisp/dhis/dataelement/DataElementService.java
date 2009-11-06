@@ -118,7 +118,7 @@ public interface DataElementService
      * @param code the code of the DataElement to return.
      * @return the DataElement with the given code, or null if no match.
      */
-    DataElement getDataElementByCode( String code );
+    DataElement getDataElementByCode( String code );   
 
     /**
      * Returns all DataElements.
@@ -126,7 +126,8 @@ public interface DataElementService
      * @return a collection of all DataElements, or an empty collection if there
      *         are no DataElements.
      */
-    Collection<DataElement> getAllDataElements();
+    Collection<DataElement> getAllDataElements(); 
+    
     
     /**
      * Returns all DataElements which are instances of CalculatedDataElement.
@@ -197,11 +198,20 @@ public interface DataElementService
     Collection<DataElement> getDataElementsByAggregationOperator( String aggregationOperator );
 
     /**
+     * Returns all DataElements with the given value type.
+     * 
+     * @param valueType the valueType.
+     * @return all DataElements with the given valueType.
+     */
+    Collection<DataElement> getDataElementsByValueType( String valueType );
+    
+    /**
      * Returns all DataElements with the given type.
      * 
      * @param type the type.
      * @return all DataElements with the given type.
      */
+    
     Collection<DataElement> getDataElementsByType( String type );
 
     /**

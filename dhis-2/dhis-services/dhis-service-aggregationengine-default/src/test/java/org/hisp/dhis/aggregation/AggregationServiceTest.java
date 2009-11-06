@@ -118,8 +118,8 @@ public class AggregationServiceTest
         // Setup DataElements
         // ---------------------------------------------------------------------
 
-        DataElement dataElementA = createDataElement( 'A', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
-        DataElement dataElementB = createDataElement( 'B', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
+        DataElement dataElementA = createDataElement( 'A', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
+        DataElement dataElementB = createDataElement( 'B', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
 
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
@@ -233,8 +233,8 @@ public class AggregationServiceTest
         // Setup DataElements
         // ---------------------------------------------------------------------
 
-        DataElement dataElementA = createDataElement( 'A', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE );
-        DataElement dataElementB = createDataElement( 'B', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE );        
+        DataElement dataElementA = createDataElement( 'A', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE );
+        DataElement dataElementB = createDataElement( 'B', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE );        
 
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
@@ -332,8 +332,8 @@ public class AggregationServiceTest
         // Setup DataElements
         // ---------------------------------------------------------------------
 
-        DataElement dataElementA = createDataElement( 'A', DataElement.TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM );
-        DataElement dataElementB = createDataElement( 'B', DataElement.TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM );
+        DataElement dataElementA = createDataElement( 'A', DataElement.VALUE_TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM );
+        DataElement dataElementB = createDataElement( 'B', DataElement.VALUE_TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM );
 
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
@@ -440,8 +440,8 @@ public class AggregationServiceTest
         // Setup DataElements
         // ---------------------------------------------------------------------
 
-        DataElement dataElementA = createDataElement( 'A', DataElement.TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_AVERAGE );
-        DataElement dataElementB = createDataElement( 'B', DataElement.TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_AVERAGE );
+        DataElement dataElementA = createDataElement( 'A', DataElement.VALUE_TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_AVERAGE );
+        DataElement dataElementB = createDataElement( 'B', DataElement.VALUE_TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_AVERAGE );
 
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
@@ -545,10 +545,10 @@ public class AggregationServiceTest
         // Setup DataElements
         // ---------------------------------------------------------------------
 
-        DataElement elementA = createDataElement( 'A', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
-        DataElement elementB = createDataElement( 'B', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
-        DataElement elementC = createDataElement( 'C', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
-        DataElement elementD = createDataElement( 'D', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
+        DataElement elementA = createDataElement( 'A', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
+        DataElement elementB = createDataElement( 'B', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
+        DataElement elementC = createDataElement( 'C', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
+        DataElement elementD = createDataElement( 'D', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM );
         
         int dataElementIdA = dataElementService.addDataElement( elementA );
         int dataElementIdB = dataElementService.addDataElement( elementB );

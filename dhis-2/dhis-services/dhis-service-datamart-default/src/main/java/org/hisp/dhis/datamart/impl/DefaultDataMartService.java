@@ -250,10 +250,10 @@ public class DefaultDataMartService
         
         final Collection<DataElement> dataElements = dataElementService.getDataElements( nonCalculatedDataElementIds );
         
-        final Collection<Operand> sumIntOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_SUM, DataElement.TYPE_INT );
-        final Collection<Operand> averageIntOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_AVERAGE, DataElement.TYPE_INT );
-        final Collection<Operand> sumBooleanOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_SUM, DataElement.TYPE_BOOL );
-        final Collection<Operand> averageBooleanOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_AVERAGE, DataElement.TYPE_BOOL );
+        final Collection<Operand> sumIntOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_SUM, DataElement.VALUE_TYPE_INT );
+        final Collection<Operand> averageIntOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_AVERAGE, DataElement.VALUE_TYPE_INT );
+        final Collection<Operand> sumBooleanOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_SUM, DataElement.VALUE_TYPE_BOOL );
+        final Collection<Operand> averageBooleanOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_AVERAGE, DataElement.VALUE_TYPE_BOOL );
 
         // ---------------------------------------------------------------------
         // Data element export

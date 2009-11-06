@@ -462,9 +462,9 @@ public class JExcelWorkbookService
     private Map<String, String> getType()
     {
         Map<String, String> map = new HashMap<String, String>();
-        map.put( DataElement.TYPE_STRING, "Text" );
-        map.put( DataElement.TYPE_INT, "Number" );
-        map.put( DataElement.TYPE_BOOL, "Yes/No" );
+        map.put( DataElement.VALUE_TYPE_STRING, "Text" );
+        map.put( DataElement.VALUE_TYPE_INT, "Number" );
+        map.put( DataElement.VALUE_TYPE_BOOL, "Yes/No" );
         return map;
     }
     

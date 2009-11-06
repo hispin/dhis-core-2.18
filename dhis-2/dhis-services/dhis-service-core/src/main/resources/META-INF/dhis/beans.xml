@@ -336,8 +336,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="runlevel" value="1"/>
   </bean>
   
-  <bean id="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator"
-    class="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator">
+  <bean id="org.hisp.dhis.dataelement.DataElementDefaultDimensionAndTypePopulator"
+    class="org.hisp.dhis.dataelement.DataElementDefaultDimensionAndTypePopulator">
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="categoryService"
@@ -402,7 +402,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
         <list>
           <ref local="org.hisp.dhis.dataelement.OptionsCategoriesDefaultSortOrderPopulator"/>
           <ref local="org.hisp.dhis.period.PeriodTypePopulator"/>
-          <ref local="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator"/>
+          <ref local="org.hisp.dhis.dataelement.DataElementDefaultDimensionAndTypePopulator"/>
           <ref local="org.hisp.dhis.expression.MultiDimensionExpressionUpgrader"/>
           <ref local="org.hisp.dhis.dataset.DataSetShortNamePopulator"/>
           <ref local="org.hisp.dhis.dataelement.UuidPopulator"/>

@@ -160,14 +160,14 @@ public class HibernateDataElementStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Set<String> types = new HashSet<String>();
+        Set<String> valueTypes = new HashSet<String>();
 
-        types.add( DataElement.TYPE_INT );
-        types.add( DataElement.TYPE_BOOL );
+        valueTypes.add( DataElement.VALUE_TYPE_INT );
+        valueTypes.add( DataElement.VALUE_TYPE_BOOL );
 
         Criteria criteria = session.createCriteria( DataElement.class );
 
-        criteria.add( Restrictions.in( "type", types ) );
+        criteria.add( Restrictions.in( "valueType", valueTypes ) );
 
         return criteria.list();
     }
@@ -201,6 +201,17 @@ public class HibernateDataElementStore
 
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.add( Restrictions.eq( "type", type ) );
+
+        return criteria.list();
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataElement> getDataElementsByValueType( String valueType )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DataElement.class );
+        criteria.add( Restrictions.eq( "valueType", valueType ) );
 
         return criteria.list();
     }
@@ -325,4 +336,5 @@ public class HibernateDataElementStore
 
         return criteria.list();
     }
+    
 }

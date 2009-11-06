@@ -79,7 +79,7 @@ public class DataElementStoreTest
         dataElement.setCode( "Code" + uniqueCharacter );
         dataElement.setDescription( "DataElementDescription" + uniqueCharacter );
         dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        dataElement.setType( DataElement.TYPE_INT );
+        dataElement.setType( DataElement.VALUE_TYPE_INT );
         return dataElement;
     }
     
@@ -132,13 +132,13 @@ public class DataElementStoreTest
         DataElement dataElementA = createDataElement( 'A' );
         int idA = dataElementStore.addDataElement( dataElementA );
         dataElementA = dataElementStore.getDataElement( idA );
-        assertEquals( DataElement.TYPE_INT, dataElementA.getType() );
+        assertEquals( DataElement.VALUE_TYPE_INT, dataElementA.getValueType() );
 
-        dataElementA.setType( DataElement.TYPE_BOOL );
+        dataElementA.setValueType( DataElement.VALUE_TYPE_BOOL );
         dataElementStore.updateDataElement( dataElementA );
         dataElementA = dataElementStore.getDataElement( idA );
-        assertNotNull( dataElementA.getType() );
-        assertEquals( DataElement.TYPE_BOOL, dataElementA.getType() );
+        assertNotNull( dataElementA.getValueType() );
+        assertEquals( DataElement.VALUE_TYPE_BOOL, dataElementA.getValueType() );
     }
 
     @Test
@@ -331,10 +331,10 @@ public class DataElementStoreTest
         DataElement dataElementC = createDataElement( 'C' );
         DataElement dataElementD = createDataElement( 'D' );
         
-        dataElementA.setType( DataElement.TYPE_INT );
-        dataElementB.setType( DataElement.TYPE_BOOL );
-        dataElementC.setType( DataElement.TYPE_STRING );
-        dataElementD.setType( DataElement.TYPE_INT );
+        dataElementA.setValueType( DataElement.VALUE_TYPE_INT );
+        dataElementB.setValueType( DataElement.VALUE_TYPE_BOOL );
+        dataElementC.setValueType( DataElement.VALUE_TYPE_STRING );
+        dataElementD.setValueType( DataElement.VALUE_TYPE_INT );
 
         dataElementStore.addDataElement( dataElementA );
         dataElementStore.addDataElement( dataElementB );
@@ -411,29 +411,53 @@ public class DataElementStoreTest
         assertEquals( 3, dataElementStore.getDataElementsByAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM )
             .size() );
     }
-
+    
     @Test
     public void testGetDataElementsByType()
     {
-        assertEquals( 0, dataElementStore.getDataElementsByType( DataElement.TYPE_INT ).size() );
-        assertEquals( 0, dataElementStore.getDataElementsByType( DataElement.TYPE_BOOL ).size() );
+        assertEquals( 0, dataElementStore.getDataElementsByType( DataElement.TYPE_AGGREGATE ).size() );
+        assertEquals( 0, dataElementStore.getDataElementsByType( DataElement.TYPE_PATIENT ).size() );
 
         DataElement dataElementA = createDataElement( 'A' );
-        dataElementA.setType( DataElement.TYPE_INT );
+        dataElementA.setType( DataElement.TYPE_AGGREGATE );
         DataElement dataElementB = createDataElement( 'B' );
-        dataElementB.setType( DataElement.TYPE_BOOL );
+        dataElementB.setType( DataElement.TYPE_PATIENT );
         DataElement dataElementC = createDataElement( 'C' );
-        dataElementC.setType( DataElement.TYPE_BOOL );
+        dataElementC.setType( DataElement.TYPE_PATIENT );
         DataElement dataElementD = createDataElement( 'D' );
-        dataElementD.setType( DataElement.TYPE_BOOL );
+        dataElementD.setType( DataElement.TYPE_PATIENT );
 
         dataElementStore.addDataElement( dataElementA );
         dataElementStore.addDataElement( dataElementB );
         dataElementStore.addDataElement( dataElementC );
         dataElementStore.addDataElement( dataElementD );
 
-        assertEquals( 1, dataElementStore.getDataElementsByType( DataElement.TYPE_INT ).size() );
-        assertEquals( 3, dataElementStore.getDataElementsByType( DataElement.TYPE_BOOL ).size() );
+        assertEquals( 1, dataElementStore.getDataElementsByType( DataElement.TYPE_AGGREGATE ).size() );
+        assertEquals( 3, dataElementStore.getDataElementsByType( DataElement.TYPE_PATIENT ).size() );
+    }
+
+    @Test
+    public void testGetDataElementsByValueType()
+    {
+        assertEquals( 0, dataElementStore.getDataElementsByType( DataElement.VALUE_TYPE_INT ).size() );
+        assertEquals( 0, dataElementStore.getDataElementsByType( DataElement.VALUE_TYPE_BOOL ).size() );
+
+        DataElement dataElementA = createDataElement( 'A' );
+        dataElementA.setType( DataElement.VALUE_TYPE_INT );
+        DataElement dataElementB = createDataElement( 'B' );
+        dataElementB.setType( DataElement.VALUE_TYPE_BOOL );
+        DataElement dataElementC = createDataElement( 'C' );
+        dataElementC.setType( DataElement.VALUE_TYPE_BOOL );
+        DataElement dataElementD = createDataElement( 'D' );
+        dataElementD.setType( DataElement.VALUE_TYPE_BOOL );
+
+        dataElementStore.addDataElement( dataElementA );
+        dataElementStore.addDataElement( dataElementB );
+        dataElementStore.addDataElement( dataElementC );
+        dataElementStore.addDataElement( dataElementD );
+
+        assertEquals( 1, dataElementStore.getDataElementsByType( DataElement.VALUE_TYPE_INT ).size() );
+        assertEquals( 3, dataElementStore.getDataElementsByType( DataElement.VALUE_TYPE_BOOL ).size() );
     }
 
     @Test

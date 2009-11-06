@@ -292,7 +292,7 @@ public class GenerateDefaultDataSetReportAction
                         String value;
                         DataValue dataValue;
 
-                        if ( dataElement.getType().equals( DataElement.TYPE_INT ) )
+                        if ( dataElement.getValueType().equals( DataElement.VALUE_TYPE_INT ) )
                         {
                             double aggregatedValue;
                         	
@@ -369,8 +369,8 @@ public class GenerateDefaultDataSetReportAction
                     String value;
                     DataValue dataValue;
 
-                    if ( dataElementService.getDataElement( reportElement.getElementId() ).getType().equals(
-                        DataElement.TYPE_INT ) )
+                    if ( dataElementService.getDataElement( reportElement.getElementId() ).getValueType().equals(
+                        DataElement.VALUE_TYPE_INT ) )
                     {
                     	double aggregatedValue;
                     	

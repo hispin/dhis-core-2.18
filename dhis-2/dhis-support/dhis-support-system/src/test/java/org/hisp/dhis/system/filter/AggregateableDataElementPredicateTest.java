@@ -29,12 +29,12 @@ public class AggregateableDataElementPredicateTest
         DataElement elementE = createDataElement( 'E' );
         DataElement elementF = createDataElement( 'F' );
         
-        elementA.setType( DataElement.TYPE_BOOL );
-        elementB.setType( DataElement.TYPE_INT );
-        elementC.setType( DataElement.TYPE_STRING );
-        elementD.setType( DataElement.TYPE_BOOL );
-        elementE.setType( DataElement.TYPE_INT );
-        elementF.setType( DataElement.TYPE_STRING );        
+        elementA.setType( DataElement.VALUE_TYPE_BOOL );
+        elementB.setType( DataElement.VALUE_TYPE_INT );
+        elementC.setType( DataElement.VALUE_TYPE_STRING );
+        elementD.setType( DataElement.VALUE_TYPE_BOOL );
+        elementE.setType( DataElement.VALUE_TYPE_INT );
+        elementF.setType( DataElement.VALUE_TYPE_STRING );        
         
         Set<DataElement> set = new HashSet<DataElement>();
         
