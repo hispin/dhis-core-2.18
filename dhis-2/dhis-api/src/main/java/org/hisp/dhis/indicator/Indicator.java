@@ -29,11 +29,14 @@ package org.hisp.dhis.indicator;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.dimension.DimensionSet;
 
@@ -67,6 +70,8 @@ public class Indicator
     private String url;
 
     private Date lastUpdated;
+    
+    private Set<IndicatorGroup> groups =  new HashSet<IndicatorGroup>();
     
     private List<IndicatorGroupSet> groupSets = new ArrayList<IndicatorGroupSet>();
     
@@ -105,7 +110,12 @@ public class Indicator
     {
         return groupSets;
     }
-    
+
+    public List<? extends DimensionOption> getDimensionOptions()
+    {
+        return new ArrayList<DimensionOption>( groups );
+    }
+
     public boolean isDimensionSet()
     {
         return groupSets != null && groupSets.size() > 0;
@@ -281,6 +291,16 @@ public class Indicator
     public void setUrl( String url )
     {
         this.url = url;
+    }
+
+    public Set<IndicatorGroup> getGroups()
+    {
+        return groups;
+    }
+
+    public void setGroups( Set<IndicatorGroup> groups )
+    {
+        this.groups = groups;
     }
 
     public List<IndicatorGroupSet> getGroupSets()
