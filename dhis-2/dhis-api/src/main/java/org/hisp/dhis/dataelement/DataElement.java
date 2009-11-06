@@ -151,14 +151,14 @@ public class DataElement
     private Set<DataSet> dataSets = new HashSet<DataSet>();
 
     /**
-     * The lower organisation unit levels for aggregation.
-     */
-    private List<Integer> aggregationLevels = new ArrayList<Integer>();
-
-    /**
      * A Set of DataElementGroupSets.
      */
     private List<DataElementGroupSet> groupSets = new ArrayList<DataElementGroupSet>();
+
+    /**
+     * The lower organisation unit levels for aggregation.
+     */
+    private List<Integer> aggregationLevels = new ArrayList<Integer>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -258,6 +258,11 @@ public class DataElement
     public Dimension getDimension()
     {
         return DIMENSION;
+    }
+    
+    public String getDimensionSetType()
+    {
+        return DataElement.class.getSimpleName().toUpperCase(); 
     }
     
     public boolean isDimensionSet()
@@ -507,16 +512,6 @@ public class DataElement
         this.dataSets = dataSets;
     }
 
-    public List<Integer> getAggregationLevels()
-    {
-        return aggregationLevels;
-    }
-
-    public void setAggregationLevels( List<Integer> aggregationLevels )
-    {
-        this.aggregationLevels = aggregationLevels;
-    }
-
     public List<DataElementGroupSet> getGroupSets()
     {
         return groupSets;
@@ -525,5 +520,15 @@ public class DataElement
     public void setGroupSets( List<DataElementGroupSet> groupSets )
     {
         this.groupSets = groupSets;
+    }
+
+    public List<Integer> getAggregationLevels()
+    {
+        return aggregationLevels;
+    }
+
+    public void setAggregationLevels( List<Integer> aggregationLevels )
+    {
+        this.aggregationLevels = aggregationLevels;
     }
 }

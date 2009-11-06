@@ -31,14 +31,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Hans S. Toemmerholt
@@ -104,6 +109,13 @@ public class ShowAddDataElementForm
     	return defaultCategoryCombo;
     }
     
+    private List<DataElementGroupSet> dataElementGroupSets;
+    
+    public List<DataElementGroupSet> getDataElementGroupSets()
+    {
+        return dataElementGroupSets;
+    }
+
     private List<OrganisationUnitLevel> organisationUnitLevels;
 
     public List<OrganisationUnitLevel> getOrganisationUnitLevels()
@@ -120,8 +132,14 @@ public class ShowAddDataElementForm
     	defaultCategoryCombo = dataElementCategoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
     	
         dataElementGroups = dataElementService.getAllDataElementGroups();
-        
+                
         dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getAllDataElementCategoryCombos() );
+        
+        Collections.sort( dataElementCategoryCombos, new DataElementCategoryComboNameComparator() );
+        
+        dataElementGroupSets = new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() );
+
+        Collections.sort( dataElementGroupSets, new IdentifiableObjectNameComparator() );
         
         organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
         
