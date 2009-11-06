@@ -508,6 +508,7 @@ function toggleByIdAndFlagIfDefaultCombo( id, display, defaultId )
 function submitAddDataElement()
 {
     selectAllById( "aggregationLevels" );
+    selectAllById( "dataElementGroupSets" );
     
     document.getElementById( "addDataElementForm" ).submit();
 }
@@ -515,6 +516,7 @@ function submitAddDataElement()
 function submitUpdateDataElement()
 {
     selectAllById( "aggregationLevels" );
+    selectAllById( "dataElementGroupSets" );
     
     document.getElementById( "updateDataElementForm" ).submit();
 }

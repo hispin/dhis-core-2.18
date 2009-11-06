@@ -80,6 +80,11 @@ public class DataElementCategoryCombo
         return new ArrayList<DimensionOptionElement>( optionCombos );
     }
     
+    public String getDimensionSetType()
+    {
+        return DataElementCategoryCombo.class.getSimpleName().toUpperCase();
+    }
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------

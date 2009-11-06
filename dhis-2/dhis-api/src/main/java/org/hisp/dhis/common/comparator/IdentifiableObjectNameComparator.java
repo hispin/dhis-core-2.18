@@ -1,4 +1,4 @@
-package org.hisp.dhis.dimension;
+package org.hisp.dhis.common.comparator;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,26 +27,18 @@ package org.hisp.dhis.dimension;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.util.Comparator;
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.common.IdentifiableObject;
 
 /**
  * @author Lars Helge Overland
  */
-public interface DimensionSet
+public class IdentifiableObjectNameComparator
+    implements Comparator<IdentifiableObject>
 {
-    final String TYPE_DATAELEMENT = DataElement.class.getSimpleName().toUpperCase();
-    final String TYPE_INDICATOR = Indicator.class.getSimpleName().toUpperCase();
-    final String TYPE_CATEGORY_COMBO = DataElementCategoryCombo.class.getSimpleName().toUpperCase();
-    
-    String getName();
-    
-    List<? extends Dimension> getDimensions();
-    
-    List<? extends DimensionOptionElement> getDimensionOptionElements();
-    
-    String getDimensionSetType();
+    public int compare( IdentifiableObject object0, IdentifiableObject object1 )
+    {
+        return object0.getName().compareTo( object1.getName() );
+    }
 }

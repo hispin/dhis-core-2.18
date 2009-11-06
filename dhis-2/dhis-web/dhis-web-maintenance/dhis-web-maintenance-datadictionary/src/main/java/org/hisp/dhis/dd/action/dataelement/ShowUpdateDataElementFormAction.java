@@ -34,18 +34,22 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.ActionSupport;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Hans S. Toemmerholt
@@ -139,6 +143,13 @@ public class ShowUpdateDataElementFormAction
         return dataElementCategoryCombos;
     }
 
+    private List<DataElementGroupSet> dataElementGroupSets;
+    
+    public List<DataElementGroupSet> getDataElementGroupSets()
+    {
+        return dataElementGroupSets;
+    }
+
     private List<OrganisationUnitLevel> organisationUnitLevels;
 
     public List<OrganisationUnitLevel> getOrganisationUnitLevels()
@@ -196,6 +207,12 @@ public class ShowUpdateDataElementFormAction
             }            
         }               
 
+        dataElementGroupSets = new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() );
+
+        dataElementGroupSets.removeAll( dataElement.getGroupSets() );
+        
+        Collections.sort( dataElementGroupSets, new IdentifiableObjectNameComparator() );
+        
         return SUCCESS;        
     }
 }

@@ -130,7 +130,12 @@ public class Indicator
         
         return dimensionOptionElements;
     }
-
+    
+    public String getDimensionSetType()
+    {
+        return Indicator.class.getSimpleName().toUpperCase();
+    }
+    
     public boolean isDimensionSet()
     {
         return groupSets != null && groupSets.size() > 0;
