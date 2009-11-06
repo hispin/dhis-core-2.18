@@ -136,7 +136,7 @@ public class GetFilteredDataElementsAction
 
         if ( dataElementGroupId == ALL )
         {
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByType( DataElement.TYPE_INT ) );
+            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByValueType( DataElement.VALUE_TYPE_INT ) );
         }
         else
         {
@@ -183,7 +183,7 @@ public class GetFilteredDataElementsAction
         
         while ( iterator.hasNext() )
         {
-            if ( !iterator.next().getType().equals( DataElement.TYPE_INT ) )
+            if ( !iterator.next().getValueType().equals( DataElement.VALUE_TYPE_INT ) )
             {
                 iterator.remove();
             }

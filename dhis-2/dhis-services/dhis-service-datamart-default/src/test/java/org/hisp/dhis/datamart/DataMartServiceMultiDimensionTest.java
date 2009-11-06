@@ -212,7 +212,7 @@ public class DataMartServiceMultiDimensionTest
     @Test
     public void testSumIntDataElementDataMart()
     {
-        dataElementA.setType( DataElement.TYPE_INT );
+        dataElementA.setValueType( DataElement.VALUE_TYPE_INT );
         dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );        
         dataElementService.updateDataElement( dataElementA );
         
@@ -266,7 +266,7 @@ public class DataMartServiceMultiDimensionTest
     @Test
     public void testAverageIntDataElementDataMart()
     {
-        dataElementA.setType( DataElement.TYPE_INT );
+        dataElementA.setValueType( DataElement.VALUE_TYPE_INT );
         dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );        
         dataElementService.updateDataElement( dataElementA );
         
@@ -320,7 +320,7 @@ public class DataMartServiceMultiDimensionTest
     @Test
     public void testSumBoolDataElement()
     {
-        dataElementA.setType( DataElement.TYPE_BOOL );
+        dataElementA.setValueType( DataElement.VALUE_TYPE_BOOL );
         dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );        
         dataElementService.updateDataElement( dataElementA );
         
@@ -374,7 +374,7 @@ public class DataMartServiceMultiDimensionTest
     @Test
     public void testAverageBoolDataElement()
     {
-        dataElementA.setType( DataElement.TYPE_BOOL );
+        dataElementA.setValueType( DataElement.VALUE_TYPE_BOOL );
         dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );        
         dataElementService.updateDataElement( dataElementA );
         
@@ -428,7 +428,7 @@ public class DataMartServiceMultiDimensionTest
     @Test
     public void testIndicator()
     {
-        dataElementA.setType( DataElement.TYPE_INT );
+        dataElementA.setValueType( DataElement.VALUE_TYPE_INT );
         dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );        
         dataElementService.updateDataElement( dataElementA );
         
@@ -490,7 +490,7 @@ public class DataMartServiceMultiDimensionTest
     @Test
     public void testAnnualizedIndicator()
     {
-        dataElementA.setType( DataElement.TYPE_INT );
+        dataElementA.setValueType( DataElement.VALUE_TYPE_INT );
         dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );        
         dataElementService.updateDataElement( dataElementA );
         

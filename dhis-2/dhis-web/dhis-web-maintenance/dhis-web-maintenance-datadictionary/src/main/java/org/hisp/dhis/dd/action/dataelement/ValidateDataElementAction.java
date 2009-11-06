@@ -109,17 +109,17 @@ public class ValidateDataElementAction
     {
         this.code = code;
     }
+    
+    private String valueType;
+
+    public void setValueType( String valueType )
+    {
+        this.valueType = valueType;
+    }
 
     // -------------------------------------------------------------------------
     // Calculated data elements
     // -------------------------------------------------------------------------
-
-    private String type;
-
-    public void setType( String type )
-    {
-        this.type = type;
-    }
 
     private String calculated;
 
@@ -134,9 +134,9 @@ public class ValidateDataElementAction
     {
         this.dataElementIds = dataElementIds;
     }
-    
+
     private Integer selectedCategoryComboId;
-    
+
     public void setSelectedCategoryComboId( Integer selectedCategoryComboId )
     {
         this.selectedCategoryComboId = selectedCategoryComboId;
@@ -158,7 +158,7 @@ public class ValidateDataElementAction
     // -------------------------------------------------------------------------
 
     public String execute()
-    {    	
+    {
         // ---------------------------------------------------------------------
         // Validating DataElement fields
         // ----------------------------------------------------------------------
@@ -239,8 +239,8 @@ public class ValidateDataElementAction
 
                 return INPUT;
             }
-        }       
-        
+        }
+
         if ( selectedCategoryComboId == null )
         {
             message = i18n.getString( "select_categorycombo" );
@@ -254,39 +254,41 @@ public class ValidateDataElementAction
 
         if ( calculated != null && calculated.equals( "on" ) )
         {
-            if ( type != null && (!type.equals( DataElement.TYPE_INT )) )
+            if ( valueType != null && (!valueType.equals( DataElement.VALUE_TYPE_INT )) )
             {
                 message = i18n.getString( "cde_must_be_number" );
 
                 return INPUT;
             }
-            
+
             if ( dataElementIds != null && dataElementIds.size() > 1 )
             {
                 DataElement dataElement;
                 DataElementCategoryOptionCombo optionCombo;
-                
+
                 message = "";
-                
+
                 for ( String operandId : dataElementIds )
                 {
-                    String dataElementIdStr = operandId.substring( 0, operandId.indexOf('.') );
-                    String optionComboIdStr = operandId.substring( operandId.indexOf('.')+1, operandId.length() );                    
-                    
-                    dataElement = dataElementService.getDataElement( Integer.parseInt(dataElementIdStr) );
-                    optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( optionComboIdStr ) );
-                    
-                    if ( !dataElement.getType().equals( DataElement.TYPE_INT ) || optionCombo == null )
+                    String dataElementIdStr = operandId.substring( 0, operandId.indexOf( '.' ) );
+                    String optionComboIdStr = operandId.substring( operandId.indexOf( '.' ) + 1, operandId.length() );
+
+                    dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementIdStr ) );
+                    optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer
+                        .parseInt( optionComboIdStr ) );
+
+                    if ( !dataElement.getValueType().equals( DataElement.VALUE_TYPE_INT ) || optionCombo == null )
                     {
                         message += dataElement.getName() + ", ";
                     }
                 }
-                
-                if ( ! message.equals("") )
+
+                if ( !message.equals( "" ) )
                 {
-                    message = i18n.getString( "cde_data_elements_must_be_numbers" ) + ": " +message.substring(0, message.length()-2);
+                    message = i18n.getString( "cde_data_elements_must_be_numbers" ) + ": "
+                        + message.substring( 0, message.length() - 2 );
                     return INPUT;
-                }                
+                }
             }
             else
             {

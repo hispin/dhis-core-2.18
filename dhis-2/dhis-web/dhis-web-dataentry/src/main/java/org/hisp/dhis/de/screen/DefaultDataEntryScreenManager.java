@@ -28,9 +28,9 @@ package org.hisp.dhis.de.screen;
  */
 
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
-import static org.hisp.dhis.dataelement.DataElement.TYPE_BOOL;
-import static org.hisp.dhis.dataelement.DataElement.TYPE_INT;
-import static org.hisp.dhis.dataelement.DataElement.TYPE_STRING;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_STRING;
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
 import java.util.ArrayList;
@@ -366,7 +366,7 @@ public class DefaultDataEntryScreenManager
 
                 boolean customValueExists = customValuesExists( customValues, dataElementId, optionComboId );
                 
-                if ( dataElement.getType().equals( TYPE_BOOL ) || (dataElement.getType().equals( TYPE_STRING ) && customValueExists ) )
+                if ( dataElement.getValueType().equals( VALUE_TYPE_BOOL ) || (dataElement.getValueType().equals( VALUE_TYPE_STRING ) && customValueExists ) )
                 {
                     dataElementCode = dataElementCode.replace( "input", "select" );
                     dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
@@ -430,7 +430,7 @@ public class DefaultDataEntryScreenManager
 
                 String appendCode = dataElementCode;
 
-                if ( dataElement.getType().equals( TYPE_BOOL ) )
+                if ( dataElement.getValueType().equals( VALUE_TYPE_BOOL ) )
                 {
                     appendCode += jsCodeForCombos;
 
@@ -456,7 +456,7 @@ public class DefaultDataEntryScreenManager
 
                     appendCode += "</select>";
                 }
-                else if ( dataElement.getType().equals( TYPE_STRING ) && customValueExists )
+                else if ( dataElement.getValueType().equals( VALUE_TYPE_STRING ) && customValueExists )
                 {
                     appendCode += jsCodeForCombos;
 
@@ -486,7 +486,7 @@ public class DefaultDataEntryScreenManager
                 {
                     appendCode += jsCodeForInputs;
 
-                    if ( dataElement.getType().equals( TYPE_INT ) )
+                    if ( dataElement.getValueType().equals( VALUE_TYPE_INT ) )
                     {
                         appendCode += historyCode;
                     }
@@ -604,10 +604,10 @@ public class DefaultDataEntryScreenManager
                 DataElement dataElement = dataElementMap.get( dataElementId ); //dataElementService.getDataElement( dataElementId );
                 
                 // -------------------------------------------------------------
-                // Find type of data element
+                // Find value type of data element
                 // -------------------------------------------------------------
 
-                String dataElementType = dataElement.getType();
+                String dataElementValueType = dataElement.getValueType();
 
                 // -------------------------------------------------------------
                 // Find existing value of data element in data set
@@ -639,7 +639,7 @@ public class DefaultDataEntryScreenManager
 
                 boolean customValueExists = customValuesExists( customValues, dataElementId, optionComboId );
                 
-                if ( dataElement.getType().equals( DataElement.TYPE_BOOL ) || (dataElement.getType().equals( TYPE_STRING ) && customValueExists ) )
+                if ( dataElement.getValueType().equals( DataElement.VALUE_TYPE_BOOL ) || (dataElement.getValueType().equals( VALUE_TYPE_STRING ) && customValueExists ) )
                 {
                     dataElementCode = dataElementCode.replace( "input", "select" );
                     dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
@@ -701,7 +701,7 @@ public class DefaultDataEntryScreenManager
 
                 String appendCode = dataElementCode;
 
-                if ( dataElement.getType().equals( TYPE_BOOL ) )
+                if ( dataElement.getValueType().equals( VALUE_TYPE_BOOL ) )
                 {
                     appendCode += jsCodeForCombos;
 
@@ -727,7 +727,7 @@ public class DefaultDataEntryScreenManager
 
                     appendCode += "</select>";
                 }
-                else if ( dataElement.getType().equals( TYPE_STRING ) && customValueExists )
+                else if ( dataElement.getValueType().equals( VALUE_TYPE_STRING ) && customValueExists )
                 {
                     appendCode += jsCodeForCombos;
 
@@ -757,7 +757,7 @@ public class DefaultDataEntryScreenManager
                 {
                     appendCode += jsCodeForInputs;
 
-                    if ( dataElement.getType().equals( TYPE_INT ) )
+                    if ( dataElement.getValueType().equals( VALUE_TYPE_INT ) )
                     {
                         appendCode += historyCode;
                     }
@@ -778,7 +778,7 @@ public class DefaultDataEntryScreenManager
                 appendCode += metaDataCode;
                 appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
                 appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
-                appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementType );
+                appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementValueType );
                 appendCode = appendCode.replace( "$OPTIONCOMBOID", String.valueOf( optionComboId ) );
                 appendCode = appendCode.replace( "$SAVEMODE", "" + saveMode + "" );
                 appendCode = appendCode.replace( "$DISABLED", disabled );

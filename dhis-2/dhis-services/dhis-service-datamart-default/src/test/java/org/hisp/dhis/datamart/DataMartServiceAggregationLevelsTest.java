@@ -123,7 +123,7 @@ public class DataMartServiceAggregationLevelsTest
         // Setup DataElements
         // ---------------------------------------------------------------------
 
-        dataElement = createDataElement( 'A', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
+        dataElement = createDataElement( 'A', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
         
         dataElementIds.add( dataElementService.addDataElement( dataElement ) );
         
@@ -201,7 +201,7 @@ public class DataMartServiceAggregationLevelsTest
     public void testSumIntDataElementDataMart()
     {
         dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        dataElement.setType( DataElement.TYPE_INT );
+        dataElement.setValueType( DataElement.VALUE_TYPE_INT );
         dataElement.setAggregationLevels( Arrays.asList( 3, 5 ) );        
         
         dataElementService.updateDataElement( dataElement );
@@ -227,7 +227,7 @@ public class DataMartServiceAggregationLevelsTest
     public void testAverageIntDataElementDataMart()
     {
         dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
-        dataElement.setType( DataElement.TYPE_INT );
+        dataElement.setValueType( DataElement.VALUE_TYPE_INT );
         dataElement.setAggregationLevels( Arrays.asList( 3, 5 ) );        
         
         dataElementService.updateDataElement( dataElement );

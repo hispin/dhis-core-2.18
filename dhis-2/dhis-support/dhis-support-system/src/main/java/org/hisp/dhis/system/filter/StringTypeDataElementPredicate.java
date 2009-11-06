@@ -39,6 +39,6 @@ public class StringTypeDataElementPredicate
 {
     public boolean evaluate( Object object )
     {
-        return ((DataElement) object).getType().equals( DataElement.TYPE_STRING );
+        return ((DataElement) object).getType().equals( DataElement.VALUE_TYPE_STRING );
     }
 }

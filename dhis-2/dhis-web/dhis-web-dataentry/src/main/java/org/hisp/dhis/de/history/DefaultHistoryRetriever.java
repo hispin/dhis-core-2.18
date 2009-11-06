@@ -83,7 +83,7 @@ public class DefaultHistoryRetriever
         OrganisationUnit organisationUnit, Period lastPeriod, int historyLength )
         throws HistoryRetrieverException
     {
-        if ( !dataElement.getType().equals( DataElement.TYPE_INT ) )
+        if ( !dataElement.getValueType().equals( DataElement.VALUE_TYPE_INT ) )
         {
             return null;
 

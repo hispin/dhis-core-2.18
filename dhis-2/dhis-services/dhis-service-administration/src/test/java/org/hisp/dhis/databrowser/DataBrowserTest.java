@@ -144,17 +144,17 @@ public abstract class DataBrowserTest
         // Setup DataElements
         // ---------------------------------------------------------------------
 
-        dataElementA = super.createDataElement( 'A', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM,
+        dataElementA = super.createDataElement( 'A', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM,
             categoryCombo );
-        dataElementB = super.createDataElement( 'B', DataElement.TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM,
+        dataElementB = super.createDataElement( 'B', DataElement.VALUE_TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM,
             categoryCombo );
-        dataElementC = super.createDataElement( 'C', DataElement.TYPE_STRING, DataElement.AGGREGATION_OPERATOR_SUM,
+        dataElementC = super.createDataElement( 'C', DataElement.VALUE_TYPE_STRING, DataElement.AGGREGATION_OPERATOR_SUM,
             categoryCombo );
-        dataElementD = super.createDataElement( 'D', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM,
+        dataElementD = super.createDataElement( 'D', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM,
             categoryCombo );
-        dataElementE = super.createDataElement( 'E', DataElement.TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM,
+        dataElementE = super.createDataElement( 'E', DataElement.VALUE_TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM,
             categoryCombo );
-        dataElementF = super.createDataElement( 'F', DataElement.TYPE_STRING, DataElement.AGGREGATION_OPERATOR_SUM,
+        dataElementF = super.createDataElement( 'F', DataElement.VALUE_TYPE_STRING, DataElement.AGGREGATION_OPERATOR_SUM,
             categoryCombo );
 
         dataElementIds.add( dataElementService.addDataElement( dataElementA ) );

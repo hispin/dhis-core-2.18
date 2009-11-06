@@ -3,9 +3,9 @@ package org.hisp.dhis.importexport.dhis14.util;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_COUNT;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
-import static org.hisp.dhis.dataelement.DataElement.TYPE_BOOL;
-import static org.hisp.dhis.dataelement.DataElement.TYPE_INT;
-import static org.hisp.dhis.dataelement.DataElement.TYPE_STRING;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_STRING;
 
 /**
  * @author Lars Helge Overland
@@ -84,15 +84,15 @@ public class Dhis14TypeHandler
     
     public static String convertTypeToDhis14( String value )
     {
-        if ( value == null || value.equals( TYPE_INT ) )
+        if ( value == null || value.equals( VALUE_TYPE_INT ) )
         {
             return DHIS14_TYPE_INT;
         }
-        if ( value.equals( TYPE_STRING ) )
+        if ( value.equals( VALUE_TYPE_STRING ) )
         {
             return DHIS14_TYPE_STRING;
         }
-        if ( value.equals( TYPE_BOOL ) )
+        if ( value.equals( VALUE_TYPE_BOOL ) )
         {
             return DHIS14_TYPE_BOOL;
         }
@@ -104,17 +104,17 @@ public class Dhis14TypeHandler
     {
         if ( value == null || value.equals( DHIS14_TYPE_INT ) )
         {
-            return TYPE_INT;
+            return VALUE_TYPE_INT;
         }
         if ( value.equals( DHIS14_TYPE_STRING ) )
         {
-            return TYPE_STRING;
+            return VALUE_TYPE_STRING;
         }
         if ( value.equals( DHIS14_TYPE_BOOL ) )
         {
-            return TYPE_BOOL;
+            return VALUE_TYPE_BOOL;
         }
         
-        return TYPE_INT;
+        return VALUE_TYPE_INT;
     }
 }

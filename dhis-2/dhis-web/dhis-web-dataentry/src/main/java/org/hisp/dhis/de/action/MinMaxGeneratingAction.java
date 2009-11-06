@@ -116,7 +116,7 @@ public class MinMaxGeneratingAction
 
         for ( DataElement dataelement : dataElements )
         {        	
-            if ( dataelement.getType().equals( DataElement.TYPE_INT ) )
+            if ( dataelement.getValueType().equals( DataElement.VALUE_TYPE_INT ) )
             {            	
                 for ( DataElementCategoryOptionCombo optionCombo : dataelement.getCategoryCombo().getOptionCombos() )
                 {                	

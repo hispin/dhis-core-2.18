@@ -91,7 +91,7 @@ public class DefaultAggregationService
         OrganisationUnit organisationUnit )
     {
         AbstractDataElementAggregation dataElementAggregation = 
-            getInstance( dataElement.getType(), dataElement.getAggregationOperator() );        
+            getInstance( dataElement.getValueType(), dataElement.getAggregationOperator() );        
 
         return dataElementAggregation.getAggregatedValue( dataElement, optionCombo, startDate, endDate, organisationUnit );
     }
@@ -122,24 +122,24 @@ public class DefaultAggregationService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private AbstractDataElementAggregation getInstance( String type, String aggregationOperator )
+    private AbstractDataElementAggregation getInstance( String valueType, String aggregationOperator )
     {
-        if ( type.equals( DataElement.TYPE_INT )
+        if ( valueType.equals( DataElement.VALUE_TYPE_INT )
             && aggregationOperator.equals( DataElement.AGGREGATION_OPERATOR_SUM ) )
         {
             return sumIntDataElementAggregation;
         }
-        else if ( type.equals( DataElement.TYPE_BOOL )
+        else if ( valueType.equals( DataElement.VALUE_TYPE_BOOL )
             && aggregationOperator.equals( DataElement.AGGREGATION_OPERATOR_SUM ) )
         {
             return sumBoolDataElementAggregation;
         }
-        else if ( type.equals( DataElement.TYPE_INT )
+        else if ( valueType.equals( DataElement.VALUE_TYPE_INT )
             && aggregationOperator.equals( DataElement.AGGREGATION_OPERATOR_AVERAGE ) )
         {
             return averageIntDataElementAggregation;
         }
-        else if ( type.equals( DataElement.TYPE_BOOL )
+        else if ( valueType.equals( DataElement.VALUE_TYPE_BOOL )
             && aggregationOperator.equals( DataElement.AGGREGATION_OPERATOR_AVERAGE ) )
         {
             return averageBoolDataElementAggregation;
@@ -147,7 +147,7 @@ public class DefaultAggregationService
         else
         {
             throw new IllegalArgumentException( "Unsupported aggregation operator ("
-                + aggregationOperator + ") or data element type (" + type + ")" );
+                + aggregationOperator + ") or data element value type (" + valueType + ")" );
         }
     }
 }

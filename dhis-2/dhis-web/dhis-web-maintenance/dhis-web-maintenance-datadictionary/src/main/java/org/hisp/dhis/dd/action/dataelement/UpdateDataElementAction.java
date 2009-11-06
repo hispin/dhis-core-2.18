@@ -128,6 +128,13 @@ public class UpdateDataElementAction
     {
         this.type = type;
     }
+    
+    private String valueType;
+
+    public void setValueType( String valueType )
+    {
+        this.valueType = valueType;
+    }
 
     private String aggregationOperator;
 
@@ -217,6 +224,7 @@ public class UpdateDataElementAction
         dataElement.setDescription( description );
         dataElement.setActive( active );
         dataElement.setType( type );
+        dataElement.setValueType( valueType );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
         dataElement.setCategoryCombo( categoryCombo );        

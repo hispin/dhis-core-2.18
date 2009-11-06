@@ -54,7 +54,7 @@ public class AddDataElementAction
     extends ActionSupport
 {
     private static final String TRUE = "on";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -64,7 +64,7 @@ public class AddDataElementAction
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    } 
+    }
 
     private DataElementCategoryService dataElementCategoryService;
 
@@ -119,6 +119,13 @@ public class AddDataElementAction
         this.type = type;
     }
 
+    private String valueType;
+
+    public void setValueType( String valueType )
+    {
+        this.valueType = valueType;
+    }
+
     private String aggregationOperator;
 
     public void setAggregationOperator( String aggregationOperator )
@@ -139,14 +146,14 @@ public class AddDataElementAction
     {
         this.url = url;
     }
-    
+
     private Collection<String> aggregationLevels;
 
     public void setAggregationLevels( Collection<String> aggregationLevels )
     {
         this.aggregationLevels = aggregationLevels;
     }
-    
+
     private String saved;
 
     public void setSaved( String saved )
@@ -167,14 +174,14 @@ public class AddDataElementAction
     {
         this.factors = factors;
     }
-    
+
     private Integer selectedCategoryComboId;
-    
+
     public void setSelectedCategoryComboId( Integer selectedCategoryComboId )
     {
         this.selectedCategoryComboId = selectedCategoryComboId;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -204,71 +211,76 @@ public class AddDataElementAction
         // Create data element
         // ---------------------------------------------------------------------
 
-        DataElement dataElement = null;       
+        DataElement dataElement = null;
 
-        DataElementCategoryCombo defaultCategoryCombo = dataElementCategoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME ); 
-        
-        DataElementCategoryCombo categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( selectedCategoryComboId );
-        
+        DataElementCategoryCombo defaultCategoryCombo = dataElementCategoryService
+            .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+
+        DataElementCategoryCombo categoryCombo = dataElementCategoryService
+            .getDataElementCategoryCombo( selectedCategoryComboId );
+
         if ( calculated != null && calculated.equals( TRUE ) )
         {
             categoryCombo = defaultCategoryCombo;
-        	
+
             dataElement = new CalculatedDataElement();
-            
+
             CalculatedDataElement calculatedDataElement = (CalculatedDataElement) dataElement;
 
             Set<DataElement> expressionDataElements = new HashSet<DataElement>();
-            
+
             String expressionString = "";
 
             for ( int i = 0; i < dataElementIds.size(); i++ )
             {
-                String operandId = dataElementIds.get( i ) ;
-                
-                String dataElementIdString = operandId.substring( 0, operandId.indexOf( SEPARATOR ) );                    
-                
-            	DataElement expressionDataElement = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );                      
-                
+                String operandId = dataElementIds.get( i );
+
+                String dataElementIdString = operandId.substring( 0, operandId.indexOf( SEPARATOR ) );
+
+                DataElement expressionDataElement = dataElementService.getDataElement( Integer
+                    .parseInt( dataElementIdString ) );
+
                 if ( expressionDataElement == null )
                 {
                     continue;
                 }
 
                 Double factor = Double.parseDouble( factors.get( i ) );
-                
+
                 expressionString += " + ([" + operandId + "] * " + factor + ")";
 
                 expressionDataElements.add( expressionDataElement );
-            }        	
-        	
-            if ( expressionString.length() > 3 )
-            {            
-                expressionString = expressionString.substring( 3 );             
             }
 
-            Expression expression = new Expression( expressionString, "", expressionDataElements);
-                        
-            calculatedDataElement.setExpression( expression );            
-            
+            if ( expressionString.length() > 3 )
+            {
+                expressionString = expressionString.substring( 3 );
+            }
+
+            Expression expression = new Expression( expressionString, "", expressionDataElements );
+
+            calculatedDataElement.setExpression( expression );
+
             calculatedDataElement.setSaved( saved != null );
         }
         else
         {
             dataElement = new DataElement();
         }
-        
+
         dataElement.setName( name );
         dataElement.setAlternativeName( alternativeName );
-        dataElement.setShortName( shortName );      
+        dataElement.setShortName( shortName );
         dataElement.setCode( code );
         dataElement.setDescription( description );
         dataElement.setActive( true );
         dataElement.setType( type );
+        dataElement.setValueType( valueType );
         dataElement.setAggregationOperator( aggregationOperator );
-        dataElement.setUrl( url );        
+        dataElement.setUrl( url );
         dataElement.setCategoryCombo( categoryCombo );
-        dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils.getIntegerCollection( aggregationLevels ) ) );
+        dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils
+            .getIntegerCollection( aggregationLevels ) ) );
 
         dataElementService.addDataElement( dataElement );
 

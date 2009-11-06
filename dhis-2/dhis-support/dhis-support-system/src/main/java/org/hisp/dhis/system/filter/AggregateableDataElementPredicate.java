@@ -47,8 +47,8 @@ public class AggregateableDataElementPredicate
     {
         types = new HashSet<String>();
         
-        types.add( DataElement.TYPE_BOOL );
-        types.add( DataElement.TYPE_INT );
+        types.add( DataElement.VALUE_TYPE_BOOL );
+        types.add( DataElement.VALUE_TYPE_INT );
     }
     
     public boolean evaluate( Object object )

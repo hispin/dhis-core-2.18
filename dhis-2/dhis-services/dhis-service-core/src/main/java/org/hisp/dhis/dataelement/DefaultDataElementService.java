@@ -249,6 +249,11 @@ public class DefaultDataElementService
         return dataElementStore.getDataElementsByType( type );
     }
     
+    public Collection<DataElement> getDataElementsByValueType( String valueType )
+    {
+        return dataElementStore.getDataElementsByValueType( valueType );
+    }
+    
     public Collection<DataElement> getDataElementByCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         return dataElementStore.getDataElementByCategoryCombo( categoryCombo );
@@ -502,4 +507,5 @@ public class DefaultDataElementService
         
         return groupSets;
     }
+   
 }

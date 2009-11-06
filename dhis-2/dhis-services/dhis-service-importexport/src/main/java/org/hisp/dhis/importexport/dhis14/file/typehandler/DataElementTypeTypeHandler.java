@@ -51,7 +51,7 @@ public class DataElementTypeTypeHandler
     {
         int value = getter.getInt();
         
-        String type = Dhis14ObjectMappingUtil.getDataElementTypeMap().get( value );
+        String type = Dhis14ObjectMappingUtil.getDataElementValueTypeMap().get( value );
         
         return type;
     }
@@ -66,7 +66,7 @@ public class DataElementTypeTypeHandler
     {
         int value = Integer.parseInt( result );
         
-        String type = Dhis14ObjectMappingUtil.getDataElementTypeMap().get( value );
+        String type = Dhis14ObjectMappingUtil.getDataElementValueTypeMap().get( value );
         
         return type;
     }

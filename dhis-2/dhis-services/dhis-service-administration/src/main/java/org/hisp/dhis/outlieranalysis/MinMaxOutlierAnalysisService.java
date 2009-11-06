@@ -74,7 +74,7 @@ public class MinMaxOutlierAnalysisService
     {
         final Collection<OutlierValue> outlierValues = new ArrayList<OutlierValue>();
 
-        if ( !dataElement.getType().equals( DataElement.TYPE_INT ) )
+        if ( !dataElement.getValueType().equals( DataElement.VALUE_TYPE_INT ) )
         {
             return outlierValues;
         }

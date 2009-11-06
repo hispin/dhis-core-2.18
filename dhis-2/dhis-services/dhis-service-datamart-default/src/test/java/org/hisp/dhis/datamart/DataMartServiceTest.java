@@ -132,8 +132,8 @@ public class DataMartServiceTest
         // Setup DataElements
         // ---------------------------------------------------------------------
 
-        dataElementA = createDataElement( 'A', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
-        dataElementB = createDataElement( 'B', DataElement.TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
+        dataElementA = createDataElement( 'A', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
+        dataElementB = createDataElement( 'B', DataElement.VALUE_TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
 
         dataElementIds.add( dataElementService.addDataElement( dataElementA ) );
         dataElementIds.add( dataElementService.addDataElement( dataElementB ) );
@@ -359,10 +359,10 @@ public class DataMartServiceTest
         // Setup DataElements
         // ---------------------------------------------------------------------
 
-        DataElement dataElementC = createDataElement( 'C', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
-        DataElement dataElementD = createDataElement( 'D', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
-        DataElement dataElementE = createDataElement( 'E', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE, categoryCombo );
-        DataElement dataElementF = createDataElement( 'F', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE, categoryCombo );
+        DataElement dataElementC = createDataElement( 'C', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
+        DataElement dataElementD = createDataElement( 'D', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
+        DataElement dataElementE = createDataElement( 'E', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE, categoryCombo );
+        DataElement dataElementF = createDataElement( 'F', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE, categoryCombo );
         
         int idC = dataElementService.addDataElement( dataElementC );
         int idD = dataElementService.addDataElement( dataElementD );
@@ -455,10 +455,10 @@ public class DataMartServiceTest
         // Setup DataElements
         // ---------------------------------------------------------------------
 
-        DataElement dataElementC = createDataElement( 'C', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
-        DataElement dataElementD = createDataElement( 'D', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
-        DataElement dataElementE = createDataElement( 'E', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE, categoryCombo );
-        DataElement dataElementF = createDataElement( 'F', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE, categoryCombo );
+        DataElement dataElementC = createDataElement( 'C', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
+        DataElement dataElementD = createDataElement( 'D', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
+        DataElement dataElementE = createDataElement( 'E', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE, categoryCombo );
+        DataElement dataElementF = createDataElement( 'F', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_AVERAGE, categoryCombo );
         
         int idC = dataElementService.addDataElement( dataElementC );
         int idD = dataElementService.addDataElement( dataElementD );
@@ -525,8 +525,8 @@ public class DataMartServiceTest
         // Setup DataElements
         // ---------------------------------------------------------------------
 
-        DataElement dataElementC = createDataElement( 'C', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
-        DataElement dataElementD = createDataElement( 'D', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
+        DataElement dataElementC = createDataElement( 'C', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
+        DataElement dataElementD = createDataElement( 'D', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
         
         int idC = dataElementService.addDataElement( dataElementC );
         int idD = dataElementService.addDataElement( dataElementD );
@@ -565,7 +565,7 @@ public class DataMartServiceTest
         
         expressionService.addExpression( expression );
         
-        CalculatedDataElement calculated = createCalculatedDataElement( 'E', DataElement.TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo, expression );
+        CalculatedDataElement calculated = createCalculatedDataElement( 'E', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo, expression );
         
         dataElementIds.clear();
         dataElementIds.add( dataElementService.addDataElement( calculated ) );

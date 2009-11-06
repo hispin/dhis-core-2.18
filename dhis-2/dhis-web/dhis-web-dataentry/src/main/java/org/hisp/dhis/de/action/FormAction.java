@@ -205,11 +205,11 @@ public class FormAction
         return standardComments;
     }
 
-    private Map<String, String> dataElementTypeMap;
+    private Map<String, String> dataElementValueTypeMap;
 
-    public Map<String, String> getDataElementTypeMap()
+    public Map<String, String> getDataElementValueTypeMap()
     {
-        return dataElementTypeMap;
+        return dataElementValueTypeMap;
     }
 
     private Map<Integer, MinMaxDataElement> minMaxMap;
@@ -370,11 +370,11 @@ public class FormAction
         // Make the DataElement types available
         // ---------------------------------------------------------------------
 
-        dataElementTypeMap = new HashMap<String, String>();
-        dataElementTypeMap.put( DataElement.TYPE_DATE, i18n.getString( "date" ) );
-        dataElementTypeMap.put( DataElement.TYPE_BOOL, i18n.getString( "yes_no" ) );
-        dataElementTypeMap.put( DataElement.TYPE_INT, i18n.getString( "number" ) );
-        dataElementTypeMap.put( DataElement.TYPE_STRING, i18n.getString( "text" ) );
+        dataElementValueTypeMap = new HashMap<String, String>();
+        dataElementValueTypeMap.put( DataElement.VALUE_TYPE_DATE, i18n.getString( "date" ) );
+        dataElementValueTypeMap.put( DataElement.VALUE_TYPE_BOOL, i18n.getString( "yes_no" ) );
+        dataElementValueTypeMap.put( DataElement.VALUE_TYPE_INT, i18n.getString( "number" ) );
+        dataElementValueTypeMap.put( DataElement.VALUE_TYPE_STRING, i18n.getString( "text" ) );
 
         // ---------------------------------------------------------------------
         // Get the custom data entry form (if any)
