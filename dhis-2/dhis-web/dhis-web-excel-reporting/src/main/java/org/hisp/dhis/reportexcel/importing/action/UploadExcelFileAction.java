@@ -32,6 +32,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
 import org.hisp.dhis.reportexcel.export.action.SelectionManager;
 
@@ -40,103 +41,111 @@ import org.hisp.dhis.reportexcel.export.action.SelectionManager;
  * @version $Id
  */
 
-public class UploadExcelFileAction
-    extends org.hisp.dhis.reportexcel.action.ActionSupport
-{
-    // -------------------------------------------
-    // Dependency
-    // -------------------------------------------
+public class UploadExcelFileAction extends
+		org.hisp.dhis.reportexcel.action.ActionSupport {
+	// -------------------------------------------
+	// Dependency
+	// -------------------------------------------
 
-    private ReportLocationManager reportLocationManager;
+	private ReportLocationManager reportLocationManager;
 
-    public void setReportLocationManager( ReportLocationManager reportLocationManager )
-    {
-        this.reportLocationManager = reportLocationManager;
-    }
+	public void setReportLocationManager(
+			ReportLocationManager reportLocationManager) {
+		this.reportLocationManager = reportLocationManager;
+	}
 
-    private SelectionManager selectionManager;
+	private SelectionManager selectionManager;
 
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
+	public void setSelectionManager(SelectionManager selectionManager) {
+		this.selectionManager = selectionManager;
+	}
 
-    // -------------------------------------------------------------------------
-    // Getters & Setters
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Getters & Setters
+	// -------------------------------------------------------------------------
 
-    private String fileName;
+	private Integer selectedPeriodIndex;
 
-    public void setUploadFileName( String fileName )
-    {
-        this.fileName = fileName;
-    }
+	public Integer getSelectedPeriodIndex() {
+		return selectedPeriodIndex;
+	}
 
-    private File upload;
+	public void setSelectedPeriodIndex(Integer selectedPeriodIndex) {
+		this.selectedPeriodIndex = selectedPeriodIndex;
+	}
 
-    public void setUpload( File upload )
-    {
-        this.upload = upload;
-    }
+	private Period period;
 
-    private File fileExcel;
+	public Period getPeriod() {
+		return period;
+	}
 
-    public File getFileExcel()
-    {
-        return fileExcel;
-    }
+	public void setPeriod(Period period) {
+		this.period = period;
+	}
 
-    public void setFileExcel( File fileExcel )
-    {
-        this.fileExcel = fileExcel;
-    }
+	private String fileName;
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
+	public void setUploadFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
-    public String execute()
-        throws Exception
-    {
+	private File upload;
 
-        File directory = reportLocationManager.getReportExcelTempDirectory();
+	public void setUpload(File upload) {
+		this.upload = upload;
+	}
 
-        if ( upload != null )
-        {
+	private File fileExcel;
 
-            try
-            {
-                FileInputStream fin = new FileInputStream( upload );
+	public File getFileExcel() {
+		return fileExcel;
+	}
 
-                byte[] data = new byte[8192];
-                int byteReads = fin.read( data );
+	public void setFileExcel(File fileExcel) {
+		this.fileExcel = fileExcel;
+	}
 
-                fileExcel = new File( directory, fileName );
+	// -------------------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------------------
 
-                FileOutputStream fout = new FileOutputStream( fileExcel );
+	public String execute() throws Exception {
 
-                selectionManager.setUploadFilepath( fileExcel.getAbsolutePath() );
+		File directory = reportLocationManager.getReportExcelTempDirectory();
 
-                while ( byteReads != -1 )
-                {
-                    fout.write( data, 0, byteReads );
-                    fout.flush();
-                    byteReads = fin.read( data );
-                }
-                fin.close();
+		if (upload != null) {
 
-                fout.close();
+			try {
+				FileInputStream fin = new FileInputStream(upload);
 
-                return SUCCESS;
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-                return ERROR;
-            }
+				byte[] data = new byte[8192];
+				int byteReads = fin.read(data);
 
-        }
+				fileExcel = new File(directory, fileName);
 
-        return SUCCESS;
-    }
+				FileOutputStream fout = new FileOutputStream(fileExcel);
+
+				selectionManager.setUploadFilepath(fileExcel.getAbsolutePath());
+
+				while (byteReads != -1) {
+					fout.write(data, 0, byteReads);
+					fout.flush();
+					byteReads = fin.read(data);
+				}
+				
+				fin.close();
+
+				fout.close();
+
+				return SUCCESS;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return ERROR;
+			}
+
+		}
+
+		return SUCCESS;
+	}
 }

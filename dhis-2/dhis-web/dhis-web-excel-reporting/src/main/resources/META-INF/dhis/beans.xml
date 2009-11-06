@@ -1189,16 +1189,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!--  IMPORT DATA 													   -->
 
+	<!--  GUI - Import param form -->
 	<bean
 		id="org.hisp.dhis.reportexcel.importing.action.GetImportingParamsAction"
 		class="org.hisp.dhis.reportexcel.importing.action.GetImportingParamsAction"
 		scope="prototype">
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 	</bean>
 
+	<!--  function - Get periods by group -->
 	<bean
 		id="org.hisp.dhis.reportexcel.importing.action.GetPeriodsByExcelItemGroupAction"
 		class="org.hisp.dhis.reportexcel.importing.action.GetPeriodsByExcelItemGroupAction"
@@ -1209,8 +1211,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.reportexcel.importing.action.ViewDataAction"
-		class="org.hisp.dhis.reportexcel.importing.action.ViewDataAction"
+	<!--  function - Prewiew Data  flow from excel file  -->
+	<bean id="org.hisp.dhis.reportexcel.importing.action.ViewDataFlowAction"
+		class="org.hisp.dhis.reportexcel.importing.action.ViewDataFlowAction"
 		scope="prototype">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
@@ -1218,16 +1221,33 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
 
+	<!--  function - Prewiew Data - NORMAL  -->
+	<bean id="org.hisp.dhis.reportexcel.importing.action.ViewDataNormalAction"
+		class="org.hisp.dhis.reportexcel.importing.action.ViewDataNormalAction"
+		scope="prototype">
+	</bean>
+
+	<!--  function - Prewiew Data - ORGANISATION GROUP  -->
+	<bean
+		id="org.hisp.dhis.reportexcel.importing.action.ViewDataOrganizationGroupAction"
+		class="org.hisp.dhis.reportexcel.importing.action.ViewDataOrganizationGroupAction"
+		scope="prototype">
+		<property name="organisationUnitSelectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<!--  function - Import data flow -->
 	<bean id="org.hisp.dhis.reportexcel.importing.action.ImportDataFlowAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ImportDataFlowAction"
 		scope="prototype">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
+		
 	</bean>
 
+	<!--  function - Import data - NORMAL  -->
 	<bean
 		id="org.hisp.dhis.reportexcel.importing.action.ImportDataNormalExcelGroupAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ImportDataNormalExcelGroupAction"
@@ -1242,9 +1262,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
+		<!--
+			<property name="periodService"
+			ref="org.hisp.dhis.period.PeriodService" />
+		-->
 	</bean>
 
+	<!--  function - Import data - ORGANISATION UNIT  -->
 	<bean
 		id="org.hisp.dhis.reportexcel.importing.action.ImportDataExcelOrganizationGroupAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ImportDataExcelOrganizationGroupAction"
@@ -1259,9 +1285,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
+	<!--  function - Import data - CATEGORY  -->
 	<bean
 		id="org.hisp.dhis.reportexcel.importing.action.ImportDataCategoryExcelGroupAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ImportDataCategoryExcelGroupAction"
@@ -1278,6 +1308,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
+	<!--  function - Upload excel file  -->
 	<bean
 		id="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction"
 		class="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction"
@@ -1296,7 +1327,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importing.period.action.GetPeriodsByExcelItemGroupAction"
 		class="org.hisp.dhis.reportexcel.importing.period.action.GetPeriodsByExcelItemGroupAction">
 		<property name="selectedStateManager"
-			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStatePeriodManager" />
+			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 	</bean>
@@ -1305,21 +1336,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.importing.period.action.NextPeriodsAction"
 		class="org.hisp.dhis.reportexcel.importing.period.action.NextPeriodsAction">
 		<property name="selectedStateManager"
-			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStatePeriodManager" />
+			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.importing.period.action.PreviousPeriodsAction"
 		class="org.hisp.dhis.reportexcel.importing.period.action.PreviousPeriodsAction">
 		<property name="selectedStateManager"
-			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStatePeriodManager" />
+			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.importing.period.action.SelectedStatePeriodManager"
+		id="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager"
 		class="org.hisp.dhis.reportexcel.importing.period.action.DefaultSelectedStateManager">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
-	
+
 </beans>

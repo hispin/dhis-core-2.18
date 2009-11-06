@@ -48,11 +48,11 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
+import org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -79,9 +79,9 @@ public class ImportDataNormalExcelGroupAction extends ActionSupport {
 
 	private CurrentUserService currentUserService;
 
-	private PeriodService periodService;
-
 	private ExcelItemService excelItemService;
+	
+	private SelectedStateManager selectedStateManager;
 
 	// --------------------------------------------------------------------
 	// Inputs && Outputs
@@ -91,16 +91,20 @@ public class ImportDataNormalExcelGroupAction extends ActionSupport {
 
 	private String uploadFileName;
 
-	private Integer periodId;
-
 	public Integer[] excelItemIds;
 
 	// --------------------------------------------------------------------
 	// Getters and Setters
 	// --------------------------------------------------------------------
+	
 	public void setOrganisationUnitSelectionManager(
 			OrganisationUnitSelectionManager organisationUnitSelectionManager) {
 		this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+	}
+
+	public void setSelectedStateManager(
+			SelectedStateManager selectedStateManager) {
+		this.selectedStateManager = selectedStateManager;
 	}
 
 	public void setExpressionService(ExpressionService expressionService) {
@@ -119,10 +123,6 @@ public class ImportDataNormalExcelGroupAction extends ActionSupport {
 		this.excelItemService = excelItemService;
 	}
 
-	public void setPeriodService(PeriodService periodService) {
-		this.periodService = periodService;
-	}
-
 	public void setDataValueService(DataValueService dataValueService) {
 		this.dataValueService = dataValueService;
 	}
@@ -133,10 +133,6 @@ public class ImportDataNormalExcelGroupAction extends ActionSupport {
 
 	public void setUploadFileName(String uploadFileName) {
 		this.uploadFileName = uploadFileName;
-	}
-
-	public void setPeriodId(Integer periodId) {
-		this.periodId = periodId;
 	}
 
 	public void setExcelItemIds(Integer[] excelItemIds) {
@@ -184,9 +180,10 @@ public class ImportDataNormalExcelGroupAction extends ActionSupport {
 				String value = ExcelUtils.readValue(exelItem.getRow(),
 						exelItem.getColumn(), sheet);
 				
-				if (value.length() > 0) {
-					Period period = periodService
-							.getPeriod(periodId.intValue());
+				if (value.length() > 0) {					
+					Period period = selectedStateManager.getSelectedPeriod();
+//					Period period = periodService
+//							.getPeriod(periodId.intValue());
 
 					Operand operand = expressionService
 							.getOperandsInExpression(exelItem.getExpression())
@@ -202,7 +199,7 @@ public class ImportDataNormalExcelGroupAction extends ActionSupport {
 					String storedBy = currentUserService.getCurrentUsername();
 
 					DataValue dataValue = dataValueService.getDataValue(
-							organisationUnit, dataElement, period, optionCombo);
+							organisationUnit, dataElement, period, optionCombo);				
 					
 					if (dataValue == null) {
 						dataValue = new DataValue(dataElement, period,
@@ -213,7 +210,6 @@ public class ImportDataNormalExcelGroupAction extends ActionSupport {
 						dataValue.setValue(value + "");
 						dataValue.setTimestamp(new Date());
 						dataValue.setStoredBy(storedBy);
-
 						dataValueService.updateDataValue(dataValue);
 
 					}

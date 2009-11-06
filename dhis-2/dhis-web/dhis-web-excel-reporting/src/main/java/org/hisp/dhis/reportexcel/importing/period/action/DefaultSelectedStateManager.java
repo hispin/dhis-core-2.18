@@ -27,6 +27,7 @@ package org.hisp.dhis.reportexcel.importing.period.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +35,8 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -43,25 +46,40 @@ import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 import com.opensymphony.xwork2.ActionContext;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: DefaultSelectedStateManager.java 5282 2008-05-28 10:41:06Z
- *          larshelg $
+ * @author Chau Thu Tran
+ * @version $Id$
  */
-public class DefaultSelectedStateManager implements SelectedStatePeriodManager {
+public class DefaultSelectedStateManager implements SelectedStateManager {
+	
 	private static final Log log = LogFactory
 			.getLog(DefaultSelectedStateManager.class);
 
-	public static final String SESSION_KEY_SELECTED_EXCEL_ITEM_GROUP_ID = "excel_item_group_id";
+	public static final String SESSION_KEY_SELECTED_EXCEL_ITEM_GROUP_ID = "excel_selected_excelItemGroup_id";
 
-	public static final String SESSION_KEY_SELECTED_PERIOD_INDEX = "excel_item_group_period_index";
+	public static final String SESSION_KEY_SELECTED_PERIOD_INDEX = "excel_selected_period_index";
 
-	public static final String SESSION_KEY_BASE_PERIOD = "excel_item_group";
+	public static final String SESSION_KEY_BASE_PERIOD = "excel_base_period";
 
 	// -------------------------------------------------------------------------
 	// Dependencies
 	// -------------------------------------------------------------------------
 
 	private ExcelItemService excelItemService;
+
+	private OrganisationUnitSelectionManager selectionManager;
+
+	// -------------------------------------------------------------------------
+	// Getters && Setters
+	// -------------------------------------------------------------------------
+
+	public OrganisationUnit getSelectedOrganisationUnit() {
+		return selectionManager.getSelectedOrganisationUnit();
+	}
+
+	public void setSelectionManager(
+			OrganisationUnitSelectionManager selectionManager) {
+		this.selectionManager = selectionManager;
+	}
 
 	public void setExcelItemService(ExcelItemService excelItemService) {
 		this.excelItemService = excelItemService;
@@ -77,10 +95,20 @@ public class DefaultSelectedStateManager implements SelectedStatePeriodManager {
 	}
 
 	public ExcelItemGroup getSelectedExcelItemGroup() {
-		Integer id = (Integer) getSession().get(
-				SESSION_KEY_SELECTED_EXCEL_ITEM_GROUP_ID);
+		Integer id = (Integer) getSession()
+				.get(SESSION_KEY_SELECTED_EXCEL_ITEM_GROUP_ID);
 
 		return id != null ? excelItemService.getExcelItemGroup(id) : null;
+	}
+
+	public void clearSelectedExcelItemGroup() {
+		getSession().remove(SESSION_KEY_SELECTED_EXCEL_ITEM_GROUP_ID);
+	}
+
+	public Collection<ExcelItemGroup> loadExcelItemGroupsForSelectedOrgUnit(
+			OrganisationUnit organisationUnit) {
+
+		return excelItemService.getExcelItemGroupsByOrganisationUnit(organisationUnit);
 	}
 
 	// -------------------------------------------------------------------------
@@ -98,7 +126,7 @@ public class DefaultSelectedStateManager implements SelectedStatePeriodManager {
 	public Period getSelectedPeriod() {
 
 		Integer index = getSelectedPeriodIndex();
-
+		
 		if (index == null) {
 			return null;
 		}
@@ -117,7 +145,7 @@ public class DefaultSelectedStateManager implements SelectedStatePeriodManager {
 	}
 
 	public List<Period> getPeriodList() {
-
+		
 		Period basePeriod = getBasePeriod();
 
 		CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
@@ -138,13 +166,10 @@ public class DefaultSelectedStateManager implements SelectedStatePeriodManager {
 	}
 
 	public void nextPeriodSpan() {
-
 		List<Period> periods = getPeriodList();
-
 		CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
 
 		Period basePeriod = periods.get(periods.size() - 1);
-
 		Period newBasePeriod = periodType.getNextPeriod(basePeriod);
 
 		if (newBasePeriod.getStartDate().before(new Date())) // Future periods
@@ -169,12 +194,11 @@ public class DefaultSelectedStateManager implements SelectedStatePeriodManager {
 	// -------------------------------------------------------------------------
 
 	private PeriodType getPeriodType() {
-
 		ExcelItemGroup excelItemGroup = getSelectedExcelItemGroup();
 
 		if (excelItemGroup == null) {
 			throw new IllegalStateException(
-					"Cannot ask for PeriodType when no excel item group is selected");
+					"Cannot ask for PeriodType when no ExcelItemGroup is selected");
 		}
 
 		return excelItemGroup.getPeriodType();
@@ -203,5 +227,4 @@ public class DefaultSelectedStateManager implements SelectedStatePeriodManager {
 	private static final Map<String, Object> getSession() {
 		return ActionContext.getContext().getSession();
 	}
-
 }

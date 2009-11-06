@@ -995,13 +995,41 @@
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
 		</action>
 
-		<action name="previewData"
-			class="org.hisp.dhis.reportexcel.importing.action.ViewDataAction">
+		<!--  function - Prewiew Data  flow from excel file  -->
+		<action name="previewDataFlow"
+			class="org.hisp.dhis.reportexcel.importing.action.ViewDataFlowAction">
+			<result name="CATEGORY" type="chain">
+				previewDataNormal
+			</result>
+			<result name="NORMAL" type="chain">
+				previewDataNormal
+			</result>
+			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
+				previewDataOrganizationGroupAction
+			</result>
+			<result name="PERIOD_COLUMN_LISTING" type="chain">
+				previewDataNormal
+			</result>
+		</action>
+		
+		<!--  function - Prewiew Data - NORMAL  		     -->
+		<action name="previewDataNormal"
+			class="org.hisp.dhis.reportexcel.importing.action.ViewDataNormalAction">
 			<result name="success" type="velocity">
 				/dhis-web-excel-reporting/responseExcelItemValues.vm</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>
+		
+		<!--  function - Prewiew Data - ORGANISATION GROUP  -->
+		<action name="previewDataOrganizationGroupAction"
+			class="org.hisp.dhis.reportexcel.importing.action.ViewDataOrganizationGroupAction">
+			<result name="success" type="velocity">
+				/dhis-web-excel-reporting/responseExcelItemValueByOrganisations.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-excel-reporting/responseError.vm</result>
+		</action>
+
 
 		<action name="importData"
 			class="org.hisp.dhis.reportexcel.importing.action.ImportDataFlowAction">

@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportexcel.importing.action;
+
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -24,13 +26,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.importing.action;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import jxl.Sheet;
@@ -46,14 +44,13 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
+import org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -80,21 +77,19 @@ public class ImportDataExcelOrganizationGroupAction extends ActionSupport {
 
 	private CurrentUserService currentUserService;
 
-	private PeriodService periodService;
-
 	private ExcelItemService excelItemService;
+
+	private OrganisationUnitService organisationUnitService;
+
+	private SelectedStateManager selectedStateManager;
 
 	// --------------------------------------------------------------------
 	// Inputs && Outputs
 	// --------------------------------------------------------------------
 
-	private Integer excelItemGroupId;
-
 	private String uploadFileName;
 
-	private Integer periodId;
-
-	public Integer[] excelItemIds;
+	public String[] excelItemIds;
 
 	// --------------------------------------------------------------------
 	// Getters and Setters
@@ -102,6 +97,11 @@ public class ImportDataExcelOrganizationGroupAction extends ActionSupport {
 	public void setOrganisationUnitSelectionManager(
 			OrganisationUnitSelectionManager organisationUnitSelectionManager) {
 		this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+	}
+
+	public void setOrganisationUnitService(
+			OrganisationUnitService organisationUnitService) {
+		this.organisationUnitService = organisationUnitService;
 	}
 
 	public void setExpressionService(ExpressionService expressionService) {
@@ -120,27 +120,20 @@ public class ImportDataExcelOrganizationGroupAction extends ActionSupport {
 		this.excelItemService = excelItemService;
 	}
 
-	public void setPeriodService(PeriodService periodService) {
-		this.periodService = periodService;
+	public void setSelectedStateManager(
+			SelectedStateManager selectedStateManager) {
+		this.selectedStateManager = selectedStateManager;
 	}
 
 	public void setDataValueService(DataValueService dataValueService) {
 		this.dataValueService = dataValueService;
 	}
 
-	public void setExcelItemGroupId(Integer excelItemGroupId) {
-		this.excelItemGroupId = excelItemGroupId;
-	}
-
 	public void setUploadFileName(String uploadFileName) {
 		this.uploadFileName = uploadFileName;
 	}
 
-	public void setPeriodId(Integer periodId) {
-		this.periodId = periodId;
-	}
-
-	public void setExcelItemIds(Integer[] excelItemIds) {
+	public void setExcelItemIds(String[] excelItemIds) {
 		this.excelItemIds = excelItemIds;
 	}
 
@@ -154,9 +147,6 @@ public class ImportDataExcelOrganizationGroupAction extends ActionSupport {
 
 	public String execute() throws Exception {
 
-		ExcelItemGroup excelItemGroup = excelItemService
-				.getExcelItemGroup(excelItemGroupId.intValue());
-
 		OrganisationUnit organisationUnit = organisationUnitSelectionManager
 				.getSelectedOrganisationUnit();
 
@@ -167,83 +157,29 @@ public class ImportDataExcelOrganizationGroupAction extends ActionSupport {
 			ws.setLocale(new Locale("en", "EN"));
 			Workbook templateWorkbook = Workbook.getWorkbook(upload, ws);
 
-			Collection<ExcelItem> excelItems = new ArrayList<ExcelItem>();
-			if (excelItemIds != null) {
-				for (int i = 0; i < excelItemIds.length; i++) {
-					excelItems.add(excelItemService
-							.getExcelItem(excelItemIds[i]));
-				}
-			} else {
-				excelItems = excelItemGroup.getExcelItems();
-			}
+			Period period = selectedStateManager.getSelectedPeriod();
 
-			
-			
-			for (OrganisationUnitGroup organisationUnitGroup : excelItemGroup
-					.getOrganisationUnitGroups()) {
+			for (int i = 0; i < excelItemIds.length; i++) {
 
-				Collection<OrganisationUnit> organisationUnits = getOrganisationUnits(
-						organisationUnitGroup, organisationUnit);
+				int orgunitId = Integer.parseInt(excelItemIds[i].split("-")[0]);
 
-				int row = 0;
-				
-				for (OrganisationUnit o : organisationUnits) {
+				OrganisationUnit o = organisationUnitService
+						.getOrganisationUnit(orgunitId);
 
-					for (ExcelItem exelItem : excelItems) {
+				int row = Integer.parseInt(excelItemIds[i].split("-")[1]);
 
-						Sheet sheet = templateWorkbook.getSheet(exelItem
-								.getSheetNo() - 1);
+				int excelItemId = Integer
+						.parseInt(excelItemIds[i].split("-")[2]);
 
-						String value = ExcelUtils.readValue(exelItem.getRow()
-								+ row, exelItem.getColumn(), sheet);
+				ExcelItem exelItem = excelItemService.getExcelItem(excelItemId);
 
-						if (value.length() > 0) {
+				if (exelItem.getId() == excelItemId) {
 
-							Period period = periodService.getPeriod(periodId
-									.intValue());
+					writeDataValue(exelItem, templateWorkbook, row, o, period);
 
-							Operand operand = expressionService
-									.getOperandsInExpression(
-											exelItem.getExpression())
-									.iterator().next();
+				}// end if( exelItem ...
 
-							DataElement dataElement = dataElementService
-									.getDataElement(operand.getDataElementId());
-
-							DataElementCategoryOptionCombo optionCombo = categoryService
-									.getDataElementCategoryOptionCombo(operand
-											.getOptionComboId());
-
-							String storedBy = currentUserService
-									.getCurrentUsername();
-
-							DataValue dataValue = dataValueService
-									.getDataValue(o, dataElement, period,
-											optionCombo);
-
-							if (dataValue == null) {
-								dataValue = new DataValue(dataElement, period,
-										o, value + "", storedBy, new Date(),
-										null, optionCombo);
-								dataValueService.addDataValue(dataValue);
-							} else {
-								dataValue.setValue(value + "");
-								dataValue.setTimestamp(new Date());
-								dataValue.setStoredBy(storedBy);
-
-								dataValueService.updateDataValue(dataValue);
-
-							}
-
-						} // if (value.length() ...
-
-					}// end for (ExcelItem ...
-					
-					row ++;
-					
-				}// end for (OrganisationUnit ...
-
-			} // end for ( OrganisationUnitGroup ...
+			}// end for (int i ...
 
 		}// end if (organisationUnit ...
 
@@ -252,17 +188,44 @@ public class ImportDataExcelOrganizationGroupAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	private Collection<OrganisationUnit> getOrganisationUnits(
-			OrganisationUnitGroup group, OrganisationUnit parentUnit) {
+	private void writeDataValue(ExcelItem exelItem, Workbook templateWorkbook,
+			int row, OrganisationUnit o, Period period) {
 
-		List<OrganisationUnit> childrenOrganisationUnits = new ArrayList<OrganisationUnit>(
-				parentUnit.getChildren());
+		Sheet sheet = templateWorkbook.getSheet(exelItem.getSheetNo() - 1);
 
-		Collection<OrganisationUnit> organisationUnits = group.getMembers();
+		String value = ExcelUtils.readValue(exelItem.getRow() + row, exelItem
+				.getColumn(), sheet);
 
-		organisationUnits.retainAll(childrenOrganisationUnits);
+		if (value.length() > 0) {
 
-		return organisationUnits;
+			Operand operand = expressionService.getOperandsInExpression(
+					exelItem.getExpression()).iterator().next();
+
+			DataElement dataElement = dataElementService.getDataElement(operand
+					.getDataElementId());
+
+			DataElementCategoryOptionCombo optionCombo = categoryService
+					.getDataElementCategoryOptionCombo(operand
+							.getOptionComboId());
+
+			String storedBy = currentUserService.getCurrentUsername();
+
+			DataValue dataValue = dataValueService.getDataValue(o, dataElement,
+					period, optionCombo);
+
+			if (dataValue == null) {
+				dataValue = new DataValue(dataElement, period, o, value + "",
+						storedBy, new Date(), null, optionCombo);
+				dataValueService.addDataValue(dataValue);
+			} else {
+				dataValue.setValue(value + "");
+				dataValue.setTimestamp(new Date());
+				dataValue.setStoredBy(storedBy);
+
+				dataValueService.updateDataValue(dataValue);
+
+			}
+		}
 	}
 
 }
