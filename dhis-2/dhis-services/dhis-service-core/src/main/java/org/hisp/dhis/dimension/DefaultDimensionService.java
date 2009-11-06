@@ -30,9 +30,6 @@ package org.hisp.dhis.dimension;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.dimension.Dimension;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionSet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -74,8 +71,8 @@ public class DefaultDimensionService
     // -------------------------------------------------------------------------
     // DimensionService implementation
     // -------------------------------------------------------------------------
-
-    public Collection<DimensionSet> getAllDimensionSets()
+    
+    public Collection<DimensionSet> getDataElementDimensionSets()
     {
         Collection<DimensionSet> dimensionSets = new ArrayList<DimensionSet>();
         
@@ -87,11 +84,33 @@ public class DefaultDimensionService
             }
         }
         
-        for ( Indicator indicator : indicatorService.getAllIndicators() )
+        dimensionSets.addAll( categoryService.getAllDataElementCategoryCombos() );
+        
+        return dimensionSets;
+    }
+    
+    public DimensionSet getDataElementDimensionSetByName( String name )
+    {
+        for ( DimensionSet dimensionSet : getDataElementDimensionSets() )
         {
-            if ( indicator.isDimensionSet() )
+            if ( dimensionSet.getName().equals( name ) )
             {
-                dimensionSets.add( indicator );
+                return dimensionSet;
+            }
+        }
+        
+        return null;
+    }
+
+    public Collection<DimensionSet> getIndicatorDimensionSets()
+    {
+        Collection<DimensionSet> dimensionSets = new ArrayList<DimensionSet>();
+        
+        for ( DataElement dataElement : dataElementService.getAllDataElements() )
+        {
+            if ( dataElement.isDimensionSet() )
+            {
+                dimensionSets.add( dataElement );
             }
         }
         
@@ -100,25 +119,31 @@ public class DefaultDimensionService
         return dimensionSets;
     }
     
-    public Collection<Dimension> getAllDimensions()
+    public DimensionSet getIndicatorDimensionSetByName( String name )
     {
-        Collection<Dimension> dimensions = new ArrayList<Dimension>();
+        for ( DimensionSet dimensionSet : getIndicatorDimensionSets() )
+        {
+            if ( dimensionSet.getName().equals( name ) )
+            {
+                return dimensionSet;
+            }
+        }
         
-        dimensions.addAll( dataElementService.getAllDataElementGroupSets() );
-        dimensions.addAll( indicatorService.getAllIndicatorGroupSets() );
-        dimensions.addAll( categoryService.getAllDataElementCategories() );
-        
-        return dimensions;
+        return null;
     }
-    
-    public Collection<DimensionOption> getAllDimensionOptions()
+
+    public Collection<DimensionSet> getAllDimensionSets()
     {
-        Collection<DimensionOption> dimensionOptions = new ArrayList<DimensionOption>();
+        Collection<DimensionSet> dimensionSets = getDataElementDimensionSets();
         
-        dimensionOptions.addAll( dataElementService.getAllDataElementGroups() );
-        dimensionOptions.addAll( indicatorService.getAllIndicatorGroups() );
-        dimensionOptions.addAll( categoryService.getAllDataElementCategoryOptions() );
+        for ( Indicator indicator : indicatorService.getAllIndicators() )
+        {
+            if ( indicator.isDimensionSet() )
+            {
+                dimensionSets.add( indicator );
+            }
+        }
         
-        return dimensionOptions;
+        return dimensionSets;
     }
 }

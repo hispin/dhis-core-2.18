@@ -27,10 +27,12 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -78,6 +80,8 @@ public class DimensionTest
         
         Map<Dimension, DimensionOption> dimensions = dataValue.getDimensions( diseaseByType );
         
+        // Test Measure.getDimensions
+        
         assertEquals( 4, dimensions.size() );
         
         assertTrue( dimensions.keySet().contains( diseaseType ) );
@@ -105,5 +109,23 @@ public class DimensionTest
         assertTrue( dimensions.values().contains( diabetes ) );
         assertTrue( dimensions.values().contains( period ) );
         assertTrue( dimensions.values().contains( source ) );
+        
+        // Test Dimension.getDimensionOption
+        
+        assertEquals( communicable, diseaseType.getDimensionOption( hivAids ) );
+        assertEquals( communicable, diseaseType.getDimensionOption( malaria ) );
+        assertEquals( nonCommunicable, diseaseType.getDimensionOption( diabetes ) );
+        assertEquals( nonCommunicable, diseaseType.getDimensionOption( cancer ) );
+        
+        // Test DimensionSet.getDimensionOptionElements
+        
+        List<? extends DimensionOptionElement> dimensionOptionElements = diseaseByType.getDimensionOptionElements();
+        
+        assertEquals( 4, dimensionOptionElements.size() );
+        
+        assertTrue( dimensionOptionElements.contains( hivAids ) );
+        assertTrue( dimensionOptionElements.contains( malaria ) );
+        assertTrue( dimensionOptionElements.contains( diabetes ) );
+        assertTrue( dimensionOptionElements.contains( cancer ) );
     }
 }

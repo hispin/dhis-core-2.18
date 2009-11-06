@@ -38,7 +38,11 @@ public interface DimensionService
     
     Collection<DimensionSet> getAllDimensionSets();
     
-    Collection<Dimension> getAllDimensions();
+    Collection<DimensionSet> getDataElementDimensionSets();
     
-    Collection<DimensionOption> getAllDimensionOptions();
+    DimensionSet getDataElementDimensionSetByName( String name );
+    
+    Collection<DimensionSet> getIndicatorDimensionSets();
+
+    DimensionSet getIndicatorDimensionSetByName( String name );
 }
