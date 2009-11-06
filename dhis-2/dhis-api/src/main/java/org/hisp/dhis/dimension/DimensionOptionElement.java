@@ -27,10 +27,14 @@ package org.hisp.dhis.dimension;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
 /**
  * @author Lars Helge Overland
  */
 public interface DimensionOptionElement
 {
     String getName();
+    
+    List<? extends DimensionOption> getDimensionOptions();
 }

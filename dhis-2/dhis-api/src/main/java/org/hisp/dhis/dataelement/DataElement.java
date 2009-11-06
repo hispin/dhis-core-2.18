@@ -125,6 +125,11 @@ public class DataElement
     private Date lastUpdated;
     
     /**
+     * The data element groups which this  
+     */
+    private Set<DataElementGroup> groups = new HashSet<DataElementGroup>();
+    
+    /**
      * The data sets which this data element is a member of.
      */
     private Set<DataSet> dataSets = new HashSet<DataSet>();
@@ -217,6 +222,11 @@ public class DataElement
     public List<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         return null;
+    }
+    
+    public List<? extends DimensionOption> getDimensionOptions()
+    {
+        return new ArrayList<DimensionOption>( groups );
     }
 
     public boolean isDimensionSet()
@@ -434,6 +444,16 @@ public class DataElement
     public void setLastUpdated( Date lastUpdated )
     {
         this.lastUpdated = lastUpdated;
+    }
+
+    public Set<DataElementGroup> getGroups()
+    {
+        return groups;
+    }
+
+    public void setGroups( Set<DataElementGroup> groups )
+    {
+        this.groups = groups;
     }
 
     public Set<DataSet> getDataSets()
