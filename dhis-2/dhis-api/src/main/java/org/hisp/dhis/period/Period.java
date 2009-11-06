@@ -140,6 +140,11 @@ public class Period
     {
         return null;
     }
+
+    public Dimension getDimension()
+    {
+        return DIMENSION;
+    }
     
     // -------------------------------------------------------------------------
     // hashCode, equals and toString

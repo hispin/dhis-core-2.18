@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
 
@@ -70,6 +71,15 @@ public class DataElementCategoryOption
     public List<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         return categoryOptionCombos;
+    }
+
+    // -------------------------------------------------------------------------
+    // Dimension
+    // -------------------------------------------------------------------------
+
+    public Dimension getDimension()
+    {
+        return category;
     }
     
     // -------------------------------------------------------------------------

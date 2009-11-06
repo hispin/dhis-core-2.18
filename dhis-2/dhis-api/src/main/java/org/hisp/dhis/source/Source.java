@@ -107,6 +107,11 @@ public abstract class Source
     {
         return null;
     }
+
+    public Dimension getDimension()
+    {
+        return DIMENSION;
+    }
     
     // -------------------------------------------------------------------------
     // hashCode, equals and toString

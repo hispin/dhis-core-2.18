@@ -229,6 +229,11 @@ public class DataElement
         return new ArrayList<DimensionOption>( groups );
     }
 
+    public Dimension getDimension()
+    {
+        return DIMENSION;
+    }
+    
     public boolean isDimensionSet()
     {
         return groupSets != null && groupSets.size() > 0;

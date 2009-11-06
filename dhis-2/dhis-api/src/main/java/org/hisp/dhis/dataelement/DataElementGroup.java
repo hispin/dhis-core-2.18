@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
 
@@ -41,15 +42,12 @@ import org.hisp.dhis.dimension.DimensionOptionElement;
  * @version $Id: DataElementGroup.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 public class DataElementGroup
-    extends IdentifiableObject
-    implements DimensionOption
+    extends IdentifiableObject implements DimensionOption
 {
-
-    /**
-     * The members of the DataElementGroup.
-     */
     private Set<DataElement> members = new HashSet<DataElement>();
 
+    private DataElementGroupSet groupSet;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -70,6 +68,11 @@ public class DataElementGroup
     public List<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         return new ArrayList<DataElement>( members );
+    }
+    
+    public Dimension getDimension()
+    {
+        return groupSet;
     }
     
     // -------------------------------------------------------------------------
@@ -115,7 +118,6 @@ public class DataElementGroup
     // Getters and setters
     // -------------------------------------------------------------------------
 
-
     public Set<DataElement> getMembers()
     {
         return members;
@@ -124,5 +126,15 @@ public class DataElementGroup
     public void setMembers( Set<DataElement> members )
     {
         this.members = members;
+    }
+
+    public DataElementGroupSet getGroupSet()
+    {
+        return groupSet;
+    }
+
+    public void setGroupSet( DataElementGroupSet groupSet )
+    {
+        this.groupSet = groupSet;
     }
 }
