@@ -27,51 +27,52 @@ package org.hisp.dhis.reportexcel.importing.period.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.List;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: SelectedStateManager.java 3311 2007-05-18 14:08:01Z torgeilo $
+ * @author Chau Thu Tran
+ * @version $Id$
  */
-public interface SelectedStatePeriodManager
+public interface SelectedStateManager
 {
-//    // -------------------------------------------------------------------------
-//    // OrganisationUnit
-//    // -------------------------------------------------------------------------
-//    
-//    OrganisationUnit getSelectedOrganisationUnit();  
-//
-//    // -------------------------------------------------------------------------
-//    // DataSet
-//    // -------------------------------------------------------------------------
-//    
-    void setSelectedExcelItemGroup( ExcelItemGroup excelItemGroup );
-//
-    ExcelItemGroup getSelectedExcelItemGroup();
-//
-//    void clearSelectedExcelItemGroup();
-//    
-//    List<ExcelItemGroup> loadExcelItemGroupsForSelectedOrgUnit( OrganisationUnit organisationUnit );    
+    // -------------------------------------------------------------------------
+    // OrganisationUnit
+    // -------------------------------------------------------------------------
+    
+    OrganisationUnit getSelectedOrganisationUnit();  
+
+    // -------------------------------------------------------------------------
+    // Excel item group
+    // -------------------------------------------------------------------------
+    
+    public void setSelectedExcelItemGroup( ExcelItemGroup excelItemGroup );
+
+    public ExcelItemGroup getSelectedExcelItemGroup();
+
+    public void clearSelectedExcelItemGroup();
+    
+    public Collection<ExcelItemGroup> loadExcelItemGroupsForSelectedOrgUnit( OrganisationUnit organisationUnit );    
 
     // -------------------------------------------------------------------------
     // Period
     // -------------------------------------------------------------------------
     
-    void setSelectedPeriodIndex( Integer index );
+    public void setSelectedPeriodIndex( Integer index );
 
-    Integer getSelectedPeriodIndex();
+    public Integer getSelectedPeriodIndex();
 
-    Period getSelectedPeriod();
+    public Period getSelectedPeriod();
 
-    void clearSelectedPeriod();
+    public void clearSelectedPeriod();
 
-    List<Period> getPeriodList();
+    public List<Period> getPeriodList();
 
-    void nextPeriodSpan();
+    public void nextPeriodSpan();
 
-    void previousPeriodSpan();
-	
+    public void previousPeriodSpan();
 }

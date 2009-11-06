@@ -27,11 +27,9 @@ package org.hisp.dhis.reportexcel.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
-import org.hisp.dhis.reportexcel.export.action.SelectionManager;
+import org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -46,10 +44,10 @@ public class ImportDataFlowAction implements Action {
 	// -------------------------------------------
 
 	private ExcelItemService excelItemService;
+	//
+	// private PeriodService periodService;
 
-	private PeriodService periodService;
-
-	private SelectionManager selectionManager;
+	private SelectedStateManager selectedStateManager;
 
 	// -------------------------------------------
 	// Input & Output
@@ -67,16 +65,13 @@ public class ImportDataFlowAction implements Action {
 	// Getter & Setter
 	// -------------------------------------------
 
-	public void setSelectionManager(SelectionManager selectionManager) {
-		this.selectionManager = selectionManager;
-	}
-
 	public void setExcelItemGroupId(Integer excelItemGroupId) {
 		this.excelItemGroupId = excelItemGroupId;
 	}
 
-	public void setPeriodService(PeriodService periodService) {
-		this.periodService = periodService;
+	public void setSelectedStateManager(
+			SelectedStateManager selectedStateManager) {
+		this.selectedStateManager = selectedStateManager;
 	}
 
 	public void setPeriodId(Integer periodId) {
@@ -105,14 +100,14 @@ public class ImportDataFlowAction implements Action {
 	}
 
 	public String execute() throws Exception {
+		
+		// Period period = periodService.getPeriod(periodId);
 
-		Period period = periodService.getPeriod(periodId);
-
-		selectionManager.setSelectedPeriod(period);
-
+		selectedStateManager.setSelectedPeriodIndex(periodId);
+System.out.println("\n\n ==== periodId : " + selectedStateManager.getSelectedPeriod());
 		ExcelItemGroup excelItemGroup = excelItemService
 				.getExcelItemGroup(excelItemGroupId);
-		
+
 		return excelItemGroup.getType();
 	}
 

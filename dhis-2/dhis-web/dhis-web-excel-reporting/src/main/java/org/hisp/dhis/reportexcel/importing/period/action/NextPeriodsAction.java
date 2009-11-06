@@ -27,6 +27,8 @@ package org.hisp.dhis.reportexcel.importing.period.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager;
+
 import com.opensymphony.xwork2.Action;
 
 /**
@@ -40,9 +42,9 @@ public class NextPeriodsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStatePeriodManager selectedStateManager;
+    private SelectedStateManager selectedStateManager;
 
-    public void setSelectedStateManager( SelectedStatePeriodManager selectedStateManager )
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
     }

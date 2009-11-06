@@ -49,7 +49,7 @@ public class GetPeriodsByExcelItemGroupAction implements Action {
 	// Dependences
 	// -------------------------------------------------------------------------
 
-	private SelectedStatePeriodManager selectedStateManager;
+	private SelectedStateManager selectedStateManager;
 
 	private ExcelItemService excelItemService;
 
@@ -74,7 +74,7 @@ public class GetPeriodsByExcelItemGroupAction implements Action {
 	}
 
 	public void setSelectedStateManager(
-			SelectedStatePeriodManager selectedStateManager) {
+			SelectedStateManager selectedStateManager) {
 		this.selectedStateManager = selectedStateManager;
 	}
 
