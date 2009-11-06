@@ -37,4 +37,6 @@ public interface DimensionOption
     String getName();
     
     List<? extends DimensionOptionElement> getDimensionOptionElements();
+    
+    Dimension getDimension();
 }

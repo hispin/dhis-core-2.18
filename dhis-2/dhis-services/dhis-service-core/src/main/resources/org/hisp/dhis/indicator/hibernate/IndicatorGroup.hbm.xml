@@ -23,8 +23,13 @@
     <set name="members" table="indicatorgroupmembers">
       <key column="indicatorgroupid"/>
       <many-to-many class="org.hisp.dhis.indicator.Indicator" 
-          column="indicatorid" foreign-key="fk_indicatorgroup_indicatorid"/>
+        column="indicatorid" foreign-key="fk_indicatorgroup_indicatorid"/>
     </set>
+	
+    <join table="indicatorgroupsetmembers" inverse="true">
+      <key column="indicatorgroupid"/>
+      <many-to-one column="indicatorgroupsetid" name="groupSet"/> 
+    </join>
 	
   </class>
 </hibernate-mapping>

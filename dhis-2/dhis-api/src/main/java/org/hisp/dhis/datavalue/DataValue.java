@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
@@ -156,9 +155,9 @@ public class DataValue
         
         if ( optionCombo != null && !optionCombo.isDefault() )
         {
-            for ( DataElementCategoryOption categoryOption : optionCombo.getCategoryOptions() )
+            for ( DimensionOption dimensionOption : optionCombo.getDimensionOptions() )
             {
-                dimensions.put( categoryOption.getCategory(), categoryOption );
+                dimensions.put( dimensionOption.getDimension(), dimensionOption );
             }
         }
         
