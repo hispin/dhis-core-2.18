@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.dimension.DimensionSet;
 
 /**
@@ -72,6 +73,11 @@ public class DataElementCategoryCombo
     public List<? extends Dimension> getDimensions()
     {
         return categories;
+    }
+    
+    public List<? extends DimensionOptionElement> getDimensionOptionElements()
+    {
+        return new ArrayList<DimensionOptionElement>( optionCombos );
     }
     
     // -------------------------------------------------------------------------
