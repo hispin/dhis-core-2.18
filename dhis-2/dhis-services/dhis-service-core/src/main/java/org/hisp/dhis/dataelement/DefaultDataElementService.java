@@ -259,6 +259,11 @@ public class DefaultDataElementService
         return dataElementStore.getDataElementByCategoryCombo( categoryCombo );
     }
     
+    public Collection<DataElement> getDataElementsWithGroupSets()
+    {
+        return dataElementStore.getDataElementsWithGroupSets();
+    }
+    
     // -------------------------------------------------------------------------
     // CalculatedDataElement
     // -------------------------------------------------------------------------

@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -225,6 +226,16 @@ public class HibernateDataElementStore
         criteria.add( Restrictions.eq( "categoryCombo", categoryCombo ) );
         
         return criteria.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataElement> getDataElementsWithGroupSets()
+    {
+        final String sql = "from DataElement d where d.groupSets.size > 0";
+        
+        Query query = sessionFactory.getCurrentSession().createQuery( sql );
+        
+        return query.list();
     }
 
     // -------------------------------------------------------------------------

@@ -172,6 +172,11 @@ public class DefaultIndicatorService
         return indicatorStore.getIndicatorByCode( code );
     }
     
+    public Collection<Indicator> getIndicatorsWithGroupSets()
+    {
+        return indicatorStore.getIndicatorsWithGroupSets();
+    }
+    
     // -------------------------------------------------------------------------
     // IndicatorType
     // -------------------------------------------------------------------------

@@ -34,6 +34,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorStore;
 
@@ -42,7 +43,7 @@ import org.hisp.dhis.indicator.IndicatorStore;
  * @version $Id: HibernateIndicatorStore.java 3287 2007-05-08 00:26:53Z larshelg $
  */
 public class HibernateIndicatorStore 
-    implements IndicatorStore
+    extends HibernateGenericStore<Indicator> implements IndicatorStore
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -150,5 +151,15 @@ public class HibernateIndicatorStore
         query.setString( "code", code );
 
         return (Indicator) query.uniqueResult();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<Indicator> getIndicatorsWithGroupSets()
+    {
+        final String sql = "from Indicator d where d.groupSets.size > 0";
+        
+        Query query = sessionFactory.getCurrentSession().createQuery( sql );
+        
+        return query.list();
     }
 }
