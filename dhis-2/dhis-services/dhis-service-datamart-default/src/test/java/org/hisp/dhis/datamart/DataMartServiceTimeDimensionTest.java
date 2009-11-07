@@ -106,7 +106,7 @@ public class DataMartServiceTimeDimensionTest
     {
         DataElement dataElement = createDataElement( 'A', categoryCombo );
         
-        dataElement.setValueType( DataElement.VALUE_TYPE_INT );
+        dataElement.setType( DataElement.VALUE_TYPE_INT );
         dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
         
         dataElementIds.add( dataElementService.addDataElement( dataElement ) );
@@ -139,7 +139,7 @@ public class DataMartServiceTimeDimensionTest
     {
         DataElement dataElement = createDataElement( 'A', categoryCombo );
         
-        dataElement.setValueType( DataElement.VALUE_TYPE_INT );
+        dataElement.setType( DataElement.VALUE_TYPE_INT );
         dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         
         dataElementIds.add( dataElementService.addDataElement( dataElement ) );        

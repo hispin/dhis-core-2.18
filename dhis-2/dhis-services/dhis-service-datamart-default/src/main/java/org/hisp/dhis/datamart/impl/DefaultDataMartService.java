@@ -434,13 +434,13 @@ public class DefaultDataMartService
      * Sorts out the data element identifers of the given aggregation operator and 
      * the given type.
      */
-    private Collection<Operand> getOperands( final Collection<DataElement> dataElements, String aggregationOperator, String type )
+    private Collection<Operand> getOperands( final Collection<DataElement> dataElements, String aggregationOperator, String valueType )
     {
         final Collection<Integer> section = new ArrayList<Integer>();
         
         for ( final DataElement element : dataElements )
         {
-            if ( element.getAggregationOperator().equals( aggregationOperator ) && element.getType().equals( type ) )
+            if ( element.getAggregationOperator().equals( aggregationOperator ) && element.getType().equals( valueType ) )
             {
                 section.add( element.getId() );
             }

@@ -91,7 +91,7 @@ public class DefaultAggregationService
         OrganisationUnit organisationUnit )
     {
         AbstractDataElementAggregation dataElementAggregation = 
-            getInstance( dataElement.getValueType(), dataElement.getAggregationOperator() );        
+            getInstance( dataElement.getType(), dataElement.getAggregationOperator() );        
 
         return dataElementAggregation.getAggregatedValue( dataElement, optionCombo, startDate, endDate, organisationUnit );
     }

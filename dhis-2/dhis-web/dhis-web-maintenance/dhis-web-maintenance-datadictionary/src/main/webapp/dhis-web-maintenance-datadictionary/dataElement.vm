@@ -92,8 +92,8 @@
 				<p><label>$i18n.getString( "alternative_name" ):</label><br><span id="alternativeNameField"></span></p>
 				<p><label>$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
 				<p><label>$i18n.getString( "active" ):</label><br><span id="activeField"></span></p>
-				<p><label>$i18n.getString( "type" ):</label><br><span id="typeField"></span></p>
-				<p><label>$i18n.getString( "value_type" ):</label><br><span id="valueTypeField"></span></p>
+				<p><label>$i18n.getString( "domain_type" ):</label><br><span id="domainTypeField"></span></p>
+				<p><label>$i18n.getString( "value_type" ):</label><br><span id="typeField"></span></p>				
 				<p><label>$i18n.getString( "aggregation_operator" ):</label><br><span id="aggregationOperatorField"></span></p>                
 				<p><label>$i18n.getString( "category_combination" ):</label><br><span id="categoryComboField"></span></p>
 				<p><label>$i18n.getString( "url" ):</label><br><span id="urlField"></span></p>

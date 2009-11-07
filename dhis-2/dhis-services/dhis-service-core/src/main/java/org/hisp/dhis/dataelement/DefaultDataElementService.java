@@ -249,9 +249,9 @@ public class DefaultDataElementService
         return dataElementStore.getDataElementsByType( type );
     }
     
-    public Collection<DataElement> getDataElementsByValueType( String valueType )
+    public Collection<DataElement> getDataElementsByDomainType( String domainType )
     {
-        return dataElementStore.getDataElementsByValueType( valueType );
+        return dataElementStore.getDataElementsByDomainType( domainType );
     }
     
     public Collection<DataElement> getDataElementByCategoryCombo( DataElementCategoryCombo categoryCombo )

@@ -49,7 +49,7 @@ public class Dhis14ObjectMappingUtil
 {
     private static Map<Integer, PeriodType> periodTypeMap;
     
-    private static Map<Integer, String> dataElementValueTypeMap;
+    private static Map<Integer, String> dataElementTypeMap;
     
     static
     {
@@ -68,14 +68,14 @@ public class Dhis14ObjectMappingUtil
     
     static
     {
-        dataElementValueTypeMap = new HashMap<Integer, String>();
+        dataElementTypeMap = new HashMap<Integer, String>();
 
-        dataElementValueTypeMap.put( 1, DataElement.VALUE_TYPE_STRING ); // Should be Date
-        dataElementValueTypeMap.put( 2, DataElement.VALUE_TYPE_STRING );
-        dataElementValueTypeMap.put( 3, DataElement.VALUE_TYPE_INT );
-        dataElementValueTypeMap.put( 4, DataElement.VALUE_TYPE_STRING );
-        dataElementValueTypeMap.put( 5, DataElement.VALUE_TYPE_BOOL );
-        dataElementValueTypeMap.put( 6, DataElement.VALUE_TYPE_STRING ); // Should be Object
+        dataElementTypeMap.put( 1, DataElement.VALUE_TYPE_STRING ); // Should be Date
+        dataElementTypeMap.put( 2, DataElement.VALUE_TYPE_STRING );
+        dataElementTypeMap.put( 3, DataElement.VALUE_TYPE_INT );
+        dataElementTypeMap.put( 4, DataElement.VALUE_TYPE_STRING );
+        dataElementTypeMap.put( 5, DataElement.VALUE_TYPE_BOOL );
+        dataElementTypeMap.put( 6, DataElement.VALUE_TYPE_STRING ); // Should be Object
     }
 
     public static Map<Integer, PeriodType> getPeriodTypeMap()
@@ -83,8 +83,8 @@ public class Dhis14ObjectMappingUtil
         return periodTypeMap;
     }
         
-    public static Map<Integer, String> getDataElementValueTypeMap()
+    public static Map<Integer, String> getDataElementTypeMap()
     {
-        return dataElementValueTypeMap;
+        return dataElementTypeMap;
     }
 }

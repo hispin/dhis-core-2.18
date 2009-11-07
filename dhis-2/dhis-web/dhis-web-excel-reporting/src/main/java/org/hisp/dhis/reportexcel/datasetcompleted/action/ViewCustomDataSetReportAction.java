@@ -164,7 +164,7 @@ public class ViewCustomDataSetReportAction
             DataElementCategoryCombo catCombo = dataElement.getCategoryCombo();
             for ( DataElementCategoryOptionCombo optionCombo : catCombo.getOptionCombos() )
             {
-                if ( dataElement.getValueType().equals( DataElement.VALUE_TYPE_INT ) )
+                if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
                 {
                     DataValue value = dataValueService
                         .getDataValue( organisationUnit, dataElement, period, optionCombo );

@@ -366,7 +366,7 @@ public class DefaultDataEntryScreenManager
 
                 boolean customValueExists = customValuesExists( customValues, dataElementId, optionComboId );
                 
-                if ( dataElement.getValueType().equals( VALUE_TYPE_BOOL ) || (dataElement.getValueType().equals( VALUE_TYPE_STRING ) && customValueExists ) )
+                if ( dataElement.getType().equals( VALUE_TYPE_BOOL ) || (dataElement.getType().equals( VALUE_TYPE_STRING ) && customValueExists ) )
                 {
                     dataElementCode = dataElementCode.replace( "input", "select" );
                     dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
@@ -430,7 +430,7 @@ public class DefaultDataEntryScreenManager
 
                 String appendCode = dataElementCode;
 
-                if ( dataElement.getValueType().equals( VALUE_TYPE_BOOL ) )
+                if ( dataElement.getType().equals( VALUE_TYPE_BOOL ) )
                 {
                     appendCode += jsCodeForCombos;
 
@@ -456,7 +456,7 @@ public class DefaultDataEntryScreenManager
 
                     appendCode += "</select>";
                 }
-                else if ( dataElement.getValueType().equals( VALUE_TYPE_STRING ) && customValueExists )
+                else if ( dataElement.getType().equals( VALUE_TYPE_STRING ) && customValueExists )
                 {
                     appendCode += jsCodeForCombos;
 
@@ -486,7 +486,7 @@ public class DefaultDataEntryScreenManager
                 {
                     appendCode += jsCodeForInputs;
 
-                    if ( dataElement.getValueType().equals( VALUE_TYPE_INT ) )
+                    if ( dataElement.getType().equals( VALUE_TYPE_INT ) )
                     {
                         appendCode += historyCode;
                     }
@@ -607,7 +607,7 @@ public class DefaultDataEntryScreenManager
                 // Find value type of data element
                 // -------------------------------------------------------------
 
-                String dataElementValueType = dataElement.getValueType();
+                String dataElementValueType = dataElement.getType();
 
                 // -------------------------------------------------------------
                 // Find existing value of data element in data set
@@ -639,7 +639,7 @@ public class DefaultDataEntryScreenManager
 
                 boolean customValueExists = customValuesExists( customValues, dataElementId, optionComboId );
                 
-                if ( dataElement.getValueType().equals( DataElement.VALUE_TYPE_BOOL ) || (dataElement.getValueType().equals( VALUE_TYPE_STRING ) && customValueExists ) )
+                if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) || (dataElement.getType().equals( VALUE_TYPE_STRING ) && customValueExists ) )
                 {
                     dataElementCode = dataElementCode.replace( "input", "select" );
                     dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
@@ -701,7 +701,7 @@ public class DefaultDataEntryScreenManager
 
                 String appendCode = dataElementCode;
 
-                if ( dataElement.getValueType().equals( VALUE_TYPE_BOOL ) )
+                if ( dataElement.getType().equals( VALUE_TYPE_BOOL ) )
                 {
                     appendCode += jsCodeForCombos;
 
@@ -727,7 +727,7 @@ public class DefaultDataEntryScreenManager
 
                     appendCode += "</select>";
                 }
-                else if ( dataElement.getValueType().equals( VALUE_TYPE_STRING ) && customValueExists )
+                else if ( dataElement.getType().equals( VALUE_TYPE_STRING ) && customValueExists )
                 {
                     appendCode += jsCodeForCombos;
 
@@ -757,7 +757,7 @@ public class DefaultDataEntryScreenManager
                 {
                     appendCode += jsCodeForInputs;
 
-                    if ( dataElement.getValueType().equals( VALUE_TYPE_INT ) )
+                    if ( dataElement.getType().equals( VALUE_TYPE_INT ) )
                     {
                         appendCode += historyCode;
                     }

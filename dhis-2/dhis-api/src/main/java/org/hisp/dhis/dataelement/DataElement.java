@@ -72,9 +72,9 @@ public class DataElement
 
     public static final String VALUE_TYPE_DATE = "date";
 
-    public static final String TYPE_AGGREGATE = "aggregate";
+    public static final String DOMAIN_TYPE_AGGREGATE = "aggregate";
 
-    public static final String TYPE_PATIENT = "patient";
+    public static final String DOMAIN_TYPE_PATIENT = "patient";
 
     public static final String AGGREGATION_OPERATOR_SUM = "sum";
 
@@ -88,16 +88,16 @@ public class DataElement
     private boolean active;
 
     /**
-     * The type of this DataElement; e.g. DataElement.TYPE_AGGREGATE or
-     * DataElement.TYPE_PATIENT.
+     * The domain of this DataElement; e.g. DataElement.DOMAIN_TYPE_AGGREGATE or
+     * DataElement.DOMAIN_TYPE_PATIENT.
      */
-    private String type;
+    private String domainType;
 
     /**
      * The value type of this DataElement; e.g. DataElement.VALUE_TYPE_INT or
      * DataElement.VALUE_TYPE_BOOL.
      */
-    private String valueType;
+    private String type;
 
     /**
      * The aggregation operator of this DataElement; e.g. DataElement.SUM og
@@ -141,10 +141,10 @@ public class DataElement
     private Date lastUpdated;
 
     /**
-     * The data element groups which this  
+     * The data element groups which this
      */
     private Set<DataElementGroup> groups = new HashSet<DataElementGroup>();
-    
+
     /**
      * The data sets which this data element is a member of.
      */
@@ -238,7 +238,7 @@ public class DataElement
     public List<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         List<DimensionOptionElement> dimensionOptionElements = new ArrayList<DimensionOptionElement>();
-        
+
         for ( Dimension dimension : getDimensions() )
         {
             for ( DimensionOption dimensionOption : dimension.getDimensionOptions() )
@@ -246,10 +246,10 @@ public class DataElement
                 dimensionOptionElements.addAll( dimensionOption.getDimensionOptionElements() );
             }
         }
-        
+
         return dimensionOptionElements;
     }
-    
+
     public List<? extends DimensionOption> getDimensionOptions()
     {
         return new ArrayList<DimensionOption>( groups );
@@ -259,12 +259,12 @@ public class DataElement
     {
         return DIMENSION;
     }
-    
+
     public String getDimensionSetType()
     {
-        return DataElement.class.getSimpleName().toUpperCase(); 
+        return DataElement.class.getSimpleName().toUpperCase();
     }
-    
+
     public boolean isDimensionSet()
     {
         return groupSets != null && groupSets.size() > 0;
@@ -378,6 +378,19 @@ public class DataElement
         return false;
     }
 
+    public String getDomainTypeNullSafe()
+    {
+        if ( domainType == null )
+        {
+            return DataElement.DOMAIN_TYPE_AGGREGATE;
+        }
+
+        else
+        {
+            return domainType;
+        }
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -392,6 +405,16 @@ public class DataElement
         this.active = active;
     }
 
+    public String getDomainType()
+    {
+        return domainType;
+    }
+
+    public void setDomainType( String domainType )
+    {
+        this.domainType = domainType;
+    }
+
     public String getType()
     {
         return type;
@@ -400,16 +423,6 @@ public class DataElement
     public void setType( String type )
     {
         this.type = type;
-    }
-
-    public String getValueType()
-    {
-        return valueType;
-    }
-
-    public void setValueType( String valueType )
-    {
-        this.valueType = valueType;
     }
 
     public String getAggregationOperator()

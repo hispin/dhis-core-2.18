@@ -89,7 +89,6 @@ public class DownloadFileAction
         this.selectionManager = selectionManager;
     }
 
-    @Override
     public String execute()
         throws Exception
     {
