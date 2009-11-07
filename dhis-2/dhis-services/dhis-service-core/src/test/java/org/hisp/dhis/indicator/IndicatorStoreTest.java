@@ -63,6 +63,8 @@ public class IndicatorStoreTest
         indicatorStore = (IndicatorStore) getBean( IndicatorStore.ID );
         
         indicatorTypeStore = (GenericIdentifiableObjectStore<IndicatorType>) getBean( "org.hisp.dhis.indicator.IndicatorTypeStore" );
+        
+        indicatorService = (IndicatorService) getBean( IndicatorService.ID );
     }
 
     // -------------------------------------------------------------------------
@@ -414,5 +416,37 @@ public class IndicatorStoreTest
         
         Indicator indicatorC = indicatorStore.getIndicatorByCode( "CodeC" );
         assertNull( indicatorC );
+    } 
+
+    @Test
+    public void testGetIndicatorsWithGroupSets()
+        throws Exception
+    {
+        IndicatorGroupSet groupSetA = createIndicatorGroupSet( 'A' );
+        
+        indicatorService.addIndicatorGroupSet( groupSetA );
+        
+        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+
+        indicatorTypeStore.save( type );
+        
+        Indicator indicatorA = createIndicator( 'A', type );
+        Indicator indicatorB = createIndicator( 'B', type );
+        Indicator indicatorC = createIndicator( 'C', type );
+        Indicator indicatorD = createIndicator( 'D', type );
+    
+        indicatorB.getGroupSets().add( groupSetA );
+        indicatorD.getGroupSets().add( groupSetA );        
+        
+        indicatorStore.addIndicator( indicatorA );
+        indicatorStore.addIndicator( indicatorB );
+        indicatorStore.addIndicator( indicatorC );
+        indicatorStore.addIndicator( indicatorD );
+        
+        Collection<Indicator> indicators = indicatorStore.getIndicatorsWithGroupSets();
+        
+        assertEquals( 2, indicators.size() );
+        assertTrue( indicators.contains( indicatorB ) );
+        assertTrue( indicators.contains( indicatorD ) );
     }
 }

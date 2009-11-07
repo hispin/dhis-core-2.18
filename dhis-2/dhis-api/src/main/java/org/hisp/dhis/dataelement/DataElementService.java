@@ -221,6 +221,13 @@ public interface DataElementService
      * @return all DataElements with the given category combo.
      */
     Collection<DataElement> getDataElementByCategoryCombo( DataElementCategoryCombo categoryCombo );
+
+    /**
+     * Returns all DataElements which are associated with one or more DataElementGroupSets.
+     * 
+     * @return all DataElements which are associated with one or more DataElementGroupSets.
+     */
+    Collection<DataElement> getDataElementsWithGroupSets();
     
     // -------------------------------------------------------------------------
     // Calculated Data Elements

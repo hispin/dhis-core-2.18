@@ -54,7 +54,7 @@ public class DataElementStoreTest
     extends DhisSpringTest
 {
     private DataElementStore dataElementStore;
-
+    
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -64,6 +64,8 @@ public class DataElementStoreTest
         throws Exception
     {
         dataElementStore = (DataElementStore) getBean( DataElementStore.ID );
+        
+        dataElementService = (DataElementService) getBean( DataElementService.ID );
     }
 
     // -------------------------------------------------------------------------
@@ -473,6 +475,33 @@ public class DataElementStoreTest
         assertNotNull( dataElementStore.getDataElement( idA ).getAggregationLevels() );
         assertEquals( 2, dataElementStore.getDataElement( idA ).getAggregationLevels().size() );
         assertEquals( aggregationLevels, dataElementStore.getDataElement( idA ).getAggregationLevels() );
+    }
+    
+    @Test
+    public void testGetDataElementsWithGroupSets()
+    {
+        DataElementGroupSet groupSetA = createDataElementGroupSet( 'A' );
+        
+        dataElementService.addDataElementGroupSet( groupSetA );
+        
+        DataElement dataElementA = createDataElement( 'A' );
+        DataElement dataElementB = createDataElement( 'B' );
+        DataElement dataElementC = createDataElement( 'C' );
+        DataElement dataElementD = createDataElement( 'D' );
+        
+        dataElementB.getGroupSets().add( groupSetA );
+        dataElementD.getGroupSets().add( groupSetA );
+        
+        dataElementStore.addDataElement( dataElementA );
+        dataElementStore.addDataElement( dataElementB );
+        dataElementStore.addDataElement( dataElementC );
+        dataElementStore.addDataElement( dataElementD );
+        
+        Collection<DataElement> dataElements = dataElementStore.getDataElementsWithGroupSets();
+        
+        assertEquals( 2, dataElements.size() );
+        assertTrue( dataElements.contains( dataElementB ) );
+        assertTrue( dataElements.contains( dataElementD ) );        
     }
 
     // -------------------------------------------------------------------------
