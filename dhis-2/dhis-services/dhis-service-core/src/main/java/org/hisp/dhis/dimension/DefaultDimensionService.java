@@ -30,10 +30,8 @@ package org.hisp.dhis.dimension;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 
 /**
@@ -75,15 +73,7 @@ public class DefaultDimensionService
     public Collection<DimensionSet> getDataElementDimensionSets()
     {
         Collection<DimensionSet> dimensionSets = new ArrayList<DimensionSet>();
-        
-        for ( DataElement dataElement : dataElementService.getAllDataElements() )
-        {
-            if ( dataElement.isDimensionSet() )
-            {
-                dimensionSets.add( dataElement );
-            }
-        }
-        
+        dimensionSets.addAll( dataElementService.getDataElementsWithGroupSets() );        
         dimensionSets.addAll( categoryService.getAllDataElementCategoryCombos() );
         
         return dimensionSets;
@@ -105,15 +95,7 @@ public class DefaultDimensionService
     public Collection<DimensionSet> getIndicatorDimensionSets()
     {
         Collection<DimensionSet> dimensionSets = new ArrayList<DimensionSet>();
-        
-        for ( DataElement dataElement : dataElementService.getAllDataElements() )
-        {
-            if ( dataElement.isDimensionSet() )
-            {
-                dimensionSets.add( dataElement );
-            }
-        }
-        
+        dimensionSets.addAll( indicatorService.getIndicatorsWithGroupSets() );
         dimensionSets.addAll( categoryService.getAllDataElementCategoryCombos() );
         
         return dimensionSets;
@@ -134,15 +116,10 @@ public class DefaultDimensionService
 
     public Collection<DimensionSet> getAllDimensionSets()
     {
-        Collection<DimensionSet> dimensionSets = getDataElementDimensionSets();
-        
-        for ( Indicator indicator : indicatorService.getAllIndicators() )
-        {
-            if ( indicator.isDimensionSet() )
-            {
-                dimensionSets.add( indicator );
-            }
-        }
+        Collection<DimensionSet> dimensionSets = new ArrayList<DimensionSet>();
+        dimensionSets.addAll( dataElementService.getDataElementsWithGroupSets() ); 
+        dimensionSets.addAll( indicatorService.getIndicatorsWithGroupSets() );
+        dimensionSets.addAll( categoryService.getAllDataElementCategoryCombos() );
         
         return dimensionSets;
     }

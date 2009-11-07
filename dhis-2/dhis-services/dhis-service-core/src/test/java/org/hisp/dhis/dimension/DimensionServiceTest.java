@@ -27,7 +27,7 @@ package org.hisp.dhis.dimension;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 import java.util.Collection;
@@ -50,7 +50,8 @@ public class DimensionServiceTest
     private DataElementGroupSet dataElementGroupSetA;
     private DataElementGroupSet dataElementGroupSetB;
     
-    private DataElement dataElementA;
+    private DataElement dataElementA;    
+    private DataElement dataElementB;
     
     @Override
     public void setUpTest()
@@ -66,11 +67,13 @@ public class DimensionServiceTest
         dataElementService.addDataElementGroupSet( dataElementGroupSetB );
         
         dataElementA = createDataElement( 'A' );
+        dataElementB = createDataElement( 'B' );
         
         dataElementA.getGroupSets().add( dataElementGroupSetA );
         dataElementA.getGroupSets().add( dataElementGroupSetA );
         
         dataElementService.addDataElement( dataElementA );
+        dataElementService.addDataElement( dataElementB );
     }
     
     @Test
@@ -78,7 +81,7 @@ public class DimensionServiceTest
     {
         Collection<DimensionSet> dimensionSets = dimensionService.getAllDimensionSets();
         
-        assertNotNull( dimensionSets );
         assertTrue( dimensionSets.contains( dataElementA ) );
+        assertFalse( dimensionSets.contains( dataElementB ) );
     }
 }
