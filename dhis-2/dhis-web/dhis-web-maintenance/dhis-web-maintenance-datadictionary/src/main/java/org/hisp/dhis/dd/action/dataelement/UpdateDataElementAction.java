@@ -46,11 +46,12 @@ import com.opensymphony.xwork2.ActionSupport;
 /**
  * @author Torgeir Lorange Ostby
  * @author Hans S. Toemmerholt
- * @version $Id: UpdateDataElementAction.java 6216 2008-11-06 18:06:42Z eivindwa $
+ * @version $Id: UpdateDataElementAction.java 6216 2008-11-06 18:06:42Z eivindwa
+ *          $
  */
 public class UpdateDataElementAction
     extends ActionSupport
-{       
+{
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -122,13 +123,13 @@ public class UpdateDataElementAction
         this.active = active;
     }
 
-    private String type;
+    private String domainType;
 
-    public void setType( String type )
+    public void setDomainType( String domainType )
     {
-        this.type = type;
+        this.domainType = domainType;
     }
-    
+
     private String valueType;
 
     public void setValueType( String valueType )
@@ -163,14 +164,14 @@ public class UpdateDataElementAction
     {
         this.aggregationLevels = aggregationLevels;
     }
-    
+
     private String saved;
-    
+
     public void setSaved( String saved )
     {
         this.saved = saved;
     }
-    
+
     private List<String> dataElementIds;
 
     public void setDataElementIds( List<String> dataElementIds )
@@ -184,21 +185,21 @@ public class UpdateDataElementAction
     {
         this.factors = factors;
     }
-    
+
     private Integer selectedCategoryComboId;
-    
+
     public void setSelectedCategoryComboId( Integer selectedCategoryComboId )
     {
         this.selectedCategoryComboId = selectedCategoryComboId;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
-    {    	
-    	// ---------------------------------------------------------------------
+    {
+        // ---------------------------------------------------------------------
         // Prepare values
         // ---------------------------------------------------------------------
 
@@ -215,14 +216,15 @@ public class UpdateDataElementAction
         if ( description != null && description.trim().length() == 0 )
         {
             description = null;
-        }       
-        
+        }
+
         // ---------------------------------------------------------------------
         // Update data element
         // ---------------------------------------------------------------------
 
         DataElement dataElement = dataElementService.getDataElement( id );
-        DataElementCategoryCombo categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( selectedCategoryComboId );
+        DataElementCategoryCombo categoryCombo = dataElementCategoryService
+            .getDataElementCategoryCombo( selectedCategoryComboId );
 
         dataElement.setName( name );
         dataElement.setAlternativeName( alternativeName );
@@ -230,42 +232,44 @@ public class UpdateDataElementAction
         dataElement.setCode( code );
         dataElement.setDescription( description );
         dataElement.setActive( active );
-        dataElement.setType( type );
-        dataElement.setValueType( valueType );
+        dataElement.setDomainType( domainType );
+        dataElement.setType( valueType );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
-        dataElement.setCategoryCombo( categoryCombo );        
-        dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils.getIntegerCollection( aggregationLevels ) ) );
+        dataElement.setCategoryCombo( categoryCombo );
+        dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils
+            .getIntegerCollection( aggregationLevels ) ) );
 
         // ---------------------------------------------------------------------
         // Calculated data element
         // ---------------------------------------------------------------------
 
         if ( dataElement instanceof CalculatedDataElement )
-        {        	
+        {
             CalculatedDataElement calculatedDataElement = (CalculatedDataElement) dataElement;
-            
+
             Expression expression = calculatedDataElement.getExpression();
-            
+
             Set<DataElement> expressionDataElements = new HashSet<DataElement>();
-            
+
             String expressionString = "";
 
             for ( int i = 0; i < dataElementIds.size(); i++ )
             {
-            	String operandId = dataElementIds.get( i ) ;
-                
-                String dataElementIdStr = operandId.substring( 0, operandId.indexOf('.') );                    
-                
-            	DataElement expressionDataElement = dataElementService.getDataElement( Integer.parseInt(dataElementIdStr) );                      
-                
+                String operandId = dataElementIds.get( i );
+
+                String dataElementIdStr = operandId.substring( 0, operandId.indexOf( '.' ) );
+
+                DataElement expressionDataElement = dataElementService.getDataElement( Integer
+                    .parseInt( dataElementIdStr ) );
+
                 if ( expressionDataElement == null )
                 {
                     continue;
                 }
 
                 Double factor = Double.parseDouble( factors.get( i ) );
-                
+
                 expressionString += " + ([" + operandId + "] * " + factor + ")";
 
                 expressionDataElements.add( expressionDataElement );
@@ -275,7 +279,7 @@ public class UpdateDataElementAction
             {
                 expressionString = expressionString.substring( 3 );
             }
-            
+
             expression.setExpression( expressionString );
             
             expression.setDataElementsInExpression( expressionDataElements );            

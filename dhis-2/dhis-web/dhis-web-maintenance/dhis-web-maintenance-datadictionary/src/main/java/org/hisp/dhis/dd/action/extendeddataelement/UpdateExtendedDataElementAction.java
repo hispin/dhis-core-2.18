@@ -116,11 +116,18 @@ public class UpdateExtendedDataElementAction
         this.active = active;
     }
 
-    private String type;
+    private String domainType;
 
-    public void setType( String type )
+    public void setDomainType( String domainType )
     {
-        this.type = type;
+        this.domainType = domainType;
+    }
+
+    private String valueType;
+
+    public void setValueType( String valueType )
+    {
+        this.valueType = valueType;
     }
 
     private String aggregationOperator;
@@ -474,7 +481,8 @@ public class UpdateExtendedDataElementAction
         dataElement.setCode( code );
         dataElement.setDescription( nullIfEmpty( description ) );
         dataElement.setActive( active );
-        dataElement.setType( type );
+        dataElement.setType( valueType );
+        dataElement.setDomainType( domainType );
         dataElement.setAggregationOperator( aggregationOperator );
         
         // -------------------------------------------------------------------------

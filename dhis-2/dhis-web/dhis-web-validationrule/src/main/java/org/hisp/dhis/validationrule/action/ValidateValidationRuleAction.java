@@ -172,7 +172,7 @@ public class ValidateValidationRuleAction
         
         for ( DataElement element : leftSideDataElements )
         {
-            if ( !element.getValueType().equals( DataElement.VALUE_TYPE_INT ) )
+            if ( !element.getType().equals( DataElement.VALUE_TYPE_INT ) )
             {
                 message = i18n.getString( "dataelements_left_must_be_type_integers" );
                 
@@ -191,7 +191,7 @@ public class ValidateValidationRuleAction
 
         for ( DataElement element : rightSideDataElements )
         {
-            if ( !element.getValueType().equals( DataElement.VALUE_TYPE_INT ) )
+            if ( !element.getType().equals( DataElement.VALUE_TYPE_INT ) )
             {
                 message = i18n.getString( "dataelements_right_must_be_type_integers" );
                 

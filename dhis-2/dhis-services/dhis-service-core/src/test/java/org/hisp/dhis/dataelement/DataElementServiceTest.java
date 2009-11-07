@@ -130,13 +130,13 @@ public class DataElementServiceTest
         DataElement dataElementA = createDataElement( 'A' );
         int idA = dataElementService.addDataElement( dataElementA );
         dataElementA = dataElementService.getDataElement( idA );
-        assertEquals( DataElement.VALUE_TYPE_INT, dataElementA.getValueType() );
+        assertEquals( DataElement.VALUE_TYPE_INT, dataElementA.getType() );
 
-        dataElementA.setValueType( DataElement.VALUE_TYPE_BOOL );
+        dataElementA.setType( DataElement.VALUE_TYPE_BOOL );
         dataElementService.updateDataElement( dataElementA );
         dataElementA = dataElementService.getDataElement( idA );
-        assertNotNull( dataElementA.getValueType() );
-        assertEquals( DataElement.VALUE_TYPE_BOOL, dataElementA.getValueType() );
+        assertNotNull( dataElementA.getType() );
+        assertEquals( DataElement.VALUE_TYPE_BOOL, dataElementA.getType() );
     }
 
     @Test
@@ -333,10 +333,10 @@ public class DataElementServiceTest
         DataElement dataElementC = createDataElement( 'C' );
         DataElement dataElementD = createDataElement( 'D' );
         
-        dataElementA.setValueType( DataElement.VALUE_TYPE_INT );
-        dataElementB.setValueType( DataElement.VALUE_TYPE_BOOL );
-        dataElementC.setValueType( DataElement.VALUE_TYPE_STRING );
-        dataElementD.setValueType( DataElement.VALUE_TYPE_INT );
+        dataElementA.setType( DataElement.VALUE_TYPE_INT );
+        dataElementB.setType( DataElement.VALUE_TYPE_BOOL );
+        dataElementC.setType( DataElement.VALUE_TYPE_STRING );
+        dataElementD.setType( DataElement.VALUE_TYPE_INT );
 
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
@@ -417,31 +417,31 @@ public class DataElementServiceTest
     }
     
     @Test
-    public void testGetDataElementsByType()
+    public void testGetDataElementsByDomainType()
     {
-        assertEquals( 0, dataElementService.getDataElementsByType( DataElement.TYPE_AGGREGATE ).size() );
-        assertEquals( 0, dataElementService.getDataElementsByType( DataElement.TYPE_PATIENT ).size() );
+        assertEquals( 0, dataElementService.getDataElementsByType( DataElement.DOMAIN_TYPE_AGGREGATE ).size() );
+        assertEquals( 0, dataElementService.getDataElementsByType( DataElement.DOMAIN_TYPE_PATIENT ).size() );
 
         DataElement dataElementA = createDataElement( 'A' );
-        dataElementA.setType( DataElement.TYPE_AGGREGATE );
+        dataElementA.setType( DataElement.DOMAIN_TYPE_AGGREGATE );
         DataElement dataElementB = createDataElement( 'B' );
-        dataElementB.setType( DataElement.TYPE_PATIENT );
+        dataElementB.setType( DataElement.DOMAIN_TYPE_PATIENT );
         DataElement dataElementC = createDataElement( 'C' );
-        dataElementC.setType( DataElement.TYPE_PATIENT );
+        dataElementC.setType( DataElement.DOMAIN_TYPE_PATIENT );
         DataElement dataElementD = createDataElement( 'D' );
-        dataElementD.setType( DataElement.TYPE_PATIENT );
+        dataElementD.setType( DataElement.DOMAIN_TYPE_PATIENT );
 
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
         dataElementService.addDataElement( dataElementC );
         dataElementService.addDataElement( dataElementD );
 
-        assertEquals( 1, dataElementService.getDataElementsByType( DataElement.TYPE_AGGREGATE ).size() );
-        assertEquals( 3, dataElementService.getDataElementsByType( DataElement.TYPE_PATIENT ).size() );
+        assertEquals( 1, dataElementService.getDataElementsByType( DataElement.DOMAIN_TYPE_AGGREGATE ).size() );
+        assertEquals( 3, dataElementService.getDataElementsByType( DataElement.DOMAIN_TYPE_PATIENT ).size() );
     }
 
     @Test
-    public void testGetDataElementsByValueType()
+    public void testGetDataElementsByType()
     {
         assertEquals( 0, dataElementService.getDataElementsByType( DataElement.VALUE_TYPE_INT ).size() );
         assertEquals( 0, dataElementService.getDataElementsByType( DataElement.VALUE_TYPE_BOOL ).size() );

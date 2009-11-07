@@ -46,10 +46,10 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Abyot Aselefew
  * @version $Id$
  */
-public class DataElementDefaultDimensionAndTypePopulator
+public class DataElementDefaultDimensionPopulator
     extends AbstractStartupRoutine
 {
-    private static final Log log = LogFactory.getLog( DataElementDefaultDimensionAndTypePopulator.class );
+    private static final Log log = LogFactory.getLog( DataElementDefaultDimensionPopulator.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -104,20 +104,10 @@ public class DataElementDefaultDimensionAndTypePopulator
             if ( dataElement.getCategoryCombo() == null )
             {
                 dataElement.setCategoryCombo( categoryCombo );
-                
+
+                dataElementService.updateDataElement( dataElement );
+
                 dataElementUpdated = true;
-            }
-            
-            if( dataElement.getType() == null )
-            {
-                dataElement.setType( DataElement.TYPE_AGGREGATE );
-                
-                dataElementUpdated = true;                
-            }
-            
-            if( dataElementUpdated )
-            {               
-                dataElementService.updateDataElement( dataElement );               
             }
         }
 

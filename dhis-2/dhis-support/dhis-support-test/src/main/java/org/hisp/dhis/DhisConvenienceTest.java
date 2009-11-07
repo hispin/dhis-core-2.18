@@ -310,8 +310,8 @@ public abstract class DhisConvenienceTest
         dataElement.setCode( "Code" + uniqueCharacter );
         dataElement.setDescription( "Description" + uniqueCharacter );
         dataElement.setActive( true );
-        dataElement.setValueType( DataElement.VALUE_TYPE_INT );
-        dataElement.setType( DataElement.TYPE_AGGREGATE );
+        dataElement.setType( DataElement.VALUE_TYPE_INT );
+        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
         dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         
         return dataElement;
@@ -326,7 +326,7 @@ public abstract class DhisConvenienceTest
         DataElement dataElement = createDataElement( uniqueCharacter );
         
         dataElement.setCategoryCombo( categoryCombo );
-        dataElement.setType( DataElement.TYPE_AGGREGATE );
+        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
         
         return dataElement;
     }
@@ -336,12 +336,12 @@ public abstract class DhisConvenienceTest
      * @param valueType The value type.
      * @param aggregationOperator The aggregation operator.
      */
-    public static DataElement createDataElement( char uniqueCharacter, String valueType, String aggregationOperator )
+    public static DataElement createDataElement( char uniqueCharacter, String type, String aggregationOperator )
     {
         DataElement dataElement = createDataElement( uniqueCharacter );
         
-        dataElement.setValueType( valueType );
-        dataElement.setType( DataElement.TYPE_AGGREGATE );
+        dataElement.setType( type );
+        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
         dataElement.setAggregationOperator( aggregationOperator );
         
         return dataElement;
@@ -353,12 +353,12 @@ public abstract class DhisConvenienceTest
      * @param aggregationOperator The aggregation operator.
      * @param categoryCombo The category combo.
      */
-    public static DataElement createDataElement( char uniqueCharacter, String valueType, String aggregationOperator, DataElementCategoryCombo categoryCombo )
+    public static DataElement createDataElement( char uniqueCharacter, String type, String aggregationOperator, DataElementCategoryCombo categoryCombo )
     {
         DataElement dataElement = createDataElement( uniqueCharacter );
         
-        dataElement.setValueType( valueType );
-        dataElement.setType( DataElement.TYPE_AGGREGATE );
+        dataElement.setType( type );
+        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setCategoryCombo( categoryCombo );
         
@@ -369,7 +369,7 @@ public abstract class DhisConvenienceTest
      * @param uniqueCharacter A unique character to identify the object.
      * @param expression The Expression.
      */
-    public static CalculatedDataElement createCalculatedDataElement( char uniqueCharacter, String valueType, String aggregationOperator, DataElementCategoryCombo categoryCombo, Expression expression )
+    public static CalculatedDataElement createCalculatedDataElement( char uniqueCharacter, String type, String aggregationOperator, DataElementCategoryCombo categoryCombo, Expression expression )
     {
         CalculatedDataElement dataElement = new CalculatedDataElement();
         
@@ -380,8 +380,8 @@ public abstract class DhisConvenienceTest
         dataElement.setCode( "Code" + uniqueCharacter );
         dataElement.setDescription( "Description" + uniqueCharacter );
         dataElement.setActive( true );
-        dataElement.setValueType( valueType );
-        dataElement.setType( DataElement.TYPE_AGGREGATE );
+        dataElement.setType( type );
+        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setCategoryCombo( categoryCombo );
         dataElement.setSaved( false );

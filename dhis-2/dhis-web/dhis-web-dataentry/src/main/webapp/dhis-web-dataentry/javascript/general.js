@@ -69,7 +69,7 @@ function commentLeft( dataElementId, optionComboId )
 function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSaveMode )
 {
     var field = document.getElementById( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');
-    var type = document.getElementById( 'value[' + dataElementId + '].valueType' ).innerHTML; 
+    var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerHTML; 
     
     field.style.backgroundColor = '#ffffcc';   
     
@@ -237,7 +237,7 @@ function ValueSaver( dataElementId_, optionComboId_, value_, resultColor_, selec
     
     function markValue( color )
     {
-        var type = document.getElementById( 'value[' + dataElementId + '].valueType' ).innerHTML;       
+        var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerHTML;       
         
         var element;
         

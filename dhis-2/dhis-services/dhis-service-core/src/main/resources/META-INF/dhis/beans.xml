@@ -336,8 +336,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="runlevel" value="1"/>
   </bean>
   
-  <bean id="org.hisp.dhis.dataelement.DataElementDefaultDimensionAndTypePopulator"
-    class="org.hisp.dhis.dataelement.DataElementDefaultDimensionAndTypePopulator">
+  <bean id="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator"
+    class="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator">
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="categoryService"
@@ -402,7 +402,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
         <list>
           <ref local="org.hisp.dhis.dataelement.OptionsCategoriesDefaultSortOrderPopulator"/>
           <ref local="org.hisp.dhis.period.PeriodTypePopulator"/>
-          <ref local="org.hisp.dhis.dataelement.DataElementDefaultDimensionAndTypePopulator"/>
+          <ref local="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator"/>
           <ref local="org.hisp.dhis.expression.MultiDimensionExpressionUpgrader"/>
           <ref local="org.hisp.dhis.dataset.DataSetShortNamePopulator"/>
           <ref local="org.hisp.dhis.dataelement.UuidPopulator"/>
@@ -558,7 +558,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
           <ref local="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler"/>
           <ref local="org.hisp.dhis.dataelement.DataElementDeletionHandler"/>
           <ref local="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler"/>
-		  <ref local="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler"/>        
+          <ref local="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler"/>        
           <ref local="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler"/>
           <ref local="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler"/>
           <ref local="org.hisp.dhis.dataset.DataSetDeletionHandler"/>
@@ -573,7 +573,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
           <ref local="org.hisp.dhis.validation.ValidationRuleDeletionHandler"/>
           <ref local="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler"/>
           <ref local="org.hisp.dhis.datavalue.DataValueDeletionHandler"/>
-		  <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler"/>
+          <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler"/>
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler"/>
         </list>
       </list>

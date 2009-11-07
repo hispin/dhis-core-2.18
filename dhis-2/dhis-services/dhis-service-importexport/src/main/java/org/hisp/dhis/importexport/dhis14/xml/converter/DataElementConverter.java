@@ -210,8 +210,7 @@ public class DataElementConverter
             element.setShortName( values.get( FIELD_SHORT_NAME ) );
             element.setDescription( Dhis14ParsingUtils.removeNewLine( values.get( FIELD_DESCRIPTION ) ) );
             element.setActive( true );        
-            element.setValueType( Dhis14ObjectMappingUtil.getDataElementValueTypeMap().get( Integer.parseInt( values.get( FIELD_DATA_TYPE ) ) ) );
-            element.setType( DataElement.TYPE_AGGREGATE );
+            element.setType( Dhis14ObjectMappingUtil.getDataElementTypeMap().get( Integer.parseInt( values.get( FIELD_DATA_TYPE ) ) ) );            
             element.setAggregationOperator( convertAggregationOperatorFromDhis14( values.get( FIELD_AGGREGATION_OPERATOR ) ) );
             element.setSortOrder( parseInt( values.get( FIELD_SORT_ORDER ) ) );
             element.setLastUpdated( Dhis14DateUtil.getDate( values.get( FIELD_LAST_UPDATED ) ) );
@@ -234,8 +233,7 @@ public class DataElementConverter
             element.setShortName( values.get( FIELD_SHORT_NAME ) );
             element.setDescription( Dhis14ParsingUtils.removeNewLine( values.get( FIELD_DESCRIPTION ) ) );
             element.setActive( true );        
-            element.setValueType( Dhis14ObjectMappingUtil.getDataElementValueTypeMap().get( Integer.parseInt( values.get( FIELD_DATA_TYPE ) ) ) );
-            element.setType( DataElement.TYPE_AGGREGATE );
+            element.setType( Dhis14ObjectMappingUtil.getDataElementTypeMap().get( Integer.parseInt( values.get( FIELD_DATA_TYPE ) ) ) );            
             element.setAggregationOperator( convertAggregationOperatorFromDhis14( values.get( FIELD_AGGREGATION_OPERATOR ) ) );
             element.setSortOrder( parseInt( values.get( FIELD_SORT_ORDER ) ) );
             element.setLastUpdated( Dhis14DateUtil.getDate( values.get( FIELD_LAST_UPDATED ) ) );

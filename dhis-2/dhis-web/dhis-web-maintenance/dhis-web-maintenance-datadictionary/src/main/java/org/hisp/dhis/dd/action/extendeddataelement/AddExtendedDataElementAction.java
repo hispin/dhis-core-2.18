@@ -111,11 +111,18 @@ public class AddExtendedDataElementAction
         this.description = description;
     }
 
-    private String type;
+    private String domainType;
 
-    public void setType( String type )
+    public void setDomainType( String domainType )
     {
-        this.type = type;
+        this.domainType = domainType;
+    }
+
+    private String valueType;
+
+    public void setValueType( String valueType )
+    {
+        this.valueType = valueType;
     }
 
     private String aggregationOperator;
@@ -124,31 +131,31 @@ public class AddExtendedDataElementAction
     {
         this.aggregationOperator = aggregationOperator;
     }
-    
+
     // -------------------------------------------------------------------------
-    // Identifying and Definitional attributes 
+    // Identifying and Definitional attributes
     // -------------------------------------------------------------------------
-    
+
     private String mnemonic;
 
     public void setMnemonic( String mnemonic )
     {
         this.mnemonic = mnemonic;
-    }    
-    
+    }
+
     private String version;
 
     public void setVersion( String version )
     {
         this.version = version;
     }
-    
+
     private String context;
 
     public void setContext( String context )
     {
         this.context = context;
-    }    
+    }
 
     private String synonyms;
 
@@ -156,35 +163,35 @@ public class AddExtendedDataElementAction
     {
         this.synonyms = synonyms;
     }
-    
+
     private String hononyms;
 
     public void setHononyms( String hononyms )
     {
         this.hononyms = hononyms;
     }
-    
+
     private String keywords;
 
     public void setKeywords( String keywords )
     {
         this.keywords = keywords;
     }
-    
+
     private String status;
 
     public void setStatus( String status )
     {
         this.status = status;
     }
-    
+
     private String statusDate;
 
     public void setStatusDate( String statusDate )
     {
         this.statusDate = statusDate;
     }
-    
+
     private String dataElementType;
 
     public void setDataElementType( String dataElementType )
@@ -223,7 +230,7 @@ public class AddExtendedDataElementAction
     {
         this.minimumSize = minimumSize;
     }
-    
+
     private Integer maximumSize;
 
     public void setMaximumSize( Integer maximumSize )
@@ -267,7 +274,7 @@ public class AddExtendedDataElementAction
     }
 
     // -------------------------------------------------------------------------
-    // Administrative attributes 
+    // Administrative attributes
     // -------------------------------------------------------------------------
 
     private String responsibleAuthority;
@@ -346,7 +353,7 @@ public class AddExtendedDataElementAction
     {
         this.comment = comment;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -366,37 +373,37 @@ public class AddExtendedDataElementAction
         {
             code = null;
         }
-        
+
         if ( description != null && description.trim().length() == 0 )
         {
             description = null;
         }
-        
+
         if ( context != null && context.trim().length() == 0 )
         {
             context = null;
         }
-        
+
         if ( synonyms != null && synonyms.trim().length() == 0 )
         {
             synonyms = null;
         }
-        
+
         if ( hononyms != null && hononyms.trim().length() == 0 )
         {
             hononyms = null;
         }
-        
+
         if ( statusDate != null && statusDate.trim().length() == 0 )
         {
             statusDate = null;
         }
-        
+
         if ( representationalLayout != null && representationalLayout.trim().length() == 0 )
         {
             representationalLayout = null;
         }
-        
+
         if ( dataDomain != null && dataDomain.trim().length() == 0 )
         {
             dataDomain = null;
@@ -456,9 +463,9 @@ public class AddExtendedDataElementAction
         {
             comment = null;
         }
-        
-        DataElementCategoryCombo categoryCombo = dataElementCategoryService.
-            getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+
+        DataElementCategoryCombo categoryCombo = dataElementCategoryService
+            .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
         DataElement dataElement = new DataElement();
 
@@ -466,22 +473,23 @@ public class AddExtendedDataElementAction
         // DataElement
         // -------------------------------------------------------------------------
 
-        dataElement.setName( name );        
+        dataElement.setName( name );
         dataElement.setAlternativeName( nullIfEmpty( alternativeName ) );
         dataElement.setShortName( shortName );
         dataElement.setCode( nullIfEmpty( code ) );
         dataElement.setDescription( nullIfEmpty( description ) );
         dataElement.setActive( true );
-        dataElement.setType( type );
+        dataElement.setType( valueType );
+        dataElement.setDomainType( domainType );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setCategoryCombo( categoryCombo );
 
         ExtendedDataElement extendedDataElement = new ExtendedDataElement();
-        
+
         // -------------------------------------------------------------------------
-        // Identifying and Definitional attributes 
+        // Identifying and Definitional attributes
         // -------------------------------------------------------------------------
-        
+
         extendedDataElement.setMnemonic( nullIfEmpty( mnemonic ) );
         extendedDataElement.setVersion( nullIfEmpty( version ) );
         extendedDataElement.setContext( nullIfEmpty( context ) );
@@ -491,7 +499,7 @@ public class AddExtendedDataElementAction
         extendedDataElement.setStatus( nullIfEmpty( status ) );
         extendedDataElement.setStatusDate( format.parseDate( statusDate ) );
         extendedDataElement.setDataElementType( nullIfEmpty( dataElementType ) );
-        
+
         // -------------------------------------------------------------------------
         // Relational and Representational attributes
         // -------------------------------------------------------------------------
@@ -508,7 +516,7 @@ public class AddExtendedDataElementAction
         extendedDataElement.setCollectionMethods( nullIfEmpty( collectionMethods ) );
 
         // -------------------------------------------------------------------------
-        // Administrative attributes 
+        // Administrative attributes
         // -------------------------------------------------------------------------
 
         extendedDataElement.setResponsibleAuthority( nullIfEmpty( responsibleAuthority ) );
@@ -524,9 +532,9 @@ public class AddExtendedDataElementAction
         extendedDataElement.setComment( nullIfEmpty( comment ) );
         extendedDataElement.setSaved( new Date() );
         extendedDataElement.setLastUpdated( new Date() );
-        
+
         dataElement.setExtended( extendedDataElement );
-        
+
         dataElementService.addDataElement( dataElement );
 
         return SUCCESS;

@@ -156,12 +156,12 @@ public interface DataElementStore
     Collection<DataElement> getDataElementsByAggregationOperator( String aggregationOperator );
 
     /**
-     * Returns all DataElements with the given value type.
+     * Returns all DataElements with the given domain type.
      * 
-     * @param valueType the valueType.
-     * @return all DataElements with the given valueType.
+     * @param domainType the domainType.
+     * @return all DataElements with the given domainType.
      */
-    Collection<DataElement> getDataElementsByValueType( String valueType );
+    Collection<DataElement> getDataElementsByDomainType( String domainType );
     
     /**
      * Returns all DataElements with the given type.

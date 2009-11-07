@@ -112,11 +112,11 @@ public class AddDataElementAction
         this.description = description;
     }
 
-    private String type;
+    private String domainType;
 
-    public void setType( String type )
+    public void setDomainType( String domainType )
     {
-        this.type = type;
+        this.domainType = domainType;
     }
 
     private String valueType;
@@ -286,8 +286,8 @@ public class AddDataElementAction
         dataElement.setCode( code );
         dataElement.setDescription( description );
         dataElement.setActive( true );
-        dataElement.setType( type );
-        dataElement.setValueType( valueType );
+        dataElement.setDomainType( domainType );
+        dataElement.setType( valueType );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
         dataElement.setCategoryCombo( categoryCombo );

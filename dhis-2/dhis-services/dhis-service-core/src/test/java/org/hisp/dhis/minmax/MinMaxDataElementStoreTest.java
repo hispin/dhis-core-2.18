@@ -84,29 +84,29 @@ public class MinMaxDataElementStoreTest
         dataElement1.setName( "DE1name" );
         dataElement1.setShortName( "DE1sname" );
         dataElement1.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        dataElement1.setValueType( DataElement.VALUE_TYPE_INT );
-        dataElement1.setType( DataElement.TYPE_AGGREGATE );
+        dataElement1.setType( DataElement.VALUE_TYPE_INT );
+        dataElement1.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
         
         DataElement dataElement2 = new DataElement();
         dataElement2.setName( "DE2name" );
         dataElement2.setShortName( "DE2sname" );
         dataElement2.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        dataElement2.setValueType( DataElement.VALUE_TYPE_INT );
-        dataElement2.setType( DataElement.TYPE_AGGREGATE );
+        dataElement2.setType( DataElement.VALUE_TYPE_INT );
+        dataElement2.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
 
         DataElement dataElement3 = new DataElement();
         dataElement3.setName( "DE3name" );
         dataElement3.setShortName( "DE3sname" );
         dataElement3.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        dataElement3.setValueType( DataElement.VALUE_TYPE_INT );
-        dataElement3.setType( DataElement.TYPE_AGGREGATE );
+        dataElement3.setType( DataElement.VALUE_TYPE_INT );
+        dataElement3.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
         
         DataElement dataElement4 = new DataElement();
         dataElement4.setName( "DE4name" );
         dataElement4.setShortName( "DE4sname" );
         dataElement4.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        dataElement4.setValueType( DataElement.VALUE_TYPE_INT );
-        dataElement4.setType( DataElement.TYPE_AGGREGATE );
+        dataElement4.setType( DataElement.VALUE_TYPE_INT );
+        dataElement4.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
         
         dataElementService.addDataElement( dataElement1 );
         dataElementService.addDataElement( dataElement2 );

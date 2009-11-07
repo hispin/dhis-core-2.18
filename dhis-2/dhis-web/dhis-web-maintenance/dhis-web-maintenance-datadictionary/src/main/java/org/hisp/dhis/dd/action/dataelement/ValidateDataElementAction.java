@@ -277,7 +277,7 @@ public class ValidateDataElementAction
                     optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer
                         .parseInt( optionComboIdStr ) );
 
-                    if ( !dataElement.getValueType().equals( DataElement.VALUE_TYPE_INT ) || optionCombo == null )
+                    if ( !dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) || optionCombo == null )
                     {
                         message += dataElement.getName() + ", ";
                     }

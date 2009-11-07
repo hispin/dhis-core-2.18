@@ -36,9 +36,9 @@
 
     <property name="active"/>
 
-    <property name="valueType" column="valuetype" length="16" not-null="true"/>
+    <property name="type" column="valuetype" length="16" not-null="true"/>
     
-    <property name="type" column="type" length="16" not-null="true"/>
+    <property name="domainType" column="domaintype" length="16"/>
 		
     <property name="aggregationOperator" not-null="true" column="aggregationtype" length="16"/>
 
