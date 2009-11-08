@@ -49,7 +49,7 @@
 	</tr>
 </table>
 </form>
-<h3>$i18n.getString( "translation_addlocale")</h3>
+<h3>$i18n.getString( "translation_addlocale") #openHelp( "dhis-web-commons.locale" )</h3>
 <table>
 	<tr>
 		<th colspan="2">Details</th>
