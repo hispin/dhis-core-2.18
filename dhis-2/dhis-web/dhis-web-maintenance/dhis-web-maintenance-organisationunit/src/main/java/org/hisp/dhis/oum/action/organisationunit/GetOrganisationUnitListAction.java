@@ -31,11 +31,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.hisp.dhis.i18n.action.TranslationUserSettingSupport;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -44,10 +41,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetOrganisationUnitListAction.java 1898 2006-09-22 12:06:56Z
- *          torgeilo $
- * @modifier Dang Duy Hieu
- * @since 2009-10-20
+ * @version $Id: GetOrganisationUnitListAction.java 1898 2006-09-22 12:06:56Z torgeilo $
  */
 public class GetOrganisationUnitListAction
     extends ActionSupport
@@ -56,23 +50,11 @@ public class GetOrganisationUnitListAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
     private OrganisationUnitSelectionManager selectionManager;
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
-    }
-
-    private TranslationUserSettingSupport translationUserSettingSupport;
-
-    public void setTranslationUserSettingSupport( TranslationUserSettingSupport translationUserSettingSupport )
-    {
-        this.translationUserSettingSupport = translationUserSettingSupport;
     }
 
     // -------------------------------------------------------------------------
@@ -85,7 +67,7 @@ public class GetOrganisationUnitListAction
     {
         this.organisationUnitComparator = organisationUnitComparator;
     }
-
+    
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
@@ -95,8 +77,8 @@ public class GetOrganisationUnitListAction
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
-    }
-
+    }    
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -108,20 +90,6 @@ public class GetOrganisationUnitListAction
         return organisationUnits;
     }
 
-    private Map<String, String> translationsOrgUnit = new HashMap<String, String>();
-
-    public Map<String, String> getTranslationsOrgUnit()
-    {
-        return translationsOrgUnit;
-    }
-
-    private Map<String, String> refTranslationsOrgUnit = new HashMap<String, String>();
-
-    public Map<String, String> getRefTranslationsOrgUnit()
-    {
-        return refTranslationsOrgUnit;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -129,7 +97,6 @@ public class GetOrganisationUnitListAction
     public String execute()
         throws Exception
     {
-
         Collection<OrganisationUnit> selectedUnits = selectionManager.getSelectedOrganisationUnits();
 
         if ( selectedUnits.isEmpty() )
@@ -143,24 +110,11 @@ public class GetOrganisationUnitListAction
                 organisationUnits.addAll( selectedUnit.getChildren() );
             }
         }
-
+        
         Collections.sort( organisationUnits, organisationUnitComparator );
-
+        
         displayPropertyHandler.handle( organisationUnits );
-
-        // ---------------------------------------------------------------------
-        // Translation for Organization Unit
-        // ---------------------------------------------------------------------
-
-        this.translationUserSettingSupport.setClazz( OrganisationUnit.class );
         
-        this.translationUserSettingSupport.setObjectList( new ArrayList<Object>( organisationUnits ) );
-        
-        translationsOrgUnit = this.translationUserSettingSupport.initTranslations( translationsOrgUnit );
-        
-        refTranslationsOrgUnit = this.translationUserSettingSupport.initTranslations( refTranslationsOrgUnit );
-
-
         return SUCCESS;
     }
 }

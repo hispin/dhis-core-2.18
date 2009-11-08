@@ -32,8 +32,6 @@ import java.util.Collection;
 
 /**
  * @author Oyvind Brucker
- * @modifier Dang Duy Hieu
- * @since 2009-10-23
  */
 public interface TranslationStore
 {
@@ -56,7 +54,4 @@ public interface TranslationStore
     Collection<Locale> getAvailableLocales();
 
     void deleteTranslations( String className, int id );
-
-    // -------------------------------------------------------------------------
-    Collection<Translation> getTranslations( String className, String propertyName, Locale locate );
 }

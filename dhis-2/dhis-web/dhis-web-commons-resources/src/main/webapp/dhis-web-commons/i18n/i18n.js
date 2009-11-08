@@ -37,7 +37,7 @@ function updateTranslationReceived( xmlObject )
 
         var value = translations[ i ].getElementsByTagName("value")[0].firstChild.nodeValue;
 
-        var field = document.getElementById( key.split("_")[1] );
+        var field = document.getElementById(key);
 
         if ( field != null )
         {
@@ -85,7 +85,7 @@ function updateReferenceReceived( xmlObject )
 
         var value = translations[ i ].getElementsByTagName("value")[0].firstChild.nodeValue;
 
-        var field = document.getElementById( key.split("_")[1] + " Ref");
+        var field = document.getElementById(key + " Ref");
 
         if ( field != null )
         {

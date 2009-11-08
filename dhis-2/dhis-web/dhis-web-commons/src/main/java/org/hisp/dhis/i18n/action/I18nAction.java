@@ -41,11 +41,9 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Oyvind Brucker
  */
-public class I18nAction
+public class I18nAction 
     implements Action
 {
-	private static final String UNDERSCORE = "_";
-
     private String className;
 
     private String objectId;
@@ -109,6 +107,7 @@ public class I18nAction
         return objectId;
     }
 
+
     public String getReturnUrl()
     {
         return returnUrl;
@@ -157,13 +156,12 @@ public class I18nAction
     public String execute()
         throws Exception
     {
-
-		propertyLabels = i18nService.getPropertyNamesLabel( className );
+        propertyLabels = i18nService.getPropertyNamesLabel( className );
 
         translations = i18nService.getTranslations( className, Integer.parseInt( objectId ), getCurrentLocale() );
 
-        referenceTranslations = i18nService.getTranslations( className, Integer.parseInt( objectId ),
-            getCurrentRefLocale() );
+        referenceTranslations =
+            i18nService.getTranslations( className, Integer.parseInt( objectId ), getCurrentRefLocale() );
 
         /**
          * Fill in empty strings for null values
@@ -171,16 +169,16 @@ public class I18nAction
 
         for ( String property : getPropertyNames() )
         {
-            if ( translations.get( String.valueOf( objectId ) + UNDERSCORE + property ) == null )
+            if ( translations.get( property ) == null )
             {
-                translations.put( String.valueOf( objectId ) + UNDERSCORE + property, "" );
+                translations.put( property, "" );
             }
-            if ( referenceTranslations.get( String.valueOf( objectId ) + UNDERSCORE + property ) == null )
+            if ( referenceTranslations.get( property ) == null )
             {
-                referenceTranslations.put( String.valueOf( objectId ) + UNDERSCORE + property, "" );
+                referenceTranslations.put( property, "" );
             }
         }
-
+        
         return SUCCESS;
     }
 }

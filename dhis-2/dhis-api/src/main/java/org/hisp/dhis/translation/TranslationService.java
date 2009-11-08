@@ -33,13 +33,11 @@ import java.util.Locale;
 /**
  * @author Lars Helge Overland
  * @version $Id$
- * @modifier Dang Duy Hieu
- * @since 2009-10-23
  */
 public interface TranslationService
 {
     String ID = TranslationService.class.getName();
-
+    
     Translation getTranslation( String className, int id, Locale locale, String property );
 
     Collection<Translation> getTranslations( String className, int id, Locale locale );
@@ -57,7 +55,4 @@ public interface TranslationService
     Collection<Locale> getAvailableLocales();
 
     void deleteTranslations( String className, int id );
-
-    // -------------------------------------------------------------------------
-    Collection<Translation> getTranslations( String className, String propertyName, Locale locate );
 }

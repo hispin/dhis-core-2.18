@@ -51,8 +51,8 @@ public class DateUtilsTest
     @Test
     public void testConvertDate()
     {
-        assertEquals( "20 apr 2009", convertDate( "2009-04-20" ) );
-        assertEquals( "10 mar 2010", convertDate( "2010-03-10" ) );
+        assertEquals( "20 apr 2009", convertDate( "2009-04-20" ).toLowerCase() );
+        assertEquals( "10 mar 2010", convertDate( "2010-03-10" ).toLowerCase() );
         assertEquals( "Invalid", convertDate( "Invalid" ) );
     }
 }
