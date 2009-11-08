@@ -84,7 +84,6 @@ public class I18nServiceTest
     // -------------------------------------------------------------------------
 
     @Test
-    @Ignore
     public void testUpdateTranslation()
         throws Exception
     {
@@ -155,7 +154,6 @@ public class I18nServiceTest
     }
 
     @Test
-    @Ignore
     public void testAddObject()
         throws Exception
     {
@@ -199,7 +197,6 @@ public class I18nServiceTest
     }
 
     @Test
-    @Ignore
     public void testVerify()
         throws Exception
     {
@@ -251,7 +248,6 @@ public class I18nServiceTest
     }
 
     @Test
-    @Ignore
     public void testGetAvailableLocales()
         throws Exception
     {
@@ -277,7 +273,6 @@ public class I18nServiceTest
     }
 
     @Test
-    @Ignore
     public void testAddTranslation()
         throws Exception
     {
@@ -295,7 +290,6 @@ public class I18nServiceTest
     }
 
     @Test
-    @Ignore
     public void testSetToFallback()
         throws Exception
     {
