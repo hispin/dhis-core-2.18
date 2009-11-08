@@ -536,15 +536,15 @@ public class DefaultI18nService
         }
         catch ( IllegalAccessException iae )
         {
-            System.out.println( "Ex: " + iae );
+            log.warn( "Ex: " + iae );
         }
         catch ( NoSuchMethodException nsme )
         {
-            System.out.println( "Ex: " + nsme );
+            log.warn( "Ex: " + nsme );
         }
         catch ( InvocationTargetException ite )
         {
-            System.out.println( "Ex: " + ite );
+            log.warn( "Ex: " + ite );
         }
     }
 
@@ -573,15 +573,15 @@ public class DefaultI18nService
         }
         catch ( NoSuchMethodException e )
         {
-            System.out.println( e );
+            log.warn( e );
         }
         catch ( IllegalAccessException e )
         {
-            System.out.println( e );
+            log.warn( e );
         }
         catch ( InvocationTargetException e )
         {
-            System.out.println( e );
+            log.warn( e );
         }
 
         return value;
@@ -625,15 +625,15 @@ public class DefaultI18nService
         }
         catch ( NoSuchMethodException e )
         {
-            System.out.println( e );
+            log.warn( e );
         }
         catch ( IllegalAccessException e )
         {
-            System.out.println( e );
+            log.warn( e );
         }
         catch ( InvocationTargetException e )
         {
-            System.out.println( e );
+            log.warn( e );
         }
 
         return result;
