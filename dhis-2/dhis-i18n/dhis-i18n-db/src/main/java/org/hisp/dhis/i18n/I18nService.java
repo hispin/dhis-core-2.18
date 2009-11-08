@@ -59,14 +59,9 @@ public interface I18nService
 
     public void setToFallback( Object object );
 
-    public void verify( Object object );
+    public void verify(Object object);
 
     public void verifyCollection( Collection<?> collection );
 
     public void removeObject( Object object );
-
-    // -------------------------------------------------------------------------
-    public Map<String, String> getTranslations( String className, Locale locale );
-
-    public Map<String, String> getTranslations( String className, String propertyName, Locale locate );
 }

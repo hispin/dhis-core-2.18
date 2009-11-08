@@ -20,18 +20,9 @@
 					<th colspan="4">$i18n.getString( "operations" )</th>
 				</tr>
 				#set( $mark = false )
-				
 				#foreach( $organisationUnit in $organisationUnits )
-					#set( $key = $organisationUnit.getId() + "_" + "name" )
-					#set( $value = $encoder.htmlEncode($translationsOrgUnit.get($key)) )
 				<tr>
-					<td #alternate( $mark )>
-						#if( $value != "" )
-							$value
-						#else
-							$encoder.htmlEncode( $organisationUnit.name )
-						#end
-					</td>
+					<td#alternate( $mark )>$encoder.htmlEncode( $organisationUnit.name )</td>
 					<td style="text-align:center"#alternate( $mark )><a href="showUpdateOrganisationUnitForm.action?id=$organisationUnit.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
 					<td style="text-align:center"#alternate( $mark )><a href="javascript:translate( 'OrganisationUnit', '$organisationUnit.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a></td>
 					<td style="text-align:center"#alternate( $mark )>#if( $organisationUnit.children.size() == 0 )<a href="javascript:removeOrganisationUnit( $organisationUnit.id, '$encoder.jsEncode( $organisationUnit.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>#end</td>

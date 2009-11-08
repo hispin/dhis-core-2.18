@@ -42,8 +42,6 @@ import org.hisp.dhis.translation.TranslationStore;
 
 /**
  * @author Oyvind Brucker
- * @modifier Dang Duy Hieu
- * @since 2009-10-23
  */
 public class HibernateTranslationStore
     implements TranslationStore
@@ -103,7 +101,7 @@ public class HibernateTranslationStore
         criteria.add( Restrictions.eq( "locale", locale.toString() ) );
 
         criteria.setCacheable( true );
-
+        
         return criteria.list();
     }
 
@@ -181,7 +179,7 @@ public class HibernateTranslationStore
 
     /**
      * Creates a Locale object based on the input String
-     * 
+     *
      * @param localestr String to parse
      * @return A locale object or null if not valid
      */
@@ -209,20 +207,5 @@ public class HibernateTranslationStore
         }
 
         return thisLocale;
-    }
-
-    // -------------------------------------------------------------------------
-    @SuppressWarnings( "unchecked" )
-    public Collection<Translation> getTranslations( String className, String propertyName, Locale locate )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( Translation.class );
-
-        criteria.add( Restrictions.eq( "className", className ) );
-        criteria.add( Restrictions.eq( "property", propertyName ) );
-        criteria.add( Restrictions.eq( "locale", locate.toString() ) );
-
-        return criteria.list();
     }
 }
