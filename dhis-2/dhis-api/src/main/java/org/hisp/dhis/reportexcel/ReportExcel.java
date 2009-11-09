@@ -96,11 +96,11 @@ public abstract class ReportExcel
         this.organisationAssocitions = new HashSet<OrganisationUnit>();
     }
 
-    public ReportExcelItem getReportExcelItem( String name )
+    public ReportExcelItem getReportExcelItem( String name, int sheetNo )
     {
         for ( ReportExcelItem reportExcelItem : this.reportExcelItems )
         {
-            if ( reportExcelItem.getName().equalsIgnoreCase( name ) )
+            if ( reportExcelItem.getName().equalsIgnoreCase( name ) && reportExcelItem.getSheetNo()== sheetNo )
             {
                 return reportExcelItem;
             }
@@ -281,11 +281,8 @@ public abstract class ReportExcel
     {
         this.excelTemplateFile = excelTemplateFile;
     }
-    
-    public abstract Document createDocument() throws ParserConfigurationException;
 
-    
-    
-    
+    public abstract Document createDocument()
+        throws ParserConfigurationException;
 
 }
