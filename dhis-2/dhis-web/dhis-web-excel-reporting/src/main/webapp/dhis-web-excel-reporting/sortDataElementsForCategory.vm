@@ -1,32 +1,26 @@
 ﻿ <h2>$i18n.getString( "sort_dataelement" )</h2>
-
-<p>
-<input type="button" value="$i18n.getString( "update_sorted_dataelement" )" onclick="updateSortedDataElement()"/>
-<input type="button" value="$i18n.getString( "cancel" )" onclick="history.go(-1);"/>
-</p>
-<ul id="sortable1" class="connectedSortable">	
-	#foreach( $dataElement in $dataElementGroupOrder.dataElements)
-	<li class='ui-state-default' name='dataElement' value='$dataElement.id'><span class='ui-icon ui-icon-arrowthick-2-n-s'></span>$dataElement.name</li>
-	#end
-</ul>
-<div style="position:fixed;right:10px;top:200px;">
-	<ul id="sortable2" class="connectedSortable">
-		<li class="ui-state-highlight">$i18n.getString( "temp_place" )</li>		
-	</ul>
-</div>
-
-
-<script type="text/javascript">
-	var id = $dataElementGroupOrder.id;
-	$(function() {
-		$("#sortable1, #sortable2").sortable({
-			connectWith: '.connectedSortable',
-			placeholder: 'ui-state-highlight'
-
-		}).disableSelection();
-	});	
-</script>
-
+<input type="hidden" id="dataElementGroupOrderId" name="dataElementGroupOrderId" value="$dataElementGroupOrder.id">
+<table>
+	<tr>
+		<td>
+			<select id="sortdataElement" name="sortdataElement" multiple size="10">	
+				#foreach( $dataElement in $dataElementGroupOrder.dataElements)
+					<option value="$dataElement.id">$dataElement.name</option>
+				#end
+			</select>
+		
+	 <td style="width:30px; text-align:center">
+        <a href="javascript:moveUpSelectedOption( 'sortdataElement' )"><img src="../images/move_up.png"></a><br><br>
+        <a href="javascript:moveDownSelectedOption( 'sortdataElement' )"><img src="../images/move_down.png"></a><br><br>
+		</td>
+    </tr>
+	<tr>
+      	<td>
+        	<input type="button" value="$i18n.getString( "update_sorted_dataelement" )" onclick="updateSortedDataElement()"/>
+			<input type="button" value="$i18n.getString( "cancel" )" onclick="history.go(-1);"/>
+		</td>
+    </tr>
+</table>
 <span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="javascript:hideById(this.id);"></span>
 
 

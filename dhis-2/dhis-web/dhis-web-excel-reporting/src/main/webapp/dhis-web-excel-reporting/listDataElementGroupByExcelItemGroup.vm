@@ -28,7 +28,7 @@
 				<td>$encoder.htmlEncode( $group.name )</td>
 				<td width="100px">$encoder.htmlEncode( $group.code )</td>
 				<td width="100px">
-					<a href="javascript:deleteDataElementOrder('$group.id');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+					<a href="javascript:deleteDataElementGroupOrder('$group.id');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 					<a href="javascript:openUpdateDataElementOrder( '$group.id' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 					<a href="openSortDataElementForCategory.action?id=$group.id" title="$i18n.getString( 'sort_dataelement' )"><img src="../images/sort.png" border="1px"/></a>
 				</td>
@@ -40,9 +40,9 @@
 </ul> 
 
 <form name="dataElementGroups" method="post">
-<input type="hidden" name="id" value="$excelItemGroup.id"/>
+<input type="hidden" name="id" id="id" value="$excelItemGroup.id"/>
 <input type="hidden" name="dataElementGroupOrderId" id="dataElementGroupOrderId"/>
-<div id="dataElementGroups" style="position:fixed;display:block;width:870px;z-index:10001;background-color: white;border: medium solid silver;height:300px;padding:20px;">
+<div id="dataElementGroups" style="position:fixed;display:none;width:870px;z-index:10001;background-color: white;border: medium solid silver;height:300px;padding:20px;">
 	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('dataElementGroups');deleteDivEffect();">[x]</div>	
 	<table>
 		<tr>
@@ -74,7 +74,7 @@
 				<input type="button" value="<<" onclick="moveAllById('dataElementIds' , 'availableDataElements' );" style="width:50px"/>
 			</td>
 			<td width="64%">
-				<select id="dataElementIds" name="dataElementIds" multiple size=10 style="width:400px" ondblclick="moveSelectedById('dataElementIds' , 'availableDataElements' );" ></select>
+				<select id="dataElementIds" name="dataElementIds" onMouseOut="javascript: hideToolTip();"  multiple size=10 style="width:400px" ondblclick="moveSelectedById('dataElementIds' , 'availableDataElements' );" ></select>
 			</td>
 		</tr>
 	</table>

@@ -30,17 +30,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
+import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class UpdateSortedDataElementGroupOrderForCategoryAction implements
-		Action {
+public class UpdateSortedDataElementGroupOrderForCategoryAction extends 
+		ActionSupport {
 	// -------------------------------------------
 	// Dependency
 	// -------------------------------------------
@@ -95,6 +94,8 @@ public class UpdateSortedDataElementGroupOrderForCategoryAction implements
 
 		excelItemService.updateExcelItemGroup(excelItemGroup);
 
+		message = i18n.getString("success");
+		
 		return SUCCESS;
 	}
 

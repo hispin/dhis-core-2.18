@@ -170,8 +170,8 @@
 
 		<action name="deleteDataElementGroupOrder"
 			class="org.hisp.dhis.reportexcel.category.action.DeleteDataElementGroupOrderAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+			<result name="success" type="redirect">
+				listDataElementGroupOrder.action?id=${id}</result>
 		</action>
 
 		<action name="getDataElementGroupOrder"
@@ -827,7 +827,7 @@
 			<param name="page">/dhis-web-excel-reporting/listDataElementGroupByExcelItemGroup.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">javascript/ui.core.js,javascript/ui.sortable.js,
-				javascript/excelitemgroups.js,javascript/commons.js</param>
+				javascript/sortedDataElementGroup.js,javascript/commons.js</param>
 			<param name="stylesheets">style/ui.theme.css, style/basic.css, style/style.css</param>
 		</action>
 
@@ -841,7 +841,8 @@
 		<action name="updateDataElementGroupOrderForCategory"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.UpdateDataElementGroupOrderForCategoryAction">
 			<result name="success" type="redirect">
-				listDataElementGroupOrderForExcelItemGroup.action?id=${id}</result>
+				listDataElementGroupOrderForExcelItemGroup.action?id=${id}
+			</result>
 		</action>
 
 		<action name="deleteDataElementGroupOrderForCategory"
@@ -861,6 +862,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/sortDataElementsForCategory.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+			<param name="javascripts">javascript/sortedDataElementGroup.js</param>
 			<param name="stylesheets">style/ui.theme.css,style/basic.css</param>
 		</action>
 
@@ -870,10 +872,10 @@
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
 
-		<action name="updateSortDataElementGroupOrderForCategory"
+		<action name="updateSortedDataElementGroupOrderForCategory"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.UpdateSortedDataElementGroupOrderForCategoryAction">
-			<result name="success" type="redirect">
-				listDataElementGroupOrder.action?id=${excelItemGroupId}</result>
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
 
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
