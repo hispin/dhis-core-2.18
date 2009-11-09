@@ -28,7 +28,7 @@ function validateAddReportExcel(){
 		periodCol:$("#periodColumn").val(),
 		organisationRow:$("#organisationRow").val(),
 		organisationCol:$("#organisationColumn").val(),
-		group:$("#group").val()
+		groupName:$("#group").val()
 	},function(xmlObject){
 		var xmlObject = xmlObject.getElementsByTagName('message')[0];
 		var type = xmlObject.getAttribute( 'type' );

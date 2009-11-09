@@ -59,6 +59,7 @@ function validateAddReportExcelItem(){
 		expression:$("#expression").val(),
 		row:$("#row").val(),
 		column:$("#column").val(),		
+		sheetNo:$("#sheetNo").val(),
 		reportId:reportId
 	}, function (data){
 		var xmlObject = data.getElementsByTagName('message')[0];
@@ -101,7 +102,8 @@ function validateUpdateReportExcelItem(){
 		reportItemId:$("#id").val(),
 		expression:$("#expression").val(),
 		row:$("#row").val(),
-		column:$("#column").val(),		
+		column:$("#column").val(),	
+		sheetNo:$("#sheetNo").val(),		
 		reportId:reportId
 	}, function (data){
 		var xmlObject = data.getElementsByTagName('message')[0];

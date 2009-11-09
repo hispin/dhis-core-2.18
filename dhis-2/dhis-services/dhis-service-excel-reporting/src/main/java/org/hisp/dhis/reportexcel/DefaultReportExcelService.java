@@ -44,202 +44,179 @@ import org.springframework.transaction.annotation.Transactional;
  * @version $Id$
  */
 @Transactional
-public class DefaultReportExcelService
-    implements ReportExcelService
-{
-    // -------------------------------------------------
-    // Dependency
-    // -------------------------------------------------
+public class DefaultReportExcelService implements ReportExcelService {
+	// -------------------------------------------------
+	// Dependency
+	// -------------------------------------------------
 
-    private ReportExcelStore reportStore;
+	private ReportExcelStore reportStore;
 
-    public void setReportStore( ReportExcelStore reportStore )
-    {
-        this.reportStore = reportStore;
-    }
+	public void setReportStore(ReportExcelStore reportStore) {
+		this.reportStore = reportStore;
+	}
 
-    private UserStore userStore;
+	private UserStore userStore;
 
-    public void setUserStore( UserStore userStore )
-    {
-        this.userStore = userStore;
-    }
+	public void setUserStore(UserStore userStore) {
+		this.userStore = userStore;
+	}
 
-    // --------------------------------------
-    // Service of Report
-    // --------------------------------------
+	// --------------------------------------
+	// Service of Report
+	// --------------------------------------
 
-    public int addReportExcel( ReportExcel report )
-    {
-        return reportStore.addReportExcel( report );
-    }
+	public int addReportExcel(ReportExcel report) {
+		return reportStore.addReportExcel(report);
+	}
 
-    public void updateReportExcel( ReportExcel report )
-    {
-        reportStore.updateReportExcel( report );
-    }
+	public void updateReportExcel(ReportExcel report) {
+		reportStore.updateReportExcel(report);
+	}
 
-    public void deleteReportExcel( int id )
-    {
-        reportStore.deleteReportExcel( id );
-    }
+	public void deleteReportExcel(int id) {
+		reportStore.deleteReportExcel(id);
+	}
 
-    public ReportExcel getReportExcel( int id )
-    {
-        return reportStore.getReportExcel( id );
-    }
+	public ReportExcel getReportExcel(int id) {
+		return reportStore.getReportExcel(id);
+	}
 
-    public ReportExcel getReportExcel( String name )
-    {
-        return reportStore.getReportExcel( name );
-    }
+	public ReportExcel getReportExcel(String name) {
+		return reportStore.getReportExcel(name);
+	}
 
-    public Collection<ReportExcel> getReportExcelsByOrganisationUnit( OrganisationUnit organisationUnit )
-    {
-        return reportStore.getReportExcelsByOrganisationUnit( organisationUnit );
-    }
+	public Collection<ReportExcel> getReportExcelsByOrganisationUnit(
+			OrganisationUnit organisationUnit) {
+		return reportStore.getReportExcelsByOrganisationUnit(organisationUnit);
+	}
 
-    public Collection<ReportExcel> getALLReportExcel()
-    {
-        return reportStore.getALLReportExcel();
-    }
+	public Collection<ReportExcel> getALLReportExcel() {
+		return reportStore.getALLReportExcel();
+	}
 
-    public Collection<ReportExcel> getReportExcels( User user, boolean superUser, String group )
-    {
-        if ( user == null || (user != null && superUser) )
-        {
-            return this.getReportsByGroup( group );
-        }
-        
-        else
-        {
-            Collection<ReportExcel> reports = new ArrayList<ReportExcel>();
+	public Collection<ReportExcel> getReportExcels(User user,
+			boolean superUser, String group) {
+		if (user == null || (user != null && superUser)) {
+			return this.getReportsByGroup(group);
+		}
 
-            UserCredentials credentials = userStore.getUserCredentials( user );
+		else {
+			Collection<ReportExcel> reports = new ArrayList<ReportExcel>();
 
-            for ( UserAuthorityGroup ugroup : credentials.getUserAuthorityGroups() )
-            {
-                reports.addAll( ugroup.getReportExcels() );
-            }
+			UserCredentials credentials = userStore.getUserCredentials(user);
 
-            reports.retainAll( this.getReportsByGroup( group ) );
+			for (UserAuthorityGroup ugroup : credentials
+					.getUserAuthorityGroups()) {
+				reports.addAll(ugroup.getReportExcels());
+			}
 
-            return reports;
-        }
-    }
+			reports.retainAll(this.getReportsByGroup(group));
 
-    public Collection<String> getReportExcelGroups()
-    {
-        return reportStore.getReportExcelGroups();
-    }
+			return reports;
+		}
+	}
 
-    public Collection<ReportExcel> getReportsByGroup( String group )
-    {
-        return reportStore.getReportsByGroup( group );
-    }
+	public Collection<String> getReportExcelGroups() {
+		return reportStore.getReportExcelGroups();
+	}
 
-    // --------------------------------------
-    // Service of Report Item
-    // --------------------------------------
+	public Collection<ReportExcel> getReportsByGroup(String group) {
+		return reportStore.getReportsByGroup(group);
+	}
 
-    public void addReportExcelItem( ReportExcelItem reportItem )
-    {
-        reportStore.addReportExcelItem( reportItem );
-    }
+	// --------------------------------------
+	// Service of Report Item
+	// --------------------------------------
 
-    public void updateReportExcelItem( ReportExcelItem reportItem )
-    {
-        reportStore.updateReportExcelItem( reportItem );
-    }
+	public void addReportExcelItem(ReportExcelItem reportItem) {
+		reportStore.addReportExcelItem(reportItem);
+	}
 
-    public void deleteReportExcelItem( int id )
-    {
-        reportStore.deleteReportExcelItem( id );
-    }
+	public void updateReportExcelItem(ReportExcelItem reportItem) {
+		reportStore.updateReportExcelItem(reportItem);
+	}
 
-    public ReportExcelItem getReportExcelItem( int id )
-    {
-        return reportStore.getReportExcelItem( id );
-    }
+	public void deleteReportExcelItem(int id) {
+		reportStore.deleteReportExcelItem(id);
+	}
 
-    public Collection<ReportExcelItem> getALLReportExcelItem()
-    {
-        return reportStore.getALLReportExcelItem();
-    }
+	public ReportExcelItem getReportExcelItem(int id) {
+		return reportStore.getReportExcelItem(id);
+	}
 
-    public Collection<ReportExcelItem> getReportExcelItem( int sheetNo, Integer reportId )
-    {
-        return reportStore.getReportExcelItem( sheetNo, reportId );
-    }
+	public Collection<ReportExcelItem> getALLReportExcelItem() {
+		return reportStore.getALLReportExcelItem();
+	}
 
-    public Collection<Integer> getSheets( Integer reportId )
-    {
-        return reportStore.getSheets( reportId );
-    }
+	public Collection<ReportExcelItem> getReportExcelItem(int sheetNo,
+			Integer reportId) {
+		return reportStore.getReportExcelItem(sheetNo, reportId);
+	}
+	
+	public ReportExcelItem getReportExcelItem(
+			ReportExcel reportExcel, int sheetNo, String name) {		
+		return reportStore.getReportExcelItem( reportExcel, sheetNo, name );
+	}
 
-    // --------------------------------------
-    // Report DataElement Order
-    // --------------------------------------
+	public Collection<Integer> getSheets(Integer reportId) {
+		return reportStore.getSheets(reportId);
+	}
 
-    public DataElementGroupOrder getDataElementGroupOrder( Integer id )
-    {
-        return reportStore.getDataElementGroupOrder( id );
-    }
+	// --------------------------------------
+	// Report DataElement Order
+	// --------------------------------------
 
-    public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder )
-    {
-        reportStore.updateDataElementGroupOrder( dataElementGroupOrder );
-    }
+	public DataElementGroupOrder getDataElementGroupOrder(Integer id) {
+		return reportStore.getDataElementGroupOrder(id);
+	}
 
-    public void deleteDataElementGroupOrder( Integer id )
-    {
-        reportStore.deleteDataElementGroupOrder( id );
-    }
+	public void updateDataElementGroupOrder(
+			DataElementGroupOrder dataElementGroupOrder) {
+		reportStore.updateDataElementGroupOrder(dataElementGroupOrder);
+	}
 
-    // -------------------------------------------------
-    // Data Entry Status
-    // -------------------------------------------------
+	public void deleteDataElementGroupOrder(Integer id) {
+		reportStore.deleteDataElementGroupOrder(id);
+	}
 
-    public int countDataValueOfDataSet( DataSet arg0, OrganisationUnit arg1, Period arg2 )
-    {
-        return reportStore.countDataValueOfDataSet( arg0, arg1, arg2 );
-    }
+	// -------------------------------------------------
+	// Data Entry Status
+	// -------------------------------------------------
 
-    public void deleteDataEntryStatus( int arg0 )
-    {
-        reportStore.deleteDataEntryStatus( arg0 );
-    }
+	public int countDataValueOfDataSet(DataSet arg0, OrganisationUnit arg1,
+			Period arg2) {
+		return reportStore.countDataValueOfDataSet(arg0, arg1, arg2);
+	}
 
-    public Collection<DataEntryStatus> getALLDataEntryStatus()
-    {
-        return reportStore.getALLDataEntryStatus();
-    }
+	public void deleteDataEntryStatus(int arg0) {
+		reportStore.deleteDataEntryStatus(arg0);
+	}
 
-    public DataEntryStatus getDataEntryStatus( int arg0 )
-    {
-        return reportStore.getDataEntryStatus( arg0 );
-    }
+	public Collection<DataEntryStatus> getALLDataEntryStatus() {
+		return reportStore.getALLDataEntryStatus();
+	}
 
-    public Collection<DataEntryStatus> getDataEntryStatusDefault()
-    {
-        return reportStore.getDataEntryStatusDefault();
-    }
+	public DataEntryStatus getDataEntryStatus(int arg0) {
+		return reportStore.getDataEntryStatus(arg0);
+	}
 
-    public int saveDataEntryStatus( DataEntryStatus arg0 )
-    {
-        return reportStore.saveDataEntryStatus( arg0 );
-    }
+	public Collection<DataEntryStatus> getDataEntryStatusDefault() {
+		return reportStore.getDataEntryStatusDefault();
+	}
 
-    public Collection<DataEntryStatus> getDataEntryStatusDefaultByDataSets( Collection<DataSet> arg0 )
-    {
-        return reportStore.getDataEntryStatusDefaultByDataSets( arg0 );
+	public int saveDataEntryStatus(DataEntryStatus arg0) {
+		return reportStore.saveDataEntryStatus(arg0);
+	}
 
-    }
+	public Collection<DataEntryStatus> getDataEntryStatusDefaultByDataSets(
+			Collection<DataSet> arg0) {
+		return reportStore.getDataEntryStatusDefaultByDataSets(arg0);
 
-    public void updateDataEntryStatus( DataEntryStatus arg0 )
-    {
+	}
 
-        reportStore.updateDataEntryStatus( arg0 );
-    }
+	public void updateDataEntryStatus(DataEntryStatus arg0) {
+
+		reportStore.updateDataEntryStatus(arg0);
+	}
 
 }

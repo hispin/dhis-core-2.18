@@ -203,6 +203,19 @@ public class HibernateReportExcelStore
         sqlQuery.addEntity( ReportExcelItem.class );
         return sqlQuery.list();
     }
+    
+    @Override
+    public ReportExcelItem getReportExcelItem( ReportExcel reportExcel, int sheetNo, String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Criteria criteria = session.createCriteria( ReportExcelItem.class );
+        criteria.add( Restrictions.eq( "reportExcel", reportExcel ) );
+        criteria.add( Restrictions.eq( "sheetNo", sheetNo ) );
+        criteria.add( Restrictions.eq( "name", name ) );       
+        
+        return (ReportExcelItem) criteria.uniqueResult();
+    }
 
     @SuppressWarnings( "unchecked" )
     public Collection<Integer> getSheets( Integer reportId )
@@ -214,6 +227,8 @@ public class HibernateReportExcelStore
 
         return sqlQuery.list();
     }
+    
+    
 
     // --------------------------------------
     // Report DataElement Order
@@ -332,4 +347,6 @@ public class HibernateReportExcelStore
         Session session = sessionFactory.getCurrentSession();
         session.update( arg0 );
     }
+
+   
 }

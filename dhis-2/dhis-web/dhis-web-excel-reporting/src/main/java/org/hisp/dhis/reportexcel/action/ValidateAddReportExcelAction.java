@@ -45,11 +45,13 @@ public class ValidateAddReportExcelAction
 
     // -------------------------------------------
     // Input & Output
-    // -------------------------------------------   
+    // -------------------------------------------
 
     private String name;
 
     private String excel;
+
+    private String groupName;
 
     // -------------------------------------------
     // Getter & Setter
@@ -60,6 +62,11 @@ public class ValidateAddReportExcelAction
         this.reportService = reportService;
     }
 
+    public void setGroupName( String groupName )
+    {
+        this.groupName = groupName;
+    }
+
     public void setName( String name )
     {
         this.name = name;
@@ -68,13 +75,12 @@ public class ValidateAddReportExcelAction
     public void setExcel( String excel )
     {
         this.excel = excel;
-    }   
+    }
 
     public String getReportType( String reportType )
     {
         return reportType;
     }
-    
 
     public String execute()
         throws Exception
@@ -89,7 +95,7 @@ public class ValidateAddReportExcelAction
         {
             message = i18n.getString( "name_is_null" );
             return ERROR;
-        }       
+        }
 
         ReportExcel reportExcel = reportService.getReportExcel( name );
 
@@ -97,8 +103,7 @@ public class ValidateAddReportExcelAction
         {
             message = i18n.getString( "name_ready_exist" );
             return ERROR;
-        }
-   
+        }             
 
         if ( excel == null )
         {
@@ -108,6 +113,17 @@ public class ValidateAddReportExcelAction
         if ( excel.trim().length() == 0 )
         {
             message = i18n.getString( "excel_is_null" );
+            return ERROR;
+        }
+        
+        if ( groupName == null )
+        {
+            message = i18n.getString( "please_enter_group_name" );
+            return ERROR;
+        }
+        if ( groupName.trim().length() == 0 )
+        {
+            message = i18n.getString( "please_enter_group_name" );
             return ERROR;
         }
 

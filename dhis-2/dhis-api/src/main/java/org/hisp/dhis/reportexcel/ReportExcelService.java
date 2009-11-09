@@ -81,6 +81,8 @@ public interface ReportExcelService
     public Collection<ReportExcelItem> getALLReportExcelItem();
 
     public Collection<ReportExcelItem> getReportExcelItem( int sheetNo, Integer reportId );
+    
+    public ReportExcelItem getReportExcelItem(ReportExcel reportExcel, int sheetNo, String name);
 
     public Collection<Integer> getSheets( Integer reportId );
 
