@@ -210,7 +210,7 @@ public class DefaultI18nService
     }
 
     // -------------------------------------------------------------------------
-    // Internationalise
+    // Object
     // -------------------------------------------------------------------------
 
     public void addObject( Object object )
@@ -301,14 +301,6 @@ public class DefaultI18nService
             internationalise( object, localeManager.getFallbackLocale() );
         }
 
-    }
-
-    public void verifyCollection( Collection<?> collection )
-    {
-        for ( Object object : collection )
-        {
-            verify( object );
-        }
     }
 
     public void removeObject( Object object )
