@@ -27,6 +27,9 @@ package org.hisp.dhis.i18n;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -39,10 +42,7 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Oyvind Brucker

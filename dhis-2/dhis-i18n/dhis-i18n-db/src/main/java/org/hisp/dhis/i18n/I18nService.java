@@ -39,29 +39,49 @@ public interface I18nService
 {
     String ID = I18nService.class.getName();
 
+    // -------------------------------------------------------------------------
+    // Internationalise
+    // -------------------------------------------------------------------------
+
     public void internationalise( Object object );
 
     public void internationaliseCollection( Collection<?> objects );
 
-    public Map<String, String> getTranslations( String className, int id, Locale locale );
-
-    public List<String> getPropertyNames( String className );
-
-    public void updateTranslation( String className, int id, Locale thisLocale, Map<String, String> translations );
-
-    public Collection<Locale> getAvailableLocales();
-
-    public Map<String, String> getPropertyNamesLabel( String className );
+    // -------------------------------------------------------------------------
+    // Object
+    // -------------------------------------------------------------------------
 
     public void addObject( Object object );
-
-    public void addTranslation( Object object, String property, String value, Locale locale );
-
-    public void setToFallback( Object object );
 
     public void verify(Object object);
 
     public void verifyCollection( Collection<?> collection );
 
     public void removeObject( Object object );
+
+    public void setToFallback( Object object );
+
+    // -------------------------------------------------------------------------
+    // Translation
+    // -------------------------------------------------------------------------
+
+    public void addTranslation( Object object, String property, String value, Locale locale );
+
+    public void updateTranslation( String className, int id, Locale thisLocale, Map<String, String> translations );
+
+    public Map<String, String> getTranslations( String className, int id, Locale locale );
+
+    // -------------------------------------------------------------------------
+    // Property
+    // -------------------------------------------------------------------------
+
+    public List<String> getPropertyNames( String className );
+
+    public Map<String, String> getPropertyNamesLabel( String className );
+
+    // -------------------------------------------------------------------------
+    // Locale
+    // -------------------------------------------------------------------------
+
+    public Collection<Locale> getAvailableLocales();
 }
