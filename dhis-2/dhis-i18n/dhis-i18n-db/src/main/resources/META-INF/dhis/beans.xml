@@ -9,16 +9,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <!-- Event listener definitions -->
-
+  <!--
   <bean id="org.hisp.dhis.i18n.hibernate.HibernateI18nPostLoadEventListener"
     class="org.hisp.dhis.i18n.hibernate.HibernateI18nPostLoadEventListener">
     <property name="i18nService">
       <ref bean="org.hisp.dhis.i18n.I18nService"/>
     </property>
   </bean>
-
+  -->
   <!-- Event listener registrations -->
-
+  <!--
   <bean id="addI18nPostLoadEventListener" 
     class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetObject">
@@ -34,7 +34,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       </list>
     </property>
   </bean>
-  
+  -->
   <!-- I18n object definitions -->
 
   <bean id="I18nDataElement"

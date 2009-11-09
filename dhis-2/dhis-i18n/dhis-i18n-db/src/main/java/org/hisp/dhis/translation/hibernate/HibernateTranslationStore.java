@@ -37,6 +37,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.i18n.util.LocaleUtils;
 import org.hisp.dhis.translation.Translation;
 import org.hisp.dhis.translation.TranslationStore;
 
@@ -165,47 +166,11 @@ public class HibernateTranslationStore
 
         for ( Object object : objlist )
         {
-            Locale locale = getLocale( object.toString() );
+            Locale locale = LocaleUtils.getLocale( object.toString() );
 
             locales.add( locale );
         }
 
         return locales;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    /**
-     * Creates a Locale object based on the input String
-     *
-     * @param localestr String to parse
-     * @return A locale object or null if not valid
-     */
-    private Locale getLocale( String localestr )
-    {
-        String[] parts = localestr.split( "_" );
-
-        Locale thisLocale;
-
-        if ( parts.length == 1 )
-        {
-            thisLocale = new Locale( parts[0] );
-        }
-        else if ( parts.length == 2 )
-        {
-            thisLocale = new Locale( parts[0], parts[1] );
-        }
-        else if ( parts.length == 3 )
-        {
-            thisLocale = new Locale( parts[0], parts[1], parts[2] );
-        }
-        else
-        {
-            return null;
-        }
-
-        return thisLocale;
     }
 }

@@ -43,13 +43,31 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultTranslationService
     implements TranslationService
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private TranslationStore translationStore;
 
     public void setTranslationStore( TranslationStore translationStore )
     {
         this.translationStore = translationStore;
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Translation
+    // -------------------------------------------------------------------------
+
+    public void addTranslation( Translation translation )
+    {
+        translationStore.addTranslation( translation );
+    }
+
+    public void updateTranslation( Translation translation )
+    {
+        translationStore.updateTranslation( translation );
+    }
+
     public Translation getTranslation( String className, int id, Locale locale, String property )
     {
         return translationStore.getTranslation( className, id, locale, property );
@@ -70,28 +88,18 @@ public class DefaultTranslationService
         return translationStore.getAllTranslations();
     }
 
-    public void addTranslation( Translation translation )
-    {
-        translationStore.addTranslation( translation );
-    }
-
-    public void updateTranslation( Translation translation )
-    {
-        translationStore.updateTranslation( translation );
-    }
-
     public void deleteTranslation( Translation translation )
     {
         translationStore.deleteTranslation( translation );
     }
 
-    public Collection<Locale> getAvailableLocales()
-    {
-        return translationStore.getAvailableLocales();
-    }
-
     public void deleteTranslations( String className, int id )
     {
         translationStore.deleteTranslations( className, id );
+    }
+
+    public Collection<Locale> getAvailableLocales()
+    {
+        return translationStore.getAvailableLocales();
     }
 }
