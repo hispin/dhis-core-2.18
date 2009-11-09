@@ -55,8 +55,6 @@ public interface I18nService
 
     public void verify(Object object);
 
-    public void verifyCollection( Collection<?> collection );
-
     public void removeObject( Object object );
 
     public void setToFallback( Object object );

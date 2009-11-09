@@ -160,8 +160,7 @@ public class I18nAction
 
         translations = i18nService.getTranslations( className, Integer.parseInt( objectId ), getCurrentLocale() );
 
-        referenceTranslations =
-            i18nService.getTranslations( className, Integer.parseInt( objectId ), getCurrentRefLocale() );
+        referenceTranslations = i18nService.getTranslations( className, Integer.parseInt( objectId ), getCurrentRefLocale() );
 
         /**
          * Fill in empty strings for null values
