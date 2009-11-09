@@ -73,9 +73,9 @@ public class GetExcelItemGroupByIdAction implements Action {
 	// -------------------------------------------------------------------------
 
 	public String execute() throws Exception {
-
+System.out.println("\n\n\n ==== id = " + id);
 		excelItemGroup = excelItemService.getExcelItemGroup(id);
-
+System.out.println("\n\n\n ==== excelItemGroup = " + excelItemGroup);
 		return SUCCESS;
 	}
 }

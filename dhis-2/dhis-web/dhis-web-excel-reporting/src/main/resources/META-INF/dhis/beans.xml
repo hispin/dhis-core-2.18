@@ -1109,8 +1109,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+		<property name="dataElementService"
+			ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
 	<bean
