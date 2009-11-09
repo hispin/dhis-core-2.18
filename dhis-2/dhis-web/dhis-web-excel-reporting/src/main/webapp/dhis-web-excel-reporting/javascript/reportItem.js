@@ -249,14 +249,14 @@ function saveCopyItems() {
 		
 	if (reportItemsDuplicated.length > 0) {
 
-		var reportItemsDuplicatedList = "Sheet [" +  + "]" +i18n_copy_items_duplicated + "<ul>";
+		var reportItemsDuplicatedList = "Sheet [" + sheetId + "] - " + i18n_copy_items_duplicated + "<ul>";
 		
 		for (var i in reportItemsDuplicated) {
 		
 			reportItemsDuplicatedList = reportItemsDuplicatedList 
 			+ "  <li>"
 			+ reportItemsDuplicated[i] 
-			+ "</li><br/>";
+			+ "</li>";
 		}
 		
 		reportItemsDuplicatedList = reportItemsDuplicatedList + "</ul>"
