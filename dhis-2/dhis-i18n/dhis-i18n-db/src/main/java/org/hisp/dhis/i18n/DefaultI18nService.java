@@ -325,23 +325,6 @@ public class DefaultI18nService
     // Translation
     // -------------------------------------------------------------------------
 
-    public void addTranslation( Object object, String property, String value, Locale locale )
-    {
-        if ( !isI18nObject( object ) | object == null )
-        {
-            return;
-        }
-
-        String className = getClassName( object );
-        int id = getId( object );
-
-        Map<String, String> translations = new Hashtable<String, String>();
-
-        translations.put( property, value );
-
-        updateTranslation( className, id, locale, translations );
-    }
-
     public void updateTranslation( String className, int id, Locale locale, Map<String, String> translations )
     {
         for ( Map.Entry<String,String> translationEntry : translations.entrySet() )

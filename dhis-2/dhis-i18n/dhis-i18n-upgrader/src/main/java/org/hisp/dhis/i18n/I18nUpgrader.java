@@ -44,7 +44,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.i18n.util.LocaleUtils;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -143,17 +142,9 @@ public class I18nUpgrader
         this.i18nService = i18nService;
     }
 
-    private Locale alternativeNameLocale = null;
-
-    public void setAlternativeNameLocale( String alternativeNameLocale )
-    {
-        this.alternativeNameLocale = LocaleUtils.getLocale( alternativeNameLocale );
-    }
-
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
-
     
     public void execute()
     {
@@ -178,16 +169,7 @@ public class I18nUpgrader
 
             localeManager.setCurrentLocale( localeManager.getFallbackLocale() );
 
-            String alternativeNameDescription = "";
-
-            if ( alternativeNameLocale != null )
-            {
-                alternativeNameDescription = " and " + alternativeNameLocale.getDisplayName()
-                    + " for alternative names";
-            }
-
-            log.info( "I18n Upgrader running using locale " + localeManager.getFallbackLocale().getDisplayName()
-                + alternativeNameDescription );
+            log.info( "I18n Upgrader running using locale " + localeManager.getFallbackLocale().getDisplayName() );
 
             // ---------------------------------------------------------------------
             // DataElement
@@ -202,12 +184,6 @@ public class I18nUpgrader
                 for ( DataElement dataElement : dataElements )
                 {
                     i18nService.addObject( dataElement );
-
-                    if ( alternativeNameLocale != null && dataElement.getAlternativeName() != null )
-                    {
-                        i18nService.addTranslation( dataElement, "name", dataElement.getAlternativeName(),
-                            alternativeNameLocale );
-                    }
                 }
             }
 
@@ -240,12 +216,6 @@ public class I18nUpgrader
                 for ( Indicator indicator : indicators )
                 {
                     i18nService.addObject( indicator );
-
-                    if ( alternativeNameLocale != null && indicator.getAlternativeName() != null )
-                    {
-                        i18nService.addTranslation( indicator, "name", indicator.getAlternativeName(),
-                            alternativeNameLocale );
-                    }
                 }
             }
 

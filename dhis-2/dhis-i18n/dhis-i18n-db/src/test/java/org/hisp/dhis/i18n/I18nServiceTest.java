@@ -273,23 +273,6 @@ public class I18nServiceTest
     }
 
     @Test
-    public void testAddTranslation()
-        throws Exception
-    {
-        OrganisationUnit organisationUnit1 = new OrganisationUnit( "orgunit", "shortName1", "organisationUnitCode1",
-            new Date(), new Date(), true, "comment" );
-        organisationUnit1.setId( id1 );
-
-        i18nService.addTranslation( organisationUnit1, "name", "orgunit-1", Locale.UK );
-
-        localeManager.setCurrentLocale( Locale.UK );
-
-        i18nService.internationalise( organisationUnit1 );
-
-        assertEquals( "orgunit-1", organisationUnit1.getName() );
-    }
-
-    @Test
     public void testSetToFallback()
         throws Exception
     {
