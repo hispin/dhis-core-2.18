@@ -27,8 +27,7 @@ package org.hisp.dhis.translation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.*;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -70,83 +69,112 @@ public class TranslationStoreTest
     private String className1 = OrganisationUnit.class.getName();
     private String className2 = DataElement.class.getName();
 
-    private Translation translation1a = new Translation( className1, id1, locale1, "name", "orgunitss" );
-    private Translation translation1b = new Translation( className1, id1, locale1, "shortName", "orgs" );
-    private Translation translation2a = new Translation( className1, id1, locale2, "name", "orgunitzz" );
-    private Translation translation2b = new Translation( className2, id1, locale2, "name", "dataelement1" );
-    private Translation translation2c = new Translation( className2, id2, locale2, "name", "dataelement2" );
-    private Translation translation3 = new Translation( className1, id1, locale3, "name", "orgunit" );
+    private Translation translation1a = new Translation( className1, id1, locale1, "name", "cheers" );
+    private Translation translation1b = new Translation( className1, id1, locale1, "shortName", "goodbye" );
+    private Translation translation2a = new Translation( className1, id1, locale2, "name", "hello" );
+    private Translation translation2b = new Translation( className2, id1, locale2, "name", "hey" );
+    private Translation translation2c = new Translation( className2, id2, locale3, "name", "bonjour" );
 
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
     @Test
-    public void testAddGetUpdateDelete()
-        throws Exception
+    public void testAddGet()
     {
-        // Add
+        translationStore.addTranslation( translation1a );
+        translationStore.addTranslation( translation1b );
+        
+        assertEquals( translation1a, translationStore.getTranslation( className1, id1, Locale.UK, "name" ) );
+        assertEquals( translation1b, translationStore.getTranslation( className1, id1, Locale.UK, "shortName" ) );
+    }
+    
+    @Test
+    public void delete()
+    {
+        translationStore.addTranslation( translation1a );
+        translationStore.addTranslation( translation1b );
+        
+        assertNotNull( translationStore.getTranslation( className1, id1, Locale.UK, "name" ) );
+        assertNotNull( translationStore.getTranslation( className1, id1, Locale.UK, "shortName" ) );
+        
+        translationStore.deleteTranslation( translation1a );
+        
+        assertNull( translationStore.getTranslation( className1, id1, Locale.UK, "name" ) );
+        assertNotNull( translationStore.getTranslation( className1, id1, Locale.UK, "shortName" ) );
+
+        translationStore.deleteTranslation( translation1b );
+
+        assertNull( translationStore.getTranslation( className1, id1, Locale.UK, "name" ) );
+        assertNull( translationStore.getTranslation( className1, id1, Locale.UK, "shortName" ) );
+    }
+    
+    @Test
+    public void testUpdateTranslation()
+    {
+        translationStore.addTranslation( translation1a );
+        
+        assertEquals( translation1a, translationStore.getTranslation( className1, id1, Locale.UK, "name" ) );
+        
+        translation1a.setValue( "regards" );
+        
+        translationStore.updateTranslation( translation1a );
+
+        assertEquals( "regards", translationStore.getTranslation( className1, id1, Locale.UK, "name" ).getValue() );
+    }
+
+    @Test
+    public void testGetTranslations1()
+    {
         translationStore.addTranslation( translation1a );
         translationStore.addTranslation( translation1b );
         translationStore.addTranslation( translation2a );
         translationStore.addTranslation( translation2b );
         translationStore.addTranslation( translation2c );
-        translationStore.addTranslation( translation3 );
-
-        // Get
-        Translation savedTranslation1a = translationStore.getTranslation( className1, id1, Locale.UK, "name" );
-        Translation savedTranslation1b = translationStore.getTranslation( className1, id1, Locale.UK, "shortName" );
-        Translation savedTranslation2b = translationStore.getTranslation( className2, id1, Locale.US, "name" );
-        Translation savedTranslation2c = translationStore.getTranslation( className2, id2, Locale.US, "name" );
-
-        assertEquals( "orgunitss", savedTranslation1a.getValue() );
-        assertEquals( "orgs", savedTranslation1b.getValue() );
-        assertEquals( "dataelement1", savedTranslation2b.getValue() );
-        assertEquals( "dataelement2", savedTranslation2c.getValue() );
-
-        Collection<Translation> col = translationStore.getTranslations( className1, id1, Locale.UK );
-
-        assertEquals( "Unexpected amount of translations received", 2, col.size() );
-
-        // Update
-        translation1a.setValue( "org-unitssz" );
-        translation2c.setValue( "dataelement-2" );
-
-        translationStore.updateTranslation( translation1a );
-        translationStore.updateTranslation( translation2c );
-
-        Translation savedTranslationAfterUpdate1 =
-            translationStore.getTranslation( className1, id1, Locale.UK, "name" );
-        Translation savedTranslationAfterUpdate2 =
-            translationStore.getTranslation( className2, id2, Locale.US, "name" );
-
-        assertEquals( "org-unitssz", savedTranslationAfterUpdate1.getValue() );
-        assertEquals( "dataelement-2", savedTranslationAfterUpdate2.getValue() );
-
-        // Delete
-        translationStore.deleteTranslation( translation3 );
-
-        Translation deletedTranslation = translationStore.getTranslation(className1, id1, Locale.FRANCE ,"name" );
-
-        assertNull(deletedTranslation);
-
-        translationStore.deleteTranslations(className1, id1);
-
-        col = translationStore.getAllTranslations();
-
-        assertEquals( "Unexpected amount of translations received after delete", 2, col.size() );
+        
+        assertEquals( 2, translationStore.getTranslations( className1, id1, Locale.UK ).size() );
+        assertTrue( translationStore.getTranslations( className1, id1, Locale.UK ).contains( translation1a ) );
+        assertTrue( translationStore.getTranslations( className1, id1, Locale.UK ).contains( translation1b ) );
     }
 
+    @Test
+    public void testGetTranslations2()
+    {
+        translationStore.addTranslation( translation1a );
+        translationStore.addTranslation( translation1b );
+        translationStore.addTranslation( translation2a );
+        translationStore.addTranslation( translation2b );
+        translationStore.addTranslation( translation2c );
+        
+        assertEquals( 2, translationStore.getTranslations( className1, Locale.UK ).size() );
+        assertTrue( translationStore.getTranslations( className1, id1, Locale.UK ).contains( translation1a ) );
+        assertTrue( translationStore.getTranslations( className1, id1, Locale.UK ).contains( translation1b ) );
+    }
+    
+    @Test
+    public void testGetAllTranslations()
+    {
+        translationStore.addTranslation( translation1a );
+        translationStore.addTranslation( translation1b );
+        translationStore.addTranslation( translation2a );
+        translationStore.addTranslation( translation2b );
+        translationStore.addTranslation( translation2c );
+        
+        assertEquals( 5, translationStore.getAllTranslations().size() );
+    }
+    
     @Test
     public void testGetAvailableLocales()
         throws Exception
     {
         translationStore.addTranslation( translation1a );
+        translationStore.addTranslation( translation1b );
         translationStore.addTranslation( translation2a );
-        translationStore.addTranslation( translation3 );
+        translationStore.addTranslation( translation2b );
+        translationStore.addTranslation( translation2c );
 
         Collection<Locale> locales = translationStore.getAvailableLocales();
 
-        assertEquals( "Unexpected size of available locales", 3, locales.size() );
+        assertEquals( 3, locales.size() );
     }
 }

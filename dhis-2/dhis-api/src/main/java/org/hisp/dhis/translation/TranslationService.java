@@ -37,22 +37,77 @@ import java.util.Locale;
 public interface TranslationService
 {
     String ID = TranslationService.class.getName();
-    
-    Translation getTranslation( String className, int id, Locale locale, String property );
 
-    Collection<Translation> getTranslations( String className, int id, Locale locale );
-
-    Collection<Translation> getTranslations( String className, Locale locale );
-
-    Collection<Translation> getAllTranslations();
-
+    /**
+     * Adds a Translation.
+     * 
+     * @param translation the Translation.
+     */
     void addTranslation( Translation translation );
 
+    /**
+     * Updates a Translation.
+     * 
+     * @param translation the Translation.
+     */
     void updateTranslation( Translation translation );
 
+    /**
+     * Retrieves a Translation.
+     * 
+     * @param className the class name.
+     * @param id the id.
+     * @param locale the locale.
+     * @param property the property.
+     * @return a Translation.
+     */
+    Translation getTranslation( String className, int id, Locale locale, String property );
+
+    /**
+     * Retrieves a Collection of Translations.
+     * 
+     * @param className the class name.
+     * @param id the id.
+     * @param locale the locale.
+     * @return a Collection of Translations.
+     */
+    Collection<Translation> getTranslations( String className, int id, Locale locale );
+
+    /**
+     * Retrieves a Collection of Translations.
+     * 
+     * @param className the class name.
+     * @param locale the locale.
+     * @return a Collection of Translations.
+     */
+    Collection<Translation> getTranslations( String className, Locale locale );
+
+    /**
+     * Retrieves a Collection of all Translations.
+     * 
+     * @return a Collection of all Translations.
+     */
+    Collection<Translation> getAllTranslations();
+
+    /**
+     * Deletes a Translation.
+     * 
+     * @param translation the Translation.
+     */
     void deleteTranslation( Translation translation );
 
-    Collection<Locale> getAvailableLocales();
-
+    /**
+     * Deletes Translations.
+     * 
+     * @param className the class name.
+     * @param id the id.
+     */
     void deleteTranslations( String className, int id );
+    
+    /**
+     * Retrieves all available Locales.
+     * 
+     * @return a Collection of all available Locales.
+     */
+    Collection<Locale> getAvailableLocales();
 }
