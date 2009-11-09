@@ -29,12 +29,16 @@ package org.hisp.dhis.reportexcel.importing.action;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 import jxl.Sheet;
 import jxl.Workbook;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.excelitem.comparator.ExcelItemComparator;
 import org.hisp.dhis.reportexcel.importing.ExcelItemValue;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
@@ -46,16 +50,18 @@ import com.opensymphony.xwork2.Action;
  */
 
 public class ViewDataCategoryAction implements Action {
-	
+
 	// --------------------------------------------------------------------
 	// Inputs && Outputs
 	// --------------------------------------------------------------------
 
+	private ExcelItemGroup excelItemGroup;
+
+	private ArrayList<ExcelItemValue> excelItemValues;
+
 	private File upload;
 
-	private List<ExcelItemValue> excelItemValues;
-
-	private ArrayList<ExcelItem> excelItems;
+	public String[] excelItemIds;
 
 	// --------------------------------------------------------------------
 	// Getters and Setters
@@ -65,11 +71,15 @@ public class ViewDataCategoryAction implements Action {
 		this.upload = upload;
 	}
 
-	public void setExcelItems(ArrayList<ExcelItem> excelItems) {
-		this.excelItems = excelItems;
+	public void setExcelItemGroup(ExcelItemGroup excelItemGroup) {
+		this.excelItemGroup = excelItemGroup;
 	}
 
-	public List<ExcelItemValue> getExcelItemValues() {
+	public void setExcelItemIds(String[] excelItemIds) {
+		this.excelItemIds = excelItemIds;
+	}
+
+	public ArrayList<ExcelItemValue> getExcelItemValues() {
 		return excelItemValues;
 	}
 
@@ -80,27 +90,55 @@ public class ViewDataCategoryAction implements Action {
 	public String execute() {
 		try {
 			
-			Workbook templateWorkbook = Workbook.getWorkbook(upload);
+			Workbook uploadWorkbook = Workbook.getWorkbook(upload);
+
+			ArrayList<ExcelItem> excelItems = new ArrayList<ExcelItem>(
+					excelItemGroup.getExcelItems());
+
+			Collections.sort(excelItems, new ExcelItemComparator());
 
 			excelItemValues = new ArrayList<ExcelItemValue>();
 
 			for (ExcelItem excelItem : excelItems) {
 
-				Sheet sheet = templateWorkbook
+				Sheet sheet = uploadWorkbook
 						.getSheet(excelItem.getSheetNo() - 1);
 
-				String value = ExcelUtils.readValue(excelItem.getRow(),
-						excelItem.getColumn(), sheet);
+				int rowBegin = excelItem.getRow();
 
-				ExcelItemValue excelItemvalue = new ExcelItemValue(excelItem,
-						value);
+				for (DataElementGroupOrder dataElementGroup : excelItemGroup
+						.getDataElementOrders()) {
+					
+					for (DataElement dataElement : dataElementGroup
+							.getDataElements()) {
 
-				if (value.length() == 0) {
-					excelItemvalue.setValue(0 + "");
-				}
+						String value = ExcelUtils.readValue(rowBegin, excelItem
+								.getColumn(), sheet);
 
-				excelItemValues.add(excelItemvalue);
-			}
+						ExcelItem item = new ExcelItem();
+
+						item.setId(excelItem.getId());
+
+						item.setExpression(excelItem.getExpression().replace(
+								"*", String.valueOf(dataElement.getId())));
+
+						item.setName(excelItem.getName() + " - "
+								+ dataElement.getName());
+
+						item.setRow(rowBegin);
+
+						ExcelItemValue excelItemValue = new ExcelItemValue(
+								item, value);
+
+						excelItemValues.add(excelItemValue);
+
+						rowBegin++;
+						
+					} // for (DataElementGroupOrder ...
+
+				} // for (DataElement ...
+
+			}// end for (ExcelItem ...
 
 			return SUCCESS;
 

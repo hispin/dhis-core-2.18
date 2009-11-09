@@ -1236,6 +1236,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
 
+	<!--  function - Prewiew Data - CATEGORY  -->
+	<bean
+		id="org.hisp.dhis.reportexcel.importing.action.ViewDataCategoryAction"
+		class="org.hisp.dhis.reportexcel.importing.action.ViewDataCategoryAction"
+		scope="prototype">
+	</bean>
+
 	<!--  function - Import data flow -->
 	<bean id="org.hisp.dhis.reportexcel.importing.action.ImportDataFlowAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ImportDataFlowAction"
@@ -1244,7 +1251,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
-		
+
 	</bean>
 
 	<!--  function - Import data - NORMAL  -->
@@ -1305,7 +1312,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
+		<property name="dataElementService"
+			ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
 	<!--  function - Upload excel file  -->

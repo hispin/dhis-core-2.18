@@ -104,9 +104,11 @@ public class ImportDataFlowAction implements Action {
 		// Period period = periodService.getPeriod(periodId);
 
 		selectedStateManager.setSelectedPeriodIndex(periodId);
-System.out.println("\n\n ==== periodId : " + selectedStateManager.getSelectedPeriod());
+
 		ExcelItemGroup excelItemGroup = excelItemService
 				.getExcelItemGroup(excelItemGroupId);
+
+		System.out.println("\n\n ==== excelItemGroup : " + excelItemGroup.getType());
 
 		return excelItemGroup.getType();
 	}

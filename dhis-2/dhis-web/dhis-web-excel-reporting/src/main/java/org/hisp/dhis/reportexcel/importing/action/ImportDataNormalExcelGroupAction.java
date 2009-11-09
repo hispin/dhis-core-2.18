@@ -155,6 +155,12 @@ public class ImportDataNormalExcelGroupAction extends ActionSupport {
 		OrganisationUnit organisationUnit = organisationUnitSelectionManager
 				.getSelectedOrganisationUnit();
 		
+		if(excelItemIds == null){
+			message = i18n.getString("choose_excelItem");
+			
+			return ERROR;
+		}
+		
 		if (organisationUnit != null) {
 
 			File upload = new File(uploadFileName);
@@ -172,6 +178,9 @@ public class ImportDataNormalExcelGroupAction extends ActionSupport {
 				excelItems = excelItemGroup.getExcelItems();
 			}
 
+
+			Period period = selectedStateManager.getSelectedPeriod();
+System.out.println("\n\n === period : " + period);
 			for (ExcelItem exelItem : excelItems) {
 
 				Sheet sheet = templateWorkbook
@@ -180,11 +189,8 @@ public class ImportDataNormalExcelGroupAction extends ActionSupport {
 				String value = ExcelUtils.readValue(exelItem.getRow(),
 						exelItem.getColumn(), sheet);
 				
-				if (value.length() > 0) {					
-					Period period = selectedStateManager.getSelectedPeriod();
-//					Period period = periodService
-//							.getPeriod(periodId.intValue());
-
+				if (value.length() > 0) {
+					
 					Operand operand = expressionService
 							.getOperandsInExpression(exelItem.getExpression())
 							.iterator().next();

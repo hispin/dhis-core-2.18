@@ -39,6 +39,7 @@ function getALLReportCompleted( xmlObject ){
 		options.add(new Option(name,id), null);
 	}
 }
+
 function currentYear(){
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
@@ -63,12 +64,13 @@ function nextYear(){
 function getListPeriodCompleted( xmlObject ){
 	clearListById('period');
 	var nodes = xmlObject.getElementsByTagName('period');
-	for ( var i = 0; i < nodes.length; i++ )
+	var length = nodes.length;
+	for ( var i = 0; i < length; i++ )
     {
         node = nodes.item(i);  
         var id = node.getElementsByTagName('id')[0].firstChild.nodeValue;
         var name = node.getElementsByTagName('name')[0].firstChild.nodeValue;
-		addOption('period', name, id);
+		addOption('period', name, length - id - 1);
     }
 }
 
@@ -121,15 +123,22 @@ function Completed( xmlObject ){
 
 function getPreviewImportData(fileExcel){
 	
-	var request = new Request();
-	
-	request.setResponseTypeXML( 'xmlObject' );
-	
-	request.setCallbackSuccess( getReportItemValuesReceived );
-	
-	var excelItemGroupId = byId("excelItemGroupId").value;
-	
-	request.send( "previewDataFlow.action?excelItemGroupId=" + excelItemGroupId +"&uploadFileName=" + fileExcel);
+	if(byId('excelItemGroupId').value > 0){
+		
+		var request = new Request();
+		
+		request.setResponseTypeXML( 'xmlObject' );
+		
+		request.setCallbackSuccess( getReportItemValuesReceived );
+		
+		var excelItemGroupId = byId("excelItemGroupId").value;
+		
+		request.send( "previewDataFlow.action?excelItemGroupId=" + excelItemGroupId +"&uploadFileName=" + fileExcel);
+	}else{
+		
+		var availableDiv = byId('showValue');
+		availableDiv.style.display = 'none';
+	}
 }
 
 
@@ -139,12 +148,15 @@ function getPreviewImportData(fileExcel){
 
 function getReportItemValuesReceived( xmlObject ){
 	
-	var availableObjectList = xmlObject.getElementsByTagName('excelItemValueByOrgUnit');
-	
-	if(availableObjectList.length > 0 )
+	if(xmlObject.getElementsByTagName('excelItemValueByOrgUnit').length > 0 ){
 		previewOrganisation(xmlObject);
-	else 
+	}
+	else if(xmlObject.getElementsByTagName('excelItemValueByCategory').length > 0 ){
+		previewCategory(xmlObject);
+	}
+	else{
 		previewNormal(xmlObject);
+	}
 }
 
 
@@ -171,19 +183,19 @@ function previewNormal( xmlObject ){
 	for(var i=0;i<availableObjectList.length;i++){
 		
 		// get values
-		var reportItermValue = availableObjectList.item(i);
+		var itermValue = availableObjectList.item(i);
 		// add new row
 		var newTR = document.createElement('tr');
 		// create new column
 		var newTD2 = document.createElement('td');
-		newTD2.innerHTML = reportItermValue.getElementsByTagName('name')[0].firstChild.nodeValue;
+		newTD2.innerHTML = itermValue.getElementsByTagName('name')[0].firstChild.nodeValue;
 		// create new column
 		var newTD3 = document.createElement('td');
-		var value = reportItermValue.getElementsByTagName('value')[0].firstChild.nodeValue;
+		var value = itermValue.getElementsByTagName('value')[0].firstChild.nodeValue;
 		newTD3.innerHTML = value;
 		// create new column
 		var newTD1 = document.createElement('td');
-		var id = reportItermValue.getElementsByTagName('id')[0].firstChild.nodeValue;
+		var id = itermValue.getElementsByTagName('id')[0].firstChild.nodeValue;
 		if(value!=0){
 			newTD1.innerHTML= "<input type='checkbox' name='excelItems' id='excelItems' value='" + id + "'>" ;
 		}
@@ -270,7 +282,59 @@ function previewOrganisation( xmlObject ){
 			
 	}// end for availableObjectList
 }
- 
+
+
+// -----------------------------------------------------------------------------
+// PREVIEW DATA - CATEGORY
+// -----------------------------------------------------------------------------
+
+function previewCategory( xmlObject ){
+	
+	byId('selectAll').checked = false;
+	var availableDiv = byId('showValue');
+	availableDiv.style.display = 'block';
+	
+	var availableObjectList = xmlObject.getElementsByTagName('excelItemValueByCategory');
+	
+	var myTable = byId('showExcelItemValues');
+	var tBody = myTable.getElementsByTagName('tbody')[0];
+	
+	for(var i = byId("showExcelItemValues").rows.length; i > 1;i--)
+	{
+		byId("showExcelItemValues").deleteRow(i -1);
+	}
+
+	for(var i=0;i<availableObjectList.length;i++){
+		
+		// get values
+		var itermValue = availableObjectList.item(i);
+		// add new row
+		var newTR = document.createElement('tr');
+		// create new column
+		var newTD2 = document.createElement('td');
+		newTD2.innerHTML = itermValue.getElementsByTagName('name')[0].firstChild.nodeValue;
+		// create new column
+		var newTD3 = document.createElement('td');
+		var value = itermValue.getElementsByTagName('value')[0].firstChild.nodeValue;
+		newTD3.innerHTML = value;
+		// create new column
+		var newTD1 = document.createElement('td');
+		var id = itermValue.getElementsByTagName('id')[0].firstChild.nodeValue;
+		var row = itermValue.getElementsByTagName('row')[0].firstChild.nodeValue;
+		var expression = itermValue.getElementsByTagName('expression')[0].firstChild.nodeValue
+		if(value!=0){
+			newTD1.innerHTML= "<input type='checkbox' name='excelItems' id='excelItems' value='" + id + "-" + row + "-" + expression + "'>" ;
+		}
+		
+		newTR.appendChild (newTD1);
+		newTR.appendChild (newTD2);
+		newTR.appendChild (newTD3);
+		// add row into the table
+		tBody.appendChild(newTR);
+	}
+}
+
+
 function selectAll(){
 	 
 	var select = byId('selectAll').checked;
@@ -300,11 +364,10 @@ function responseListPeriodReceived( xmlObject ) {
 	var list = xmlObject.getElementsByTagName('period');
 	for ( var i = 0; i < list.length; i++ )
     {
-        item = list[i];  
-        //var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
+        item = list[i];
         var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
-		//addOption('period', name, id);
-		addOption('period', name, list.length - i - 1);
+        
+		addOption('period', name, i);
     }
 }
 

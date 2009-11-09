@@ -1,4 +1,5 @@
 <h2>$i18n.getString('dataelement_groups')</h2>
+<div id="tooltip" style=" display:none; background-color:#FFFFCC; ; position:absolute; z-index:100001" ></div>
 <h4>$excelItemGroup.name</h4>
 <p></p>
 <table width="800px">
@@ -41,39 +42,39 @@
 <form name="dataElementGroups" method="post">
 <input type="hidden" name="id" value="$excelItemGroup.id"/>
 <input type="hidden" name="dataElementGroupOrderId" id="dataElementGroupOrderId"/>
-<div id="dataElementGroups" style="position:fixed;display:none;width:1000px;z-index:10001;background-color: white;border: medium solid silver;height:350px;padding:20px;">
+<div id="dataElementGroups" style="position:fixed;display:block;width:870px;z-index:10001;background-color: white;border: medium solid silver;height:300px;padding:20px;">
 	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('dataElementGroups');deleteDivEffect();">[x]</div>	
 	<table>
 		<tr>
 			<td>$i18n.getString('name')</td>
-			<td><input type="text" style="width:400px" id="name" name="name"/></td>
+			<td><input type="text" style="width:350px" id="name" name="name" /></td>
 		</tr>
 		<tr>
 			<td>$i18n.getString('code')</td>
-			<td><input type="text" style="width:400px" id="code" name="code"/></td>
+			<td><input type="text" style="width:350px" id="code" name="code"/></td>
 		</tr>
 	</table>		
 	
-	<br/><br/>	
+	<br/>
 	<div style="width:100%;overflow:auto">
 	<table width="100%">		
 		<tr>
 			<td colspan="3">
-				<select id="availableDataElementGroups" onchange="getDataElementsByGroup(this.value)" style="min-width:300px"></select>				
+				<select id="availableDataElementGroups" onchange="getDataElementsByGroup(this.value)" style="width:400px"></select>				
 			</td>			
 		</tr>
 		<tr>
-			<td>
-				<select id="availableDataElements" multiple size=13 style="min-width:300px" ondblclick="moveSelectedById('availableDataElements','dataElementIds');"></select>
+			<td width="31%">
+				<select id="availableDataElements" multiple size=10 style="width:400px" onMouseOut="javascript: hideToolTip();" ondblclick="moveSelectedById('availableDataElements','dataElementIds');"></select>
 			</td>
-			<td align="center">
+			<td width="5%" align="center">
 				<input type="button" value=">" onclick="moveSelectedById('availableDataElements','dataElementIds');" style="width:50px"/><br>
 				<input type="button" value="<" onclick="moveSelectedById('dataElementIds' , 'availableDataElements' );" style="width:50px"/><br>
 				<input type="button" value=">>" onclick="moveAllById('availableDataElements' , 'dataElementIds' );" style="width:50px"/><br>
 				<input type="button" value="<<" onclick="moveAllById('dataElementIds' , 'availableDataElements' );" style="width:50px"/>
 			</td>
-			<td>
-				<select id="dataElementIds" name="dataElementIds" multiple size=13 style="min-width:300px" ondblclick="moveSelectedById('dataElementIds' , 'availableDataElements' );" ></select>
+			<td width="64%">
+				<select id="dataElementIds" name="dataElementIds" multiple size=10 style="width:400px" ondblclick="moveSelectedById('dataElementIds' , 'availableDataElements' );" ></select>
 			</td>
 		</tr>
 	</table>
