@@ -27,8 +27,11 @@ package org.hisp.dhis.i18n;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import static org.hisp.dhis.system.util.ReflectionUtils.getClassName;
+import static org.hisp.dhis.system.util.ReflectionUtils.getId;
+import static org.hisp.dhis.system.util.ReflectionUtils.getProperty;
+import static org.hisp.dhis.system.util.ReflectionUtils.setProperty;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
@@ -502,141 +505,6 @@ public class DefaultI18nService
         }
 
         return translationMap;
-    }
-
-    /**
-     * Sets a property for the supplied object
-     *
-     * @param object Object to modify
-     * @param name   Name of property to set
-     * @param value  Value the property will be set to
-     */
-    private void setProperty( Object object, String name, String value )
-    {
-        Class<?> c = object.getClass();
-
-        Object[] arguments = new Object[] { value };
-
-        Class<?>[] parameterTypes = new Class<?>[] { String.class };
-
-        if ( name.length() > 0 )
-        {
-            name = "set" + name.substring( 0, 1 ).toUpperCase() + name.substring( 1, name.length() );
-        }
-        else
-        {
-            return;
-        }
-
-        try
-        {
-            Method concatMethod = c.getMethod( name, parameterTypes );
-
-            concatMethod.invoke( object, arguments );
-        }
-        catch ( IllegalAccessException iae )
-        {
-            log.warn( "Ex: " + iae );
-        }
-        catch ( NoSuchMethodException nsme )
-        {
-            log.warn( "Ex: " + nsme );
-        }
-        catch ( InvocationTargetException ite )
-        {
-            log.warn( "Ex: " + ite );
-        }
-    }
-
-    /**
-     * Fetch a property off the object using reflection
-     *
-     * @param object Object to search
-     * @param property Name of the property to get
-     * @return the value of the property or null
-     */
-    private String getProperty( Object object, String property )
-    {
-        String value = null;
-
-        property = property.substring( 0, 1 ).toUpperCase() + property.substring( 1, property.length() );
-
-        Class<?> c = object.getClass();
-
-        Method method;
-
-        try
-        {
-            method = c.getMethod( "get" + property );
-
-            value = (String) method.invoke( object );
-        }
-        catch ( NoSuchMethodException e )
-        {
-            log.warn( e );
-        }
-        catch ( IllegalAccessException e )
-        {
-            log.warn( e );
-        }
-        catch ( InvocationTargetException e )
-        {
-            log.warn( e );
-        }
-
-        return value;
-    }
-
-    /**
-     * Returns the name of the class that the object is an instance of
-     * org.hisp.dhis.indicator.Indicactor returns Indicator
-     *
-     * @param object Object to determine className of
-     * @return String containing the class name
-     */
-    private String getClassName( Object object )
-    {
-        String pathToClassName = object.getClass().getName();
-
-        int start = pathToClassName.lastIndexOf( "." );
-
-        return pathToClassName.substring( start + 1, pathToClassName.length() );
-    }
-
-    /**
-     * Calls the method getId for this object, throws exception if this fails.
-     *
-     * @param object object to call method on, needs to have the public method getId():int
-     * @return The id
-     */
-    private int getId( Object object )
-    {
-        int result = -1;
-
-        Class<?> c = object.getClass();
-
-        Method method;
-
-        try
-        {
-            method = c.getMethod( "getId" );
-
-            result = (Integer) method.invoke( object );
-        }
-        catch ( NoSuchMethodException e )
-        {
-            log.warn( e );
-        }
-        catch ( IllegalAccessException e )
-        {
-            log.warn( e );
-        }
-        catch ( InvocationTargetException e )
-        {
-            log.warn( e );
-        }
-
-        return result;
     }
 
     /**
