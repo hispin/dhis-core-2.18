@@ -27,20 +27,17 @@ package org.hisp.dhis.reportexcel.importing.period.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Nguyen Tran Do Xuan Thuy
+ * @author Chau Thu Tran
  * @version $Id$
- * @since 2009-10-14
  */
 
 public class GetPeriodsByExcelItemGroupAction implements Action {
@@ -88,17 +85,25 @@ public class GetPeriodsByExcelItemGroupAction implements Action {
 
 	public String execute() throws Exception {
 
-		ExcelItemGroup excelItemGroup = excelItemService
-				.getExcelItemGroup(excelItemGroupId);
+		if (excelItemGroupId > 0) {
+			ExcelItemGroup excelItemGroup = excelItemService
+					.getExcelItemGroup(excelItemGroupId);
 
-		selectedStateManager.setSelectedExcelItemGroup(excelItemGroup);
-		
-        selectedStateManager.clearSelectedPeriod();
-		
-		periods = selectedStateManager.getPeriodList();
-		
-		Collections.sort(periods, new PeriodComparator());
+			selectedStateManager.setSelectedExcelItemGroup(excelItemGroup);
 
-		return SUCCESS;
+			selectedStateManager.clearSelectedPeriod();
+
+			periods = selectedStateManager.getPeriodList();
+			
+		} else{
+
+			selectedStateManager.clearSelectedExcelItemGroup();
+			
+			selectedStateManager.clearSelectedPeriod();
+
+			periods = null;
+		}
+
+			return SUCCESS;
 	}
 }

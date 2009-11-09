@@ -22,7 +22,7 @@
     <td>$i18n.getString( 'excelitem_group' )</td>
     <td><select type="text" id="excelItemGroupId" name="excelItemGroupId"  onChange="getPeriodsByPeriodTypeName(this.value); getPreviewImportData('$!fileExcel.getName()')"; style="min-width:20em; width:100%" >
 	<!-- onChange="getPeriodsByPeriodTypeName(this.value);" -->
-	  <option value="">$i18n.getString('select')</option>
+	  <option value="0">$i18n.getString('select')</option>
 	  #foreach($excelItemGroup in $excelItemGroups)
 		<option value="$!excelItemGroup.id">$!encoder.htmlEncode($!excelItemGroup.name)</option>
 	  #end

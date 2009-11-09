@@ -58,7 +58,6 @@ function validateExcelItemGroup(){
 }
 
 function addExcelItemGroup(){
-	alert($("#periodType").val());
 	
 	$.post("addExcelItemGroup.action",{
 		name:$("#name").val(),
@@ -85,7 +84,7 @@ function updateExcelItemGroup(){
 
 function deleteExcelItemGroup(id){
 	if(window.confirm(i18n_confirm_delete)){
-		$.post("deleteExcelItemGroupForCategory.action",{
+		$.post("deleteExcelItemGroup.action",{
 				id:id
 			},function(data){
 				window.location.reload();
@@ -121,14 +120,24 @@ function getDataElementsByGroup( id ){
 }
 
 function getDataElementsByGroupReceived( datalement ){
+	
 	var dataElements = datalement.getElementsByTagName( "dataElement" );
+	
 	var listDataElement = document.getElementById('availableDataElements');
+	
 	listDataElement.options.length = 0;
+	
 	for ( var i = 0; i < dataElements.length; i++ )
     {
         var id = dataElements[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-        var name = dataElements[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;  
-		listDataElement.options.add(new Option(name, id));          
+        var name = dataElements[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
+        var option = new Option(name, id);
+		
+		option.onmousemove  = function(e){
+			showToolTip( e, this.text);
+		}
+		
+		listDataElement.add(option, null);
     }
 	
 	var availableDataElements = document.getElementById('availableDataElements');
@@ -148,14 +157,22 @@ function getALLDataElementGroups(){
 	
 	$.get("getAllDataElementGroups.action",{},
 	function(data){
+		
 		var availableDataElementGroups = document.getElementById('availableDataElementGroups');
+		
 		availableDataElementGroups.options.length = 0;
+		
 		var dataElementGroups = data.getElementsByTagName('dataElementGroups')[0].getElementsByTagName('dataElementGroup');
+		
 		availableDataElementGroups.options.add(new Option("ALL", null));	
+		
 		for(var i=0;i<dataElementGroups.length;i++){
+			
 			var id = dataElementGroups.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
 			var name = dataElementGroups.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
-			availableDataElementGroups.options.add(new Option(name, id));			
+			
+			var option = new Option( name, id );
+			availableDataElementGroups.add(option, null);
 		}			
 		getDataElementsByGroup($("#availableDataElementGroups").val());
 	},'xml');
@@ -197,13 +214,21 @@ function openUpdateDataElementOrder( id ){
 		$("#name").val(data.getElementsByTagName('name')[0].firstChild.nodeValue);
 		$("#code").val(data.getElementsByTagName('code')[0].firstChild.nodeValue);
 		var dataElements = data.getElementsByTagName('dataElements')[0].getElementsByTagName('dataElement');
+		
 		for(var i=0;i<dataElements.length;i++){
 			var name = dataElements[i].getElementsByTagName('name')[0].firstChild.nodeValue;
 			var id = dataElements[i].getElementsByTagName('id')[0].firstChild.nodeValue;
-			listDataElement.options.add(new Option(name, id));
+			
+			var option = new Option( name, id );
+			option.onmousemove  = function(e){
+				showToolTip( e, this.text);
+			}
+	
+			listDataElement.add(option, null);
 		}
 		
 		document.forms['dataElementGroups'].action = "updateDataElementGroupOrderForCategory.action";
+		
 		getALLDataElementGroups();
 	},'xml');
 }
@@ -235,3 +260,32 @@ function updateDataElementGroupOrder(){
 	
 }
 
+// -----------------------------------------------------------------------------
+function showToolTip( e, value){
+	
+	var tooltipDiv = byId('tooltip');
+	tooltipDiv.style.display = 'block';
+	
+	var posx = 0;
+    var posy = 0;
+	
+    if (!e) var e = window.event;
+    if (e.pageX || e.pageY)
+    {
+        posx = e.pageX;
+        posy = e.pageY;
+    }
+    else if (e.clientX || e.clientY)
+    {
+        posx = e.clientX;
+        posy = e.clientY;
+    }
+	
+	tooltipDiv.style.left= posx  + 8 + 'px';
+	tooltipDiv.style.top = posy  + 8 + 'px';
+	tooltipDiv.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +   value;
+}
+
+function hideToolTip(){
+	byId('tooltip').style.display = 'none';
+}

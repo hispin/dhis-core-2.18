@@ -28,7 +28,6 @@ package org.hisp.dhis.reportexcel.importing.action;
  */
 
 import java.io.File;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 
@@ -39,6 +38,7 @@ import jxl.WorkbookSettings;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -46,12 +46,10 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
+import org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -66,6 +64,8 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 	// Dependencies
 	// --------------------------------------------------------------------
 
+	private ExcelItemService excelItemService;
+
 	private DataValueService dataValueService;
 
 	private OrganisationUnitSelectionManager organisationUnitSelectionManager;
@@ -76,21 +76,21 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 
 	private CurrentUserService currentUserService;
 
-	private PeriodService periodService;
+	private SelectedStateManager selectedStateManager;
 
-	private ExcelItemService excelItemService;
+	private DataElementService dataElementService;
 
 	// --------------------------------------------------------------------
 	// Inputs && Outputs
 	// --------------------------------------------------------------------
 
-	private Integer excelItemGroupId;
+	// private Integer excelItemGroupId;
 
 	private String uploadFileName;
 
-	private Integer periodId;
+	// private Integer periodId;
 
-	public Integer[] reportExcelItemIds;
+	public String[] excelItemIds;
 
 	// --------------------------------------------------------------------
 	// Getters and Setters
@@ -100,12 +100,21 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 		this.organisationUnitSelectionManager = organisationUnitSelectionManager;
 	}
 
+	public void setDataElementService(DataElementService dataElementService) {
+		this.dataElementService = dataElementService;
+	}
+
+	public void setSelectedStateManager(
+			SelectedStateManager selectedStateManager) {
+		this.selectedStateManager = selectedStateManager;
+	}
+
 	public void setExcelItemService(ExcelItemService excelItemService) {
 		this.excelItemService = excelItemService;
 	}
 
-	public void setReportExcelItemIds(Integer[] reportExcelItemIds) {
-		this.reportExcelItemIds = reportExcelItemIds;
+	public void setExcelItemIds(String[] excelItemIds) {
+		this.excelItemIds = excelItemIds;
 	}
 
 	public void setExpressionService(ExpressionService expressionService) {
@@ -120,29 +129,20 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 		this.currentUserService = currentUserService;
 	}
 
-	public void setPeriodService(PeriodService periodService) {
-		this.periodService = periodService;
-	}
-
 	public void setDataValueService(DataValueService dataValueService) {
 		this.dataValueService = dataValueService;
 	}
 
-	public void setExcelItemGroupId(Integer excelItemGroupId) {
-		this.excelItemGroupId = excelItemGroupId;
-	}
+	// public void setExcelItemGroupId(Integer excelItemGroupId) {
+	// this.excelItemGroupId = excelItemGroupId;
+	// }
 
 	public void setUploadFileName(String uploadFileName) {
 		this.uploadFileName = uploadFileName;
 	}
 
-	public void setPeriodId(Integer periodId) {
-		this.periodId = periodId;
-	}
-
-	// public void setDataElementService(DataElementService dataElementService)
-	// {
-	// this.dataElementService = dataElementService;
+	// public void setPeriodId(Integer periodId) {
+	// this.periodId = periodId;
 	// }
 
 	// --------------------------------------------------------------------
@@ -150,13 +150,17 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 	// --------------------------------------------------------------------
 
 	public String execute() throws Exception {
-
-		ExcelItemGroup excelItemGroup = (ExcelItemGroup) excelItemService
-				.getExcelItemGroup(excelItemGroupId.intValue());
-
+		
 		OrganisationUnit organisationUnit = organisationUnitSelectionManager
 				.getSelectedOrganisationUnit();
 
+
+		if(excelItemIds == null){
+			message = i18n.getString("choose_excelItem");
+			
+			return ERROR;
+		}
+		
 		if (organisationUnit != null) {
 
 			File upload = new File(uploadFileName);
@@ -164,36 +168,60 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 			ws.setLocale(new Locale("en", "EN"));
 			Workbook templateWorkbook = Workbook.getWorkbook(upload, ws);
 
-			Collection<ExcelItem> excelItems = excelItemGroup.getExcelItems();
+			Period period = selectedStateManager.getSelectedPeriod();
+				
+			for (int i = 0; i < excelItemIds.length; i++) {
 
-			for (ExcelItem exelItem : excelItems) {
+				int excelItemId = Integer
+						.parseInt(excelItemIds[i].split("-")[0]);
+				
+				int rowIndex = Integer.parseInt(excelItemIds[i].split("-")[1]);
+				
+				String expression = excelItemIds[i].split("-")[2];
 
-				Sheet sheet = templateWorkbook.getSheet(exelItem
-						.getSheetNo() - 1);
+				ExcelItem excelItem = excelItemService
+						.getExcelItem(excelItemId);
 
-				int rowBegin = exelItem.getRow();
+				Sheet sheet = templateWorkbook
+						.getSheet(excelItem.getSheetNo() - 1);
 
-				for (DataElementGroupOrder dataElementGroup : excelItemGroup
-						.getDataElementOrders()) {
+				String value = ExcelUtils.readValue(rowIndex, excelItem.getColumn(), sheet);
+				
+				addDataValue(expression, value, organisationUnit, period);
 
-					for (DataElement dataElement : dataElementGroup
-							.getDataElements()) {
+			}
 
-						String value = ExcelUtils.readValue(rowBegin,
-								exelItem.getColumn(), sheet);
-
-						if (value.length() > 0) {
-
-							addDataValue(exelItem, value,
-									organisationUnit, dataElement);
-						}
-
-						rowBegin++;
-					}
-
-				}
-
-			}// end for (ExcelItem ...
+			// Collection<ExcelItem> excelItems =
+			// excelItemGroup.getExcelItems();
+			//
+			// for (ExcelItem exelItem : excelItems) {
+			//
+			// Sheet sheet = templateWorkbook
+			// .getSheet(exelItem.getSheetNo() - 1);
+			//
+			// int rowBegin = exelItem.getRow();
+			//
+			// for (DataElementGroupOrder dataElementGroup : excelItemGroup
+			// .getDataElementOrders()) {
+			//
+			// for (DataElement dataElement : dataElementGroup
+			// .getDataElements()) {
+			//
+			// String value = ExcelUtils.readValue(rowBegin, exelItem
+			// .getColumn(), sheet);
+			//
+			// if (value.length() > 0) {
+			//
+			// addDataValue(exelItem, value, organisationUnit,
+			// dataElement);
+			// }
+			//
+			// rowBegin++;
+			// }
+			//
+			// }
+			//
+			// }// end for (ExcelItem ...
 
 		}// end if (organisationUnit ...
 
@@ -202,19 +230,14 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	private void addDataValue(ExcelItem excelItem, String value,
-			OrganisationUnit organisationUnit, DataElement dataElement) {
-
-		if (!excelItem.getExpression().contains("*"))
-			return;
-
-		Period period = periodService.getPeriod(periodId.intValue());
-
-		String expression = excelItem.getExpression().replace("*",
-				String.valueOf(dataElement.getId()));
+	private void addDataValue(String expression, String value,
+			OrganisationUnit organisationUnit, Period period) {
 
 		Operand operand = expressionService.getOperandsInExpression(expression)
 				.iterator().next();
+
+		DataElement dataElement = dataElementService.getDataElement(operand
+				.getDataElementId());
 
 		DataElementCategoryOptionCombo optionCombo = categoryService
 				.getDataElementCategoryOptionCombo(operand.getOptionComboId());
@@ -228,6 +251,8 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 			dataValue = new DataValue(dataElement, period, organisationUnit,
 					value + "", storedBy, new Date(), null, optionCombo);
 			dataValueService.addDataValue(dataValue);
+
+
 		} else {
 			dataValue.setValue(value + "");
 			dataValue.setTimestamp(new Date());

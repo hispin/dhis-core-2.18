@@ -150,6 +150,13 @@ public class ImportDataExcelOrganizationGroupAction extends ActionSupport {
 		OrganisationUnit organisationUnit = organisationUnitSelectionManager
 				.getSelectedOrganisationUnit();
 
+		if(excelItemIds == null){
+			message = i18n.getString("choose_excelItem");
+			
+			return ERROR;
+		}
+		
+		
 		if (organisationUnit != null) {
 
 			File upload = new File(uploadFileName);

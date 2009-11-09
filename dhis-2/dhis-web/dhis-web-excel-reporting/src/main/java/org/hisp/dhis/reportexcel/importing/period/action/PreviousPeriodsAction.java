@@ -27,37 +27,52 @@ package org.hisp.dhis.reportexcel.importing.period.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: PreviousPeriodsAction.java 2966 2007-03-03 14:38:20Z torgeilo $
+ * @author Chau Thu Tran
+ * @version $Id$
  */
-public class PreviousPeriodsAction
-    implements Action
-{
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+public class PreviousPeriodsAction implements Action {
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+	private SelectedStateManager selectedStateManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
+	// -------------------------------------------------------------------------
+	// Output
+	// -------------------------------------------------------------------------
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
+	private List<Period> periods;
 
-    public String execute()
-        throws Exception
-    {
-        selectedStateManager.previousPeriodSpan();
+	// -------------------------------------------------------------------------
+	// Getter && Setter
+	// -------------------------------------------------------------------------
+	public void setSelectedStateManager(
+			SelectedStateManager selectedStateManager) {
+		this.selectedStateManager = selectedStateManager;
+	}
 
-        return SUCCESS;
-    }
+	public List<Period> getPeriods() {
+		return periods;
+	}
+
+	// -------------------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------------------
+
+	public String execute() throws Exception {
+
+		selectedStateManager.previousPeriodSpan();
+
+		periods = selectedStateManager.getPeriodList();
+
+		return SUCCESS;
+	}
 }

@@ -106,7 +106,7 @@ public class ViewDataOrganizationGroupAction implements Action {
 			OrganisationUnit organisationUnit = organisationUnitSelectionManager
 					.getSelectedOrganisationUnit();
 
-			Workbook templateWorkbook = Workbook.getWorkbook(upload);
+			Workbook uploadWorkbook = Workbook.getWorkbook(upload);
 
 			excelItemValueByOrgUnits = new ArrayList<ExcelItemValueByOrganisationUnit>();
 
@@ -128,7 +128,7 @@ public class ViewDataOrganizationGroupAction implements Action {
 						
 						for (ExcelItem excelItem : excelItems) {
 
-							Sheet sheet = templateWorkbook.getSheet(excelItem
+							Sheet sheet = uploadWorkbook.getSheet(excelItem
 									.getSheetNo() - 1);
 
 							String value = ExcelUtils.readValue(excelItem

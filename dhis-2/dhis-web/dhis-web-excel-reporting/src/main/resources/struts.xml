@@ -658,7 +658,12 @@
 			<param name="page">/dhis-web-excel-reporting/individualReportExcel.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
 			<param name="menuTreeHeight">220</param>
-			<param name="javascripts">javascript/individual.js,javascript/commons.js,../dhis-web-commons/ouwt/ouwt.js</param>
+			<param name="javascripts">
+				javascript/individual.js,
+				javascript/commons.js,
+				../dhis-web-commons/ouwt/ouwt.js
+			</param>
+			<param name="stylesheets">style/style.css</param>
 		</action>
 
 		<action name="filterAvailableDataElementsByDataElementGroup"
@@ -823,7 +828,7 @@
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">javascript/ui.core.js,javascript/ui.sortable.js,
 				javascript/excelitemgroups.js,javascript/commons.js</param>
-			<param name="stylesheets">style/ui.theme.css,style/basic.css</param>
+			<param name="stylesheets">style/ui.theme.css, style/basic.css, style/style.css</param>
 		</action>
 
 		<action name="addDataElementGroupOrderForCategory"
@@ -999,13 +1004,13 @@
 		<action name="previewDataFlow"
 			class="org.hisp.dhis.reportexcel.importing.action.ViewDataFlowAction">
 			<result name="CATEGORY" type="chain">
-				previewDataNormal
+				previewDataCategory
 			</result>
 			<result name="NORMAL" type="chain">
 				previewDataNormal
 			</result>
 			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
-				previewDataOrganizationGroupAction
+				previewDataOrganizationGroup
 			</result>
 			<result name="PERIOD_COLUMN_LISTING" type="chain">
 				previewDataNormal
@@ -1022,10 +1027,19 @@
 		</action>
 		
 		<!--  function - Prewiew Data - ORGANISATION GROUP  -->
-		<action name="previewDataOrganizationGroupAction"
+		<action name="previewDataOrganizationGroup"
 			class="org.hisp.dhis.reportexcel.importing.action.ViewDataOrganizationGroupAction">
 			<result name="success" type="velocity">
 				/dhis-web-excel-reporting/responseExcelItemValueByOrganisations.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-excel-reporting/responseError.vm</result>
+		</action>
+		
+		<!--  function - Prewiew Data - CATEGORY GROUP  -->
+		<action name="previewDataCategory"
+			class="org.hisp.dhis.reportexcel.importing.action.ViewDataCategoryAction">
+			<result name="success" type="velocity">
+				/dhis-web-excel-reporting/responseExcelItemValuesByCategory.vm</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>
@@ -1064,7 +1078,7 @@
 		</action>
 
 		<action name="importDataCategoryExcelGroup"
-			class="org.hisp.dhis.reportexcel.importing.period.action.NextPeriodsAction">
+			class="org.hisp.dhis.reportexcel.importing.action.ImportDataCategoryExcelGroupAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
