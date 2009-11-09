@@ -156,7 +156,7 @@ function selectALL( checked ){
 /*
 *	COPY REPORT ITEM 
 */
-function copySelectedItem(){
+function copySelectedItem() {
 	$.post("getAllReportExcels.action",{},
 	function (xmlObject){
 		xmlObject = xmlObject.getElementsByTagName('reports')[0];
@@ -173,21 +173,112 @@ function copySelectedItem(){
 	},'xml');	
 }
 
-function saveCopyItems(){
-	var reportItems = new Array();	
-	var listRadio = document.getElementsByName('reportItemCheck');	
-	for(var i=0;i<listRadio.length;i++){
-		if(listRadio.item(i).checked){
-			reportItems.push(listRadio.item(i).value);
-		}
-	}	
-	$.post("copyReportExcelItems.action",{
+
+sheetId = 0;
+reportItems = null;
+reportItemsCurTarget = null;
+reportItemsDuplicated = null;
+
+function validateCopyReportItems() {
+
+	reportItemsCurTarget = null;
+	reportItemsDuplicated = null;
+	
+	reportItemsCurTarget = new Array();
+	reportItemsDuplicated = new Array();
+
+	sheetId	= $("#targetSheetNo").val();
+	
+	$.post("getReportExcelItems.action",
+	{
 		reportId:$("#targetReport").val(),
-		sheetNo:$("#targetSheetNo").val(),
-		reportItems:reportItems
-	}, function (data) {
+		sheetNo:sheetId
+	},
+	function (data)
+	{
+		data = data.getElementsByTagName('reportItems')[0];
+		var items = data.getElementsByTagName('reportItem');
+		
+		for (var i = 0 ;  i < items.length ; i ++) {
+		
+			reportItemsCurTarget.push(items[i].getElementsByTagName('name')[0].firstChild.nodeValue);
+		}
+		
+		splitDuplicatedReportItems();
+		saveCopyItems();
+		
+	}, "xml");
+}
+
+function splitDuplicatedReportItems() {
+
+	var flag = -1;
+	var reportItemsChecked = new Array();
+	var listRadio = document.getElementsByName('reportItemCheck');
+
+	reportItems = null;
+	reportItems = new Array();
+	
+	for (var i = 0 ; i < listRadio.length ; i++) {
+		if ( listRadio.item(i).checked ) {
+			reportItemsChecked.push( listRadio.item(i).getAttribute("reportItemID") + "#" + listRadio.item(i).getAttribute("reportItemName"));
+		}
+	}
+	
+	for (var i in reportItemsChecked)
+	{
+		flag = i;
+		
+		for (var j in reportItemsCurTarget)
+		{
+			if ( reportItemsChecked[i].split("#")[1] == reportItemsCurTarget[j] )
+			{
+				flag = -1;
+				reportItemsDuplicated.push( reportItemsChecked[i].split("#")[1] );
+				break;
+			}
+		}
+		if ( flag >= 0 )
+		{
+			reportItems.push( reportItemsChecked[i].split("#")[0] );
+		}
+	}
+}
+
+function saveCopyItems() {
+		
+	if (reportItemsDuplicated.length > 0) {
+
+		var reportItemsDuplicatedList = "Sheet [" +  + "]" +i18n_copy_items_duplicated + "<ul>";
+		
+		for (var i in reportItemsDuplicated) {
+		
+			reportItemsDuplicatedList = reportItemsDuplicatedList 
+			+ "  <li>"
+			+ reportItemsDuplicated[i] 
+			+ "</li><br/>";
+		}
+		
+		reportItemsDuplicatedList = reportItemsDuplicatedList + "</ul>"
+		
+		setMessage(reportItemsDuplicatedList);
+	
 		$("#copyTo").hide();
-	},'xml');		
+	}
+	else {
+		$.post("copyReportExcelItems.action",
+		{
+			reportId:$("#targetReport").val(),
+			sheetNo:sheetId,
+			reportItems:reportItems
+		},
+		function (data)
+		{
+			setMessage( i18n_copy_successful );
+			$("#copyTo").hide();
+		},'xml');
+	}
+	
 }
 
 /**

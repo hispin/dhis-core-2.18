@@ -31,7 +31,7 @@
 	#set( $mark = false )
 	#foreach($reportItem in $reportItems)
 		<tr #alternate( $mark )>
-			<td align=center><input type="checkbox" value="$reportItem.id" name="reportItemCheck" id="reportItemCheck"/></td>
+			<td align=center><input type="checkbox" reportItemID="$reportItem.id" reportItemName="$reportItem.name" name="reportItemCheck" id="reportItemCheck"/></td>
 			<td>$encoder.htmlEncode( $reportItem.name )</td>
 			<td>$i18n.getString( $reportItem.itemType )</td>
 			<td>$i18n.getString( $reportItem.periodType )</td>
@@ -308,7 +308,12 @@
 	</tr>	
 </table>
 <p align="center">
-<input type="button" value="$i18n.getString('ok')" onclick="saveCopyItems();"/>
+<input type="button" value="$i18n.getString('ok')" onclick="javascript: validateCopyReportItems(); "/>
 <input type="button" value="$i18n.getString('cancel')" onclick="hideById('copyTo');"/>
 </p>
 </div>
+
+<script type="text/javascript">
+    var i18n_copy_successful = '$encoder.jsEscape( $i18n.getString( "copy_successful" ) , "'")';
+	var i18n_copy_items_duplicated = '$encoder.jsEscape( $i18n.getString( "copy_items_duplicated" ) , "'")';
+</script>
