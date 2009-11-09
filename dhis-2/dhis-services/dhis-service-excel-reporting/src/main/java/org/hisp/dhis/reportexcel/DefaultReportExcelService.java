@@ -151,13 +151,8 @@ public class DefaultReportExcelService implements ReportExcelService {
 	public Collection<ReportExcelItem> getReportExcelItem(int sheetNo,
 			Integer reportId) {
 		return reportStore.getReportExcelItem(sheetNo, reportId);
-	}
+	}	
 	
-	public ReportExcelItem getReportExcelItem(
-			ReportExcel reportExcel, int sheetNo, String name) {		
-		return reportStore.getReportExcelItem( reportExcel, sheetNo, name );
-	}
-
 	public Collection<Integer> getSheets(Integer reportId) {
 		return reportStore.getSheets(reportId);
 	}

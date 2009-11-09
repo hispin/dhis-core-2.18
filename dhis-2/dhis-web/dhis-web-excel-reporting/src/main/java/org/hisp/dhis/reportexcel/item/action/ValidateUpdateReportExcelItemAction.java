@@ -26,6 +26,8 @@
  */
 package org.hisp.dhis.reportexcel.item.action;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
@@ -38,6 +40,7 @@ import org.hisp.dhis.reportexcel.action.ActionSupport;
 public class ValidateUpdateReportExcelItemAction
     extends ActionSupport
 {
+    private static final Log log = LogFactory.getLog( ValidateUpdateReportExcelItemAction.class );
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
@@ -135,12 +138,13 @@ public class ValidateUpdateReportExcelItemAction
 
         ReportExcel reportExcel = reportService.getReportExcel( reportId );
 
-        ReportExcelItem reportItem = reportService.getReportExcelItem( reportExcel, sheetNo, name );
+        ReportExcelItem reportItem = reportExcel.getReportExcelItem( name, sheetNo );
 
-        ReportExcelItem temp = reportService.getReportExcelItem( reportItemId );
+        ReportExcelItem temp = reportService.getReportExcelItem( reportItemId );   
 
-        if ( (!temp.equals( reportItem )) )
-        {
+        
+        if ( reportItem!=null && !reportItem.equals( temp ))
+        {     
             message = i18n.getString( "name_ready_exist" );
             return ERROR;
         }

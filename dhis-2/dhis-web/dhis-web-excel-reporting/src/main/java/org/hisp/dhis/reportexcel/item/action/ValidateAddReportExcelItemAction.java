@@ -132,7 +132,7 @@ public class ValidateAddReportExcelItemAction
         }
         
         ReportExcel reportExcel = reportService.getReportExcel( reportId );
-        ReportExcelItem reportItem = reportService.getReportExcelItem( reportExcel, sheetNo, name );
+        ReportExcelItem reportItem = reportExcel.getReportExcelItem( name, sheetNo );
 
         if ( reportItem != null )
         {
