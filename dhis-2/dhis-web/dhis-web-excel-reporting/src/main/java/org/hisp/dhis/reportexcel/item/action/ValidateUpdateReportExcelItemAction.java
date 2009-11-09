@@ -51,6 +51,8 @@ public class ValidateUpdateReportExcelItemAction
 
     private Integer reportItemId;
 
+    private Integer sheetNo;
+
     private String name;
 
     private String expression;
@@ -58,6 +60,11 @@ public class ValidateUpdateReportExcelItemAction
     private Integer row;
 
     private Integer column;
+
+    public void setSheetNo( Integer sheetNo )
+    {
+        this.sheetNo = sheetNo;
+    }
 
     public void setReportItemId( Integer reportItemId )
     {
@@ -107,33 +114,43 @@ public class ValidateUpdateReportExcelItemAction
             message = i18n.getString( "name_is_null" );
             return ERROR;
         }
-        ReportExcel reportExcel = reportService.getReportExcel( reportId );
-        
-        ReportExcelItem reportItem = reportExcel.getReportExcelItem( name );        
-
-        ReportExcelItem temp = reportService.getReportExcelItem( reportItemId );
-
-        if ( (!temp.equals( reportItem )) && reportExcel.getReportExcelItems().contains( reportItem ) )
-        {
-            message = i18n.getString( "name_ready_exist" );
-            return ERROR;
-        }       
 
         if ( expression == null )
         {
-            message = i18n.getString( "name_is_null" );
+            message = i18n.getString( "expression_is_null" );
             return ERROR;
         }
+
         if ( expression.trim().length() == 0 )
         {
             message = i18n.getString( "expression_is_null" );
             return ERROR;
         }
+
+        if ( sheetNo == null )
+        {
+            message = i18n.getString( "please_enter_sheet_no" );
+            return ERROR;
+        }
+
+        ReportExcel reportExcel = reportService.getReportExcel( reportId );
+
+        ReportExcelItem reportItem = reportService.getReportExcelItem( reportExcel, sheetNo, name );
+
+        ReportExcelItem temp = reportService.getReportExcelItem( reportItemId );
+
+        if ( (!temp.equals( reportItem )) )
+        {
+            message = i18n.getString( "name_ready_exist" );
+            return ERROR;
+        }
+
         if ( row == null )
         {
             message = i18n.getString( "row_is_null" );
             return ERROR;
         }
+
         if ( column == null )
         {
             message = i18n.getString( "column_is_null" );

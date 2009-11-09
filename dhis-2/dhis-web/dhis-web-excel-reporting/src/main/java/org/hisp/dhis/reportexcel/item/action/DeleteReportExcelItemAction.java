@@ -26,6 +26,8 @@
  */
 package org.hisp.dhis.reportexcel.item.action;
 
+import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 
 import com.opensymphony.xwork2.Action;
@@ -47,7 +49,7 @@ public class DeleteReportExcelItemAction
     // Input & Output
     // -------------------------------------------
 
-    private Integer id;
+    private Integer id;    
 
     // -------------------------------------------
     // Getter & Setter
@@ -61,13 +63,20 @@ public class DeleteReportExcelItemAction
     public void setId( Integer id )
     {
         this.id = id;
-    }
+    }   
 
     public String execute()
         throws Exception
-    {
-        reportService.deleteReportExcelItem( id );
-
+    {       
+        
+        ReportExcelItem reportExcelItem = reportService.getReportExcelItem( id );
+        
+        ReportExcel reportExcel = reportExcelItem.getReportExcel();
+        
+        reportExcel.getReportExcelItems().remove( reportExcelItem );
+        
+        reportService.updateReportExcel( reportExcel );        
+       
         return SUCCESS;
     }
 
