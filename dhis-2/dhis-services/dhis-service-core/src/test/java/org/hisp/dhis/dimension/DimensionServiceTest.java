@@ -27,11 +27,6 @@ package org.hisp.dhis.dimension;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-
-import java.util.Collection;
-
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
@@ -79,9 +74,6 @@ public class DimensionServiceTest
     @Test
     public void getDimensions()
     {
-        Collection<DimensionSet> dimensionSets = dimensionService.getAllDimensionSets();
         
-        assertTrue( dimensionSets.contains( dataElementA ) );
-        assertFalse( dimensionSets.contains( dataElementB ) );
     }
 }
