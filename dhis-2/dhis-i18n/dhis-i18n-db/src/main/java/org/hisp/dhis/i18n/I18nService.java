@@ -45,15 +45,13 @@ public interface I18nService
 
     public void internationalise( Object object );
 
-    public void internationaliseCollection( Collection<?> objects );
-
     // -------------------------------------------------------------------------
     // Object
     // -------------------------------------------------------------------------
 
     public void addObject( Object object );
 
-    public void verify(Object object);
+    public void verify( Object object );
 
     public void removeObject( Object object );
 
