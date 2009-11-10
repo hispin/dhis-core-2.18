@@ -8,33 +8,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="systemLocale" value="en_GB"/>
   </bean>
 
-  <!-- Event listener definitions -->
-  <!--
-  <bean id="org.hisp.dhis.i18n.hibernate.HibernateI18nPostLoadEventListener"
-    class="org.hisp.dhis.i18n.hibernate.HibernateI18nPostLoadEventListener">
-    <property name="i18nService">
-      <ref bean="org.hisp.dhis.i18n.I18nService"/>
-    </property>
-  </bean>
-  -->
-  <!-- Event listener registrations -->
-  <!--
-  <bean id="addI18nPostLoadEventListener" 
-    class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-    <property name="targetObject">
-      <ref bean="org.hisp.dhis.hibernate.HibernateConfigurationProvider"/>
-    </property>
-    <property name="targetMethod">
-      <value>setEventListener</value>
-    </property>
-    <property name="arguments">
-      <list>
-        <value>post-load</value>
-        <ref local="org.hisp.dhis.i18n.hibernate.HibernateI18nPostLoadEventListener"/>
-      </list>
-    </property>
-  </bean>
-  -->
   <!-- I18n object definitions -->
 
   <bean id="I18nDataElement"
@@ -179,16 +152,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
   
-  <bean id="I18nDataElementCategoryOption"
-    class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="DataElementCategoryOption"/>
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-      </list>
-    </property>
-  </bean>
-  
   <!-- I18nService -->
   
   <bean id="org.hisp.dhis.i18n.I18nService"
@@ -214,7 +177,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <ref bean="I18nOrganisationUnitGroupSet"/>
         <ref bean="I18nDataSet"/>
         <ref bean="I18nDataElementCategory"/>
-        <ref bean="I18nDataElementCategoryOption"/>
       </list>
     </property>
   </bean>
@@ -240,11 +202,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.i18n.I18nService"/>  
   </bean>
   -->
-  <!--
+  
   <bean id="i18nTranslationInterceptor"
-    class="org.hisp.dhis.i18n.interceptor.I18nObjectInterceptor">
+    class="org.hisp.dhis.i18n.interceptor.I18nTranslationInterceptor">
     <property name="i18nService"
       ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
-  -->
+  
 </beans>

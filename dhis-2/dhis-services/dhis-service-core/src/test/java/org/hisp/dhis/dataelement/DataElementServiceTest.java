@@ -90,22 +90,10 @@ public class DataElementServiceTest
         DataElement dataElementA = createDataElement( 'A' );
         DataElement dataElementB = createDataElement( 'B' );
         DataElement dataElementC = createDataElement( 'C' );
-        DataElement dataElementD = createDataElement( 'A' );
 
         int idA = dataElementService.addDataElement( dataElementA );
         int idB = dataElementService.addDataElement( dataElementB );
         int idC = dataElementService.addDataElement( dataElementC );
-
-        try
-        {
-            // Should give unique constraint violation
-            dataElementService.addDataElement( dataElementD );
-            fail();
-        }
-        catch ( Exception e )
-        {
-            // Expected
-        }
 
         dataElementA = dataElementService.getDataElement( idA );
         assertNotNull( dataElementA );
@@ -562,22 +550,10 @@ public class DataElementServiceTest
         DataElementGroup dataElementGroupA = new DataElementGroup( "DataElementGroupA" );
         DataElementGroup dataElementGroupB = new DataElementGroup( "DataElementGroupB" );
         DataElementGroup dataElementGroupC = new DataElementGroup( "DataElementGroupC" );
-        DataElementGroup dataElementGroupD = new DataElementGroup( "DataElementGroupA" );
 
         int idA = dataElementService.addDataElementGroup( dataElementGroupA );
         int idB = dataElementService.addDataElementGroup( dataElementGroupB );
         int idC = dataElementService.addDataElementGroup( dataElementGroupC );
-
-        try
-        {
-            // Should give unique constraint violation
-            dataElementService.addDataElementGroup( dataElementGroupD );
-            fail();
-        }
-        catch ( Exception e )
-        {
-            // Expected
-        }
 
         dataElementGroupA = dataElementService.getDataElementGroup( idA );
         assertNotNull( dataElementGroupA );

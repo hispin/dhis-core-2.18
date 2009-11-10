@@ -1,4 +1,4 @@
-package org.hisp.dhis.i18n.hibernate;
+package org.hisp.dhis.i18n.interceptor;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,24 +27,27 @@ package org.hisp.dhis.i18n.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hibernate.event.PostLoadEventListener;
-import org.hibernate.event.PostLoadEvent;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.system.util.TimeUtils;
+
+import org.aspectj.lang.JoinPoint;
 
 /**
- * @author Oyvind Brucker
+ * @author Lars Helge Overland
+ * @version $Id$
  */
-public class HibernateI18nPostLoadEventListener implements PostLoadEventListener
+public class I18nTranslationInterceptor
 {
     private I18nService i18nService;
-
+    
     public void setI18nService( I18nService i18nService )
     {
         this.i18nService = i18nService;
     }
-
-    public void onPostLoad( PostLoadEvent postLoadEvent )
+    
+    public void intercept( JoinPoint joinPoint, Object object )
     {
-        i18nService.internationalise( postLoadEvent.getEntity() );
+        i18nService.internationalise( object );      
     }
 }

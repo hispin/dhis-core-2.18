@@ -602,6 +602,15 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       <aop:around pointcut="execution( * org.hisp.dhis.validation.ValidationRuleService.validate(..) )" method="intercept"/>
     </aop:aspect>
     
+    <aop:aspect ref="i18nTranslationInterceptor">
+      <aop:after-returning pointcut="execution( * org.hisp.dhis.dataelement.DataElementService.get*(..) )" method="intercept" returning="object"/>
+      <aop:after-returning pointcut="execution( * org.hisp.dhis.dataelement.DataElementCategoryService.get*(..) )" method="intercept" returning="object"/>
+      <aop:after-returning pointcut="execution( * org.hisp.dhis.indicator.IndicatorService.get*(..) )" method="intercept" returning="object"/>
+      <aop:after-returning pointcut="execution( * org.hisp.dhis.datadictionary.DataDictionaryService.get*(..) )" method="intercept" returning="object"/>
+      <aop:after-returning pointcut="execution( * org.hisp.dhis.dataset.DataSetService.get*(..) )" method="intercept" returning="object"/>
+      <aop:after-returning pointcut="execution( * org.hisp.dhis.organisationunit.OrganisationUnitService.get*(..) )" method="intercept" returning="object"/>
+    </aop:aspect>
+	
   </aop:config>
   
 </beans>
