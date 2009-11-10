@@ -82,7 +82,7 @@ public class I18nServiceTest
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-
+    
     @Test
     public void testUpdateTranslation()
         throws Exception

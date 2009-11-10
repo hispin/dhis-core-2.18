@@ -332,7 +332,7 @@ public class DefaultI18nService
             String key = translationEntry.getKey();
             String value = translationEntry.getValue();
 
-            if ( value != null && value.trim().length() > 0 )
+            if ( value != null && !value.trim().isEmpty() )
             {
                 Translation translation = translationService.getTranslation( className, id, locale, key );
                 
@@ -352,9 +352,7 @@ public class DefaultI18nService
 
     public Map<String, String> getTranslations( String className, int id, Locale locale )
     {
-        Collection<Translation> translationsCol = translationService.getTranslations( className, id, locale );
-
-        return convertTranslations( translationsCol );
+        return convertTranslations( translationService.getTranslations( className, id, locale ) );
     }
 
     // -------------------------------------------------------------------------
@@ -423,11 +421,13 @@ public class DefaultI18nService
     // -------------------------------------------------------------------------
 
     /**
-     * Returns property/value pairs of translations for one object matching id.
+     * Returns a map representing Translations for an object matching the given 
+     * id where the key is the translation property and the value is the translation 
+     * value.
      *
-     * @param translations Collection to search
-     * @param id           Object id
-     * @return Map of property/value pairs
+     * @param translations Collection to search.
+     * @param id the object id.
+     * @return Map of property/value pairs.
      */
     private Map<String, String> getTranslationsForObject( Collection<Translation> translations, int id )
     {
@@ -445,10 +445,11 @@ public class DefaultI18nService
     }
 
     /**
-     * Returns property/value pairs of a collection of translations as a map
+     * Returns a map for a collection of Translations where the key is the 
+     * translation property and the value is the translation value.
      *
-     * @param translations
-     * @return Map containing translations
+     * @param translations the Collection of translations.
+     * @return Map containing translations.
      */
     private Map<String, String> convertTranslations( Collection<Translation> translations )
     {
@@ -466,11 +467,10 @@ public class DefaultI18nService
     }
 
     /**
-     * Converts the property to a i18n keystring
-     * alternativeName produces alternative_name
+     * Converts the property to a i18n keystring alternativeName produces alternative_name.
      *
-     * @param propName string to parse
-     * @return Modified string
+     * @param propName string to parse.
+     * @return the modified string.
      */
     private String convertPropertyToKey( String propName )
     {
@@ -494,10 +494,10 @@ public class DefaultI18nService
     }
 
     /**
-     * Test if an object is enabled for i18n
+     * Test if an object is enabled for i18n.
      *
-     * @param object Object to check
-     * @return true if the object is enabled for i18n
+     * @param object Object to check.
+     * @return true if the object is enabled for i18n.
      */
     private boolean isI18nObject( Object object )
     {
