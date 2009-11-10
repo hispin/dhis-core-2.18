@@ -169,7 +169,7 @@ function copySelectedItem() {
 			var name = reports[i].getElementsByTagName("name")[0].firstChild.nodeValue;
 			options.add(new Option(name,id), null);
 		}	
-	$("#copyTo").showAtCenter( false );
+	$("#copyTo").showAtCenter( true );
 	},'xml');	
 }
 
@@ -249,23 +249,24 @@ function saveCopyItems() {
 		
 	if (reportItemsDuplicated.length > 0) {
 
-		var reportItemsDuplicatedList = "Sheet [" + sheetId + "] - " + i18n_copy_items_duplicated + "<ul>";
+		var reportItemsDuplicatedList = "Sheet [" + sheetId + "] - " + i18n_copy_items_duplicated + "<br>";
 		
 		for (var i in reportItemsDuplicated) {
 		
 			reportItemsDuplicatedList = reportItemsDuplicatedList 
-			+ "  <li>"
+			+ "&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;"
 			+ reportItemsDuplicated[i] 
-			+ "</li>";
+			+ "<br>";
 		}
 		
-		reportItemsDuplicatedList = reportItemsDuplicatedList + "</ul>"
+		//reportItemsDuplicatedList = reportItemsDuplicatedList + "</ul>"
 		
-		setMessage(reportItemsDuplicatedList);
+		//setMessage(reportItemsDuplicatedList);
 	
-		$("#copyTo").hide();
+		//$("#copyTo").hide();
 	}
-	else {
+	
+	if( reportItems.length > 0 ) {
 		$.post("copyReportExcelItems.action",
 		{
 			reportId:$("#targetReport").val(),
@@ -274,10 +275,23 @@ function saveCopyItems() {
 		},
 		function (data)
 		{
-			setMessage( i18n_copy_successful );
-			$("#copyTo").hide();
+			//setMessage( i18n_copy_successful );
+			//$("#copyTo").hide();
 		},'xml');
 	}
+	
+	if(reportItems.length == 0){
+		setMessage( excelItemsDuplicatedList );
+	}else{
+		if (reportItemsDuplicatedList.length > 0)
+			 reportItemsDuplicatedList += "<br>==========<br>" + i18n_copy_successful;
+		else
+			reportItemsDuplicatedList += i18n_copy_successful;
+		setMessage( reportItemsDuplicatedList);
+	}
+	
+	$("#copyTo").hide();
+	deleteDivEffect();
 	
 }
 

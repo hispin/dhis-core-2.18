@@ -280,7 +280,13 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/reportItems.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/reportItem.js,javascript/dataelement.js,javascript/jquery.autocomplete.js,javascript/commons.js</param>
+			<param name="javascripts">
+				javascript/reportItem.js,
+				javascript/excelitems.js,
+				javascript/dataelement.js,
+				javascript/jquery.autocomplete.js,
+				javascript/commons.js
+			</param>
 			<param name="stylesheets">style/jquery.autocomplete.css</param>
 		</action>
 
@@ -776,6 +782,13 @@
 			<param name="javascripts">javascript/excelitemgroups.js,javascript/commons.js,../dhis-web-commons/ouwt/ouwt.js</param>
 		</action>
 
+		<action name="getAllExcelItemGroup"
+			class="org.hisp.dhis.reportexcel.excelitemgroup.action.ListAllExcelItemGroupAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseExcelItemGroups.vm</result>
+		</action>
+
+
 		<action name="updateExcelItemGroup"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.action.UpdateExcelItemGroupAction">
 			<result name="success" type="velocity-xml">
@@ -828,7 +841,8 @@
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">javascript/ui.core.js,javascript/ui.sortable.js,
 				javascript/sortedDataElementGroup.js,javascript/commons.js</param>
-			<param name="stylesheets">style/ui.theme.css, style/basic.css, style/style.css</param>
+			<param name="stylesheets">style/ui.theme.css,
+				style/basic.css, style/style.css</param>
 		</action>
 
 		<action name="addDataElementGroupOrderForCategory"
@@ -940,6 +954,19 @@
 				/dhis-web-excel-reporting/responseExcelItem.vm</result>
 		</action>
 
+		<action name="getExcelItemsByGroup"
+			class="org.hisp.dhis.reportexcel.excelitem.action.ListExcelItemAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseExcelItems.vm
+			</result>
+		</action>
+
+		<action name="copyExcelItems"
+			class="org.hisp.dhis.reportexcel.excelitem.action.CopyExcelItemAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+		</action>
+
 		<!-- IMPORT DATA -->
 
 		<action name="getImportingParams"
@@ -1018,7 +1045,7 @@
 				previewDataNormal
 			</result>
 		</action>
-		
+
 		<!--  function - Prewiew Data - NORMAL  		     -->
 		<action name="previewDataNormal"
 			class="org.hisp.dhis.reportexcel.importing.action.ViewDataNormalAction">
@@ -1027,21 +1054,23 @@
 			<result name="error" type="velocity-xml">
 				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>
-		
+
 		<!--  function - Prewiew Data - ORGANISATION GROUP  -->
 		<action name="previewDataOrganizationGroup"
 			class="org.hisp.dhis.reportexcel.importing.action.ViewDataOrganizationGroupAction">
 			<result name="success" type="velocity">
-				/dhis-web-excel-reporting/responseExcelItemValueByOrganisations.vm</result>
+				/dhis-web-excel-reporting/responseExcelItemValueByOrganisations.vm
+			</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>
-		
+
 		<!--  function - Prewiew Data - CATEGORY GROUP  -->
 		<action name="previewDataCategory"
 			class="org.hisp.dhis.reportexcel.importing.action.ViewDataCategoryAction">
 			<result name="success" type="velocity">
-				/dhis-web-excel-reporting/responseExcelItemValuesByCategory.vm</result>
+				/dhis-web-excel-reporting/responseExcelItemValuesByCategory.vm
+			</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>

@@ -2,7 +2,7 @@
 <table width="100%">
 <tr>
 <td>
-	<input type="button" onclick="copySelectedItem()" value="$i18n.getString('copy_selected_item_to')"/>
+	<input type="button" onclick="copySelectedExcelItemForm()" value="$i18n.getString('copy_selected_item_to')"/>
 </td>
 <td align="right">
 	$i18n.getString('filter_by_sheet')
@@ -13,7 +13,7 @@
 		#end
 	</select>	
 	<input type="button" onclick="mode='add'; openAddExcelItem()" value="$i18n.getString('add')" style="width:100px"/>
-	<input type="button" onclick="window.location='listReportExcel.action'" value="$i18n.getString('cancel')" style="width:100px"/>
+	<input type="button" onclick="window.location='listAllExcelItemGroup.action'" value="$i18n.getString('cancel')" style="width:100px"/>
 </td>
 </tr>
 </table>
@@ -142,12 +142,12 @@
 	
 </script>
 <div id="copyTo" style="position:fixed;display:none;width:450px;z-index:10001;background-color: white;border: medium solid silver;padding:20px;">
-<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('copyTo');">[x]</div>
+<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('copyTo'); deleteDivEffect();">[x]</div>
 <table width="100%">
 	<tr>
 		<td>$i18n.getString('reports')</td>
 		<td>
-			<select id="targetReport">
+			<select id="targetGroup" style="max-width:30em;min-width:30em;">
 			</select>
 		</td>
 	</tr>
@@ -158,6 +158,6 @@
 </table>
 <p align="center">
 <input type="button" value="$i18n.getString('ok')" onclick="saveCopyItems();"/>
-<input type="button" value="$i18n.getString('cancel')" onclick="hideById('copyTo');"/>
+<input type="button" value="$i18n.getString('cancel')" onclick="hideById('copyTo'); deleteDivEffect();"/>
 </p>
 </div>

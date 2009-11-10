@@ -110,6 +110,7 @@ public class CopyReportExcelItemAction
         for ( String itemId : this.reportItems )
         {
             ReportExcelItem reportItem = reportService.getReportExcelItem( Integer.parseInt( itemId ) );
+            
             ReportExcelItem newReportItem = new ReportExcelItem();
             newReportItem.setName( reportItem.getName() );
             newReportItem.setItemType( reportItem.getItemType() );
