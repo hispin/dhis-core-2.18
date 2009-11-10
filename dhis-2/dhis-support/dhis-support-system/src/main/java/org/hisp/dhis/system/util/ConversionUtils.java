@@ -77,14 +77,33 @@ public class ConversionUtils
     {
         Collection<Integer> integers = new ArrayList<Integer>();
         
-        if ( strings == null )
+        if ( strings != null )
         {
-            return integers;
+            for ( String string : strings )
+            {
+                integers.add( Integer.valueOf( string ) );
+            }
         }
         
-        for ( String string : strings )
+        return integers;
+    }
+    
+    /**
+     * Creates an array of Integers out of an array of Strings.
+     * 
+     * @param strings the array of Strings.
+     * @return an array of Integers.
+     */
+    public static Integer[] getIntegerArray( String[] strings )
+    {
+        Integer[] integers = new Integer[strings.length];
+        
+        if ( strings != null )
         {
-            integers.add( Integer.valueOf( string ) );
+            for ( int i = 0; i < strings.length; i++ )
+            {
+                integers[i] = Integer.valueOf( strings[i] );            
+            }
         }
         
         return integers;
