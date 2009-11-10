@@ -27,8 +27,7 @@ package org.hisp.dhis.dimension;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -70,57 +69,8 @@ public class DefaultDimensionService
     // DimensionService implementation
     // -------------------------------------------------------------------------
     
-    public Collection<DimensionSet> getDataElementDimensionSets()
+    public Map<String, String> getDimensionSets()
     {
-        Collection<DimensionSet> dimensionSets = new ArrayList<DimensionSet>();
-        dimensionSets.addAll( dataElementService.getDataElementsWithGroupSets() );        
-        dimensionSets.addAll( categoryService.getAllDataElementCategoryCombos() );
-        
-        return dimensionSets;
-    }
-    
-    public DimensionSet getDataElementDimensionSetByName( String name )
-    {
-        for ( DimensionSet dimensionSet : getDataElementDimensionSets() )
-        {
-            if ( dimensionSet.getName().equals( name ) )
-            {
-                return dimensionSet;
-            }
-        }
-        
         return null;
-    }
-
-    public Collection<DimensionSet> getIndicatorDimensionSets()
-    {
-        Collection<DimensionSet> dimensionSets = new ArrayList<DimensionSet>();
-        dimensionSets.addAll( indicatorService.getIndicatorsWithGroupSets() );
-        dimensionSets.addAll( categoryService.getAllDataElementCategoryCombos() );
-        
-        return dimensionSets;
-    }
-    
-    public DimensionSet getIndicatorDimensionSetByName( String name )
-    {
-        for ( DimensionSet dimensionSet : getIndicatorDimensionSets() )
-        {
-            if ( dimensionSet.getName().equals( name ) )
-            {
-                return dimensionSet;
-            }
-        }
-        
-        return null;
-    }
-
-    public Collection<DimensionSet> getAllDimensionSets()
-    {
-        Collection<DimensionSet> dimensionSets = new ArrayList<DimensionSet>();
-        dimensionSets.addAll( dataElementService.getDataElementsWithGroupSets() ); 
-        dimensionSets.addAll( indicatorService.getIndicatorsWithGroupSets() );
-        dimensionSets.addAll( categoryService.getAllDataElementCategoryCombos() );
-        
-        return dimensionSets;
     }
 }
