@@ -30,8 +30,8 @@ package org.hisp.dhis.i18n;
 import static org.hisp.dhis.system.util.ReflectionUtils.getClassName;
 import static org.hisp.dhis.system.util.ReflectionUtils.getId;
 import static org.hisp.dhis.system.util.ReflectionUtils.getProperty;
-import static org.hisp.dhis.system.util.ReflectionUtils.setProperty;
 import static org.hisp.dhis.system.util.ReflectionUtils.isCollection;
+import static org.hisp.dhis.system.util.ReflectionUtils.setProperty;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -143,11 +143,16 @@ public class DefaultI18nService
 
     private void internationaliseCollection( Collection<?> intObjects )
     {
+        if ( intObjects == null || intObjects.size() == 0 )
+        {
+            return;
+        }
+        
         I18nObject i18nObject = isI18nObject( intObjects.iterator().next() );
 
         Locale locale = localeManager.getCurrentLocale();
 
-        if ( i18nObject != null && locale != null && intObjects != null )
+        if ( i18nObject != null && locale != null )
         {            
             Collection<Translation> allTranslations = translationService.getTranslations( i18nObject.getClassName(), locale );
                                 
@@ -443,7 +448,7 @@ public class DefaultI18nService
                 }
             }
             
-            log.warn( "Object not enabled for i18n: " + object );
+            log.debug( "Object not enabled for i18n: " + object );
         }
         
         return null;

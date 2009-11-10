@@ -31,7 +31,6 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -83,20 +82,10 @@ public class IndicatorServiceTest
     {
         IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
         IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1 );
-        IndicatorType typeC = new IndicatorType( "IndicatorTypeA", 100 );
         
         int idA = indicatorService.addIndicatorType( typeA );
         int idB = indicatorService.addIndicatorType( typeB );
         
-        try
-        {
-            indicatorService.addIndicatorType( typeC );
-            fail( "Expected unique constraint exception" );
-        }
-        catch ( Exception ex )
-        {
-        }
-
         typeA = indicatorService.getIndicatorType( idA );
         assertNotNull( typeA );
         assertEquals( idA, typeA.getId() );
@@ -194,20 +183,10 @@ public class IndicatorServiceTest
     {
         IndicatorGroup groupA = new IndicatorGroup( "IndicatorGroupA" );
         IndicatorGroup groupB = new IndicatorGroup( "IndicatorGroupB" );
-        IndicatorGroup groupC = new IndicatorGroup( "IndicatorGroupA" );
         
         int idA = indicatorService.addIndicatorGroup( groupA );
         int idB = indicatorService.addIndicatorGroup( groupB );
         
-        try
-        {
-            indicatorService.addIndicatorGroup( groupC );
-            fail( "Expected unique constraint exception" );
-        }
-        catch ( Exception ex )
-        {
-        }
-
         groupA = indicatorService.getIndicatorGroup( idA );
         assertNotNull( groupA );
         assertEquals( idA, groupA.getId() );
@@ -375,20 +354,10 @@ public class IndicatorServiceTest
         
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );
-        Indicator indicatorC = createIndicator( 'A', type );
         
         int idA = indicatorService.addIndicator( indicatorA );
         int idB = indicatorService.addIndicator( indicatorB );
         
-        try
-        {
-            indicatorService.addIndicator( indicatorC );
-            fail( "Expected unique constraint exception" );
-        }
-        catch ( Exception ex )
-        {
-        }
-
         indicatorA = indicatorService.getIndicator( idA );
         assertNotNull( indicatorA );
         assertEq( 'A', indicatorA );

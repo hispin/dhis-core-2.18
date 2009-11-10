@@ -217,6 +217,12 @@ public interface OrganisationUnitService
      */
     int getNumberOfOrganisationalLevels();
 
+    /**
+     * Set parent of OrganisationUnit.
+     * 
+     * @param organisationUnitId the identifier of the child OrganisationUnit.
+     * @param parentId the identifier of the parent OrganisationUnit.
+     */
     void updateOrganisationUnitParent( int organisationUnitId, int parentId );
     
     // -------------------------------------------------------------------------
