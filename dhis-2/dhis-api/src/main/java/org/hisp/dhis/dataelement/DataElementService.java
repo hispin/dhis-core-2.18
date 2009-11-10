@@ -29,6 +29,7 @@ package org.hisp.dhis.dataelement;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
@@ -228,6 +229,14 @@ public interface DataElementService
      * @return all DataElements which are associated with one or more DataElementGroupSets.
      */
     Collection<DataElement> getDataElementsWithGroupSets();
+    
+    /**
+     * Returns all DataElements which are associated with the given set of DataElementGroupSets.
+     * 
+     * @param groupSets the set of DataElementGroupSets.
+     * @return all DataElements which are associated with the given set of DataElementGroupSets.
+     */
+    Collection<DataElement> getDataElementsByGroupSets( Set<DataElementGroupSet> groupSets );
     
     // -------------------------------------------------------------------------
     // Calculated Data Elements
