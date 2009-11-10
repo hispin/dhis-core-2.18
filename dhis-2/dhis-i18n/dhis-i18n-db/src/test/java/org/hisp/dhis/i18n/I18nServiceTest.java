@@ -28,7 +28,7 @@ package org.hisp.dhis.i18n;
  */
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
+import static junit.framework.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -143,7 +143,7 @@ public class I18nServiceTest
         translations1.put( "comment", "Just another orgunit" );
         i18nService.updateTranslation( className1, id3, Locale.UK, translations1 );
 
-        i18nService.internationaliseCollection( orgunits );
+        i18nService.internationalise( orgunits );
 
         for ( int i = 0; i < orgunits.size(); i++ )
         {
@@ -265,11 +265,10 @@ public class I18nServiceTest
 
         Collection<Locale> availableLocales = i18nService.getAvailableLocales();
 
-        if ( !availableLocales.contains( Locale.UK ) | !availableLocales.contains( Locale.FRANCE )
-            | !availableLocales.contains( Locale.US ) )
-        {
-            fail( "Failed to get available locales" );
-        }
+        assertEquals( 3, availableLocales.size() );
+        assertTrue( availableLocales.contains( Locale.UK ) );
+        assertTrue( availableLocales.contains( Locale.FRANCE ) );
+        assertTrue( availableLocales.contains( Locale.US ) );
     }
 
     @Test
