@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excelitemgroups>
+	#foreach($excelItemGroup in $excelItemGroups)
+		<excelitemgroup>
+			<id>$excelItemGroup.id</id>
+			<name>$encoder.xmlEncode( $!excelItemGroup.name )</name>
+			<type>$excelItemGroup.type</type>
+			<periodType>$excelItemGroup.periodType.name</periodType>
+			<excelTemplateFile>$excelItemGroup.excelTemplateFile</excelTemplateFile>
+		</excelitemgroup>
+	#end
+</excelitemgroups>
