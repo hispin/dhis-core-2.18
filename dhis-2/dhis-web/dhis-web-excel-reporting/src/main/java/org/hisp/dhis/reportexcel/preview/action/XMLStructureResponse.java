@@ -468,58 +468,35 @@ public class XMLStructureResponse
 
     private void recalculatedValueForCellFormula( org.apache.poi.ss.usermodel.Workbook wb, int sheetNo )
     {
-
-        Cell[] cell = null;
-        Sheet s = WORKBOOK.getSheet( sheetNo );
-
         org.apache.poi.ss.usermodel.Sheet sheet = wb.getSheetAt( sheetNo );
         org.apache.poi.ss.usermodel.FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
 
-        String recalculatedValue = "0";
-
-        for ( int i = 0; i < s.getRows(); i++ )
-        {
-            STRUCTURE_DATA_RESPONSE.append( "    <row index=\"" + i + "\">" );
-            STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-
-            cell = s.getRow( i );
-
-            for ( int j = 0; j < cell.length; j++ )
-            {
-
-                if ( cell[j].getType() == CellType.NUMBER_FORMULA || cell[j].getType() == CellType.STRING_FORMULA
-                    || cell[j].getType() == CellType.BOOLEAN_FORMULA || cell[j].getType() == CellType.DATE_FORMULA
-                    || cell[j].getType() == CellType.FORMULA_ERROR )
+        String recalculatedValue = "";
+		
+        for (org.apache.poi.ss.usermodel.Row rowPOI : sheet) {
+            
+            for (org.apache.poi.ss.usermodel.Cell cellPOI : rowPOI) {
+                
+                if (cellPOI.getCellType() == org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA)
                 {
-
-                    // suppose your formula is in Cell
-                    org.apache.poi.ss.util.CellReference cellReference = new org.apache.poi.ss.util.CellReference(
-                        cell[j].getRow(), cell[j].getColumn() );
-                    org.apache.poi.ss.usermodel.Row rowPOI = sheet.getRow( cellReference.getRow() );
-                    org.apache.poi.ss.usermodel.Cell cellPOI = rowPOI.getCell( cellReference.getCol() );
-
-                    if ( cellPOI != null )
+                    switch ( evaluator.evaluateFormulaCell( cellPOI ) )
                     {
-                        switch ( evaluator.evaluateFormulaCell( cellPOI ) )
+                    case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
+
+                        recalculatedValue = String.valueOf( cellPOI.getNumericCellValue() );
+                        
+                        if ( new Double( recalculatedValue.split( "\\." )[1] ) == 0.0d )
                         {
-                        case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
-
-                            recalculatedValue = String.valueOf( cellPOI.getNumericCellValue() );
-
-                            if ( new Integer( recalculatedValue.split( "\\." )[1] ) == 0 )
-                            {
-
-                                recalculatedValue = recalculatedValue.split( "\\." )[0];
-                            }
-
-                            ExcelUtils.writeValueByPOI( i, j, recalculatedValue, ExcelUtils.NUMBER, (HSSFSheet) sheet,
-                                (HSSFCellStyle) wb.createCellStyle() );
-                            break;
-
-                        // CELL_TYPE_FORMULA will never occur
-                        case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA:
-                            break;
+                            recalculatedValue = recalculatedValue.split( "\\." )[0];
                         }
+                        
+                        ExcelUtils.writeValueByPOI( cellPOI.getRowIndex(), cellPOI.getColumnIndex(), recalculatedValue, ExcelUtils.NUMBER, (HSSFSheet) sheet,
+                            (HSSFCellStyle) wb.createCellStyle() );
+                        break;
+
+                    // CELL_TYPE_FORMULA will never occur
+                    case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA:
+                        break;
                     }
                 }
             }
