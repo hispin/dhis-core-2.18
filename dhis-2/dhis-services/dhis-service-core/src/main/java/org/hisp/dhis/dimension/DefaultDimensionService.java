@@ -119,7 +119,7 @@ public class DefaultDimensionService
             {
                 Set<DataElementGroupSet> dimensionSet = getDataElementDimensionSet( getDimensionSetIdentifiers( identifier ) );
                 
-                // TODO return dataElementService.getDataElementsByDimensionSet( dimensionSet );
+                return dataElementService.getDataElementsByGroupSets( dimensionSet );
             }
         }
         
