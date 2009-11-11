@@ -27,3 +27,26 @@ $.fn.extend({
 		this.show();
 	}  
 });
+
+function filterValues( filter, columnIndex )
+{
+    var list = document.getElementById( 'list' );
+    
+    var rows = list.getElementsByTagName( 'tr' );
+    
+    for ( var i = 0; i < rows.length; ++i )
+    {
+        var cell = rows[i].getElementsByTagName( 'td' )[columnIndex-1];
+        
+        var value = cell.firstChild.nodeValue;
+
+        if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
+        {
+            rows[i].style.display = 'table-row';
+        }
+        else
+        {
+            rows[i].style.display = 'none';
+        }
+    }
+}

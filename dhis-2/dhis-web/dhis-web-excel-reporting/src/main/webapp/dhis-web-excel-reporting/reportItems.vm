@@ -1,20 +1,21 @@
 ﻿<h2>$!encoder.htmlEncode($!reportExcel.name)</h2>
 <table width="100%">
-<tr>
+<tr style="vertical-align:bottom;">
 <td>
-	<input type="button" onclick="copySelectedItem()" value="$i18n.getString('copy_selected_item_to')"/>
-	<input type="button" onclick="copySelectedExcelItemForm()" value="$i18n.getString('copy_selected_item_to_excel_item')"/>
-</td>
-<td align="right">
+	$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 2)" style="width:300px"/>
 	$i18n.getString('filter_by_sheet')
 	<select id="sheetNoFilter" onchange="getReportItemBySheet();">
 		<option value="" >--- ALL ---</option>
 		#foreach($sheet in $sheets)
 		<option value="$sheet" #if($sheetNo==$sheet) selected #end >$sheet</option>
 		#end
-	</select>	
-	<input type="button" onclick="openAddReportItemForm()" value="$i18n.getString('add')" style="width:100px"/>
-	<input type="button" onclick="window.location='listReportExcel.action'" value="$i18n.getString('cancel')" style="width:100px"/>
+	</select>
+</td>
+<td align="right">		
+	<input type="button" onclick="openAddReportItemForm()" value="$i18n.getString('add')" style="width:150px"/><br>
+	<input type="button" onclick="window.location='listReportExcel.action'" value="$i18n.getString('cancel')" style="width:150px"/><br>
+	<input type="button" onclick="copySelectedItem()" value="$i18n.getString('copy_selected_item_to')" style="width:150px"/><br>
+	<input type="button" onclick="copySelectedExcelItemForm()" value="$i18n.getString('copy_selected_item_to_excel_item')" style="width:150px"/>
 </td>
 </tr>
 </table>
@@ -30,6 +31,7 @@
 		<th>$i18n.getString('sheet_no')</th>	
 		<th width="70px">$i18n.getString('operations')</th>		
 	</tr>
+	<tbody id="list">
 	#set( $mark = false )
 	#foreach($reportItem in $reportItems)
 		<tr #alternate( $mark )>
@@ -52,6 +54,7 @@
 			#set( $mark = true )
 		#end
 	#end
+	</tbody>
 </table>
 
 <script type="text/javascript">

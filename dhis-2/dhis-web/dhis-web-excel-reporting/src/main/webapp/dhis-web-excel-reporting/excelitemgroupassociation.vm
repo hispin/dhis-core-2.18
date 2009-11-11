@@ -13,12 +13,11 @@
 <div id="selectionTree" style="width:50em;height:30em;overflow:auto;border:1px solid #cccccc"></div>
 <span id="message"></span>
 <p> <input type="submit" id="submitButton" value="$i18n.getString( "save" )" style="width:10em">
-		<input type="button" onclick="window.location.href='index.action'" value="$i18n.getString( "cancel" )" style="width:10em"></p>
+		<input type="button" onclick="window.location.href='listAllExcelItemGroup.action'" value="$i18n.getString( "cancel" )" style="width:10em"></p>
 </form>
 <script type="text/javascript">
 
 	var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
-
 
 	selectionTreeSelection.setMultipleSelectionAllowed( true );
 	selectionTreeSelection.setOnSelectFunction( treeClicked );
