@@ -40,10 +40,8 @@ import jxl.format.CellFormat;
 import jxl.format.Colour;
 import jxl.format.Pattern;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.hisp.dhis.reportexcel.utils.ExcelUtils;
+import org.apache.poi.hssf.util.CellReference;
 
 /**
  * Simple demo class which uses the api to present the contents of an excel 97
@@ -220,7 +218,6 @@ public class XMLStructureResponse
 
         if ( sheetId > 0 )
         {
-
             this.recalculatedValueForCellFormula( wb, (sheetId - 1) );
         }
         else
@@ -465,42 +462,59 @@ public class XMLStructureResponse
         }
     }
 
-
     private void recalculatedValueForCellFormula( org.apache.poi.ss.usermodel.Workbook wb, int sheetNo )
+        throws Exception
     {
         org.apache.poi.ss.usermodel.Sheet sheet = wb.getSheetAt( sheetNo );
         org.apache.poi.ss.usermodel.FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
 
         String recalculatedValue = "";
-		
-        for (org.apache.poi.ss.usermodel.Row rowPOI : sheet) {
-            
-            for (org.apache.poi.ss.usermodel.Cell cellPOI : rowPOI) {
-                
-                if (cellPOI.getCellType() == org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA)
+
+        for ( org.apache.poi.ss.usermodel.Row rowPOI : sheet )
+        {
+            for ( org.apache.poi.ss.usermodel.Cell cellPOI : rowPOI )
+            {
+
+                CellReference cellReference = new CellReference( cellPOI.getRowIndex(), cellPOI.getColumnIndex() );
+                org.apache.poi.ss.usermodel.Row rowRef = sheet.getRow( cellReference.getRow() );
+                org.apache.poi.ss.usermodel.Cell cellRef = rowRef.getCell( cellReference.getCol() );
+
+                if ( (cellRef != null) && (cellRef.getCellType() == org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA) )
                 {
-                    switch ( evaluator.evaluateFormulaCell( cellPOI ) )
+                    switch ( evaluator.evaluateInCell( cellRef ).getCellType() )
                     {
                     case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
 
-                        recalculatedValue = String.valueOf( cellPOI.getNumericCellValue() );
-                        
+                        recalculatedValue = String.valueOf( cellRef.getNumericCellValue() );
+
                         if ( new Double( recalculatedValue.split( "\\." )[1] ) == 0.0d )
                         {
                             recalculatedValue = recalculatedValue.split( "\\." )[0];
                         }
-                        
-                        ExcelUtils.writeValueByPOI( cellPOI.getRowIndex(), cellPOI.getColumnIndex(), recalculatedValue, ExcelUtils.NUMBER, (HSSFSheet) sheet,
-                            (HSSFCellStyle) wb.createCellStyle() );
                         break;
 
                     // CELL_TYPE_FORMULA will never occur
                     case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA:
+                        System.out.println("Place of cell :: ["  + cellRef.getRowIndex()+"]["+cellRef.getColumnIndex() +"]");
                         break;
                     }
                 }
             }
         }
     }
+
+    /**/
+    public static void main( String[] args )
+        throws Exception
+    {
+        // System.out.println(new
+        // XMLStructureResponse("c:/phammemthongke/reporttemplate/admin11.11.2009.3.43.28.PMbaocaoquy.xls",
+        // "UTF8", 1, true, false, true, false,
+        // false).getSTRUCTURE_DATA_RESPONSE());
+        System.out.println( new XMLStructureResponse(
+            "c:/phammemthongke/reporttemplate/admin11.11.2009.3.56.21.PMBieuMau_08.xls", "UTF8", 1, true, false, true,
+            false, false ).getSTRUCTURE_DATA_RESPONSE() );
+    }
+    /**/
 
 }
