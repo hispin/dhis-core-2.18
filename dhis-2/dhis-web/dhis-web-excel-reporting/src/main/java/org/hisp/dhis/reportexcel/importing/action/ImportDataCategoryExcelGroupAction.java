@@ -133,34 +133,25 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 		this.dataValueService = dataValueService;
 	}
 
-	// public void setExcelItemGroupId(Integer excelItemGroupId) {
-	// this.excelItemGroupId = excelItemGroupId;
-	// }
-
 	public void setUploadFileName(String uploadFileName) {
 		this.uploadFileName = uploadFileName;
 	}
-
-	// public void setPeriodId(Integer periodId) {
-	// this.periodId = periodId;
-	// }
 
 	// --------------------------------------------------------------------
 	// Action implementation
 	// --------------------------------------------------------------------
 
 	public String execute() throws Exception {
-		
+
 		OrganisationUnit organisationUnit = organisationUnitSelectionManager
 				.getSelectedOrganisationUnit();
 
-
-		if(excelItemIds == null){
+		if (excelItemIds == null) {
 			message = i18n.getString("choose_excelItem");
-			
+
 			return ERROR;
 		}
-		
+
 		if (organisationUnit != null) {
 
 			File upload = new File(uploadFileName);
@@ -169,14 +160,14 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 			Workbook templateWorkbook = Workbook.getWorkbook(upload, ws);
 
 			Period period = selectedStateManager.getSelectedPeriod();
-				
+
 			for (int i = 0; i < excelItemIds.length; i++) {
 
 				int excelItemId = Integer
 						.parseInt(excelItemIds[i].split("-")[0]);
-				
+
 				int rowIndex = Integer.parseInt(excelItemIds[i].split("-")[1]);
-				
+
 				String expression = excelItemIds[i].split("-")[2];
 
 				ExcelItem excelItem = excelItemService
@@ -185,8 +176,9 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 				Sheet sheet = templateWorkbook
 						.getSheet(excelItem.getSheetNo() - 1);
 
-				String value = ExcelUtils.readValue(rowIndex, excelItem.getColumn(), sheet);
-				
+				String value = ExcelUtils.readValue(rowIndex, excelItem
+						.getColumn(), sheet);
+
 				addDataValue(expression, value, organisationUnit, period);
 
 			}
@@ -251,7 +243,6 @@ public class ImportDataCategoryExcelGroupAction extends ActionSupport {
 			dataValue = new DataValue(dataElement, period, organisationUnit,
 					value + "", storedBy, new Date(), null, optionCombo);
 			dataValueService.addDataValue(dataValue);
-
 
 		} else {
 			dataValue.setValue(value + "");

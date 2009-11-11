@@ -41,8 +41,6 @@ public class ValidateExcelItemGroupAction extends ActionSupport {
 
 	private String name;
 
-	private String excelTemplateFile;
-
 	private String type;
 
 	// -------------------------------------------------------------------------
@@ -51,10 +49,6 @@ public class ValidateExcelItemGroupAction extends ActionSupport {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public void setExcelTemplateFile(String excelTemplateFile) {
-		this.excelTemplateFile = excelTemplateFile;
 	}
 
 	public void setType(String type) {
@@ -74,23 +68,19 @@ public class ValidateExcelItemGroupAction extends ActionSupport {
 			message += i18n.getString("name") + "<br>";
 		}
 
-		if (excelTemplateFile == null || excelTemplateFile.length() == 0) {
-
-			message += i18n.getString("expression") + "<br>";
-		}
-
 		if (type == null || type.length() == 0) {
 
 			message += i18n.getString("row") + "<br>";
 		}
 
-		if(message.length() > 0 ){
-			
-			message = i18n.getString("error") + "<br>"+ message + i18n.getString("not_null");
-			
+		if (message.length() > 0) {
+
+			message = i18n.getString("error") + "<br>" + message
+					+ i18n.getString("not_null");
+
 			return ERROR;
 		}
-		
+
 		return SUCCESS;
 	}
 

@@ -6,7 +6,7 @@
 	<tr>
 		<th>$i18n.getString('name')</th>
 		<th>$i18n.getString('type')</th>
-		<th>$i18n.getString('excel_template')</th>		
+		<th>$i18n.getString('period_type')</th>		
 		<th width="200px">$i18n.getString('operations')</th>		
 	</tr>
 	#set( $mark = false )
@@ -14,7 +14,7 @@
 		<tr #alternate( $mark )>
 			<td>$encoder.htmlEncode( $excelItemGroup.name )</td>
 			<td>$i18n.getString($excelItemGroup.type)</td>
-			<td>$encoder.htmlEncode( $excelItemGroup.excelTemplateFile )</td>
+			<td>$encoder.htmlEncode( $excelItemGroup.periodType.name )</td>
 			<td align="left">
 				<a href="openExcelItemGroupAssociations.action?excelItemGroupId=$excelItemGroup.id" title="$i18n.getString( 'associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'associations' )"></a>
 				<a href="listExcelItems.action?excelItemGroupId=$excelItemGroup.id" title="$i18n.getString( 'excel_item' )"><img src="../images/add_section.png" alt="$i18n.getString( 'excelitem' )"></a>
@@ -45,7 +45,7 @@
 	#end
 </table>
 
-<div id="divExcelitemGroup" style="position:fixed;display:none;width:450px;z-index:11;background-color: white;border: medium solid silver;height:150px;padding:20px;">
+<div id="divExcelitemGroup" style="position:fixed;display:none;width:400px;z-index:11;background-color: white;border: medium solid silver;height:100px;padding:20px;">
 	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('divExcelitemGroup');deleteDivEffect();">[x]</div>
 	<input type="hidden" value="" id="id"/>
 	<table>
@@ -54,16 +54,12 @@
 			<td><input type="text" id="name"  style="width:20em"/></td>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString('excel_template')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="excelTemplateFile"  style="width:20em"/></td>
-		</tr>
-		<tr>
 			<td><label>$i18n.getString('report_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
 				<select type="text" id="type" name="type" style="min-width:20em">
 					<option value='NORMAL'>$i18n.getString('NORMAL')</option>					
 					<option value='CATEGORY'>$i18n.getString('CATEGORY')</option>					
-					<option value='PERIOD_COLUMN_LISTING'>$i18n.getString('PERIOD_COLUMN_LISTING')</option>	
+					<!-- <option value='PERIOD_COLUMN_LISTING'>$i18n.getString('PERIOD_COLUMN_LISTING')</option>	-->
 					<option value='ORGANIZATION_GROUP_LISTING'>$i18n.getString('ORGANIZATION_GROUP_LISTING')</option>									
 				</select>
 			</td>

@@ -55,9 +55,9 @@ public class DefaultExcelItemService implements ExcelItemService {
 	// Excelitem group Services
 	// --------------------------------------
 
-	public void addExcelItemGroup(ExcelItemGroup excelItemGroup) {
+	public int addExcelItemGroup(ExcelItemGroup excelItemGroup) {
 
-		excelItemStore.addExcelItemGroup(excelItemGroup);
+		return excelItemStore.addExcelItemGroup(excelItemGroup);
 	}
 
 	public void deleteExcelItemGroup(int id) {
@@ -91,9 +91,9 @@ public class DefaultExcelItemService implements ExcelItemService {
 	// Excelitem Services
 	// --------------------------------------
 
-	public void addExcelItem(ExcelItem excelItem) {
+	public int addExcelItem(ExcelItem excelItem) {
 
-		excelItemStore.addExcelItem(excelItem);
+		return excelItemStore.addExcelItem(excelItem);
 	}
 
 	public void deleteExcelItem(int id) {

@@ -20,7 +20,6 @@ function openUpdateExcelItemGroup( id ){
 		
 		$("#id").val(id);
 		$("#name").val( xmlObject.getElementsByTagName('name')[0].firstChild.nodeValue );
-		$("#excelTemplateFile").val( xmlObject.getElementsByTagName('excelTemplateFile')[0].firstChild.nodeValue);
 		$("#type").val( xmlObject.getElementsByTagName('type')[0].firstChild.nodeValue);
 		$("#periodType").val( xmlObject.getElementsByTagName('periodType')[0].firstChild.nodeValue);
 		
@@ -37,7 +36,6 @@ function openUpdateExcelItemGroup( id ){
 function validateExcelItemGroup(){
 	$.post("validateExcelItemGroup.action",{		
 		name:$("#name").val(),
-		excelTemplateFile:$("#excelTemplateFile").val(),
 		type:$("#type").val()
 	},function(xmlObject){
 		var xmlObject = xmlObject.getElementsByTagName('message')[0];
@@ -61,7 +59,6 @@ function addExcelItemGroup(){
 	
 	$.post("addExcelItemGroup.action",{
 		name:$("#name").val(),
-		excelTemplateFile:$("#excelTemplateFile").val(),
 		type:$("#type").val(),
 		periodTypeName:$("#periodType").val()
 	},function(data){
@@ -74,7 +71,6 @@ function updateExcelItemGroup(){
 	$.post("updateExcelItemGroup.action",{
 		id:$("#id").val(),
 		name:$("#name").val(),
-		excelTemplateFile:$("#excelTemplateFile").val(),
 		type:$("#type").val(),
 		periodTypeName:$("#periodType").val()
 	},function(data){

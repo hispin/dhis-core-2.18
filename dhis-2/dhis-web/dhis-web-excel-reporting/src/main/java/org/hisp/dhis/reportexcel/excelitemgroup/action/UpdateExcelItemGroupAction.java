@@ -55,8 +55,6 @@ public class UpdateExcelItemGroupAction implements Action {
 
 	private String name;
 
-	private String excelTemplateFile;
-
 	private String type;
 
 	private String periodTypeName;
@@ -84,10 +82,6 @@ public class UpdateExcelItemGroupAction implements Action {
 		this.name = name;
 	}
 
-	public void setExcelTemplateFile(String excelTemplateFile) {
-		this.excelTemplateFile = excelTemplateFile;
-	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
@@ -103,8 +97,6 @@ public class UpdateExcelItemGroupAction implements Action {
 		excelItemGroup.setName(name);
 
 		excelItemGroup.setType(type);
-
-		excelItemGroup.setExcelTemplateFile(excelTemplateFile);
 		
 		PeriodType periodType = periodService
 				.getPeriodTypeByName(periodTypeName);

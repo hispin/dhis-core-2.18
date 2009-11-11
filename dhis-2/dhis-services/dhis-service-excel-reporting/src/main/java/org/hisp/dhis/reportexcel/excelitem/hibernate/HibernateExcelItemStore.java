@@ -69,9 +69,11 @@ public class HibernateExcelItemStore implements ExcelItemStore {
 	// ExcelItemStore implementation
 	// ----------------------------------------------------------------------
 
-	public void addExcelItem(ExcelItem excelItem) {
+	public int addExcelItem(ExcelItem excelItem) {
 
-		sessionFactory.getCurrentSession().save(excelItem);
+		Session session = sessionFactory.getCurrentSession();
+
+        return (Integer) session.save( excelItem );
 	}
 
 	public void deleteExcelItem(int id) {
@@ -109,7 +111,7 @@ public class HibernateExcelItemStore implements ExcelItemStore {
 		return (ExcelItem) criteria.uniqueResult();
 	}
 
-	public void addExcelItemGroup(ExcelItemGroup excelItemGroup) {
+	public int addExcelItemGroup(ExcelItemGroup excelItemGroup) {
 
 		PeriodType periodType = periodStore.getPeriodType( excelItemGroup.getPeriodType().getClass() );
 
@@ -117,7 +119,7 @@ public class HibernateExcelItemStore implements ExcelItemStore {
 
         Session session = sessionFactory.getCurrentSession();
 
-        session.save( excelItemGroup );
+        return (Integer) session.save( excelItemGroup );
 	}
 
 	public void deleteExcelItemGroup(int id) {

@@ -180,7 +180,7 @@ public class ImportDataNormalExcelGroupAction extends ActionSupport {
 
 
 			Period period = selectedStateManager.getSelectedPeriod();
-System.out.println("\n\n === period : " + period);
+
 			for (ExcelItem exelItem : excelItems) {
 
 				Sheet sheet = templateWorkbook

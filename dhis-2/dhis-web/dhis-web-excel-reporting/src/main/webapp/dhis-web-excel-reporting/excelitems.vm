@@ -2,16 +2,10 @@
 <table width="100%">
 <tr>
 <td>
-	<input type="button" onclick="copySelectedExcelItemForm()" value="$i18n.getString('copy_selected_item_to')"/>
+	
 </td>
 <td align="right">
-	$i18n.getString('filter_by_sheet')
-	<select id="sheetNoFilter" onchange="getReportItemBySheet();">
-		<option value="" >--- ALL ---</option>
-		#foreach($sheet in $sheets)
-		<option value="$sheet" #if($sheetNo==$sheet) selected #end >$sheet</option>
-		#end
-	</select>	
+	
 	<input type="button" onclick="mode='add'; openAddExcelItem()" value="$i18n.getString('add')" style="width:100px"/>
 	<input type="button" onclick="window.location='listAllExcelItemGroup.action'" value="$i18n.getString('cancel')" style="width:100px"/>
 </td>
@@ -19,7 +13,6 @@
 </table>
 <table width="100%">
 	<tr>
-		<th><input type="checkbox" onclick="selectALL(this.checked)"/></th>
 		<th>$i18n.getString('name')</th>
 		<th>$i18n.getString('sheetNo')</th>	
 		<th>$i18n.getString('row')</th>		
@@ -31,7 +24,6 @@
 	#set( $mark = false )
 	#foreach($excelItem in $excelItems)
 		<tr #alternate( $mark )>
-			<td align=center><input type="checkbox" value="$reportItem.id" name="reportItemCheck"/></td>
 			<td>$encoder.htmlEncode( $excelItem.name )</td>
 			<td>$excelItem.sheetNo</td>
 			<td>$excelItem.row</td>

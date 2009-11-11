@@ -101,14 +101,10 @@ public class ImportDataFlowAction implements Action {
 
 	public String execute() throws Exception {
 		
-		// Period period = periodService.getPeriod(periodId);
-
 		selectedStateManager.setSelectedPeriodIndex(periodId);
 
 		ExcelItemGroup excelItemGroup = excelItemService
 				.getExcelItemGroup(excelItemGroupId);
-
-		System.out.println("\n\n ==== excelItemGroup : " + excelItemGroup.getType());
 
 		return excelItemGroup.getType();
 	}
