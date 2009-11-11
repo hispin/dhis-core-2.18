@@ -503,18 +503,4 @@ public class XMLStructureResponse
         }
     }
 
-    /**/
-    public static void main( String[] args )
-        throws Exception
-    {
-        // System.out.println(new
-        // XMLStructureResponse("c:/phammemthongke/reporttemplate/admin11.11.2009.3.43.28.PMbaocaoquy.xls",
-        // "UTF8", 1, true, false, true, false,
-        // false).getSTRUCTURE_DATA_RESPONSE());
-        System.out.println( new XMLStructureResponse(
-            "c:/phammemthongke/reporttemplate/admin11.11.2009.3.56.21.PMBieuMau_08.xls", "UTF8", 1, true, false, true,
-            false, false ).getSTRUCTURE_DATA_RESPONSE() );
-    }
-    /**/
-
 }
