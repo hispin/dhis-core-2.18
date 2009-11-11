@@ -1,14 +1,24 @@
 <h2>$i18n.getString('excelitem_group')</h2>
-<p><input type="button" onclick="mode='add'; openAddExcelItemGroup()" value="$i18n.getString('add')" style="width:100px"/>
-<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='administration.action'" style="width:100px"></p>
+<table width=100%>
+	<tr>
+		<td>
+			$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:300px"/>
+		</td>
+		<td align=right>
+			<input type="button" onclick="mode='add'; openAddExcelItemGroup()" value="$i18n.getString('add')" style="width:100px"/>
+			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='administration.action'" style="width:100px">
+		</td>
+	</tr>
+</table>
 
 <table width="100%">
 	<tr>
 		<th>$i18n.getString('name')</th>
 		<th>$i18n.getString('type')</th>
 		<th>$i18n.getString('period_type')</th>		
-		<th width="200px">$i18n.getString('operations')</th>		
+		<th width="110px">$i18n.getString('operations')</th>		
 	</tr>
+	<tbody id="list">
 	#set( $mark = false )
 	#foreach($excelItemGroup in $excelItemGroups)
 		<tr #alternate( $mark )>
@@ -43,6 +53,7 @@
 			#set( $mark = true )
 		#end
 	#end
+	</tbody>
 </table>
 
 <div id="divExcelitemGroup" style="position:fixed;display:none;width:400px;z-index:11;background-color: white;border: medium solid silver;height:100px;padding:20px;">

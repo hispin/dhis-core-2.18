@@ -32,8 +32,8 @@
   <tr>
     <td>$i18n.getString( 'period' )</td>
     <td>
-	<input type="button" value="<<" id="lastYear" name="lastYear" onclick="lastPeriod();"  />
-	<input type="button" value=">>" id="nextYear" name="nextYear" onclick="nextPeriod()"  />
+	<input type="button" value="<<" id="lastYear" name="lastYear" onclick="lastPeriod();"  #if(!$!fileExcel) disabled #end/>
+	<input type="button" value=">>" id="nextYear" name="nextYear" onclick="nextPeriod()" #if(!$!fileExcel) disabled #end />
 	<select name="period" id="period" style="min-width:20em; width:100%" type="text" disabled>
     	</select></td>
   </tr>
