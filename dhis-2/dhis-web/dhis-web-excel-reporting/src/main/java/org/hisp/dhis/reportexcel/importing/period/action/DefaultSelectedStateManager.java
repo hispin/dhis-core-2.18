@@ -52,7 +52,7 @@ import com.opensymphony.xwork2.ActionContext;
  * @version $Id$
  */
 public class DefaultSelectedStateManager implements SelectedStateManager {
-	
+
 	private static final Log log = LogFactory
 			.getLog(DefaultSelectedStateManager.class);
 
@@ -75,18 +75,18 @@ public class DefaultSelectedStateManager implements SelectedStateManager {
 	// -------------------------------------------------------------------------
 
 	public OrganisationUnit getSelectedOrganisationUnit() {
-		
+
 		return selectionManager.getSelectedOrganisationUnit();
 	}
 
 	public void setSelectionManager(
 			OrganisationUnitSelectionManager selectionManager) {
-		
+
 		this.selectionManager = selectionManager;
 	}
 
 	public void setExcelItemService(ExcelItemService excelItemService) {
-		
+
 		this.excelItemService = excelItemService;
 	}
 
@@ -95,28 +95,29 @@ public class DefaultSelectedStateManager implements SelectedStateManager {
 	// -------------------------------------------------------------------------
 
 	public void setSelectedExcelItemGroup(ExcelItemGroup excelItemGroup) {
-		
+
 		getSession().put(SESSION_KEY_SELECTED_EXCEL_ITEM_GROUP_ID,
 				excelItemGroup.getId());
 	}
 
 	public ExcelItemGroup getSelectedExcelItemGroup() {
-		
-		Integer id = (Integer) getSession()
-				.get(SESSION_KEY_SELECTED_EXCEL_ITEM_GROUP_ID);
+
+		Integer id = (Integer) getSession().get(
+				SESSION_KEY_SELECTED_EXCEL_ITEM_GROUP_ID);
 
 		return id != null ? excelItemService.getExcelItemGroup(id) : null;
 	}
 
 	public void clearSelectedExcelItemGroup() {
-		
+
 		getSession().remove(SESSION_KEY_SELECTED_EXCEL_ITEM_GROUP_ID);
 	}
 
 	public Collection<ExcelItemGroup> loadExcelItemGroupsForSelectedOrgUnit(
 			OrganisationUnit organisationUnit) {
 
-		return excelItemService.getExcelItemGroupsByOrganisationUnit(organisationUnit);
+		return excelItemService
+				.getExcelItemGroupsByOrganisationUnit(organisationUnit);
 	}
 
 	// -------------------------------------------------------------------------
@@ -124,19 +125,19 @@ public class DefaultSelectedStateManager implements SelectedStateManager {
 	// -------------------------------------------------------------------------
 
 	public void setSelectedPeriodIndex(Integer index) {
-		
+
 		getSession().put(SESSION_KEY_SELECTED_PERIOD_INDEX, index);
 	}
 
 	public Integer getSelectedPeriodIndex() {
-		
+
 		return (Integer) getSession().get(SESSION_KEY_SELECTED_PERIOD_INDEX);
 	}
 
 	public Period getSelectedPeriod() {
 
 		Integer index = getSelectedPeriodIndex();
-		
+
 		if (index == null) {
 			return null;
 		}
@@ -155,7 +156,7 @@ public class DefaultSelectedStateManager implements SelectedStateManager {
 	}
 
 	public List<Period> getPeriodList() {
-		
+
 		Period basePeriod = getBasePeriod();
 
 		CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
@@ -167,42 +168,41 @@ public class DefaultSelectedStateManager implements SelectedStateManager {
 		Iterator<Period> iterator = periods.iterator();
 
 		while (iterator.hasNext()) {
-			
+
 			if (iterator.next().getStartDate().after(now)) {
-				
+
 				iterator.remove();
 			}
 		}
 
 		Collections.sort(periods, new AscendingPeriodComparator());
-		
+
 		return periods;
 	}
 
 	public void nextPeriodSpan() {
-		
+
 		List<Period> periods = getPeriodList();
-		
+
 		CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
 
 		Period basePeriod = periods.get(periods.size() - 1);
-		
+
 		Period newBasePeriod = periodType.getNextPeriod(basePeriod);
 
-		if (newBasePeriod.getStartDate().before(new Date())) 
-		{
+		if (newBasePeriod.getStartDate().before(new Date())) {
 			getSession().put(SESSION_KEY_BASE_PERIOD, newBasePeriod);
 		}
 	}
 
 	public void previousPeriodSpan() {
-		
+
 		List<Period> periods = getPeriodList();
-		
+
 		CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
 
 		Period basePeriod = periods.get(0);
-		
+
 		Period newBasePeriod = periodType.getPreviousPeriod(basePeriod);
 
 		getSession().put(SESSION_KEY_BASE_PERIOD, newBasePeriod);
@@ -213,7 +213,7 @@ public class DefaultSelectedStateManager implements SelectedStateManager {
 	// -------------------------------------------------------------------------
 
 	private PeriodType getPeriodType() {
-		
+
 		ExcelItemGroup excelItemGroup = getSelectedExcelItemGroup();
 
 		if (excelItemGroup == null) {
@@ -225,7 +225,7 @@ public class DefaultSelectedStateManager implements SelectedStateManager {
 	}
 
 	private Period getBasePeriod() {
-		
+
 		Period basePeriod = (Period) getSession().get(SESSION_KEY_BASE_PERIOD);
 
 		PeriodType periodType = getPeriodType();
@@ -234,15 +234,15 @@ public class DefaultSelectedStateManager implements SelectedStateManager {
 			log.debug("Base period is null, creating new");
 
 			basePeriod = periodType.createPeriod();
-			
+
 			getSession().put(SESSION_KEY_BASE_PERIOD, basePeriod);
-			
+
 		} else if (!basePeriod.getPeriodType().equals(periodType)) {
-			
+
 			log.debug("Wrong type of base period, transforming");
 
 			basePeriod = periodType.createPeriod(basePeriod.getStartDate());
-			
+
 			getSession().put(SESSION_KEY_BASE_PERIOD, basePeriod);
 		}
 
@@ -250,7 +250,7 @@ public class DefaultSelectedStateManager implements SelectedStateManager {
 	}
 
 	private static final Map<String, Object> getSession() {
-		
+
 		return ActionContext.getContext().getSession();
 	}
 }

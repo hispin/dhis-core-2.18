@@ -20,7 +20,7 @@
   </form>
   <tr>
     <td>$i18n.getString( 'excelitem_group' )</td>
-    <td><select type="text" id="excelItemGroupId" name="excelItemGroupId"  onChange="getPeriodsByPeriodTypeName(this.value); getPreviewImportData('$!fileExcel.getName()')"; style="min-width:20em; width:100%" >
+    <td><select type="text" id="excelItemGroupId" name="excelItemGroupId" #if(!$!fileExcel) disabled #end  onChange="getPeriodsByPeriodTypeName(this.value); getPreviewImportData('$!fileExcel.getName()'); setDisable();"; style="min-width:20em; width:100%" >
 	<!-- onChange="getPeriodsByPeriodTypeName(this.value);" -->
 	  <option value="0">$i18n.getString('select')</option>
 	  #foreach($excelItemGroup in $excelItemGroups)
@@ -34,7 +34,7 @@
     <td>
 	<input type="button" value="<<" id="lastYear" name="lastYear" onclick="lastPeriod();"  />
 	<input type="button" value=">>" id="nextYear" name="nextYear" onclick="nextPeriod()"  />
-	<select name="period" id="period" style="min-width:20em; width:100%" type="text">
+	<select name="period" id="period" style="min-width:20em; width:100%" type="text" disabled>
     	</select></td>
   </tr>
   <tr>
@@ -45,7 +45,7 @@
 </table>
 	 
 <hr>
-<input type="button" name="import" id="import" onClick="javascript: importData();" value="$i18n.getString('import')" >
+<input type="button" name="importButton" id="importButton" onClick="javascript: importData();" value="$i18n.getString('import')" disabled>
 <br><br>
 	<div id="showValue" style="display:none; width:100%" >
 		<table id="showExcelItemValues" width="100%">
@@ -63,6 +63,13 @@
 <script language="javascript">
 	if(byId('excelItemGroupId').value != '' && byId('period').value >= 0){
 		getPreviewImportData('$!fileExcel.getName()');
+	}
+	
+	function setDisable(){
+		byId('lastYear').disabled=false;
+		byId('nextYear').disabled=false;
+		byId('period').disabled=false;
+		byId('importButton').disabled=false;
 	}
 </script>
 </body>

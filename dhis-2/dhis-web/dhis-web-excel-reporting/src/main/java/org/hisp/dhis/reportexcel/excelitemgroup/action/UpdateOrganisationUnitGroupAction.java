@@ -79,6 +79,10 @@ public class UpdateOrganisationUnitGroupAction implements Action {
 		this.selectedOrganisationUnitGroups = selectedOrganisationUnitGroups;
 	}
 
+	// -------------------------------------------------------------
+	// Action implementation
+	// -------------------------------------------------------------
+
 	public String execute() throws Exception {
 
 		ExcelItemGroup excelItemGroup = (ExcelItemGroup) excelItemService

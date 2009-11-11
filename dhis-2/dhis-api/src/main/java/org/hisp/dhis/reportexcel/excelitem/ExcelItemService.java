@@ -13,7 +13,7 @@ public interface ExcelItemService {
 	// Excelitem group services
 	// ----------------------------------------------------------------------------
 
-	public void addExcelItemGroup(ExcelItemGroup excelItemGroup);
+	public int addExcelItemGroup(ExcelItemGroup excelItemGroup);
 
 	public void updateExcelItemGroup(ExcelItemGroup excelItemGroup);
 
@@ -30,7 +30,7 @@ public interface ExcelItemService {
 	// Excelitem services
 	// ----------------------------------------------------------------------------
 
-	public void addExcelItem(ExcelItem excelItem);
+	public int addExcelItem(ExcelItem excelItem);
 
 	public void updateExcelItem(ExcelItem excelItem);
 

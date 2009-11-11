@@ -40,185 +40,133 @@ import org.hisp.dhis.reportexcel.DataElementGroupOrder;
  * @version $Id$
  */
 
-public class ExcelItemGroup
-{
-    private int id;
+public class ExcelItemGroup {
+	private int id;
 
-    private String name;
+	private String name;
 
-    private Set<ExcelItem> excelItems;
+	private Set<ExcelItem> excelItems;
 
-    private String excelTemplateFile;
+	private String type;
 
-    private String type;
+	private Set<OrganisationUnit> organisationAssocitions;
 
-    private Set<OrganisationUnit> organisationAssocitions;
+	private List<OrganisationUnitGroup> organisationUnitGroups;
 
-    private List<OrganisationUnitGroup> organisationUnitGroups;
+	private List<DataElementGroupOrder> dataElementOrders;
 
-    private List<DataElementGroupOrder> dataElementOrders;
-    
-    private PeriodType periodType;
+	private PeriodType periodType;
 
-    // ----------------------------------------------------------------------
-    // Constructors
-    // ----------------------------------------------------------------------
+	// ----------------------------------------------------------------------
+	// Constructors
+	// ----------------------------------------------------------------------
 
-    public ExcelItemGroup()
-    {
+	public ExcelItemGroup() {
 
-    }
+	}
 
-    // -------------------------------------------------------------------------
-    // Internal classes
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Internal classes
+	// -------------------------------------------------------------------------
 
-    public static class TYPE
-    {
-        public static final String NORMAL = "NORMAL";
+	public static class TYPE {
+		public static final String NORMAL = "NORMAL";
 
-        public static final String CATEGORY = "CATEGORY";
+		public static final String CATEGORY = "CATEGORY";
 
-        public static final String PERIOD_COLUMN_LISTING = "PERIOD_COLUMN_LISTING";
+		public static final String PERIOD_COLUMN_LISTING = "PERIOD_COLUMN_LISTING";
 
-        public static final String ORGANIZATION_GROUP_LISTING = "ORGANIZATION_GROUP_LISTING";
-    }
+		public static final String ORGANIZATION_GROUP_LISTING = "ORGANIZATION_GROUP_LISTING";
+	}
 
-    // -------------------------------------------------------------------------
-    // hashCode and equals
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// hashCode and equals
+	// -------------------------------------------------------------------------
 
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + name.hashCode();
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + name.hashCode();
+		return result;
+	}
 
-    @Override
-    public boolean equals( Object obj )
-    {
-        if ( this == obj )
-            return true;
-        if ( obj == null )
-            return false;
-        if ( getClass() != obj.getClass() )
-            return false;
-        ExcelItemGroup other = (ExcelItemGroup) obj;
-        if ( name != other.name )
-            return false;
-        return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ExcelItemGroup other = (ExcelItemGroup) obj;
+		if (name != other.name)
+			return false;
+		return true;
+	}
 
-    // ----------------------------------------------------------------------
-    // Getters and setters
-    // ----------------------------------------------------------------------
+	// ----------------------------------------------------------------------
+	// Getters and setters
+	// ----------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public List<DataElementGroupOrder> getDataElementOrders()
-    {
-        return dataElementOrders;
-    }
+	public List<DataElementGroupOrder> getDataElementOrders() {
+		return dataElementOrders;
+	}
 
-    public void setDataElementOrders( List<DataElementGroupOrder> dataElementOrders )
-    {
-        this.dataElementOrders = dataElementOrders;
-    }
+	public void setDataElementOrders(
+			List<DataElementGroupOrder> dataElementOrders) {
+		this.dataElementOrders = dataElementOrders;
+	}
 
-    public String getType()
-    {
-        return type;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setType( String type )
-    {
-        this.type = type;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public void setId( int id )
-    {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getName()
-    {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public List<OrganisationUnitGroup> getOrganisationUnitGroups()
-    {
-        return organisationUnitGroups;
-    }
+	public List<OrganisationUnitGroup> getOrganisationUnitGroups() {
+		return organisationUnitGroups;
+	}
 
-    public void setOrganisationUnitGroups( List<OrganisationUnitGroup> organisationUnitGroups )
-    {
-        this.organisationUnitGroups = organisationUnitGroups;
-    }
+	public void setOrganisationUnitGroups(
+			List<OrganisationUnitGroup> organisationUnitGroups) {
+		this.organisationUnitGroups = organisationUnitGroups;
+	}
 
-    public void setName( String name )
-    {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getExcelTemplateFile()
-    {
-        return excelTemplateFile;
-    }
+	public Set<ExcelItem> getExcelItems() {
+		return excelItems;
+	}
 
-    public void setExcelTemplateFile( String excelTemplateFile )
-    {
-        this.excelTemplateFile = excelTemplateFile;
-    }
+	public void setExcelItems(Set<ExcelItem> excelItems) {
+		this.excelItems = excelItems;
+	}
 
-    public Set<ExcelItem> getExcelItems()
-    {
-        return excelItems;
-    }
+	public Set<OrganisationUnit> getOrganisationAssocitions() {
+		return organisationAssocitions;
+	}
 
-    public void setExcelItems( Set<ExcelItem> excelItems )
-    {
-        this.excelItems = excelItems;
-    }
-
-    public Set<OrganisationUnit> getOrganisationAssocitions()
-    {
-        return organisationAssocitions;
-    }
-
-    public void setOrganisationAssocitions( Set<OrganisationUnit> organisationAssocitions )
-    {
-        this.organisationAssocitions = organisationAssocitions;
-    }
-
-    // ----------------------------------------------------------------------
-    // getType
-    // ----------------------------------------------------------------------
-
-    public boolean isCategory()
-    {
-        return this.getType().equalsIgnoreCase( TYPE.CATEGORY );
-    }
-
-    public boolean isOrganisationUnitGroupListing()
-    {
-        return this.getType().equalsIgnoreCase( TYPE.ORGANIZATION_GROUP_LISTING );
-    }
-
-    public boolean isPeriodColumnListing()
-    {
-        return this.getType().equalsIgnoreCase( TYPE.PERIOD_COLUMN_LISTING );
-    }
-
-    public boolean isNormal()
-    {
-        return this.getType().equalsIgnoreCase( TYPE.NORMAL );
-    }
+	public void setOrganisationAssocitions(
+			Set<OrganisationUnit> organisationAssocitions) {
+		this.organisationAssocitions = organisationAssocitions;
+	}
 
 	public PeriodType getPeriodType() {
 		return periodType;
@@ -227,5 +175,25 @@ public class ExcelItemGroup
 	public void setPeriodType(PeriodType periodType) {
 		this.periodType = periodType;
 	}
-	
+
+	// ----------------------------------------------------------------------
+	// getType
+	// ----------------------------------------------------------------------
+
+	public boolean isCategory() {
+		return this.getType().equalsIgnoreCase(TYPE.CATEGORY);
+	}
+
+	public boolean isOrganisationUnitGroupListing() {
+		return this.getType().equalsIgnoreCase(TYPE.ORGANIZATION_GROUP_LISTING);
+	}
+
+	public boolean isPeriodColumnListing() {
+		return this.getType().equalsIgnoreCase(TYPE.PERIOD_COLUMN_LISTING);
+	}
+
+	public boolean isNormal() {
+		return this.getType().equalsIgnoreCase(TYPE.NORMAL);
+	}
+
 }
