@@ -237,6 +237,8 @@ public class DefaultDataMartService
             return 0;
         }           
 
+        log.info( "Validated crosstab table: " + TimeUtils.getHMS() );
+        
         //setMessage( "crosstabulating_data" );
 
         final Collection<Operand> emptyOperands = crossTabService.populateCrossTabTable( allDataElementOperands, getIntersectingIds( periodIds ), 

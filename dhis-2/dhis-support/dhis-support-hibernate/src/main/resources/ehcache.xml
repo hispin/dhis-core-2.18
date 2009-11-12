@@ -61,13 +61,13 @@
   />
   
   <cache name="org.hisp.dhis.translation.Translation"
-    maxElementsInMemory="6000"
+    maxElementsInMemory="8000"
   />
   
   <!-- Hibernate Query Cache -->
   
   <cache name="org.hibernate.cache.StandardQueryCache"
-    maxElementsInMemory="4000"
+    maxElementsInMemory="8000"
   />
 
   <cache name="org.hibernate.cache.UpdateTimestampsCache"

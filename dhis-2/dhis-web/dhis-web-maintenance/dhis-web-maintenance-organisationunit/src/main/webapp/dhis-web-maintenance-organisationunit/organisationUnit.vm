@@ -10,21 +10,19 @@
 				<col width="20">
 				<col width="20">
 				<col width="20">
-				<col width="20">
 				<tr>
 					<td></td>
-					<td colspan="4" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddOrganisationUnitForm.action'"></td>
+					<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddOrganisationUnitForm.action'"></td>
 				</tr>
 				<tr>
 					<th>$i18n.getString( "name" )</th>
-					<th colspan="4">$i18n.getString( "operations" )</th>
+					<th colspan="3">$i18n.getString( "operations" )</th>
 				</tr>
 				#set( $mark = false )
 				#foreach( $organisationUnit in $organisationUnits )
 				<tr>
 					<td#alternate( $mark )>$encoder.htmlEncode( $organisationUnit.name )</td>
 					<td style="text-align:center"#alternate( $mark )><a href="showUpdateOrganisationUnitForm.action?id=$organisationUnit.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
-					<td style="text-align:center"#alternate( $mark )><a href="javascript:translate( 'OrganisationUnit', '$organisationUnit.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a></td>
 					<td style="text-align:center"#alternate( $mark )>#if( $organisationUnit.children.size() == 0 )<a href="javascript:removeOrganisationUnit( $organisationUnit.id, '$encoder.jsEncode( $organisationUnit.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>#end</td>
 					<td style="text-align:center"#alternate( $mark )><a href="javascript:showOrganisationUnitDetails( $organisationUnit.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
 				</tr>

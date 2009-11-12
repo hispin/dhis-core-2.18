@@ -40,7 +40,6 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
-import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
 import org.hisp.dhis.source.SourceStore;
 import org.hisp.dhis.system.util.UUIdUtils;
@@ -74,13 +73,6 @@ public class DefaultOrganisationUnitService
         this.organisationUnitStore = organisationUnitStore;
     }
 
-    private I18nService i18nService;
-
-    public void setI18nService( I18nService service )
-    {
-        i18nService = service;
-    }
-    
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
@@ -96,8 +88,6 @@ public class DefaultOrganisationUnitService
         
         int id = sourceStore.addSource( organisationUnit );
 
-        i18nService.addObject( organisationUnit );
-        
         addOrganisationUnitHierarchy( organisationUnit.getOpeningDate() );
         
         return id;
@@ -108,8 +98,6 @@ public class DefaultOrganisationUnitService
         organisationUnit.setLastUpdated( new Date() );
         
         sourceStore.updateSource( organisationUnit );
-        
-        i18nService.verify( organisationUnit );
     }
     
     public void updateOrganisationUnit( OrganisationUnit organisationUnit, boolean updateHierarchy )
@@ -138,8 +126,6 @@ public class DefaultOrganisationUnitService
             
             sourceStore.updateSource( parent );
         }
-        
-        i18nService.removeObject( organisationUnit );
         
         sourceStore.deleteSource( organisationUnit );
         

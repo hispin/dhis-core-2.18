@@ -87,6 +87,8 @@ public class HibernateTranslationStore
         criteria.add( Restrictions.eq( "locale", locale.toString() ) );
         criteria.add( Restrictions.eq( "property", property ) );
 
+        criteria.setCacheable( true );
+        
         return (Translation) criteria.uniqueResult();
     }
 
@@ -116,6 +118,8 @@ public class HibernateTranslationStore
         criteria.add( Restrictions.eq( "className", className ) );
         criteria.add( Restrictions.eq( "locale", locale.toString() ) );
 
+        criteria.setCacheable( true );
+        
         return criteria.list();
     }
 
@@ -126,6 +130,8 @@ public class HibernateTranslationStore
 
         Criteria criteria = session.createCriteria( Translation.class );
 
+        criteria.setCacheable( true );
+        
         return criteria.list();
     }
 
