@@ -39,6 +39,8 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.hisp.dhis.i18n.I18nUtils.*;
+
 /**
  * @author Lars Helge Overland
  * @version $Id: DefaultDataSetService.java 6255 2008-11-10 16:01:24Z larshelg $
@@ -101,22 +103,22 @@ public class DefaultDataSetService
 
     public DataSet getDataSet( int id )
     {
-        return dataSetStore.getDataSet( id );
+        return i18n( i18nService, dataSetStore.getDataSet( id ) );
     }
 
     public DataSet getDataSetByName( String name )
     {
-        return dataSetStore.getDataSetByName( name );
+        return i18n( i18nService, dataSetStore.getDataSetByName( name ) );
     }
 
     public DataSet getDataSetByShortName( String shortName )
     {
-        return dataSetStore.getDataSetByShortName( shortName );
+        return i18n( i18nService, dataSetStore.getDataSetByShortName( shortName ) );
     }
     
     public DataSet getDataSetByCode( String code )
     {
-        return dataSetStore.getDataSetByCode( code );
+        return i18n( i18nService, dataSetStore.getDataSetByCode( code ) );
     }
 
     public Collection<DataSet> getDataSetsBySource( Source source )
@@ -171,12 +173,12 @@ public class DefaultDataSetService
     
     public Collection<DataSet> getAllDataSets()
     {
-        return dataSetStore.getAllDataSets();
+        return i18n( i18nService, dataSetStore.getAllDataSets() );
     }
     
     public Collection<DataSet> getDataSetsByPeriodType( PeriodType periodType )
     {
-        return dataSetStore.getDataSetsByPeriodType( periodType );
+        return i18n( i18nService, dataSetStore.getDataSetsByPeriodType( periodType ) );
     }
     
     public Collection<DataSet> getDataSets( Collection<Integer> identifiers )

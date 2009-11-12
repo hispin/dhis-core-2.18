@@ -108,14 +108,12 @@
       <version>${version}</version>
       <type>war</type>
     </dependency>	
-	
-   <dependency>
+    <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-mapping</artifactId>
       <version>${version}</version>
       <type>war</type>
-    </dependency>   
-
+    </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-excel-reporting</artifactId>

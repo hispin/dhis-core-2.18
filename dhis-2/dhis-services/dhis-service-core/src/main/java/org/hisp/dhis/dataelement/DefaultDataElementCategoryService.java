@@ -39,7 +39,6 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.GenericStore;
-import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.UUIdUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,13 +90,6 @@ public class DefaultDataElementCategoryService
         this.dataElementService = dataElementService;
     }
 
-    private I18nService i18nService;
-
-    public void setI18nService( I18nService service )
-    {
-        i18nService = service;
-    }
-
     // -------------------------------------------------------------------------
     // Category
     // -------------------------------------------------------------------------
@@ -109,24 +101,16 @@ public class DefaultDataElementCategoryService
 	    dataElementCategory.setUuid( UUIdUtils.getUUId() );
 	}
 
-        int id = dataElementCategoryStore.save( dataElementCategory );
-        
-        i18nService.addObject( dataElementCategory );
-        
-        return id;
+        return dataElementCategoryStore.save( dataElementCategory );
     }
 
     public void updateDataElementCategory( DataElementCategory dataElementCategory )
     {
         dataElementCategoryStore.update( dataElementCategory );
-        
-        i18nService.verify( dataElementCategory );
     }
 
     public void deleteDataElementCategory( DataElementCategory dataElementCategory )
     {
-        i18nService.removeObject( dataElementCategory );
-        
         dataElementCategoryStore.delete( dataElementCategory );
     }
 
@@ -168,24 +152,16 @@ public class DefaultDataElementCategoryService
 
     public int addDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
     {
-        int id = dataElementCategoryOptionStore.save( dataElementCategoryOption );
-        
-        i18nService.addObject( dataElementCategoryOption );
-        
-        return id;
+        return dataElementCategoryOptionStore.save( dataElementCategoryOption );
     }
 
     public void updateDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
     {
         dataElementCategoryOptionStore.update( dataElementCategoryOption );
-        
-        i18nService.verify( dataElementCategoryOption );
     }
 
     public void deleteDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
     {
-        i18nService.removeObject( dataElementCategoryOption );
-        
         dataElementCategoryOptionStore.delete( dataElementCategoryOption );
     }
 

@@ -205,8 +205,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.datadictionary.DefaultDataDictionaryService">
     <property name="dataDictionaryStore"
       ref="org.hisp.dhis.datadictionary.DataDictionaryStore"/>
-    <property name="i18nService"
-      ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
  
   <bean id="org.hisp.dhis.indicator.IndicatorService"
@@ -293,8 +291,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboStore"/>  
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="i18nService"
-      ref="org.hisp.dhis.i18n.I18nService"/>  
   </bean>
   
   <bean id="org.hisp.dhis.dimension.DimensionService"
@@ -313,8 +309,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.source.SourceStore"/>
     <property name="organisationUnitStore"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitStore"/>
-    <property name="i18nService"
-      ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"
@@ -323,8 +317,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore"/>
     <property name="organisationUnitGroupSetStore"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetStore"/>
-    <property name="i18nService"
-      ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
   
   <!-- Startup routine definitions -->
@@ -602,6 +594,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       <aop:around pointcut="execution( * org.hisp.dhis.validation.ValidationRuleService.validate(..) )" method="intercept"/>
     </aop:aspect>
     
+	<!--
     <aop:aspect ref="i18nTranslationInterceptor">
       <aop:after-returning pointcut="execution( * org.hisp.dhis.dataelement.DataElementService.get*(..) )" method="intercept" returning="object"/>
       <aop:after-returning pointcut="execution( * org.hisp.dhis.dataelement.DataElementCategoryService.get*(..) )" method="intercept" returning="object"/>
@@ -609,7 +602,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       <aop:after-returning pointcut="execution( * org.hisp.dhis.datadictionary.DataDictionaryService.get*(..) )" method="intercept" returning="object"/>
       <aop:after-returning pointcut="execution( * org.hisp.dhis.dataset.DataSetService.get*(..) )" method="intercept" returning="object"/>
       <aop:after-returning pointcut="execution( * org.hisp.dhis.organisationunit.OrganisationUnitService.get*(..) )" method="intercept" returning="object"/>
+      <aop:after-returning pointcut="execution( * org.hisp.dhis.organisationunit.OrganisationUnitGroupService.get*(..) )" method="intercept" returning="object"/>
     </aop:aspect>
+	-->
 	
   </aop:config>
   

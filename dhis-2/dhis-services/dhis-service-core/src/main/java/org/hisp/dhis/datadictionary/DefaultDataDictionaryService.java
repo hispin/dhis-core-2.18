@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -53,33 +52,13 @@ public class DefaultDataDictionaryService
         this.dataDictionaryStore = dataDictionaryStore;
     }
 
-    private I18nService i18nService;
-
-    public void setI18nService( I18nService service )
-    {
-        i18nService = service;
-    }
-
     // -------------------------------------------------------------------------
     // DataDictionary
     // -------------------------------------------------------------------------
 
     public int saveDataDictionary( DataDictionary dataDictionary )
-    {
-        int dataDictionaryId = dataDictionary.getId();
-        
-        int id = dataDictionaryStore.save( dataDictionary );
-        
-        if ( dataDictionaryId == 0 )
-        {
-            i18nService.addObject( dataDictionary );
-        }
-        else
-        {
-            i18nService.verify( dataDictionary );
-        }
-        
-        return id;
+    {   
+        return dataDictionaryStore.save( dataDictionary );     
     }
     
     public DataDictionary getDataDictionary( int id )
@@ -106,8 +85,6 @@ public class DefaultDataDictionaryService
     
     public void deleteDataDictionary( DataDictionary dataDictionary )
     {
-        i18nService.removeObject( dataDictionary );
-        
         dataDictionaryStore.delete( dataDictionary );
     }
     

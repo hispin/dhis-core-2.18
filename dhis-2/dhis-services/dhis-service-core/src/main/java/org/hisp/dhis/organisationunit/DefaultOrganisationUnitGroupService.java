@@ -27,14 +27,13 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.system.util.UUIdUtils;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.system.util.UUIdUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -62,13 +61,6 @@ public class DefaultOrganisationUnitGroupService
         this.organisationUnitGroupSetStore = organisationUnitGroupSetStore;
     }
 
-    private I18nService i18nService;
-
-    public void setI18nService( I18nService service )
-    {
-        i18nService = service;
-    }
-    
     // -------------------------------------------------------------------------
     // OrganisationUnitGroup
     // -------------------------------------------------------------------------
@@ -80,24 +72,16 @@ public class DefaultOrganisationUnitGroupService
             organisationUnitGroup.setUuid( UUIdUtils.getUUId() );
         }
         
-        int id = organisationUnitGroupStore.save( organisationUnitGroup );
-        
-        i18nService.addObject( organisationUnitGroup );
-        
-        return id;
+        return organisationUnitGroupStore.save( organisationUnitGroup );
     }
 
     public void updateOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
     {
         organisationUnitGroupStore.update( organisationUnitGroup );
-        
-        i18nService.verify( organisationUnitGroup );
     }
 
     public void deleteOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
     {
-        i18nService.removeObject( organisationUnitGroup );
-        
         organisationUnitGroupStore.delete( organisationUnitGroup );
     }
 
@@ -144,24 +128,16 @@ public class DefaultOrganisationUnitGroupService
 
     public int addOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet )
     {
-        int id = organisationUnitGroupSetStore.save( organisationUnitGroupSet );
-        
-        i18nService.addObject( organisationUnitGroupSet );
-        
-        return id;
+        return organisationUnitGroupSetStore.save( organisationUnitGroupSet );
     }
 
     public void updateOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet )
     {
         organisationUnitGroupSetStore.update( organisationUnitGroupSet );
-        
-        i18nService.verify( organisationUnitGroupSet );
     }
 
     public void deleteOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet )
     {
-        i18nService.removeObject( organisationUnitGroupSet );
-        
         organisationUnitGroupSetStore.delete( organisationUnitGroupSet );
     }
 

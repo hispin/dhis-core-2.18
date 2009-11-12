@@ -22,7 +22,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/dataElement.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/dataElement.js,javascript/dataDictionary.js,javascript/filterTable.js</param>
+			<param name="javascripts">javascript/dataElement.js,javascript/dataDictionary.js</param>
 		</action>
 
 		<action name="showSortDataElementForm"
@@ -166,7 +166,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/dataElementGroup.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/dataElementGroup.js,javascript/filterTable.js</param>
+			<param name="javascripts">javascript/dataElementGroup.js</param>
 		</action>
 
 		<action name="getDataElementGroup"
@@ -237,7 +237,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/dataElementGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/dataElementGroupSet.js,javascript/filterTable.js</param>
+			<param name="javascripts">javascript/dataElementGroupSet.js</param>
 		</action>
 		
 		<action name="openAddDataElementGroupSet"
@@ -245,7 +245,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addDataElementGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/dataElementGroupSet.js,javascript/filterTable.js</param>
+			<param name="javascripts">javascript/dataElementGroupSet.js</param>
 			<param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
 		</action>
 		
@@ -266,7 +266,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateDataElementGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/dataElementGroupSet.js,javascript/filterTable.js</param>
+			<param name="javascripts">javascript/dataElementGroupSet.js</param>
 		</action>	
 		
 		<action name="updateDataElementGroupSet"
@@ -351,7 +351,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/indicatorGroup.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/indicatorGroup.js,javascript/filterTable.js</param>
+			<param name="javascripts">javascript/indicatorGroup.js</param>
 		</action>
 
 		<action name="getIndicatorGroup"
@@ -424,7 +424,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/indicatorGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/indicatorGroupSet.js,javascript/filterTable.js</param>
+			<param name="javascripts">javascript/indicatorGroupSet.js</param>
 		</action>
 		
 		<action name="openAddIndicatorGroupSet"
@@ -432,7 +432,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addIndicatorGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/indicatorGroupSet.js,javascript/filterTable.js</param>
+			<param name="javascripts">javascript/indicatorGroupSet.js</param>
 			<param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
 		</action>
 		
@@ -453,7 +453,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorGroupSet.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/indicatorGroupSet.js,javascript/filterTable.js</param>
+			<param name="javascripts">javascript/indicatorGroupSet.js</param>
 		</action>	
 		
 		<action name="updateIndicatorGroupSet"
@@ -558,7 +558,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/indicator.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/indicator.js,javascript/dataDictionary.js,javascript/filterTable.js,javascript/denum.js</param>
+			<param name="javascripts">javascript/indicator.js,javascript/dataDictionary.js,javascript/denum.js</param>
 		</action>
 
 		<action name="showSortIndicatorForm"
@@ -878,7 +878,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/multidimensional/category.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/category.js,javascript/filterTable.js</param>
+			<param name="javascripts">javascript/category.js</param>
 		</action>
 
 		<action name="getDataElementCategory"
@@ -948,7 +948,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/multidimensional/categoryCombo.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/categoryCombo.js,javascript/filterTable.js</param>
+			<param name="javascripts">javascript/categoryCombo.js</param>
 		</action>
 
 		<action name="getDataElementCategoryCombo"
