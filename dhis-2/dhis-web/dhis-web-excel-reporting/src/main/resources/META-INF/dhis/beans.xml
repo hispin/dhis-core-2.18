@@ -932,7 +932,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean
 		id="org.hisp.dhis.reportexcel.export.individual.manager.SelectedStateManager"
-		class="org.hisp.dhis.reportexcel.export.individual.manager.DefaultSelectedStateManager">
+		class="org.hisp.dhis.reportexcel.export.individual.manager.DefaultSelectedStateManager"
+		scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
@@ -1341,7 +1342,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean
 		id="org.hisp.dhis.reportexcel.importing.period.action.GetPeriodsByExcelItemGroupAction"
-		class="org.hisp.dhis.reportexcel.importing.period.action.GetPeriodsByExcelItemGroupAction">
+		class="org.hisp.dhis.reportexcel.importing.period.action.GetPeriodsByExcelItemGroupAction"
+		scope="prototype">
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
 		<property name="excelItemService"
@@ -1350,21 +1352,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean
 		id="org.hisp.dhis.reportexcel.importing.period.action.NextPeriodsAction"
-		class="org.hisp.dhis.reportexcel.importing.period.action.NextPeriodsAction">
+		class="org.hisp.dhis.reportexcel.importing.period.action.NextPeriodsAction"
+		scope="prototype">
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.importing.period.action.PreviousPeriodsAction"
-		class="org.hisp.dhis.reportexcel.importing.period.action.PreviousPeriodsAction">
+		class="org.hisp.dhis.reportexcel.importing.period.action.PreviousPeriodsAction"
+		scope="prototype">
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager"
-		class="org.hisp.dhis.reportexcel.importing.period.action.DefaultSelectedStateManager">
+		class="org.hisp.dhis.reportexcel.importing.period.action.DefaultSelectedStateManager"
+		scope="prototype">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 		<property name="selectionManager"
