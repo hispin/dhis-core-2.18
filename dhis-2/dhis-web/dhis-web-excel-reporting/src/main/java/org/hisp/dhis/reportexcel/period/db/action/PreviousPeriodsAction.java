@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.export.individual.action;
+package org.hisp.dhis.reportexcel.period.db.action;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,18 +27,17 @@ package org.hisp.dhis.reportexcel.export.individual.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reportexcel.export.action.SelectionManager;
-import org.hisp.dhis.reportexcel.export.individual.manager.SelectedStateManager;
+import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: PreviousPeriodsAction.java 2966 2007-03-03 14:38:20Z torgeilo $ *
+ * @version $Id: PreviousPeriodsAction.java 2966 2007-03-03 14:38:20Z torgeilo $
+ *          *
  * @modifier Dang Duy Hieu
  * @since 2009-10-14
  */
@@ -49,18 +48,11 @@ public class PreviousPeriodsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private PeriodDatabaseService periodDatabaseService;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setPeriodDatabaseService( PeriodDatabaseService periodDatabaseService )
     {
-        this.selectedStateManager = selectedStateManager;
-    }
-
-    private SelectionManager selectionManager;
-
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
+        this.periodDatabaseService = periodDatabaseService;
     }
 
     // -------------------------------------------------------------------------
@@ -81,10 +73,9 @@ public class PreviousPeriodsAction
     public String execute()
         throws Exception
     {
-        selectionManager.setSeletedYear( selectionManager.getSelectedYear() - 1 );
-        selectedStateManager.previousPeriodSpan();
+        periodDatabaseService.previousPeriodSpan();
 
-        periods = new ArrayList<Period>( selectedStateManager.getPeriodList() );
+        periods = periodDatabaseService.getPeriodList();
 
         return SUCCESS;
     }

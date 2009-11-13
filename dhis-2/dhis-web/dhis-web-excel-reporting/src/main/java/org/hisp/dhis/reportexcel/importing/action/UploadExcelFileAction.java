@@ -28,124 +28,67 @@ package org.hisp.dhis.reportexcel.importing.action;
  */
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
-import org.hisp.dhis.reportexcel.export.action.SelectionManager;
+import org.hisp.dhis.reportexcel.action.ActionSupport;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
+import org.hisp.dhis.system.util.StreamUtils;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id
  */
 
-public class UploadExcelFileAction extends
-		org.hisp.dhis.reportexcel.action.ActionSupport {
-	// -------------------------------------------
-	// Dependency
-	// -------------------------------------------
+public class UploadExcelFileAction
+    extends ActionSupport
+{
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
 
-	private ReportLocationManager reportLocationManager;
+    private ReportLocationManager reportLocationManager;
 
-	public void setReportLocationManager(
-			ReportLocationManager reportLocationManager) {
-		this.reportLocationManager = reportLocationManager;
-	}
+    public void setReportLocationManager( ReportLocationManager reportLocationManager )
+    {
+        this.reportLocationManager = reportLocationManager;
+    }
 
-	private SelectionManager selectionManager;
+    private SelectionManager selectionManager;
 
-	public void setSelectionManager(SelectionManager selectionManager) {
-		this.selectionManager = selectionManager;
-	}
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
 
-	// -------------------------------------------------------------------------
-	// Getters & Setters
-	// -------------------------------------------------------------------------
+    // -------------------------------------------
+    // Input & Output
+    // -------------------------------------------
 
-	private Integer selectedPeriodIndex;
+    private String fileName;
 
-	public Integer getSelectedPeriodIndex() {
-		return selectedPeriodIndex;
-	}
+    public void setUploadFileName( String fileName )
+    {
+        this.fileName = fileName;
+    }
 
-	public void setSelectedPeriodIndex(Integer selectedPeriodIndex) {
-		this.selectedPeriodIndex = selectedPeriodIndex;
-	}
+    private File upload;
 
-	private Period period;
+    public void setUpload( File upload )
+    {
+        this.upload = upload;
+    }
 
-	public Period getPeriod() {
-		return period;
-	}
+    public String execute()
+        throws Exception
+    {
+        File directory = reportLocationManager.getReportExcelTempDirectory();
 
-	public void setPeriod(Period period) {
-		this.period = period;
-	}
+        File output = new File( directory, (Math.random() * 1000) + fileName );
 
-	private String fileName;
+        selectionManager.setUploadFilePath( output.getAbsolutePath() );
 
-	public void setUploadFileName(String fileName) {
-		this.fileName = fileName;
-	}
+        StreamUtils.write( upload, output );
 
-	private File upload;
-
-	public void setUpload(File upload) {
-		this.upload = upload;
-	}
-
-	private File fileExcel;
-
-	public File getFileExcel() {
-		return fileExcel;
-	}
-
-	public void setFileExcel(File fileExcel) {
-		this.fileExcel = fileExcel;
-	}
-
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
-
-	public String execute() throws Exception {
-
-		File directory = reportLocationManager.getReportExcelTempDirectory();
-
-		if (upload != null) {
-
-			try {
-				FileInputStream fin = new FileInputStream(upload);
-
-				byte[] data = new byte[8192];
-				int byteReads = fin.read(data);
-
-				fileExcel = new File(directory, fileName);
-
-				FileOutputStream fout = new FileOutputStream(fileExcel);
-
-				selectionManager.setUploadFilepath(fileExcel.getAbsolutePath());
-
-				while (byteReads != -1) {
-					fout.write(data, 0, byteReads);
-					fout.flush();
-					byteReads = fin.read(data);
-				}
-				
-				fin.close();
-
-				fout.close();
-
-				return SUCCESS;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return ERROR;
-			}
-
-		}
-
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 }

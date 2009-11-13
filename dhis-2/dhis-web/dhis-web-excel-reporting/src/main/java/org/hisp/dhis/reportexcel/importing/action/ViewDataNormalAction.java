@@ -45,70 +45,78 @@ import com.opensymphony.xwork2.Action;
  * @version $Id
  */
 
-public class ViewDataNormalAction implements Action {
-	
-	// --------------------------------------------------------------------
-	// Inputs && Outputs
-	// --------------------------------------------------------------------
+public class ViewDataNormalAction
+    implements Action
+{
 
-	private File upload;
+    // --------------------------------------------------------------------
+    // Inputs && Outputs
+    // --------------------------------------------------------------------
 
-	private List<ExcelItemValue> excelItemValues;
+    private File upload;
 
-	private ArrayList<ExcelItem> excelItems;
+    private List<ExcelItemValue> excelItemValues;
 
-	// --------------------------------------------------------------------
-	// Getters and Setters
-	// --------------------------------------------------------------------
+    private ArrayList<ExcelItem> excelItems;
 
-	public void setUpload(File upload) {
-		this.upload = upload;
-	}
+    // --------------------------------------------------------------------
+    // Getters and Setters
+    // --------------------------------------------------------------------
 
-	public void setExcelItems(ArrayList<ExcelItem> excelItems) {
-		this.excelItems = excelItems;
-	}
+    public void setUpload( File upload )
+    {
+        this.upload = upload;
+    }
 
-	public List<ExcelItemValue> getExcelItemValues() {
-		return excelItemValues;
-	}
+    public void setExcelItems( ArrayList<ExcelItem> excelItems )
+    {
+        this.excelItems = excelItems;
+    }
 
-	// --------------------------------------------------------------------
-	// Action implementation
-	// --------------------------------------------------------------------
+    public List<ExcelItemValue> getExcelItemValues()
+    {
+        return excelItemValues;
+    }
 
-	public String execute() {
-		try {
-			
-			Workbook templateWorkbook = Workbook.getWorkbook(upload);
+    // --------------------------------------------------------------------
+    // Action implementation
+    // --------------------------------------------------------------------
 
-			excelItemValues = new ArrayList<ExcelItemValue>();
+    public String execute()
+    {
+        try
+        {
 
-			for (ExcelItem excelItem : excelItems) {
+            Workbook templateWorkbook = Workbook.getWorkbook( upload );
 
-				Sheet sheet = templateWorkbook
-						.getSheet(excelItem.getSheetNo() - 1);
+            excelItemValues = new ArrayList<ExcelItemValue>();
 
-				String value = ExcelUtils.readValue(excelItem.getRow(),
-						excelItem.getColumn(), sheet);
+            for ( ExcelItem excelItem : excelItems )
+            {
 
-				ExcelItemValue excelItemvalue = new ExcelItemValue(excelItem,
-						value);
+                Sheet sheet = templateWorkbook.getSheet( excelItem.getSheetNo() - 1 );
 
-				if (value.length() == 0) {
-					excelItemvalue.setValue(0 + "");
-				}
+                String value = ExcelUtils.readValue( excelItem.getRow(), excelItem.getColumn(), sheet );
 
-				excelItemValues.add(excelItemvalue);
-			}
+                ExcelItemValue excelItemvalue = new ExcelItemValue( excelItem, value );
 
-			return SUCCESS;
+                if ( value.length() == 0 )
+                {
+                    excelItemvalue.setValue( 0 + "" );
+                }
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+                excelItemValues.add( excelItemvalue );
+            }
 
-		return ERROR;
-	}
+            return SUCCESS;
+
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+
+        return ERROR;
+    }
 
 }

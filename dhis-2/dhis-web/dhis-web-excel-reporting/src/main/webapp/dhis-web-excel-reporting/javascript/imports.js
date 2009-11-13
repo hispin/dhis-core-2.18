@@ -3,90 +3,18 @@ function organisationUnitSelected( orgUnits ){
 }
 selection.setListenerFunction( organisationUnitSelected );
 
-function deleteExcelFile( name ){
-	if(window.confirm(i18n_confirm_delete)){
-		window.location = "deleteExcelFile.action?fileName=" + name;
-	}
-}
-var fileName;
-function viewData(){
-	window.location = "viewExcelFileDataValue.action?fileName=" + fileName + "&reportId=" + document.getElementById("targetReport").value;
-}
-
-function openImportForm( name ){
-	fileName = name;
-	getALLReport();
-	showDivEffect();
-	setPositionCenter('importForm');
-	showById('importForm');
-}
-
-function getALLReport(){
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( getALLReportCompleted );
-	request.send( "getALLReportAjax.action");
-}
-
-function getALLReportCompleted( xmlObject ){
-	var reports = xmlObject.getElementsByTagName("report");
-	var selectList = document.getElementById("targetReport");
-	var options = selectList.options;
-	options.length = 0;
-	for(i=0;i<reports.length;i++){
-		var id = reports[i].getElementsByTagName("id")[0].firstChild.nodeValue;
-		var name = reports[i].getElementsByTagName("name")[0].firstChild.nodeValue;
-		options.add(new Option(name,id), null);
-	}
-}
-
-function currentYear(){
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( getListPeriodCompleted );
-	request.send( 'getPeriod.action?mode=current'); 
-}
-
-function lastYear(){
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( getListPeriodCompleted );
-	request.send( 'getPeriod.action?mode=previous'); 
-}
-
-function nextYear(){
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( getListPeriodCompleted );
-	request.send( 'getPeriod.action?mode=next'); 
-}
-
-function getListPeriodCompleted( xmlObject ){
-	clearListById('period');
-	var nodes = xmlObject.getElementsByTagName('period');
-	var length = nodes.length;
-	for ( var i = 0; i < length; i++ )
-    {
-        node = nodes.item(i);  
-        var id = node.getElementsByTagName('id')[0].firstChild.nodeValue;
-        var name = node.getElementsByTagName('name')[0].firstChild.nodeValue;
-		addOption('period', name, length - id - 1);
-    }
-}
-
 // -----------------------------------------------------------------------------
 // IMPORT DATA FROM EXCEL FILE INTO DATABASE
 // -----------------------------------------------------------------------------
 
 function importData(){
 	
-	var excelItemGroupId = byId('excelItemGroupId').value;
-	var upload = byId('uploadFileName').value;
+	var excelItemGroupId = byId('excelItemGroupId').value;	
 	var periodId = byId('period').value;
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( Completed );
+	request.setCallbackSuccess( importDataCompleted );
 	
 	// URL
 	url = 'importData.action?excelItemGroupId='+excelItemGroupId;
@@ -101,44 +29,34 @@ function importData(){
 				url +='&excelItemIds=' + excelItems[i].value;
 			}
 		}
-	}
-
-	url += '&uploadFileName='+ upload;
+	}	
 	url += '&periodId='+ periodId;
 	
 	request.send(url); 
 }
 
-function Completed( xmlObject ){
+function importDataCompleted( xmlObject ){
 	
-	if(document.getElementById('message') != null){
-		document.getElementById('message').style.display = 'block';
-		document.getElementById('message').innerHTML = xmlObject.firstChild.nodeValue;
-	}
+	setMessage(xmlObject.firstChild.nodeValue);	
 }
 
 // -----------------------------------------------------------------------------
 // PREVIEW DATA FLOW
 // -----------------------------------------------------------------------------
 
-function getPreviewImportData(fileExcel){
+function getPreviewImportData(){	
+		
+	var request = new Request();
 	
-	if(byId('excelItemGroupId').value > 0){
+	request.setResponseTypeXML( 'xmlObject' );
+	
+	request.setCallbackSuccess( getReportItemValuesReceived );
+	
+	var excelItemGroupId = byId("excelItemGroupId").value;
+	
+	request.send( "previewDataFlow.action?excelItemGroupId=" + excelItemGroupId );
 		
-		var request = new Request();
-		
-		request.setResponseTypeXML( 'xmlObject' );
-		
-		request.setCallbackSuccess( getReportItemValuesReceived );
-		
-		var excelItemGroupId = byId("excelItemGroupId").value;
-		
-		request.send( "previewDataFlow.action?excelItemGroupId=" + excelItemGroupId +"&uploadFileName=" + fileExcel);
-	}else{
-		
-		var availableDiv = byId('showValue');
-		availableDiv.style.display = 'none';
-	}
+	
 }
 
 
@@ -350,12 +268,12 @@ function selectAll(){
 // PERIOD TYPE
 // --------------------------------------------------------------------
 
-function getPeriodsByPeriodTypeName(excelItemGroupId) {
+function getPeriodsByExcelItemGroup(excelItemGroupId) {
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( responseListPeriodReceived );
-	request.send( 'getPeriods.action?excelItemGroupId=' + excelItemGroupId);
+	request.send( 'getPeriodsByExcelItemGroup.action?excelItemGroupId=' + excelItemGroupId);
 }
 
 function responseListPeriodReceived( xmlObject ) {
@@ -376,7 +294,7 @@ function lastPeriod() {
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( responseListPeriodReceived );
-	request.send( 'previousPeriods.action' ); 
+	request.send( 'previousPeriodsGeneric.action' ); 
 }
 
 function nextPeriod() {
@@ -384,5 +302,5 @@ function nextPeriod() {
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( responseListPeriodReceived );
-	request.send( 'nextPeriods.action' ); 
+	request.send( 'nextPeriodsGeneric.action' ); 
 }

@@ -41,7 +41,9 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.ReportExcelCategory;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
+import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
 import org.hisp.dhis.reportexcel.preview.action.GeneratePreviewReportExcelSupport;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
@@ -54,11 +56,12 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 public class GeneratePreviewAdvancedCategoryAction
     extends GeneratePreviewReportExcelSupport
 {
+
     // ---------------------------------------------------------------------
     // Dependency
     // ---------------------------------------------------------------------
 
-    private OrganisationUnitGroupService organisationUnitGroupService;
+    private OrganisationUnitGroupService organisationUnitGroupService; 
 
     // ---------------------------------------------------------------------
     // Input && Output
@@ -80,6 +83,7 @@ public class GeneratePreviewAdvancedCategoryAction
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
+  
     // ---------------------------------------------------------------------
     // Action implementation
     // ---------------------------------------------------------------------
@@ -91,12 +95,13 @@ public class GeneratePreviewAdvancedCategoryAction
 
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( orgunitGroupId.intValue() );
-        
-        Period period = selectionManager.getSelectedPeriod();
+
+        Period period = periodDatabaseService.getSelectedPeriod();
+
         this.installPeriod( period );
-        
+
         ReportExcelCategory reportExcel = (ReportExcelCategory) reportService.getReportExcel( selectionManager
-            .getSelectedReportExcelId() );
+            .getSelectedReportId() );
 
         this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );
 
@@ -105,18 +110,18 @@ public class GeneratePreviewAdvancedCategoryAction
             HSSFSheet sheet = this.templateWorkbook.getSheetAt( this.sheetId - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( this.sheetId,
-                selectionManager.getSelectedReportExcelId() );
+                selectionManager.getSelectedReportId() );
 
             this.generateOutPutFile( organisationUnitGroup.getMembers(), reportExcelItems, reportExcel, sheet );
         }
         else
         {
-            for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
+            for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
             {
                 HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
                 Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( this.sheetId,
-                    selectionManager.getSelectedReportExcelId() );
+                    selectionManager.getSelectedReportId() );
 
                 this.generateOutPutFile( organisationUnitGroup.getMembers(), reportExcelItems, reportExcel, sheet );
             }

@@ -69,6 +69,8 @@ import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
+import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.reportexcel.utils.DateUtils;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 import org.hisp.dhis.system.util.MathUtils;
@@ -119,6 +121,8 @@ public abstract class GenerateReportExcelSupport
     protected DataMartStore dataMartStore;
 
     protected SelectionManager selectionManager;
+
+    protected PeriodDatabaseService periodDatabaseService;
 
     // -------------------------------------------
     // Output
@@ -200,6 +204,11 @@ public abstract class GenerateReportExcelSupport
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
+    }
+
+    public void setPeriodDatabaseService( PeriodDatabaseService periodDatabaseService )
+    {
+        this.periodDatabaseService = periodDatabaseService;
     }
 
     // -----------------------------------------
@@ -341,7 +350,7 @@ public abstract class GenerateReportExcelSupport
     protected void installReadTemplateFile( ReportExcel reportExcel, Period period, OrganisationUnit organisationUnit )
         throws BiffException, IOException, RowsExceededException, WriteException, IndexOutOfBoundsException
     {
-    	
+
         File reportTempDir = reportLocationManager.getReportExcelTempDirectory();
 
         this.inputExcelTemplate = new File( reportLocationManager.getReportExcelTemplateDirectory() + File.separator
@@ -351,7 +360,7 @@ public abstract class GenerateReportExcelSupport
 
         this.outputReportFile = new File( reportTempDir, currentUserService.getCurrentUsername()
             + this.dateformatter.format( calendar.getTime() ) + inputExcelTemplate.getName() );
-		
+
         Workbook templateWorkbook = Workbook.getWorkbook( inputExcelTemplate );
 
         outputReportWorkbook = Workbook.createWorkbook( outputReportFile, templateWorkbook );
@@ -361,7 +370,7 @@ public abstract class GenerateReportExcelSupport
 
         ExcelUtils.writeValue( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(),
             format.formatPeriod( period ), ExcelUtils.TEXT, outputReportWorkbook.getSheet( 0 ), text );
-        
+
     }
 
     protected double getIndicatorValue( ReportExcelItem reportItem, OrganisationUnit organisationUnit )
@@ -413,8 +422,8 @@ public abstract class GenerateReportExcelSupport
         outputReportWorkbook.write();
 
         outputReportWorkbook.close();
-        
-        selectionManager.setDownloadFilePath(  outputReportFile.getPath() );
+
+        selectionManager.setDownloadFilePath( outputReportFile.getPath() );
     }
 
     protected String generateIndicatorExpression( ReportExcelItem reportItem, Date startDate, Date endDate,
@@ -574,7 +583,8 @@ public abstract class GenerateReportExcelSupport
 
     }
 
-    protected void installReadTemplateFile( ReportExcel reportExcel, Period period, OrganisationUnitGroup organisationUnitGroup )
+    protected void installReadTemplateFile( ReportExcel reportExcel, Period period,
+        OrganisationUnitGroup organisationUnitGroup )
         throws BiffException, IOException, RowsExceededException, WriteException, IndexOutOfBoundsException
     {
 
@@ -592,8 +602,8 @@ public abstract class GenerateReportExcelSupport
 
         outputReportWorkbook = Workbook.createWorkbook( outputReportFile, templateWorkbook );
 
-        ExcelUtils.writeValue( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(), organisationUnitGroup
-            .getName(), ExcelUtils.TEXT, outputReportWorkbook.getSheet( 0 ), text );
+        ExcelUtils.writeValue( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
+            organisationUnitGroup.getName(), ExcelUtils.TEXT, outputReportWorkbook.getSheet( 0 ), text );
 
         ExcelUtils.writeValue( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(),
             format.formatPeriod( period ), ExcelUtils.TEXT, outputReportWorkbook.getSheet( 0 ), text );

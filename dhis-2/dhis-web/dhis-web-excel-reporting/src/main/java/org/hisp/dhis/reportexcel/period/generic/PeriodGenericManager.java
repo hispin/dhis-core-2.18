@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.importing.period.action;
+package org.hisp.dhis.reportexcel.period.generic;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -30,49 +30,27 @@ package org.hisp.dhis.reportexcel.importing.period.action;
 import java.util.List;
 
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class PreviousPeriodsAction implements Action {
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+public interface PeriodGenericManager
+{        
+    
+    public void setSelectedPeriodIndex( Integer index );
 
-	private SelectedStateManager selectedStateManager;
+    public Integer getSelectedPeriodIndex();
 
-	// -------------------------------------------------------------------------
-	// Output
-	// -------------------------------------------------------------------------
+    public Period getSelectedPeriod();
+    
+    public void setPeriodType( String periodTypeNam );
 
-	private List<Period> periods;
+    public void clearSelectedPeriod();
 
-	// -------------------------------------------------------------------------
-	// Getter && Setter
-	// -------------------------------------------------------------------------
-	public void setSelectedStateManager(
-			SelectedStateManager selectedStateManager) {
-		this.selectedStateManager = selectedStateManager;
-	}
+    public List<Period> getPeriodList();
 
-	public List<Period> getPeriods() {
-		return periods;
-	}
+    public void nextPeriodSpan();
 
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
-
-	public String execute() throws Exception {
-
-		selectedStateManager.previousPeriodSpan();
-
-		periods = selectedStateManager.getPeriodList();
-
-		return SUCCESS;
-	}
+    public void previousPeriodSpan();
 }

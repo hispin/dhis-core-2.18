@@ -24,108 +24,75 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.export.action;
+package org.hisp.dhis.reportexcel.export.advance.action;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.comparator.PeriodComparator;
-import org.hisp.dhis.reportexcel.utils.DateUtils;
+import org.hisp.dhis.reportexcel.ReportExcel;
+import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.comparator.ReportExcelNameComparator;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
+
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class GetMonthlyPeriodsAction implements Action
+
+public class GetReportExcelsByGroupAction
+    implements Action
 {
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
 
-    private SelectionManager selectionManager;
+    private ReportExcelService reportService;
 
-    private PeriodService periodService;
+    private CurrentUserService currentUserService;
 
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
 
-    private String mode;
+    private List<ReportExcel> reports;
 
-    private List<Period> periods;
+    private String group;
 
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
 
-    public void setPeriodService( PeriodService periodService )
+    public List<ReportExcel> getReports()
     {
-        this.periodService = periodService;
+        return reports;
     }
 
-    public List<Period> getPeriods()
+    public void setCurrentUserService( CurrentUserService currentUserService )
     {
-        return periods;
+        this.currentUserService = currentUserService;
     }
 
-    public void setSelectionManager( SelectionManager selectionManager )
+    public void setReportService( ReportExcelService reportService )
     {
-        this.selectionManager = selectionManager;
+        this.reportService = reportService;
     }
 
-    public void setMode( String mode )
+    public void setGroup( String group )
     {
-        this.mode = mode;
+        this.group = group;
     }
 
+    @Override
     public String execute()
         throws Exception
     {
-        int selectedYear = selectionManager.getSelectedYear();
+        reports = new ArrayList<ReportExcel>( reportService.getReportExcels( currentUserService.getCurrentUser(),
+            currentUserService.currentUserIsSuper(), group ) );
 
-        Date lastDateOfYear;
-
-        if ( mode.equalsIgnoreCase( "current" ) )
-        {
-            selectedYear = DateUtils.getCurrentYear();
-
-            int currentDay = DateUtils.getCurrentMonth();
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.set( Calendar.YEAR, selectedYear );
-            calendar.set( Calendar.MONTH, currentDay );
-            calendar.set( Calendar.DATE, calendar.getActualMaximum( Calendar.DATE ) );
-
-            lastDateOfYear = calendar.getTime();
-        }
-
-        if ( mode.equalsIgnoreCase( "next" ) )
-        {
-            selectedYear++;
-        }
-        if ( mode.equalsIgnoreCase( "previous" ) )
-        {
-            selectedYear--;
-        }
-        selectionManager.setSeletedYear( selectedYear );
-
-        Date firstDateOfYear = DateUtils.getFirstDayOfYear( selectedYear );
-
-        lastDateOfYear = DateUtils.getLastDayOfYear( selectedYear );
-
-        PeriodType periodType = periodService.getPeriodTypeByName( "Monthly" );
-
-        periods = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( periodType, firstDateOfYear,
-            lastDateOfYear ) );
-
-        Collections.sort( periods, new PeriodComparator() );
+        Collections.sort( reports, new ReportExcelNameComparator() );
 
         return SUCCESS;
     }

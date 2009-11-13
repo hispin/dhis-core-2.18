@@ -57,6 +57,46 @@
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
+		<!-- PROCESSED FOR PERIOD IN REPORT -->
+
+		<action name="getPeriodsByPeriodTypeDB"
+			class="org.hisp.dhis.reportexcel.period.db.action.GetPeriodsByPeriodTypeAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responsePeriods.vm</result>
+		</action>
+
+		<action name="nextPeriodsDB"
+			class="org.hisp.dhis.reportexcel.period.db.action.NextPeriodsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responsePeriods.vm</result>
+		</action>
+
+		<action name="previousPeriodsDB"
+			class="org.hisp.dhis.reportexcel.period.db.action.PreviousPeriodsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responsePeriods.vm</result>
+		</action>
+
+		<action name="getPeriodsByPeriodTypeGeneric"
+			class="org.hisp.dhis.reportexcel.period.generic.action.GetPeriodsByPeriodTypeAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responsePeriods.vm</result>
+		</action>
+
+		<action name="nextPeriodsGeneric"
+			class="org.hisp.dhis.reportexcel.period.generic.action.NextPeriodsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responsePeriods.vm</result>
+		</action>
+
+		<action name="previousPeriodsGeneric"
+			class="org.hisp.dhis.reportexcel.period.generic.action.PreviousPeriodsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responsePeriods.vm</result>
+		</action>
+
+
+
 		<!-- REPORT EXCEL CORE ACTION -->
 
 		<action name="addReportExcel"
@@ -388,12 +428,6 @@
 				/dhis-web-excel-reporting/responseListReport.vm</result>
 		</action>
 
-		<action name="getPeriods"
-			class="org.hisp.dhis.reportexcel.export.action.GetMonthlyPeriodsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responsePeriods.vm</result>
-		</action>
-
 		<!-- Generate Report By Ajax -->
 
 		<action name="generateReportExcel"
@@ -618,6 +652,12 @@
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,javascript/commons.js,javascript/preview.js</param>
 		</action>
 
+		<action name="getALLReportExcelByGroup"
+			class="org.hisp.dhis.reportexcel.export.advance.action.GetReportExcelsByGroupAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseListReport.vm</result>
+		</action>
+
 		<action name="generateAdvancedReportExcel"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
 			<result name="CATEGORY" type="chain">
@@ -733,27 +773,6 @@
 			</result>
 		</action>
 
-		<!-- PROCESSED FOR PERIOD IN INDIVIDUAL REPORT -->
-
-		<action name="getPeriodsByPeriodType"
-			class="org.hisp.dhis.reportexcel.export.individual.action.GetPeriodsByPeriodTypeAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responsePeriods.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-excel-reporting/responseError.vm</result>
-		</action>
-
-		<action name="nextPeriods"
-			class="org.hisp.dhis.reportexcel.export.individual.action.NextPeriodsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responsePeriods.vm</result>
-		</action>
-
-		<action name="previousPeriods"
-			class="org.hisp.dhis.reportexcel.export.individual.action.PreviousPeriodsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responsePeriods.vm</result>
-		</action>
 
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<!-- EXCEL ITEM GROUP                                               -->
@@ -969,14 +988,14 @@
 
 		<!-- IMPORT DATA -->
 
-		<action name="getImportingParams"
+		<action name="uploadExcelImport"
 			class="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction">
-			<result name="success" type="chain">
-				getImportingParamsChain</result>
+			<result name="success" type="redirect">getImportingParams.action
+			</result>
 			<interceptor-ref name="fileUploadStack" />
 		</action>
 
-		<action name="getImportingParamsChain"
+		<action name="getImportingParams"
 			class="org.hisp.dhis.reportexcel.importing.action.GetImportingParamsAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
@@ -986,6 +1005,12 @@
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/export.js,
 				javascript/commons.js,javascript/imports.js</param>
 			<param name="stylesheets">style/style.css</param>
+		</action>
+		
+		<action name="getPeriodsByExcelItemGroup"
+			class="org.hisp.dhis.reportexcel.importing.action.GetPeriodsByExcelItemGroupAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responsePeriods.vm</result>
 		</action>
 
 		<action name="openExcelItemGroupAssociations"
@@ -1030,6 +1055,7 @@
 		</action>
 
 		<!--  function - Prewiew Data  flow from excel file  -->
+
 		<action name="previewDataFlow"
 			class="org.hisp.dhis.reportexcel.importing.action.ViewDataFlowAction">
 			<result name="CATEGORY" type="chain">
@@ -1116,28 +1142,39 @@
 				/dhis-web-excel-reporting/responseError.vm</result>
 		</action>
 
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<!-- PERIOD                                                        -->
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+		<!-- Period Column -->
 
-		<action name="getPeriods"
-			class="org.hisp.dhis.reportexcel.importing.period.action.GetPeriodsByExcelItemGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responsePeriods.vm
+		<action name="periodColumns"
+			class="org.hisp.dhis.reportexcel.action.GetReportExcelAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-excel-reporting/periodcolumns.vm</param>
+			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
+			<param name="javascripts">javascript/commons.js,javascript/periodcolumn.js,javascript/ui/ui.datepicker.js</param>
+			<param name="stylesheets">style/ui.datepicker.css,style/jquery-ui.css</param>
+		</action>
+
+		<action name="savePeriodColumn"
+			class="org.hisp.dhis.reportexcel.periodcolumn.action.SavePeriodColumnAction">
+			<result name="success" type="redirect">periodColumns.action?id=${id}
 			</result>
 		</action>
 
-		<action name="nextPeriods"
-			class="org.hisp.dhis.reportexcel.importing.period.action.NextPeriodsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responsePeriods.vm
-			</result>
+		<action name="updatePeriodColumn"
+			class="org.hisp.dhis.reportexcel.periodcolumn.action.UpdatePeriodColumnAction">
+			<result name="success" type="redirect">
+				periodColumns.action?id=${reportId}</result>
 		</action>
 
-		<action name="previousPeriods"
-			class="org.hisp.dhis.reportexcel.importing.period.action.PreviousPeriodsAction">
+		<action name="deletePeriodColumn"
+			class="org.hisp.dhis.reportexcel.periodcolumn.action.DeletePeriodColumnAction">
+			<result name="success" type="redirect">
+				periodColumns.action?id=${reportId}</result>
+		</action>
+
+		<action name="getPeriodColumn"
+			class="org.hisp.dhis.reportexcel.periodcolumn.action.GetPeriodColumnAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responsePeriods.vm
+				/dhis-web-excel-reporting/responsePeriodColumn.vm
 			</result>
 		</action>
 	</package>

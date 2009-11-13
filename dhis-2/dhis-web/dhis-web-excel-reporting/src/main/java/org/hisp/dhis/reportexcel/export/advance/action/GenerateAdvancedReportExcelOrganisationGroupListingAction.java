@@ -42,6 +42,8 @@ import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelOganiztionGroupListing;
 import org.hisp.dhis.reportexcel.export.action.GenerateReportExcelSupport;
+import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
@@ -87,8 +89,8 @@ public class GenerateAdvancedReportExcelOrganisationGroupListingAction
         throws Exception
     {
         statementManager.initialise();
-        
-        Period period = selectionManager.getSelectedPeriod();
+
+        Period period = periodDatabaseService.getSelectedPeriod();
 
         this.installExcelFormat();
 
@@ -98,16 +100,16 @@ public class GenerateAdvancedReportExcelOrganisationGroupListingAction
             .getOrganisationUnitGroup( organisationGroupId.intValue() );
 
         ReportExcelOganiztionGroupListing reportExcel = (ReportExcelOganiztionGroupListing) reportService
-            .getReportExcel( selectionManager.getSelectedReportExcelId() );
+            .getReportExcel( selectionManager.getSelectedReportId() );
 
         this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );
 
-        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
+        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             WritableSheet sheet = outputReportWorkbook.getSheet( sheetNo - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo, selectionManager
-                .getSelectedReportExcelId() );
+                .getSelectedReportId() );
 
             this.generateOutPutFile( reportExcel, reportExcelItems, organisationUnitGroup.getMembers(), sheet );
 

@@ -51,131 +51,140 @@ import com.opensymphony.xwork2.Action;
  * @version $Id
  */
 
-public class ViewDataOrganizationGroupAction implements Action {
+public class ViewDataOrganizationGroupAction
+    implements Action
+{
 
-	// --------------------------------------------------------------------
-	// Dependency
-	// --------------------------------------------------------------------
+    // --------------------------------------------------------------------
+    // Dependency
+    // --------------------------------------------------------------------
 
-	private OrganisationUnitSelectionManager organisationUnitSelectionManager;
+    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
-	// --------------------------------------------------------------------
-	// Inputs && Outputs
-	// --------------------------------------------------------------------
+    // --------------------------------------------------------------------
+    // Inputs && Outputs
+    // --------------------------------------------------------------------
 
-	private File upload;
+    private File upload;
 
-	private List<ExcelItemValueByOrganisationUnit> excelItemValueByOrgUnits;
+    private List<ExcelItemValueByOrganisationUnit> excelItemValueByOrgUnits;
 
-	private ArrayList<ExcelItem> excelItems;
+    private ArrayList<ExcelItem> excelItems;
 
-	private ExcelItemGroup excelItemGroup;
+    private ExcelItemGroup excelItemGroup;
 
-	// --------------------------------------------------------------------
-	// Getters and Setters
-	// --------------------------------------------------------------------
+    // --------------------------------------------------------------------
+    // Getters and Setters
+    // --------------------------------------------------------------------
 
-	public void setUpload(File upload) {
-		this.upload = upload;
-	}
+    public void setUpload( File upload )
+    {
+        this.upload = upload;
+    }
 
-	public void setOrganisationUnitSelectionManager(
-			OrganisationUnitSelectionManager organisationUnitSelectionManager) {
-		this.organisationUnitSelectionManager = organisationUnitSelectionManager;
-	}
+    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    {
+        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+    }
 
-	public void setExcelItemGroup(ExcelItemGroup excelItemGroup) {
-		this.excelItemGroup = excelItemGroup;
-	}
+    public void setExcelItemGroup( ExcelItemGroup excelItemGroup )
+    {
+        this.excelItemGroup = excelItemGroup;
+    }
 
-	public void setExcelItems(ArrayList<ExcelItem> excelItems) {
-		this.excelItems = excelItems;
-	}
+    public void setExcelItems( ArrayList<ExcelItem> excelItems )
+    {
+        this.excelItems = excelItems;
+    }
 
-	public List<ExcelItemValueByOrganisationUnit> getExcelItemValueByOrgUnits() {
-		return excelItemValueByOrgUnits;
-	}
+    public List<ExcelItemValueByOrganisationUnit> getExcelItemValueByOrgUnits()
+    {
+        return excelItemValueByOrgUnits;
+    }
 
-	// --------------------------------------------------------------------
-	// Action implementation
-	// --------------------------------------------------------------------
+    // --------------------------------------------------------------------
+    // Action implementation
+    // --------------------------------------------------------------------
 
-	public String execute() {
-		try {
+    public String execute()
+    {
+        try
+        {
 
-			OrganisationUnit organisationUnit = organisationUnitSelectionManager
-					.getSelectedOrganisationUnit();
+            OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
-			Workbook uploadWorkbook = Workbook.getWorkbook(upload);
+            Workbook uploadWorkbook = Workbook.getWorkbook( upload );
 
-			excelItemValueByOrgUnits = new ArrayList<ExcelItemValueByOrganisationUnit>();
+            excelItemValueByOrgUnits = new ArrayList<ExcelItemValueByOrganisationUnit>();
 
-			if (organisationUnit != null) {
-				
-				for (OrganisationUnitGroup organisationUnitGroup : excelItemGroup
-						.getOrganisationUnitGroups()) {
+            if ( organisationUnit != null )
+            {
 
-					Collection<OrganisationUnit> organisationUnits = getOrganisationUnits(
-							organisationUnitGroup, organisationUnit);
+                for ( OrganisationUnitGroup organisationUnitGroup : excelItemGroup.getOrganisationUnitGroups() )
+                {
 
-					int row = 0;
+                    Collection<OrganisationUnit> organisationUnits = getOrganisationUnits( organisationUnitGroup,
+                        organisationUnit );
 
-					for (OrganisationUnit o : organisationUnits) {
+                    int row = 0;
 
-						ExcelItemValueByOrganisationUnit excelItemValueByOrgUnit = new ExcelItemValueByOrganisationUnit(
-								o);
-						ArrayList<ExcelItemValue> excelItemValues = new ArrayList<ExcelItemValue>();
-						
-						for (ExcelItem excelItem : excelItems) {
+                    for ( OrganisationUnit o : organisationUnits )
+                    {
 
-							Sheet sheet = uploadWorkbook.getSheet(excelItem
-									.getSheetNo() - 1);
+                        ExcelItemValueByOrganisationUnit excelItemValueByOrgUnit = new ExcelItemValueByOrganisationUnit(
+                            o );
+                        ArrayList<ExcelItemValue> excelItemValues = new ArrayList<ExcelItemValue>();
 
-							String value = ExcelUtils.readValue(excelItem
-									.getRow()
-									+ row, excelItem.getColumn(), sheet);
+                        for ( ExcelItem excelItem : excelItems )
+                        {
 
-							ExcelItemValue excelItemvalue = new ExcelItemValue(
-									excelItem, value);
+                            Sheet sheet = uploadWorkbook.getSheet( excelItem.getSheetNo() - 1 );
 
-							if (value.length() == 0) {
-								excelItemvalue.setValue(0 + "");
-							}
+                            String value = ExcelUtils
+                                .readValue( excelItem.getRow() + row, excelItem.getColumn(), sheet );
 
-							excelItemValues.add(excelItemvalue);
-							
-						}// end for (ExcelItem ...
+                            ExcelItemValue excelItemvalue = new ExcelItemValue( excelItem, value );
 
-						row++;
-						
-						excelItemValueByOrgUnit.setExcelItemValues(excelItemValues);
+                            if ( value.length() == 0 )
+                            {
+                                excelItemvalue.setValue( 0 + "" );
+                            }
 
-						excelItemValueByOrgUnits.add(excelItemValueByOrgUnit);
-						
-					}// end for (OrganisationUnit ...
+                            excelItemValues.add( excelItemvalue );
 
-				} // end for ( OrganisationUnitGroup ...
-				
-			}// end if (organisationUnit ...
+                        }// end for (ExcelItem ...
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+                        row++;
 
-		return SUCCESS;
-	}
+                        excelItemValueByOrgUnit.setExcelItemValues( excelItemValues );
 
-	private Collection<OrganisationUnit> getOrganisationUnits(
-			OrganisationUnitGroup group, OrganisationUnit parentUnit) {
+                        excelItemValueByOrgUnits.add( excelItemValueByOrgUnit );
 
-		List<OrganisationUnit> childrenOrganisationUnits = new ArrayList<OrganisationUnit>(
-				parentUnit.getChildren());
+                    }// end for (OrganisationUnit ...
 
-		Collection<OrganisationUnit> organisationUnits = group.getMembers();
+                } // end for ( OrganisationUnitGroup ...
 
-		organisationUnits.retainAll(childrenOrganisationUnits);
+            }// end if (organisationUnit ...
 
-		return organisationUnits;
-	}
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+
+        return SUCCESS;
+    }
+
+    private Collection<OrganisationUnit> getOrganisationUnits( OrganisationUnitGroup group, OrganisationUnit parentUnit )
+    {
+
+        List<OrganisationUnit> childrenOrganisationUnits = new ArrayList<OrganisationUnit>( parentUnit.getChildren() );
+
+        Collection<OrganisationUnit> organisationUnits = group.getMembers();
+
+        organisationUnits.retainAll( childrenOrganisationUnits );
+
+        return organisationUnits;
+    }
 
 }

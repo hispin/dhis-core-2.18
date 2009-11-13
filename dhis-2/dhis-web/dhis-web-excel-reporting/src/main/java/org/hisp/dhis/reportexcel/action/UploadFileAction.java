@@ -3,9 +3,8 @@ package org.hisp.dhis.reportexcel.action;
 import java.io.File;
 
 import org.hisp.dhis.reportexcel.ReportLocationManager;
-import org.hisp.dhis.reportexcel.export.action.SelectionManager;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.system.util.StreamUtils;
-
 import com.opensymphony.xwork2.Action;
 
 public class UploadFileAction
@@ -54,8 +53,8 @@ public class UploadFileAction
 
         File output = new File( directory, (Math.random() * 1000) + fileName );
 
-        selectionManager.setUploadFilepath( output.getAbsolutePath() );        
-        
+        selectionManager.setUploadFilePath( output.getAbsolutePath() );
+
         StreamUtils.write( upload, output );
 
         return SUCCESS;

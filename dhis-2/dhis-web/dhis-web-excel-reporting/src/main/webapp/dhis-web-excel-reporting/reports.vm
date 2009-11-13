@@ -46,6 +46,10 @@
 				<a href="listDataElementGroupOrder.action?id=$report.id" title="$i18n.getString( 'dataelement_groups' )"><img src="images/group.jpg"/></a>
 				
 				#end
+				
+				#if($report.isPeriodColumnListing())
+				<a href="periodColumns.action?id=$report.id" title="$i18n.getString( 'period_columns' )"><img src="images/calendar.png"/></a>
+				#end
 
 			</td>
 		</tr>

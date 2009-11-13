@@ -32,7 +32,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import org.hisp.dhis.reportexcel.export.action.SelectionManager;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 

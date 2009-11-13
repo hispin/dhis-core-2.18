@@ -149,7 +149,7 @@
       <tr>
         <td colspan="3">
           <input type="button" value="$i18n.getString( "generate" )" style="width:10em" onClick="generateIndividualReportExcel();">
-		  <input type="button" value="$i18n.getString( "bookmark" )" style="width:10em">
+		  <!--input type="button" value="$i18n.getString( "bookmark" )" style="width:10em"-->
         </td>
       </tr>
       

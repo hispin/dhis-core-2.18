@@ -3,7 +3,7 @@
 	<tr>
 		<td ><label>$i18n.getString('group')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select type="text" id="group" name="group" style="width:20em" onchange="getReportExcelsByGroup()" >
+			<select type="text" id="group" name="group" style="width:20em" onchange="getALLReportExcelByGroup()" >
 				#foreach($reportGroup in $reportGroups)
 					<option value='$reportGroup'>$reportGroup</option>				
 				#end
@@ -23,7 +23,7 @@
 	<tr>
 		<td></td>
 		<td>
-			<input type="button" value="<<" onclick="lastYear();" /><input type="button" value=">>"  onclick="nextYear()"/>
+			<input type="button" value="<<" onclick="lastPeriod();" /><input type="button" value=">>"  onclick="nextPeriod()"/>
 		</td>
     </tr>
 	<tr>
@@ -68,5 +68,6 @@
 <span id="loading" style="display:none;position:fixed;"><img src="../images/ajax-loader.gif" /></span>
 
 <script>
-	getReportExcelsByGroup();
+	getALLReportExcelByGroup();
+	getPeriodsByPeriodTypeName();
 </script>

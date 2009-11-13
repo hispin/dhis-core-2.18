@@ -54,26 +54,26 @@ public class GenerateReportExcelCategoryAction
         statementManager.initialise();
 
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-        Period period = selectionManager.getSelectedPeriod();
+        Period period = periodDatabaseService.getSelectedPeriod();
         this.installExcelFormat();
         this.installPeriod( period );
 
         ReportExcelCategory reportExcel = (ReportExcelCategory) reportService.getReportExcel( selectionManager
-            .getSelectedReportExcelId() );
+            .getSelectedReportId() );
 
         this.installReadTemplateFile( reportExcel, period, organisationUnit );
 
-        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
+        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             WritableSheet sheet = outputReportWorkbook.getSheet( sheetNo - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo, selectionManager
-                .getSelectedReportExcelId() );
+                .getSelectedReportId() );
 
             this.generateOutPutFile( organisationUnit, reportExcelItems, reportExcel, sheet );
 
         }
-     
+
         this.complete();
 
         statementManager.destroy();
@@ -94,7 +94,7 @@ public class GenerateReportExcelCategoryAction
             {
 
                 int beginChapter = rowBegin;
-                
+
                 if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_NAME ) )
                 {
                     ExcelUtils.writeValue( rowBegin, reportItem.getColumn(), dataElementGroup.getName(),
@@ -107,9 +107,9 @@ public class GenerateReportExcelCategoryAction
                 }
 
                 rowBegin++;
-                
+
                 int serial = 1;
-                
+
                 for ( DataElement dataElement : dataElementGroup.getDataElements() )
                 {
 

@@ -42,6 +42,8 @@ import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.ReportExcelCategory;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.export.action.GenerateReportExcelSupport;
+import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
@@ -56,7 +58,7 @@ public class GenerateAdvancedReportExcelCategoryAction
     // Dependency
     // ---------------------------------------------------------------------
 
-    private OrganisationUnitGroupService organisationUnitGroupService;
+    private OrganisationUnitGroupService organisationUnitGroupService;  
 
     // ---------------------------------------------------------------------
     // Input && Output
@@ -71,7 +73,7 @@ public class GenerateAdvancedReportExcelCategoryAction
     public void setOrganisationGroupId( Integer organisationGroupId )
     {
         this.organisationGroupId = organisationGroupId;
-    }
+    }   
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
@@ -88,23 +90,23 @@ public class GenerateAdvancedReportExcelCategoryAction
         statementManager.initialise();
 
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
-            .getOrganisationUnitGroup( organisationGroupId.intValue() );
+            .getOrganisationUnitGroup( organisationGroupId );
 
-        Period period = selectionManager.getSelectedPeriod();
+        Period period = periodDatabaseService.getSelectedPeriod();
         this.installExcelFormat();
         this.installPeriod( period );
 
         ReportExcelCategory reportExcel = (ReportExcelCategory) reportService.getReportExcel( selectionManager
-            .getSelectedReportExcelId() );
+            .getSelectedReportId() );
 
         this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );
 
-        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
+        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             WritableSheet sheet = outputReportWorkbook.getSheet( sheetNo - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo, selectionManager
-                .getSelectedReportExcelId() );
+                .getSelectedReportId() );
 
             this.generateOutPutFile( organisationUnitGroup.getMembers(), reportExcelItems, reportExcel, sheet );
 
@@ -117,8 +119,8 @@ public class GenerateAdvancedReportExcelCategoryAction
         return SUCCESS;
     }
 
-    private void generateOutPutFile( Set<OrganisationUnit> organisationUnits, Collection<ReportExcelItem> reportExcelItems,
-        ReportExcelCategory reportExcel, WritableSheet sheet )
+    private void generateOutPutFile( Set<OrganisationUnit> organisationUnits,
+        Collection<ReportExcelItem> reportExcelItems, ReportExcelCategory reportExcel, WritableSheet sheet )
         throws RowsExceededException, WriteException
     {
 
@@ -181,7 +183,8 @@ public class GenerateAdvancedReportExcelCategoryAction
                         newReportItem.setExpression( expression );
 
                         double value = 0.0;
-                        for(OrganisationUnit organisationUnit : organisationUnits){
+                        for ( OrganisationUnit organisationUnit : organisationUnits )
+                        {
                             value += this.getDataValue( newReportItem, organisationUnit );
                         }
                         ExcelUtils.writeValue( rowBegin, reportItem.getColumn(), String.valueOf( value ),

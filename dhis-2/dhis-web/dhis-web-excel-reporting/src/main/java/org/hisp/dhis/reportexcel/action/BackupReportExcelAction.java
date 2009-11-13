@@ -38,7 +38,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
-import org.hisp.dhis.reportexcel.export.action.SelectionManager;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 

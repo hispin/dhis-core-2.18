@@ -51,38 +51,38 @@ public class GeneratePreviewNormalAction
         statementManager.initialise();
 
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-        Period period = selectionManager.getSelectedPeriod();
+        Period period = periodDatabaseService.getSelectedPeriod();
         this.installPeriod( period );
 
         ReportExcelNormal reportExcel = (ReportExcelNormal) reportService.getReportExcel( selectionManager
-            .getSelectedReportExcelId() );
+            .getSelectedReportId() );
 
         this.installReadTemplateFile( reportExcel, period, organisationUnit );
-        
+
         if ( this.sheetId > 0 )
         {
             HSSFSheet sheet = this.templateWorkbook.getSheetAt( this.sheetId - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( this.sheetId,
-                selectionManager.getSelectedReportExcelId() );
+                selectionManager.getSelectedReportId() );
 
             this.generateOutPutFile( organisationUnit, reportExcelItems, sheet );
         }
         else
         {
-            for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
+            for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
             {
                 HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
                 Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo,
-                    selectionManager.getSelectedReportExcelId() );
+                    selectionManager.getSelectedReportId() );
 
                 this.generateOutPutFile( organisationUnit, reportExcelItems, sheet );
             }
         }
 
         this.complete();
-        
+
         statementManager.destroy();
 
         return SUCCESS;

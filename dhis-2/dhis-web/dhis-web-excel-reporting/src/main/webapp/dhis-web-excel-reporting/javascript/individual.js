@@ -262,7 +262,7 @@ function generateIndividualReportExcel(){
 		operands:operands,
 		periods:periods
 		},function(data){		
-			window.location = "downloadExcelOutput.action";
+			window.location = "downloadFile.action?outputFormat=";
 			deleteDivEffect();
 			$("#loading").hide();		
 		},'xml');
@@ -303,7 +303,7 @@ function getPeriodsByPeriodTypeName() {
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( responseListPeriodReceived );
-	request.send( 'getPeriodsByPeriodType.action?periodTypeName=' + $("#availabelPeriodTypes").val());
+	request.send( 'getPeriodsByPeriodTypeDB.action?periodTypeName=' + $("#availabelPeriodTypes").val());
 }
 
 function lastPeriod() {
@@ -311,7 +311,7 @@ function lastPeriod() {
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( responseListPeriodReceived );
-	request.send( 'previousPeriods.action' ); 
+	request.send( 'previousPeriodsDB.action' ); 
 }
 
 function nextPeriod() {
@@ -319,7 +319,7 @@ function nextPeriod() {
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( responseListPeriodReceived );
-	request.send( 'nextPeriods.action' ); 
+	request.send( 'nextPeriodsDB.action' ); 
 }
 
 function responseListPeriodReceived( xmlObject ) {

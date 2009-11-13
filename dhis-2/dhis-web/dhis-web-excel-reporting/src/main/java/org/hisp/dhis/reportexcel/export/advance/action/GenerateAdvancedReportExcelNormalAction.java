@@ -84,7 +84,7 @@ public class GenerateAdvancedReportExcelNormalAction
         throws Exception
     {
 
-        Period period = selectionManager.getSelectedPeriod();
+        Period period = periodDatabaseService.getSelectedPeriod();
 
         this.installExcelFormat();
 
@@ -98,7 +98,7 @@ public class GenerateAdvancedReportExcelNormalAction
         statementManager.initialise();
 
         ReportExcelNormal reportExcel = (ReportExcelNormal) reportService.getReportExcel( selectionManager
-            .getSelectedReportExcelId() );
+            .getSelectedReportId() );
 
         Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportExcelItems();
 

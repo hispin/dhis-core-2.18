@@ -29,19 +29,14 @@ package org.hisp.dhis.reportexcel.export.action;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.reportexcel.ReportExcelService;
-import org.hisp.dhis.reportexcel.export.action.SelectionManager;
-import org.hisp.dhis.reportexcel.utils.DateUtils;
+import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -60,9 +55,7 @@ public class SelectFormAction
 
     private ReportExcelService reportService;
 
-    private PeriodService periodService;
-
-    private SelectionManager selectionManager;
+    private PeriodDatabaseService periodDatabaseService;
 
     // -------------------------------------------
     // Input & Output
@@ -83,15 +76,10 @@ public class SelectFormAction
         return groups;
     }
 
-    public void setPeriodService( PeriodService periodService )
+    public void setPeriodDatabaseService( PeriodDatabaseService periodDatabaseService )
     {
-        this.periodService = periodService;
-    }
-
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
+        this.periodDatabaseService = periodDatabaseService;
+    }   
 
     public OrganisationUnit getOrganisationUnit()
     {
@@ -133,20 +121,11 @@ public class SelectFormAction
         if ( organisationUnit == null )
         {
             return SUCCESS;
-        }
+        } 
+        
+        periodDatabaseService.setSelectedPeriodTypeName( MonthlyPeriodType.NAME );
 
-        PeriodType periodType = periodService.getPeriodTypeByClass( MonthlyPeriodType.class );
-
-        Date firstDateOfThisYear = DateUtils.getFirstDayOfYear( DateUtils.getCurrentYear() );
-
-        Date endDateOfThisMonth = DateUtils.getEndDate( DateUtils.getCurrentMonth(), DateUtils.getCurrentYear() );
-
-        periods = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( periodType,
-            firstDateOfThisYear, endDateOfThisMonth ) );
-
-        Collections.sort( periods, new PeriodComparator() );
-
-        selectionManager.setSeletedYear( DateUtils.getCurrentYear() );
+        periods = periodDatabaseService.getPeriodList();               
 
         groups = new ArrayList<String>( reportService.getReportExcelGroups() );
 

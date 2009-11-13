@@ -26,10 +26,10 @@
  */
 package org.hisp.dhis.reportexcel.export.action;
 
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
+import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -48,9 +48,9 @@ public class GenerateReportExcelFlowAction
 
     private ReportExcelService reportService;
 
-    private PeriodService periodService;
-
     private SelectionManager selectionManager;
+
+    private PeriodDatabaseService periodDatabaseService;
 
     // -------------------------------------------
     // Input & Output
@@ -60,9 +60,9 @@ public class GenerateReportExcelFlowAction
 
     private Integer periodId;
 
-    private Integer sheetId;
+    //private Integer sheetId;
 
-    private Integer orgunitGroupId;
+   //private Integer orgunitGroupId;
 
     // -------------------------------------------
     // Getter & Setter
@@ -78,9 +78,9 @@ public class GenerateReportExcelFlowAction
         this.selectionManager = selectionManager;
     }
 
-    public void setPeriodService( PeriodService periodService )
+    public void setPeriodDatabaseService( PeriodDatabaseService periodDatabaseService )
     {
-        this.periodService = periodService;
+        this.periodDatabaseService = periodDatabaseService;
     }
 
     public void setPeriodId( Integer periodId )
@@ -93,39 +93,37 @@ public class GenerateReportExcelFlowAction
         this.reportService = reportService;
     }
 
-    public Integer getSheetId()
-    {
-        return sheetId;
-
-    }
-
-    public void setSheetId( Integer sheetId )
-    {
-        this.sheetId = sheetId;
-    }
-
-    public Integer getOrgunitGroupId()
-    {
-        return orgunitGroupId;
-    }
-
-    public void setOrgunitGroupId( Integer orgunitGroupId )
-    {
-        this.orgunitGroupId = orgunitGroupId;
-    }
+//    public Integer getSheetId()
+//    {
+//        return sheetId;
+//
+//    }
+//
+//    public void setSheetId( Integer sheetId )
+//    {
+//        this.sheetId = sheetId;
+//    }
+//
+//    public Integer getOrgunitGroupId()
+//    {
+//        return orgunitGroupId;
+//    }
+//
+//    public void setOrgunitGroupId( Integer orgunitGroupId )
+//    {
+//        this.orgunitGroupId = orgunitGroupId;
+//    }
 
     public String execute()
         throws Exception
     {
-    	
+
         ReportExcel reportExcel = reportService.getReportExcel( reportId );
 
-        Period period = periodService.getPeriod( periodId );
+        periodDatabaseService.setSelectedperiod( periodId );
 
-        selectionManager.setSelectedPeriod( period );
+        selectionManager.setSelectedReportId( reportId );
 
-        selectionManager.setSelectedReportExcelId( reportId );
-        
         return reportExcel.getReportType();
     }
 

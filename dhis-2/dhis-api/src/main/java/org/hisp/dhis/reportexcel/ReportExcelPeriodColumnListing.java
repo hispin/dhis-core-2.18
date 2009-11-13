@@ -26,6 +26,9 @@
  */
 package org.hisp.dhis.reportexcel;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,6 +44,9 @@ import org.w3c.dom.Element;
 public class ReportExcelPeriodColumnListing
     extends ReportExcel
 {
+
+    private Set<PeriodColumn> periodColumns = new HashSet<PeriodColumn>();
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -48,6 +54,17 @@ public class ReportExcelPeriodColumnListing
     public ReportExcelPeriodColumnListing()
     {
         super();
+    }
+
+    public void addPeriodColumn( PeriodColumn periodColumn )
+    {
+        periodColumns.add( periodColumn );
+    }
+
+    public void deletePeriodColumn( PeriodColumn periodColumn )
+    {
+
+        periodColumns.remove( periodColumn );
     }
 
     @Override
@@ -142,4 +159,15 @@ public class ReportExcelPeriodColumnListing
 
         return document;
     }
+
+    public Set<PeriodColumn> getPeriodColumns()
+    {
+        return periodColumns;
+    }
+
+    public void setPeriodColumns( Set<PeriodColumn> periodColumns )
+    {
+        this.periodColumns = periodColumns;
+    }
+
 }
