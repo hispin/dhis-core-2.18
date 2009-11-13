@@ -30,177 +30,132 @@ package org.hisp.dhis.reportexcel.importing.action;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
-import org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 /**
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class GetImportingParamsAction extends ActionSupport {
+public class GetImportingParamsAction
+    extends ActionSupport
+{
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
-	private ExcelItemService excelItemService;
+    private ExcelItemService excelItemService;
 
-	// -------------------------------------------------------------------------
-	// Inputs && Outputs
-	// -------------------------------------------------------------------------
+    private SelectionManager selectionManager;
 
-	private OrganisationUnit organisationUnit;
+    // -------------------------------------------------------------------------
+    // Inputs && Outputs
+    // -------------------------------------------------------------------------
 
-	private Collection<ExcelItemGroup> excelItemGroups = new ArrayList<ExcelItemGroup>();
+    private OrganisationUnit organisationUnit;
 
-	private List<Period> periods = new ArrayList<Period>();
+    private List<ExcelItemGroup> excelItemGroups;
 
-	private boolean locked;
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
 
-	// -------------------------------------------------------------------------
-	// Input/output
-	// -------------------------------------------------------------------------
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
 
-	private Integer selectedExcelItemGroupId;
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
 
-	private Integer selectedPeriodIndex;
+        this.excelItemService = excelItemService;
 
-	// -------------------------------------------------------------------------
-	// Getters && Setters
-	// -------------------------------------------------------------------------
+    }
 
-	public void setExcelItemService(ExcelItemService excelItemService) {
-		this.excelItemService = excelItemService;
-	}
+    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    {
+        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
 
-	public void setSelectedStateManager(
-			SelectedStateManager selectedStateManager) {
-		this.selectedStateManager = selectedStateManager;
-	}
+    }
 
-	public void setSelectedPeriodIndex(Integer selectedPeriodIndex) {
-		this.selectedPeriodIndex = selectedPeriodIndex;
-	}
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
 
-	public Integer getSelectedPeriodIndex() {
-		return selectedPeriodIndex;
-	}
+    public Collection<ExcelItemGroup> getExcelItemGroups()
+    {
+        return excelItemGroups;
+    }
 
-	public void setSelectedExcelItemGroupId(Integer selectedExcelItemGroupId) {
-		this.selectedExcelItemGroupId = selectedExcelItemGroupId;
-	}
+    private File fileExcel;
 
-	public Integer getSelectedExcelItemGroupId() {
-		return selectedExcelItemGroupId;
-	}
+    public File getFileExcel()
+    {
+        return fileExcel;
+    }
 
-	public OrganisationUnit getOrganisationUnit() {
-		return organisationUnit;
-	}
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-	public Collection<ExcelItemGroup> getExcelItemGroups() {
-		return excelItemGroups;
-	}
+    public String execute()
+        throws Exception
+    {
 
-	public Collection<Period> getPeriods() {
-		return periods;
-	}
+        // ---------------------------------------------------------
+        // Get File Excel
+        // ---------------------------------------------------------
 
-	public boolean isLocked() {
-		return locked;
-	}
+        String path = selectionManager.getUploadFilePath();
 
-	private File fileExcel;
+        if ( path != null && path != "" )
+        {
 
-	public File getFileExcel() {
-		return fileExcel;
-	}
+            fileExcel = new File( path );
 
-	public void setFileExcel(File fileExcel) {
-		this.fileExcel = fileExcel;
-	}
+        }
 
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
+        // Validate selected OrganisationUnit
+        // ---------------------------------------------------------------------
 
-	public String execute() throws Exception {
+        organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
-		// ---------------------------------------------------------
-		// Get File Excel
-		// ---------------------------------------------------------
-		
-		if (fileExcel != null) {
-			message = i18n.getString("upload_file") + " "
-					+ i18n.getString("success") + " <br>      ' "
-					+ fileExcel.getName() + " '";
-		}
+        if ( organisationUnit == null )
+        {
 
-		// ---------------------------------------------------------------------
-		// Validate selected OrganisationUnit
-		// ---------------------------------------------------------------------
+            return SUCCESS;
+        }
 
-		organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        // ---------------------------------------------------------------------
+        // Load and sort ExcelItemGroups
+        // ---------------------------------------------------------------------
 
-		if (organisationUnit == null) {
-			selectedExcelItemGroupId = null;
-			selectedPeriodIndex = null;
+        excelItemGroups = new ArrayList<ExcelItemGroup>( excelItemService
+            .getExcelItemGroupsByOrganisationUnit( organisationUnit ) );
 
-			selectedStateManager.clearSelectedPeriod();
+        Collections.sort( excelItemGroups, new Comparator<ExcelItemGroup>()
+        {
 
-			return SUCCESS;
-		}
+            @Override
+            public int compare( ExcelItemGroup arg0, ExcelItemGroup arg1 )
+            {
+                return arg0.getName().compareTo( arg1.getName() );
+            }
+        } );
 
-		// ---------------------------------------------------------------------
-		// Load and sort ExcelItemGroups
-		// ---------------------------------------------------------------------
-
-		excelItemGroups = selectedStateManager
-				.loadExcelItemGroupsForSelectedOrgUnit(organisationUnit);
-
-		// ---------------------------------------------------------------------
-		// Validate selected ExcelItemGroup
-		// ---------------------------------------------------------------------
-
-		ExcelItemGroup selectedExcelItemGroup;
-
-		if (selectedExcelItemGroupId != null) {
-			selectedExcelItemGroup = excelItemService
-					.getExcelItemGroup(selectedExcelItemGroupId);
-		} else {
-			selectedExcelItemGroup = selectedStateManager
-					.getSelectedExcelItemGroup();
-		}
-
-		if (selectedExcelItemGroup != null
-				&& excelItemGroups.contains(selectedExcelItemGroup)) {
-			selectedExcelItemGroupId = selectedExcelItemGroup.getId();
-			selectedStateManager
-					.setSelectedExcelItemGroup(selectedExcelItemGroup);
-		} else {
-			selectedExcelItemGroupId = null;
-			selectedPeriodIndex = null;
-
-			selectedStateManager.clearSelectedExcelItemGroup();
-			selectedStateManager.clearSelectedPeriod();
-
-			return SUCCESS;
-		}
-
-		// ---------------------------------------------------------------------
-		// Generate Periods
-		// ---------------------------------------------------------------------
-
-		periods = selectedStateManager.getPeriodList();
-
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 }

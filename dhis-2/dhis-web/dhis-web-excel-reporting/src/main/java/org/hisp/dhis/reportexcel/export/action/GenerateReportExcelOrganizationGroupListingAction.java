@@ -53,34 +53,34 @@ public class GenerateReportExcelOrganizationGroupListingAction
     public String execute()
         throws Exception
     {
-    	
+
         statementManager.initialise();
 
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-        Period period = selectionManager.getSelectedPeriod();
+        Period period = periodDatabaseService.getSelectedPeriod();
         this.installExcelFormat();
         this.installPeriod( period );
 
         ReportExcelOganiztionGroupListing reportExcel = (ReportExcelOganiztionGroupListing) reportService
-            .getReportExcel( selectionManager.getSelectedReportExcelId() );
+            .getReportExcel( selectionManager.getSelectedReportId() );
 
         this.installReadTemplateFile( reportExcel, period, organisationUnit );
-        
-        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
+
+        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             WritableSheet sheet = outputReportWorkbook.getSheet( sheetNo - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo, selectionManager
-                .getSelectedReportExcelId() );
+                .getSelectedReportId() );
 
             this.generateOutPutFile( reportExcel, reportExcelItems, organisationUnit, sheet );
 
-        }      
+        }
 
         this.complete();
-        
+
         statementManager.destroy();
-        
+
         return SUCCESS;
     }
 

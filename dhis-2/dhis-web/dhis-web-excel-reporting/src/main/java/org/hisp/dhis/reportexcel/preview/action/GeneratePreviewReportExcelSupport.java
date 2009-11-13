@@ -65,8 +65,9 @@ import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
-import org.hisp.dhis.reportexcel.export.action.SelectionManager;
+import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
 import org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.reportexcel.utils.DateUtils;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 import org.hisp.dhis.system.util.MathUtils;
@@ -133,6 +134,8 @@ public abstract class GeneratePreviewReportExcelSupport
     protected ReportExcelService reportService;
 
     protected PeriodService periodService;
+
+    protected PeriodDatabaseService periodDatabaseService;
 
     // -------------------------------------------
     // Input & Output
@@ -236,6 +239,11 @@ public abstract class GeneratePreviewReportExcelSupport
     public void setInitPOIStylesManager( InitializePOIStylesManager initPOIStylesManager )
     {
         this.initPOIStylesManager = initPOIStylesManager;
+    }
+
+    public void setPeriodDatabaseService( PeriodDatabaseService periodDatabaseService )
+    {
+        this.periodDatabaseService = periodDatabaseService;
     }
 
     // -----------------------------------------
@@ -666,9 +674,5 @@ public abstract class GeneratePreviewReportExcelSupport
         this.outputStreamExcelTemplate.close();
 
         selectionManager.setDownloadFilePath( outputReportFile.getPath() );
-
-        // inputStream = new BufferedInputStream( new FileInputStream(
-        // this.outputReportFile ) );
-        // outputReportFile.delete();
     }
 }

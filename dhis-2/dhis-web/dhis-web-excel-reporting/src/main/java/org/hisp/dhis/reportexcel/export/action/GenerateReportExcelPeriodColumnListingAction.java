@@ -54,83 +54,79 @@ import org.hisp.dhis.system.util.MathUtils;
  * @version $Id$
  */
 
-public class GenerateReportExcelPeriodColumnListingAction extends
-		GenerateReportExcelSupport {
+public class GenerateReportExcelPeriodColumnListingAction
+    extends GenerateReportExcelSupport
+{
 
-	public String execute() throws Exception {
-		
-		statementManager.initialise();
+    public String execute()
+        throws Exception
+    {
 
-		OrganisationUnit organisationUnit = organisationUnitSelectionManager
-				.getSelectedOrganisationUnit();
-		Period period = selectionManager.getSelectedPeriod();
-		this.installExcelFormat();
-		this.installPeriod(period);
-		Calendar calendar = Calendar.getInstance();
-		PeriodType periodType = periodService
-				.getPeriodTypeByClass(MonthlyPeriodType.class);
-		Date firstDateOfThisYear = DateUtils.getFirstDayOfYear(calendar
-				.get(Calendar.YEAR));
+        statementManager.initialise();
 
-		List<Period> periods = new ArrayList<Period>(periodService
-				.getIntersectingPeriodsByPeriodType(periodType,
-						firstDateOfThisYear, endDate));
-		Collections.sort(periods, new AscendingPeriodComparator());
+        OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
+        Period period = periodDatabaseService.getSelectedPeriod();
+        this.installExcelFormat();
+        this.installPeriod( period );
+        Calendar calendar = Calendar.getInstance();
+        PeriodType periodType = periodService.getPeriodTypeByClass( MonthlyPeriodType.class );
+        Date firstDateOfThisYear = DateUtils.getFirstDayOfYear( calendar.get( Calendar.YEAR ) );
 
-		ReportExcelPeriodColumnListing reportExcel = (ReportExcelPeriodColumnListing) reportService
-				.getReportExcel(selectionManager.getSelectedReportExcelId());
+        List<Period> periods = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( periodType,
+            firstDateOfThisYear, endDate ) );
+        Collections.sort( periods, new AscendingPeriodComparator() );
 
-		this.installReadTemplateFile(reportExcel, period, organisationUnit);
+        ReportExcelPeriodColumnListing reportExcel = (ReportExcelPeriodColumnListing) reportService
+            .getReportExcel( selectionManager.getSelectedReportId() );
 
-		for (Integer sheetNo : reportService.getSheets(selectionManager
-				.getSelectedReportExcelId())) {
-			WritableSheet sheet = outputReportWorkbook.getSheet(sheetNo - 1);
+        this.installReadTemplateFile( reportExcel, period, organisationUnit );
 
-			Collection<ReportExcelItem> reportExcelItems = reportService
-					.getReportExcelItem(sheetNo, selectionManager
-							.getSelectedReportExcelId());
+        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
+        {
+            WritableSheet sheet = outputReportWorkbook.getSheet( sheetNo - 1 );
 
-			this.generateOutPutFile(periods, reportExcelItems,
-					organisationUnit, sheet);
+            Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo, selectionManager
+                .getSelectedReportId() );
 
-		}
+            this.generateOutPutFile( periods, reportExcelItems, organisationUnit, sheet );
 
-		this.complete();
+        }
 
-		statementManager.destroy();
+        this.complete();
 
-		return SUCCESS;
-	}
+        statementManager.destroy();
 
-	private void generateOutPutFile(List<Period> periods,
-			Collection<ReportExcelItem> reportExcelItems,
-			OrganisationUnit organisationUnit, WritableSheet sheet)
-			throws RowsExceededException, WriteException {
-		for (ReportExcelItem reportItem : reportExcelItems) {
-			int i = 0;
-			for (Period p : periods) {
-				double value = 0.0;
+        return SUCCESS;
+    }
 
-				if (reportItem.getItemType().equalsIgnoreCase(
-						ReportExcelItem.TYPE.DATAELEMENT)) {
-					value = MathUtils.calculateExpression(generateExpression(
-							reportItem, p.getStartDate(), p.getEndDate(),
-							organisationUnit));
-				} else if (reportItem.getItemType().equalsIgnoreCase(
-						ReportExcelItem.TYPE.INDICATOR)) {
-					value = MathUtils.calculateExpression(generateExpression(
-							reportItem, p.getStartDate(), p.getEndDate(),
-							organisationUnit));
-				}
+    private void generateOutPutFile( List<Period> periods, Collection<ReportExcelItem> reportExcelItems,
+        OrganisationUnit organisationUnit, WritableSheet sheet )
+        throws RowsExceededException, WriteException
+    {
+        for ( ReportExcelItem reportItem : reportExcelItems )
+        {
+            int i = 0;
+            for ( Period p : periods )
+            {
+                double value = 0.0;
 
-				ExcelUtils.writeValue(reportItem.getRow(), reportItem
-						.getColumn()
-						+ i, String.valueOf(value), ExcelUtils.NUMBER, sheet,
-						number);
-				i++;
-			}
-		}
+                if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) )
+                {
+                    value = MathUtils.calculateExpression( generateExpression( reportItem, p.getStartDate(), p
+                        .getEndDate(), organisationUnit ) );
+                }
+                else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ) )
+                {
+                    value = MathUtils.calculateExpression( generateExpression( reportItem, p.getStartDate(), p
+                        .getEndDate(), organisationUnit ) );
+                }
 
-	}
+                ExcelUtils.writeValue( reportItem.getRow(), reportItem.getColumn() + i, String.valueOf( value ),
+                    ExcelUtils.NUMBER, sheet, number );
+                i++;
+            }
+        }
+
+    }
 
 }

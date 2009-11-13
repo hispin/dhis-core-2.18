@@ -77,7 +77,7 @@ public interface ReportExcelStore
 
     public Collection<ReportExcelItem> getALLReportExcelItem();
 
-    public Collection<ReportExcelItem> getReportExcelItem( int sheetNo, Integer reportId );    
+    public Collection<ReportExcelItem> getReportExcelItem( int sheetNo, Integer reportId );
 
     public Collection<Integer> getSheets( Integer reportId );
 
@@ -110,5 +110,13 @@ public interface ReportExcelStore
     Collection<DataEntryStatus> getDataEntryStatusDefaultByDataSets( Collection<DataSet> dataSets );
 
     public int countDataValueOfDataSet( DataSet dataSet, OrganisationUnit organisationUnit, Period period );
+
+    // --------------------------------------
+    // Period Column
+    // --------------------------------------
+
+    public PeriodColumn getPeriodColumn( Integer id );
+
+    public void updatePeriodColumn( PeriodColumn periodColumn );
 
 }

@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.export.individual.action;
+package org.hisp.dhis.reportexcel.period.db.action;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -26,13 +26,11 @@ package org.hisp.dhis.reportexcel.export.individual.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.comparator.PeriodComparator;
-import org.hisp.dhis.reportexcel.export.individual.manager.SelectedStateManager;
+import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,11 +47,11 @@ public class GetPeriodsByPeriodTypeAction
     // Dependences
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private PeriodDatabaseService periodDatabaseService;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setPeriodDatabaseService( PeriodDatabaseService periodDatabaseService )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.periodDatabaseService = periodDatabaseService;
     }
 
     // -------------------------------------------------------------------------
@@ -81,18 +79,19 @@ public class GetPeriodsByPeriodTypeAction
     public String execute()
         throws Exception
     {
-        
-        selectedStateManager.setSelectedPeriodTypeName( periodTypeName );
-     
-        periods = new ArrayList<Period>(selectedStateManager.getPeriodList());
-
-        if ( periods == null )
+        if ( periodTypeName == null || periodTypeName == "" )
         {
-            return ERROR;
+
+            periodDatabaseService.setSelectedPeriodTypeName( MonthlyPeriodType.NAME );
+        }
+        else
+        {
+
+            periodDatabaseService.setSelectedPeriodTypeName( periodTypeName );
         }
 
-        Collections.sort( periods, new PeriodComparator() );
-        
+        periods = periodDatabaseService.getPeriodList();
+
         return SUCCESS;
     }
 }

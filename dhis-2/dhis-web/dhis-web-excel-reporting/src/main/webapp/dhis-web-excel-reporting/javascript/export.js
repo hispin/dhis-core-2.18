@@ -23,20 +23,32 @@ function getReportExcelsByGroup(){
 }
 
 
-function lastYear(){
+function getPeriodsByPeriodTypeName() {
+	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( getListPeriodCompleted );
-	request.send( 'getPeriods.action?mode=previous'); 
+	request.setCallbackSuccess( responseListPeriodReceived );
+	request.send( 'getPeriodsByPeriodTypeDB.action');
 }
 
-function nextYear(){
+function lastPeriod() {
+
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( getListPeriodCompleted );
-	request.send( 'getPeriods.action?mode=next'); 
+	request.setCallbackSuccess( responseListPeriodReceived );
+	request.send( 'previousPeriodsDB.action' ); 
 }
-function getListPeriodCompleted( xmlObject ){
+
+function nextPeriod() {
+
+	var request = new Request();
+	request.setResponseTypeXML( 'xmlObject' );
+	request.setCallbackSuccess( responseListPeriodReceived );
+	request.send( 'nextPeriodsDB.action' ); 
+}
+
+function responseListPeriodReceived( xmlObject ) {
+
 	clearListById('period');
 	var nodes = xmlObject.getElementsByTagName('period');
 	for ( var i = 0; i < nodes.length; i++ )
@@ -48,23 +60,35 @@ function getListPeriodCompleted( xmlObject ){
     }
 }
 
-function generateReportExcel() {	
+function generateReportExcel() {
+	
+	$("#loading").showAtCenter( true );	
+	$.post("generateReportExcel.action",{
+	reportId:$('#report').val(),
+	periodId:$('#period').val()
+	},function(data){		
+		window.location = "downloadFile.action";
+		deleteDivEffect();
+		$("#loading").hide();		
+	},'xml');
+	
+}
 
-	//if(byId('advancedCheck').checked){
-		
-		//generateAdvancedReportExcel();
-		
-	//}else{
-		$("#loading").showAtCenter( true );	
-		$.post("generateReportExcel.action",{
-		reportId:$('#report').val(),
-		periodId:$('#period').val()
-		},function(data){		
-			window.location = "downloadFile.action";
-			deleteDivEffect();
-			$("#loading").hide();		
-		},'xml');
-	//}
+function getALLReportExcelByGroup(){
+	$.post("getALLReportExcelByGroup.action",
+    {
+        group:$("#group").val()
+    }, function( xmlObject ){       
+        xmlObject = xmlObject.getElementsByTagName("reports")[0];
+		clearListById('report');
+		var list = xmlObject.getElementsByTagName("report");
+		for(var i=0;i<list.length;i++){
+			var item = list[i];
+			var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
+			var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
+			addOption('report',name,id);
+		}
+    }, "xml");
 }
 
 function generateAdvancedReportExcel() {	

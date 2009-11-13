@@ -49,6 +49,8 @@ import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelPeriodColumnListing;
 import org.hisp.dhis.reportexcel.export.action.GenerateReportExcelSupport;
+import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.reportexcel.utils.DateUtils;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 import org.hisp.dhis.system.util.MathUtils;
@@ -62,7 +64,6 @@ import org.hisp.dhis.system.util.MathUtils;
 public class GenerateAdvancedReportExcelPeriodColumnListingAction
     extends GenerateReportExcelSupport
 {
-
     // ---------------------------------------------------------------------
     // Dependency
     // ---------------------------------------------------------------------
@@ -101,7 +102,7 @@ public class GenerateAdvancedReportExcelPeriodColumnListingAction
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( organisationGroupId.intValue() );
 
-        Period period = selectionManager.getSelectedPeriod();
+        Period period = periodDatabaseService.getSelectedPeriod();
 
         this.installExcelFormat();
 
@@ -119,16 +120,16 @@ public class GenerateAdvancedReportExcelPeriodColumnListingAction
         Collections.sort( periods, new AscendingPeriodComparator() );
 
         ReportExcelPeriodColumnListing reportExcel = (ReportExcelPeriodColumnListing) reportService
-            .getReportExcel( selectionManager.getSelectedReportExcelId() );
+            .getReportExcel( selectionManager.getSelectedReportId() );
 
         this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );
 
-        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
+        for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             WritableSheet sheet = outputReportWorkbook.getSheet( sheetNo - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo, selectionManager
-                .getSelectedReportExcelId() );
+                .getSelectedReportId() );
 
             this.generateOutPutFile( periods, reportExcelItems, organisationUnitGroup.getMembers(), sheet );
 
@@ -151,10 +152,10 @@ public class GenerateAdvancedReportExcelPeriodColumnListingAction
             for ( Period p : periods )
             {
                 double value = 0.0;
-                
+
                 for ( OrganisationUnit organisationUnit : organisationUnits )
                 {
-                    
+
                     if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) )
                     {
                         value += MathUtils.calculateExpression( generateExpression( reportItem, p.getStartDate(), p
@@ -166,12 +167,11 @@ public class GenerateAdvancedReportExcelPeriodColumnListingAction
                             .getEndDate(), organisationUnit ) );
                     }
 
-                   
                 }// end for organisation
 
                 ExcelUtils.writeValue( reportItem.getRow(), reportItem.getColumn() + i, String.valueOf( value ),
                     ExcelUtils.NUMBER, sheet, number );
-                
+
                 i++;
             }
         }

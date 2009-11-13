@@ -31,14 +31,12 @@ package org.hisp.dhis.reportexcel.action;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
 public class GetReportExcelAction
-    implements Action
+    extends ActionSupport
 {
     // -------------------------------------------
     // Dependency

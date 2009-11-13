@@ -65,7 +65,7 @@ public class GetOrganisationUnitGroupListAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
+    private List<OrganisationUnitGroup> organisationUnitGroups;
 
     public List<OrganisationUnitGroup> getOrganisationUnitGroups()
     {

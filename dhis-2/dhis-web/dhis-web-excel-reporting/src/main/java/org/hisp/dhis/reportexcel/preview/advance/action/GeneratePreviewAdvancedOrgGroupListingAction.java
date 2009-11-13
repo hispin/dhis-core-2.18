@@ -61,6 +61,7 @@ public class GeneratePreviewAdvancedOrgGroupListingAction
 
     private OrganisationUnitGroupService organisationUnitGroupService;
 
+   
     // ---------------------------------------------------------------------
     // Input && Output
     // ---------------------------------------------------------------------
@@ -81,6 +82,8 @@ public class GeneratePreviewAdvancedOrgGroupListingAction
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
+  
+
     // ---------------------------------------------------------------------
     // Action implementation
     // ---------------------------------------------------------------------
@@ -90,14 +93,15 @@ public class GeneratePreviewAdvancedOrgGroupListingAction
     {
         this.statementManager.initialise();
 
-        Period period = selectionManager.getSelectedPeriod();
+        Period period = periodDatabaseService.getSelectedPeriod();
+        
         this.installPeriod( period );
 
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( orgunitGroupId.intValue() );
 
         ReportExcelOganiztionGroupListing reportExcel = (ReportExcelOganiztionGroupListing) reportService
-            .getReportExcel( selectionManager.getSelectedReportExcelId() );
+            .getReportExcel( selectionManager.getSelectedReportId() );
 
         this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );
 
@@ -106,18 +110,18 @@ public class GeneratePreviewAdvancedOrgGroupListingAction
             HSSFSheet sheet = this.templateWorkbook.getSheetAt( this.sheetId - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( this.sheetId,
-                this.selectionManager.getSelectedReportExcelId() );
+                this.selectionManager.getSelectedReportId() );
 
             this.generateOutPutFile( reportExcel, reportExcelItems, organisationUnitGroup.getMembers(), sheet );
         }
         else
         {
-            for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
+            for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
             {
                 HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
                 Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo,
-                    selectionManager.getSelectedReportExcelId() );
+                    selectionManager.getSelectedReportId() );
 
                 this.generateOutPutFile( reportExcel, reportExcelItems, organisationUnitGroup.getMembers(), sheet );
             }

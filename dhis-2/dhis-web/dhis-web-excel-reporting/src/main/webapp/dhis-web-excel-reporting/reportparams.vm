@@ -23,7 +23,7 @@
 	<tr>
 		<td></td>
 		<td>
-			<input type="button" value="<<" onclick="lastYear();" #if(!$organisationUnit) disabled #end/><input type="button" value=">>" #if(!$organisationUnit) disabled #end onclick="nextYear()"/>
+			<input type="button" value="<<" onclick="lastPeriod();" #if(!$organisationUnit) disabled #end/><input type="button" value=">>" #if(!$organisationUnit) disabled #end onclick="nextPeriod()"/>
 		</td>
     </tr>
 	<tr>
@@ -63,5 +63,6 @@
 <script>
 #if($organisationUnit)
 	getReportExcelsByGroup();
+	getPeriodsByPeriodTypeName();
 #end
 </script>

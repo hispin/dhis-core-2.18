@@ -31,7 +31,11 @@
 		</joined-subclass>
 		
 		<joined-subclass name="org.hisp.dhis.reportexcel.ReportExcelPeriodColumnListing" table="reportexcels_periodcolumnlisting">
-			<key column="reportexcelid" />			
+			<key column="reportexcelid" />		
+			<set name="periodColumns" cascade="all" table="reportexcel_periodcolumns" lazy="false">
+				<key column="reportexcelid"/>
+				<one-to-many class="org.hisp.dhis.reportexcel.PeriodColumn"/>
+			</set>	
 		</joined-subclass>
 		
 		<joined-subclass name="org.hisp.dhis.reportexcel.ReportExcelCategory" table="reportexcels_category">

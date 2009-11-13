@@ -70,7 +70,7 @@ public class GeneratePreviewAdvancedPeriodColumnListingAction
     // ---------------------------------------------------------------------
 
     private OrganisationUnitGroupService organisationUnitGroupService;
-
+  
     // ---------------------------------------------------------------------
     // Input && Output
     // ---------------------------------------------------------------------
@@ -91,19 +91,21 @@ public class GeneratePreviewAdvancedPeriodColumnListingAction
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
+  
     // ---------------------------------------------------------------------
     // Action implementation
     // ---------------------------------------------------------------------
 
     public String execute()
         throws Exception
-    {       
+    {
         this.statementManager.initialise();
 
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( orgunitGroupId.intValue() );
 
-        Period period = this.selectionManager.getSelectedPeriod();
+        Period period = periodDatabaseService.getSelectedPeriod();
+        
         this.installPeriod( period );
 
         Calendar calendar = Calendar.getInstance();
@@ -118,7 +120,7 @@ public class GeneratePreviewAdvancedPeriodColumnListingAction
         Collections.sort( periodList, new AscendingPeriodComparator() );
 
         ReportExcelPeriodColumnListing reportExcel = (ReportExcelPeriodColumnListing) reportService
-            .getReportExcel( selectionManager.getSelectedReportExcelId() );
+            .getReportExcel( selectionManager.getSelectedReportId());
 
         this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );
 
@@ -127,18 +129,18 @@ public class GeneratePreviewAdvancedPeriodColumnListingAction
             HSSFSheet sheet = this.templateWorkbook.getSheetAt( this.sheetId - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( this.sheetId,
-                this.selectionManager.getSelectedReportExcelId() );
+                this.selectionManager.getSelectedReportId() );
 
             this.generateOutPutFile( periodList, reportExcelItems, organisationUnitGroup.getMembers(), sheet );
         }
         else
         {
-            for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
+            for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
             {
                 HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
                 Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo,
-                    selectionManager.getSelectedReportExcelId() );
+                    selectionManager.getSelectedReportId() );
 
                 this.generateOutPutFile( periodList, reportExcelItems, organisationUnitGroup.getMembers(), sheet );
             }
@@ -178,7 +180,7 @@ public class GeneratePreviewAdvancedPeriodColumnListingAction
 
                 ExcelUtils.writeValueByPOI( reportItem.getRow(), reportItem.getColumn() + i, String.valueOf( value ),
                     ExcelUtils.NUMBER, sheet, this.csNumber );
-                
+
                 i++;
             }
         }

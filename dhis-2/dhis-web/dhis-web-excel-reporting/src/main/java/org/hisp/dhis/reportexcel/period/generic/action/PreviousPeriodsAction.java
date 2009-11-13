@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.export.individual.action;
+package org.hisp.dhis.reportexcel.period.generic.action;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,40 +27,32 @@ package org.hisp.dhis.reportexcel.export.individual.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reportexcel.export.action.SelectionManager;
-import org.hisp.dhis.reportexcel.export.individual.manager.SelectedStateManager;
+import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: NextPeriodsAction.java 2966 2007-03-03 14:38:20Z torgeilo $ *
+ * @version $Id: PreviousPeriodsAction.java 2966 2007-03-03 14:38:20Z torgeilo $
+ *          *
  * @modifier Dang Duy Hieu
  * @since 2009-10-14
  */
-public class NextPeriodsAction
+public class PreviousPeriodsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectionManager selectionManager;
+    private PeriodGenericManager periodGenericManager;
 
-    public void setSelectionManager( SelectionManager selectionManager )
+    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
     {
-        this.selectionManager = selectionManager;
-    }
-
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
+        this.periodGenericManager = periodGenericManager;
     }
 
     // -------------------------------------------------------------------------
@@ -81,12 +73,11 @@ public class NextPeriodsAction
     public String execute()
         throws Exception
     {
-        selectionManager.setSeletedYear( selectionManager.getSelectedYear() + 1 );
-        
-        selectedStateManager.nextPeriodSpan();
+        periodGenericManager.previousPeriodSpan();
 
-        periods = new ArrayList<Period>( selectedStateManager.getPeriodList() );
+        periods = periodGenericManager.getPeriodList();
 
         return SUCCESS;
     }
+
 }

@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.importing.period.action;
+package org.hisp.dhis.reportexcel.period.db;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,46 +27,24 @@ package org.hisp.dhis.reportexcel.importing.period.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.List;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 
 /**
- * @author Chau Thu Tran
- * @version $Id$
+ * @author Torgeir Lorange Ostby
+ * @version $Id: SelectedStateManager.java 3311 2007-05-18 14:08:01Z torgeilo $
+ * @modifier Dang Duy Hieu
+ * @since 2009-10-14
  */
-public interface SelectedStateManager
-{
-    // -------------------------------------------------------------------------
-    // OrganisationUnit
-    // -------------------------------------------------------------------------
+public interface PeriodDatabaseService
+{ 
+
+    public void setSelectedPeriodTypeName( String periodTypeName ); 
     
-    OrganisationUnit getSelectedOrganisationUnit();  
-
-    // -------------------------------------------------------------------------
-    // Excel item group
-    // -------------------------------------------------------------------------
-    
-    public void setSelectedExcelItemGroup( ExcelItemGroup excelItemGroup );
-
-    public ExcelItemGroup getSelectedExcelItemGroup();
-
-    public void clearSelectedExcelItemGroup();
-    
-    public Collection<ExcelItemGroup> loadExcelItemGroupsForSelectedOrgUnit( OrganisationUnit organisationUnit );    
-
-    // -------------------------------------------------------------------------
-    // Period
-    // -------------------------------------------------------------------------
-    
-    public void setSelectedPeriodIndex( Integer index );
-
-    public Integer getSelectedPeriodIndex();
-
     public Period getSelectedPeriod();
+    
+    public void setSelectedperiod( Integer periodId );
 
     public void clearSelectedPeriod();
 

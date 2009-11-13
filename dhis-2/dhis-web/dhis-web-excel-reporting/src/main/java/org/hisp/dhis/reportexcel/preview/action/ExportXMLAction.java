@@ -30,7 +30,7 @@ package org.hisp.dhis.reportexcel.preview.action;
 import java.io.File;
 import java.io.IOException;
 
-import org.hisp.dhis.reportexcel.export.action.SelectionManager;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 

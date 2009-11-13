@@ -4,8 +4,7 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="org.hisp.dhis.reportexcel.export.action.SelectionManager"
-		class="org.hisp.dhis.reportexcel.export.action.SelectionManager"
+	<bean id="org.hisp.dhis.reportexcel.state.SelectionManager" class="org.hisp.dhis.reportexcel.state.DefaultSelectionManager"
 		scope="singleton">
 	</bean>
 
@@ -21,16 +20,77 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportexcel.action.DownloadFileAction"
 		class="org.hisp.dhis.reportexcel.action.DownloadFileAction" scope="prototype">
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.action.UploadFileAction"
 		class="org.hisp.dhis.reportexcel.action.UploadFileAction" scope="prototype">
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
+
+	<!-- PERIOD SELECT MANAGER -->
+
+	<bean id="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService"
+		class="org.hisp.dhis.reportexcel.period.db.DefaultPeriodDatabaseManager"
+		scope="singleton">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.period.db.action.GetPeriodsByPeriodTypeAction"
+		class="org.hisp.dhis.reportexcel.period.db.action.GetPeriodsByPeriodTypeAction"
+		scope="prototype">
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.reportexcel.period.db.action.NextPeriodsAction"
+		class="org.hisp.dhis.reportexcel.period.db.action.NextPeriodsAction"
+		scope="prototype">
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.period.db.action.PreviousPeriodsAction"
+		class="org.hisp.dhis.reportexcel.period.db.action.PreviousPeriodsAction"
+		scope="prototype">
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager"
+		class="org.hisp.dhis.reportexcel.period.generic.DefaultPeriodGenericManager"
+		scope="singleton">
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.period.generic.action.GetPeriodsByPeriodTypeAction"
+		class="org.hisp.dhis.reportexcel.period.generic.action.GetPeriodsByPeriodTypeAction"
+		scope="prototype">
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.period.generic.action.NextPeriodsAction"
+		class="org.hisp.dhis.reportexcel.period.generic.action.NextPeriodsAction"
+		scope="prototype">
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.period.generic.action.PreviousPeriodsAction"
+		class="org.hisp.dhis.reportexcel.period.generic.action.PreviousPeriodsAction"
+		scope="prototype">
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
+	</bean>
+
 
 	<!-- SYSTEM CONFIGURATION BEAN -->
 
@@ -101,7 +161,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="locationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
@@ -111,7 +171,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="reportExcelService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
 
 	<!-- REPORT EXCEL ASSOCIATION BEAN -->
@@ -312,11 +372,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.export.action.SelectFormAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean
@@ -329,22 +388,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.reportexcel.export.action.GetMonthlyPeriodsAction"
-		class="org.hisp.dhis.reportexcel.export.action.GetMonthlyPeriodsAction"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
-	</bean>
-
 	<bean
 		id="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction"
 		class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean
@@ -352,7 +404,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelCategoryAction"
 		scope="prototype">
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -366,6 +418,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean
@@ -373,7 +427,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelNormalAction"
 		scope="prototype">
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -387,7 +441,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean
@@ -395,7 +450,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelOrganizationGroupListingAction"
 		scope="prototype">
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -409,7 +464,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean
@@ -417,7 +473,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelPeriodColumnListingAction"
 		scope="prototype">
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -431,7 +487,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<!-- DATA ENTRY STATUS BEAN -->
@@ -570,7 +627,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewCategoryAction"
 		scope="prototype">
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -586,6 +643,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean
@@ -593,7 +652,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewNormalAction"
 		scope="prototype">
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -609,6 +668,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean
@@ -616,7 +677,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewOrgGroupListingAction"
 		scope="prototype">
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -632,6 +693,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean
@@ -639,7 +702,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.preview.action.GeneratePreviewPeriodColumnListingAction"
 		scope="prototype">
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -655,13 +718,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.preview.action.ExportXMLAction"
 		class="org.hisp.dhis.reportexcel.preview.action.ExportXMLAction"
 		scope="prototype">
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
 
 	<!--  GERERATE ADVANCE -->
@@ -670,19 +735,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.export.advance.action.SelectAdvancedExportFormAction"
 		class="org.hisp.dhis.reportexcel.export.advance.action.SelectAdvancedExportFormAction"
 		scope="prototype">
-		<property name="organisationUnitGroupService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService" />
-		</property>
-		<property name="selectionManager">
-			<ref bean="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
-		</property>
-		<property name="reportService">
-			<ref bean="org.hisp.dhis.reportexcel.ReportExcelService" />
-		</property>
+		<property name="organisationUnitGroupService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportexcel.export.advance.action.GetReportExcelsByGroupAction"
+		class="org.hisp.dhis.reportexcel.export.advance.action.GetReportExcelsByGroupAction"
+		scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+
 
 	<bean
 		id="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelNormalAction"
@@ -691,7 +758,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -705,6 +772,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean
@@ -714,7 +783,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -728,6 +797,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean
@@ -737,7 +808,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -751,6 +822,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean
@@ -760,7 +833,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -774,6 +847,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<!-- INDIVIDUAL REPORT EXCEL -->
@@ -800,7 +875,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -817,6 +892,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<!-- Clean up Report Excel module -->
+
 	<bean id="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction"
 		class="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction"
 		scope="prototype">
@@ -834,7 +910,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -850,6 +926,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean
@@ -859,7 +937,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -875,6 +953,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean
@@ -884,7 +964,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -900,6 +980,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<bean
@@ -909,7 +991,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="organisationUnitSelectionManager"
@@ -925,46 +1007,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager" />
-	</bean>
-
-
-	<!-- Selection State -->
-
-	<bean
-		id="org.hisp.dhis.reportexcel.export.individual.manager.SelectedStateManager"
-		class="org.hisp.dhis.reportexcel.export.individual.manager.DefaultSelectedStateManager"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportexcel.export.individual.action.GetPeriodsByPeriodTypeAction"
-		class="org.hisp.dhis.reportexcel.export.individual.action.GetPeriodsByPeriodTypeAction"
-		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.reportexcel.export.individual.manager.SelectedStateManager" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportexcel.export.individual.action.PreviousPeriodsAction"
-		class="org.hisp.dhis.reportexcel.export.individual.action.PreviousPeriodsAction"
-		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.reportexcel.export.individual.manager.SelectedStateManager" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportexcel.export.individual.action.NextPeriodsAction"
-		class="org.hisp.dhis.reportexcel.export.individual.action.NextPeriodsAction"
-		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.reportexcel.export.individual.manager.SelectedStateManager" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+		<property name="periodDatabaseService"
+			ref="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService" />
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -1198,41 +1242,37 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!--  IMPORT DATA 													   -->
 
 	<!--  GUI - Import param form -->
+
 	<bean
-		id="org.hisp.dhis.reportexcel.importing.action.GetImportingParamsAction"
-		class="org.hisp.dhis.reportexcel.importing.action.GetImportingParamsAction"
-		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
+		id="org.hisp.dhis.reportexcel.importing.action.GetPeriodsByExcelItemGroupAction"
+		class="org.hisp.dhis.reportexcel.importing.action.GetPeriodsByExcelItemGroupAction">
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
 	</bean>
 
-	<!--  function - Get periods by group -->
 	<bean
-		id="org.hisp.dhis.reportexcel.importing.action.GetPeriodsByExcelItemGroupAction"
-		class="org.hisp.dhis.reportexcel.importing.action.GetPeriodsByExcelItemGroupAction"
+		id="org.hisp.dhis.reportexcel.importing.action.GetImportingParamsAction"
+		class="org.hisp.dhis.reportexcel.importing.action.GetImportingParamsAction"
 		scope="prototype">
 		<property name="organisationUnitSelectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
 
 	<!--  function - Prewiew Data  flow from excel file  -->
+
 	<bean id="org.hisp.dhis.reportexcel.importing.action.ViewDataFlowAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ViewDataFlowAction"
 		scope="prototype">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
-		<property name="reportLocationManager"
-			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
-	</bean>
-
-	<!--  function - Prewiew Data - NORMAL  -->
-	<bean id="org.hisp.dhis.reportexcel.importing.action.ViewDataNormalAction"
-		class="org.hisp.dhis.reportexcel.importing.action.ViewDataNormalAction"
-		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
 
 	<!--  function - Prewiew Data - ORGANISATION GROUP  -->
@@ -1244,21 +1284,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
 
-	<!--  function - Prewiew Data - CATEGORY  -->
-	<bean
-		id="org.hisp.dhis.reportexcel.importing.action.ViewDataCategoryAction"
-		class="org.hisp.dhis.reportexcel.importing.action.ViewDataCategoryAction"
-		scope="prototype">
-	</bean>
-
 	<!--  function - Import data flow -->
+
 	<bean id="org.hisp.dhis.reportexcel.importing.action.ImportDataFlowAction"
 		class="org.hisp.dhis.reportexcel.importing.action.ImportDataFlowAction"
 		scope="prototype">
 		<property name="excelItemService"
 			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 
 	</bean>
 
@@ -1277,12 +1311,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
-		<!--
-			<property name="periodService"
-			ref="org.hisp.dhis.period.PeriodService" />
-		-->
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
 
 	<!--  function - Import data - ORGANISATION UNIT  -->
@@ -1300,10 +1332,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
 
 	<!--  function - Import data - CATEGORY  -->
@@ -1320,9 +1354,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
+		<property name="periodGenericManager"
+			ref="org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
 
 	<!--  function - Upload excel file  -->
@@ -1333,47 +1369,40 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.export.action.SelectionManager" />
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
 
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- PERIOD                                                        -->
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+	<!-- Period Column -->
 
 	<bean
-		id="org.hisp.dhis.reportexcel.importing.period.action.GetPeriodsByExcelItemGroupAction"
-		class="org.hisp.dhis.reportexcel.importing.period.action.GetPeriodsByExcelItemGroupAction"
+		id="org.hisp.dhis.reportexcel.periodcolumn.action.GetPeriodColumnAction"
+		class="org.hisp.dhis.reportexcel.periodcolumn.action.GetPeriodColumnAction"
 		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
-		<property name="excelItemService"
-			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.importing.period.action.NextPeriodsAction"
-		class="org.hisp.dhis.reportexcel.importing.period.action.NextPeriodsAction"
+		id="org.hisp.dhis.reportexcel.periodcolumn.action.SavePeriodColumnAction"
+		class="org.hisp.dhis.reportexcel.periodcolumn.action.SavePeriodColumnAction"
 		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.importing.period.action.PreviousPeriodsAction"
-		class="org.hisp.dhis.reportexcel.importing.period.action.PreviousPeriodsAction"
+		id="org.hisp.dhis.reportexcel.periodcolumn.action.UpdatePeriodColumnAction"
+		class="org.hisp.dhis.reportexcel.periodcolumn.action.UpdatePeriodColumnAction"
 		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager" />
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager"
-		class="org.hisp.dhis.reportexcel.importing.period.action.DefaultSelectedStateManager"
+		id="org.hisp.dhis.reportexcel.periodcolumn.action.DeletePeriodColumnAction"
+		class="org.hisp.dhis.reportexcel.periodcolumn.action.DeletePeriodColumnAction"
 		scope="prototype">
-		<property name="excelItemService"
-			ref="org.hisp.dhis.reportexcel.excelitem.ExcelItemService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 	</bean>
+
 
 </beans>

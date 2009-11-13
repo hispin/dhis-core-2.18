@@ -1,5 +1,3 @@
-package org.hisp.dhis.reportexcel.export.individual.manager;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -26,34 +24,24 @@ package org.hisp.dhis.reportexcel.export.individual.manager;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-import java.util.List;
-
-import org.hisp.dhis.period.Period;
+package org.hisp.dhis.reportexcel.state;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: SelectedStateManager.java 3311 2007-05-18 14:08:01Z torgeilo $
- * @modifier Dang Duy Hieu
- * @since 2009-10-14
+ * @author Tran Thanh Tri
+ * @version $Id$
  */
-public interface SelectedStateManager
+public interface SelectionManager
 {
-    void setSelectedPeriodIndex( Integer index );
+    public String getDownloadFilePath();
 
-    Integer getSelectedPeriodIndex();
+    public void setDownloadFilePath( String path );
 
-    void setSelectedPeriodTypeName( String periodTypeName );
+    public String getUploadFilePath();
+
+    public void setUploadFilePath( String path );
     
-    String getSelectedPeriodTypeName();
+    public void setSelectedReportId( Integer id );
     
-    Period getSelectedPeriod();
+    public Integer getSelectedReportId();
 
-    void clearSelectedPeriod();
-
-    List<Period> getPeriodList();
-
-    void nextPeriodSpan();
-
-    void previousPeriodSpan();
 }

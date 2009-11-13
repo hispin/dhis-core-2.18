@@ -29,7 +29,7 @@ package org.hisp.dhis.reportexcel.importing.action;
 
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
-import org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager;
+import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -37,76 +37,84 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class ImportDataFlowAction implements Action {
+public class ImportDataFlowAction
+    implements Action
+{
 
-	// -------------------------------------------
-	// Dependency
-	// -------------------------------------------
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
 
-	private ExcelItemService excelItemService;
-	//
-	// private PeriodService periodService;
+    private ExcelItemService excelItemService;
 
-	private SelectedStateManager selectedStateManager;
+    private PeriodGenericManager periodGenericManager;
 
-	// -------------------------------------------
-	// Input & Output
-	// -------------------------------------------
+    // -------------------------------------------
+    // Input & Output
+    // -------------------------------------------
 
-	private Integer excelItemGroupId;
+    private Integer excelItemGroupId;
 
-	private Integer periodId;
+    private Integer periodId;
 
-	private Integer sheetId;
+    private Integer sheetId;
 
-	private Integer orgunitGroupId;
+    private Integer orgunitGroupId;
 
-	// -------------------------------------------
-	// Getter & Setter
-	// -------------------------------------------
+    // -------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------
 
-	public void setExcelItemGroupId(Integer excelItemGroupId) {
-		this.excelItemGroupId = excelItemGroupId;
-	}
+    public void setExcelItemGroupId( Integer excelItemGroupId )
+    {
+        this.excelItemGroupId = excelItemGroupId;
+    }
 
-	public void setSelectedStateManager(
-			SelectedStateManager selectedStateManager) {
-		this.selectedStateManager = selectedStateManager;
-	}
+    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
+    {
+        this.periodGenericManager = periodGenericManager;
+    }
 
-	public void setPeriodId(Integer periodId) {
-		this.periodId = periodId;
-	}
+    public void setPeriodId( Integer periodId )
+    {
+        this.periodId = periodId;
+    }
 
-	public void setExcelItemService(ExcelItemService excelItemService) {
-		this.excelItemService = excelItemService;
-	}
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
+        this.excelItemService = excelItemService;
+    }
 
-	public Integer getSheetId() {
-		return sheetId;
+    public Integer getSheetId()
+    {
+        return sheetId;
 
-	}
+    }
 
-	public void setSheetId(Integer sheetId) {
-		this.sheetId = sheetId;
-	}
+    public void setSheetId( Integer sheetId )
+    {
+        this.sheetId = sheetId;
+    }
 
-	public Integer getOrgunitGroupId() {
-		return orgunitGroupId;
-	}
+    public Integer getOrgunitGroupId()
+    {
+        return orgunitGroupId;
+    }
 
-	public void setOrgunitGroupId(Integer orgunitGroupId) {
-		this.orgunitGroupId = orgunitGroupId;
-	}
+    public void setOrgunitGroupId( Integer orgunitGroupId )
+    {
+        this.orgunitGroupId = orgunitGroupId;
+    }
 
-	public String execute() throws Exception {
-		
-		selectedStateManager.setSelectedPeriodIndex(periodId);
+    public String execute()
+        throws Exception
+    {
 
-		ExcelItemGroup excelItemGroup = excelItemService
-				.getExcelItemGroup(excelItemGroupId);
+        periodGenericManager.setSelectedPeriodIndex( periodId );
 
-		return excelItemGroup.getType();
-	}
+        ExcelItemGroup excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId );
+
+        return excelItemGroup.getType();
+    }
 
 }

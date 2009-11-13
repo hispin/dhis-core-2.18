@@ -55,7 +55,7 @@ public class GeneratePreviewAdvancedNormalAction
     // Dependency
     // ---------------------------------------------------------------------
 
-    private OrganisationUnitGroupService organisationUnitGroupService;
+    private OrganisationUnitGroupService organisationUnitGroupService;   
 
     // ---------------------------------------------------------------------
     // Input && Output
@@ -75,7 +75,8 @@ public class GeneratePreviewAdvancedNormalAction
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
-    }
+    }   
+    
 
     // ---------------------------------------------------------------------
     // Action implementation
@@ -83,10 +84,10 @@ public class GeneratePreviewAdvancedNormalAction
 
     public String execute()
         throws Exception
-    {        
+    {
         this.statementManager.initialise();
 
-        Period period = this.selectionManager.getSelectedPeriod();
+        Period period = periodDatabaseService.getSelectedPeriod();
         this.installPeriod( period );
 
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
@@ -95,7 +96,7 @@ public class GeneratePreviewAdvancedNormalAction
         Set<OrganisationUnit> organisationUnits = organisationUnitGroup.getMembers();
 
         ReportExcelNormal reportExcel = (ReportExcelNormal) reportService.getReportExcel( this.selectionManager
-            .getSelectedReportExcelId() );
+            .getSelectedReportId() );
 
         this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );
 
@@ -104,18 +105,18 @@ public class GeneratePreviewAdvancedNormalAction
             HSSFSheet sheet = this.templateWorkbook.getSheetAt( this.sheetId - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( this.sheetId,
-                this.selectionManager.getSelectedReportExcelId() );
+                this.selectionManager.getSelectedReportId() );
 
             this.generateOutPutFile( organisationUnits, reportExcelItems, sheet );
         }
         else
         {
-            for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportExcelId() ) )
+            for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
             {
                 HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
                 Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo,
-                    this.selectionManager.getSelectedReportExcelId() );
+                    this.selectionManager.getSelectedReportId() );
 
                 this.generateOutPutFile( organisationUnits, reportExcelItems, sheet );
             }

@@ -24,74 +24,99 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.export.action;
 
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+package org.hisp.dhis.reportexcel.periodcolumn.action;
+
+import org.hisp.dhis.reportexcel.PeriodColumn;
+import org.hisp.dhis.reportexcel.ReportExcelPeriodColumnListing;
+import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class ValidateGenerateReportAction
+public class SavePeriodColumnAction
     extends ActionSupport
 {
+
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
-    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
+    private ReportExcelService reportService;
 
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
 
-    private Integer reportId;
+    private Integer id;
 
-    private Integer periodId;
+    private String periodType;
+
+    private Integer column;
+
+    private String startdate;
+
+    private String enddate;
 
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
 
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    public void setReportService( ReportExcelService reportService )
     {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+        this.reportService = reportService;
     }
 
-    public void setReportId( Integer reportId )
+    public void setId( Integer id )
     {
-        this.reportId = reportId;
+        this.id = id;
     }
 
-    public void setPeriodId( Integer periodId )
+    public Integer getId()
     {
-        this.periodId = periodId;
+        return id;
     }
 
+    public void setPeriodType( String periodType )
+    {
+        this.periodType = periodType;
+    }
+
+    public void setColumn( Integer column )
+    {
+        this.column = column;
+    }
+
+    public void setStartdate( String startdate )
+    {
+        this.startdate = startdate;
+    }
+
+    public void setEnddate( String enddate )
+    {
+        this.enddate = enddate;
+    }
+
+    @Override
     public String execute()
         throws Exception
     {
-        if ( organisationUnitSelectionManager.getSelectedOrganisationUnit() == null )
-        {
-            message = i18n.getString( "organisationunit_is_null" );
-            return ERROR;
-        }
-        if ( (reportId == null) || (reportId == -1) )
-        {
-            message = i18n.getString( "report_is_null" );
-            return ERROR;
-        }
-        if ( periodId == null )
-        {
-            message = i18n.getString( "period_is_null" );
-            return ERROR;
-        }
+        ReportExcelPeriodColumnListing reportExcel = (ReportExcelPeriodColumnListing) reportService.getReportExcel( id );
+
+        PeriodColumn periodColumn = new PeriodColumn();
+        periodColumn.setColumn( column );
+        periodColumn.setPeriodType( periodType );
+
+        periodColumn.setStartdate( format.parseDate( startdate ) );
+
+        periodColumn.setEnddate( format.parseDate( enddate ) );
+
+        reportExcel.addPeriodColumn( periodColumn );
+
+        reportService.updateReportExcel( reportExcel );
+
         return SUCCESS;
     }
 

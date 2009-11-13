@@ -1,5 +1,3 @@
-package org.hisp.dhis.reportexcel.importing.period.action;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -26,54 +24,106 @@ package org.hisp.dhis.reportexcel.importing.period.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.reportexcel;
 
-import java.util.List;
+import java.util.Date;
 
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reportexcel.importing.period.action.SelectedStateManager;
-
-import com.opensymphony.xwork2.Action;
 
 /**
- * @author Chau Thu Tran
+ * @author Tran Thanh Tri
  * @version $Id$
  */
-public class NextPeriodsAction implements Action {
 
-	// -------------------------------------------------------------------------
-	// Dependency
-	// -------------------------------------------------------------------------
+public class PeriodColumn
+{
+    private int id;
 
-	private SelectedStateManager selectedStateManager;
+    private Date startdate;
 
-	// -------------------------------------------------------------------------
-	// Output
-	// -------------------------------------------------------------------------
+    private Date enddate;
 
-	private List<Period> periods;
+    private int column;
 
-	// -------------------------------------------------------------------------
-	// Getter && Setter
-	// -------------------------------------------------------------------------
+    private String periodType;
 
-	public void setSelectedStateManager(
-			SelectedStateManager selectedStateManager) {
-		this.selectedStateManager = selectedStateManager;
-	}
+    public PeriodColumn()
+    {
+        super();
+    }
 
-	public List<Period> getPeriods() {
-		return periods;
-	}
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        return result;
+    }
 
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( this == obj )
+            return true;
+        if ( obj == null )
+            return false;
+        if ( getClass() != obj.getClass() )
+            return false;
+        PeriodColumn other = (PeriodColumn) obj;
+        if ( id != other.id )
+            return false;
+        return true;
+    }
 
-	public String execute() throws Exception {
-		selectedStateManager.nextPeriodSpan();
+    public int getId()
+    {
+        return id;
+    }
 
-		periods = selectedStateManager.getPeriodList();
+    public void setId( int id )
+    {
+        this.id = id;
+    }
 
-		return SUCCESS;
-	}
+    public Date getStartdate()
+    {
+        return startdate;
+    }
+
+    public void setStartdate( Date startdate )
+    {
+        this.startdate = startdate;
+    }
+
+    public Date getEnddate()
+    {
+        return enddate;
+    }
+
+    public void setEnddate( Date enddate )
+    {
+        this.enddate = enddate;
+    }
+
+    public int getColumn()
+    {
+        return column;
+    }
+
+    public void setColumn( int column )
+    {
+        this.column = column;
+    }
+
+    public String getPeriodType()
+    {
+        return periodType;
+    }
+
+    public void setPeriodType( String periodType )
+    {
+        this.periodType = periodType;
+    }
+
 }
