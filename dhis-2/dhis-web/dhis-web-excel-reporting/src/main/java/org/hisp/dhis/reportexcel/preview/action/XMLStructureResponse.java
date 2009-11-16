@@ -42,6 +42,7 @@ import jxl.format.Pattern;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.CellReference;
+import org.hisp.dhis.reportexcel.utils.StringUtils;
 
 /**
  * Simple demo class which uses the api to present the contents of an excel 97
@@ -121,11 +122,11 @@ public class XMLStructureResponse
 
         throws Exception
     {
-        this.PATH_FILE_NAME = pathFileName;
-        this.WORKBOOK = Workbook.getWorkbook( new File( pathFileName ) );
         this.ENCODING = enc;
         this.bWRITE_DTD = bWriteDTD;
         this.bWRITE_VERSION = bWriteVersion;
+        this.PATH_FILE_NAME = pathFileName;
+        this.WORKBOOK = Workbook.getWorkbook( new File( pathFileName ) );
         this.STRUCTURE_DATA_RESPONSE = new StringBuffer();
 
         if ( this.ENCODING == null || !this.ENCODING.equals( "UnicodeBig" ) )
@@ -135,6 +136,7 @@ public class XMLStructureResponse
 
         if ( bFormat )
         {
+            // recalculatedValueForCellFormula(sheetId);
             writeFormattedXML( sheetId, bDetailed, bWriteDescription );
         }
         else
@@ -214,19 +216,7 @@ public class XMLStructureResponse
         throws Exception
     {
         FileInputStream fis = new FileInputStream( this.PATH_FILE_NAME );
-        org.apache.poi.ss.usermodel.Workbook wb = new HSSFWorkbook( fis );
-
-        if ( sheetId > 0 )
-        {
-            this.recalculatedValueForCellFormula( wb, (sheetId - 1) );
-        }
-        else
-        {
-            for ( int sheet = 0; sheet < WORKBOOK.getNumberOfSheets(); sheet++ )
-            {
-                this.recalculatedValueForCellFormula( wb, sheet );
-            }
-        }
+        HSSFWorkbook hssfwb = new HSSFWorkbook( fis );
 
         if ( bWriteDescription )
         {
@@ -251,13 +241,13 @@ public class XMLStructureResponse
 
         if ( sheetId > 0 )
         {
-            writeBySheetNo( wb, (sheetId - 1), bDetailed );
+            writeBySheetNo( hssfwb, (sheetId - 1), bDetailed );
         }
         else
         {
             for ( int sheet = 0; sheet < WORKBOOK.getNumberOfSheets(); sheet++ )
             {
-                writeBySheetNo( wb, sheet, bDetailed );
+                writeBySheetNo( hssfwb, sheet, bDetailed );
             }
         }
 
@@ -280,6 +270,11 @@ public class XMLStructureResponse
 
         Cell[] cell = null;
         CellFormat format = null;
+        boolean bFormula = false;
+        String recalculatedValue = "";
+
+        org.apache.poi.ss.usermodel.Sheet sheet = wb.getSheetAt( sheetNo );
+        org.apache.poi.ss.usermodel.FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
 
         for ( int i = 0; i < s.getRows(); i++ )
         {
@@ -294,22 +289,50 @@ public class XMLStructureResponse
                 // information
                 if ( (cell[j].getType() != CellType.EMPTY) || (cell[j].getCellFormat() != null) )
                 {
+                    bFormula = false;
+
+                    CellReference cellReference = new CellReference( i, j );
+                    org.apache.poi.ss.usermodel.Row rowRef = sheet.getRow( cellReference.getRow() );
+                    org.apache.poi.ss.usermodel.Cell cellRef = rowRef.getCell( cellReference.getCol() );
+
+                    if ( (cellRef != null)
+                        && (cellRef.getCellType() == org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA) )
+                    {
+                        bFormula = true;
+                        recalculatedValue = "";
+
+                        switch ( evaluator.evaluateInCell( cellRef ).getCellType() )
+//                        switch ( evaluator.evaluateFormulaCell( cellRef ) )
+                        {
+                        case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
+
+                            recalculatedValue = String.valueOf( cellRef.getNumericCellValue() );
+
+                            break;
+
+                        // CELL_TYPE_FORMULA will never occur
+                        case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA:
+                            System.out.println( "Place of cell :: [" + cellRef.getRowIndex() + "]["
+                                + cellRef.getColumnIndex() + "]" );
+                            break;
+                        }
+                    }
 
                     // end of checking the cell formula
                     STRUCTURE_DATA_RESPONSE.append( "      <col no=\"" + j + "\">" );
                     STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
                     STRUCTURE_DATA_RESPONSE.append( "        <data>" );
 
-                    if ( cell[j].getContents().equals( NUMBER_OF_ZERO ) )
+                    if ( bFormula )
                     {
-
-                        STRUCTURE_DATA_RESPONSE.append( "<![CDATA[-]]>" );
+                        STRUCTURE_DATA_RESPONSE.append( "<![CDATA[" 
+                            + StringUtils.checkingNumberDecimal( recalculatedValue ) + "]]>" );
                     }
                     else
                     {
-                        STRUCTURE_DATA_RESPONSE.append( "<![CDATA[" + cell[j].getContents() + "]]>" );
+                        STRUCTURE_DATA_RESPONSE.append( "<![CDATA["
+                            + StringUtils.checkingNumberDecimal( cell[j].getContents() ) + "]]>" );
                     }
-                    // }
 
                     STRUCTURE_DATA_RESPONSE.append( "</data>" );
                     STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
@@ -336,7 +359,7 @@ public class XMLStructureResponse
         if ( format != null )
         {
             STRUCTURE_DATA_RESPONSE.append( "        <format align=\""
-                + this.convertAlignmentString( format.getAlignment().getDescription() ) + "\"" );
+                + StringUtils.convertAlignmentString( format.getAlignment().getDescription() ) + "\"" );
 
             if ( bDetailed )
             {
@@ -442,63 +465,6 @@ public class XMLStructureResponse
                 STRUCTURE_DATA_RESPONSE.append( "  <cell" + " iKey=\"" + sheetNo + "#" + iRowTopLeft + "#"
                     + iColTopLeft + "\">" + (iColBottomRight - iColTopLeft + 1) + "</cell>" );
                 STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
-            }
-        }
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private String convertAlignmentString( String s )
-    {
-        if ( s.equalsIgnoreCase( "centre" ) )
-        {
-            return "center";
-        }
-        else
-        {
-            return s;
-        }
-    }
-
-    private void recalculatedValueForCellFormula( org.apache.poi.ss.usermodel.Workbook wb, int sheetNo )
-        throws Exception
-    {
-        org.apache.poi.ss.usermodel.Sheet sheet = wb.getSheetAt( sheetNo );
-        org.apache.poi.ss.usermodel.FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
-
-        String recalculatedValue = "";
-
-        for ( org.apache.poi.ss.usermodel.Row rowPOI : sheet )
-        {
-            for ( org.apache.poi.ss.usermodel.Cell cellPOI : rowPOI )
-            {
-
-                CellReference cellReference = new CellReference( cellPOI.getRowIndex(), cellPOI.getColumnIndex() );
-                org.apache.poi.ss.usermodel.Row rowRef = sheet.getRow( cellReference.getRow() );
-                org.apache.poi.ss.usermodel.Cell cellRef = rowRef.getCell( cellReference.getCol() );
-
-                if ( (cellRef != null) && (cellRef.getCellType() == org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA) )
-                {
-                    switch ( evaluator.evaluateInCell( cellRef ).getCellType() )
-                    {
-                    case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
-
-                        recalculatedValue = String.valueOf( cellRef.getNumericCellValue() );
-
-                        if ( new Double( recalculatedValue.split( "\\." )[1] ) == 0.0d )
-                        {
-                            recalculatedValue = recalculatedValue.split( "\\." )[0];
-                        }
-                        break;
-
-                    // CELL_TYPE_FORMULA will never occur
-                    case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA:
-                        System.out.println("Place of cell :: ["  + cellRef.getRowIndex()+"]["+cellRef.getColumnIndex() +"]");
-                        break;
-                    }
-                }
             }
         }
     }

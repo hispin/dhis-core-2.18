@@ -132,7 +132,7 @@ public class ExcelUtils
         if ( row > 0 && column > 0 )
         {
             HSSFRow rowPOI = sheet.getRow( row - 1 );
-            
+
             if ( rowPOI == null )
             {
                 rowPOI = sheet.createRow( row - 1 );
@@ -147,14 +147,7 @@ public class ExcelUtils
             }
             else if ( type.equalsIgnoreCase( ExcelUtils.NUMBER ) )
             {
-                if ( Double.parseDouble( value ) != 0 )
-                {
-                    cellPOI.setCellValue( new HSSFRichTextString( value ) );
-                }
-                else
-                {
-                    cellPOI.setCellValue( new HSSFRichTextString( ExcelUtils.NUMBER_OF_ZERO ) );
-                }
+                cellPOI.setCellValue( Double.parseDouble( value ) );
             }
         }
     }
