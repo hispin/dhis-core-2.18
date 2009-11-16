@@ -45,7 +45,6 @@ import com.opensymphony.xwork2.Action;
 public class ExportXMLAction
     implements Action
 {
-    private static final String SEPARATE = "/";
 
     private static final String ENCODING = "UTF8";
 
@@ -131,13 +130,5 @@ public class ExportXMLAction
         this.FILE_XLS = new File( selectionManager.getDownloadFilePath() );
 
         // inputStream.close();
-    }
-
-    @SuppressWarnings( "unused" )
-    private static final String replacedSeparateSimple( String path )
-    {
-        path = path.replace( "\\", SEPARATE );
-
-        return path;
     }
 }

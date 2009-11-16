@@ -92,8 +92,6 @@ public class XMLStructureResponse
 
     private static final String PRINT_END_LINE = "\n";
 
-    public static final String NUMBER_OF_ZERO = "0";
-
     // ------------------------------------------------
     // Get & Set methods //
     // ------------------------------------------------
@@ -136,7 +134,6 @@ public class XMLStructureResponse
 
         if ( bFormat )
         {
-            // recalculatedValueForCellFormula(sheetId);
             writeFormattedXML( sheetId, bDetailed, bWriteDescription );
         }
         else
@@ -302,7 +299,6 @@ public class XMLStructureResponse
                         recalculatedValue = "";
 
                         switch ( evaluator.evaluateInCell( cellRef ).getCellType() )
-//                        switch ( evaluator.evaluateFormulaCell( cellRef ) )
                         {
                         case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
 
