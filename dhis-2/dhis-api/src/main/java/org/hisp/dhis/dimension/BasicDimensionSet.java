@@ -1,6 +1,8 @@
 package org.hisp.dhis.dimension;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,6 +22,11 @@ public class BasicDimensionSet
     public BasicDimensionSet( List<? extends Dimension> dimensions )
     {
         this.dimensions = dimensions;
+    }
+    
+    public BasicDimensionSet( Dimension... dimensions )
+    {
+        this.dimensions = Arrays.asList( dimensions );
     }
     
     // -------------------------------------------------------------------------
@@ -95,9 +102,50 @@ public class BasicDimensionSet
     }
     
     // -------------------------------------------------------------------------
-    // toString
+    // equals, hashCode, toString
     // -------------------------------------------------------------------------
-    
+        
+    @Override
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+        
+        if ( object == null )
+        {
+            return false;
+        }
+        
+        if ( getClass() != object.getClass() )
+        {
+            return false;
+        }
+        
+        BasicDimensionSet other = (BasicDimensionSet) object;
+        
+        if ( dimensions == null )
+        {
+            if ( other.dimensions != null )
+            {
+                return false;
+            }
+        }
+        else if ( !( new HashSet<Dimension>( dimensions ).equals( new HashSet<Dimension>( other.dimensions ) ) ) )
+        {
+            return false;
+        }
+        
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return dimensions == null ? 0 : dimensions.hashCode();
+    }
+
     public String toString()
     {
         return "[" + getName() + "]";
