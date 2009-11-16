@@ -326,6 +326,7 @@
 			class="org.hisp.dhis.oum.action.organisationunitlevel.GetOrganisationUnitLevelsAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/saveOrganisationUnitLevelForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>
 		</action>
 
 		<action name="saveOrganisationUnitLevels"
