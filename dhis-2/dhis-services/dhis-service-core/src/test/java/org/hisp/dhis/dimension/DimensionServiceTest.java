@@ -27,6 +27,12 @@ package org.hisp.dhis.dimension;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
+import java.util.Collection;
+import java.util.HashSet;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
@@ -44,9 +50,12 @@ public class DimensionServiceTest
     
     private DataElementGroupSet dataElementGroupSetA;
     private DataElementGroupSet dataElementGroupSetB;
+    private DataElementGroupSet dataElementGroupSetC;
     
-    private DataElement dataElementA;    
+    private DataElement dataElementA;
     private DataElement dataElementB;
+    private DataElement dataElementC;
+    private DataElement dataElementD;
     
     @Override
     public void setUpTest()
@@ -57,23 +66,57 @@ public class DimensionServiceTest
         
         dataElementGroupSetA = new DataElementGroupSet( "DataElementGroupSetA" );
         dataElementGroupSetB = new DataElementGroupSet( "DataElementGroupSetB" );
+        dataElementGroupSetC = new DataElementGroupSet( "DataElementGroupSetC" );
         
         dataElementService.addDataElementGroupSet( dataElementGroupSetA );
         dataElementService.addDataElementGroupSet( dataElementGroupSetB );
+        dataElementService.addDataElementGroupSet( dataElementGroupSetC );
         
         dataElementA = createDataElement( 'A' );
         dataElementB = createDataElement( 'B' );
+        dataElementC = createDataElement( 'C' );
+        dataElementD = createDataElement( 'D' );
         
         dataElementA.getGroupSets().add( dataElementGroupSetA );
-        dataElementA.getGroupSets().add( dataElementGroupSetA );
+        dataElementA.getGroupSets().add( dataElementGroupSetB );
+
+        dataElementB.getGroupSets().add( dataElementGroupSetB );
+        dataElementB.getGroupSets().add( dataElementGroupSetC );
+
+        dataElementC.getGroupSets().add( dataElementGroupSetA );
+        dataElementC.getGroupSets().add( dataElementGroupSetB );
         
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
+        dataElementService.addDataElement( dataElementC );
+        dataElementService.addDataElement( dataElementD );
     }
     
     @Test
-    public void getDimensions()
+    public void getDataElementDimensionSets()
     {
+        Collection<DimensionSet> dimensionSets = dimensionService.getDataElementDimensionSets();
         
+        assertEquals( 3, dimensionSets.size() ); // Including default category combo
+        assertTrue( dimensionSets.contains( new BasicDimensionSet( dataElementGroupSetA, dataElementGroupSetB ) ) );
+        assertTrue( dimensionSets.contains( new BasicDimensionSet( dataElementGroupSetB, dataElementGroupSetC ) ) );
+    }
+    
+    @Test
+    public void getDataElements()
+    {
+        Collection<DataElement> dataElements = new HashSet<DataElement>();
+        
+        Collection<DimensionSet> dimensionSets = dimensionService.getDataElementDimensionSets();
+        
+        for ( DimensionSet dimensionSet : dimensionSets )
+        {
+            dataElements.addAll( dimensionService.getDataElements( dimensionSet ) );
+        }
+        
+        assertEquals( 3, dataElements.size() );
+        assertTrue( dataElements.contains( dataElementA ) );
+        assertTrue( dataElements.contains( dataElementB ) );
+        assertTrue( dataElements.contains( dataElementC ) );
     }
 }
