@@ -39,6 +39,8 @@ public class StringUtils
     private static final String MIDDLE_LINE = "-";
 
     public static final String NUMBER_OF_ZERO = "0";
+    
+    private static final String SEPARATE = "/";
 
     /* ---------------------------------------------------------------------- */
     /*                                                                        */
@@ -69,7 +71,7 @@ public class StringUtils
 
             if ( Double.parseDouble( input ) >= 0.0d )
             {
-                if ( input.contains( "." ) )
+                if ( input.contains( DOT ) )
                 {
                     s1 = input.split( "\\." )[0];
                     s2 = input.split( "\\." )[1];
@@ -125,5 +127,17 @@ public class StringUtils
         }
 
         return number;
+    }
+    
+    /* ---------------------------------------------------------------------- */
+    /*                                                                        */
+    /* ---------------------------------------------------------------------- */
+
+    @SuppressWarnings("unused")
+    private static final String replacedSeparateCharacter( String path )
+    {
+        path = path.replace( "\\", SEPARATE );
+
+        return path;
     }
 }

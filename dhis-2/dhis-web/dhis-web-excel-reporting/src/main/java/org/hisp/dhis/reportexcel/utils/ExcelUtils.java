@@ -56,8 +56,6 @@ public class ExcelUtils
 
     public static final String NUMBER = "NUMBER";
 
-    public static final String NUMBER_OF_ZERO = "0";
-
     private final static Integer NUMBER_OF_LETTER = new Integer( 26 );
 
     public static void writeValue( int row, int column, String value, String type, WritableSheet sheet,
