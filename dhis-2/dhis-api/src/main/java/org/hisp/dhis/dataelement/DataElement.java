@@ -41,7 +41,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
-import org.hisp.dhis.dimension.DimensionSet;
 import org.hisp.dhis.period.PeriodType;
 
 /**
@@ -62,7 +61,7 @@ import org.hisp.dhis.period.PeriodType;
  */
 public class DataElement
     extends IdentifiableObject
-    implements DimensionSet, DimensionOption, DimensionOptionElement
+    implements DimensionOption, DimensionOptionElement
 {
     public static final String VALUE_TYPE_STRING = "string";
 
@@ -230,24 +229,9 @@ public class DataElement
         }
     }
 
-    public List<? extends Dimension> getDimensions()
-    {
-        return groupSets;
-    }
-
     public List<? extends DimensionOptionElement> getDimensionOptionElements()
     {
-        List<DimensionOptionElement> dimensionOptionElements = new ArrayList<DimensionOptionElement>();
-
-        for ( Dimension dimension : getDimensions() )
-        {
-            for ( DimensionOption dimensionOption : dimension.getDimensionOptions() )
-            {
-                dimensionOptionElements.addAll( dimensionOption.getDimensionOptionElements() );
-            }
-        }
-
-        return dimensionOptionElements;
+        return null; // DataElement is DimensionOption for the static DataElement dimension
     }
 
     public List<? extends DimensionOption> getDimensionOptions()
@@ -258,16 +242,6 @@ public class DataElement
     public Dimension getDimension()
     {
         return DIMENSION;
-    }
-
-    public String getDimensionSetType()
-    {
-        return DataElement.class.getSimpleName().toUpperCase();
-    }
-
-    public boolean isDimensionSet()
-    {
-        return groupSets != null && groupSets.size() > 0;
     }
 
     // -------------------------------------------------------------------------
@@ -389,6 +363,21 @@ public class DataElement
         {
             return domainType;
         }
+    }
+    
+    public Set<DataElement> getDataElements()
+    {
+        Set<DataElement> dataElements = new HashSet<DataElement>();
+        
+        for ( DataElementGroupSet groupSet : groupSets )
+        {
+            for ( DataElementGroup group : groupSet.getMembers() )
+            {
+                dataElements.addAll( group.getMembers() );
+            }
+        }
+        
+        return dataElements;
     }
 
     // -------------------------------------------------------------------------

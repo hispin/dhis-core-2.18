@@ -70,6 +70,21 @@ public class DataElementCategoryCombo
     // Dimension
     // -------------------------------------------------------------------------
 
+    public String getDimensionSetId()
+    {
+        return TYPE_CATEGORY_COMBO + SEPARATOR_TYPE + id;
+    }
+    
+    public String getDimensionSetType()
+    {
+        return TYPE_CATEGORY_COMBO;
+    }
+    
+    public boolean isDimensionSetType( String type )
+    {
+        return TYPE_CATEGORY_COMBO.equals( type );
+    }
+    
     public List<? extends Dimension> getDimensions()
     {
         return categories;
@@ -78,11 +93,6 @@ public class DataElementCategoryCombo
     public List<? extends DimensionOptionElement> getDimensionOptionElements()
     {
         return new ArrayList<DimensionOptionElement>( optionCombos );
-    }
-    
-    public String getDimensionSetType()
-    {
-        return DataElementCategoryCombo.class.getSimpleName().toUpperCase();
     }
     
     // -------------------------------------------------------------------------

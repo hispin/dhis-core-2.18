@@ -34,7 +34,11 @@ import java.util.List;
  */
 public interface DimensionOptionElement
 {
+    int getId(); //TODO temporary, remove
+    
     String getName();
+    
+    String getShortName();
     
     List<? extends DimensionOption> getDimensionOptions();
 }

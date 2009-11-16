@@ -164,8 +164,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="categoryService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+	<property name="dimensionService"
+	  ref="org.hisp.dhis.dimension.DimensionService"/>
     <property name="indicatorService"
       ref="org.hisp.dhis.indicator.IndicatorService"/>
     <property name="periodService"
@@ -183,8 +183,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="categoryService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    <property name="dimensionService"
+      ref="org.hisp.dhis.dimension.DimensionService"/>
     <property name="indicatorService"
       ref="org.hisp.dhis.indicator.IndicatorService"/>
     <property name="periodService"
@@ -294,6 +294,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="reportTableService"
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetDimensionSetDataElementsAction"
+    class="org.hisp.dhis.reporting.tablecreator.action.GetDimensionSetDataElementsAction"
+    scope="prototype">
+    <property name="dimensionService"
+      ref="org.hisp.dhis.dimension.DimensionService"/>
   </bean>
   
   <!-- ReportViewer -->

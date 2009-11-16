@@ -28,7 +28,6 @@ package org.hisp.dhis.dimension;
  */
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 
@@ -39,7 +38,9 @@ public interface DimensionService
 {
     final String ID = DimensionService.class.getName();
     
-    Map<String, String> getDataElementDimensionSets();
+    DimensionSet getDimensionSet( String dimensionSetId );
     
-    Collection<DataElement> getDataElements( String identifier );
+    Collection<DimensionSet> getDataElementDimensionSets();
+    
+    Collection<DataElement> getDataElements( DimensionSet dimensionSet );
 }

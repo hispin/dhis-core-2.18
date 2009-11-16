@@ -36,16 +36,15 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
+import org.hisp.dhis.dimension.DimensionService;
+import org.hisp.dhis.dimension.DimensionSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
@@ -99,11 +98,11 @@ public class GetTableOptionsAction
         this.dataElementService = dataElementService;
     }
 
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
+    private DimensionService dimensionService;
+    
+    public void setDimensionService( DimensionService dimensionService )
     {
-        this.categoryService = categoryService;
+        this.dimensionService = dimensionService;
     }
 
     private IndicatorService indicatorService;
@@ -178,18 +177,18 @@ public class GetTableOptionsAction
         this.mode = mode;
     }
     
-    private boolean category;
+    private boolean dimension;
 
-    public void setCategory( boolean category )
+    public boolean isDimension()
     {
-        this.category = category;
+        return dimension;
     }
 
-    public boolean isCategory()
+    public void setDimension( boolean dimension )
     {
-        return category;
+        this.dimension = dimension;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -201,13 +200,13 @@ public class GetTableOptionsAction
         return dataElementGroups;
     }
     
-    private List<DataElementCategoryCombo> categoryCombos = new ArrayList<DataElementCategoryCombo>();
+    private List<DimensionSet> dimensionSets = new ArrayList<DimensionSet>();
 
-    public List<DataElementCategoryCombo> getCategoryCombos()
+    public List<DimensionSet> getDimensionSets()
     {
-        return categoryCombos;
-    }    
-    
+        return dimensionSets;
+    }
+
     private List<DataElement> dataElements = new ArrayList<DataElement>();
 
     public List<DataElement> getDataElements()
@@ -330,7 +329,7 @@ public class GetTableOptionsAction
         // Available metadata
         // ---------------------------------------------------------------------
 
-        if ( mode != null && mode.equals( ReportTable.MODE_DATAELEMENTS ) && !category )
+        if ( mode != null && mode.equals( ReportTable.MODE_DATAELEMENTS ) && !dimension )
         {
             dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
             
@@ -342,11 +341,9 @@ public class GetTableOptionsAction
             
             displayPropertyHandler.handle( dataElements );
         }
-        else if ( mode != null && mode.equals( ReportTable.MODE_DATAELEMENTS ) && category )
+        else if ( mode != null && mode.equals( ReportTable.MODE_DATAELEMENTS ) && dimension )
         {
-            categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAllDataElementCategoryCombos() );
-            
-            Collections.sort( categoryCombos, new DataElementCategoryComboNameComparator() );
+            dimensionSets = new ArrayList<DimensionSet>( dimensionService.getDataElementDimensionSets() );
         }
         else if ( mode != null && mode.equals( ReportTable.MODE_INDICATORS ) )
         {

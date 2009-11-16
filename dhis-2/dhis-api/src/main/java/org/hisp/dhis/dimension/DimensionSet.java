@@ -29,24 +29,31 @@ package org.hisp.dhis.dimension;
 
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.indicator.Indicator;
-
 /**
  * @author Lars Helge Overland
  */
 public interface DimensionSet
 {
-    final String TYPE_DATAELEMENT = DataElement.class.getSimpleName().toUpperCase();
-    final String TYPE_INDICATOR = Indicator.class.getSimpleName().toUpperCase();
-    final String TYPE_CATEGORY_COMBO = DataElementCategoryCombo.class.getSimpleName().toUpperCase();
+    final String TYPE_CATEGORY_COMBO = "categoryCombo";
+    final String TYPE_GROUP_SET = "groupSet";
+    final String SEPARATOR_TYPE = "_";
+    final String SEPARATOR_ID = "-";
+    final String SEPARATOR_NAME = ", ";
     
     String getName();
+    
+    /**
+     * The DimensionSet identifier is on the format 
+     * [type]SEPARATOR_TYPE[id]SEPARATOR_ID[id]SEPARATOR[id], for instance
+     * groupSet_1-2-3 and categoryCombo_1 .
+     */
+    String getDimensionSetId();
+    
+    String getDimensionSetType();
+
+    boolean isDimensionSetType( String type );
     
     List<? extends Dimension> getDimensions();
     
     List<? extends DimensionOptionElement> getDimensionOptionElements();
-    
-    String getDimensionSetType();
 }

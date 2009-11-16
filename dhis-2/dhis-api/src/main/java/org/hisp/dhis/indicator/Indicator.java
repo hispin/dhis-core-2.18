@@ -35,17 +35,15 @@ import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
-import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
-import org.hisp.dhis.dimension.DimensionSet;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: Indicator.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 public class Indicator
-    extends IdentifiableObject implements DimensionSet, DimensionOptionElement
+    extends IdentifiableObject implements DimensionOptionElement
 {
     private Boolean annualized;
 
@@ -106,41 +104,11 @@ public class Indicator
     // Dimension
     // -------------------------------------------------------------------------
 
-    public List<? extends Dimension> getDimensions()
-    {
-        return groupSets;
-    }
-
     public List<? extends DimensionOption> getDimensionOptions()
     {
         return new ArrayList<DimensionOption>( groups );
     }
     
-    public List<? extends DimensionOptionElement> getDimensionOptionElements()
-    {
-        List<DimensionOptionElement> dimensionOptionElements = new ArrayList<DimensionOptionElement>();
-        
-        for ( Dimension dimension : getDimensions() )
-        {
-            for ( DimensionOption dimensionOption : dimension.getDimensionOptions() )
-            {
-                dimensionOptionElements.addAll( dimensionOption.getDimensionOptionElements() );
-            }
-        }
-        
-        return dimensionOptionElements;
-    }
-    
-    public String getDimensionSetType()
-    {
-        return Indicator.class.getSimpleName().toUpperCase();
-    }
-    
-    public boolean isDimensionSet()
-    {
-        return groupSets != null && groupSets.size() > 0;
-    }
-
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------

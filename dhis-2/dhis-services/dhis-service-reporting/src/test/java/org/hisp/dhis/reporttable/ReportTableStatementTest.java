@@ -31,10 +31,12 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -68,6 +70,8 @@ public class ReportTableStatementTest
     private List<Period> periods;
     private List<Period> relativePeriods;
     private List<OrganisationUnit> units;
+
+    private DataElementCategoryCombo categoryCombo;
     
     private PeriodType periodType;
     
@@ -102,6 +106,10 @@ public class ReportTableStatementTest
         
         categoryOptionCombos.add( createCategoryOptionCombo( 'A', 'A', 'B' ) );
         categoryOptionCombos.add( createCategoryOptionCombo( 'B', 'C', 'D' ) );
+
+        categoryCombo = new DataElementCategoryCombo( "CategoryComboA" );
+        categoryCombo.setId( 'A' );
+        categoryCombo.setOptionCombos( new HashSet<DataElementCategoryOptionCombo>( categoryOptionCombos ) );
         
         indicatorType = createIndicatorType( 'A' );
         
@@ -142,8 +150,8 @@ public class ReportTableStatementTest
     public void testCreateReportTableStatement()
     {
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
+            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
         
         reportTable.init();
         
@@ -152,8 +160,8 @@ public class ReportTableStatementTest
         assertNotNull( statement.getStatement() );
         
         reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
+            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -162,8 +170,8 @@ public class ReportTableStatementTest
         assertNotNull( statement.getStatement() );
         
         reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
+            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -176,8 +184,8 @@ public class ReportTableStatementTest
     public void testGetReportTableDataStatementIndicatorsMode()
     {
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false, 
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            true, false ,true, false, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
+            null, true, false ,true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -194,8 +202,8 @@ public class ReportTableStatementTest
     public void testGetReportTableDataStatementDataElementsModeWithCategoryOptionCombos()
     {        
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), categoryOptionCombos, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            true, true, false, false, relatives, null, i18nFormat, "january_2000" );
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
+            categoryCombo, true, true, false, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -212,8 +220,8 @@ public class ReportTableStatementTest
     public void testGetReportTableDataStatementDataElementsMode()
     {        
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
+            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -230,8 +238,8 @@ public class ReportTableStatementTest
     public void testGetReportTableDataStatementDataSetsMode()
     {
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATASETS, false,
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
+            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
@@ -248,8 +256,8 @@ public class ReportTableStatementTest
     public void testRemoveReportTableStatement()
     {
         ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), new ArrayList<DataElementCategoryOptionCombo>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            true, false, true, false, relatives, null, i18nFormat, "january_2000" );
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
+            null, true, false, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         

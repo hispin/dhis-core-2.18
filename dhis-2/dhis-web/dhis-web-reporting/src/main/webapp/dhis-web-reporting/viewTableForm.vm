@@ -18,10 +18,10 @@
                 <col width="20">
 		        <tr>
                     <td colspan="10" style="text-align:right">
-                    	<input type="button" value="$i18n.getString( 'add_indicator_reporttable' )" style="width:250px" onclick="window.location.href='displayAddTableForm.action?mode=indicators'"><br>
-                    	<input type="button" value="$i18n.getString( 'add_dataelement_reporttable' )" style="width:250px" onclick="window.location.href='displayAddTableForm.action?mode=dataelements'"><br>
-                        <input type="button" value="$i18n.getString( 'add_dataelement_category_reporttable' )" style="width:250px" onclick="window.location.href='displayAddTableForm.action?mode=dataelements&category=true'"><br>
-                    	<input type="button" value="$i18n.getString( 'add_dataset_reporttable' )" style="width:250px" onclick="window.location.href='displayAddTableForm.action?mode=datasets'">
+                    	<input type="button" value="$i18n.getString( 'add_indicator_table' )" style="width:250px" onclick="window.location.href='displayAddTableForm.action?mode=indicators'"><br>
+                    	<input type="button" value="$i18n.getString( 'add_dataelement_table' )" style="width:250px" onclick="window.location.href='displayAddTableForm.action?mode=dataelements'"><br>
+                        <input type="button" value="$i18n.getString( 'add_dataelement_dimension_table' )" style="width:250px" onclick="window.location.href='displayAddTableForm.action?mode=dataelements&dimension=true'"><br>
+                    	<input type="button" value="$i18n.getString( 'add_dataset_table' )" style="width:250px" onclick="window.location.href='displayAddTableForm.action?mode=datasets'">
                     </td>
                 </tr>
 				<tr>
@@ -33,7 +33,7 @@
 				<tr>
 					<td#alternate( $mark )>$encoder.htmlEncode( $table.name )</td>
 					<td style="text-align:center"#alternate( $mark )><a href="getReportParams.action?id=$table.id&mode=table" title="$i18n.getString( "create" )"><img src="../images/start_process.png" alt="$i18n.getString( "create" )"></a></td>
-                    <td style="text-align:center"#alternate( $mark )><a href="displayAddTableForm.action?id=$table.id&mode=$table.mode&category=$table.hasCategoryOptionCombos()" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
+                    <td style="text-align:center"#alternate( $mark )><a href="displayAddTableForm.action?id=$table.id&mode=$table.mode&dimension=$table.isDimensional()" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
                     <td style="text-align:center"#alternate( $mark )><a href="displayTable.action?id=$table.id" title="$i18n.getString( "display" )"><img src="../images/display.png" alt="$i18n.getString( "display" )"></a></td>
                     <td style="text-align:center"#alternate( $mark )><a href="generateTableDataWorkbook.action?id=$table.id" title="$i18n.getString( "export_to_excel" )"><img src="../images/excel.png" alt="$i18n.getString( "export_to_excel" )"></a></td>
                     <td style="text-align:center"#alternate( $mark )><a href="getTableData.action?id=$table.id" title="$i18n.getString( "export_to_html" )"><img src="../images/html.png" alt="$i18n.getString( "export_to_html" )"></a></td>

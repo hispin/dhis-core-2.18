@@ -43,23 +43,22 @@ function getDataElementsReceived( xmlObject )
     }
 }
 
-function getCategoryComboDataElements()
+function getDimensionSetDataElements()
 {
-    var categoryComboList = document.getElementById( "categoryComboId" );
-    var categoryComboId = categoryComboList.options[ categoryComboList.selectedIndex ].value;
+    var dimensionSetId = getListValue( "dimensionSetId" );
     
-    if ( categoryComboId != null )
+    if ( dimensionSetId != null )
     {
-        var url = "../dhis-web-commons-ajax/getDataElements.action?categoryComboId=" + categoryComboId + "&aggregate=true";
+        var url = "getDimensionSetDataElements.action?dimensionSetId=" + dimensionSetId;
         
         var request = new Request();
         request.setResponseTypeXML( 'dataElement' );
-        request.setCallbackSuccess( getCategoryComboDataElementsReceived );
+        request.setCallbackSuccess( getDimensionSetDataElementsReceived );
         request.send( url );
     }
 }
 
-function getCategoryComboDataElementsReceived( xmlObject )
+function getDimensionSetDataElementsReceived( xmlObject )
 {   
     var availableDataElements = document.getElementById( "availableDataElements" );
     var selectedDataElements = document.getElementById( "selectedDataElements" );
