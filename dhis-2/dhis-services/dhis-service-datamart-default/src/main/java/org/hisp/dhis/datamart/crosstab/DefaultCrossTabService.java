@@ -217,13 +217,21 @@ public class DefaultCrossTabService
      */
     private boolean validate( Collection<Operand> operands, Collection<Integer> periodIds, Collection<Integer> unitIds )
     {
-        if ( operands == null || periodIds == null || unitIds == null )
+        if ( operands == null || operands.size() == 0 )
         {
+            log.warn( "No operands selected for crosstab table" );            
             return false;
         }
         
-        if ( operands.size() == 0 || periodIds.size() == 0 || unitIds.size() == 0 )
+        if ( periodIds == null || periodIds.size() == 0 )
         {
+            log.warn( "No periods selected for crosstab table" );            
+            return false;
+        }
+        
+        if ( unitIds == null || unitIds.size() == 0 )
+        {
+            log.warn( "No organisation units selected for crosstab table" );
             return false;
         }
         

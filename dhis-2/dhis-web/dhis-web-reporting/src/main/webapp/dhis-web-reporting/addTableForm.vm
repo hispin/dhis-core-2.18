@@ -38,7 +38,7 @@
 		<td><input type="checkbox" id="doPeriods" name="doPeriods" value="true"#if( $reportTable.doPeriods ) checked#end></td>
 	</tr>
 	
-	#if ( $category )
+	#if ( $dimension )
 		
     <tr>
         <td></td>
@@ -67,7 +67,7 @@
     
         <!-- Non-Category -->
     
-	    #if ( !$category )
+	    #if ( !$dimension )
 	    
 	    <tr>
 	        <td>
@@ -86,10 +86,10 @@
 	    
         <tr>
             <td>
-                <select id="categoryComboId" name="categoryComboId" style="min-width:640px" onchange="getCategoryComboDataElements()">
+                <select id="dimensionSetId" name="dimensionSetId" style="min-width:640px" onchange="getDimensionSetDataElements()">
                     <option value="-1">[ $i18n.getString( "select_category_combo" ) ]</option>
-                    #foreach ( $categoryCombo in $categoryCombos )
-                        <option value="$categoryCombo.id">$categoryCombo.name</option>
+                    #foreach ( $dimensionSet in $dimensionSets )
+                        <option value="$dimensionSet.dimensionSetId">$dimensionSet.name</option>
                     #end
                 </select>
             </td>

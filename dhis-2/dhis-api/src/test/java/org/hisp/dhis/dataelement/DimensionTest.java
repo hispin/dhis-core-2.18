@@ -27,12 +27,15 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.dimension.BasicDimensionSet;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
+import org.hisp.dhis.dimension.DimensionSet;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -63,7 +66,10 @@ public class DimensionTest
         
         DataElementGroupSet diseaseType = new DataElementGroupSet( "DiseaseType" );
         
-        DataElement diseaseByType = new DataElement( "DiseaseByType" ); // Uber data element
+        List<Dimension> dims = new ArrayList<Dimension>();
+        dims.add( diseaseType );
+        
+        DimensionSet diseaseByType = new BasicDimensionSet( dims );
         
         communicable.getMembers().add( hivAids );
         communicable.getMembers().add( malaria );
@@ -73,8 +79,6 @@ public class DimensionTest
         
         diseaseType.getMembers().add( communicable );
         diseaseType.getMembers().add( nonCommunicable );
-        
-        diseaseByType.getGroupSets().add( diseaseType );
         
         DataValue dataValue = new DataValue( hivAids, period, source );
         

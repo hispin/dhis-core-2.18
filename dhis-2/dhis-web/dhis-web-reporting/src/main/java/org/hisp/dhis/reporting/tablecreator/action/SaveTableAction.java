@@ -33,12 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dimension.DimensionService;
+import org.hisp.dhis.dimension.DimensionSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -78,11 +77,11 @@ public class SaveTableAction
         this.dataElementService = dataElementService;
     }
 
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
+    private DimensionService dimensionService;
+    
+    public void setDimensionService( DimensionService dimensionService )
     {
-        this.categoryService = categoryService;
+        this.dimensionService = dimensionService;
     }
 
     private IndicatorService indicatorService;
@@ -145,13 +144,13 @@ public class SaveTableAction
         this.regression = regression;
     }    
     
-    private Integer categoryComboId;
+    private String dimensionSetId;
 
-    public void setCategoryComboId( Integer categoryComboId )
+    public void setDimensionSetId( String dimensionSetId )
     {
-        this.categoryComboId = categoryComboId;
+        this.dimensionSetId = dimensionSetId;
     }
-    
+
     private boolean doIndicators;
 
     public void setDoIndicators( boolean doIndicators )
@@ -363,12 +362,8 @@ public class SaveTableAction
         List<OrganisationUnit> organisationUnits = new CollectionConversionUtils<OrganisationUnit>().getList( 
             organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) );
 
-        DataElementCategoryCombo categoryCombo = ( categoryComboId != null ) ? 
-            categoryService.getDataElementCategoryCombo( categoryComboId ) : null;
+        DimensionSet dimensionSet = dimensionService.getDimensionSet( dimensionSetId );
         
-        List<DataElementCategoryOptionCombo> categoryOptionCombos = ( categoryCombo != null ) ? 
-            new ArrayList<DataElementCategoryOptionCombo>( categoryCombo.getOptionCombos() ) : new ArrayList<DataElementCategoryOptionCombo>();
-
         RelativePeriods relatives = new RelativePeriods();
         
         relatives.setReportingMonth( reportingMonth );
@@ -396,8 +391,8 @@ public class SaveTableAction
         if ( tableId == null )
         {
             reportTable = new ReportTable( tableName, mode, regression,
-                dataElements, indicators, dataSets, categoryOptionCombos, periods, null, organisationUnits, null,
-                doIndicators, doCategoryOptionCombos, doPeriods, doOrganisationUnits, relatives, reportParams, 
+                dataElements, indicators, dataSets, periods, null, organisationUnits, null,
+                dimensionSet, doIndicators, doCategoryOptionCombos, doPeriods, doOrganisationUnits, relatives, reportParams, 
                 null, null );
         }
         else
@@ -409,7 +404,6 @@ public class SaveTableAction
             reportTable.setDataElements( dataElements );
             reportTable.setIndicators( indicators );
             reportTable.setDataSets( dataSets );
-            reportTable.setCategoryOptionCombos( categoryOptionCombos );
             reportTable.setPeriods( periods );
             reportTable.setUnits( organisationUnits );
             reportTable.setDoIndicators( doIndicators );
@@ -418,6 +412,7 @@ public class SaveTableAction
             reportTable.setDoUnits( doOrganisationUnits );
             reportTable.setRelatives( relatives );
             reportTable.setReportParams( reportParams );
+            reportTable.setDimensionSet( dimensionSet );
         }
         
         return reportTable;
