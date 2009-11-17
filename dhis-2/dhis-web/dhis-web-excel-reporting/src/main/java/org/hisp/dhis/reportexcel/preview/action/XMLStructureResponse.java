@@ -298,6 +298,8 @@ public class XMLStructureResponse
                         bFormula = true;
                         recalculatedValue = "";
 
+                        // CELL_TYPE_NUMERIC if this cell is an
+                        // NumbericCell
                         switch ( evaluator.evaluateInCell( cellRef ).getCellType() )
                         {
                         case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
@@ -311,6 +313,12 @@ public class XMLStructureResponse
                             System.out.println( "Place of cell :: [" + cellRef.getRowIndex() + "]["
                                 + cellRef.getColumnIndex() + "]" );
                             break;
+
+                        // CELL_TYPE_ERROR if this cell is an ErrorCell
+                        case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_ERROR:
+
+                            recalculatedValue = cell[j].getContents();
+                            break;
                         }
                     }
 
@@ -321,7 +329,7 @@ public class XMLStructureResponse
 
                     if ( bFormula )
                     {
-                        STRUCTURE_DATA_RESPONSE.append( "<![CDATA[" 
+                        STRUCTURE_DATA_RESPONSE.append( "<![CDATA["
                             + StringUtils.checkingNumberDecimal( recalculatedValue ) + "]]>" );
                     }
                     else
@@ -463,6 +471,21 @@ public class XMLStructureResponse
                 STRUCTURE_DATA_RESPONSE.append( PRINT_END_LINE );
             }
         }
+    }
+
+    // -------------------------------------------------------------------------
+    // main method
+    // -------------------------------------------------------------------------
+
+    public static void main( String[] args )
+        throws Exception
+    {
+        // String fileName = "GenerateBaoCaoCongTacNam.xls";
+        String fileName = "admin17.11.2009.10.24.00.AMBaoCaoCongTacThang.xls";
+
+        System.out.println( new XMLStructureResponse( "c:\\Program Files\\DHIS2OH-2.0\\config\\excelreporting\\temp\\"
+            + fileName, "UTF8", 1, true, false, true, false, false ).getSTRUCTURE_DATA_RESPONSE() );
+
     }
 
 }
