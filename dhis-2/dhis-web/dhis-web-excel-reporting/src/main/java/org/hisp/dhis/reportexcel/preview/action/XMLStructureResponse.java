@@ -473,19 +473,4 @@ public class XMLStructureResponse
         }
     }
 
-    // -------------------------------------------------------------------------
-    // main method
-    // -------------------------------------------------------------------------
-
-    public static void main( String[] args )
-        throws Exception
-    {
-        // String fileName = "GenerateBaoCaoCongTacNam.xls";
-        String fileName = "admin17.11.2009.10.24.00.AMBaoCaoCongTacThang.xls";
-
-        System.out.println( new XMLStructureResponse( "c:\\Program Files\\DHIS2OH-2.0\\config\\excelreporting\\temp\\"
-            + fileName, "UTF8", 1, true, false, true, false, false ).getSTRUCTURE_DATA_RESPONSE() );
-
-    }
-
 }
