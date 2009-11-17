@@ -341,6 +341,7 @@ public class ReportTable
     // Init
     // -------------------------------------------------------------------------
 
+    @SuppressWarnings( "unchecked" )
     public void init()
     {
         if ( nonEmptyLists( dataElements, indicators, dataSets ) > 1 )
@@ -368,10 +369,9 @@ public class ReportTable
         {
             // -----------------------------------------------------------------
             // CategoryCombo is set, populate CategoryOptionCombos
+            // Unchecked conversion is safe due to dimension set type check
             // -----------------------------------------------------------------
 
-            // TODO switch to dimoptelm. make report table unaware of catoptcom. ?
-            
             categoryOptionCombos = (List<DataElementCategoryOptionCombo>) categoryCombo.getDimensionOptionElements();
         }
         else if ( isDimensional() && dimensionSetType.equals( DimensionSet.TYPE_GROUP_SET ) )
@@ -386,7 +386,7 @@ public class ReportTable
             {
                 elements.addAll( element.getDataElements() );
             }
-                            
+            
             dimensionalDataElements = elements;
         }
         
