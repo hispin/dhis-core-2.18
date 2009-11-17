@@ -40,6 +40,7 @@ import jxl.write.biff.RowsExceededException;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFErrorConstants;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -145,7 +146,18 @@ public class ExcelUtils
             }
             else if ( type.equalsIgnoreCase( ExcelUtils.NUMBER ) )
             {
-                cellPOI.setCellValue( Double.parseDouble( value ) );
+                if ( Double.isNaN( Double.valueOf( value ) ) )
+                {
+                    cellPOI.setCellErrorValue( (byte) HSSFErrorConstants.ERROR_NA );
+                }
+                else if ( Double.isInfinite( Double.valueOf( value ) ) )
+                {
+                    cellPOI.setCellErrorValue( (byte) HSSFErrorConstants.ERROR_NUM );
+                }
+                else
+                {
+                    cellPOI.setCellValue( Double.parseDouble( value ) );
+                }
             }
         }
     }
