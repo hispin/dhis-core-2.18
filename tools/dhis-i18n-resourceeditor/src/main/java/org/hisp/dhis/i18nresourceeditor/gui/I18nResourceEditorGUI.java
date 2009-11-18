@@ -26,29 +26,56 @@ package org.hisp.dhis.i18nresourceeditor.gui;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import org.hisp.dhis.i18nresourceeditor.exception.I18nResourceException;
-import org.hisp.dhis.i18nresourceeditor.persistence.ResourceManager;
-import org.hisp.dhis.i18nresourceeditor.service.ConfigurationManager;
-import org.hisp.dhis.i18nresourceeditor.tree.ModuleNode;
-import org.hisp.dhis.i18nresourceeditor.tree.ResourceNode;
-
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreePath;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Collection;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JToolBar;
+import javax.swing.JTree;
+import javax.swing.ToolTipManager;
+import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreePath;
+
+import org.hisp.dhis.i18nresourceeditor.exception.I18nResourceException;
+import org.hisp.dhis.i18nresourceeditor.persistence.ResourceManager;
+import org.hisp.dhis.i18nresourceeditor.tree.ModuleNode;
+import org.hisp.dhis.i18nresourceeditor.tree.ResourceNode;
 
 /**
  * @author Oyvind Brucker
@@ -69,7 +96,6 @@ public class I18nResourceEditorGUI extends JFrame {
     // -------------------------------------------------------------------------
     private I18nLoggingSwing log = new I18nLoggingSwing();
     private ResourceManager resourceManager = new ResourceManager(log);
-    private ConfigurationManager configurationManager = new ConfigurationManager(log);
     // Root module used by the tree
     private ModuleNode rootModule = new ModuleNode();
     // -------------------------------------------------------------------------

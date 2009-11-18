@@ -74,7 +74,7 @@ public class FileUtils {
      * @param path    full path for the resource including complete filename with locale information
      * @throws I18nResourceException
      */
-    public static void saveResource(Hashtable content, String path)
+    public static void saveResource(Hashtable<?,?> content, String path)
             throws I18nResourceException {
         File file = new File(path);
 
