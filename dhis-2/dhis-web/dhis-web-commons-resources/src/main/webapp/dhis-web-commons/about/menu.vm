@@ -7,7 +7,6 @@
 <h2>$i18n.getString( "dhis2_online" )&nbsp;</h2>
 
 <ul>
-	<li><a href="http://www.hisp.info" target="_blank">$i18n.getString( "hisp_homepage" )&nbsp;</a></li>
-	<li><a href="http://dhis2.com" target="_blank">$i18n.getString( "dhis2_home_page" )&nbsp;</a></li>
+	<li><a href="http://dhis2.org" target="_blank">$i18n.getString( "dhis2_home_page" )&nbsp;</a></li>
 	<li><a href="https://launchpad.net/dhis2" target="_blank">$i18n.getString( "dhis2_issue_tracking" )&nbsp;</a></li>
 </ul>

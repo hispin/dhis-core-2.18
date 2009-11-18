@@ -32,7 +32,7 @@ import java.util.Collection;
 /**
  * @author Oyvind Brucker
  */
-public interface ResourceNode extends Comparable {
+public interface ResourceNode extends Comparable<ResourceNode> {
 
     public static int MODULE = 1;
     public static int KEY = 2;

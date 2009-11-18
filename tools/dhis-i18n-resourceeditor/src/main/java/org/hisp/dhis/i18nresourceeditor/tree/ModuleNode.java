@@ -26,20 +26,18 @@ package org.hisp.dhis.i18nresourceeditor.tree;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import org.hisp.dhis.i18nresourceeditor.service.I18nLogging;
-
-import java.util.Locale;
-import java.util.Collection;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Collections;
-import java.io.File;
+import java.util.Locale;
 
 /**
  * @author Oyvind Brucker
  */
-public class ModuleNode implements ResourceNode, Comparable {
+public class ModuleNode implements ResourceNode {
 
     private File path; // root path for module
     private File resourcePath;
@@ -117,7 +115,7 @@ public class ModuleNode implements ResourceNode, Comparable {
     // -------------------------------------------------------------------------
     // Comparable implementation
     // -------------------------------------------------------------------------
-    public int compareTo(Object o) {
+    public int compareTo(ResourceNode o) {
         if (o instanceof KeyNode) {
             return 1;
         } else {

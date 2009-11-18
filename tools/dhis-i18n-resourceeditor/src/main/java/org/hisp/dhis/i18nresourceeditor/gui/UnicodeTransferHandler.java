@@ -4,6 +4,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.io.BufferedReader;
 import java.io.Reader;
+import java.util.List;
+
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
 import javax.swing.TransferHandler;
@@ -68,7 +70,7 @@ public class UnicodeTransferHandler extends TransferHandler {
                 }
                 br.close();
             } else if (listFlavor != null) {
-                java.util.List list = (java.util.List) transferable.getTransferData(listFlavor);
+                List<?> list = (List<?>) transferable.getTransferData(listFlavor);
                 println(list);
             } else if (objectFlavor != null) {
                 println("Data is a java object:\n" + transferable.getTransferData(objectFlavor));

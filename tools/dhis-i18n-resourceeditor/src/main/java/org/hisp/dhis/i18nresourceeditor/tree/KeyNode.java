@@ -77,7 +77,7 @@ public class KeyNode implements ResourceNode {
     // -------------------------------------------------------------------------
     // Comparable implementation
     // -------------------------------------------------------------------------
-    public int compareTo(Object o) {
+    public int compareTo(ResourceNode o) {
         if (o instanceof ModuleNode) {
             return -1;
         } else {
