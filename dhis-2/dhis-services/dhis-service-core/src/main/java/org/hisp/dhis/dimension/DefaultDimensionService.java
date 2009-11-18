@@ -106,28 +106,29 @@ public class DefaultDimensionService
     }
     
     public Collection<DataElement> getDataElements( DimensionSet dimensionSet )
-    {        
-        if ( dimensionSet != null )
+    {
+        if ( dimensionSet == null )
         {
-            if ( dimensionSet.getDimensionSetType().equals( TYPE_CATEGORY_COMBO ) )
-            {
-                Integer id = getDimensionSetIdentifiers( dimensionSet.getDimensionSetId() )[0];
-                
-                DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( id );
-
-                return dataElementService.getDataElementByCategoryCombo( categoryCombo );
-            }
-            else // TYPE_GROUP_SET
-            {
-                Integer[] ids = getDimensionSetIdentifiers( dimensionSet.getDimensionSetId() );
-                
-                Set<DataElementGroupSet> groupSets = getDataElementDimensionSet( ids );
-                
-                return dataElementService.getDataElementsByGroupSets( groupSets );
-            }
+            return null;
         }
-        
-        return null;
+
+        if ( dimensionSet.getDimensionSetType().equals( TYPE_CATEGORY_COMBO ) )
+        {
+            Integer id = getDimensionSetIdentifiers( dimensionSet.getDimensionSetId() )[0];
+
+            DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( id );
+
+            return dataElementService.getDataElementByCategoryCombo( categoryCombo );
+        }
+
+        // TYPE_GROUP_SET
+
+        Integer[] ids = getDimensionSetIdentifiers( dimensionSet.getDimensionSetId() );
+
+        Set<DataElementGroupSet> groupSets = getDataElementDimensionSet( ids );
+
+        return dataElementService.getDataElementsByGroupSets( groupSets );
+
     }
 
     // -------------------------------------------------------------------------
