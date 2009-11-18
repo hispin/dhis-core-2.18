@@ -1,8 +1,0 @@
-<h2>Lookup Tables</h2>
-<ul>
-    <li>Configure</li>
-    <ul>
-        <li><a href="configForm.action">Configuration</a></li>
-        <li><a href="takeMysqlBackupResult.action">Take MySQL Backup</a></li>
-    </ul>
-</ul>
