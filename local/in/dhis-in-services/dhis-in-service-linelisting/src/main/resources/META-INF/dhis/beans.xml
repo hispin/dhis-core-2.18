@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <!-- Store definitions -->
+
+  <bean id="org.hisp.dhis.linelisting.LineListStore"
+    class="org.hisp.dhis.linelisting.hibernate.HibernateLineListStore">
+    <property name="sessionFactory" ref="sessionFactory"/>
+    <property name="periodStore"
+      ref="org.hisp.dhis.period.PeriodStore"/>
+  </bean>
+
+  <bean id="org.hisp.dhis.linelisting.LineListValidationRuleStore"
+    class="org.hisp.dhis.linelisting.hibernate.HibernateLineListValidationRuleStore">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.linelisting.linelistdataelementmapping.hibernate.HibernateLineListDataElementMappingStore"
+    class="org.hisp.dhis.linelisting.linelistdataelementmapping.hibernate.HibernateLineListDataElementMappingStore">
+    <property name="sessionFactory" ref="sessionFactory"/>  
+  </bean>
+  
+  <!-- Service definitions -->
+
+  <bean id="org.hisp.dhis.linelisting.LineListService"
+    class="org.hisp.dhis.linelisting.DefaultLineListService">
+    <property name="lineListStore"
+      ref="org.hisp.dhis.linelisting.LineListStore"/>
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>
+  </bean>
+
+  <bean id="org.hisp.dhis.linelisting.LineListValidationRuleService"
+    class="org.hisp.dhis.linelisting.DefaultLineListValidationRuleService">
+    <property name="lineListValidationRuleStore"
+      ref="org.hisp.dhis.linelisting.LineListValidationRuleStore"/>
+  </bean>
+
+  <bean id="org.hisp.dhis.linelisting.linelistdataelementmapping.DefaultLineListDataElementMappingService"
+    class="org.hisp.dhis.linelisting.linelistdataelementmapping.DefaultLineListDataElementMappingService">
+    <property name="lineListDataElementMappingStore" 
+      ref="org.hisp.dhis.linelisting.linelistdataelementmapping.hibernate.HibernateLineListDataElementMappingStore"/>  
+  </bean>
+  
+</beans>
