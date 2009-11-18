@@ -206,7 +206,7 @@ public class AddReportAction
 
         log.info( "Upload file name: " + fileName + ", content type: " + contentType );
             
-        if ( ( type != null || type.equals( Report.TYPE_JASPER ) ) && file != null )
+        if ( ( type != null && type.equals( Report.TYPE_JASPER ) ) && file != null )
         {
             // -----------------------------------------------------------------
             // Design file upload

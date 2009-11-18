@@ -176,7 +176,7 @@ public class UpdateOrganisationUnitAction
 
         Date cDate = null;
 
-        if ( closedDate != null || closedDate.trim().length() != 0 )
+        if ( closedDate != null && closedDate.trim().length() != 0 )
         {
             cDate = format.parseDate( closedDate );
         }

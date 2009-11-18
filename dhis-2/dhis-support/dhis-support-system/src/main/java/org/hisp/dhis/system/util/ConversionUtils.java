@@ -92,20 +92,22 @@ public class ConversionUtils
      * Creates an array of Integers out of an array of Strings.
      * 
      * @param strings the array of Strings.
-     * @return an array of Integers.
+     * @return an array of Integers, an empty array if input is null.
      */
     public static Integer[] getIntegerArray( String[] strings )
     {
+
+        if ( strings == null )
+        {
+            return new Integer[0];
+        }
+
         Integer[] integers = new Integer[strings.length];
         
-        if ( strings != null )
+        for ( int i = 0; i < strings.length; i++ )
         {
-            for ( int i = 0; i < strings.length; i++ )
-            {
-                integers[i] = Integer.valueOf( strings[i] );            
-            }
+            integers[i] = Integer.valueOf( strings[i] );
         }
-        
         return integers;
     }
     
