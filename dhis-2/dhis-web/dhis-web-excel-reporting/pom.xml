@@ -49,11 +49,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-user-hibernate</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-importexport</artifactId>
-    </dependency>
+    </dependency>   
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-support-external</artifactId>
@@ -64,15 +60,18 @@
     </dependency>    
       
     <!-- Other -->
-     
+   
     <dependency>
       <groupId>net.sourceforge.jexcelapi</groupId>
       <artifactId>jxl</artifactId>
     </dependency>
+    <!-- 
     <dependency>
       <groupId>org.amplecode</groupId>
       <artifactId>cave-process</artifactId>
     </dependency>
+    
+    -->
 	
 	<!-- POI Library -->
 	

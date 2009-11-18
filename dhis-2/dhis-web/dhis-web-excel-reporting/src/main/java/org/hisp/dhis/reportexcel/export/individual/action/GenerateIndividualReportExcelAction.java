@@ -27,13 +27,10 @@ package org.hisp.dhis.reportexcel.export.individual.action;
  */
 
 import java.io.File;
-import java.util.Locale;
+import java.io.FileOutputStream;
 
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
-
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.Operand;
@@ -42,7 +39,7 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reportexcel.export.action.GenerateReportExcelSupport;
+import org.hisp.dhis.reportexcel.export.action.GenerateReportSupport;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
@@ -51,7 +48,7 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
  */
 
 public class GenerateIndividualReportExcelAction
-    extends GenerateReportExcelSupport
+    extends GenerateReportSupport
 {
 
     // ---------------------------------------------------------------------------------------------------
@@ -101,19 +98,17 @@ public class GenerateIndividualReportExcelAction
     public String execute()
         throws Exception
     {
-
+        statementManager.initialise();
+        
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-
-        WorkbookSettings ws = new WorkbookSettings();
-
-        ws.setLocale( new Locale( "en", "EN" ) );
-
-        File tempFile = new File( reportLocationManager.getReportExcelTempDirectory() + File.separator
-            + System.currentTimeMillis() + ".xls" );
-
-        WritableWorkbook tempWorkbook = Workbook.createWorkbook( tempFile, ws );
-
-        WritableSheet sheet = tempWorkbook.createSheet( "Sheet1", 0 );
+        
+        templateWorkbook = new HSSFWorkbook();
+        
+        HSSFSheet sheet = templateWorkbook.createSheet( organisationUnit.getName() ); 
+        
+        initExcelFormat();
+        
+        installDefaultExcelFormat();  
 
         for ( int i = 0; i < operands.length; i++ )
         {
@@ -121,12 +116,13 @@ public class GenerateIndividualReportExcelAction
 
             DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
 
-            DataElementCategoryOptionCombo optionCombo = categoryService
-                .getDataElementCategoryOptionCombo( operand.getOptionComboId() );
+            DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( operand
+                .getOptionComboId() );
 
             // start row = 2, start column = 1 --> dataelement name
-            ExcelUtils.writeValue( i + 2, 1, dataElement.getName() + " - " + optionCombo.getName(), ExcelUtils.TEXT,
-                sheet, this.textLeft );
+
+            ExcelUtils.writeValueByPOI( i + 2, 1, dataElement.getName() + " - " + optionCombo.getName(),
+                ExcelUtils.TEXT, sheet, this.csText );
 
             for ( int j = 0; j < periods.length; j++ )
             {
@@ -138,7 +134,10 @@ public class GenerateIndividualReportExcelAction
                 if ( dataValue != null )
                 {
                     // start row = 2, start column = 2 --> datavalue
-                    ExcelUtils.writeValue( i + 2, j + 2, dataValue.getValue(), ExcelUtils.TEXT, sheet, number );
+
+                    ExcelUtils.writeValueByPOI( i + 2, j + 2, dataValue.getValue(), ExcelUtils.NUMBER, sheet,
+                        this.csNumber );
+
                 }
 
             }
@@ -150,15 +149,21 @@ public class GenerateIndividualReportExcelAction
 
             format.formatPeriod( period );
 
-            ExcelUtils.writeValue( 1, j + 2, format.formatPeriod( period ), ExcelUtils.TEXT, sheet,
-                this.textICDBoldJustify );
+            ExcelUtils.writeValueByPOI( 1, j + 2, format.formatPeriod( period ), ExcelUtils.TEXT, sheet,
+                this.csTextICDJustify );
+
         }
+        
+        String file =  reportLocationManager.getReportExcelTempDirectory() + File.separator
+        + System.currentTimeMillis() + ".xls" ;
+        
+        FileOutputStream out = new FileOutputStream( file );
 
-        tempWorkbook.write();
+        templateWorkbook.write( out );
 
-        tempWorkbook.close();
+        out.close();
 
-        selectionManager.setDownloadFilePath( tempFile.getPath() );
+        selectionManager.setDownloadFilePath( file );
 
         statementManager.destroy();
 

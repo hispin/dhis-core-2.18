@@ -28,10 +28,7 @@ package org.hisp.dhis.reportexcel.export.action;
 
 import java.util.Collection;
 
-import jxl.write.WritableSheet;
-import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
-
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
@@ -42,50 +39,44 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class GenerateReportExcelNormalAction
-    extends GenerateReportExcelSupport
+public class GenerateReportNormalAction
+    extends GenerateReportSupport
 {
 
+    @Override
     public String execute()
         throws Exception
     {
-
         statementManager.initialise();
 
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-
         Period period = periodDatabaseService.getSelectedPeriod();
-
-        this.installExcelFormat();
-
         this.installPeriod( period );
 
-        ReportExcelNormal reportExcel = (ReportExcelNormal) reportService.getReportExcel( selectionManager
-            .getSelectedReportId() );
+        ReportExcelNormal reportExcel = (ReportExcelNormal) reportService
+            .getReportExcel( selectionManager.getSelectedReportId() );
 
         this.installReadTemplateFile( reportExcel, period, organisationUnit );
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
-            WritableSheet sheet = outputReportWorkbook.getSheet( sheetNo - 1 );
+            HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
-            Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo, selectionManager
-                .getSelectedReportId() );
+            Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
 
-            this.generateOutPutFile( organisationUnit, reportExcelItems, sheet );
+            this.generateOutPutFile( reportExcelItems, organisationUnit, sheet );
 
         }
 
-        this.complete();
+        complete();
 
         statementManager.destroy();
 
         return SUCCESS;
     }
 
-    private void generateOutPutFile( OrganisationUnit organisationUnit, Collection<ReportExcelItem> reportExcelItems,
-        WritableSheet sheet )
-        throws RowsExceededException, WriteException
+    private void generateOutPutFile( Collection<ReportExcelItem> reportExcelItems, OrganisationUnit organisationUnit,
+        HSSFSheet sheet )
     {
         for ( ReportExcelItem reportItem : reportExcelItems )
         {
@@ -93,16 +84,17 @@ public class GenerateReportExcelNormalAction
             {
                 double value = getDataValue( reportItem, organisationUnit );
 
-                ExcelUtils.writeValue( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
-                    ExcelUtils.NUMBER, sheet, number );
+                ExcelUtils.writeValueByPOI( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
+                    ExcelUtils.NUMBER, sheet, this.csNumber );
+
             }
 
             if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ) )
             {
                 double value = getIndicatorValue( reportItem, organisationUnit );
 
-                ExcelUtils.writeValue( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
-                    ExcelUtils.NUMBER, sheet, number );
+                ExcelUtils.writeValueByPOI( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
+                    ExcelUtils.NUMBER, sheet, this.csNumber );
             }
         }
     }

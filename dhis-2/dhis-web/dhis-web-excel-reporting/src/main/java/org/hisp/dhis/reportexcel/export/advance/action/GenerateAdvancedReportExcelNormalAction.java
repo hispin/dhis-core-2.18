@@ -1,5 +1,3 @@
-package org.hisp.dhis.reportexcel.export.advance.action;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -27,19 +25,21 @@ package org.hisp.dhis.reportexcel.export.advance.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.hisp.dhis.reportexcel.export.advance.action;
+
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-import jxl.write.WritableSheet;
-
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelNormal;
-import org.hisp.dhis.reportexcel.export.action.GenerateReportExcelSupport;
+import org.hisp.dhis.reportexcel.export.action.GenerateReportSupport;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
@@ -47,7 +47,7 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
  * @version $Id$
  */
 public class GenerateAdvancedReportExcelNormalAction
-    extends GenerateReportExcelSupport
+    extends GenerateReportSupport
 {
 
     // ---------------------------------------------------------------------
@@ -83,10 +83,9 @@ public class GenerateAdvancedReportExcelNormalAction
     public String execute()
         throws Exception
     {
+        statementManager.initialise();
 
         Period period = periodDatabaseService.getSelectedPeriod();
-
-        this.installExcelFormat();
 
         this.installPeriod( period );
 
@@ -94,8 +93,6 @@ public class GenerateAdvancedReportExcelNormalAction
             .getOrganisationUnitGroup( organisationGroupId );
 
         Set<OrganisationUnit> organisationList = organisationUnitGroup.getMembers();
-
-        statementManager.initialise();
 
         ReportExcelNormal reportExcel = (ReportExcelNormal) reportService.getReportExcel( selectionManager
             .getSelectedReportId() );
@@ -117,10 +114,10 @@ public class GenerateAdvancedReportExcelNormalAction
                 value += getDataValue( reportItem, organisationUnit );
             }
 
-            WritableSheet sheet = outputReportWorkbook.getSheet( reportItem.getSheetNo() - 1 );
+            HSSFSheet sheet = this.templateWorkbook.getSheetAt( reportItem.getSheetNo() - 1 );
 
-            ExcelUtils.writeValue( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
-                ExcelUtils.NUMBER, sheet, number );
+            ExcelUtils.writeValueByPOI( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
+                ExcelUtils.NUMBER, sheet, this.csNumber );
 
         }
 

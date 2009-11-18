@@ -169,5 +169,29 @@ public class ReportExcelPeriodColumnListing
     {
         this.periodColumns = periodColumns;
     }
+    
+    @Override
+    public boolean isCategory()
+    {       
+        return false;
+    }
+
+    @Override
+    public boolean isNormal()
+    {       
+        return false;
+    }
+
+    @Override
+    public boolean isOrganisationUnitGroupListing()
+    {       
+        return false;
+    }
+
+    @Override
+    public boolean isPeriodColumnListing()
+    {        
+        return true;
+    }
 
 }

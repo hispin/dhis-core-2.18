@@ -28,8 +28,6 @@ package org.hisp.dhis.reportexcel;
 
 import java.util.Date;
 
-import org.hisp.dhis.period.Period;
-
 /**
  * @author Tran Thanh Tri
  * @version $Id$

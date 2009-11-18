@@ -28,6 +28,7 @@ package org.hisp.dhis.reportexcel.importing.action;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Date;
 import java.util.Locale;
 
@@ -35,6 +36,8 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -172,11 +175,10 @@ public class ImportDataExcelOrganizationGroupAction
 
         if ( organisationUnit != null )
         {
-
-            File upload = new File( selectionManager.getUploadFilePath() );
-            WorkbookSettings ws = new WorkbookSettings();
-            ws.setLocale( new Locale( "en", "EN" ) );
-            Workbook templateWorkbook = Workbook.getWorkbook( upload, ws );
+            
+            FileInputStream inputStream = new FileInputStream( selectionManager.getUploadFilePath() );
+            
+            HSSFWorkbook wb = new  HSSFWorkbook( inputStream );
 
             Period period = periodGenericManager.getSelectedPeriod();
 
@@ -196,7 +198,7 @@ public class ImportDataExcelOrganizationGroupAction
                 if ( exelItem.getId() == excelItemId )
                 {
 
-                    writeDataValue( exelItem, templateWorkbook, row, o, period );
+                    writeDataValue( exelItem, wb, row, o, period );
 
                 }// end if( exelItem ...
 
@@ -209,13 +211,13 @@ public class ImportDataExcelOrganizationGroupAction
         return SUCCESS;
     }
 
-    private void writeDataValue( ExcelItem exelItem, Workbook templateWorkbook, int row, OrganisationUnit o,
+    private void writeDataValue( ExcelItem exelItem, HSSFWorkbook wb, int row, OrganisationUnit o,
         Period period )
     {
 
-        Sheet sheet = templateWorkbook.getSheet( exelItem.getSheetNo() - 1 );
+        HSSFSheet sheet = wb.getSheetAt( exelItem.getSheetNo() - 1 );
 
-        String value = ExcelUtils.readValue( exelItem.getRow() + row, exelItem.getColumn(), sheet );
+        String value = ExcelUtils.readValuePOI( exelItem.getRow() + row, exelItem.getColumn(), sheet );
 
         if ( value.length() > 0 )
         {

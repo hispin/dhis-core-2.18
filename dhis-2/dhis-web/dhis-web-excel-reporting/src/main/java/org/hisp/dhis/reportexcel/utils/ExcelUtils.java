@@ -118,11 +118,11 @@ public class ExcelUtils
         }
     }
 
-    public static String readValue( int row, int column, Sheet sheet )
-    {
-        Cell cell = sheet.getCell( column - 1, row - 1 );
-        return cell.getContents();
-    }
+//    public static String readValue( int row, int column, Sheet sheet )
+//    {
+//        Cell cell = sheet.getCell( column - 1, row - 1 );
+//        return cell.getContents();
+//    }
 
     /* POI methods */
     public static void writeValueByPOI( int row, int column, String value, String type, HSSFSheet sheet,
@@ -206,5 +206,16 @@ public class ExcelUtils
         {
             return -1;
         }
+    }
+
+    public static String readValuePOI( int row, int column, HSSFSheet sheet )
+    {
+
+        HSSFRow rowPOI = sheet.getRow( row - 1 );
+
+        HSSFCell cell = rowPOI.getCell( column - 1 );
+
+        return String.valueOf( cell.getNumericCellValue() );
+
     }
 }

@@ -28,6 +28,7 @@ package org.hisp.dhis.reportexcel.importing.action;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -37,6 +38,8 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -177,10 +180,9 @@ public class ImportDataNormalExcelGroupAction
         if ( organisationUnit != null )
         {
 
-            File upload = new File( selectionManager.getUploadFilePath() );
-            WorkbookSettings ws = new WorkbookSettings();
-            ws.setLocale( new Locale( "en", "EN" ) );
-            Workbook templateWorkbook = Workbook.getWorkbook( upload, ws );
+            FileInputStream upload = new FileInputStream( selectionManager.getUploadFilePath() );
+            
+            HSSFWorkbook wb = new  HSSFWorkbook( upload );
 
             Collection<ExcelItem> excelItems = new ArrayList<ExcelItem>();
             if ( excelItemIds != null )
@@ -197,17 +199,18 @@ public class ImportDataNormalExcelGroupAction
 
             Period period = periodGenericManager.getSelectedPeriod();
 
-            for ( ExcelItem exelItem : excelItems )
+            for ( ExcelItem excelItem : excelItems )
             {
 
-                Sheet sheet = templateWorkbook.getSheet( exelItem.getSheetNo() - 1 );
 
-                String value = ExcelUtils.readValue( exelItem.getRow(), exelItem.getColumn(), sheet );
+                HSSFSheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
+
+                String value = ExcelUtils.readValuePOI( excelItem.getRow(), excelItem.getColumn(), sheet );
 
                 if ( value.length() > 0 )
                 {
 
-                    Operand operand = expressionService.getOperandsInExpression( exelItem.getExpression() ).iterator()
+                    Operand operand = expressionService.getOperandsInExpression( excelItem.getExpression() ).iterator()
                         .next();
 
                     DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );

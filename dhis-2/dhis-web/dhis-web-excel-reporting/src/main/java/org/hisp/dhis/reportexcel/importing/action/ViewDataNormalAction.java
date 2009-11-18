@@ -28,12 +28,12 @@ package org.hisp.dhis.reportexcel.importing.action;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import jxl.Sheet;
-import jxl.Workbook;
-
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importing.ExcelItemValue;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
@@ -87,16 +87,18 @@ public class ViewDataNormalAction
         try
         {
 
-            Workbook templateWorkbook = Workbook.getWorkbook( upload );
+            FileInputStream inputStream = new FileInputStream( upload );
+           
+            HSSFWorkbook wb = new  HSSFWorkbook( inputStream );
 
             excelItemValues = new ArrayList<ExcelItemValue>();
 
             for ( ExcelItem excelItem : excelItems )
             {
 
-                Sheet sheet = templateWorkbook.getSheet( excelItem.getSheetNo() - 1 );
+                HSSFSheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
 
-                String value = ExcelUtils.readValue( excelItem.getRow(), excelItem.getColumn(), sheet );
+                String value = ExcelUtils.readValuePOI( excelItem.getRow(), excelItem.getColumn(), sheet );
 
                 ExcelItemValue excelItemvalue = new ExcelItemValue( excelItem, value );
 

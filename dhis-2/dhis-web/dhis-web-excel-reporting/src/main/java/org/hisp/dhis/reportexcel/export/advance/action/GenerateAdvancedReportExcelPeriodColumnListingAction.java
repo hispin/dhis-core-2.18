@@ -27,31 +27,22 @@
 
 package org.hisp.dhis.reportexcel.export.advance.action;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
+import org.hisp.dhis.reportexcel.PeriodColumn;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelPeriodColumnListing;
-import org.hisp.dhis.reportexcel.export.action.GenerateReportExcelSupport;
-import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
-import org.hisp.dhis.reportexcel.state.SelectionManager;
-import org.hisp.dhis.reportexcel.utils.DateUtils;
+import org.hisp.dhis.reportexcel.export.action.GenerateReportSupport;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 import org.hisp.dhis.system.util.MathUtils;
 
@@ -62,7 +53,7 @@ import org.hisp.dhis.system.util.MathUtils;
  */
 
 public class GenerateAdvancedReportExcelPeriodColumnListingAction
-    extends GenerateReportExcelSupport
+    extends GenerateReportSupport
 {
     // ---------------------------------------------------------------------
     // Dependency
@@ -103,21 +94,7 @@ public class GenerateAdvancedReportExcelPeriodColumnListingAction
             .getOrganisationUnitGroup( organisationGroupId.intValue() );
 
         Period period = periodDatabaseService.getSelectedPeriod();
-
-        this.installExcelFormat();
-
         this.installPeriod( period );
-
-        Calendar calendar = Calendar.getInstance();
-
-        PeriodType periodType = periodService.getPeriodTypeByClass( MonthlyPeriodType.class );
-
-        Date firstDateOfThisYear = DateUtils.getFirstDayOfYear( calendar.get( Calendar.YEAR ) );
-
-        List<Period> periods = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( periodType,
-            firstDateOfThisYear, endDate ) );
-
-        Collections.sort( periods, new AscendingPeriodComparator() );
 
         ReportExcelPeriodColumnListing reportExcel = (ReportExcelPeriodColumnListing) reportService
             .getReportExcel( selectionManager.getSelectedReportId() );
@@ -126,12 +103,12 @@ public class GenerateAdvancedReportExcelPeriodColumnListingAction
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
-            WritableSheet sheet = outputReportWorkbook.getSheet( sheetNo - 1 );
+            HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
-            Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo, selectionManager
-                .getSelectedReportId() );
+            Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
 
-            this.generateOutPutFile( periods, reportExcelItems, organisationUnitGroup.getMembers(), sheet );
+            this.generateOutPutFile( reportExcel.getPeriodColumns(), reportExcelItems, organisationUnitGroup
+                .getMembers(), sheet );
 
         }
 
@@ -142,37 +119,39 @@ public class GenerateAdvancedReportExcelPeriodColumnListingAction
         return SUCCESS;
     }
 
-    private void generateOutPutFile( List<Period> periods, Collection<ReportExcelItem> reportExcelItems,
-        Set<OrganisationUnit> organisationUnits, WritableSheet sheet )
-        throws RowsExceededException, WriteException
+    private void generateOutPutFile( Collection<PeriodColumn> periodColumns,
+        Collection<ReportExcelItem> reportExcelItems, Set<OrganisationUnit> organisationUnits, HSSFSheet sheet )
     {
         for ( ReportExcelItem reportItem : reportExcelItems )
         {
             int i = 0;
-            for ( Period p : periods )
+            for ( PeriodColumn p : periodColumns )
             {
-                double value = 0.0;
-
-                for ( OrganisationUnit organisationUnit : organisationUnits )
+                if ( p.getPeriodType().equals( reportItem.getPeriodType() ) )
                 {
+                    double value = 0.0;
 
-                    if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) )
+                    for ( OrganisationUnit organisationUnit : organisationUnits )
                     {
-                        value += MathUtils.calculateExpression( generateExpression( reportItem, p.getStartDate(), p
-                            .getEndDate(), organisationUnit ) );
+
+                        if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) )
+                        {
+                            value += MathUtils.calculateExpression( generateExpression( reportItem, p.getStartdate(), p
+                                .getEnddate(), organisationUnit ) );
+                        }
+                        else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ) )
+                        {
+                            value += MathUtils.calculateExpression( generateExpression( reportItem, p.getStartdate(), p
+                                .getEnddate(), organisationUnit ) );
+                        }
+
                     }
-                    else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ) )
-                    {
-                        value += MathUtils.calculateExpression( generateExpression( reportItem, p.getStartDate(), p
-                            .getEndDate(), organisationUnit ) );
-                    }
 
-                }// end for organisation
+                    ExcelUtils.writeValueByPOI( reportItem.getRow(), p.getColumn(), String.valueOf( value ),
+                        ExcelUtils.NUMBER, sheet, this.csNumber );
 
-                ExcelUtils.writeValue( reportItem.getRow(), reportItem.getColumn() + i, String.valueOf( value ),
-                    ExcelUtils.NUMBER, sheet, number );
-
-                i++;
+                    i++;
+                }
             }
         }
 
