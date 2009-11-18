@@ -41,9 +41,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.ReportExcelCategory;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
-import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
 import org.hisp.dhis.reportexcel.preview.action.GeneratePreviewReportExcelSupport;
-import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**

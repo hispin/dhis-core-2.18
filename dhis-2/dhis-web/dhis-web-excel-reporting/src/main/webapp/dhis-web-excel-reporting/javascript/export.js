@@ -106,37 +106,6 @@ function generateAdvancedReportExcel() {
 	
 }
 
-generic_type = '';
-
-function validateGenerateReport(message) {
-
-	setMessage(message);
-	
-	$.post("validateGenerateReport.action", {
-		reportId:$("#report").val(),
-		periodId:$("#period").val()
-	},	function ( xmlObject ) {
-			xmlObject = xmlObject.getElementsByTagName( 'message' )[0];
-			var type = xmlObject.getAttribute( 'type' );
-			
-			if ( type == 'error' )
-			{
-				setMessage( xmlObject.firstChild.nodeValue );
-			}
-			else
-			{
-				if ( generic_type == 'preview' ) {
-				
-					openPreviewReport();
-				}
-				else {
-					generateReportExcel();
-				}
-			}
-	}, "xml");
-}
-
-
 function openPreviewReport() {
 	
 	var url = "openPreviewReport.action?reportId=" + $('#report').val() + "&periodId=" + $('#period').val() + "&sheetId=1";
