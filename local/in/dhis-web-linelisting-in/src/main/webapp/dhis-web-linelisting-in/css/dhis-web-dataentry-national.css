@@ -1,0 +1,43 @@
+#currentSelection {
+  position: fixed;
+  top: 95px;
+  right: 0;
+  color: black;
+  background-color: yellow;
+  border: 1px solid black;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+#selectForm {
+  padding-top: 32px;
+}
+
+#actions {
+  float: right;
+  width: 170px;
+}
+
+#actions button[type=button] {
+  width: 100%;
+}
+
+@media print {
+  #mainHeader, #topMenu, #leftBar, #currentSelection, #actions, input[type=button] {
+    display: none;
+  }
+  
+  input, select {
+    border: 0;
+    background-color: inherit;
+  }
+  
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  
+  #typeCol, #minCol, #maxCol, #commentCol {
+    visibility: collapse;
+  } 
+}
+

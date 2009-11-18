@@ -1,0 +1,20 @@
+
+<h2>DashBoard</h2>
+	<ul>
+		<li>Graphical Analysis</li>
+			<ul>
+		    	<li><a href="graphicalAnalyser.action">Regular</a></li>
+		        <li><a href="annualAnalyser.action">Annual</a></li>
+		        <li><a href="surveyAnalyser.action">Survey</a></li>
+		        <li><a href="motionChartForm.action">MotionChart</a></li>
+		   	</ul>
+		<li><a href="tabularAnalysisForm.action">Tabular Analysis</a></li>   	
+		<li>Data Status</li>
+			<ul>				
+		   		<li><a href="dataStatusForm.action">Data Status</a></li>
+				<li><a href="dataStatusOrgnisationunitGroupSetWiseForm.action">OrgUnitGroupwise Data Status</a></li>
+				<li><a href="NullReporter.action">Null Reporter</a></li>	
+	    		<!-- <li><a href="commentsForm.action">Comments</a></li>
+		   		<li><a href="dashBoardMatrixForm.action">DashBoard matrix</a></li> -->
+		   	</ul>		   	
+	</ul>

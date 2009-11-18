@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+  
+<!-- Store definitions -->
+
+  <bean id="org.hisp.dhis.survey.SurveyStore"
+    class="org.hisp.dhis.survey.hibernate.HibernateSurveyStore">
+    <property name="sessionFactory" ref="sessionFactory"/>
+    <property name="surveyDataValueService"
+      ref="org.hisp.dhis.surveydatavalue.SurveyDataValueService"/>	      
+  </bean>
+  
+  <bean id="org.hisp.dhis.surveydatavalue.SurveyDataValueStore"
+    class="org.hisp.dhis.surveydatavalue.hibernate.HibernateSurveyDataValueStore">
+      <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+	
+  <bean id="org.hisp.dhis.target.DeTargetMappingStore"
+    class="org.hisp.dhis.target.HibernateDeTargetMappingStore">
+    <property name="sessionFactory" ref="sessionFactory"/>    
+  </bean>
+	
+	  
+<!-- Service definitions -->
+
+  <bean id="org.hisp.dhis.survey.SurveyService"
+    class="org.hisp.dhis.survey.DefaultSurveyService">
+    <property name="surveyStore"
+      ref="org.hisp.dhis.survey.SurveyStore"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.surveydatavalue.SurveyDataValueService"
+    class="org.hisp.dhis.surveydatavalue.DefaultSurveyDataValueService">
+    <property name="surveyDataValueStore"
+      ref="org.hisp.dhis.surveydatavalue.SurveyDataValueStore"/>
+  </bean>	
+  
+  <bean id="org.hisp.dhis.target.DeTargetMappingService"
+    class="org.hisp.dhis.target.DefaultDeTargetMappingService">
+    <property name="deTargetMappingStore"
+      ref="org.hisp.dhis.target.DeTargetMappingStore"/>
+  </bean>
+	
+</beans>

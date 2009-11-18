@@ -1,0 +1,37 @@
+<h2>DashBoard</h2>
+	<ul>
+		<li>Data Status</li>
+		<ul>
+		 	<li>OrganisationUnit Group Wise DatStatus</li>
+		 </ul>
+	</ul>
+</ul>
+<div style=" float:right; font-size:6pt; cursor:pointer; margin-top:-15px; ">
+        <a href="index.action">
+          <img src="images/goback.png" width="36" height="30" alt="$i18n.getString( "go_back" )"></a>
+</div>
+#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+
+<!-- The script that registeres selctions in the orgunit tree -->
+<script type="text/javascript">
+
+function orgUnitHasBeenSelected( orgUnitIds )
+{    
+    document.ChartGenerationForm.ouIDTB.value = orgUnitIds;
+    
+    if(orgUnitIds == null || orgUnitIds == "" )
+	{
+		return;
+	}
+	
+    if(orgUnitIds !=null)
+	   {
+	     getOrgUDetails(orgUnitIds);
+	   }
+	
+}
+
+selection.setListenerFunction( orgUnitHasBeenSelected );
+
+</script>
+
