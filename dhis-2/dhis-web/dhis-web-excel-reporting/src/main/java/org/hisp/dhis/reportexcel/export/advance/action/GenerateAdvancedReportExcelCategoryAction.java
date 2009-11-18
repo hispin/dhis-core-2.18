@@ -29,10 +29,10 @@ package org.hisp.dhis.reportexcel.export.advance.action;
 import java.util.Collection;
 import java.util.Set;
 
-import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -41,9 +41,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.ReportExcelCategory;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
-import org.hisp.dhis.reportexcel.export.action.GenerateReportExcelSupport;
-import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
-import org.hisp.dhis.reportexcel.state.SelectionManager;
+import org.hisp.dhis.reportexcel.export.action.GenerateReportSupport;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
@@ -52,7 +50,7 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
  * @version $Id$
  */
 public class GenerateAdvancedReportExcelCategoryAction
-    extends GenerateReportExcelSupport
+    extends GenerateReportSupport
 {
     // ---------------------------------------------------------------------
     // Dependency
@@ -91,9 +89,9 @@ public class GenerateAdvancedReportExcelCategoryAction
 
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( organisationGroupId );
-
+        
+         
         Period period = periodDatabaseService.getSelectedPeriod();
-        this.installExcelFormat();
         this.installPeriod( period );
 
         ReportExcelCategory reportExcel = (ReportExcelCategory) reportService.getReportExcel( selectionManager
@@ -103,10 +101,9 @@ public class GenerateAdvancedReportExcelCategoryAction
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
-            WritableSheet sheet = outputReportWorkbook.getSheet( sheetNo - 1 );
+            HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
-            Collection<ReportExcelItem> reportExcelItems = reportService.getReportExcelItem( sheetNo, selectionManager
-                .getSelectedReportId() );
+            Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
 
             this.generateOutPutFile( organisationUnitGroup.getMembers(), reportExcelItems, reportExcel, sheet );
 
@@ -116,11 +113,12 @@ public class GenerateAdvancedReportExcelCategoryAction
 
         statementManager.destroy();
 
-        return SUCCESS;
+        return SUCCESS;   
+
     }
 
     private void generateOutPutFile( Set<OrganisationUnit> organisationUnits,
-        Collection<ReportExcelItem> reportExcelItems, ReportExcelCategory reportExcel, WritableSheet sheet )
+        Collection<ReportExcelItem> reportExcelItems, ReportExcelCategory reportExcel, HSSFSheet sheet )
         throws RowsExceededException, WriteException
     {
 
@@ -132,15 +130,16 @@ public class GenerateAdvancedReportExcelCategoryAction
             {
 
                 int beginChapter = rowBegin;
+                
                 if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_NAME ) )
                 {
-                    ExcelUtils.writeValue( rowBegin, reportItem.getColumn(), dataElementGroup.getName(),
-                        ExcelUtils.TEXT, sheet, this.textChapterLeft );
+                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( dataElementGroup
+                        .getName() ), ExcelUtils.TEXT, sheet, this.csTextChapterLeft );   
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_CODE ) )
                 {
-                    ExcelUtils.writeValue( rowBegin, reportItem.getColumn(), dataElementGroup.getCode(),
-                        ExcelUtils.TEXT, sheet, this.textChapterLeft );
+                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( dataElementGroup
+                        .getCode() ), ExcelUtils.TEXT, sheet, this.csTextChapterLeft ); 
                 }
 
                 rowBegin++;
@@ -150,23 +149,23 @@ public class GenerateAdvancedReportExcelCategoryAction
 
                     if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_NAME ) )
                     {
-                        ExcelUtils.writeValue( rowBegin, reportItem.getColumn(), dataElement.getName(),
-                            ExcelUtils.TEXT, sheet, this.textLeft );
+                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( dataElement
+                            .getName() ), ExcelUtils.TEXT, sheet, this.csTextChapterLeft );
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_CODE ) )
                     {
-                        ExcelUtils.writeValue( rowBegin, reportItem.getColumn(), dataElement.getCode(),
-                            ExcelUtils.TEXT, sheet, this.textLeft );
+                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( dataElement
+                            .getCode() ), ExcelUtils.TEXT, sheet, this.csTextICDJustify );
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.SERIAL ) )
                     {
-                        ExcelUtils.writeValue( rowBegin, reportItem.getColumn(), String.valueOf( serial ),
-                            ExcelUtils.NUMBER, sheet, this.number );
+                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( serial ),
+                            ExcelUtils.NUMBER, sheet, this.csNumber );
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.FORMULA_EXCEL ) )
                     {
-                        ExcelUtils.writeFormula( rowBegin, reportItem.getColumn(), reportItem.getExpression(), sheet,
-                            this.number );
+                        ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), reportItem.getExpression(),
+                            sheet, this.csNumber );                     
                     }
                     else
                     {
@@ -187,8 +186,8 @@ public class GenerateAdvancedReportExcelCategoryAction
                         {
                             value += this.getDataValue( newReportItem, organisationUnit );
                         }
-                        ExcelUtils.writeValue( rowBegin, reportItem.getColumn(), String.valueOf( value ),
-                            ExcelUtils.NUMBER, sheet, this.number );
+                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( value ),
+                            ExcelUtils.NUMBER, sheet, this.csNumber );
                     }
                     rowBegin++;
                     serial++;
@@ -198,7 +197,8 @@ public class GenerateAdvancedReportExcelCategoryAction
                 {
                     String columnName = ExcelUtils.convertColNumberToColName( reportItem.getColumn() );
                     String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
-                    ExcelUtils.writeFormula( beginChapter, reportItem.getColumn(), formula, sheet, this.number );
+                    ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula,
+                        sheet, this.csNumber );    
                 }
             }
         }

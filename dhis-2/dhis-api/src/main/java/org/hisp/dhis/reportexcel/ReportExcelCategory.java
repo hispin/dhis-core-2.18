@@ -202,4 +202,28 @@ public class ReportExcelCategory
 
         return document;
     }
+
+    @Override
+    public boolean isCategory()
+    {       
+        return true;
+    }
+
+    @Override
+    public boolean isNormal()
+    {       
+        return false;
+    }
+
+    @Override
+    public boolean isOrganisationUnitGroupListing()
+    {       
+        return false;
+    }
+
+    @Override
+    public boolean isPeriodColumnListing()
+    {        
+        return false;
+    }
 }

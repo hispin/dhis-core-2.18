@@ -28,6 +28,7 @@ package org.hisp.dhis.reportexcel.importing.action;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,6 +36,8 @@ import java.util.List;
 import jxl.Sheet;
 import jxl.Workbook;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -113,7 +116,9 @@ public class ViewDataOrganizationGroupAction
 
             OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
-            Workbook uploadWorkbook = Workbook.getWorkbook( upload );
+            FileInputStream inputStream = new FileInputStream( upload );
+            
+            HSSFWorkbook wb = new  HSSFWorkbook( inputStream );
 
             excelItemValueByOrgUnits = new ArrayList<ExcelItemValueByOrganisationUnit>();
 
@@ -138,10 +143,10 @@ public class ViewDataOrganizationGroupAction
                         for ( ExcelItem excelItem : excelItems )
                         {
 
-                            Sheet sheet = uploadWorkbook.getSheet( excelItem.getSheetNo() - 1 );
+                            HSSFSheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
 
                             String value = ExcelUtils
-                                .readValue( excelItem.getRow() + row, excelItem.getColumn(), sheet );
+                                .readValuePOI( excelItem.getRow() + row, excelItem.getColumn(), sheet );
 
                             ExcelItemValue excelItemvalue = new ExcelItemValue( excelItem, value );
 

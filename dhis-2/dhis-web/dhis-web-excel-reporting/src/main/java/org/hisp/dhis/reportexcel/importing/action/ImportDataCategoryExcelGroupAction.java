@@ -27,14 +27,11 @@ package org.hisp.dhis.reportexcel.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.util.Date;
-import java.util.Locale;
 
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -164,10 +161,12 @@ public class ImportDataCategoryExcelGroupAction
         if ( organisationUnit != null )
         {
 
-            File upload = new File( selectionManager.getUploadFilePath() );
-            WorkbookSettings ws = new WorkbookSettings();
-            ws.setLocale( new Locale( "en", "EN" ) );
-            Workbook templateWorkbook = Workbook.getWorkbook( upload, ws );
+            FileInputStream upload = new FileInputStream( selectionManager.getUploadFilePath() );
+           // WorkbookSettings ws = new WorkbookSettings();
+            //ws.setLocale( new Locale( "en", "EN" ) );
+           // Workbook templateWorkbook = Workbook.getWorkbook( upload, ws );
+            
+            HSSFWorkbook wb = new  HSSFWorkbook( upload );
 
             Period period = periodGenericManager.getSelectedPeriod();
 
@@ -182,9 +181,9 @@ public class ImportDataCategoryExcelGroupAction
 
                 ExcelItem excelItem = excelItemService.getExcelItem( excelItemId );
 
-                Sheet sheet = templateWorkbook.getSheet( excelItem.getSheetNo() - 1 );
+                HSSFSheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
 
-                String value = ExcelUtils.readValue( rowIndex, excelItem.getColumn(), sheet );
+                String value = ExcelUtils.readValuePOI( rowIndex, excelItem.getColumn(), sheet );
 
                 addDataValue( expression, value, organisationUnit, period );
 

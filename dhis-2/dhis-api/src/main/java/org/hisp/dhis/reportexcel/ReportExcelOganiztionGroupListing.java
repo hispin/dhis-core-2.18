@@ -167,13 +167,37 @@ public class ReportExcelOganiztionGroupListing
 
         for ( OrganisationUnitGroup o : this.organisationUnitGroups )
         {
-            Element id = document.createElement( ID);  
-            id.appendChild( document.createTextNode( String.valueOf( o.getId()) ) );
+            Element id = document.createElement( ID );
+            id.appendChild( document.createTextNode( String.valueOf( o.getId() ) ) );
             organisationUnitGroups.appendChild( id );
         }
 
         document.appendChild( root );
 
         return document;
+    }
+
+    @Override
+    public boolean isCategory()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isNormal()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isOrganisationUnitGroupListing()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean isPeriodColumnListing()
+    {
+        return false;
     }
 }

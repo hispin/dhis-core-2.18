@@ -427,9 +427,52 @@
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseListReport.vm</result>
 		</action>
+		
+		<!-- Generate Report Excel use POI -->
+
+		<action name="generateReportExcel"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
+			<result name="CATEGORY" type="chain">
+				generateReportCategory
+			</result>
+			<result name="NORMAL" type="chain">
+				generateReportNormal
+			</result>
+			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
+				generateReportOrgGroupListing
+			</result>
+			<result name="PERIOD_COLUMN_LISTING" type="chain">
+				generateReportPeriodColumnListing
+			</result>
+		</action>
+
+		<action name="generateReportCategory"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportCategoryAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+		</action>
+
+		<action name="generateReportNormal"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportNormalAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+		</action>
+
+		<action name="generateReportOrgGroupListing"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportOrganizationGroupListingAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+		</action>
+
+		<action name="generateReportPeriodColumnListing"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateReportPeriodColumnListingAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-excel-reporting/responseSuccess.vm</result>
+		</action>
+		
 
 		<!-- Generate Report By Ajax -->
-
+		<!-- 
 		<action name="generateReportExcel"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
 			<result name="CATEGORY" type="chain">
@@ -470,6 +513,7 @@
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
 
+		-->
 		<!-- DATA ENTRY STATUS ACTION -->
 
 		<action name="viewDataEntryStatus"

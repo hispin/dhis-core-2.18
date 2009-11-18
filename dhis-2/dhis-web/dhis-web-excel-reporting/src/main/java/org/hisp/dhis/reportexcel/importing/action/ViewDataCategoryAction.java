@@ -28,12 +28,15 @@ package org.hisp.dhis.reportexcel.importing.action;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import jxl.Sheet;
 import jxl.Workbook;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
@@ -49,104 +52,112 @@ import com.opensymphony.xwork2.Action;
  * @version $Id
  */
 
-public class ViewDataCategoryAction implements Action {
+public class ViewDataCategoryAction
+    implements Action
+{
 
-	// --------------------------------------------------------------------
-	// Inputs && Outputs
-	// --------------------------------------------------------------------
+    // --------------------------------------------------------------------
+    // Inputs && Outputs
+    // --------------------------------------------------------------------
 
-	private ExcelItemGroup excelItemGroup;
+    private ExcelItemGroup excelItemGroup;
 
-	private ArrayList<ExcelItemValue> excelItemValues;
+    private ArrayList<ExcelItemValue> excelItemValues;
 
-	private File upload;
+    private File upload;
 
-	public String[] excelItemIds;
+    public String[] excelItemIds;
 
-	// --------------------------------------------------------------------
-	// Getters and Setters
-	// --------------------------------------------------------------------
+    // --------------------------------------------------------------------
+    // Getters and Setters
+    // --------------------------------------------------------------------
 
-	public void setUpload(File upload) {
-		this.upload = upload;
-	}
+    public void setUpload( File upload )
+    {
+        this.upload = upload;
+    }
 
-	public void setExcelItemGroup(ExcelItemGroup excelItemGroup) {
-		this.excelItemGroup = excelItemGroup;
-	}
+    public void setExcelItemGroup( ExcelItemGroup excelItemGroup )
+    {
+        this.excelItemGroup = excelItemGroup;
+    }
 
-	public void setExcelItemIds(String[] excelItemIds) {
-		this.excelItemIds = excelItemIds;
-	}
+    public void setExcelItemIds( String[] excelItemIds )
+    {
+        this.excelItemIds = excelItemIds;
+    }
 
-	public ArrayList<ExcelItemValue> getExcelItemValues() {
-		return excelItemValues;
-	}
+    public ArrayList<ExcelItemValue> getExcelItemValues()
+    {
+        return excelItemValues;
+    }
 
-	// --------------------------------------------------------------------
-	// Action implementation
-	// --------------------------------------------------------------------
+    // --------------------------------------------------------------------
+    // Action implementation
+    // --------------------------------------------------------------------
 
-	public String execute() {
-		try {
-			
-			Workbook uploadWorkbook = Workbook.getWorkbook(upload);
+    public String execute()
+    {
+        try
+        {
 
-			ArrayList<ExcelItem> excelItems = new ArrayList<ExcelItem>(
-					excelItemGroup.getExcelItems());
+            FileInputStream inputStream = new FileInputStream( upload );
 
-			Collections.sort(excelItems, new ExcelItemComparator());
+            HSSFWorkbook wb = new HSSFWorkbook( inputStream );
 
-			excelItemValues = new ArrayList<ExcelItemValue>();
+            ArrayList<ExcelItem> excelItems = new ArrayList<ExcelItem>( excelItemGroup.getExcelItems() );
 
-			for (ExcelItem excelItem : excelItems) {
+            Collections.sort( excelItems, new ExcelItemComparator() );
 
-				Sheet sheet = uploadWorkbook
-						.getSheet(excelItem.getSheetNo() - 1);
+            excelItemValues = new ArrayList<ExcelItemValue>();
 
-				int rowBegin = excelItem.getRow();
+            for ( ExcelItem excelItem : excelItems )
+            {
 
-				for (DataElementGroupOrder dataElementGroup : excelItemGroup
-						.getDataElementOrders()) {
-					
-					for (DataElement dataElement : dataElementGroup
-							.getDataElements()) {
+                HSSFSheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
 
-						String value = ExcelUtils.readValue(rowBegin, excelItem
-								.getColumn(), sheet);
+                int rowBegin = excelItem.getRow();
 
-						ExcelItem item = new ExcelItem();
+                for ( DataElementGroupOrder dataElementGroup : excelItemGroup.getDataElementOrders() )
+                {
 
-						item.setId(excelItem.getId());
+                    for ( DataElement dataElement : dataElementGroup.getDataElements() )
+                    {
 
-						item.setExpression(excelItem.getExpression().replace(
-								"*", String.valueOf(dataElement.getId())));
+                        String value = ExcelUtils.readValuePOI( rowBegin, excelItem.getColumn(), sheet );
 
-						item.setName(excelItem.getName() + " - "
-								+ dataElement.getName());
+                        ExcelItem item = new ExcelItem();
 
-						item.setRow(rowBegin);
+                        item.setId( excelItem.getId() );
 
-						ExcelItemValue excelItemValue = new ExcelItemValue(
-								item, value);
+                        item.setExpression( excelItem.getExpression().replace( "*",
+                            String.valueOf( dataElement.getId() ) ) );
 
-						excelItemValues.add(excelItemValue);
+                        item.setName( excelItem.getName() + " - " + dataElement.getName() );
 
-						rowBegin++;
-						
-					} // for (DataElementGroupOrder ...
+                        item.setRow( rowBegin );
 
-				} // for (DataElement ...
+                        ExcelItemValue excelItemValue = new ExcelItemValue( item, value );
 
-			}// end for (ExcelItem ...
+                        excelItemValues.add( excelItemValue );
 
-			return SUCCESS;
+                        rowBegin++;
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+                    } // for (DataElementGroupOrder ...
 
-		return ERROR;
-	}
+                } // for (DataElement ...
+
+            }// end for (ExcelItem ...
+
+            return SUCCESS;
+
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+
+        return ERROR;
+    }
 
 }

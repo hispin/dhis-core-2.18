@@ -29,6 +29,8 @@ package org.hisp.dhis.reportexcel.export.action;
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -37,20 +39,14 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jxl.Workbook;
-import jxl.format.Alignment;
-import jxl.format.Border;
-import jxl.format.BorderLineStyle;
-import jxl.format.Colour;
-import jxl.format.UnderlineStyle;
-import jxl.read.biff.BiffException;
-import jxl.write.WritableCellFormat;
-import jxl.write.WritableFont;
-import jxl.write.WritableWorkbook;
-import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
-
 import org.amplecode.quick.StatementManager;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFHeader;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -70,6 +66,7 @@ import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
 import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
+import org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager;
 import org.hisp.dhis.reportexcel.state.SelectionManager;
 import org.hisp.dhis.reportexcel.utils.DateUtils;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
@@ -79,12 +76,26 @@ import org.hisp.dhis.user.CurrentUserService;
 import com.opensymphony.xwork2.Action;
 
 /**
+ * @author Dang Duy Hieu
  * @author Tran Thanh Tri
  * @version $Id$
+ * @since 2009-09-18
  */
-public abstract class GenerateReportExcelSupport
+public abstract class GenerateReportSupport
     implements Action
 {
+
+    protected static final short CELLSTYLE_ALIGN_LEFT = HSSFCellStyle.ALIGN_LEFT;
+
+    protected static final short CELLSTYLE_ALIGN_CENTER = HSSFCellStyle.ALIGN_CENTER;
+
+    protected static final short CELLSTYLE_ALIGN_RIGHT = HSSFCellStyle.ALIGN_RIGHT;
+
+    protected static final short CELLSTYLE_ALIGN_JUSTIFY = HSSFCellStyle.ALIGN_JUSTIFY;
+
+    protected static final short CELLSTYLE_BORDER = HSSFCellStyle.BORDER_THIN;
+
+    protected static final short CELLSTYLE_BORDER_COLOR = HSSFColor.LIGHT_ORANGE.index;
 
     private static final String NULL_REPLACEMENT = "0";
 
@@ -98,34 +109,36 @@ public abstract class GenerateReportExcelSupport
 
     protected OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
-    protected CurrentUserService currentUserService;
+    CurrentUserService currentUserService;
 
-    protected AggregationService aggregationService;
+    AggregationService aggregationService;
 
-    protected IndicatorService indicatorService;
+    IndicatorService indicatorService;
 
     protected DataElementCategoryService categoryService;
-
-    protected StatementManager statementManager;
 
     protected DataElementService dataElementService;
 
     protected ReportLocationManager reportLocationManager;
 
+    protected I18nFormat format;
+
+    DataMartStore dataMartStore;
+
+    InitializePOIStylesManager initPOIStylesManager;
+
+    protected StatementManager statementManager;
+
+    protected SelectionManager selectionManager;
+
     protected ReportExcelService reportService;
 
     protected PeriodService periodService;
 
-    protected I18nFormat format;
-
-    protected DataMartStore dataMartStore;
-
-    protected SelectionManager selectionManager;
-
     protected PeriodDatabaseService periodDatabaseService;
 
     // -------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------
 
     protected String outputXLS;
@@ -135,6 +148,17 @@ public abstract class GenerateReportExcelSupport
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
+   
+
+    public String getOutputXLS()
+    {
+        return outputXLS;
+    }
+
+    public InputStream getInputStream()
+    {
+        return inputStream;
+    }
 
     public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
     {
@@ -156,14 +180,14 @@ public abstract class GenerateReportExcelSupport
         this.currentUserService = currentUserService;
     }
 
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
+    }
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
     }
 
     public void setDataElementService( DataElementService dataElementService )
@@ -174,16 +198,6 @@ public abstract class GenerateReportExcelSupport
     public void setAggregationService( AggregationService aggregationService )
     {
         this.aggregationService = aggregationService;
-    }
-
-    public String getOutputXLS()
-    {
-        return outputXLS;
-    }
-
-    public InputStream getInputStream()
-    {
-        return inputStream;
     }
 
     public void setFormat( I18nFormat format )
@@ -206,6 +220,16 @@ public abstract class GenerateReportExcelSupport
         this.periodService = periodService;
     }
 
+    public InitializePOIStylesManager getInitPOIStylesManager()
+    {
+        return initPOIStylesManager;
+    }
+
+    public void setInitPOIStylesManager( InitializePOIStylesManager initPOIStylesManager )
+    {
+        this.initPOIStylesManager = initPOIStylesManager;
+    }
+
     public void setPeriodDatabaseService( PeriodDatabaseService periodDatabaseService )
     {
         this.periodDatabaseService = periodDatabaseService;
@@ -216,87 +240,111 @@ public abstract class GenerateReportExcelSupport
     // -----------------------------------------
     protected File outputReportFile;
 
-    File inputExcelTemplate;
+    protected FileInputStream inputStreamExcelTemplate;
 
-    protected WritableWorkbook outputReportWorkbook;
+    protected FileOutputStream outputStreamExcelTemplate;
 
-    Date startDate;
+    protected HSSFWorkbook templateWorkbook;
+
+    protected HSSFSheet hssfSheet;
+
+    protected Date startDate;
 
     protected Date endDate;
 
-    Date firstDayOfYear;
+    protected Date firstDayOfYear;
 
-    Date last3MonthStartDate;
+    protected Date last3MonthStartDate;
 
-    Date last3MonthEndDate;
+    protected Date last3MonthEndDate;
 
-    Date last6MonthStartDate;
+    protected Date last6MonthStartDate;
 
-    Date last6MonthEndDate;
+    protected Date last6MonthEndDate;
 
-    Date endDateOfYear;
+    protected Date endDateOfYear;
 
-    Date startQuaterly;
+    protected Date startQuaterly;
 
-    Date endQuaterly;
+    protected Date endQuaterly;
 
-    Date startSixMonthly;
+    protected Date startSixMonthly;
 
-    Date endSixMonthly;
+    protected Date endSixMonthly;
 
     // ------------------------------------------
     // Excel format
     // ------------------------------------------
+    protected HSSFFont csFont;
+
+    protected HSSFHeader header;
+
+    protected HSSFDataFormat dFormat;
+
+    protected HSSFCellStyle csHeader;
+
+    protected HSSFCellStyle csText;
+
+    protected HSSFCellStyle csTextLeft;
+
+    protected HSSFCellStyle csTextRight;
+
+    protected HSSFCellStyle csTextICDJustify;
+
+    protected HSSFCellStyle csTextChapterLeft;
+
+    protected HSSFCellStyle csNumber;
 
     SimpleDateFormat dateformatter = new SimpleDateFormat( "dd.MM.yyyy.h.mm.ss.a" );
 
-    WritableCellFormat text = new WritableCellFormat();
+    protected void initExcelFormat()
+        throws Exception
+    {
+        hssfSheet = templateWorkbook.getSheetAt( 0 );
+        header = hssfSheet.getHeader();
+        csFont = templateWorkbook.createFont();
+        dFormat = templateWorkbook.createDataFormat();
+        csHeader = templateWorkbook.createCellStyle();
+        csText = templateWorkbook.createCellStyle();
+        csTextLeft = templateWorkbook.createCellStyle();
+        csTextRight = templateWorkbook.createCellStyle();
+        csTextICDJustify = templateWorkbook.createCellStyle();
+        csTextChapterLeft = templateWorkbook.createCellStyle();
+        csNumber = templateWorkbook.createCellStyle();       
+        
 
-    protected WritableCellFormat textLeft = new WritableCellFormat();
-
-    WritableCellFormat textRight = new WritableCellFormat();
-
-    WritableFont writableNumberFont = new WritableFont( WritableFont.ARIAL, 10, WritableFont.BOLD );
-
-    WritableFont writableICDFont = new WritableFont( WritableFont.ARIAL, 11, WritableFont.BOLD );
-
-    WritableFont writableChapterFont = new WritableFont( WritableFont.ARIAL, 11, WritableFont.BOLD, false,
-        UnderlineStyle.NO_UNDERLINE, Colour.BLACK );
-
-    protected WritableCellFormat textChapterLeft = new WritableCellFormat( writableChapterFont );
-
-    WritableCellFormat textNumberBoldRight = new WritableCellFormat( writableNumberFont );
-
-    protected WritableCellFormat textICDBoldJustify = new WritableCellFormat( writableICDFont );
-
-    protected WritableCellFormat number = new WritableCellFormat();
+    }
 
     protected void installExcelFormat()
-        throws WriteException
     {
+        // override
+    }
 
-        textLeft.setAlignment( Alignment.LEFT );
-        textLeft.setBorder( Border.ALL, BorderLineStyle.THIN );
-
-        textRight.setAlignment( Alignment.RIGHT );
-        textRight.setBorder( Border.ALL, BorderLineStyle.THIN );
-
-        textNumberBoldRight.setAlignment( Alignment.RIGHT );
-        textNumberBoldRight.setBorder( Border.ALL, BorderLineStyle.THIN );
-
-        textICDBoldJustify.setAlignment( Alignment.JUSTIFY );
-        textICDBoldJustify.setBorder( Border.ALL, BorderLineStyle.THIN );
-        textChapterLeft.setAlignment( Alignment.LEFT );
-        textChapterLeft.setBorder( Border.ALL, BorderLineStyle.THIN );
-
-        number.setBorder( Border.ALL, BorderLineStyle.THIN );
-        number.setAlignment( Alignment.CENTRE );
+    @SuppressWarnings( "static-access" )
+    protected void installDefaultExcelFormat()
+        throws Exception
+    {
+        initPOIStylesManager.initDefaultHeader( header );
+        initPOIStylesManager.initDefaultFont( csFont );
+        initPOIStylesManager.initDefaultCellStyle( csText, csFont );
+        initPOIStylesManager.initCellStyle( csTextLeft, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT );
+        initPOIStylesManager.initCellStyle( csTextRight, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_RIGHT );
+        initPOIStylesManager.initCellStyle( csTextICDJustify, csFont, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_ALIGN_JUSTIFY );
+        initPOIStylesManager.initCellStyle( csNumber, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_CENTER );
 
     }
 
     protected void installPeriod( Period period )
     {
-
         Calendar calendar = Calendar.getInstance();
 
         // Monthly period
@@ -348,28 +396,31 @@ public abstract class GenerateReportExcelSupport
     }
 
     protected void installReadTemplateFile( ReportExcel reportExcel, Period period, OrganisationUnit organisationUnit )
-        throws BiffException, IOException, RowsExceededException, WriteException, IndexOutOfBoundsException
+        throws Exception
     {
+        Calendar calendar = Calendar.getInstance();
 
         File reportTempDir = reportLocationManager.getReportExcelTempDirectory();
 
-        this.inputExcelTemplate = new File( reportLocationManager.getReportExcelTemplateDirectory() + File.separator
-            + reportExcel.getExcelTemplateFile() );
-
-        Calendar calendar = Calendar.getInstance();
+        this.inputStreamExcelTemplate = new FileInputStream( reportLocationManager.getReportExcelTemplateDirectory()
+            + File.separator + reportExcel.getExcelTemplateFile() );
 
         this.outputReportFile = new File( reportTempDir, currentUserService.getCurrentUsername()
-            + this.dateformatter.format( calendar.getTime() ) + inputExcelTemplate.getName() );
+            + this.dateformatter.format( calendar.getTime() ) + reportExcel.getExcelTemplateFile() );
 
-        Workbook templateWorkbook = Workbook.getWorkbook( inputExcelTemplate );
+        this.outputStreamExcelTemplate = new FileOutputStream( outputReportFile );
 
-        outputReportWorkbook = Workbook.createWorkbook( outputReportFile, templateWorkbook );
+        this.templateWorkbook = new HSSFWorkbook( inputStreamExcelTemplate );        
 
-        ExcelUtils.writeValue( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(), organisationUnit
-            .getName(), ExcelUtils.TEXT, outputReportWorkbook.getSheet( 0 ), text );
+        this.initExcelFormat();
 
-        ExcelUtils.writeValue( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(),
-            format.formatPeriod( period ), ExcelUtils.TEXT, outputReportWorkbook.getSheet( 0 ), text );
+        this.installDefaultExcelFormat();
+
+        ExcelUtils.writeValueByPOI( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
+            organisationUnit.getName(), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
+
+        ExcelUtils.writeValueByPOI( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(), format
+            .formatPeriod( period ), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
 
     }
 
@@ -414,16 +465,6 @@ public abstract class GenerateReportExcelSupport
         }
         return value;
 
-    }
-
-    public void complete()
-        throws IOException, WriteException
-    {
-        outputReportWorkbook.write();
-
-        outputReportWorkbook.close();
-
-        selectionManager.setDownloadFilePath( outputReportFile.getPath() );
     }
 
     protected String generateIndicatorExpression( ReportExcelItem reportItem, Date startDate, Date endDate,
@@ -483,7 +524,6 @@ public abstract class GenerateReportExcelSupport
 
         if ( reportItem.getPeriodType().equalsIgnoreCase( ReportExcelItem.PERIODTYPE.SELECTED_MONTH ) )
         {
-
             value = MathUtils
                 .calculateExpression( generateExpression( reportItem, startDate, endDate, organisationUnit ) );
         }
@@ -580,34 +620,45 @@ public abstract class GenerateReportExcelSupport
         {
             throw new RuntimeException( "Illegal DataElement id", ex );
         }
-
     }
 
     protected void installReadTemplateFile( ReportExcel reportExcel, Period period,
         OrganisationUnitGroup organisationUnitGroup )
-        throws BiffException, IOException, RowsExceededException, WriteException, IndexOutOfBoundsException
+        throws Exception
     {
+        Calendar calendar = Calendar.getInstance();
 
         File reportTempDir = reportLocationManager.getReportExcelTempDirectory();
 
-        this.inputExcelTemplate = new File( reportLocationManager.getReportExcelTemplateDirectory() + File.separator
-            + reportExcel.getExcelTemplateFile() );
-
-        Calendar calendar = Calendar.getInstance();
+        this.inputStreamExcelTemplate = new FileInputStream( reportLocationManager.getReportExcelTemplateDirectory()
+            + File.separator + reportExcel.getExcelTemplateFile() );
 
         this.outputReportFile = new File( reportTempDir, currentUserService.getCurrentUsername()
-            + this.dateformatter.format( calendar.getTime() ) + inputExcelTemplate.getName() );
+            + this.dateformatter.format( calendar.getTime() ) + reportExcel.getExcelTemplateFile() );
 
-        Workbook templateWorkbook = Workbook.getWorkbook( inputExcelTemplate );
+        this.outputStreamExcelTemplate = new FileOutputStream( outputReportFile );
 
-        outputReportWorkbook = Workbook.createWorkbook( outputReportFile, templateWorkbook );
+        this.templateWorkbook = new HSSFWorkbook( inputStreamExcelTemplate );       
 
-        ExcelUtils.writeValue( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
-            organisationUnitGroup.getName(), ExcelUtils.TEXT, outputReportWorkbook.getSheet( 0 ), text );
+        this.initExcelFormat();
 
-        ExcelUtils.writeValue( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(),
-            format.formatPeriod( period ), ExcelUtils.TEXT, outputReportWorkbook.getSheet( 0 ), text );
+        this.installDefaultExcelFormat();
+
+        ExcelUtils.writeValueByPOI( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
+            organisationUnitGroup.getName(), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
+
+        ExcelUtils.writeValueByPOI( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(), format
+            .formatPeriod( period ), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
 
     }
 
+    protected void complete()
+        throws IOException
+    {
+        this.templateWorkbook.write( outputStreamExcelTemplate );
+
+        this.outputStreamExcelTemplate.close();
+
+        selectionManager.setDownloadFilePath( outputReportFile.getPath() );
+    }
 }

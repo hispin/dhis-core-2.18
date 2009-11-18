@@ -26,6 +26,7 @@
  */
 package org.hisp.dhis.reportexcel;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -96,11 +97,28 @@ public abstract class ReportExcel
         this.organisationAssocitions = new HashSet<OrganisationUnit>();
     }
 
+    public Collection<ReportExcelItem> getReportItemBySheet( Integer sheetNo )
+    {
+
+        Set<ReportExcelItem> results = new HashSet<ReportExcelItem>();
+
+        for ( ReportExcelItem reportExcelItem : this.reportExcelItems )
+        {
+            if ( reportExcelItem.getSheetNo() == sheetNo )
+            {
+                results.add( reportExcelItem );
+            }
+        }
+
+        return results;
+
+    }
+
     public ReportExcelItem getReportExcelItem( String name, int sheetNo )
     {
         for ( ReportExcelItem reportExcelItem : this.reportExcelItems )
         {
-            if ( reportExcelItem.getName().equalsIgnoreCase( name ) && reportExcelItem.getSheetNo()== sheetNo )
+            if ( reportExcelItem.getName().equalsIgnoreCase( name ) && reportExcelItem.getSheetNo() == sheetNo )
             {
                 return reportExcelItem;
             }
@@ -109,25 +127,13 @@ public abstract class ReportExcel
         return null;
     }
 
-    public boolean isCategory()
-    {
-        return this.getReportType().equalsIgnoreCase( TYPE.CATEGORY );
-    }
+    public abstract boolean isCategory();
 
-    public boolean isOrganisationUnitGroupListing()
-    {
-        return this.getReportType().equalsIgnoreCase( TYPE.ORGANIZATION_GROUP_LISTING );
-    }
+    public abstract boolean isOrganisationUnitGroupListing();
 
-    public boolean isPeriodColumnListing()
-    {
-        return this.getReportType().equalsIgnoreCase( TYPE.PERIOD_COLUMN_LISTING );
-    }
+    public abstract boolean isPeriodColumnListing();
 
-    public boolean isNormal()
-    {
-        return this.getReportType().equalsIgnoreCase( TYPE.NORMAL );
-    }
+    public abstract boolean isNormal();
 
     // -------------------------------------------------------------------------
     // Abstract methods
