@@ -1,8 +1,0 @@
-
-<h2>Survey</h2>
-            <ul>
-                <li><a href="index.action">Survey Management</a></li>
-                <li><a href="surveydataentry.action">Survey Data Entry</a></li>
-                <li><a href="generateTarget.action">Target Mapping</a></li>
-            </ul>
-        
