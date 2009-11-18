@@ -210,12 +210,6 @@ public class ExcelUtils
 
     public static String readValuePOI( int row, int column, HSSFSheet sheet )
     {
-
-        HSSFRow rowPOI = sheet.getRow( row - 1 );
-
-        HSSFCell cell = rowPOI.getCell( column - 1 );
-
-        return String.valueOf( cell.getNumericCellValue() );
-
+        return String.valueOf( sheet.getRow( row - 1 ).getCell( column - 1 ).getNumericCellValue() );
     }
 }

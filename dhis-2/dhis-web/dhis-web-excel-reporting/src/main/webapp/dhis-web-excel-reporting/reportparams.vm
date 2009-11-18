@@ -50,7 +50,7 @@
 <br>
 <hr>
 <p>
-<input type="button" value='$i18n.getString( "preview_report" )' onclick="javascript: generic_type = 'preview'; openPreviewReport();" #if(!$organisationUnit) disabled #end/>
+<input type="button" value='$i18n.getString( "preview_report" )' onclick="javascript: openPreviewReport();" #if(!$organisationUnit) disabled #end/>
 <input name="generate_report" id="generate_report"  type="button" onClick="generateReportExcel()" value='$i18n.getString( "generate_report" )' #if(!$organisationUnit) disabled #end/>
 
 

@@ -619,14 +619,6 @@
 
 		<!-- PREVIEW REPORT EXCEL ACTION -->
 
-		<action name="validateGenerateReport"
-			class="org.hisp.dhis.reportexcel.export.action.ValidateGenerateReportAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-excel-reporting/responseError.vm</result>
-		</action>
-
 		<action name="openPreviewReport"
 			class="org.hisp.dhis.reportexcel.preview.action.OpenPreviewReportAction">
 			<result name="success" type="velocity">/popup.vm</result>

@@ -60,10 +60,6 @@ public class GenerateReportExcelFlowAction
 
     private Integer periodId;
 
-    //private Integer sheetId;
-
-   //private Integer orgunitGroupId;
-
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
@@ -93,27 +89,10 @@ public class GenerateReportExcelFlowAction
         this.reportService = reportService;
     }
 
-//    public Integer getSheetId()
-//    {
-//        return sheetId;
-//
-//    }
-//
-//    public void setSheetId( Integer sheetId )
-//    {
-//        this.sheetId = sheetId;
-//    }
-//
-//    public Integer getOrgunitGroupId()
-//    {
-//        return orgunitGroupId;
-//    }
-//
-//    public void setOrgunitGroupId( Integer orgunitGroupId )
-//    {
-//        this.orgunitGroupId = orgunitGroupId;
-//    }
-
+	// -------------------------------------------
+    // Action implementation
+    // -------------------------------------------
+	
     public String execute()
         throws Exception
     {
