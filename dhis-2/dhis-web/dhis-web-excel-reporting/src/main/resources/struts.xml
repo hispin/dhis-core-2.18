@@ -697,36 +697,36 @@
 		<action name="generateAdvancedReportExcel"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelFlowAction">
 			<result name="CATEGORY" type="chain">
-				generateAdvancedReportExcelCategory
+				generateAdvancedReportCategory
             </result>
-			<result name="NORMAL" type="chain">generateAdvancedReportExcelNormal
+			<result name="NORMAL" type="chain">generateAdvancedReportNormal
 			</result>
 			<result name="ORGANIZATION_GROUP_LISTING" type="chain">
-				generateAdvancedReportExcelOrganizationGroupListing</result>
+				generateAdvancedReportOrganizationGroupListing</result>
 			<result name="PERIOD_COLUMN_LISTING" type="chain">
-				generateAdvancedReportExcelPeriodColumnListingAction</result>
+				generateAdvancedReportPeriodColumnListingAction</result>
 		</action>
 
-		<action name="generateAdvancedReportExcelNormal"
-			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelNormalAction">
+		<action name="generateAdvancedReportNormal"
+			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportNormalAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
 
-		<action name="generateAdvancedReportExcelOrganizationGroupListing"
-			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelOrganisationGroupListingAction">
+		<action name="generateAdvancedReportOrganizationGroupListing"
+			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportOrgGroupListingAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
 
-		<action name="generateAdvancedReportExcelPeriodColumnListingAction"
-			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelPeriodColumnListingAction">
+		<action name="generateAdvancedReportPeriodColumnListingAction"
+			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportPeriodColumnListingAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>
 
-		<action name="generateAdvancedReportExcelCategory"
-			class="org.hisp.dhis.reportexcel.export.action.GenerateReportExcelCategoryAction">
+		<action name="generateAdvancedReportCategory"
+			class="org.hisp.dhis.reportexcel.export.action.GenerateAdvancedReportCategoryAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-excel-reporting/responseSuccess.vm</result>
 		</action>

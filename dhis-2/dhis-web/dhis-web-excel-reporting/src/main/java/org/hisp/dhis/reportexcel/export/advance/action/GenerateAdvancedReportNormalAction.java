@@ -46,7 +46,7 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class GenerateAdvancedReportExcelNormalAction
+public class GenerateAdvancedReportNormalAction
     extends GenerateReportSupport
 {
 

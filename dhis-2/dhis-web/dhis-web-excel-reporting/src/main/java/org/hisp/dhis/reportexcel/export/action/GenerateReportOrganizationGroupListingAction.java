@@ -101,7 +101,7 @@ public class GenerateReportOrganizationGroupListingAction
                     && (!organisationUnits.isEmpty()) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( organisationUnitGroup
-                        .getName() ), ExcelUtils.TEXT, sheet, this.csTextChapterLeft );
+                        .getName() ), ExcelUtils.TEXT, sheet, this.csTextOrgUnitName );
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.SERIAL )
                     && (!organisationUnits.isEmpty()) )
@@ -118,7 +118,7 @@ public class GenerateReportOrganizationGroupListingAction
                     if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.ORGANISATION ) )
                     {
                         ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), o.getName(), ExcelUtils.TEXT,
-                            sheet, this.csTextChapterLeft ); 
+                            sheet, this.csTextOrgUnitName ); 
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.SERIAL ) )
                     {

@@ -761,8 +761,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 
 	<bean
-		id="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelNormalAction"
-		class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelNormalAction"
+		id="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportNormalAction"
+		class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportNormalAction"
 		scope="prototype">
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
@@ -788,8 +788,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelOrganisationGroupListingAction"
-		class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelOrganisationGroupListingAction"
+		id="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportOrgGroupListingAction"
+		class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportOrgGroupListingAction"
 		scope="prototype">
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
@@ -815,8 +815,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelPeriodColumnListingAction"
-		class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelPeriodColumnListingAction"
+		id="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportPeriodColumnListingAction"
+		class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportPeriodColumnListingAction"
 		scope="prototype">
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
@@ -842,8 +842,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelCategoryAction"
-		class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportExcelCategoryAction"
+		id="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportCategoryAction"
+		class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportCategoryAction"
 		scope="prototype">
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />

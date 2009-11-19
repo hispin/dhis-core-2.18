@@ -49,7 +49,7 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class GenerateAdvancedReportExcelCategoryAction
+public class GenerateAdvancedReportCategoryAction
     extends GenerateReportSupport
 {
     // ---------------------------------------------------------------------
