@@ -650,6 +650,15 @@ public class DefaultReportTableService
                         {
                             grid.addValue( parseAndReplaceNull( map.get( identifier ) ) );
                         }
+
+                        // -----------------------------------------------------
+                        // Values
+                        // -----------------------------------------------------
+                        
+                        if ( reportTable.doTotal() )
+                        {
+                            grid.addValue( String.valueOf( dataMartStore.getTotalAggregatedValue( (DataElement) metaObject, period, unit ) ) );
+                        }
                     }
                 }
             }

@@ -88,7 +88,7 @@ public class CreateReportTableStatement
         buffer.append( ReportTable.REPORTING_MONTH_COLUMN_NAME + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR );
 
         // ---------------------------------------------------------------------
-        // Crosstab columns
+        // Crosstab
         // ---------------------------------------------------------------------
 
         for ( String column : reportTable.getCrossTabColumns() )
@@ -96,6 +96,15 @@ public class CreateReportTableStatement
             buffer.append( column + SPACE + statementBuilder.getDoubleColumnType() + SEPARATOR );
         }
 
+        // ---------------------------------------------------------------------
+        // Total
+        // ---------------------------------------------------------------------
+
+        if ( reportTable.doTotal() )
+        {
+            buffer.append( ReportTable.NAME_TOTAL_COLUMN + SPACE + statementBuilder.getDoubleColumnType() + SEPARATOR );
+        }
+        
         // ---------------------------------------------------------------------
         // Regression
         // ---------------------------------------------------------------------

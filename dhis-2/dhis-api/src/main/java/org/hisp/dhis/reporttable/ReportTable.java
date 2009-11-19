@@ -81,6 +81,8 @@ public class ReportTable
     
     public static final String REGRESSION_COLUMN_PREFIX = "regression_";
     
+    public static final String NAME_TOTAL_COLUMN = "total";
+    
     private static final String EMPTY_REPLACEMENT = "_";    
     private static final String TABLE_PREFIX = "_report_";
     private static final String REGEX_NUMERIC = "([0-9]*)";
@@ -651,6 +653,15 @@ public class ReportTable
     public boolean isDimensional()
     {
         return dimensionSetType != null;
+    }
+    
+    /**
+     * Tests whether a total column should be included.
+     */
+    public boolean doTotal()
+    {
+        return !isDoIndicators() && !isDoPeriods() && !isDoUnits() && isDoCategoryOptionCombos() && 
+            isDimensional() && mode.equals( MODE_DATAELEMENTS );
     }
     
     // -------------------------------------------------------------------------
