@@ -16,8 +16,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <!-- RelationshipType -->
   
-  <bean
-    id="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeListAction"
+  <bean id="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeListAction"
     class="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeListAction"
     scope="prototype">
     <property name="relationshipTypeService"
@@ -38,24 +37,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.relationship.RelationshipTypeService"/>
   </bean>
   
-  <bean
-    id="org.hisp.dhis.patient.action.relationship.RemoveRelationshipTypeAction"
+  <bean id="org.hisp.dhis.patient.action.relationship.RemoveRelationshipTypeAction"
     class="org.hisp.dhis.patient.action.relationship.RemoveRelationshipTypeAction"
     scope="prototype">
     <property name="relationshipTypeService"
       ref="org.hisp.dhis.relationship.RelationshipTypeService"/>
   </bean>
   
-  <bean
-    id="org.hisp.dhis.patient.action.relationship.UpdateRelationshipTypeAction"
+  <bean id="org.hisp.dhis.patient.action.relationship.UpdateRelationshipTypeAction"
     class="org.hisp.dhis.patient.action.relationship.UpdateRelationshipTypeAction"
     scope="prototype">
     <property name="relationshipTypeService"
       ref="org.hisp.dhis.relationship.RelationshipTypeService"/>
   </bean>
   
-  <bean
-    id="org.hisp.dhis.patient.action.relationship.ValidateRelationshipTypeAction"
+  <bean id="org.hisp.dhis.patient.action.relationship.ValidateRelationshipTypeAction"
     class="org.hisp.dhis.patient.action.relationship.ValidateRelationshipTypeAction"
     scope="prototype">
   </bean>
@@ -92,8 +88,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService"/>
   </bean>
   
-  <bean
-    id="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipFormAction"
+  <bean id="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipFormAction"
     class="org.hisp.dhis.patient.action.relationship.ShowAddRelationshipFormAction"
     scope="prototype">
     <property name="relationshipTypeService"

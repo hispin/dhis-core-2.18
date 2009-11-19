@@ -38,8 +38,6 @@ public class NoAction
     public String execute()
         throws Exception
     {
-
         return SUCCESS;
-
     }
 }

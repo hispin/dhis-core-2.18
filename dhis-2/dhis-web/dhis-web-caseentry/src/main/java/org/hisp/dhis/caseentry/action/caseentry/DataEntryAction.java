@@ -54,7 +54,6 @@ import com.opensymphony.xwork2.Action;
 public class DataEntryAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

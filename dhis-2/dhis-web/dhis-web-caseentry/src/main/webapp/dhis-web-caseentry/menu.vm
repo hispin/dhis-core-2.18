@@ -1,13 +1,13 @@
 
 <h2>$i18n.getString( "data_entry" )&nbsp;</h2>
 <ul>
-    <li><a href="dataEntrySelect.action">$i18n.getString( "data_entry" )</a></li>
+    <li><a href="dataEntrySelect.action">$i18n.getString( "data_entry" )&nbsp;</a></li>
 </ul>
 
 <h2>$i18n.getString( "reports" )&nbsp;</h2>
 <ul>
-    <li><a href="reportSelect.action">$i18n.getString( "summary_report" )</a></li>     
-    <li><a href="visitPlanSelect.action">$i18n.getString( "visit_plan" )</a></li>    
+    <li><a href="reportSelect.action">$i18n.getString( "summary_report" )&nbsp;</a></li>     
+    <li><a href="visitPlanSelect.action">$i18n.getString( "visit_plan" )&nbsp;</a></li>    
 </ul>
 
 <br>

@@ -53,7 +53,6 @@ import com.opensymphony.xwork2.Action;
 public class DataRecordingSelectAction
     implements Action
 {
-
     private static final String DATAENTRY_FORM = "dataentryform";
 
     // -------------------------------------------------------------------------

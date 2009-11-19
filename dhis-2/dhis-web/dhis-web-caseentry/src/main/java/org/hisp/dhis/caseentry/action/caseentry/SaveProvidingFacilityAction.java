@@ -53,7 +53,6 @@ import com.opensymphony.xwork2.Action;
 public class SaveProvidingFacilityAction
     implements Action
 {
-
     private static final Log LOG = LogFactory.getLog( SaveProvidingFacilityAction.class );
 
     // -------------------------------------------------------------------------
