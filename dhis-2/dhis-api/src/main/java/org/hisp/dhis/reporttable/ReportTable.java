@@ -27,6 +27,9 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dimension.DimensionSet.TYPE_CATEGORY_COMBO;
+import static org.hisp.dhis.dimension.DimensionSet.TYPE_GROUP_SET;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,14 +44,13 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dimension.Dimension;
+import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.dimension.DimensionSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-
-import static org.hisp.dhis.dimension.DimensionSet.*;
 
 /**
  * @author Lars Helge Overland
@@ -78,10 +80,11 @@ public class ReportTable
     public static final String MODE_DATAELEMENTS = "dataelements";
     public static final String MODE_INDICATORS = "indicators";
     public static final String MODE_DATASETS = "datasets";
+
+    public static final String TOTAL_COLUMN_NAME = "total";
+    public static final String TOTAL_COLUMN_PREFIX = "total_";
     
     public static final String REGRESSION_COLUMN_PREFIX = "regression_";
-    
-    public static final String NAME_TOTAL_COLUMN = "total";
     
     private static final String EMPTY_REPLACEMENT = "_";    
     private static final String TABLE_PREFIX = "_report_";
@@ -249,6 +252,16 @@ public class ReportTable
      * The data elements derived from the dimension set.
      */
     private List<DataElement> dimensionalDataElements = new ArrayList<DataElement>();
+    
+    /**
+     * The dimension options.
+     */
+    private List<DimensionOption> dimensionOptions = new ArrayList<DimensionOption>();
+
+    /**
+     * The dimension option column names.
+     */
+    private List<String> dimensionOptionColumns = new ArrayList<String>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -499,6 +512,24 @@ public class ReportTable
                 }
             }
         }
+
+        // ---------------------------------------------------------------------
+        // Init dimensionOptions and dimensionOptionColumns
+        // ---------------------------------------------------------------------
+
+        if ( doTotal() )
+        {
+            List<? extends Dimension> dimensions = isDimensional( TYPE_CATEGORY_COMBO ) ? categoryCombo.getDimensions() : dataElementGroupSets;
+            
+            for ( Dimension dimension : dimensions )
+            {
+                for ( DimensionOption dimensionOption : dimension.getDimensionOptions() )
+                {
+                    dimensionOptions.add( dimensionOption );
+                    dimensionOptionColumns.add( databaseEncode( TOTAL_COLUMN_PREFIX + dimensionOption.getName() ) );
+                }
+            }
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -656,14 +687,23 @@ public class ReportTable
     }
     
     /**
+     * Tests whether this ReportTable is multi-dimensional and of the argument
+     * dimension set type.
+     */
+    public boolean isDimensional( String dimensionSetType )
+    {
+        return isDimensional() && dimensionSetType.equals( dimensionSetType );
+    }
+    
+    /**
      * Tests whether a total column should be included.
      */
     public boolean doTotal()
     {
         return !isDoIndicators() && !isDoPeriods() && !isDoUnits() && isDoCategoryOptionCombos() && 
-            isDimensional() && mode.equals( MODE_DATAELEMENTS );
+            isDimensional( DimensionSet.TYPE_CATEGORY_COMBO ) && mode.equals( MODE_DATAELEMENTS );
     }
-    
+        
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -784,35 +824,28 @@ public class ReportTable
         
         if ( metaObject != null )
         {
-            buffer.append( databaseEncode( metaObject.getShortName() ) + SEPARATOR );
+            buffer.append( metaObject.getShortName() + SEPARATOR );
         }
         if ( categoryOptionCombo != null )
         {
-            buffer.append( databaseEncode( categoryOptionCombo.getShortName() ) + SEPARATOR );
+            buffer.append( categoryOptionCombo.getShortName() + SEPARATOR );
         }
         if ( period != null )
         {
             String periodName = period.getName() != null ? period.getName() : i18nFormat.formatPeriod( period );
             
-            buffer.append( databaseEncode( periodName ) + SEPARATOR );
+            buffer.append( periodName + SEPARATOR );
         }
         if ( unit != null )
         {
-            buffer.append( databaseEncode( unit.getShortName() ) + SEPARATOR );
+            buffer.append( unit.getShortName() + SEPARATOR );
         }
 
-        // ---------------------------------------------------------------------
-        // Columns cannot start with numeric character
-        // ---------------------------------------------------------------------
-
-        if ( buffer.length() > 0 && buffer.substring( 0, 1 ).matches( REGEX_NUMERIC ) )
-        {
-            buffer.insert( 0, SEPARATOR );
-        }
+        String column = databaseEncode( buffer.toString() );
         
-        return buffer.length() > 0 ? buffer.substring( 0, buffer.lastIndexOf( SEPARATOR ) ) : buffer.toString();
+        return column.length() > 0 ? column.substring( 0, column.lastIndexOf( SEPARATOR ) ) : column;
     }
-    
+        
     /**
      * Generates a column identifier based on the internal identifiers of the
      * argument objects. Null arguments are ignored in the identifier. 
@@ -842,7 +875,10 @@ public class ReportTable
     }
     
     /**
-     * Database encodes the argument string.
+     * Database encodes the argument string. Remove non-character data from the
+     * string, prefixes the string if it starts with a numeric charater and
+     * truncates the string if it is longer than 255 characters.
+     * 
      */
     private String databaseEncode( String string )
     {
@@ -868,7 +904,20 @@ public class ReportTable
             string = buffer.toString();
             
             string = string.replaceAll( EMPTY_REPLACEMENT + "+", EMPTY_REPLACEMENT );
-            
+
+            // -----------------------------------------------------------------
+            // Cannot start with numeric character
+            // -----------------------------------------------------------------
+
+            if ( string.length() > 0 && string.substring( 0, 1 ).matches( REGEX_NUMERIC ) )
+            {
+                string = SEPARATOR + string;
+            }
+
+            // -----------------------------------------------------------------
+            // Cannot be longer than 255 characters
+            // -----------------------------------------------------------------
+
             if ( string.length() > 255 )
             {
                 string = string.substring( 0, 255 );
@@ -1243,5 +1292,15 @@ public class ReportTable
     public void setReportingMonthName( String reportingMonthName )
     {
         this.reportingMonthName = reportingMonthName;
+    }
+    
+    public List<DimensionOption> getDimensionOptions()
+    {
+        return dimensionOptions;
+    }
+    
+    public List<String> getDimensionOptionColumns()
+    {
+        return dimensionOptionColumns;
     }
 }

@@ -44,10 +44,12 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
@@ -552,10 +554,8 @@ public class DefaultReportTableService
     
     private Grid getGrid( ReportTable reportTable )
     {
-        Grid grid = new Grid();
+        final Grid grid = new Grid();
         
-        Map<String, Double> map = null;
-
         for ( final IdentifiableObject metaObject : reportTable.getReportIndicators() )
         {
             for ( final DataElementCategoryOptionCombo categoryOptionCombo : reportTable.getReportCategoryOptionCombos() )
@@ -644,7 +644,7 @@ public class DefaultReportTableService
                         // Values
                         // -----------------------------------------------------
 
-                        map = reportTableManager.getAggregatedValueMap( reportTable, metaObject, categoryOptionCombo, period, unit );
+                        Map<String, Double> map = reportTableManager.getAggregatedValueMap( reportTable, metaObject, categoryOptionCombo, period, unit );
                         
                         for ( String identifier : reportTable.getCrossTabIdentifiers() )
                         {
@@ -657,6 +657,12 @@ public class DefaultReportTableService
                         
                         if ( reportTable.doTotal() )
                         {
+                            for ( DimensionOption dimensionOption : reportTable.getDimensionOptions() )
+                            {
+                                grid.addValue( String.valueOf( dataMartStore.
+                                    getTotalAggregatedValue( (DataElement) metaObject, (DataElementCategoryOption) dimensionOption, period, unit ) ) );
+                            }
+                            
                             grid.addValue( String.valueOf( dataMartStore.getTotalAggregatedValue( (DataElement) metaObject, period, unit ) ) );
                         }
                     }
