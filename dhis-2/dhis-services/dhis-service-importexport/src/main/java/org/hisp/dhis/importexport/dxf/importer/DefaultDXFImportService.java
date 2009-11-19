@@ -168,7 +168,7 @@ import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.validation.ValidationRuleService;
-import org.hisp.dhis.importexport.dxf.importer.V2Parser;
+import org.hisp.dhis.importexport.dxf2.importer.Parser;
 
 /**
  * @author Lars Helge Overland
@@ -371,7 +371,7 @@ public class DefaultDXFImportService
 
             try
             {
-                V2Parser v2parser = new V2Parser();
+                Parser v2parser = new Parser();
                 v2parser.getMetadata( reader.getXmlStreamReader() );
                 v2parser.getDataValues( reader.getXmlStreamReader() );
             }
