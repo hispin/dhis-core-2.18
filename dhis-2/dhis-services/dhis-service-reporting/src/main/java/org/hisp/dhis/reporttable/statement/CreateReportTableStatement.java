@@ -102,7 +102,12 @@ public class CreateReportTableStatement
 
         if ( reportTable.doTotal() )
         {
-            buffer.append( ReportTable.NAME_TOTAL_COLUMN + SPACE + statementBuilder.getDoubleColumnType() + SEPARATOR );
+            for ( String column : reportTable.getDimensionOptionColumns() )
+            {
+                buffer.append( column + SPACE + statementBuilder.getDoubleColumnType() + SEPARATOR );
+            }
+            
+            buffer.append( ReportTable.TOTAL_COLUMN_NAME + SPACE + statementBuilder.getDoubleColumnType() + SEPARATOR );
         }
         
         // ---------------------------------------------------------------------
