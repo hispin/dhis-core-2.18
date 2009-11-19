@@ -39,7 +39,6 @@ public class IndicatorGroupSetNameComparator
     implements Comparator<IndicatorGroupSet>
 {
 
-    @Override
     public int compare( IndicatorGroupSet o1, IndicatorGroupSet o2 )
     {        
         return o1.getName().compareToIgnoreCase( o2.getName() );

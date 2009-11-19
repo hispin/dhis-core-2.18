@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<patient>
+  #foreach( $patientIdentifier in $patient.identifiers )
+    <identifier>        
+        <identifierText>$encoder.xmlEncode( $patientIdentifier.identifier )</identifierText>
+     </identifier>
+  #end
+  #foreach( $attribute in $patient.attributes )
+    #set( $attributeValue = false )
+    #set( $attributeValue = $patientAttributeValueMap.get( $attribute.id ) )        
+    <attribute>
+        <name>$encoder.xmlEncode( $attribute.name )</name>
+        <value>$encoder.xmlEncode( $attributeValue )</value>
+    </attribute> 
+  #end  
+  #foreach( $program in $patient.programs )
+    <program>
+        <name>$encoder.xmlEncode( $program.name )</name>
+    </program> 
+  #end         
+</patient>
+

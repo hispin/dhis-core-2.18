@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<programStage>
+  <id>$programStage.id</id>
+  <name>$encoder.xmlEncode( $programStage.name )</name>
+  <description>$encoder.xmlEncode( $programStage.description )</description>
+  <stageInProgram>$programStage.stageInProgram</stageInProgram>
+  <minDaysFromStart>$programStage.minDaysFromStart</minDaysFromStart>  
+  <dataElementCount>$programStageDataElements.size()</dataElementCount>  
+</programStage>

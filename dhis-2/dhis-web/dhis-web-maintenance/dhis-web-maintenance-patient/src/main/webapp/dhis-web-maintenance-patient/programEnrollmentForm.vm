@@ -1,0 +1,108 @@
+#parse( "/dhis-web-maintenance-patient/programEnrollmentSelectForm.vm" )
+
+<form id="programEnrollmentForm" name="programEnrollmentForm" method="post" action="saveProgramEnrollment.action" onsubmit="return validateProgramEnrollment()">
+
+<table>
+
+    <tr>
+        <td><label for="enrollmentDate">$i18n.getString( "date_of_enrollment" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><input type="text" id="enrollmentDate" name="enrollmentDate" #if( $programInstance ) value="$!format.formatDate( $programInstance.enrollmentDate )" #end>
+        <img src="../images/calendar_icon.gif" width="16" height="16" id="getEnrollmentDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date_of_enrollment" )"></td>
+        <script type="text/javascript">
+            Calendar.setup({
+                inputField     :    "enrollmentDate",      // id of the input field
+                ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+                button         :    "getEnrollmentDate"   // trigger for the calendar (button ID)
+            });
+        </script>                         
+    </tr>
+    
+    <tr>
+        <td><label for="dateOfIncident">$i18n.getString( "date_of_incident" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><input type="text" id="dateOfIncident" name="dateOfIncident" #if( $programInstance ) value="$!format.formatDate( $programInstance.dateOfIncident )" #end>
+        <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateOfIncident" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date_of_incident" )"></td>
+        <script type="text/javascript">
+            Calendar.setup({
+                inputField     :    "dateOfIncident",      // id of the input field
+                ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+                button         :    "getDateOfIncident"   // trigger for the calendar (button ID)
+            });
+        </script>                         
+    </tr>  
+    
+    <tr>
+        <td></td>
+        <td></td>                                
+    </tr>
+    
+    <tr>
+        <td><input type="submit" #if( $programInstance ) value="$i18n.getString( "update_enrollment_date" ) #else value="$i18n.getString( "enroll" ) #end"></td>
+        <td><input type="button" value="$i18n.getString( "unenroll" )" onclick="window.location.href='removeEnrollment.action'" #if( !$programInstance ) disabled="disabled" #end></td>                                        
+    </tr>  
+        
+</table>
+
+</form>
+
+
+#if( $programInstance )
+
+<table class="mainPageTable">
+    <col id="noCol">
+    <col id="stageCol">    
+    <col id="entryCol">    
+    <tr>
+        <th>$i18n.getString( "nr" )</th>
+        <th>$i18n.getString( "program_stage" )</th>                   
+        <th>$i18n.getString( "due_date" )</th>        
+    </tr>
+    
+#set( $rowCount = 0 )
+#set( $mark = 0 )
+#set( $tabIndex = 1 )
+
+#foreach( $programStageInstance in $programStageInstances )
+    #set( $rowCount = $rowCount + 1 )    
+    #if( $mark == 1 )
+        #set( $mark = 0 )
+    #else
+        #set( $mark = 1 )
+    #end       
+    <tr #if( $mark == 0 ) style="background-color:#dddddd" #end>
+        ##rowCount
+        <td style="text-align:right">$rowCount</td>        
+        ##stage name
+        <td>
+            <span id="value[$programStageInstance.id].name" title="$!encoder.htmlEncode( $programStageInstance.programStage.description )">
+                $encoder.htmlEncode( $programStageInstance.programStage.name )            
+            </span>
+        </td>        
+               
+        ##entry        
+        <td>        
+            <input type="text" id="value[$programStageInstance.id].date" name="entryfield" value="$!format.formatDate( $programStageInstance.dueDate )" onchange="saveDueDate( $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" tabindex="$tabIndex" >
+                <img src="../images/calendar_icon.gif" width="16" height="16" id="get$programStageInstance.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "due_date" )">
+                <script type="text/javascript">
+                    Calendar.setup({
+                        inputField     :    "value[$programStageInstance.id].date",      // id of the input field
+                        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+                        button         :    "get$programStageInstance.id"   // trigger for the calendar (button ID)
+                    });
+                </script>
+        </td>       
+    </tr>
+    #set( $tabIndex = $tabIndex + 1 )
+#end
+</table>
+
+ 
+#end
+
+<span id="message"></span>
+
+<script type="text/javascript">    
+    var i18n_program_enrollment_failed = '$encoder.jsEscape( $i18n.getString( "program_enrollment_failed" ) , "'")';
+    var i18n_saving_value_failed_status_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_status_code" ) , "'")';
+    var i18n_saving_value_failed_error_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_error_code" ) , "'")';
+    var i18n_searching_patient_failed = '$encoder.jsEscape( $i18n.getString( "searching_patient_failed" ) , "'")'; 
+</script>
