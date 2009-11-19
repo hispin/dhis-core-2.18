@@ -148,7 +148,6 @@ public abstract class GenerateReportSupport
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
-   
 
     public String getOutputXLS()
     {
@@ -277,6 +276,10 @@ public abstract class GenerateReportSupport
     // ------------------------------------------
     protected HSSFFont csFont;
 
+    protected HSSFFont csFontBold;
+
+    protected HSSFFont csFontChapterBold;
+
     protected HSSFHeader header;
 
     protected HSSFDataFormat dFormat;
@@ -293,6 +296,8 @@ public abstract class GenerateReportSupport
 
     protected HSSFCellStyle csTextChapterLeft;
 
+    protected HSSFCellStyle csTextOrgUnitName;
+
     protected HSSFCellStyle csNumber;
 
     SimpleDateFormat dateformatter = new SimpleDateFormat( "dd.MM.yyyy.h.mm.ss.a" );
@@ -303,6 +308,8 @@ public abstract class GenerateReportSupport
         hssfSheet = templateWorkbook.getSheetAt( 0 );
         header = hssfSheet.getHeader();
         csFont = templateWorkbook.createFont();
+        csFontBold = templateWorkbook.createFont();
+        csFontChapterBold = templateWorkbook.createFont();
         dFormat = templateWorkbook.createDataFormat();
         csHeader = templateWorkbook.createCellStyle();
         csText = templateWorkbook.createCellStyle();
@@ -310,8 +317,8 @@ public abstract class GenerateReportSupport
         csTextRight = templateWorkbook.createCellStyle();
         csTextICDJustify = templateWorkbook.createCellStyle();
         csTextChapterLeft = templateWorkbook.createCellStyle();
-        csNumber = templateWorkbook.createCellStyle();       
-        
+        csTextOrgUnitName = templateWorkbook.createCellStyle();
+        csNumber = templateWorkbook.createCellStyle();
 
     }
 
@@ -327,6 +334,10 @@ public abstract class GenerateReportSupport
         initPOIStylesManager.initDefaultHeader( header );
         initPOIStylesManager.initDefaultFont( csFont );
         initPOIStylesManager.initDefaultCellStyle( csText, csFont );
+        initPOIStylesManager.initFont( csFontBold, "Tahoma", (short) 11, HSSFFont.BOLDWEIGHT_BOLD,
+            HSSFColor.DARK_BLUE.index );
+        initPOIStylesManager.initFont( csFontChapterBold, "Tahoma", (short) 12, HSSFFont.BOLDWEIGHT_BOLD,
+            HSSFColor.BROWN.index );
         initPOIStylesManager.initCellStyle( csTextLeft, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT );
@@ -340,6 +351,13 @@ public abstract class GenerateReportSupport
         initPOIStylesManager.initCellStyle( csNumber, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_CENTER );
+        initPOIStylesManager.initCellStyle( csTextOrgUnitName, csFontBold, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_ALIGN_CENTER );
+        initPOIStylesManager.initCellStyle( csTextChapterLeft, csFontChapterBold, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT );
 
     }
 
@@ -410,7 +428,7 @@ public abstract class GenerateReportSupport
 
         this.outputStreamExcelTemplate = new FileOutputStream( outputReportFile );
 
-        this.templateWorkbook = new HSSFWorkbook( inputStreamExcelTemplate );        
+        this.templateWorkbook = new HSSFWorkbook( inputStreamExcelTemplate );
 
         this.initExcelFormat();
 
@@ -638,7 +656,7 @@ public abstract class GenerateReportSupport
 
         this.outputStreamExcelTemplate = new FileOutputStream( outputReportFile );
 
-        this.templateWorkbook = new HSSFWorkbook( inputStreamExcelTemplate );       
+        this.templateWorkbook = new HSSFWorkbook( inputStreamExcelTemplate );
 
         this.initExcelFormat();
 

@@ -46,7 +46,7 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
  * @author Tran Thanh Tri
  * @version $Id$
  */
-public class GenerateAdvancedReportExcelOrganisationGroupListingAction
+public class GenerateAdvancedReportOrgGroupListingAction
     extends GenerateReportSupport
 {
 
@@ -132,7 +132,7 @@ public class GenerateAdvancedReportExcelOrganisationGroupListingAction
                 if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.ORGANISATION ) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), o.getName(), ExcelUtils.TEXT, sheet,
-                        this.csTextChapterLeft );
+                        this.csTextOrgUnitName );
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.SERIAL ) )
                 {

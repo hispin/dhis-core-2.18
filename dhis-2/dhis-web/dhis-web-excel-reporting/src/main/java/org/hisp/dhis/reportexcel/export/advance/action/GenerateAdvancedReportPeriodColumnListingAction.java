@@ -30,10 +30,6 @@ package org.hisp.dhis.reportexcel.export.advance.action;
 import java.util.Collection;
 import java.util.Set;
 
-import jxl.write.WritableSheet;
-import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
-
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -52,7 +48,7 @@ import org.hisp.dhis.system.util.MathUtils;
  * @version $Id$
  */
 
-public class GenerateAdvancedReportExcelPeriodColumnListingAction
+public class GenerateAdvancedReportPeriodColumnListingAction
     extends GenerateReportSupport
 {
     // ---------------------------------------------------------------------
