@@ -28,9 +28,7 @@
 package org.hisp.dhis.caseentry.action.report;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,10 +52,8 @@ import com.opensymphony.xwork2.Action;
 public class GenerateReportAction
     implements Action
 {
-
-    private static final String RED = "#ff0000";
-
-    private static final String YELLOW = "#ffff00";
+    public static final String RED = "#ff0000";
+    public static final String YELLOW = "#ffff00";
 
     // -------------------------------------------------------------------------
     // Dependencies

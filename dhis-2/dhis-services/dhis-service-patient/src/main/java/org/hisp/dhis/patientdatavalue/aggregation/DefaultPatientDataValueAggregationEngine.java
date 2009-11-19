@@ -16,6 +16,7 @@ import org.hisp.dhis.system.util.TextUtils;
 
 // Work in progress!
 
+@SuppressWarnings( "unused" )
 public class DefaultPatientDataValueAggregationEngine
     implements PatientDataValueAggregationEngine
 {
@@ -72,12 +73,7 @@ public class DefaultPatientDataValueAggregationEngine
         
         Collection<Integer> patients = null; // patientService.getPatients( OrganisationUnit organisationUnit );
 
-        Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
-            
-        for ( DataElement dataElement : dataElements )
-        {
-            
-        }
+        Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );            
     }
     
     private void aggregate( DataElement dataElement, Collection<Integer> categoryOptionCombos, Period period, Collection<Integer> patients )

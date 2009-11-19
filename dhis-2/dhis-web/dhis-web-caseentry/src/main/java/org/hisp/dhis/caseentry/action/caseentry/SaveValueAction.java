@@ -56,7 +56,6 @@ import com.opensymphony.xwork2.Action;
 public class SaveValueAction
     implements Action
 {
-
     private static final Log LOG = LogFactory.getLog( SaveValueAction.class );
 
     // -------------------------------------------------------------------------

@@ -47,17 +47,11 @@ import com.opensymphony.xwork2.ActionContext;
 public class DefaultSelectedStateManager
     implements SelectedStateManager
 {
-
     public static final String SESSION_KEY_SELECTED_PATIENT_ID = "selected_patient_id";
-
     public static final String SESSION_KEY_SELECTED_PROGRAM_ID = "selected_program_id";
-
     public static final String SESSION_KEY_SELECTED_PROGRAMSTAGE_ID = "selected_program_stage_id";
-
     public static final String SESSION_KEY_LISTALL = "list_all_value";
-
     public static final String SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID = "selected_searching_attribute_id";
-
     public static final String SESSION_KEY_SPECIFIED_SEARCH_TEXT = "specified_search_text";
 
     // -------------------------------------------------------------------------

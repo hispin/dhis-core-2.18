@@ -57,7 +57,6 @@ import com.opensymphony.xwork2.Action;
 public class VisitPlanAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

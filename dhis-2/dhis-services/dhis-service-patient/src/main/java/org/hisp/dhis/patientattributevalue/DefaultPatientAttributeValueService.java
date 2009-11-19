@@ -36,7 +36,6 @@ import java.util.TreeMap;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
