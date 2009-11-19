@@ -38,10 +38,8 @@ public class DataElementGroupSetNameComparator
     implements Comparator<DataElementGroupSet>
 {
 
-    @Override
     public int compare( DataElementGroupSet o1, DataElementGroupSet o2 )
     {
-
         return o1.getName().compareTo( o2.getName() );
     }
 

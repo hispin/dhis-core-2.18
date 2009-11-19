@@ -1,0 +1,38 @@
+
+<h3>$i18n.getString( "update_program" )</h3>
+
+<form id="updateProgramForm" name="updateProgramForm" action="updateProgram.action" method="post" onsubmit="return validateUpdateProgram()">
+
+<div style="display:inline">
+  <input type="hidden" id="id" name="id" value="$program.id">
+</div>
+  
+  <table id="detailsList">
+    <thead>
+      <tr>
+        <th colspan="2">$i18n.getString( "program_details" )</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><input type="text" id="nameField" name="nameField" value="$encoder.htmlEncode( $program.name )" style="width:30em"></td>
+	  </tr>	  
+      <tr>
+		<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $program.description )" style="width:30em"></td>
+	  </tr>	    
+      <tr>
+      	<td colspan="2" style="height:15px"></td>
+      </tr>
+    </tbody>
+  </table>  
+
+<p>
+	<input type="submit" value="$i18n.getString( "update" )" style="width:10em">
+	<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='program.action'" style="width:10em">
+</p>
+
+</form> 	
+
+<span id="message"></span>

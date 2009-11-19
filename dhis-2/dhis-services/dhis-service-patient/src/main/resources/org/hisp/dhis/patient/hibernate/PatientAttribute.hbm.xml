@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.patient.PatientAttribute" table="patientattribute">    
+    <id name="id" column="patientattributeid">
+      <generator class="native"/>
+    </id>   
+    
+    <property name="name" not-null="true" unique="true" length="160"/>
+    
+    <property name="description"/>    
+    
+    <property name="valueType" column="valuetype" not-null="true"/>       	
+	
+  </class>
+</hibernate-mapping>

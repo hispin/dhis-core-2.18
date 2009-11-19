@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.program.ProgramStage" table="programstage">    
+    <id name="id" column="programstageid">
+      <generator class="native"/>
+    </id>   
+    
+    <property name="name" not-null="true" unique="true" length="160"/>
+    
+    <property name="description"/>    
+    
+    <property name="stageInProgram" column="stageinprogram"/>
+    
+    <property name="minDaysFromStart" column="mindaysfromstart"/>   
+    
+    <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid"/>    
+    
+    <set name="dataElements" table="programstage_dataelements">
+      <key column="programstageid"/>
+      <many-to-many class="org.hisp.dhis.dataelement.DataElement" 
+          column="dataelementid" foreign-key="fk_programstage_dataelementid"/>
+    </set>   	
+	
+  </class>
+</hibernate-mapping>

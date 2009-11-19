@@ -79,6 +79,8 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
@@ -98,51 +100,53 @@ public abstract class DhisConvenienceTest
     private static final String EXT_TEST_DIR = System.getProperty( "user.home" ) + File.separator + "dhis2_test_dir";
 
     private static Date date;
-    
+
     // -------------------------------------------------------------------------
     // Service references
     // -------------------------------------------------------------------------
 
     protected DataElementService dataElementService;
-    
+
     protected DataElementCategoryService categoryService;
-    
+
     protected DataDictionaryService dataDictionaryService;
-    
+
     protected IndicatorService indicatorService;
-    
+
     protected DataSetService dataSetService;
-    
+
     protected CompleteDataSetRegistrationService completeDataSetRegistrationService;
-    
+
     protected SourceStore sourceStore;
-    
+
     protected OrganisationUnitService organisationUnitService;
-    
+
     protected OrganisationUnitGroupService organisationUnitGroupService;
-    
+
     protected PeriodService periodService;
-    
+
     protected ValidationRuleService validationRuleService;
-    
+
     protected ExpressionService expressionService;
-    
+
     protected DataValueService dataValueService;
-    
+
     protected ResourceTableService resourceTableService;
-        
+
     protected MappingService mappingService;
-    
+
     protected DbmsManager dbmsManager;
-    
+
     protected LocationManager locationManager;
     
+    protected ProgramStageService programStageService;
+
     static
     {
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
         calendar.set( 1970, Calendar.JANUARY, 1 );
-    
+
         date = calendar.getTime();
     }
 
@@ -161,10 +165,10 @@ public abstract class DhisConvenienceTest
     public static Date getDate( int year, int month, int day )
     {
         final Calendar calendar = Calendar.getInstance();
-        
+
         calendar.clear();
         calendar.set( year, month - 1, day );
-        
+
         return calendar.getTime();
     }
 
@@ -177,13 +181,13 @@ public abstract class DhisConvenienceTest
     public Date getDay( int day )
     {
         final Calendar calendar = Calendar.getInstance();
-        
+
         calendar.clear();
         calendar.set( Calendar.DAY_OF_YEAR, day );
 
         return calendar.getTime();
     }
-        
+
     /**
      * Compares two collections for equality. This method does not check for the
      * implementation type of the collection in contrast to the native equals
@@ -197,27 +201,27 @@ public abstract class DhisConvenienceTest
     public static boolean equals( Collection<?> actual, Object... reference )
     {
         final Collection<Object> collection = new HashSet<Object>();
-        
+
         for ( Object object : reference )
         {
             collection.add( object );
         }
-        
+
         if ( actual == collection )
         {
             return true;
         }
-        
+
         if ( actual == null || collection == null )
         {
             return false;
         }
-        
+
         if ( actual.size() != collection.size() )
         {
             return false;
         }
-        
+
         for ( Object object : actual )
         {
             if ( !collection.contains( object ) )
@@ -225,7 +229,7 @@ public abstract class DhisConvenienceTest
                 return false;
             }
         }
-        
+
         for ( Object object : collection )
         {
             if ( !actual.contains( object ) )
@@ -233,7 +237,7 @@ public abstract class DhisConvenienceTest
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -243,11 +247,12 @@ public abstract class DhisConvenienceTest
 
     /**
      * Sets a dependency on the target service. This method can be used to set
-     * mock implementations of dependencies on services for testing purposes. The
-     * advantage of using this method over setting the services directly is that
-     * the test can still be executed against the interface type of the service;
-     * making the test unaware of the implementation and thus re-usable. A weakness
-     * is that the field name of the dependency must be assumed.
+     * mock implementations of dependencies on services for testing purposes.
+     * The advantage of using this method over setting the services directly is
+     * that the test can still be executed against the interface type of the
+     * service; making the test unaware of the implementation and thus
+     * re-usable. A weakness is that the field name of the dependency must be
+     * assumed.
      * 
      * @param targetService the target service.
      * @param fieldName the name of the dependency field in the target service.
@@ -256,17 +261,18 @@ public abstract class DhisConvenienceTest
     protected void setDependency( Object targetService, String fieldName, Object dependency )
     {
         Class<?> clazz = dependency.getClass().getInterfaces()[0];
-        
+
         setDependency( targetService, fieldName, dependency, clazz );
     }
-    
+
     /**
      * Sets a dependency on the target service. This method can be used to set
-     * mock implementations of dependencies on services for testing purposes. The
-     * advantage of using this method over setting the services directly is that
-     * the test can still be executed against the interface type of the service;
-     * making the test unaware of the implementation and thus re-usable. A weakness
-     * is that the field name of the dependency must be assumed.
+     * mock implementations of dependencies on services for testing purposes.
+     * The advantage of using this method over setting the services directly is
+     * that the test can still be executed against the interface type of the
+     * service; making the test unaware of the implementation and thus
+     * re-usable. A weakness is that the field name of the dependency must be
+     * assumed.
      * 
      * @param targetService the target service.
      * @param fieldName the name of the dependency field in the target service.
@@ -277,23 +283,23 @@ public abstract class DhisConvenienceTest
     {
         try
         {
-            String setMethodName = "set" + fieldName.substring( 0, 1 ).toUpperCase() + 
-                fieldName.substring( 1, fieldName.length() );
-            
+            String setMethodName = "set" + fieldName.substring( 0, 1 ).toUpperCase()
+                + fieldName.substring( 1, fieldName.length() );
+
             Class<?>[] argumentClass = new Class<?>[] { clazz };
-            
+
             Method method = targetService.getClass().getMethod( setMethodName, argumentClass );
-            
+
             method.invoke( targetService, dependency );
         }
         catch ( Exception ex )
         {
             throw new RuntimeException( "Failed to set dependency on service: " + fieldName, ex );
         }
-    }    
-    
+    }
+
     // -------------------------------------------------------------------------
-    // Create object methods 
+    // Create object methods
     // -------------------------------------------------------------------------
 
     /**
@@ -302,7 +308,7 @@ public abstract class DhisConvenienceTest
     public static DataElement createDataElement( char uniqueCharacter )
     {
         DataElement dataElement = new DataElement();
-        
+
         dataElement.setUuid( BASE_UUID + uniqueCharacter );
         dataElement.setName( "DataElement" + uniqueCharacter );
         dataElement.setAlternativeName( "AlternativeName" + uniqueCharacter );
@@ -313,10 +319,10 @@ public abstract class DhisConvenienceTest
         dataElement.setType( DataElement.VALUE_TYPE_INT );
         dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
         dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        
+
         return dataElement;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @param categoryCombo The category combo.
@@ -324,13 +330,13 @@ public abstract class DhisConvenienceTest
     public static DataElement createDataElement( char uniqueCharacter, DataElementCategoryCombo categoryCombo )
     {
         DataElement dataElement = createDataElement( uniqueCharacter );
-        
+
         dataElement.setCategoryCombo( categoryCombo );
-        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
-        
+        dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );        
+
         return dataElement;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @param valueType The value type.
@@ -338,15 +344,14 @@ public abstract class DhisConvenienceTest
      */
     public static DataElement createDataElement( char uniqueCharacter, String type, String aggregationOperator )
     {
-        DataElement dataElement = createDataElement( uniqueCharacter );
-        
+        DataElement dataElement = createDataElement( uniqueCharacter );        
         dataElement.setType( type );
         dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
         dataElement.setAggregationOperator( aggregationOperator );
-        
+
         return dataElement;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @param valueType The value type.
@@ -355,16 +360,15 @@ public abstract class DhisConvenienceTest
      */
     public static DataElement createDataElement( char uniqueCharacter, String type, String aggregationOperator, DataElementCategoryCombo categoryCombo )
     {
-        DataElement dataElement = createDataElement( uniqueCharacter );
-        
+        DataElement dataElement = createDataElement( uniqueCharacter );        
         dataElement.setType( type );
         dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setCategoryCombo( categoryCombo );
-        
+
         return dataElement;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @param expression The Expression.
@@ -372,7 +376,7 @@ public abstract class DhisConvenienceTest
     public static CalculatedDataElement createCalculatedDataElement( char uniqueCharacter, String type, String aggregationOperator, DataElementCategoryCombo categoryCombo, Expression expression )
     {
         CalculatedDataElement dataElement = new CalculatedDataElement();
-        
+
         dataElement.setUuid( BASE_UUID + uniqueCharacter );
         dataElement.setName( "DataElement" + uniqueCharacter );
         dataElement.setAlternativeName( "AlternativeName" + uniqueCharacter );
@@ -386,39 +390,43 @@ public abstract class DhisConvenienceTest
         dataElement.setCategoryCombo( categoryCombo );
         dataElement.setSaved( false );
         dataElement.setExpression( expression );
-        
+
         return dataElement;
     }
 
     /**
-     * @param categoryComboUniqueIdentifier A unique character to identify the category combo.
-     * @param categoryOptionUniqueIdentifiers Unique characters to identify the category options.
+     * @param categoryComboUniqueIdentifier A unique character to identify the
+     *        category combo.
+     * @param categoryOptionUniqueIdentifiers Unique characters to identify the
+     *        category options.
      * @return
      */
-    public static DataElementCategoryOptionCombo createCategoryOptionCombo( char categoryComboUniqueIdentifier, char... categoryOptionUniqueIdentifiers )
+    public static DataElementCategoryOptionCombo createCategoryOptionCombo( char categoryComboUniqueIdentifier,
+        char... categoryOptionUniqueIdentifiers )
     {
         DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();
-        
-        categoryOptionCombo.setCategoryCombo( new DataElementCategoryCombo( "CategoryCombo" + categoryComboUniqueIdentifier ) );
-        
+
+        categoryOptionCombo.setCategoryCombo( new DataElementCategoryCombo( "CategoryCombo"
+            + categoryComboUniqueIdentifier ) );
+
         for ( char identifier : categoryOptionUniqueIdentifiers )
         {
             categoryOptionCombo.getCategoryOptions().add( new DataElementCategoryOption( "CategoryOption" + identifier ) );
         }
-        
+
         return categoryOptionCombo;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
     public static DataElementGroup createDataElementGroup( char uniqueCharacter )
     {
         DataElementGroup group = new DataElementGroup();
-        
+
         group.setUuid( BASE_UUID + uniqueCharacter );
         group.setName( "DataElementGroup" + uniqueCharacter );
-        
+
         return group;
     }
 
@@ -433,32 +441,32 @@ public abstract class DhisConvenienceTest
         groupSet.setName( "DataElementGroupSet" + uniqueCharacter );
         
         return groupSet;
-    }
-    
+    }    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
     public static DataDictionary createDataDictionary( char uniqueCharacter )
     {
         DataDictionary dictionary = new DataDictionary();
-        
+
         dictionary.setName( "DataDictionary" + uniqueCharacter );
         dictionary.setDescription( "Description" + uniqueCharacter );
         dictionary.setRegion( "Region" + uniqueCharacter );
-        
+
         return dictionary;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
     public static IndicatorType createIndicatorType( char uniqueCharacter )
     {
         IndicatorType type = new IndicatorType();
-        
+
         type.setName( "IndicatorType" + uniqueCharacter );
         type.setFactor( 100 );
-        
+
         return type;
     }
 
@@ -469,7 +477,7 @@ public abstract class DhisConvenienceTest
     public static Indicator createIndicator( char uniqueCharacter, IndicatorType type )
     {
         Indicator indicator = new Indicator();
-        
+
         indicator.setUuid( BASE_UUID + uniqueCharacter );
         indicator.setName( "Indicator" + uniqueCharacter );
         indicator.setAlternativeName( "AlternativeName" + uniqueCharacter );
@@ -484,23 +492,23 @@ public abstract class DhisConvenienceTest
         indicator.setDenominator( "Denominator" );
         indicator.setDenominatorDescription( "DenominatorDescription" );
         indicator.setDenominatorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
-        
+
         return indicator;
     }
-        
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
     public static IndicatorGroup createIndicatorGroup( char uniqueCharacter )
     {
         IndicatorGroup group = new IndicatorGroup();
-        
+
         group.setUuid( BASE_UUID + uniqueCharacter );
         group.setName( "IndicatorGroup" + uniqueCharacter );
-        
+
         return group;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
@@ -521,22 +529,22 @@ public abstract class DhisConvenienceTest
     public static DataSet createDataSet( char uniqueCharacter, PeriodType periodType )
     {
         DataSet dataSet = new DataSet();
-        
+
         dataSet.setName( "DataSet" + uniqueCharacter );
         dataSet.setShortName( "ShortName" + uniqueCharacter );
         dataSet.setCode( "Code" + uniqueCharacter );
         dataSet.setPeriodType( periodType );
-        
+
         return dataSet;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
     public static OrganisationUnit createOrganisationUnit( char uniqueCharacter )
     {
         OrganisationUnit unit = new OrganisationUnit();
-        
+
         unit.setUuid( BASE_UUID + uniqueCharacter );
         unit.setName( "OrganisationUnit" + uniqueCharacter );
         unit.setShortName( "ShortName" + uniqueCharacter );
@@ -548,10 +556,10 @@ public abstract class DhisConvenienceTest
         unit.setGeoCode( "GeoCode" );
         unit.setLatitude( "Latitude" );
         unit.setLongitude( "Longitude" );
-                
+
         return unit;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @param parent The parent.
@@ -559,40 +567,40 @@ public abstract class DhisConvenienceTest
     public static OrganisationUnit createOrganisationUnit( char uniqueCharacter, OrganisationUnit parent )
     {
         OrganisationUnit unit = createOrganisationUnit( uniqueCharacter );
-        
+
         unit.setParent( parent );
-        
+
         return unit;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
     public static OrganisationUnitGroup createOrganisationUnitGroup( char uniqueCharacter )
     {
         OrganisationUnitGroup group = new OrganisationUnitGroup();
-        
+
         group.setUuid( BASE_UUID + uniqueCharacter );
         group.setName( "OrganisationUnitGroup" + uniqueCharacter );
-        
+
         return group;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
     public static OrganisationUnitGroupSet createOrganisationUnitGroupSet( char uniqueCharacter )
     {
         OrganisationUnitGroupSet groupSet = new OrganisationUnitGroupSet();
-        
+
         groupSet.setName( "OrganisationUnitGroupSet" + uniqueCharacter );
         groupSet.setDescription( "Description" + uniqueCharacter );
         groupSet.setCompulsory( true );
         groupSet.setExclusive( true );
-        
+
         return groupSet;
     }
-    
+
     /**
      * @param type The PeriodType.
      * @param startDate The start date.
@@ -601,14 +609,14 @@ public abstract class DhisConvenienceTest
     public static Period createPeriod( PeriodType type, Date startDate, Date endDate )
     {
         Period period = new Period();
-        
+
         period.setPeriodType( type );
         period.setStartDate( startDate );
         period.setEndDate( endDate );
-        
+
         return period;
     }
-    
+
     /**
      * @param startDate The start date.
      * @param endDate The end date.
@@ -616,14 +624,14 @@ public abstract class DhisConvenienceTest
     public static Period createPeriod( Date startDate, Date endDate )
     {
         Period period = new Period();
-        
+
         period.setPeriodType( new MonthlyPeriodType() );
         period.setStartDate( startDate );
         period.setEndDate( endDate );
-        
+
         return period;
     }
-    
+
     /**
      * @param dataElement The data element.
      * @param period The period.
@@ -631,10 +639,11 @@ public abstract class DhisConvenienceTest
      * @param value The value.
      * @param categoryOptionCombo The data element category option combo.
      */
-    public static DataValue createDataValue( DataElement dataElement, Period period, Source source, String value, DataElementCategoryOptionCombo categoryOptionCombo )
+    public static DataValue createDataValue( DataElement dataElement, Period period, Source source, String value,
+        DataElementCategoryOptionCombo categoryOptionCombo )
     {
         DataValue dataValue = new DataValue();
-        
+
         dataValue.setDataElement( dataElement );
         dataValue.setPeriod( period );
         dataValue.setSource( source );
@@ -643,30 +652,31 @@ public abstract class DhisConvenienceTest
         dataValue.setStoredBy( "StoredBy" );
         dataValue.setTimestamp( date );
         dataValue.setOptionCombo( categoryOptionCombo );
-        
+
         return dataValue;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @param operator The operator.
      * @param leftSide The left side expression.
      * @param rightSide The right side expression.
      */
-    public static ValidationRule createValidationRule( char uniqueCharacter, String operator, Expression leftSide, Expression rightSide )
+    public static ValidationRule createValidationRule( char uniqueCharacter, String operator, Expression leftSide,
+        Expression rightSide )
     {
         ValidationRule validationRule = new ValidationRule();
-        
+
         validationRule.setName( "ValidationRule" + uniqueCharacter );
         validationRule.setDescription( "Description" + uniqueCharacter );
         validationRule.setType( ValidationRule.TYPE_ABSOLUTE );
         validationRule.setOperator( operator );
         validationRule.setLeftSide( leftSide );
         validationRule.setRightSide( rightSide );
-        
+
         return validationRule;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @return
@@ -674,43 +684,45 @@ public abstract class DhisConvenienceTest
     public static ValidationRuleGroup createValidationRuleGroup( char uniqueCharacter )
     {
         ValidationRuleGroup group = new ValidationRuleGroup();
-        
+
         group.setName( "ValidationRuleGroup" + uniqueCharacter );
         group.setDescription( "Description" + uniqueCharacter );
-        
+
         return group;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @param expressionString The expression string.
-     * @param dataElementsInExpression A collection of the data elements entering into the expression.
+     * @param dataElementsInExpression A collection of the data elements
+     *        entering into the expression.
      */
-    public static Expression createExpression( char uniqueCharacter, String expressionString, Set<DataElement> dataElementsInExpression )
+    public static Expression createExpression( char uniqueCharacter, String expressionString,
+        Set<DataElement> dataElementsInExpression )
     {
         Expression expression = new Expression();
-        
+
         expression.setExpression( expressionString );
         expression.setDescription( "Description" + uniqueCharacter );
         expression.setDataElementsInExpression( dataElementsInExpression );
-        
+
         return expression;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      */
     public static DataElement createExtendedDataElement( char uniqueCharacter )
     {
         DataElement dataElement = createDataElement( uniqueCharacter );
-        
+
         ExtendedDataElement extended = createExtendedElement( uniqueCharacter );
-        
+
         dataElement.setExtended( extended );
-        
+
         return dataElement;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @param type The type.
@@ -720,23 +732,25 @@ public abstract class DhisConvenienceTest
         Indicator indicator = createIndicator( uniqueCharacter, type );
 
         ExtendedDataElement extended = createExtendedElement( uniqueCharacter );
-        
+
         indicator.setExtended( extended );
-        
+
         return indicator;
     }
 
     /**
      * @param dataElementId The data element identifier.
-     * @param categoryOptionComboId The data element category option combo identifier.
+     * @param categoryOptionComboId The data element category option combo
+     *        identifier.
      * @param periodId The period identifier.
      * @param sourceId The source identifier.
      * @param status The status.
      */
-    public static ImportDataValue createImportDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId, ImportObjectStatus status )
+    public static ImportDataValue createImportDataValue( int dataElementId, int categoryOptionComboId, int periodId,
+        int sourceId, ImportObjectStatus status )
     {
         ImportDataValue importDataValue = new ImportDataValue();
-        
+
         importDataValue.setDataElementId( dataElementId );
         importDataValue.setCategoryOptionComboId( categoryOptionComboId );
         importDataValue.setPeriodId( periodId );
@@ -746,14 +760,14 @@ public abstract class DhisConvenienceTest
         importDataValue.setTimestamp( new Date() );
         importDataValue.setComment( "Comment" );
         importDataValue.setStatus( status.name() );
-        
+
         return importDataValue;
     }
-    
+
     public static Map createMap( char uniqueCharacter, OrganisationUnit unit, OrganisationUnitLevel level )
     {
         Map map = new Map();
-        
+
         map.setName( "Map" + uniqueCharacter );
         map.setOrganisationUnit( unit );
         map.setOrganisationUnitLevel( level );
@@ -763,69 +777,82 @@ public abstract class DhisConvenienceTest
         map.setLatitude( "Latitude" + uniqueCharacter );
         map.setZoom( 1 );
         map.setStaticMapLayerPaths( new HashSet<String>() );
-        
+
         return map;
     }
-    
+
     public static MapLegendSet createMapLegendSet( char uniqueCharacter, Indicator... indicators )
     {
         MapLegendSet legendSet = new MapLegendSet();
-        
+
         legendSet.setName( "MapLegendSet" + uniqueCharacter );
         legendSet.setColorLow( "ColorLow" + uniqueCharacter );
         legendSet.setColorHigh( "ColorHigh" + uniqueCharacter );
-        
+
         for ( Indicator indicator : indicators )
         {
             legendSet.getIndicators().add( indicator );
         }
-        
+
         return legendSet;
     }
-    
-    public static Chart createChart( char uniqueCharacter, List<Indicator> indicators, List<Period> periods, List<OrganisationUnit> units )
+
+    public static Chart createChart( char uniqueCharacter, List<Indicator> indicators, List<Period> periods,
+        List<OrganisationUnit> units )
     {
         Chart chart = new Chart();
-        
+
         chart.setTitle( "Chart" + uniqueCharacter );
         chart.setDimension( Chart.DIMENSION_PERIOD );
         chart.setIndicators( indicators );
         chart.setPeriods( periods );
         chart.setOrganisationUnits( units );
-        
+
         return chart;
     }
 
     public static OlapURL createOlapURL( char uniqueCharacter )
     {
         OlapURL olapURL = new OlapURL();
-        
+
         olapURL.setName( "OlapURL" + uniqueCharacter );
         olapURL.setUrl( "URL" + uniqueCharacter );
-        
+
         return olapURL;
     }
-    
+
     public static User createUser( char uniqueCharacter )
     {
         User user = new User();
-        
+
         user.setFirstName( "FirstName" + uniqueCharacter );
         user.setSurname( "Surname" + uniqueCharacter );
         user.setEmail( "Email" + uniqueCharacter );
         user.setPhoneNumber( "PhoneNumber" + uniqueCharacter );
-        
+
         return user;
+    }
+
+    public static ProgramStage createProrgamStage( char uniqueCharacter, int stage, int minDays ) //TODO typo
+    {
+        ProgramStage programStage = new ProgramStage();
+
+        programStage.setName( "name" + uniqueCharacter );
+        programStage.setDescription( "description" + uniqueCharacter );
+        programStage.setStageInProgram( stage );
+        programStage.setMinDaysFromStart( minDays );        
+
+        return programStage;
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
+
     private static ExtendedDataElement createExtendedElement( char uniqueCharacter )
     {
         ExtendedDataElement extended = new ExtendedDataElement();
-        
+
         extended.setMnemonic( "Mnemonic" + uniqueCharacter );
         extended.setVersion( "Version" + uniqueCharacter );
         extended.setContext( "Context" + uniqueCharacter );
@@ -835,7 +862,7 @@ public abstract class DhisConvenienceTest
         extended.setStatus( ExtendedDataElement.STATUS_CURRENT );
         extended.setStatusDate( date );
         extended.setDataElementType( ExtendedDataElement.TYPE_DATAELEMENT );
-        
+
         extended.setDataType( ExtendedDataElement.DATATYPE_ALPHABETIC );
         extended.setRepresentationalForm( ExtendedDataElement.REPRESENTATIONAL_FORM_CODE );
         extended.setRepresentationalLayout( "RepresentationalLayout" + uniqueCharacter );
@@ -846,7 +873,7 @@ public abstract class DhisConvenienceTest
         extended.setRelatedDataReferences( "RelatedDataReferences" + uniqueCharacter );
         extended.setGuideForUse( "GuideForUse" + uniqueCharacter );
         extended.setCollectionMethods( "CollectionMethods" + uniqueCharacter );
-        
+
         extended.setResponsibleAuthority( "ResponsibleAuthority" + uniqueCharacter );
         extended.setUpdateRules( "UpdateRules" + uniqueCharacter );
         extended.setAccessAuthority( "AccessAuthority" + uniqueCharacter );
@@ -860,22 +887,24 @@ public abstract class DhisConvenienceTest
         extended.setComment( "Comment" + uniqueCharacter );
         extended.setSaved( date );
         extended.setLastUpdated( date );
-        
+
         return extended;
     }
 
     /**
-     * Injects the externalDir property of LocationManager to user.home/dhis2_test_dir.
-     * LocationManager dependency must be retrieved from the context up front.
+     * Injects the externalDir property of LocationManager to
+     * user.home/dhis2_test_dir. LocationManager dependency must be retrieved
+     * from the context up front.
      * 
-     * @param locationManager The LocationManager to be injected with the external directory.
+     * @param locationManager The LocationManager to be injected with the
+     *        external directory.
      */
     public void setExternalTestDir( LocationManager locationManager )
     {
         this.locationManager = locationManager;
-        
+
         setDependency( locationManager, "externalDir", EXT_TEST_DIR, String.class );
-    }    
+    }
 
     /**
      * Attempts to remove the external test directory.
@@ -884,24 +913,24 @@ public abstract class DhisConvenienceTest
     {
         deleteDir( new File( EXT_TEST_DIR ) );
     }
-    
-    private boolean deleteDir( File dir ) 
+
+    private boolean deleteDir( File dir )
     {
         if ( dir.isDirectory() )
         {
             String[] children = dir.list();
-            
+
             for ( int i = 0; i < children.length; i++ )
             {
-                boolean success = deleteDir( new File( dir, children[ i ] ) );
-                
-                if ( !success ) 
+                boolean success = deleteDir( new File( dir, children[i] ) );
+
+                if ( !success )
                 {
                     return false;
                 }
             }
         }
-        
+
         return dir.delete();
-    }    
+    }
 }

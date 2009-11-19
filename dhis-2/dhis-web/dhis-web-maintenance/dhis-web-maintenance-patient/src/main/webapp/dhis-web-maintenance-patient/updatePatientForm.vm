@@ -1,0 +1,85 @@
+
+<h3>$i18n.getString( "update_patient" )</h3>
+
+<form id="updatePatientForm" action="updatePatient.action" method="post" onsubmit="return validateUpdatePatient()">
+<div>
+	<input type="hidden" id="id" name="id" value="$patient.id">
+</div>
+
+<table>
+	<tr>
+		<th colspan="2">$i18n.getString( "patient_identifier_s" )</th>
+	</tr>
+	<tr>
+		<td><label for="identifier">$i18n.getString( "identifier" )</label></td>
+		<td><input type="text" readonly="readonly" id="identifier" name="identifier" value="$encoder.htmlEncode( $patientIdentifier.identifier )" style="width:30em"></td>
+	</tr>	
+	<tr><td>&nbsp;</td></tr>	
+	<tr>
+		<th colspan="2">$i18n.getString( "name" )</th>
+	</tr>
+	<tr>
+		<td><label for="firstName">$i18n.getString( "first_name" )</label></td>
+		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $patient.firstName )" style="width:30em"></td>
+	</tr>
+	<tr>
+		<td><label for="middleName">$i18n.getString( "middle_name" ) </label></td>
+		<td><input type="text" id="middleName" name="middleName" value="$encoder.htmlEncode( $patient.middleName )" style="width:30em"></td>
+	</tr>
+	<tr>
+		<td><label for="lastName">$i18n.getString( "last_name" )</label></td>
+		<td><input type="text" id="lastName" name="lastName" value="$encoder.htmlEncode( $patient.lastName )" style="width:30em"></td>
+	</tr>
+	<tr><td>&nbsp;</td></tr>	
+	<tr>
+		<th colspan="2">$i18n.getString( "demographics" )</th>
+	</tr>
+	<tr>
+		<td><label for="gender">$i18n.getString( "gender" )</label></td>
+		<td>
+			<select id="gender" name="gender" style="min-width:20em">
+				<option value="M" #if( $patient.gender == 'M' ) selected="selected" #end>$i18n.getString( "male" )</option>
+				<option value="F" #if( $patient.gender == 'F' ) selected="selected" #end>$i18n.getString( "female" )</option>
+			</select>
+		</td>					
+	</tr>	
+	<tr>
+		<td><label for="birthDate">$i18n.getString( "date_of_birth" ) </label></td>
+		<td>
+		    <input type="text" id="birthDate" name="birthDate" value="$format.formatDate( $patient.birthDate )" style="width:10em">
+		    <img src="../images/calendar_icon.gif" width="16" height="16" id="getBirthDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date_of_birth" )">		    
+            &nbsp;&nbsp;&nbsp;
+            <label for="estimated">$i18n.getString( "estimated" )</label>
+            <input type="checkbox" " id="birthDateEstimated" name="birthDateEstimated" #if( $patient.birthDateEstimated ) checked="checked" #end>
+            &nbsp;
+            <label for="age">$i18n.getString( "age" )</label>&nbsp;&nbsp;$encoder.htmlEncode( $patient.getAge() )            
+        </td> 
+	</tr>  
+		
+</table>
+
+<p>
+	<input type="submit" value="$i18n.getString( "update" )" style="width:10em">
+	<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='searchPatient.action'" style="width:10em">
+</p>
+
+</form> 	
+
+<span id="message"></span>
+
+<script type="text/javascript">	
+	
+	var firstNameField = document.getElementById( 'firstName' );
+	firstNameField.select();
+	firstNameField.focus();
+
+</script>
+
+<script type="text/javascript">
+        Calendar.setup({
+            inputField     :    "birthDate",      // id of the input field
+            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+            button         :    "getBirthDate"   // trigger for the calendar (button ID)
+        });
+</script>
+				

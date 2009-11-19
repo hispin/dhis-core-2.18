@@ -1,0 +1,83 @@
+
+<h3>$i18n.getString( "add_new_patient" )</h3>
+																					
+<form id="addPatientForm" action="addPatient.action" method="post" onsubmit="return validateAddPatient()">
+
+<table>	
+	<tr>
+		<th colspan="2">$i18n.getString( "patient_identifier_s" )</th>
+	</tr>
+	<tr>
+		<td><label for="identifier">$i18n.getString( "identifier" )</label></td>
+		<td><input type="text" readonly="readonly" id="identifier" name="identifier" value="$encoder.htmlEncode( $identifier )" style="width:30em"></td>		
+	</tr>	
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+		<th colspan="2">$i18n.getString( "name" )</th>
+	</tr>
+	<tr>
+		<td><label for="firstName">$i18n.getString( "first_name" )</label></td>
+		<td><input type="text" id="firstName" name="firstName" maxlength="30" style="width:30em"></td>
+	</tr>
+	<tr>
+		<td><label for="middleName">$i18n.getString( "middle_name" ) </label></td>
+		<td><input type="text" id="middleName" name="middleName" maxlength="30" style="width:30em"></td>
+	</tr>
+	<tr>
+		<td><label for="lastName">$i18n.getString( "last_name" )</label></td>
+		<td><input type="text" id="lastName" name="lastName" maxlength="30" style="width:30em"></td>
+	</tr>	
+	<tr><td>&nbsp;</td></tr>	
+	<tr>
+		<th colspan="2">$i18n.getString( "demographics" )</th>
+	</tr>
+		
+	<tr>
+		<td><label for="gender">$i18n.getString( "gender" )</label></td>
+		<td>
+			<select id="gender" name="gender" style="min-width:20em">
+				<option value="M" selected="selected">$i18n.getString( "male" )</option>
+				<option value="F">$i18n.getString( "female" )</option>
+			</select>
+		</td>					
+	</tr>
+	<tr>
+		<td><label for="birthDate">$i18n.getString( "date_of_birth" ) </label></td>
+		<td>
+		    <input type="text" id="birthDate" name="birthDate" style="width:10em">
+			<img src="../images/calendar_icon.gif" width="16" height="16" id="getBirthDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date_of_birth" )">
+			&nbsp;
+			<label for="age">$i18n.getString( "or" )  $i18n.getString( "age" ) </label>
+			<input type="text" id="age" name="age" style="width:4em">
+			&nbsp;&nbsp;&nbsp;
+			<label for="estimated">$i18n.getString( "estimated" )</label>
+            <input type="checkbox" " id="birthDateEstimated" name="birthDateEstimated"> 
+	   </td>
+	</tr>
+	  	
+</table>
+
+<p>
+	<input type="submit" value="$i18n.getString( "add" )" style="width:10em">
+	<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='searchPatient.action'" style="width:10em">
+</p>
+
+</form> 	
+
+<span id="message"></span>
+
+<script type="text/javascript">
+	
+	var firstNameField = document.getElementById( 'firstName' );
+	firstNameField.select();
+	firstNameField.focus();
+	var i18n_age_must_integer = '$encoder.jsEscape( $i18n.getString( "age_must_integer" ) , "'")';
+</script>	
+
+<script type="text/javascript">
+    Calendar.setup({
+        inputField     :    "birthDate",      // id of the input field
+        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+        button         :    "getBirthDate"   // trigger for the calendar (button ID)
+    });
+</script>	
