@@ -376,7 +376,7 @@ public class ReportTableManagerTest
         reportTable.init();
         
         Map<String, Double> map = reportTableManager.getAggregatedValueMap( reportTable, null, null, null, unitA );
-System.out.println( map );
+
         assertNotNull( map );
         assertEquals( 4, map.entrySet().size() );
         

@@ -66,6 +66,15 @@ import org.hisp.dhis.system.objectmapper.ObjectMapper;
 public class JdbcDataMartStore
     implements DataMartStore
 {
+    private static final Map<String, String> functionMap = new HashMap<String, String>();
+    
+    static
+    {
+        functionMap.put( DataElement.AGGREGATION_OPERATOR_SUM, "SUM" );
+        functionMap.put( DataElement.AGGREGATION_OPERATOR_AVERAGE, "AVG" );
+        functionMap.put( DataElement.AGGREGATION_OPERATOR_COUNT, "SUM" );
+    }
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -87,6 +96,18 @@ public class JdbcDataMartStore
     // -------------------------------------------------------------------------
     // AggregatedDataValue
     // -------------------------------------------------------------------------
+    
+    public Double getTotalAggregatedValue( final DataElement dataElement, final Period period, final OrganisationUnit organisationUnit )
+    {
+        final String sql = 
+            "SELECT " + functionMap.get( dataElement.getAggregationOperator() ) + "(value) " +
+            "FROM aggregateddatavalue " +
+            "WHERE dataelementid = " + dataElement.getId() + " " +
+            "AND periodid = " + period.getId() + " " +
+            "AND organisationunitid = " + organisationUnit.getId();
+        
+        return statementManager.getHolder().queryForDouble( sql );
+    }
     
     public double getAggregatedValue( final DataElement dataElement, final Period period, final OrganisationUnit organisationUnit )
     {
