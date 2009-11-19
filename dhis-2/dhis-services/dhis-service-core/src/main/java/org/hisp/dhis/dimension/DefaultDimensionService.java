@@ -49,9 +49,8 @@ import org.hisp.dhis.system.util.ConversionUtils;
 public class DefaultDimensionService
     implements DimensionService
 {
-    final String SEPARATOR_TYPE = "_";
-    final String SEPARATOR_ID = "-";
-    final String SEPARATOR_NAME = ", ";
+    private static final String SEPARATOR_TYPE = "_";
+    private static final String SEPARATOR_ID = "-";
     
     // -------------------------------------------------------------------------
     // Dependencies
