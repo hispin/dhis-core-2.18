@@ -3,9 +3,8 @@
 <form id="programEnrollmentForm" name="programEnrollmentForm" method="post" action="saveProgramEnrollment.action" onsubmit="return validateProgramEnrollment()">
 
 <table>
-
     <tr>
-        <td><label for="enrollmentDate">$i18n.getString( "date_of_enrollment" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td style="width:180px"><label for="enrollmentDate">$i18n.getString( "date_of_enrollment" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td><input type="text" id="enrollmentDate" name="enrollmentDate" #if( $programInstance ) value="$!format.formatDate( $programInstance.enrollmentDate )" #end>
         <img src="../images/calendar_icon.gif" width="16" height="16" id="getEnrollmentDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date_of_enrollment" )"></td>
         <script type="text/javascript">
@@ -18,7 +17,7 @@
     </tr>
     
     <tr>
-        <td><label for="dateOfIncident">$i18n.getString( "date_of_incident" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td style="width:180px"><label for="dateOfIncident">$i18n.getString( "date_of_incident" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td><input type="text" id="dateOfIncident" name="dateOfIncident" #if( $programInstance ) value="$!format.formatDate( $programInstance.dateOfIncident )" #end>
         <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateOfIncident" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date_of_incident" )"></td>
         <script type="text/javascript">
@@ -28,22 +27,21 @@
                 button         :    "getDateOfIncident"   // trigger for the calendar (button ID)
             });
         </script>                         
-    </tr>  
-    
+    </tr>
     <tr>
         <td></td>
         <td></td>                                
     </tr>
     
     <tr>
-        <td><input type="submit" #if( $programInstance ) value="$i18n.getString( "update_enrollment_date" ) #else value="$i18n.getString( "enroll" ) #end"></td>
-        <td><input type="button" value="$i18n.getString( "unenroll" )" onclick="window.location.href='removeEnrollment.action'" #if( !$programInstance ) disabled="disabled" #end></td>                                        
-    </tr>  
-        
+        <td style="width:180px">
+        	<input type="submit" #if( $programInstance ) value="$i18n.getString( "update" )#else value="$i18n.getString( "enroll" ) #end">
+            <input type="button" value="$i18n.getString( "unenroll" )" onclick="window.location.href='removeEnrollment.action'" #if( !$programInstance ) disabled="disabled" #end>
+        </td>                                        
+    </tr>
 </table>
 
 </form>
-
 
 #if( $programInstance )
 
