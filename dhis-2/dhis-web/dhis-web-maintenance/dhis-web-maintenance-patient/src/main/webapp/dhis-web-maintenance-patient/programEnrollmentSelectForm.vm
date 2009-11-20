@@ -14,27 +14,19 @@
 <table>
     <tr>
         <td><strong>$i18n.getString( "full_name" ):</strong></td>
-        <td>           
-            $encoder.htmlEncode( $patient.getFullName() )  
-        </td>
+        <td>$encoder.htmlEncode( $patient.getFullName() )</td>
     </tr>
     <tr>
         <td><strong>$i18n.getString( "gender" ):</strong></td>
-        <td>            
-            $encoder.htmlEncode( $patient.gender )
-        </td>
+        <td>$encoder.htmlEncode( $patient.gender )</td>
     </tr>    
     <tr>
         <td><strong>$i18n.getString( "date_of_birth" ):</strong></td>
-        <td>            
-            $format.formatDate( $patient.birthDate )
-        </td>
+        <td>$format.formatDate( $patient.birthDate )</td>
     </tr>
     <tr>
         <td><strong>$i18n.getString( "age" ):</strong></td>
-        <td>            
-            $encoder.htmlEncode( $patient.getAge() )
-        </td>
+        <td>$encoder.htmlEncode( $patient.getAge() )</td>
     </tr>    
     <tr>
         <td>&nbsp;</td>
@@ -45,9 +37,9 @@
 
 <table>    
     <tr>
-        <td><label for="programId">$i18n.getString( "program" )</label></td>
+        <td style="width:180px"><label for="programId">$i18n.getString( "program" )</label></td>
         <td>
-            <select id="programId" name="programId" onchange="document.getElementById( 'programSelectForm' ).submit();" #if( $programs.size() == 0 ) disabled="disabled" #end>
+            <select id="programId" name="programId" onchange="document.getElementById( 'programSelectForm' ).submit();" style="min-width:200px" #if( $programs.size() == 0 ) disabled="disabled"#end>
                 <option value="0">[$i18n.getString( "select" )]</option>
                 #foreach( $program in $programs )
                     <option value="$program.id" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>

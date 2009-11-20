@@ -28,8 +28,8 @@
 		    <td></td>
 		    <td></td> 
 		  	<td colspan="3" style="text-align:right">
-		  	   <input type="button" value="$i18n.getString( "sort" )" onclick="javascript:showSortProgramStage()">
-		  	   <input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:addProgramStage()">		  	   
+		  	   <input type="button" value="$i18n.getString( "sort" )" onclick="javascript:showSortProgramStage()" style="width:75px">
+		  	   <input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:addProgramStage()" style="width:75px">		  	   
 			</td>
 		  </tr>
 		  
