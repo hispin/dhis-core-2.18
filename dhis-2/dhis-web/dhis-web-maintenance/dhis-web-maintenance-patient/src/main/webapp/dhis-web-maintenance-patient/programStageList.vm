@@ -82,8 +82,7 @@
 				<p><label>$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>				
 				<p><label>$i18n.getString( "stage_in_program" ):</label><br><span id="stageInProgramField"></span></p>
 				<p><label>$i18n.getString( "min_days_from_start" ):</label><br><span id="minDaysFromStartField"></span></p>
-                <p><label>$i18n.getString( "max_days_from_start" ):</label><br><span id="maxDaysFromStartField"></span></p>						
-				<p><label>$i18n.getString( "no_of_dataelements" ):</label><br><span id="dataElementCountField"></span></p>			  		
+                <p><label>$i18n.getString( "no_of_dataelements" ):</label><br><span id="dataElementCountField"></span></p>			  		
 			</div>
 
 		</td>
