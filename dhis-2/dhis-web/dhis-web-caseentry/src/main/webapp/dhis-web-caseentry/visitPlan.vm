@@ -58,9 +58,9 @@
                 #set( $mark = false )          
                 #foreach( $stageInstance in $stageInstances )                    
                     <tr #alternate( $mark )>                
-                        <td>$stageInstance.programInstance.program.name</td>
-                        <td>$stageInstance.programStage.name</td>
-                        <td>$format.formatDate( $stageInstance.dueDate )</td>                
+                        <td>$!stageInstance.programInstance.program.name</td>
+                        <td>$!stageInstance.programStage.name</td>
+                        <td>$!format.formatDate( $!stageInstance.dueDate )</td>                
                     </tr>
                     #if( $mark )
                         #set( $mark = false )
