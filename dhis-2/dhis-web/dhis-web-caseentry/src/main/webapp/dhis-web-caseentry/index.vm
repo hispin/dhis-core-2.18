@@ -1,2 +1,8 @@
 
-<p>$i18n.getString("please_select_item_from_menu")</p>
+<h3>$i18n.getString( "dhis-web-caseentry" )</h3>
+
+<ul class="introList">
+    #introListItem( "dataEntrySelect.action" "data_entry" )
+    #introListItem( "reportSelect.action" "summary_report" )
+    #introListItem( "visitPlanSelect.action" "visit_plan" )
+</ul>
