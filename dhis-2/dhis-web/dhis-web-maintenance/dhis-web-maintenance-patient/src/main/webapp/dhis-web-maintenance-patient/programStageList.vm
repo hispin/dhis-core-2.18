@@ -2,7 +2,7 @@
 
 <table>
     <tr>
-        <td colspan="2"><label>$i18n.getString( "select_program" )</label><br>
+        <td><label>$i18n.getString( "select_program" )</label><br>
             <select id="id" name="id" style="min-width:20em" onchange="javascript:getStageByProgram(this.options[this.selectedIndex].value)">
                 <option value="" selected="selected" >[ $i18n.getString( "all" ) ]</option>
                 #foreach ( $program in $programs )
@@ -28,6 +28,7 @@
 		    <td></td>
 		    <td></td> 
 		  	<td colspan="3" style="text-align:right">
+               <input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='program.action'" style="width:75px">
 		  	   <input type="button" value="$i18n.getString( "sort" )" onclick="javascript:showSortProgramStage()" style="width:75px">
 		  	   <input type="button" value="$i18n.getString( "add_new" )" onclick="javascript:addProgramStage()" style="width:75px">		  	   
 			</td>
