@@ -9,5 +9,4 @@
     <li><a href="reportSelect.action">$i18n.getString( "summary_report" )&nbsp;</a></li>     
     <li><a href="visitPlanSelect.action">$i18n.getString( "visit_plan" )&nbsp;</a></li>    
 </ul>
-
 <br>
