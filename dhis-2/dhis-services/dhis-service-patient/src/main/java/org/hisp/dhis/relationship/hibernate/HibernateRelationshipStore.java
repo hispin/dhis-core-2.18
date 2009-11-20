@@ -45,7 +45,7 @@ public class HibernateRelationshipStore
 {
 
     @SuppressWarnings( "unchecked" )
-    public Collection<Relationship> getRelationshipsForPatient( Patient patient )
+    public Collection<Relationship> getForPatient( Patient patient )
     {
         return getCriteria(
             Restrictions.disjunction().add( Restrictions.eq( "patientA", patient ) ).add(
@@ -53,19 +53,19 @@ public class HibernateRelationshipStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<Relationship> getRelationshipsByRelationshipType( RelationshipType relationshipType )
+    public Collection<Relationship> getByRelationshipType( RelationshipType relationshipType )
     {
         return getCriteria( Restrictions.eq( "relationshipType", relationshipType ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<Relationship> getRelationships( Patient patientA, RelationshipType relationshipType )
+    public Collection<Relationship> get( Patient patientA, RelationshipType relationshipType )
     {
         return getCriteria( Restrictions.eq( "patientA", patientA ),
             Restrictions.eq( "relationshipType", relationshipType ) ).list();
     }
 
-    public Relationship getRelationship( Patient patientA, Patient patientB, RelationshipType relationshipType )
+    public Relationship get( Patient patientA, Patient patientB, RelationshipType relationshipType )
     {
         return (Relationship) getCriteria( Restrictions.eq( "patientA", patientA ),
             Restrictions.eq( "patientB", patientB ), Restrictions.eq( "relationshipType", relationshipType ) )
