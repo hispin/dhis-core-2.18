@@ -30,7 +30,7 @@
 		  	<td></td>
 		  	<td></td>  		  	
 		  	<td colspan="2" style="text-align:right">  			
-				<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='select.action'" style="width:10em">
+				<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='dataEntrySelect.action'" style="width:60px">
 			</td>
           <tr>
             <th>$i18n.getString( "first_name" )</th>
@@ -80,20 +80,18 @@
     	#end
     	</tbody>
     
-	 </table>
-   </td>
-        <td style="width:20em; padding-left:2em; vertical-align:top">
-            <div id="detailsArea" style="display:none">
-                <div style="float:right">
-                    <a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
-                </div>              
-                    <p><label>$i18n.getString( "identifier" ):</label><br><span id="identifierField"></span></p>                    
-                    <p><label>$i18n.getString( "attributes" ):</label><br><span id="attributeField"></span></p>
-                    <p><label>$i18n.getString( "enrolled_in_program" ):</label><br><span id="programField"></span></p>
-                </div>
-
-        </td>
-
+	  </table>
+    </td>
+    <td style="width:20em; padding-left:2em; vertical-align:top">
+        <div id="detailsArea" style="display:none">
+            <div style="float:right">
+                <a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
+            </div>              
+            <p><label>$i18n.getString( "identifier" ):</label><br><span id="identifierField"></span></p>                    
+            <p><label>$i18n.getString( "attributes" ):</label><br><span id="attributeField"></span></p>
+            <p><label>$i18n.getString( "enrolled_in_program" ):</label><br><span id="programField"></span></p>
+        </div>
+    </td>
   </tr>
 </table>
    
