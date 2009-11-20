@@ -70,7 +70,7 @@
                     </select> 
                     <em title="$i18n.getString( "required" )" class="required">*</em>
                     <input type="text" id="searchText" name="searchText" maxlength="30">        
-                    <input type="submit" value="$i18n.getString( "search" )"
+                    <input type="submit" value="$i18n.getString( "search" )">
                 </td> 
             </tr>                  
             <tr>  
@@ -87,10 +87,12 @@
                         #foreach ( $partner in $patients )
                             <option value="$partner.id"> $encoder.htmlEncode( $partner.getFullName() )</option>
                         #end                
-                    </select>                    
-                    <input type="button" value="$i18n.getString( "assign_relationship" )" onclick="javascript:addRelationship()" style="width:10em">
+                    </select>
                 </td>                     
-            </tr>   
+            </tr>
+            <tr>
+            	<td><input type="button" value="$i18n.getString( "assign_relationship" )" onclick="javascript:addRelationship()" style="width:10em"></td>
+            </tr>
         </table>
     </td>
 </tr>
