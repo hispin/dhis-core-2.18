@@ -175,6 +175,7 @@ function copySelectedItem() {
 
 
 sheetId = 0;
+iReportItemsChecked = 0;
 reportItems = null;
 reportItemsCurTarget = null;
 reportItemsDuplicated = null;
@@ -225,6 +226,8 @@ function splitDuplicatedReportItems() {
 		}
 	}
 	
+	iReportItemsChecked = reportItemsChecked.length;
+	
 	for (var i in reportItemsChecked)
 	{
 		flag = i;
@@ -246,27 +249,33 @@ function splitDuplicatedReportItems() {
 }
 
 function saveCopyItems() {
-		
-	if (reportItemsDuplicated.length > 0) {
+	
+	var warningMessage = " ======= Sheet [" + sheetId + "] =======<br/>";
+	
+	// If have ReportItem(s) in Duplicating list
+	// preparing the warning message
+	if ( reportItemsDuplicated.length > 0 ) {
 
-		var reportItemsDuplicatedList = "Sheet [" + sheetId + "] - " + i18n_copy_items_duplicated + "<br>";
+		warningMessage += 
+		"<b>[" + (reportItemsDuplicated.length) + "/" + (iReportItemsChecked) + "]</b>:: "
+		+ i18n_copy_items_duplicated
+		+ "<br/><br/>";
 		
 		for (var i in reportItemsDuplicated) {
 		
-			reportItemsDuplicatedList = reportItemsDuplicatedList 
-			+ "&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;"
+			warningMessage +=
+			"<b>(*)</b> "
 			+ reportItemsDuplicated[i] 
-			+ "<br>";
+			+ "<br/><br/>";
 		}
 		
-		//reportItemsDuplicatedList = reportItemsDuplicatedList + "</ul>"
-		
-		//setMessage(reportItemsDuplicatedList);
-	
-		//$("#copyTo").hide();
+		warningMessage += "======================<br/><br/>";
 	}
 	
-	if( reportItems.length > 0 ) {
+	// If have also ReportItem(s) in Copying list
+	// do copy and prepare the message notes
+	if ( reportItems.length > 0 ) {
+	
 		$.post("copyReportExcelItems.action",
 		{
 			reportId:$("#targetReport").val(),
@@ -275,25 +284,32 @@ function saveCopyItems() {
 		},
 		function (data)
 		{
-			//setMessage( i18n_copy_successful );
-			//$("#copyTo").hide();
+			var data = data.getElementsByTagName("message")[0];	
+			var type = data.getAttribute("type");
+			
+			if ( type == "success" ) {
+				
+				warningMessage +=
+				"<br/><b>[" + (reportItems.length) + "/" + (iReportItemsChecked) + "]</b>:: "
+				+ i18n_copy_successful
+				+ "<br/>======================<br/><br/>";
+			}
+			
+			setMessage( warningMessage );
+			
 		},'xml');
 	}
-	
-	if(reportItems.length == 0){
-		setMessage( excelItemsDuplicatedList );
-	}else{
-		if (reportItemsDuplicatedList.length > 0)
-			 reportItemsDuplicatedList += "<br>==========<br>" + i18n_copy_successful;
-		else
-			reportItemsDuplicatedList += i18n_copy_successful;
-		setMessage( reportItemsDuplicatedList);
+	// If have no any ReportItem(s) will be copied
+	// and also have ReportItem(s) in Duplicating list
+	else if ( reportItemsDuplicated.length > 0 ) {
+
+		setMessage( warningMessage );
 	}
-	
+		
 	$("#copyTo").hide();
 	deleteDivEffect();
-	
 }
+
 
 /**
 * DataElement Report type
