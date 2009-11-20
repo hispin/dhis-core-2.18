@@ -47,7 +47,7 @@ public interface PatientIdentifierStore
 
     Collection<PatientIdentifier> getByIdentifier( String identifier );
     
-    Collection<PatientIdentifier> getPatientIdentifiersByType( PatientIdentifierType identifierType );
+    Collection<PatientIdentifier> getByType( PatientIdentifierType identifierType );
 
     Collection<PatientIdentifier> getByOrganisationUnit( OrganisationUnit organisationUnit );
 }

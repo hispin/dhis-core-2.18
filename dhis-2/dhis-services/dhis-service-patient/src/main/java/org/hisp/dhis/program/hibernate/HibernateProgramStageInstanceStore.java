@@ -44,7 +44,7 @@ public class HibernateProgramStageInstanceStore
     extends HibernateGenericStore<ProgramStageInstance>
     implements ProgramStageInstanceStore
 {    
-    public ProgramStageInstance getProgramStageInstance( ProgramInstance programInstance, ProgramStage programStage )
+    public ProgramStageInstance get( ProgramInstance programInstance, ProgramStage programStage )
     {
         return (ProgramStageInstance) getCriteria( Restrictions.eq( "programInstance", programInstance ),
             Restrictions.eq( "programStage", programStage ) ).uniqueResult();

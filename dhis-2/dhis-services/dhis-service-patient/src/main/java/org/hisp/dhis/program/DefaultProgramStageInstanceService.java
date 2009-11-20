@@ -80,7 +80,7 @@ public class DefaultProgramStageInstanceService
 
     public ProgramStageInstance getProgramStageInstance( ProgramInstance programInstance, ProgramStage programStage )
     {
-        return programStageInstanceStore.getProgramStageInstance( programInstance, programStage );
+        return programStageInstanceStore.get( programInstance, programStage );
     }
 
     public Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage )

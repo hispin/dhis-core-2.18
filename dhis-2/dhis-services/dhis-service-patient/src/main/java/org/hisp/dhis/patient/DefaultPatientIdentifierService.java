@@ -76,7 +76,7 @@ public class DefaultPatientIdentifierService
     
     public Collection<PatientIdentifier> getPatientIdentifiersByType( PatientIdentifierType identifierType )
     {
-        return patientIdentifierStore.getPatientIdentifiersByType( identifierType );
+        return patientIdentifierStore.getByType( identifierType );
     }
 
     public Collection<PatientIdentifier> getPatientIdentifiersByIdentifier( String identifier )

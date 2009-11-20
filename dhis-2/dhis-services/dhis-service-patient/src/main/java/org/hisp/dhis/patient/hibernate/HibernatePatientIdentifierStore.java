@@ -71,7 +71,7 @@ public class HibernatePatientIdentifierStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<PatientIdentifier> getPatientIdentifiersByType( PatientIdentifierType identifierType )
+    public Collection<PatientIdentifier> getByType( PatientIdentifierType identifierType )
     {
         return getCriteria( Restrictions.eq( "identifierType", identifierType ) ).list();
     }

@@ -72,7 +72,7 @@ public class DefaultRelationshipService
 
     public Collection<Relationship> getRelationshipsForPatient( Patient patient )
     {
-        return relationshipStore.getRelationshipsForPatient( patient );
+        return relationshipStore.getForPatient( patient );
     }
 
     public int saveRelationship( Relationship relationship )
@@ -87,16 +87,16 @@ public class DefaultRelationshipService
 
     public Collection<Relationship> getRelationshipsByRelationshipType( RelationshipType relationshipType )
     {
-        return relationshipStore.getRelationshipsByRelationshipType( relationshipType );
+        return relationshipStore.getByRelationshipType( relationshipType );
     }
 
     public Collection<Relationship> getRelationships( Patient patientA, RelationshipType relationshipType )
     {
-        return relationshipStore.getRelationships( patientA, relationshipType );
+        return relationshipStore.get( patientA, relationshipType );
     }
 
     public Relationship getRelationship( Patient patientA, Patient patientB, RelationshipType relationshipType )
     {
-        return relationshipStore.getRelationship( patientA, patientB, relationshipType );
+        return relationshipStore.get( patientA, patientB, relationshipType );
     }    
 }
