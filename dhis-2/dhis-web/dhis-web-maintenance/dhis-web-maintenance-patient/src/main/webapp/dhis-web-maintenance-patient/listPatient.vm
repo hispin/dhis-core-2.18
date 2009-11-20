@@ -76,15 +76,15 @@
                 </td>                
                 
                 <td style="text-align:center"#alternate( $mark )>                  
-                  <a href="showUpdatePatientForm.action?id=$patient.id" title="$i18n.getString( "edit_profile" )"><img src="images/edit_profile.png" alt="$i18n.getString( "edit_profile" )"></a>
+                  <a href="showUpdatePatientForm.action?id=$patient.id" title="$i18n.getString( "edit_profile" )"><img src="../images/edit.png" alt="$i18n.getString( "edit_profile" )"></a>
                 </td>
                 
                 <td style="text-align:center"#alternate( $mark )>
-                  <a href="showUpdatePatientAttributeValueForm.action?id=$patient.id" title="$i18n.getString( "edit_attribute_values" )"><img src="images/attribute_value.png" alt="$i18n.getString( "edit_attribute_values" )"></a>
+                  <a href="showUpdatePatientAttributeValueForm.action?id=$patient.id" title="$i18n.getString( "edit_attribute_values" )"><img src="../images/attribute.png" alt="$i18n.getString( "edit_attribute_values" )"></a>
                 </td>
                 
                 <td style="text-align:center"#alternate( $mark )>                  
-                  <a href="showRelationshipList.action?id=$patient.id" title="$i18n.getString( "manage_relationship" )"><img src="images/relationship.gif" alt="$i18n.getString( "manage_relationship" )"></a>
+                  <a href="showRelationshipList.action?id=$patient.id" title="$i18n.getString( "manage_relationship" )"><img src="../images/relationship.png" alt="$i18n.getString( "manage_relationship" )"></a>
                 </td>                                
  
                 <td style="text-align:center"#alternate( $mark )>
