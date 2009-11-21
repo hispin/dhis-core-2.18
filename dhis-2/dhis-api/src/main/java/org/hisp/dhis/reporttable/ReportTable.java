@@ -40,8 +40,6 @@ import java.util.regex.Pattern;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
@@ -120,7 +118,7 @@ public class ReportTable
     
     private DimensionSet categoryCombo;
     
-    private List<? extends Dimension> dataElementGroupSets = new ArrayList<DataElementGroupSet>();
+    private List<? extends Dimension> dataElementGroupSets = new ArrayList<Dimension>();
     
     private Boolean doIndicators;
     
@@ -169,7 +167,7 @@ public class ReportTable
     /**
      * CategoryCombos that will be crosstabulated on the columns axis. Optional dimension.
      */
-    private List<DataElementCategoryOptionCombo> crossTabCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+    private List<? extends DimensionOptionElement> crossTabCategoryOptionCombos = new ArrayList<DimensionOptionElement>();
     
     /**
      * Periods that will be crosstabulated on the columns axis. Mandatory dimension.
@@ -189,7 +187,7 @@ public class ReportTable
     /**
      * CategoryOptionCombos that will be present on the rows axis. Optional dimension.
      */
-    private List<DataElementCategoryOptionCombo> reportCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+    private List<? extends DimensionOptionElement> reportCategoryOptionCombos = new ArrayList<DimensionOptionElement>();
     
     /**
      * Periods that will be present on the rows axis. Mandatory dimension.
@@ -246,7 +244,7 @@ public class ReportTable
     /**
      * The category option combos derived from the dimension set.
      */
-    private List<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+    private List<? extends DimensionOptionElement> categoryOptionCombos = new ArrayList<DimensionOptionElement>();
     
     /**
      * The data elements derived from the dimension set.
@@ -356,7 +354,6 @@ public class ReportTable
     // Init
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     public void init()
     {
         if ( nonEmptyLists( dataElements, indicators, dataSets ) > 1 )
@@ -384,10 +381,9 @@ public class ReportTable
         {
             // -----------------------------------------------------------------
             // CategoryCombo is set, populate CategoryOptionCombos
-            // Unchecked conversion is safe due to dimension set type check
             // -----------------------------------------------------------------
 
-            categoryOptionCombos = (List<DataElementCategoryOptionCombo>) categoryCombo.getDimensionOptionElements();
+            categoryOptionCombos = categoryCombo.getDimensionOptionElements();
         }
         else if ( isDimensional() && dimensionSetType.equals( DimensionSet.TYPE_GROUP_SET ) )
         {
@@ -1040,12 +1036,12 @@ public class ReportTable
         this.dataElements = dataElements;
     }
 
-    public List<DataElementCategoryOptionCombo> getCategoryOptionCombos()
+    public List<? extends DimensionOptionElement> getCategoryOptionCombos()
     {
         return categoryOptionCombos;
     }
 
-    public void setCategoryOptionCombos( List<DataElementCategoryOptionCombo> categoryOptionCombos )
+    public void setCategoryOptionCombos( List<? extends DimensionOptionElement> categoryOptionCombos )
     {
         this.categoryOptionCombos = categoryOptionCombos;
     }
@@ -1239,7 +1235,7 @@ public class ReportTable
         return reportIndicators;
     }
 
-    public List<DataElementCategoryOptionCombo> getReportCategoryOptionCombos()
+    public List<? extends DimensionOptionElement> getReportCategoryOptionCombos()
     {
         return reportCategoryOptionCombos;
     }

@@ -50,6 +50,7 @@ import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
@@ -558,7 +559,7 @@ public class DefaultReportTableService
         
         for ( final IdentifiableObject metaObject : reportTable.getReportIndicators() )
         {
-            for ( final DataElementCategoryOptionCombo categoryOptionCombo : reportTable.getReportCategoryOptionCombos() )
+            for ( final DimensionOptionElement categoryOptionCombo : reportTable.getReportCategoryOptionCombos() )
             {
                 for ( final Period period : reportTable.getReportPeriods() )
                 {
@@ -644,7 +645,8 @@ public class DefaultReportTableService
                         // Values
                         // -----------------------------------------------------
 
-                        Map<String, Double> map = reportTableManager.getAggregatedValueMap( reportTable, metaObject, categoryOptionCombo, period, unit );
+                        Map<String, Double> map = reportTableManager.getAggregatedValueMap( 
+                            reportTable, metaObject, (DataElementCategoryOptionCombo) categoryOptionCombo, period, unit );
                         
                         for ( String identifier : reportTable.getCrossTabIdentifiers() )
                         {
