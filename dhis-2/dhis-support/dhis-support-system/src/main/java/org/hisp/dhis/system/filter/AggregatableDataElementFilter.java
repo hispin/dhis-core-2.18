@@ -27,18 +27,29 @@ package org.hisp.dhis.system.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.collections.Predicate;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.system.util.Filter;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public class StringTypeDataElementPredicate
-    implements Predicate
+public class AggregatableDataElementFilter
+    implements Filter<DataElement>
 {
-    public boolean evaluate( Object object )
+    private static Set<String> types;
+    
+    static
     {
-        return ((DataElement) object).getType().equals( DataElement.VALUE_TYPE_STRING );
+        types = new HashSet<String>();        
+        types.add( DataElement.VALUE_TYPE_BOOL );
+        types.add( DataElement.VALUE_TYPE_INT );
+    }
+
+    public boolean retain( DataElement object )
+    {
+        return object != null && types.contains( object.getType() );
     }
 }

@@ -32,7 +32,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -41,7 +40,8 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-import org.hisp.dhis.system.filter.AggregateableDataElementPredicate;
+import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -196,7 +196,7 @@ public class GetDataElementsAction
 
         if ( aggregate )
         {
-            CollectionUtils.filter( dataElements, new AggregateableDataElementPredicate() );
+            FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
         }
         
         return SUCCESS;

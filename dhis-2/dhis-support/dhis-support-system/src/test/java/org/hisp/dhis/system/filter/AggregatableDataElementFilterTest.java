@@ -1,26 +1,26 @@
 package org.hisp.dhis.system.filter;
 
+import static junit.framework.Assert.assertEquals;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.junit.Test;
 import org.springframework.test.annotation.NotTransactional;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class AggregateableDataElementPredicateTest
-    extends DhisConvenienceTest
+public class AggregatableDataElementFilterTest
+    extends DhisTest
 {
     @Test
     @NotTransactional
-    public void testPredicate()
+    public void filter()
     {
         DataElement elementA = createDataElement( 'A' );
         DataElement elementB = createDataElement( 'B' );
@@ -52,7 +52,7 @@ public class AggregateableDataElementPredicateTest
         reference.add( elementD );
         reference.add( elementE );
         
-        CollectionUtils.filter( set, new AggregateableDataElementPredicate() );
+        FilterUtils.filter( set, new AggregatableDataElementFilter() );
         
         assertEquals( reference.size(), set.size() );
         assertEquals( reference, set );

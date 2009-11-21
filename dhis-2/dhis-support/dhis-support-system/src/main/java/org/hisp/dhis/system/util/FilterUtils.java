@@ -1,4 +1,4 @@
-package org.hisp.dhis.system.filter;
+package org.hisp.dhis.system.util;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -27,34 +27,31 @@ package org.hisp.dhis.system.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.commons.collections.Predicate;
-
-import org.hisp.dhis.dataelement.DataElement;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public class AggregateableDataElementPredicate
-    implements Predicate
+public class FilterUtils
 {
-    private static Set<String> types;
-    
-    public AggregateableDataElementPredicate()
+    public static <T> Collection<T> filter( Collection<T> collection, Filter<T> filter )
     {
-        types = new HashSet<String>();
+        if ( collection == null || filter == null )
+        {
+            return collection;
+        }
         
-        types.add( DataElement.VALUE_TYPE_BOOL );
-        types.add( DataElement.VALUE_TYPE_INT );
-    }
-    
-    public boolean evaluate( Object object )
-    {
-        DataElement dataElement = (DataElement) object;        
+        final Iterator<T> iterator = collection.iterator();
         
-        return types.contains( dataElement.getType() );
+        while ( iterator.hasNext() )
+        {
+            if ( !filter.retain( iterator.next() ) )
+            {
+                iterator.remove();
+            }
+        }
+        
+        return collection;
     }
 }
