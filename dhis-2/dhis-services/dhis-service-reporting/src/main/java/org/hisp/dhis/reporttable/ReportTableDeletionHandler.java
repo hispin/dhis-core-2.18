@@ -28,12 +28,9 @@ package org.hisp.dhis.reporttable;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -78,21 +75,7 @@ public class ReportTableDeletionHandler
         
         return true;
     }
-    
-    @Override
-    public boolean allowDeleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
-    {
-        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
-        {
-            if ( categoryOptionCombo.get( reportTable.getCategoryOptionCombos() ) != null )
-            {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-        
+            
     @Override
     public boolean allowDeleteIndicator( Indicator indicator )
     {
