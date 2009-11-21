@@ -26,8 +26,6 @@
  */
 package org.hisp.dhis.reportexcel.item.action;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
@@ -40,7 +38,6 @@ import org.hisp.dhis.reportexcel.action.ActionSupport;
 public class ValidateUpdateReportExcelItemAction
     extends ActionSupport
 {
-    private static final Log log = LogFactory.getLog( ValidateUpdateReportExcelItemAction.class );
     // -------------------------------------------
     // Dependency
     // -------------------------------------------

@@ -39,7 +39,6 @@ import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportManager;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.report.manager.ReportConfiguration;
-import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.CollectionConversionUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
@@ -251,7 +250,7 @@ public class AddReportAction
         report.setName( name );
         report.setDesign( fileName );
         report.setType( type );
-        report.setReportTables( selectedReportTables != null ? new CollectionConversionUtils<ReportTable>().getSet( 
+        report.setReportTables( selectedReportTables != null ? CollectionConversionUtils.getSet( 
             reportTableService.getReportTables( ConversionUtils.getIntegerCollection( selectedReportTables ) ) ) : null );
         
         reportService.saveReport( report );

@@ -271,13 +271,11 @@ public class SaveChartAction
     {
         Chart chart = new Chart();
 
-        List<Indicator> indicators = new CollectionConversionUtils<Indicator>().getList( 
+        List<Indicator> indicators = CollectionConversionUtils.getList( 
             indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) );
-
-        List<Period> periods = new CollectionConversionUtils<Period>().getList( 
-            periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) );
-        
-        List<OrganisationUnit> organisationUnits = new CollectionConversionUtils<OrganisationUnit>().getList( 
+        List<Period> periods = CollectionConversionUtils.getList( 
+            periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) );        
+        List<OrganisationUnit> organisationUnits = CollectionConversionUtils.getList( 
             organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) );
 
         chart.setId( id != null ? id : 0 );

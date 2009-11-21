@@ -27,14 +27,8 @@ package org.hisp.dhis.reportexcel.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.util.Date;
-import java.util.Locale;
-
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.WorkbookSettings;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;

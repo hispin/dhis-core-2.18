@@ -41,8 +41,6 @@ public class UUIdUtils
      */
     public static String getUUId()
     {
-        UUID uuid = UUID.randomUUID();
-        
-        return uuid.toString().toUpperCase();
+        return UUID.randomUUID().toString().toUpperCase();
     }
 }

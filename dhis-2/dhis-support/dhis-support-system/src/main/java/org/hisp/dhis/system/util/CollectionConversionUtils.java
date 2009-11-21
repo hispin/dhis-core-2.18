@@ -37,22 +37,15 @@ import java.util.Set;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class CollectionConversionUtils<T>
+public class CollectionConversionUtils
 {
-    /**
-     * Default constructor.
-     */
-    public CollectionConversionUtils()
-    {   
-    }
-    
     /**
      * Creates a Set of objects out of a Collection of objects.
      * 
      * @param objects the Collection of objects.
      * @return a Set of objects.
      */
-    public Set<T> getSet( Collection<T> objects )
+    public static <T> Set<T> getSet( Collection<T> objects )
     {
         Set<T> set = new HashSet<T>();
         
@@ -70,7 +63,7 @@ public class CollectionConversionUtils<T>
      * @param objects the Collection of objects.
      * @return a List of objects.
      */
-    public List<T> getList( Collection<T> objects )
+    public static <T> List<T> getList( Collection<T> objects )
     {
         List<T> list = new ArrayList<T>();
         

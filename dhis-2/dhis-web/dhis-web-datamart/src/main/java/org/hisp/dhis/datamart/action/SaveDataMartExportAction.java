@@ -31,15 +31,11 @@ import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
 
 import java.util.Collection;
 
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.DataMartExportService;
-import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.CollectionConversionUtils;
 
@@ -147,13 +143,13 @@ public class SaveDataMartExportAction
         
         export.setName( name );
         
-        export.setDataElements( new CollectionConversionUtils<DataElement>().getSet( 
+        export.setDataElements( CollectionConversionUtils.getSet( 
             dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) ) );
-        export.setIndicators( new CollectionConversionUtils<Indicator>().getSet( 
+        export.setIndicators( CollectionConversionUtils.getSet( 
             indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) ) );
-        export.setPeriods( new CollectionConversionUtils<Period>().getSet( 
+        export.setPeriods( CollectionConversionUtils.getSet( 
             periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) ) );
-        export.setOrganisationUnits( new CollectionConversionUtils<OrganisationUnit>().getSet( 
+        export.setOrganisationUnits( CollectionConversionUtils.getSet( 
             organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) ) );
         
         dataMartExportService.saveDataMartExport( export );
