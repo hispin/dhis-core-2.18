@@ -43,8 +43,7 @@ public class ConversionUtils
      * @param clazz the clazz of the argument objects.
      * @param objects for which to get the identifiers.
      */
-    @SuppressWarnings( "unchecked" )
-    public static Collection<Integer> getIdentifiers( Class clazz, Collection<?> objects )
+    public static Collection<Integer> getIdentifiers( Class<?> clazz, Collection<?> objects )
     {
         try
         {
@@ -96,7 +95,6 @@ public class ConversionUtils
      */
     public static Integer[] getIntegerArray( String[] strings )
     {
-
         if ( strings == null )
         {
             return new Integer[0];

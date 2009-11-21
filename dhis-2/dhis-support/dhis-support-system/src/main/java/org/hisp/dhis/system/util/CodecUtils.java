@@ -87,6 +87,7 @@ public class CodecUtils
         }
     }
 	
+    //TODO remove
     public static String unescape( String s )
     {
         StringBuffer sbuf = new StringBuffer();

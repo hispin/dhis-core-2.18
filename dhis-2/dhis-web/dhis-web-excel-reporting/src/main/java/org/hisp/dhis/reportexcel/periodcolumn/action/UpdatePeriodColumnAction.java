@@ -28,7 +28,6 @@
 package org.hisp.dhis.reportexcel.periodcolumn.action;
 
 import org.hisp.dhis.reportexcel.PeriodColumn;
-import org.hisp.dhis.reportexcel.ReportExcelPeriodColumnListing;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 

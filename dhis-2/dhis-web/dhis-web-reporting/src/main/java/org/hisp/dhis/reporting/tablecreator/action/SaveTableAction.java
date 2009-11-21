@@ -347,19 +347,19 @@ public class SaveTableAction
     private ReportTable getReportTable()
         throws Exception
     {
-        List<DataElement> dataElements = new CollectionConversionUtils<DataElement>().getList( 
+        List<DataElement> dataElements = CollectionConversionUtils.getList( 
             dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) );
         
-        List<Indicator> indicators = new CollectionConversionUtils<Indicator>().getList( 
+        List<Indicator> indicators = CollectionConversionUtils.getList( 
             indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) );
         
-        List<DataSet> dataSets = new CollectionConversionUtils<DataSet>().getList( 
+        List<DataSet> dataSets = CollectionConversionUtils.getList( 
             dataSetService.getDataSets( getIntegerCollection( selectedDataSets ) ) );
         
-        List<Period> periods = new CollectionConversionUtils<Period>().getList( 
+        List<Period> periods = CollectionConversionUtils.getList( 
             periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) );
         
-        List<OrganisationUnit> organisationUnits = new CollectionConversionUtils<OrganisationUnit>().getList( 
+        List<OrganisationUnit> organisationUnits = CollectionConversionUtils.getList( 
             organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) );
 
         DimensionSet dimensionSet = dimensionService.getDimensionSet( dimensionSetId );
