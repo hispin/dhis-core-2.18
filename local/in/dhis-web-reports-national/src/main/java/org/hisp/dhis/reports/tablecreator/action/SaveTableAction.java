@@ -34,11 +34,13 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dimension.DimensionService;
+import org.hisp.dhis.dimension.DimensionSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -78,9 +80,9 @@ public class SaveTableAction
         this.dataElementService = dataElementService;
     }
     
-    private DataElementCategoryComboService categoryComboService;
+    private DataElementCategoryService categoryComboService;
 
-    public void setCategoryComboService( DataElementCategoryComboService categoryComboService )
+    public void setCategoryComboService( DataElementCategoryService categoryComboService )
     {
         this.categoryComboService = categoryComboService;
     }    
@@ -111,6 +113,13 @@ public class SaveTableAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    private DimensionService dimensionService;
+    
+    public void setDimensionService( DimensionService dimensionService )
+    {
+        this.dimensionService = dimensionService;
     }
 
     // -------------------------------------------------------------------------
@@ -327,6 +336,13 @@ public class SaveTableAction
         this.paramOrganisationUnit = paramOrganisationUnit;
     }
         
+    private String dimensionSetId;
+
+    public void setDimensionSetId( String dimensionSetId )
+    {
+        this.dimensionSetId = dimensionSetId;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -369,6 +385,8 @@ public class SaveTableAction
         List<DataElementCategoryOptionCombo> categoryOptionCombos = ( categoryCombo != null ) ? 
             new ArrayList<DataElementCategoryOptionCombo>( categoryCombo.getOptionCombos() ) : new ArrayList<DataElementCategoryOptionCombo>();
 
+        DimensionSet dimensionSet = dimensionService.getDimensionSet( dimensionSetId );
+            
         RelativePeriods relatives = new RelativePeriods();
         
         relatives.setReportingMonth( reportingMonth );
@@ -395,10 +413,10 @@ public class SaveTableAction
         
         if ( tableId == null )
         {
-            reportTable = new ReportTable( tableName, mode, regression,
-                dataElements, indicators, dataSets, categoryOptionCombos, periods, null, organisationUnits, null,
-                doIndicators, doCategoryOptionCombos, doPeriods, doOrganisationUnits, relatives, reportParams, 
-                null, null );
+        	reportTable = new ReportTable( tableName, mode, regression,
+                    dataElements, indicators, dataSets, periods, null, organisationUnits, null,
+                    dimensionSet, doIndicators, doCategoryOptionCombos, doPeriods, doOrganisationUnits, relatives, reportParams, 
+                    null, null );
         }
         else
         {

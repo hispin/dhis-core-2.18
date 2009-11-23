@@ -35,8 +35,8 @@ import java.util.Map;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryComboService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.den.state.SelectedStateManager;
 import org.hisp.dhis.den.state.StatefulDataValueSaver;
@@ -82,9 +82,9 @@ public class CalculateCDEsAction
         this.expressionService = expressionService;
     }
     
-    private DataElementCategoryComboService dataElementCategoryComboService;
+    private DataElementCategoryService dataElementCategoryComboService;
 
-    public void setDataElementCategoryComboService( DataElementCategoryComboService dataElementCategoryComboService )
+    public void setDataElementCategoryComboService( DataElementCategoryService dataElementCategoryComboService )
     {
         this.dataElementCategoryComboService = dataElementCategoryComboService;
     }

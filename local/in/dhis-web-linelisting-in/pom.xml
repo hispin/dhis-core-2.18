@@ -40,10 +40,12 @@
       <artifactId>dhis-in-service-dbmanager</artifactId>
 	  <version>${version}</version>
     </dependency>
+	<!--
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-organisationunit</artifactId>
     </dependency>
+	-->
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-commons</artifactId>

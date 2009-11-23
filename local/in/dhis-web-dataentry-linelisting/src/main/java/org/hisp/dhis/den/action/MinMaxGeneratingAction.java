@@ -119,7 +119,7 @@ public class MinMaxGeneratingAction
         for ( DataElement dataelement : dataElements )
         {
             // check if dataelement is of type int
-            if ( dataelement.getType().equals( DataElement.TYPE_INT ) )
+            if ( dataelement.getType().equals( DataElement.VALUE_TYPE_INT ) )
             {
                 DataElementHistory dataElementHistory = historyRetriever.getHistory( dataelement, organisationUnit,
                     period, HISTORY_LENGTH );

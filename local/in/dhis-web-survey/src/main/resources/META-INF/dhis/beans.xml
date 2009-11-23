@@ -221,7 +221,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/> 
     <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>   	 
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>   	 
   </bean>
 	  
    <bean id="org.hisp.dhis.target.action.SaveMappingAction"
@@ -232,7 +232,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <property name="deTargetMappingService"
         ref="org.hisp.dhis.target.DeTargetMappingService"/>  
 	   <property name="dataElementCategoryOptionComboService"
-        ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>  
+        ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>  
       
   </bean> 
 	
@@ -242,7 +242,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>   
     <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>       
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>       
   </bean>
 		
 	<bean id="org.hisp.dhis.target.action.GetMesageAction"
@@ -251,7 +251,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>   
 	  <property name="dataElementCategoryOptionComboService"
-        ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>  
+        ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>  
     <property name="deTargetMappingService"
       ref="org.hisp.dhis.target.DeTargetMappingService"/>          
   </bean> 
@@ -264,7 +264,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <property name="deTargetMappingService"
         ref="org.hisp.dhis.target.DeTargetMappingService"/>  
       <property name="dataElementCategoryOptionComboService"
-        ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/> 	   
+        ref="org.hisp.dhis.dataelement.DataElementCategoryService"/> 	   
   </bean> 
   
 </beans>

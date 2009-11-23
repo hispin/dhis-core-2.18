@@ -16,7 +16,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService" 
       ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="dataElementCategoryOptionComboService" 
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>
 
   <bean id="org.hisp.dhis.den.api.LLDataValueService"
@@ -59,7 +59,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="currentUserService"
       ref="org.hisp.dhis.user.CurrentUserService"/>
 	<property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>  
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>  
   </bean>
   
   <!-- Actions -->
@@ -107,7 +107,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectedStateManager"
       ref="org.hisp.dhis.den.state.SelectedStateManager"/>    
 	<property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>  
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>  
   </bean>
 	
   <bean id="org.hisp.dhis.den.action.multidimensional.FormAction"
@@ -125,15 +125,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectedStateManager"
       ref="org.hisp.dhis.den.state.SelectedStateManager"/>
     <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="dataEntryFormService"
       ref="org.hisp.dhis.dataset.DataEntryFormService"/>  
-    <property name="dataElementDimensionRowOrderService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementDimensionRowOrderService"/>
-    </property>  
-    <property name="dataElementDimensionColumnOrderService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementDimensionColumnOrderService"/>
-    </property>        
   </bean>
   
    <bean id="org.hisp.dhis.den.action.SectionFormAction"
@@ -185,7 +179,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectedStateManager"
       ref="org.hisp.dhis.den.state.SelectedStateManager"/>
     <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
           
   </bean>
   
@@ -200,7 +194,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectedStateManager"
       ref="org.hisp.dhis.den.state.SelectedStateManager"/>
     <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>        
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>        
   </bean>
   
   <bean id="org.hisp.dhis.den.action.SaveCommentAction"
@@ -335,8 +329,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.den.state.SelectedStateManager"/>
 	<property name="dataElementCategoryComboService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-	<property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>  
   </bean>
   
   <bean id="org.hisp.dhis.den.action.MinMaxGeneratingAction"

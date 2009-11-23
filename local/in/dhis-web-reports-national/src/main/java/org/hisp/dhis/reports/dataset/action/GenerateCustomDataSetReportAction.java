@@ -207,7 +207,7 @@ public class GenerateCustomDataSetReportAction
                     String value = null;
                     DataValue dataValue;
 
-                    if ( dataElement.getType().equals( DataElement.TYPE_INT ) )
+                    if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
                     {
                         double aggregatedValue;
 

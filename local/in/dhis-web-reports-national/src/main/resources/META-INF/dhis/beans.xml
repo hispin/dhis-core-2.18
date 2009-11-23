@@ -43,7 +43,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	 <property name="statementManager" ref="statementManager"/>
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>		
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -100,7 +100,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
     <property name="statementManager" ref="statementManager"/>
     <property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     </property>   
     <property name="periodService">
       <ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -154,7 +154,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
     <property name="statementManager" ref="statementManager"/>
     <property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     </property>   
     <property name="periodService">
       <ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -208,7 +208,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	    <property name="statementManager" ref="statementManager"/>
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>		
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -269,7 +269,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	    <property name="statementManager" ref="statementManager"/>
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>		
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -316,7 +316,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	    <property name="statementManager" ref="statementManager"/>
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>		
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -369,7 +369,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>		
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -423,7 +423,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	    <property name="statementManager" ref="statementManager"/>
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>		
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -469,7 +469,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	    <property name="statementManager" ref="statementManager"/>
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -529,7 +529,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>	
     </property>	 
     <property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>	
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>	
     </property>	  
     <property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>	
@@ -572,7 +572,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>  
 		</property>  
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>   
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>   
 		</property>   
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>    
@@ -615,7 +615,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>  
         </property>  
         <property name="dataElementCategoryOptionComboService">
-            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>   
+            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>   
         </property>   
         <property name="periodService">
             <ref bean="org.hisp.dhis.period.PeriodService"/>    
@@ -647,7 +647,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
         <property name="statementManager" ref="statementManager"/>   
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>		
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -686,7 +686,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
         <property name="statementManager" ref="statementManager"/>   
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>		
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -725,7 +725,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
         <property name="statementManager" ref="statementManager"/>   
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>		
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -777,7 +777,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
         <property name="statementManager" ref="statementManager"/>   
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>		
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -826,7 +826,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>		
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -890,7 +890,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
            <ref bean="org.hisp.dhis.datavalue.DataValueService"/>  
         </property> 
         <property name="dataElementCategoryOptionComboService">
-          <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+          <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
         </property> 
         <property name="periodService">
           <ref bean="org.hisp.dhis.period.PeriodService"/>    
@@ -925,7 +925,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     
     <property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     </property>
     <property name="periodService">
       <ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -1032,13 +1032,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectedStateManager"
       ref="org.hisp.dhis.reports.dataset.state.SelectedStateManager"/>
     <property name="dataElementCategoryOptionComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>		
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>		
     <property name="dataElementOrderManager"
       ref="org.hisp.dhis.order.manager.DataElementOrderManager"/>
-    <property name="dataElementCategoryComboService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryComboService"/>
-    <property name="dataElementCategoryService"
-      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>		
 	<property name="organisationUnitService"
@@ -1157,7 +1153,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
 		</property>
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>
 		<property name="configurationService">
 			<ref bean="org.hisp.dhis.config.ConfigurationService"/>
@@ -1416,6 +1412,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="dataSetService"
       ref="org.hisp.dhis.dataset.DataSetService"/>
+    <property name="dimensionService"
+      ref="org.hisp.dhis.dimension.DimensionService"/>	  
   </bean>
   
   <bean id="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction"
