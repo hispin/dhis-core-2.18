@@ -99,7 +99,7 @@ public class JdbcDataMartStore
     // AggregatedDataValue
     // -------------------------------------------------------------------------
     
-    public Double getTotalAggregatedValue( final DataElement dataElement, final Period period, final OrganisationUnit organisationUnit )
+    public Double getTotalAggregatedValue( DataElement dataElement, Period period, OrganisationUnit organisationUnit )
     {
         final String sql = 
             "SELECT " + functionMap.get( dataElement.getAggregationOperator() ) + "(value) " +
@@ -111,8 +111,8 @@ public class JdbcDataMartStore
         return statementManager.getHolder().queryForDouble( sql );
     }
 
-    public Double getTotalAggregatedValue( final DataElement dataElement, 
-        final DataElementCategoryOption categoryOption, final Period period, final OrganisationUnit organisationUnit )
+    public Double getTotalAggregatedValue( DataElement dataElement, 
+        DataElementCategoryOption categoryOption, Period period, OrganisationUnit organisationUnit )
     {
         String ids = getCommaDelimitedString( getIdentifiers( DataElementCategoryOptionCombo.class, categoryOption.getCategoryOptionCombos() ) );
         
@@ -127,35 +127,8 @@ public class JdbcDataMartStore
         return statementManager.getHolder().queryForDouble( sql );
     }
     
-    public double getAggregatedValue( final DataElement dataElement, final Period period, final OrganisationUnit organisationUnit )
-    {
-        final StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            final String sql =
-                "SELECT value " +
-                "FROM aggregateddatavalue " +
-                "WHERE dataelementid = " + dataElement.getId() + " " +
-                "AND periodid = " + period.getId() + " " +
-                "AND organisationunitid = " + organisationUnit.getId();
-            
-            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            return resultSet.next() ? resultSet.getDouble( 1 ) : -1;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get aggregated data value", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-
-    public double getAggregatedValue( final DataElement dataElement, 
-        final DataElementCategoryOptionCombo categoryOptionCombo, final Period period, final OrganisationUnit organisationUnit )
+    public double getAggregatedValue( DataElement dataElement, 
+        DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit organisationUnit )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -183,8 +156,8 @@ public class JdbcDataMartStore
         }
     }
     
-    public Collection<AggregatedDataValue> getAggregatedDataValues( final int dataElementId, 
-        final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds )
+    public Collection<AggregatedDataValue> getAggregatedDataValues( int dataElementId, 
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -213,8 +186,7 @@ public class JdbcDataMartStore
         }
     }
     
-    public int deleteAggregatedDataValues( final Collection<Integer> dataElementIds, 
-        final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds )
+    public int deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         final String sql =
             "DELETE FROM aggregateddatavalue " +
@@ -234,7 +206,7 @@ public class JdbcDataMartStore
     // AggregatedIndicatorValue
     // -------------------------------------------------------------------------
 
-    public double getAggregatedValue( final Indicator indicator, final Period period, final OrganisationUnit organisationUnit )
+    public double getAggregatedValue( Indicator indicator, Period period, OrganisationUnit organisationUnit )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -261,8 +233,7 @@ public class JdbcDataMartStore
         }
     }
 
-    public Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( final Collection<Integer> periodIds, 
-        final Collection<Integer> organisationUnitIds )
+    public Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -290,8 +261,8 @@ public class JdbcDataMartStore
         }
     }
 
-    public Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( final Collection<Integer> indicatorIds, 
-        final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds )
+    public Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> indicatorIds, 
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -320,8 +291,8 @@ public class JdbcDataMartStore
         }
     }
 
-    public int deleteAggregatedIndicatorValues( final Collection<Integer> indicatorIds, final Collection<Integer> periodIds,
-        final Collection<Integer> organisationUnitIds )
+    public int deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds,
+        Collection<Integer> organisationUnitIds )
     {
         final String sql =
             "DELETE FROM aggregatedindicatorvalue " +
@@ -341,7 +312,7 @@ public class JdbcDataMartStore
     // AggregatedMapValue
     // -------------------------------------------------------------------------
 
-    public Collection<AggregatedMapValue> getAggregatedMapValues( final int indicatorId, final int periodId, final int level )
+    public Collection<AggregatedMapValue> getAggregatedMapValues( int indicatorId, int periodId, int level )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -375,7 +346,7 @@ public class JdbcDataMartStore
     // DataValue
     // -------------------------------------------------------------------------
 
-    public Collection<DeflatedDataValue> getDeflatedDataValues( final int dataElementId, final int periodId, final Collection<Integer> sourceIds )
+    public Collection<DeflatedDataValue> getDeflatedDataValues( int dataElementId, int periodId, Collection<Integer> sourceIds )
     {
         final StatementHolder holder = statementManager.getHolder();
             
@@ -403,7 +374,7 @@ public class JdbcDataMartStore
         }
     }
     
-    public DataValue getDataValue( final int dataElementId, final int categoryOptionComboId, final int periodId, final int sourceId )
+    public DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -432,7 +403,7 @@ public class JdbcDataMartStore
         }
     }
     
-    public Map<Operand, String> getDataValueMap( final int periodId, final int sourceId )
+    public Map<Operand, String> getDataValueMap( int periodId, int sourceId )
     {
         final StatementHolder holder = statementManager.getHolder();
             
@@ -471,8 +442,8 @@ public class JdbcDataMartStore
     // CrossTabDataValue
     // -------------------------------------------------------------------------
 
-    public Collection<CrossTabDataValue> getCrossTabDataValues( final Map<Operand, Integer> operandIndexMap, 
-        final Collection<Integer> periodIds, final Collection<Integer> sourceIds )
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<Operand, Integer> operandIndexMap, 
+        Collection<Integer> periodIds, Collection<Integer> sourceIds )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -498,8 +469,7 @@ public class JdbcDataMartStore
         }
     }
     
-    public Collection<CrossTabDataValue> getCrossTabDataValues( final Map<Operand, Integer> operandIndexMap, 
-        final Collection<Integer> periodIds, final int sourceId )
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<Operand, Integer> operandIndexMap, Collection<Integer> periodIds, int sourceId )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -538,7 +508,7 @@ public class JdbcDataMartStore
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private Collection<CrossTabDataValue> getCrossTabDataValues( final ResultSet resultSet, final Map<Operand, Integer> operandIndexMap )
+    private Collection<CrossTabDataValue> getCrossTabDataValues( ResultSet resultSet, Map<Operand, Integer> operandIndexMap )
         throws SQLException
     {
         final Collection<CrossTabDataValue> values = new ArrayList<CrossTabDataValue>();

@@ -129,9 +129,9 @@ public class DataMartServiceTimeDimensionTest
         
         dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
         
-        assertEquals( 100.0, dataMartStore.getAggregatedValue( dataElement, periodA, unit ) );
-        assertEquals( 100.0, dataMartStore.getAggregatedValue( dataElement, periodB, unit ) );
-        assertEquals( 100.0, dataMartStore.getAggregatedValue( dataElement, periodC, unit ) );
+        assertEquals( 100.0, dataMartStore.getAggregatedValue( dataElement, categoryOptionCombo, periodA, unit ) );
+        assertEquals( 100.0, dataMartStore.getAggregatedValue( dataElement, categoryOptionCombo, periodB, unit ) );
+        assertEquals( 100.0, dataMartStore.getAggregatedValue( dataElement, categoryOptionCombo, periodC, unit ) );
     }
 
     @Test
@@ -162,6 +162,6 @@ public class DataMartServiceTimeDimensionTest
 
         dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
         
-        assertEquals( 60.0, dataMartStore.getAggregatedValue( dataElement, periodA, unit ) );
+        assertEquals( 60.0, dataMartStore.getAggregatedValue( dataElement, categoryOptionCombo, periodA, unit ) );
     }
 }

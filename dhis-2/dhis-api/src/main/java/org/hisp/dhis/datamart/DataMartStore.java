@@ -83,16 +83,6 @@ public interface DataMartStore
      * Gets the aggregated value from the datamart table for the given parameters.
      * 
      * @param dataElement The DataElement.
-     * @param period The Period.
-     * @param organisationUnit The OrganisationUnit.
-     * @return the aggregated value, or -1 if no value exists.
-     */
-    double getAggregatedValue( DataElement dataElement, Period period, OrganisationUnit organisationUnit );
-    
-    /**
-     * Gets the aggregated value from the datamart table for the given parameters.
-     * 
-     * @param dataElement The DataElement.
      * @param categoryOptionCombo The DataElementCategoryOptionCombo.
      * @param period The Period.
      * @param organisationUnit The OrganisationUnit.
