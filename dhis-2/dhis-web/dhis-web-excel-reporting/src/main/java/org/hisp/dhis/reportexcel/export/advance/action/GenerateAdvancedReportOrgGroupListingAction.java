@@ -27,13 +27,16 @@ package org.hisp.dhis.reportexcel.export.advance.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelCategory;
@@ -101,8 +104,12 @@ public class GenerateAdvancedReportOrgGroupListingAction
             HSSFSheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
             Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
+            
+            List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>(organisationUnitGroup.getMembers());
+            
+            Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
 
-            this.generateOutPutFile( reportExcel, reportExcelItems, organisationUnitGroup.getMembers(), sheet );
+            this.generateOutPutFile( reportExcel, reportExcelItems, organisationUnits , sheet );
 
         }
 
@@ -114,7 +121,7 @@ public class GenerateAdvancedReportOrgGroupListingAction
     }
 
     private void generateOutPutFile( ReportExcel reportExcel, Collection<ReportExcelItem> reportExcelItems,
-        Set<OrganisationUnit> organisationUnits, HSSFSheet sheet )
+    		List<OrganisationUnit> organisationUnits, HSSFSheet sheet )
     {
         for ( ReportExcelItem reportItem : reportExcelItems )
         {
