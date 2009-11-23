@@ -25,5 +25,8 @@
       <artifactId>dhis-service-user-hibernate</artifactId>
     </dependency>
   </dependencies>
+  <properties>
+    <rootDir>../../</rootDir>
+  </properties>
 </project>
 

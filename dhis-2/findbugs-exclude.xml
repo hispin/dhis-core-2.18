@@ -1,0 +1,5 @@
+<FindBugsFilter>
+     <Match>
+       <Bug code="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
+     </Match>
+</FindBugsFilter>

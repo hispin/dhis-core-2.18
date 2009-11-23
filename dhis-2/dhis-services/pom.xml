@@ -41,4 +41,7 @@
       <artifactId>dhis-support-test</artifactId>
     </dependency>
   </dependencies>
+  <properties>
+    <rootDir>../</rootDir>
+  </properties>
 </project>
