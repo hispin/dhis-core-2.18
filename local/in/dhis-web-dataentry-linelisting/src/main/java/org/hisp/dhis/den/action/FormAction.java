@@ -39,7 +39,7 @@ import java.util.Set;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataEntryForm;
 import org.hisp.dhis.dataset.DataEntryFormService;
@@ -93,9 +93,9 @@ public class FormAction
     }
     
     @SuppressWarnings("unused")
-	private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;    
+	private DataElementCategoryService dataElementCategoryOptionComboService;    
 
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setDataElementCategoryOptionComboService( DataElementCategoryService dataElementCategoryOptionComboService )
     {
     	this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }  
@@ -434,9 +434,10 @@ public class FormAction
         // ---------------------------------------------------------------------
 
         dataElementTypeMap = new HashMap<String, String>();
-        dataElementTypeMap.put( DataElement.TYPE_BOOL, i18n.getString( "yes_no" ) );
-        dataElementTypeMap.put( DataElement.TYPE_INT, i18n.getString( "number" ) );
-        dataElementTypeMap.put( DataElement.TYPE_STRING, i18n.getString( "text" ) );
+        
+        dataElementTypeMap.put( DataElement.VALUE_TYPE_BOOL, i18n.getString( "yes_no" ) );
+        dataElementTypeMap.put( DataElement.VALUE_TYPE_INT, i18n.getString( "number" ) );
+        dataElementTypeMap.put( DataElement.VALUE_TYPE_STRING, i18n.getString( "text" ) );
 
         // ---------------------------------------------------------------------
         // Get the custom data entry form (if any)

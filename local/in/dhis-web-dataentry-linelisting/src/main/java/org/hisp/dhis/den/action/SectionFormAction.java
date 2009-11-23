@@ -307,9 +307,9 @@ public class SectionFormAction
         // ---------------------------------------------------------------------
 
         dataElementTypeMap = new HashMap<String, String>();
-        dataElementTypeMap.put( DataElement.TYPE_BOOL, i18n.getString( "yes_no" ) );
-        dataElementTypeMap.put( DataElement.TYPE_INT, i18n.getString( "number" ) );
-        dataElementTypeMap.put( DataElement.TYPE_STRING, i18n.getString( "text" ) );
+        dataElementTypeMap.put( DataElement.VALUE_TYPE_BOOL, i18n.getString( "yes_no" ) );
+        dataElementTypeMap.put( DataElement.VALUE_TYPE_INT, i18n.getString( "number" ) );
+        dataElementTypeMap.put( DataElement.VALUE_TYPE_STRING, i18n.getString( "text" ) );
 
         return SUCCESS;
     }

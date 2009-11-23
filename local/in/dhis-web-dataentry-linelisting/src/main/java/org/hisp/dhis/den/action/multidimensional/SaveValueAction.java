@@ -33,7 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.den.api.LLDataValue;
 import org.hisp.dhis.den.api.LLDataValueService;
@@ -86,9 +86,9 @@ public class SaveValueAction
         this.selectedStateManager = selectedStateManager;
     }
     
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    private DataElementCategoryService dataElementCategoryOptionComboService;
     
-    public void setDataElementCategoryOptionComboService( DataElementCategoryOptionComboService dataElementCategoryOptionComboService)
+    public void setDataElementCategoryOptionComboService( DataElementCategoryService dataElementCategoryOptionComboService)
     {
     	this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;    	
     }

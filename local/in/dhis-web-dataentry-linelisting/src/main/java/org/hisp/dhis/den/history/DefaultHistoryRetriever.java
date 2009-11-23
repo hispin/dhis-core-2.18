@@ -75,9 +75,9 @@ public class DefaultHistoryRetriever
         Period lastPeriod, int historyLength )
         throws HistoryRetrieverException
     {
-        if ( !dataElement.getType().equals( DataElement.TYPE_INT ) )
+        if ( !dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
         {
-            throw new HistoryRetrieverException( "DataElement is not of type " + DataElement.TYPE_INT + ": "
+            throw new HistoryRetrieverException( "DataElement is not of type " + DataElement.VALUE_TYPE_INT + ": "
                 + dataElement.getShortName() );
         }
 
@@ -153,9 +153,9 @@ public class DefaultHistoryRetriever
             Period lastPeriod, int historyLength )
         throws HistoryRetrieverException
         {
-            if ( !dataElement.getType().equals( DataElement.TYPE_INT ) )
+            if ( !dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
             {
-                throw new HistoryRetrieverException( "DataElement is not of type " + DataElement.TYPE_INT + ": "
+                throw new HistoryRetrieverException( "DataElement is not of type " + DataElement.VALUE_TYPE_INT + ": "
                     + dataElement.getShortName() );
             }
 
