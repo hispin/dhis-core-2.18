@@ -86,7 +86,6 @@ import org.hisp.dhis.importexport.dxf.converter.OrganisationUnitGroupMemberConve
 import org.hisp.dhis.importexport.dxf.converter.OrganisationUnitLevelConverter;
 import org.hisp.dhis.importexport.dxf.converter.OrganisationUnitRelationshipConverter;
 import org.hisp.dhis.importexport.dxf.converter.PeriodConverter;
-import org.hisp.dhis.importexport.dxf.converter.ReportTableCategoryOptionComboConverter;
 import org.hisp.dhis.importexport.dxf.converter.ReportTableConverter;
 import org.hisp.dhis.importexport.dxf.converter.ReportTableDataElementConverter;
 import org.hisp.dhis.importexport.dxf.converter.ReportTableDataSetConverter;
@@ -303,7 +302,6 @@ public class DefaultDXFExportService
             
             thread.registerXMLConverter( new ReportTableConverter( reportTableService ) );
             thread.registerXMLConverter( new ReportTableDataElementConverter( reportTableService ) );
-            thread.registerXMLConverter( new ReportTableCategoryOptionComboConverter( reportTableService ) );
             thread.registerXMLConverter( new ReportTableIndicatorConverter( reportTableService ) );
             thread.registerXMLConverter( new ReportTableDataSetConverter( reportTableService ) );
             thread.registerXMLConverter( new ReportTablePeriodConverter( reportTableService ) );
