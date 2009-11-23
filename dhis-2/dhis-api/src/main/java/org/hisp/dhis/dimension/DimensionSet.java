@@ -43,7 +43,7 @@ public interface DimensionSet
     /**
      * The DimensionSet identifier is on the format 
      * [DimensionType]SEPARATOR_TYPE[id]SEPARATOR_ID[id]SEPARATOR[id], for instance
-     * groupSet_1-2-3 and categoryCombo_1 .
+     * GROUPSET_1-2-3 and CATEGORY_1 .
      */
     String getDimensionSetId();
     
