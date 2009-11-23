@@ -148,11 +148,11 @@ public class DefaultPatientIdentifierService
 
         if ( nextIdentifierIndex.length() < PatientIdentifier.IDENTIFIER_INDEX_LENGTH )
         {
-            String prefix = "0";
+            StringBuilder prefix = new StringBuilder( "0" );
 
             for ( int i = 1; i < PatientIdentifier.IDENTIFIER_INDEX_LENGTH - nextIdentifierIndex.length(); i++ )
             {
-                prefix += "0";
+                prefix.append( "0" );
             }
 
             nextIdentifier = orgUnit.getShortName() + "." + prefix + nextIdentifierIndex;

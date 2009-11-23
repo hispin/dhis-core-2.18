@@ -1,9 +1,5 @@
 package org.hisp.dhis.dataelement.comparator;
 
-import java.util.Comparator;
-
-import org.hisp.dhis.dataelement.DataElementGroupSet;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -30,6 +26,11 @@ import org.hisp.dhis.dataelement.DataElementGroupSet;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.util.Comparator;
+
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+
 /**
  * @author Tran Thanh Tri
  * @version $Id$
@@ -37,10 +38,8 @@ import org.hisp.dhis.dataelement.DataElementGroupSet;
 public class DataElementGroupSetNameComparator
     implements Comparator<DataElementGroupSet>
 {
-
     public int compare( DataElementGroupSet o1, DataElementGroupSet o2 )
     {
         return o1.getName().compareTo( o2.getName() );
     }
-
 }

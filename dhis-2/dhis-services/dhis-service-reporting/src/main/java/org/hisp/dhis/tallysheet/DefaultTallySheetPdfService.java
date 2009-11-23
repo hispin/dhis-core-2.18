@@ -171,32 +171,32 @@ public class DefaultTallySheetPdfService
 
     private PdfPCell createCellsCell( int rows, Font font, int rowWidth )
     {
-        String cellRows = "";
+        StringBuilder cellRows = new StringBuilder();
 
         for ( int i = 0; i < rows; i++ )
         {
             if ( i > 0 )
             {
-                cellRows += "\n";
+                cellRows.append( "\n" );
             }
             
             for ( int j = 0; j < rowWidth; j++ )
             {
                 if ( j % 5 == 0 )
                 {
-                    cellRows += " ";
+                    cellRows.append( " " );
                 }
                 
                 if ( j != 0 && j % 25 == 0 )
                 {
-                    cellRows += "    ";
+                    cellRows.append( "    " );
                 }
                 
-                cellRows += "0";
+                cellRows.append( "0" );
             }
         }
 
-        Paragraph cellParagraph = new Paragraph( cellRows, font );
+        Paragraph cellParagraph = new Paragraph( cellRows.toString(), font );
         PdfPCell cellCell = new PdfPCell( cellParagraph );
         cellCell.setBorderWidth( 0 );
         cellCell.setBorderWidthTop( (float) 0.5 );
