@@ -37,7 +37,7 @@ import org.hisp.dhis.datamart.DataMartExportService;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.system.util.CollectionConversionUtils;
+import static org.hisp.dhis.system.util.ConversionUtils.*;
 
 import com.opensymphony.xwork2.Action;
 
@@ -143,14 +143,10 @@ public class SaveDataMartExportAction
         
         export.setName( name );
         
-        export.setDataElements( CollectionConversionUtils.getSet( 
-            dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) ) );
-        export.setIndicators( CollectionConversionUtils.getSet( 
-            indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) ) );
-        export.setPeriods( CollectionConversionUtils.getSet( 
-            periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) ) );
-        export.setOrganisationUnits( CollectionConversionUtils.getSet( 
-            organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) ) );
+        export.setDataElements( getSet( dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) ) );
+        export.setIndicators( getSet( indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) ) );
+        export.setPeriods( getSet( periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) ) );
+        export.setOrganisationUnits( getSet( organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) ) );
         
         dataMartExportService.saveDataMartExport( export );
         

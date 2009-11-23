@@ -41,7 +41,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reporttable.RelativePeriods;
-import org.hisp.dhis.system.util.CollectionConversionUtils;
+
+import static org.hisp.dhis.system.util.ConversionUtils.*;
 
 import com.opensymphony.xwork2.Action;
 
@@ -271,12 +272,9 @@ public class SaveChartAction
     {
         Chart chart = new Chart();
 
-        List<Indicator> indicators = CollectionConversionUtils.getList( 
-            indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) );
-        List<Period> periods = CollectionConversionUtils.getList( 
-            periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) );        
-        List<OrganisationUnit> organisationUnits = CollectionConversionUtils.getList( 
-            organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) );
+        List<Indicator> indicators = getList( indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) );
+        List<Period> periods = getList( periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) );        
+        List<OrganisationUnit> organisationUnits = getList( organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) );
 
         chart.setId( id != null ? id : 0 );
         chart.setTitle( title );
