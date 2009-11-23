@@ -57,7 +57,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="dataElementCategoryOptionComboService">
 			<ref
-				bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+				bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>
 		<property name="dashBoardService">
 			<ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
@@ -517,7 +517,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		</property>
 		<property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>
 		<property name="indicatorService">
 			<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
@@ -539,7 +539,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="dataElementCategoryOptionComboService">
 			<ref
-				bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+				bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>
 	</bean>
 	
@@ -651,7 +651,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="dataElementCategoryOptionComboService">
 			<ref
-				bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+				bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		</property>
 	</bean>
 	

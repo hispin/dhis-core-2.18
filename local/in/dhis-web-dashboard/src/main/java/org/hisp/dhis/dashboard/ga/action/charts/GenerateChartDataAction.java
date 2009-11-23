@@ -54,7 +54,7 @@ import org.hisp.dhis.dashboard.util.SurveyData;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
@@ -88,10 +88,10 @@ public class GenerateChartDataAction
     // Dependencies
     // -------------------------------------------------------------------------
     
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    private DataElementCategoryService  dataElementCategoryOptionComboService;
 
     public void setDataElementCategoryOptionComboService(
-        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    		DataElementCategoryService  dataElementCategoryOptionComboService )
     {
         this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
@@ -535,8 +535,8 @@ public class GenerateChartDataAction
                     DataElementCategoryOptionCombo decoc = dataElementCategoryOptionComboService
                         .getDataElementCategoryOptionCombo( optionComboId );
                     selectedOptionComboList.add( decoc );
-                    chartTitle += dataElement.getName() + " : "
-                        + dataElementCategoryOptionComboService.getOptionNames( decoc ) + ", ";
+                    chartTitle += dataElement.getName() + " : " + decoc.getName() + ", ";
+                    
                 }
             }
             else
@@ -776,12 +776,11 @@ public class GenerateChartDataAction
                      */
                     {
                         series1[countForServiceList] = dElement.getName() + " : "
-                            + dataElementCategoryOptionComboService.getOptionNames( decoc );
+                            + decoc.getName();
                         series2[countForServiceList] = dElement.getName() + " : "
-                            + dataElementCategoryOptionComboService.getOptionNames( decoc ) + " (Target)";
+                            + decoc.getName() + " (Target)";
                     }
-                    yseriesList.add( dElement.getName() + " : "
-                        + dataElementCategoryOptionComboService.getOptionNames( decoc ) );
+                    yseriesList.add( dElement.getName() + " : " + decoc.getName() );
                 }
                 else
                 {
@@ -1219,13 +1218,10 @@ public class GenerateChartDataAction
                      * decoc ) + " (Target)"; } else
                      */
                     {
-                        series1[countForServiceList] = dElement.getName() + " : "
-                            + dataElementCategoryOptionComboService.getOptionNames( decoc );
-                        series2[countForServiceList] = dElement.getName() + " : "
-                            + dataElementCategoryOptionComboService.getOptionNames( decoc ) + " (Target)";
+                        series1[countForServiceList] = dElement.getName() + " : " + decoc.getName();
+                        series2[countForServiceList] = dElement.getName() + " : " + decoc.getName() + " (Target)";
                     }
-                    yseriesList.add( dElement.getName() + " : "
-                        + dataElementCategoryOptionComboService.getOptionNames( decoc ) );
+                    yseriesList.add( dElement.getName() + " : " + decoc.getName() );
                 }
                 else
                 {
