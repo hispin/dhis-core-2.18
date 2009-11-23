@@ -28,11 +28,13 @@ package org.hisp.dhis.reportexcel.export.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelOganiztionGroupListing;
@@ -92,9 +94,11 @@ public class GenerateReportOrganizationGroupListingAction
                 List<OrganisationUnit> childrenOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnit
                     .getChildren() );
 
-                Collection<OrganisationUnit> organisationUnits = organisationUnitGroup.getMembers();
+                List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>(organisationUnitGroup.getMembers());
 
                 organisationUnits.retainAll( childrenOrganisationUnits );
+                
+                Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
 
                 int beginChapter = rowBegin;
                 if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.ORGANISATION )
