@@ -432,55 +432,6 @@ public class JdbcDataMartStore
         }
     }
     
-    public Collection<DataValue> getDataValues( final int dataElementId, final Collection<Integer> periodIds, final Collection<Integer> sourceIds )
-    {
-        if ( sourceIds != null && sourceIds.size() > 0 && periodIds != null && periodIds.size() > 0 )
-        {
-            final StatementHolder holder = statementManager.getHolder();
-            
-            try
-            {
-                final String sql = 
-                    "SELECT periodid, value " +
-                    "FROM datavalue " +
-                    "WHERE dataelementid = " + dataElementId + " " +
-                    "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
-                    "AND sourceid IN ( " + getCommaDelimitedString( sourceIds ) + " ) " +
-                    "GROUP BY periodid";
-                
-                final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-                
-                final Collection<DataValue> list = new ArrayList<DataValue>();
-                
-                while ( resultSet.next() )
-                {
-                    final Period period = new Period();
-                    
-                    period.setId( Integer.parseInt( resultSet.getString( 1 ) ) );
-                    
-                    final DataValue dataValue = new DataValue();
-                    
-                    dataValue.setPeriod( period );
-                    dataValue.setValue( resultSet.getString( 2 ) );
-                    
-                    list.add( dataValue );
-                }
-                
-                return list;
-            }
-            catch ( SQLException ex )
-            {
-                throw new RuntimeException( "Failed to get DataValues", ex );
-            }
-            finally
-            {
-                holder.close();
-            }
-        }
-        
-        return new ArrayList<DataValue>();
-    }
-
     public Map<Operand, String> getDataValueMap( final int periodId, final int sourceId )
     {
         final StatementHolder holder = statementManager.getHolder();

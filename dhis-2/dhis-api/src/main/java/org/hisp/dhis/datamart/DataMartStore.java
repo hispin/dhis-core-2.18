@@ -160,7 +160,7 @@ public interface DataMartStore
      * @param organisationUnitIds the OrganisationUnit identifiers.
      * @return a collection of AggregatedIndicatorValues.
      */
-    Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> indicatorIds, 
+    Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     
     /**
@@ -218,17 +218,6 @@ public interface DataMartStore
      * @param sourceId the Source identifier.
      */
     DataValue getDataValue( final int dataElementId, final int categoryOptionComboId, final int periodId, final int sourceId );
-    
-    /**
-     * Gets all DataValues for the given DataElement identifer, collection of Period identifers, and collection of Sources
-     * grouped by Period.
-     * 
-     * @param dataElementId the DataElement identifier.
-     * @param periodIds the collection of Period identifiers.
-     * @param sourceIds the collection of Source identifiers.
-     * @return collection of DataValues.
-     */
-    Collection<DataValue> getDataValues( int dataElementId, Collection<Integer> periodIds, Collection<Integer> sourceIds );
     
     /**
      * Gets a Map with entries containing Operand and value for all DataValues registered for the given Period and Source.
