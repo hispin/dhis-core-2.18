@@ -27,7 +27,7 @@ package org.hisp.dhis.importexport.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.ImportParams;
@@ -41,7 +41,7 @@ public class AbstractDataValueConverter
 {
     protected DataValueService dataValueService;
     
-    protected DataMartStore dataMartStore;
+    protected DataMartService dataMartService;
     
     protected ImportParams params;
     
@@ -76,7 +76,7 @@ public class AbstractDataValueConverter
             return null;
         }
         
-        return dataMartStore.getDataValue( object.getDataElement().getId(), object.getOptionCombo().getId(), 
+        return dataMartService.getDataValue( object.getDataElement().getId(), object.getOptionCombo().getId(), 
             object.getPeriod().getId(), object.getSource().getId() );
     }
     

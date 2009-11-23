@@ -27,427 +27,174 @@ package org.hisp.dhis.datamart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.datamart.util.ParserUtil.getDataElementIdsInExpression;
-
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
+import org.hisp.dhis.aggregation.AggregatedDataValue;
+import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.Operand;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datamart.DataMartStore;
-import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
-import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
-import org.hisp.dhis.datamart.calculateddataelement.CalculatedDataElementDataMart;
-import org.hisp.dhis.datamart.crosstab.CrossTabService;
-import org.hisp.dhis.datamart.dataelement.DataElementDataMart;
-import org.hisp.dhis.datamart.indicator.IndicatorDataMart;
-import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.datamart.engine.DataMartEngine;
+import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
+import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.system.util.ConversionUtils;
-import org.hisp.dhis.system.util.TimeUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultDataMartService.java 6260 2008-11-11 15:58:43Z larshelg $
  */
 public class DefaultDataMartService
     implements DataMartService
 {
-    private static final Log log = LogFactory.getLog( DefaultDataMartService.class );
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    protected AggregationCache aggregationCache;
-        
-    public void setAggregationCache( AggregationCache aggregationCache )
-    {
-        this.aggregationCache = aggregationCache;
-    }
+    private DataMartEngine dataMartEngine;
     
-    private DataMartStore dataMartStore;
+    public void setDataMartEngine( DataMartEngine dataMartEngine )
+    {
+        this.dataMartEngine = dataMartEngine;
+    }
 
+    private DataMartStore dataMartStore;
+    
     public void setDataMartStore( DataMartStore dataMartStore )
     {
         this.dataMartStore = dataMartStore;
     }
 
-    private CrossTabService crossTabService;
+    private GenericIdentifiableObjectStore<DataMartExport> dataMartExportStore;
 
-    public void setCrossTabService( CrossTabService crossTabService )
+    public void setDataMartExportStore( GenericIdentifiableObjectStore<DataMartExport> dataMartExportStore )
     {
-        this.crossTabService = crossTabService;
+        this.dataMartExportStore = dataMartExportStore;
     }
 
-    private DataElementDataMart dataElementDataMart;
-
-    public void setDataElementDataMart( DataElementDataMart dataElementDataMart )
+    // -------------------------------------------------------------------------
+    // Export
+    // -------------------------------------------------------------------------
+    
+    public int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
-        this.dataElementDataMart = dataElementDataMart;
+        return dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
     }
 
-    private IndicatorDataMart indicatorDataMart;
-
-    public void setIndicatorDataMart( IndicatorDataMart indicatorDataMart )
+    // ----------------------------------------------------------------------
+    // AggregatedDataValue
+    // ----------------------------------------------------------------------
+    
+    public Double getAggregatedValue( DataElement dataElement, Period period, OrganisationUnit organisationUnit )
     {
-        this.indicatorDataMart = indicatorDataMart;
+        return dataMartStore.getAggregatedValue( dataElement, period, organisationUnit );
     }
     
-    private CalculatedDataElementDataMart calculatedDataElementDataMart;
-
-    public void setCalculatedDataElementDataMart( CalculatedDataElementDataMart calculatedDataElementDataMart )
+    public Double getAggregatedValue( DataElement dataElement, DimensionOption dimensionOption, Period period, OrganisationUnit organisationUnit )
     {
-        this.calculatedDataElementDataMart = calculatedDataElementDataMart;
+        return dataMartStore.getAggregatedValue( dataElement, dimensionOption, period, organisationUnit );
     }
     
-    private DataElementAggregator sumIntAggregator;
-
-    public void setSumIntAggregator( DataElementAggregator sumIntDataElementAggregator )
+    public Double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit organisationUnit )
     {
-        this.sumIntAggregator = sumIntDataElementAggregator;
-    }
-
-    private DataElementAggregator averageIntAggregator;
-
-    public void setAverageIntAggregator( DataElementAggregator averageIntDataElementAggregator )
-    {
-        this.averageIntAggregator = averageIntDataElementAggregator;
-    }
-
-    private DataElementAggregator sumBoolAggregator;
-
-    public void setSumBoolAggregator( DataElementAggregator sumBooleanDataElementAggregator )
-    {
-        this.sumBoolAggregator = sumBooleanDataElementAggregator;
-    }
-
-    private DataElementAggregator averageBoolAggregator;
-
-    public void setAverageBoolAggregator( DataElementAggregator averageBooleanDataElementAggregator )
-    {
-        this.averageBoolAggregator = averageBooleanDataElementAggregator;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
+        return dataMartStore.getAggregatedValue( dataElement, categoryOptionCombo, period, organisationUnit );
     }
     
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
+    public Collection<AggregatedDataValue> getAggregatedDataValues( int dataElementId, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
-        this.indicatorService = indicatorService;
+        return dataMartStore.getAggregatedDataValues( dataElementId, periodIds, organisationUnitIds );
     }
     
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
+    public int deleteAggregatedDataValues()
     {
-        this.periodService = periodService;
+        return dataMartStore.deleteAggregatedDataValues();
     }
 
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
+    // -------------------------------------------------------------------------
+    // AggregatedIndicatorValue
+    // -------------------------------------------------------------------------
+    
+    public Double getAggregatedValue( Indicator indicator, Period period, OrganisationUnit unit )
     {
-        this.categoryService = categoryService;
+        return dataMartStore.getAggregatedValue( indicator, period, unit );
+    }
+    
+    public Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    {
+        return dataMartStore.getAggregatedIndicatorValues( periodIds, organisationUnitIds );
+    }
+    
+    public Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> indicatorIds,
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    {
+        return dataMartStore.getAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
+    }
+    
+    public int deleteAggregatedIndicatorValues()
+    {
+        return dataMartStore.deleteAggregatedIndicatorValues();
     }
 
-    private ExpressionService expressionService;
-
-    public void setExpressionService( ExpressionService expressionService )
+    // ----------------------------------------------------------------------
+    // DataValue
+    // ----------------------------------------------------------------------
+    
+    public Collection<DeflatedDataValue> getDeflatedDataValues( int dataElementId, int periodId, Collection<Integer> sourceIds )
     {
-        this.expressionService = expressionService;
+        return dataMartStore.getDeflatedDataValues( dataElementId, periodId, sourceIds );
+    }
+    
+    public DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId )
+    {
+        return dataMartStore.getDataValue( dataElementId, categoryOptionComboId, periodId, sourceId );
+    }
+    
+    // ----------------------------------------------------------------------
+    // Period
+    // ----------------------------------------------------------------------
+    
+    public int deleteRelativePeriods()
+    {
+        return dataMartStore.deleteRelativePeriods();
     }
     
     // -------------------------------------------------------------------------
-    // DataMartInternalProcess implementation
+    // DataMartExport
     // -------------------------------------------------------------------------
+    
+    @Transactional
+    public void saveDataMartExport( DataMartExport export )
+    {
+        dataMartExportStore.save( export );
+    }
 
     @Transactional
-    public int export( final Collection<Integer> dataElementIds, final Collection<Integer> indicatorIds,
-        final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds )
-    {   
-        int count = 0;
-             
-        log.info( "Export process started" );
-        
-        TimeUtils.start();
-
-        //setMessage( "deleting_existing_aggregated_data" );
-
-        // ---------------------------------------------------------------------
-        // Delete existing aggregated data
-        // ---------------------------------------------------------------------
-
-        dataMartStore.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
-        
-        dataMartStore.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
-        
-        log.info( "Deleted existing aggregated data: " + TimeUtils.getHMS() );
-
-        // ---------------------------------------------------------------------
-        // Crosstabulate data
-        // ---------------------------------------------------------------------
-
-        final Set<Integer> nonCalculatedDataElementIds = filterCalculatedDataElementIds( dataElementIds, false );
-        final Set<Integer> calculatedDataElementIds = filterCalculatedDataElementIds( dataElementIds, true );
-        
-        final Set<Integer> dataElementInIndicatorIds = getDataElementIdsInIndicators( indicatorIds );
-        final Set<Integer> dataElementInCalculatedDataElementIds = getDataElementIdsInCalculatedDataElements( calculatedDataElementIds );
-        
-        final Set<Integer> allDataElementIds = new HashSet<Integer>();
-        allDataElementIds.addAll( nonCalculatedDataElementIds );
-        allDataElementIds.addAll( dataElementInIndicatorIds );
-        allDataElementIds.addAll( dataElementInCalculatedDataElementIds );
-
-        final Collection<Operand> allDataElementOperands = categoryService.getOperandsByIds( allDataElementIds );
-        final Collection<Operand> dataElementInIndicatorOperands = categoryService.getOperandsByIds( dataElementInIndicatorIds );
-        final Collection<Operand> dataElementInCalculatedDataElementOperands = categoryService.getOperandsByIds( dataElementInCalculatedDataElementIds );
-
-        // ---------------------------------------------------------------------
-        // Validate crosstabtable
-        // ---------------------------------------------------------------------
-
-        if ( crossTabService.validateCrossTabTable( allDataElementOperands ) != 0 )
-        {
-            int excess = crossTabService.validateCrossTabTable( allDataElementOperands );
-
-            log.warn( "Cannot crosstabulate since the number of data elements exceeded maximum columns: " + excess );
-            
-            //setMessage( "could_not_export_too_many_data_elements" );
-            
-            return 0;
-        }           
-
-        log.info( "Validated crosstab table: " + TimeUtils.getHMS() );
-        
-        //setMessage( "crosstabulating_data" );
-
-        final Collection<Operand> emptyOperands = crossTabService.populateCrossTabTable( allDataElementOperands, getIntersectingIds( periodIds ), 
-            getIdsWithChildren( organisationUnitIds ) );
-
-        log.info( "Populated crosstab table: " + TimeUtils.getHMS() );
-                
-        crossTabService.trimCrossTabTable( emptyOperands );
-
-        log.info( "Trimmed crosstab table: " + TimeUtils.getHMS() );
-        
-        final Collection<DataElement> dataElements = dataElementService.getDataElements( nonCalculatedDataElementIds );
-        
-        final Collection<Operand> sumIntOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_SUM, DataElement.VALUE_TYPE_INT );
-        final Collection<Operand> averageIntOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_AVERAGE, DataElement.VALUE_TYPE_INT );
-        final Collection<Operand> sumBooleanOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_SUM, DataElement.VALUE_TYPE_BOOL );
-        final Collection<Operand> averageBooleanOperands = getOperands( dataElements, DataElement.AGGREGATION_OPERATOR_AVERAGE, DataElement.VALUE_TYPE_BOOL );
-
-        // ---------------------------------------------------------------------
-        // Data element export
-        // ---------------------------------------------------------------------
-
-        //setMessage( "exporting_data_for_data_elements" );
-
-        if ( sumIntOperands.size() > 0 )
-        {
-            count += dataElementDataMart.exportDataValues( sumIntOperands, periodIds, organisationUnitIds, sumIntAggregator );
-        
-            log.info( "Exported values for data elements with sum aggregation operator of type number (" + sumIntOperands.size() + "): " + TimeUtils.getHMS() );
-        }
-
-        if ( averageIntOperands.size() > 0 )
-        {            
-            count += dataElementDataMart.exportDataValues( averageIntOperands, periodIds, organisationUnitIds, averageIntAggregator );
-        
-            log.info( "Exported values for data elements with average aggregation operator of type number (" + averageIntOperands.size() + "): " + TimeUtils.getHMS() );
-        }
-
-        if ( sumBooleanOperands.size() > 0 )
-        {
-            count += dataElementDataMart.exportDataValues( sumBooleanOperands, periodIds, organisationUnitIds, sumBoolAggregator );
-            
-            log.info( "Exported values for data elements with sum aggregation operator of type yes/no (" + sumBooleanOperands.size() + "): " + TimeUtils.getHMS() );
-        }
-
-        if ( averageBooleanOperands.size() > 0 )
-        {
-            count += dataElementDataMart.exportDataValues( averageBooleanOperands, periodIds, organisationUnitIds, averageBoolAggregator );
-            
-            log.info( "Exported values for data elements with average aggregation operator of type yes/no (" + averageBooleanOperands.size() + "): " + TimeUtils.getHMS() );
-        }
-
-        //setMessage( "exporting_data_for_indicators" );
-
-        // ---------------------------------------------------------------------
-        // Indicator export
-        // ---------------------------------------------------------------------
-
-        if ( indicatorIds != null && indicatorIds.size() > 0 )
-        {
-            count += indicatorDataMart.exportIndicatorValues( indicatorIds, periodIds, organisationUnitIds, dataElementInIndicatorOperands );
-            
-            log.info( "Exported values for indicators (" + indicatorIds.size() + "): " + TimeUtils.getHMS() );
-        }
-
-        //setMessage( "exporting_data_for_calculated_data_elements" );
-
-        // ---------------------------------------------------------------------
-        // Calculated data element export
-        // ---------------------------------------------------------------------
-
-        if ( calculatedDataElementIds != null && calculatedDataElementIds.size() > 0 )
-        {
-            count += calculatedDataElementDataMart.exportCalculatedDataElements( calculatedDataElementIds, periodIds, organisationUnitIds, dataElementInCalculatedDataElementOperands );
-            
-            log.info( "Exported values for calculated data elements (" + calculatedDataElementIds.size() + "): " + TimeUtils.getHMS() );
-        }
-
-        crossTabService.dropCrossTabTable();
-        
-        log.info( "Export process completed: " + TimeUtils.getHMS() );
-        
-        TimeUtils.stop();
-
-        //setMessage( "export_process_done" );
-        
-        aggregationCache.clearCache();
-        
-        return count;
+    public void deleteDataMartExport( DataMartExport export )
+    {
+        dataMartExportStore.delete( export );
     }
 
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
+    @Transactional
+    public DataMartExport getDataMartExport( int id )
+    {
+        return dataMartExportStore.get( id );
+    }
 
-    /**
-     * Sorts calculated data elements from non-calculated based on the given collection
-     * of identifiers and flag.
-     */
-    private Set<Integer> filterCalculatedDataElementIds( final Collection<Integer> dataElementIds, boolean calculated )
+    @Transactional
+    public Collection<DataMartExport> getAllDataMartExports()
     {
-        final Set<Integer> identifiers = new HashSet<Integer>();
-        
-        for ( final Integer id : dataElementIds )
-        {
-            final DataElement element = dataElementService.getDataElement( id );
-            
-            if ( ( element instanceof CalculatedDataElement ) == calculated )
-            {
-                identifiers.add( id );
-            }
-        }
-        
-        return identifiers;
+        return dataMartExportStore.getAll();
     }
-    
-    /**
-     * Returns all data element identifiers included in the indicators in the given 
-     * identifier collection.
-     */
-    private Set<Integer> getDataElementIdsInIndicators( final Collection<Integer> indicatorIds )
+
+    @Transactional
+    public DataMartExport getDataMartExportByName( String name )
     {
-        final Set<Integer> identifiers = new HashSet<Integer>( indicatorIds.size() );
-        
-        for ( final Integer id : indicatorIds )
-        {
-            final Indicator indicator = indicatorService.getIndicator( id );
-            
-            identifiers.addAll( getDataElementIdsInExpression( indicator.getNumerator() ) );
-            identifiers.addAll( getDataElementIdsInExpression( indicator.getDenominator() ) );            
-        }
-        
-        return identifiers;
-    }
-    
-    /**
-     * Returns all data element identifiers included in the calculated data elements
-     * in the given identifier collection.
-     */
-    private Set<Integer> getDataElementIdsInCalculatedDataElements( final Collection<Integer> calculatedDataElementIds )
-    {
-        final Set<Integer> identifiers = new HashSet<Integer>();
-        
-        for ( final Integer id : calculatedDataElementIds )
-        {
-            final Set<DataElement> dataElements = expressionService.getDataElementsInCalculatedDataElement( id );
-            
-            if ( dataElements != null )
-            {
-                identifiers.addAll( ConversionUtils.getIdentifiers( DataElement.class, dataElements ) );
-            }
-        }
-        
-        return identifiers;
-    }
-        
-    /**
-     * Returns the idenfifiers in given collection including all of its children.
-     */
-    private Collection<Integer> getIdsWithChildren( final Collection<Integer> organisationUnitIds )
-    {
-        final OrganisationUnitHierarchy hierarchy = aggregationCache.getLatestOrganisationUnitHierarchy();
-        
-        final Set<Integer> identifers = new HashSet<Integer>( organisationUnitIds.size() );
-        
-        for ( final Integer id : organisationUnitIds )
-        {
-            identifers.addAll( aggregationCache.getChildren( hierarchy, id ) );
-        }
-        
-        return identifers;
-    }
-    
-    /**
-     * Returns the identifiers of the periods in the given collection including 
-     * all intersecting periods.
-     */
-    private Collection<Integer> getIntersectingIds( final Collection<Integer> periodIds )
-    {
-        final Set<Integer> identifiers = new HashSet<Integer>( periodIds.size() );
-        
-        for ( final Integer id : periodIds )
-        {
-            final Period period = periodService.getPeriod( id );
-            
-            final Collection<Period> periods = periodService.getIntersectingPeriods( period.getStartDate(), period.getEndDate() );
-            
-            identifiers.addAll( ConversionUtils.getIdentifiers( Period.class, periods ) );
-        }
-        
-        return identifiers;
-    }
-    
-    /**
-     * Sorts out the data element identifers of the given aggregation operator and 
-     * the given type.
-     */
-    private Collection<Operand> getOperands( final Collection<DataElement> dataElements, String aggregationOperator, String valueType )
-    {
-        final Collection<Integer> section = new ArrayList<Integer>();
-        
-        for ( final DataElement element : dataElements )
-        {
-            if ( element.getAggregationOperator().equals( aggregationOperator ) && element.getType().equals( valueType ) )
-            {
-                section.add( element.getId() );
-            }
-        }
-        
-        return categoryService.getOperandsByIds( section );
+        return dataMartExportStore.getByName( name );
     }
 }

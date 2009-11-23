@@ -28,7 +28,7 @@ package org.hisp.dhis.datamart.action;
  */
 
 import org.hisp.dhis.datamart.DataMartExport;
-import org.hisp.dhis.datamart.DataMartExportService;
+import org.hisp.dhis.datamart.DataMartService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -39,11 +39,11 @@ import com.opensymphony.xwork2.Action;
 public class RemoveDataMartExportAction
     implements Action
 {
-    private DataMartExportService dataMartExportService;
+    private DataMartService dataMartService;
 
-    public void setDataMartExportService( DataMartExportService dataMartExportService )
+    public void setDataMartService( DataMartService dataMartService )
     {
-        this.dataMartExportService = dataMartExportService;
+        this.dataMartService = dataMartService;
     }
 
     private Integer id;
@@ -57,11 +57,11 @@ public class RemoveDataMartExportAction
     {
         if ( id != null )
         {
-            DataMartExport export = dataMartExportService.getDataMartExport( id );
+            DataMartExport export = dataMartService.getDataMartExport( id );
             
             if ( export != null )
             {
-                dataMartExportService.deleteDataMartExport( export );
+                dataMartService.deleteDataMartExport( export );
             }
         }
         

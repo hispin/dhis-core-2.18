@@ -1,4 +1,4 @@
-package org.hisp.dhis.datamart;
+package org.hisp.dhis.datamart.engine;
 
 /*
  * Copyright (c) 2004-2007, University of Oslo
@@ -31,46 +31,9 @@ import java.util.Collection;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public interface DataMartExportService
+public interface DataMartEngine
 {
-    String ID = DataMartExportService.class.getName();
-    
-    /**
-     * Saves a DataMartExport.
-     * 
-     * @param export the DataMartExport to save.
-     */
-    void saveDataMartExport( DataMartExport export );
-    
-    /**
-     * Retrieves the DataMartExport with the given identifier.
-     * 
-     * @param id the identifier of the DataMartExport.
-     * @return the DataMartExport.
-     */
-    DataMartExport getDataMartExport( int id );
-    
-    /**
-     * Deletes a DataMartExport.
-     * 
-     * @param export the DataMartExport to delete.
-     */
-    void deleteDataMartExport( DataMartExport export );
-    
-    /**
-     * Retrieves all DataMartExports.
-     * 
-     * @return a Collection of DataMartExports.
-     */
-    Collection<DataMartExport> getAllDataMartExports();
-    
-    /**
-     * Retrieves the DataMartExport with the given name.
-     * 
-     * @param name the name of the DataMartExport to retrieve.
-     * @return the DataMartExport.
-     */
-    DataMartExport getDataMartExportByName( String name );
+    int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
 }

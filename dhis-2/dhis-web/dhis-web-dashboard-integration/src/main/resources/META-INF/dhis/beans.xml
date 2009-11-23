@@ -136,7 +136,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
     <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="dataMartExportService" ref="org.hisp.dhis.datamart.DataMartExportService"/>
+    <property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService"/>
   </bean>
   
   <bean id="org.hisp.dhis.dashboard.action.RemoveOlapUrlAction"

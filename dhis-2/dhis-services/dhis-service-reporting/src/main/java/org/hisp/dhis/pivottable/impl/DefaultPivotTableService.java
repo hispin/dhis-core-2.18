@@ -34,7 +34,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
-import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -57,12 +57,12 @@ public class DefaultPivotTableService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataMartStore dataMartStore;
-
-    public void setDataMartStore( DataMartStore dataMartStore )
+    private DataMartService dataMartService;
+    
+    public void setDataMartService( DataMartService dataMartService )
     {
-        this.dataMartStore = dataMartStore;
-    }
+        this.dataMartService = dataMartService;
+    }        
 
     private IndicatorService indicatorService;
 
@@ -106,7 +106,7 @@ public class DefaultPivotTableService
         {
             indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
             
-            indicatorValues = dataMartStore.getAggregatedIndicatorValues(
+            indicatorValues = dataMartService.getAggregatedIndicatorValues(
                 ConversionUtils.getIdentifiers( Period.class, periods ), 
                 ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );
         }
@@ -114,7 +114,7 @@ public class DefaultPivotTableService
         {
             indicators = new ArrayList<Indicator>( indicatorService.getIndicatorGroup( indicatorGroupId ).getMembers() );
             
-            indicatorValues = dataMartStore.getAggregatedIndicatorValues(
+            indicatorValues = dataMartService.getAggregatedIndicatorValues(
                 ConversionUtils.getIdentifiers( Indicator.class, indicators ),
                 ConversionUtils.getIdentifiers( Period.class, periods ), 
                 ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );            

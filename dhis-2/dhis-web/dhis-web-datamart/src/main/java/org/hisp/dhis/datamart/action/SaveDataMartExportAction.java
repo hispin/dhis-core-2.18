@@ -28,16 +28,16 @@ package org.hisp.dhis.datamart.action;
  */
 
 import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
+import static org.hisp.dhis.system.util.ConversionUtils.getSet;
 
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartExport;
-import org.hisp.dhis.datamart.DataMartExportService;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
-import static org.hisp.dhis.system.util.ConversionUtils.*;
 
 import com.opensymphony.xwork2.Action;
 
@@ -51,14 +51,14 @@ public class SaveDataMartExportAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
-    private DataMartExportService dataMartExportService;
 
-    public void setDataMartExportService( DataMartExportService dataMartExportService )
+    private DataMartService dataMartService;
+
+    public void setDataMartService( DataMartService dataMartService )
     {
-        this.dataMartExportService = dataMartExportService;
+        this.dataMartService = dataMartService;
     }
-    
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -139,7 +139,7 @@ public class SaveDataMartExportAction
     
     public String execute()
     {
-        DataMartExport export = id == null ? new DataMartExport() : dataMartExportService.getDataMartExport( id );
+        DataMartExport export = id == null ? new DataMartExport() : dataMartService.getDataMartExport( id );
         
         export.setName( name );
         
@@ -148,7 +148,7 @@ public class SaveDataMartExportAction
         export.setPeriods( getSet( periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) ) );
         export.setOrganisationUnits( getSet( organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) ) );
         
-        dataMartExportService.saveDataMartExport( export );
+        dataMartService.saveDataMartExport( export );
         
         return SUCCESS;
     }

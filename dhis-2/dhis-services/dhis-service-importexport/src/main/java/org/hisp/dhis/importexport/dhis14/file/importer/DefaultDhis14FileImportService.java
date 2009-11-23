@@ -47,7 +47,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
@@ -225,11 +225,11 @@ public class DefaultDhis14FileImportService
         this.dataValueService = dataValueService;
     }
     
-    private DataMartStore dataMartStore;
+    private DataMartService dataMartService;
     
-    public void setDataMartStore( DataMartStore dataMartStore )
+    public void setDataMartService( DataMartService dataMartService )
     {
-        this.dataMartStore = dataMartStore;
+        this.dataMartService = dataMartService;
     }
 
     private ImportAnalyser importAnalyser;
@@ -751,7 +751,7 @@ public class DefaultDhis14FileImportService
         RowHandler rowHandler = new RoutineDataValueRowHandler( batchHandler,
             importDataValueBatchHandler,
             dataValueService,
-            dataMartStore,
+            dataMartService,
             objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
             objectMappingGenerator.getPeriodMapping( params.skipMapping() ),
             objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),
@@ -820,7 +820,7 @@ public class DefaultDhis14FileImportService
         RowHandler rowHandler = new SemiPermanentDataValueRowHandler( batchHandler,
             importDataValueBatchHandler,
             dataValueService,
-            dataMartStore,
+            dataMartService,
             objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
             objectMappingGenerator.getPeriodObjectMapping( params.skipMapping() ),
             objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ),

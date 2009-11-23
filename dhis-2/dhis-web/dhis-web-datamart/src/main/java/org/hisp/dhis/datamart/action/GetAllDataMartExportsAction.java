@@ -32,7 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.datamart.DataMartExport;
-import org.hisp.dhis.datamart.DataMartExportService;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datamart.comparator.DataMartExportComparator;
 
 import com.opensymphony.xwork2.Action;
@@ -48,11 +48,11 @@ public class GetAllDataMartExportsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataMartExportService dataMartExportService;
+    private DataMartService dataMartService;
 
-    public void setDataMartExportService( DataMartExportService dataMartExportService )
+    public void setDataMartService( DataMartService dataMartService )
     {
-        this.dataMartExportService = dataMartExportService;
+        this.dataMartService = dataMartService;
     }
 
     // -------------------------------------------------------------------------
@@ -72,7 +72,7 @@ public class GetAllDataMartExportsAction
 
     public String execute()
     {
-        exports = new ArrayList<DataMartExport>( dataMartExportService.getAllDataMartExports() );
+        exports = new ArrayList<DataMartExport>( dataMartService.getAllDataMartExports() );
         
         Collections.sort( exports, new DataMartExportComparator() );
         

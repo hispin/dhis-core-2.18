@@ -28,13 +28,14 @@ package org.hisp.dhis.datamart.action;
  */
 
 import static org.hisp.dhis.datamart.DataMartInternalProcess.PROCESS_TYPE;
-import static org.hisp.dhis.util.InternalProcessUtil.*;
+import static org.hisp.dhis.util.InternalProcessUtil.PROCESS_KEY_DATAMART;
+import static org.hisp.dhis.util.InternalProcessUtil.setCurrentRunningProcess;
 
 import org.amplecode.cave.process.ProcessCoordinator;
 import org.amplecode.cave.process.ProcessExecutor;
 import org.hisp.dhis.datamart.DataMartExport;
-import org.hisp.dhis.datamart.DataMartExportService;
 import org.hisp.dhis.datamart.DataMartInternalProcess;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -63,14 +64,14 @@ public class ExportDataMartExportAction
     {
         this.currentUserService = currentUserService;
     }
-    
-    private DataMartExportService dataMartExportService;
 
-    public void setDataMartExportService( DataMartExportService dataMartExportService )
+    private DataMartService dataMartService;
+
+    public void setDataMartService( DataMartService dataMartService )
     {
-        this.dataMartExportService = dataMartExportService;
+        this.dataMartService = dataMartService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -94,7 +95,7 @@ public class ExportDataMartExportAction
 
         DataMartInternalProcess process = (DataMartInternalProcess) executor.getProcess();
                 
-        DataMartExport export = dataMartExportService.getDataMartExport( id );
+        DataMartExport export = dataMartService.getDataMartExport( id );
         
         process.setProperties( export );
 

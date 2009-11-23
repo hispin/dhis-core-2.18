@@ -32,7 +32,7 @@ import java.util.Map;
 import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.GroupMemberType;
@@ -74,7 +74,7 @@ public class SemiPermanentDataValueRowHandler
     public SemiPermanentDataValueRowHandler( BatchHandler<DataValue> batchHandler,
         BatchHandler<ImportDataValue> importDataValueBatchHandler,
         DataValueService dataValueService,
-        DataMartStore dataMartStore,
+        DataMartService dataMartService,
         Map<Object, Integer> dataElementMapping,
         Map<Period, Integer> periodMapping, 
         Map<Object, Integer> organisationUnitMapping,
@@ -84,7 +84,7 @@ public class SemiPermanentDataValueRowHandler
         this.batchHandler = batchHandler;
         this.importDataValueBatchHandler = importDataValueBatchHandler;
         this.dataValueService = dataValueService;
-        this.dataMartStore = dataMartStore;
+        this.dataMartService = dataMartService;
         this.dataElementMapping = dataElementMapping;
         this.periodMapping = periodMapping;
         this.organisationUnitMapping = organisationUnitMapping;

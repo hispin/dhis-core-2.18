@@ -48,7 +48,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -284,13 +284,13 @@ public class DefaultDXFImportService
         this.dataValueService = dataValueService;
     }
 
-    private DataMartStore dataMartStore;
-
-    public void setDataMartStore( DataMartStore dataMartStore )
+    private DataMartService dataMartService;
+    
+    public void setDataMartService( DataMartService dataMartService )
     {
-        this.dataMartStore = dataMartStore;
+        this.dataMartService = dataMartService;
     }
-
+    
     private BatchHandlerFactory batchHandlerFactory;
 
     public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
@@ -1208,7 +1208,7 @@ public class DefaultDXFImportService
                     importDataValueBatchHandler.init();
 
                     XMLConverter converter = new DataValueConverter( batchHandler, importDataValueBatchHandler,
-                        dataValueService, dataMartStore, importObjectService, params, objectMappingGenerator
+                        dataValueService, dataMartService, importObjectService, params, objectMappingGenerator
                             .getDataElementMapping( params.skipMapping() ), objectMappingGenerator
                             .getPeriodMapping( params.skipMapping() ), objectMappingGenerator
                             .getOrganisationUnitMapping( params.skipMapping() ), objectMappingGenerator

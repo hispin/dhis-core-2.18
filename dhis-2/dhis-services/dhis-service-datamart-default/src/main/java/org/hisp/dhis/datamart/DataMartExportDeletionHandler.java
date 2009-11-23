@@ -44,11 +44,11 @@ public class DataMartExportDeletionHandler
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataMartExportService dataMartExportService;
+    private DataMartService dataMartService;
 
-    public void setDataMartExportService( DataMartExportService dataMartExportService )
+    public void setDataMartService( DataMartService dataMartService )
     {
-        this.dataMartExportService = dataMartExportService;
+        this.dataMartService = dataMartService;
     }
 
     // -------------------------------------------------------------------------
@@ -64,11 +64,11 @@ public class DataMartExportDeletionHandler
     @Override
     public void deleteDataElement( DataElement dataElement )
     {
-        for ( DataMartExport export : dataMartExportService.getAllDataMartExports() )
+        for ( DataMartExport export : dataMartService.getAllDataMartExports() )
         {
             if ( export.getDataElements().remove( dataElement ) )
             {
-                dataMartExportService.saveDataMartExport( export );
+                dataMartService.saveDataMartExport( export );
             }
         }
     }
@@ -76,11 +76,11 @@ public class DataMartExportDeletionHandler
     @Override
     public void deleteIndicator( Indicator indicator )
     {
-        for ( DataMartExport export : dataMartExportService.getAllDataMartExports() )
+        for ( DataMartExport export : dataMartService.getAllDataMartExports() )
         {
             if ( export.getIndicators().remove( indicator ) )
             {
-                dataMartExportService.saveDataMartExport( export );
+                dataMartService.saveDataMartExport( export );
             }
         }
     }
@@ -88,11 +88,11 @@ public class DataMartExportDeletionHandler
     @Override
     public void deletePeriod( Period period )
     {
-        for ( DataMartExport export : dataMartExportService.getAllDataMartExports() )
+        for ( DataMartExport export : dataMartService.getAllDataMartExports() )
         {
             if ( export.getPeriods().remove( period ) )
             {
-                dataMartExportService.saveDataMartExport( export );
+                dataMartService.saveDataMartExport( export );
             }
         }
     }
@@ -100,11 +100,11 @@ public class DataMartExportDeletionHandler
     @Override
     public void deleteSource( Source source )
     {
-        for ( DataMartExport export : dataMartExportService.getAllDataMartExports() )
+        for ( DataMartExport export : dataMartService.getAllDataMartExports() )
         {
             if ( export.getOrganisationUnits().remove( source ) )
             {
-                dataMartExportService.saveDataMartExport( export );
+                dataMartService.saveDataMartExport( export );
             }
         }
     }    

@@ -42,7 +42,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
@@ -113,12 +113,12 @@ public class DefaultIXFImportService
     {
         this.periodService = periodService;
     }
-    
-    private DataMartStore dataMartStore;
 
-    public void setDataMartStore( DataMartStore dataMartStore )
+    private DataMartService dataMartService;
+    
+    public void setDataMartService( DataMartService dataMartService )
     {
-        this.dataMartStore = dataMartStore;
+        this.dataMartService = dataMartService;
     }
 
     private BatchHandlerFactory batchHandlerFactory;
@@ -233,7 +233,7 @@ public class DefaultIXFImportService
                 XMLConverter converter = new IndicatorConverter( batchHandler, 
                     dataElementService, 
                     importObjectService,
-                    dataMartStore,
+                    dataMartService,
                     categoryCombo, 
                     dataValueBatchHandler,
                     categoryOptionCombo,

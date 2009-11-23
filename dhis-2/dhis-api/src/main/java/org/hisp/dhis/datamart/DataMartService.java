@@ -29,13 +29,27 @@ package org.hisp.dhis.datamart;
 
 import java.util.Collection;
 
+import org.hisp.dhis.aggregation.AggregatedDataValue;
+import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
+import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
+
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public interface DataMartService
 {
     final String ID = DataMartService.class.getName();
+
+    // ----------------------------------------------------------------------
+    // Export
+    // ----------------------------------------------------------------------
     
     /**
      * Exports to data mart for the given arguments.
@@ -49,4 +63,176 @@ public interface DataMartService
      */
     int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
+
+    // ----------------------------------------------------------------------
+    // AggregatedDataValue
+    // ----------------------------------------------------------------------
+    
+    /**
+     * Gets the total aggregated value from the datamart table for the given parameters.
+     * 
+     * @param dataElement The DataElement.
+     * @param period The Period.
+     * @param organisationUnit The OrganisationUnit.
+     * @return the aggregated value.
+     */
+    Double getAggregatedValue( DataElement dataElement, Period period, OrganisationUnit organisationUnit );
+
+    /**
+     * Gets the total aggregated value from the datamart table for the given parameters.
+     * 
+     * @param dataElement The DataElement.
+     * @param dimensionOptionElement the DimensionOptionElement.
+     * @param period The Period.
+     * @param organisationUnit The OrganisationUnit.
+     * @return the aggregated value.
+     */
+    Double getAggregatedValue( DataElement dataElement, DimensionOption dimensionOption, Period period, OrganisationUnit organisationUnit );
+    
+    /**
+     * Gets the aggregated value from the datamart table for the given parameters.
+     * 
+     * @param dataElement The DataElement.
+     * @param categoryOptionCombo The DataElementCategoryOptionCombo.
+     * @param period The Period.
+     * @param organisationUnit The OrganisationUnit.
+     * @return the aggregated value, or -1 if no value exists.
+     */
+    Double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit organisationUnit );
+    
+    /**
+     * Gets a collection of AggregatedDataValues.
+     * 
+     * @param dataElementId the DataElement identifier.
+     * @param periodIds the collection of Period identifiers.
+     * @param organisationUnitIds the collection of OrganisationUnit identifiers.
+     * @return a collection of AggregatedDataValues.
+     */
+    Collection<AggregatedDataValue> getAggregatedDataValues( int dataElementId, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
+    
+    /**
+     * Deletes all AggregatedDataValues.
+     * 
+     * @return the number of deleted AggregatedDataValues.
+     * @throws AggregationStoreException
+     */
+    int deleteAggregatedDataValues();
+
+    // ----------------------------------------------------------------------
+    // AggregatedIndicatorValue
+    // ----------------------------------------------------------------------
+
+    /**
+     * Gets the aggregated value from the datamart table for the given parameters.
+     * 
+     * @param indicator The Indicator.
+     * @param period The Period.
+     * @param organisationUnit The OrganisationUnit.
+     * @return the aggregated value, or -1 if no value exists.
+     */
+    Double getAggregatedValue( Indicator indicator, Period period, OrganisationUnit unit );
+
+    /**
+     * Gets a collection of AggregatedIndicatorValues.
+     * 
+     * @param periodIds the Period identifiers.
+     * @param organisationUnitIds the OrganisationUnit identifiers.
+     * @return a collection of AggregatedIndicatorValues.
+     */
+    Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
+    
+    /**
+     * Gets a collection of AggregatedIndicatorValues.
+     * 
+     * @param indicatorIds the Indicator identifiers.
+     * @param periodIds the Period identifiers.
+     * @param organisationUnitIds the OrganisationUnit identifiers.
+     * @return a collection of AggregatedIndicatorValues.
+     */
+    Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> indicatorIds,
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
+    
+    /**
+     * Deletes all AggregatedIndicatorValue.
+     * 
+     * @return the number of deleted AggregatedIndicatorValues.
+     * @throws AggregationStoreException
+     */
+    int deleteAggregatedIndicatorValues();
+
+    // ----------------------------------------------------------------------
+    // DataValue
+    // ----------------------------------------------------------------------
+    
+    /**
+     * Gets a Collection of DeflatedDataValues.
+     * 
+     * @param dataElementId the DataElement identifier.
+     * @param periodId the Period identifier.
+     * @param sourceIds the Collection of Source identifiers.
+     */
+    Collection<DeflatedDataValue> getDeflatedDataValues( int dataElementId, int periodId, Collection<Integer> sourceIds );
+    
+    /**
+     * Gets a DataValues. Note that this is a "deflated" data value as the objects
+     * in the composite identifier only has its id property populated.
+     * 
+     * @param dataElementId the DataElement identifier.
+     * @param categoryOptionComboId the DataElementCategoryOptionCombo identifier.
+     * @param periodId the Period identifier.
+     * @param sourceId the Source identifier.
+     */
+    DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId );
+
+    // ----------------------------------------------------------------------
+    // Period
+    // ----------------------------------------------------------------------
+    
+    /**
+     * Delets periods of type relative.
+     * 
+     * @return the number of affected rows.
+     */
+    int deleteRelativePeriods();
+    
+    // ----------------------------------------------------------------------
+    // DataMartExport
+    // ----------------------------------------------------------------------
+    
+    /**
+     * Saves a DataMartExport.
+     * 
+     * @param export the DataMartExport to save.
+     */
+    void saveDataMartExport( DataMartExport export );
+    
+    /**
+     * Retrieves the DataMartExport with the given identifier.
+     * 
+     * @param id the identifier of the DataMartExport.
+     * @return the DataMartExport.
+     */
+    DataMartExport getDataMartExport( int id );
+    
+    /**
+     * Deletes a DataMartExport.
+     * 
+     * @param export the DataMartExport to delete.
+     */
+    void deleteDataMartExport( DataMartExport export );
+    
+    /**
+     * Retrieves all DataMartExports.
+     * 
+     * @return a Collection of DataMartExports.
+     */
+    Collection<DataMartExport> getAllDataMartExports();
+    
+    /**
+     * Retrieves the DataMartExport with the given name.
+     * 
+     * @param name the name of the DataMartExport to retrieve.
+     * @return the DataMartExport.
+     */
+    DataMartExport getDataMartExportByName( String name );    
 }

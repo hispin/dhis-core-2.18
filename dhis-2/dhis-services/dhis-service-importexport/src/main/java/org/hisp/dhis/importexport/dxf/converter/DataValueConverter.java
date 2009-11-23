@@ -36,7 +36,7 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
@@ -92,11 +92,11 @@ public class DataValueConverter
     /**
      * Constructor for write operations.
      */
-    public DataValueConverter( DataMartStore dataMartStore,
+    public DataValueConverter( DataMartService dataMartService,
         StatementManager statementManager,
         PeriodService periodService )
     {
-        this.dataMartStore = dataMartStore;
+        this.dataMartService = dataMartService;
         this.statementManager = statementManager;
         this.periodService = periodService;
     }
@@ -107,7 +107,7 @@ public class DataValueConverter
     public DataValueConverter( BatchHandler<DataValue> batchHandler,
         BatchHandler<ImportDataValue> importDataValueBatchHandler,
         DataValueService dataValueService,
-        DataMartStore dataMartStore,
+        DataMartService dataMartService,
         ImportObjectService importObjectService,
         ImportParams params,
         Map<Object, Integer> dataElementMapping,
@@ -118,7 +118,7 @@ public class DataValueConverter
         this.batchHandler = batchHandler;
         this.importDataValueBatchHandler = importDataValueBatchHandler;
         this.dataValueService = dataValueService;
-        this.dataMartStore = dataMartStore;
+        this.dataMartService = dataMartService;
         this.importObjectService = importObjectService;
         this.params = params;
         this.dataElementMapping = dataElementMapping;
@@ -149,7 +149,7 @@ public class DataValueConverter
                 {
                     for ( final Period period : periods )
                     {
-                        values = dataMartStore.getDeflatedDataValues( element, period.getId(), params.getOrganisationUnits() );
+                        values = dataMartService.getDeflatedDataValues( element, period.getId(), params.getOrganisationUnits() );
                         
                         for ( final DeflatedDataValue value : values )
                         {   

@@ -30,7 +30,7 @@ package org.hisp.dhis.dashboard.action;
 import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.datamart.DataMartExport;
-import org.hisp.dhis.datamart.DataMartExportService;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
@@ -61,11 +61,11 @@ public class RemoveDataMartExportAction
         this.dashboardService = dashboardService;
     }
     
-    private DataMartExportService dataMartExportService;
+    private DataMartService dataMartService;
 
-    public void setDataMartExportService( DataMartExportService dataMartExportService )
+    public void setDataMartService( DataMartService dataMartService )
     {
-        this.dataMartExportService = dataMartExportService;
+        this.dataMartService = dataMartService;
     }
     
     // -------------------------------------------------------------------------
@@ -91,7 +91,7 @@ public class RemoveDataMartExportAction
         {
             DashboardContent content = dashboardService.getDashboardContent( user );
             
-            DataMartExport export = dataMartExportService.getDataMartExport( id );
+            DataMartExport export = dataMartService.getDataMartExport( id );
             
             if ( content.getDataMartExports().remove( export ) )
             {

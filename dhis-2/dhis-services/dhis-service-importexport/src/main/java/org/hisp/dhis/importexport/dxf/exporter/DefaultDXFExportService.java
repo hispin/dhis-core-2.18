@@ -42,7 +42,7 @@ import org.hibernate.SessionFactory;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ExportParams;
@@ -205,14 +205,14 @@ public class DefaultDXFExportService
     {
         this.completeDataSetRegistrationService = completeDataSetRegistrationService;
     }
-    
-    private DataMartStore dataMartStore;
 
-    public void setDataMartStore( DataMartStore dataMartStore )
-    {
-        this.dataMartStore = dataMartStore;
-    }
+    private DataMartService dataMartService;
     
+    public void setDataMartService( DataMartService dataMartService )
+    {
+        this.dataMartService = dataMartService;
+    }
+
     private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
@@ -313,8 +313,8 @@ public class DefaultDXFExportService
                 completeDataSetRegistrationService, dataSetService, organisationUnitService, periodService ) );
             
             thread.registerXMLConverter( params.isAggregatedData() ? 
-                new AggregatedDataValueConverter( dataMartStore, dataSetService, periodService ) : 
-                new DataValueConverter( dataMartStore, statementManager, periodService ) );
+                new AggregatedDataValueConverter( dataMartService, dataSetService, periodService ) : 
+                new DataValueConverter( dataMartService, statementManager, periodService ) );
             
             thread.start();
             
