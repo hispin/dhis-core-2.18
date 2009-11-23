@@ -22,4 +22,7 @@
     <module>dhis-web-maintenance-dataadmin</module>
 	<module>dhis-web-maintenance-patient</module>
   </modules>
+  <properties>
+    <rootDir>../../</rootDir>
+  </properties>
 </project>

@@ -12,4 +12,7 @@
   <artifactId>dhis-web-commons-resources</artifactId>
   <packaging>war</packaging>
   <name>DHIS Common Resources for Web</name>
+  <properties>
+    <rootDir>../../</rootDir>
+  </properties>
 </project>

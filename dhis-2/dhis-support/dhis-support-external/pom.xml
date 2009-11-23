@@ -41,4 +41,7 @@
       <artifactId>xpp3</artifactId>
     </dependency>  
   </dependencies>
+  <properties>
+    <rootDir>../../</rootDir>
+  </properties>
 </project>

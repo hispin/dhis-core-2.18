@@ -92,4 +92,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+  <properties>
+    <rootDir>../</rootDir>
+  </properties>
 </project>

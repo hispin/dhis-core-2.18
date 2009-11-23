@@ -19,4 +19,7 @@
     <module>dhis-support-system</module>
     <module>dhis-support-external</module>
   </modules>
+  <properties>
+    <rootDir>../</rootDir>
+  </properties>
 </project>

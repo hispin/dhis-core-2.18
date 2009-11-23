@@ -45,4 +45,7 @@
       <artifactId>spring-test</artifactId>
     </dependency>
   </dependencies>
+  <properties>
+    <rootDir>../../</rootDir>
+  </properties>
 </project>
