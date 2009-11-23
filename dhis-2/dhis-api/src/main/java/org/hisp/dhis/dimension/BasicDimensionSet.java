@@ -54,7 +54,7 @@ public class BasicDimensionSet
 
     public String getDimensionSetId()
     {
-        StringBuffer identifier = new StringBuffer( TYPE_GROUP_SET + SEPARATOR_TYPE );
+        StringBuffer identifier = new StringBuffer( DimensionType.GROUPSET.name() + SEPARATOR_TYPE );
         
         Iterator<? extends Dimension> iterator = getDimensions().iterator(); 
         
@@ -71,14 +71,9 @@ public class BasicDimensionSet
         return identifier.toString();
     }
 
-    public String getDimensionSetType()
+    public DimensionType getDimensionType()
     {
-        return getDimensionSetId().split( SEPARATOR_TYPE )[0];
-    }
-    
-    public boolean isDimensionSetType( String type )
-    {
-        return getDimensionSetType() != null ? getDimensionSetType().equals( type ) : false;
+        return DimensionType.valueOf( getDimensionSetId().split( SEPARATOR_TYPE )[0] );
     }
     
     public List<? extends Dimension> getDimensions()

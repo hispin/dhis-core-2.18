@@ -27,29 +27,11 @@ package org.hisp.dhis.dimension;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
 /**
  * @author Lars Helge Overland
  */
-public interface DimensionSet
+public enum DimensionType
 {
-    final String SEPARATOR_TYPE = "_";
-    final String SEPARATOR_ID = "-";
-    final String SEPARATOR_NAME = ", ";
-    
-    String getName();
-    
-    /**
-     * The DimensionSet identifier is on the format 
-     * [DimensionType]SEPARATOR_TYPE[id]SEPARATOR_ID[id]SEPARATOR[id], for instance
-     * groupSet_1-2-3 and categoryCombo_1 .
-     */
-    String getDimensionSetId();
-    
-    DimensionType getDimensionType();
-    
-    List<? extends Dimension> getDimensions();
-    
-    List<? extends DimensionOptionElement> getDimensionOptionElements();
+    CATEGORY,
+    GROUPSET
 }

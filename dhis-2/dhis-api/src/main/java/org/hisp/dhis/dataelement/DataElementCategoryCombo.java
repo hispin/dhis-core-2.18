@@ -36,6 +36,7 @@ import java.util.Set;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.dimension.DimensionSet;
+import org.hisp.dhis.dimension.DimensionType;
 
 /**
  * @author Abyot Aselefew
@@ -72,17 +73,12 @@ public class DataElementCategoryCombo
 
     public String getDimensionSetId()
     {
-        return TYPE_CATEGORY_COMBO + SEPARATOR_TYPE + id;
+        return DimensionType.CATEGORY.name() + SEPARATOR_TYPE + id;
     }
     
-    public String getDimensionSetType()
+    public DimensionType getDimensionType()
     {
-        return TYPE_CATEGORY_COMBO;
-    }
-    
-    public boolean isDimensionSetType( String type )
-    {
-        return TYPE_CATEGORY_COMBO.equals( type );
+        return DimensionType.CATEGORY;
     }
     
     public List<? extends Dimension> getDimensions()
