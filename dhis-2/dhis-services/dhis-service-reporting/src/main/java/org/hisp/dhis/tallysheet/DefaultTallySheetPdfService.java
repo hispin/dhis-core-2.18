@@ -64,7 +64,7 @@ public class DefaultTallySheetPdfService
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         InputStream inputStream = null;
         Document document = new Document();
-        String facilityName = new String();
+        String facilityName = "";
 
         boolean a3Format = tallySheet.isA3Format();
 

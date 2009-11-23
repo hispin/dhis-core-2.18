@@ -31,14 +31,13 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportParams;
-import org.hisp.dhis.importexport.XMLConverter;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: PeriodTypeXSDConverter.java 6455 2008-11-24 08:59:37Z larshelg $
  */
 public class PeriodTypeXSDConverter
-    extends AbstractXSDConverter implements XMLConverter
+    extends AbstractXSDConverter
 {
     // -------------------------------------------------------------------------
     // Constructor
