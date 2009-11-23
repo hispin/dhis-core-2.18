@@ -97,7 +97,7 @@ public class DataValueConverter
 
     public void read( BufferedReader reader, ImportParams params )
     {
-        String line = new String();
+        String line = "";
         
         final DataValue value = new DataValue();
         final DataElement dataElement = new DataElement();
