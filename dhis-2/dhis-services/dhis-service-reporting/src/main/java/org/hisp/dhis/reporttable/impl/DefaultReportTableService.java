@@ -73,7 +73,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@Transactional
 public class DefaultReportTableService
     implements ReportTableService
 {
@@ -720,8 +719,6 @@ public class DefaultReportTableService
         }
         
         return cal.getTime();
-        
-        //TODO Create system setting for start month, this can be different from place to place
     }
     
     private Date getStartDateOfYear( Date date )
