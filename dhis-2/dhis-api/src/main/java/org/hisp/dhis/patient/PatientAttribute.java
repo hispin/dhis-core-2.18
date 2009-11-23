@@ -28,8 +28,6 @@ package org.hisp.dhis.patient;
 
 import java.io.Serializable;
 
-import org.hisp.dhis.dataelement.DataElement;
-
 /**
  * @author Abyot Asalefew
  * @version $Id$
@@ -84,7 +82,7 @@ public class PatientAttribute
             return false;
         }
 
-        if ( !(o instanceof DataElement) )
+        if ( !(o instanceof PatientAttribute) )
         {
             return false;
         }

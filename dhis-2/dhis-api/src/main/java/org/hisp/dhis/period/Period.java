@@ -83,7 +83,7 @@ public class Period
     // Dimension
     // -------------------------------------------------------------------------
 
-    public static Dimension DIMENSION = new PeriodDimension();
+    public static final Dimension DIMENSION = new PeriodDimension();
     
     public static class PeriodDimension
         extends Dimension

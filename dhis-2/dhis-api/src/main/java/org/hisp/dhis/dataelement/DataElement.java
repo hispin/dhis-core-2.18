@@ -176,7 +176,7 @@ public class DataElement
     // Dimension
     // -------------------------------------------------------------------------
 
-    public static Dimension DIMENSION = new DataElementDimension();
+    public static final Dimension DIMENSION = new DataElementDimension();
 
     public static class DataElementDimension
         extends Dimension
