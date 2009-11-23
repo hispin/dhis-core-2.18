@@ -27,9 +27,6 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dimension.DimensionSet.TYPE_CATEGORY_COMBO;
-import static org.hisp.dhis.dimension.DimensionSet.TYPE_GROUP_SET;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +42,7 @@ import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.dimension.DimensionSet;
+import org.hisp.dhis.dimension.DimensionType;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -114,7 +112,7 @@ public class ReportTable
     
     private List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
     
-    private String dimensionSetType;
+    private DimensionType dimensionType;
     
     private DimensionSet categoryCombo;
     
@@ -377,7 +375,7 @@ public class ReportTable
         // Init dimensional lists
         // ---------------------------------------------------------------------
 
-        if ( isDimensional() && dimensionSetType.equals( TYPE_CATEGORY_COMBO ) )
+        if ( isDimensional() && dimensionType.equals( DimensionType.CATEGORY ) )
         {
             // -----------------------------------------------------------------
             // CategoryCombo is set, populate CategoryOptionCombos
@@ -385,7 +383,7 @@ public class ReportTable
 
             categoryOptionCombos = categoryCombo.getDimensionOptionElements();
         }
-        else if ( isDimensional() && dimensionSetType.equals( DimensionSet.TYPE_GROUP_SET ) )
+        else if ( isDimensional() && dimensionType.equals( DimensionType.GROUPSET ) )
         {
             // -----------------------------------------------------------------
             // All DataElements have GroupSets, populate DataElements
@@ -515,7 +513,7 @@ public class ReportTable
 
         if ( doTotal() )
         {
-            List<? extends Dimension> dimensions = isDimensional( TYPE_CATEGORY_COMBO ) ? categoryCombo.getDimensions() : dataElementGroupSets;
+            List<? extends Dimension> dimensions = isDimensional( DimensionType.CATEGORY ) ? categoryCombo.getDimensions() : dataElementGroupSets;
             
             for ( Dimension dimension : dimensions )
             {
@@ -540,9 +538,9 @@ public class ReportTable
     {
         if ( dimensionSet != null )
         {
-            this.dimensionSetType = dimensionSet.getDimensionSetType();
-            this.categoryCombo = dimensionSet.isDimensionSetType( TYPE_CATEGORY_COMBO ) ? dimensionSet : null;
-            this.dataElementGroupSets = dimensionSet.isDimensionSetType( TYPE_GROUP_SET ) ? dimensionSet.getDimensions() : null;
+            this.dimensionType = dimensionSet.getDimensionType();
+            this.categoryCombo = dimensionType.equals( DimensionType.CATEGORY ) ? dimensionSet : null;
+            this.dataElementGroupSets = dimensionType.equals( DimensionType.GROUPSET ) ? dimensionSet.getDimensions() : null;
         }
     }
     
@@ -679,16 +677,16 @@ public class ReportTable
      */
     public boolean isDimensional()
     {
-        return dimensionSetType != null;
+        return dimensionType != null;
     }
     
     /**
      * Tests whether this ReportTable is multi-dimensional and of the argument
      * dimension set type.
      */
-    public boolean isDimensional( String dimensionSetType )
+    public boolean isDimensional( DimensionType dimensionType )
     {
-        return isDimensional() && dimensionSetType.equals( dimensionSetType );
+        return isDimensional() && this.dimensionType.equals( dimensionType );
     }
     
     /**
@@ -697,7 +695,7 @@ public class ReportTable
     public boolean doTotal()
     {
         return !isDoIndicators() && !isDoPeriods() && !isDoUnits() && isDoCategoryOptionCombos() && 
-            isDimensional( DimensionSet.TYPE_CATEGORY_COMBO ) && mode.equals( MODE_DATAELEMENTS );
+            isDimensional( DimensionType.CATEGORY ) && mode.equals( MODE_DATAELEMENTS );
     }
         
     // -------------------------------------------------------------------------
@@ -1086,14 +1084,14 @@ public class ReportTable
         this.units = units;
     }
 
-    public String getDimensionSetType()
+    public DimensionType getDimensionType()
     {
-        return dimensionSetType;
+        return dimensionType;
     }
 
-    public void setDimensionSetType( String dimensionSetType )
+    public void setDimensionType( DimensionType dimensionType )
     {
-        this.dimensionSetType = dimensionSetType;
+        this.dimensionType = dimensionType;
     }
 
     public DimensionSet getCategoryCombo()

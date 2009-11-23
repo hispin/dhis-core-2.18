@@ -27,8 +27,6 @@ package org.hisp.dhis.dimension;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dimension.DimensionSet.TYPE_CATEGORY_COMBO;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -41,6 +39,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.system.util.ConversionUtils;
+
+import static org.hisp.dhis.dimension.DimensionType.*;
 
 /**
  * @author Lars Helge Overland
@@ -106,28 +106,26 @@ public class DefaultDimensionService
     
     public Collection<DataElement> getDataElements( DimensionSet dimensionSet )
     {
-        if ( dimensionSet == null )
-        {
-            return null;
-        }
+        Collection<DataElement> dataElements = null;
 
-        if ( dimensionSet.getDimensionSetType().equals( TYPE_CATEGORY_COMBO ) )
+        if ( dimensionSet != null && dimensionSet.getDimensionType().equals( CATEGORY ) )
         {
             Integer id = getDimensionSetIdentifiers( dimensionSet.getDimensionSetId() )[0];
 
             DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( id );
 
-            return dataElementService.getDataElementByCategoryCombo( categoryCombo );
+            dataElements = dataElementService.getDataElementByCategoryCombo( categoryCombo );
         }
-
-        // TYPE_GROUP_SET
-
-        Integer[] ids = getDimensionSetIdentifiers( dimensionSet.getDimensionSetId() );
-
-        Set<DataElementGroupSet> groupSets = getDataElementDimensionSet( ids );
-
-        return dataElementService.getDataElementsByGroupSets( groupSets );
-
+        else if ( dimensionSet != null && dimensionSet.getDimensionType().equals( GROUPSET ) )
+        {
+            Integer[] ids = getDimensionSetIdentifiers( dimensionSet.getDimensionSetId() );
+    
+            Set<DataElementGroupSet> groupSets = getDataElementDimensionSet( ids );
+    
+            dataElements = dataElementService.getDataElementsByGroupSets( groupSets );
+        }
+        
+        return dataElements;
     }
 
     // -------------------------------------------------------------------------
