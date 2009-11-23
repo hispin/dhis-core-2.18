@@ -179,7 +179,7 @@ public abstract class ReportExcel
         if ( getClass() != obj.getClass() )
             return false;
         ReportExcel other = (ReportExcel) obj;
-        if ( name != other.name )
+        if ( !name.equals( other.name ) )
             return false;
         return true;
     }
