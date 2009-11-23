@@ -354,15 +354,7 @@ public class DataElement
 
     public String getDomainTypeNullSafe()
     {
-        if ( domainType == null )
-        {
-            return DataElement.DOMAIN_TYPE_AGGREGATE;
-        }
-
-        else
-        {
-            return domainType;
-        }
+        return domainType != null ? domainType : DOMAIN_TYPE_AGGREGATE;
     }
     
     public Set<DataElement> getDataElements()
