@@ -28,7 +28,7 @@ package org.hisp.dhis.datamart.action;
  */
 
 import org.hisp.dhis.datamart.DataMartExport;
-import org.hisp.dhis.datamart.DataMartExportService;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
@@ -44,13 +44,13 @@ public class ValidateDataMartExportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataMartExportService dataMartExportService;
+    private DataMartService dataMartService;
 
-    public void setDataMartExportService( DataMartExportService dataMartExportService )
+    public void setDataMartService( DataMartService dataMartService )
     {
-        this.dataMartExportService = dataMartExportService;
+        this.dataMartService = dataMartService;
     }
-    
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -110,7 +110,7 @@ public class ValidateDataMartExportAction
                 return INPUT;
             }
 
-            DataMartExport match = dataMartExportService.getDataMartExportByName( name );
+            DataMartExport match = dataMartService.getDataMartExportByName( name );
 
             if ( match != null && ( id == null || match.getId() != id ) )
             {

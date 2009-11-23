@@ -38,7 +38,7 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.datamart.DataMartExport;
-import org.hisp.dhis.datamart.DataMartExportService;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
@@ -96,12 +96,12 @@ public class GetOptionsAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
-    private DataMartExportService dataMartExportService;
 
-    public void setDataMartExportService( DataMartExportService dataMartExportService )
+    private DataMartService dataMartService;
+
+    public void setDataMartService( DataMartService dataMartService )
     {
-        this.dataMartExportService = dataMartExportService;
+        this.dataMartService = dataMartService;
     }
 
     private I18nFormat format;
@@ -365,7 +365,7 @@ public class GetOptionsAction
         
         if ( id != null )
         {
-            DataMartExport export = dataMartExportService.getDataMartExport( id );
+            DataMartExport export = dataMartService.getDataMartExport( id );
             
             // -----------------------------------------------------------------
             // Data element

@@ -46,7 +46,6 @@ import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datamart.DataMartService;
-import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
@@ -136,14 +135,7 @@ public class DefaultReportTableService
     {
         this.dataMartService = dataMartService;
     }
-    
-    private DataMartStore dataMartStore;
-
-    public void setDataMartStore( DataMartStore dataMartStore )
-    {
-        this.dataMartStore = dataMartStore;
-    }
-    
+        
     private DataSetCompletenessService completenessService;
 
     public void setCompletenessService( DataSetCompletenessService completenessService )
@@ -230,7 +222,7 @@ public class DefaultReportTableService
             createReportTable( reportTable, true );
         }
                 
-        dataMartStore.deleteRelativePeriods();
+        dataMartService.deleteRelativePeriods();
     }
 
     @Transactional
@@ -660,11 +652,11 @@ public class DefaultReportTableService
                         {
                             for ( DimensionOption dimensionOption : reportTable.getDimensionOptions() )
                             {
-                                grid.addValue( String.valueOf( dataMartStore.
+                                grid.addValue( String.valueOf( dataMartService.
                                     getAggregatedValue( (DataElement) metaObject, dimensionOption, period, unit ) ) );
                             }
                             
-                            grid.addValue( String.valueOf( dataMartStore.getAggregatedValue( (DataElement) metaObject, period, unit ) ) );
+                            grid.addValue( String.valueOf( dataMartService.getAggregatedValue( (DataElement) metaObject, period, unit ) ) );
                         }
                     }
                 }

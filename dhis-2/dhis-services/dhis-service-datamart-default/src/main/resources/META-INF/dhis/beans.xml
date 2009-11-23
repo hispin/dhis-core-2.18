@@ -6,6 +6,14 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
   
+  <!-- DataMartStore -->
+    
+  <bean id="org.hisp.dhis.datamart.DataMartStore"
+    class="org.hisp.dhis.datamart.jdbc.JdbcDataMartStore">
+    <property name="statementManager" ref="statementManager"/>
+    <property name="statementBuilder" ref="statementBuilder"/>
+  </bean>
+    
   <!-- DataMartExportStore -->
   
   <bean id="org.hisp.dhis.datamart.DataMartExportStore"
@@ -14,26 +22,22 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
   
-  <!-- DataMartExportService -->
-  
-  <bean id="org.hisp.dhis.datamart.DataMartExportService"
-    class="org.hisp.dhis.datamart.impl.DefaultDataMartExportService">
-    <property name="dataMartExportStore"
-      ref="org.hisp.dhis.datamart.DataMartExportStore"/>
-  </bean>
-  
-  <!-- DataMartStore -->
-	
-  <bean id="org.hisp.dhis.datamart.DataMartStore"
-    class="org.hisp.dhis.datamart.jdbc.JdbcDataMartStore">
-    <property name="statementManager" ref="statementManager"/>
-    <property name="statementBuilder" ref="statementBuilder"/>
-  </bean>
-	
   <!-- DataMartService -->
   
   <bean id="org.hisp.dhis.datamart.DataMartService"
     class="org.hisp.dhis.datamart.impl.DefaultDataMartService">
+	<property name="dataMartEngine"
+	  ref="org.hisp.dhis.datamart.engine.DataMartEngine"/>
+	<property name="dataMartStore"
+	  ref="org.hisp.dhis.datamart.DataMartStore"/>
+    <property name="dataMartExportStore"
+      ref="org.hisp.dhis.datamart.DataMartExportStore"/>
+  </bean>
+  
+  <!-- DataMartEngine -->
+  
+  <bean id="org.hisp.dhis.datamart.engine.DataMartEngine"
+    class="org.hisp.dhis.datamart.engine.DefaultDataMartEngine">
     <property name="aggregationCache"
       ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache"/>
     <property name="dataMartStore"
@@ -70,8 +74,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.datamart.DataMartInternalProcess"
     scope="prototype">
     <property name="statementManager" ref="statementManager"/>
-    <property name="dataMartService"
-      ref="org.hisp.dhis.datamart.DataMartService"/>
+    <property name="dataMartEngine"
+      ref="org.hisp.dhis.datamart.engine.DataMartEngine"/>
   </bean>
   
   <!-- Crosstab -->
@@ -202,8 +206,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="org.hisp.dhis.datamart.DataMartExportDeletionHandler"
     class="org.hisp.dhis.datamart.DataMartExportDeletionHandler">
-    <property name="dataMartExportService"
-      ref="org.hisp.dhis.datamart.DataMartExportService"/>
+    <property name="dataMartService"
+      ref="org.hisp.dhis.datamart.DataMartService"/>
   </bean>
   
   <!-- DeletionManager -->
@@ -225,7 +229,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <aop:config>
   
     <aop:aspect ref="deletionInterceptor">      
-      <aop:before pointcut="execution( * org.hisp.dhis.datamart.DataMartExportService.delete*(..) )" method="intercept"/>
+      <aop:before pointcut="execution( * org.hisp.dhis.datamart.DataMartService.deleteDataMartExport(..) )" method="intercept"/>
     </aop:aspect>
       
   </aop:config>

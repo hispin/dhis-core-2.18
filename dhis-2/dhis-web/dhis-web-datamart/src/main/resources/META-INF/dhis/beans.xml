@@ -22,8 +22,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="processCoordinator"/>
     <property name="currentUserService"
       ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="dataMartExportService"
-      ref="org.hisp.dhis.datamart.DataMartExportService"/>
+    <property name="dataMartService"
+      ref="org.hisp.dhis.datamart.DataMartService"/>
   </bean>
   
   <bean id="org.hisp.dhis.datamart.action.GetExportStatusAction"
@@ -51,8 +51,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/>
-    <property name="dataMartExportService"
-      ref="org.hisp.dhis.datamart.DataMartExportService"/>
+    <property name="dataMartService"
+      ref="org.hisp.dhis.datamart.DataMartService"/>
 	</bean>
   
   <!-- DataMartExport -->
@@ -60,8 +60,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.datamart.action.SaveDataMartExportAction"
     class="org.hisp.dhis.datamart.action.SaveDataMartExportAction"
     scope="prototype">
-    <property name="dataMartExportService"
-      ref="org.hisp.dhis.datamart.DataMartExportService"/>
+    <property name="dataMartService"
+      ref="org.hisp.dhis.datamart.DataMartService"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="indicatorService"
@@ -75,29 +75,29 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.datamart.action.GetAllDataMartExportsAction"
     class="org.hisp.dhis.datamart.action.GetAllDataMartExportsAction"
     scope="prototype">
-    <property name="dataMartExportService"
-      ref="org.hisp.dhis.datamart.DataMartExportService"/>
+    <property name="dataMartService"
+      ref="org.hisp.dhis.datamart.DataMartService"/>
   </bean>
   
   <bean id="org.hisp.dhis.datamart.action.RemoveDataMartExportAction"
     class="org.hisp.dhis.datamart.action.RemoveDataMartExportAction"
     scope="prototype">
-    <property name="dataMartExportService"
-      ref="org.hisp.dhis.datamart.DataMartExportService"/>
+    <property name="dataMartService"
+      ref="org.hisp.dhis.datamart.DataMartService"/>
   </bean>
   
   <bean id="org.hisp.dhis.datamart.action.GetDataMartExportAction"
     class="org.hisp.dhis.datamart.action.GetDataMartExportAction"
     scope="prototype">
-    <property name="dataMartExportService"
-      ref="org.hisp.dhis.datamart.DataMartExportService"/>
+    <property name="dataMartService"
+      ref="org.hisp.dhis.datamart.DataMartService"/>
   </bean>
   
   <bean id="org.hisp.dhis.datamart.action.ValidateDataMartExportAction"
     class="org.hisp.dhis.datamart.action.ValidateDataMartExportAction"
     scope="prototype">    
-    <property name="dataMartExportService"
-      ref="org.hisp.dhis.datamart.DataMartExportService"/>
+    <property name="dataMartService"
+      ref="org.hisp.dhis.datamart.DataMartService"/>
   </bean>
   
   <bean id="org.hisp.dhis.datamart.action.AddDataMartExportToDashboardAction"
@@ -107,8 +107,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.user.CurrentUserService"/>
     <property name="dashboardService"
       ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="dataMartExportService" 
-      ref="org.hisp.dhis.datamart.DataMartExportService"/>
+    <property name="dataMartService"
+      ref="org.hisp.dhis.datamart.DataMartService"/>
   </bean>
   
 </beans>

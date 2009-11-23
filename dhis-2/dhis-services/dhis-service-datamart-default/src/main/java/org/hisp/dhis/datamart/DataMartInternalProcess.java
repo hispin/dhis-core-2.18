@@ -33,6 +33,7 @@ import java.util.Collection;
 
 import org.amplecode.cave.process.SerialToGroup;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.datamart.engine.DataMartEngine;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -55,13 +56,13 @@ public class DataMartInternalProcess
     // Dependencies
     // -------------------------------------------------------------------------
     
-    private DataMartService dataMartService;
+    private DataMartEngine dataMartEngine;
 
-    public void setDataMartService( DataMartService dataMartService )
+    public void setDataMartEngine( DataMartEngine dataMartEngine )
     {
-        this.dataMartService = dataMartService;
+        this.dataMartEngine = dataMartEngine;
     }
-    
+
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
@@ -121,7 +122,7 @@ public class DataMartInternalProcess
     {
         setMessage( "export_process_started" );
         
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
         
         setMessage( "export_process_finished" );
     }

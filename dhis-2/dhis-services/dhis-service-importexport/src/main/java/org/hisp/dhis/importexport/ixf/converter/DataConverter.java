@@ -35,7 +35,7 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.datamart.DataMartStore;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.GroupMemberType;
@@ -93,7 +93,7 @@ public class DataConverter
      */
     public DataConverter( BatchHandler<DataValue> batchHandler,
         ImportObjectService importObjectService,
-        DataMartStore dataMartStore,
+        DataMartService dataMartService,
         ImportParams params,
         DataElement dataElement,
         DataElementCategoryOptionCombo categoryOptionCombo,
@@ -102,7 +102,7 @@ public class DataConverter
     {
         this.batchHandler = batchHandler;
         this.importObjectService = importObjectService;
-        this.dataMartStore = dataMartStore;
+        this.dataMartService = dataMartService;
         this.params = params;
         this.dataElement = dataElement;
         this.categoryOptionCombo = categoryOptionCombo;

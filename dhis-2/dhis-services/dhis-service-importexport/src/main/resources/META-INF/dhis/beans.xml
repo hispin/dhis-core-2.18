@@ -228,7 +228,7 @@
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="dataMartStore" ref="org.hisp.dhis.datamart.DataMartStore" />
+		<property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService" />
 		<property name="importAnalyser"
 			ref="org.hisp.dhis.importexport.analysis.ImportAnalyser" />
 		<property name="cacheManager" ref="org.hisp.dhis.cache.HibernateCacheManager" />
@@ -290,7 +290,7 @@
 		<property name="olapURLService" ref="org.hisp.dhis.olap.OlapURLService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="dataMartStore" ref="org.hisp.dhis.datamart.DataMartStore" />
+		<property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService" />
 		<property name="batchHandlerFactory" ref="batchHandlerFactory" />
 		<property name="objectMappingGenerator"
 			ref="org.hisp.dhis.importexport.mapping.ObjectMappingGenerator" />
@@ -325,7 +325,7 @@
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="dataMartStore" ref="org.hisp.dhis.datamart.DataMartStore" />
+		<property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService" />
 		<property name="batchHandlerFactory" ref="batchHandlerFactory" />
 		<property name="objectMappingGenerator"
 			ref="org.hisp.dhis.importexport.mapping.ObjectMappingGenerator" />
@@ -359,7 +359,7 @@
 		<property name="olapURLService" ref="org.hisp.dhis.olap.OlapURLService" />
 		<property name="completeDataSetRegistrationService"
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-		<property name="dataMartStore" ref="org.hisp.dhis.datamart.DataMartStore" />
+		<property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService" />
 		<property name="statementManager" ref="statementManager" />
 	</bean>
 
