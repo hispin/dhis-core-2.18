@@ -34,11 +34,11 @@ import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
+import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -51,8 +51,6 @@ public interface DataMartStore
 {
     String ID = DataMartStore.class.getName();
     
-    final double NO_VALUES_REGISTERED = -1;
-
     // ----------------------------------------------------------------------
     // AggregatedDataValue
     // ----------------------------------------------------------------------
@@ -65,19 +63,18 @@ public interface DataMartStore
      * @param organisationUnit The OrganisationUnit.
      * @return the aggregated value.
      */
-    Double getTotalAggregatedValue( DataElement dataElement, Period period, OrganisationUnit organisationUnit );
+    Double getAggregatedValue( DataElement dataElement, Period period, OrganisationUnit organisationUnit );
 
     /**
      * Gets the total aggregated value from the datamart table for the given parameters.
      * 
      * @param dataElement The DataElement.
-     * @param categoryOption the DataElementCategoryOption.
+     * @param dimensionOptionElement the DimensionOptionElement.
      * @param period The Period.
      * @param organisationUnit The OrganisationUnit.
      * @return the aggregated value.
      */
-    Double getTotalAggregatedValue( final DataElement dataElement, 
-        final DataElementCategoryOption categoryOption, final Period period, final OrganisationUnit organisationUnit );
+    Double getAggregatedValue( DataElement dataElement, DimensionOption dimensionOption, Period period, OrganisationUnit organisationUnit );
     
     /**
      * Gets the aggregated value from the datamart table for the given parameters.
@@ -88,7 +85,7 @@ public interface DataMartStore
      * @param organisationUnit The OrganisationUnit.
      * @return the aggregated value, or -1 if no value exists.
      */
-    double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit organisationUnit );
+    Double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit organisationUnit );
     
     /**
      * Gets a collection of AggregatedDataValues.
@@ -131,7 +128,7 @@ public interface DataMartStore
      * @param organisationUnit The OrganisationUnit.
      * @return the aggregated value, or -1 if no value exists.
      */
-    double getAggregatedValue( Indicator indicator, Period period, OrganisationUnit unit );
+    Double getAggregatedValue( Indicator indicator, Period period, OrganisationUnit unit );
 
     /**
      * Gets a collection of AggregatedIndicatorValues.

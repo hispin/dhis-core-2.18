@@ -299,13 +299,13 @@ public class DefaultChartService
 
                     for ( Period period : chart.getPeriods() )
                     {
-                        final double value = dataMartStore.getAggregatedValue( indicator, period, selectedOrganisationUnit );
+                        final Double value = dataMartStore.getAggregatedValue( indicator, period, selectedOrganisationUnit );
 
-                        regularDataSet.addValue( value != -1 ? value : 0, indicator.getShortName(), chart.getFormat().formatPeriod( period ) );
+                        regularDataSet.addValue( value != null ? value : 0, indicator.getShortName(), chart.getFormat().formatPeriod( period ) );
                         
                         columnIndex++;
                         
-                        if ( value != -1.0 && value != 0.0 ) // Omit missing values and 0 from regression
+                        if ( value != null && value != 0.0 ) // Omit missing values and 0 from regression
                         {
                             regression.addData( columnIndex, value );
                         }
@@ -338,9 +338,9 @@ public class DefaultChartService
 
                     for ( OrganisationUnit unit : chart.getOrganisationUnits() )
                     {
-                        final double value = dataMartStore.getAggregatedValue( indicator, selectedPeriod, unit );
+                        final Double value = dataMartStore.getAggregatedValue( indicator, selectedPeriod, unit );
                         
-                        regularDataSet.addValue( value != -1 ? value : 0, indicator.getShortName(), unit.getShortName() );
+                        regularDataSet.addValue( value != null ? value : 0, indicator.getShortName(), unit.getShortName() );
                         
                         columnIndex++;
                     }

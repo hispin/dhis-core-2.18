@@ -662,10 +662,10 @@ public class DefaultReportTableService
                             for ( DimensionOption dimensionOption : reportTable.getDimensionOptions() )
                             {
                                 grid.addValue( String.valueOf( dataMartStore.
-                                    getTotalAggregatedValue( (DataElement) metaObject, (DataElementCategoryOption) dimensionOption, period, unit ) ) );
+                                    getAggregatedValue( (DataElement) metaObject, dimensionOption, period, unit ) ) );
                             }
                             
-                            grid.addValue( String.valueOf( dataMartStore.getTotalAggregatedValue( (DataElement) metaObject, period, unit ) ) );
+                            grid.addValue( String.valueOf( dataMartStore.getAggregatedValue( (DataElement) metaObject, period, unit ) ) );
                         }
                     }
                 }

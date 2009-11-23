@@ -43,13 +43,13 @@ import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.Operand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
+import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -99,7 +99,7 @@ public class JdbcDataMartStore
     // AggregatedDataValue
     // -------------------------------------------------------------------------
     
-    public Double getTotalAggregatedValue( DataElement dataElement, Period period, OrganisationUnit organisationUnit )
+    public Double getAggregatedValue( DataElement dataElement, Period period, OrganisationUnit organisationUnit )
     {
         final String sql = 
             "SELECT " + functionMap.get( dataElement.getAggregationOperator() ) + "(value) " +
@@ -111,10 +111,11 @@ public class JdbcDataMartStore
         return statementManager.getHolder().queryForDouble( sql );
     }
 
-    public Double getTotalAggregatedValue( DataElement dataElement, 
-        DataElementCategoryOption categoryOption, Period period, OrganisationUnit organisationUnit )
+    public Double getAggregatedValue( DataElement dataElement, DimensionOption dimensionOption, Period period, OrganisationUnit organisationUnit )
     {
-        String ids = getCommaDelimitedString( getIdentifiers( DataElementCategoryOptionCombo.class, categoryOption.getCategoryOptionCombos() ) );
+        // Assuming dimension type CATEGORY for now
+        
+        String ids = getCommaDelimitedString( getIdentifiers( DataElementCategoryOptionCombo.class, dimensionOption.getDimensionOptionElements() ) );
         
         final String sql =
             "SELECT " + functionMap.get( dataElement.getAggregationOperator() ) + "(value)" +
@@ -127,33 +128,18 @@ public class JdbcDataMartStore
         return statementManager.getHolder().queryForDouble( sql );
     }
     
-    public double getAggregatedValue( DataElement dataElement, 
+    public Double getAggregatedValue( DataElement dataElement, 
         DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit organisationUnit )
     {
-        final StatementHolder holder = statementManager.getHolder();
+        final String sql =
+            "SELECT value " +
+            "FROM aggregateddatavalue " +
+            "WHERE dataelementid = " + dataElement.getId() + " " +
+            "AND categoryoptioncomboid = " + categoryOptionCombo.getId() + " " +
+            "AND periodid = " + period.getId() + " " +
+            "AND organisationunitid = " + organisationUnit.getId();
         
-        try
-        {
-            final String sql =
-                "SELECT value " +
-                "FROM aggregateddatavalue " +
-                "WHERE dataelementid = " + dataElement.getId() + " " +
-                "AND categoryoptioncomboid = " + categoryOptionCombo.getId() + " " +
-                "AND periodid = " + period.getId() + " " +
-                "AND organisationunitid = " + organisationUnit.getId();
-            
-            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            return resultSet.next() ? resultSet.getDouble( 1 ) : -1;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get aggregated data value", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return statementManager.getHolder().queryForDouble( sql );
     }
     
     public Collection<AggregatedDataValue> getAggregatedDataValues( int dataElementId, 
@@ -206,31 +192,16 @@ public class JdbcDataMartStore
     // AggregatedIndicatorValue
     // -------------------------------------------------------------------------
 
-    public double getAggregatedValue( Indicator indicator, Period period, OrganisationUnit organisationUnit )
+    public Double getAggregatedValue( Indicator indicator, Period period, OrganisationUnit organisationUnit )
     {
-        final StatementHolder holder = statementManager.getHolder();
+        final String sql =
+            "SELECT value " +
+            "FROM aggregatedindicatorvalue " +
+            "WHERE indicatorid = " + indicator.getId() + " " +
+            "AND periodid = " + period.getId() + " " +
+            "AND organisationunitid = " + organisationUnit.getId();
         
-        try
-        {
-            final String sql =
-                "SELECT value " +
-                "FROM aggregatedindicatorvalue " +
-                "WHERE indicatorid = " + indicator.getId() + " " +
-                "AND periodid = " + period.getId() + " " +
-                "AND organisationunitid = " + organisationUnit.getId();
-            
-            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            return resultSet.next() ? resultSet.getDouble( 1 ) : -1;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get aggregated indicator value", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return statementManager.getHolder().queryForDouble( sql );
     }
 
     public Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
