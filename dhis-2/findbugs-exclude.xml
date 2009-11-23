@@ -1,5 +1,8 @@
 <FindBugsFilter>
      <Match>
-       <Bug code="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
+       <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
+     </Match>
+     <Match>
+       <Bug pattern="SE_NO_SERIALVERSIONID" />
      </Match>
 </FindBugsFilter>
