@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -137,15 +138,16 @@ public class DefaultPatientAttributeValueService
 
         Map<Integer, Collection<PatientAttributeValue>> patentAttributeValueMap = new HashMap<Integer, Collection<PatientAttributeValue>>();
 
-        for ( Integer id : attributeValueMap.keySet() )
+        for ( Entry<Integer, Set<PatientAttributeValue>> entry : attributeValueMap.entrySet() )
         {
             SortedMap<String, PatientAttributeValue> sortedByAttribute = new TreeMap<String, PatientAttributeValue>();
-            for ( PatientAttributeValue patientAttributeValue : attributeValueMap.get( id ) )
+            
+            for ( PatientAttributeValue patientAttributeValue : entry.getValue() )
             {
                 sortedByAttribute.put( patientAttributeValue.getPatientAttribute().getName(), patientAttributeValue );
             }
 
-            patentAttributeValueMap.put( id, sortedByAttribute.values() );
+            patentAttributeValueMap.put( entry.getKey(), sortedByAttribute.values() );
 
         }
 

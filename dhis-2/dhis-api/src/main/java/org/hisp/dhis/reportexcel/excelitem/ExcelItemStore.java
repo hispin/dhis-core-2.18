@@ -5,49 +5,48 @@ import java.util.Collection;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
 
-public interface ExcelItemStore {
+public interface ExcelItemStore
+{
 
-	String ID = ExcelItemStore.class.getName();
+    String ID = ExcelItemStore.class.getName();
 
-	// ----------------------------------------------------------------------------
-	// Excelitem group services
-	// ----------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------
+    // Excelitem group services
+    // ----------------------------------------------------------------------------
 
-	public int addExcelItemGroup(ExcelItemGroup excelItemGroup);
+    public int addExcelItemGroup( ExcelItemGroup excelItemGroup );
 
-	public void updateExcelItemGroup(ExcelItemGroup excelItemGroup);
+    public void updateExcelItemGroup( ExcelItemGroup excelItemGroup );
 
-	public void deleteExcelItemGroup(int id);
+    public void deleteExcelItemGroup( int id );
 
-	public Collection<ExcelItemGroup> getAllExcelItemGroup();
+    public Collection<ExcelItemGroup> getAllExcelItemGroup();
 
-	public ExcelItemGroup getExcelItemGroup(int id);
+    public ExcelItemGroup getExcelItemGroup( int id );
 
-	public Collection<ExcelItemGroup> getExcelItemGroupsByOrganisationUnit(
-			OrganisationUnit organisationUnit);
+    public Collection<ExcelItemGroup> getExcelItemGroupsByOrganisationUnit( OrganisationUnit organisationUnit );
 
-	// ----------------------------------------------------------------------------
-	// Excelitem services
-	// ----------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------
+    // Excelitem services
+    // ----------------------------------------------------------------------------
 
-	public int addExcelItem(ExcelItem excelItem);
+    public int addExcelItem( ExcelItem excelItem );
 
-	public void updateExcelItem(ExcelItem excelItem);
+    public void updateExcelItem( ExcelItem excelItem );
 
-	public void deleteExcelItem(int id);
+    public void deleteExcelItem( int id );
 
-	public Collection<ExcelItem> getAllExcelItem();
+    public Collection<ExcelItem> getAllExcelItem();
 
-	public ExcelItem getExcelItem(int id);
+    public ExcelItem getExcelItem( int id );
 
-	// --------------------------------------
-	// DataElement Order
-	// --------------------------------------
+    // --------------------------------------
+    // DataElement Order
+    // --------------------------------------
 
-	public DataElementGroupOrder getDataElementGroupOrder(Integer id);
+    public DataElementGroupOrder getDataElementGroupOrder( Integer id );
 
-	public void updateDataElementGroupOrder(
-			DataElementGroupOrder dataElementGroupOrder);
+    public void updateDataElementGroupOrder( DataElementGroupOrder dataElementGroupOrder );
 
-	public void deleteDataElementGroupOrder(Integer id);
+    public void deleteDataElementGroupOrder( Integer id );
 }

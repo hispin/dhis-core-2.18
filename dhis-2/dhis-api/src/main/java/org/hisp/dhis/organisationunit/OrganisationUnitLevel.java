@@ -93,7 +93,7 @@ public class OrganisationUnitLevel
         
         final OrganisationUnitLevel other = (OrganisationUnitLevel) object;
         
-        return level == other.level && name == other.name;
+        return level == other.level && name.equals( other.name );
     }
     
     // -------------------------------------------------------------------------

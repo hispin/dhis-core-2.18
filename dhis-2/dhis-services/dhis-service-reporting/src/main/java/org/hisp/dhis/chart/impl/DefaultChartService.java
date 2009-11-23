@@ -273,15 +273,15 @@ public class DefaultChartService
      */
     private CategoryDataset[] getCategoryDataSet( Chart chart )
     {
-        Collections.sort( chart.getIndicators(), new IndicatorNameComparator() );
-        Collections.sort( chart.getPeriods(), new AscendingPeriodComparator() );
-        Collections.sort( chart.getOrganisationUnits(), new OrganisationUnitNameComparator() );
-        
         final DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         final DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();
         
         if ( chart != null )
         {
+            Collections.sort( chart.getIndicators(), new IndicatorNameComparator() );
+            Collections.sort( chart.getPeriods(), new AscendingPeriodComparator() );
+            Collections.sort( chart.getOrganisationUnits(), new OrganisationUnitNameComparator() );
+            
             Period selectedPeriod = chart.getPeriods().get( 0 );
             OrganisationUnit selectedOrganisationUnit = chart.getOrganisationUnits().get( 0 );
             
