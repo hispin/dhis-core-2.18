@@ -48,7 +48,7 @@ public class OrganisationUnitHierarchyVerifier
 {
     private static final Log log = LogFactory.getLog( OrganisationUnitHierarchyVerifier.class );
     
-    public static Date START_OF_TIME;
+    public static final Date START_OF_TIME;
     
     static
     {

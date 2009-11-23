@@ -50,7 +50,7 @@ public abstract class Source
     // Dimension
     // -------------------------------------------------------------------------
 
-    public static Dimension DIMENSION = new SourceDimension();
+    public static final Dimension DIMENSION = new SourceDimension();
     
     public static class SourceDimension
         extends Dimension

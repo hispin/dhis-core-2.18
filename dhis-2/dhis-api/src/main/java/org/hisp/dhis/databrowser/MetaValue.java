@@ -1,5 +1,6 @@
 package org.hisp.dhis.databrowser;
 
+
 /*
  * Copyright (c) 2004-${year}, University of Oslo
  * All rights reserved.
@@ -113,7 +114,29 @@ public class MetaValue
     @Override
     public boolean equals( Object o )
     {
-        return o.equals( name );
-    }
+        if ( this == o )
+        {
+            return true;
+        }
 
+        if ( o == null )
+        {
+            return false;
+        }
+
+        if ( !(o instanceof MetaValue) )
+        {
+            return false;
+        }
+
+        final MetaValue other = (MetaValue) o;
+
+        return name.equals( other.getName() );
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return name.hashCode();
+    }
 }
