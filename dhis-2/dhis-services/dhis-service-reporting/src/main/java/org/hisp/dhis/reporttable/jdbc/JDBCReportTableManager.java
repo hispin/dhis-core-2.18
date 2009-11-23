@@ -94,11 +94,13 @@ public class JDBCReportTableManager
         
         ReportTableStatement statement = new CreateReportTableStatement( reportTable, statementBuilder );
         
-        log.debug( "Creating report table with SQL statement: '" + statement.getStatement() + "'" );
+        final String sql = statement.getStatement();
+        
+        log.debug( "Creating report table with SQL statement: '" + sql + "'" );
         
         try
         {
-            holder.getStatement().executeUpdate( statement.getStatement() );
+            holder.getStatement().executeUpdate( sql );
         }
         catch ( Exception ex )
         {
@@ -115,10 +117,12 @@ public class JDBCReportTableManager
         StatementHolder holder = statementManager.getHolder();
         
         ReportTableStatement statement = new RemoveReportTableStatement( reportTable );
+
+        final String sql = statement.getStatement();
         
         try
         {
-            holder.getStatement().executeUpdate( statement.getStatement() );
+            holder.getStatement().executeUpdate( sql );
         }
         catch ( Exception ex )
         {

@@ -139,7 +139,7 @@ public class OrganisationUnitHierarchyConverter
         Integer parentId = organisationUnitMapping.get( Integer.parseInt( values.get( FIELD_PARENT ) ) );
         Integer childId = organisationUnitMapping.get( Integer.parseInt( values.get( FIELD_CHILD ) ) );
         
-        if ( parentId != null && childId != null && parentId != childId ) // Parent id equals child id for root
+        if ( parentId != null && childId != null && parentId.equals( childId ) ) // Parent id equals child id for root
         {
             association.setGroupId( parentId );
             association.setMemberId( childId );
