@@ -40,11 +40,11 @@ import org.hisp.dhis.report.ReportManager;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.report.manager.ReportConfiguration;
 import org.hisp.dhis.reporttable.ReportTableService;
-import org.hisp.dhis.system.util.CollectionConversionUtils;
-import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
+
+import static org.hisp.dhis.system.util.ConversionUtils.*;
 
 /**
  * @author Lars Helge Overland
@@ -250,8 +250,8 @@ public class AddReportAction
         report.setName( name );
         report.setDesign( fileName );
         report.setType( type );
-        report.setReportTables( selectedReportTables != null ? CollectionConversionUtils.getSet( 
-            reportTableService.getReportTables( ConversionUtils.getIntegerCollection( selectedReportTables ) ) ) : null );
+        report.setReportTables( selectedReportTables != null ? getSet( 
+            reportTableService.getReportTables( getIntegerCollection( selectedReportTables ) ) ) : null );
         
         reportService.saveReport( report );
         

@@ -27,7 +27,7 @@ package org.hisp.dhis.reporting.tablecreator.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
+import static org.hisp.dhis.system.util.ConversionUtils.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,6 @@ import org.hisp.dhis.reporttable.RelativePeriods;
 import org.hisp.dhis.reporttable.ReportParams;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
-import org.hisp.dhis.system.util.CollectionConversionUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -347,20 +346,11 @@ public class SaveTableAction
     private ReportTable getReportTable()
         throws Exception
     {
-        List<DataElement> dataElements = CollectionConversionUtils.getList( 
-            dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) );
-        
-        List<Indicator> indicators = CollectionConversionUtils.getList( 
-            indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) );
-        
-        List<DataSet> dataSets = CollectionConversionUtils.getList( 
-            dataSetService.getDataSets( getIntegerCollection( selectedDataSets ) ) );
-        
-        List<Period> periods = CollectionConversionUtils.getList( 
-            periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) );
-        
-        List<OrganisationUnit> organisationUnits = CollectionConversionUtils.getList( 
-            organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) );
+        List<DataElement> dataElements = getList( dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) );        
+        List<Indicator> indicators = getList( indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) );        
+        List<DataSet> dataSets = getList( dataSetService.getDataSets( getIntegerCollection( selectedDataSets ) ) );        
+        List<Period> periods = getList( periodService.getPeriods( getIntegerCollection( selectedPeriods ) ) );        
+        List<OrganisationUnit> units = getList( organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) );
 
         DimensionSet dimensionSet = dimensionService.getDimensionSet( dimensionSetId );
         
@@ -391,7 +381,7 @@ public class SaveTableAction
         if ( tableId == null )
         {
             reportTable = new ReportTable( tableName, mode, regression,
-                dataElements, indicators, dataSets, periods, null, organisationUnits, null,
+                dataElements, indicators, dataSets, periods, null, units, null,
                 dimensionSet, doIndicators, doCategoryOptionCombos, doPeriods, doOrganisationUnits, relatives, reportParams, 
                 null, null );
         }
@@ -405,7 +395,7 @@ public class SaveTableAction
             reportTable.setIndicators( indicators );
             reportTable.setDataSets( dataSets );
             reportTable.setPeriods( periods );
-            reportTable.setUnits( organisationUnits );
+            reportTable.setUnits( units );
             reportTable.setDoIndicators( doIndicators );
             reportTable.setDoCategoryOptionCombos( doCategoryOptionCombos );
             reportTable.setDoPeriods( doPeriods );

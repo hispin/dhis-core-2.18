@@ -30,6 +30,9 @@ package org.hisp.dhis.system.util;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -124,5 +127,41 @@ public class ConversionUtils
         }
         
         return Integer.parseInt( string );
+    }
+    
+    /**
+     * Creates a Set of objects out of a Collection of objects.
+     * 
+     * @param objects the Collection of objects.
+     * @return a Set of objects.
+     */
+    public static <T> Set<T> getSet( Collection<T> objects )
+    {
+        Set<T> set = new HashSet<T>();
+        
+        for ( T object : objects )
+        {
+            set.add( object );
+        }
+        
+        return set;
+    }
+    
+    /**
+     * Creates a List of objects out of a Collection of objects.
+     * 
+     * @param objects the Collection of objects.
+     * @return a List of objects.
+     */
+    public static <T> List<T> getList( Collection<T> objects )
+    {
+        List<T> list = new ArrayList<T>();
+        
+        for ( T object : objects )
+        {
+            list.add( object );
+        }
+        
+        return list;
     }
 }
