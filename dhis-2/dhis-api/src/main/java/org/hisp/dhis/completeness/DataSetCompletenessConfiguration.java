@@ -38,14 +38,19 @@ public class DataSetCompletenessConfiguration
 {
     private Integer days;
     
-    private transient Calendar cal = Calendar.getInstance();
+    private static transient Calendar cal;
+    
+    static
+    {
+        cal = Calendar.getInstance();
+    }
     
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
     public DataSetCompletenessConfiguration()
-    {   
+    {
     }
     
     public DataSetCompletenessConfiguration( Integer days )
