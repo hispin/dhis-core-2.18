@@ -38,9 +38,26 @@ public interface DimensionService
 {
     final String ID = DimensionService.class.getName();
     
+    /**
+     * Returns the DimensionSet with the argument DimensionSet identifier.
+     * 
+     * @param dimensionSetId the DimensionSet identifier.
+     * @return the DimensionSet with the argument DimensionSet identifier.
+     */
     DimensionSet getDimensionSet( String dimensionSetId );
     
+    /**
+     * Returns all DataElement DimensionSets.
+     * 
+     * @return a Collection of DataElement DimensionSets.
+     */
     Collection<DimensionSet> getDataElementDimensionSets();
     
+    /**
+     * Returns all DataElemens associated with the argument DimensionSet.
+     * 
+     * @param dimensionSet the DimensionSet.
+     * @return a Collection of DataElements associated with the argument DimensionSet.
+     */
     Collection<DataElement> getDataElements( DimensionSet dimensionSet );
 }
