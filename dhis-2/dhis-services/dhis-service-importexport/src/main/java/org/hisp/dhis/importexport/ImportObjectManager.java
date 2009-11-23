@@ -103,8 +103,6 @@ public interface ImportObjectManager
     
     void importReportTableDataElements();
     
-    void importReportTableCategoryOptionCombos();
-    
     void importReportTableIndicators();
     
     void importReportTableDataSets();

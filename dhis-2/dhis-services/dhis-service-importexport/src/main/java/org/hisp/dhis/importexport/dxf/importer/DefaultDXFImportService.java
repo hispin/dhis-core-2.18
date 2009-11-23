@@ -98,7 +98,6 @@ import org.hisp.dhis.importexport.dxf.converter.OrganisationUnitGroupMemberConve
 import org.hisp.dhis.importexport.dxf.converter.OrganisationUnitLevelConverter;
 import org.hisp.dhis.importexport.dxf.converter.OrganisationUnitRelationshipConverter;
 import org.hisp.dhis.importexport.dxf.converter.PeriodConverter;
-import org.hisp.dhis.importexport.dxf.converter.ReportTableCategoryOptionComboConverter;
 import org.hisp.dhis.importexport.dxf.converter.ReportTableConverter;
 import org.hisp.dhis.importexport.dxf.converter.ReportTableDataElementConverter;
 import org.hisp.dhis.importexport.dxf.converter.ReportTableDataSetConverter;
@@ -106,6 +105,7 @@ import org.hisp.dhis.importexport.dxf.converter.ReportTableIndicatorConverter;
 import org.hisp.dhis.importexport.dxf.converter.ReportTableOrganisationUnitConverter;
 import org.hisp.dhis.importexport.dxf.converter.ReportTablePeriodConverter;
 import org.hisp.dhis.importexport.dxf.converter.ValidationRuleConverter;
+import org.hisp.dhis.importexport.dxf2.importer.Parser;
 import org.hisp.dhis.importexport.invoker.ConverterInvoker;
 import org.hisp.dhis.importexport.locking.LockingManager;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
@@ -148,7 +148,6 @@ import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTableBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableCategoryOptionComboBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTableDataElementBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTableDataSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTableIndicatorBatchHandler;
@@ -168,7 +167,6 @@ import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.validation.ValidationRuleService;
-import org.hisp.dhis.importexport.dxf2.importer.Parser;
 
 /**
  * @author Lars Helge Overland
@@ -1081,25 +1079,6 @@ public class DefaultDXFImportService
                 batchHandler.flush();
 
                 log.info( "Imported ReportTable DataElements" );
-            }
-            else if ( reader.isStartElement( ReportTableCategoryOptionComboConverter.COLLECTION_NAME ) )
-            {
-                // setMessage( "importing_report_table_category_option_combos" );
-
-                BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
-                    .createBatchHandler( ReportTableCategoryOptionComboBatchHandler.class );
-
-                batchHandler.init();
-
-                XMLConverter converter = new ReportTableCategoryOptionComboConverter( batchHandler,
-                    importObjectService, objectMappingGenerator.getReportTableMapping( params.skipMapping() ),
-                    objectMappingGenerator.getCategoryOptionComboMapping( params.skipMapping() ) );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                batchHandler.flush();
-
-                log.info( "Imported ReportTable CategoryOptionCombos" );
             }
             else if ( reader.isStartElement( ReportTableIndicatorConverter.COLLECTION_NAME ) )
             {

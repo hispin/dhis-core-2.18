@@ -100,7 +100,6 @@ import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTableBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.ReportTableCategoryOptionComboBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTableDataElementBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTableDataSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ReportTableIndicatorBatchHandler;
@@ -1211,18 +1210,6 @@ public class DefaultImportObjectManager
             objectMappingGenerator.getDataElementMapping( false ) );
         
         log.info( "Imported ReportTable DataElements" );
-    }
-
-    @Transactional
-    public void importReportTableCategoryOptionCombos()
-    {
-        BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory.createBatchHandler( ReportTableCategoryOptionComboBatchHandler.class );
-        
-        importGroupMemberAssociation( batchHandler, GroupMemberType.REPORTTABLE_CATEGORY_OPTION_COMBO,
-            objectMappingGenerator.getReportTableMapping( false ),
-            objectMappingGenerator.getCategoryOptionComboMapping( false ) );
-        
-        log.info( "Imported ReportTable CategoryOptionCombos" );
     }
 
     @Transactional

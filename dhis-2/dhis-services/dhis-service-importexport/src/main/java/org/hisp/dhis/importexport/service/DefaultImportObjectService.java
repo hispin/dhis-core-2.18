@@ -379,7 +379,6 @@ public class DefaultImportObjectService<T>
                 ReportTable reportTable = (ReportTable) importObject.getObject();
                 
                 deleteGroupAssociations( GroupMemberType.REPORTTABLE_DATAELEMENT, reportTable.getId() );
-                deleteGroupAssociations( GroupMemberType.REPORTTABLE_CATEGORY_OPTION_COMBO, reportTable.getId() );
                 deleteGroupAssociations( GroupMemberType.REPORTTABLE_INDICATOR, reportTable.getId() );
                 deleteGroupAssociations( GroupMemberType.REPORTTABLE_DATASET, reportTable.getId() );                
                 deleteGroupAssociations( GroupMemberType.REPORTTABLE_PERIOD, reportTable.getId() );
@@ -487,7 +486,6 @@ public class DefaultImportObjectService<T>
         else if ( clazz.equals( ReportTable.class ) )
         {
             importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_DATAELEMENT );
-            importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_CATEGORY_OPTION_COMBO );
             importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_INDICATOR );
             importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_DATASET );
             importObjectStore.deleteImportObjects( GroupMemberType.REPORTTABLE_PERIOD );
@@ -667,7 +665,6 @@ public class DefaultImportObjectService<T>
         importObjectManager.importPeriods();
         importObjectManager.importReportTables();
         importObjectManager.importReportTableDataElements();
-        importObjectManager.importReportTableCategoryOptionCombos();
         importObjectManager.importReportTableIndicators();
         importObjectManager.importReportTableDataSets();
         importObjectManager.importReportTablePeriods();
