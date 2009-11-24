@@ -113,6 +113,7 @@ public class HibernateDbmsManager
         emptyTable( "datasetmembers" );        
         emptyTable( "dataset" );
 
+        emptyTable( "minmaxdataelement" );
         emptyTable( "expressiondataelement" );
         emptyTable( "calculateddataelement" );
         emptyTable( "dataelementgroupsetmembers" );

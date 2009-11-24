@@ -51,7 +51,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -104,7 +103,7 @@ public class MinMaxOutlierAnalysisServiceTest
     public void setUpTest()
         throws Exception
     {
-        minMaxOutlierAnalysisService = (MinMaxOutlierAnalysisService) getBean( "org.hisp.dhis.outlieranalysis.MinMaxOutlierAnalysisService" );
+        minMaxOutlierAnalysisService = (OutlierAnalysisService) getBean( "org.hisp.dhis.outlieranalysis.MinMaxOutlierAnalysisService" );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
 
@@ -167,7 +166,6 @@ public class MinMaxOutlierAnalysisServiceTest
     // ----------------------------------------------------------------------
 
     @Test
-    @Ignore //TODO
     public void testGetFindOutliers()
     {
         // testvalues = [5, 5, -5, -5, 10, -10, 13, -13, 41, -41]
@@ -201,11 +199,9 @@ public class MinMaxOutlierAnalysisServiceTest
         Collection<OutlierValue> result = minMaxOutlierAnalysisService.findOutliers( 
             organisationUnitA, dataElementsA, periods, null );
 
-        Collection<OutlierValue> ref = new ArrayList<OutlierValue>();
-        ref.add( new OutlierValue( new DeflatedDataValue( dataValueA ), minMaxDataElement.getMin(), minMaxDataElement.getMax() ) );
-        ref.add( new OutlierValue( new DeflatedDataValue( dataValueB ), minMaxDataElement.getMin(), minMaxDataElement.getMax() ) );
-
         assertEquals( 2, result.size() );
-        assertEquals( ref, result );
+        equals( result,
+            new OutlierValue( new DeflatedDataValue( dataValueA ), minMaxDataElement.getMin(), minMaxDataElement.getMax() ),
+            new OutlierValue( new DeflatedDataValue( dataValueB ), minMaxDataElement.getMin(), minMaxDataElement.getMax() ) );
     }
 }
