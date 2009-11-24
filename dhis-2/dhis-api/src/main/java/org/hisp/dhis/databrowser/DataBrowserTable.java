@@ -125,9 +125,9 @@ public class DataBrowserTable
             ResultSetMetaData data = resultSet.getMetaData();
             if ( data.getColumnCount() == 5 )
             {
-                if ( data.getColumnLabel( 5 ).toString().equalsIgnoreCase( "ColumnHeader" ) )
+                if ( data.getColumnLabel( 5 ).equalsIgnoreCase( "ColumnHeader" ) )
                     hasColumnName = true;
-                if ( data.getColumnLabel( 4 ).toString().equalsIgnoreCase( "PeriodId" ) )
+                if ( data.getColumnLabel( 4 ).equalsIgnoreCase( "PeriodId" ) )
                     hasPeriodIds = true;
             }
         }
