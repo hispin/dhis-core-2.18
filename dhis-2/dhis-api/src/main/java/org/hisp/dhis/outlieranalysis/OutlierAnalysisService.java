@@ -53,13 +53,13 @@ public interface OutlierAnalysisService
      * outliers.
      * 
      * @param organisationUnits The organisation units.
-     * @param dataElements The DataElements.
+     * @param dataElement The DataElement.
      * @param period The period.
      * @param stdDevFactor The standard deviation factor.
      * @return A collection of OutlierValue objects. If no values were found, an
      *         empty collection is returned.
      */
-    Collection<OutlierValue> findOutliers( Collection<? extends OrganisationUnit> organisationUnits, Collection<DataElement> dataElements,
+    Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit, Collection<DataElement> dataElements,
         Collection<Period> periods, Double stdDevFactor );
 
 }

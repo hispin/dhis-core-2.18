@@ -92,10 +92,6 @@ public class MinMaxOutlierAnalysisServiceTest
 
     private OrganisationUnit organisationUnitA;
 
-    private OrganisationUnit organisationUnitB;
-
-    private Set<OrganisationUnit> organisationUnitsA = new HashSet<OrganisationUnit>();
-
     private MinMaxDataElement minMaxDataElement;
 
     // ----------------------------------------------------------------------
@@ -154,13 +150,8 @@ public class MinMaxOutlierAnalysisServiceTest
         periodJ = createPeriod( new MonthlyPeriodType(), getDate( 2000, 12, 1 ), getDate( 2000, 12, 30 ) );
 
         organisationUnitA = createOrganisationUnit( 'A' );
-        organisationUnitB = createOrganisationUnit( 'B' );
 
         organisationUnitService.addOrganisationUnit( organisationUnitA );
-        organisationUnitService.addOrganisationUnit( organisationUnitB );
-
-        organisationUnitsA.add( organisationUnitA );
-        organisationUnitsA.add( organisationUnitB );
     }
 
     // ----------------------------------------------------------------------
@@ -199,7 +190,7 @@ public class MinMaxOutlierAnalysisServiceTest
         periods.add( periodE );
 
         Collection<OutlierValue> result = minMaxOutlierAnalysisService.findOutliers( 
-            organisationUnitsA, dataElementsA, periods, null );
+            organisationUnitA, dataElementsA, periods, null );
 
         Collection<OutlierValue> ref = new ArrayList<OutlierValue>();
         ref.add( new OutlierValue( dataValueA, minMaxDataElement.getMin(), minMaxDataElement.getMax() ) );

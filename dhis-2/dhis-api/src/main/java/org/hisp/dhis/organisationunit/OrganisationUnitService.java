@@ -162,7 +162,7 @@ public interface OrganisationUnitService
      * OrganisationUnit. Both root and target OrganisationUnits are included in
      * the returned collection.
      * 
-     * @param id the id of the OrganisationUnit to trace backwards from.
+     * @param id the id of the OrganisationUnit to trace upwards from.
      * @return the list of OrganisationUnits from a root to the given
      *         OrganisationUnit, or an empty list if the given OrganisationUnit
      *         doesn't exist.
