@@ -342,6 +342,8 @@ public class DefaultDXFImportService
 
     public void importData( ImportParams params, InputStream inputStream )
     {
+        log.info( "Import process started" );
+        
         if ( params.isPreview() )
         {
             importObjectService.deleteImportObjects();
