@@ -38,12 +38,7 @@ public class DataSetCompletenessConfiguration
 {
     private Integer days;
     
-    private static transient Calendar cal;
-    
-    static
-    {
-        cal = Calendar.getInstance();
-    }
+    private Calendar cal = Calendar.getInstance();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -68,7 +63,7 @@ public class DataSetCompletenessConfiguration
         
         if ( period != null )
         {
-            if ( days != null )
+            if ( days != null && cal != null )
             {
                 cal.clear();                
                 cal.setTime( period.getEndDate() );                                       
