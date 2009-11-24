@@ -82,4 +82,14 @@ public class CalculatedDataElement
     {
         this.expression = expression;
     }
+    
+    public boolean equals( Object other )
+    {
+        return super.equals( other );
+    }
+    
+    public int hashCode()
+    {
+        return super.hashCode();
+    }
 }
