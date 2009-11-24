@@ -46,20 +46,6 @@ public interface OutlierAnalysisService
     String ID = OutlierAnalysisService.class.getName();
 
     /**
-     * Finds possible outliers for the datavalues with the selected periods.
-     * 
-     * @param organisationUnit The organisation unit.
-     * @param dataElement The data element.
-     * @param periods The periods.
-     * @param stdDevFactor The standard deviation factor.
-     * 
-     * @return A Collection of OutlierValue objects. An empty collection is
-     *         returned if no outliers were found.
-     */
-    Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit, DataElement dataElement, Collection<Period> periods,
-        Double stdDevFactor );
-
-    /**
      * Finds possible outliers for a collection of sources, dataelements and periods.
      * 
      * Checks for every combination in the cartesian product of sources,
