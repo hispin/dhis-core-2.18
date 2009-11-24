@@ -33,8 +33,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.datamart.DataMartService;
-import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
@@ -77,27 +75,22 @@ public class MinMaxOutlierAnalysisService
     {
         final Collection<OutlierValue> outlierValues = new ArrayList<OutlierValue>();
 
-        final Collection<MinMaxDataElement> minMaxDataElements = 
-            minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataElement );
+        MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit, dataElement, categoryOptionCombo );
 
-        for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )
+        if ( minMaxDataElement != null )
         {
             double lowerBound = minMaxDataElement.getMin();
             double upperBound = minMaxDataElement.getMax();
-            
-            for ( Period period : periods )
-            {    
-                final DataValue dataValue = null; //outlierAnalysisStore.getDeflatedDataValue( dataElement, categoryOptionCombo, period, organisationUnit );
-    
-                final int value = Integer.parseInt( dataValue.getValue() );
-        
-                if ( value < lowerBound || value > upperBound )
-                {
-                    outlierValues.add( new OutlierValue( new DeflatedDataValue( dataValue ), lowerBound, upperBound ) );
-                }
-            }
-        }        
 
+            Collection<DeflatedDataValue> outliers = outlierAnalysisStore.
+                getDeflatedDataValues( dataElement, categoryOptionCombo, organisationUnit, lowerBound, upperBound );
+
+            for ( DeflatedDataValue outlier : outliers )
+            {
+                outlierValues.add( new OutlierValue( outlier, lowerBound, upperBound ) );
+            }
+        }
+        
         return outlierValues;
     }
 }
