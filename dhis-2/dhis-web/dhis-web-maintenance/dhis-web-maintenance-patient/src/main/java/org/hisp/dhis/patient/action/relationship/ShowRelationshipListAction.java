@@ -81,13 +81,6 @@ public class ShowRelationshipListAction
         return patient;
     }
 
-    Collection<Relationship> relationships;
-
-    public Collection<Relationship> getRelationships()
-    {
-        return relationships;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------

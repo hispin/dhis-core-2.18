@@ -192,20 +192,18 @@ public class VisitPlanAction
         // Get all the programs the facility is providing
         // ---------------------------------------------------------------------
 
-        Collection<Program> programs = new ArrayList<Program>();
-
-        programs = programService.getPrograms( organisationUnit );
+        Collection<Program> programs = programService.getPrograms( organisationUnit );
+        
 
         if ( programs.size() > 0 )
         {
-            Collection<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
             // -----------------------------------------------------------------
             // For all the programs a facility is servicing get the active
             // instances completed = false
             // -----------------------------------------------------------------
 
-            programInstances = programInstanceService.getProgramInstances( programs, false );
+            Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( programs, false );
 
             // -----------------------------------------------------------------
             // For all the active program instances determine the next visits

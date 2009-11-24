@@ -90,7 +90,7 @@ public class ValidatePatientProgramEnrollmentAction
 
     public String execute()
         throws Exception
-    {        
+    {
 
         if ( enrollmentDate == null )
         {
@@ -101,27 +101,24 @@ public class ValidatePatientProgramEnrollmentAction
 
         else
         {
-            if ( enrollmentDate != null )
-            {
-                enrollmentDate = enrollmentDate.trim();
+            enrollmentDate = enrollmentDate.trim();
 
-                if ( enrollmentDate.length() == 0 )
+            if ( enrollmentDate.length() == 0 )
+            {
+                message = i18n.getString( "please_specify_enrollment_date" );
+
+                return INPUT;
+            }
+
+            if ( enrollmentDate.length() != 0 )
+            {
+                Date DateOfEnrollment = format.parseDate( enrollmentDate );
+
+                if ( DateOfEnrollment == null )
                 {
-                    message = i18n.getString( "please_specify_enrollment_date" );
+                    message = i18n.getString( "please_specify_a_valid_enrollment_date" );
 
                     return INPUT;
-                }
-
-                if ( enrollmentDate.length() != 0 )
-                {
-                    Date DateOfEnrollment = format.parseDate( enrollmentDate );
-
-                    if ( DateOfEnrollment == null )
-                    {
-                        message = i18n.getString( "please_specify_a_valid_enrollment_date" );
-
-                        return INPUT;
-                    }
                 }
             }
         }
@@ -135,27 +132,24 @@ public class ValidatePatientProgramEnrollmentAction
 
         else
         {
-            if ( dateOfIncident != null )
+            dateOfIncident = dateOfIncident.trim();
+
+            if ( dateOfIncident.length() == 0 )
             {
                 message = i18n.getString( "please_specify_date_of_incident" );
 
-                dateOfIncident = dateOfIncident.trim();
+                return INPUT;
+            }
 
-                if ( dateOfIncident.length() == 0 )
+            if ( dateOfIncident.length() != 0 )
+            {
+                Date DateOfIncident = format.parseDate( dateOfIncident );
+
+                if ( DateOfIncident == null )
                 {
+                    message = i18n.getString( "please_specify_a_valid_date_of_incident" );
+
                     return INPUT;
-                }
-
-                if ( dateOfIncident.length() != 0 )
-                {
-                    Date DateOfIncident = format.parseDate( dateOfIncident );
-
-                    if ( DateOfIncident == null )
-                    {
-                        message = i18n.getString( "please_specify_a_valid_date_of_incident" );
-
-                        return INPUT;
-                    }
                 }
             }
         }

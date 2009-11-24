@@ -61,18 +61,11 @@ public class ShowAddPatientFormAction
     public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
     {
         this.patientIdentifierService = patientIdentifierService;
-    }    
-    
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-
-    private PatientIdentifier patientIdentifier;
-
-    public PatientIdentifier getPatientIdentifier()
-    {
-        return patientIdentifier;
-    }
 
     private String identifier;
 
@@ -80,8 +73,7 @@ public class ShowAddPatientFormAction
     {
         return identifier;
     }
-    
-  
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -90,7 +82,7 @@ public class ShowAddPatientFormAction
     {
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        identifier = patientIdentifierService.getNextIdentifierForOrgUnit( organisationUnit );        
+        identifier = patientIdentifierService.getNextIdentifierForOrgUnit( organisationUnit );
 
         return SUCCESS;
     }
