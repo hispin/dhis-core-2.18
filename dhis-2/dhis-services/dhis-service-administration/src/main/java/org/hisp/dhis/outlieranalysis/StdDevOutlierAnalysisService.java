@@ -29,19 +29,20 @@ package org.hisp.dhis.outlieranalysis;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.outlieranalysis.jdbc.OutlierAnalysisStore;
 import org.hisp.dhis.period.Period;
+
+import static org.hisp.dhis.system.util.MathUtils.isEqual;
 
 /**
  * 
  * @author Dag Haavi Finstad
+ * @author Lars Helge Overland
  * @version $Id: DefaultStdDevOutlierAnalysisService.java 1020 2009-06-05 01:30:07Z daghf $
  */
 public class StdDevOutlierAnalysisService
@@ -51,61 +52,41 @@ public class StdDevOutlierAnalysisService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataValueService dataValueService;
+    private OutlierAnalysisStore outlierAnalysisStore;
 
-    public void setDataValueService( DataValueService dataValueService )
+    public void setOutlierAnalysisStore( OutlierAnalysisStore outlierAnalysisStore )
     {
-        this.dataValueService = dataValueService;
+        this.outlierAnalysisStore = outlierAnalysisStore;
     }
 
     // -------------------------------------------------------------------------
     // OutlierAnalysisService implementation
     // -------------------------------------------------------------------------
 
-    public Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit, 
-        DataElement dataElement, Collection<Period> periods, Double stdDevFactor )
+    public Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit, DataElement dataElement, 
+        DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor )
     {
         final Collection<OutlierValue> outlierValues = new ArrayList<OutlierValue>();
 
-        if ( !dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
+        Double stdDev = outlierAnalysisStore.getStandardDeviation( dataElement, categoryOptionCombo, organisationUnit );
+                
+        if ( !isEqual( stdDev, 0.0 ) ) // If 0.0 no values found or no outliers exist
         {
-            return outlierValues;
-        }
-
-        final Collection<DataValue> dataValues = dataValueService.getDataValues( organisationUnit, dataElement );
-        final DescriptiveStatistics statistics = new DescriptiveStatistics();
-        
-        final Map<Period, DataValue> dataValueMap = new HashMap<Period, DataValue>();        
-        
-        for ( DataValue dataValue : dataValues )
-        {
-            statistics.addValue( Double.parseDouble( dataValue.getValue() ) );
-            dataValueMap.put( dataValue.getPeriod(), dataValue );
-        }
-
-        double mean = statistics.getMean();
-        double deviation = statistics.getStandardDeviation() * stdDevFactor;
-        
-        double lowerBound = mean - deviation;
-        double upperBound = mean + deviation;
-
-        for ( Period period : periods )
-        {
-            final DataValue dataValue = dataValueMap.get( period );
-
-            if ( dataValue == null )
+            Double avg = outlierAnalysisStore.getAverage( dataElement, categoryOptionCombo, organisationUnit );
+            
+            double deviation = stdDev * stdDevFactor;        
+            double lowerBound = avg - deviation;
+            double upperBound = avg + deviation;
+            
+            Collection<DeflatedDataValue> outliers = outlierAnalysisStore.
+                getDeflatedDataValues( dataElement, categoryOptionCombo, organisationUnit, lowerBound, upperBound );
+            
+            for ( DeflatedDataValue outlier : outliers )
             {
-                continue;
-            }
-
-            final double value = Double.parseDouble( dataValue.getValue() );
-
-            if ( value < lowerBound || value > upperBound )
-            {
-                outlierValues.add( new OutlierValue( dataValue, lowerBound, upperBound ) );
+                outlierValues.add( new OutlierValue( outlier, lowerBound, upperBound ) );
             }
         }
-
+        
         return outlierValues;
     }
 }

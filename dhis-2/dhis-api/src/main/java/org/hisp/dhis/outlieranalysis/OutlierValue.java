@@ -27,7 +27,7 @@ package org.hisp.dhis.outlieranalysis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
 
 /**
  * The OutlierValue class wraps an outlier DataValue. The value is outside of
@@ -42,7 +42,7 @@ public class OutlierValue
     /**
      * Outlier datavalue.
      */
-    private DataValue dataValue;
+    private DeflatedDataValue outlier;
 
     /**
      * Lower bound. This is the lower cut-off point for 
@@ -58,9 +58,10 @@ public class OutlierValue
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
-    public OutlierValue( DataValue outlierValue, double lowerBound, double upperBound )
+    
+    public OutlierValue( DeflatedDataValue outlier, double lowerBound, double upperBound )
     {
-        this.dataValue = outlierValue;
+        this.outlier = outlier;
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
     }
@@ -106,9 +107,9 @@ public class OutlierValue
      * 
      * @return The outlier DataValue.
      */
-    public DataValue getOutlier()
+    public DeflatedDataValue getOutlier()
     {
-        return dataValue;
+        return outlier;
     }
 
     /**
@@ -116,9 +117,25 @@ public class OutlierValue
      * 
      * @param outlier An outlier DataValue.
      */
-    public void setOutlier( DataValue outlier )
+    public void setOutlier( DeflatedDataValue outlier )
     {
-        this.dataValue = outlier;
+        this.outlier = outlier;
+    }
+
+    /**
+     * @param lowerBound the lowerBound to set
+     */
+    public void setLowerBound( double lowerBound )
+    {
+        this.lowerBound = lowerBound;
+    }
+
+    /**
+     * @param upperBound the upperBound to set
+     */
+    public void setUpperBound( double upperBound )
+    {
+        this.upperBound = upperBound;
     }
 
     @Override
@@ -141,29 +158,12 @@ public class OutlierValue
 
         final OutlierValue other = (OutlierValue) o;
 
-        return dataValue.equals( other.getOutlier() );
+        return outlier.equals( other.outlier ) && lowerBound == other.lowerBound && upperBound == other.upperBound;
     }
 
     @Override
     public int hashCode()
     {
-        return dataValue.hashCode();
+        return outlier.hashCode();
     }
-
-    /**
-     * @param lowerBound the lowerBound to set
-     */
-    public void setLowerBound( double lowerBound )
-    {
-        this.lowerBound = lowerBound;
-    }
-
-    /**
-     * @param upperBound the upperBound to set
-     */
-    public void setUpperBound( double upperBound )
-    {
-        this.upperBound = upperBound;
-    }
-
 }

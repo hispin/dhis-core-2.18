@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -68,7 +69,15 @@ public abstract class AbstractOutlierAnalysisService
         {
             for ( DataElement dataElement : dataElements )
             {
-                outlierCollection.addAll( findOutliers( unit, dataElement, periods, stdDevFactor ) );
+                if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
+                {                    
+                    Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
+                    
+                    for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
+                    {
+                        outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, stdDevFactor ) );
+                    }
+                }
             }
         }
 
@@ -80,5 +89,5 @@ public abstract class AbstractOutlierAnalysisService
     // -------------------------------------------------------------------------
 
     protected abstract Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit, 
-        DataElement dataElement, Collection<Period> periods, Double stdDevFactor );
+        DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor );
 }

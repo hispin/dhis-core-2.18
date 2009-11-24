@@ -32,11 +32,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.outlieranalysis.jdbc.OutlierAnalysisStore;
 import org.hisp.dhis.period.Period;
 
 /**
@@ -58,45 +61,39 @@ public class MinMaxOutlierAnalysisService
         this.minMaxDataElementService = minMaxDataElementService;
     }
 
-    private DataValueService dataValueService;
+    private OutlierAnalysisStore outlierAnalysisStore;
 
-    public void setDataValueService( DataValueService dataValueService )
+    public void setOutlierAnalysisStore( OutlierAnalysisStore outlierAnalysisStore )
     {
-        this.dataValueService = dataValueService;
+        this.outlierAnalysisStore = outlierAnalysisStore;
     }
-
+    
     // -------------------------------------------------------------------------
     // MinMaxOutlierAnalysisService implementation
     // -------------------------------------------------------------------------
 
     public Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit, DataElement dataElement,
-        Collection<Period> periods, Double stdDevFactor )
+        DataElementCategoryOptionCombo categoryOptionCombo, Collection<Period> periods, Double stdDevFactor )
     {
         final Collection<OutlierValue> outlierValues = new ArrayList<OutlierValue>();
-
-        if ( !dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
-        {
-            return outlierValues;
-        }
 
         final Collection<MinMaxDataElement> minMaxDataElements = 
             minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataElement );
 
         for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )
         {
-            int lowerBound = minMaxDataElement.getMin();
-            int upperBound = minMaxDataElement.getMax();
+            double lowerBound = minMaxDataElement.getMin();
+            double upperBound = minMaxDataElement.getMax();
             
             for ( Period period : periods )
             {    
-                final DataValue dataValue = dataValueService.getDataValue( 
-                    organisationUnit, dataElement, period, minMaxDataElement.getOptionCombo() );
+                final DataValue dataValue = null; //outlierAnalysisStore.getDeflatedDataValue( dataElement, categoryOptionCombo, period, organisationUnit );
     
                 final int value = Integer.parseInt( dataValue.getValue() );
         
                 if ( value < lowerBound || value > upperBound )
                 {
-                    outlierValues.add( new OutlierValue( dataValue, lowerBound, upperBound ) );
+                    outlierValues.add( new OutlierValue( new DeflatedDataValue( dataValue ), lowerBound, upperBound ) );
                 }
             }
         }        
