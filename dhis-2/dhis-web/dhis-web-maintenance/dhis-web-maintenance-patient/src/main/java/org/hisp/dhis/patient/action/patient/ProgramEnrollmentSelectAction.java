@@ -107,12 +107,12 @@ public class ProgramEnrollmentSelectAction
     public Patient getPatient()
     {
         return patient;
-    }   
-   
+    }
+
     public void setPatient( Patient patient )
     {
         this.patient = patient;
-    }    
+    }
 
     private Collection<Program> programs = new ArrayList<Program>();
 
@@ -151,15 +151,15 @@ public class ProgramEnrollmentSelectAction
         // ---------------------------------------------------------------------
         // Validate selected Patient
         // ---------------------------------------------------------------------
-        
-        if( id != null )
+
+        if ( id != null )
         {
             patient = patientService.getPatient( id );
         }
-        
-        if( id == null )
+
+        if ( id == null )
         {
-            patient = selectedStateManager.getSelectedPatient();           
+            patient = selectedStateManager.getSelectedPatient();
         }
 
         if ( patient == null )
@@ -173,11 +173,6 @@ public class ProgramEnrollmentSelectAction
         }
 
         selectedStateManager.setSelectedPatient( patient );
-
-        if ( patient == null )
-        {
-            return SUCCESS;
-        }        
 
         // ---------------------------------------------------------------------
         // Load Programs
