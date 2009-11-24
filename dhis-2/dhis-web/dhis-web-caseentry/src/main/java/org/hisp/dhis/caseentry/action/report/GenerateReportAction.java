@@ -53,6 +53,7 @@ public class GenerateReportAction
     implements Action
 {
     public static final String RED = "#ff0000";
+
     public static final String YELLOW = "#ffff00";
 
     // -------------------------------------------------------------------------
@@ -117,13 +118,6 @@ public class GenerateReportAction
     public Collection<Program> getPrograms()
     {
         return programs;
-    }
-
-    private Collection<ProgramStage> programStages;
-
-    public Collection<ProgramStage> getProgramStages()
-    {
-        return programStages;
     }
 
     private Integer programId;

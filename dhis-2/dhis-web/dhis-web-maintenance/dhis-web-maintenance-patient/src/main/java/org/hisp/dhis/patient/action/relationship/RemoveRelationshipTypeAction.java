@@ -60,13 +60,6 @@ public class RemoveRelationshipTypeAction
     {
         this.id = id;
     }
-    
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
 
     // -------------------------------------------------------------------------
     // Action implementation

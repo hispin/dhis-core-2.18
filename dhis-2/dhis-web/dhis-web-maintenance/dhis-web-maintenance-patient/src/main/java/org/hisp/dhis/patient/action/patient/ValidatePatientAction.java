@@ -140,21 +140,28 @@ public class ValidatePatientAction
             return INPUT;
         }
 
-        else
+        if ( firstName != null )
         {
             firstName = firstName.trim();
+        }
+
+        if ( middleName != null )
+        {
             middleName = middleName.trim();
+        }
+
+        if ( lastName != null )
+        {
             lastName = lastName.trim();
+        }
+        if ( firstName.length() == 0 && middleName.length() == 0 && lastName.length() == 0 )
+        {
+            message = i18n.getString( "specfiy_name_s" );
 
-            if ( firstName.length() == 0 && middleName.length() == 0 && lastName.length() == 0 )
-            {
-                message = i18n.getString( "specfiy_name_s" );
+            return INPUT;
+        }
 
-                return INPUT;
-            }
-        }   
-        
-        if( age == null && birthDate == null )
+        if ( age == null && birthDate == null )
         {
             message = i18n.getString( "specfiy_birth_date_or_age" );
 
@@ -178,14 +185,14 @@ public class ValidatePatientAction
             }
             else
             {
-                if( age == null )
+                if ( age == null )
                 {
                     message = i18n.getString( "specfiy_birth_date_or_age" );
 
                     return INPUT;
-                }                
+                }
             }
-        }        
+        }
 
         // ---------------------------------------------------------------------
         // Validation success

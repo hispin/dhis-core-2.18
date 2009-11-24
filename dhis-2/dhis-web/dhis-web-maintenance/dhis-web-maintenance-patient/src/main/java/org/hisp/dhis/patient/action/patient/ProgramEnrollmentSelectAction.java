@@ -119,14 +119,7 @@ public class ProgramEnrollmentSelectAction
     public Collection<Program> getPrograms()
     {
         return programs;
-    }
-
-    private Collection<ProgramStage> programStages;
-
-    public Collection<ProgramStage> getProgramStages()
-    {
-        return programStages;
-    }
+    }   
 
     private ProgramInstance programInstance;
 

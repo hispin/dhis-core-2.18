@@ -124,21 +124,8 @@ public class ProgramEnrollmentAction
     public Collection<Program> getPrograms()
     {
         return programs;
-    }
-
-    private Collection<ProgramStage> programStages;
-
-    public Collection<ProgramStage> getProgramStages()
-    {
-        return programStages;
-    }
-
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
+    }    
+    
 
     private ProgramInstance programInstance;
 

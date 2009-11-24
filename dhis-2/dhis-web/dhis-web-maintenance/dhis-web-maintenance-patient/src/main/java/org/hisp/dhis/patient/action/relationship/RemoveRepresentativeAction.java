@@ -69,13 +69,6 @@ public class RemoveRepresentativeAction
         return patient;
     }
 
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------

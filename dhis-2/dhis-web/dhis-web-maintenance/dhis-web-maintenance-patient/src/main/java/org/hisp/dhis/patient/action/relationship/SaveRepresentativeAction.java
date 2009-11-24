@@ -91,13 +91,6 @@ public class SaveRepresentativeAction
         this.copyAttribute = copyAttribute;
     }
 
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------

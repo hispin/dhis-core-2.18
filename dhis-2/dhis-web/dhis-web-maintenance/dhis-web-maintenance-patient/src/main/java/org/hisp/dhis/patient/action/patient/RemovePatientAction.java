@@ -42,7 +42,7 @@ public class RemovePatientAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-                           
+
     private PatientService patientService;
 
     public void setPatientService( PatientService patientService )
@@ -59,13 +59,6 @@ public class RemovePatientAction
     public void setId( int id )
     {
         this.id = id;
-    }
-    
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
     }
 
     // -------------------------------------------------------------------------
