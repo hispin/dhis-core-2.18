@@ -193,7 +193,7 @@ public interface DataMartStore
      * @param periodId the Period identifier.
      * @param sourceIds the Collection of Source identifiers.
      */
-    Collection<DeflatedDataValue> getDeflatedDataValues( final int dataElementId, final int periodId, final Collection<Integer> sourceIds );
+    Collection<DeflatedDataValue> getDeflatedDataValues( int dataElementId, int periodId, Collection<Integer> sourceIds );
     
     /**
      * Gets a DataValues. Note that this is a "deflated" data value as the objects
@@ -204,7 +204,7 @@ public interface DataMartStore
      * @param periodId the Period identifier.
      * @param sourceId the Source identifier.
      */
-    DataValue getDataValue( final int dataElementId, final int categoryOptionComboId, final int periodId, final int sourceId );
+    DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId );
     
     /**
      * Gets a Map with entries containing Operand and value for all DataValues registered for the given Period and Source.

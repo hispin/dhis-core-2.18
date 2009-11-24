@@ -34,7 +34,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -43,6 +43,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -55,7 +56,7 @@ import org.junit.Test;
  * @version $Id: StdDevOutlierAnalysisServiceTest.java 883 2009-05-15 00:42:45Z daghf $
  */
 public class StdDevOutlierAnalysisServiceTest
-    extends DhisSpringTest
+    extends DhisTest
 {
     private OutlierAnalysisService stdDevOutlierAnalysisService;
 
@@ -68,8 +69,6 @@ public class StdDevOutlierAnalysisServiceTest
     private DataValue dataValueB;
 
     private Set<DataElement> dataElementsA = new HashSet<DataElement>();
-    private Set<DataElement> dataElementsB = new HashSet<DataElement>();
-    private Set<DataElement> dataElementsC = new HashSet<DataElement>();
 
     private DataElementCategoryCombo categoryCombo;
 
@@ -109,10 +108,12 @@ public class StdDevOutlierAnalysisServiceTest
 
         periodService = (PeriodService) getBean( PeriodService.ID );
 
-        dataElementA = createDataElement( 'A' );
-        dataElementB = createDataElement( 'B' );
-        dataElementC = createDataElement( 'C' );
-        dataElementD = createDataElement( 'D' );
+        categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+
+        dataElementA = createDataElement( 'A', categoryCombo );
+        dataElementB = createDataElement( 'B', categoryCombo );
+        dataElementC = createDataElement( 'C', categoryCombo );
+        dataElementD = createDataElement( 'D', categoryCombo );
 
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
@@ -121,11 +122,6 @@ public class StdDevOutlierAnalysisServiceTest
 
         dataElementsA.add( dataElementA );
         dataElementsA.add( dataElementB );
-        dataElementsB.add( dataElementC );
-        dataElementsB.add( dataElementD );
-        dataElementsC.add( dataElementB );
-
-        categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
         categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
 
@@ -145,6 +141,12 @@ public class StdDevOutlierAnalysisServiceTest
         organisationUnitService.addOrganisationUnit( organisationUnitA );
     }
 
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+    
     // ----------------------------------------------------------------------
     // Business logic tests
     // ----------------------------------------------------------------------
@@ -180,10 +182,12 @@ public class StdDevOutlierAnalysisServiceTest
         Collection<OutlierValue> result = stdDevOutlierAnalysisService.findOutliers( 
             organisationUnitA, dataElementsA, periods, stdDevFactor );
 
-        Collection<OutlierValue> ref = new ArrayList<OutlierValue>();
-        ref.add( new OutlierValue( dataValueA, -34.51 * stdDevFactor, 34.51 * stdDevFactor ) );
-        ref.add( new OutlierValue( dataValueB, -34.51 * stdDevFactor, 34.51 * stdDevFactor ) );
-        assertEquals( result.size(), 2 );
-        assertEquals( result, ref );
+        double lowerBound = -34.51 * stdDevFactor;
+        double upperBound = 34.51 * stdDevFactor;
+        
+        assertEquals( 2, result.size() );
+        equals( result, 
+            new OutlierValue( new DeflatedDataValue( dataValueA ), lowerBound, upperBound ),
+            new OutlierValue( new DeflatedDataValue( dataValueB ), lowerBound, upperBound ) );
     }
 }

@@ -61,7 +61,19 @@ public class DeflatedDataValue
     public DeflatedDataValue()
     {   
     }
-
+    
+    public DeflatedDataValue( DataValue dataValue )
+    {
+        this.dataElementId = dataValue.getDataElement().getId();
+        this.periodId = dataValue.getPeriod().getId();
+        this.sourceId = dataValue.getSource().getId();
+        this.value = dataValue.getValue();
+        this.storedBy = dataValue.getStoredBy();
+        this.timestamp = dataValue.getTimestamp();
+        this.comment = dataValue.getComment();
+        this.categoryOptionComboId = dataValue.getOptionCombo().getId();
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -144,5 +156,47 @@ public class DeflatedDataValue
     public void setCategoryOptionComboId( int categoryOptionComboId )
     {
         this.categoryOptionComboId = categoryOptionComboId;
+    }
+
+    // -------------------------------------------------------------------------
+    // hashCode and equals
+    // -------------------------------------------------------------------------
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        
+        result = prime * result + dataElementId;
+        result = prime * result + periodId;
+        result = prime * result + sourceId;
+        result = prime * result + categoryOptionComboId;
+        
+        return result;
+    }
+
+    @Override
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+        
+        if ( object == null )
+        {
+            return false;
+        }
+        
+        if ( getClass() != object.getClass() )
+        {
+            return false;
+        }
+        
+        final DeflatedDataValue other = (DeflatedDataValue) object;
+        
+        return dataElementId == other.dataElementId && periodId == other.periodId &&
+            sourceId == other.sourceId && categoryOptionComboId == other.categoryOptionComboId;
     }
 }
