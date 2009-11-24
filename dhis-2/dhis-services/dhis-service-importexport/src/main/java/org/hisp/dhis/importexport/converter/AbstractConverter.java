@@ -100,7 +100,7 @@ public abstract class AbstractConverter<T>
                     }
                 }
             }
-            else if ( match != null && params.getImportStrategy() == NEW_AND_UPDATES ) // Similar object exists
+            else if ( params.getImportStrategy() == NEW_AND_UPDATES ) // Similar object exists
             {
                 if ( !params.isPreview() ) // Import object
                 {
