@@ -87,9 +87,6 @@ public class StdDevOutlierAnalysisServiceTest
     private Period periodJ;
 
     private OrganisationUnit organisationUnitA;
-    private OrganisationUnit organisationUnitB;
-
-    private Set<OrganisationUnit> organisationUnitsA = new HashSet<OrganisationUnit>();
 
     // ----------------------------------------------------------------------
     // Fixture
@@ -144,13 +141,8 @@ public class StdDevOutlierAnalysisServiceTest
         periodJ = createPeriod( new MonthlyPeriodType(), getDate( 2000, 12, 1 ), getDate( 2000, 12, 30 ) );
 
         organisationUnitA = createOrganisationUnit( 'A' );
-        organisationUnitB = createOrganisationUnit( 'B' );
 
         organisationUnitService.addOrganisationUnit( organisationUnitA );
-        organisationUnitService.addOrganisationUnit( organisationUnitB );
-
-        organisationUnitsA.add( organisationUnitA );
-        organisationUnitsA.add( organisationUnitB );
     }
 
     // ----------------------------------------------------------------------
@@ -186,7 +178,7 @@ public class StdDevOutlierAnalysisServiceTest
         periods.add( periodE );
 
         Collection<OutlierValue> result = stdDevOutlierAnalysisService.findOutliers( 
-            organisationUnitsA, dataElementsA, periods, stdDevFactor );
+            organisationUnitA, dataElementsA, periods, stdDevFactor );
 
         Collection<OutlierValue> ref = new ArrayList<OutlierValue>();
         ref.add( new OutlierValue( dataValueA, -34.51 * stdDevFactor, 34.51 * stdDevFactor ) );

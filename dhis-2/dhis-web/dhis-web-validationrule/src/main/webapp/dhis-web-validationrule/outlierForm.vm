@@ -80,7 +80,7 @@
 			<div id="selectionTree" style="width:40em;height:20em;overflow:auto;/*border:1px solid #cccccc*/"></div>
 			<script type="text/javascript">
 
-          		selectionTreeSelection.setMultipleSelectionAllowed( true );
+          		selectionTreeSelection.setMultipleSelectionAllowed( false );
           		// selectionTreeSelection.setOnSelectFunction( treeClicked );
           		// selectionTreeSelection.setListenerFunction( selectCompleted );
           		selectionTree.buildSelectionTree();

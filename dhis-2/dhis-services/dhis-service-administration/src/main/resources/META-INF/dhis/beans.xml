@@ -98,12 +98,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         
   <bean id="org.hisp.dhis.outlieranalysis.StdDevOutlierAnalysisService" 
     class="org.hisp.dhis.outlieranalysis.StdDevOutlierAnalysisService">
+	<property name="organisationUnitService"
+	  ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="dataValueService"
       ref="org.hisp.dhis.datavalue.DataValueService"/>    
   </bean>
 
   <bean id="org.hisp.dhis.outlieranalysis.MinMaxOutlierAnalysisService"
     class="org.hisp.dhis.outlieranalysis.MinMaxOutlierAnalysisService">
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="minMaxDataElementService"
       ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="dataValueService" 

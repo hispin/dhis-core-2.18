@@ -162,11 +162,11 @@ public class GetOutliersAction
         return new ArrayList<DataElement>( this.dataElements );
     }
     
-    private Collection<OrganisationUnit> sources = null;
+    private OrganisationUnit source;
     
-    public Collection<OrganisationUnit> getSources()
+    public OrganisationUnit getSource()
     {
-    	return (sources == null ? new ArrayList<OrganisationUnit>(0) : sources);
+        return source;
     }
 
     private String outlierType;
@@ -221,7 +221,7 @@ public class GetOutliersAction
 
         dataElements = dataElementService.getDataElements( ConversionUtils.getIntegerCollection( dataElementsById ) );
 
-        sources = selectionTreeManager.getSelectedOrganisationUnits();
+        source = selectionTreeManager.getSelectedOrganisationUnit();
         
         DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
         
@@ -253,11 +253,11 @@ public class GetOutliersAction
 
         if ( outlierType.equals( TYPE_MINMAX ) )
         {
-            outlierValues = minMaxOutlierAnalysisService.findOutliers( sources, dataElements, periods, null );
+            outlierValues = minMaxOutlierAnalysisService.findOutliers( source, dataElements, periods, null );
         }
         else if ( outlierType.equals( TYPE_STDDEV ) )
         {
-            outlierValues = stdDevOutlierAnalysisService.findOutliers( sources, dataElements, periods, standardDeviation );
+            outlierValues = stdDevOutlierAnalysisService.findOutliers( source, dataElements, periods, standardDeviation );
         }
         else
         {

@@ -29,11 +29,10 @@ package org.hisp.dhis.outlieranalysis;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 
 /**
@@ -43,26 +42,43 @@ import org.hisp.dhis.period.Period;
 public abstract class AbstractOutlierAnalysisService
     implements OutlierAnalysisService
 {
-    public final Collection<OutlierValue> findOutliers( Collection<? extends OrganisationUnit> organisationUnits,
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private OrganisationUnitService organisationUnitService;
+    
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+    
+    // -------------------------------------------------------------------------
+    // OutlierAnalysisService implementation
+    // -------------------------------------------------------------------------
+
+    public final Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit,
         Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
     {
-        final Queue<OrganisationUnit> organisationUnitQueue = new LinkedList<OrganisationUnit>( organisationUnits );
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() );
+        
         final Collection<OutlierValue> outlierCollection = new ArrayList<OutlierValue>();
         
-        while ( !organisationUnitQueue.isEmpty() )
+        for ( OrganisationUnit unit : units )
         {
-            final OrganisationUnit organisationUnit = organisationUnitQueue.remove();
-            organisationUnitQueue.addAll( organisationUnit.getChildren() );
-            
             for ( DataElement dataElement : dataElements )
             {
-                outlierCollection.addAll( findOutliers( organisationUnit, dataElement, periods, stdDevFactor ) );
+                outlierCollection.addAll( findOutliers( unit, dataElement, periods, stdDevFactor ) );
             }
         }
 
         return outlierCollection;
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Abstract methods
+    // -------------------------------------------------------------------------
+
     protected abstract Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit, 
         DataElement dataElement, Collection<Period> periods, Double stdDevFactor );
 }
