@@ -62,4 +62,7 @@ public abstract class AbstractOutlierAnalysisService
 
         return outlierCollection;
     }
+    
+    protected abstract Collection<OutlierValue> findOutliers( OrganisationUnit organisationUnit, 
+        DataElement dataElement, Collection<Period> periods, Double stdDevFactor );
 }
